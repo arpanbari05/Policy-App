@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components/macro";
+import { IoArrowForwardSharp } from "react-icons/io5";
 
 const StyledButton = ({
   type,
@@ -12,7 +13,7 @@ const StyledButton = ({
   height,
   bg,
   color,
-  styledCss
+  styledCss,
 }) => {
   return (
     <Button
@@ -28,8 +29,7 @@ const StyledButton = ({
       color={color}
       css={styledCss}
     >
-      {value ? value : children}{" "}
-      {!noIcon && <i className="icon flaticon-next"></i>}
+      {value ? value : children} {!noIcon && <IoArrowForwardSharp />}
     </Button>
   );
 };
@@ -37,7 +37,7 @@ const StyledButton = ({
 StyledButton.defaultProps = {
   height: "58px",
   width: "100%",
-  bg: "blue",
+  bg: "#0a87ff",
   color: "white",
 };
 

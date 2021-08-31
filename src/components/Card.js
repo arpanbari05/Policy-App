@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const Card = ({
   height,
@@ -12,6 +12,7 @@ const Card = ({
   BgColor,
   children,
   boxShadow,
+  styledCss,
 }) => {
   return (
     <Container
@@ -24,6 +25,7 @@ const Card = ({
       color={color}
       BgColor={BgColor}
       boxShadow={boxShadow}
+      css={styledCss}
     >
       {children}
     </Container>
@@ -33,7 +35,7 @@ const Card = ({
 export default Card;
 
 Card.defaultProps = {
-  height: "100%",
+  height: "auto",
   width: "100%",
   borderRadius: "0",
   padding: "10px",

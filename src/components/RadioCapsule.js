@@ -36,9 +36,9 @@ const RadioInput = styled.input`
   &:checked + label,
   &:not(:checked) + label:hover {
     background-color: #fff;
-    color: #c7222a;
+    color: #0a87ff;
     text-align: center !important;
-    border: 1px solid #c7222a;
+    border: 1px solid #0a87ff;
     border-radius: 50px;
     line-height: 12px;
   }

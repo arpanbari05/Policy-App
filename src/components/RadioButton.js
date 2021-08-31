@@ -36,7 +36,7 @@ export const RadioInput = styled.input`
     margin-bottom: 0;
     color: #000;
     opacity: 1;
-    border: 2px solid #c7222a;
+    border: 1px solid #0a87ff;
     font-size: 15px;
     background-color: #fffafa;
   }
