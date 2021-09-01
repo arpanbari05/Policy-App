@@ -3,11 +3,11 @@ import { FloatingLabel, Form } from "react-bootstrap";
 import "styled-components/macro";
 import { closeImg } from "../assets/images";
 
-const TextInput = ({ label, type, placeholder, value, clear }) => {
+const TextInput = ({ label, type, placeholder, value, clear, styledCss }) => {
   return (
     <div
       css={`
-    
+        ${styledCss}
         position: relative;
         & span {
           position: absolute;
@@ -25,15 +25,16 @@ const TextInput = ({ label, type, placeholder, value, clear }) => {
         }
         & label {
           padding: 19px 0.75rem;
+          color: #505b6d;
         }
       `}
     >
-      <FloatingLabel controlId="floatingInput" label={label} >
+      <FloatingLabel controlId="floatingInput" label={label}>
         <Form.Control type={type} placeholder={placeholder} value={value} />
       </FloatingLabel>
       {clear && (
         <span onClick={clear}>
-          <img src={closeImg} alt={"close"}/>
+          <img src={closeImg} alt={"close"} />
         </span>
       )}
     </div>
