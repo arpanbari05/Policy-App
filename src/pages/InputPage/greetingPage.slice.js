@@ -123,11 +123,23 @@ export const saveForm1UserDetails = (data, handleChange) => {
   const { pinCode, is_pincode_search } = data;
   return async (dispatch) => {
     try {
-      const { res } = await createUser({
-        section: "health",
-        ...data,
-      });
-      console.log(res)
+      if (pinCode) {
+        const { res } = await createUser({
+          section: "health",
+          pincode: pinCode,
+          is_pincode_search,
+        });
+        dispatch(
+          createUserData({
+            pincode: pinCode,
+            is_pincode_search,
+          })
+        );
+        setTimeout(() => {
+          handleChange(2);
+          dispatch(setIsDisabled(false));
+        }, 500);
+      }
     } catch {
       alert("something went wrong");
     }
@@ -288,71 +300,75 @@ export const saveForm1UserDetails = (data, handleChange) => {
 //   };
 // };
 
-// export const saveForm4UserDetails = data => {
-//   const { planType } = data;
-//   return async dispatch => {
-//     try {
-//       const response = await updateUser({
-//         plan_type: planType,
-//       });
-//       const newMemberGroups = response.data.data.groups.reduce(
-//         (groups, member) => ({
-//           ...groups,
-//           [member.id]: member.members,
-//         }),
-//         {},
-//       );
-//       dispatch(setMemberGroups(newMemberGroups));
-//       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-//       dispatch(createUserData({ plan_type: planType }));
-//       dispatch(
-//         setFilters({
-//           planType:
-//             planType === "M"
-//               ? "Multi Individual"
-//               : planType === "F"
-//               ? "Family Floater"
-//               : "Individual",
-//         }),
-//       );
-//     } catch (err) {
-//       //alert(err);
-//     }
-//   };
-// };
-// export const saveForm5UserDetails = (data, pushToQuotes) => {
-//   return async (dispatch, getState) => {
-//     try {
-//       const response = await updateUser({
-//         medical_history: [...data],
-//       });
+export const saveForm4UserDetails = data => {
+  const { planType } = data;
+  return async dispatch => {
+    try {
+      const response = await updateUser({
+        plan_type: planType,
+      });
+      const newMemberGroups = response.data.data.groups.reduce(
+        (groups, member) => ({
+          ...groups,
+          [member.id]: member.members,
+        }),
+        {},
+      );
+      dispatch(setMemberGroups(newMemberGroups));
+      // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      dispatch(createUserData({ plan_type: planType }));
+      // dispatch(
+      //   setFilters({
+      //     planType:
+      //       planType === "M"
+      //         ? "Multi Individual"
+      //         : planType === "F"
+      //         ? "Family Floater"
+      //         : "Individual",
+      //   }),
+      // );
+    } catch (err) {
+      //alert(err);
+    }
+  };
+};
 
-//       const newMemberGroups = response.data.data.groups.reduce(
-//         (groups, member) => ({
-//           ...groups,
-//           [member.id]: member.members,
-//         }),
-//         {},
-//       );
-//       dispatch(setMemberGroups(newMemberGroups));
-//       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-//       dispatch(createUserData({ medical_history: [...data] }));
+export const saveForm5UserDetails = (data) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await updateUser({
+        medical_history: [...data],
+      });
 
-//       pushToQuotes(Object.keys(newMemberGroups)[0]);
-//     } catch (err) {
-//       //alert(err);
-//     }
-//   };
-// };
+      const newMemberGroups = response.data.data.groups.reduce(
+        (groups, member) => ({
+          ...groups,
+          [member.id]: member.members,
+        }),
+        {},
+      );
+     // dispatch(setMemberGroups(newMemberGroups));
+     // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      dispatch(createUserData({ medical_history: [...data] }));
+
+    } catch (err) {
+      //alert(err);
+    }
+  };
+};
 
 export const getRegion = (data) => {
   return async (dispatch) => {
     try {
       dispatch(requestRegionData());
       const response = await checkpinCode(data);
-      dispatch(createRegionData(response?.data));
-    } catch (err) {
-      dispatch(requestRegionFail("Please enter a valid pincode"));
+      if (!response?.message) {
+        dispatch(createRegionData(response?.data));
+      } else {
+        dispatch(requestRegionFail(response?.message));
+      }
+    } catch (error) {
+      dispatch(requestRegionFail(error?.response?.data?.message));
     }
   };
 };
