@@ -3,7 +3,7 @@ import { FloatingLabel, Form } from "react-bootstrap";
 import "styled-components/macro";
 import { closeImg } from "../assets/images";
 
-const TextInput = ({ label, type, placeholder, value, clear, styledCss }) => {
+const TextInput = ({ label, type, placeholder, value, clear, styledCss,onChange }) => {
   return (
     <div
       css={`
@@ -30,9 +30,9 @@ const TextInput = ({ label, type, placeholder, value, clear, styledCss }) => {
       `}
     >
       <FloatingLabel controlId="floatingInput" label={label}>
-        <Form.Control type={type} placeholder={placeholder} value={value} />
+        <Form.Control type={type} placeholder={placeholder} value={value} onChange={onChange}/>
       </FloatingLabel>
-      {clear && (
+      {value?.length > 1 && clear && (
         <span onClick={clear}>
           <img src={closeImg} alt={"close"} />
         </span>

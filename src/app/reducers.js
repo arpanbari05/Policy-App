@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
-import { frontendBootSlice } from "../pages";
+import { frontendBootSlice, greetingPageSlice } from "../pages";
 
 
 export default combineReducers({
   frontendBoot: frontendBootSlice,
+  greetingPage: greetingPageSlice,
 });
