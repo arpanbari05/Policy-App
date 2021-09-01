@@ -10,9 +10,13 @@ import RoundDD from "../../components/RoundDD";
 import Checkbox from "../../components/Checkbox";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import Form1 from "./components/Form1";
+import Form2 from "./components/Form2";
+import Form3 from "./components/Form3";
+import Form4 from "./components/Form4";
+import Form5 from "./components/Form5";
 
 export const InputPage = () => {
-  const [currentForm, setCurrentForm] = useState(1);
+  const [currentForm, setCurrentForm] = useState(5);
   const [showmore, setShowmore] = useState(false);
 
   const handleChange = (form) => {
@@ -25,7 +29,11 @@ export const InputPage = () => {
         <InnerWrapper>{planCard()}</InnerWrapper>
         <InnerWrapper>
           {" "}
-          <Card padding={`0`} styledCss={`margin: 73px auto; margin-bottom: 30px`} width={`499px`}>
+          <Card
+            padding={`0`}
+            styledCss={`margin: 73px auto; margin-bottom: 30px`}
+            width={`499px`}
+          >
             <div
               css={`
                 display: flex;
@@ -37,9 +45,13 @@ export const InputPage = () => {
               `}
             >
               <Form1 currentForm={currentForm} handleChange={handleChange} />
+              <Form2 currentForm={currentForm} handleChange={handleChange} />
+              <Form3 currentForm={currentForm} handleChange={handleChange} />
+              <Form4 currentForm={currentForm} handleChange={handleChange} />
+              <Form5 currentForm={currentForm} handleChange={handleChange} />
             </div>
           </Card>
-          {termsAndConditions(showmore, setShowmore)}
+          {currentForm === 1 && termsAndConditions(showmore, setShowmore)}
         </InnerWrapper>
       </Wrapper>
       {/* <Card width={`400px`} height={"600px"} padding={`0px`}>
@@ -106,7 +118,9 @@ const PlanCard = styled.div`
     height: 22px;
   }
 `;
-const InnerWrapper = styled.div`display: block;`;
+const InnerWrapper = styled.div`
+  display: block;
+`;
 
 function planCard() {
   return (
@@ -131,47 +145,48 @@ function planCard() {
 
 function termsAndConditions(showmore, setShowmore) {
   return (
-    <div css={`
-    display: flex;
-    `}>
-
-    <label
-      style={{ fontSize: "13px", color: "black", fontWeight: "400" }}
+    <div
       css={`
-      width: 496px;
-      margin: 0 auto;
+        display: flex;
       `}
+    >
+      <label
+        style={{ fontSize: "13px", color: "black", fontWeight: "400" }}
+        css={`
+          width: 496px;
+          margin: 0 auto;
+        `}
       >
-      <i class="termchk"></i>By clicking on Get Started, I hereby authorise
-      FYNTUNE. and all of its affiliates,
-      subsidiaries, group companies and related parties to access the details
-      such as my name, address, telephone number,{" "}
-      <span style={{ display: showmore ? "inline" : "none" }}>
-        e-mail address, birth date and / or anniversary date shared by me, and
-        contact me to provide information on the various products and services
-        offered. I understand that this consent will override my NDNC
-        registration, if any. I also understand that at any point of time, I
-        wish to stop receiving such communications from ABIBL, I can withdraw
-        such consent anytime on{" "}
-        <a
-          href="https://cpuat.adityabirlainsurancebrokers.com/"
-          target="_blank"
-          style={{ color: "black !important" }}
+        <i class="termchk"></i>By clicking on Get Started, I hereby authorise
+        FYNTUNE. and all of its affiliates, subsidiaries, group companies and
+        related parties to access the details such as my name, address,
+        telephone number,{" "}
+        <span style={{ display: showmore ? "inline" : "none" }}>
+          e-mail address, birth date and / or anniversary date shared by me, and
+          contact me to provide information on the various products and services
+          offered. I understand that this consent will override my NDNC
+          registration, if any. I also understand that at any point of time, I
+          wish to stop receiving such communications from FYNTUNE, I can withdraw
+          such consent anytime on{" "}
+          <a
+            href="#"
+            target="_blank"
+            style={{ color: "black !important" }}
           >
-          cpuat.adityabirlainsurancebrokers.com
-        </a>{" "}
-        (to provide a contact number or email id or both){" "}
-      </span>
-      <a
-        style={{ color: "red", fontSize: "15px" }}
-        onClick={() => {
-          setShowmore(!showmore);
-        }}
+            
+          </a>{" "}
+          (to provide a contact number or email id or both){" "}
+        </span>
+        <a
+          style={{ color: "red", fontSize: "15px" }}
+          onClick={() => {
+            setShowmore(!showmore);
+          }}
         >
-        {showmore ? "...show less" : "...show more"}
-      </a>
-    </label>
-</div>
+          {showmore ? "...show less" : "...show more"}
+        </a>
+      </label>
+    </div>
   );
 }
 

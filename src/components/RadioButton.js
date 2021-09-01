@@ -1,21 +1,39 @@
 import React from "react";
 import styled from "styled-components/macro";
-import { check } from "../assets/images";
 
-const RadioButton = ({ onChange, checked, value, id, label,itemsCentered }) => {
+import { FaCheck } from "react-icons/fa";
+const RadioButton = ({
+  onChange,
+  checked,
+  value,
+  id,
+  label,
+  onClick,
+  itemsCentered,
+}) => {
   return (
     <>
       <RadioInput
         type="radio"
-        name={"planType"}
+        name={label}
         id={id}
+        onClick={onClick}
         value={value}
-        checked={checked}
-        onChange={onChange}
+        checked={checked || false}
+        onChange={() => {}}
       />
       <RadioLabel itemsCentered={itemsCentered} htmlFor={id}>
-        {checked && <RadioLabelImage src={check} />}
         <span> {label}</span>
+        {checked && (
+          <FaCheck
+            css={`
+              position: absolute;
+              right: 20px;
+              color: #0a87ff;
+              font-size: 20px;
+            `}
+          />
+        )}
       </RadioLabel>
     </>
   );
@@ -33,12 +51,12 @@ export const RadioInput = styled.input`
     visibility: hidden;
   }
   &:checked + label {
-    margin-bottom: 0;
+    margin-bottom: 10px;
     color: #000;
     opacity: 1;
-    border: 1px solid #0a87ff;
+    border: solid 1px #0a87ff;
+    background-color: #e2f0ff;
     font-size: 15px;
-    background-color: #fffafa;
   }
 `;
 
@@ -52,14 +70,14 @@ export const RadioLabel = styled.label`
   opacity: 1;
   font-size: 15px;
   border-radius: 10px;
-  margin: 10px 0;
+  margin-bottom: 10px;
   width: 100%;
   height: 66px;
   position: relative;
   & span {
     position: relative;
     font-size: 18px;
-    left:  ${(props) => !props.itemsCentered && "13px"};
+    left: ${(props) => !props.itemsCentered && "13px"};
   }
   display: inline-flex;
   align-items: center;
