@@ -111,7 +111,7 @@ export default RoundDD;
 
 const InputField = styled.input`
   poistion: absolute !important;
-  top: -8px !important;
+  top: -3px !important;
   left: -7px !important;
   z-index: 99;
   border: none !important;
@@ -119,7 +119,7 @@ const InputField = styled.input`
   margin: 13px 16px 20px !important;
   padding: 4px 8px !important;
   width: 58% !important;
-  font-size: 17px !important;
+  font-size: 12px;
   font-weight: 400 !important;
 
   color: #000 !important;
@@ -132,9 +132,9 @@ export const Label = styled.label`
   position: absolute;
   z-index: -1;
   top: -10px;
-  background: #fff;
+ background-color: #d5dce5;
   left: 18px;
-  font-size: 13px;
+  font-size: 12px;
 `;
 
 export const Wrapper = styled.div`
@@ -150,7 +150,7 @@ export const Header = styled.a`
   padding: ${(props) => (props.sortByDD ? "auto" : "12px 15px !important")};
   display: inline-block;
   width: ${(props) => (props.sortByDD ? "auto" : "175px")};
-  overflow: hidden;
+ // overflow: hidden;
   position: relative;
   z-index: 1;
   -webkit-box-sizing: border-box;
@@ -162,7 +162,6 @@ export const Header = styled.a`
   -moz-border-radius: 3px;
   border-radius: 50px;
   box-shadow: 0 12px 12px -11px #004b8347;
-  margin: 0px 53px 0 2px;
 
   &.active {
     border-radius: 3px 3px 0 0;
@@ -176,7 +175,7 @@ export const Header = styled.a`
 
 export const HeaderTitle = styled.div`
   position: relative;
-  font-size: 17px;
+     font-size: 12px;
   font-weight: 400;
   line-height: 18px;
   color: #000;
@@ -213,7 +212,6 @@ export const List = styled.div`
   z-index: 10000;
   border: 1px solid #d0d0d0;
   background: #fff;
-  margin: 0px 0px 0 2px;
   border-top: 0 none;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -230,7 +228,7 @@ export const List = styled.div`
   -webkit-overflow-scrolling: touch;
 `;
 export const ListItem = styled.div`
-  font-size: 13px;
+font-size: 12px;
   font-weight: 400;
   line-height: 18px;
   padding: 5px 8px 8px 14px;

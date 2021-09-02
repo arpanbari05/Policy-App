@@ -44,18 +44,22 @@ export const medicalHistoryRadioArr = [
 
 const Form3 = ({ handleChange, currentForm }) => {
   const dispatch = useDispatch();
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(false);
   const [diseaseArray, setDiseaseArray] = useState([]);
-
+  const [customErrors, setCustomErrors] = useState(false);
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const { data } = frontendData || [""];
   const { existingdiseases } = data || [""];
   console.log(diseaseArray);
-  
+
   const handleSubmit = () => {
-    const medical_history = [...diseaseArray];
-    dispatch(saveForm5UserDetails(medical_history));
-    handleChange(5);
+    if (selected) {
+      const medical_history = [...diseaseArray];
+      dispatch(saveForm5UserDetails(medical_history));
+      handleChange(5);
+    } else {
+      setCustomErrors("Please Select One");
+    }
   };
   const handleDiseases = (disease) => {
     const tempArray = [...diseaseArray];
@@ -94,7 +98,10 @@ const Form3 = ({ handleChange, currentForm }) => {
             medicalHistoryRadioArr.map(({ code, display_name }, i) => {
               return (
                 <RadioButton
-                  onClick={(e) => setSelected(code)}
+                  onClick={(e) => {
+                    customErrors && setCustomErrors(false);
+                    setSelected(code);
+                  }}
                   id={display_name}
                   value={code}
                   checked={selected === code || undefined}
@@ -116,6 +123,7 @@ const Form3 = ({ handleChange, currentForm }) => {
               />
             );
           })}
+          {customErrors && <ErrorMessage>{customErrors}</ErrorMessage>}
         {formButtons(handleChange, handleSubmit, currentForm)}
       </div>
     </div>
