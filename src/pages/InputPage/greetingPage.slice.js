@@ -146,47 +146,56 @@ export const saveForm1UserDetails = (data, handleChange) => {
   };
 };
 
-// export const saveForm1UserDetails = (userDetails, handleChange) => {
-//   const { fullName, mobile, gender, email } = userDetails;
-//   return async dispatch => {
-//     try {
-//       const modUserDetails = {
-//         name: fullName,
-//         email: email,
-//         // first_name: fullName.split(" ")[0],
-//         // last_name: fullName.split(" ")[1],
-//         mobile: mobile,
-//         gender: gender,
-//       };
+export const saveForm2UserDetails = (userDetails, pushToQuotes) => {
+  const { fullName, mobile, gender, email } = userDetails;
+  return async (dispatch) => {
+    try {
+      const modUserDetails = {
+        name: fullName,
+        email: email,
+        // first_name: fullName.split(" ")[0],
+        // last_name: fullName.split(" ")[1],
+        mobile: mobile,
+        gender: gender,
+      };
 
-//       const { data } = await createUser({
-//         section: "health",
-//         ...modUserDetails,
-//       });
+      const { data } = await updateUser({
+        ...modUserDetails,
+      });
 
-//       const {
-//         data: { enquiry_id },
-//         access_token,
-//       } = data;
+      // const {
+      //   data: { enquiry_id },
+      //   access_token,
+      // } = data;
 
-//       ls.set("token", access_token);
-//       ls.set("enquiryId", enquiry_id);
+      // ls.set("token", access_token);
+      // ls.set("enquiryId", enquiry_id);
 
-//       dispatch(
-//         createUserData({
-//           ...modUserDetails,
-//           sum_insured: data?.data?.user_input?.sum_insured,
-//           tenure: data?.data?.user_input?.tenure,
-//         }),
-//       );
-//       handleChange("form2");
-//       // dispatch(saveFilteredQuotes([]));
-//       // dispatch(createUserData(modUserDetails));
-//     } catch (err) {
-//       //alert(err);
-//     }
-//   };
-// };
+      dispatch(
+        createUserData({
+          ...modUserDetails,
+          sum_insured: data?.data?.user_input?.sum_insured,
+          tenure: data?.data?.user_input?.tenure,
+        })
+      );
+      // dispatch(setMemberGroups(newMemberGroups));
+      // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      dispatch(createUserData({ medical_history: [...data] }));
+      const newMemberGroups = data.data.groups.reduce(
+        (groups, member) => ({
+          ...groups,
+          [member.id]: member.members,
+        }),
+        {},
+      );
+      pushToQuotes(Object.keys(newMemberGroups)[0]);
+      // dispatch(saveFilteredQuotes([]));
+      // dispatch(createUserData(modUserDetails));
+    } catch (err) {
+      //alert(err);
+    }
+  };
+};
 
 // export const saveForm2UserDetails = (data, handleChange) => {
 //   const { pinCode, is_pincode_search } = data;
@@ -300,9 +309,9 @@ export const saveForm1UserDetails = (data, handleChange) => {
 //   };
 // };
 
-export const saveForm4UserDetails = data => {
+export const saveForm4UserDetails = (data) => {
   const { planType } = data;
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const response = await updateUser({
         plan_type: planType,
@@ -312,7 +321,7 @@ export const saveForm4UserDetails = data => {
           ...groups,
           [member.id]: member.members,
         }),
-        {},
+        {}
       );
       dispatch(setMemberGroups(newMemberGroups));
       // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
@@ -345,12 +354,11 @@ export const saveForm5UserDetails = (data) => {
           ...groups,
           [member.id]: member.members,
         }),
-        {},
+        {}
       );
-     // dispatch(setMemberGroups(newMemberGroups));
-     // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      // dispatch(setMemberGroups(newMemberGroups));
+      // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
       dispatch(createUserData({ medical_history: [...data] }));
-
     } catch (err) {
       //alert(err);
     }
