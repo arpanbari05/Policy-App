@@ -34,6 +34,7 @@ export function formButtons(handleChange, handleSubmit, currentForm, lastForm) {
       css={`
         display: flex;
         justify-content: space-between;
+        width: 100%;
       `}
     >
       <BackButton

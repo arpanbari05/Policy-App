@@ -14,9 +14,10 @@ import Form2 from "./components/Form2";
 import Form3 from "./components/Form3";
 import Form4 from "./components/Form4";
 import Form5 from "./components/Form5";
+import Slider from "../../components/Slider";
 
 export const InputPage = () => {
-  const [currentForm, setCurrentForm] = useState(5);
+  const [currentForm, setCurrentForm] = useState(2);
   const [showmore, setShowmore] = useState(false);
 
   const handleChange = (form) => {
@@ -77,6 +78,7 @@ export const InputPage = () => {
           styledCss={`position: absolute;bottom: 0;left: 0; right: 0; margin: 0;`}
         />
       </Card> */}
+     
     </Container>
   );
 };

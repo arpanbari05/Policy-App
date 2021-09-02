@@ -174,21 +174,19 @@ export const saveForm2UserDetails = (userDetails, pushToQuotes) => {
       dispatch(
         createUserData({
           ...modUserDetails,
-          sum_insured: data?.data?.user_input?.sum_insured,
-          tenure: data?.data?.user_input?.tenure,
         })
       );
       // dispatch(setMemberGroups(newMemberGroups));
       // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-      dispatch(createUserData({ medical_history: [...data] }));
       const newMemberGroups = data.data.groups.reduce(
         (groups, member) => ({
           ...groups,
           [member.id]: member.members,
         }),
-        {},
+        {}
       );
       pushToQuotes(Object.keys(newMemberGroups)[0]);
+      console.log("dgasgasd", 221);
       // dispatch(saveFilteredQuotes([]));
       // dispatch(createUserData(modUserDetails));
     } catch (err) {
@@ -225,89 +223,89 @@ export const saveForm2UserDetails = (userDetails, pushToQuotes) => {
 //   };
 // };
 
-// export const saveForm3UserDetails = (data, handleChange) => {
-//   return async dispatch => {
-//     let sonCount = 1;
-//     let DCount = 1;
-//     try {
-//       const response = await updateUser({
-//         members: data?.map(member => {
-//           member.type = member.type.toLowerCase();
-//           if (member.type.includes("daughter"))
-//             return {
-//               ...member,
-//               type: member.type.slice(0, 8).concat(DCount++),
-//             };
-//           if (member.type.includes("son"))
-//             return {
-//               ...member,
-//               type: member.type.slice(0, 3).concat(sonCount++),
-//             };
-//           return member;
-//         }),
-//       });
+export const saveForm3UserDetails = (data, handleChange) => {
+  return async (dispatch) => {
+    let sonCount = 1;
+    let DCount = 1;
+    try {
+      const response = await updateUser({
+        members: data?.map((member) => {
+          member.type = member.type.toLowerCase();
+          if (member.type.includes("daughter"))
+            return {
+              ...member,
+              type: member.type.slice(0, 8).concat(DCount++),
+            };
+          if (member.type.includes("son"))
+            return {
+              ...member,
+              type: member.type.slice(0, 3).concat(sonCount++),
+            };
+          return member;
+        }),
+      });
 
-//       if (response?.data) {
-//         dispatch(createUserData({ members: response.data.data.input.members }));
-//         // handleChange("form4");
-//         if (response.data.data.input.members.length === 1) {
-//           dispatch(saveForm4UserDetails({ planType: "I" }));
-//         } else handleChange("form4");
-//       }
-//       if (!response.success) {
-//         //emtpy commit
-//         dispatch(
-//           ageError(
-//             Object.keys(response.errors || {}).map(
-//               item => response.errors[item][0],
-//             ),
-//           ),
-//         );
-//       }
-//       const {
-//         data: { trace_id },
-//       } = response.data;
-//       dispatch(setTraceId(trace_id));
-//       if (data && !response.errors && data.length === 1) {
-//         handleChange("form5");
-//       }
-//       // dispatch(createUserData({ member: data }));
-//       // const newMemberGroups = response.data.data.members.reduce(
-//       //   (groups, member) => ({
-//       //     ...groups,
-//       //     [member.group]: groups[member.group]
-//       //       ? [...groups[member.group], member.type]
-//       //       : [member.type],
-//       //   }),
-//       //   {},
-//       // );
-//       const newMemberGroups = response.data.data.groups.reduce(
-//         (groups, member) => ({
-//           ...groups,
-//           [member.id]: member.members,
-//         }),
-//         {},
-//       );
-//       dispatch(createUserData({ member: response?.data.data.members }));
-//       // const memberGroupsList = Object.keys(newMemberGroups);
-//       // const showPlanTypeFilter =
-//       //   memberGroupsList.length > 1 ||
-//       //   newMemberGroups[memberGroupsList[0]].length > 1;
-//       const showPlanTypeFilter = response.data.data.input.members.length;
-//       if (!showPlanTypeFilter) {
-//         dispatch(
-//           setFilters({
-//             planType: "Individual",
-//           }),
-//         );
-//       }
-//       dispatch(setMemberGroups(newMemberGroups));
-//       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-//     } catch (err) {
-//       // alert(err.message);
-//     }
-//   };
-// };
+      if (response?.data) {
+        dispatch(createUserData({ members: response.data.data.input.members }));
+        // handleChange("form4");
+        if (response.data.data.input.members.length === 1) {
+          dispatch(saveForm4UserDetails({ planType: "I" }));
+        } else handleChange(3);
+      }
+      if (!response.success) {
+        //emtpy commit
+        dispatch(
+          ageError(
+            Object.keys(response.errors || {}).map(
+              (item) => response.errors[item][0]
+            )
+          )
+        );
+      }
+      const {
+        data: { trace_id },
+      } = response.data;
+      dispatch(setTraceId(trace_id));
+      if (data && !response.errors && data.length === 1) {
+        handleChange(4);
+      }
+      // dispatch(createUserData({ member: data }));
+      // const newMemberGroups = response.data.data.members.reduce(
+      //   (groups, member) => ({
+      //     ...groups,
+      //     [member.group]: groups[member.group]
+      //       ? [...groups[member.group], member.type]
+      //       : [member.type],
+      //   }),
+      //   {},
+      // );
+      const newMemberGroups = response.data.data.groups.reduce(
+        (groups, member) => ({
+          ...groups,
+          [member.id]: member.members,
+        }),
+        {}
+      );
+      dispatch(createUserData({ member: response?.data.data.members }));
+      // const memberGroupsList = Object.keys(newMemberGroups);
+      // const showPlanTypeFilter =
+      //   memberGroupsList.length > 1 ||
+      //   newMemberGroups[memberGroupsList[0]].length > 1;
+      const showPlanTypeFilter = response.data.data.input.members.length;
+      // if (!showPlanTypeFilter) {
+      //   dispatch(
+      //     setFilters({
+      //       planType: "Individual",
+      //     }),
+      //   );
+      // }
+      dispatch(setMemberGroups(newMemberGroups));
+      //dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+    } catch (err) {
+      // alert(err.message);
+    }
+  };
+};
 
 export const saveForm4UserDetails = (data) => {
   const { planType } = data;
