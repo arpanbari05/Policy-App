@@ -125,7 +125,7 @@ const InnerWrapper = styled.div`
 function planCard() {
   return (
     <Card
-      BgColor={`#edf0f4`}
+      BgColor={`#edf0f49e`}
       padding={`27px`}
       styledCss={`
     margin: 73px auto;
@@ -166,15 +166,9 @@ function termsAndConditions(showmore, setShowmore) {
           contact me to provide information on the various products and services
           offered. I understand that this consent will override my NDNC
           registration, if any. I also understand that at any point of time, I
-          wish to stop receiving such communications from FYNTUNE, I can withdraw
-          such consent anytime on{" "}
-          <a
-            href="#"
-            target="_blank"
-            style={{ color: "black !important" }}
-          >
-            
-          </a>{" "}
+          wish to stop receiving such communications from FYNTUNE, I can
+          withdraw such consent anytime on{" "}
+          <a href="#" target="_blank" style={{ color: "black !important" }}></a>{" "}
           (to provide a contact number or email id or both){" "}
         </span>
         <a
