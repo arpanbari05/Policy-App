@@ -1,6 +1,13 @@
 import React from "react";
 import styled from "styled-components/macro";
-const RadioCapsule = ({ label, checked, value, onChange, styledCss }) => {
+const RadioCapsule = ({
+  label,
+  checked,
+  value,
+  onChange,
+  onClick,
+  styledCss,
+}) => {
   return (
     <>
       <RadioInput
@@ -8,8 +15,9 @@ const RadioCapsule = ({ label, checked, value, onChange, styledCss }) => {
         type={"radio"}
         id={label}
         value={value}
-        checked={checked}
-        onChange={onChange}
+      checked={checked || false }
+        onClick={onClick}
+        onChange={() => {}}
       />
       <RadioLabel
         className="for-checkbox-tools"

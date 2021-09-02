@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import StyledButton from "../../../components/StyledButton";
 import TextInput from "../../../components/TextInput";
 import CustomProgressBar from "../../../components/ProgressBar";
-import { Title, SubTitle } from "./FormComponents";
+import { Title, SubTitle, ErrorMessage } from "./FormComponents";
 import { useSelector, useDispatch } from "react-redux";
 import RadioCapsule from "../../../components/RadioCapsule";
 import {
@@ -14,8 +14,13 @@ import "styled-components/macro";
 const Form1 = ({ handleChange, currentForm }) => {
   const dispatch = useDispatch();
   const { frontendData } = useSelector((state) => state.frontendBoot);
-  const { regionDetailsLoading, regionDetails, proposerDetails, isDisabled } =
-    useSelector((state) => state.greetingPage);
+  const {
+    regionDetailsLoading,
+    regionDetails,
+    proposerDetails,
+    isDisabled,
+    regionDetailsError,
+  } = useSelector((state) => state.greetingPage);
   const { data } = frontendData || [""];
   const { popularcities } = data || [""];
 
@@ -27,8 +32,12 @@ const Form1 = ({ handleChange, currentForm }) => {
       dispatch(getRegion(pinCode));
     }
   }, [pinCode]);
+  useEffect(() => {
+    setCustomErrors(regionDetailsError);
+  }, [regionDetailsError]);
 
   const handleSubmit = () => {
+    console.log("heheh");
     if (
       !isDisabled &&
       regionDetails?.city?.toLowerCase() === data?.pinCode?.toLowerCase()
@@ -54,14 +63,18 @@ const Form1 = ({ handleChange, currentForm }) => {
   };
 
   return (
-    <>
+    <div
+      css={`
+        display: ${currentForm !== 1 && "none"};
+      `}
+    >
       <div
         css={`
           padding: 17px;
         `}
       >
-        <Title>Tell Us Where You Live</Title>
-        <CustomProgressBar now={1} total={5} />
+        <Title>Tell Us Where You Live?</Title>
+        <CustomProgressBar now={currentForm} total={5} />
         <div
           css={`
             position: relative;
@@ -85,38 +98,28 @@ const Form1 = ({ handleChange, currentForm }) => {
             label={`Pincode/City`}
             onChange={(e) => {
               setPinCode(e.target.value);
-              setCustomErrors(false);
-              dispatch(
-                saveForm1UserDetails(
-                  {
-                    pinCode: regionDetails.pincode,
-                    is_pincode_search: regionDetails.is_pincode_search,
-                  },
-                  handleChange
-                )
-              );
-              // handleChange("form3");
             }}
           />
+          {customErrors && <ErrorMessage>{customErrors}</ErrorMessage>}
           {!regionDetailsLoading &&
             regionDetails?.city &&
             pinCode?.length > 2 &&
             proposerDetails.pincode !== regionDetails?.pincode && (
               <div
-                onClick={() => {
-                  setPinCode(regionDetails.city);
-                  //setCustomErrors(false);
-                  // dispatch(
-                  //   saveForm2UserDetails(
-                  //     {
-                  //       pinCode: regionDetails.pincode,
-                  //       is_pincode_search: regionDetails.is_pincode_search,
-                  //     },
-                  //     handleChange,
-                  //   ),
-                  // );
-                  // handleChange("form3");
-                }}
+              onClick={() => {
+                setPinCode(regionDetails.city);
+                setCustomErrors(false);
+                dispatch(
+                  saveForm1UserDetails(
+                    {
+                      pinCode: regionDetails.pincode,
+                      is_pincode_search: regionDetails.is_pincode_search,
+                    },
+                    handleChange,
+                  ),
+                );
+             
+              }}
                 className="dropdown"
               >
                 {regionDetails?.city}
@@ -132,7 +135,7 @@ const Form1 = ({ handleChange, currentForm }) => {
             value={name}
             id={name}
             checked={name === pinCode}
-            onChange={(e) => {
+            onClick={(e) => {
               setPinCode(`${e.target.value}`);
               dispatch(setIsDisabled(true));
               setCustomErrors(false);
@@ -156,7 +159,7 @@ const Form1 = ({ handleChange, currentForm }) => {
           onClick={handleSubmit}
         />
       </div>
-    </>
+    </div>
   );
 };
 

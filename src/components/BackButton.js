@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components/macro";
-import { IoArrowForwardSharp } from "react-icons/io5";
+import { IoArrowBackSharp } from "react-icons/io5";
 
-const StyledButton = ({
+const BackButton = ({
   type,
   value,
-  noIcon,
   onClick,
   children,
   customClass,
@@ -13,6 +12,7 @@ const StyledButton = ({
   height,
   bg,
   color,
+
   styledCss,
 }) => {
   return (
@@ -29,19 +29,18 @@ const StyledButton = ({
       color={color}
       css={styledCss}
     >
-      {value ? value : children} {!noIcon && <IoArrowForwardSharp />}
+      {<IoArrowBackSharp />} {value ? value : children}
     </Button>
   );
 };
 
-StyledButton.defaultProps = {
+BackButton.defaultProps = {
   height: "58px",
   width: "100%",
-  bg: "#0a87ff",
-  color: "white",
+  bg: 'unset'
 };
 
-export default StyledButton;
+export default BackButton;
 
 const Button = styled.button.attrs((props) => ({
   type: props.type,
@@ -71,6 +70,7 @@ color: ${props.color};
   font-size: 20px;
   font-weight: 400;
   line-height: 35px;
+  z-index: 9999;
   float: left;
   left: 4px;
   position: inherit;
