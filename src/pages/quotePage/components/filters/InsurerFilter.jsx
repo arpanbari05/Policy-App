@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import styled from "styled-components";
 import "styled-components/macro";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
+import demoplanlogo from "../../../../assets/logos/digit.png";
 
 const FilterModal = ({ show, handleClose }) => {
   return (
@@ -17,7 +18,7 @@ const FilterModal = ({ show, handleClose }) => {
         }
         .modal-content {
           top: 238px;
-          left: 685px;
+          left: 920px;
         }
         .modal-footer {
           padding: 0px !important;
@@ -43,16 +44,24 @@ const FilterModal = ({ show, handleClose }) => {
       <Modal.Body>
         <div>
           <OptionWrapper>
-          <input type="checkbox" className="d-none" />
-            <li className="option d-flex align-items-center justify-content-between">
-<div>
-<img src={} />
-<label htmlFor="name">Tata AIG</label>
-</div>
-              
-              <input type="radio" id="name" name="premium" />
+          
+            <input type="checkbox" className="d-none" id="insurer1" />
+            <label htmlFor="insurer1" className="w-100">
+            <li className="option insurer_option d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center">
+                <div className="insurer_logo">
+                  <img src={demoplanlogo} alt="COMPANY_LOGO" className="w-100" />
+                </div>
+                <span>Tata AIG</span>
+              </div>
+
+              <div className="d-flex align-items-center ">
+                <span className="plan_csr">99.0%</span>
+                <div className="custom_checkbox"></div>
+              </div>
             </li>
-           
+            </label>
+   
           </OptionWrapper>
         </div>
       </Modal.Body>
@@ -63,7 +72,7 @@ const FilterModal = ({ show, handleClose }) => {
   );
 };
 
-const MultiyearOptionFilter = () => {
+const InsurerFilter = () => {
   const [showModal, setShowModal] = useState(false);
   return (
     <>
@@ -82,4 +91,6 @@ const MultiyearOptionFilter = () => {
   );
 };
 
-export default MultiyearOptionFilter;
+export default InsurerFilter;
+
+

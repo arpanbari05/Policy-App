@@ -3,18 +3,19 @@ import PremiumFilter from "./filters/PremiumFilter";
 import CoverRangeFilter from "./filters/CoverRangeFilter";
 import PolicyTypeFilter from "./filters/PolicyTypeFilter";
 import MultiyearOptionFilter from "./filters/MultiyearOptionFilter";
+import InsurerFilter from "./filters/InsurerFilter";
+import MoreFilters from "./filters/MoreFilters";
 
 const LowerModifier = () => {
   return (
     <div className="container">
       <FiltersWrapper className="d-flex">
         <PremiumFilter/>
-
         <CoverRangeFilter/>
         <PolicyTypeFilter/>
         <MultiyearOptionFilter/>
-        <PremiumFilter/>
-        <PremiumFilter/>
+        <InsurerFilter/>
+        <MoreFilters/>
       </FiltersWrapper>
     </div>
   );
@@ -26,5 +27,5 @@ const FiltersWrapper = styled.div`
   border: solid 1px #cacaca;
   padding: 5px;
   margin: 10px 0;
-  
+  border-radius: 3px;
 `;

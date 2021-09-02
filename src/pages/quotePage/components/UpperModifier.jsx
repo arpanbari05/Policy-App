@@ -1,22 +1,19 @@
+import { useState } from "react";
 import styled from "styled-components";
-import PencilIcon from "../../../assets/images/svg-icons/PencilIcon";
+import PlanTypeFilter from "./filters/PlanTypeFilter";
+import EditMemberFilter from "./filters/EditMemberFilter";
+import ShareQuoteModal from "../../../components/ShareQuoteModal";
 
 const UpperModifier = () => {
+
+const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
+
   return (
+    <>
     <UpperModifierWrapper>
       <div className="container d-flex justify-content-between align-items-center py-3">
         <div className="left_modifiers  d-flex align-items-center">
-          <span className="plans_for plans_for_editable d-flex align-items-center">
-            <div className="yellow_start_line"></div>Plans For
-            <PencilWrapper className="d-flex justify-content-center align-items-center">
-              <PencilIcon
-                style={{
-                  color: "#0a87ff",
-                }}
-                width="14px"
-              />
-            </PencilWrapper>
-          </span>
+          <EditMemberFilter />
           <span className="plans_for plans_for_members active position-relative">
             Self,Spouse <div className="active_bar"></div>
           </span>
@@ -26,18 +23,20 @@ const UpperModifier = () => {
         </div>
 
         <div className="right_midifiers d-flex justify-content-between align-items-center ">
-          <button className="btn share_Quote_btn">
+          <button className="btn share_Quote_btn" onClick={() => setShowShareQuoteModal(true)}>
             <i class="fas fa-share"></i> Share Quote
           </button>
-          <button className="btn select_plan_btn d-flex align-items-center">
-            Base Health{" "}
-            <DownArrowWrapper>
-              <i class="fas fa-chevron-down"></i>
-            </DownArrowWrapper>
-          </button>
+          <PlanTypeFilter />
         </div>
       </div>
     </UpperModifierWrapper>
+
+{/* modal */}
+    <ShareQuoteModal
+      show={showShareQuoteModal}
+      handleClose={() => setShowShareQuoteModal(false)}
+    />
+    </>
   );
 };
 
@@ -93,22 +92,5 @@ const UpperModifierWrapper = styled.div`
   }
 `;
 
-const PencilWrapper = styled.div`
-  background-color: white;
-  width: 25px;
-  height: 25px;
-  border-radius: 100%;
-  margin: 0px 5px;
-`;
 
-const DownArrowWrapper = styled.div`
-  background-color: #eff7ff;
-  color: #0a87ff;
-  width: 25px;
-  height: 25px;
-  border-radius: 100%;
-  margin: 0px 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+

@@ -28,12 +28,41 @@ export const OptionWrapper = styled.ul`
   padding-left: 0rem;
   .option {
     border-bottom: 1px solid #d5dce5;
-    padding: 15px;
+    padding: 15px 5px;
     font-weight: 600;
     input[type="radio"] {
       width: 20px;
       height: 20px;
     }
+  }
+  .insurer_option{
+    .insurer_logo{
+      width: 80px;
+      height: 40px;
+    }
+    
+  }
+  .custom_checkbox{
+      width: 20px;
+      height: 20px;
+      border:1px solid grey;
+      border-radius: 100%;
+      margin-left: 10px;
+     
+    }
+  input[type="checkbox"]:checked + label{
+.custom_checkbox{
+  background-color: #0a87ff;
+  border: 1px solid white;
+  ::before{
+        content: 	"\u2713";
+        color: white;
+        display: flex;
+        justify-content: center;
+        margin: -3.5px auto;
+        
+      }
+}
   }
 `;
 
