@@ -1,10 +1,15 @@
 import React from 'react'
+
+import UpperModifier from "./components/UpperModifier";
+import LowerModifier from "./components/LowerModifier"
 import QuoteCard from './components/QuoteCard'
 import { MenuWrapper, SortByButton, TextLabel } from './Quote.style'
 
 function QuotePage() {
     return (
         <div>
+            <UpperModifier/>
+            <LowerModifier />
 
             <div className="container">
                 <div className="col-md-12 d-flex">

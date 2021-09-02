@@ -63,3 +63,12 @@ html {
 }
 
 /* Generic Styles end  */
+
+
+.yellow_start_line{
+  width: 6px;
+height: 32px;
+border-radius: 12px;
+background-color: #ffcb00;
+margin-right: 10px;
+}
