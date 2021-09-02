@@ -1,15 +1,28 @@
 import React from "react";
-import styled from "styled-components";
-const RadioCapsule = ({ label, checked, value, onChange }) => {
+import styled from "styled-components/macro";
+const RadioCapsule = ({
+  label,
+  checked,
+  value,
+  onChange,
+  onClick,
+  styledCss,
+}) => {
   return (
     <>
-      <RadioInput className="checkbox-tools" type={"radio"}   checked={checked}/>
+      <RadioInput
+        className="checkbox-tools"
+        type={"radio"}
+        id={label}
+        value={value}
+      checked={checked || false }
+        onClick={onClick}
+        onChange={() => {}}
+      />
       <RadioLabel
         className="for-checkbox-tools"
         htmlFor={label}
-        value={value}
-      
-        onChange={onChange}
+        css={styledCss}
       >
         {label}
       </RadioLabel>
@@ -60,7 +73,8 @@ const RadioLabel = styled.label`
   font-weight: 900;
   padding: 13px 26px;
   letter-spacing: 1px;
-  margin: 0 5px;
+  margin: 0 0px;
+  margin-bottom: 10px;
   height: 40px;
   font-size: 14px;
 `;

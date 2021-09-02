@@ -25,20 +25,18 @@ const Checkbox = ({
           onChange={() => {}}
           disabled={disabled || undefined}
         />
-        <label htmlFor={code}>
-          {" "}
-          <span
-            htmlFor={code}
-            css={`
-              left: 34px;
-              font-size: 20px;
-              top: -2px;
-              position: relative;
-            `}
-          >
-            {title}
-          </span>
-        </label>
+        <label htmlFor={code}> </label>
+        <span
+          htmlFor={code}
+          css={`
+            left: 21px;
+            font-size: 16px;
+            top: 0px;
+            position: relative;
+          `}
+        >
+          {title}
+        </span>
       </div>
     </div>
   );
