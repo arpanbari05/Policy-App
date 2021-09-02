@@ -9,7 +9,6 @@ const Navbar = () => {
             display: flex;
             align-items: center;
             height: 100%;
-            padding: 0px 120px;
           `}>
         <img
           src={fyntune}
