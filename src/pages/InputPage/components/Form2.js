@@ -320,7 +320,7 @@ const Form2 = ({ handleChange, currentForm }) => {
           }
           .modal-content {
             border-radius: 0;
-            height: 100%;
+            height: auto;
             padding: 20px;
           }
         `}
@@ -349,6 +349,7 @@ const Form2 = ({ handleChange, currentForm }) => {
         <div
           css={`
             margin-top: 10px;
+         
           `}
         >
           {membersArray &&
