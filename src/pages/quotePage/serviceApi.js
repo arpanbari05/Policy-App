@@ -1,4 +1,4 @@
-import HttpClient from "../../../api/httpClient";
+import HttpClient from "../../api/httpClient";
 const getQutoes = (
     {
         alias,
