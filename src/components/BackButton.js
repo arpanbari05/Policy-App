@@ -51,7 +51,7 @@ width: ${props.width};
 background: ${props.bg};
 color: ${props.color};
 `}
-
+  font-weight: 900;
   box-sizing: border-box;
   user-select: none;
   touch-action: manipulation;
@@ -68,7 +68,7 @@ color: ${props.color};
   display: block;
   border-radius: 2px;
   font-size: 20px;
-  font-weight: 400;
+ 
   line-height: 35px;
   z-index: 9999;
   float: left;

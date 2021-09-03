@@ -63,7 +63,7 @@ const Container = styled.div`
   background-image: url(${bg});
   background-attachment: fixed;
   background-position: center;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   background-size: contain;
   background-repeat: no-repeat;
