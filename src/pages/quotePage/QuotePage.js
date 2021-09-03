@@ -3,9 +3,12 @@ import styled from "styled-components";
 import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
 import QuoteCard from "./components/QuoteCard";
-import { MenuWrapper, SortByButton, TextLabel } from "./Quote.style";
+import { SortByButton, TextLabel } from "./Quote.style";
+import useQuotes from "./useQuotes";
 
 function QuotePage() {
+  const { quotes } = useQuotes();
+  console.log("quotes", quotes);
   return (
     <div>
       <UpperModifier />
