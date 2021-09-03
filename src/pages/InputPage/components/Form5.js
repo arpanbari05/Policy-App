@@ -151,7 +151,8 @@ const Form5 = ({ handleChange, currentForm }) => {
                 width: 100%;
                 display: flex;
                 align-items: center;
-                margin-bottom: 12px;
+                margin-bottom: 35px;
+                margin-top: 13px;
                 font-weight: 900;
                 & > div {
                   margin: 0 10px;
@@ -161,7 +162,7 @@ const Form5 = ({ handleChange, currentForm }) => {
                 }
               `}
             >
-              <img src={boy} alt={"girl"} />
+              <img src={boy} alt={"girl"} css={`filter:${gender !== "M" && "grayscale(100%)"};`} />
               <span
                 css={`
                   margin-left: 10px;
@@ -194,7 +195,7 @@ const Form5 = ({ handleChange, currentForm }) => {
               >
                 Female
               </span>
-              <img src={girl} alt={"girl"} />
+              <img src={girl} alt={"girl"} css={`filter:${gender !== "F" && "grayscale(100%)"};`} />
             </label>
 
             {fieldSet1Data.map(
@@ -209,7 +210,8 @@ const Form5 = ({ handleChange, currentForm }) => {
                     styledCss={`  
                   margin-bottom: 19px;
                   `}
-                    label={name}
+                    label={name === "fullName" ? "FullName" : name}
+                    name={name}
                     type={type}
                     value={
                       name === "fullName"

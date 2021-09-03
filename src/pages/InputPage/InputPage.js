@@ -54,7 +54,7 @@ export const InputPage = () => {
           </Card>
           {currentForm === 5 && termsAndConditions(showmore, setShowmore)}
         </InnerWrapper>
-      </Wrapper> 
+      </Wrapper>
     </Container>
   );
 };
@@ -67,7 +67,6 @@ const Container = styled.div`
   width: 100%;
   background-size: contain;
   background-repeat: no-repeat;
-
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -81,6 +80,7 @@ const Wrapper = styled.div`
 const PlanCard = styled.div`
   & h3 {
     color: #0a87ff;
+    background-color: #ecf6ff;
     border: 1px solid #0a87ff;
     border-radius: 15px;
     width: max-content;
@@ -110,9 +110,13 @@ function planCard() {
       styledCss={`
     margin: 73px auto;
     box-shadow: none!important;
+    width: 585px;
+    @media(max-width:1200px){
+      width: 500px;
+    }
     `}
       width={`500px`}
-      height={`460px`}
+      height={`400px`}
     >
       <PlanCard>
         <h3>HEALTH INSURANCE</h3>
@@ -137,7 +141,7 @@ function termsAndConditions(showmore, setShowmore) {
           margin: 0 auto;
         `}
       >
-        <i class="termchk"></i>By clicking on Get Started, I hereby authorise
+        <i class="termchk"></i>By clicking on View Quotes, I hereby authorise
         FYNTUNE. and all of its affiliates, subsidiaries, group companies and
         related parties to access the details such as my name, address,
         telephone number,{" "}

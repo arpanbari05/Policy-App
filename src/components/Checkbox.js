@@ -31,6 +31,7 @@ const Checkbox = ({
           css={`
             left: 21px;
             font-size: 16px;
+            font-weight: 900;
             top: 0px;
             position: relative;
           `}
