@@ -17,7 +17,7 @@ import Form5 from "./components/Form5";
 import Slider from "../../components/Slider";
 
 export const InputPage = () => {
-  const [currentForm, setCurrentForm] = useState(4);
+  const [currentForm, setCurrentForm] = useState(1);
   const [showmore, setShowmore] = useState(false);
 
   const handleChange = (form) => {
