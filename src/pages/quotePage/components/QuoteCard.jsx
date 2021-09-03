@@ -55,9 +55,9 @@ function QuoteCard() {
                     >
                         <SeeText
                             css={`
-                            border: none;
+                            border-bottom: none !important;
                         `}
-                        >2 more plans</SeeText>
+                        >2 more plans  <i class="fas fa-chevron-down"></i></SeeText>
                     </CenterBottomToggle>
                 </div>
                 <div className="col-md-3">
