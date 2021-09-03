@@ -57,12 +57,14 @@ export const RadioInput = styled.input`
     border: solid 1px #0a87ff;
     background-color: #e2f0ff;
     font-size: 15px;
+    font-weight: 900;
   }
 `;
 
 export const RadioLabel = styled.label`
   transition: all 0.3s linear 0s;
   border-radius: 5px;
+  font-weight: 900;
   background: #fff;
   box-shadow: 5px 5px 10px rgb(0 75 131 / 9%);
   border: #dfe1f2 0.8px solid;

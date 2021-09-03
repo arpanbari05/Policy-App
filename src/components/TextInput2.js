@@ -6,8 +6,10 @@ const TextInput2 = React.forwardRef(
   (
     {
       label,
+      name,
       type,
       placeholder,
+      autoComplete,
       value,
       clear,
       styledCss,
@@ -41,14 +43,16 @@ const TextInput2 = React.forwardRef(
         & label {
           padding: 19px 0.75rem;
           color: #505b6d;
+          font-weight: 900;
         }
       `}
     >
       <FloatingLabel controlId="floatingInput" label={label}>
         <Form.Control
-          name={label}
+          name={name}
           type={type}
           placeholder={"text"}
+          autoComplete={autoComplete}
           value={value}
           onChange={onChange}
           onPaste={onPaste}

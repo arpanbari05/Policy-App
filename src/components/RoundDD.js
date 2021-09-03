@@ -28,7 +28,7 @@ const RoundDD = ({
       data?.title?.toLowerCase().includes(searchText?.toLowerCase())
     );
     setAgeList(array);
-  }, [searchText,list]);
+  }, [searchText, list]);
 
   const toggleList = () => {
     setIsOpen(!isOpen);
@@ -66,11 +66,17 @@ const RoundDD = ({
           }`}
         >
           <HeaderTitle
+           
             className={`${isOpen && "active"} GreetingDD__Title ${
               disabled && "font-gray"
             }`}
           >
+            <span  css={`
+              visibility: ${isOpen && "hidden"};
+            `}>
+
             {selected}
+            </span>
           </HeaderTitle>
         </Header>
         {isOpen && (
@@ -78,7 +84,7 @@ const RoundDD = ({
             style={{
               visibility: "visible",
               width: "174.562px",
-              top: "44px",
+              top: "42px",
               left: "0px",
             }}
             css={`
@@ -121,8 +127,8 @@ const InputField = styled.input`
   width: 58% !important;
   font-size: 12px;
   font-weight: 400 !important;
-
-  color: #000 !important;
+  background-color:#ebf5ff;
+  color: #6b7789;
   &:focus::placeholder {
     opacity: 1 !important;
   }
@@ -132,40 +138,41 @@ export const Label = styled.label`
   position: absolute;
   z-index: -1;
   top: -10px;
- background-color: #d5dce5;
+
   left: 18px;
   font-size: 12px;
 `;
 
 export const Wrapper = styled.div`
   position: relative;
-  margin: 10px 0;
+  margin: 5px 0;
 `;
 
 export const Header = styled.a`
   cursor: pointer;
-  background-color: #fff;
+  background-color:#ebf5ff;
   position: relative;
-  border: 0.2px solid #dfe1f2;
+  color: #6b7789;
+  // border: 0.2px solid #dfe1f2;
   padding: ${(props) => (props.sortByDD ? "auto" : "12px 15px !important")};
   display: inline-block;
   width: ${(props) => (props.sortByDD ? "auto" : "175px")};
- // overflow: hidden;
+  // overflow: hidden;
   position: relative;
   z-index: 1;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
-  box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 50px;
-  box-shadow: 0 12px 12px -11px #004b8347;
+ // -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
+  // box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
+  // -webkit-border-radius: 3px;
+  // -moz-border-radius: 3px;
+   border-radius: 50px;
+  // box-shadow: 0 12px 12px -11px #004b8347;
 
   &.active {
     border-radius: 3px 3px 0 0;
-    box-shadow: inset 0 1px 2px rgb(0 0 0 / 15%);
+   // box-shadow: inset 0 1px 2px rgb(0 0 0 / 15%);
   }
   @media (max-width: 767px) {
     margin: unset;
@@ -175,10 +182,10 @@ export const Header = styled.a`
 
 export const HeaderTitle = styled.div`
   position: relative;
-     font-size: 12px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 18px;
-  color: #000;
+  color: #6b7789;
   &:after {
     content: "";
     display: block;
@@ -210,7 +217,7 @@ export const HeaderTitle = styled.div`
 export const List = styled.div`
   position: absolute;
   z-index: 10000;
-  border: 1px solid #d0d0d0;
+  // border: 1px solid #d0d0d0;
   background: #fff;
   border-top: 0 none;
   -webkit-box-sizing: border-box;
@@ -228,10 +235,11 @@ export const List = styled.div`
   -webkit-overflow-scrolling: touch;
 `;
 export const ListItem = styled.div`
-font-size: 12px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 18px;
   padding: 5px 8px 8px 14px;
+  background-color:#ebf5ff;
 
   &:hover,
   &.active {
