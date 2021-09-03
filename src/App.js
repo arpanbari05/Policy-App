@@ -20,7 +20,7 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/" component={InputPage} />
-        <Route exact path="/quote" component={QuotePage} />
+        <Route exact path="/quotes" component={QuotePage} />
       </Switch>
     </Router>
   );
