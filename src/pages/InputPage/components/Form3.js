@@ -31,8 +31,10 @@ const Form3 = ({ handleChange, currentForm }) => {
   const { plantypes, description } = data || [""];
 
   const handleSubmit = () => {
-    handleChange(4);
-    dispatch(saveForm4UserDetails(selected));
+    if (selected) {
+      handleChange(4);
+      dispatch(saveForm4UserDetails({planType: selected}));
+    }
   };
 
   return (
@@ -61,7 +63,6 @@ const Form3 = ({ handleChange, currentForm }) => {
                     onClick={(e) => setSelected(code)}
                     id={display_name}
                     value={code}
-
                     checked={selected === code || undefined}
                     label={display_name}
                   />
@@ -86,7 +87,9 @@ const Form3 = ({ handleChange, currentForm }) => {
               );
             })}
         </div>
-        {formButtons(handleChange, handleSubmit, currentForm)}
+        {formButtons(() => {
+          handleChange(currentForm - 1);
+        }, handleSubmit)}
       </div>
     </div>
   );

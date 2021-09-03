@@ -306,7 +306,9 @@ const Form2 = ({ handleChange, currentForm }) => {
           Other Members
         </StyledButton>
 
-        {formButtons(handleChange, handleSubmit, currentForm)}
+        {formButtons(() => {
+          handleChange(currentForm - 1);
+        }, handleSubmit)}
       </div>
       <Modal
         css={`
@@ -349,7 +351,6 @@ const Form2 = ({ handleChange, currentForm }) => {
         <div
           css={`
             margin-top: 10px;
-         
           `}
         >
           {membersArray &&

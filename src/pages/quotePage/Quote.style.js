@@ -7,7 +7,7 @@ background-color: #eaeef2;
 margin-bottom: 20px;
 `
 export const TextLabel = styled.span`
-font-size: 22px;
+font-size: 20px;
 font-weight: 500;
 font-stretch: normal;
 font-style: normal;
@@ -17,9 +17,7 @@ text-align: left;
 color: #6b7789;
 `
 export const SortByButton = styled.div`
-width: 202px;
-height: 55px;
-padding: 16px 19.2px 15px 22px;
+padding: 5px 10px;
 border-radius: 8px;
 border: solid 1px #bbc4cf;
 background-color: #fff;

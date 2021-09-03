@@ -96,7 +96,10 @@ padding-top:10px;
 export const CenterBottomToggle = styled.div`
 display: flex;
 justify-content: center;
-width:100px;
-padding: 10px 20px 0px;
+width:fit-content;
+border-top-left-radius: 30px;
+border-top-right-radius: 30px;
+padding: 13px 20px 0px;
+margin: auto;
 background-color: #e2f0ff;
 `
