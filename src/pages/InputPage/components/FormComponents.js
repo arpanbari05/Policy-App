@@ -28,7 +28,7 @@ export const ErrorMessage = styled.p`
   color: red;
   width: 100%;
 `;
-export function formButtons(handleChange, handleSubmit, currentForm, lastForm) {
+export function formButtons(handleChange, handleSubmit, lastForm) {
   return (
     <div
       css={`
@@ -39,7 +39,7 @@ export function formButtons(handleChange, handleSubmit, currentForm, lastForm) {
     >
       <BackButton
         value={`Back`}
-        onClick={() => handleChange(currentForm - 1)}
+        onClick={handleChange}
         width={`107px`}
         styledCss={`margin: 0;`}
       />
@@ -105,7 +105,6 @@ export const firstFormSchema = yup.object({
     .required("Mobile no. is required.")
     .matches(mobile, "Please enter a valid Mobile no.")
     .label("Mobile No."),
-  gender: yup.string().required("select gender."),
   // declaration: yup
   //   .boolean()
   //   .oneOf([true], "Please Accept terms and conditions"),
