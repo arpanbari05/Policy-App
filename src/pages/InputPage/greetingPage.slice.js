@@ -321,9 +321,9 @@ export const saveForm4UserDetails = (data) => {
         }),
         {}
       );
+      dispatch(createUserData({ plan_type: planType }));
       dispatch(setMemberGroups(newMemberGroups));
       // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-      dispatch(createUserData({ plan_type: planType }));
       // dispatch(
       //   setFilters({
       //     planType:
