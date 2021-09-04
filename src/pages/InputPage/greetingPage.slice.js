@@ -4,6 +4,7 @@ import { getCityForPincode } from "../../FrontendBoot/serviceApi/frontendBoot";
 import {
   setFilters,
   setSelectedGroup,
+  setShouldFetchQuotes,
   updateFetchedFilters,
 } from "../quotePage/quote.slice";
 
@@ -345,8 +346,8 @@ export const saveForm4UserDetails = (data) => {
             planType === "M"
               ? "Multi Individual"
               : planType === "F"
-              ? "Family Floater"
-              : "Individual",
+                ? "Family Floater"
+                : "Individual",
         })
       );
 
@@ -372,6 +373,7 @@ export const saveForm5UserDetails = (data) => {
       );
       dispatch(setMemberGroups(newMemberGroups));
       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      dispatch(setShouldFetchQuotes(true));
       dispatch(createUserData({ medical_history: [...data] }));
     } catch (err) {
       //alert(err);

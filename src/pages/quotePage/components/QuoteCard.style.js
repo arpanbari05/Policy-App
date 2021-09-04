@@ -71,12 +71,14 @@ letter-spacing: normal;
 text-align: left;
 color: #000;
 margin-bottom: 16px;
+width:120px;
 `
 
 export const TextWrapper = styled.div`
 display:flex;
 flex-direction: column;
 min-width:120px;
+margin-right: 5px;
 `
 export const SeeText = styled.span`
 font-size: 15px;

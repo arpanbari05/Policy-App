@@ -20,6 +20,7 @@ function QuoteCard({ id, item }) {
     const [activeCover, setActiveCover] = useState(0);
     const { multiYear } = useSelector(state => state.quotePage.filters);
     console.log("active cover: " + activeCover)
+    console.log("dfeature", mergedQuotes[0]?.features[activeCover])
 
     let additionalPremium = 0;
 
@@ -49,29 +50,43 @@ function QuoteCard({ id, item }) {
                         padding:20px 25px;
                     `}>
                         <div className="d-flex justify-content-start">
-                            <TextWrapper>
-                                <SmallLabel>Room Rent</SmallLabel>
-                                <ValueText>No Sub-Limit</ValueText>
-                            </TextWrapper>
-                            <TextWrapper>
-                                <SmallLabel>No Claim Bonus</SmallLabel>
-                                <ValueText>Up To 100%</ValueText>
-                            </TextWrapper>
+                            {mergedQuotes[0]?.features[activeCover].map((item, i) => {
+                                return (
+                                    <>
+                                        {item.name === "Room Rent" && (<TextWrapper>
+                                            <SmallLabel>Room Rent</SmallLabel>
+                                            <ValueText>{item.value}</ValueText>
+                                        </TextWrapper>)}
+                                        {item.name === "No Claim Bonus" && (<TextWrapper>
+                                            <SmallLabel>No Claim Bonus</SmallLabel>
+                                            <ValueText>{item.value}</ValueText>
+                                        </TextWrapper>)}
+
+                                    </>
+                                )
+                            })}
+
                             <TextWrapper>
                                 <SmallLabel>Cashless Hospitals</SmallLabel>
                                 <ValueText>{mergedQuotes[0]?.cashlessHospitalsCount[activeCover]}</ValueText>
                             </TextWrapper>
                         </div>
                         <div className="d-flex justify-content-start">
-                            <TextWrapper>
-                                <SmallLabel>Co-Payment</SmallLabel>
-                                <ValueText>No </ValueText>
-                            </TextWrapper>
-                            <TextWrapper>
-                                <SmallLabel>Pre-existing diseases</SmallLabel>
-                                <ValueText>3 years</ValueText>
-                            </TextWrapper>
+                            {mergedQuotes[0]?.features[activeCover].map((item, i) => {
+                                return (
+                                    <>
+                                        {item.name === "Co-Payment" && (<TextWrapper>
+                                            <SmallLabel>Co-Payment</SmallLabel>
+                                            <ValueText>{item.value}</ValueText>
+                                        </TextWrapper>)}
+                                        {item.name === "Pre Existing Disease" && (<TextWrapper>
+                                            <SmallLabel>Pre Existing Disease</SmallLabel>
+                                            <ValueText>{item.value}</ValueText>
+                                        </TextWrapper>)}
 
+                                    </>
+                                )
+                            })}
                         </div>
 
                     </EachWrapper>
@@ -122,9 +137,9 @@ function QuoteCard({ id, item }) {
                             `} />
                             <SeeText
                                 css={`
-                            color: black;
-                            border:none;
-                            padding:0px 20px;
+                            color: black !important;
+                            border:none !important;
+                            padding:0px 20px !important;
                         `}
                             >Compare</SeeText>
                         </div>

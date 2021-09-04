@@ -35,6 +35,7 @@ function App() {
       if (pathname !== "/") {
         dispatch(setShouldFetchQuotes(true));
       }
+      // dispatch(setShouldFetchQuotes(true));
       if (pathname !== "/" && Object.keys(proposerDetails || {}).length < 1) {
         Promise.allSettled([
           dispatch(getCart),

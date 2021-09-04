@@ -51,7 +51,7 @@ function QuotePage() {
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
               </SortByButton>
             </div>
-            {quotesLength ?
+            {quotes?.length ?
               (
                 firstQuoteFound && (
                   quotes.map(
