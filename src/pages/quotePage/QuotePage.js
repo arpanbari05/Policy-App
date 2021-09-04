@@ -15,7 +15,7 @@ function QuotePage() {
     arr,
     companies,
     setFilterMobile,
-    // filterQuotes,
+    filterQuotes,
     showTalkModal,
     setShowTalkModal,
     setShowBuyNow,
@@ -34,7 +34,7 @@ function QuotePage() {
   const { loadingQuotes, filters } = useSelector(state => state.quotePage);
 
   const firstQuoteFound =
-    quotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
+    filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
 
   console.log("firstquoteFound: ", firstQuoteFound);
   return (
@@ -54,14 +54,13 @@ function QuotePage() {
             {quotesLength ?
               (
                 firstQuoteFound && (
-                  quotes.map(
+                  filterQuotes.map(
                     (item, index) =>
                       item.length > 0 && (
                         <QuoteCard
                           key={index}
                           id={index}
                           item={item}
-
                         />
                       ),
                   )

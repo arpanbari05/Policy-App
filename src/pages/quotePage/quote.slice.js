@@ -279,6 +279,7 @@ const cancelTokens = {};
 
 export const fetchQuotes =
     (companies, { sum_insured, tenure, plan_type, member, basePlanType }) =>
+    
         async (dispatch, store) => {
             try {
                 const filters = store().quotePage.filters;

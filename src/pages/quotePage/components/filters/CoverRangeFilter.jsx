@@ -2,27 +2,56 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { setFilters } from "../../quote.slice";
+import { setFilters, fetchQuotes, replaceQuotes, replaceFilterQuotes } from "../../quote.slice";
 import "styled-components/macro";
 import { Filter,OptionWrapper,ApplyBtn } from "./Filter.style";
 
-const FilterModal = ({ show, handleClose, filters }) => {
-  const coverRangeOptions = useSelector(({frontendBoot}) => frontendBoot.frontendData.data)
+const FilterModal = ({ show, handleClose }) => {
+  
+  const { filters, selectedGroup } = useSelector(state => state.quotePage);
+  const coverRangeOptions = useSelector(({frontendBoot}) => frontendBoot.frontendData.data);
+  const companies = useSelector(
+    state => state.frontendBoot.frontendData.data.companies,
+  );
+  const existingCoverCode = coverRangeOptions.covers.find(
+    filter => filter.display_name === filters.cover,
+  )?.code;
+  const existingCoverDisplayname = filters.cover;
   const dispatch = useDispatch();
 
   const [selectedCover, setselectedCover] = useState(
-    filters.cover ? filters.cover : ""
+    filters.cover ? {
+      code:existingCoverCode,
+      displayName:existingCoverDisplayname
+    }:{}
   );
 
   const handleChange = (code,displayName) => {
     if (displayName) {
-      setselectedCover(displayName);
+      setselectedCover({
+        code,
+        displayName
+      });
     }
   };
 
-  const handleApply = () => {
+  const handleApply = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
    dispatch(setFilters({cover:selectedCover}));
-   handleClose();
+   
+   console.log(selectedCover,"=====")
+   dispatch(replaceQuotes([]));
+   dispatch(replaceFilterQuotes([]));
+   dispatch(
+    fetchQuotes(companies, {
+      plan_type:filters.planType === "Individual"?"I":filters.planType === "Family Floater"?"F":"M",
+      tenure: parseInt(filters.multiYear),
+      sum_insured:selectedCover.code,
+      member: selectedGroup,
+    }),)
+
+    handleClose();
   };
 
   return (
@@ -92,7 +121,7 @@ const FilterModal = ({ show, handleClose, filters }) => {
         </div>
       </Modal.Body>
       <Modal.Footer className="text-center">
-        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100" onClick={() => handleApply()}>Apply</ApplyBtn>
+        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100" onClick={(e) => handleApply(e)}>Apply</ApplyBtn>
       </Modal.Footer>
     </Modal>
   );
@@ -109,6 +138,7 @@ const CoverRangeFilter = () => {
       >
         <span className="filter_head">Cover</span>
         <span className="filter_sub_head">
+        {console.log(filters.cover,"=======")}
           {filters.cover?filters.cover:"Select cover"} <i class="fas fa-chevron-down"></i>
         </span>
       </Filter>
@@ -116,7 +146,7 @@ const CoverRangeFilter = () => {
       <FilterModal
         show={showModal}
         handleClose={() => setShowModal(false)}
-        filters={filters}
+    
       />
     </>
   );

@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 // import { updateQuotes } from "../ComparePage/compare.slice";
 // import { updateUser } from "../InputPage/ServiceApi/serviceApi";
 // import { getRecommendedQuotesOnMount } from "../RecommendedPage/recommendedPage.slice";
-// import useQuoteFilter from "./components/QuoteFilter/useQuoteFilter";
+import useQuoteFilter from "./components/filters/useQuoteFilter";
 import {
     clearFilterQuotes,
     fetchQuotes,
@@ -23,7 +23,7 @@ function useQuotesPage() {
     const {
         fetchFilters,
         quotes,
-        filterQuotes: filterQuotesRedux,
+        filterQuotes,
         shouldFetchQuotes,
     } = useSelector(state => state.quotePage);
     const { cover, tenure, plan_type } = useSelector(
@@ -282,7 +282,7 @@ function useQuotesPage() {
         arr,
         companies,
         setFilterMobile,
-        // filterQuotes,
+        filterQuotes,
         showTalkModal,
         setShowTalkModal,
         setShowBuyNow,
