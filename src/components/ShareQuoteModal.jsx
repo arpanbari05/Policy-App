@@ -1,8 +1,8 @@
 import { Modal } from "react-bootstrap";
 import "styled-components/macro";
-import EmailIcon from "../assets/images/svg-icons/EmailIcon";
-import WhtsappIcon from "../assets/images/svg-icons/WhtsappIcon";
-import SmsIcon from "../assets/images/svg-icons/SmsIcon";
+import EmailIcon from "../assets/svg-icons/EmailIcon";
+import WhtsappIcon from "../assets/svg-icons/WhtsappIcon";
+import SmsIcon from "../assets/svg-icons/SmsIcon";
 import styled from "styled-components";
 
 const ShareQuoteModal = ({ show, handleClose }) => {
