@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux';
 import "styled-components/macro"
 import { maxbupa } from '../../../assets/images'
 import { CenterBottomStyle, CenterBottomToggle, EachWrapper, Logo, LogoWrapper, Outer, PlanName, RadioButton, SeeText, SmallLabel, TextWrapper, ValueText } from './QuoteCard.style'
@@ -16,6 +17,18 @@ function QuoteCard({ id, item }) {
         // setActiveCover,
     } = useQuoteCard({ item });
     console.log("mergedquotes", mergedQuotes)
+    const [activeCover, setActiveCover] = useState(0);
+    const { multiYear } = useSelector(state => state.quotePage.filters);
+    console.log("active cover: " + activeCover)
+
+    let additionalPremium = 0;
+
+    mergedQuotes[0]?.mandatory_riders[activeCover]?.forEach(element => {
+        additionalPremium += element.total_premium;
+    });
+
+    const tenure = parseInt(multiYear) === 1 ? "" : parseInt(multiYear);
+
     return (
         <Outer>
             <div className="col-md-12 d-flex">
@@ -46,7 +59,7 @@ function QuoteCard({ id, item }) {
                             </TextWrapper>
                             <TextWrapper>
                                 <SmallLabel>Cashless Hospitals</SmallLabel>
-                                <ValueText>182 </ValueText>
+                                <ValueText>{mergedQuotes[0]?.cashlessHospitalsCount[activeCover]}</ValueText>
                             </TextWrapper>
                         </div>
                         <div className="d-flex justify-content-start">
@@ -76,12 +89,29 @@ function QuoteCard({ id, item }) {
                     <EachWrapper>
                         <LogoWrapper>
                             <RadioButton>
-                                <strong>10000/ year</strong>
+                                <strong>₹{" "}
+                                    {parseInt(
+                                        mergedQuotes[0]?.total_premium[activeCover] + additionalPremium,
+                                    ).toLocaleString("en-In")}
+                                    <span>
+                                        /{tenure} {tenure > 1 ? "years" : "year"}
+                                    </span></strong>
                             </RadioButton>
                             <PlanName
                                 style={{ fontSize: "16px" }}
                             >
-                                Cover of: 10000000
+                                <span>Cover of: </span><select
+                                    onChange={e => setActiveCover(e.target.value)}
+                                >
+                                    {mergedQuotes[0]?.sum_insured.map((data, i) => {
+                                        return (
+                                            <option value={i} key={i}>
+                                                {parseInt(data).toLocaleString("en-In")}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+
                             </PlanName>
                         </LogoWrapper>
                     </EachWrapper>
