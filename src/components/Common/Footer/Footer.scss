@@ -1,0 +1,39 @@
+.email {
+  font-size: 18px;
+  color: #76797e !important;
+  margin: 15px 0 15px;
+  display: block;
+}
+
+.phone {
+  font-size: 22px;
+  color: #76797e !important;
+}
+
+.shape-one {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  border: 6px solid #27c3ff;
+  border-radius: 50%;
+  position: absolute;
+  left: -22px;
+  top: 48%;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -55px;
+    left: -55px;
+    right: -55px;
+    bottom: -55px;
+    border: 1px solid #ecf4ff;
+    border-radius: 50%;
+}
+}
+
+.shape-two {
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  animation: rotated 18s infinite linear;
+}

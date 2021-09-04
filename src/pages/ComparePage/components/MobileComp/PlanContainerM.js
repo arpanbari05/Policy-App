@@ -1,0 +1,192 @@
+import React from "react";
+import { Col, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router";
+import styled from "styled-components";
+import useWindowSize from "../../../../customHooks/useWindowSize";
+import { useCartProduct } from "../../../Cart";
+import { CompanyName, PlanName, RemoveCross } from "../../ComparePage.style";
+import CompareBtn from "../buttons/CompareBtn";
+import "../PlanContainer/PlanContainer"
+// import { backgroundPosition } from "html2canvas/dist/types/css/property-descriptors/background-position";
+
+
+const getYearsUsingTenure = tenure => {
+  if (tenure == 1) {
+    return "year";
+  } else if (tenure == 2) {
+    return "2 years";
+  } else if (tenure == 3) {
+    return "3 years";
+  }
+};
+const PlanContainerM = ({
+  plans,
+  removePlan,
+  setShowM,
+  index,
+  setShowBuyNowPopup,
+}) => {
+  const {
+    product,
+    premium,
+    sum_insured,
+    logo: IcLogo,
+    total_premium,
+    tax_amount,
+    tenure,
+  } = plans || {};
+  const { discount, ridersPremium, riders } = useSelector(
+    state => state.comparePage,
+  );
+  const [windowHeight,windowWidth] = useWindowSize();
+  const { groupCode: selectedGroup } = useParams();
+  const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
+  return (
+    <>
+      {product?.name ? (
+        <Row className="price_IC_box text-center " style={{boxShadow:"none",width:'48%'}}>
+        
+          <RemoveCross
+            onClick={() => removePlan(`${product.id}${sum_insured}`)}
+            className="remove-btn"
+          >
+            <span>
+              <i class="fa fa-close"></i>
+            </span>
+          </RemoveCross>
+          
+          
+          
+           
+            <img src={IcLogo} style={{width:'80px',marginTop:'8px'}}/>
+
+            {/* <ImageLogoWrapper style={{backgroundImage:`url(${IcLogo})`}}>
+          </ImageLogoWrapper> */}
+
+ 
+          
+           
+            <Col md={12}>
+            {/* Dynamic ic name */}
+            <WrapperCompanyDetails>
+              <CompanyName style={{textAlign:"center"}}>{product.company.name}</CompanyName>    
+            </WrapperCompanyDetails>
+          </Col>
+            
+            
+            <CompareBtn
+            windowWidth={windowWidth}
+              onClick={() => {
+                const selectedPlan = {
+                  // company_alias: mergedQuotes[0]?.company_alias,
+                  // logo: mergedQuotes[0]?.logo,
+                  product: product,
+                  total_premium:
+                    discount[`${product.id}${sum_insured}`]?.total_premium ||
+                    total_premium,
+                  // premium: mergedQuotes[0]?.premium[activeCover],
+                  sum_insured:
+                    discount[`${product.id}${sum_insured}`]?.sum_insured ||
+                    sum_insured,
+                  tax_amount:
+                    discount[`${product.id}${sum_insured}`]?.tax_amount ||
+                    tax_amount,
+                  tenure:
+                    discount[`${product.id}${sum_insured}`]?.tenure || tenure,
+                };
+                addProduct({
+                  ...selectedPlan,
+                  product_id: selectedPlan.product?.id,
+                  premium: selectedPlan.total_premium,
+                  group_id: parseInt(selectedGroup),
+                  service_tax: selectedPlan.tax_amount,
+                  riders: riders[`${product.id}${sum_insured}`],
+                }).then(() => setShowBuyNowPopup(true));
+              }}
+              value={`${((Object.keys(discount).length &&
+                discount[`${product.id}${sum_insured}`]?.premium) ||
+                premium) + (ridersPremium[`${product.id}${sum_insured}`] || 0)
+                } /${getYearsUsingTenure(
+                  discount[`${product.id}${sum_insured}`]?.tenure || tenure,
+                )}`}
+            />
+  
+        </Row>
+      ) : (
+      
+        
+        <EmptyContainer className="IC_product_compare_card blank" style={{width:'48%'}}>
+          <div className="plus" onClick={() => setShowM(true)}>
+            <i className="fa fa-plus"></i>
+          </div>
+          <div className="text-center mt-2">Add plans</div>
+          {/* <select
+            className="form-control_compare"
+            style={{
+              background: `url(${downarrow}) no-repeat 94% 53%`,
+            }}
+          >
+            <option>Select Insurer</option>
+            <option>Self</option>
+            <option>Son</option>
+          </select> */}
+        </EmptyContainer>
+
+
+      )}
+    </>
+  );
+};
+
+export default PlanContainerM;
+
+
+
+const EmptyContainer = styled.div`
+  width: 45% !important;
+  border: 2px dashed #e2a6a9;
+  color: #c7222a;
+  background: #fff5f5;
+  border-radius: 12px;
+  height: 157px;
+  margin: 10px;
+  min-width:250px;
+  display:flex;
+  justify-content:center;
+  & .plus{
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    background-color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+
+
+const ImageLogo = styled.img`
+  width:100%;
+  height:auto;
+`;
+
+
+const ImageLogoWrapper = styled.div`
+  border-radius: unset !important;
+  margin-top: 8px;
+  height: 50px;
+  width: 100px;
+  background-position:center;
+    background-repeat: no-repeat;
+    background-size: contain;
+`;
+
+
+const WrapperCompanyDetails = styled.div`
+  color: #111;
+  text-align: left;
+  padding-top: 8px;
+`;
