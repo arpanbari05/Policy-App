@@ -2,16 +2,28 @@ import React from 'react'
 import "styled-components/macro"
 import { maxbupa } from '../../../assets/images'
 import { CenterBottomStyle, CenterBottomToggle, EachWrapper, Logo, LogoWrapper, Outer, PlanName, RadioButton, SeeText, SmallLabel, TextWrapper, ValueText } from './QuoteCard.style'
+import useQuoteCard from './useQuoteCard';
 
-function QuoteCard() {
+function QuoteCard({ id, item }) {
+    const {
+        dispatch,
+        show,
+        setShow,
+        checked,
+        mergedQuotes,
+        quotesForCompare,
+        // activeCover,
+        // setActiveCover,
+    } = useQuoteCard({ item });
+    console.log("mergedquotes", mergedQuotes)
     return (
         <Outer>
             <div className="col-md-12 d-flex">
                 <div className="col-md-3">
                     <EachWrapper>
                         <LogoWrapper>
-                            <Logo src={maxbupa} />
-                            <PlanName>Reassure Family</PlanName>
+                            <Logo src={mergedQuotes[0]?.logo} />
+                            <PlanName>{mergedQuotes[0]?.product.name}</PlanName>
                         </LogoWrapper>
                     </EachWrapper>
                     <CenterBottomStyle>

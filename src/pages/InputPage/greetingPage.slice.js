@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import SecureLS from "secure-ls";
+import { setSelectedGroup } from "../quotePage/quote.slice";
 // import {
 //   saveFilteredQuotes,
 //   setFilters,
@@ -307,7 +308,7 @@ export const saveForm3UserDetails = (data, handleChange) => {
       //   );
       // }
       dispatch(setMemberGroups(newMemberGroups));
-      //dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
     } catch (err) {
       // alert(err.message);
     }
@@ -330,7 +331,7 @@ export const saveForm4UserDetails = (data) => {
       );
       dispatch(createUserData({ plan_type: planType }));
       dispatch(setMemberGroups(newMemberGroups));
-      // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
       // dispatch(
       //   setFilters({
       //     planType:
@@ -361,8 +362,8 @@ export const saveForm5UserDetails = (data) => {
         }),
         {}
       );
-      // dispatch(setMemberGroups(newMemberGroups));
-      // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      dispatch(setMemberGroups(newMemberGroups));
+      dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
       dispatch(createUserData({ medical_history: [...data] }));
     } catch (err) {
       //alert(err);

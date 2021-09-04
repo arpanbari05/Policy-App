@@ -25,11 +25,12 @@ justify-content: center;
 align-items: center;
 `
 export const Logo = styled.img`
-height:70px;
+height:45px;
 margin-bottom: 10px;
 `
 export const PlanName = styled.p`
-font-size:20px;
+font-size:14px;
+text-align:center;
 font-weight:bold ;
 `
 export const RadioButton = styled.button`
