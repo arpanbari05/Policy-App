@@ -1,6 +1,7 @@
 import Checkbox from "../../../components/Checkbox";
 import RoundDD from "../../../components/RoundDD";
-
+import StyledComponent from "styled-components/macro";
+import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
 export const age = [];
 for (let i = 0; i <= 10; i++) {
   age[i] = { id: i, title: `${24 + i} Years` };
@@ -73,6 +74,51 @@ export const dataset = (
           true
         }
       />
+      <div
+        css={`
+          ${((title === "Son" && code === "son") ||
+            (title == "Daughter" && code === "daughter")) &&
+          insurerCBXArray.includes(code)
+            ? "display: flex;"
+            : "display: none;"}
+          align-items: center;
+          position: relative;
+          left: -50px;
+          font-size: 19px;
+          color: #000;
+        `}
+      >
+        <a
+          onClick={() => {
+            addChild(title);
+          }}
+        >
+          <IoAddCircle />
+        </a>{" "}
+        <span
+          css={`
+            color: #6b7789;
+            margin: 0 12px;
+            position: relative;
+            font-size: 14px;
+            font-weight: 900;
+          `}
+        >
+          {count}
+        </span>
+        <a
+          onClick={() => {
+            removeChild &&
+              handleInput(
+                removeChild,
+                insurerCBXArray.includes(removeChild) && true,
+                "checkbox"
+              );
+          }}
+        >
+          <IoRemoveCircle />
+        </a>
+      </div>
       <RoundDD
         disabled={
           (title === "Son" || title === "Daughter") &&

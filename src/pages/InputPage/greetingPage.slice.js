@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import SecureLS from "secure-ls";
+import { getCityForPincode } from "../../FrontendBoot/serviceApi/frontendBoot";
+import {
+  setFilters,
+  setSelectedGroup,
+  updateFetchedFilters,
+} from "../quotePage/quote.slice";
 // import {
 //   saveFilteredQuotes,
 //   setFilters,
@@ -299,15 +305,15 @@ export const saveForm3UserDetails = (data, handleChange) => {
       //   memberGroupsList.length > 1 ||
       //   newMemberGroups[memberGroupsList[0]].length > 1;
       const showPlanTypeFilter = response.data.data.input.members.length;
-      // if (!showPlanTypeFilter) {
-      //   dispatch(
-      //     setFilters({
-      //       planType: "Individual",
-      //     }),
-      //   );
-      // }
+      if (!showPlanTypeFilter) {
+        dispatch(
+          setFilters({
+            planType: "Individual",
+          })
+        );
+      }
       dispatch(setMemberGroups(newMemberGroups));
-      //dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
     } catch (err) {
       // alert(err.message);
     }
@@ -330,17 +336,17 @@ export const saveForm4UserDetails = (data) => {
       );
       dispatch(createUserData({ plan_type: planType }));
       dispatch(setMemberGroups(newMemberGroups));
-      // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-      // dispatch(
-      //   setFilters({
-      //     planType:
-      //       planType === "M"
-      //         ? "Multi Individual"
-      //         : planType === "F"
-      //         ? "Family Floater"
-      //         : "Individual",
-      //   }),
-      // );
+      dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      dispatch(
+        setFilters({
+          planType:
+            planType === "M"
+              ? "Multi Individual"
+              : planType === "F"
+              ? "Family Floater"
+              : "Individual",
+        })
+      );
     } catch (err) {
       //alert(err);
     }
@@ -361,8 +367,8 @@ export const saveForm5UserDetails = (data) => {
         }),
         {}
       );
-      // dispatch(setMemberGroups(newMemberGroups));
-      // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      dispatch(setMemberGroups(newMemberGroups));
+      dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
       dispatch(createUserData({ medical_history: [...data] }));
     } catch (err) {
       //alert(err);
@@ -386,84 +392,85 @@ export const getRegion = (data) => {
   };
 };
 
-// export const getProposerDetails = data => {
-//   return async dispatch => {
-//     try {
-//       const response = await getProposerData(data);
-//       const cityResponse = await getCityForPincode({
-//         pincode: response?.data?.data?.input?.pincode,
-//       });
-//       const city = cityResponse?.data?.city;
-//       if (response.data) {
-//         ls.set("enquiryId", response?.data?.data?.enquiry_id);
-//         const {
-//           data: { trace_id },
-//         } = response.data;
+export const getProposerDetails = (data) => {
+  return async (dispatch) => {
+    try {
+      const response = await getProposerData(data);
+      const cityResponse = await getCityForPincode({
+        pincode: response?.data?.data?.input?.pincode,
+      });
+      const city = cityResponse?.data?.city;
+      if (response.data) {
+        ls.set("enquiryId", response?.data?.data?.enquiry_id);
+        const {
+          data: { trace_id },
+        } = response.data;
 
-//         ls.set("trace_id", trace_id);
-//         dispatch(setTraceId(trace_id));
-//         const newData = {
-//           enquiryId: response?.data?.data?.enquiry_id,
-//           name: response.data?.data?.name,
-//           mobile: response?.data?.data?.mobile,
-//           member: response?.data?.data?.input.members,
-//           email: response?.data?.data?.email,
+        ls.set("trace_id", trace_id);
+        dispatch(setTraceId(trace_id));
+        const newData = {
+          enquiryId: response?.data?.data?.enquiry_id,
+          name: response.data?.data?.name,
+          mobile: response?.data?.data?.mobile,
+          member: response?.data?.data?.input.members,
+          email: response?.data?.data?.email,
+        };
 
-//         };
+        dispatch(
+          refreshUserData({
+            ...response?.data?.data?.input,
+            ...newData,
+            city,
+            plan_type: response?.data?.data?.groups?.[0]?.plan_type,
+          })
+        );
+        dispatch(
+          setFilters({
+            ...response?.data?.data?.groups,
+            plan_type: response?.data?.data?.groups?.[0]?.plan_type,
+          })
+        );
+        dispatch(updateFetchedFilters(response?.data?.data?.groups));
+        const newMemberGroups = response.data.data.groups.reduce(
+          (groups, member) => ({
+            ...groups,
+            [member.id]: member.members,
+          }),
+          {}
+        );
+        dispatch(setMemberGroups(newMemberGroups));
+        dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      }
+    } catch (err) {
+      console.error(err);
+      dispatch(catchEnquiry());
+      alert("Something went wrong");
+    }
+  };
+};
 
-//         dispatch(
-//           refreshUserData({
-//             ...response?.data?.data?.input,
-//             ...newData,
-//             city,
-//             plan_type: response?.data?.data?.groups?.[0]?.plan_type,
-//           }),
-//         );
-//         dispatch(setFilters({
-//           ...response?.data?.data?.groups,
-//           plan_type: response?.data?.data?.groups?.[0]?.plan_type
-//         }));
-//         dispatch(updateFetchedFilters(response?.data?.data?.groups));
-//         const newMemberGroups = response.data.data.groups.reduce(
-//           (groups, member) => ({
-//             ...groups,
-//             [member.id]: member.members,
-//           }),
-//           {},
-//         );
-//         dispatch(setMemberGroups(newMemberGroups));
-//         dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-//       }
-//     } catch (err) {
-//       console.error(err);
-//       dispatch(catchEnquiry());
-//       alert("Something went wrong");
-//     }
-//   };
-// };
-
-// export const updateProposerDetails = response => dispatch => {
-//   if (response.data) {
-//     ls.set("enquiryId", response?.data?.data?.enquiry_id);
-//     const newData = {
-//       enquiryId: response?.data?.data?.enquiry_id,
-//       name: response.data?.data?.name,
-//       mobile: response?.data?.data?.mobile,
-//       member: response?.data?.data?.input.members,
-//       email: response?.data?.data?.email,
-//     };
-//     dispatch(refreshUserData({ ...response?.data?.data?.input, ...newData }));
-//     const newMemberGroups = response.data.data.groups.reduce(
-//       (groups, member) => ({
-//         ...groups,
-//         [member.id]: member.members,
-//       }),
-//       {},
-//     );
-//     dispatch(setMemberGroups(newMemberGroups));
-//     dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-//   }
-// };
+export const updateProposerDetails = (response) => (dispatch) => {
+  if (response.data) {
+    ls.set("enquiryId", response?.data?.data?.enquiry_id);
+    const newData = {
+      enquiryId: response?.data?.data?.enquiry_id,
+      name: response.data?.data?.name,
+      mobile: response?.data?.data?.mobile,
+      member: response?.data?.data?.input.members,
+      email: response?.data?.data?.email,
+    };
+    dispatch(refreshUserData({ ...response?.data?.data?.input, ...newData }));
+    const newMemberGroups = response.data.data.groups.reduce(
+      (groups, member) => ({
+        ...groups,
+        [member.id]: member.members,
+      }),
+      {}
+    );
+    dispatch(setMemberGroups(newMemberGroups));
+    dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+  }
+};
 
 export default greeting.reducer;
 

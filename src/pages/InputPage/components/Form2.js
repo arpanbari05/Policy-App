@@ -322,7 +322,7 @@ const Form2 = ({ handleChange, currentForm }) => {
           }
           .modal-content {
             border-radius: 0;
-            height: auto;
+            min-height: 100%;
             padding: 20px;
           }
         `}
