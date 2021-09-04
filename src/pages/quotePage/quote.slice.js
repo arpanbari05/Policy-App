@@ -216,10 +216,12 @@ const quotePageSlice = createSlice({
         },
 
         insurerFilterQuotes: (state, action) => {
+          
             state.filterQuotes = state.quotes.map(item => {
                 return item.filter(
-                    quote => quote.company_alias === action.payload.alias,
-                );
+                    quote =>   {
+                        if(action.payload.includes(quote.company_alias)) return quote
+                    });
             });
         },
 
@@ -388,9 +390,12 @@ export const saveQuotesData = data => {
 };
 
 export const insurerFilter = data => {
-    const { alias } = data;
+    let aliasSet =[];
+    data.map(({alias}) => aliasSet.push(alias))
+  
+    console.log(aliasSet,"alias")
     return async dispatch => {
-        dispatch(insurerFilterQuotes({ alias }));
+        dispatch(insurerFilterQuotes(aliasSet));
     };
 };
 

@@ -12,6 +12,7 @@ import {
     saveQuotesData,
     setFilters,
     setShouldFetchQuotes,
+    insurerFilter
 } from "./quote.slice";
 import { updateGroups } from "./serviceApi";
 

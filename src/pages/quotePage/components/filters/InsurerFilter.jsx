@@ -3,27 +3,43 @@ import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
-import { setFilters } from "../../quote.slice";
+import { setFilters, insurerFilter } from "../../quote.slice";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 import demoplanlogo from "../../../../assets/logos/digit.png";
 
-const FilterModal = ({ show, handleClose }) => {
+const FilterModal = ({ show, handleClose, filters }) => {
   const dispatch = useDispatch();
-
+  
   const insurerOptions = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
-  const [selectedinsurers, setSelectedinsurers] = useState([]);
+  const [selectedinsurers, setSelectedinsurers] = useState(filters.insurers.length?filters.insurers:[]);
 
-  const handleChange = (code, displayName) => {
-    if (displayName) {
-      setSelectedinsurers(displayName);
-    }
-  };
+  const handleChange = (insurer) => {
+  
 
-  const handleApply = () => {
+    selectedinsurers !==[] &&
+    selectedinsurers.filter(co => co.alias === insurer.alias).length === 0?
+    setSelectedinsurers([...selectedinsurers,insurer])
+    :
+    setSelectedinsurers([
+        ...selectedinsurers.filter(co => co.alias !== insurer.alias)
+      ])
+    
+      
+   
+  }
+
+
+
+
+  const handleApply = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     dispatch(setFilters({ insurers: selectedinsurers }));
+   dispatch(insurerFilter(selectedinsurers)); 
+              
     handleClose();
   };
 
@@ -65,7 +81,7 @@ const FilterModal = ({ show, handleClose }) => {
       <Modal.Body>
         <div>
           <OptionWrapper>
-            {insurerOptions ? (
+            {insurerOptions && selectedinsurers ? (
               Object.keys(insurerOptions.companies)
                 .sort(
                   (a, b) =>
@@ -88,7 +104,11 @@ const FilterModal = ({ show, handleClose }) => {
                         type="checkbox"
                         className="d-none"
                         id={insurerOptions.companies[key].alias}
+                        onChange={() => handleChange(insurerOptions.companies[key])}
+                        checked={selectedinsurers.includes(insurerOptions.companies[key])}
+
                       />
+                     
                       <label
                         htmlFor={insurerOptions.companies[key].alias}
                         className="w-100"
@@ -129,7 +149,7 @@ const FilterModal = ({ show, handleClose }) => {
         </div>
       </Modal.Body>
       <Modal.Footer className="text-center">
-        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100">Apply</ApplyBtn>
+        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100" onClick={(e) => handleApply(e)}>Apply</ApplyBtn>
       </Modal.Footer>
     </Modal>
   );
@@ -137,6 +157,7 @@ const FilterModal = ({ show, handleClose }) => {
 
 const InsurerFilter = () => {
   const [showModal, setShowModal] = useState(false);
+  const filters = useSelector(({ quotePage }) => quotePage.filters);
   return (
     <>
       <Filter
@@ -145,11 +166,12 @@ const InsurerFilter = () => {
       >
         <span className="filter_head">Insurers</span>
         <span className="filter_sub_head">
-          Select Insurers<i class="fas fa-chevron-down"></i>
+          {filters.insurers.length?`${filters.insurers.length} Insurers selected`:"Select Insurers"}<i class="fas fa-chevron-down"></i>
         </span>
       </Filter>
 
-      <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
+      <FilterModal show={showModal} handleClose={() => setShowModal(false)} filters={filters} />
+
     </>
   );
 };
