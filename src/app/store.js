@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 // import { persistStore, persistReducer } from "redux-persist";
 // import storage from "redux-persist/lib/storage";
 import rootReducer from "./reducers";
@@ -10,13 +10,16 @@ import rootReducer from "./reducers";
 
 // const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const middleware = [...getDefaultMiddleware()];
-
 const store = configureStore({
   // reducer: persistedReducer,
   reducer: rootReducer,
   devTools: process.env.NODE_ENV !== "production",
-  middleware,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: true,
+      serializableCheck: true,
+      immutableCheck: true,
+    }),
 });
 // let persistor = persistStore(store);
 

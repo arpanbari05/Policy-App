@@ -1,0 +1,146 @@
+.navdropdown {
+  z-index: 2;
+  position: relative;
+  &__content {
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    min-width: 170px;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+
+    & li {
+      display: block;
+      padding: 0 15px;
+      font-size: 15px;
+      color: #767a89;
+      line-height: 32px;
+      text-transform: uppercase;
+    }
+    &.show {
+      display: block;
+    }
+  }
+}
+
+.topHeader__btn1 li:hover {
+  color: #010101;
+  transition: all 0.3s ease-in-out;
+}
+
+.p_modal_title_bg_filters_product_cart {
+  margin: 0 4px 0 64px;
+  font-size: 24px;
+  line-height: 28px;
+  margin-bottom: 12px;
+  font-weight: 900;
+  font-family: PFHandbookProbld;
+  background-image: linear-gradient(to right, #ffe7e7 13%, #fff 21%);
+  padding: 10px;
+  /* width: 54%; */
+  margin: 0 -2px;
+  border-radius: 8px;
+  color: #000;
+}
+
+.modal_body_padding_filters_product {
+  padding: 0px 0px 0 4px !important;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.modal_body_padding_filters_product::-webkit-scrollbar {
+  width: 0px; /* For Chrome, Safari, and Opera */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.section {
+  width: 100% !important;
+  min-height: inherit !important;
+  display: flex !important;
+  justify-content: center !important;
+  /* align-items: center; */
+  flex-direction: column !important;
+  margin: 0 57px !important;
+  position: relative !important;
+}
+
+.rider-box_product_cart {
+  border-radius: 8px;
+  border: 1px solid #dce2ec;
+  background-color: #fff;
+  // padding: 9px 3px 109px 13px;
+  margin: 10px 0 0;
+  justify-content: space-between;
+  height: 0px;
+  width: 398px;
+  margin-left: 6px !important;
+}
+
+.bg_cart {
+  background: #f2f6f9;
+  padding: 10px 0px 0px -1px;
+  padding: 12px 0px;
+  width: 104.2%;
+  border-radius: 8px;
+  margin: 0 -8px;
+}
+
+.font_family_bold_quote {
+  font-family: PFEncoreSansProblck !important;
+  line-height: 20px;
+}
+
+.text-left {
+  text-align: left !important;
+}
+.font_family_bold_quote_cart {
+  font-family: PFEncoreSansProblck !important;
+  line-height: 20px;
+  font-size: 13px;
+}
+
+.remove_review_btn-test {
+  background-color: #fff3f3 !important;
+  color: #000 !important;
+  border: 1px dashed #eec5c7 !important;
+  font-size: 16px;
+  border-radius: 8px;
+  font-family: PFEncoreSansPromed;
+  display: inline-flex;
+  width: 398px;
+  text-align: center;
+  padding: 8px 125px;
+  line-height: 38px;
+  margin-top: -17px;
+}
+
+.row_bg_total_p_cart {
+  background: #f8f8fb;
+  width: 398px;
+  margin-left: 6px;
+  padding: 16px 12px 12px 12px;
+  border-radius: 8px;
+  margin-bottom: -19px;
+  height: 57px;
+  line-height: 19px;
+}
+
+.test {
+  height: 61px;
+  width: 100% !important;
+}
+
+.max-wi {
+  max-width: 78.333333% !important;
+}

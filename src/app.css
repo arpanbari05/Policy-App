@@ -72,3 +72,54 @@ border-radius: 12px;
 background-color: #ffcb00;
 margin-right: 10px;
 }
+/* ==================res========================= */
+.hideOnMobile {
+  display: block;
+}
+.hideOnDesktop {
+  display: none;
+}
+.showOnMobile {
+  display: none;
+}
+.showOnDesktop {
+  display: block;
+}
+.showOnDesktopF {
+  display: table-cell;
+}
+.showOnDesktopFlex {
+  display: flex;
+}
+@media (max-width: 1023px) {
+  .hideOnDesktop {
+    display: block;
+  }
+  .showOnDesktop {
+    display: none !important;
+  }
+  .showOnDesktopFlex {
+    display: none;
+  }
+
+  .showOnDesktopF {
+    display: none;
+  }
+
+  .tbody_bg_border_th {
+    padding-left: 6px;
+  }
+}
+@media (max-width: 767px) {
+  .hideOnMobile {
+    display: none !important;
+  }
+  .mobileWidth {
+    width: 100% !important;
+  }
+
+  .showOnMobile {
+    display: Block;
+  }
+}
+/* =========================================== */

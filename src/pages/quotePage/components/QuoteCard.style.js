@@ -40,7 +40,7 @@ width:160px;
 padding: 10px;
 border-radius: 6px;
 color:#fff;
-font-size:20px;
+font-size:16px;
 font-weight:900 !important;
 border: none;
 background-color: #0a87ff;

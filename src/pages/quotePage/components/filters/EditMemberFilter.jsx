@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { setFilters } from "../../quote.slice";
 import "styled-components/macro";
 import { Filter,OptionWrapper,ApplyBtn } from "./Filter.style";
-import PencilIcon from "../../../../assets/images/svg-icons/PencilIcon";
+import PencilIcon from "../../../../assets/svg-icons/PencilIcon";
 
 const FilterModal = ({ show, handleClose }) => {
   return (
