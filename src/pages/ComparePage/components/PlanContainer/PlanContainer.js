@@ -7,12 +7,10 @@ import { useCartProduct } from "../../../Cart";
 import { CompanyName, PlanName, RemoveCross } from "../../ComparePage.style";
 import CompareBtn from "../buttons/CompareBtn";
 import "../PlanContainer/PlanContainer";
-
+import { AiOutlinePlus } from "react-icons/ai";
 import { images } from "../../../../assets/logos/logo.js";
 
-
-
-const getYearsUsingTenure = tenure => {
+const getYearsUsingTenure = (tenure) => {
   if (tenure == 1) {
     return "year";
   } else if (tenure == 2) {
@@ -40,13 +38,12 @@ const PlanContainer = ({
     tenure,
   } = plans || {};
 
-  console.log(plans, "121");
   const { discount, ridersPremium, riders } = useSelector(
-    state => state.comparePage,
+    (state) => state.comparePage
   );
   let additionalPremium = 0;
 
-  mandatory_riders?.forEach(element => {
+  mandatory_riders?.forEach((element) => {
     additionalPremium += element.total_premium;
   });
 
@@ -55,13 +52,24 @@ const PlanContainer = ({
   return (
     <>
       {product?.name ? (
-        <Row className="price_IC_box text-center ">
+        <Row
+          className="price_IC_box text-center "
+          css={`
+            display: flex;
+            align-items: center;
+            border-radius: 4px;
+            height: 160px;
+            width: 248px;
+            margin: 0 12px;
+            justify-content: space-around;
+            border: 2px solid #0a87ff;
+           position:relative;
+            `}
+        >
           <RemoveCross
             onClick={() => removePlan(`${product.id}${sum_insured}`)}
           >
-            <span>
-              <i class="fa fa-close"></i>
-            </span>
+            <span>x</span>
           </RemoveCross>
           <Col
             md={12}
@@ -76,7 +84,6 @@ const PlanContainer = ({
               `}
             >
               <ImageLogo src={images[company_alias]} alt="" />
-              
             </span>
             {/* Dynamic ic name */}
             <WrapperCompanyDetails>
@@ -124,13 +131,50 @@ const PlanContainer = ({
       ) : (
         <Row>
           <Col md={12}>
-            <button onClick={() => setShow(true)}>
+            <button
+              onClick={() => setShow(true)}
+              css={`
+                border: none;
+                background: none;
+              `}
+            >
               <div
-                className="IC_product_compare_card blank"
-                // modal on Click
+                css={`
+                  // border: 1px dashed #e2a6a9;
+                  background-color: #ebf5ff;
+                  box-shadow: none;
+                  cursor: pointer;
+                  display: block;
+                  padding-top: 40px;
+                  transition: 0.45s;
+                  height: 160px;
+                  width: 248px;
+                  color: #0a87ff;
+                  border-radius: 5px;
+                `}
               >
-                <div className="cross">
-                  <i className="fa fa-plus"></i>
+                <div
+                  className="cross"
+                  css={`
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                  `}
+                >
+                  <div
+                    css={`
+                      border: 1px dashed #0a87ff;
+                      width: 83px;
+                      height: 65px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      font-size: 55px;
+                      border-radius: 12px;
+                    `}
+                  >
+                    <AiOutlinePlus></AiOutlinePlus>
+                  </div>
                 </div>
                 <div
                   style={{ fontWeight: "900" }}
@@ -161,12 +205,12 @@ const PlanContainer = ({
 export default PlanContainer;
 
 const ImageLogo = styled.img`
-  position: unset !important;
+  position: relative;
+  top: 11px;
   object-fit: contain;
   height: 45px !important;
-  width: 90px !important;
-  border-radius: unset !important;
-  margin-top: unset !important;
+  width: 74px !important;
+
   padding: 2px 0px !important;
 `;
 const WrapperCompanyDetails = styled.div`

@@ -73,6 +73,9 @@ background-color: #ffcb00;
 margin-right: 10px;
 }
 /* ==================res========================= */
+.tbody_bg_border_th {
+  padding-left: 10px;
+}
 .hideOnMobile {
   display: block;
 }
@@ -106,9 +109,7 @@ margin-right: 10px;
     display: none;
   }
 
-  .tbody_bg_border_th {
-    padding-left: 6px;
-  }
+ 
 }
 @media (max-width: 767px) {
   .hideOnMobile {
