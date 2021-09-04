@@ -40,7 +40,7 @@ width:160px;
 padding: 10px;
 border-radius: 6px;
 color:#fff;
-font-size:20px;
+font-size:16px;
 font-weight:900 !important;
 border: none;
 background-color: #0a87ff;
@@ -71,12 +71,14 @@ letter-spacing: normal;
 text-align: left;
 color: #000;
 margin-bottom: 16px;
+width:120px;
 `
 
 export const TextWrapper = styled.div`
 display:flex;
 flex-direction: column;
 min-width:120px;
+margin-right: 5px;
 `
 export const SeeText = styled.span`
 font-size: 15px;
