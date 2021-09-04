@@ -6,36 +6,36 @@ import ShareQuoteModal from "../../../components/ShareQuoteModal";
 
 const UpperModifier = () => {
 
-const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
+  const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
 
   return (
     <>
-    <UpperModifierWrapper>
-      <div className="container d-flex justify-content-between align-items-center py-3">
-        <div className="left_modifiers  d-flex align-items-center">
-          <EditMemberFilter />
-          <span className="plans_for plans_for_members active position-relative">
-            Self,Spouse <div className="active_bar"></div>
-          </span>
-          <span className="plans_for plans_for_members">
-            Father,Mother <div className="active_bar"></div>
-          </span>
-        </div>
+      <UpperModifierWrapper>
+        <div className="container d-flex justify-content-between align-items-center py-3">
+          <div className="left_modifiers  d-flex align-items-center">
+            <EditMemberFilter />
+            <span className="plans_for plans_for_members active position-relative">
+              Self,Spouse <div className="active_bar"></div>
+            </span>
+            <span className="plans_for plans_for_members">
+              Father,Mother <div className="active_bar"></div>
+            </span>
+          </div>
 
-        <div className="right_midifiers d-flex justify-content-between align-items-center ">
-          <button className="btn share_Quote_btn" onClick={() => setShowShareQuoteModal(true)}>
-            <i class="fas fa-share"></i> Share Quote
-          </button>
-          <PlanTypeFilter />
+          <div className="right_midifiers d-flex justify-content-between align-items-center ">
+            <button className="btn share_Quote_btn" onClick={() => setShowShareQuoteModal(true)}>
+              <i class="fas fa-share"></i> Share Quote
+            </button>
+            <PlanTypeFilter />
+          </div>
         </div>
-      </div>
-    </UpperModifierWrapper>
+      </UpperModifierWrapper>
 
-{/* modal */}
-    <ShareQuoteModal
-      show={showShareQuoteModal}
-      handleClose={() => setShowShareQuoteModal(false)}
-    />
+      {/* modal */}
+      <ShareQuoteModal
+        show={showShareQuoteModal}
+        handleClose={() => setShowShareQuoteModal(false)}
+      />
     </>
   );
 };
@@ -46,7 +46,6 @@ const UpperModifierWrapper = styled.div`
   background-color: #eaeef2;
   .left_modifiers {
     font-size: 20px;
-    font-family: Inter;
     .plans_for {
       margin-right: 15px;
       cursor: pointer;

@@ -4,11 +4,39 @@ import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
 import QuoteCard from "./components/QuoteCard";
 import { SortByButton, TextLabel } from "./Quote.style";
-import useQuotes from "./useQuotes";
+
+import useQuotesPage from "./useQuotes";
+import { useSelector } from "react-redux";
 
 function QuotePage() {
-  const { quotes } = useQuotes();
+  const {
+    quotes,
+    filterMobile,
+    arr,
+    companies,
+    setFilterMobile,
+    // filterQuotes,
+    showTalkModal,
+    setShowTalkModal,
+    setShowBuyNow,
+    setShowSeeDetails,
+    showPopup,
+    showBuyNow,
+    showSeeDetails,
+    // sortByData,
+    quotesLength,
+    member,
+    // setSortBy,
+    recFilterdQuotes,
+  } = useQuotesPage();
   console.log("quotes", quotes);
+
+  const { loadingQuotes, filters } = useSelector(state => state.quotePage);
+
+  const firstQuoteFound =
+    quotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
+
+  console.log("firstquoteFound: ", firstQuoteFound);
   return (
     <div>
       <UpperModifier />
@@ -16,14 +44,43 @@ function QuotePage() {
 
       <div className="container">
         <div className="col-md-12 d-flex">
-          <div className="col-md-8" style={{ padding: "0px 5px" }}>
+          <div className="col-md-8" style={{ padding: "0px 5px", marginBottom: "40px" }}>
             <div className=" d-flex justify-content-between align-items-center">
               <TextLabel> Showing Family Floater Plan</TextLabel>
               <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
               </SortByButton>
             </div>
-            <QuoteCard />
+            {quotesLength ?
+              (
+                firstQuoteFound && (
+                  quotes.map(
+                    (item, index) =>
+                      item.length > 0 && (
+                        <QuoteCard
+                          key={index}
+                          id={index}
+                          item={item}
+
+                        />
+                      ),
+                  )
+                )
+              ) :
+              (
+                !loadingQuotes && (
+                  <p
+                    css={`
+                  display: flex;
+                  height: 275px;
+                  justify-content: center;
+                  align-items: center;
+                `}
+                  >
+                    no quotes
+                  </p>))
+            }
+
           </div>
           <div className="col-md-4" style={{ padding: "0px 5px" }}>
             <div className="d-flex justify-content-between align-items-center ">
