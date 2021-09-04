@@ -1,0 +1,60 @@
+.topHeader {
+  border-bottom: 1px solid #ececec;
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+  &__button{
+    background: transparent;
+    font-size: 14px;
+    height: 100%;
+    outline: none;
+    padding: 0 20px;
+    border: none;
+    border-left: 1px solid #ececec;
+    border-right: 1px solid #ececec;
+    &:hover{
+    
+        cursor: pointer;
+        
+    }
+    &::after{
+      display: inline-block;
+      width: 0;
+      height: 0;
+      margin-left: .455em;
+      vertical-align: .255em;
+      content: "";
+      border-top: .3em solid;
+      border-right: .3em solid transparent;
+      border-bottom: 0;
+      border-left: .3em solid transparent;
+      }
+    & span {   
+      color: #414141;
+      vertical-align: middle;
+      padding-left: 9px;
+      line-height: 16px;
+    }
+   
+  
+  }
+  &__profileBtn{
+    font-size: 17px;
+    padding-left: 10px;
+    
+    & svg {
+      position: relative;
+      top: 3px;
+    }
+  }
+}
+
+.topHeader__btn1{
+  top: 32px;
+  left: -26px;
+}
+
+.topHeader__btn2{
+  top: 33px;
+  left: -63px;
+}
