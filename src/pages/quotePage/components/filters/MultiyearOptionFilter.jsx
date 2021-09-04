@@ -1,21 +1,32 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { setFilters } from "../../quote.slice";
+import {
+  setFilters,
+  fetchQuotes,
+  replaceQuotes,
+  replaceFilterQuotes,
+} from "../../quote.slice";
 import styled from "styled-components";
 import "styled-components/macro";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
 const FilterModal = ({ show, handleClose }) => {
-
+  const { filters, selectedGroup } = useSelector((state) => state.quotePage);
+  const companies = useSelector(
+    (state) => state.frontendBoot.frontendData.data.companies
+  );
+  const frontEndData = useSelector(
+    ({ frontendBoot }) => frontendBoot.frontendData.data
+  );
   const dispatch = useDispatch();
 
  
 
-  const [selectedTenure, setSelectedTenure] = useState({
-    code:"",
-    displayName:""
-  });
+  const [selectedTenure, setSelectedTenure] = useState(filters.multiYear?{
+    code:parseInt(filters.multiYear),
+    displayName:filters.multiYear
+  }:{});
 
   const handleChange = (code, displayName) => {
     if (displayName) {
@@ -26,8 +37,28 @@ const FilterModal = ({ show, handleClose }) => {
     }
   };
 
-  const handleApply = () => {
-    dispatch(setFilters({ tenure: selectedTenure.code }));
+  const handleApply = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    dispatch(setFilters({ multiYear: selectedTenure.displayName}));
+
+    dispatch(replaceQuotes([]));
+    dispatch(replaceFilterQuotes([]));
+    dispatch(
+      fetchQuotes(companies, {
+        plan_type: filters.planType === "Individual"
+        ? "I"
+        : filters.planType === "Family Floater"
+        ? "F"
+        : "M",
+        tenure: selectedTenure.code,
+        sum_insured: frontEndData.covers.find(
+          (filter) => filter.display_name === filters.cover
+        )?.code,
+        member: selectedGroup,
+      })
+    );
+
     handleClose();
   };
 
@@ -70,11 +101,11 @@ const FilterModal = ({ show, handleClose }) => {
         <div>
           <OptionWrapper>
             <li className="option d-flex align-items-center justify-content-between">
-              <label htmlFor="name">1 Year</label>
-              <input type="radio" id="name" name="premium" onChange={() => handleChange(1,"1 Year")} />
+              <label htmlFor="1 Year">1 Year</label>
+              <input type="radio" id="1 Year" name="multiYear" onChange={() => handleChange(1,"1 Year")} />
             </li>
             <li className="option d-flex align-items-center justify-content-between">
-              <label htmlFor="name">
+              <label htmlFor="2 Year">
                 2 Year{" "}
                 <span
                   style={{
@@ -84,10 +115,10 @@ const FilterModal = ({ show, handleClose }) => {
                   (save upto 10%)
                 </span>
               </label>
-              <input type="radio" id="name" name="premium" onChange={() => handleChange(2,"2 Years")} />
+              <input type="radio" id="2 Year" name="multiYear" onChange={() => handleChange(2,"2 Years")} />
             </li>
             <li className="option d-flex align-items-center justify-content-between">
-              <label htmlFor="name">
+              <label htmlFor="3 Year">
                 3 Year{" "}
                 <span
                   style={{
@@ -97,13 +128,13 @@ const FilterModal = ({ show, handleClose }) => {
                   (save upto 20%)
                 </span>
               </label>
-              <input type="radio" id="name" name="premium" onChange={() => handleChange(3,"3 Years")} />
+              <input type="radio" id="3 Year" name="multiYear" onChange={() => handleChange(3,"3 Years")} />
             </li>
           </OptionWrapper>
         </div>
       </Modal.Body>
       <Modal.Footer className="text-center">
-        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100">Apply</ApplyBtn>
+        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100" onClick={(e) => handleApply(e)}>Apply</ApplyBtn>
       </Modal.Footer>
     </Modal>
   );

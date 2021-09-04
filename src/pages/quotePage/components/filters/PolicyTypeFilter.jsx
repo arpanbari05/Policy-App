@@ -2,29 +2,64 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { setFilters } from "../../quote.slice";
+import {
+  setFilters,
+  fetchQuotes,
+  replaceQuotes,
+  replaceFilterQuotes,
+} from "../../quote.slice";
 import "styled-components/macro";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
-const FilterModal = ({ show, handleClose, filters }) => {
+const FilterModal = ({ show, handleClose }) => {
+  const { filters, selectedGroup } = useSelector((state) => state.quotePage);
   const plantypeOptions = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
-
+  const coverRangeOptions = useSelector(
+    ({ frontendBoot }) => frontendBoot.frontendData.data
+  );
   const dispatch = useDispatch();
 
+  const companies = useSelector(
+    (state) => state.frontendBoot.frontendData.data.companies
+  );
+  const existingPlanTypeCode = filters.planType === "Individual"
+  ? "I"
+  : filters.planType === "Family Floater"
+  ? "F"
+  : "M";
+  const existingPlanTypeDisplayname = filters.planType;
   const [selectedPlanType, setselectedPlanType] = useState(
-    filters.planType ? filters.planType : ""
+    filters.planType
+      ? {
+          code: existingPlanTypeCode,
+          displayName: existingPlanTypeDisplayname,
+        }
+      : {}
   );
 
   const handleChange = (code,displayName) => {
     if (displayName) {
-      setselectedPlanType(displayName);
+      setselectedPlanType({code,displayName});
     }
   };
 
   const handleApply = () => {
-    dispatch(setFilters({ planType: selectedPlanType }));
+    dispatch(setFilters({ planType: selectedPlanType.displayName }));
+    dispatch(replaceQuotes([]));
+    dispatch(replaceFilterQuotes([]));
+    dispatch(
+      fetchQuotes(companies, {
+        plan_type:selectedPlanType.code,
+        tenure: parseInt(filters.multiYear),
+        sum_insured: coverRangeOptions.covers.find(
+          (filter) => filter.display_name === filters.cover
+        )?.code,
+        member: selectedGroup,
+      })
+    );
+
     handleClose();
   };
 
@@ -119,7 +154,6 @@ const PolicyTypeFilter = () => {
       <FilterModal
         show={showModal}
         handleClose={() => setShowModal(false)}
-        filters={filters}
       />
     </>
   );

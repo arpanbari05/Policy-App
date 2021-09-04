@@ -65,10 +65,25 @@ const FilterModal = ({ show, handleClose }) => {
       <Modal.Body>
         <div>
           <OptionWrapper>
-            {insurerOptions
-              ? Object.keys(insurerOptions.companies).map((key, i) => {
-                  return insurerOptions.companies[key].insurance_types[0] === "health"? (
-               <>
+            {insurerOptions ? (
+              Object.keys(insurerOptions.companies)
+                .sort(
+                  (a, b) =>
+                    insurerOptions?.companies[b].csr -
+                    insurerOptions?.companies[a].csr
+                )
+                .map((key, i) => {
+                  return insurerOptions.companies[key].insurance_types[0] ===
+                    "health" ||
+                    insurerOptions.companies[key].insurance_types[0] ===
+                      "top_up" ||
+                    insurerOptions.companies[key].insurance_types[0] ===
+                      "cancer" ||
+                    insurerOptions.companies[key].insurance_types[0] ===
+                      "critical_illness" ||
+                    insurerOptions.companies[key].insurance_types[0] ===
+                      "personal_accident" ? (
+                    <>
                       <input
                         type="checkbox"
                         className="d-none"
@@ -100,10 +115,14 @@ const FilterModal = ({ show, handleClose }) => {
                           </div>
                         </li>
                       </label>
-                  </>
-                  ):<></>
+                    </>
+                  ) : (
+                    <></>
+                  );
                 })
-              : <></>}
+            ) : (
+              <></>
+            )}
 
             {/* */}
           </OptionWrapper>
