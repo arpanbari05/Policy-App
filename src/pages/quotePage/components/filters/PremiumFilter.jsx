@@ -10,18 +10,19 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
   const premiumOptions = useSelector(({frontendBoot}) => frontendBoot.frontendData.data)
   const dispatch = useDispatch();
 
-  const [selectedPremium, setSelectedPremium] = useState(
-    existingPremium ? existingPremium : ""
-  );
+  const [selectedPremium, setSelectedPremium] = useState({
+    code:"",
+    displayName:""
+  });
 
   const handleChange = (code,displayName) => {
     if (displayName) {
-      setSelectedPremium(displayName);
+      setSelectedPremium({code,displayName});
     }
   };
 
   const handleApply = () => {
-   dispatch(setFilters({premium:selectedPremium}));
+   dispatch(setFilters({premium:selectedPremium.displayName}));
    handleClose();
   };
 

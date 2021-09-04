@@ -8,7 +8,28 @@ import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
 const FilterModal = ({ show, handleClose }) => {
 
+  const dispatch = useDispatch();
 
+ 
+
+  const [selectedTenure, setSelectedTenure] = useState({
+    code:"",
+    displayName:""
+  });
+
+  const handleChange = (code, displayName) => {
+    if (displayName) {
+      setSelectedTenure({
+        code,
+        displayName
+      });
+    }
+  };
+
+  const handleApply = () => {
+    dispatch(setFilters({ tenure: selectedTenure.code }));
+    handleClose();
+  };
 
   return (
     <Modal
@@ -50,7 +71,7 @@ const FilterModal = ({ show, handleClose }) => {
           <OptionWrapper>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="name">1 Year</label>
-              <input type="radio" id="name" name="premium" />
+              <input type="radio" id="name" name="premium" onChange={() => handleChange(1,"1 Year")} />
             </li>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="name">
@@ -63,7 +84,7 @@ const FilterModal = ({ show, handleClose }) => {
                   (save upto 10%)
                 </span>
               </label>
-              <input type="radio" id="name" name="premium" />
+              <input type="radio" id="name" name="premium" onChange={() => handleChange(2,"2 Years")} />
             </li>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="name">
@@ -76,7 +97,7 @@ const FilterModal = ({ show, handleClose }) => {
                   (save upto 20%)
                 </span>
               </label>
-              <input type="radio" id="name" name="premium" />
+              <input type="radio" id="name" name="premium" onChange={() => handleChange(3,"3 Years")} />
             </li>
           </OptionWrapper>
         </div>
@@ -99,7 +120,7 @@ const MultiyearOptionFilter = () => {
       >
         <span className="filter_head">Multiyear Options</span>
         <span className="filter_sub_head">
-          {} <i class="fas fa-chevron-down"></i>
+          {filters.multiYear?filters.multiYear:"Select Tenure"} <i class="fas fa-chevron-down"></i>
         </span>
       </Filter>
 
