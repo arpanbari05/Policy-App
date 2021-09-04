@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
 const FilterModal = ({ show, handleClose }) => {
+
+
+
   return (
     <Modal
       show={show}
@@ -85,6 +89,7 @@ const FilterModal = ({ show, handleClose }) => {
 
 const MultiyearOptionFilter = () => {
   const [showModal, setShowModal] = useState(false);
+  const filters = useSelector(({ quotePage }) => quotePage.filters);
   return (
     <>
       <Filter
@@ -93,11 +98,11 @@ const MultiyearOptionFilter = () => {
       >
         <span className="filter_head">Multiyear Options</span>
         <span className="filter_sub_head">
-          1 Year <i class="fas fa-chevron-down"></i>
+          {} <i class="fas fa-chevron-down"></i>
         </span>
       </Filter>
 
-      <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
+      <FilterModal show={showModal} handleClose={() => setShowModal(false)} filters={filters} />
     </>
   );
 };

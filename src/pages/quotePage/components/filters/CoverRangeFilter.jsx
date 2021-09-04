@@ -1,10 +1,30 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import { setFilters } from "../../quotePage.slice";
 import "styled-components/macro";
 import { Filter,OptionWrapper,ApplyBtn } from "./Filter.style";
 
-const FilterModal = ({ show, handleClose }) => {
+const FilterModal = ({ show, handleClose, filters }) => {
+  const coverRangeOptions = useSelector(({frontendBoot}) => frontendBoot.frontendData.data)
+  const dispatch = useDispatch();
+
+  const [selectedCover, setselectedCover] = useState(
+    filters.cover ? filters.cover : ""
+  );
+
+  const handleChange = (code,displayName) => {
+    if (displayName) {
+      setselectedCover(displayName);
+    }
+  };
+
+  const handleApply = () => {
+   dispatch(setFilters({cover:selectedCover}));
+   handleClose();
+  };
+
   return (
     <Modal
       show={show}
@@ -43,30 +63,21 @@ const FilterModal = ({ show, handleClose }) => {
       <Modal.Body>
       <div>
         <OptionWrapper>
-          <li className="option d-flex align-items-center justify-content-between">
-            <label htmlFor="name">1 to 3 Lacs</label>
-            <input type="radio" id="name" name="premium" />
-          </li>
 
-          <li className="option d-flex align-items-center justify-content-between">
-            <label htmlFor="name">3 to 5 Lacs</label>
-            <input type="radio" id="name" name="premium" />
+{
+  coverRangeOptions?coverRangeOptions.covers.map((option,i) => {
+    return(
+      <li className="option d-flex align-items-center justify-content-between" key={i}>
+            <label htmlFor={option.code}>{option.display_name}</label>
+            <input type="radio" id={option.code} name="selectCover"  onChange={(e) => handleChange(option.code,option.display_name)} />
           </li>
+    )
+  }):""
+}
 
-          <li className="option d-flex align-items-center justify-content-between">
-            <label htmlFor="name">5 to 10 Lacs</label>
-            <input type="radio" id="name" name="premium" />
-          </li>
+          
 
-          <li className="option d-flex align-items-center justify-content-between">
-            <label htmlFor="name">3 to 5 Lacs</label>
-            <input type="radio" id="name" name="premium" />
-          </li>
-
-          <li className="option d-flex align-items-center justify-content-between">
-            <label htmlFor="name">5 to 10 Lacs</label>
-            <input type="radio" id="name" name="premium" />
-          </li>
+       
           
         </OptionWrapper>
         <div style={{
@@ -81,7 +92,7 @@ const FilterModal = ({ show, handleClose }) => {
         </div>
       </Modal.Body>
       <Modal.Footer className="text-center">
-        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100">Apply</ApplyBtn>
+        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100" onClick={() => handleApply()}>Apply</ApplyBtn>
       </Modal.Footer>
     </Modal>
   );
@@ -89,6 +100,7 @@ const FilterModal = ({ show, handleClose }) => {
 
 const CoverRangeFilter = () => {
   const [showModal, setShowModal] = useState(false);
+  const filters = useSelector(({ quotePage }) => quotePage.filters);
   return (
     <>
       <Filter
@@ -97,13 +109,14 @@ const CoverRangeFilter = () => {
       >
         <span className="filter_head">Cover</span>
         <span className="filter_sub_head">
-          3 to 5 Lacs. <i class="fas fa-chevron-down"></i>
+          {filters.cover?filters.cover:"Select cover"} <i class="fas fa-chevron-down"></i>
         </span>
       </Filter>
 
       <FilterModal
         show={showModal}
         handleClose={() => setShowModal(false)}
+        filters={filters}
       />
     </>
   );

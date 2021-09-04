@@ -1,10 +1,34 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 import "styled-components/macro";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
 const FilterModal = ({ show, handleClose }) => {
+
+
+
+  const dispatch = useDispatch();
+
+  // const insurerOptions = useSelector(
+  //   ({ frontendBoot }) => frontendBoot.frontendData.data
+  // );
+
+  // const [selectedinsurers, setSelectedinsurers] = useState([]);
+
+  // const handleChange = (code, displayName) => {
+  //   if (displayName) {
+  //     setSelectedinsurers(displayName);
+  //   }
+  // };
+
+  // const handleApply = () => {
+  //   dispatch(setFilters({ insurers: selectedinsurers }));
+  //   handleClose();
+  // };
+
+
   return (
     <Modal
       show={show}

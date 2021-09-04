@@ -1,11 +1,32 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
+import { setFilters } from "../../quotePage.slice";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 import demoplanlogo from "../../../../assets/logos/digit.png";
 
 const FilterModal = ({ show, handleClose }) => {
+  const dispatch = useDispatch();
+
+  const insurerOptions = useSelector(
+    ({ frontendBoot }) => frontendBoot.frontendData.data
+  );
+
+  const [selectedinsurers, setSelectedinsurers] = useState([]);
+
+  const handleChange = (code, displayName) => {
+    if (displayName) {
+      setSelectedinsurers(displayName);
+    }
+  };
+
+  const handleApply = () => {
+    dispatch(setFilters({ insurers: selectedinsurers }));
+    handleClose();
+  };
+
   return (
     <Modal
       show={show}
@@ -44,24 +65,47 @@ const FilterModal = ({ show, handleClose }) => {
       <Modal.Body>
         <div>
           <OptionWrapper>
-          
-            <input type="checkbox" className="d-none" id="insurer1" />
-            <label htmlFor="insurer1" className="w-100">
-            <li className="option insurer_option d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center">
-                <div className="insurer_logo">
-                  <img src={demoplanlogo} alt="COMPANY_LOGO" className="w-100" />
-                </div>
-                <span>Tata AIG</span>
-              </div>
+            {insurerOptions
+              ? Object.keys(insurerOptions.companies).map((key, i) => {
+                  return insurerOptions.companies[key].insurance_types[0] === "health"? (
+               <>
+                      <input
+                        type="checkbox"
+                        className="d-none"
+                        id={insurerOptions.companies[key].alias}
+                      />
+                      <label
+                        htmlFor={insurerOptions.companies[key].alias}
+                        className="w-100"
+                      >
+                        <li className="option insurer_option d-flex align-items-center justify-content-between">
+                          <div className="d-flex align-items-center">
+                            <div className="insurer_logo">
+                              <img
+                                src={insurerOptions.companies[key].logo}
+                                alt="COMPANY_LOGO"
+                                className="w-100"
+                              />
+                            </div>
+                            <span className="mx-3">
+                              {insurerOptions.companies[key].short_name}
+                            </span>
+                          </div>
 
-              <div className="d-flex align-items-center ">
-                <span className="plan_csr">99.0%</span>
-                <div className="custom_checkbox"></div>
-              </div>
-            </li>
-            </label>
-   
+                          <div className="d-flex align-items-center ">
+                            <span className="plan_csr">
+                              {insurerOptions.companies[key].csr}%
+                            </span>
+                            <div className="custom_checkbox"></div>
+                          </div>
+                        </li>
+                      </label>
+                  </>
+                  ):<></>
+                })
+              : <></>}
+
+            {/* */}
           </OptionWrapper>
         </div>
       </Modal.Body>
@@ -92,5 +136,3 @@ const InsurerFilter = () => {
 };
 
 export default InsurerFilter;
-
-
