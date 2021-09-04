@@ -11,17 +11,19 @@ function useQuotes() {
     const {
         quotes,
         shouldFetchQuotes,
+
     } = useSelector(state => state.quotePage);
     const { cover, tenure, plan_type } = useSelector(
         ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters,
     );
 
-    const { data } = useSelector(({ frontendBoot }) => frontendBoot.frontendData);
+    // const { data } = useSelector(({ frontendBoot }) => frontendBoot.frontendData);
     const { memberGroups, proposerDetails } = useSelector(
         ({ greetingPage }) => greetingPage,
     );
-    const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
-    console.log("company", companies, "cover", cover, "tenure", tenure, "members", memberGroups, "proposerDetails", proposerDetails);
+    const { selectedGroup, } = useSelector(({ quotePage }) => quotePage);
+
+    console.log("company", companies, "cover", cover, "tenure", tenure, "members", memberGroups, "proposerDetails", proposerDetails, "ses", selectedGroup);
     //   const findCode = (fitlerName, fitlerValue) => {
     //     let code;
     //     data[fitlerName].forEach(data => {
