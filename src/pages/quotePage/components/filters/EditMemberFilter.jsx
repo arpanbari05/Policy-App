@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import styled from "styled-components";
+import { setFilters } from "../../quote.slice";
 import "styled-components/macro";
 import { Filter,OptionWrapper,ApplyBtn } from "./Filter.style";
 import PencilIcon from "../../../../assets/images/svg-icons/PencilIcon";

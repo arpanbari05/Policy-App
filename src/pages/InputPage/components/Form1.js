@@ -92,6 +92,7 @@ const Form1 = ({ handleChange, currentForm }) => {
           `}
         >
           <TextInput
+            autoComplete={`off`}
             styledCss={`margin-bottom: 10px;`}
             clear={() => setPinCode("")}
             value={pinCode}
@@ -106,20 +107,19 @@ const Form1 = ({ handleChange, currentForm }) => {
             pinCode?.length > 2 &&
             proposerDetails.pincode !== regionDetails?.pincode && (
               <div
-              onClick={() => {
-                setPinCode(regionDetails.city);
-                setCustomErrors(false);
-                dispatch(
-                  saveForm1UserDetails(
-                    {
-                      pinCode: regionDetails.pincode,
-                      is_pincode_search: regionDetails.is_pincode_search,
-                    },
-                    handleChange,
-                  ),
-                );
-             
-              }}
+                onClick={() => {
+                  setPinCode(regionDetails.city);
+                  setCustomErrors(false);
+                  dispatch(
+                    saveForm1UserDetails(
+                      {
+                        pinCode: regionDetails.pincode,
+                        is_pincode_search: regionDetails.is_pincode_search,
+                      },
+                      handleChange
+                    )
+                  );
+                }}
                 className="dropdown"
               >
                 {regionDetails?.city}

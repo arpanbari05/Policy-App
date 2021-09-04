@@ -282,7 +282,7 @@ const Form2 = ({ handleChange, currentForm }) => {
             setShowModal(true);
           }}
           styledCss={`
-            background-color: #e2f0ff;
+            background-color:#ebf5ff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -306,7 +306,9 @@ const Form2 = ({ handleChange, currentForm }) => {
           Other Members
         </StyledButton>
 
-        {formButtons(handleChange, handleSubmit, currentForm)}
+        {formButtons(() => {
+          handleChange(currentForm - 1);
+        }, handleSubmit)}
       </div>
       <Modal
         css={`
@@ -332,11 +334,30 @@ const Form2 = ({ handleChange, currentForm }) => {
           `}
         >
           <Title>All your family members</Title>{" "}
+          <div
+            css={`
+              position: relative;
+            `}
+          >
+            <span
+              css={`
+                &:before {
+                  position: absolute;
+                  top: -17px;
+                  right: -87px;
+                  content: "";
+                  background-color: #6b7789;
+                  height: 19px;
+                  width: 18px;
+                }
+              `}
+            ></span>
+          </div>
           <a
             onClick={() => setShowModal(false)}
             css={`
               position: relative;
-              color: #4a5971;
+              color: #ebf5ff;
               font-size: 32px;
               font-size: 43px;
               top: -11px;
@@ -349,7 +370,6 @@ const Form2 = ({ handleChange, currentForm }) => {
         <div
           css={`
             margin-top: 10px;
-         
           `}
         >
           {membersArray &&

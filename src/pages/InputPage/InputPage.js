@@ -52,44 +52,21 @@ export const InputPage = () => {
               <Form5 currentForm={currentForm} handleChange={handleChange} />
             </div>
           </Card>
-          {currentForm === 1 && termsAndConditions(showmore, setShowmore)}
+          {currentForm === 5 && termsAndConditions(showmore, setShowmore)}
         </InnerWrapper>
       </Wrapper>
-      {/* <Card width={`400px`} height={"600px"} padding={`0px`}>
-        <div
-          css={`
-            padding: 10px;
-          `}
-        >
-          <TextInput clear={() => console.log("hehee")} />
-          <RadioButton label={`sadf`} checked={true} />
-          <RadioButton label={`sadf3`} itemsCentered />
-          <RadioCapsule label={`tes`} />
-          <RadioCapsule label={`tes2`} checked={true} />
-          <RadioCapsule label={`tes3`} checked={true} />
-          <Checkbox title={"self"} handleChange={() => {}} code={`g`} />
-          <RoundDD
-            list={[{ title: "he" }, { title: "he 2" }]}
-            selected={"Select Age"}
-          />
-        </div>
-        <StyledButton
-          value={`button`}
-          styledCss={`position: absolute;bottom: 0;left: 0; right: 0; margin: 0;`}
-        />
-      </Card> */}
-     
     </Container>
   );
 };
 
 const Container = styled.div`
   background-image: url(${bg});
+  background-attachment: fixed;
+  background-position: center;
   height: 100%;
   width: 100%;
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: right top;
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -103,6 +80,7 @@ const Wrapper = styled.div`
 const PlanCard = styled.div`
   & h3 {
     color: #0a87ff;
+    background-color: #ecf6ff;
     border: 1px solid #0a87ff;
     border-radius: 15px;
     width: max-content;
@@ -132,9 +110,13 @@ function planCard() {
       styledCss={`
     margin: 73px auto;
     box-shadow: none!important;
+    width: 585px;
+    @media(max-width:1200px){
+      width: 500px;
+    }
     `}
       width={`500px`}
-      height={`460px`}
+      height={`400px`}
     >
       <PlanCard>
         <h3>HEALTH INSURANCE</h3>
@@ -159,7 +141,7 @@ function termsAndConditions(showmore, setShowmore) {
           margin: 0 auto;
         `}
       >
-        <i class="termchk"></i>By clicking on Get Started, I hereby authorise
+        <i class="termchk"></i>By clicking on View Quotes, I hereby authorise
         FYNTUNE. and all of its affiliates, subsidiaries, group companies and
         related parties to access the details such as my name, address,
         telephone number,{" "}

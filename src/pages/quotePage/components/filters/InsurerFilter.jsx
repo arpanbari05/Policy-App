@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
-import { setFilters } from "../../quotePage.slice";
+import { setFilters } from "../../quote.slice";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 import demoplanlogo from "../../../../assets/logos/digit.png";
 

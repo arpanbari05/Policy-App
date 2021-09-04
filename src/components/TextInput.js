@@ -9,6 +9,7 @@ const TextInput = ({
   placeholder,
   value,
   clear,
+  autoComplete,
   styledCss,
   onChange,
   onPaste,
@@ -45,6 +46,7 @@ const TextInput = ({
     >
       <FloatingLabel controlId="floatingInput" label={label}>
         <Form.Control
+        autoComplete={autoComplete}
           type={type}
           placeholder={placeholder}
           value={value}

@@ -119,16 +119,23 @@ export const {
   setTraceId,
 } = greeting.actions;
 
-export const saveForm1UserDetails = (data, handleChange) => {
-  const { pinCode, is_pincode_search } = data;
+export const saveForm1UserDetails = (data2, handleChange) => {
+  const { pinCode, is_pincode_search } = data2;
   return async (dispatch) => {
     try {
       if (pinCode) {
-        const { res } = await createUser({
+        const { data } = await createUser({
           section: "health",
           pincode: pinCode,
           is_pincode_search,
         });
+        const {
+          data: { enquiry_id },
+          access_token,
+        } = data;
+
+        ls.set("token", access_token);
+        ls.set("enquiryId", enquiry_id);
         dispatch(
           createUserData({
             pincode: pinCode,
@@ -321,9 +328,9 @@ export const saveForm4UserDetails = (data) => {
         }),
         {}
       );
+      dispatch(createUserData({ plan_type: planType }));
       dispatch(setMemberGroups(newMemberGroups));
       // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-      dispatch(createUserData({ plan_type: planType }));
       // dispatch(
       //   setFilters({
       //     planType:

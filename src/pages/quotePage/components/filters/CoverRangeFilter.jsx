@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { setFilters } from "../../quotePage.slice";
+import { setFilters } from "../../quote.slice";
 import "styled-components/macro";
 import { Filter,OptionWrapper,ApplyBtn } from "./Filter.style";
 

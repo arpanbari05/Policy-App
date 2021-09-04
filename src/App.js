@@ -7,12 +7,15 @@ import Navbar from "./components/Navbar";
 import { fetchFrontendData } from "./FrontendBoot/reducer/frontendBoot.slice";
 import { useDispatch } from "react-redux";
 import QuotePage from "./pages/quotePage/QuotePage";
+import { setShouldFetchQuotes } from "./pages/quotePage/quote.slice";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchFrontendData());
+
+    dispatch(setShouldFetchQuotes(true));
   }, []);
 
   return (
@@ -20,7 +23,9 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/" component={InputPage} />
-        <Route exact path="/quotes" component={QuotePage} />
+
+        <Route exact path="/quotes/:groupCode" component={QuotePage} />
+
       </Switch>
     </Router>
   );

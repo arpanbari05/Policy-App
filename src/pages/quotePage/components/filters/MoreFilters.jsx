@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
+import { setFilters } from "../../quote.slice";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import "styled-components/macro";

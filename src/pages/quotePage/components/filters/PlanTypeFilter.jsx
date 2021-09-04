@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-
+import { setFilters } from "../../quote.slice";
 const PlanTypeFilter = () => {
 const [showDropdown, setShowDropdown] = useState(false);
 
