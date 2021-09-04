@@ -6,6 +6,7 @@ import {
   setSelectedGroup,
   updateFetchedFilters,
 } from "../quotePage/quote.slice";
+
 // import {
 //   saveFilteredQuotes,
 //   setFilters,
@@ -337,6 +338,7 @@ export const saveForm4UserDetails = (data) => {
       dispatch(createUserData({ plan_type: planType }));
       dispatch(setMemberGroups(newMemberGroups));
       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+
       dispatch(
         setFilters({
           planType:
@@ -347,6 +349,7 @@ export const saveForm4UserDetails = (data) => {
               : "Individual",
         })
       );
+
     } catch (err) {
       //alert(err);
     }
