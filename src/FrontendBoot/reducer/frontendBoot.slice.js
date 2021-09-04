@@ -4,6 +4,7 @@ import { getFrontendData } from "../serviceApi/frontendBoot";
 
 import SecureLS from "secure-ls";
 import axios from "axios";
+import { setFilters } from "../../pages/quotePage/quote.slice";
 
 const ls = new SecureLS();
 
@@ -36,13 +37,13 @@ export const fetchFrontendData = (onFetch = () => {}) => {
       const { cover, plan_type, tenure } = data.data.defaultfilters;
       const { covers, plantypes } = data.data;
 
-      // dispatch(
-      //   setFilters({
-      //     cover: covers.find(c => c.code === cover).display_name,
-      //     planType: plantypes.find(p => p.code === plan_type).display_name,
-      //     multiYear: `${tenure} Year`,
-      //   }),
-      // );
+      dispatch(
+        setFilters({
+          cover: covers.find(c => c.code === cover).display_name,
+          planType: plantypes.find(p => p.code === plan_type).display_name,
+          multiYear: `${tenure} Year`,
+        }),
+      );
 
       dispatch(saveFrontendData(data));
 
