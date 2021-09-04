@@ -10,7 +10,7 @@ import MobileHeader from "./components/MobileComp/Header";
 import ShowDiffMobile from "./components/MobileComp/ShowDiffMobile";
 import PlanContainerMobile from "./components/MobileComp/PlanContainerM";
 import TBodyM from "./components/MobileComp/TBodyM";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import THeadM from "./components/MobileComp/THeadM";
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import TBlank from "./components/tables/TBlank";
@@ -58,7 +58,7 @@ const sendContent = (
   email,
   setEmail,
   emailStatus,
-  sendRef,
+  sendRef
 ) => {
   return (
     <div className="text-center p-lg mb-50 sm-50 xs-50">
@@ -76,7 +76,7 @@ const sendContent = (
         <input
           type={type === "email" ? "email" : "tel"}
           class="form__field"
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder={
             type === "email"
               ? "Enter Your Email Address"
@@ -117,7 +117,7 @@ const sendContent = (
     </div>
   );
 };
-const getYearsUsingTenure = tenure => {
+const getYearsUsingTenure = (tenure) => {
   if (tenure == 1) {
     return "year";
   } else if (tenure == 2) {
@@ -138,7 +138,7 @@ const popupContent = (
   errors,
   setErrors,
   discount,
-  removePlan2point0,
+  removePlan2point0
 ) => {
   let companies = [];
   let companyWisePlans = {};
@@ -146,29 +146,28 @@ const popupContent = (
   let companyWiseLogos = [];
   let ProductWiseId = {};
   let covers = {};
-  fitlerQuotes.forEach(item => {
+  fitlerQuotes.forEach((item) => {
     if (item[0]) {
       companies.push(item[0].product.company.name);
       companyWiseLogos.push(item[0].logo);
-    
 
-      item.forEach(innerItem => {
+      item.forEach((innerItem) => {
         if (!(innerItem.product.name in covers)) {
           covers[innerItem.product.name] = [innerItem.sum_insured];
         } else {
           covers[innerItem.product.name].push(innerItem.sum_insured);
         }
       });
-    
-      item.forEach(innerItem => {
+
+      item.forEach((innerItem) => {
         if (
           ((companyWisePlans[innerItem.product.company.name] &&
             !companyWisePlans[innerItem.product.company.name].includes(
-              innerItem.product.name,
+              innerItem.product.name
             )) ||
             !companyWisePlans[innerItem.product.company.name]) &&
           !mergedQuotes.some(
-            item => item.data.product.name === innerItem.product.name,
+            (item) => item.data.product.name === innerItem.product.name
           )
         ) {
           companyWisePlans = {
@@ -188,7 +187,7 @@ const popupContent = (
         if (
           (companyWiseSumAssured[innerItem.product.company.name] &&
             !companyWiseSumAssured[innerItem.product.company.name].includes(
-              innerItem.sum_insured,
+              innerItem.sum_insured
             )) ||
           !companyWiseSumAssured[innerItem.product.company.name]
         )
@@ -216,7 +215,7 @@ const popupContent = (
                   <RemoveCross
                     onClick={() =>
                       removePlan(
-                        `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`,
+                        `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
                       )
                     }
                   >
@@ -225,7 +224,14 @@ const popupContent = (
                     </span>
                   </RemoveCross>
                   <LogoWrapper>
-                    <img src={mergedQuotes[index].data.logo} alt="logo"></img>
+                    <img
+                      src={mergedQuotes[index].data.logo}
+                      alt="logo"
+                      css={`
+                        width: 57px;
+                        object-fit: contain;
+                      `}
+                    ></img>
                   </LogoWrapper>
                   <NameWrapper>
                     <CompanyName>
@@ -241,7 +247,7 @@ const popupContent = (
                         <Value>
                           <i class="fa fa-inr"></i>{" "}
                           {mergedQuotes[index].data.sum_insured.toLocaleString(
-                            "en-IN",
+                            "en-IN"
                           )}
                         </Value>
                       </DetailWrapper>
@@ -261,7 +267,7 @@ const popupContent = (
                             getYearsUsingTenure(
                               discount[
                                 `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
-                              ]?.tenure,
+                              ]?.tenure
                             )}
                         </Value>
                       </DetailWrapper>
@@ -290,7 +296,14 @@ const popupContent = (
                   <div className="col-lg-4">
                     <QuoteWrapper>
                       <LogoWrapper>
-                        <img src={companyWiseLogos[index]} alt="logo"></img>
+                        <img
+                          src={companyWiseLogos[index]}
+                          alt="logo"
+                          css={`
+                            width: 57px;
+                            object-fit: contain;
+                          `}
+                        ></img>
                       </LogoWrapper>
                       <QuoteName>{item}</QuoteName>
                       <DropDownWrapper>
@@ -298,12 +311,12 @@ const popupContent = (
                           name={companyWisePlans[item]}
                           sum={companyWiseSumAssured[item]}
                           covers={covers}
-                          onChange={value => {
-                            setValue(prev => {
+                          onChange={(value) => {
+                            setValue((prev) => {
                               return { ...prev, [item]: value };
                             });
                             if (mergedQuotes.length >= 3) {
-                              setErrors(prev => {
+                              setErrors((prev) => {
                                 return {
                                   ...prev,
                                   [item]: "You can add only upto 3 plans",
@@ -313,7 +326,7 @@ const popupContent = (
                               setSelectedAddPlan(
                                 `${ProductWiseId[value.plan]}${
                                   value?.sumInsured
-                                }`,
+                                }`
                               );
                               setValue({});
                             }
@@ -351,7 +364,7 @@ const popupContentM = (
   setErrors,
   discount,
   windowWidth,
-  removePlan2point0,
+  removePlan2point0
 ) => {
   let companies = [];
   let companyWisePlans = {};
@@ -359,19 +372,19 @@ const popupContentM = (
   let companyWiseLogos = [];
   let ProductWiseId = {};
 
-  fitlerQuotes.forEach(item => {
+  fitlerQuotes.forEach((item) => {
     if (item[0]) {
       companies.push(item[0].product.company.name);
       companyWiseLogos.push(item[0].logo);
-      item.forEach(innerItem => {
+      item.forEach((innerItem) => {
         if (
           ((companyWisePlans[innerItem.product.company.name] &&
             !companyWisePlans[innerItem.product.company.name].includes(
-              innerItem.product.name,
+              innerItem.product.name
             )) ||
             !companyWisePlans[innerItem.product.company.name]) &&
           !mergedQuotes.some(
-            item => item.data.product.name === innerItem.product.name,
+            (item) => item.data.product.name === innerItem.product.name
           )
         ) {
           companyWisePlans = {
@@ -391,7 +404,7 @@ const popupContentM = (
         if (
           (companyWiseSumAssured[innerItem.product.company.name] &&
             !companyWiseSumAssured[innerItem.product.company.name].includes(
-              innerItem.sum_insured,
+              innerItem.sum_insured
             )) ||
           !companyWiseSumAssured[innerItem.product.company.name]
         )
@@ -428,7 +441,7 @@ const popupContentM = (
                   <RemoveCross
                     onClick={() =>
                       removePlan(
-                        `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`,
+                        `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
                       )
                     }
                   >
@@ -464,7 +477,7 @@ const popupContentM = (
                       <Value style={{ fontSize: "12px" }}>
                         <i class="fa fa-inr"></i>{" "}
                         {mergedQuotes[index].data.sum_insured.toLocaleString(
-                          "en-IN",
+                          "en-IN"
                         )}
                       </Value>
                     </div>
@@ -490,7 +503,7 @@ const popupContentM = (
                           getYearsUsingTenure(
                             discount[
                               `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
-                            ]?.tenure,
+                            ]?.tenure
                           )}
                       </Value>
                     </div>
@@ -525,12 +538,12 @@ const popupContentM = (
                         <DropDown
                           name={companyWisePlans[item]}
                           sum={companyWiseSumAssured[item]}
-                          onChange={value => {
-                            setValue(prev => {
+                          onChange={(value) => {
+                            setValue((prev) => {
                               return { ...prev, [item]: value };
                             });
                             if (mergedQuotes.length >= 3) {
-                              setErrors(prev => {
+                              setErrors((prev) => {
                                 return {
                                   ...prev,
                                   [item]: "You can add only upto 3 plans",
@@ -540,7 +553,7 @@ const popupContentM = (
                               setSelectedAddPlan(
                                 `${ProductWiseId[value.plan]}${
                                   value?.sumInsured
-                                }`,
+                                }`
                               );
                             }
                           }}
@@ -599,7 +612,7 @@ const ComparePage = () => {
   const sendRef = useRef();
   const dispatch = useDispatch();
 
-  const { proposerDetails } = useSelector(state => state.greetingPage);
+  const { proposerDetails } = useSelector((state) => state.greetingPage);
 
   const [width, setWidth] = useState(window.innerWidth);
   return (
@@ -612,9 +625,9 @@ const ComparePage = () => {
       )}
 
       {loading ? (
-        <div className="agn-our-pricing pb-200  mgt-5">
+        <div>
           <GoBack path={"/quotes"} groupCode={groupCode} />
-          <Container className="tab-content tab-content_mt_comapre">
+          <Container>
             <CardSkeletonLoader noOfCards={3} />
           </Container>
         </div>
@@ -639,10 +652,9 @@ const ComparePage = () => {
           <div className="agn-our-pricing pb-200 mgt-5 ">
             {/* will visible only on desktop screen by media query*/}
             <div className="desktop-header hideOnMobile">
-              <ul className="menu topRight">
+              <ul className="menu topRight" css={`display: none;`}>
                 <li class="share bottom">
                   <i class="fa fa-share-alt share"></i>
-
                   <ul class="submenu">
                     <li>
                       <button
@@ -704,7 +716,7 @@ const ComparePage = () => {
                               hideCells={hideCells}
                             />
                           </>
-                        ),
+                        )
                     )}
 
                   <TBodyM
@@ -724,7 +736,6 @@ const ComparePage = () => {
               <div>
                 <div className="table-wrapper">
                   <table className="table table-hover">
-                  
                     <THead
                       plans={mergedQuotes}
                       setshowDiffCbx={setshowDiffCbx}
@@ -757,7 +768,7 @@ const ComparePage = () => {
                               />
                               <TBlank />
                             </>
-                          ),
+                          )
                       )}
                   </table>
                 </div>
@@ -784,7 +795,7 @@ const ComparePage = () => {
           errors,
           setErrors,
           discount,
-          windowWidth,
+          windowWidth
         )}
         handleClose={() => {
           setShowM(false);
@@ -813,7 +824,7 @@ const ComparePage = () => {
           setValue,
           errors,
           setErrors,
-          discount,
+          discount
         )}
         handleClose={() => {
           setShow(false);
@@ -833,7 +844,7 @@ const ComparePage = () => {
           email,
           setEmail,
           emailStatus,
-          sendRef,
+          sendRef
         )}
         showButton={false}
         handleClose={() => setSend(false)}

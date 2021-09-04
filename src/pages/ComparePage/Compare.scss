@@ -8,7 +8,23 @@
     position: sticky;
     top: 0;
     box-shadow: inset 0px -6px 6px -6px #e9decd;
+    z-index: 99;
   }
+}
+tr {
+  padding: 15 10px !important;
+}
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+  border: 0 !important;
+}
+.table thead tr th {
+  width: 26.667%;
+  background-color: #fff;
 }
 .exclusions__showless {
   display: none !important;
@@ -244,10 +260,10 @@
     height: 154px;
   }
 }
-.mobile-view{
+.mobile-view {
   display: none;
 }
-.plan-container-mobile{
+.plan-container-mobile {
   width: 100%;
   box-shadow: 0 3px 6px 0 #dbe1ee;
   background-color: #ffffff;
@@ -260,22 +276,25 @@
 }
 
 @media (max-width: 768px) {
-  .rider-wrapper{
+  .rider-wrapper {
     margin-bottom: 5px !important;
   }
-  .table-wrapper{
+  .table-wrapper {
     margin-top: 0px !important;
   }
-  .mobile-view{
+  .mobile-view {
     display: block;
   }
-  .desktop-header{
+  .desktop-header {
     display: none;
   }
-  .compare_t_bor_l{
+  .compare_t_bor_l {
     display: none !important;
   }
-  .agn-our-pricing.mgt-5{
+  .agn-our-pricing.mgt-5 {
     margin-top: 0px !important;
-  } 
+  }
+}
+select { 
+  border: none;
 }
