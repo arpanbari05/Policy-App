@@ -8,7 +8,8 @@ import "styled-components/macro";
 import { v4 as uuidv4 } from "uuid";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 import PencilIcon from "../../../../assets/svg-icons/PencilIcon";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
+import { ErrorMessage } from "../../../InputPage/components/FormComponents";
 
 const CustomDropdown = ({ member }) => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -303,7 +304,7 @@ const FilterModal = ({ show, handleClose }) => {
   };
 
   const history = useHistory();
-
+ 
   const handleUpdate = (e) => {
     e.preventDefault();
 
@@ -341,8 +342,9 @@ const FilterModal = ({ show, handleClose }) => {
           history
         )
       );
+   
     }
-    handleClose();
+  
   };
 
   return (
@@ -438,6 +440,14 @@ const FilterModal = ({ show, handleClose }) => {
         </OptionWrapper>
       </Modal.Body>
       <Modal.Footer className="text-center">
+      {errors && (
+          <ErrorMessage style={{ fontSize: "15px" }}>{errors}</ErrorMessage>
+        )}
+
+        {error &&
+          error.map(msg => (
+            <ErrorMessage style={{ fontSize: "15px" }}>{msg}</ErrorMessage>
+          ))}
         <ApplyBtn
           onClick={handleUpdate}
           className="btn apply_btn mx-auto h-100 w-100"
@@ -568,40 +578,6 @@ const EditMemberFilter = () => {
     setInsurerDDArray(tempArray);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const ageErrorArray = [];
-    insurerCBXArray.forEach((data) => {
-      const hasAge = insurerDDArray.some((item) => item.insurer === data);
-      if (!hasAge) {
-        ageErrorArray.push(data);
-      }
-    });
-
-    if (insurerCBXArray.length < 1) {
-      setErrors("Select at least one Insured");
-    } else if (insurerDDArray.length < 1 || ageErrorArray.length > 0) {
-      setErrors("Select age for Insured");
-      setAgeError(ageErrorArray);
-    } else {
-      setErrors(false);
-    }
-    if (ageErrorArray.length < 1 && !errors && insurerDDArray.length > 0) {
-      const dataArray = [];
-      insurerDDArray.forEach((data) => {
-        const i = membersArray.findIndex((x) => x.code === data.insurer);
-        if (membersArray[i]?.is_primary) {
-          dataArray.push({
-            type: `${membersArray[i].code}`,
-            age: data.value.endsWith("months")
-              ? `0.${data.value.split(" ")[0]}`
-              : `${data.value.split(" ")[0]}`,
-          });
-        }
-      });
-      // dispatch(saveForm3UserDetails(dataArray, handleChange));
-    }
-  };
 
   const [showModal, setShowModal] = useState(false);
   return (

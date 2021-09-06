@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  useLocation,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { useLocation, Switch, Route } from "react-router-dom";
 import { InputPage } from "./pages/InputPage/InputPage";
 import ComparePage from "./pages/ComparePage/ComparePage";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -54,14 +49,14 @@ function App() {
     );
 
   return Object.keys(frontendData || {}).length > 0 ? (
-    <Router>
+    <>
       <Navbar />
       <Switch>
         <Route exact path="/" component={InputPage} />
         <Route exact path="/quotes/:groupCode" component={QuotePage} />
         <Route exact path="/compare/:groupCode" component={ComparePage} />
       </Switch>
-    </Router>
+    </>
   ) : (
     <>
       <Navbar />
