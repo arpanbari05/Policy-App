@@ -25,9 +25,10 @@ function useQuotesPage() {
     const {
         fetchFilters,
         quotes,
-        filterQuotes,
+        filterQuotes: QuotesToAdd,
         shouldFetchQuotes,
     } = useSelector(state => state.quotePage);
+
     const { cover, tenure, plan_type } = useSelector(
         ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters,
     );
@@ -93,9 +94,9 @@ function useQuotesPage() {
 
     const [showTalkModal, setShowTalkModal] = useState(false);
 
-    //   const { filterQuotes: filterGivenQuotes } = useQuoteFilter();
+    const { filterQuotes: filterGivenQuotes } = useQuoteFilter();
 
-    //   const filterQuotes = quotes.map(icQuotes => filterGivenQuotes(icQuotes));
+    const filterQuotes = quotes.map(icQuotes => filterGivenQuotes(icQuotes));
 
     const dispatch = useDispatch();
     const [showPopup, setShowPopup] = useState(false);
@@ -261,41 +262,41 @@ function useQuotesPage() {
     //     }
     //   }, [filterMobile]);
 
-    //   const sortByData = [
-    //     { id: 1, title: `Relevance` },
-    //     { id: 2, title: `Premium low to high` },
-    //     // { id: 2, title: `Premium high to low` },
-    //   ];
+    const sortByData = [
+        { id: 1, title: `Relevance` },
+        { id: 2, title: `Premium low to high` }
+        // { id: 2, title: `Premium high to low` },
+    ];
 
     const quotesLength = quotes.reduce(
         (length, quotes) => length + quotes?.length,
         0,
     );
 
-    //   const [sortBy, setSortBy] = useState("Relevance");
+    const [sortBy, setSortBy] = useState("Relevance");
 
-    //   if (sortBy === "Premium low to high") {
-    //     filterQuotes?.sort((a, b) => {
-    //       if (!a[0] && !b[0]) return 0;
-    //       if (a[0] && !b[0]) return 1;
-    //       if (!a[0] && b[0]) return -1;
-    //       if (a[0]?.total_premium > b[0]?.total_premium) {
-    //         return 1;
-    //       }
-    //       return -1;
-    //     });
-    //   }
-    //   if (sortBy === "Premium high to low") {
-    //     filterQuotes?.sort((a, b) => {
-    //       if (!a[0] && !b[0]) return 0;
-    //       if (a[0] && !b[0]) return -1;
-    //       if (!a[0] && b[0]) return 1;
-    //       if (a[0]?.total_premium > b[0]?.total_premium) {
-    //         return -1;
-    //       }
-    //       return 1;
-    //     });
-    //   }
+    if (sortBy === "Premium low to high") {
+        filterQuotes?.sort((a, b) => {
+            if (!a[0] && !b[0]) return 0;
+            if (a[0] && !b[0]) return 1;
+            if (!a[0] && b[0]) return -1;
+            if (a[0]?.total_premium > b[0]?.total_premium) {
+                return 1;
+            }
+            return -1;
+        });
+    }
+    if (sortBy === "Premium high to low") {
+        filterQuotes?.sort((a, b) => {
+            if (!a[0] && !b[0]) return 0;
+            if (a[0] && !b[0]) return -1;
+            if (!a[0] && b[0]) return 1;
+            if (a[0]?.total_premium > b[0]?.total_premium) {
+                return -1;
+            }
+            return 1;
+        });
+    }
 
     return {
         quotes,
@@ -311,10 +312,10 @@ function useQuotesPage() {
         showPopup,
         showBuyNow,
         showSeeDetails,
-        // sortByData,
+        sortByData,
         quotesLength,
         member,
-        // setSortBy,
+        setSortBy,
         recFilterdQuotes,
     };
 }
