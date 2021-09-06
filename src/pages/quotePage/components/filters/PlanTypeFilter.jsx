@@ -7,7 +7,7 @@ const PlanTypeFilter = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef()
 
-  useOutsiteClick(ref, () => setShowDropdown(false)); return (
+  useOutsiteClick(ref, () => setShowDropdown(false)); return (  
     <>
       <button className="btn select_plan_btn d-flex align-items-center position-relative" style={{
         fontWeight: "600"

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 // import { updateQuotes } from "../ComparePage/compare.slice";
@@ -20,7 +21,7 @@ function useQuotesPage() {
     const companies = useSelector(
         ({ frontendBoot }) => frontendBoot.frontendData.data,
     );
-
+    
     const {
         fetchFilters,
         quotes,
@@ -111,6 +112,7 @@ function useQuotesPage() {
 
     const { groupCode } = useParams();
 
+    
     // const recommendedQuotes = useSelector(
     //     ({ recommendedPage }) => recommendedPage.recommendedQuotes[groupCode],
     // );
@@ -174,59 +176,77 @@ function useQuotesPage() {
     //     setRecFilterdQuotes(tempArray);
     //   }, [recommendedQuotes, quotes]);
 
-    //   const defaultfilters = {
-    //     insurers: [],
-    //     premium: "",
-    //     cover: "3 to 5 Lacs",
-    //     ownCover: "",
-    //     multiYear: "1 Year",
-    //     basePlanType: "Base health",
-    //     moreFilters: {},
-    //   };
+      const defaultfilters = {
+        insurers: [],
+        premium: "",
+        cover: "3 to 5 Lacs",
+        ownCover: "",
+        multiYear: "1 Year",
+        basePlanType: "Base health",
+        moreFilters: {},
+      };
 
-    //   useEffect(() => {
-    //     dispatch(clearFilterQuotes());
-    //   }, [groupCode]);
-    //   useEffect(() => {
-    //     if (Object.keys(memberGroups) && !initRef.current) {
-    //       dispatch(
-    //         fetchQuotes(companies?.companies, {
-    //           sum_insured: cover,
-    //           tenure,
-    //           member: selectedGroup,
-    //           plan_type:
-    //             memberGroups[selectedGroup].length === 1
-    //               ? "I"
-    //               : proposerDetails.plan_type
-    //               ? proposerDetails.plan_type === "M"
-    //                 ? "M"
-    //                 : "F"
-    //               : "F",
-    //         }),
-    //       );
+      useEffect(() => {
+        dispatch(clearFilterQuotes());
+      }, [groupCode]);
+      useEffect(() => {
+        if (Object.keys(memberGroups) && !initRef.current) {
+          dispatch(
+            fetchQuotes(companies?.companies, {
+              sum_insured: cover,
+              tenure,
+              member: selectedGroup,
+              plan_type:
+                memberGroups[selectedGroup].length === 1
+                  ? "I"
+                  : proposerDetails.plan_type
+                  ? proposerDetails.plan_type === "M"
+                    ? "M"
+                    : "F"
+                  : "F",
+            }),
+          );
 
-    //       // if (filterQuotes.length < 2) {
-    //       //   arr?.forEach((item) =>
-    //       //     dispatch(
-    //       //       saveQuotesData({
-    //       //         alias: item,
-    //       //         type: "normal",
-    //       //         sum_insured: cover,
-    //       //         tenure,
-    //       //         member: member.filter(m => m.group === "group_code_1"),
-    //       //         plan_type,
-    //       //       })
-    //       //     )
-    //       //   );
-    //       // }
-    //     }
-    //     if (fetchFilters.length < 1) {
-    //       if (initRef.current) {
-    //         dispatch(setFilters(defaultfilters));
-    //       }
-    //       initRef.current = false;
-    //     }
-    //   }, [memberGroups]);
+          if (filterQuotes.length < 2) {
+            arr?.forEach((item) =>
+              dispatch(
+                saveQuotesData({
+                  alias: item,
+                  type: "normal",
+                  sum_insured: cover,
+                  tenure,
+                  member: member.filter(m => m.group === "group_code_1"),
+                  plan_type,
+                })
+              )
+            );
+          }
+        }
+        if (fetchFilters.length < 1) {
+          if (initRef.current) {
+            dispatch(setFilters(defaultfilters));
+          }
+          initRef.current = false;
+        }
+      }, [memberGroups]);
+
+      useEffect(() => {
+        dispatch(clearFilterQuotes());
+        dispatch(
+            fetchQuotes(companies?.companies, {
+              sum_insured: cover,
+              tenure,
+              member: selectedGroup,
+              plan_type:
+                memberGroups[selectedGroup].length === 1
+                  ? "I"
+                  : proposerDetails.plan_type
+                  ? proposerDetails.plan_type === "M"
+                    ? "M"
+                    : "F"
+                  : "F"
+            }))
+      }, [filters])
 
     //   useEffect(() => {
     //     dispatch(getRecommendedQuotesOnMount(groupCode));
