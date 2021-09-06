@@ -21,12 +21,15 @@ import { Modal } from "react-bootstrap";
 
 const Form2 = ({ handleChange, currentForm }) => {
   const { error } = useSelector((state) => state.greetingPage);
+
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const { data } = frontendData || [""];
   const { members } = data || [""];
 
   const [membersArray, setMembersArray] = useState([]);
+ 
   const [childCount, setChildCount] = useState(0);
+  
   const [ageError, setAgeError] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
@@ -42,6 +45,7 @@ const Form2 = ({ handleChange, currentForm }) => {
 
   // Will contain list of insurer names that are checked
   const [insurerCBXArray, setInsurerCBXArray] = useState([]);
+  console.log(insurerCBXArray,"insurerCBXArray")
   // Will contain list of insurer Dropdown values if checkbox is checked
   const [insurerDDArray, setInsurerDDArray] = useState([]);
 

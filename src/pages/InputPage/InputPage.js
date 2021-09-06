@@ -156,7 +156,7 @@ function termsAndConditions(showmore, setShowmore) {
           (to provide a contact number or email id or both){" "}
         </span>
         <a
-          style={{  fontSize: "15px" }}
+          style={{ color: "red", fontSize: "15px" }}
           onClick={() => {
             setShowmore(!showmore);
           }}
