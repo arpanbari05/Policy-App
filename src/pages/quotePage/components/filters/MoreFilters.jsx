@@ -7,14 +7,11 @@ import "styled-components/macro";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
 const FilterModal = ({ show, handleClose }) => {
-
-
-
   const dispatch = useDispatch();
 
-  // const insurerOptions = useSelector(
-  //   ({ frontendBoot }) => frontendBoot.frontendData.data
-  // );
+  const moreFilterData = useSelector(
+    ({ frontendBoot }) => frontendBoot.frontendData.data.morefilters
+  );
 
   // const [selectedinsurers, setSelectedinsurers] = useState([]);
 
@@ -28,7 +25,6 @@ const FilterModal = ({ show, handleClose }) => {
   //   dispatch(setFilters({ insurers: selectedinsurers }));
   //   handleClose();
   // };
-
 
   return (
     <Modal
@@ -63,32 +59,75 @@ const FilterModal = ({ show, handleClose }) => {
       <Modal.Body>
         <MoreFilterWrapper>
           <OptionWrapper>
-            <div className="morefilter_head">
-              <span>Popular Filters</span>
-            </div>
-            <div className="morefilter_options">
-              <div
-                className="d-flex justify-content-between py-3 mb-2"
-                style={{
-                  borderBottom: "1px solid #a1b2c8",
-                }}
-              >
-                <div className="morefilter_option">
-                  <input type="checkbox" id="No_room_rent_limit" className="d-none" />
-                  <label htmlFor="No_room_rent_limit" className="d-flex align-items-center" >
-                    <span className="option_name">No room rent limit</span>
-                    <div className="custom_checkbox"></div>
-                  </label>
-                </div>
-                <div className="morefilter_option">
-                  <input type="checkbox" id="No_room_rent_limit" className="d-none" />
-                  <label htmlFor="No_room_rent_limit" className="d-flex align-items-center" >
-                    <span className="option_name">No room rent limit</span>
-                    <div className="custom_checkbox"></div>
-                  </label>
-                </div>
-              </div>
-            </div>
+            {moreFilterData ? (
+              moreFilterData.map((filter, i) => {
+                return (
+                  <>
+                    <div className="morefilter_head" key={i}>
+                      <span>{filter.group_name}</span>
+                    </div>
+                    <div className="morefilter_options">
+                      <div
+                        className="d-flex justify-content-between py-3 mb-2 w-100 flex-wrap"
+                        style={{
+                          borderBottom: "1px solid #a1b2c8",
+                        }}
+                      >
+                        {filter.options.map((option, optionIndex) => {
+                          return ["popular_filters", "others"].includes(
+                            filter.code
+                          ) ? (
+                            <div
+                              className="morefilter_option w-50 mb-3"
+                              key={optionIndex}
+                            >
+                              <input
+                                type="checkbox"
+                                id={`${option.display_name}_${filter.group_name}`}
+                                className="d-none"
+                                name={filter.group_name}
+                              />
+                              <label
+                                htmlFor={`${option.display_name}_${filter.group_name}`}
+                                className="d-flex align-items-center"
+                              >
+                                <span className="option_name">
+                                  {option.display_name}
+                                </span>
+                                <div className="custom_checkbox"></div>
+                              </label>
+                            </div>
+                          ) : (
+                            <div
+                              className="morefilter_option w-50 mb-3"
+                              key={optionIndex}
+                            >
+                              <input
+                                type="radio"
+                                id={`${option.display_name}_${filter.group_name}`}
+                                className="d-none"
+                                name={filter.group_name}
+                              />
+                              <label
+                                htmlFor={`${option.display_name}_${filter.group_name}`}
+                                className="d-flex align-items-center"
+                              >
+                                <span className="option_name">
+                                  {option.display_name}
+                                </span>
+                                <div className="custom_radio"></div>
+                              </label>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </>
+                );
+              })
+            ) : (
+              <></>
+            )}
           </OptionWrapper>
         </MoreFilterWrapper>
       </Modal.Body>
