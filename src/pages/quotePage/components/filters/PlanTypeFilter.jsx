@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import styled from "styled-components";
+import { setFilters } from "../../quote.slice";
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 
 const PlanTypeFilter = () => {

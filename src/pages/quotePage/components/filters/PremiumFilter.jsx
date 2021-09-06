@@ -1,10 +1,32 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import { setFilters, premiumFilterCards } from "../../quote.slice";
 import "styled-components/macro";
-import { Filter,OptionWrapper,ApplyBtn } from "./Filter.style";
+import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
-const FilterModal = ({ show, handleClose }) => {
+const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
+  const premiumOptions = useSelector(({frontendBoot}) => frontendBoot.frontendData.data)
+  const dispatch = useDispatch();
+
+  const [selectedPremium, setSelectedPremium] = useState({
+    code:"",
+    displayName:""
+  });
+
+  const handleChange = (code,displayName) => {
+    if (displayName) {
+      setSelectedPremium({code,displayName});
+    }
+  };
+
+  const handleApply = () => {
+   dispatch(setFilters({premium:selectedPremium.displayName}));
+   dispatch(premiumFilterCards( {code:selectedPremium.code} ));
+   handleClose();
+  };
+
   return (
     <Modal
       show={show}
@@ -41,29 +63,36 @@ const FilterModal = ({ show, handleClose }) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <div>
+        <div>
+          <OptionWrapper>
 
-        <OptionWrapper>
-          <li className="option d-flex align-items-center justify-content-between">
-            <label htmlFor="name">{"< 5000"}</label>
-            <input type="radio" id="name" name="premium" />
-          </li>
-
-          <li className="option d-flex align-items-center justify-content-between">
-            <label htmlFor="name2">{"10,000 - 15000"}</label>
-            <input type="radio" id="name2" name="premium" />
-          </li>
-
-          <li className="option d-flex align-items-center justify-content-between">
-            <label htmlFor="name3">{"20,000 - 25000"}</label>
-            <input type="radio" id="name3" name="premium" />
-          </li>
-        </OptionWrapper>
-        
+          {
+            premiumOptions?premiumOptions.premiums.map((option,i) => {
+          return(
+            <li className="option d-flex align-items-center justify-content-between" key={i}>
+              <label htmlFor={option.code}>{option.display_name}</label>
+              <input
+                type="radio"
+                id={option.code}
+                name="select_premium"
+                onChange={() => handleChange(option.code,option.display_name)}
+              />
+            </li>
+          )
+            }):""
+          }
+           
+           
+          </OptionWrapper>
         </div>
       </Modal.Body>
       <Modal.Footer className="text-center">
-        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100">Apply</ApplyBtn>
+        <ApplyBtn
+          className="btn apply_btn mx-auto h-100 w-100"
+          onClick={() => handleApply()}
+        >
+          Apply
+        </ApplyBtn>
       </Modal.Footer>
     </Modal>
   );
@@ -71,6 +100,8 @@ const FilterModal = ({ show, handleClose }) => {
 
 const PremiumFilter = () => {
   const [showModal, setShowModal] = useState(false);
+  const filters = useSelector(({ quotePage }) => quotePage.filters);
+
   return (
     <>
       <Filter
@@ -79,17 +110,19 @@ const PremiumFilter = () => {
       >
         <span className="filter_head">Premium</span>
         <span className="filter_sub_head">
-          Select Premium <i class="fas fa-chevron-down"></i>
+          {filters.premium ? filters.premium : "Select Premium"}{" "}
+          <i class="fas fa-chevron-down"></i>
         </span>
       </Filter>
 
       <FilterModal
         show={showModal}
         handleClose={() => setShowModal(false)}
+        existingPremium={filters.premium}
+        filters={filters}
       />
     </>
   );
 };
 
 export default PremiumFilter;
-
