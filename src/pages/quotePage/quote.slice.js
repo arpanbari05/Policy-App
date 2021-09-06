@@ -216,11 +216,11 @@ const quotePageSlice = createSlice({
         },
 
         insurerFilterQuotes: (state, action) => {
-          
+
             state.filterQuotes = state.quotes.map(item => {
                 return item.filter(
-                    quote =>   {
-                        if(action.payload.includes(quote.company_alias)) return quote
+                    quote => {
+                        if (action.payload.includes(quote.company_alias)) return quote
                     });
             });
         },
@@ -281,7 +281,7 @@ const cancelTokens = {};
 
 export const fetchQuotes =
     (companies, { sum_insured, tenure, plan_type, member, basePlanType }) =>
-    
+
         async (dispatch, store) => {
             try {
                 const filters = store().quotePage.filters;
@@ -290,6 +290,7 @@ export const fetchQuotes =
                 const selectedBasePlanType = baseplantypes.find(
                     bpt => bpt.display_name === filters.basePlanType,
                 );
+                console.log("base", basePlanType, plan_type);
 
                 dispatch(setLoadingQuotes(true));
                 Object.keys(cancelTokens).forEach(cancelToken => {
@@ -390,10 +391,10 @@ export const saveQuotesData = data => {
 };
 
 export const insurerFilter = data => {
-    let aliasSet =[];
-    data.map(({alias}) => aliasSet.push(alias))
-  
-    console.log(aliasSet,"alias")
+    let aliasSet = [];
+    data.map(({ alias }) => aliasSet.push(alias))
+
+    console.log(aliasSet, "alias")
     return async dispatch => {
         dispatch(insurerFilterQuotes(aliasSet));
     };
@@ -429,7 +430,7 @@ export const createCartItem = (data, onCreate = () => { }) => {
                 //   icon: "success",
                 //   button: "Ok",
                 //   className: "red-bg",
-                //   closeOnClickOutside: true,
+                //   closeOnClickOutside:, title, list true,
                 //   closeOnEsc: true,
                 // });
             }
