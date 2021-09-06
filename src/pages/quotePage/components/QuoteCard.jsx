@@ -3,11 +3,12 @@ import { useSelector } from 'react-redux';
 import "styled-components/macro"
 import { maxbupa } from '../../../assets/images'
 import Checkbox from '../../../components/Checkbox';
+import { saveSelectedPlan } from '../quote.slice';
 import CustomDropDown from './filters/CustomDropdown';
 import { CenterBottomStyle, CenterBottomToggle, EachWrapper, Logo, LogoWrapper, Outer, PlanName, RadioButton, SeeText, SmallLabel, TextWrapper, ValueText } from './QuoteCard.style'
 import useQuoteCard from './useQuoteCard';
 
-function QuoteCard({ id, item }) {
+function QuoteCard({ id, item,  handleSeeDetails, }) {
     const {
         dispatch,
         show,
@@ -31,6 +32,32 @@ function QuoteCard({ id, item }) {
         additionalPremium += element.total_premium;
     });
 
+    
+  const handleSeeDetailsClick = clickedFrom => {
+    handleSeeDetails(
+      {
+        quote: mergedQuotes[0],
+        activeSum: activeCover,
+      },
+      clickedFrom,
+    );
+    const selectedPlan = {
+      company_alias: mergedQuotes[0]?.company_alias,
+      logo: mergedQuotes[0]?.logo,
+      product: mergedQuotes[0]?.product,
+      total_premium: mergedQuotes[0]?.total_premium[activeCover],
+      premium: mergedQuotes[0]?.premium[activeCover],
+      sum_insured: mergedQuotes[0]?.sum_insured[activeCover],
+      tax_amount: mergedQuotes[0]?.tax_amount[activeCover],
+      tenure: mergedQuotes[0]?.tenure[activeCover],
+    };
+ 
+    dispatch(saveSelectedPlan({
+      ...selectedPlan,
+      product_id: selectedPlan.product?.id,
+    }));
+  };
+
     const tenure = parseInt(multiYear) === 1 ? "" : parseInt(multiYear);
 
     return (
@@ -44,7 +71,7 @@ function QuoteCard({ id, item }) {
                         </LogoWrapper>
                     </EachWrapper>
                     <CenterBottomStyle>
-                        <SeeText>See Details</SeeText>
+                        <SeeText onClick={handleSeeDetailsClick}>See Details</SeeText>
                     </CenterBottomStyle>
                 </div>
                 <div className="col-md-6">

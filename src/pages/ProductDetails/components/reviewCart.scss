@@ -1,0 +1,123 @@
+.theme-sidebar-widget .list-item li a .expander {
+  position: absolute;
+  background: transparent;
+  line-height: 50px;
+  right: 0;
+  top: 0;
+  color: inherit;
+  font-size: 14px;
+}
+
+.fa-chevron-down:before {
+  content: "\f078";
+}
+
+.theme-sidebar-widget .list-item li .sub-menu a {
+  font-size: 12px;
+  line-height: 26px;
+  color: #585858;
+  margin-top: 1px;
+}
+
+.margin_top__10 {
+  margin-top: -12px !important;
+}
+.swal-button {
+  background-color: red;
+  outline: none;
+}
+
+.swal-button:hover {
+  background-color: red !important;
+  outline: none;
+}
+.adjust-1024-img {
+  margin: 0px 4px 0 0px;
+  width: 40px;
+}
+.adjust-1024 {
+  padding: 12px !important;
+}
+.adjust-1024-flex {
+  display: flex !important;
+  align-items: center;
+}
+.review-addons {
+  min-height: 50px;
+}
+.total-prem-head {
+  margin-top: 15px;
+}
+
+.adjust-1024-p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 102px;
+}
+
+.adjust-add-to-cart-1024 {
+  padding: 0 3.7vw !important;
+}
+
+@media (max-width: 1024px) {
+  .adjust-1024 {
+    padding: 11px !important;
+  }
+  .adjust-1024-img {
+    margin: 10px 4px 0 -4px !important;
+  }
+  .adjust-1024-p {
+    font-size: 9px !important;
+  }
+  .adjust-1024-span {
+    font-size: 10px !important;
+    padding: 4px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .adjust-addon-1024 {
+    left: 34px;
+  }
+  .adjust-self-spouse-1024 {
+    display: none;
+  }
+  .adjust-add-to-cart-1024 {
+    min-width: 139% !important;
+  }
+  .adjust-plan-1024 {
+    top: -3px !important;
+    font-size: 15px !important;
+  }
+  .adjust-desc-plan-1024 {
+    font-size: 11px !important;
+  }
+
+  .adjust-rider-1024-p {
+    margin: 15px 0 0 0;
+  }
+  .adjust-1024-btn-price {
+    position: relative;
+    left: -34px;
+    padding: 9px 22px !important;
+    font-size: 15px !important;
+    width: 95px;
+  }
+  .adjust-1024-unlimited-p {
+    font-size: 18px !important;
+    color: #000 !important;
+    font-family: "PFHandbookProbld";
+    text-align: left;
+    margin: 3px 0 3px !important;
+  }
+
+  .adjust-1024-add-on-plan-table {
+    text-align: left !important;
+    font-size: 10px !important;
+    font-weight: 400 !important;
+    line-height: 20px !important;
+    color: #8b8b8f !important;
+  }
+}

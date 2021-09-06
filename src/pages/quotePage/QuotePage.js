@@ -1,4 +1,4 @@
-import React from "react";
+import {useState} from "react";
 import styled from "styled-components";
 import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
@@ -7,6 +7,7 @@ import { SortByButton, TextLabel } from "./Quote.style";
 import {insurerFilter} from "./quote.slice";
 import useQuotesPage from "./useQuotes";
 import { useDispatch,useSelector } from "react-redux";
+import SeeDetails from "../SeeDetails/SeeDetails";
 
 function QuotePage() {
   const {
@@ -32,6 +33,10 @@ function QuotePage() {
   console.log("quotes", quotes);
 const dispatch = useDispatch();
   const { loadingQuotes, filters } = useSelector(state => state.quotePage);
+  const [seeDetailsQuote, setSeeDetailsQuote] = useState({
+    quote: "",
+    activeSum: "",
+  });
 
  
   const firstQuoteFound =
@@ -62,6 +67,10 @@ const dispatch = useDispatch();
                           key={index}
                           id={index}
                           item={item}
+                          handleSeeDetails={quote => {
+                            setSeeDetailsQuote(quote);
+                            setShowSeeDetails(true);
+                          }}
                         />
                       ),
                   )
@@ -101,6 +110,20 @@ const dispatch = useDispatch();
           </div>
         </div>
       </div>
+      {showSeeDetails && (
+              <SeeDetails
+                show={showSeeDetails}
+                handleClose={() => setShowSeeDetails(!showSeeDetails)}
+                quote={seeDetailsQuote.quote}
+                sum_insured={
+                  seeDetailsQuote.quote.sum_insured[seeDetailsQuote.activeSum]
+                }
+                tenure={seeDetailsQuote.quote.tenure[seeDetailsQuote.activeSum]}
+                product={
+                  seeDetailsQuote.quote.product[seeDetailsQuote.activeSum]
+                }
+              />
+            )}
     </div>
   );
 }
