@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import "styled-components/macro"
 import { maxbupa } from '../../../assets/images'
+import Checkbox from '../../../components/Checkbox';
+import CustomDropDown from './filters/CustomDropdown';
 import { CenterBottomStyle, CenterBottomToggle, EachWrapper, Logo, LogoWrapper, Outer, PlanName, RadioButton, SeeText, SmallLabel, TextWrapper, ValueText } from './QuoteCard.style'
 import useQuoteCard from './useQuoteCard';
 
@@ -16,7 +18,8 @@ function QuoteCard({ id, item }) {
         // activeCover,
         // setActiveCover,
     } = useQuoteCard({ item });
-    console.log("mergedquotes", mergedQuotes)
+    console.log("mergedquotes", mergedQuotes);
+    const [check, setCheck] = useState(false);
     const [activeCover, setActiveCover] = useState(0);
     const { multiYear } = useSelector(state => state.quotePage.filters);
     console.log("active cover: " + activeCover)
@@ -113,9 +116,14 @@ function QuoteCard({ id, item }) {
                                     </span></strong>
                             </RadioButton>
                             <PlanName
-                                style={{ fontSize: "16px" }}
+                                css={`
+                                    font-size:13px;
+                                    display:flex;
+                                    
+                                `}
                             >
-                                <span>Cover of: </span><select
+                                <span>Cover of: </span>
+                                {/* <select
                                     onChange={e => setActiveCover(e.target.value)}
                                 >
                                     {mergedQuotes[0]?.sum_insured.map((data, i) => {
@@ -125,23 +133,32 @@ function QuoteCard({ id, item }) {
                                             </option>
                                         );
                                     })}
-                                </select>
+                                </select> */}
+                                {mergedQuotes[0]?.sum_insured && <CustomDropDown option={mergedQuotes[0]?.sum_insured} handleChange={(e) => { setActiveCover(e) }} />}
 
                             </PlanName>
                         </LogoWrapper>
                     </EachWrapper>
-                    <CenterBottomStyle>
+                    <CenterBottomStyle
+                        css={`
+                        padding:5px;
+                    `}
+                    >
                         <div>
-                            <input type="checkbox" css={`
+                            {/* <input type="checkbox" css={`
                                 border-radius:50px;
-                            `} />
-                            <SeeText
+                            `} /> */}
+                            <Checkbox title="Compare"
+                                checked={check}
+                                onClick={() => { setCheck(true) }}
+                            />
+                            {/* <SeeText
                                 css={`
                             color: black !important;
                             border:none !important;
                             padding:0px 20px !important;
                         `}
-                            >Compare</SeeText>
+                            >Compare</SeeText> */}
                         </div>
                     </CenterBottomStyle>
 
