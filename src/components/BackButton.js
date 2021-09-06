@@ -11,6 +11,7 @@ const BackButton = ({
   width,
   height,
   bg,
+  icon,
   color,
 
   styledCss,
@@ -29,7 +30,7 @@ const BackButton = ({
       color={color}
       css={styledCss}
     >
-      {<IoArrowBackSharp />} {value ? value : children}
+      {icon ? icon : <IoArrowBackSharp />} {value ? value : children}
     </Button>
   );
 };

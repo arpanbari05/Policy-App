@@ -32,18 +32,19 @@ const keyBenefits = (plans, title, windowWidth) => {
   return (
     <>
       {" "}
-      <tr>
+      <tr
+        css={`
+          border-bottom: 1px solid #ebf5ff !important;
+        `}
+      >
         <th scope="row">
-          <span className="tbody_bg_border_th">Unique Features</span>
           <OverlayTrigger
             placement={"right"}
             overlay={renderTooltipDesc({
               desc: "Your health cover will have the above unqiue selling propositions",
             })}
           >
-            <div className="tbody_bg_border_th_bor_bootom hideOnMobile">
-              Unique Features
-            </div>
+            <span className="tbody_bg_border_th">Unique Features</span>
           </OverlayTrigger>
         </th>
 
@@ -55,6 +56,9 @@ const keyBenefits = (plans, title, windowWidth) => {
               <td
                 style={{ whiteSpace: "break-spaces" }}
                 className={`${item === 2 && "showOnDesktopF"}`}
+                css={`
+                  border-bottom: 1px solid #ebf5ff !important;
+                `}
               >
                 {plans[item]?.data?.features[1]?.value}
               </td>
@@ -128,16 +132,18 @@ const dataset = (
           ) {
             count++;
             return (
-              <tr style={{ display: data?.is_compariable !== 1 && "none" }}>
+              <tr
+                style={{ display: data?.is_compariable !== 1 && "none" }}
+                css={`
+                  border-bottom: 1px solid #ebf5ff !important;
+                `}
+              >
                 <th scope="row">
-                  <span className="tbody_bg_border_th">{data?.title}</span>
                   <OverlayTrigger
                     placement={"right"}
                     overlay={renderTooltipDesc({ desc: data?.description })}
                   >
-                    <div className="tbody_bg_border_th_bor_bootom hideOnMobile">
-                      {data?.title} &nbsp;
-                    </div>
+                    <span className="tbody_bg_border_th">{data?.title}</span>
                   </OverlayTrigger>
                 </th>
 
@@ -151,6 +157,9 @@ const dataset = (
                         <td
                           style={{ whiteSpace: "break-spaces" }}
                           className={`${item === 2 && "showOnDesktopF"}`}
+                          css={`
+                            border-bottom: 1px solid #ebf5ff !important;
+                          `}
                         >
                           <>
                             <input
@@ -266,20 +275,27 @@ const dataset = (
             count++;
             // console.log(data?.is_compariable !== 1);
             return (
-              <tr style={{ display: data?.is_compariable !== 1 && "none" }}>
+              <tr
+                style={{ display: data?.is_compariable !== 1 && "none" }}
+                css={`
+                  border-bottom: 1px solid #ebf5ff !important;
+                `}
+              >
                 <OverlayTrigger
                   placement={"right"}
                   overlay={renderTooltipDesc({ desc: data?.description })}
                 >
                   <th scope="row">
                     <span className="tbody_bg_border_th">{data?.title}</span>
-                    <div className="tbody_bg_border_th_bor_bootom hideOnMobile">
-                      {data?.title} &nbsp;
-                    </div>
                   </th>
                 </OverlayTrigger>
 
-                <td style={{ whiteSpace: "break-spaces" }}>
+                <td
+                  style={{ whiteSpace: "break-spaces" }}
+                  css={`
+                    border-bottom: 1px solid #ebf5ff !important;
+                  `}
+                >
                   <OverlayTrigger
                     placement={"right"}
                     overlay={renderTooltipDesc({
@@ -301,7 +317,12 @@ const dataset = (
                   </OverlayTrigger>
                 </td>
 
-                <td style={{ whiteSpace: "break-spaces" }}>
+                <td
+                  style={{ whiteSpace: "break-spaces" }}
+                  css={`
+                    border-bottom: 1px solid #ebf5ff !important;
+                  `}
+                >
                   <OverlayTrigger
                     placement={"right"}
                     overlay={renderTooltipDesc({
@@ -326,6 +347,9 @@ const dataset = (
                 <td
                   className="showOnDesktopF"
                   style={{ whiteSpace: "break-spaces" }}
+                  css={`
+                    border-bottom: 1px solid #ebf5ff !important;
+                  `}
                 >
                   <OverlayTrigger
                     placement={"left"}
@@ -362,18 +386,23 @@ const additionalBenefits = (plans, title, index, dispatch, windowWidth) => {
   return (
     <>
       {" "}
-      <tr className="nohover ">
+      <tr
+        className="nohover "
+        css={`
+          border-bottom: 1px solid #ebf5ff !important;
+        `}
+        css={`
+          border-bottom: 1px solid #ebf5ff !important;
+        `}
+      >
         <th scope="row">
-          <span className="tbody_bg_border_th">Optional Covers</span>
           <OverlayTrigger
             placement={"right"}
             overlay={renderTooltipDesc({
               desc: "Your health cover will have the above unqiue selling propositions",
             })}
           >
-            <div className="tbody_bg_border_th_bor_bootom ">
-              Optional Covers
-            </div>
+            <span className="tbody_bg_border_th">Optional Covers</span>
           </OverlayTrigger>
         </th>
 
@@ -493,17 +522,47 @@ const TBody = ({
       <tbody
         className={`tbody_bg ${title === "Additional Benefits" && "hideTBody"}`}
       >
-        <tr className="table__title-compare">
+        <tr
+          className="table__title-compare"
+          css={`
+            border-bottom: 1px solid #ebf5ff !important;
+          `}
+        >
           <th
             colSpan={windowWidth > 1023 ? "4" : "3"}
             className="title_compare_t"
+            css={`
+              background-color: #ebf5ff !important;
+              font-size: 20px;
+              padding: 12px 16px !important;
+              position: relative;
+              z-index: -1;
+            `}
           >
-            <span className="bg_th_i">{title}</span>
+            <div
+              css={`
+                &:after {
+                  content: "";
+                  height: 54px;
+                  width: 5px;
+                  position: absolute;
+                  left: 1px;
+                  top: 0px;
+                  background-color: rgb(254, 204, 40);
+                }
+              `}
+            >
+              <span>{title}</span>
+            </div>
           </th>
         </tr>
         {title === "Plan Details" ? (
           <>
-            <tr>
+            <tr
+              css={`
+                border-bottom: 1px solid #ebf5ff !important;
+              `}
+            >
               <OverlayTrigger
                 placement={"right"}
                 overlay={renderTooltipDesc({
@@ -512,9 +571,6 @@ const TBody = ({
               >
                 <th scope="row ">
                   <span className="tbody_bg_border_th ">Sum Insured</span>
-                  <div className="tbody_bg_border_th_bor_bootom hideOnMobile">
-                    Sum Insured &nbsp;
-                  </div>
                 </th>
               </OverlayTrigger>
               <td>
@@ -633,7 +689,11 @@ const TBody = ({
               )}
             </tr>
 
-            <tr>
+            <tr
+              css={`
+                border-bottom: 1px solid #ebf5ff !important;
+              `}
+            >
               <OverlayTrigger
                 placement={"right"}
                 overlay={renderTooltipDesc({
@@ -642,9 +702,6 @@ const TBody = ({
               >
                 <th scope="row">
                   <span className="tbody_bg_border_th">Tenure</span>
-                  <div className="tbody_bg_border_th_bor_bootom hideOnMobile">
-                    Tenure &nbsp;
-                  </div>
                 </th>
               </OverlayTrigger>
               {[0, 1, 2].map((item, index) =>

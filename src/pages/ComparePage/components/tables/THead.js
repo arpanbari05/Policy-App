@@ -7,8 +7,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { requestDownload, requestDownloadSuccess } from "../../compare.slice";
 import { useDispatch, useSelector } from "react-redux";
-
-
+import "styled-components/macro";
 import PlansDetailsMobile from "../MobileComp/PlanDetailsMobile";
 const plansDataset = (plans, removePlan, setShow, setShowBuyNowPopup) => {
   const containerArray = [];
@@ -22,7 +21,7 @@ const plansDataset = (plans, removePlan, setShow, setShowBuyNowPopup) => {
           index={i}
           setShowBuyNowPopup={setShowBuyNowPopup}
         />
-      </th>,
+      </th>
     );
   }
 
@@ -40,7 +39,7 @@ const THead = ({
   console.log("wwww2", plans);
   const [scroll, setScroll] = useState(false);
   const dispatch = useDispatch();
-  const { downloading } = useSelector(state => state.comparePage);
+  const { downloading } = useSelector((state) => state.comparePage);
 
   // const checkScrollTop = () => {
   //   console.log(window.pageYOffset);
@@ -59,7 +58,7 @@ const THead = ({
 
   const download2 = () => {
     const input = document.getElementById("printCompare");
-    html2canvas(input, { useCORS: true }).then(canvas => {
+    html2canvas(input, { useCORS: true }).then((canvas) => {
       const componentWidth = input.offsetWidth;
       const componentHeight = input.offsetHeight;
 
@@ -90,23 +89,31 @@ const THead = ({
       }}
     >
       <tr>
-        <th scope="row" id="hideButton" style={{ width: "20%" }}>
-          <div className="compare_t_bor_l">
-            <p className="p_compare_title">Product Comparision</p>
+        <th scope="row">
+          <div
+            css={`
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+           
+              justify-content: space-between;
+            `}
+          >
+            <p>Product Comparision</p>
+            <CheckBox
+              checked={showDiffCbx}
+              onChange={(e) => {
+                setshowDiffCbx(!showDiffCbx);
+              }}
+            />
+            <Downloadbtn
+              downloading={downloading}
+              onClick={() => {
+                dispatch(requestDownload());
+                download2();
+              }}
+            />
           </div>
-          <CheckBox
-            checked={showDiffCbx}
-            onChange={e => {
-              setshowDiffCbx(!showDiffCbx);
-            }}
-          />
-          <Downloadbtn
-            downloading={downloading}
-            onClick={() => {
-              dispatch(requestDownload());
-              download2();
-            }}
-          />
         </th>
         {plansDataset(plans, removePlan, setShow, setShowBuyNowPopup)}
       </tr>

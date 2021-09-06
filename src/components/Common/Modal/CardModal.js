@@ -1,8 +1,8 @@
 import React from "react";
 import { Modal, Container } from "react-bootstrap";
 import styled from "styled-components";
-import "styled-components/macro"
-import StyledButton from "../Button/StyledButton";
+import "styled-components/macro";
+import StyledButton from "../../StyledButton";
 
 const CardModal = ({
   title,
@@ -27,9 +27,7 @@ const CardModal = ({
         borderRadius: "12px",
         border: "none",
         marginBottom: revised ? "70px" : "0px",
-
       }}
-
       // css={`
       // @media(max-width: 767px){
       //  margin-left:0px;
@@ -46,9 +44,10 @@ const CardModal = ({
           borderToprightRadius: "14px",
           borderBottomRightRadius: "0px",
           borderBottomLeftRadius: "0px",
+          backgroundColor: "#ebf5ff",
         }}
       >
-        {title && <ModalTitle className='modal-headerz'>{title}</ModalTitle>}
+        {title && <ModalTitle className="modal-headerz">{title}</ModalTitle>}
       </Modal.Header>
       <CloseButton
         type="button"
@@ -78,10 +77,11 @@ const CardModal = ({
             value={buttonValue}
             onClick={handleClick}
             noIcon={BtnArrow ? false : true}
+            width={`200px`}
           />
         )}
       </Modal.Footer>
-    </Modal >
+    </Modal>
   );
 };
 
@@ -107,10 +107,9 @@ const ModalTitle = styled.h5`
   font-size: 25px;
   font-weight: 900;
   width: 80%;
-  @media(max-width: 767px){
-    font-size:16px;
-    line-height:1.3;
- 
+  @media (max-width: 767px) {
+    font-size: 16px;
+    line-height: 1.3;
   }
   &:after {
     content: "";
