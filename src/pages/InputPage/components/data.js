@@ -8,6 +8,7 @@ for (let i = 0; i <= 10; i++) {
 }
 
 export const getAge = (min, max) => {
+  console.log(min,max,"+++")
   const age = [];
   const checkMin = Number(min) >= 1 ? min : `${Number(min?.split(".")[0]) + 1}`;
   const checkMinMonths = Number(min) < 1 && min?.split(".")[1];

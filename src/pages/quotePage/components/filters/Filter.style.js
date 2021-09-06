@@ -92,6 +92,6 @@ export const ApplyBtn = styled.button`
   background-color: #0a87ff;
   color: white;
   padding: 10px 0px;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 600;
 `;

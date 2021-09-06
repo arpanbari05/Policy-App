@@ -4,6 +4,7 @@ import { setFilters } from "../../quote.slice";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import "styled-components/macro";
+import useQuoteFilter from "./useQuoteFilter";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
 const FilterModal = ({ show, handleClose }) => {
@@ -13,18 +14,51 @@ const FilterModal = ({ show, handleClose }) => {
     ({ frontendBoot }) => frontendBoot.frontendData.data.morefilters
   );
 
-  // const [selectedinsurers, setSelectedinsurers] = useState([]);
+  const [popularFilter, setPopularFilter] = useState(
+    moreFilterData.popularFilter || []
+  );
+  const [preExisting, setPreExisting] = useState(
+    moreFilterData.preExisting || ""
+  );
+  const [renewalBonus, setRenewalBonus] = useState(
+    moreFilterData.renewalBonus || ""
+  );
 
-  // const handleChange = (code, displayName) => {
-  //   if (displayName) {
-  //     setSelectedinsurers(displayName);
-  //   }
-  // };
+  const [others, setOthers] = useState(moreFilterData.others || []);
 
-  // const handleApply = () => {
-  //   dispatch(setFilters({ insurers: selectedinsurers }));
-  //   handleClose();
-  // };
+  const handleReset = () => {
+    setPopularFilter([]);
+    setPreExisting("");
+    setRenewalBonus("");
+    setOthers([]);
+  };
+
+  const { filterQuotes } = useQuoteFilter({
+    givenMoreFilters: {
+      preExisting,
+      renewalBonus,
+      others,
+      popularFilter,
+    },
+  });
+
+  const quotes = useSelector(state => state.quotePage.quotes);
+
+  const filteredQuotes = quotes.map(icQuotes => filterQuotes(icQuotes)).flat();
+
+  const handleSubmit = () => {
+    dispatch(
+      setFilters({
+        moreFilters: {
+          popularFilter,
+          preExisting,
+          renewalBonus,
+          others,
+        },
+      }),
+    );
+    handleClose();
+  };
 
   return (
     <Modal
@@ -36,8 +70,6 @@ const FilterModal = ({ show, handleClose }) => {
           max-width: 650px;
         }
         .modal-footer {
-          padding: 0px !important;
-
           border-top: none !important;
         }
         .modal-footer > * {
@@ -86,6 +118,46 @@ const FilterModal = ({ show, handleClose }) => {
                                 id={`${option.display_name}_${filter.group_name}`}
                                 className="d-none"
                                 name={filter.group_name}
+                                onChange={(evt) => {
+                                  if (filter.code === "popular_filters") {
+                                    if (
+                                      popularFilter.includes(
+                                        option.display_name
+                                      )
+                                    ) {
+                                      setPopularFilter(
+                                        popularFilter.filter(
+                                          (pf) => pf !== option.display_name
+                                        )
+                                      );
+                                      return;
+                                    }
+                                    setPopularFilter([
+                                      ...popularFilter,
+                                      option.display_name,
+                                    ]);
+                                  }
+
+                                  if (filter.code === "others") {
+                                    if (others.includes(option.display_name)) {
+                                      setOthers(
+                                        others.filter(
+                                          (pf) => pf !== option.display_name
+                                        )
+                                      );
+                                      return;
+                                    }
+                                    setOthers([...others, option.display_name]);
+                                  }
+                                }}
+                                checked={(() => {
+                                  if (filter.code === "popular_filters")
+                                    return popularFilter.includes(
+                                      option.display_name
+                                    );
+                                  if (filter.code === "others")
+                                    return others.includes(option.display_name);
+                                })()}
                               />
                               <label
                                 htmlFor={`${option.display_name}_${filter.group_name}`}
@@ -107,6 +179,24 @@ const FilterModal = ({ show, handleClose }) => {
                                 id={`${option.display_name}_${filter.group_name}`}
                                 className="d-none"
                                 name={filter.group_name}
+                                onChange={(evt) => {
+                                  if (filter.code === "pre_existing_ailments") {
+                                    if (preExisting === option.display_name) {
+                                      setPreExisting("");
+                                    } else setPreExisting(option.display_name);
+                                  }
+                                  if (filter.code === "no_claim_bonus") {
+                                    if (renewalBonus === option.display_name)
+                                      setRenewalBonus("");
+                                    else setRenewalBonus(option.display_name);
+                                  }
+                                }}
+                                checked={(() => {
+                                  if (filter.code === "pre_existing_ailments")
+                                    return preExisting === option.display_name;
+                                  if (filter.code === "no_claim_bonus")
+                                    return renewalBonus === option.display_name;
+                                })()}
                               />
                               <label
                                 htmlFor={`${option.display_name}_${filter.group_name}`}
@@ -131,8 +221,21 @@ const FilterModal = ({ show, handleClose }) => {
           </OptionWrapper>
         </MoreFilterWrapper>
       </Modal.Body>
-      <Modal.Footer className="text-center">
-        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100">Apply</ApplyBtn>
+      <Modal.Footer
+        className="text-center"
+        style={{
+          padding: "10px",
+        }}
+      >
+        <ClearBtn className="text-center w-50 h-100" onClick={() => handleReset()}>
+          <span>Clear Filters</span>
+        </ClearBtn>
+        {
+          filteredQuotes.length?(
+            <ApplyBtn className="btn apply_btn mx-auto h-100 w-50" onClick={() => handleSubmit()}>Show {filteredQuotes.length} plans</ApplyBtn>
+
+          ):<span className="w-50 text-center h-100">No Plan available</span>
+        }
       </Modal.Footer>
     </Modal>
   );
@@ -173,5 +276,15 @@ const MoreFilterWrapper = styled.div`
     .option_name {
       width: 80%;
     }
+  }
+`;
+
+const ClearBtn = styled.div`
+  span {
+    cursor: pointer;
+    color: #4c5a70;
+    font-weight: 600;
+    border-bottom: 2px dotted #4c5a70;
+    width: fit-content;
   }
 `;
