@@ -4,9 +4,9 @@ import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
 import QuoteCard from "./components/QuoteCard";
 import { SortByButton, TextLabel } from "./Quote.style";
-
+import {insurerFilter} from "./quote.slice";
 import useQuotesPage from "./useQuotes";
-import { useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 
 function QuotePage() {
   const {
@@ -15,7 +15,7 @@ function QuotePage() {
     arr,
     companies,
     setFilterMobile,
-    // filterQuotes,
+    filterQuotes,
     showTalkModal,
     setShowTalkModal,
     setShowBuyNow,
@@ -30,11 +30,12 @@ function QuotePage() {
     recFilterdQuotes,
   } = useQuotesPage();
   console.log("quotes", quotes);
-
+const dispatch = useDispatch();
   const { loadingQuotes, filters } = useSelector(state => state.quotePage);
 
+ 
   const firstQuoteFound =
-    quotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
+    filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
 
   console.log("firstquoteFound: ", firstQuoteFound);
   return (
@@ -54,14 +55,13 @@ function QuotePage() {
             {quotes?.length ?
               (
                 firstQuoteFound && (
-                  quotes.map(
+                  filterQuotes.map(
                     (item, index) =>
                       item.length > 0 && (
                         <QuoteCard
                           key={index}
                           id={index}
                           item={item}
-
                         />
                       ),
                   )
