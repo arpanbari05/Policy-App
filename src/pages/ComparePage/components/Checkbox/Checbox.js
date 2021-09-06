@@ -1,20 +1,42 @@
 import React from "react";
-
-const Checbox = ({ checked, onChange }) => {
+import "styled-components/macro";
+import "./Checkbox.css";
+const Checkbox = ({
+  id,
+  title,
+  handleChange,
+  checked,
+  disabled,
+}) => {
+  
   return (
-    <div className="agreement-checkbox_compare margin_top_checkbox_card">
-      <div>   
+    <div >
+      <div class="round">
         <input
           type="checkbox"
-          id="compare_one"
-          className="compare-checkbox"
-          checked={checked}
-          onChange={onChange}
+          id={id}
+          checked={checked || undefined}
+          onClick={handleChange}
+          onChange={() => {}}
+          disabled={disabled || undefined}
         />
-        <label htmlFor="compare_one">Show Difference</label>
+        <label htmlFor={id}> </label>
+        <span
+          htmlFor={id}
+          css={`
+            left: 21px;
+            font-size: 16px;
+            font-weight: 900;
+            top: 0px;
+            position: relative;
+          `}
+        >
+          {title}
+        </span>
       </div>
     </div>
   );
+ 
 };
 
-export default Checbox;
+export default Checkbox;

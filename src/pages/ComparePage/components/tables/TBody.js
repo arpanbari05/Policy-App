@@ -35,6 +35,9 @@ const keyBenefits = (plans, title, windowWidth) => {
       <tr
         css={`
           border-bottom: 1px solid #ebf5ff !important;
+          &:hover{
+            box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
+          }
         `}
       >
         <th scope="row">
@@ -58,6 +61,7 @@ const keyBenefits = (plans, title, windowWidth) => {
                 className={`${item === 2 && "showOnDesktopF"}`}
                 css={`
                   border-bottom: 1px solid #ebf5ff !important;
+                  
                 `}
               >
                 {plans[item]?.data?.features[1]?.value}
@@ -136,6 +140,9 @@ const dataset = (
                 style={{ display: data?.is_compariable !== 1 && "none" }}
                 css={`
                   border-bottom: 1px solid #ebf5ff !important;
+                  &:hover{
+                    box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
+                  }
                 `}
               >
                 <th scope="row">
@@ -159,6 +166,7 @@ const dataset = (
                           className={`${item === 2 && "showOnDesktopF"}`}
                           css={`
                             border-bottom: 1px solid #ebf5ff !important;
+                            
                           `}
                         >
                           <>
@@ -279,6 +287,9 @@ const dataset = (
                 style={{ display: data?.is_compariable !== 1 && "none" }}
                 css={`
                   border-bottom: 1px solid #ebf5ff !important;
+                  &:hover{
+                    box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
+                  }
                 `}
               >
                 <OverlayTrigger
@@ -561,6 +572,9 @@ const TBody = ({
             <tr
               css={`
                 border-bottom: 1px solid #ebf5ff !important;
+                &:hover{
+                  box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
+                }
               `}
             >
               <OverlayTrigger
@@ -692,6 +706,9 @@ const TBody = ({
             <tr
               css={`
                 border-bottom: 1px solid #ebf5ff !important;
+                &:hover{
+                  box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
+                }
               `}
             >
               <OverlayTrigger
