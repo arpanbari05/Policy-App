@@ -8,11 +8,15 @@
     position: sticky;
     top: 0;
     box-shadow: inset 0px -6px 6px -6px #e9decd;
-    z-index: 99;
+    z-index: 9999;
   }
 }
 tr {
   padding: 15 10px !important;
+}
+
+.table-hover>tbody>tr:hover {
+  --bs-table-accent-bg: #fff !important;
 }
 tbody,
 td,
@@ -25,16 +29,22 @@ tr {
 .table thead tr th {
   width: 26.667%;
   background-color: #fff;
+
+
 }
+th{
+  padding: 12px 12px !important;
+}
+
 .exclusions__showless {
   display: none !important;
 }
 .showless__button {
   display: none;
-  color: #c7222a;
+  color: #0a87ff;
 }
 .showmore__button {
-  color: #c7222a;
+  color:#0a87ff;
 }
 #exclusions1:checked {
   & ~ .exclusions__showmore {

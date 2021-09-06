@@ -1,0 +1,13 @@
+.plan {
+  display: block;
+}
+.plan__active {
+  display: block;
+}
+.plan__active:after {
+  content: "";
+  display: block;
+
+  border-bottom: 5px solid #c7222a;
+  border-radius: 10px;
+}
