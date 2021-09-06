@@ -22,7 +22,7 @@ const Checkbox = ({
           id={code}
           checked={checked || undefined}
           onClick={handleChecked}
-          onChange={() => {}}
+          onChange={() => { }}
           disabled={disabled || undefined}
         />
         <label htmlFor={code}> </label>
@@ -30,7 +30,7 @@ const Checkbox = ({
           htmlFor={code}
           css={`
             left: 21px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 900;
             top: 0px;
             position: relative;

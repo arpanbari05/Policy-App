@@ -37,7 +37,6 @@ const TableMainCell = ({ title, flagType, value, valueFor }) => {
 		<tr>
 			<th scope="row">
 				<span className="tbody_bg_border_th">{title}</span>
-				<div className="tbody_bg_border_th_bor_bootom">{title} &nbsp;</div>
 			</th>
 
 			{tableDataset(value, valueFor, flagType)}

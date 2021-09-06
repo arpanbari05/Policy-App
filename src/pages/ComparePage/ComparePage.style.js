@@ -48,12 +48,12 @@ export const CompareQuotes = styled.div`
 `;
 export const QuoteNameM = styled.div`
   margin-left: 60px;
-  font-family: pf_handbook_proregular;
+
   font-size: 15px;
 `;
 export const QuoteName = styled.div`
   margin-left: 60px;
-  font-family: pf_handbook_proregular;
+
   font-size: 18px;
 `;
 export const DropDownWrapper = styled.div`
@@ -108,9 +108,9 @@ export const RemoveCross = styled.div`
   background-color: #ffffff;
   color: #000;
   font-size: 14px;
-
-  right: 0;
-  top: 0;
+  width: 12px;
+  right: 1px;
+  top: -1px;
   border-radius: 50%;
   transform: translate(50%, -50%);
   & span {
@@ -171,22 +171,22 @@ export const Title = styled.div`
   font-size: 16px;
 `;
 export const Value = styled.div`
-  font-family: pf_handbook_probold;
+
   font-size: 18px;
 `;
 export const CompanyName = styled.div`
-  font-family: pf_handbook_probold;
+
   font-size: 17px;
   font-stretch: normal;
   font-style: normal;
-  line-height: 0.7;
+  line-height: 1;
   letter-spacing: normal;
   text-align: left;
   color: #000000;
   margin-bottom: 5px;
 `;
 export const PlanName = styled.div`
-  font-family: pf_handbook_proregular;
+
   font-size: 14px;
   line-height: 1.19;
 `;

@@ -1,10 +1,12 @@
 import React from "react";
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SecureLS from "secure-ls";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
-import "./GoBack.css"
+import BackButton from "../../../../components/BackButton";
+import { IoChevronBackCircleSharp } from "react-icons/io5";
+import "styled-components/macro";
 const GoBack = ({ productDetails, path, groupCode }) => {
   const history = useHistory();
 
@@ -12,23 +14,33 @@ const GoBack = ({ productDetails, path, groupCode }) => {
   const enquiryID = urlQueries.get("enquiryId");
   return (
     <Container>
-      <div className="theme-title-one text-center">
-        <button
+      <div
+        css={`
+          height: 66px;
+        `}
+      >
+        <BackButton
+          styledCss={`width: 121px;`}
+          value={`Back`}
+          icon={
+            <span
+              css={`
+                color: #ebf5ff;
+                font-size: 43px;
+                position: relative;
+                top: 4px;
+              `}
+            >
+              <IoChevronBackCircleSharp />
+            </span>
+          }
           onClick={() =>
             history.replace({
               pathname: `${path}/${groupCode}`,
               search: `enquiryId=${enquiryID}`,
             })
           }
-          className="go_back_quote compare_back"
-          style={{ left: productDetails ? "0px" : "54px" }}
-        >
-          <i className="flaticon-back font_size_go_back"></i>
-          <p className="hideGoBack">
-            &nbsp;Go Back
-          </p>
-        </button>
-        <h2 className="main-title comp_m_top_line" >&nbsp;</h2>
+        ></BackButton>
       </div>
     </Container>
   );
