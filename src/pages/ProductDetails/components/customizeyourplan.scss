@@ -1,0 +1,16 @@
+.form .plan input:checked + label:after {
+  content: "\2713" !important;
+  width: 35px !important;
+  height: 35px !important;
+  line-height: 34px !important;
+  border-radius: 100% !important;
+  border: 2px solid #ffffff !important;
+  background-color: #de9b9e !important;
+  z-index: 999 !important;
+  position: absolute !important;
+  top: -15px !important;
+  right: -10px !important;
+  color: #fff !important;
+  font-family: "FontAwesome" !important;
+  font-size: 15px !important;
+}
