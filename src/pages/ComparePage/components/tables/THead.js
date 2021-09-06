@@ -94,15 +94,19 @@ const THead = ({
             css={`
               display: flex;
               flex-direction: column;
-              height: 100%;
-           
-              justify-content: space-between;
+              height: 145px;
+              & p {
+                font-size: 22px;
+                color: #253858;
+              }
             `}
           >
             <p>Product Comparision</p>
             <CheckBox
               checked={showDiffCbx}
-              onChange={(e) => {
+              title={`Show Difference`}
+              id={`show difference`}
+              handleChange={(e) => {
                 setshowDiffCbx(!showDiffCbx);
               }}
             />
