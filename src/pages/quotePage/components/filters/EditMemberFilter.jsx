@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { setFilters } from "../../quote.slice";
-import { getAge } from "../../../InputPage/components/data";
+import { setFilters, updateUserMembersDetails } from "../../quote.slice";
+import { dataset, getAge } from "../../../InputPage/components/data";
 import "styled-components/macro";
 import { v4 as uuidv4 } from "uuid";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 import PencilIcon from "../../../../assets/svg-icons/PencilIcon";
+import { useHistory } from "react-router";
 
 const CustomDropdown = ({ member }) => {
-  
   const [showDropDown, setShowDropDown] = useState(false);
 
   let ageRows = getAge(member.min_age, member.max_age);
@@ -44,9 +44,306 @@ const CustomDropdown = ({ member }) => {
 };
 
 const FilterModal = ({ show, handleClose }) => {
-  const membersData = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.members
+  const { error, proposerDetails } = useSelector((state) => state.greetingPage);
+  const { frontendData } = useSelector((state) => state.frontendBoot);
+  const { data } = frontendData || [""];
+  const { members } = data || [""];
+  const [ageError, setAgeError] = useState([]);
+  const [childCount, setChildCount] = useState(0);
+  const [membersArray, setMembersArray] = useState([]);
+  const [errors, setErrors] = useState(false);
+  const [sonCount, setSonCount] = useState(2);
+  const [daughterCount, setDaughterCount] = useState(2);
+  const [showModal, setShow] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (members?.length > 0) {
+      setMembersArray([...members]);
+    }
+  }, [members]);
+
+  useEffect(() => {
+    const tempArray = [];
+  }, [membersArray]);
+
+  // Will contain list of insurer names that are checked
+  const [insurerCBXArray, setInsurerCBXArray] = useState(
+    proposerDetails.members.map(
+      (m, index) => {
+        if (index > 0 && proposerDetails.members[index].type.includes("son1")) {
+          return "son";
+        } else if (
+          index > 0 &&
+          proposerDetails.members[index - 1].type.includes("son") &&
+          m.type.includes("son")
+        )
+          return "son" + index;
+
+        if (
+          index > 0 &&
+          proposerDetails.members[index].type.includes("daughter1")
+        ) {
+          return "daughter";
+        } else if (
+          index > 0 &&
+          proposerDetails.members[index - 1].type.includes("daughter") &&
+          m.type.includes("daughter")
+        )
+          return "daughter" + index;
+        else return m.type;
+      }
+      // capitalize(m.type)
+      //   .replaceAll("_", "-")
+      //   .replace("Grand-mother", "Grand Mother")
+      //   .replace("Grand-father", "Grand Father"),
+    )
   );
+
+  // Will contain list of insurer Dropdown values if checkbox is checked
+  const [insurerDDArray, setInsurerDDArray] = useState(
+    proposerDetails.members.map((m, index) => {
+      if (index > 0 && proposerDetails.members[index].type.includes("son1")) {
+        return { insurer: "son", value: m.age + " Years" };
+      }
+      if (
+        index > 0 &&
+        proposerDetails.members[index - 1].type.includes("son") &&
+        m.type.includes("son")
+      )
+        return { insurer: "son" + index, value: m.age + " Years" };
+
+      if (
+        index > 0 &&
+        proposerDetails.members[index].type.includes("daughter1")
+      ) {
+        return { insurer: "daughter", value: m.age + " Years" };
+      }
+      if (
+        index > 0 &&
+        proposerDetails.members[index - 1].type.includes("daughter") &&
+        m.type.includes("daughter")
+      )
+        return { insurer: "daughter" + index, value: m.age + " Years" };
+      else return { insurer: m.type, value: m.age + " Years" };
+    })
+  );
+
+  // To find additional Sons And Daughters
+  useEffect(() => {
+    if (members?.length) {
+      let sons = [];
+      let daughters = [];
+      insurerCBXArray.forEach((item) => {
+        if (item !== "son" && item.includes("son")) {
+          sons = [
+            ...sons,
+            {
+              code: item,
+              display_name: "Son",
+              min_age: "1",
+              max_age: "25",
+              ["is_primary"]: true,
+              ["hasClose"]: true,
+            },
+          ];
+        }
+        if (item !== "daughter" && item.includes("daughter")) {
+          daughters = [
+            ...daughters,
+            {
+              code: item,
+              display_name: "Daughter",
+              min_age: "1",
+              max_age: "25",
+              ["is_primary"]: true,
+              ["hasClose"]: true,
+            },
+          ];
+        }
+      });
+      let tempArray = [...members];
+
+      const index = tempArray.findIndex((x) => x.display_name === "Son");
+      tempArray.splice(index + 1, 0, ...sons);
+      const index2 = tempArray.findIndex((x) => x.display_name === "Daughter");
+      tempArray.splice(index2 + 1, 0, ...daughters);
+
+      setMembersArray(tempArray);
+    }
+  }, [members]);
+
+  useEffect(() => {
+    let count = 0;
+    insurerCBXArray.forEach((element) => {
+      if (element.slice(0, 8) === "daughter" || element.slice(0, 3) === "son") {
+        count += 1;
+      }
+    });
+
+    setChildCount(count);
+  }, [insurerCBXArray]);
+
+  const addChild = (name) => {
+    const code = name.toLowerCase();
+    if (childCount < 4) {
+      const { max_age, min_age } = membersArray.filter(
+        (item) => item.code === code
+      )[0];
+      setChildCount(childCount + 1);
+      const genCode = `${code + uuidv4()}`;
+      const tempArray = [
+        ...membersArray,
+        // {
+        //   [`code`]: genCode,
+        //   [`display_name`]: name,
+        //   [`min_age`]: `${min_age}`,
+        //   [`max_age`]: `${max_age}`,
+        //   ["is_primary"]: true,
+        //   ["hasClose"]: true,
+        // },
+      ];
+      const index = tempArray.findIndex((x) => x.display_name === name);
+      tempArray.splice(index + 1, 0, {
+        [`code`]: genCode,
+        [`display_name`]: name,
+        [`min_age`]: `${min_age}`,
+        [`max_age`]: `${max_age}`,
+        ["is_primary"]: true,
+        ["hasClose"]: true,
+      });
+      handleinsurerCBXArray(genCode);
+
+      setMembersArray(tempArray);
+    }
+  };
+
+  const handleinsurerCBXArray = (insurer) => {
+    const tempArray = [...insurerCBXArray];
+
+    if (!tempArray.includes(insurer)) {
+      tempArray.push(insurer);
+    } else {
+      const index = tempArray.indexOf(insurer);
+
+      if (index > -1) {
+        tempArray.splice(index, 1);
+        handleinsurerDDArray(insurer, "Select Age");
+      }
+    }
+    setInsurerCBXArray(tempArray);
+  };
+
+  const handleinsurerDDArray = (insurer, value) => {
+    const tempArray = [...insurerDDArray];
+    var index = tempArray.map((o) => o.insurer).indexOf(insurer);
+    if (value !== "Select Age") {
+      if (index > -1) {
+        tempArray[index].value = value;
+        if (!insurerCBXArray.includes(insurer)) {
+          handleinsurerCBXArray(insurer);
+        }
+      } else {
+        tempArray.push({ insurer: `${insurer}`, value: `${value}` });
+        if (!insurerCBXArray.includes(insurer)) {
+          handleinsurerCBXArray(insurer);
+        }
+      }
+    } else if (index > -1) {
+      tempArray.splice(index, 1);
+    }
+    if (tempArray.length > 0) {
+      setErrors(false);
+    } else {
+      setErrors(true);
+    }
+    setInsurerDDArray(tempArray);
+  };
+
+  const handleInput = (insurer, value, type) => {
+    if (type === "checkbox") {
+      if (
+        (insurer.slice(0, 3) === "son" && insurer !== "son") ||
+        (insurer.slice(0, 8) === "daughter" && insurer !== "daughter")
+      ) {
+        const tempArray = [...membersArray];
+        var index = tempArray.map((o) => o.code).indexOf(insurer);
+        if (index > -1) {
+          tempArray.splice(index, 1);
+          setMembersArray(tempArray);
+        }
+      }
+      if (
+        (insurer.slice(0, 3) === "son" || insurer.slice(0, 8) === "daughter") &&
+        insurerCBXArray.includes(insurer)
+      ) {
+        if (insurer === "son") {
+          const tempArray = membersArray.filter((element) => {
+            return (
+              element.display_name !== "Son" ||
+              (element.display_name === "Son" && element.code === "son")
+            );
+          });
+          setMembersArray(tempArray);
+        } else if (insurer === "daughter") {
+          const tempArray = membersArray.filter(
+            (element) =>
+              element.display_name !== "Daughter" ||
+              (element.display_name === "Daughter" &&
+                element.code === "daughter")
+          );
+          setMembersArray(tempArray);
+        }
+      }
+      handleinsurerCBXArray(insurer, value);
+    } else if (type === "dropdown") {
+      handleinsurerDDArray(insurer, value);
+    }
+  };
+
+  const history = useHistory();
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+
+    const ageErrorArray = [];
+    insurerCBXArray.forEach((data) => {
+      const hasAge = insurerDDArray.some((item) => item.insurer === data);
+      if (!hasAge) {
+        ageErrorArray.push(data);
+      }
+    });
+
+    if (insurerDDArray.length < 1) {
+      setErrors("Select at least One Insured");
+    } else if (ageErrorArray.length > 0) {
+      setErrors("Select age for Insured");
+      setAgeError(ageErrorArray);
+    } else {
+      setErrors(false);
+    }
+    if (ageErrorArray.length < 1 && !errors && insurerDDArray.length > 0) {
+      const dataArray = [];
+      insurerDDArray.forEach((data) => {
+        const i = membersArray.findIndex((x) => x.code === data.insurer);
+        dataArray.push({
+          type: `${membersArray[i]?.code}`,
+          age: data.value.endsWith("months")
+            ? `0.${data.value.split(" ")[0]}`
+            : `${data.value.split(" ")[0]}`,
+        });
+      });
+
+      dispatch(
+        updateUserMembersDetails(
+          { ...proposerDetails, members: dataArray },
+          history
+        )
+      );
+    }
+    handleClose();
+  };
 
   return (
     <Modal
@@ -55,7 +352,7 @@ const FilterModal = ({ show, handleClose }) => {
       animation={false}
       css={`
         .modal-dialog {
-          max-width: 660px;
+          max-width: 846px;
         }
 
         .modal-footer {
@@ -86,41 +383,67 @@ const FilterModal = ({ show, handleClose }) => {
       </Modal.Header>
       <Modal.Body>
         <OptionWrapper>
-          <div className="d-flex flex-wrap">
-            {membersData ? (
-              membersData.map((member, i) => {
-                return (
-                  <Member className="w-50" key={i}>
-                    <input
-                      type="checkbox"
-                      class="d-none"
-                      id={`${member.code}_member`}
-                    />
-                    <label htmlFor={`${member.code}_member`}>
-                      <div className="d-flex align-items-center">
-                        <div className="custom_checkbox"></div>
-                        <span
-                          style={{
-                            fontWeight: "600",
-                          }}
-                        >
-                          {member.display_name}
-                        </span>
-                      </div>
+          <div
+            css={`
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: space-between;
+            `}
+          >
+            {membersArray &&
+              membersArray.map(
+                ({
+                  display_name,
+                  min_age,
+                  max_age,
+                  is_primary,
+                  hasClose,
+                  code,
+                }) => {
+                  const age = getAge(min_age, max_age);
 
-                      <CustomDropdown member={member} />
-                    </label>
-                  </Member>
-                );
-              })
-            ) : (
-              <></>
-            )}
+                  return (
+                    <div
+                      css={`
+                        display: flex;
+                        align-items: center;
+                        padding: 2px 10px;
+                        border: solid 1px #b0bed0;
+                        margin-bottom: 10px;
+                        border-radius: 7px;
+                        width: 400px;
+                        & .addChild{
+                          left: -12px;
+                        }
+                      `}
+                    
+                    >
+                      {dataset(
+                        display_name,
+                        age,
+                        insurerCBXArray,
+                        insurerDDArray,
+                        handleInput,
+                        hasClose,
+                        code,
+                        ageError,
+                        childCount,
+                        addChild
+                      )}
+                    </div>
+                  );
+                }
+              )}
           </div>
         </OptionWrapper>
       </Modal.Body>
       <Modal.Footer className="text-center">
-        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100">Apply</ApplyBtn>
+        <ApplyBtn
+          onClick={handleUpdate}
+          className="btn apply_btn mx-auto h-100 w-100"
+        >
+          Apply
+        </ApplyBtn>
       </Modal.Footer>
     </Modal>
   );
@@ -279,7 +602,6 @@ const EditMemberFilter = () => {
       // dispatch(saveForm3UserDetails(dataArray, handleChange));
     }
   };
-
 
   const [showModal, setShowModal] = useState(false);
   return (
