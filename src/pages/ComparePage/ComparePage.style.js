@@ -71,7 +71,7 @@ export const ErrorAddPlan = styled.div`
   position: absolute;
   bottom: -6px;
 `;
-export const QuoteWrapperM  = styled.div`
+export const QuoteWrapperM = styled.div`
   height: 117px;
   margin-bottom: 10px;
   padding: 10px 15px ;
@@ -119,7 +119,7 @@ export const RemoveCross = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  & @media (max-width: 768px) {
+ @media (max-width: 768px) {
     top:12px;
     right:12px;
   }
@@ -201,10 +201,11 @@ export const RiderWrapper = styled.div`
   position: relative;
   padding: 6px 14px 6px 10px;
   border-radius: 10px;
-  background-color: #fff1f2;
+  background-color: #eff7ff;
   margin-bottom: 32px;
   min-height: fit-content;
-  & @media (max-width: 768px){
+  display: flex;
+  @media (max-width: 768px){
     margin-bottom: 4px !important;
   }
 `;
