@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
+import { Col, Collapse, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import "styled-components/macro"
 import { maxbupa } from '../../../assets/images'
-import Checkbox from '../../../components/Checkbox';
-import { saveSelectedPlan } from '../quote.slice';
+import CheckBox from "../../ComparePage/components/Checkbox/Checbox"
+import { removeQuotesForCompare, saveSelectedPlan, setQuotesForCompare, setQuotesOnCompare } from '../quote.slice';
 import CustomDropDown from './filters/CustomDropdown';
-import { CenterBottomStyle, CenterBottomToggle, EachWrapper, Logo, LogoWrapper, Outer, PlanName, RadioButton, SeeText, SmallLabel, TextWrapper, ValueText } from './QuoteCard.style'
+import { CenterBottomStyle, CenterBottomToggle, EachWrapper, Logo, LogoWrapper, Outer, PlanName, RadioButton, RadioInput, RadioLabel, SeeText, SmallLabel, TextWrapper, ValueText } from './QuoteCard.style'
+import SubContent from './SubContent';
 import useQuoteCard from './useQuoteCard';
 
-function QuoteCard({ id, item,  handleSeeDetails, }) {
+function QuoteCard({ id, item, handleSeeDetails, }) {
     const {
         dispatch,
         show,
         setShow,
         checked,
+        setChecked,
         mergedQuotes,
         quotesForCompare,
         // activeCover,
@@ -32,31 +35,31 @@ function QuoteCard({ id, item,  handleSeeDetails, }) {
         additionalPremium += element.total_premium;
     });
 
-    
-  const handleSeeDetailsClick = clickedFrom => {
-    handleSeeDetails(
-      {
-        quote: mergedQuotes[0],
-        activeSum: activeCover,
-      },
-      clickedFrom,
-    );
-    const selectedPlan = {
-      company_alias: mergedQuotes[0]?.company_alias,
-      logo: mergedQuotes[0]?.logo,
-      product: mergedQuotes[0]?.product,
-      total_premium: mergedQuotes[0]?.total_premium[activeCover],
-      premium: mergedQuotes[0]?.premium[activeCover],
-      sum_insured: mergedQuotes[0]?.sum_insured[activeCover],
-      tax_amount: mergedQuotes[0]?.tax_amount[activeCover],
-      tenure: mergedQuotes[0]?.tenure[activeCover],
+
+    const handleSeeDetailsClick = clickedFrom => {
+        handleSeeDetails(
+            {
+                quote: mergedQuotes[0],
+                activeSum: activeCover,
+            },
+            clickedFrom,
+        );
+        const selectedPlan = {
+            company_alias: mergedQuotes[0]?.company_alias,
+            logo: mergedQuotes[0]?.logo,
+            product: mergedQuotes[0]?.product,
+            total_premium: mergedQuotes[0]?.total_premium[activeCover],
+            premium: mergedQuotes[0]?.premium[activeCover],
+            sum_insured: mergedQuotes[0]?.sum_insured[activeCover],
+            tax_amount: mergedQuotes[0]?.tax_amount[activeCover],
+            tenure: mergedQuotes[0]?.tenure[activeCover],
+        };
+
+        dispatch(saveSelectedPlan({
+            ...selectedPlan,
+            product_id: selectedPlan.product?.id,
+        }));
     };
- 
-    dispatch(saveSelectedPlan({
-      ...selectedPlan,
-      product_id: selectedPlan.product?.id,
-    }));
-  };
 
     const tenure = parseInt(multiYear) === 1 ? "" : parseInt(multiYear);
 
@@ -127,7 +130,24 @@ function QuoteCard({ id, item,  handleSeeDetails, }) {
                             css={`
                             border-bottom: none !important;
                         `}
-                        >2 more plans  <i class="fas fa-chevron-down"></i></SeeText>
+                            onClick={() => {
+                                setShow(!show);
+                            }}
+                        >
+
+                            {!show ? (
+                                <>
+                                    <span>2 more plans </span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </>
+                            ) :
+                                (<>
+                                    <span>hide plans </span>
+                                    <i class="fas fa-chevron-up"></i>
+                                </>
+                                )}
+
+                        </SeeText>
                     </CenterBottomToggle>
                 </div>
                 <div className="col-md-3">
@@ -175,10 +195,7 @@ function QuoteCard({ id, item,  handleSeeDetails, }) {
                             {/* <input type="checkbox" css={`
                                 border-radius:50px;
                             `} /> */}
-                            <Checkbox title="Compare"
-                                checked={check}
-                                onClick={() => { setCheck(true) }}
-                            />
+
                             {/* <SeeText
                                 css={`
                             color: black !important;
@@ -186,11 +203,75 @@ function QuoteCard({ id, item,  handleSeeDetails, }) {
                             padding:0px 20px !important;
                         `}
                             >Compare</SeeText> */}
+                            <RadioInput
+                                type="checkbox"
+                                id={`compare_${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`}
+                                className="compare-checkbox"
+                                checked={checked}
+                                onChange={() => {
+                                    dispatch(setQuotesOnCompare());
+
+                                    if (!checked) {
+                                        const numberOfPlans = window.matchMedia(
+                                            "(max-width: 1023px)",
+                                        ).matches
+                                            ? 2
+                                            : 3;
+                                        dispatch(
+                                            setQuotesForCompare([
+                                                `${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`,
+                                                numberOfPlans,
+                                            ]),
+                                        );
+                                    } else {
+                                        dispatch(
+                                            removeQuotesForCompare(
+                                                `${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`,
+                                            ),
+                                        );
+                                    }
+                                }}
+                            />
+
+                            <RadioLabel
+                                //dynamic id
+                                htmlFor={`compare_${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`}
+                            >
+                                Compare
+                            </RadioLabel>
                         </div>
                     </CenterBottomStyle>
 
                 </div>
             </div>
+            <Collapse in={show}>
+                <div id="collapseOne">
+                    <div className="card-body card_body_padding margin_bottom_more_plan_card"
+                        css={`
+                    margin-top:0px;
+                    `}
+                    >
+                        <Col md={12}>
+                            {/* plans will be clubbed here */}
+                            {mergedQuotes?.slice(1).map((item, index) => (
+                                <>
+                                    {console.log("ssssssss3", item)}
+                                    {item && <SubContent
+                                        // addProduct={addProduct}
+                                        key={index}
+                                        id={index}
+                                        quoteCardData={item}
+                                        quotesForCompare={quotesForCompare}
+                                        // // handleClick={handleClick}
+                                        handleSeeDetails={handleSeeDetails}
+                                    />}
+                                </>
+                            ))}
+                        </Col>
+                    </div>
+
+                </div>
+            </Collapse>
         </Outer>
     )
 }

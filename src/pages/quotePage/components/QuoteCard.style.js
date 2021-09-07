@@ -106,3 +106,62 @@ padding: 13px 20px 0px;
 margin: auto;
 background-color: #e2f0ff;
 `
+export const RadioInput = styled.input`
+  & label:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    line-height: 19px;
+    border-radius: 50px;
+    border: 1px solid #ecc6c8;
+    
+    
+    font-size: 11px;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    top: 0px;
+    transition: all 0.1s ease-in-out;
+  }
+  &:checked + label:before {
+    content: "\u2713";
+    font-family: "font-awesome";
+    background: #0a87ff;
+    color: #fff;
+    border-color: #0a87ff;
+  }
+`;
+export const RadioLabel = styled.label`
+  position: relative;
+  font-size: 17px;
+  font-weight: 900;
+  color: #000;
+  cursor: pointer;
+  padding-left: 30px;
+  /* margin: 30px 0 35px; */
+  transition: all 0.1s ease-in-out;
+  // font-family: PFEncoreSansProblck;
+  top: -2px;
+  margin-top: 5px;
+  &:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    line-height: 19px;
+    border-radius: 50px;
+    border: 1px solid #ecc6c8;
+    font-size: 11px;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    top: 0px;
+    transition: all 0.1s ease-in-out;
+  }
+  @media (max-width: 1023px) {
+    left: 33px;
+    padding: unset !important;
+    &:before {
+      left: -28px !important;
+    }
+  }
+`;
