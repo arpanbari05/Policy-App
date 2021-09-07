@@ -39,10 +39,8 @@ const dispatch = useDispatch();
   });
 
  
-  const firstQuoteFound =
-    filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
+  const firstQuoteFound = filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
 
-  console.log("firstquoteFound: ", firstQuoteFound);
   return (
     <div>
       <UpperModifier />
@@ -62,7 +60,7 @@ const dispatch = useDispatch();
                 firstQuoteFound && (
                   filterQuotes.map(
                     (item, index) =>
-                      item.length > 0 && (
+                      item.length?(
                         <QuoteCard
                           key={index}
                           id={index}
@@ -72,7 +70,7 @@ const dispatch = useDispatch();
                             setShowSeeDetails(true);
                           }}
                         />
-                      ),
+                      ):<></>
                   )
                 )
               ) :

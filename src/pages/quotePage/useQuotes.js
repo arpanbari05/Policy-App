@@ -12,6 +12,7 @@ import {
     getCartItem,
     saveQuotesData,
     setFilters,
+    premiumFilterCards,
     setShouldFetchQuotes,
     insurerFilter
 } from "./quote.slice";
@@ -248,6 +249,25 @@ function useQuotesPage() {
             }))
       }, [filters])
 
+     
+    //   const filterPremium = useSelector(({quotePage}) => quotePage.filters.premium);
+    //   const premiums = useSelector(
+    //     ({ frontendBoot }) => frontendBoot.frontendData.data.premiums,
+    // );
+    
+    //   console.log(premiums.filter(premium => premium.display_name === filterPremium),"+++++++++")
+    //   useEffect(() => {
+       
+    //     let premiumCode;
+    //     if(premiums.filter(premium => premium.display_name === filterPremium).length){
+    //       premiumCode =  premiums.filter(premium => premium.display_name === filterPremium)[0].code;
+    //       dispatch(premiumFilterCards(premiumCode))
+    //     }
+       
+  
+    //   },[filterPremium])
+    
+   
     //   useEffect(() => {
     //     dispatch(getRecommendedQuotesOnMount(groupCode));
     //     dispatch(getCartItem());
