@@ -89,158 +89,12 @@ const dataset = (
   for (var i = 0; i < 1; i++) {
     dataArray.push(
       plans?.length > 0 &&
-        plans[i]?.features[index]?.sum_insureds[
-          plans[i]?.data?.sum_insured
-        ]?.features?.map((data, i) => {
-          if (
-            data?.title === "Permanent Exclusions" &&
-            (!showDiffCbx ||
-              (showDiffCbx &&
-                plans.length < 3 &&
-                plans[0]?.features[index]?.sum_insureds[
-                  plans[0]?.data?.sum_insured
-                ]?.features[i]?.is_compariable === 1 &&
-                !(
-                  plans[0]?.features[index]?.sum_insureds[
-                    plans[0]?.data?.sum_insured
-                  ]?.features[i]?.feature_value ===
-                  plans[1]?.features[index]?.sum_insureds[
-                    plans[1]?.data?.sum_insured
-                  ]?.features[i]?.feature_value
-                )) ||
-              (showDiffCbx &&
-                plans.length === 3 &&
-                !(
-                  plans[0]?.features[index]?.sum_insureds[
-                    plans[0]?.data?.sum_insured
-                  ]?.features[i]?.is_compariable === 1 &&
-                  plans[0]?.features[index]?.sum_insureds[
-                    plans[0]?.data?.sum_insured
-                  ]?.features[i]?.feature_value ===
-                    plans[1]?.features[index]?.sum_insureds[
-                      plans[1]?.data?.sum_insured
-                    ]?.features[i]?.feature_value &&
-                  plans[1]?.features[index]?.sum_insureds[
-                    plans[1]?.data?.sum_insured
-                  ]?.features[i]?.feature_value ===
-                    plans[2]?.features[index]?.sum_insureds[
-                      plans[2]?.data?.sum_insured
-                    ]?.features[i]?.feature_value &&
-                  plans[0]?.features[index]?.sum_insureds[
-                    plans[0]?.data?.sum_insured
-                  ]?.features[i]?.feature_value ===
-                    plans[2]?.features[index]?.sum_insureds[
-                      plans[2]?.data?.sum_insured
-                    ]?.features[i]?.feature_value
-                )))
-          ) {
-            count++;
-            return (
-              <tr
-                style={{ display: data?.is_compariable !== 1 && "none" }}
-                css={`
-                  border-bottom: 1px solid #ebf5ff !important;
-                  &:hover{
-                    box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
-                  }
-                `}
-              >
-                <th scope="row">
-                  <OverlayTrigger
-                    placement={"right"}
-                    overlay={renderTooltipDesc({ desc: data?.description })}
-                  >
-                    <span className="tbody_bg_border_th">{data?.title}</span>
-                  </OverlayTrigger>
-                </th>
-
-                <>
-                  {[0, 1, 2].map((item) => {
-                    if (!plans[item] && item === 1) return <td></td>;
-                    else if (!plans[item])
-                      return windowWidth > 1023 ? <td></td> : "";
-                    if (plans[item])
-                      return (
-                        <td
-                          style={{ whiteSpace: "break-spaces" }}
-                          className={`${item === 2 && "showOnDesktopF"}`}
-                          css={`
-                            border-bottom: 1px solid #ebf5ff !important;
-                            
-                          `}
-                        >
-                          <>
-                            <input
-                              id={"exclusions" + item}
-                              name={"exclusions" + item}
-                              type="checkbox"
-                              style={{ display: "none" }}
-                            ></input>
-                            <div
-                              className="exclusions__showmore"
-                              css={`
-                                white-space: initial;
-                              `}
-                            >
-                              {(
-                                <>
-                                  {
-                                    plans[item]?.features[index]?.sum_insureds[
-                                      plans[item]?.data?.sum_insured
-                                    ]?.features[i]?.feature_value
-                                  }
-                                </>
-                              ) || (
-                                <img
-                                  src={wrong}
-                                  style={{ margin: "auto", display: "none" }}
-                                />
-                              )}
-                            </div>
-                            <label
-                              htmlFor={"exclusions" + item}
-                              className="showmore__button"
-                            >
-                              Show More
-                            </label>
-                            <div
-                              className="exclusions__showless"
-                              css={`
-                                white-space: initial;
-                              `}
-                            >
-                              {(
-                                <>
-                                  {
-                                    plans[item]?.features[index]?.sum_insureds[
-                                      plans[item]?.data?.sum_insured
-                                    ]?.features[i]?.feature_value
-                                  }
-                                </>
-                              ) || (
-                                <img
-                                  src={wrong}
-                                  style={{ margin: "auto", display: "none" }}
-                                />
-                              )}
-                            </div>
-                            <label
-                              htmlFor={"exclusions" + item}
-                              className="showless__button"
-                            >
-                              Show less
-                            </label>
-                          </>
-                        </td>
-                      );
-                    else return <></>;
-                  })}
-                </>
-              </tr>
-            );
-          }
-          if (
-            !showDiffCbx ||
+      plans[i]?.features[index]?.sum_insureds[
+        plans[i]?.data?.sum_insured
+      ]?.features?.map((data, i) => {
+        if (
+          data?.title === "Permanent Exclusions" &&
+          (!showDiffCbx ||
             (showDiffCbx &&
               plans.length < 3 &&
               plans[0]?.features[index]?.sum_insureds[
@@ -263,129 +117,275 @@ const dataset = (
                 plans[0]?.features[index]?.sum_insureds[
                   plans[0]?.data?.sum_insured
                 ]?.features[i]?.feature_value ===
-                  plans[1]?.features[index]?.sum_insureds[
-                    plans[1]?.data?.sum_insured
-                  ]?.features[i]?.feature_value &&
+                plans[1]?.features[index]?.sum_insureds[
+                  plans[1]?.data?.sum_insured
+                ]?.features[i]?.feature_value &&
                 plans[1]?.features[index]?.sum_insureds[
                   plans[1]?.data?.sum_insured
                 ]?.features[i]?.feature_value ===
-                  plans[2]?.features[index]?.sum_insureds[
-                    plans[2]?.data?.sum_insured
-                  ]?.features[i]?.feature_value &&
+                plans[2]?.features[index]?.sum_insureds[
+                  plans[2]?.data?.sum_insured
+                ]?.features[i]?.feature_value &&
                 plans[0]?.features[index]?.sum_insureds[
                   plans[0]?.data?.sum_insured
                 ]?.features[i]?.feature_value ===
-                  plans[2]?.features[index]?.sum_insureds[
-                    plans[2]?.data?.sum_insured
-                  ]?.features[i]?.feature_value
-              ))
-          ) {
-            count++;
-            // console.log(data?.is_compariable !== 1);
-            return (
-              <tr
-                style={{ display: data?.is_compariable !== 1 && "none" }}
-                css={`
+                plans[2]?.features[index]?.sum_insureds[
+                  plans[2]?.data?.sum_insured
+                ]?.features[i]?.feature_value
+              )))
+        ) {
+          count++;
+          return (
+            <tr
+              style={{ display: data?.is_compariable !== 1 && "none" }}
+              css={`
                   border-bottom: 1px solid #ebf5ff !important;
                   &:hover{
                     box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
                   }
                 `}
-              >
+            >
+              <th scope="row">
                 <OverlayTrigger
                   placement={"right"}
                   overlay={renderTooltipDesc({ desc: data?.description })}
                 >
-                  <th scope="row">
-                    <span className="tbody_bg_border_th">{data?.title}</span>
-                  </th>
+                  <span className="tbody_bg_border_th">{data?.title}</span>
                 </OverlayTrigger>
+              </th>
 
-                <td
-                  style={{ whiteSpace: "break-spaces" }}
-                  css={`
+              <>
+                {[0, 1, 2].map((item) => {
+                  if (!plans[item] && item === 1) return <td></td>;
+                  else if (!plans[item])
+                    return windowWidth > 1023 ? <td></td> : "";
+                  if (plans[item])
+                    return (
+                      <td
+                        style={{ whiteSpace: "break-spaces" }}
+                        className={`${item === 2 && "showOnDesktopF"}`}
+                        css={`
+                            border-bottom: 1px solid #ebf5ff !important;
+                            
+                          `}
+                      >
+                        <>
+                          <input
+                            id={"exclusions" + item}
+                            name={"exclusions" + item}
+                            type="checkbox"
+                            style={{ display: "none" }}
+                          ></input>
+                          <div
+                            className="exclusions__showmore"
+                            css={`
+                                white-space: initial;
+                              `}
+                          >
+                            {(
+                              <>
+                                {
+                                  plans[item]?.features[index]?.sum_insureds[
+                                    plans[item]?.data?.sum_insured
+                                  ]?.features[i]?.feature_value
+                                }
+                              </>
+                            ) || (
+                                <img
+                                  src={wrong}
+                                  style={{ margin: "auto", display: "none" }}
+                                />
+                              )}
+                          </div>
+                          <label
+                            htmlFor={"exclusions" + item}
+                            className="showmore__button"
+                          >
+                            Show More
+                          </label>
+                          <div
+                            className="exclusions__showless"
+                            css={`
+                                white-space: initial;
+                              `}
+                          >
+                            {(
+                              <>
+                                {
+                                  plans[item]?.features[index]?.sum_insureds[
+                                    plans[item]?.data?.sum_insured
+                                  ]?.features[i]?.feature_value
+                                }
+                              </>
+                            ) || (
+                                <img
+                                  src={wrong}
+                                  style={{ margin: "auto", display: "none" }}
+                                />
+                              )}
+                          </div>
+                          <label
+                            htmlFor={"exclusions" + item}
+                            className="showless__button"
+                          >
+                            Show less
+                          </label>
+                        </>
+                      </td>
+                    );
+                  else return <></>;
+                })}
+              </>
+            </tr>
+          );
+        }
+        if (
+          !showDiffCbx ||
+          (showDiffCbx &&
+            plans.length < 3 &&
+            plans[0]?.features[index]?.sum_insureds[
+              plans[0]?.data?.sum_insured
+            ]?.features[i]?.is_compariable === 1 &&
+            !(
+              plans[0]?.features[index]?.sum_insureds[
+                plans[0]?.data?.sum_insured
+              ]?.features[i]?.feature_value ===
+              plans[1]?.features[index]?.sum_insureds[
+                plans[1]?.data?.sum_insured
+              ]?.features[i]?.feature_value
+            )) ||
+          (showDiffCbx &&
+            plans.length === 3 &&
+            !(
+              plans[0]?.features[index]?.sum_insureds[
+                plans[0]?.data?.sum_insured
+              ]?.features[i]?.is_compariable === 1 &&
+              plans[0]?.features[index]?.sum_insureds[
+                plans[0]?.data?.sum_insured
+              ]?.features[i]?.feature_value ===
+              plans[1]?.features[index]?.sum_insureds[
+                plans[1]?.data?.sum_insured
+              ]?.features[i]?.feature_value &&
+              plans[1]?.features[index]?.sum_insureds[
+                plans[1]?.data?.sum_insured
+              ]?.features[i]?.feature_value ===
+              plans[2]?.features[index]?.sum_insureds[
+                plans[2]?.data?.sum_insured
+              ]?.features[i]?.feature_value &&
+              plans[0]?.features[index]?.sum_insureds[
+                plans[0]?.data?.sum_insured
+              ]?.features[i]?.feature_value ===
+              plans[2]?.features[index]?.sum_insureds[
+                plans[2]?.data?.sum_insured
+              ]?.features[i]?.feature_value
+            ))
+        ) {
+          count++;
+          // console.log(data?.is_compariable !== 1);
+          return (
+            <tr
+              style={{ display: data?.is_compariable !== 1 && "none" }}
+              css={`
+                  border-bottom: 1px solid #ebf5ff !important;
+                  &:hover{
+                    box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
+                  }
+                `}
+            >
+              <OverlayTrigger
+                placement={"right"}
+                overlay={renderTooltipDesc({ desc: data?.description })}
+              >
+                <th scope="row">
+                  <span className="tbody_bg_border_th">{data?.title}</span>
+                </th>
+              </OverlayTrigger>
+
+              <td
+                style={{ whiteSpace: "break-spaces" }}
+                css={`
                     border-bottom: 1px solid #ebf5ff !important;
                   `}
+              >
+                <OverlayTrigger
+                  placement={"right"}
+                  overlay={renderTooltipDesc({
+                    desc: plans[0]?.features[index]?.sum_insureds[
+                      plans[0]?.data?.sum_insured
+                    ]?.features[i]?.short_description,
+                  })}
                 >
-                  <OverlayTrigger
-                    placement={"right"}
-                    overlay={renderTooltipDesc({
-                      desc: plans[0]?.features[index]?.sum_insureds[
-                        plans[0]?.data?.sum_insured
-                      ]?.features[i]?.short_description,
-                    })}
-                  >
-                    <div style={{ display: "inline-block" }}>
-                      {plans[0]?.features[index]?.sum_insureds[
-                        plans[0]?.data?.sum_insured
-                      ]?.features[i]?.feature_value || (
+                  <div style={{ display: "inline-block" }}>
+                    {plans[0]?.features[index]?.sum_insureds[
+                      plans[0]?.data?.sum_insured
+                    ]?.features[i]?.feature_value || (
                         <img
                           src={wrong}
                           style={{ margin: "auto", display: "none" }}
                         />
                       )}
-                    </div>
-                  </OverlayTrigger>
-                </td>
+                  </div>
+                </OverlayTrigger>
+              </td>
 
-                <td
-                  style={{ whiteSpace: "break-spaces" }}
-                  css={`
+              <td
+                style={{ whiteSpace: "break-spaces" }}
+                css={`
                     border-bottom: 1px solid #ebf5ff !important;
                   `}
+              >
+                <OverlayTrigger
+                  placement={"right"}
+                  overlay={renderTooltipDesc({
+                    desc: plans[1]?.features[index]?.sum_insureds[
+                      plans[1]?.data?.sum_insured
+                    ]?.features[i]?.short_description,
+                  })}
                 >
-                  <OverlayTrigger
-                    placement={"right"}
-                    overlay={renderTooltipDesc({
-                      desc: plans[1]?.features[index]?.sum_insureds[
-                        plans[1]?.data?.sum_insured
-                      ]?.features[i]?.short_description,
-                    })}
-                  >
-                    <div style={{ display: "inline-block" }}>
-                      {plans[1]?.features[index]?.sum_insureds[
-                        plans[1]?.data?.sum_insured
-                      ]?.features[i]?.feature_value || (
+                  <div style={{ display: "inline-block" }}>
+                    {plans[1]?.features[index]?.sum_insureds[
+                      plans[1]?.data?.sum_insured
+                    ]?.features[i]?.feature_value || (
                         <img
                           src={wrong}
                           style={{ margin: "auto", display: "none" }}
                         />
                       )}
-                    </div>
-                  </OverlayTrigger>
-                </td>
+                  </div>
+                </OverlayTrigger>
+              </td>
 
-                <td
-                  className="showOnDesktopF"
-                  style={{ whiteSpace: "break-spaces" }}
-                  css={`
+              <td
+                className="showOnDesktopF"
+                style={{ whiteSpace: "break-spaces" }}
+                css={`
                     border-bottom: 1px solid #ebf5ff !important;
                   `}
+              >
+                <OverlayTrigger
+                  placement={"left"}
+                  overlay={renderTooltipDesc({
+                    desc: plans[2]?.features[index]?.sum_insureds[
+                      plans[2]?.data?.sum_insured
+                    ]?.features[i]?.short_description,
+                  })}
                 >
-                  <OverlayTrigger
-                    placement={"left"}
-                    overlay={renderTooltipDesc({
-                      desc: plans[2]?.features[index]?.sum_insureds[
-                        plans[2]?.data?.sum_insured
-                      ]?.features[i]?.short_description,
-                    })}
-                  >
-                    <div style={{ display: "inline-block" }}>
-                      {plans[2]?.features[index]?.sum_insureds[
-                        plans[2]?.data?.sum_insured
-                      ]?.features[i]?.feature_value || (
+                  <div style={{ display: "inline-block" }}>
+                    {plans[2]?.features[index]?.sum_insureds[
+                      plans[2]?.data?.sum_insured
+                    ]?.features[i]?.feature_value || (
                         <img
                           src={wrong}
                           style={{ margin: "auto", display: "none" }}
                         />
                       )}
-                    </div>
-                  </OverlayTrigger>
-                </td>
-              </tr>
-            );
-          }
-        })
+                  </div>
+                </OverlayTrigger>
+              </td>
+            </tr>
+          );
+        }
+      })
     );
   }
   if (count < 0) {
@@ -441,7 +441,7 @@ const additionalBenefits = (plans, title, index, dispatch, windowWidth) => {
                       <div>{innerItem.total_premium} </div>{" "}
                       <div>
                         <Checkbox
-                          title={innerItem.name + plans[item].data.product.id}
+                          // title={innerItem.name + plans[item].data.product.id}
                           showTitle={false}
                           onChange={(e) => {
                             if (e.target.checked) {
