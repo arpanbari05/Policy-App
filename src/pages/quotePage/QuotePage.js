@@ -4,10 +4,14 @@ import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
 import QuoteCard from "./components/QuoteCard";
 import { SortByButton, TextLabel } from "./Quote.style";
-import {insurerFilter} from "./quote.slice";
+import { insurerFilter } from "./quote.slice";
 import useQuotesPage from "./useQuotes";
-import { useDispatch,useSelector } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
+import SortByDD from "./components/SortBy/SortByDD";
+
 import SeeDetails from "../SeeDetails/SeeDetails";
+
 
 function QuotePage() {
   const {
@@ -24,22 +28,23 @@ function QuotePage() {
     showPopup,
     showBuyNow,
     showSeeDetails,
-    // sortByData,
+    sortByData,
     quotesLength,
     member,
-    // setSortBy,
+    setSortBy,
     recFilterdQuotes,
   } = useQuotesPage();
   console.log("quotes", quotes);
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { loadingQuotes, filters } = useSelector(state => state.quotePage);
   const [seeDetailsQuote, setSeeDetailsQuote] = useState({
     quote: "",
     activeSum: "",
   });
 
- 
-  const firstQuoteFound = filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
+
+  const firstQuoteFound =
+    filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
 
   return (
     <div>
@@ -51,9 +56,16 @@ const dispatch = useDispatch();
           <div className="col-md-8" style={{ padding: "0px 5px", marginBottom: "40px" }}>
             <div className=" d-flex justify-content-between align-items-center">
               <TextLabel> Showing Family Floater Plan</TextLabel>
-              <SortByButton>
+              {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
-              </SortByButton>
+              </SortByButton> */}
+              {true && (
+                <SortByDD
+                  list={sortByData}
+                  title="Sort By"
+                  onSortByChange={setSortBy}
+                />
+              )}
             </div>
             {quotes?.length ?
               (
