@@ -26,14 +26,14 @@ const CustomizeYourPlan = ({
   );
 
   const { sum_insured, tenure, product, health_riders } = cartItem;
-  console.log(health_riders,'1gege3312')
+  
   const {
     proposerDetails: { members: membersWithAge },
   } = useSelector(state => state.greetingPage);
-  console.log("ggg", selectedProduct);
+
   const fetchRiders = useCallback(() => {
     if (product) {
-      // setIsRidersLoading(true);
+  
 
       setRidersError(false);
       getRiders(
@@ -160,8 +160,6 @@ const CustomizeYourPlan = ({
   useEffect(() => {
     const keys = Object.keys(selectedRiders);
     const string = keys.reduce((a, b) => a + `&${b}=${selectedRiders[b]}`, "");
-
-    console.log("gege2", string);
     fetchAbhiRiders(string);
   }, [selectedRiders]);
 

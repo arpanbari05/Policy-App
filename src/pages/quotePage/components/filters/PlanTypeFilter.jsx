@@ -69,7 +69,7 @@ const PlanTypeFilter = () => {
 
         <Dropdown className={showDropdown ? "d-block" : "d-none"} ref={ref}>
           {basePlanTypes.map(thisPlanType => {
-            return (
+            return thisPlanType.code !== "arogya_sanjeevani" && (
               <li className="option d-flex justify-content-between align-items-center"
 
               >

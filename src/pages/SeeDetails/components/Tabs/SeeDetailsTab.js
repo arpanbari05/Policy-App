@@ -12,48 +12,46 @@ const SeeDetailsTab = ({ activeFieldset, setActiveFieldset }) => {
   const [windowHeight, windowWidth] = windowSize();
   return (
     <SeeDetailsTabT
-
       id="theme-tab-twlv"
-      className="theme-tab-basic tab-dark theme-tab hover contained medium z-icons-dark z-shadows z-bordered z-tabs horizontal top top-left silver"
-      data-role="z-tabs"
+
       //	data-options='{"theme": "silver", "orientation": "horizontal", "animation": {"duration": 400, "effects": "slideH"}}'
     >
       <SeeDetailsTabWrapper
         className="tab_modal_product_d  tabs-menu clearfix z-tabs-nav z-tabs-desktop z-hide-menu see-details__tab-modal"
-        style={{ display: "flex", justifyContent: "space-between" }}
+        
       >
         <SeeDetailsTabContainer
           title={"Plan Details"}
           id={1}
-          onClick={id => setActiveFieldset(id)}
+          onClick={(id) => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={planDetails}
         />
         <SeeDetailsTabContainer
           title={"Add-on Coverages"}
           id={2}
-          onClick={id => setActiveFieldset(id)}
+          onClick={(id) => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={addOn}
         />
         <SeeDetailsTabContainer
           title={"Cashless Hospitals"}
           id={3}
-          onClick={id => setActiveFieldset(id)}
+          onClick={(id) => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={cashless}
         />
         <SeeDetailsTabContainer
           title={"Claim Process"}
           id={4}
-          onClick={id => setActiveFieldset(id)}
+          onClick={(id) => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={claim}
         />
         <SeeDetailsTabContainer
           title={"About Company"}
           id={5}
-          onClick={id => setActiveFieldset(id)}
+          onClick={(id) => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={aboutCompany}
         />
@@ -64,23 +62,22 @@ const SeeDetailsTab = ({ activeFieldset, setActiveFieldset }) => {
 
 const SeeDetailsTabT = styled.div`
   margin-top: 28px;
-  @media (max-width:1024px){
+  @media (max-width: 1024px) {
     margin-top: 0px;
   }
 `;
 
 const SeeDetailsTabWrapper = styled.ul`
-  padding-left:0px;
-  @media (max-width: 1023px){
-    border:none !important;
+display: flex;
+justify-content: center;
+  padding-left: 0px;
+  @media (max-width: 1023px) {
+    border: none !important;
     border-top-left-radius: 0px !important;
     border-top-right-radius: 0px !important;
-      width:100% !important;
-      padding: 11px 0px 8px 0px !important;
-}
-
-
-  
+    width: 100% !important;
+    padding: 11px 0px 8px 0px !important;
+  }
 `;
 
 export default SeeDetailsTab;

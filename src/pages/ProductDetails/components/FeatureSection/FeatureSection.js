@@ -52,10 +52,10 @@ const FeatureSectionHeader = styled("header")`
 
 const FeatureSectionHeading = styled("p")`
   font-size: 23px;
-  /* margin-bottom: 8px; */
-  color: #000;
+   margin-bottom: 8px; 
+   color: #253858;
   font-weight: 900;
-  font-family: "PFHandbookProbld";
+
   position: relative;
   /* @media (max-width: 767px) {
     display: none;
@@ -87,7 +87,7 @@ const FeatureSectionSubHeading = styled("p")`
   color: #76797e;
   font-size: 14px;
   margin-left: 20px;
-
+  color: #253858;
   ${mobile} {
     line-height: normal;
   }
