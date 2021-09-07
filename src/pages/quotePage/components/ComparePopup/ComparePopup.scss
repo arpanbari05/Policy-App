@@ -1,3 +1,72 @@
 .quotes_compare_container {
-	left: 0;
+  left: 0;
+}
+
+.quotes_compare_container {
+  position: fixed;
+  box-shadow: 0 -5px 6px 0 rgba(0, 0, 0, 0.16);
+  bottom: 0;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background: #fff;
+  z-index: 9999999;
+}
+
+.quotes_compare_container .quotes_compare_container_wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  max-width: 1170px;
+  margin: 0 auto;
+}
+
+.quotes_compare_div {
+  display: flex;
+  flex-direction: row;
+  width: 70%;
+  align-items: center;
+}
+.quotes_compare_buttons_div {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.quotes_compare_remove_button {
+  border-radius: 2;
+  cursor: pointer;
+  color: #000000;
+  background-color: #b6b6b6;
+  width: 116%;
+  margin-left: 45px;
+  margin-right: 15px;
+  padding: 10px 15px;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.quotes_compare_button {
+  border-radius: 2;
+  cursor: pointer;
+  background-color: #c72229;
+  color: #fff;
+  width: 116%;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding: 10px 15px;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
