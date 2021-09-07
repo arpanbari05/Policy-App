@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./PlanContainer.css"
 import { useSelector, useDispatch } from "react-redux";
 import { removeQuotesForCompare } from "../../../quote.slice";
 

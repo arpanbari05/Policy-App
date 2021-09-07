@@ -119,8 +119,9 @@ export const RadioInput = styled.input`
     font-size: 11px;
     text-align: center;
     position: absolute;
-    left: 0;
-    top: 0px;
+left: 0px;
+
+visibility: hidden;
     transition: all 0.1s ease-in-out;
   }
   &:checked + label:before {
