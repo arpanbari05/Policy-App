@@ -25,7 +25,7 @@ console.log(selectedPremium,"selectedPremium")
 
   const handleApply = () => {
    dispatch(setFilters({premium:selectedPremium.displayName}));
-   dispatch(premiumFilterQuotes( selectedPremium.code ));
+   dispatch(premiumFilterQuotes( selectedPremium ));
    handleClose();
   };
 

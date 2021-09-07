@@ -250,7 +250,24 @@ function useQuotesPage() {
             }))
       }, [filters])
 
-     
+    //  const members = useSelector(({greetingPage}) => greetingPage.proposerDetails.members);
+
+    //  useEffect(() => {
+    //   dispatch(setFilters({ planType: selectedPlanType }));
+    //   dispatch(replaceQuotes([]));
+    //   dispatch(replaceFilterQuotes([]));
+    //   dispatch(
+    //     fetchQuotes(companies, {
+    //       plan_type:selectedPlanType.code,
+    //       tenure: parseInt(filters.multiYear),
+    //       sum_insured: coverRangeOptions.covers.find(
+    //         (filter) => filter.display_name === filters.cover
+    //       )?.code,
+    //       member: selectedGroup,
+    //     })
+    //   );
+    //  }, [members])
+
     //   const filterPremium = useSelector(({quotePage}) => quotePage.filters.premium);
     //   const premiums = useSelector(
     //     ({ frontendBoot }) => frontendBoot.frontendData.data.premiums,

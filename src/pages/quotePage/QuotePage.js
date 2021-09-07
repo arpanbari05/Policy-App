@@ -3,6 +3,9 @@ import styled from "styled-components";
 import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
 import QuoteCard from "./components/QuoteCard";
+import BuyNowModal from "./components/BuyNowModal";
+import CardSkeletonLoader from "../../components/Common/card-skeleton-loader/CardSkeletonLoader";
+
 import { SortByButton, TextLabel } from "./Quote.style";
 import { insurerFilter } from "./quote.slice";
 import useQuotesPage from "./useQuotes";
@@ -81,23 +84,12 @@ function QuotePage() {
                             setSeeDetailsQuote(quote);
                             setShowSeeDetails(true);
                           }}
+                          handleClick={() => setShowBuyNow(true)}
                         />
                       ):<></>
                   )
                 )
-              ) :
-              (
-                !loadingQuotes && (
-                  <p
-                    css={`
-                  display: flex;
-                  height: 275px;
-                  justify-content: center;
-                  align-items: center;
-                `}
-                  >
-                    no quotes
-                  </p>))
+              ):<CardSkeletonLoader noOfCards={3}/> 
             }
 
           </div>
@@ -120,6 +112,12 @@ function QuotePage() {
           </div>
         </div>
       </div>
+      {showBuyNow && (
+              <BuyNowModal
+                showBuyNow={showBuyNow}
+                setShowBuyNow={setShowBuyNow}
+              />
+            )}
       {showSeeDetails && (
               <SeeDetails
                 show={showSeeDetails}

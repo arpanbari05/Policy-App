@@ -342,9 +342,13 @@ const FilterModal = ({ show, handleClose }) => {
           history
         )
       );
+      
+      console.log(dataArray,"dataArray");
+      dataArray.length === 1? dispatch(setFilters({ planType: "Individual" })):dispatch(setFilters({ planType: "Family Floater" }))
+    handleClose()
    
     }
-  
+    
   };
 
   return (
@@ -449,7 +453,7 @@ const FilterModal = ({ show, handleClose }) => {
             <ErrorMessage style={{ fontSize: "15px" }}>{msg}</ErrorMessage>
           ))}
         <ApplyBtn
-          onClick={handleUpdate}
+          onClick={(e) => handleUpdate(e)}
           className="btn apply_btn mx-auto h-100 w-100"
         >
           Apply

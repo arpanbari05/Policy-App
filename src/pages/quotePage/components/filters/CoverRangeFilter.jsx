@@ -62,13 +62,12 @@ const FilterModal = ({ show, handleClose }) => {
           code: `${1500000}-${2500000}`,
           displayName: `₹ ${inputCover}`,
         });
-      }else if (inputCover > 2500000) {
+      } else if (inputCover > 2500000) {
         setselectedCover({
           code: `${2500000}-${10000000}`,
           displayName: `₹ ${inputCover}`,
         });
-      }
-       else if (inputCover > 10000000) {
+      } else if (inputCover > 10000000) {
         setinputCoverError("Maximum should be 1 Crore");
       } else if (inputCover % 100000 != 0) {
         setinputCoverError("Enter in multiples of 1 lac");
@@ -93,15 +92,11 @@ const FilterModal = ({ show, handleClose }) => {
   const handleApply = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    dispatch(
-      setFilters(
-        
-           { cover: selectedCover.displayName }
-      )
-    );
+    dispatch(setFilters({ cover: selectedCover.displayName }));
 
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
+    
     dispatch(
       fetchQuotes(companies, {
         plan_type:

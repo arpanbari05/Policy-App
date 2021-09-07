@@ -1,20 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  createCart,
-  getQutoes,
-  deleteCart,
-  getCart,
-  getDiscount,
-  updateCart,
-  getUpdatedGroups,
+    createCart,
+    getQutoes,
+    deleteCart,
+    getCart,
+    getDiscount,
+    updateCart,
+    getUpdatedGroups,
 } from "./serviceApi";
 import { createUser } from "../InputPage/ServiceApi/serviceApi";
 import SecureLS from "secure-ls";
 import {
-  ageError,
-  createUserData,
-  refreshUserData,
-  setMemberGroups,
+    ageError,
+    createUserData,
+    refreshUserData,
+    setMemberGroups,
 } from "../InputPage/greetingPage.slice";
 import axios from "axios";
 const ls = new SecureLS();
@@ -227,55 +227,54 @@ const quotePageSlice = createSlice({
 
         premiumFilterQuotes: (state, action) => {
             state.filterQuotes = state.quotes.map(item => {
-                return item.filter(
-                    quote =>
-                        quote.premium > action.payload?.code?.split("-")[0] &&
-                        quote.premium < action.payload?.code?.split("-")[1],
-                );
+              return item.filter(
+                quote =>
+                  quote.premium > action.payload?.code?.split("-")[0] &&
+                  quote.premium < action.payload?.code?.split("-")[1],
+              );
             });
-        },
+          },
     },
-  },
 });
 
 export const {
-  setQuotesOnCompare,
-  setQuotesForCompare,
-  removeQuotesForCompare,
-  removeAllQuotesForCompare,
-  saveQuotes,
-  saveFilteredQuotes,
-  saveFilteredPremium,
-  saveSelectedPlan,
-  setShouldFetchQuotes,
-  saveCartData,
-  saveProductCart,
-  deleteCartItemArr,
-  updateFetchedFilters,
-  insurerFilterQuotes,
-  premiumFilterQuotes,
-  ChangeUi,
-  replaceQuotes,
-  replaceFilterQuotes,
-  updateQuotesForCompare,
-  setFilters,
-  saveProductDiscountResponse,
-  setSelectedGroup,
-  addSelectedQuote,
-  removeSelectedQuote,
-  setLoadingQuotes,
-  setSelectedQuotes,
-  setSelectedRiders,
-  addSelectedRider,
-  removeSelectedRider,
-  addSelectedRiders,
-  addSelectedAddOns,
-  setSelectedAddOns,
-  removeSelectedAddOns,
-  addSelectedAddOn,
-  setQuotes,
-  setAppLoading,
-  clearFilterQuotes,
+    setQuotesOnCompare,
+    setQuotesForCompare,
+    removeQuotesForCompare,
+    removeAllQuotesForCompare,
+    saveQuotes,
+    saveFilteredQuotes,
+    saveFilteredPremium,
+    saveSelectedPlan,
+    setShouldFetchQuotes,
+    saveCartData,
+    saveProductCart,
+    deleteCartItemArr,
+    updateFetchedFilters,
+    insurerFilterQuotes,
+    premiumFilterQuotes,
+    ChangeUi,
+    replaceQuotes,
+    replaceFilterQuotes,
+    updateQuotesForCompare,
+    setFilters,
+    saveProductDiscountResponse,
+    setSelectedGroup,
+    addSelectedQuote,
+    removeSelectedQuote,
+    setLoadingQuotes,
+    setSelectedQuotes,
+    setSelectedRiders,
+    addSelectedRider,
+    removeSelectedRider,
+    addSelectedRiders,
+    addSelectedAddOns,
+    setSelectedAddOns,
+    removeSelectedAddOns,
+    addSelectedAddOn,
+    setQuotes,
+    setAppLoading,
+    clearFilterQuotes,
 } = quotePageSlice.actions;
 
 const cancelTokens = {};
@@ -370,178 +369,116 @@ export const saveQuotesData = data => {
         const { companies } = getState().frontendBoot.frontendData.data;
 
         try {
-          const response = await getQutoes(
-            {
-              alias,
-              sum_insured,
-              tenure,
-              member,
-              plan_type,
-              base_plan_type:
-                basePlanType || selectedBasePlanType
-                  ? selectedBasePlanType.code
-                  : "base_health",
-            },
-            {
-              cancelToken,
+            const response = await getQutoes({
+                alias,
+                sum_insured,
+                tenure,
+                member,
+                plan_type,
+            });
+            const newData = response?.data?.data.map(data => {
+                return { ...data, logo: companies[data.company_alias].logo };
+            });
+
+            if (response?.data) {
+                dispatch(saveQuotes(newData));
             }
-          );
-          const cashlessHospitalsCount =
-            response.data?.cashless_hospitals_count;
-          const quoteData = response?.data?.data.map((data) => {
-            return {
-              logo: companies[data.company_alias].logo,
-              cashlessHospitalsCount,
-              ...data,
-            };
-          });
-          // count++;
-          if (quoteData) {
-            dispatch(saveQuotes(quoteData));
-          }
-          delete cancelTokens[alias];
-          if (Object.keys(cancelTokens).length === 0) {
-            dispatch(setLoadingQuotes(false));
-          }
-        } catch (error) {
-          alert(error);
-          console.error(error);
+        } catch (err) {
+            console.log(err);
+            alert(err);
         }
-      };
-
-      dispatch(replaceQuotes([]));
-
-      Object.keys(companies).forEach((alias) => {
-        const cancelTokenSource = axios.CancelToken.source();
-        cancelTokens[alias] = cancelTokenSource;
-        fetchQuote({
-          alias,
-          cancelToken: cancelTokenSource.token,
-          sum_insured,
-          tenure,
-          plan_type,
-          member,
-        });
-      });
-    } catch (error) {}
-  };
-
-export const saveQuotesData = (data) => {
-  const { alias, sum_insured, tenure, member, plan_type } = data;
-
-  return async (dispatch, getState) => {
-    const { companies } = getState().frontendBoot.frontendData.data;
-
-    try {
-      const response = await getQutoes({
-        alias,
-        sum_insured,
-        tenure,
-        member,
-        plan_type,
-      });
-      const newData = response?.data?.data.map((data) => {
-        return { ...data, logo: companies[data.company_alias].logo };
-      });
-
-      if (response?.data) {
-        dispatch(saveQuotes(newData));
-      }
-    } catch (err) {
-      console.log(err);
-      alert(err);
-    }
-  };
+    };
 };
 
-export const insurerFilter = (data) => {
-  let aliasSet = [];
-  data.map(({ alias }) => aliasSet.push(alias));
+export const insurerFilter = data => {
+    let aliasSet = [];
+    data.map(({ alias }) => aliasSet.push(alias))
 
-  console.log(aliasSet, "alias");
-  return async (dispatch) => {
-    dispatch(insurerFilterQuotes(aliasSet));
-  };
+    console.log(aliasSet, "alias")
+    return async dispatch => {
+        dispatch(insurerFilterQuotes(aliasSet));
+    };
 };
 
-export const premiumFilterCards = (code) => {
-  return async (dispatch) => {
-    dispatch(premiumFilterQuotes(code));
+export const premiumFilterCards = data => {
+    const { code } = data;
+    return async dispatch => {
+      dispatch(premiumFilterQuotes({ code }));
+    };
   };
-};
-export const createCartItem = (data, onCreate = () => {}) => {
-  const newData = {
-    enquiry_id: ls.get("enquiryId"),
-    insurance_id: data?.insurance_id,
-    product_id: data?.product?.id,
-    insurance_type_id: data?.insurance_type_id,
-    tenure: data?.tenure,
-    sum_insured: data?.sum_insured,
-    premium: data?.totalPremium || data?.gross_premium,
-    pa_addons: [],
-    members: data?.members,
-  };
-  return async (dispatch) => {
-    try {
-      const response = await createCart(newData);
-      if (response?.data) {
-        onCreate(response?.data.data.id);
-        dispatch(getCartItem());
-        dispatch(saveCartData(response?.data?.data));
-        // swal({
-        //   title: "Product Added to Cart!",
-        //   icon: "success",
-        //   button: "Ok",
-        //   className: "red-bg",
-        //   closeOnClickOutside: true,
-        //   closeOnEsc: true,
-        // });
-      }
-    } catch (err) {
-      console.log(err);
-      alert(err);
-    }
-  };
-};
-
-export const deleteCartItem = (data, onDelete = () => {}) => {
-  return async (dispatch) => {
-    try {
-      await deleteCart(data).then(() => {
-        onDelete();
-        dispatch(getCartItem());
-      });
-    } catch (err) {
-      console.log(err);
-      alert(err);
-    }
-  };
+export const createCartItem = (data, onCreate = () => { }) => {
+    const newData = {
+        enquiry_id: ls.get("enquiryId"),
+        insurance_id: data?.insurance_id,
+        product_id: data?.product?.id,
+        insurance_type_id: data?.insurance_type_id,
+        tenure: data?.tenure,
+        sum_insured: data?.sum_insured,
+        premium: data?.totalPremium || data?.gross_premium,
+        pa_addons: [],
+        members: data?.members,
+    };
+    return async dispatch => {
+        try {
+            const response = await createCart(newData);
+            if (response?.data) {
+                onCreate(response?.data.data.id);
+                dispatch(getCartItem());
+                dispatch(saveCartData(response?.data?.data));
+                // swal({
+                //   title: "Product Added to Cart!",
+                //   icon: "success",
+                //   button: "Ok",
+                //   className: "red-bg",
+                //   closeOnClickOutside:, title, list true,
+                //   closeOnEsc: true,
+                // });
+            }
+        } catch (err) {
+            console.log(err);
+            alert(err);
+        }
+    };
 };
 
-export const getCartItem = (data) => {
-  return async (dispatch) => {
-    try {
-      const response = await getCart(data);
-      if (response?.data) {
-        dispatch(saveProductCart(response?.data?.data));
-      }
-    } catch (err) {
-      console.log(err);
-      alert(err);
-    }
-  };
+export const deleteCartItem = (data, onDelete = () => { }) => {
+    return async dispatch => {
+        try {
+            await deleteCart(data).then(() => {
+                onDelete();
+                dispatch(getCartItem());
+            });
+        } catch (err) {
+            console.log(err);
+            alert(err);
+        }
+    };
 };
 
-export const updateCartItem = (data, onUpdate = () => {}) => {
-  return async (dispatch) => {
-    try {
-      const resopnse = await updateCart(data);
-      await dispatch(getCartItem());
-      onUpdate(resopnse?.data?.data?.id);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+export const getCartItem = data => {
+    return async dispatch => {
+        try {
+            const response = await getCart(data);
+            if (response?.data) {
+                dispatch(saveProductCart(response?.data?.data));
+            }
+        } catch (err) {
+            console.log(err);
+            alert(err);
+        }
+    };
+};
+
+export const updateCartItem = (data, onUpdate = () => { }) => {
+    return async dispatch => {
+        try {
+            const resopnse = await updateCart(data);
+            await dispatch(getCartItem());
+            onUpdate(resopnse?.data?.data?.id);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 };
 
 export const updateUserMembersDetails = (givenData, history) => {
@@ -681,29 +618,29 @@ export const updateUserMembersDetails = (givenData, history) => {
   };
 
 export const getProductDiscount =
-  ({ alias, product_id, member, sum_insured, group }, onFetch = () => {}) =>
-  async (dispatch) => {
-    console.log(alias, product_id, member, sum_insured, group);
-    try {
-      const response = await getDiscount({
-        alias: alias,
-        productId: product_id,
-        member,
-        group,
-        sum_insured,
-      });
-      if (response.message) {
-        onFetch(null, response.message);
-      }
-      if (response?.data) {
-        dispatch(saveProductDiscountResponse(response?.data?.data));
-        onFetch(response.data?.data);
-      }
-      console.log(response);
-    } catch (err) {
-      alert(err);
-      console.log(err);
-    }
-  };
+    ({ alias, product_id, member, sum_insured, group }, onFetch = () => { }) =>
+        async dispatch => {
+            console.log(alias, product_id, member, sum_insured, group);
+            try {
+                const response = await getDiscount({
+                    alias: alias,
+                    productId: product_id,
+                    member,
+                    group,
+                    sum_insured,
+                });
+                if (response.message) {
+                    onFetch(null, response.message);
+                }
+                if (response?.data) {
+                    dispatch(saveProductDiscountResponse(response?.data?.data));
+                    onFetch(response.data?.data);
+                }
+                console.log(response);
+            } catch (err) {
+                alert(err);
+                console.log(err);
+            }
+        };
 
 export default quotePageSlice.reducer;

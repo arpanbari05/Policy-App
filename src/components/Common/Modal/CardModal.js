@@ -20,6 +20,7 @@ const CardModal = ({
     <Modal
       centered
       show={show}
+      size="lg"
       onHide={handleClose}
       animation={false}
       style={{
@@ -104,14 +105,15 @@ const ModalTitle = styled.h5`
   margin-bottom: 0;
   line-height: 1.5;
   color: #000;
-  font-size: 25px;
+  font-size: 20px;
+  color:#304261;
   font-weight: 900;
   width: 80%;
   @media (max-width: 767px) {
     font-size: 16px;
     line-height: 1.3;
   }
-  &:after {
+  /* &:after {
     content: "";
     height: 37px;
     width: 7px;
@@ -120,5 +122,5 @@ const ModalTitle = styled.h5`
     top: 13px;
     background-color: #fecc28;
     border-radius: 50px;
-  }
+  } */
 `;
