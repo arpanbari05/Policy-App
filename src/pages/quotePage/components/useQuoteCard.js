@@ -28,50 +28,51 @@ function useQuoteCard({ item }) {
 
     useEffect(() => {
         // code to merge plans with same id but different covers.
-
-        let newQuote = [];
-        for (var i = 0; i < item.length; i++) {
-            let exist = false;
-            for (var k = 0; k < item.length; k++) {
-                if (item[i]?.product.name == newQuote[k]?.product.name) {
-                    exist = true;
-                }
-            }
-
-            if (!exist) {
-                const tempQuote = {
-                    product: { id: item[i].product.id, name: item[i].product.name },
-                    sum_insured: [],
-                    premium: [],
-                    total_premium: [],
-                    mandatory_riders: [],
-                    tenure: [],
-                    tax_amount: [],
-                    company_alias: item[i].company_alias,
-                    logo: item[i].logo,
-                    cashlessHospitalsCount: [],
-                    features: [],
-                };
-                for (var j = 0; j < item.length; j++) {
-
-                    if (item[i].product.id === item[j].product.id) {
-                        tempQuote.sum_insured.push(item[j].sum_insured);
-                        tempQuote.total_premium.push(item[j].total_premium);
-                        tempQuote.premium.push(item[j].premium);
-                        tempQuote.mandatory_riders.push(item[j].mandatory_riders);
-                        tempQuote.tenure.push(item[j].tenure);
-                        tempQuote.tax_amount.push(item[j].tax_amount);
-                        tempQuote.cashlessHospitalsCount.push(
-                            item[j].cashlessHospitalsCount,
-                        );
-                        tempQuote.features.push(item[j].features);
+        if (item) {
+            let newQuote = [];
+            for (var i = 0; i < item.length; i++) {
+                let exist = false;
+                for (var k = 0; k < item.length; k++) {
+                    if (item[i]?.product.name == newQuote[k]?.product.name) {
+                        exist = true;
                     }
                 }
-                newQuote.push(tempQuote);
-            }
-        }
 
-        setMergedQuotes([...newQuote]);
+                if (!exist) {
+                    const tempQuote = {
+                        product: { id: item[i].product.id, name: item[i].product.name },
+                        sum_insured: [],
+                        premium: [],
+                        total_premium: [],
+                        mandatory_riders: [],
+                        tenure: [],
+                        tax_amount: [],
+                        company_alias: item[i].company_alias,
+                        logo: item[i].logo,
+                        cashlessHospitalsCount: [],
+                        features: [],
+                    };
+                    for (var j = 0; j < item.length; j++) {
+
+                        if (item[i].product.id === item[j].product.id) {
+                            tempQuote.sum_insured.push(item[j].sum_insured);
+                            tempQuote.total_premium.push(item[j].total_premium);
+                            tempQuote.premium.push(item[j].premium);
+                            tempQuote.mandatory_riders.push(item[j].mandatory_riders);
+                            tempQuote.tenure.push(item[j].tenure);
+                            tempQuote.tax_amount.push(item[j].tax_amount);
+                            tempQuote.cashlessHospitalsCount.push(
+                                item[j].cashlessHospitalsCount,
+                            );
+                            tempQuote.features.push(item[j].features);
+                        }
+                    }
+                    newQuote.push(tempQuote);
+                }
+            }
+
+            setMergedQuotes([...newQuote]);
+        }
     }, [item]);
 
     useEffect(() => {
@@ -96,6 +97,7 @@ function useQuoteCard({ item }) {
         setShow,
         mergedQuotes,
         checked,
+        setChecked,
 
         activeCover,
         setActiveCover,

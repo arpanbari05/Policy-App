@@ -26,7 +26,7 @@ const Checkbox = ({
           disabled={disabled || undefined}
         />
         <label htmlFor={code}> </label>
-        <span
+        {title && <span
           htmlFor={code}
           css={`
             left: 21px;
@@ -37,7 +37,7 @@ const Checkbox = ({
           `}
         >
           {title}
-        </span>
+        </span>}
       </div>
     </div>
   );
