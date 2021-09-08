@@ -342,9 +342,13 @@ const FilterModal = ({ show, handleClose }) => {
           history
         )
       );
+      
+      console.log(dataArray,"dataArray");
+      dataArray.length === 1? dispatch(setFilters({ planType: "Individual" })):dispatch(setFilters({ planType: "Family Floater" }))
+    handleClose()
    
     }
-  
+    
   };
 
   return (
@@ -449,7 +453,7 @@ const FilterModal = ({ show, handleClose }) => {
             <ErrorMessage style={{ fontSize: "15px" }}>{msg}</ErrorMessage>
           ))}
         <ApplyBtn
-          onClick={handleUpdate}
+          onClick={(e) => handleUpdate(e)}
           className="btn apply_btn mx-auto h-100 w-100"
         >
           Apply
@@ -460,27 +464,27 @@ const FilterModal = ({ show, handleClose }) => {
 };
 
 const EditMemberFilter = () => {
-  const { error } = useSelector((state) => state.greetingPage);
-  const { frontendData } = useSelector((state) => state.frontendBoot);
-  const { data } = frontendData || [""];
-  const { members } = data || [""];
-  const dispatch = useDispatch();
-  const [membersArray, setMembersArray] = useState([]);
-  const [childCount, setChildCount] = useState(0);
-  const [ageError, setAgeError] = useState([]);
+  // const { error } = useSelector((state) => state.greetingPage);
+  // const { frontendData } = useSelector((state) => state.frontendBoot);
+  // const { data } = frontendData || [""];
+  // const { members } = data || [""];
+  // const dispatch = useDispatch();
+  // const [membersArray, setMembersArray] = useState([]);
+  // const [childCount, setChildCount] = useState(0);
+  // const [ageError, setAgeError] = useState([]);
 
-  // const [showModal, setShowModal] = useState(false);
-  const [errors, setErrors] = useState(false);
-  // Will contain list of insurer names that are checked
-  const [insurerCBXArray, setInsurerCBXArray] = useState([]);
-  // Will contain list of insurer Dropdown values if checkbox is checked
-  const [insurerDDArray, setInsurerDDArray] = useState([]);
+  // // const [showModal, setShowModal] = useState(false);
+  // const [errors, setErrors] = useState(false);
+  // // Will contain list of insurer names that are checked
+  // const [insurerCBXArray, setInsurerCBXArray] = useState([]);
+  // // Will contain list of insurer Dropdown values if checkbox is checked
+  // const [insurerDDArray, setInsurerDDArray] = useState([]);
 
-  useEffect(() => {
-    if (members?.length > 0) {
-      setMembersArray([...members]);
-    }
-  }, [members]);
+  // useEffect(() => {
+  //   if (members?.length > 0) {
+  //     setMembersArray([...members]);
+  //   }
+  // }, [members]);
 
   // useEffect(() => {
   //   if (window.matchMedia("(max-width: 767px)")) {
@@ -499,84 +503,84 @@ const EditMemberFilter = () => {
   //   }
   // }, [membersArray]);
 
-  useEffect(() => {
-    let count = 0;
-    insurerCBXArray.forEach((element) => {
-      if (element.slice(0, 8) === "daughter" || element.slice(0, 3) === "son") {
-        count += 1;
-      }
-    });
+  // useEffect(() => {
+  //   let count = 0;
+  //   insurerCBXArray.forEach((element) => {
+  //     if (element.slice(0, 8) === "daughter" || element.slice(0, 3) === "son") {
+  //       count += 1;
+  //     }
+  //   });
 
-    setChildCount(count);
-  }, [insurerCBXArray]);
+  //   setChildCount(count);
+  // }, [insurerCBXArray]);
 
-  const addChild = (name) => {
-    const code = name.toLowerCase();
-    if (insurerCBXArray.includes(code)) {
-      if (childCount < 4) {
-        const { max_age, min_age } = membersArray.filter(
-          (item) => item.code === code
-        )[0];
-        setChildCount(childCount + 1);
-        const genCode = `${code + uuidv4()}`;
-        const tempArray = [...membersArray];
-        const index = tempArray.findIndex((x) => x.display_name === name);
-        tempArray.splice(index + 1, 0, {
-          [`code`]: genCode,
-          [`display_name`]: name,
-          [`min_age`]: `${min_age}`,
-          [`max_age`]: `${max_age}`,
-          ["is_primary"]: true,
-          ["hasClose"]: true,
-        });
-        handleinsurerCBXArray(genCode);
+  // const addChild = (name) => {
+  //   const code = name.toLowerCase();
+  //   if (insurerCBXArray.includes(code)) {
+  //     if (childCount < 4) {
+  //       const { max_age, min_age } = membersArray.filter(
+  //         (item) => item.code === code
+  //       )[0];
+  //       setChildCount(childCount + 1);
+  //       const genCode = `${code + uuidv4()}`;
+  //       const tempArray = [...membersArray];
+  //       const index = tempArray.findIndex((x) => x.display_name === name);
+  //       tempArray.splice(index + 1, 0, {
+  //         [`code`]: genCode,
+  //         [`display_name`]: name,
+  //         [`min_age`]: `${min_age}`,
+  //         [`max_age`]: `${max_age}`,
+  //         ["is_primary"]: true,
+  //         ["hasClose"]: true,
+  //       });
+  //       handleinsurerCBXArray(genCode);
 
-        setMembersArray(tempArray);
-      }
-    }
-  };
+  //       setMembersArray(tempArray);
+  //     }
+  //   }
+  // };
 
-  const handleinsurerCBXArray = (insurer) => {
-    const tempArray = [...insurerCBXArray];
+  // const handleinsurerCBXArray = (insurer) => {
+  //   const tempArray = [...insurerCBXArray];
 
-    if (!tempArray.includes(insurer)) {
-      tempArray.push(insurer);
-    } else {
-      const index = tempArray.indexOf(insurer);
+  //   if (!tempArray.includes(insurer)) {
+  //     tempArray.push(insurer);
+  //   } else {
+  //     const index = tempArray.indexOf(insurer);
 
-      if (index > -1) {
-        tempArray.splice(index, 1);
-        handleinsurerDDArray(insurer, "Select Age");
-      }
-    }
-    setInsurerCBXArray(tempArray);
-  };
+  //     if (index > -1) {
+  //       tempArray.splice(index, 1);
+  //       handleinsurerDDArray(insurer, "Select Age");
+  //     }
+  //   }
+  //   setInsurerCBXArray(tempArray);
+  // };
 
-  const handleinsurerDDArray = (insurer, value) => {
-    const tempArray = [...insurerDDArray];
-    var index = tempArray.map((o) => o.insurer).indexOf(insurer);
-    if (value !== "Select Age") {
-      if (index > -1) {
-        tempArray[index].value = value;
-        if (!insurerCBXArray.includes(insurer)) {
-          handleinsurerCBXArray(insurer);
-        }
-      } else {
-        tempArray.push({ insurer: `${insurer}`, value: `${value}` });
-        if (!insurerCBXArray.includes(insurer)) {
-          handleinsurerCBXArray(insurer);
-        }
-      }
-    } else if (index > -1) {
-      tempArray.splice(index, 1);
-    }
-    if (tempArray.length > 0) {
-      setErrors(false);
-    } else {
-      setErrors(true);
-    }
-    setInsurerDDArray(tempArray);
-  };
+  // const handleinsurerDDArray = (insurer, value) => {
+  //   const tempArray = [...insurerDDArray];
+  //   var index = tempArray.map((o) => o.insurer).indexOf(insurer);
+  //   if (value !== "Select Age") {
+  //     if (index > -1) {
+  //       tempArray[index].value = value;
+  //       if (!insurerCBXArray.includes(insurer)) {
+  //         handleinsurerCBXArray(insurer);
+  //       }
+  //     } else {
+  //       tempArray.push({ insurer: `${insurer}`, value: `${value}` });
+  //       if (!insurerCBXArray.includes(insurer)) {
+  //         handleinsurerCBXArray(insurer);
+  //       }
+  //     }
+  //   } else if (index > -1) {
+  //     tempArray.splice(index, 1);
+  //   }
+  //   if (tempArray.length > 0) {
+  //     setErrors(false);
+  //   } else {
+  //     setErrors(true);
+  //   }
+  //   setInsurerDDArray(tempArray);
+  // };
 
 
   const [showModal, setShowModal] = useState(false);
