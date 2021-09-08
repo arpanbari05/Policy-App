@@ -61,21 +61,19 @@ const RoundDD = ({
           css={`
             border: ${redBorder && "1px solid red !important"};
           `}
-          className={`${isOpen && "active"} GreetingDD__Header ${
-            disabled && "disabled"
-          }`}
+          className={`${isOpen && "active"} GreetingDD__Header ${disabled && "disabled"
+            }`}
         >
           <HeaderTitle
-           
-            className={`${isOpen && "active"} GreetingDD__Title ${
-              disabled && "font-gray"
-            }`}
+
+            className={`${isOpen && "active"} GreetingDD__Title ${disabled && "font-gray"
+              }`}
           >
-            <span  css={`
+            <span css={`
               visibility: ${isOpen && "hidden"};
             `}>
 
-            {selected}
+              {selected}
             </span>
           </HeaderTitle>
         </Header>
@@ -127,8 +125,11 @@ const InputField = styled.input`
   width: 58% !important;
   font-size: 12px;
   font-weight: 400 !important;
-  background-color:#ebf5ff;
+  background-color:#fff;
   color: #6b7789;
+  &:focus{
+    outline: none;
+  }
   &:focus::placeholder {
     opacity: 1 !important;
   }
@@ -150,10 +151,10 @@ export const Wrapper = styled.div`
 
 export const Header = styled.a`
   cursor: pointer;
-  background-color:#ebf5ff;
+  background-color:#fff;
   position: relative;
   color: #6b7789;
-  // border: 0.2px solid #dfe1f2;
+  border: 1px solid #b0bed0;
   padding: ${(props) => (props.sortByDD ? "auto" : "12px 15px !important")};
   display: inline-block;
   width: ${(props) => (props.sortByDD ? "auto" : "175px")};
@@ -239,11 +240,11 @@ export const ListItem = styled.div`
   font-weight: 400;
   line-height: 18px;
   padding: 5px 8px 8px 14px;
-  background-color:#ebf5ff;
+  background-color:#fff;
 
   &:hover,
   &.active {
-    background-color: #fff5f6;
-    color: #495c68;
+    background-color: #0a87ff;
+    color: #fff;
   }
 `;
