@@ -115,6 +115,7 @@ const FilterModal = ({ show, handleClose }) => {
                         onChange={(e) =>
                           handleChange(option.code, option.display_name)
                         }
+                
                       />
                     </li>
                   ) :<></>

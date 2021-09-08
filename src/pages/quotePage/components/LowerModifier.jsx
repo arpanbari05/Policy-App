@@ -1,3 +1,4 @@
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import PremiumFilter from "./filters/PremiumFilter";
 import CoverRangeFilter from "./filters/CoverRangeFilter";
@@ -7,12 +8,15 @@ import InsurerFilter from "./filters/InsurerFilter";
 import MoreFilters from "./filters/MoreFilters";
 
 const LowerModifier = () => {
+  const planType = useSelector(({quotePage}) => quotePage.filters.planType)
   return (
     <div className="container">
       <FiltersWrapper className="d-flex">
         <PremiumFilter/>
         <CoverRangeFilter/>
-        <PolicyTypeFilter/>
+        {
+          planType !== "Individual"?<PolicyTypeFilter/>:<></>
+        }
         <MultiyearOptionFilter/>
         <InsurerFilter/>
         <MoreFilters/>

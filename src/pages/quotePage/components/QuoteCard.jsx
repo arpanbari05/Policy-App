@@ -3,15 +3,16 @@ import { Col, Collapse, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import "styled-components/macro"
 import { maxbupa } from '../../../assets/images'
+import { useParams } from "react-router";
 import CheckBox from "../../ComparePage/components/Checkbox/Checbox"
 import { removeQuotesForCompare, saveSelectedPlan, setQuotesForCompare, setQuotesOnCompare } from '../quote.slice';
 import CustomDropDown from './filters/CustomDropdown';
 import { CenterBottomStyle, CenterBottomToggle, EachWrapper, Logo, LogoWrapper, Outer, PlanName, RadioButton, RadioInput, RadioLabel, SeeText, SmallLabel, TextWrapper, ValueText } from './QuoteCard.style'
 import SubContent from './SubContent';
 import useQuoteCard from './useQuoteCard';
+import useCartProduct from "../../Cart/hooks/useCartProduct"
 
-
-function QuoteCard({ id, item, handleSeeDetails, }) {
+function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
     const {
         dispatch,
         show,
@@ -25,6 +26,9 @@ function QuoteCard({ id, item, handleSeeDetails, }) {
     } = useQuoteCard({ item });
     console.log("mergedquotes", mergedQuotes);
     const [check, setCheck] = useState(false);
+    const { groupCode: selectedGroup } = useParams();
+    const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
+    const  [isLoading,setIsLoading] = useState(false);
     const [activeCover, setActiveCover] = useState(0);
     const { multiYear } = useSelector(state => state.quotePage.filters);
     console.log("active cover: " + activeCover)
@@ -36,6 +40,32 @@ function QuoteCard({ id, item, handleSeeDetails, }) {
         additionalPremium += element.total_premium;
     });
 
+    const handleBuyNowClick = () => {
+        setIsLoading(true);
+        const selectedPlan = {
+          // company_alias: mergedQuotes[0]?.company_alias,
+          // logo: mergedQuotes[0]?.logo,
+          product: mergedQuotes[0]?.product,
+          total_premium: mergedQuotes[0]?.total_premium[activeCover],
+          // premium: mergedQuotes[0]?.premium[activeCover],
+          sum_insured: mergedQuotes[0]?.sum_insured[activeCover],
+          tax_amount: mergedQuotes[0]?.tax_amount[activeCover],
+          tenure: mergedQuotes[0]?.tenure[activeCover],
+        };
+
+        addProduct({
+          ...selectedPlan,
+          product_id: selectedPlan.product?.id,
+          premium: selectedPlan.total_premium,
+          group_id: parseInt(selectedGroup),
+          service_tax: selectedPlan.tax_amount,
+          riders: mergedQuotes[0]?.mandatory_riders[activeCover].map((rider) => ({
+            ...rider,
+            rider_id: rider.id,
+          })),
+        }).then(handleClick);
+        setIsLoading(false);
+      };
 
     const handleSeeDetailsClick = clickedFrom => {
         handleSeeDetails(
@@ -154,7 +184,7 @@ function QuoteCard({ id, item, handleSeeDetails, }) {
                 <div className="col-md-3">
                     <EachWrapper>
                         <LogoWrapper>
-                            <RadioButton>
+                            <RadioButton onClick={() => handleBuyNowClick()}>
                                 <strong>₹{" "}
                                     {parseInt(
                                         mergedQuotes[0]?.total_premium[activeCover] + additionalPremium,

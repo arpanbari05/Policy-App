@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -16,9 +16,13 @@ const FilterModal = ({ show, handleClose }) => {
   const coverRangeOptions = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
+  const [ownCover, setOwnCover] = useState(filters.ownCover);
+
+  const [inputCoverError, setinputCoverError] = useState(false);
   const companies = useSelector(
     (state) => state.frontendBoot.frontendData.data.companies
   );
+  const [inputCover, setInputCover] = useState(false);
   const existingCoverCode = coverRangeOptions.covers.find(
     (filter) => filter.display_name === filters.cover
   )?.code;
@@ -34,7 +38,49 @@ const FilterModal = ({ show, handleClose }) => {
       : {}
   );
 
+  useEffect(() => {
+    if (inputCover) {
+      if (inputCover < 200000) {
+        setinputCoverError("Minimum should be 2 lac");
+      } else if (inputCover > 200000 && inputCover < 300000) {
+        setselectedCover({
+          code: `${inputCover}-${300000}`,
+          displayName: `₹ ${inputCover}`,
+        });
+      } else if (inputCover > 300000 && inputCover < 500000) {
+        setselectedCover({
+          code: `${300000}-${500000}`,
+          displayName: `₹ ${inputCover}`,
+        });
+      } else if (inputCover > 1000000 && inputCover < 1500000) {
+        setselectedCover({
+          code: `${1500000}-${1500000}`,
+          displayName: `₹ ${inputCover}`,
+        });
+      } else if (inputCover > 1500000 && inputCover < 2500000) {
+        setselectedCover({
+          code: `${1500000}-${2500000}`,
+          displayName: `₹ ${inputCover}`,
+        });
+      } else if (inputCover > 2500000) {
+        setselectedCover({
+          code: `${2500000}-${10000000}`,
+          displayName: `₹ ${inputCover}`,
+        });
+      } else if (inputCover > 10000000) {
+        setinputCoverError("Maximum should be 1 Crore");
+      } else if (inputCover % 100000 != 0) {
+        setinputCoverError("Enter in multiples of 1 lac");
+      } else {
+        setinputCoverError(false);
+      }
+    } else {
+      setinputCoverError(false);
+    }
+  }, [inputCover]);
+
   const handleChange = (code, displayName) => {
+    setInputCover(false);
     if (displayName) {
       setselectedCover({
         code,
@@ -48,9 +94,9 @@ const FilterModal = ({ show, handleClose }) => {
     e.preventDefault();
     dispatch(setFilters({ cover: selectedCover.displayName }));
 
-    console.log(selectedCover, "=====");
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
+    
     dispatch(
       fetchQuotes(companies, {
         plan_type:
@@ -118,9 +164,10 @@ const FilterModal = ({ show, handleClose }) => {
                         type="radio"
                         id={option.code}
                         name="selectCover"
-                        onChange={(e) =>
-                          handleChange(option.code, option.display_name)
-                        }
+                        onChange={(e) => {
+                          setInputCover("");
+                          handleChange(option.code, option.display_name);
+                        }}
                       />
                     </li>
                   );
@@ -139,13 +186,20 @@ const FilterModal = ({ show, handleClose }) => {
           {/* custom input range for plan */}
           <CustomInputWrapper>
             <input
-              type="text"
+              type="number"
               placeholder="Enter your own cover."
               className="w-100"
+              value={inputCover}
+              onChange={(e) => {
+                setInputCover(e.target.value);
+                setselectedCover("");
+              }}
             />
-            <div className="bottom_msg">
-              Enter value between 2 lacs to 1 crore in multiples of 1 lacs.
-            </div>
+            {inputCoverError ? (
+              <div className="bottom_msg">{inputCoverError}</div>
+            ) : (
+              <></>
+            )}
           </CustomInputWrapper>
         </div>
       </Modal.Body>

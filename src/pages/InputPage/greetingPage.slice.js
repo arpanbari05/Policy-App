@@ -127,13 +127,13 @@ export const {
   setTraceId,
 } = greeting.actions;
 
-export const saveForm1UserDetails = (data2, handleChange) => {
+export const saveForm1UserDetails = (data2, pushToQuotes) => {
   const { pinCode, is_pincode_search } = data2;
   return async (dispatch) => {
     try {
       if (pinCode) {
-        const { data } = await createUser({
-          section: "health",
+        const { data } = await updateUser({
+
           pincode: pinCode,
           is_pincode_search,
         });
@@ -150,10 +150,18 @@ export const saveForm1UserDetails = (data2, handleChange) => {
             is_pincode_search,
           })
         );
-        setTimeout(() => {
-          handleChange(2);
-          dispatch(setIsDisabled(false));
-        }, 500);
+        // setTimeout(() => {
+
+        //   dispatch(setIsDisabled(false));
+        // }, 500);
+        const newMemberGroups = data.data.groups.reduce(
+          (groups, member) => ({
+            ...groups,
+            [member.id]: member.members,
+          }),
+          {}
+        );
+        pushToQuotes(Object.keys(newMemberGroups)[0]);
       }
     } catch {
       alert("something went wrong");
@@ -161,7 +169,7 @@ export const saveForm1UserDetails = (data2, handleChange) => {
   };
 };
 
-export const saveForm2UserDetails = (userDetails, pushToQuotes) => {
+export const saveForm2UserDetails = (userDetails, handleChange) => {
   const { fullName, mobile, gender, email } = userDetails;
   return async (dispatch) => {
     try {
@@ -174,7 +182,8 @@ export const saveForm2UserDetails = (userDetails, pushToQuotes) => {
         gender: gender,
       };
 
-      const { data } = await updateUser({
+      const { data } = await createUser({
+        section: "health",
         ...modUserDetails,
       });
 
@@ -200,7 +209,8 @@ export const saveForm2UserDetails = (userDetails, pushToQuotes) => {
         }),
         {}
       );
-      pushToQuotes(Object.keys(newMemberGroups)[0]);
+      // pushToQuotes(Object.keys(newMemberGroups)[0]);
+      handleChange(2)
       console.log("dgasgasd", 221);
       // dispatch(saveFilteredQuotes([]));
       // dispatch(createUserData(modUserDetails));

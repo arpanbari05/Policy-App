@@ -4,6 +4,9 @@ import "styled-components/macro"
 import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
 import QuoteCard from "./components/QuoteCard";
+import BuyNowModal from "./components/BuyNowModal";
+
+
 import { SortByButton, TextLabel } from "./Quote.style";
 import { insurerFilter } from "./quote.slice";
 import useQuotesPage from "./useQuotes";
@@ -66,7 +69,6 @@ function QuotePage() {
   const firstQuoteFound =
     filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
 
-  console.log("firstquoteFound: ", firstQuoteFound);
   return (
     <div>
       <UpperModifier />
@@ -74,7 +76,7 @@ function QuotePage() {
 
       <div className="container">
         <div className="col-md-12 d-flex">
-          <div className="col-md-9" style={{ padding: "0px 5px", marginBottom: "40px" }}
+          <div className="col-md-9" style={{ padding: "0px 5px", marginBottom: "120px" }}
             css={`
                      @media (max-width: 1200px) {
            width: 100%;
@@ -99,7 +101,7 @@ function QuotePage() {
                 firstQuoteFound && (
                   filterQuotes.map(
                     (item, index) =>
-                      item.length > 0 && (
+                      item.length ? (
                         <QuoteCard
                           key={index}
                           id={index}
@@ -108,23 +110,12 @@ function QuotePage() {
                             setSeeDetailsQuote(quote);
                             setShowSeeDetails(true);
                           }}
+                          handleClick={() => setShowBuyNow(true)}
                         />
-                      ),
+                      ) : <></>
                   )
                 )
-              ) :
-              (
-                !loadingQuotes && (
-                  <p
-                    css={`
-                  display: flex;
-                  height: 275px;
-                  justify-content: center;
-                  align-items: center;
-                `}
-                  >
-                    no quotes
-                  </p>))
+              ) : <CardSkeletonLoader noOfCards={3} />
             }
 
           </div>
@@ -153,6 +144,12 @@ display: none;
           </div>
         </div>
       </div>
+      {showBuyNow && (
+        <BuyNowModal
+          showBuyNow={showBuyNow}
+          setShowBuyNow={setShowBuyNow}
+        />
+      )}
       <ComparePopup showPopup={showPopup} groupCode={groupCode} />
       {showSeeDetails && (
         <SeeDetails

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { setFilters, premiumFilterCards } from "../../quote.slice";
+import { setFilters, premiumFilterQuotes } from "../../quote.slice";
 import "styled-components/macro";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
@@ -15,6 +15,8 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
     displayName:""
   });
 
+console.log(selectedPremium,"selectedPremium")
+
   const handleChange = (code,displayName) => {
     if (displayName) {
       setSelectedPremium({code,displayName});
@@ -23,7 +25,7 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
 
   const handleApply = () => {
    dispatch(setFilters({premium:selectedPremium.displayName}));
-   dispatch(premiumFilterCards( {code:selectedPremium.code} ));
+   dispatch(premiumFilterQuotes( selectedPremium ));
    handleClose();
   };
 
