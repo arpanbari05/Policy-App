@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import StyledButton from "../../../components/StyledButton";
 import TextInput from "../../../components/TextInput";
 import CustomProgressBar from "../../../components/ProgressBar";
-import { Title, SubTitle, ErrorMessage } from "./FormComponents";
+import { Title, SubTitle, ErrorMessage, formButtons } from "./FormComponents";
 import { useSelector, useDispatch } from "react-redux";
 import RadioCapsule from "../../../components/RadioCapsule";
 import {
@@ -11,6 +11,8 @@ import {
   setIsDisabled,
 } from "../greetingPage.slice";
 import "styled-components/macro";
+import { useHistory } from "react-router";
+import SecureLS from "secure-ls";
 const Form1 = ({ handleChange, currentForm }) => {
   const dispatch = useDispatch();
   const { frontendData } = useSelector((state) => state.frontendBoot);
@@ -24,6 +26,9 @@ const Form1 = ({ handleChange, currentForm }) => {
   const { data } = frontendData || [""];
   const { popularcities } = data || [""];
 
+  const ls = new SecureLS();
+  const history = useHistory();
+
   const [pinCode, setPinCode] = useState("");
   const [customErrors, setCustomErrors] = useState(false);
 
@@ -35,6 +40,13 @@ const Form1 = ({ handleChange, currentForm }) => {
   useEffect(() => {
     setCustomErrors(regionDetailsError);
   }, [regionDetailsError]);
+
+  const pushToQuotes = (groupCode) => {
+    history.push({
+      pathname: `/quotes/${groupCode}`,
+      search: `enquiryId=${ls.get("enquiryId")}`,
+    });
+  };
 
   const handleSubmit = () => {
     console.log("heheh");
@@ -49,7 +61,8 @@ const Form1 = ({ handleChange, currentForm }) => {
             pinCode: regionDetails.pincode,
             is_pincode_search: regionDetails.is_pincode_search,
           },
-          handleChange
+          // handleChange
+          pushToQuotes
         )
       );
     } else if (
@@ -65,7 +78,7 @@ const Form1 = ({ handleChange, currentForm }) => {
   return (
     <div
       css={`
-        display: ${currentForm !== 1 && "none"};
+        display: ${currentForm !== 5 && "none"};
       `}
     >
       <div
@@ -116,7 +129,7 @@ const Form1 = ({ handleChange, currentForm }) => {
                         pinCode: regionDetails.pincode,
                         is_pincode_search: regionDetails.is_pincode_search,
                       },
-                      handleChange
+                      pushToQuotes
                     )
                   );
                 }}
@@ -145,19 +158,26 @@ const Form1 = ({ handleChange, currentForm }) => {
                     pinCode: pincode,
                     is_pincode_search: false,
                   },
-                  handleChange
+                  pushToQuotes
                 )
               );
             }}
           />
         ))}
       </div>
+      {formButtons(
+        () => {
+          handleChange(currentForm - 1);
+        },
+        handleSubmit,
+        true
+      )}
       <div>
-        <StyledButton
+        {/* <StyledButton
           styledCss={`margin:0; width: 100%;`}
           value={`Get Started`}
           onClick={handleSubmit}
-        />
+        /> */}
       </div>
     </div>
   );
