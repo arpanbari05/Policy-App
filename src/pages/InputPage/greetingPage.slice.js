@@ -132,11 +132,13 @@ export const saveForm1UserDetails = (data2, pushToQuotes) => {
   return async (dispatch) => {
     try {
       if (pinCode) {
+
         const { data } = await updateUser({
 
           pincode: pinCode,
           is_pincode_search,
         });
+        console.log("wwww", data);
         const {
           data: { enquiry_id },
           access_token,
@@ -150,18 +152,18 @@ export const saveForm1UserDetails = (data2, pushToQuotes) => {
             is_pincode_search,
           })
         );
-        // setTimeout(() => {
+        setTimeout(() => {
+          const newMemberGroups = data.data.groups.reduce(
+            (groups, member) => ({
+              ...groups,
+              [member.id]: member.members,
+            }),
+            {}
+          );
+          pushToQuotes(Object.keys(newMemberGroups)[0]);
+          dispatch(setIsDisabled(false));
+        }, 500);
 
-        //   dispatch(setIsDisabled(false));
-        // }, 500);
-        const newMemberGroups = data.data.groups.reduce(
-          (groups, member) => ({
-            ...groups,
-            [member.id]: member.members,
-          }),
-          {}
-        );
-        pushToQuotes(Object.keys(newMemberGroups)[0]);
       }
     } catch {
       alert("something went wrong");
