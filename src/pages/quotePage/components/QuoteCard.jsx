@@ -10,6 +10,7 @@ import { CenterBottomStyle, CenterBottomToggle, EachWrapper, Logo, LogoWrapper, 
 import SubContent from './SubContent';
 import useQuoteCard from './useQuoteCard';
 
+
 function QuoteCard({ id, item, handleSeeDetails, }) {
     const {
         dispatch,
