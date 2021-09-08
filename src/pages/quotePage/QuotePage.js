@@ -1,10 +1,11 @@
-import {useState} from "react";
+import { useState } from "react";
 import styled from "styled-components";
+import "styled-components/macro"
 import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
 import QuoteCard from "./components/QuoteCard";
 import BuyNowModal from "./components/BuyNowModal";
-import CardSkeletonLoader from "../../components/Common/card-skeleton-loader/CardSkeletonLoader";
+
 
 import { SortByButton, TextLabel } from "./Quote.style";
 import { insurerFilter } from "./quote.slice";
@@ -14,6 +15,9 @@ import { useDispatch, useSelector } from "react-redux";
 import SortByDD from "./components/SortBy/SortByDD";
 
 import SeeDetails from "../SeeDetails/SeeDetails";
+import CardSkeletonLoader from "../../components/Common/card-skeleton-loader/CardSkeletonLoader";
+import ComparePopup from "./components/ComparePopup/ComparePopup";
+import { useParams } from "react-router";
 
 
 function QuotePage() {
@@ -44,8 +48,24 @@ function QuotePage() {
     quote: "",
     activeSum: "",
   });
+  const { memberGroups, proposerDetails } = useSelector(
+    state => state.greetingPage,
+  );
+  const { groupCode } = useParams();
+  const { planType } = useSelector(state => state.quotePage.filters);
+  // const { selectedGroup } = useSelector(state => state.quotePage);
+  const {
+    plantypes,
+    baseplantypes: basePlanTypes,
+    covers,
+  } = useSelector(state => state.frontendBoot.frontendData.data);
 
 
+  const selectedPlanType =
+    planType ||
+    plantypes?.find(planType => planType.code === proposerDetails.plan_type)
+      ?.display_name ||
+    "";
   const firstQuoteFound =
     filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
 
@@ -56,9 +76,15 @@ function QuotePage() {
 
       <div className="container">
         <div className="col-md-12 d-flex">
-          <div className="col-md-8" style={{ padding: "0px 5px", marginBottom: "40px" }}>
+          <div className="col-md-9" style={{ padding: "0px 5px", marginBottom: "40px" }}
+            css={`
+                     @media (max-width: 1200px) {
+           width: 100%;
+                     }
+                     `}
+          >
             <div className=" d-flex justify-content-between align-items-center">
-              <TextLabel> Showing Family Floater Plan</TextLabel>
+              <TextLabel> Showing {selectedPlanType} Plan</TextLabel>
               {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
               </SortByButton> */}
@@ -93,7 +119,13 @@ function QuotePage() {
             }
 
           </div>
-          <div className="col-md-4" style={{ padding: "0px 5px" }}>
+          <div className="col-md-3" style={{ padding: "0px 5px" }}
+            css={`
+          @media (max-width: 1200px) {
+display: none;
+          }
+          `}
+          >
             <div className="d-flex justify-content-between align-items-center ">
               <TextLabel className="my-2">
                 All Premium Plans are GST Inclusive
@@ -118,20 +150,21 @@ function QuotePage() {
                 setShowBuyNow={setShowBuyNow}
               />
             )}
+      <ComparePopup showPopup={showPopup} groupCode={groupCode} />
       {showSeeDetails && (
-              <SeeDetails
-                show={showSeeDetails}
-                handleClose={() => setShowSeeDetails(!showSeeDetails)}
-                quote={seeDetailsQuote.quote}
-                sum_insured={
-                  seeDetailsQuote.quote.sum_insured[seeDetailsQuote.activeSum]
-                }
-                tenure={seeDetailsQuote.quote.tenure[seeDetailsQuote.activeSum]}
-                product={
-                  seeDetailsQuote.quote.product[seeDetailsQuote.activeSum]
-                }
-              />
-            )}
+        <SeeDetails
+          show={showSeeDetails}
+          handleClose={() => setShowSeeDetails(!showSeeDetails)}
+          quote={seeDetailsQuote.quote}
+          sum_insured={
+            seeDetailsQuote.quote.sum_insured[seeDetailsQuote.activeSum]
+          }
+          tenure={seeDetailsQuote.quote.tenure[seeDetailsQuote.activeSum]}
+          product={
+            seeDetailsQuote.quote.product[seeDetailsQuote.activeSum]
+          }
+        />
+      )}
     </div>
   );
 }

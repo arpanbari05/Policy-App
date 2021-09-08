@@ -220,7 +220,8 @@ const popupContent = (
                     }
                   >
                     <span>
-                      <i class="fa fa-close"></i>
+                      {/* <i class="fa fa-close"></i> */}
+                      x
                     </span>
                   </RemoveCross>
                   <LogoWrapper>
@@ -259,8 +260,8 @@ const popupContent = (
                             `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
                           ]
                             ? discount[
-                                `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
-                              ].premium
+                              `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
+                            ].premium
                             : mergedQuotes[index].data.premium
                           ).toLocaleString("en-IN") +
                             "/" +
@@ -324,8 +325,7 @@ const popupContent = (
                               });
                             } else if (value?.plan && value?.sumInsured) {
                               setSelectedAddPlan(
-                                `${ProductWiseId[value.plan]}${
-                                  value?.sumInsured
+                                `${ProductWiseId[value.plan]}${value?.sumInsured
                                 }`
                               );
                               setValue({});
@@ -495,8 +495,8 @@ const popupContentM = (
                           `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
                         ]
                           ? discount[
-                              `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
-                            ].premium
+                            `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
+                          ].premium
                           : mergedQuotes[index].data.premium
                         ).toLocaleString("en-IN") +
                           "/" +
@@ -551,8 +551,7 @@ const popupContentM = (
                               });
                             } else if (value?.plan && value?.sumInsured) {
                               setSelectedAddPlan(
-                                `${ProductWiseId[value.plan]}${
-                                  value?.sumInsured
+                                `${ProductWiseId[value.plan]}${value?.sumInsured
                                 }`
                               );
                             }

@@ -58,7 +58,7 @@ const PlanContainer = ({
             display: flex;
             align-items: center;
             border-radius: 4px;
-            height: 160px;
+            height: 185px;
             width: 248px;
             margin: 0 12px;
             justify-content: space-around;
@@ -100,7 +100,7 @@ const PlanContainer = ({
                   product: product,
                   total_premium:
                     discount[`${product.id}${sum_insured}`]?.total_premium +
-                      additionalPremium || total_premium + additionalPremium,
+                    additionalPremium || total_premium + additionalPremium,
                   // premium: mergedQuotes[0]?.premium[activeCover],
                   sum_insured:
                     discount[`${product.id}${sum_insured}`]?.sum_insured ||
@@ -120,11 +120,10 @@ const PlanContainer = ({
                   riders: riders[`${product.id}${sum_insured}`],
                 }).then(() => setShowBuyNowPopup(true));
               }}
-              value={`${
-                total_premium +
+              value={`${total_premium +
                 additionalPremium +
                 (ridersPremium[`${product.id}${sum_insured}`] || 0)
-              } /${getYearsUsingTenure(tenure)}`}
+                } /${getYearsUsingTenure(tenure)}`}
             />
           </Col>
         </Row>

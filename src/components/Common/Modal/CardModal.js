@@ -38,6 +38,7 @@ const CardModal = ({
       className={`${customClass}`}
     >
       <Modal.Header
+        closeButton
         style={{
           borderBottomColor: !title && "#fff",
           padding: !title && "28px",

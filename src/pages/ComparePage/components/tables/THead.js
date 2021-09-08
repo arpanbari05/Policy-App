@@ -83,9 +83,10 @@ const THead = ({
     <thead
       id="product-comparison-header"
       style={{
-        position: !scroll ? "static" : "fixed",
+        position: !scroll ? "relative" : "fixed",
         top: "0",
-        // boxShadow: "0px 10px 20px rgb(134 156 213 / 25%)",
+        zIndex: "9",
+        boxShadow: "0px 10px 20px rgb(134 156 213 / 25%)",
       }}
     >
       <tr>
