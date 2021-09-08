@@ -53,7 +53,7 @@ export const fieldSet1Data = [
   {
     type: "email",
     name: "email",
-    label: "Email id",
+    label: "Email Id",
     placeHolder: "Enter email id.",
     maxLength: "50",
   },
@@ -213,7 +213,7 @@ const Form5 = ({ handleChange, currentForm }) => {
                     styledCss={`  
                   margin-bottom: 19px;
                   `}
-                    label={name === "fullName" ? "FullName" : name}
+                    label={name === "fullName" ? "Full Name" : label}
                     name={name}
                     type={type}
                     value={

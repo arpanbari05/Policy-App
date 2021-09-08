@@ -103,7 +103,7 @@ const Form3 = ({ handleChange, currentForm }) => {
           padding: 17px;
         `}
       >
-        <Title>Which plan would you like to opt for?</Title>
+        <Title>Do you have any medical history?</Title>
         <CustomProgressBar now={currentForm} total={5} />
         <div
           css={`
