@@ -45,11 +45,14 @@ export const InputPage = () => {
                 }
               `}
             >
-              <Form1 currentForm={currentForm} handleChange={handleChange} />
-              <Form2 currentForm={currentForm} handleChange={handleChange} />
-              <Form3 currentForm={currentForm} handleChange={handleChange} />
-              <Form4 currentForm={currentForm} handleChange={handleChange} />
               <Form5 currentForm={currentForm} handleChange={handleChange} />
+              <Form2 currentForm={currentForm} handleChange={handleChange} />
+
+              <Form3 currentForm={currentForm} handleChange={handleChange} />
+              <Form1 currentForm={currentForm} handleChange={handleChange} />
+
+              <Form4 currentForm={currentForm} handleChange={handleChange} />
+
             </div>
           </Card>
           {currentForm === 5 && termsAndConditions(showmore, setShowmore)}

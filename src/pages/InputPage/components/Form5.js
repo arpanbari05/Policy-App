@@ -110,6 +110,8 @@ const Form5 = ({ handleChange, currentForm }) => {
     mode: "onBlur",
   });
   const onSubmit = (data) => {
+
+    console.log("dgasgasd", 222);
     dispatch(
       saveForm2UserDetails(
         {
@@ -118,7 +120,8 @@ const Form5 = ({ handleChange, currentForm }) => {
           email: email,
           gender: gender,
         },
-        pushToQuotes
+        // pushToQuotes
+        handleChange
       )
     );
     console.log(gender, fullName, email, mobile, "h21");
@@ -128,7 +131,7 @@ const Form5 = ({ handleChange, currentForm }) => {
   return (
     <div
       css={`
-        display: ${currentForm !== 5 && "none"};
+        display: ${currentForm !== 1 && "none"};
       `}
     >
       <form noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -217,10 +220,10 @@ const Form5 = ({ handleChange, currentForm }) => {
                       name === "fullName"
                         ? fullName
                         : name === "email"
-                        ? email
-                        : name === "mobile"
-                        ? mobile
-                        : undefined
+                          ? email
+                          : name === "mobile"
+                            ? mobile
+                            : undefined
                     }
                     onKeyDown={
                       name === "mobile"
@@ -272,15 +275,23 @@ const Form5 = ({ handleChange, currentForm }) => {
               )
             )}
           </div>
-          {formButtons(
+          {/* {formButtons(
             () => {
               handleChange(currentForm - 1);
             },
             handleSubmit,
             true
-          )}
+          )} */}
+
         </div>
+        <StyledButton
+          styledCss={`margin:0; width: 100%;`}
+          value={`Get Started`}
+          onClick={
+            handleSubmit}
+        />
       </form>
+
     </div>
   );
 };
