@@ -4,6 +4,8 @@ import { InputPage } from "./pages/InputPage/InputPage";
 import ComparePage from "./pages/ComparePage/ComparePage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./app.css";
+import FilterSkeletonLoader from "./components/Common/filter-skeleton-loader/FilterSkeletonLoader";
+import CardSkeletonLoader from "./components/Common/card-skeleton-loader/CardSkeletonLoader";
 import Navbar from "./components/Navbar";
 import { fetchFrontendData } from "./FrontendBoot/reducer/frontendBoot.slice";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,7 +46,41 @@ function App() {
     return (
       <>
         <Navbar />
-        Loading...
+        <div
+        style={{
+          width: "80%",
+          margin: "20px auto",
+        }}
+      >
+        <FilterSkeletonLoader />
+  
+        <div className="d-flex justify-content-between">
+        <div
+          style={{
+            width: "60%",
+            margin: "20px",
+          }}
+        >
+          <CardSkeletonLoader noOfCards={3} />
+        </div>
+        <div
+          style={{
+            width: "32%",
+            margin: "20px",
+          }}
+        >
+          <CardSkeletonLoader noOfCards={1} />
+        </div>
+        </div>
+        <div
+          style={{
+            width: "60%",
+            margin: "20px",
+          }}
+        >
+          <CardSkeletonLoader noOfCards={3} />
+        </div>
+      </div>
       </>
     );
 
@@ -60,7 +96,41 @@ function App() {
   ) : (
     <>
       <Navbar />
-      loading....
+      <div
+        style={{
+          width: "80%",
+          margin: "20px auto",
+        }}
+      >
+        <FilterSkeletonLoader />
+     
+        <div className="d-flex justify-content-between">
+        <div
+          style={{
+            width: "60%",
+            margin: "20px",
+          }}
+        >
+          <CardSkeletonLoader noOfCards={3} />
+        </div>
+        <div
+          style={{
+            width: "32%",
+            margin: "20px",
+          }}
+        >
+          <CardSkeletonLoader noOfCards={1} />
+        </div>
+        </div>
+        <div
+          style={{
+            width: "60%",
+            margin: "20px",
+          }}
+        >
+          <CardSkeletonLoader noOfCards={3} />
+        </div>
+      </div>
     </>
   );
 }
