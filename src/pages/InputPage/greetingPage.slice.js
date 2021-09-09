@@ -127,7 +127,7 @@ export const {
   setTraceId,
 } = greeting.actions;
 
-export const saveForm1UserDetails = (data2, pushToQuotes) => {
+export const saveForm1UserDetails = (data2, handleChange) => {
   const { pinCode, is_pincode_search } = data2;
   return async (dispatch) => {
     try {
@@ -153,14 +153,15 @@ export const saveForm1UserDetails = (data2, pushToQuotes) => {
           })
         );
         setTimeout(() => {
-          const newMemberGroups = data.data.groups.reduce(
-            (groups, member) => ({
-              ...groups,
-              [member.id]: member.members,
-            }),
-            {}
-          );
-          pushToQuotes(Object.keys(newMemberGroups)[0]);
+          // const newMemberGroups = data.data.groups.reduce(
+          //   (groups, member) => ({
+          //     ...groups,
+          //     [member.id]: member.members,
+          //   }),
+          //   {}
+          // );
+          // pushToQuotes(Object.keys(newMemberGroups)[0]);
+          handleChange(5);
           dispatch(setIsDisabled(false));
         }, 500);
 
@@ -369,7 +370,7 @@ export const saveForm4UserDetails = (data) => {
   };
 };
 
-export const saveForm5UserDetails = (data) => {
+export const saveForm5UserDetails = (data, pushToQuotes) => {
   return async (dispatch, getState) => {
     try {
       const response = await updateUser({
@@ -383,8 +384,11 @@ export const saveForm5UserDetails = (data) => {
         }),
         {}
       );
+
+
       dispatch(setMemberGroups(newMemberGroups));
       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      pushToQuotes(Object.keys(newMemberGroups)[0]);
       dispatch(setShouldFetchQuotes(true));
       dispatch(createUserData({ medical_history: [...data] }));
     } catch (err) {

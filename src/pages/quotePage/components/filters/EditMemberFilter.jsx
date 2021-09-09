@@ -30,9 +30,8 @@ const CustomDropdown = ({ member }) => {
         )}
       </div>
       <div
-        className={`age_dropdown position-absolute ${
-          showDropDown ? "d-block" : "d-none"
-        }`}
+        className={`age_dropdown position-absolute ${showDropDown ? "d-block" : "d-none"
+          }`}
       >
         {ageRows.map((year, i) => (
           <div key={i} className="text-center py-2">
@@ -304,7 +303,7 @@ const FilterModal = ({ show, handleClose }) => {
   };
 
   const history = useHistory();
- 
+
   const handleUpdate = (e) => {
     e.preventDefault();
 
@@ -342,13 +341,13 @@ const FilterModal = ({ show, handleClose }) => {
           history
         )
       );
-      
-      console.log(dataArray,"dataArray");
-      dataArray.length === 1? dispatch(setFilters({ planType: "Individual" })):dispatch(setFilters({ planType: "Family Floater" }))
-    handleClose()
-   
+
+      console.log(dataArray, "dataArray");
+      dataArray.length === 1 ? dispatch(setFilters({ planType: "Individual" })) : dispatch(setFilters({ planType: "Family Floater" }))
+      handleClose()
+
     }
-    
+
   };
 
   return (
@@ -422,7 +421,7 @@ const FilterModal = ({ show, handleClose }) => {
                           left: -12px;
                         }
                       `}
-                    
+
                     >
                       {dataset(
                         display_name,
@@ -444,7 +443,7 @@ const FilterModal = ({ show, handleClose }) => {
         </OptionWrapper>
       </Modal.Body>
       <Modal.Footer className="text-center">
-      {errors && (
+        {errors && (
           <ErrorMessage style={{ fontSize: "15px" }}>{errors}</ErrorMessage>
         )}
 
@@ -590,13 +589,14 @@ const EditMemberFilter = () => {
         className="plans_for plans_for_editable d-flex align-items-center"
         onClick={() => setShowModal(true)}
       >
-        <div className="yellow_start_line"></div>Plans For
+        <div className="yellow_start_line"></div>Members
         <PencilWrapper className="d-flex justify-content-center align-items-center">
           <PencilIcon
             style={{
               color: "#0a87ff",
+
             }}
-            width="14px"
+            width="17px"
           />
         </PencilWrapper>
       </span>

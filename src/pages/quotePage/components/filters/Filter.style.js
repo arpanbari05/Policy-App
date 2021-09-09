@@ -2,6 +2,10 @@ import styled from "styled-components";
 
 export const Filter = styled.div`
   padding: 5px 20px;
+  
+  &:hover{
+    background-color:#eef1f4;
+  }
   :not(:last-child) {
     border-right: 1px solid #cacaca;
   }

@@ -51,14 +51,14 @@ const CardModal = ({
       >
         {title && <ModalTitle className="modal-headerz">{title}</ModalTitle>}
       </Modal.Header>
-      <CloseButton
+      {/* <CloseButton
         type="button"
         className="btn btn-white recom_close_css "
         style={{ marginTop: "-8px", zIndex: 2500 }}
         onClick={handleClose}
       >
         <i className="fa fa-close"></i>
-      </CloseButton>
+      </CloseButton> */}
       <Modal.Body>
         <Container>{content}</Container>
       </Modal.Body>
