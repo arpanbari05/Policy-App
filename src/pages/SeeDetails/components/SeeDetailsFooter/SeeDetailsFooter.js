@@ -2,6 +2,7 @@ import { useState } from "react";
 import { numberToDigitWord } from "../../../../utils/helper";
 //import BuyNowModal from "./../../../quotesPage/components/BuyNowModal/BuyNowModal";
 import SecureLS from "secure-ls";
+import { AiOutlineClose } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 // import {
 //   addSelectedQuote,
@@ -14,10 +15,12 @@ import { useParams } from "react-router";
 import { useCartProduct } from "../../../Cart";
 import "styled-components/macro";
 import BuyNowModal from "../../../quotePage/components/BuyNowModal/BuyNowModal";
+import StyledButton from "../../../../components/StyledButton";
 
 function SeeDetailsFooter({
   logo,
   claim_settlement_ratio,
+  handleClose,
   companyName,
   sumInsured,
   premium,
@@ -82,19 +85,45 @@ function SeeDetailsFooter({
     });
   };
 
-  console.log(product, "3333");
   return (
     <div
       className="modal-header bg_red showOnDesktop"
+      css={`
+        position: fixed;
+        top: 0;
+        height: 115px;
+        left: 0;
+        background: white;
+        
+      `}
       style={{
         zIndex: "9999",
         display: "flex",
         alignItems: "center",
         width: "100%",
-        padding: "5px 10px",
+        padding: "5px 4%",
+        boxShadow: "0 3px 16px 0 rgba(0, 0, 0, 0.16)"
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", width: "25%" }}>
+      <div
+        css={`
+          position: absolute;
+          right: 26px;
+          top: 25px;
+          font-size: 34px;
+        `}
+        onClick={handleClose}
+      >
+        <AiOutlineClose />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          width: "25%",
+          position: "relative",
+        }}
+      >
         <h5 className="modal-title">
           <img
             src={logo}
@@ -119,11 +148,13 @@ function SeeDetailsFooter({
       </div>
 
       <div
+        css={`
+          border: solid 1px #bac3cf;
+        `}
         style={{
-          border: "1px dashed var(--border-gray)",
           borderRadius: "10px",
           width: "43%",
-          padding: "2px 5px",
+          padding: "14px 5px",
         }}
       >
         <div
@@ -132,25 +163,29 @@ function SeeDetailsFooter({
             justifyContent: "space-around",
             padding: "5px",
           }}
+          css={`
+            display: flex;
+            align-items: center;
+          `}
         >
           <div style={{ width: "30%", borderRight: "1px solid grey" }}>
             <h6
               className="color_white_font border_right_effect font_22"
-              style={{ fontWeight: "bold" }}
               css={`
                 & span {
                   font-size: 16px !important;
                   line-height: 0;
                 }
+                margin-bottom: 0;
               `}
             >
-              <span className="font_20 color_fixed_title">Cover </span>
+              <span>Cover: </span>
               <br />
               <span className="color_white_font font_20">
                 <b>
                   {numberToDigitWord(
                     sumInsured?.toString() || sum_insured?.toString(),
-                    "seeDetails",
+                    "seeDetails"
                   )}
                 </b>
               </span>
@@ -163,24 +198,28 @@ function SeeDetailsFooter({
               borderRight: "1px solid grey",
               marginLeft: "7px",
             }}
+            css={`
+              display: flex;
+              align-items: center;
+            `}
           >
             <h6
               className="color_white_font border_right_effect_2 font_22"
-              style={{ fontWeight: "bold" }}
               css={`
                 & span {
                   font-size: 16px !important;
                   line-height: 0;
                 }
+                margin-bottom: 0;
               `}
             >
-              <span className="font_20 color_fixed_title">Premium</span>
+              <span>Premium:</span>
               <br />
               <span className="color_white_font font_20">
                 <b>
-                  <i className="fa fa-inr"></i>{" "}
+                  <i className="fa fa-inr"></i> ₹{" "}
                   {parseInt(selectedProduct.total_premium).toLocaleString(
-                    "en-IN",
+                    "en-IN"
                   )}
                   / year
                 </b>
@@ -193,23 +232,25 @@ function SeeDetailsFooter({
               display: ${product.product.company.alias === "star" && "none"};
             `}
             style={{ width: "30%", marginLeft: "7px" }}
+            css={`
+              display: flex;
+              align-items: center;
+            `}
           >
             <h6
               className="color_white_font  font_22"
-              style={{ fontWeight: "bold" }}
               css={`
                 & span {
                   font-size: 16px !important;
                   line-height: 0;
                 }
+                margin-bottom: 0;
               `}
             >
-              <span className="font_20 color_fixed_title">
-                Claim Settlement Ratio
-              </span>
+              <span>Claim Settlement Ratio:</span>
               <br />
               <span className="color_white_font font_20">
-                {claim_settlement_ratio}%
+                <b>{claim_settlement_ratio}%</b>
               </span>
             </h6>
           </div>
@@ -228,7 +269,7 @@ function SeeDetailsFooter({
             width: "fit-content",
           }}
         >
-          <div>
+          {/* <div>
             <p
               className="color_black bg_premium_txt_btn_f_p_d"
               css={`
@@ -248,90 +289,16 @@ function SeeDetailsFooter({
               {" "}
               <i className="fa fa-inr"></i> {totalPremium}
             </p>
-          </div>
+          </div> */}
 
-          <button
-            type="button"
-            // className="btn  btn_preoceed_product_fix"
-            css={`
-              border-radius: 2px;
-              padding: 7px 21px;
-              text-align: center;
-              color: #fff;
-              margin-left: 20px;
-              text-transform: capitalize;
-              box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
-              font-size: 18px;
-              background: #c72229;
-            `}
-            data-dismiss="modal"
-            // onClick={() => {
-            //   handleProceedClick();
-            //   setShowBuyNow(true);
-            //   ls.set("cover", selectedPlan?.sum_insured);
-            //   const selectePlan = {
-            //     company_alias: selectedPlan?.company_alias,
-            //     logo: selectedPlan?.logo,
-            //     product: selectedPlan?.product,
-            //     gross_premium: selectedPlan?.gross_premium,
-            //     premium: selectedPlan?.premium,
-            //     sum_insured: selectedPlan?.sum_insured,
-            //     tax_amount: selectedPlan?.tax_amount,
-            //     tenure: selectedPlan?.tenure,
-            //   };
-
-            //   if (cartItems.length > 0) {
-            //     dispatch(
-            //       updateCartItem(
-            //         {
-            //           ...selectedPlan,
-            //           members,
-            //           cartId: cartItems[0].id,
-            //           riders: selectedRiders,
-            //           product_id: selectedPlan.product?.id,
-            //           premium: selectedPlan.gross_premium,
-            //         },
-            //         cartId => {
-            //           dispatch(saveSelectedPlan(selectePlan));
-            //           dispatch(
-            //             addSelectedQuote({ cartId, ...selectedPlan }),
-            //           );
-            //           dispatch(saveProductDiscountResponse([]));
-            //         },
-            //       ),
-            //     );
-            //     return;
-            //   }
-            //   dispatch(modal-header
-            //     createCartItem(
-            //       {
-            //         ...selectedPlan,
-            //         members,
-            //         riders: selectedRiders,
-            //       },
-            //       cartId => {
-            //         dispatch(saveSelectedPlan(selectedPlan));
-            //         dispatch(
-            //           addSelectedQuote({ cartId, ...selectedPlan }),
-            //         );
-            //         dispatch(saveProductDiscountResponse([]));
-            //       },
-            //     ),
-            //   );
-            // }}
+          <StyledButton
+            styledCss={`font-size: 12px;    font-size: 15px;
+    padding: 12px 51px;`}
             onClick={handleProceed}
+            noIcon
           >
-            {/* {cartItems?.some(
-                    item => item?.product?.id === selectedPlan?.product?.id,
-                  )
-                    ? "Update Cart"
-                    : "Proceed to Buy"}{" "} */}
-            {isCartProductLoading ? (
-              <i className="fas fa-circle-notch rotate" />
-            ) : (
-              "Proceed to Buy"
-            )}
-          </button>
+            Proceed to Buy
+          </StyledButton>
         </div>
       </div>
 

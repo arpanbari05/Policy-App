@@ -2,7 +2,7 @@ import React from "react";
 import useWindowSize from "../../../../customHooks/useWindowSize";
 import styled from "styled-components";
 
-const SeeDetailsTabContainer = ({
+const SeeDetailsTabContainer2 = ({
   title,
   id,
   onClick,
@@ -15,49 +15,58 @@ const SeeDetailsTabContainer = ({
   const [windowHeight, windowWidth] = useWindowSize();
   return (
     <SeeDetailsTabContainerStyle>
-      <li className={`z-tab z-first ${activeFieldset === id && "z-active"} `}>
+      <li
+        className={`z-tab z-first ${activeFieldset === id && "z-active"} ${
+          id === 1 ? "firsttab" : id === 5 && "secondtab"
+        }`}
+      >
         <a
           className="z-link see-details__z-link"
           style={{ paddingRight: "0px" }}
           onClick={() => handleClick(id)}
         >
-          <span>{title}</span>
+          {/* <img src={image} alt="" />{" "} */}
+          <span style={{ paddingRight: "15px", textAlign: "center" }}>
+            {title}
+          </span>
         </a>
       </li>
     </SeeDetailsTabContainerStyle>
   );
 };
 
-export default SeeDetailsTabContainer;
+export default SeeDetailsTabContainer2;
 
 const SeeDetailsTabContainerStyle = styled.div`
+  //margin:0px auto;
+  cursor: pointer;
+  & a {
+    text-align: center;
+  }
+  & span {
+	color: #000 !important;
+  }
   & li {
+    width: 260px;
+    padding: 20px 2px;
     list-style-type: none;
-    & a {
-      color: black;
-    }
+    border: 1px solid #e3e4e8;
   }
-  & li.z-active a {
-    color: #0d6efd !important;
-    font-size: 17px;
-    font-weight: 900;
-    position: relative;
-    &:before {
-      content: "";
-      position: absolute;
-      transition: all 0.3s ease-in-out;
-      width: 100%;
-      height: 5px;
-      top: 44px;
-      left: 0;
-      right: 0;
-      margin: auto;
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
-      background: #0d6efd;
-    }
+  & .firsttab {
+    border-radius: 6px 0 0 6px;
   }
-  margin: auto auto;
+  & .secondtab {
+    border-radius: 0 6px 6px 0;
+  }
+  & .z-active,
+  & li:hover {
+    & span {
+      font-weight: 900;
+      color: #fff !important;
+    }
+    background-color: #0d6efd;
+    border: 1px solid #0d6efd;
+  }
   img {
     margin-right: 10px;
     padding-left: 8px;

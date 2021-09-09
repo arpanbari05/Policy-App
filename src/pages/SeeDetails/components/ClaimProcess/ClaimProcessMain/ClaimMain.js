@@ -6,15 +6,36 @@ import styled from "styled-components/macro";
 const claimBtn = (title, id, handleClick, activeBtn) => {
   return (
     <a
-
       onClick={() => handleClick(id)}
-      className={`nav-link claim  font-weight-bold rounded-0 border ${activeBtn === id && "active"
-        }`}
+      // className={`nav-link claim  font-weight-bold rounded-0 border ${
+      //   activeBtn === id && "active"
+      // }`}
       css={`
-      width:170px !important;
-        &:after{
-bottom:-18px !important;
-        }`}
+        padding: 10px 20px;
+        background-color: ${activeBtn === id ? " #0a87ff" : "#eaeef2"};
+        color: ${activeBtn === id ? "white" : "#000;"};
+        margin-right: 12px;
+        border-radius: 37px;
+        &:hover {
+          color: ${activeBtn === id ? "white" : "#000;"};
+        }
+        box-shadow: ${activeBtn === id && "0 3px 6px 0 rgba(0, 0, 0, 0.16)"};
+        position: relative;
+        &:after {
+          content: "";
+          display: ${activeBtn !== id && "none"};
+          position: absolute;
+          left: 0;
+          right: 0;
+          margin: auto;
+          top: 100%;
+          width: 0;
+          height: 0;
+          border-left: 9px solid transparent;
+          border-right: 9px solid transparent;
+          border-top: 15px solid #0a87ff;
+        }
+      `}
     >
       {title}
     </a>
@@ -26,22 +47,35 @@ const claimContent = (
   id,
   image,
   activeBtn,
-  activeDelayedBtn,
+  activeDelayedBtn
 ) => {
   return (
     <div
-      className={`tab-pane fade  py-5 ${activeBtn === id && "show"} ${activeDelayedBtn === id && "active"
-        }`}
+      className={`tab-pane fade  py-5 ${activeBtn === id && "show"} ${
+        activeDelayedBtn === id && "active"
+      }`}
       css={`
-        padding-top:25px !important `}
+        padding-top: 25px !important;
+      `}
     >
-      <img src={image} style={{ width: "110px" }} />
-      <h3 className="text-left cashless_t_r_t_main" style={{ marginBottom: "0px" }}>{title}</h3>
+      {/* <img src={image} style={{ width: "110px" }} /> */}
+      <h2
+        className="text-left cashless_t_r_t_main"
+        css={`
+          color: #253858;
+          font-weight: 900;
+          font-size: 23px;
+        `}
+      >
+        {title}
+      </h2>
       <Paragraph
         className="leade_p"
+        css={`
+          color: #253858;
+        `}
         style={{
-          textAlign: "justify",
-          whiteSpace: "normal"
+          whiteSpace: "normal",
         }}
         dangerouslySetInnerHTML={{ __html: description }}
       ></Paragraph>
@@ -58,44 +92,61 @@ const ClaimMain = ({ claimProccess }) => {
 
   console.log("claim", claimProccess);
 
-  const handleClick = id => {
+  const handleClick = (id) => {
     setActiveBtn(id);
     setTimeout(() => setActiveDelayedBtn(id), 500);
   };
   return (
     <>
-      <div className="plan_a_t_claim">
-        <h2 className="title_h4 title_h4_title_claim">
+      <div>
+        <h2
+          css={`
+            color: #253858;
+            font-weight: 900;
+            font-size: 23px;
+            margin-bottom: 24px;
+          `}
+        >
           How do I file a claim?
         </h2>
       </div>
       {/* <p className="color_gray_sub mb-15 title_h4_title_claim claimProcessMain__p">
 				Loreum ipsum site visit
 			</p> */}
-      <div
-        className=" p-5 rounded shadow mb-5"
-    
-      >
+      <div css={``}>
         {/* ============================================================ */}
-        <ul className="nav nav-tabs nav-pills with-arrow flex-column flex-sm-row text-center">
-          <li className="nav-item flex-sm-fill" style={{
-            display: 'flex',
-            
-          }}>
+        <ul
+          css={`
+            padding: 0;
+          `}
+        >
+          <li
+            className="nav-item flex-sm-fill"
+            style={{
+              display: "flex",
+            }}
+          >
             {claimBtn("Cashless Claim", 1, handleClick, activeBtn)}
             {claimBtn("Documents Required", 2, handleClick, activeBtn)}
             {claimBtn("Reimbursement Claim", 3, handleClick, activeBtn)}
           </li>
         </ul>
         {/* ============================================================ */}
-        <div className="tab-content">
+        <div
+          className="tab-content"
+          css={`
+            margin-left: 10px;
+            font-family: "Inter-Regular" !important;
+            & p {margin: 0px;}
+          `}
+        >
           {claimContent(
             "Cashless Claim",
             claimProccess?.cashless_claim || "No data available",
             1,
             cashlessImg,
             activeBtn,
-            activeDelayedBtn,
+            activeDelayedBtn
           )}
           {claimContent(
             "Document Required",
@@ -103,7 +154,7 @@ const ClaimMain = ({ claimProccess }) => {
             2,
             cashlessImg,
             activeBtn,
-            activeDelayedBtn,
+            activeDelayedBtn
           )}
           {claimContent(
             "Reimbursement Claim",
@@ -111,7 +162,7 @@ const ClaimMain = ({ claimProccess }) => {
             3,
             cashlessImg,
             activeBtn,
-            activeDelayedBtn,
+            activeDelayedBtn
           )}
         </div>
         {/* ============================================================ */}

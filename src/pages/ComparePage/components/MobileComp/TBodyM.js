@@ -18,8 +18,9 @@ import {
 } from "../../compare.slice";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import wrong from "../../../../assets/images/wrong2.png";
-import Checkbox from "../../../../components/Checkbox.js";
+
 import { getProductDiscount,removeQuotesForCompare,setQuotesForCompare } from "../../../quotePage/quote.slice.js";
+import Checkbox from "../Checkbox/Checbox.js";
 
 // tooltip show information on hover
 const renderTooltipDesc = ({ props, desc }) => (
@@ -195,13 +196,17 @@ const AdditionalBenefits = ({
                         <div>{innerItem.total_premium} </div>{" "}
                         <div>
                           <Checkbox
+                          code={ 
+                            "mob" +
+                            innerItem.name +
+                            plans[item].data.product.id}
                             title={
                               "mob" +
                               innerItem.name +
                               plans[item].data.product.id
                             }
                             showTitle={false}
-                            onChange={e => {
+                            handleChange={e => {
                               if (e.target.checked) {
                                 dispatch(
                                   insertRider(

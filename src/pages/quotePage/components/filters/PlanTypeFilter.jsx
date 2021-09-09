@@ -74,10 +74,12 @@ const PlanTypeFilter = () => {
     //       <i class="fas fa-chevron-down"></i>
     //     </DownArrowWrapper>
 
+
     //     <Dropdown className={showDropdown ? "d-block" : "d-none"} ref={ref}>
     //       {basePlanTypes.map(thisPlanType => {
     //         return (
     //           <li className="option d-flex justify-content-between align-items-center"
+
 
     //           >
     //             <label htmlFor="base_plan">{thisPlanType.display_name}</label>
