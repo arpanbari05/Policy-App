@@ -1,14 +1,15 @@
 import React from "react";
-import "./claimHover.css"
+import "./claimHover.css";
 import { Col, Row } from "react-bootstrap";
 import telephone from "../../../assets/images/telephone.png";
 import mail from "../../../assets/images/mail.png";
 import mobile from "../../../assets/images/mobile.png";
 import ClaimMain from "../components/ClaimProcess/ClaimProcessMain/ClaimMain";
 import { useDispatch, useSelector } from "react-redux";
+import "styled-components/macro";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
-const populateData = data => {
+const populateData = (data) => {
   return [
     {
       header: "Toll Free number",
@@ -28,53 +29,69 @@ const populateData = data => {
   ];
 };
 
-const dataSet = dataArray => {
-
+const dataSet = (dataArray) => {
   const array = [];
   const length = dataArray?.length;
   dataArray?.map((data, i) =>
     array.push(
-      <span key={i}>
+      <span key={i} css={``}>
         {" "}
         <div
-          className="feature-offer-box_basic support-feature js-tilt claimHover"
-          style={{ 
-            padding: "0px 40px 0px", 
-            marginBottom:"0px"
-          }}
+          css={`
+            border: solid 1px #c9c9c9;
+            border-radius: 9px;
+            margin-bottom: 10px;
+            padding: 15px;
+          `}
         >
           <div className="row">
-            <div className="col-md-2">
-              <div className="img_icon_important_claim icon-box claim_width_img">
-                <img src={data.image} />
-              </div>
-            </div>
             <div className="col-md-10">
               <h4
-                className="font_20 title margin_bottom_claim"
-                style={{
-                  lineHeight: "0px",
-                  padding: "20px 0px 11px",
-                  whiteSpace: "normal",
-                }}
+                css={`
+                  color: #253858;
+                  font-weight: 900;
+                  font-size: 23px;
+                `}
               >
                 {data.header}
               </h4>
-              <p className="feature-offer-box__p break-on-overflow">
+              <p
+                css={`
+                  color: #253858;
+                  margin-bottom: 0px;
+                `}
+              >
                 {data.description}{" "}
               </p>
             </div>
+            <div
+              className="col-md-2"
+              css={`
+                justify-content: center;
+                align-items: center;
+                background-color: #eff7ff;
+                display: flex;
+                border-radius: 44px;
+                width: 66px;
+                & img {
+                  height: 24px;
+                }
+              `}
+            >
+              <div>
+                <img src={data.image} />
+              </div>
+            </div>
           </div>
         </div>
-        {i !== length - 1 && <hr className="hr_p_b_cliam" />}
-      </span>,
-    ),
+      </span>
+    )
   );
   return array;
 };
 
 const ClaimProcess = ({ ActiveMainTab, claimProccess }) => {
-  const { loading } = useSelector(state => state.seeDetails);
+  const { loading } = useSelector((state) => state.seeDetails);
 
   return (
     <>
@@ -90,34 +107,66 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess }) => {
         {loading ? (
           <SpinLoader />
         ) : (
-          <div className="tab_inner_product_detail z-content-inner">
-            <div className="our-feature-app" style={{ padding: "47px 20px" }}>
+          <div
+            className="tab_inner_product_detail z-content-inner"
+            css={`
+              display: flex;
+              justify-content: center;
+            `}
+          >
+            <div
+              className="our-feature-app"
+              css={`
+                max-width: 1347px;
+              `}
+              style={{ padding: "47px 20px" }}
+            >
               <div className="our-service-app">
                 <div className="main-content hide-pr show-pr">
-                  <Row className="margin_important_row" style={{ flexWrap:"nowrap" }}>
-                    <Col lg={5} className="bg_white_plan" style={{ margin: 0, height: "fit-content", minWidth:'265px',padding:'8px' }}>
+                  <Row
+                    className="margin_important_row"
+                    style={{ flexWrap: "nowrap" }}
+                  >
+                    <Col
+                      lg={4}
+                      className="bg_white_plan"
+                      style={{
+                        margin: 0,
+                        height: "fit-content",
+                        minWidth: "265px",
+                        padding: "8px",
+                      }}
+                    >
                       <div className="feature-box_basic support-feature js-tilt padding_imp_row">
-                        <Row>
-                          <Col md={12}>
-                            <div className="imp_claim_p_bor">
-                              <h4 className="title imp_title_row_l">
-                                Important Number and Email Address
-                              </h4>
-                            </div>
-                            <p className="p_important_sub">
-                              Don't Hesitate to contact us for any information.
-                            </p>{" "}
-                          </Col>
-                        </Row>
+                        <div
+                          css={`
+                            background-color: #eaeef2;
+                            color: #253858;
+                            padding: 22px;
+                            padding-right: 82px;
+                            & h2 {
+                              font-weight: 900;
+                              font-size: 23px;
+                            }
+                          `}
+                        >
+                          <h2> Important Number and Email Address</h2>
+                          <p className="p_important_sub">
+                            Don't Hesitate to contact us for any information.
+                          </p>{" "}
+                        </div>
                         <hr className="hr_p_b_cliam" />
 
                         {dataSet(populateData(claimProccess))}
                       </div>
                     </Col>
                     {/* ============================================================ */}
-                    <Col md={8} style={{
-                      marginTop: "27px"
-                    }}>
+                    <Col
+                      md={8}
+                      style={{
+                        marginTop: "27px",
+                      }}
+                    >
                       <ClaimMain claimProccess={claimProccess} />
                     </Col>
                   </Row>

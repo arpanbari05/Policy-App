@@ -8,13 +8,18 @@ import { useSelector } from "react-redux";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import "styled-components/macro";
-import useWindowSize from '../../../customHooks/useWindowSize';
+import { FaDownload } from "react-icons/fa";
 
-const PlanDetails = ({ ActiveMainTab, planDetails, brochureUrl, policyWordingUrl }) => {
+const PlanDetails = ({
+  ActiveMainTab,
+  planDetails,
+  brochureUrl,
+  policyWordingUrl,
+}) => {
   const [activeTab, setActiveTab] = useState(1);
   const [activeDelayedTab, setActiveDelayedTab] = useState(1);
 
-  const { loading } = useSelector(state => state.seeDetails);
+  const { loading } = useSelector((state) => state.seeDetails);
   const handleActive = (id, selected) => {
     setActiveTab(id);
     setTimeout(() => setActiveDelayedTab(id), 500);
@@ -37,8 +42,14 @@ const PlanDetails = ({ ActiveMainTab, planDetails, brochureUrl, policyWordingUrl
           <div className="z-content-inner">
             <section className="header">
               <Container className="py-4">
-                <Row className="margin_row_plan_basic" style={{padding:'0px'}}>
-                  <Col md={5} className="text-left">
+                <Row
+                  className="margin_row_plan_basic"
+                  css={`
+                    justify-content: space-between;
+                    padding: 0px;
+                  `}
+                >
+                  <Col md={6} className="text-left">
                     <div className="nav flex-column nav-pills nav-pills-custom border_left_tab_plan">
                       {planDetails.featureList &&
                         planDetails.featureList.map((data, i) => {
@@ -57,21 +68,35 @@ const PlanDetails = ({ ActiveMainTab, planDetails, brochureUrl, policyWordingUrl
                       style={{
                         width: "92%",
                         marginTop: "30px",
-                        padding: "10px",
+
                         borderRadius: "4px",
                         background: "#fff",
-                        boxShadow: "0px 10px 20px rgb(134 156 213 / 15%)",
                       }}
+                      css={`
+                        padding: 18px 0px;
+                        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+                      `}
                     >
                       <Container>
                         <Row>
                           <Col lg={12}>
-                            <div className="feature-img-box" style={{ marginBottom: "15px" }} >
-                              <h2 className="title_h4 title_h4_download">
+                            <div
+                              className="feature-img-box"
+                              style={{ marginBottom: "15px" }}
+                            >
+                              <h2
+                                css={`
+                                  font-size: 22px;
+                                  color: #253858;
+                                  font-weight: 900;
+                                `}
+                              >
                                 Downloads
                               </h2>
-                              <div className="sub-heading title_h4_download"
-
+                              <div
+                                css={`
+                                  color: #505f79;
+                                `}
                               >
                                 To find out more about the company and it's
                                 products, kindly refer the documents given below
@@ -86,12 +111,12 @@ const PlanDetails = ({ ActiveMainTab, planDetails, brochureUrl, policyWordingUrl
                               />
                             )}
                           </Col>
-                          <hr className="hr_p_b_g"/>
+
                           <Col lg={12}>
                             {policyWordingUrl && (
                               <DownloadCard
                                 url={policyWordingUrl}
-                                title={"Policy Wordings"}
+                                title={"Terms & Conditions"}
                               />
                             )}
                           </Col>
@@ -99,7 +124,7 @@ const PlanDetails = ({ ActiveMainTab, planDetails, brochureUrl, policyWordingUrl
                       </Container>
                     </div>
                   </Col>
-                  <Col md={7} className="tab-content">
+                  <Col md={6} className="tab-content">
                     {planDetails.featureList &&
                       planDetails.featureList.map((data, i) => {
                         return (
@@ -131,77 +156,42 @@ export default PlanDetails;
 
 function DownloadCard({ url, title }) {
   return (
-    <Row>
-      <Col lg={12}>
-        <div className="feature-offer-box support-feature js-tilt">
+    <div
+      css={`
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 10px;
+        background-color: #eaeef27a;
+        padding: 15px;
+        margin-bottom: 1rem;
+      `}
+    >
+      <h4
+        css={`
+          font-size: 22px;
+          color: #253858;
+          font-weight: 900;
+          margin: 0;
+        `}
+      >
+        {title}
+      </h4>
+      {url ? (
+        <a target="_blank" rel="noopener noreferrer" href={url}>
           <div
             css={`
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              padding: 0px 10px;
+              background-color: white;
+              padding: 7px 12px;
+              border-radius: 82px;
             `}
           >
-
-            <h4
-              className="title newTitle"
-              css={`
-                margin: 0;
-              `}
-            >
-              {title}
-            </h4>
-            {url ? (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={url}
-              // className="next btn btn_download_plan"
-              // css={`
-
-              //   display: inline-block;
-
-              //   text-align: center;
-              //   white-space: nowrap;
-              //   border-radius: 12px !important;
-              //   line-height: 40px !important;
-              //   padding: 0px 16px !important;
-              //   color: #c7222a !important;
-              //   font-weight: 900 !important;
-              //   font-size: 16px !important;
-              //   width: 132px;
-              //   height: 47px;
-
-              //   border: 2px solid #c72229;
-              //   text-align: center;
-
-              //   text-transform: capitalize;
-              //   /* box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%); */
-
-              //   background: #fff;
-              //   margin-right: 10px;
-
-              //   &:hover {
-              //     color: #fff !important;
-              //     background: #c72229;
-              //   }
-              // `}
-              >
-                <div className="icon-box float_left">
-                  <img src={download} alt="download" style={{
-                    width: "40px",
-                    height:'auto'
-                  }}/>
-                </div>
-                {/* Download
-                <i className="icon flaticon-next"></i> */}
-              </a>
-            ) : (
-              <span>Loading document...</span>
-            )}
+            <FaDownload />
           </div>
-        </div>
-      </Col>
-    </Row>
+        </a>
+      ) : (
+        <span>Loading document...</span>
+      )}
+    </div>
   );
 }

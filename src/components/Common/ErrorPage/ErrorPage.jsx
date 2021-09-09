@@ -109,7 +109,7 @@ const Success = styled.span`
   border-bottom: 1px dashed blue;
 `;
 const Button2 = styled.button`
-  background: #c7222a;
+  background:#0d6efd;
   color: #fff;
   margin: 10px auto;
   padding: 6px 12px;
@@ -117,8 +117,8 @@ const Button2 = styled.button`
 const Button = styled.button`
   display: inline-block;
   & span {
-    color: #c7222a;
+    color:#0d6efd;
 
-    border-bottom: 1px dashed #c7222a;
+    border-bottom: 1px dashed#0d6efd;
   }
 `;

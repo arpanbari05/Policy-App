@@ -47,40 +47,40 @@ function App() {
       <>
         <Navbar />
         <div
-        style={{
-          width: "80%",
-          margin: "20px auto",
-        }}
-      >
-        <FilterSkeletonLoader />
-  
-        <div className="d-flex justify-content-between">
-        <div
           style={{
-            width: "60%",
-            margin: "20px",
+            width: "80%",
+            margin: "20px auto",
           }}
         >
-          <CardSkeletonLoader noOfCards={3} />
+          <FilterSkeletonLoader />
+
+          <div className="d-flex justify-content-between">
+            <div
+              style={{
+                width: "60%",
+                margin: "20px",
+              }}
+            >
+              <CardSkeletonLoader noOfCards={3} />
+            </div>
+            <div
+              style={{
+                width: "32%",
+                margin: "20px",
+              }}
+            >
+              <CardSkeletonLoader noOfCards={1} />
+            </div>
+          </div>
+          <div
+            style={{
+              width: "60%",
+              margin: "20px",
+            }}
+          >
+            <CardSkeletonLoader noOfCards={3} />
+          </div>
         </div>
-        <div
-          style={{
-            width: "32%",
-            margin: "20px",
-          }}
-        >
-          <CardSkeletonLoader noOfCards={1} />
-        </div>
-        </div>
-        <div
-          style={{
-            width: "60%",
-            margin: "20px",
-          }}
-        >
-          <CardSkeletonLoader noOfCards={3} />
-        </div>
-      </div>
       </>
     );
 
@@ -103,24 +103,24 @@ function App() {
         }}
       >
         <FilterSkeletonLoader />
-     
+
         <div className="d-flex justify-content-between">
-        <div
-          style={{
-            width: "60%",
-            margin: "20px",
-          }}
-        >
-          <CardSkeletonLoader noOfCards={3} />
-        </div>
-        <div
-          style={{
-            width: "32%",
-            margin: "20px",
-          }}
-        >
-          <CardSkeletonLoader noOfCards={1} />
-        </div>
+          <div
+            style={{
+              width: "60%",
+              margin: "20px",
+            }}
+          >
+            <CardSkeletonLoader noOfCards={3} />
+          </div>
+          <div
+            style={{
+              width: "32%",
+              margin: "20px",
+            }}
+          >
+            <CardSkeletonLoader noOfCards={1} />
+          </div>
         </div>
         <div
           style={{

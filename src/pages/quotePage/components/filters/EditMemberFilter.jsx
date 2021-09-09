@@ -8,7 +8,7 @@ import "styled-components/macro";
 import { v4 as uuidv4 } from "uuid";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 import PencilIcon from "../../../../assets/svg-icons/PencilIcon";
-import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router";
 import { ErrorMessage } from "../../../InputPage/components/FormComponents";
 
 const CustomDropdown = ({ member }) => {

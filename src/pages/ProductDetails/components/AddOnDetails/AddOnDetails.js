@@ -92,7 +92,7 @@ AddOnDetails.Body = function Body({ addOn = {} }) {
         >
           <Row>
             <AddOnDetails.Nav
-              navItems={addOnDetails.map(addOnDetail => addOnDetail.name)}
+              navItems={addOnDetails.map((addOnDetail) => addOnDetail.name)}
             />
             <AddOnDetails.NavBody
               addOn={addOn}
@@ -118,9 +118,9 @@ AddOnDetails.PlanHighlights = function PlanHighlights({
     <div>
       {features ? (
         <ul>
-          {features.map(feature =>
+          {features.map((feature) =>
             feature.feature_value
-              ? feature.feature_value.split("\n").map(item =>
+              ? feature.feature_value.split("\n").map((item) =>
                   item ? (
                     <li
                       css={`
@@ -131,9 +131,9 @@ AddOnDetails.PlanHighlights = function PlanHighlights({
                       {" "}
                       <ListItem> {item.replace("•", "")} </ListItem>
                     </li>
-                  ) : null,
+                  ) : null
                 )
-              : null,
+              : null
           )}
         </ul>
       ) : null}
@@ -180,7 +180,7 @@ function CriticalIllnessList({ feature }) {
               overflow: auto;
             `}
           >
-            {criticalIllnessList.slice(1).map(criticalIllness => (
+            {criticalIllnessList.slice(1).map((criticalIllness) => (
               <li
                 css={`
                   min-width: 50%;
@@ -207,7 +207,7 @@ AddOnDetails.WhatItCovers = function WhatItCovers({
   sumInsured,
 }) {
   const { features } = addOnDetail.sum_insureds[sumInsured] || {};
-  console.log('ddd',features)
+  console.log("ddd", features);
   return (
     <div
       css={`
@@ -215,7 +215,7 @@ AddOnDetails.WhatItCovers = function WhatItCovers({
         flex-wrap: wrap;
       `}
     >
-      {features.map(feature =>
+      {features.map((feature) =>
         feature.feature_value ? (
           feature.code === "covered_critical_illnesses" ? (
             <CriticalIllnessList feature={feature} />
@@ -228,11 +228,11 @@ AddOnDetails.WhatItCovers = function WhatItCovers({
               <FeatureDetail
                 title={feature.title}
                 description={feature.feature_value}
-                shortDesc = {feature.short_description}
+                shortDesc={feature.short_description}
               />
             </div>
           )
-        ) : null,
+        ) : null
       )}
     </div>
   );
@@ -245,7 +245,7 @@ const Description = styled.p`
   margin-top: -0.7em;
 `;
 
-function FeatureDetail({ title, description = "" ,shortDesc=""}) {
+function FeatureDetail({ title, description = "", shortDesc = "" }) {
   if (!description) return null;
   return (
     <div
@@ -263,7 +263,7 @@ function FeatureDetail({ title, description = "" ,shortDesc=""}) {
           <ListItem>{title} :</ListItem>
           {description.includes("\n") ? (
             <ul>
-              {description.split("\n").map(item => (
+              {description.split("\n").map((item) => (
                 <li
                   css={`
                     margin-bottom: 1em;
@@ -320,7 +320,7 @@ AddOnDetails.Downloads = function Downloads({
       `}
     >
       <DownloadButton title="Policy Brochure" url={brochure_url} />
-      <DownloadButton title="Policy Wordings" url={policy_wording_url} />
+      <DownloadButton title={"Terms & Conditions"} url={policy_wording_url} />
       <DownloadButton title="Claim Form" url={claim_url} />
     </div>
   );
@@ -344,7 +344,7 @@ AddOnDetails.NavBody = function NavBody({
   return (
     <Col lg={9}>
       <Tab.Content>
-        {addOnDetails.map(addOnDetail => (
+        {addOnDetails.map((addOnDetail) => (
           <Tab.Pane eventKey={addOnDetail.name}>
             {addOnDetailsComponents[addOnDetail.name]
               ? addOnDetailsComponents[addOnDetail.name]({
@@ -370,9 +370,9 @@ AddOnDetails.Nav = function Nav({ navItems = [] }) {
   const [currentItem, setCurrentItem] = useState(navItems[0]);
   const navItemPosition = [...navItems, "downloads"].indexOf(currentItem);
 
-  const handleNavClick = itemName => setCurrentItem(itemName);
+  const handleNavClick = (itemName) => setCurrentItem(itemName);
 
-  const NavItemWithClick = props => (
+  const NavItemWithClick = (props) => (
     <NavItem {...props} onClick={handleNavClick} />
   );
 
@@ -411,7 +411,7 @@ AddOnDetails.Nav = function Nav({ navItems = [] }) {
           height: 100%;
         `}
       >
-        {navItems.map(navItem => (
+        {navItems.map((navItem) => (
           <NavItemWithClick key={navItem} eventKey={navItem}>
             {navItem}
           </NavItemWithClick>

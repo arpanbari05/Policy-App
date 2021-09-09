@@ -39,7 +39,7 @@ const Button = styled.button.attrs((props) => ({
 	outline: none;
 	box-shadow: none;
 	width: 95% !important;
-	background: #c7222a;
+	background:#0d6efd;
 	color: white;
 	border: 0 none;
 	cursor: pointer;

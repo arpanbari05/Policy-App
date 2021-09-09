@@ -82,13 +82,14 @@ const AddOnCoverages = ({
       className={`z-content ${ActiveMainTab && "z-active"}`}
       style={{
         position: "relative",
-        display: ActiveMainTab ? "block" : "none",
+        display: ActiveMainTab ? "flex" : "none",
         left: ActiveMainTab ? "0px" : "1296px",
         top: "0px",
         padding: "0 70px",
       }}
+      css={`justify-content: center;`}
     >
-      <div className=" col-12 box_shadow_box_without"
+      <div className="col-12 box_shadow_box_without"
         css={`
              @media (max-width: 767px) {
                display: block;

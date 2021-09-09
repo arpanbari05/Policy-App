@@ -6,7 +6,13 @@
     margin: 0;
     padding: 0;
   }
-
+  .title_h4 {
+    &_p,
+    & {
+      font-weight: 900;
+      color: #253858;
+    }
+  }
   .modal-content {
     height: auto;
     min-height: 100%;
@@ -20,7 +26,7 @@
     display: block !important;
   }
   .theme-tab-basic.theme-tab .tabs-menu li a:before {
-    top: 64px;
+    top: 44px;
   }
 }
 .value__feature {

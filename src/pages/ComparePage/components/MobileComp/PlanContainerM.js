@@ -146,7 +146,7 @@ export default PlanContainerM;
 const EmptyContainer = styled.div`
   width: 45% !important;
   border: 2px dashed #e2a6a9;
-  color: #c7222a;
+  color:#0d6efd;
   background: #fff5f5;
   border-radius: 12px;
   height: 157px;

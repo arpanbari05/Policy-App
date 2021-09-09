@@ -11,11 +11,11 @@ import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import BarMarketMobile from "../MobileComponents/AboutCompanyMobile/BarMarketMobile";
 import BarGroupMobile from "../MobileComponents/AboutCompanyMobile/BarGroupMobile";
 const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
-  const { loading } = useSelector(state => state.seeDetails);
+  const { loading } = useSelector((state) => state.seeDetails);
 
-  const addPremium = premiums => {
+  const addPremium = (premiums) => {
     let sum = 0;
-    premiums?.map(data => {
+    premiums?.map((data) => {
       if (data.premium !== null) {
         sum += parseFloat(data.premium);
       }
@@ -43,7 +43,7 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                 {/* ====================================Main Header========================================= */}
                 <Container>
                   <Row
-                    className="single-feature-box"
+                    className="single-feature-box_main"
                     style={{
                       padding: "47px 20px ",
                     }}
@@ -52,7 +52,7 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                       <div className="feature-img-box">
                         <h2 className="title_h4_p plan_a_t">
                           About{" "}
-                          <span style={{ color: "#c7222a" }}>
+                          <span style={{ color: "#0d6efd" }}>
                             {company_name}
                           </span>{" "}
                           Insurance {/* Health Insurance */}
@@ -61,7 +61,8 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                           className="p_titltle_sub_plan"
                           css={`
                             & span {
-                              font-family: "pf_handbook_proregular" !important;
+                              font-family: "Inter-Regular" !important;
+                              color:#253858;
                             }
                           `}
                           dangerouslySetInnerHTML={{
@@ -76,10 +77,19 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                   <hr />
                   {/* ============================================================================= */}
 
-                  <Row className="single-feature-box mb-44" css={`display: ${company_name === "Star Health" && "none"};`}>
+                  <Row
+                    className="single-feature-box mb-44"
+                    css={`
+                      display: ${company_name === "Star Health" && "none"};
+                    `}
+                  >
                     <Col md={12}>
                       <div className="feature-img-box">
-                        <Row>
+                        <Row
+                          css={`
+                            align-items: center;
+                          `}
+                        >
                           {/* ====================================Market size col========================================= */}
                           <Col md={8} className="margin_market_row">
                             <DataContainer
@@ -101,75 +111,6 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                                 />
                               </div>
                             )}
-                           
-                            {/* <PieChart
-
-
-
-                                lineWidth={20}
-                                radius={35}
-                                data={[
-                                  {
-                                    title: "One",
-
-                                    value:
-                                      parseFloat(
-                                        aboutCompany?.data?.market_sizes[0]
-                                          ?.premium,
-                                      ) || 0,
-                                    color: "#f4d0d0",
-                                  },
-                                  {
-                                    title: "Two",
-                                    value:
-                                      parseFloat(
-                                        aboutCompany?.data?.market_sizes[1]
-                                          ?.premium,
-                                      ) || 0,
-                                    color: "#c7222a",
-                                  },
-                                  {
-                                    title: "Three",
-                                    value:
-                                      parseFloat(
-                                        aboutCompany?.data?.market_sizes[2]
-                                          ?.premium,
-                                      ) || 0,
-                                    color: "#885254",
-                                  },
-                                  {
-                                    title: "Fours",
-                                    value:
-                                      parseFloat(
-                                        aboutCompany?.data?.market_sizes[3]
-                                          ?.premium,
-                                      ) || 0,
-                                    color: "#f5bc00",
-                                  },
-                                ]}
-
-
-                              />
-
-                              <p className="pie__center">
-                                Total Premium <br />{" "}
-                                {addPremium(aboutCompany?.data?.market_sizes)}
-                              </p>
-                            </div>
-                            <div className="margin_below_chart_pie" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                              {aboutCompany?.data?.market_sizes?.map(data => {
-                                return (
-                                  data.year !== null && (
-                                    <>
-                                      <span className="span_square_pink_chart" style={{ width: '25px', height: '19px', borderRadius: '8px', marginRight: "10px", backgroundColor: `${data.color}` }}>
-                                        &nbsp;
-                                      </span>{" "}
-                                      {data.year} &nbsp; &nbsp; &nbsp;{" "}
-                                    </>
-                                  )
-                                );
-                              })}
-                            </div> */}
                           </Col>
                           {/* ============================================================================= */}
                         </Row>
@@ -177,10 +118,20 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                     </Col>
                   </Row>
                   {/* ============================================================================= */}
-                  <Row css={`display: ${company_name === "Star Health" && "none"};`} className="single-feature-box mb-44">
+                  <Row
+                    css={`
+                      display: ${company_name === "Star Health" && "none"};
+                    `}
+                    className="single-feature-box mb-44"
+                  >
                     <Col md={12}>
                       <div className="feature-img-box">
-                        <Row style={{ justifyContent: "space-between" }}>
+                        <Row
+                          style={{ justifyContent: "space-between" }}
+                          css={`
+                            align-items: center;
+                          `}
+                        >
                           <Col md={4}>
                             <div>
                               {aboutCompany.data && (
@@ -235,10 +186,19 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                     </Col>
                   </Row>
                   {/* ============================================================================= */}
-                  <Row className="single-feature-box mb-44" css={`display: ${company_name === "Star Health" && "none"};`}>
+                  <Row
+                    className="single-feature-box mb-44"
+                    css={`
+                      display: ${company_name === "Star Health" && "none"};
+                    `}
+                  >
                     <Col md={12}>
                       <div className="feature-img-box">
-                        <Row>
+                        <Row
+                          css={`
+                            align-items: center;
+                          `}
+                        >
                           <Col md={6} className="margin_market_row">
                             <DataContainer
                               title={"Claim Incurred ratio"}
@@ -258,7 +218,7 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                                       />
                                     )
                                   );
-                                },
+                                }
                               )}
                               {/* <ProgessBar year={"2020-2021"} value={"52%"} />
                       <ProgessBar

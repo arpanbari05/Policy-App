@@ -52,7 +52,7 @@ const Outer = styled.div`
     border-bottom: 5px solid #f4f5f7;
   }
   .plan__active{
-    border-bottom: 5px solid #c7222a;
+    border-bottom: 5px solid#0d6efd;
   border-radius: 2px;
   }
   img {
@@ -66,7 +66,7 @@ const Outer = styled.div`
   }
   @media (max-width:700px){
     .plan__active{
-    border-bottom: 2px solid #c7222a;
+    border-bottom: 2px solid#0d6efd;
   border-radius: 1px;
   }
     padding: 0px 2px;
@@ -80,7 +80,7 @@ const Outer = styled.div`
   }
   @media (max-width:500px){
     .plan__active{
-    border-bottom: 3px solid #c7222a;
+    border-bottom: 3px solid#0d6efd;
   border-radius: 1px;
    }
     

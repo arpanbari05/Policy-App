@@ -24,7 +24,7 @@ const StyledHeader = styled.div`
         color: #fff;
     }
    
-	background: #c7222a;
+	background:#0d6efd;
 	align-items: center;
 	justify-content: space-between;`
 

@@ -265,7 +265,7 @@ padding:10px;
     content: "";
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 11px solid #c7222a;
+  border-top: 11px solid#0d6efd;
   position: relative;
   bottom: -36px;
   left: -40%;

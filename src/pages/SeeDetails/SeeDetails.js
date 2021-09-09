@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Modal } from "react-bootstrap";
 import styled from "styled-components";
 import "./Scss/SeeDetails.scss";
+import SeeDetailsTab2 from "./components/Tabs/SeeDetailsTab2";
 import SeeDetailsTab from "./components/Tabs/SeeDetailsTab";
 import PlanDetails from "./DataSet/PlanDetails";
 import ClaimProcess from "./DataSet/ClaimProcess";
@@ -10,6 +11,7 @@ import AddOnCoverages from "./DataSet/AddOnCoverages/AddOnCoverages";
 import AboutCompany from "./DataSet/AboutCompany";
 import { useDispatch, useSelector } from "react-redux";
 import SeeDetailsFooter from "./components/SeeDetailsFooter/SeeDetailsFooter";
+
 // import { getAbhiRidersApi, getRidersApi } from "../../QuotesPage/ServiceApi/serviceApi";
 import { useRouteMatch, useParams } from "react-router-dom";
 import {
@@ -334,6 +336,7 @@ const SeeDetails = ({
               display: none;
             }
           `}
+       
         >
           <div>
             <CloseButton
@@ -350,8 +353,13 @@ const SeeDetails = ({
               setActiveFieldset={setActiveFieldset}
               logo={logo}
             />
+            {/* <SeeDetailsTab2
+              activeFieldset={activeFieldset}
+              setActiveFieldset={setActiveFieldset}
+              logo={logo}
+            /> */}
 
-            <div className="tab-container z-container ">
+            <div className="tab-container z-container DangerStyles">
               <PlanDetails
                 ActiveMainTab={activeFieldset === 1 ? true : false}
                 planDetails={planDetails}
@@ -557,6 +565,7 @@ const SeeDetails = ({
       </Modal>
 
       <SeeDetailsFooter
+      handleClose={handleClose}
         quote={quote}
         sum_insured={sum_insured}
         logo={logo}
@@ -580,7 +589,7 @@ export default SeeDetails;
 const CloseButton = styled.button`
   position: absolute;
   border-radius: 50%;
-  z-index: 99999;
+  z-index: 9999;
   right: 36px;
 `;
 
@@ -604,7 +613,7 @@ const StyledHeader = styled.div`
     color: #fff;
   }
 
-  background: #c7222a;
+  background:#0d6efd;
   align-items: center;
   justify-content: space-between;
 `;
