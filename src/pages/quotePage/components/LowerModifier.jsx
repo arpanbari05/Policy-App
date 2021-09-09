@@ -6,20 +6,22 @@ import PolicyTypeFilter from "./filters/PolicyTypeFilter";
 import MultiyearOptionFilter from "./filters/MultiyearOptionFilter";
 import InsurerFilter from "./filters/InsurerFilter";
 import MoreFilters from "./filters/MoreFilters";
+import PlanTypeFilter from "./filters/PlanTypeFilter";
 
 const LowerModifier = () => {
-  const planType = useSelector(({quotePage}) => quotePage.filters.planType)
+  const planType = useSelector(({ quotePage }) => quotePage.filters.planType)
   return (
     <div className="container">
       <FiltersWrapper className="d-flex">
-        <PremiumFilter/>
-        <CoverRangeFilter/>
+        <PremiumFilter />
+        <CoverRangeFilter />
         {
-          planType !== "Individual"?<PolicyTypeFilter/>:<></>
+          planType !== "Individual" ? <PolicyTypeFilter /> : <></>
         }
-        <MultiyearOptionFilter/>
-        <InsurerFilter/>
-        <MoreFilters/>
+        <MultiyearOptionFilter />
+        <PlanTypeFilter />
+        <InsurerFilter />
+        <MoreFilters />
       </FiltersWrapper>
     </div>
   );
