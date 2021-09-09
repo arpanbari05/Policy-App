@@ -22,10 +22,11 @@ const Form1 = ({ handleChange, currentForm }) => {
     proposerDetails,
     isDisabled,
     regionDetailsError,
+    memberGroups,
   } = useSelector((state) => state.greetingPage);
   const { data } = frontendData || [""];
   const { popularcities } = data || [""];
-
+  console.log("aaaaa", memberGroups)
   const ls = new SecureLS();
   const history = useHistory();
 
@@ -41,12 +42,12 @@ const Form1 = ({ handleChange, currentForm }) => {
     setCustomErrors(regionDetailsError);
   }, [regionDetailsError]);
 
-  const pushToQuotes = (groupCode) => {
-    history.push({
-      pathname: `/quotes/${groupCode}`,
-      search: `enquiryId=${ls.get("enquiryId")}`,
-    });
-  };
+  // const pushToQuotes = (groupCode) => {
+  //   history.push({
+  //     pathname: `/quotes/${groupCode}`,
+  //     search: `enquiryId=${ls.get("enquiryId")}`,
+  //   });
+  // };
 
   const handleSubmit = () => {
     console.log("heheh");
@@ -61,8 +62,8 @@ const Form1 = ({ handleChange, currentForm }) => {
             pinCode: regionDetails.pincode,
             is_pincode_search: regionDetails.is_pincode_search,
           },
-          // handleChange
-          pushToQuotes
+          handleChange
+          // pushToQuotes
         )
       );
     } else if (
@@ -78,9 +79,10 @@ const Form1 = ({ handleChange, currentForm }) => {
   return (
     <div
       css={`
-        display: ${currentForm !== 5 && "none"};
+        display: ${currentForm !== 4 && "none"};
       `}
     >
+
       <div
         css={`
           padding: 17px;
@@ -129,7 +131,8 @@ const Form1 = ({ handleChange, currentForm }) => {
                         pinCode: regionDetails.pincode,
                         is_pincode_search: regionDetails.is_pincode_search,
                       },
-                      pushToQuotes
+                      // pushToQuotes
+                      handleChange
                     )
                   );
                 }}
@@ -158,20 +161,26 @@ const Form1 = ({ handleChange, currentForm }) => {
                     pinCode: pincode,
                     is_pincode_search: false,
                   },
-                  pushToQuotes
+                  // pushToQuotes
+                  handleChange
                 )
               );
             }}
           />
         ))}
       </div>
-      {formButtons(
+      {/* {formButtons(
         () => {
           handleChange(currentForm - 1);
         },
         handleSubmit,
         true
-      )}
+      )} */}
+      {formButtons(() => {
+
+        handleChange(3);
+
+      }, handleSubmit)}
       <div>
         {/* <StyledButton
           styledCss={`margin:0; width: 100%;`}

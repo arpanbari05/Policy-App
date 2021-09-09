@@ -9,26 +9,26 @@ import demoplanlogo from "../../../../assets/logos/digit.png";
 
 const FilterModal = ({ show, handleClose, filters }) => {
   const dispatch = useDispatch();
-  
+
   const insurerOptions = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
-  const [selectedinsurers, setSelectedinsurers] = useState(filters.insurers.length?filters.insurers:[]);
+  const [selectedinsurers, setSelectedinsurers] = useState(filters.insurers.length ? filters.insurers : []);
 
   const handleChange = (insurer) => {
-  
 
-    selectedinsurers !==[] &&
-    selectedinsurers.filter(co => co.alias === insurer.alias).length === 0?
-    setSelectedinsurers([...selectedinsurers,insurer])
-    :
-    setSelectedinsurers([
+
+    selectedinsurers !== [] &&
+      selectedinsurers.filter(co => co.alias === insurer.alias).length === 0 ?
+      setSelectedinsurers([...selectedinsurers, insurer])
+      :
+      setSelectedinsurers([
         ...selectedinsurers.filter(co => co.alias !== insurer.alias)
       ])
-    
-      
-   
+
+
+
   }
 
 
@@ -38,8 +38,8 @@ const FilterModal = ({ show, handleClose, filters }) => {
     e.stopPropagation();
     e.preventDefault();
     dispatch(setFilters({ insurers: selectedinsurers }));
-   dispatch(insurerFilter(selectedinsurers)); 
-              
+    dispatch(insurerFilter(selectedinsurers));
+
     handleClose();
   };
 
@@ -55,7 +55,7 @@ const FilterModal = ({ show, handleClose, filters }) => {
         }
         .modal-content {
           top: 238px;
-          left: 920px;
+          left: 64.5vw;
         }
         .modal-footer {
           padding: 0px !important;
@@ -92,13 +92,13 @@ const FilterModal = ({ show, handleClose, filters }) => {
                   return insurerOptions.companies[key].insurance_types[0] ===
                     "health" ||
                     insurerOptions.companies[key].insurance_types[0] ===
-                      "top_up" ||
+                    "top_up" ||
                     insurerOptions.companies[key].insurance_types[0] ===
-                      "cancer" ||
+                    "cancer" ||
                     insurerOptions.companies[key].insurance_types[0] ===
-                      "critical_illness" ||
+                    "critical_illness" ||
                     insurerOptions.companies[key].insurance_types[0] ===
-                      "personal_accident" ? (
+                    "personal_accident" ? (
                     <>
                       <input
                         type="checkbox"
@@ -108,7 +108,7 @@ const FilterModal = ({ show, handleClose, filters }) => {
                         checked={selectedinsurers.includes(insurerOptions.companies[key])}
 
                       />
-                     
+
                       <label
                         htmlFor={insurerOptions.companies[key].alias}
                         className="w-100"
@@ -166,7 +166,7 @@ const InsurerFilter = () => {
       >
         <span className="filter_head">Insurers</span>
         <span className="filter_sub_head">
-          {filters.insurers.length?`${filters.insurers.length} Insurers selected`:"Select Insurers"}<i class="fas fa-chevron-down"></i>
+          {filters.insurers.length ? `${filters.insurers.length} Insurers selected` : "Select Insurers"}<i class="fas fa-chevron-down"></i>
         </span>
       </Filter>
 

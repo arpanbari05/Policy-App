@@ -22,11 +22,11 @@ const CustomProgressBar = ({ now, total }) => {
             background: #5da400;
           }
         `}
-        now={`${(now * 100)/  total}`}
+        now={`${(now * 100) / total}`}
       />
-      <span>
+      {/* <span>
         {now}/{total}
-      </span>
+      </span> */}
     </span>
   );
 };

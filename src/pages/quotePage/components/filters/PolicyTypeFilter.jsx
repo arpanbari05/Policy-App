@@ -25,23 +25,23 @@ const FilterModal = ({ show, handleClose }) => {
     (state) => state.frontendBoot.frontendData.data.companies
   );
   const existingPlanTypeCode = filters.planType === "Individual"
-  ? "I"
-  : filters.planType === "Family Floater"
-  ? "F"
-  : "M";
+    ? "I"
+    : filters.planType === "Family Floater"
+      ? "F"
+      : "M";
   const existingPlanTypeDisplayname = filters.planType;
   const [selectedPlanType, setselectedPlanType] = useState(
     filters.planType
       ? {
-          code: existingPlanTypeCode,
-          displayName: existingPlanTypeDisplayname,
-        }
+        code: existingPlanTypeCode,
+        displayName: existingPlanTypeDisplayname,
+      }
       : {}
   );
 
-  const handleChange = (code,displayName) => {
+  const handleChange = (code, displayName) => {
     if (displayName) {
-      setselectedPlanType({code,displayName});
+      setselectedPlanType({ code, displayName });
     }
   };
 
@@ -51,7 +51,7 @@ const FilterModal = ({ show, handleClose }) => {
     dispatch(replaceFilterQuotes([]));
     dispatch(
       fetchQuotes(companies, {
-        plan_type:selectedPlanType.code,
+        plan_type: selectedPlanType.code,
         tenure: parseInt(filters.multiYear),
         sum_insured: coverRangeOptions.covers.find(
           (filter) => filter.display_name === filters.cover
@@ -75,7 +75,7 @@ const FilterModal = ({ show, handleClose }) => {
         }
         .modal-content {
           top: 238px;
-          left: 483px;
+          left: 34.5vw;
         }
         .modal-footer {
           padding: 0px !important;
@@ -101,25 +101,25 @@ const FilterModal = ({ show, handleClose }) => {
       <Modal.Body>
         <div>
           <OptionWrapper>
-            {plantypeOptions? plantypeOptions.plantypes.map((option, i) => {
+            {plantypeOptions ? plantypeOptions.plantypes.map((option, i) => {
               return option.code !== "I" ? (
-                    <li
-                      className="option d-flex align-items-center justify-content-between"
-                      key={i}
-                    >
-                      <label htmlFor={option.code}>{option.display_name}</label>
-                      <input
-                        type="radio"
-                        id={option.code}
-                        name="policyType"
-                        onChange={(e) =>
-                          handleChange(option.code, option.display_name)
-                        }
-                
-                      />
-                    </li>
-                  ) :<></>
-                })
+                <li
+                  className="option d-flex align-items-center justify-content-between"
+                  key={i}
+                >
+                  <label htmlFor={option.code}>{option.display_name}</label>
+                  <input
+                    type="radio"
+                    id={option.code}
+                    name="policyType"
+                    onChange={(e) =>
+                      handleChange(option.code, option.display_name)
+                    }
+
+                  />
+                </li>
+              ) : <></>
+            })
               : ""}
           </OptionWrapper>
         </div>
@@ -145,7 +145,7 @@ const PolicyTypeFilter = () => {
         className="filter d-flex flex-column flex-fill"
         onClick={() => setShowModal(true)}
       >
-        <span className="filter_head">Plan Type</span>
+        <span className="filter_head">Policy Type</span>
         <span className="filter_sub_head">
           {filters.planType ? filters.planType : "Select"}{" "}
           <i class="fas fa-chevron-down"></i>
