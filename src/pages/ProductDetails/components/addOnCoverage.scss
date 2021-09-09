@@ -200,7 +200,7 @@
 	.tabs ul li label {
 		font-weight: bold;
 		font-size: 18px;
-		color: #c7222a;
+		color:#0d6efd;
 	}
 	
 	.tabs ul {
@@ -255,7 +255,7 @@
 	.tabs ul li label:focus,
 	.tabs ul li label:active {
 		outline: 0;
-		color: #c7222a;
+		color:#0d6efd;
 	}
 	
 	.tabs ul li label:hover svg,
@@ -276,7 +276,7 @@
 		max-width: 100%;
 		margin: 12px auto;
 		height: 5px;
-		background: #c7222a;
+		background:#0d6efd;
 		border-radius: 15px 15px 0 0;
 	}
 
@@ -300,7 +300,7 @@
 	}
 	
 	.tabs .content section h2 {
-		color: #c7222a;
+		color:#0d6efd;
 		display: none;
 	}
 	
@@ -310,7 +310,7 @@
 		display: block;
 		width: 30px;
 		height: 3px;
-		background: #c7222a;
+		background:#0d6efd;
 		margin-top: 5px;
 		left: 1px;
 	}
@@ -408,7 +408,7 @@
 		> li:nth-child(3)
 		> label
 		svg {
-		fill: #c7222a;
+		fill:#0d6efd;
 	}
 
 	@media (max-width: 600px) {
@@ -447,7 +447,7 @@
 	> li:nth-child(4)
 		> label
 		svg {
-			fill: #c7222a;
+			fill:#0d6efd;
 		}
 
 		@media (max-width: 600px) {

@@ -153,7 +153,7 @@ const Styledul = styled.ul`
   z-index: 2000;
   top: 60px;
   & li {
-    background-color: #c7222a;
+    background-color:#0d6efd;
     border-radius: 50%;
     padding: 5px 10px;
     box-shadow: 0px 1px 2px grey;
@@ -169,7 +169,7 @@ const Styledul = styled.ul`
 const StyledHeader = styled.div`
   display: none;
   height: 57px;
-  background: #c7222a;
+  background:#0d6efd;
   align-items: center;
   justify-content: space-between;
   & a {

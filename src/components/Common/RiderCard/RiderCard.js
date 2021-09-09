@@ -44,6 +44,7 @@ function RiderCard({
             handleRiderClick();
           }}
           css={`
+          margin: 10px;
             /* transition: all 0.33s; */
             max-height: ${showMore ? "300px" : "max-content"};
             /* &:hover {
@@ -127,7 +128,7 @@ font-weight:bold;
                   font-size: 15px;
                   margin-top: 13px;
                   width: 174px;
-                  background-color: var(--light-pink);
+                  background-color: #eff7ff;
                 `}
                 value={
                   (Object.keys(rider?.options)[0] in selectedRiders &&

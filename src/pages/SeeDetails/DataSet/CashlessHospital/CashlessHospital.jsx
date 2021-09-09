@@ -85,7 +85,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals }) => {
                   className="title_h4 title_h4_title "
                   css={`
                     font-size: 23px;
-                    margin-bottom: 8px;
+                    margin-bottom: 26px;
                     color: #253858;
                     font-weight: 900;
                   `}
@@ -108,17 +108,18 @@ const CashlessHospital = ({ ActiveMainTab, hospitals }) => {
                             padding: 0;
                           }
                           & li {
-                            margin-bottom: 10px;
+                           
                             list-style-type: none;
                             min-height: 135px;
                             box-shadow: 0 3px 13px 0 rgb(0 0 0 / 16%);
-                            margin-bottom: 20px;
+                       
                             padding: 15px;
+                            min-height: 156px;
                           }
                         `}
                       >
                         <ul>
-                          <li>
+                          <li css={`margin-bottom: 20px;`}>
                             <h4
                               className="sidebar-title color_red"
                               style={{ paddingBottom: "3px", fontSize: "18px" }}
@@ -191,20 +192,18 @@ const CashlessHospital = ({ ActiveMainTab, hospitals }) => {
               </div>
               <div
                 className="row hospital_margin"
-                style={{
-                  marginTop: "20px",
-                }}
+                css={`justify-content: center;`}
               >
                 <div
                   className="col-lg-12 col-md-6 col-sm-8 border_search_all"
                   style={{
-                    marginBottom: "15px",
+                    margin: "35px 15px",
                     padding: "0px",
                     boxShadow: "1px 1px 5px #c2cbde",
                   }}
                   css={`
                     max-width: 40%;
-                    margin-left: 34px;
+                    margin-left: 12px;
                   `}
                 >
                   <div className="row">
@@ -245,7 +244,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals }) => {
                   </div>
                 </div>
 
-                <table className="table margin_p_r_table table_pro_search">
+                <table className="table margin_p_r_table table_pro_search" css={`    margin: 0 10px;`}>
                   <tbody
                     css={`
                       & td {
@@ -260,6 +259,9 @@ const CashlessHospital = ({ ActiveMainTab, hospitals }) => {
                       css={`
                         background-color: #d5ddea6e;
                         font-size: 20px;
+                        & th {
+                          padding: 13px 14px !important;
+                        }
                       `}
                     >
                       <th style={{ paddingTop: "unset" }}>Hospital Name</th>

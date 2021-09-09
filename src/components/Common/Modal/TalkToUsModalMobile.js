@@ -70,7 +70,7 @@ const TalkToUsModalMobile = ({ showTalkModal, setShowTalkModal }) => {
               position: absolute;
               top: 50px;
               right: 23px;
-              background: #c7222a;
+              background:#0d6efd;
               color: white;
               width: 25%;
               cursor: pointer;

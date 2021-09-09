@@ -45,11 +45,11 @@ const PlanDetails = ({
                 <Row
                   className="margin_row_plan_basic"
                   css={`
-                    justify-content: center;
+                    justify-content: space-between;
                     padding: 0px;
                   `}
                 >
-                  <Col md={5} className="text-left">
+                  <Col md={6} className="text-left">
                     <div className="nav flex-column nav-pills nav-pills-custom border_left_tab_plan">
                       {planDetails.featureList &&
                         planDetails.featureList.map((data, i) => {
@@ -124,7 +124,7 @@ const PlanDetails = ({
                       </Container>
                     </div>
                   </Col>
-                  <Col md={5} className="tab-content">
+                  <Col md={6} className="tab-content">
                     {planDetails.featureList &&
                       planDetails.featureList.map((data, i) => {
                         return (

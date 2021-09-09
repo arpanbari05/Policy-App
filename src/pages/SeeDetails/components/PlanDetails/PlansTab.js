@@ -34,14 +34,15 @@ const Anchor = styled.a`
     color: unset !important;
     background-color: unset !important;
     position: relative;
-    &:after {
-      content: "";
-      height: 100%;
-      width: 5px;
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      background-color: rgb(254, 204, 40);
-    }
+    
+    // &:after {
+    //   content: "";
+    //   height: 100%;
+    //   width: 5px;
+    //   position: absolute;
+    //   left: 0px;
+    //   top: 0px;
+    //   background-color: rgb(254, 204, 40);
+    // }
   }
 `;
