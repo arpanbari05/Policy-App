@@ -107,6 +107,7 @@ margin: auto;
 background-color: #e2f0ff;
 `
 export const RadioInput = styled.input`
+display: none;
   & label:before {
     content: "";
     width: 20px;

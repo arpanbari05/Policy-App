@@ -76,7 +76,7 @@ function QuotePage() {
 
       <div className="container">
         <div className="col-md-12 d-flex">
-          <div className="col-md-9" style={{ padding: "0px 5px", marginBottom: "40px" }}
+          <div className="col-md-9" style={{ padding: "0px 5px", marginBottom: "120px" }}
             css={`
                      @media (max-width: 1200px) {
            width: 100%;
@@ -101,7 +101,7 @@ function QuotePage() {
                 firstQuoteFound && (
                   filterQuotes.map(
                     (item, index) =>
-                      item.length?(
+                      item.length ? (
                         <QuoteCard
                           key={index}
                           id={index}
@@ -112,10 +112,10 @@ function QuotePage() {
                           }}
                           handleClick={() => setShowBuyNow(true)}
                         />
-                      ):<></>
+                      ) : <></>
                   )
                 )
-              ):<CardSkeletonLoader noOfCards={3}/> 
+              ) : <CardSkeletonLoader noOfCards={3} />
             }
 
           </div>
@@ -145,11 +145,11 @@ display: none;
         </div>
       </div>
       {showBuyNow && (
-              <BuyNowModal
-                showBuyNow={showBuyNow}
-                setShowBuyNow={setShowBuyNow}
-              />
-            )}
+        <BuyNowModal
+          showBuyNow={showBuyNow}
+          setShowBuyNow={setShowBuyNow}
+        />
+      )}
       <ComparePopup showPopup={showPopup} groupCode={groupCode} />
       {showSeeDetails && (
         <SeeDetails
