@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import Pencil from "../../../assets/images/pencil_pink.png";
 import { useState } from "react";
 import ReviewCartPopup from "./ReviewCardPopup";
-import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
-import EditMembersContent from "./EditMembersContent";
+// import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
+// import EditMembersContent from "./EditMembersContent";
 import { mobile, small } from "../../../utils/mediaQueries";
 
 export function amount(number = 0) {
@@ -950,7 +950,7 @@ const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayP
           onClose={handleReviewPopupClose}
         />
       ) : null}
-      {showEditMembers && (
+      {/* {showEditMembers && (
         <EditMembersPopup
           handleClose={() => setShowEditMembers(false)}
           css={`
@@ -962,7 +962,7 @@ const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayP
             <EditMembersContent closePopup={() => setShowEditMembers(false)} />
           }
         />
-      )}
+      )} */}
     </>
   );
 };
