@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { getAge } from "../../QuotesPage/components/EditMembersPopup/Data";
-import GreetingFormDropdown from "../../QuotesPage/components/EditMembersPopup/DropDown";
-import { updateUser } from "../../GreetingPage/ServiceApi/serviceApi";
-import { updateProposerDetails } from "../../GreetingPage/reducer/greetingPage.slice";
+//import { getAge } from "../../QuotesPage/components/EditMembersPopup/Data";
+import GreetingFormDropdown from "../../../components/RoundDD";
+// import { updateUser } from "../../GreetingPage/ServiceApi/serviceApi";
+// import { updateProposerDetails } from "../../GreetingPage/reducer/greetingPage.slice";
 import "styled-components/macro";
-import { fetchQuotes } from "../../QuotesPage/quotePage.slice";
-import { getQutoes } from "../../QuotesPage/ServiceApi/serviceApi";
+
+// import { getQutoes } from "../../QuotesPage/ServiceApi/serviceApi";
 import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
+import { fetchQuotes } from "../../quotePage/quote.slice";
+import { getQutoes } from "../../quotePage/serviceApi";
+import { updateUser } from "../../InputPage/ServiceApi/serviceApi";
+import { updateProposerDetails } from "../../InputPage/greetingPage.slice";
+import { getAge } from "../../InputPage/components/data";
 
 function useFetchQuotes({ groupCode }) {
   const dispatch = useDispatch();

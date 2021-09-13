@@ -4,8 +4,9 @@ import {
   comparePageSlice,
   frontendBootSlice,
   greetingPageSlice,
-  quotePageSlice,
+  ProductDetailsSlice,
   SeeDetailsSlice,
+  quotePageSlice,
 } from "../pages";
 
 export default combineReducers({
@@ -15,4 +16,5 @@ export default combineReducers({
   quotePage: quotePageSlice,
   cart: CartPageSlice,
   seeDetails: SeeDetailsSlice,
+  productPage: ProductDetailsSlice,
 });

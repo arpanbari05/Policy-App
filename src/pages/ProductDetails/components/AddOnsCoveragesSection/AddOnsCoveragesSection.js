@@ -1,9 +1,9 @@
 import { Tab, Tabs } from "react-bootstrap";
-import GreetingFormDropdown from "../../../QuotesPage/components/EditMembersPopup/DropDown";
+
 import FeatureSection from "../FeatureSection/FeatureSection";
 import styled from "styled-components/macro";
 import Pencil from "../../../../assets/images/pencil_pink.png";
-import { getTopUpAddOnsApi } from "../../../QuotesPage/ServiceApi/serviceApi";
+
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
@@ -18,6 +18,8 @@ import {
 } from "../../serviceApi";
 import { mobile, small } from "../../../../utils/mediaQueries";
 import AddOnDetails from "../AddOnDetails/AddOnDetails";
+import { getTopUpAddOnsApi } from "../../../quotePage/serviceApi";
+import GreetingFormDropdown from "../../../../components/RoundDD";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 

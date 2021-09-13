@@ -1,0 +1,80 @@
+.terms__wrapper {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: rgba(188, 172, 172, 0.25) 0px -5px 28px;
+  background: #fff;
+  z-index: 111;
+  padding: 9px 0 11px;
+}
+@media (max-width: 767px) {
+  .terms__wrapper {
+    display: none;
+  }
+}
+.summary_proposal_back {
+  // top: 50%;
+  // transform: translateY(-50%);
+  top: 26px;
+}
+.summary_footer_width {
+  width: 90%;
+}
+.summary_proposal_header {
+  padding-top: 18px !important;
+  padding-bottom: 15px !important;
+}
+.termsInner__wrapper {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+}
+.btn_p_s_pay_now {
+  &:focus {
+    outline: none !important;
+    box-shadow: none;
+  }
+}
+.card_proposal_summary {
+  position: relative;
+}
+.Iaccept {
+  padding-left: 8px;
+  line-height: 21px;
+  font-size: 15px;
+  color: #000;
+}
+.TermsAndConditions {
+  color: #c72229;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: "PFEncoreSansPromed";
+}
+.product__summary {
+  border: 1px solid #dfdfdf;
+  border-radius: 8px;
+  /* box-shadow: #e2e3ed 0px 6px 12px !important; */
+}
+@media (max-width: 767px) {
+  .font_15_p_s {
+    font-size: 12px !important;
+    font-family: "pf_handbook_proregular";
+  }
+  .font_sub_p_s {
+    font-size: 14px;
+    font-family: "pf_handbook_proregular";
+    word-break: break-all;
+  }
+  .proposal_summary_d_i {
+    font-family: "pf_handbook_proregular";
+    font-size: 16px;
+  }
+  .hide-on-mobile {
+    display: none;
+  }
+  .no-padding-mobile {
+    padding: 0 8px;
+  }
+}

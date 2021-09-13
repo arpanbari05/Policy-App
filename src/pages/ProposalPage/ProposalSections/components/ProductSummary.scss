@@ -1,0 +1,151 @@
+.padding-none {
+  padding: 0px !important;
+}
+
+.margin_top_14 {
+  margin-top: 14px;
+  margin-left: 0px;
+  margin-right: 0px;
+  flex-flow: column;
+}
+.revised-premium {
+  text-decoration: line-through;
+  &-title {
+    color: #1f874c !important;
+  }
+}
+.font_grey {
+  color: #57667e;
+  font-family: "pf_handbook_proregular";
+}
+.color_span_total_revise {
+  color: #343434;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: "pf_handbook_proregular";
+}
+.color_span_total_blck_medical {
+  color: #0f0f0f;
+  font-weight: 900;
+  font-size: 20px;
+  font-family: "pf_handbook_proregular";
+}
+.btn_continue_medi_revise_pop {
+  background: #ce1933;
+  color: #fff;
+  width: 91%;
+  padding: 12px;
+  margin-top: 1px;
+  border-radius: 9px;
+}
+.rider-box_product_pro_medical_box {
+  border-radius: 8px;
+  background-color: #f9fafb;
+  padding: 7px 3px 7px 17px;
+  margin: 10px 0 0;
+  justify-content: space-between;
+}
+.product_summary {
+  &__title {
+    font-size: 20px;
+    line-height: 28px;
+    margin-bottom: 12px;
+    font-weight: 900;
+    font-family: PFHandbookProbld;
+    background-image: linear-gradient(to right, #ffe7e7, #fff);
+    padding: 10px;
+    width: 100%;
+    margin: 0 -2px;
+    border-radius: 8px;
+    color: #000;
+  }
+}
+.customClassModalDialog {
+  & > div {
+    max-width: 590px;
+  }
+}
+.rider-box_product_pro_medical {
+  border-radius: 8px;
+  border: 1px solid #dce2ec;
+  background-color: #fff;
+  padding: 39px 3px 0px 17px;
+  margin: 10px 7px 7px;
+  justify-content: space-between;
+}
+.paln_name_t_product_pro_medical {
+  margin-left: -78px;
+  margin-top: 6px;
+  color: #000;
+  font-size: 17px;
+  font-family: "PFEncoreSansPromed";
+  display: flex;
+}
+.float_left_addon_c {
+  float: left;
+  margin: -26px 27px;
+}
+.logo_add_review {
+  width: 85px;
+  margin-left: 11px;
+  margin-top: -26px;
+  /* width: 48px; */
+  border-radius: 51px;
+}
+.img_top_m_custom_medical {
+  margin-top: -4px;
+  width: 50px;
+  margin-left: -13px;
+}
+.p_cover_medical_pop {
+  color: #171717;
+  font-family: "PFEncoreSansPro-book";
+  font-size: 14px;
+  float: left;
+  width: 120px;
+  margin-top: -8px;
+}
+.p_cover_medical_pop_span {
+  color: #000;
+  font-family: "PFEncoreSansPromed";
+  top: -7px !important;
+  font-weight: 600;
+  position: relative;
+  font-size: 14px;
+}
+.bg_medical_box_row {
+  background: #f8f8fa;
+  width: 103.4%;
+  padding: 10px 0;
+}
+.display_in_m_medical {
+  display: inline-block;
+  margin: 0 -1px 0 -3px;
+}
+.font_weight_normal_mediacl {
+  font-weight: normal !important;
+  color: #000;
+  font-size: 15px;
+  font-family: "PFEncoreSansPro-book";
+}
+.bottom_addon_cover_medical {
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  position: absolute;
+  border-radius: 50px;
+  left: 50%;
+    transform: translate(-50%, 0);
+  padding: 8px 12px;
+  bottom: -5px;
+  z-index: 111111;
+  color: #c7222a;
+  font-size: 16px;
+  background: #fff;
+}
+@media only screen and (max-width: 767px) {
+  .hide-mobile {
+    display: none;
+  }
+  .no-padding-mobile {
+    padding: 0 !important;
+  }
+}
