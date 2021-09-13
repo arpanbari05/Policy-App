@@ -227,13 +227,13 @@ const quotePageSlice = createSlice({
 
         premiumFilterQuotes: (state, action) => {
             state.filterQuotes = state.quotes.map(item => {
-              return item.filter(
-                quote =>
-                  quote.premium > action.payload?.code?.split("-")[0] &&
-                  quote.premium < action.payload?.code?.split("-")[1],
-              );
+                return item.filter(
+                    quote =>
+                        quote.premium > action.payload?.code?.split("-")[0] &&
+                        quote.premium < action.payload?.code?.split("-")[1],
+                );
             });
-          },
+        },
     },
 });
 
@@ -278,7 +278,7 @@ export const {
 } = quotePageSlice.actions;
 
 const cancelTokens = {};
-
+var flag = false;
 export const fetchQuotes =
     (companies, { sum_insured, tenure, plan_type, member, basePlanType }) =>
 
@@ -332,8 +332,21 @@ export const fetchQuotes =
                             };
                         });
                         // count++;
+
+
                         if (quoteData) {
-                            dispatch(saveQuotes(quoteData));
+                            quoteData.map(item => {
+
+                                if (item.product.insurance_type.name === "Health Insurance") {
+                                    flag = true;
+
+
+                                }
+
+                            })
+                            if (flag) {
+                                dispatch(saveQuotes(quoteData))
+                            }
                         }
                         delete cancelTokens[alias];
                         if (Object.keys(cancelTokens).length === 0) {
@@ -403,9 +416,9 @@ export const insurerFilter = data => {
 export const premiumFilterCards = data => {
     const { code } = data;
     return async dispatch => {
-      dispatch(premiumFilterQuotes({ code }));
+        dispatch(premiumFilterQuotes({ code }));
     };
-  };
+};
 export const createCartItem = (data, onCreate = () => { }) => {
     const newData = {
         enquiry_id: ls.get("enquiryId"),
@@ -483,139 +496,139 @@ export const updateCartItem = (data, onUpdate = () => { }) => {
 
 export const updateUserMembersDetails = (givenData, history) => {
     // let members = data.filter(d => d.age);
-  
+
     return async (dispatch, getState) => {
-      const data = getState().greetingPage.proposerDetails;
-      const companies = getState().frontendBoot.frontendData.data.companies;
-      const planType = getState().quotePage.filters.planType;
-      const {
-        first_name,
-        last_name,
-        name,
-        mobile,
-        gender,
-        email,
-        pincode,
-        members,
-      } = givenData || {};
-      try {
-        let sonCount = 1;
-        let DCount = 1;
-        const response = await createUser({
-          name,
-          mobile,
-          email,
-          gender,
-          pincode,
-          plan_type: planType ? planType.slice(0, 1) : "F",
-          section: "health",
-          members: members?.map(member => {
-            if (member.type.includes("daughter"))
-              return {
-                ...member,
-                type: member.type.slice(0, 8).concat(sonCount++),
-              };
-            if (member.type.includes("son"))
-              return {
-                ...member,
-                type: member.type.slice(0, 3).concat(DCount++),
-              };
-            return member;
-          }),
-        });
-  
-        if (response.errors) {
-          const { errors } = response;
-          const errorsList = Object.values(errors);
-          dispatch(ageError(errorsList));
+        const data = getState().greetingPage.proposerDetails;
+        const companies = getState().frontendBoot.frontendData.data.companies;
+        const planType = getState().quotePage.filters.planType;
+        const {
+            first_name,
+            last_name,
+            name,
+            mobile,
+            gender,
+            email,
+            pincode,
+            members,
+        } = givenData || {};
+        try {
+            let sonCount = 1;
+            let DCount = 1;
+            const response = await createUser({
+                name,
+                mobile,
+                email,
+                gender,
+                pincode,
+                plan_type: planType ? planType.slice(0, 1) : "F",
+                section: "health",
+                members: members?.map(member => {
+                    if (member.type.includes("daughter"))
+                        return {
+                            ...member,
+                            type: member.type.slice(0, 8).concat(sonCount++),
+                        };
+                    if (member.type.includes("son"))
+                        return {
+                            ...member,
+                            type: member.type.slice(0, 3).concat(DCount++),
+                        };
+                    return member;
+                }),
+            });
+
+            if (response.errors) {
+                const { errors } = response;
+                const errorsList = Object.values(errors);
+                dispatch(ageError(errorsList));
+            }
+
+            // const { data } = response;
+
+            // const {
+            //   data: { enquiry_id },
+            //   access_token,
+            // } = data;
+
+            // ls.set("token", access_token);
+            // ls.set("enquiryId", enquiry_id);
+
+            // dispatch(
+            //   createUserData({
+            //     ...data,
+            //     member: members,
+            //   }),
+            // );
+
+            // const newMemberGroups = data.data.groups.reduce(
+            //   (groups, member) => ({
+            //     ...groups,
+            //     [member.id]: member.members,
+            //   }),
+            //   {},
+            // );
+
+            // dispatch(createUserData({ member: data.data.input.members }));
+            // const memberGroupsList = Object.keys(newMemberGroups);
+            // const showPlanTypeFilter =
+            //   memberGroupsList.length > 1 ||
+            //   newMemberGroups[memberGroupsList[0]].length > 1;
+            // if (!showPlanTypeFilter) {
+            //   dispatch(
+            //     setFilters({
+            //       planType: "Individual",
+            //     }),
+            //   );
+            // }
+            // dispatch(setMemberGroups(newMemberGroups));
+
+            // dispatch(replaceFilterQuotes([]));
+            // dispatch(replaceQuotes([]));
+            // history.push({
+            //   pathname: `/quotes/${memberGroupsList[0]}`,
+            //   search: `enquiryId=${enquiry_id}`,
+            // });
+            // Object.keys(companies).forEach((item) =>
+            //   dispatch(saveQuotesData({ alias: item, type: "normal" }))
+            // );
+            if (response.data) {
+                dispatch(setAppLoading(true));
+                ls.set("enquiryId", response?.data?.data?.enquiry_id);
+                const newData = {
+                    enquiryId: response?.data?.data?.enquiry_id,
+                    name: response.data?.data?.name,
+                    mobile: response?.data?.data?.mobile,
+                    member: response?.data?.data?.input.members,
+                    email: response?.data?.data?.email,
+                };
+                const newMemberGroups = response.data.data.groups.reduce(
+                    (groups, member) => ({
+                        ...groups,
+                        [member.id]: member.members,
+                    }),
+                    {},
+                );
+                dispatch(setMemberGroups(newMemberGroups));
+
+                history.push({
+                    pathname: `/quotes/${Object.keys(newMemberGroups)[0]}`,
+                    search: `enquiryId=${newData.enquiryId}`,
+                });
+                dispatch(
+                    refreshUserData({ ...response?.data?.data?.input, ...newData }),
+                );
+
+                dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+                dispatch(ageError([]));
+                dispatch(setAppLoading(false));
+            }
+        } catch (err) {
+            setAppLoading(false);
+            console.log(err);
+            alert(err);
         }
-  
-        // const { data } = response;
-  
-        // const {
-        //   data: { enquiry_id },
-        //   access_token,
-        // } = data;
-  
-        // ls.set("token", access_token);
-        // ls.set("enquiryId", enquiry_id);
-  
-        // dispatch(
-        //   createUserData({
-        //     ...data,
-        //     member: members,
-        //   }),
-        // );
-  
-        // const newMemberGroups = data.data.groups.reduce(
-        //   (groups, member) => ({
-        //     ...groups,
-        //     [member.id]: member.members,
-        //   }),
-        //   {},
-        // );
-  
-        // dispatch(createUserData({ member: data.data.input.members }));
-        // const memberGroupsList = Object.keys(newMemberGroups);
-        // const showPlanTypeFilter =
-        //   memberGroupsList.length > 1 ||
-        //   newMemberGroups[memberGroupsList[0]].length > 1;
-        // if (!showPlanTypeFilter) {
-        //   dispatch(
-        //     setFilters({
-        //       planType: "Individual",
-        //     }),
-        //   );
-        // }
-        // dispatch(setMemberGroups(newMemberGroups));
-  
-        // dispatch(replaceFilterQuotes([]));
-        // dispatch(replaceQuotes([]));
-        // history.push({
-        //   pathname: `/quotes/${memberGroupsList[0]}`,
-        //   search: `enquiryId=${enquiry_id}`,
-        // });
-        // Object.keys(companies).forEach((item) =>
-        //   dispatch(saveQuotesData({ alias: item, type: "normal" }))
-        // );
-        if (response.data) {
-          dispatch(setAppLoading(true));
-          ls.set("enquiryId", response?.data?.data?.enquiry_id);
-          const newData = {
-            enquiryId: response?.data?.data?.enquiry_id,
-            name: response.data?.data?.name,
-            mobile: response?.data?.data?.mobile,
-            member: response?.data?.data?.input.members,
-            email: response?.data?.data?.email,
-          };
-          const newMemberGroups = response.data.data.groups.reduce(
-            (groups, member) => ({
-              ...groups,
-              [member.id]: member.members,
-            }),
-            {},
-          );
-          dispatch(setMemberGroups(newMemberGroups));
-  
-          history.push({
-            pathname: `/quotes/${Object.keys(newMemberGroups)[0]}`,
-            search: `enquiryId=${newData.enquiryId}`,
-          });
-          dispatch(
-            refreshUserData({ ...response?.data?.data?.input, ...newData }),
-          );
-  
-          dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-          dispatch(ageError([]));
-          dispatch(setAppLoading(false));
-        }
-      } catch (err) {
-        setAppLoading(false);
-        console.log(err);
-        alert(err);
-      }
     };
-  };
+};
 
 export const getProductDiscount =
     ({ alias, product_id, member, sum_insured, group }, onFetch = () => { }) =>

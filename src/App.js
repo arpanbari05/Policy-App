@@ -15,6 +15,7 @@ import { setShoutGetCompare } from "./pages/ComparePage/compare.slice";
 
 import { getProposerDetails } from "./pages/InputPage/greetingPage.slice";
 import { getCart } from "./pages/Cart/cart.slice";
+import ThankYouPage from "./pages/ThankYouPage/ThankYouPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -91,6 +92,7 @@ function App() {
         <Route exact path="/" component={InputPage} />
         <Route exact path="/quotes/:groupCode" component={QuotePage} />
         <Route exact path="/compare/:groupCode" component={ComparePage} />
+        <Route exact path="/thankyou/" component={ThankYouPage} />
       </Switch>
     </>
   ) : (
