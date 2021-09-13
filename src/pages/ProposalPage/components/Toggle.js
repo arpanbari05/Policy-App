@@ -28,7 +28,9 @@ const Toggle = ({
   console.log(name, notAllowed, value);
   const dispatch = useDispatch();
   useEffect(() => {
+
      if (value &&notAllowed && value[`is${name}`] === "Y") {
+
       setBoolean("N");
       setMembersStatus({});
     } else if (value instanceof Object && Object.keys(value).length) {
@@ -41,8 +43,10 @@ const Toggle = ({
     if (!value) {
       setBoolean("N");
       setMembersStatus({});
+
     }
     if (value && notAllowed && value[`is${name}`] === "Y") {
+
       setBoolean("N");
       setMembersStatus({});
     }

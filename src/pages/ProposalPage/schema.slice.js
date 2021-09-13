@@ -38,7 +38,9 @@ export const getProposalFields = () => {
       // data.data["Medical Details"]["10006386_self"][30][0].validate.matches = "validYear/1/100"
       // data.data["Medical Details"]["10012319_self"][16][0].type = "checkBox2"
       //  data.data["Medical Details"]["10012319_self"][16][0].additionalOptions = {title: 'hahah', members: ["self"]}
+
      // data.data["Medical Details"]["10006386_self"][2][6] = 
+
       // {
       //   parent: "reassure_medical_assure_2_1",
       //   additionalOptions: { label: "dasf",customOptions: ["yas", "nononondddddddddddddd"]},
@@ -46,6 +48,7 @@ export const getProposalFields = () => {
       //   name: "31413",
       //   type: 'custom_radio'
       // };
+
       
       // data.data["Medical Details"]["10014339_self"][2].name = "3141";
       // data.data["Medical Details"]["10014339_self"][2].parent =

@@ -146,7 +146,7 @@ export const submitProposalData = next => {
   return async dispatch => {
     try {
       const res = await submitProposal({ enquiryId: ls.get("enquiryId") });
-      
+
       if (res.statusCode === 200) {
         next();
       } else throw new Error(res.message);

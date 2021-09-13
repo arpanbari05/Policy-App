@@ -34,11 +34,13 @@ const GoBack = ({ productDetails, path, groupCode }) => {
               <IoChevronBackCircleSharp />
             </span>
           }
-          onClick={() =>
+          onClick={() => {
             history.replace({
               pathname: `${path}/${groupCode}`,
               search: `enquiryId=${enquiryID}`,
             })
+
+          }
           }
         ></BackButton>
       </div>
