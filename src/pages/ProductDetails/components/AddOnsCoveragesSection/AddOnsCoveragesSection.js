@@ -19,7 +19,7 @@ import {
 import { mobile, small } from "../../../../utils/mediaQueries";
 import AddOnDetails from "../AddOnDetails/AddOnDetails";
 import { getTopUpAddOnsApi } from "../../../quotePage/serviceApi";
-import GreetingFormDropdown from "../../../../components/RoundDD";
+import GreetingFormDropdown from "../../../../components/RoundDD2";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 

@@ -6,8 +6,9 @@ import Pencil from "../../../assets/images/pencil_pink.png";
 import { useState } from "react";
 import ReviewCartPopup from "./ReviewCardPopup";
 // import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
-// import EditMembersContent from "./EditMembersContent";
+import EditMembersContent from "./EditMembersContent";
 import { mobile, small } from "../../../utils/mediaQueries";
+import CardModal from "../../../components/Common/Modal/CardModal";
 
 export function amount(number = 0) {
   return `₹ ${parseInt(number).toLocaleString("en-In")}`;
@@ -66,17 +67,19 @@ function CartDetailRow({ title, value }) {
 function AddOnDetailsRow({ addOn }) {
   const { product, total_premium, members } = addOn;
   const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
+    (state) => state.frontendBoot.frontendData.data.companies
   );
   const { logo } = companies[product.company.alias];
   const totalPremium = amount(total_premium);
   const { groupCode } = useParams();
   const { product: cartProduct, updateProductRedux } =
     useCartProduct(groupCode);
-  const removeAddOn = addOnId => {
+  const removeAddOn = (addOnId) => {
     updateProductRedux({
       ...cartProduct,
-      addons: cartProduct.addons.filter(addon => addon.product.id !== addOnId),
+      addons: cartProduct.addons.filter(
+        (addon) => addon.product.id !== addOnId
+      ),
     });
   };
   const handleRemoveAddOnClick = () => {
@@ -131,7 +134,7 @@ function AddOnDetailsRow({ addOn }) {
         `}
       >
         {`${product.name} ${
-          members.filter(member => member !== "all").length
+          members.filter((member) => member !== "all").length
             ? `(${members})`
             : ""
         }`}
@@ -193,9 +196,9 @@ export function BackgroundBorderTitle({ title, ...props }) {
 function useReviewCartButton({ groupCode }) {
   const [reviewCartPopup, setReviewCartPopup] = useState(false);
 
-  const cart = useSelector(state => state.cart);
+  const cart = useSelector((state) => state.cart);
 
-  const memberGroups = useSelector(state => state.greetingPage.memberGroups);
+  const memberGroups = useSelector((state) => state.greetingPage.memberGroups);
 
   const memberGroupsList = Object.keys(memberGroups);
 
@@ -240,13 +243,13 @@ function useReviewCartButton({ groupCode }) {
   const history = useHistory();
 
   const handleProceedClick = () => {
-    addProduct(product).then(status => {
+    addProduct(product).then((status) => {
       if (status) history.push(getNextLink());
     });
   };
 
   const handleReviewCartClick = () => {
-    addProduct(product).then(status => {
+    addProduct(product).then((status) => {
       if (status) setReviewCartPopup(true);
     });
   };
@@ -294,13 +297,24 @@ function Discounts({ discounts = [] }) {
 const ReviewCart = ({ groupCode }) => {
   const [reviewCartPopup, setReviewCartPopup] = useState(false);
 
-  const cart = useSelector(state => state.cart);
-  const displayPlanType_code  = useSelector(state => state.quotePage.filters.planType) ;
-  const existingPlanType =  useSelector(state => state.quotePage.filters.planType)
+  const cart = useSelector((state) => state.cart);
+  const displayPlanType_code = useSelector(
+    (state) => state.quotePage.filters.planType
+  );
+  const existingPlanType = useSelector(
+    (state) => state.quotePage.filters.planType
+  );
 
-const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayPlanType_code === "I"?"Individual":displayPlanType_code === "F"?"Family Floater":existingPlanType;
+  const displayPlanType =
+    displayPlanType_code === "M"
+      ? "Multi Individual"
+      : displayPlanType_code === "I"
+      ? "Individual"
+      : displayPlanType_code === "F"
+      ? "Family Floater"
+      : existingPlanType;
 
-  const memberGroups = useSelector(state => state.greetingPage.memberGroups);
+  const memberGroups = useSelector((state) => state.greetingPage.memberGroups);
 
   const memberGroupsList = Object.keys(memberGroups);
 
@@ -309,7 +323,7 @@ const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayP
   const hasNextGroupProduct = cart[nextGroup];
 
   const { companies } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data,
+    ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
   const {
@@ -327,7 +341,6 @@ const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayP
   } = product;
 
   const logoSrc = companies[companyAlias].logo;
-
 
   const {
     sum_insured,
@@ -362,13 +375,13 @@ const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayP
   const history = useHistory();
 
   const handleProceedClick = () => {
-    addProduct(product).then(status => {
+    addProduct(product).then((status) => {
       if (status) history.push(getNextLink());
     });
   };
 
   const handleReviewCartClick = () => {
-    addProduct(product).then(status => {
+    addProduct(product).then((status) => {
       if (status) setReviewCartPopup(true);
     });
   };
@@ -397,14 +410,12 @@ const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayP
           display: flex;
         `}
       >
-        <CartDetailRow
-          title="Plan Type"
-          value={
-            existingPlanType
-          }
-        />
+        <CartDetailRow title="Plan Type" value={existingPlanType} />
         <CartDetailRow title="Cover" value={coverAmount} />
-        <CartDetailRow title="Policy Term" value={`${tenure+" "+(tenure>=2?"Years":"Year")} `} />
+        <CartDetailRow
+          title="Policy Term"
+          value={`${tenure + " " + (tenure >= 2 ? "Years" : "Year")} `}
+        />
       </div>
       <div
         css={`
@@ -452,7 +463,7 @@ const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayP
 
   const AddOnDetailMobile = ({ addOn }) => {
     const companies = useSelector(
-      state => state.frontendBoot.frontendData.data.companies,
+      (state) => state.frontendBoot.frontendData.data.companies
     );
     const logoSrc = companies[addOn.product.company.alias].logo;
     return (
@@ -521,7 +532,7 @@ const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayP
         >
           Addon Covers
         </h3>
-        {addons.map(addon => (
+        {addons.map((addon) => (
           <AddOnDetailMobile addOn={addon} />
         ))}
       </div>
@@ -832,14 +843,12 @@ const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayP
                 width: "70%",
               }}
             >
-              <CartDetailRow
-                title="Plan Type"
-                value={
-                  displayPlanType
-                }
-              />
+              <CartDetailRow title="Plan Type" value={displayPlanType} />
               <CartDetailRow title="Cover" value={coverAmount} />
-              <CartDetailRow title="Policy Term" value={`${tenure+" "+(tenure>=2?"Years":"Year")} `} />
+              <CartDetailRow
+                title="Policy Term"
+                value={`${tenure + " " + (tenure >= 2 ? "Years" : "Year")} `}
+              />
               <CartDetailRow title="Premium" value={premiumAmount} />
             </div>
           </div>
@@ -950,19 +959,23 @@ const displayPlanType = displayPlanType_code === "M"?"Multi Individual":displayP
           onClose={handleReviewPopupClose}
         />
       ) : null}
-      {/* {showEditMembers && (
-        <EditMembersPopup
+      {showEditMembers && (
+        <CardModal
+          show={showEditMembers}
           handleClose={() => setShowEditMembers(false)}
+          showButton={false}
+          title={`Edit Members`}
           css={`
             ${mobile} {
               width: 90%;
             }
           `}
-          editMembersContent={
+          noFooter
+          content={
             <EditMembersContent closePopup={() => setShowEditMembers(false)} />
           }
         />
-      )} */}
+      )}
     </>
   );
 };
