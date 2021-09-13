@@ -47,18 +47,18 @@ const UpperModifier = () => {
         sum_insured: ownCover
           ? `${ownCover}-${ownCover}`
           : sumAssured
-          ? covers.filter((cover) => cover.display_name === sumAssured)[0]?.code
-          : cover,
+            ? covers.filter((cover) => cover.display_name === sumAssured)[0]?.code
+            : cover,
         tenure: multiYear ? multiYear[0] : tenure,
         member: selectedGroup,
         plan_type:
           memberGroups[selectedGroup].length === 1
             ? "I"
             : proposerDetails.plan_type
-            ? proposerDetails.plan_type === "M"
-              ? "M"
-              : "F"
-            : "F",
+              ? proposerDetails.plan_type === "M"
+                ? "M"
+                : "F"
+              : "F",
         // plan_type: planType
         //   ? plantypes.filter(plan => plan.display_name === planType)[0].code
         //   : plan_type,
@@ -87,13 +87,13 @@ const UpperModifier = () => {
                   .replaceAll("_", "-");
                 return (
                   <span
-                    className={selectedGroup === group?`plans_for plans_for_members active position-relative`:"plans_for plans_for_members"}
+                    className={selectedGroup === group ? `plans_for plans_for_members active position-relative` : "plans_for plans_for_members"}
                     onClick={() => {
                       history.push({
-                            pathname: `/quotes/${group}`,
-                            search: `enquiryId=${enquiryId}`,
-                          });
-                          dispatch(setSelectedGroup(group));
+                        pathname: `/quotes/${group}`,
+                        search: `enquiryId=${enquiryId}`,
+                      });
+                      dispatch(setSelectedGroup(group));
                     }}
                   >
                     {membersText}
@@ -114,7 +114,7 @@ const UpperModifier = () => {
             >
               <i class="fas fa-share"></i> Share Quote
             </button>
-            <PlanTypeFilter />
+
           </div>
         </div>
       </UpperModifierWrapper>

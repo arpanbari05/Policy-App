@@ -13,9 +13,9 @@ background-color: #fff;
 
 export const EachWrapper = styled.div`
 width: 100%;
-margin:20px 0px 0px;
+margin:10px 0px 0px;
 padding:10px;
-height:150px;
+height:140px;
 border-right: 1px solid #dfdfdf;
 `
 export const LogoWrapper = styled.div`
@@ -23,6 +23,7 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
+
 `
 export const Logo = styled.img`
 height:45px;
@@ -71,13 +72,13 @@ letter-spacing: normal;
 text-align: left;
 color: #000;
 margin-bottom: 16px;
-width:120px;
+width:146px;
 `
 
 export const TextWrapper = styled.div`
 display:flex;
 flex-direction: column;
-min-width:120px;
+min-width:146px;
 margin-right: 5px;
 `
 export const SeeText = styled.span`
@@ -114,7 +115,6 @@ display: none;
     height: 20px;
     line-height: 19px;
     border-radius: 50px;
-    border: 1px solid #ecc6c8;
     
     
     font-size: 11px;
@@ -151,7 +151,7 @@ export const RadioLabel = styled.label`
     height: 20px;
     line-height: 19px;
     border-radius: 50px;
-    border: 1px solid #ecc6c8;
+    border: 1px solid #0a87ff;
     font-size: 11px;
     text-align: center;
     position: absolute;

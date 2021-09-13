@@ -22,6 +22,8 @@ import {
 import "styled-components/macro";
 import BackButton from "../../../components/BackButton";
 import RadioButton from "../../../components/RadioButton";
+import SecureLS from "secure-ls";
+import { useHistory } from "react-router";
 
 export const medicalHistoryRadioArr = [
   {
@@ -67,12 +69,25 @@ const Form3 = ({ handleChange, currentForm }) => {
   const { existingdiseases } = data || [""];
 
   console.log(diseaseArray);
+  const ls = new SecureLS();
+  const history = useHistory();
+  const pushToQuotes = (groupCode) => {
+    history.push({
+      pathname: `/quotes/${groupCode}`,
+      search: `enquiryId=${ls.get("enquiryId")}`,
+    });
+  };
 
   const handleSubmit = () => {
+    console.log("aabbcc")
     if (selected) {
       const medical_history = [...diseaseArray];
-      dispatch(saveForm5UserDetails(medical_history));
-      handleChange(5);
+      dispatch(
+        saveForm5UserDetails(medical_history, pushToQuotes)
+
+
+      );
+
     } else {
       setCustomErrors("Please Select One");
     }
@@ -95,7 +110,7 @@ const Form3 = ({ handleChange, currentForm }) => {
   return (
     <div
       css={`
-        display: ${currentForm !== 4 && "none"};
+        display: ${currentForm !== 5 && "none"};
       `}
     >
       <div
@@ -140,13 +155,20 @@ const Form3 = ({ handleChange, currentForm }) => {
             );
           })}
         {customErrors && <ErrorMessage>{customErrors}</ErrorMessage>}
-        {formButtons(() => {
+        {/* {formButtons(() => {
           if (isIndividualPlan) {
             handleChange(2);
           } else {
             handleChange(3);
           }
-        }, handleSubmit)}
+        }, handleSubmit)} */}
+        {formButtons(
+          () => {
+            handleChange(currentForm - 1);
+          },
+          handleSubmit,
+          true
+        )}
       </div>
     </div>
   );

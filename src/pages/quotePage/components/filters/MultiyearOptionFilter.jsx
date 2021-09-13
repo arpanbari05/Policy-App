@@ -21,12 +21,12 @@ const FilterModal = ({ show, handleClose }) => {
   );
   const dispatch = useDispatch();
 
- 
 
-  const [selectedTenure, setSelectedTenure] = useState(filters.multiYear?{
-    code:parseInt(filters.multiYear),
-    displayName:filters.multiYear
-  }:{});
+
+  const [selectedTenure, setSelectedTenure] = useState(filters.multiYear ? {
+    code: parseInt(filters.multiYear),
+    displayName: filters.multiYear
+  } : {});
 
   const handleChange = (code, displayName) => {
     if (displayName) {
@@ -40,17 +40,17 @@ const FilterModal = ({ show, handleClose }) => {
   const handleApply = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    dispatch(setFilters({ multiYear: selectedTenure.displayName}));
+    dispatch(setFilters({ multiYear: selectedTenure.displayName }));
 
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
     dispatch(
       fetchQuotes(companies, {
         plan_type: filters.planType === "Individual"
-        ? "I"
-        : filters.planType === "Family Floater"
-        ? "F"
-        : "M",
+          ? "I"
+          : filters.planType === "Family Floater"
+            ? "F"
+            : "M",
         tenure: selectedTenure.code,
         sum_insured: frontEndData.covers.find(
           (filter) => filter.display_name === filters.cover
@@ -74,7 +74,7 @@ const FilterModal = ({ show, handleClose }) => {
         }
         .modal-content {
           top: 238px;
-          left: 685px;
+          left: 44.5vw;
         }
         .modal-footer {
           padding: 0px !important;
@@ -102,7 +102,7 @@ const FilterModal = ({ show, handleClose }) => {
           <OptionWrapper>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="1 Year">1 Year</label>
-              <input type="radio" id="1 Year" name="multiYear" onChange={() => handleChange(1,"1 Year")} />
+              <input type="radio" id="1 Year" name="multiYear" onChange={() => handleChange(1, "1 Year")} />
             </li>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="2 Year">
@@ -115,7 +115,7 @@ const FilterModal = ({ show, handleClose }) => {
                   (save upto 10%)
                 </span>
               </label>
-              <input type="radio" id="2 Year" name="multiYear" onChange={() => handleChange(2,"2 Years")} />
+              <input type="radio" id="2 Year" name="multiYear" onChange={() => handleChange(2, "2 Years")} />
             </li>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="3 Year">
@@ -128,7 +128,7 @@ const FilterModal = ({ show, handleClose }) => {
                   (save upto 20%)
                 </span>
               </label>
-              <input type="radio" id="3 Year" name="multiYear" onChange={() => handleChange(3,"3 Years")} />
+              <input type="radio" id="3 Year" name="multiYear" onChange={() => handleChange(3, "3 Years")} />
             </li>
           </OptionWrapper>
         </div>
@@ -151,7 +151,7 @@ const MultiyearOptionFilter = () => {
       >
         <span className="filter_head">Multiyear Options</span>
         <span className="filter_sub_head">
-          {filters.multiYear?filters.multiYear:"Select Tenure"} <i class="fas fa-chevron-down"></i>
+          {filters.multiYear ? filters.multiYear : "Select Tenure"} <i class="fas fa-chevron-down"></i>
         </span>
       </Filter>
 
