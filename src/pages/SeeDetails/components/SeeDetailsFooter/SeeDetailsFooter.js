@@ -94,7 +94,6 @@ function SeeDetailsFooter({
         height: 115px;
         left: 0;
         background: white;
-        
       `}
       style={{
         zIndex: "9999",
@@ -102,7 +101,7 @@ function SeeDetailsFooter({
         alignItems: "center",
         width: "100%",
         padding: "5px 4%",
-        boxShadow: "0 3px 16px 0 rgba(0, 0, 0, 0.16)"
+        boxShadow: "0 3px 16px 0 rgba(0, 0, 0, 0.16)",
       }}
     >
       <div
@@ -146,8 +145,79 @@ function SeeDetailsFooter({
           </p>
         </div>
       </div>
-
       <div
+        css={`
+          border: solid 1px #bac3cf;
+          padding: 0 5px;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          width: 45%;
+          height: 75px;
+          justify-content: space-around;
+        `}
+      >
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid grey;
+            padding-right: 10%;
+          `}
+        >
+          <span>Cover:</span>
+          <span
+            css={`
+              font-weight: bold;
+            `}
+          >
+            {" "}
+            {numberToDigitWord(
+              sumInsured?.toString() || sum_insured?.toString(),
+              "seeDetails"
+            )}
+          </span>
+        </div>
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid grey;
+            padding-right: 10%;
+          `}
+        >
+          <span>Premium:</span>
+          <span
+            css={`
+              font-weight: bold;
+            `}
+          >
+            {" "}
+            <i className="fa fa-inr"></i> ₹{" "}
+                  {parseInt(selectedProduct.total_premium).toLocaleString(
+                    "en-IN"
+                  )}
+          </span>
+        </div>
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+          
+          `}
+        >
+          <span>claim settlement ratio</span>
+          <span
+            css={`
+              font-weight: bold;
+            `}
+          >
+            {" "}
+            {claim_settlement_ratio}%
+          </span>
+        </div>
+      </div>
+      {/* <div
         css={`
           border: solid 1px #bac3cf;
         `}
@@ -255,7 +325,7 @@ function SeeDetailsFooter({
             </h6>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div
         className="col-md-9 col-lg-4 bg_pink_f_f "
