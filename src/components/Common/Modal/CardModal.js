@@ -13,6 +13,7 @@ const CardModal = ({
   handleClick,
   handleClose,
   BtnArrow,
+  noFooter,
   showButton = true,
   revised = false,
 }) => {
@@ -64,6 +65,7 @@ const CardModal = ({
       </Modal.Body>
       <Modal.Footer
         style={{
+          display: noFooter && "none",
           borderTop: !showButton && "none",
           borderBottomColor: "#fff",
           borderTopLeftRadius: "0px",

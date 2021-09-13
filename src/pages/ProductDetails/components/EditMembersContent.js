@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 //import { getAge } from "../../QuotesPage/components/EditMembersPopup/Data";
-import GreetingFormDropdown from "../../../components/RoundDD";
+import GreetingFormDropdown from "../../../components/RoundDD2";
 // import { updateUser } from "../../GreetingPage/ServiceApi/serviceApi";
 // import { updateProposerDetails } from "../../GreetingPage/reducer/greetingPage.slice";
 import "styled-components/macro";
@@ -15,18 +15,19 @@ import { getQutoes } from "../../quotePage/serviceApi";
 import { updateUser } from "../../InputPage/ServiceApi/serviceApi";
 import { updateProposerDetails } from "../../InputPage/greetingPage.slice";
 import { getAge } from "../../InputPage/components/data";
+import StyledButton from "../../../components/StyledButton";
 
 function useFetchQuotes({ groupCode }) {
   const dispatch = useDispatch();
   const { companies, covers, baseplantypes, plantypes } = useSelector(
-    state => state.frontendBoot.frontendData.data,
+    (state) => state.frontendBoot.frontendData.data
   );
   const { multiYear, ...quoteFilters } = useSelector(
-    state => state.quotePage.filters,
+    (state) => state.quotePage.filters
   );
 
   const getCode = (display_name, list) =>
-    list.find(item => item.display_name === display_name).code;
+    list.find((item) => item.display_name === display_name).code;
 
   const plan_type = getCode(quoteFilters.planType, plantypes);
   const sum_insured = getCode(quoteFilters.cover, covers);
@@ -42,7 +43,7 @@ function useFetchQuotes({ groupCode }) {
         plan_type,
         member,
         basePlanType,
-      }),
+      })
     );
   };
   return {
@@ -68,17 +69,17 @@ function EditMembersContent({ closePopup = () => {} }) {
     },
     sum_insured,
     group: { members: thisGroupMembers },
-  } = useSelector(state => state.cart[groupCode]);
+  } = useSelector((state) => state.cart[groupCode]);
 
   const {
     data: { members: allMembers },
-  } = useSelector(state => state.frontendBoot.frontendData);
+  } = useSelector((state) => state.frontendBoot.frontendData);
 
   const {
     proposerDetails: { members: allMembersWithAge },
-  } = useSelector(state => state.greetingPage);
+  } = useSelector((state) => state.greetingPage);
 
-  const checkMember = member =>
+  const checkMember = (member) =>
     thisGroupMembers.includes(member.type ?? member.code);
 
   const thisMembersData = allMembers.filter(checkMember);
@@ -100,24 +101,25 @@ function EditMembersContent({ closePopup = () => {} }) {
   //   );
 
   const handleUpdateClick = () => {
-    const selectedMembersIncludes = member =>
+    const selectedMembersIncludes = (member) =>
       selectedMembers.some(
-        selectedmember => selectedmember.type === member.type,
+        (selectedmember) => selectedmember.type === member.type
       );
     setLoading(true);
     updateUser({
       members: allMembersWithAge
-        .filter(member => !selectedMembersIncludes(member))
+        .filter((member) => !selectedMembersIncludes(member))
         .concat(selectedMembers),
-    }).then(response => {
+    }).then((response) => {
       getQutoes({
         ...filtersData,
         plan_type: group.plan_type,
         alias,
         base_plan_type: filtersData.basePlanType,
-      }).then(res => {
+      }).then((res) => {
         const newProduct = res.data.data.find(
-          quote => quote.product.id === id && quote.sum_insured === sum_insured,
+          (quote) =>
+            quote.product.id === id && quote.sum_insured === sum_insured
         );
         if (newProduct)
           updateProductRedux({
@@ -150,11 +152,7 @@ function EditMembersContent({ closePopup = () => {} }) {
   };
 
   return (
-    <div
-      css={`
-        margin-top: -30px;
-      `}
-    >
+    <div>
       <div
         css={`
           display: flex;
@@ -166,9 +164,9 @@ function EditMembersContent({ closePopup = () => {} }) {
           }
         `}
       >
-        {thisMembersData.map(memberData => {
+        {thisMembersData.map((memberData) => {
           const selectedMember = selectedMembers.find(
-            member => memberData.code === member.type,
+            (member) => memberData.code === member.type
           );
           const selectedMemberAge = selectedMember.age + " Years";
           return (
@@ -216,12 +214,12 @@ function EditMembersContent({ closePopup = () => {} }) {
                 list={getAge(memberData.min_age, memberData.max_age)}
                 selected={selectedMemberAge}
                 handleChange={(_, selectedAge) =>
-                  setSelectedMembers(selectedMembers =>
-                    selectedMembers.map(member =>
+                  setSelectedMembers((selectedMembers) =>
+                    selectedMembers.map((member) =>
                       member.type === memberData.code
                         ? { ...member, age: parseInt(selectedAge) }
-                        : member,
-                    ),
+                        : member
+                    )
                   )
                 }
               />
@@ -237,19 +235,7 @@ function EditMembersContent({ closePopup = () => {} }) {
           margin-top: 30px;
         `}
       >
-        <button
-          css={`
-            background-color: var(--abc-red);
-            width: 160px;
-            height: 46px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            border-radius: 6px;
-          `}
-          onClick={handleUpdateClick}
-        >
+        <StyledButton width={"200px"} noIcon onClick={handleUpdateClick}>
           Update
           {loading ? (
             <i
@@ -259,7 +245,7 @@ function EditMembersContent({ closePopup = () => {} }) {
               `}
             />
           ) : null}
-        </button>
+        </StyledButton>
       </div>
     </div>
   );
