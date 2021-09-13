@@ -47,6 +47,7 @@ function RiderCard({
           margin: 10px;
             /* transition: all 0.33s; */
             max-height: ${showMore ? "300px" : "max-content"};
+            min-height: 190px;
             /* &:hover {
         max-height: 300px;
       } */
