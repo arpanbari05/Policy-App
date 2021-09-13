@@ -1,4 +1,4 @@
-import { getProductDiscount } from "../../QuotesPage/quotePage.slice";
+
 import { useDispatch, useSelector } from "react-redux";
 import CardSkeletonLoader from "./../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import { useCallback, useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { getAdditionalDiscounts } from "../serviceApi";
 import { useParams } from "react-router";
 import { amount } from "./ReviewCart";
 import { AddOnBuyButton } from "./AddOnsCoveragesSection/AddOnsCoveragesSection";
+import { getProductDiscount } from "../../quotePage/quote.slice";
 
 const CheckDiscount = ({ groupCode }) => {
   const dispatch = useDispatch();

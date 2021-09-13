@@ -233,7 +233,7 @@ const RidersContainer = styled.div`
   display: flex;
  
   flex-wrap: wrap;
-  justify-content: center;
+
   @media (max-width: 1024px) {
     display: block;
     padding: 0px;

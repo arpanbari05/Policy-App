@@ -190,13 +190,13 @@ export const saveForm2UserDetails = (userDetails, handleChange) => {
         ...modUserDetails,
       });
 
-      // const {
-      //   data: { enquiry_id },
-      //   access_token,
-      // } = data;
+      const {
+        data: { enquiry_id },
+        access_token,
+      } = data;
 
-      // ls.set("token", access_token);
-      // ls.set("enquiryId", enquiry_id);
+      ls.set("token", access_token);
+      ls.set("enquiryId", enquiry_id);
 
       dispatch(
         createUserData({

@@ -18,7 +18,8 @@ import {
   MobileHeaderText,
 } from "../ProposalPage/ProposalPage.style";
 import "styled-components/macro";
-import { setFilters, setShouldFetchQuotes } from "../QuotesPage/quotePage.slice";
+import { setFilters ,setShouldFetchQuotes} from "../quotePage/quote.slice";
+//import { setFilters, setShouldFetchQuotes } from "../QuotesPage/quotePage.slice";
 
 function GoBackButton({ groupCode, ...props }) {
   const urlQuery = useUrlQuery();
@@ -157,6 +158,20 @@ const ProductDetails = () => {
             justify-content: center;
           `}
         >
+             <Col
+            xl={3}
+            lg={12}
+            md={12}
+            sm={12}
+            xs={12}
+            css={`
+              ${mobile} {
+                display: none;
+              }
+            `}
+          >
+            <ReviewCart companies={companies} groupCode={groupCode} />
+          </Col>
           <Col
             xl={9}
             lg={12}
@@ -195,20 +210,7 @@ const ProductDetails = () => {
               <AddOnsCoveragesSection groupCode={groupCode} />
             </Col>
           </Col>
-          <Col
-            xl={3}
-            lg={12}
-            md={12}
-            sm={12}
-            xs={12}
-            css={`
-              ${mobile} {
-                display: none;
-              }
-            `}
-          >
-            <ReviewCart companies={companies} groupCode={groupCode} />
-          </Col>
+       
         </Row>
         <hr />
       </main>
