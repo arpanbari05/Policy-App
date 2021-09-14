@@ -3,12 +3,13 @@ import { useParams } from "react-router";
 import { useCartProduct } from "../../Cart";
 import { mobile, small } from "../../../utils/mediaQueries";
 import "styled-components/macro";
+import styled from "styled-components/macro";
 import { amount } from "./ReviewCart";
 
 function ProductCard({ groupCode }) {
   const { groupCode: groupCodeParam } = useParams();
   const { companies } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data,
+    ({ frontendBoot }) => frontendBoot.frontendData.data
   );
   const { product, totalPremium } = useCartProduct(groupCode || groupCodeParam);
 
@@ -36,10 +37,9 @@ function ProductCard({ groupCode }) {
         justify-content: space-between;
         /* padding: 0 20px; */
         border-radius: 12px;
-        padding: 8px 30px;
-        background: #fff1f1;
-        border: 1px solid #d68d87;
-        box-shadow: 0 20px 30px -19px #e6dcdc;
+        padding: 8px 10px;
+        background: white;
+        border: 1px solid #a9a9a9;
 
         ${mobile} {
           padding: 12px 10px;
@@ -53,11 +53,11 @@ function ProductCard({ groupCode }) {
     >
       <div
         css={`
-          flex: 1;
           display: flex;
           align-items: center;
         `}
       >
+        {/* ************logo******** */}
         <div
           css={`
             max-width: 90px;
@@ -73,8 +73,9 @@ function ProductCard({ groupCode }) {
             }
           `}
         >
-          <img src={logoSrc} alt={companyAlias} />
+          <img src={logoSrc} alt={companyAlias} className="w-100" />
         </div>
+        {/* *************name*********** */}
         <div
           css={`
             margin-left: 20px;
@@ -85,7 +86,9 @@ function ProductCard({ groupCode }) {
         >
           <h3
             css={`
-              font-size: 22px;
+              font-size: 21px;
+              font-weight: 600;
+              color: #394a68;
               ${mobile} {
                 font-size: 16px;
                 font-weight: 600;
@@ -97,11 +100,38 @@ function ProductCard({ groupCode }) {
           >
             {productName}
           </h3>
-          <p
-            css={`
-              font-size: 16px;
-              color: var(--abc-red);
+        </div>
+      </div>
 
+      {/* ***********detail display panel********* */}
+      <DetailDispalyPanel className="d-flex">
+        <div className="detail_child">
+          <span
+            css={`
+              color: #5a6981;
+              font-size: 15px;
+              /* width: 90px; */
+
+              ${mobile} {
+                font-size: 14px;
+                font-weight: 400;
+              }
+
+              ${small} {
+                font-size: 8px;
+                width: auto;
+                line-height: normal;
+              }
+            `}
+          >
+            Cover :
+          </span>
+          <span
+          className="detail_amount"
+            css={`
+              font-size: 15px;
+              color: #565657;
+              font-weight: 600;
               ${mobile} {
                 font-size: 14px;
                 color: #000;
@@ -116,17 +146,109 @@ function ProductCard({ groupCode }) {
             `}
           >
             {amount(product.sum_insured)}
-          </p>
+          </span>
         </div>
-      </div>
+
+        <div className="detail_child">
+          <span
+          
+            css={`
+              color: #5a6981;
+              font-size: 15px;
+              /* width: 90px; */
+
+              ${mobile} {
+                font-size: 14px;
+                font-weight: 400;
+              }
+
+              ${small} {
+                font-size: 8px;
+                width: auto;
+                line-height: normal;
+              }
+            `}
+          >
+            Cover :
+          </span>
+          <span
+           className="detail_amount"
+            css={`
+              font-size: 15px;
+              color: #565657;
+              font-weight: 600;
+              ${mobile} {
+                font-size: 14px;
+                color: #000;
+                font-weight: 400;
+              }
+
+              ${small} {
+                font-size: 11px;
+                line-height: normal;
+                margin-top: 3px;
+              }
+            `}
+          >
+            {amount(product.sum_insured)}
+          </span>
+        </div>
+
+        <div className="detail_child">
+          <span
+            css={`
+              color: #5a6981;
+              font-size: 15px;
+              /* width: 90px; */
+
+              ${mobile} {
+                font-size: 14px;
+                font-weight: 400;
+              }
+
+              ${small} {
+                font-size: 8px;
+                width: auto;
+                line-height: normal;
+              }
+            `}
+          >
+            Cover :
+          </span>
+          <span
+           className="detail_amount"
+            css={`
+              font-size: 15px;
+              color: #565657;
+              font-weight: 600;
+              ${mobile} {
+                font-size: 14px;
+                color: #000;
+                font-weight: 400;
+              }
+
+              ${small} {
+                font-size: 11px;
+                line-height: normal;
+                margin-top: 3px;
+              }
+            `}
+          >
+            {amount(product.sum_insured)}
+          </span>
+        </div>
+      </DetailDispalyPanel>
+
+      {/* **********totalPremium panel*********** */}
       <div
         css={`
-          background-color: #fff;
+          background-color: #f4f6f8;
           border-radius: 8px;
           text-align: center;
-          padding: 10px 26px;
+          padding: 5px 10px;
           font-size: 20px;
-
+          display: flex;
+          flex-direction: column;
           ${mobile} {
             padding: 4px 10px;
           }
@@ -135,14 +257,13 @@ function ProductCard({ groupCode }) {
             height: 37px;
             /* width: 67px; */
             border-radius: 7px;
-
           }
         `}
       >
-        <p
+        <span
           css={`
-            color: #000;
-            font-size: 16px;
+            color: #5a6981;
+            font-size: 13px;
             /* width: 90px; */
 
             ${mobile} {
@@ -157,12 +278,12 @@ function ProductCard({ groupCode }) {
             }
           `}
         >
-          Total Premium
-        </p>
-        <p
+          Total Premium :
+        </span>
+        <span
           css={`
-            color: var(--abc-red);
-            font-size: 22px;
+            color: #253858;
+            font-size: 20px;
             font-weight: 900;
 
             ${mobile} {
@@ -174,11 +295,20 @@ function ProductCard({ groupCode }) {
             }
           `}
         >
-          ₹ {totalPremiumAmount}
-        </p>
+          ₹ {totalPremiumAmount}/Year
+        </span>
       </div>
     </div>
   );
 }
 
 export default ProductCard;
+
+const DetailDispalyPanel = styled.div`
+
+.detail_child:not(:last-child):after {
+    content:' | ';
+}
+
+
+`;
