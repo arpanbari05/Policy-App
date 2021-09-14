@@ -5,7 +5,8 @@ import "./proposalSummary.scss";
 import { useLocation } from "react-router";
 import care from "./../../../assets/images/Care_Health.png";
 import { useDispatch, useSelector } from "react-redux";
-import { getCartItem } from "../../../modules/QuotesPage/quotePage.slice";
+import { getCartItem } from "../../../pages/quotePage/quote.slice";
+
 const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();

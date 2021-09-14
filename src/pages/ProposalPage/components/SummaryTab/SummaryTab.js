@@ -396,7 +396,7 @@ const InnerTextBorder = styled.div`
   margin-left: 14px;
 
   @media (max-width: 767px) {
-    font-family: "pf_handbook_proregular";
+
     margin-bottom: 0;
     margin-top: 12px;
     font-size: 14px;
@@ -407,7 +407,7 @@ const MedicalQuestionWrapper = styled.p`
   text-align: inherit;
   line-height: 27px !important;
   color: #000000;
-  font-family: "pf_handbook_proregular";
+  
   font-weight: 400 !important;
   position: relative;
   padding-left: 12px;
@@ -420,7 +420,7 @@ const MedicalQuestionWrapper = styled.p`
     width: 100%;
     font-size: 12px !important;
     margin-bottom: 0px !important;
-    font-family: "pf_handbook_proregular";
+
     line-height: 16px !important;
   }
   &::after {
@@ -437,7 +437,7 @@ const MedicalQuestionWrapper = styled.p`
 const MedicalAnswer = styled.p`
   margin: 0px 0 -15px;
   text-transform: capitalize;
-  font-family: "pf_handbook_proregular";
+  
   font-size: 18px;
   @media (max-width: 767px) {
     font-size: 12px;
@@ -447,7 +447,7 @@ const TitleWrapper = styled.p`
   margin-bottom: 12px;
   color: #69758d !important;
   font-weight: 600 !important;
-  font-family: "pf_handbook_proregular";
+  
   font-size: 18px !important;
   width: 100%;
   &:not(:first-child) {
