@@ -63,7 +63,7 @@ function ProductDetailsNavbar() {
         <nav
           css={`
             position: relative;
-            height: 100%;
+   
             width: 47%;
 
             @media (max-width: 1200px) {
@@ -76,20 +76,23 @@ function ProductDetailsNavbar() {
               position: relative;
               display: flex;
               align-items: center;
-              height: 100%;
+           
             `}
           >
             <ClickToScroll
               label="Additional Riders"
               scrollToElementId="additional-riders"
+              className="btn"
             />
             <ClickToScroll
               label="Check Discounts"
               scrollToElementId="check-discounts"
+              className="btn"
             />
             <ClickToScroll
               label="Add-on Coverages"
               scrollToElementId="add-on-coverages"
+              className="btn"
             />
           </div>
           <div
@@ -121,6 +124,7 @@ function ProductDetailsNavbar() {
             ></div>
           </div>
         </nav>
+       
         {showReviewButton ? (
           <div
             css={`
@@ -131,6 +135,7 @@ function ProductDetailsNavbar() {
             <ReviewCartButton />
           </div>
         ) : null}
+     
       </div>
     </div>
   );
@@ -159,9 +164,13 @@ function ClickToScroll({ label, scrollToElementId }) {
         justify-content: center;
         height: 100%;
         cursor: pointer;
+        border: none;
+        background: none;
+
         font-weight: 900;
-        font-size: 18px;
-        color: ${!isSelected ? "#000" : "var(--abc-red)"};
+        font-size: 15px;
+       
+        color: ${!isSelected ? "#000" : "#0a87ff"};
         &::after {
           content: "";
           opacity: 0;
@@ -175,7 +184,7 @@ function ClickToScroll({ label, scrollToElementId }) {
           background-color: var(--abc-red);
         }
         &:hover {
-          color: var(--abc-red);
+          color: ${!isSelected ? "grey" : "#0a87ff"};
           /* &::after {
             opacity: 1;
           } */

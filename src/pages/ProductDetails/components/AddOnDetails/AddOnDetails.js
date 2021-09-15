@@ -62,6 +62,7 @@ function AddOnDetails({ addOn, handleClose }) {
               margin: 100px auto;
             `}
           >
+          
             <AddOnDetails.Header addOn={addOn} handleClose={handleClose} />
             <AddOnDetails.Body addOn={addOn} />
           </div>

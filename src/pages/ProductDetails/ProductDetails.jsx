@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import CustomizeYourPlan from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
 import ReviewCart from "./components/ReviewCart";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Redirect, useHistory, useLocation, useParams } from "react-router-dom";
 import AddOnsCoveragesSection from "./components/AddOnsCoveragesSection/AddOnsCoveragesSection";
 import ProductCard from "./components/AddOnProductCard";
@@ -18,7 +18,7 @@ import {
   MobileHeaderText,
 } from "../ProposalPage/ProposalPage.style";
 import "styled-components/macro";
-import { setFilters ,setShouldFetchQuotes} from "../quotePage/quote.slice";
+import { setFilters, setShouldFetchQuotes } from "../quotePage/quote.slice";
 //import { setFilters, setShouldFetchQuotes } from "../QuotesPage/quotePage.slice";
 
 function GoBackButton({ groupCode, ...props }) {
@@ -27,6 +27,7 @@ function GoBackButton({ groupCode, ...props }) {
   const history = useHistory();
   return (
     <button
+      className="btn"
       type="button"
       onClick={() =>
         history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`)
@@ -45,15 +46,27 @@ function GoBackButton({ groupCode, ...props }) {
       `}
       {...props}
     >
-      <i
-        className="flaticon-back"
+      <div
+        className="d-flex justify-content-center align-items-center"
         css={`
-          &::before {
-            margin: 10px;
-          }
+          background: #f1f4f8;
+          width: 35px;
+          margin-right: 20px;
+          border-radius: 100%;
+          height: 35px;
+          color: #707b8b;
         `}
-      />
-      <span>Go Back</span>
+      >
+        <i className="fas fa-chevron-left"></i>
+      </div>
+      <span
+        css={`
+          color: #3b4c69;
+          font-weight: 600;
+        `}
+      >
+        Go Back
+      </span>
     </button>
   );
 }
@@ -62,16 +75,16 @@ const ProductDetails = () => {
   const { groupCode } = useParams();
 
   const location = useLocation();
-  
+
   const dispatch = useDispatch();
 
   const history = useHistory();
 
   const companies = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data,
+    ({ frontendBoot }) => frontendBoot.frontendData.data
   );
   const { fetchFilters, shouldFetchQuotes } = useSelector(
-    ({ quotePage }) => quotePage,
+    ({ quotePage }) => quotePage
   );
 
   const { product } = useCartProduct(groupCode);
@@ -95,7 +108,7 @@ const ProductDetails = () => {
   useEffect(() => {
     if (shouldFetchQuotes) {
       let tempfilter;
-      fetchFilters.forEach(data => {
+      fetchFilters.forEach((data) => {
         if (`${data.id}` === groupCode) {
           tempfilter = data.extras;
         }
@@ -107,7 +120,6 @@ const ProductDetails = () => {
   }, [fetchFilters]);
 
   useEffect(() => {
-    
     if (location.hash) {
       const scrollToRef = document.querySelector(location.hash);
       if (scrollToRef) {
@@ -140,25 +152,31 @@ const ProductDetails = () => {
         </MobileHeaderText>
       </MobileHeader>
       <main
-        // className="full-width-container"
+        className="container"
         css={`
-          padding: 20px 3% 0;
-          background-color: #f4f5f7;
-          width: 100%;
-
           ${mobile} {
             background-color: #fff;
           }
         `}
       >
         {showNav && <ProductDetailsNavbar />}
-        <GoBackButton groupCode={groupCode} />
+        <div className="d-flex align-items-center justify-content-between my-3">
+          <GoBackButton groupCode={groupCode} />
+          <div
+            css={`
+              width: 70%;
+            `}
+            className="flex-fill"
+          >
+            <ProductCard />
+          </div>
+        </div>
         <Row
           css={`
             justify-content: center;
           `}
         >
-             <Col
+          <Col
             xl={3}
             lg={12}
             md={12}
@@ -202,15 +220,14 @@ const ProductDetails = () => {
                 }
               `}
             >
-              <ProductCard />
-              <CustomizeYourPlan groupCode={groupCode} />
-              <hr />
               <CheckDiscount groupCode={groupCode} />
               <hr />
+              <CustomizeYourPlan groupCode={groupCode} />
+              <hr />
+
               <AddOnsCoveragesSection groupCode={groupCode} />
             </Col>
           </Col>
-       
         </Row>
         <hr />
       </main>

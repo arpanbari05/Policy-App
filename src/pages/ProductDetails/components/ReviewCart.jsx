@@ -32,8 +32,8 @@ function CartDetailRow({ title, value }) {
     >
       <div
         css={`
-          font-size: 14px;
-
+          font-size: 13px;
+          color: #555555;
           ${mobile} {
             color: #5c5959;
           }
@@ -49,7 +49,7 @@ function CartDetailRow({ title, value }) {
       <div
         css={`
           font-weight: 900;
-          font-size: 16px;
+          font-size: 13px;
 
           ${small} {
             font-size: 12px;
@@ -92,7 +92,7 @@ function AddOnDetailsRow({ addOn }) {
         align-items: center;
       `}
     >
-      <button
+      {/* <button
         css={`
           margin: 12px 6px 12px 0;
         `}
@@ -112,22 +112,26 @@ function AddOnDetailsRow({ addOn }) {
             justify-content: center;
           `}
         />
-      </button>
+      </button> */}
       <div
         css={`
-          width: 30px;
+          width: 70px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 70px;
           margin-right: 10px;
         `}
       >
         <img
           css={`
-            max-width: 100%;
+            width: 100%;
           `}
           src={logo}
           alt={product.company.alias}
         />
       </div>
-      <p
+      <span
         css={`
           font-size: 13px;
           font-weight: 400;
@@ -138,7 +142,7 @@ function AddOnDetailsRow({ addOn }) {
             ? `(${members})`
             : ""
         }`}
-      </p>
+      </span>
     </div>
   );
   return (
@@ -163,28 +167,17 @@ export function BackgroundBorderTitle({ title, ...props }) {
     <div
       {...props}
       css={`
-        border-bottom: 1px solid #ddd;
         position: relative;
+        width: 100%;
+        margin-top: 2px;
+
+        color: #0c88ff;
       `}
     >
       <div
         css={`
-          position: absolute;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          border: 1px solid var(--abc-red);
-          box-shadow: 0 3px 6px 0 rgb(0 0 0 / 16%);
-          font-size: 15px;
+          font-size: 13px;
           font-weight: 900;
-          border-radius: 50px;
-          padding: 8px 6px;
-          background-color: #fff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--abc-red);
-          width: 100%;
-          max-width: 127px;
         `}
       >
         {title}
@@ -591,9 +584,10 @@ const ReviewCart = ({ groupCode }) => {
         <div
           css={`
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
             justify-content: space-between;
-            border-bottom: 1px solid #ddd;
+            /* border-bottom: 1px solid #ddd; */
             padding-bottom: 10px;
 
             ${mobile} {
@@ -606,10 +600,10 @@ const ReviewCart = ({ groupCode }) => {
         >
           <div
             css={`
-              font-size: 24px;
+              font-size: 20px;
               font-weight: 900;
               position: relative;
-
+              color: #2d3f5e;
               &::before {
                 content: "";
                 height: 39px;
@@ -640,15 +634,16 @@ const ReviewCart = ({ groupCode }) => {
           <div
             css={`
               display: flex;
-              justify-content: flex-end;
+              justify-content: space-between;
               align-items: center;
-              max-width: 70%;
+              width: 100%;
             `}
           >
             <div
               css={`
                 display: inline-block;
                 text-transform: capitalize;
+
                 margin-right: 12px;
                 overflow: hidden;
                 white-space: nowrap;
@@ -669,26 +664,26 @@ const ReviewCart = ({ groupCode }) => {
             >
               {membersList.join(", ")}
             </div>
-            <button
+            <div
               css={`
-                width: 20px;
-
+                width: 30px;
+                height: 30px;
+                background: #eff7ff;
+                border-radius: 100%;
+                display: flex;
+                color: #369cff;
+                align-items: center;
+                justify-content: center;
+                font-size: 13px;
                 ${small} {
                   width: 11px;
                 }
               `}
+              className="btn"
               onClick={() => setShowEditMembers(true)}
             >
-              <img
-                src={Pencil}
-                alt="edit"
-                css={`
-                  color: var(--dark-pink);
-                  background-color: #fff;
-                  max-width: 100%;
-                `}
-              />
-            </button>
+              <i class="fas fa-pen"></i>
+            </div>
           </div>
         </div>
         <div
@@ -819,6 +814,7 @@ const ReviewCart = ({ groupCode }) => {
             css={`
               margin-top: 10px;
               display: flex;
+              border-bottom: 1px solid #ddd;
             `}
           >
             <div
@@ -836,7 +832,7 @@ const ReviewCart = ({ groupCode }) => {
                 }
               `}
             >
-              <img src={logoSrc} alt={companyAlias} />
+              <img src={logoSrc} alt={companyAlias} class="w-100" />
             </div>
             <div
               style={{
@@ -853,15 +849,31 @@ const ReviewCart = ({ groupCode }) => {
             </div>
           </div>
           <Discounts discounts={discounts} />
-          <div css={``}>
+          <div
+            css={`
+              display: flex;
+              width: 100%;
+              align-items: flex-start;
+
+              border-bottom: 1px solid #ddd;
+              padding: 20px 0px;
+            `}
+          >
             <div
               css={`
-                margin: 37px 0;
+                width: 30%;
+                max-width: 80px;
+                padding-left: 12px;
               `}
             >
               <BackgroundBorderTitle title="Riders" />
             </div>
-            <div>
+
+            <div
+              css={`
+                width: 70%;
+              `}
+            >
               {!health_riders.length ? (
                 <CartDetailRow title="No Riders Selected" />
               ) : (
@@ -877,82 +889,110 @@ const ReviewCart = ({ groupCode }) => {
           </div>
           <div
             css={`
-              margin: 37px 0;
+              width: 100%;
+              align-items: flex-start;
+              border-bottom: 1px solid #ddd;
+              padding: 20px 0px;
+              padding-left: 12px;
             `}
           >
-            <BackgroundBorderTitle title="Add-On Coverages" />
+            <div>
+              <BackgroundBorderTitle title="Add-On Coverages" />
+            </div>
+            <div>
+              {!addons.length ? (
+                <CartDetailRow title="No Add-Ons Selected" />
+              ) : (
+                addons.map((addOn, idx) => (
+                  <AddOnDetailsRow
+                    key={addOn.product.name + addOn.premium + idx}
+                    addOn={addOn}
+                  />
+                ))
+              )}
+            </div>
           </div>
-          <div>
-            {!addons.length ? (
-              <CartDetailRow title="No Add-Ons Selected" />
-            ) : (
-              addons.map((addOn, idx) => (
-                <AddOnDetailsRow
-                  key={addOn.product.name + addOn.premium + idx}
-                  addOn={addOn}
-                />
-              ))
-            )}
-          </div>
-          <hr />
+
           <div
             css={`
               display: flex;
               justify-content: space-between;
               align-items: center;
-              font-size: 18px;
+              font-size: 14px;
               padding: 10px;
               border-radius: 2px;
               background-color: #f7f7f7;
               font-weight: 900;
             `}
           >
-            <div>Total Premium</div>
+            <div
+              css={`
+                color: #6d798f;
+              `}
+            >
+              Total Premium <br />
+              <small>*Inc. GST</small>
+            </div>
             <div
               css={`
                 color: var(--abc-red);
-                font-size: 21px;
+                font-size: 17px;
               `}
             >
-              {totalPremiumAmount}
+              {totalPremiumAmount}/ Year
             </div>
           </div>
-          {hasNextGroupProduct ? (
-            <ProceedButton
-              members={memberGroups[nextGroup]?.join(", ")}
-              loading={isCartProductLoading}
-              onProceedClick={handleProceedClick}
-            />
-          ) : (
-            <button
-              css={`
-                background-color: var(--abc-red);
-                color: #fff;
-                min-width: 100%;
-                border-radius: 2px;
-                box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
-                font-size: 18px;
-                font-weight: 600px;
-                height: 44px;
-                margin: 10px auto;
-              `}
-              onClick={handleReviewCartClick}
-              id="review-cart-button"
-            >
-              {/* Review Your Cart <i className="flaticon-next" /> */}
-              Review Your Cart
-              {isCartProductLoading ? (
-                <i
-                  className="fa fa-circle-notch rotate"
-                  css={`
-                    margin-left: 1rem;
-                  `}
-                />
-              ) : null}
-            </button>
-          )}
+          <div
+            css={`
+              bottom: -45px;
+              left: 0px;
+              width: 100%;
+              position: absolute;
+              border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+            `}
+          >
+            {hasNextGroupProduct ? (
+              <ProceedButton
+                members={memberGroups[nextGroup]?.join(", ")}
+                loading={isCartProductLoading}
+                onProceedClick={handleProceedClick}
+              />
+            ) : (
+              <button
+                css={`
+                  background-color: #0c88ff;
+                  color: #fff;
+                  min-width: 100%;
+                  border-radius: 2px;
+                  box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
+                  font-size: 18px;
+                  font-weight: 600px;
+                  height: 44px;
+                  margin: 10px auto;
+                `}
+                onClick={handleReviewCartClick}
+                id="review-cart-button"
+                className="btn"
+              >
+                {/* Review Your Cart <i className="flaticon-next" /> */}
+                Review Your Cart
+                {isCartProductLoading ? (
+                  <i
+                    className="fa fa-circle-notch rotate"
+                    css={`
+                      margin-left: 1rem;
+                    `}
+                  />
+                ) : null}
+              </button>
+            )}
+          </div>
         </div>
       </div>
+
       {!hasNextGroupProduct && reviewCartPopup ? (
         <ReviewCartPopup
           propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
@@ -1013,17 +1053,22 @@ export function ReviewCartButton() {
       ) : (
         <button
           css={`
-            background-color: var(--abc-red);
-            color: #fff;
+           
+            
             min-width: 219px;
+            width: 100%;
+        color: white;
+
+        background-color: #0c88ff;
             border-radius: 2px;
-            box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
+            
             font-size: 18px;
             font-weight: 600px;
             height: 44px;
             margin: 10px auto;
           `}
           onClick={handleReviewCartClick}
+          className="btn"
         >
           Review Your Cart
           {isCartProductLoading ? (
@@ -1059,8 +1104,13 @@ function ProceedButton({
         align-items: center;
         justify-content: space-between;
         padding: 10px;
+
+        width: 100%;
+        color: white;
+
+        background-color: #0c88ff;
         border: 1px dashed var(--abc-red);
-        border-radius: 8px;
+        
         margin-top: 20px;
       `}
       id="review-cart-button"
@@ -1068,8 +1118,7 @@ function ProceedButton({
       <div>
         <div
           css={`
-            font-size: 14px;
-            color: var(--abc-red);
+            font-size: 12px;
           `}
         >
           Next Step:
@@ -1077,6 +1126,7 @@ function ProceedButton({
         <div
           css={`
             text-transform: capitalize;
+            font-size: 13px;
           `}
         >
           {`Plan for ${members}`}
