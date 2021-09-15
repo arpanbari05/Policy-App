@@ -220,10 +220,11 @@ const ProductDetails = () => {
                 }
               `}
             >
-              <CustomizeYourPlan groupCode={groupCode} />
-              <hr />
               <CheckDiscount groupCode={groupCode} />
               <hr />
+              <CustomizeYourPlan groupCode={groupCode} />
+              <hr />
+
               <AddOnsCoveragesSection groupCode={groupCode} />
             </Col>
           </Col>

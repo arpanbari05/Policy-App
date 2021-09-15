@@ -12,13 +12,13 @@ function ProductCard({ groupCode }) {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
   const { product, totalPremium } = useCartProduct(groupCode || groupCodeParam);
-
+console.log(product,"product")
   if (!product) return <p>Empty Cart</p>;
 
   const {
     product: {
       name: productName,
-      company: { alias: companyAlias },
+      company: { alias: companyAlias, csr: companyCSR },
     },
   } = product;
 
@@ -39,7 +39,7 @@ function ProductCard({ groupCode }) {
         border-radius: 12px;
         padding: 8px 10px;
         background: white;
-        border: 1px solid #a9a9a9;
+        border: 1px solid #dfdfdf;
 
         ${mobile} {
           padding: 12px 10px;
@@ -86,7 +86,7 @@ function ProductCard({ groupCode }) {
         >
           <h3
             css={`
-              font-size: 21px;
+              font-size: 20px;
               font-weight: 600;
               color: #394a68;
               ${mobile} {
@@ -145,7 +145,7 @@ function ProductCard({ groupCode }) {
               }
             `}
           >
-            {amount(product.sum_insured)}
+            {" "}{amount(product.sum_insured)}
           </span>
         </div>
 
@@ -169,7 +169,7 @@ function ProductCard({ groupCode }) {
               }
             `}
           >
-            Cover :
+            Total Premium :
           </span>
           <span
            className="detail_amount"
@@ -190,7 +190,7 @@ function ProductCard({ groupCode }) {
               }
             `}
           >
-            {amount(product.sum_insured)}
+            {" "}{totalPremiumAmount}
           </span>
         </div>
 
@@ -213,7 +213,7 @@ function ProductCard({ groupCode }) {
               }
             `}
           >
-            Cover :
+            Claim Settlement Ratio :
           </span>
           <span
            className="detail_amount"
@@ -234,7 +234,7 @@ function ProductCard({ groupCode }) {
               }
             `}
           >
-            {amount(product.sum_insured)}
+            {" "}{companyCSR}%
           </span>
         </div>
       </DetailDispalyPanel>
