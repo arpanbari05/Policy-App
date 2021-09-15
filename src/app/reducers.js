@@ -6,12 +6,11 @@ import {
   greetingPageSlice,
   ProductDetailsSlice,
   SeeDetailsSlice,
-
+  schemaSlice,
   proposalPageSlice,
-
   quotePageSlice,
-
 } from "../pages";
+import FormBuilderSlice from "./../components/FormBuilder/FormBuilder.slice";
 
 export default combineReducers({
   frontendBoot: frontendBootSlice,
@@ -22,4 +21,6 @@ export default combineReducers({
   proposalPage: proposalPageSlice,
   seeDetails: SeeDetailsSlice,
   productPage: ProductDetailsSlice,
+  schema: schemaSlice,
+  formBuilder: FormBuilderSlice,
 });

@@ -5,7 +5,7 @@ import "styled-components/macro";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
-import { getCartItem } from "../QuotesPage/quotePage.slice";
+
 import { starSchema } from "./ProposalDetailsSchema";
 import { InsuredDetails, ProposerDetails } from "./ProposalSections";
 import BMI from "./ProposalSections/components/BMI";
@@ -23,6 +23,7 @@ import useUrlQuery from "../../customHooks/useUrlQuery";
 import ProductSummaryMobile from "./ProposalSections/components/ProductSummaryMobile";
 import ProductSummaryTab from "./ProposalSections/components/ProductSummaryTab";
 import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
+import Card from "../../components/Card";
 
 /* ===============================test================================= */
 
@@ -80,6 +81,7 @@ const ProposalPage = ({ history }) => {
     switch (activeForm) {
       case "Proposer Details":
         return (
+          <Card>
           <ProposerDetails
             key={activeForm}
             schema={
@@ -88,7 +90,9 @@ const ProposalPage = ({ history }) => {
             setActive={setActive}
             name={activeForm}
             defaultValue={defaultData}
-          />
+            />
+            </Card>
+       
         );
       case "Insured Details":
         return (

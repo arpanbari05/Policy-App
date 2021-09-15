@@ -19,6 +19,7 @@ import { getCart } from "./pages/Cart/cart.slice";
 import ThankYouPage from "./pages/ThankYouPage/ThankYouPage";
 
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
+import ProposalPage from "./pages/ProposalPage/ProposalPage";
 
 
 function App() {
@@ -96,7 +97,7 @@ function App() {
         <Route exact path="/" component={InputPage} />
         <Route exact path="/quotes/:groupCode" component={QuotePage} />
         <Route exact path="/compare/:groupCode" component={ComparePage} />
-
+        <Route exact path="/proposal" component={ProposalPage} />
         <Route exact path="/thankyou/" component={ThankYouPage} />
 
         <Route exact path="/productdetails/:groupCode" component={ProductDetails} />

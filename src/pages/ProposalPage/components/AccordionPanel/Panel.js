@@ -176,7 +176,7 @@ const StyledPanel = styled.a`
 
   border-radius: ${props => (!props.isShowMedical ? "19px" : "")};
   font-weight: 900;
-  font-family: "pf_handbook_proregular";
+  
   text-transform: capitalize;
   margin-bottom: 22px;
   & span {

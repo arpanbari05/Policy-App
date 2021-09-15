@@ -247,7 +247,7 @@ function ProductSummaryMobile({ cart, payNow }) {
                 font-size: 18px;
                 font-weight: 600;
                 color: #c72229;
-                font-family: "pf_handbook_proregular";
+            
                 @media (min-width: 768px) {
                   font-size: 21px !important;
                 }
