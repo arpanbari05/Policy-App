@@ -245,6 +245,7 @@ function DetailsTitle({ children, isOpen, eventKey }) {
 
 function DetailBody({ addOnDetail, children }) {
   const { name } = addOnDetail;
+  console.log('name',name)
   return (
     <div>
       <DetailsTitle eventKey={name}>{name}</DetailsTitle>

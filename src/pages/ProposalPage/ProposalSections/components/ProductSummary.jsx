@@ -8,6 +8,7 @@ import arrow from "./../../../../assets/images/arrow.png";
 import care from "./../../../../assets/images/Care_Health.png";
 import correct from "./../../../../assets/images/correct_icon.png";
 import "./ProductSummary.scss";
+import Card from "../../../../components/Card";
 const removeTotalPremium = cart => {
   let { totalPremium, ...y } = cart;
   return y;
@@ -343,21 +344,20 @@ const ProductSummary = ({ cart, setActive }) => {
   );
   return (
     <>
-      <Wrapper className="col-lg-3 product__summary hideOnMobile">
-        <Button onClick={() => setShow(true)}>
+      <Card styledCss={`    position: sticky;
+    top: 0;
+    width: 100%;`}>
+          {content}
           <div>
             Total Premium
             <Price>
               <i class="fa fa-inr"></i> {cart?.totalPremium}
             </Price>
           </div>
-          <ViewPlanDetails>
-            View Plan Details <img alt="arrow" src={arrow} />
-          </ViewPlanDetails>
-        </Button>
-      </Wrapper>
-      <ViewPlanDetailModal
-        show={show}
+    
+      </Card>
+      {/* <ViewPlanDetailModal
+        show={true}
         title={planDetails.title}
         showButton={false}
         content={content}
@@ -375,7 +375,7 @@ const ProductSummary = ({ cart, setActive }) => {
         customClass="customClassModalDialog"
         revised={true}
 
-      />
+      /> */}
     </>
   );
 };

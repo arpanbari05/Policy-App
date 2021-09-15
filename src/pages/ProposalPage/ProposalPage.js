@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SecureLS from "secure-ls";
-import "styled-components/macro";
+import styled from "styled-components/macro";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
-
+import { FaRegEdit } from "react-icons/fa";
 import { starSchema } from "./ProposalDetailsSchema";
 import { InsuredDetails, ProposerDetails } from "./ProposalSections";
 import BMI from "./ProposalSections/components/BMI";
@@ -24,17 +24,18 @@ import ProductSummaryMobile from "./ProposalSections/components/ProductSummaryMo
 import ProductSummaryTab from "./ProposalSections/components/ProductSummaryTab";
 import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
 import Card from "../../components/Card";
+import { Col, Container, Row } from "react-bootstrap";
 
 /* ===============================test================================= */
 
 /* ===============================test================================= */
 const ProposalPage = ({ history }) => {
   const [active, setActive] = useState(0);
-  const { currentSchema } = useSelector(state => state.schema);
+  const { currentSchema } = useSelector((state) => state.schema);
   const queryStrings = useUrlQuery();
   const enquiryId = queryStrings.get("enquiryId");
   //const currentSchema = starSchema;
-  const cart = useSelector(state => state.cart);
+  const cart = useSelector((state) => state.cart);
   const [listOfForms, setListOfForms] = useState([]);
   useEffect(() => {
     if (currentSchema instanceof Object)
@@ -42,14 +43,14 @@ const ProposalPage = ({ history }) => {
   }, [currentSchema]);
   const dispatch = useDispatch();
   const { activeIndex, proposalData } = useSelector(
-    state => state.proposalPage,
+    (state) => state.proposalPage
   );
   useEffect(() => {
     if (listOfForms.length && active >= listOfForms.length) {
       dispatch(
         submitProposalData(() => {
           history.push("/proposal_summary?enquiryId=" + enquiryId);
-        }),
+        })
       );
     }
   }, [active]);
@@ -62,9 +63,10 @@ const ProposalPage = ({ history }) => {
   useEffect(() => {
     setActive(activeIndex);
   }, [activeIndex]);
+
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-
+    console.log(activeForm, active, "dgsaadsg");
     if (active >= listOfForms.length && listOfForms.length) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
@@ -78,21 +80,171 @@ const ProposalPage = ({ history }) => {
         <p>Proposal Page not found against this IC</p>
       </div>;
     }
+    return (
+      <>
+        <Card styledCss={`margin-bottom: 20px;`}>
+          {activeForm === "Proposer Details" ? (
+            <>
+              {" "}
+              <h1>{activeForm}</h1>{" "}
+              <ProposerDetails
+                key={activeForm}
+                schema={
+                  currentSchema ? Object.values(currentSchema[activeForm]) : []
+                }
+                setActive={setActive}
+                name={activeForm}
+                defaultValue={defaultData}
+              />
+            </>
+          ) : (
+            <span
+              css={`
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              `}
+            >
+              <h1>Proposer Details</h1>
+              <a
+                css={`
+                  font-size: 20px;
+                  display: ${!proposalData[listOfForms[0]] && "none"};
+                `}
+                onClick={() => {
+                  setActive(0);
+                }}
+              >
+                <FaRegEdit />
+              </a>
+            </span>
+          )}
+        </Card>
+        <Card styledCss={`margin-bottom: 20px;`}>
+          {activeForm === "Insured Details" ? (
+            <>
+              {" "}
+              <h1>{activeForm}</h1>{" "}
+              <InsuredDetails
+                key={activeForm}
+                schema={currentSchema ? currentSchema[activeForm] : {}}
+                setActive={setActive}
+                name={activeForm}
+                defaultValue={defaultData}
+              />
+            </>
+          ) : (
+            <span
+            css={`
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            `}
+          >
+            <h1>Insured Details</h1>
+            <a
+              css={`
+                font-size: 20px;
+                display: ${!proposalData[listOfForms[1]] && "none"};
+              `}
+              onClick={() => {
+                setActive(1);
+              }}
+            >
+              <FaRegEdit />
+            </a>
+          </span>
+          )}
+        </Card>
+        <Card styledCss={`margin-bottom: 20px;`}>
+          {activeForm === "Medical Details" ? (
+            <>
+              {" "}
+              <h1>{activeForm}</h1>{" "}
+              <InsuredDetails
+                key={activeForm}
+                schema={currentSchema ? currentSchema[activeForm] : {}}
+                setActive={setActive}
+                name={activeForm}
+                defaultValue={defaultData}
+              />
+            </>
+          ) : (
+            <span
+            css={`
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            `}
+          >
+            <h1>Medical Details</h1>
+            <a
+              css={`
+                font-size: 20px;
+                display: ${!proposalData[listOfForms[2]] && "none"};
+              `}
+              onClick={() => {
+                setActive(2);
+              }}
+            >
+              <FaRegEdit />
+            </a>
+          </span>
+          )}
+        </Card>
+        <Card styledCss={`margin-bottom: 20px;`}>
+          {activeForm === "Other Details" ? (
+            <>
+              {" "}
+              <h1>{activeForm}</h1>{" "}
+              <InsuredDetails
+                key={activeForm}
+                schema={currentSchema ? currentSchema[activeForm] : {}}
+                setActive={setActive}
+                name={activeForm}
+                defaultValue={defaultData}
+              />
+            </>
+          ) : (
+            <span
+            css={`
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            `}
+          >
+            <h1>Other Details</h1>
+            <a
+              css={`
+                font-size: 20px;
+                display: ${!proposalData[listOfForms[3]] && "none"};
+              `}
+              onClick={() => {
+                setActive(3);
+              }}
+            >
+              <FaRegEdit />
+            </a>
+          </span>
+          )}
+        </Card>
+      </>
+    );
     switch (activeForm) {
       case "Proposer Details":
         return (
-          <Card>
-          <ProposerDetails
-            key={activeForm}
-            schema={
-              currentSchema ? Object.values(currentSchema[activeForm]) : []
-            }
-            setActive={setActive}
-            name={activeForm}
-            defaultValue={defaultData}
+          <Card styledCss={`margin-bottom: 20px;`}>
+            <h1>{activeForm}</h1>
+            <ProposerDetails
+              key={activeForm}
+              schema={
+                currentSchema ? Object.values(currentSchema[activeForm]) : []
+              }
+              setActive={setActive}
+              name={activeForm}
+              defaultValue={defaultData}
             />
-            </Card>
-       
+          </Card>
         );
       case "Insured Details":
         return (
@@ -158,7 +310,13 @@ const ProposalPage = ({ history }) => {
             <i className="icon flaticon-back" style={{ width: "27px" }}></i> Go
             Back
           </p>
-          <div
+
+          <Row>
+            <Col md={3}><ProductSummary cart={cart}/></Col>
+            <Col md={9}>{form(active, proposalData[listOfForms[active]])}</Col>
+          </Row>
+
+          {/* <div
             className="element-tile-two"
             style={{ width: "100%" }}
             css={`
@@ -180,7 +338,7 @@ const ProposalPage = ({ history }) => {
               <ProductSummary cart={cart} setActive={setActive} />
             </div>
           </div>
-          {form(active, proposalData[listOfForms[active]])}
+          {form(active, proposalData[listOfForms[active]])} */}
           {/* <div
             style={{
               display: "flex",
@@ -195,15 +353,13 @@ const ProposalPage = ({ history }) => {
 
       <div
         css={`
-       @media (max-width: 1199px) {
-       display:block;
-       }
-       @media (min-width: 1200px) {
-       display:none;
-       }
-     `}
-
-
+          @media (max-width: 1199px) {
+            display: block;
+          }
+          @media (min-width: 1200px) {
+            display: none;
+          }
+        `}
       >
         <ProductSummaryMobile cart={cart} />
       </div>
