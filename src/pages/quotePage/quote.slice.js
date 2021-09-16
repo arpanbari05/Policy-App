@@ -227,13 +227,13 @@ const quotePageSlice = createSlice({
 
         premiumFilterQuotes: (state, action) => {
             state.filterQuotes = state.quotes.map(item => {
-                return item.filter(
-                    quote =>
-                        quote.premium > action.payload?.code?.split("-")[0] &&
-                        quote.premium < action.payload?.code?.split("-")[1],
-                );
+              return item.filter(
+                quote =>
+                  quote.premium > action.payload?.code?.split("-")[0] &&
+                  quote.premium < action.payload?.code?.split("-")[1],
+              );
             });
-        },
+          },
     },
 });
 
@@ -413,12 +413,13 @@ export const insurerFilter = data => {
     };
 };
 
+
 export const premiumFilterCards = data => {
     const { code } = data;
     return async dispatch => {
-        dispatch(premiumFilterQuotes({ code }));
+      dispatch(premiumFilterQuotes({ code }));
     };
-};
+  };
 export const createCartItem = (data, onCreate = () => { }) => {
     const newData = {
         enquiry_id: ls.get("enquiryId"),
