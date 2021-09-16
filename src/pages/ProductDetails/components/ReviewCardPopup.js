@@ -549,9 +549,9 @@ function ProductDetailsCard({ cartItem }) {
             align-items: center;
           `}
         >
-          <div class="logo_add_review float_left_addon_c">
+          <div class="">
             <img
-              class="contain img_top_m_custom"
+          
               css={`
                 width: 60px;
               `}
@@ -560,9 +560,9 @@ function ProductDetailsCard({ cartItem }) {
             />
           </div>
 
-          <div class="float_left_addon_c ">
+          <div >
             <span
-              class="paln_name_t_product_pro"
+              
               css={`
                 margin-top: "0";
                 font-weight: 900;
