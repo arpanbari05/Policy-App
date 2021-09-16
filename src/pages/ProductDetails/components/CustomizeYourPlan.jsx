@@ -231,8 +231,9 @@ const CustomizeYourPlan = ({
 const RidersContainer = styled.div`
   padding: 0;
   display: flex;
- 
+  justify-content: space-between;
   flex-wrap: wrap;
+  width:100%;
 
   @media (max-width: 1024px) {
     display: block;

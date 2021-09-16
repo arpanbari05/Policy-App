@@ -1,4 +1,5 @@
 import { Tab, Tabs } from "react-bootstrap";
+import Checkbox from "../../../../pages/ComparePage/components/Checkbox/Checbox";
 
 import FeatureSection from "../FeatureSection/FeatureSection";
 import styled from "styled-components/macro";
@@ -26,29 +27,19 @@ const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 export const AddOnBuyButton = ({ selected, onClick = () => {}, children }) => (
   <button
     css={`
-      background-color: var(--abc-red);
-      width: 120px;
+      width: 100%;
       text-align: left;
+      background-color:#eff7ff;
       /* height: 39px; */
       position: relative;
       /* border-radius: 12px; */
       border-radius: 6px;
       font-size: 20px;
-      color: #fff;
+      color: #0a87ff;
+      font-weight:900;
+      text-align:center;
       padding: 10px;
-      &::after {
-        content: ${selected ? "'\f058'" : "'+'"};
-        font-family: "font-awesome";
-        position: absolute;
-        right: 10px;
-        font-size: ${selected ? "26px" : "26px"};
-        top: ${selected ? "50%" : "46%"};
-        transform: translateY(-50%);
-
-        ${mobile} {
-          font-size: 16px;
-        }
-      }
+     
 
       ${mobile} {
         display: flex;
@@ -70,6 +61,7 @@ export const AddOnBuyButton = ({ selected, onClick = () => {}, children }) => (
       }
     `}
     onClick={onClick}
+    className="btn"
   >
     {children}
   </button>
@@ -198,7 +190,7 @@ function EditDetailsPopup({
   const [selectedCover, setSelectedCover] = useState(cover || covers[0]);
   const [selectedMember, setSelectedMember] = useState(member || members[0]);
   const [selectedDeductable, setSelectedDeductable] = useState(
-    deductable || deductables[0],
+    deductable || deductables[0]
   );
 
   const handleUpdate = () => {
@@ -371,14 +363,14 @@ function EditDetailsPopup({
               <DetailDropDown
                 options={covers}
                 selected={selectedCover}
-                onChange={e => setSelectedCover(e)}
+                onChange={(e) => setSelectedCover(e)}
               />
             </Detail>
             <Detail label="Members">
               <DetailDropDown
                 options={members}
                 selected={selectedMember}
-                onChange={e => setSelectedMember(e)}
+                onChange={(e) => setSelectedMember(e)}
               />
             </Detail>
             {addOnType === "top_up" ? (
@@ -386,7 +378,7 @@ function EditDetailsPopup({
                 <DetailDropDown
                   options={deductables}
                   selected={selectedDeductable}
-                  onChange={e => setSelectedDeductable(e)}
+                  onChange={(e) => setSelectedDeductable(e)}
                 />
               </Detail>
             ) : null}
@@ -463,18 +455,18 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
   return (
     <div
       css={`
-        flex: 1;
+        justify-content: space-between;
         padding: 0 10px 6px 0px;
         margin-left: 10px;
-        font-size: 15px;
+        margin-top:10px;
+        font-size: 14px;
         font-weight: 900;
         display: flex;
+        /* width: 48%; */
 
-        flex-direction: column;
+       color: #505f79;
         justify-content: space-between;
-        &:not(:last-child) {
-          border-right: 1px solid #e2e3e9;
-        }
+       
 
         ${mobile} {
           flex: 1;
@@ -510,7 +502,7 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
           display: flex;
           align-items: center;
           font-weight: 900;
-          font-size: 19px;
+          font-size: 17px;
           text-transform: capitalize;
 
           ${mobile} {
@@ -531,8 +523,8 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
         <button
           css={`
             display: inline-block;
-            width: 20px;
-            margin-left: 6px;
+           font-size:14px;
+            margin:0 6px;
             cursor: pointer;
 
             ${mobile} {
@@ -544,8 +536,9 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
             }
           `}
           onClick={onEditClick}
+          className="btn"
         >
-          <img src={Pencil} alt="edit" />
+         <i class="fas fa-pen"></i>
         </button>
       </div>
     </div>
@@ -561,7 +554,7 @@ function AddOnCard({
   const sumInsuredList = Object.keys(premium);
 
   const [sumInsured, setSumInsured] = useState(
-    selected[0] ? selected[0].sum_insured : sumInsuredList[0],
+    selected[0] ? selected[0].sum_insured : sumInsuredList[0]
   );
 
   const membersList = Object.keys(premium[sumInsured]);
@@ -573,18 +566,18 @@ function AddOnCard({
       ? selected.length > 1
         ? "All"
         : selected[0].members[0]
-      : membersList[0],
+      : membersList[0]
   );
 
   const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
+    (state) => state.frontendBoot.frontendData.data.companies
   );
 
   const companyLogoSrc = companies[addOn.company.alias].logo;
 
   const { groupCode } = useParams();
 
-  const cart = useSelector(state => state.cart[groupCode]);
+  const cart = useSelector((state) => state.cart[groupCode]);
 
   const { sum_insured: deductable, group } = cart ?? {};
 
@@ -598,7 +591,7 @@ function AddOnCard({
               totalPremium +
               parseInt(premium?.[sumInsured]?.[member]?.total_premium)
             );
-          }, 0),
+          }, 0)
         )
       : amount(premium?.[sumInsured]?.[member]?.total_premium)
     : 0;
@@ -616,7 +609,7 @@ function AddOnCard({
     setShowDetails(!showDetails);
   };
 
-  const memberGroups = useSelector(state => state.greetingPage.memberGroups);
+  const memberGroups = useSelector((state) => state.greetingPage.memberGroups);
 
   const getSendData = () => {
     const sendData =
@@ -635,7 +628,7 @@ function AddOnCard({
             },
           ]
         : member === "all" || member === "All"
-        ? membersList.map(member => {
+        ? membersList.map((member) => {
             const {
               premium: basePremium,
               total_premium,
@@ -709,7 +702,7 @@ function AddOnCard({
       <div
         css={`
           width: 90px;
-          margin-right: 0.6em;
+          margin-right: 15px;
           max-height: 45px;
           ${mobile} {
             width: 40px;
@@ -746,10 +739,8 @@ function AddOnCard({
         />
       </div>
       <div
+        className="flex-fill"
         css={`
-          border-right: 1px solid #e2e3e9;
-          padding-right: 10px;
-          width: 30%;
           ${mobile} {
             border: none;
             padding: 0;
@@ -759,8 +750,9 @@ function AddOnCard({
       >
         <div
           css={`
-            color: #000;
+            color: #253858;
             /* width: 160px; */
+            font-weight: 900;
             white-space: nowrap;
             overflow: hidden;
 
@@ -791,10 +783,14 @@ function AddOnCard({
           {addOn.name}
         </div>
         <button
+          className="btn"
           css={`
-            font-size: 16px;
+            font-size: 12px;
+            font-weight: 900;
             color: #7b7b7b;
-
+            background: #eff7ff;
+            color: #0a87ff;
+            border-radius: 50px;
             ${mobile} {
               font-size: 14px;
               color: #000;
@@ -872,9 +868,11 @@ function AddOnCard({
           border: 1px solid var(--addon-card-border-gray);
           box-shadow: rgb(0 75 131 / 15%) 0px 3px 6px 0px;
           background-color: var(--addon-card-gray);
-          padding: 30px 26px;
+          padding: 20px 10px;
+          width: 95%;
           border-radius: 20px;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: space-between;
           &:hover {
@@ -918,9 +916,8 @@ function AddOnCard({
         <div
           css={`
             display: flex;
-            flex: 1;
-            justify-content: space-between;
-            margin-right: 10px;
+            width: 100%;
+
             align-items: center;
             ${mobile} {
               display: none;
@@ -928,18 +925,29 @@ function AddOnCard({
           `}
         >
           <AddOnName />
-          <AddOnDetailsTabs />
+          
+        </div>
+        <div css={`
+        width: 100%;
+        `}>
+        <AddOnDetailsTabs />
         </div>
         <div
           css={`
+          width: 100%;
             /* margin-right: 15px; */
             ${mobile} {
               display: none;
             }
           `}
+          className="mt-4"
         >
           <AddOnBuyButton onClick={handleBuy} selected={selected.length}>
-            {displayPremium}
+          <div className="d-flex align-items-center w-100 justify-content-center">
+          {displayPremium} <div><Checkbox checked={selected.length} /></div>
+          </div>
+
+            
           </AddOnBuyButton>
         </div>
         <AddOnCardMobile />
@@ -952,28 +960,28 @@ function AddOns({ addOns = {} }) {
   const { groupCode } = useParams();
   const { product, updateProductRedux } = useCartProduct(groupCode);
 
-  const addAddOn = addOns => {
+  const addAddOn = (addOns) => {
     let newAddOns = [...product.addons];
-    const addOnTypeExist = product.addons.some(addon =>
-      addOns.some(addOn => {
+    const addOnTypeExist = product.addons.some((addon) =>
+      addOns.some((addOn) => {
         const sameAddOnType =
           addOn.product.insurance_type.alias ===
           addon.product.insurance_type.alias;
-        const sameMember = addOn.members.some(addOnMember =>
-          addon.members.includes(addOnMember),
+        const sameMember = addOn.members.some((addOnMember) =>
+          addon.members.includes(addOnMember)
         );
         return sameAddOnType && sameMember;
-      }),
+      })
     );
     if (addOnTypeExist) {
       newAddOns = newAddOns.filter(
-        newAddOn =>
+        (newAddOn) =>
           !addOns.some(
-            addOn =>
+            (addOn) =>
               addOn.product.insurance_type.alias ===
                 newAddOn.product.insurance_type.alias &&
-              addOn.members.some(member => newAddOn.members.includes(member)),
-          ),
+              addOn.members.some((member) => newAddOn.members.includes(member))
+          )
       );
     }
     updateProductRedux({
@@ -982,37 +990,37 @@ function AddOns({ addOns = {} }) {
     });
   };
 
-  const removeAddOn = addOnId => {
+  const removeAddOn = (addOnId) => {
     updateProductRedux({
       ...product,
-      addons: product.addons.filter(addon => addon.product.id !== addOnId),
+      addons: product.addons.filter((addon) => addon.product.id !== addOnId),
     });
   };
 
-  const updateAddOn = addOns => {
-    let newAddOns = product.addons.filter(addon =>
-      addOns.some(addOn => addOn.product.id !== addon.product.id),
+  const updateAddOn = (addOns) => {
+    let newAddOns = product.addons.filter((addon) =>
+      addOns.some((addOn) => addOn.product.id !== addon.product.id)
     );
-    const addOnTypeExist = product.addons.some(addon =>
-      addOns.some(addOn => {
+    const addOnTypeExist = product.addons.some((addon) =>
+      addOns.some((addOn) => {
         const sameAddOnType =
           addOn.product.insurance_type.alias ===
           addon.product.insurance_type.alias;
-        const sameMember = addOn.members.some(addOnMember =>
-          addon.members.includes(addOnMember),
+        const sameMember = addOn.members.some((addOnMember) =>
+          addon.members.includes(addOnMember)
         );
         return sameAddOnType && sameMember;
-      }),
+      })
     );
     if (addOnTypeExist) {
       newAddOns = newAddOns.filter(
-        newAddOn =>
+        (newAddOn) =>
           !addOns.some(
-            addOn =>
+            (addOn) =>
               addOn.product.insurance_type.alias ===
                 newAddOn.product.insurance_type.alias &&
-              addOn.members.some(member => newAddOn.members.includes(member)),
-          ),
+              addOn.members.some((member) => newAddOn.members.includes(member))
+          )
       );
     }
     updateProductRedux({ ...product, addons: [...newAddOns, ...addOns] });
@@ -1029,40 +1037,49 @@ function AddOns({ addOns = {} }) {
 
   return (
     <>
-      {Object.keys(addOns).map(addOnId => (
-        <div
-          css={`
-            &:not(:last-child) {
-              margin-bottom: 30px;
-              ${mobile} {
-                margin-bottom: 10px;
+      <div
+        css={`
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+        `}
+      >
+        {Object.keys(addOns).map((addOnId) => (
+          <div
+            css={`
+              width: 50%;
+              &:not(:last-child) {
+                margin-bottom: 30px;
+                ${mobile} {
+                  margin-bottom: 10px;
+                }
               }
-            }
 
-            ${mobile} {
-              padding: 0 15px;
-            }
+              ${mobile} {
+                padding: 0 15px;
+              }
 
-            ${small} {
-              padding: 0 11px;
-            }
-          `}
-          key={addOnId}
-        >
-          <AddOnCard
-            selected={product.addons
-              .filter(addon => addon.product.id === parseInt(addOnId))
-              .map(addon =>
-                addon.members.length > 1
-                  ? { ...addon, members: ["all"] }
-                  : addon,
-              )}
-            addOnData={addOns[addOnId]}
-            handleBuyNow={handleBuyNow}
-            handleDataChange={handleUpdate}
-          />
-        </div>
-      ))}
+              ${small} {
+                padding: 0 11px;
+              }
+            `}
+            key={addOnId}
+          >
+            <AddOnCard
+              selected={product.addons
+                .filter((addon) => addon.product.id === parseInt(addOnId))
+                .map((addon) =>
+                  addon.members.length > 1
+                    ? { ...addon, members: ["all"] }
+                    : addon
+                )}
+              addOnData={addOns[addOnId]}
+              handleBuyNow={handleBuyNow}
+              handleDataChange={handleUpdate}
+            />
+          </div>
+        ))}
+      </div>
     </>
   );
 }
@@ -1079,10 +1096,11 @@ const AddOnsNav = styled(Tabs)`
     position: relative;
     width: max-content;
     background: none;
+    color: #9ea6b5 !important;
     padding: 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 900;
-    color: var(--font-gray-four);
+
     border: none !important;
     margin-right: 100px;
     &::after {
@@ -1098,9 +1116,20 @@ const AddOnsNav = styled(Tabs)`
       opacity: 0;
       transition: all 0.3s ease-in-out;
     }
-    &.active {
-      background: none;
-      color: #000;
+    .nav-link {
+      color: #9ea6b5 !important;
+      border: none !important;
+      border-radius: 50px !important;
+      :hover {
+        border: none;
+        border-radius: 50px;
+      }
+    }
+    .nav-link.active {
+      border-color: #0a87ff;
+      background: #0a87ff;
+      color: white !important;
+      border-radius: 50px;
       &::after {
         opacity: 1;
         transform: scale(1);
@@ -1139,63 +1168,64 @@ function AddOnCoveragesSection() {
     "cancer",
   ]);
   const { groupCode } = useParams();
-  const cart = useSelector(state => state.cart[groupCode]);
+  const cart = useSelector((state) => state.cart[groupCode]);
   const { sum_insured } = cart;
 
   const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
+    (state) => state.frontendBoot.frontendData.data.companies
   );
 
   const companyAliasList = Object.keys(companies);
 
-  const getCompanies = insuranceType =>
-    companyAliasList.filter(companyAlias =>
-      companies[companyAlias].insurance_types.includes(insuranceType),
+  const getCompanies = (insuranceType) =>
+    companyAliasList.filter((companyAlias) =>
+      companies[companyAlias].insurance_types.includes(insuranceType)
     );
 
-  const removeLoader = loaderToRemove =>
-    setLoaders(loaders => loaders.filter(loader => loader !== loaderToRemove));
+  const removeLoader = (loaderToRemove) =>
+    setLoaders((loaders) =>
+      loaders.filter((loader) => loader !== loaderToRemove)
+    );
 
   const getAddOns = (addOnType, callback) => {
     const companies = getCompanies(addOnType);
     const fetchAddOns = addOnsFetch[addOnType];
     return Promise.allSettled(
-      companies.map(company_alias =>
+      companies.map((company_alias) =>
         fetchAddOns({
           company_alias,
           sum_insured,
           groupCode,
         })
-          .then(response => {
-            
+          .then((response) => {
             if (response.data.data.length > 0) {
-              console.log(response,"================a")
+              
               const { data: addOns } = response.data;
               callback(normalizeAddOnsData(addOnType, addOns));
             }
           })
-          .catch(err => console.log({ err })),
-      ),
+          .catch((err) => console.log({ err }))
+      )
     ).finally(() => removeLoader(addOnType));
   };
 
   const updateAddOns = (addOnData, callback) =>
-    callback(prevAddOns => ({ ...prevAddOns, ...addOnData }));
+    callback((prevAddOns) => ({ ...prevAddOns, ...addOnData }));
 
   const {
     proposerDetails: { members: membersWithAge },
-  } = useSelector(state => state.greetingPage);
+  } = useSelector((state) => state.greetingPage);
 
   useEffect(() => {
     setTopUps({});
     setCriticalIllnessList({});
     setCancerAddOns({});
-    getAddOns("top_up", topUpsData => updateAddOns(topUpsData, setTopUps));
-    getAddOns("critical_illness", criticalIllnessData =>
-      updateAddOns(criticalIllnessData, setCriticalIllnessList),
+    getAddOns("top_up", (topUpsData) => updateAddOns(topUpsData, setTopUps));
+    getAddOns("critical_illness", (criticalIllnessData) =>
+      updateAddOns(criticalIllnessData, setCriticalIllnessList)
     );
-    getAddOns("cancer", cancerData =>
-      updateAddOns(cancerData, setCancerAddOns),
+    getAddOns("cancer", (cancerData) =>
+      updateAddOns(cancerData, setCancerAddOns)
     );
   }, [membersWithAge, groupCode]);
 
@@ -1239,7 +1269,6 @@ function AddOnCoveragesSection() {
                   Choose a plan and ensure coverage for listed Critical Illness
                   along with you selected base plan
                 </AddOnDesc>
-                
 
                 <AddOns addOns={criticalIllnessList} />
                 {loadingCriticalIllness && <CardSkeletonLoader />}

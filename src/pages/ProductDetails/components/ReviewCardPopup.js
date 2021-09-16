@@ -43,6 +43,10 @@ function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
       <Modal.Header
         style={{ borderRadius: "12px" }}
         css={`
+          color: #253858;
+          background: #f5f7f9;
+
+          font-weight: 600;
           ${mobile} {
             border: none;
           }
@@ -52,9 +56,7 @@ function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
           <ModalTitle
             css={`
               margin: 10px 9px;
-              font-size: 24px;
-              font-weight: 400;
-
+              font-size: 18px;
               ${tabletMedia} {
                 font-size: 21px;
               }
@@ -99,7 +101,7 @@ function AddOnDetailsCard({
   },
 }) {
   const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
+    (state) => state.frontendBoot.frontendData.data.companies
   );
   const logoSrc = companies[alias].logo;
 
@@ -109,7 +111,7 @@ function AddOnDetailsCard({
         css={`
           flex: 1;
           color: #000;
-          font-weight: 600;
+
           display: flex;
           justify-content: center;
           &:not(:last-child) {
@@ -117,14 +119,10 @@ function AddOnDetailsCard({
           }
         `}
       >
-        <div
-          css={`
-            text-align: center;
-          `}
-        >
+        <div>
           <div
             css={`
-              font-size: 18px;
+              font-size: 14px;
             `}
           >
             {label}
@@ -132,6 +130,8 @@ function AddOnDetailsCard({
           <div
             css={`
               font-size: 15px;
+              font-weight: 900;
+              color: #505f79;
             `}
           >
             {value}
@@ -145,26 +145,28 @@ function AddOnDetailsCard({
       css={`
         border: 1px solid #ddd;
         border-radius: 12px;
-        padding: 10px;
+        padding: 20px;
         width: 100%;
         margin: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       `}
     >
       <div
         css={`
           display: flex;
           align-items: center;
+          width: 40%;
         `}
       >
         <div>
-          <img src={logoSrc} style={{ width: "60px" }} alt={alias} />
+          <img src={logoSrc} style={{ width: "50px" }} alt={alias} />
         </div>
         <div
           css={`
-            margin-left: 30px;
-            font-weight: 600;
-            color: #000;
-            margin-bottom: 10px;
+            margin-left: 10px;
+            font-weight: 900;
           `}
         >
           {name}
@@ -175,8 +177,7 @@ function AddOnDetailsCard({
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border-top: 1px solid #ddd;
-          padding-top: 10px;
+          width: 58%;
         `}
       >
         <DetailTab label="Cover" value={`${amount(sum_insured)} / year`} />
@@ -200,7 +201,7 @@ function AddOnDetailsCard({
 
 function ProductDetailsCardMobile({ cartItem }) {
   const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
+    (state) => state.frontendBoot.frontendData.data.companies
   );
   const {
     product: {
@@ -337,7 +338,7 @@ function ProductDetailsCardMobile({ cartItem }) {
             flex-wrap: wrap;
           `}
         >
-          {health_riders.map(health_rider => (
+          {health_riders.map((health_rider) => (
             <div
               css={`
                 /* flex: 1; */
@@ -363,8 +364,34 @@ function ProductDetailsCardMobile({ cartItem }) {
             margin-top: 37px;
           `}
         >
-          <BackgroundBorderTitle title="Add-Ons Coverages" />
-          {addons.map(addon => (
+          <div
+            css={`
+              border-bottom: 1px solid #d5dce5;
+              position: relative;
+              margin-bottom: 20px;
+            `}
+          >
+            <div
+              css={`
+                color: #419bf9;
+                border-radius: 15px;
+                border: 2px solid #419bf9;
+                padding: 5px 10px;
+                font-size: 11px;
+                position: absolute;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                left: 50%;
+
+                width: fit-content;
+                background: white;
+                font-weight: 900;
+              `}
+            >
+              Add-Ons Coverages
+            </div>
+          </div>
+          {addons.map((addon) => (
             <div
               css={`
                 display: none;
@@ -487,7 +514,7 @@ function ProductDetailsCardMobile({ cartItem }) {
 
 function ProductDetailsCard({ cartItem }) {
   const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
+    (state) => state.frontendBoot.frontendData.data.companies
   );
   const {
     product: {
@@ -504,20 +531,22 @@ function ProductDetailsCard({ cartItem }) {
     <div
       className="rider-box_product_pro"
       css={`
+        border: 1px solid #d5dce5;
+        padding: 20px;
+        border-radius: 10px;
         ${mobile} {
           display: none;
         }
       `}
     >
       <div
-        class="row_display_pro_review"
+        class="row_display_pro_review d-flex"
         style={{ justifyContent: "space-between" }}
       >
         <div
           css={`
             display: flex;
             align-items: center;
-            flex: 2;
           `}
         >
           <div class="logo_add_review float_left_addon_c">
@@ -532,69 +561,112 @@ function ProductDetailsCard({ cartItem }) {
           </div>
 
           <div class="float_left_addon_c ">
-            <p class="paln_name_t_product_pro" style={{ marginTop: "0" }}>
-              {name}
-            </p>
-          </div>
-        </div>
-        <div
-          className="float_product_cover_pro"
-          css={`
-            border-left: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-            flex: 1;
-            justify-content: center;
-          `}
-        >
-          <p class="label-add_product_pro">
-            Cover
-            <br />
             <span
-              class="blk edit_css_product addon_plan_d_inter_1_product_pro"
+              class="paln_name_t_product_pro"
               css={`
-                font-size: 15px;
-                font-weight: 400;
+                margin-top: "0";
+                font-weight: 900;
               `}
             >
-              {amount(sum_insured)}
+              {name}
             </span>
-          </p>
-        </div>
-
-        <div
-          className="float_product_premium_pro"
-          css={`
-            border-left: 1px solid #ddd;
-            display: flex;
-            flex: 1;
-            align-items: center;
-            justify-content: center;
-          `}
-        >
-          <div class="si_add si_add2">
-            <p class="label-add_product_pro">
-              Premium
-              <br />
-              <span
-                class="blk edit_css_product"
-                css={`
-                  font-size: 15px;
-                  font-weight: 400;
-                `}
-              >
-                {amount(total_premium)} /{" "}
-                {tenure === 1 ? "year" : `${tenure} years`}
-              </span>
-            </p>
           </div>
         </div>
 
+        <div
+          css={`
+            width: 60%;
+            display: flex;
+          `}
+        >
+          <div
+            className="float_product_cover_pro"
+            css={`
+              display: flex;
+              align-items: center;
+              flex: 1;
+              justify-content: center;
+            `}
+          >
+            <span class="label-add_product_pro">
+              Cover
+              <br />
+              <span
+                class="blk edit_css_product addon_plan_d_inter_1_product_pro"
+                css={`
+                  font-size: 15px;
+                  font-weight: 900;
+                  color: #505f79;
+                `}
+              >
+                {amount(sum_insured)}
+              </span>
+            </span>
+          </div>
+
+          <div
+            className="float_product_premium_pro"
+            css={`
+              border-left: 1px solid #ddd;
+              display: flex;
+              flex: 1;
+              align-items: center;
+              justify-content: center;
+            `}
+          >
+            <div class="si_add si_add2">
+              <span class="label-add_product_pro">
+                Premium
+                <br />
+                <span
+                  class="blk edit_css_product"
+                  css={`
+                    font-size: 15px;
+                    font-weight: 900;
+                    color: #505f79;
+                  `}
+                >
+                  {amount(total_premium)} /{" "}
+                  {tenure === 1 ? "year" : `${tenure} years`}
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div
+            className="float_product_premium_pro"
+            css={`
+              border-left: 1px solid #ddd;
+              display: flex;
+              flex: 1;
+              align-items: center;
+              justify-content: center;
+            `}
+          >
+            <div class="si_add si_add2">
+              <span class="label-add_product_pro">
+                Premium
+                <br />
+                <span
+                  class="blk edit_css_product"
+                  css={`
+                    font-size: 15px;
+                    font-weight: 900;
+                    color: #505f79;
+                  `}
+                >
+                  {amount(total_premium)} /{" "}
+                  {tenure === 1 ? "year" : `${tenure} years`}
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
         <div class="rider-box1"></div>
       </div>
       {health_riders.length > 0 ? <hr /> : null}
       <div class="row">
-        {health_riders.map(health_rider => (
+        {health_riders.map((health_rider) => (
           <div
             css={`
               margin: 10px;
@@ -610,17 +682,17 @@ function ProductDetailsCard({ cartItem }) {
 }
 
 function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
-  const name = useSelector(state => state.greetingPage.proposerDetails.name);
+  const name = useSelector((state) => state.greetingPage.proposerDetails.name);
   const firstName = name.split(" ")[0];
-  const cart = useSelector(state => state.cart);
-  const { memberGroups } = useSelector(state => state.greetingPage);
-  const groupCodes = Object.keys(cart).filter(item =>
-    Object.keys(memberGroups).includes(item),
+  const cart = useSelector((state) => state.cart);
+  const { memberGroups } = useSelector((state) => state.greetingPage);
+  const groupCodes = Object.keys(cart).filter((item) =>
+    Object.keys(memberGroups).includes(item)
   );
 
   const allAddOns = groupCodes.reduce(
     (allAddOns, groupCode) => [...allAddOns, ...cart[groupCode].addons],
-    [],
+    []
   );
 
   const totalPremium = groupCodes.reduce((totalPremium, groupCode) => {
@@ -667,16 +739,6 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
             Hi {firstName}, take a minute and review your cart before you
             proceed
           </span>
-          <span
-            css={`
-              display: block;
-              ${mobile} {
-                display: inline;
-              }
-            `}
-          >
-            Your plan details
-          </span>
         </div>
       }
       onClose={handleCloseClick}
@@ -690,7 +752,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           }
         `}
       >
-        {groupCodes.map(groupCode => (
+        {groupCodes.map((groupCode) => (
           <ProductCard
             key={groupCode}
             groupCode={groupCode}
@@ -731,7 +793,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           <div
             css={`
               font-weight: 900;
-              text-align: center;
+         
 
               ${mobile} {
                 display: flex;
@@ -742,27 +804,27 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           >
             <div
               css={`
-                color: #000;
-                font-size: 18px;
+                color: #505f79;
+                font-size: 13px;
                 ${mobile} {
                   font-size: 16px;
                   font-weight: 600;
                 }
               `}
             >
-              Total Premium
+              Total Premium :
             </div>
             <div
               css={`
                 color: var(--abc-red);
-                font-size: 23px;
+                font-size: 20px;
                 text-align: left;
                 ${mobile} {
                   font-size: 18px;
                 }
               `}
             >
-              {amount(totalPremium)}
+              {amount(totalPremium)}/ Year
             </div>
           </div>
           <Link
@@ -776,11 +838,11 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
             <div
               css={`
                 width: 216px;
-                background: var(--abc-red);
+                background: #419bf9;
                 color: #fff;
                 border-radius: 2px;
                 height: 49px;
-                font-size: 20px;
+                font-size: 15px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -839,8 +901,8 @@ function ProductCard({ groupCode, onClose }) {
       ...reducedAddOns,
       [key]: {
         ...reducedAddOns[key],
-        members: members.some(member =>
-          reducedAddOns[key]["members"].includes(member),
+        members: members.some((member) =>
+          reducedAddOns[key]["members"].includes(member)
         )
           ? reducedAddOns[key]["members"]
           : [...reducedAddOns[key]["members"], ...members],
@@ -858,7 +920,7 @@ function ProductCard({ groupCode, onClose }) {
         `}
       >
         <GradientTitle title={product.group.members.join(" + ")} />
-        <div
+        {/* <div
           css={`
             display: flex;
           `}
@@ -879,7 +941,7 @@ function ProductCard({ groupCode, onClose }) {
           >
             <img src={DeleteIcon} alt="remove-quote" />
           </button>
-        </div>
+        </div> */}
       </div>
       <div
         css={`
@@ -906,7 +968,7 @@ function ProductCard({ groupCode, onClose }) {
               padding: 0 15px;
             `}
           >
-            {Object.keys(reducedAddOns).map(addOnKey => (
+            {Object.keys(reducedAddOns).map((addOnKey) => (
               <AddOnDetailsCard
                 key={addOnKey}
                 addOn={reducedAddOns[addOnKey]}
@@ -921,19 +983,33 @@ function ProductCard({ groupCode, onClose }) {
 
 function GradientTitle({ title = "" }) {
   return (
-    <h5
+    <span
       className="text_title_filter p_modal_title_bg_filters_product"
       style={{
         textTransform: "capitalize",
         width: "max-content",
-        fontSize: "20px",
-      }}
-      css={{
-        backgroundImage: "linear-gradient(to right, #ffe7e7 37%, #fff 90%)",
+        fontSize: "15px",
+        marginBottom: "20px",
+        fontWeight: "900",
       }}
     >
-      {title}
-    </h5>
+      <span
+        css={`
+          width: 5px;
+          height: 25px;
+          position: absolute;
+          background-color: #ffcb00;
+          border-radius: 5px;
+        `}
+      ></span>
+      <span
+        css={`
+          margin-left: 10px;
+        `}
+      >
+        {title}
+      </span>
+    </span>
   );
 }
 
@@ -957,16 +1033,6 @@ const ModalTitle = styled.h5`
   font-size: 22px;
   font-weight: 900;
   width: 80%;
-  &:after {
-    content: "";
-    height: 26px;
-    width: 7px;
-    position: absolute;
-    left: 0px;
-    top: 28px;
-    background-color: #fecc28;
-    border-radius: 50px;
-  }
 `;
 
 // /* eslint-disable jsx-a11y/alt-text */

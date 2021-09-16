@@ -1,4 +1,3 @@
-
 import { useDispatch, useSelector } from "react-redux";
 import CardSkeletonLoader from "./../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import { useCallback, useEffect, useState } from "react";
@@ -19,7 +18,7 @@ const CheckDiscount = ({ groupCode }) => {
   const {
     memberGroups,
     proposerDetails: { members: membersWithAge },
-  } = useSelector(state => state.greetingPage);
+  } = useSelector((state) => state.greetingPage);
 
   const members = memberGroups[groupCode].join(",");
 
@@ -53,8 +52,8 @@ const CheckDiscount = ({ groupCode }) => {
             }
             setDiscounts(discounts);
             setDiscountError(false);
-          },
-        ),
+          }
+        )
       );
     }
   }, [dispatch, groupCode, members, product.id, sum_insured]);
@@ -66,7 +65,7 @@ const CheckDiscount = ({ groupCode }) => {
         product_id: product.id,
         sum_insured,
         tenure,
-      }).then(res => setAdditionalDiscounts(res?.data?.data));
+      }).then((res) => setAdditionalDiscounts(res?.data?.data));
     }
   }, [groupCode, members, product.id, sum_insured, tenure]);
 
@@ -82,7 +81,7 @@ const CheckDiscount = ({ groupCode }) => {
 
   const selectedTenure = parseInt(cartProduct.tenure);
 
-  const handleTenureClick = item => {
+  const handleTenureClick = (item) => {
     updateProductRedux({
       ...cartProduct,
       tenure: item.tenure,
@@ -131,7 +130,8 @@ const CheckDiscount = ({ groupCode }) => {
                   }
                 `}
               >
-                {discounts?.map(item => {
+                {discounts?.map((item) => {
+                  console.log(item,"item")
                   return (
                     <div
                       key={item?.total_premium}
@@ -149,50 +149,48 @@ const CheckDiscount = ({ groupCode }) => {
                         name="discout"
                         value={item?.total_premium}
                         defaultChecked={selectedTenure === item.tenure}
+                        className="d-none"
                       />
                       <label
                         htmlFor={item?.total_premium}
                         css={`
-                          height: 75%;
                           display: flex;
-                          align-items: center;
+                          flex-direction: column;
+                          align-items: flex-start;
                           justify-content: space-around;
                           background: white;
-                          border-radius: 18px;
+                          border-radius: 15px;
                           padding: 1rem;
                           padding-bottom: 0.7rem;
                           text-align: center;
                           position: relative;
                           width: 218px;
-                          border: 1px solid;
+                          border: 2px solid;
                           border-color: ${selectedTenure === item.tenure
-                            ? "#e0a2a5"
+                            ? "#0a87ff"
                             : "#e5e5e5"};
-                          box-shadow: ${selectedTenure === item.tenure
-                            ? "0px 7px 13px #ffe7e8"
-                            : "0 3px 6px 0 rgb(16 24 48 / 12%)"};
 
-                            @media (max-width: 900px) {
-                              width: 190px;
-                            }
+                          @media (max-width: 900px) {
+                            width: 190px;
+                          }
 
                           &::after {
                             color: #fff;
-                            border: 2px solid #d68d87;
+                            border: 2px solid #e4e7ec;
                             content: ${selectedTenure === item.tenure
                               ? '"\f00c"'
                               : ""};
                             font-size: 11px;
                             position: absolute;
-                            bottom: -15px;
-                            right: 76px;
+                            bottom: 11px;
+                            right: 11px;
                             transform: translateX(-50%);
                             height: 30px;
                             width: 30px;
                             line-height: 30px;
                             text-align: center;
                             border-radius: 50%;
-                            background: #de9b9e;
+                            background: #0a87ff;
                             box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 25%);
                             font-family: "font-awesome";
                             border: 2px solid #fff;
@@ -238,55 +236,44 @@ const CheckDiscount = ({ groupCode }) => {
                           }
                         `}
                       >
-                        <p
-                          className="addon_p_g_r_sub"
-                          style={{ margin: "6px 0 0 0" }}
+                        <div
                           css={`
-                            ${mobile} {
-                              display: none;
-                            }
-                          `}
-                        >
-                          Premium
-                        </p>
-                        <h2
-                          css={`
+                            width: 100px;
+                            height: 22px;
+                            background: #ffcb00;
+                            border-bottom-left-radius: 300px;
+                            border-top-right-radius: 180px;
                             position: absolute;
-                            border: 1px solid;
-                            color: var(--dark-pink) !important;
-                            background: white;
-                            top: 0;
-                            left: 50%;
-                            width: 97px;
-                            transform: translate(-50%, -50%);
-                            padding: 8px 13px;
-                            font-size: 19px;
-                            border-radius: 50px;
-                            text-align: center;
-                            color: #a1a1a1;
-                            font-weight: 900;
+                            top: -2px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
 
-                            ${mobile} {
-                              left: 0;
-                              top: 50%;
-                              transform: translate(0, -50%);
-                              border: none;
-                              background-color: var(--light-pink);
-                              border-radius: 2px;
-                              margin-left: 16px;
-                              padding: 8px 16px;
-                              width: max-content;
-                              font-size: 16px;
-                            }
+                            color: #253858;
+                            font-size: 10px;
+                            right: -2px;
                           `}
                         >
-                          {item?.tenure >= 2?`${item?.tenure} Years`:`${item?.tenure} Year`} 
-                        </h2>
-                        <p
+                          7.5% off
+                        </div>
+                        <span
+                          css={`
+                            font-size: 15px;
+                            font-weight: 600;
+                            color: #253858;
+                            margin-bottom: 8px;
+                          `}
+                        >
+                          {item?.tenure >= 2
+                            ? `${item?.tenure} Years`
+                            : `${item?.tenure} Year`}
+                        </span>
+                        <span
                           className="addon_p_g_r"
                           css={`
                             display: flex;
                             align-items: center;
+                            font-size: 19px;
                           `}
                         >
                           <b
@@ -301,7 +288,7 @@ const CheckDiscount = ({ groupCode }) => {
                           >
                             ₹{" "}
                             {parseInt(item?.total_premium).toLocaleString(
-                              "en-IN",
+                              "en-IN"
                             )}
                           </b>
                           <span
@@ -321,7 +308,7 @@ const CheckDiscount = ({ groupCode }) => {
                           >
                             Premium
                           </span>
-                        </p>
+                        </span>
                       </label>
                     </div>
                   );
@@ -331,7 +318,7 @@ const CheckDiscount = ({ groupCode }) => {
           )}
           {additionalDiscounts?.length > 0 ? (
             <WrapWithTitle title="Additional Discount">
-              {additionalDiscounts.map(additionalDiscount => (
+              {additionalDiscounts.map((additionalDiscount) => (
                 <AdditionalDiscount additionalDiscount={additionalDiscount} />
               ))}
             </WrapWithTitle>
@@ -352,20 +339,22 @@ function AdditionalDiscount({ additionalDiscount }) {
   const discountAmount = (parseInt(total_premium) * parseInt(percent)) / 100;
 
   const premiumAfterDiscount = parseInt(
-    parseInt(total_premium) - discountAmount,
+    parseInt(total_premium) - discountAmount
   );
 
   const removeDiscount = () => {
     updateProductRedux({
       ...product,
-      discounts: product.discounts.filter(discount => discount.alias !== alias),
+      discounts: product.discounts.filter(
+        (discount) => discount.alias !== alias
+      ),
     });
   };
 
   const handleApply = () => {
     if (
       product.discounts &&
-      product.discounts.some(discount => discount.alias === alias)
+      product.discounts.some((discount) => discount.alias === alias)
     ) {
       removeDiscount();
       return;
@@ -387,7 +376,7 @@ function AdditionalDiscount({ additionalDiscount }) {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 3px 9px 0 rgba(0, 75, 131, 0.09);
+        box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
       `}
     >
       <div>
@@ -406,8 +395,8 @@ function AdditionalDiscount({ additionalDiscount }) {
         </p>
         <p
           css={`
-            color: var(--abc-red);
-            background-color: var(--light-pink);
+            color: #0a87ff;
+            background-color: #eff7ff;
             padding: 3px 10px;
             margin-top: 6px;
 
@@ -420,9 +409,9 @@ function AdditionalDiscount({ additionalDiscount }) {
           {description.replace("{amount}", amount(discountAmount))}
         </p>
       </div>
-      <AddOnBuyButton
+      <button
         css={`
-          background-color: var(--abc-red);
+          background-color: #0a87ff;
           border-radius: 6px;
           padding: 12px 30px;
           color: #fff;
@@ -430,11 +419,12 @@ function AdditionalDiscount({ additionalDiscount }) {
         onClick={handleApply}
         selected={
           product.discounts &&
-          product.discounts.some(discount => discount.alias === alias)
+          product.discounts.some((discount) => discount.alias === alias)
         }
+        className="btn"
       >
         Apply
-      </AddOnBuyButton>
+      </button>
     </div>
   );
 }
@@ -464,8 +454,9 @@ function WrapWithTitle({ title, children }) {
       >
         <h3
           css={`
-            font-size: 22px;
-            color: #000;
+            font-size: 17px;
+            color: #68758b;
+            font-weight: 600;
             margin: auto;
             margin-bottom: 30px;
             text-align: center;
