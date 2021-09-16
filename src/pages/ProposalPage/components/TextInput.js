@@ -160,7 +160,7 @@ const Input = styled.input`
   touch-action: manipulation;
   width: 100%;
   border: ${props => (props.error ? "solid 1px #c7222a" : "solid 1px #ced4da")};
-  border-radius: 8px;
+  // border-radius: 8px;
   background: ${props => (props.error ? "#fff6f7" : "transparent")};
   height: 55px;
   font-size: 16px;
@@ -174,7 +174,7 @@ const Input = styled.input`
   @media (max-width: 767px) {
     height: 42px;
     padding: 0 16px;
-    border-radius: 6px;
+    // border-radius: 6px;
     font-size: 14px;
   }
 `;

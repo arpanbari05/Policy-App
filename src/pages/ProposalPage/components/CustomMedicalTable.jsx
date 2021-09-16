@@ -108,7 +108,7 @@ const Title = styled.p`
   background-image: linear-gradient(to right, #ffe7e7 5%, #fff 15%);
   padding: 10px 18px;
   border-radius: 6px;
-  font-family: "PFEncoreSansPromed";
+
   height: 40px;
   padding: 25px;
   text-transform: capitalize;

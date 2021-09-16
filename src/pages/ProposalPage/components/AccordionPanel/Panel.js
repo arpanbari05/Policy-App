@@ -114,10 +114,8 @@ const Values = styled.div`
   padding: 6px 20px;
   border-radius: 34px;
   width: 280px;
-  font-family: pf_handbook_proregular;
+  font-weight: 900;
   font-size: 16px;
-
-  font-weight: 400;
   color: #000;
   position: absolute;
   top: 50%;
@@ -157,7 +155,8 @@ const StyledPanel = styled.a`
         ? "20px 10px"
         : "10px 10px"
       : "20px 40px 22px 45px"};
-  margin-left: 0px;
+      margin-left: 15px;
+      margin-right: 15px;
   font-size: 22px;
   background-image: ${props =>
     props.isShowMedical &&
@@ -166,15 +165,13 @@ const StyledPanel = styled.a`
   color: ${props => (!props.isShowMedical ? "#000 !important" : "")};
   position: relative;
   border: ${props => (!props.isShowMedical ? "1px solid #eeeff5" : "none")};
-  width: 100%;
+  width: 98%;
   position: relative;
 
   box-shadow: ${props =>
     !props.isShowMedical || props.add
       ? "0 3px 10px rgb(211 220 232 / 60%) !important;"
       : ""};
-
-  border-radius: ${props => (!props.isShowMedical ? "19px" : "")};
   font-weight: 900;
   
   text-transform: capitalize;
@@ -209,7 +206,7 @@ const HR = styled.hr`
   border-top: 0;
   border-bottom: 1px dashed #ddd;
   width: 100%;
-  margin-left: -18px;
+
   margin-top: 0px;
   @media (max-width: 767px) {
     margin-left: 0px;

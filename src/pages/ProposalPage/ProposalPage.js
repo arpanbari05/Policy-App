@@ -81,12 +81,27 @@ const ProposalPage = ({ history }) => {
       </div>;
     }
     return (
-      <>
-        <Card styledCss={`margin-bottom: 20px;`}>
+      <span
+        css={`
+          & .proposal_continue_back_margin {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          & .formbuilder__error {
+            color: #c7222a;
+          }
+        `}
+      >
+        <Card
+          styledCss={`margin-bottom: 20px; 
+    
+        `}
+        >
           {activeForm === "Proposer Details" ? (
             <>
               {" "}
-              <h1>{activeForm}</h1>{" "}
+              <MainTitle bg>{activeForm}</MainTitle>{" "}
               <ProposerDetails
                 key={activeForm}
                 schema={
@@ -105,11 +120,14 @@ const ProposalPage = ({ history }) => {
                 align-items: center;
               `}
             >
-              <h1>Proposer Details</h1>
+              <MainTitle>Proposer Details</MainTitle>
               <a
                 css={`
                   font-size: 20px;
                   display: ${!proposalData[listOfForms[0]] && "none"};
+                  position: relative;
+                  color: black;
+                  top: -7px;
                 `}
                 onClick={() => {
                   setActive(0);
@@ -124,7 +142,7 @@ const ProposalPage = ({ history }) => {
           {activeForm === "Insured Details" ? (
             <>
               {" "}
-              <h1>{activeForm}</h1>{" "}
+              <MainTitle bg>{activeForm}</MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
                 schema={currentSchema ? currentSchema[activeForm] : {}}
@@ -135,32 +153,34 @@ const ProposalPage = ({ history }) => {
             </>
           ) : (
             <span
-            css={`
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            `}
-          >
-            <h1>Insured Details</h1>
-            <a
               css={`
-                font-size: 20px;
-                display: ${!proposalData[listOfForms[1]] && "none"};
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
               `}
-              onClick={() => {
-                setActive(1);
-              }}
             >
-              <FaRegEdit />
-            </a>
-          </span>
+              <MainTitle>Insured Details</MainTitle>
+              <a
+                css={`
+                  font-size: 20px;
+                  display: ${!proposalData[listOfForms[1]] && "none"};
+                  position: relative;
+                  top: -7px;
+                `}
+                onClick={() => {
+                  setActive(1);
+                }}
+              >
+                <FaRegEdit />
+              </a>
+            </span>
           )}
         </Card>
         <Card styledCss={`margin-bottom: 20px;`}>
           {activeForm === "Medical Details" ? (
             <>
               {" "}
-              <h1>{activeForm}</h1>{" "}
+              <MainTitle bg>{activeForm}</MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
                 schema={currentSchema ? currentSchema[activeForm] : {}}
@@ -171,32 +191,35 @@ const ProposalPage = ({ history }) => {
             </>
           ) : (
             <span
-            css={`
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            `}
-          >
-            <h1>Medical Details</h1>
-            <a
               css={`
-                font-size: 20px;
-                display: ${!proposalData[listOfForms[2]] && "none"};
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
               `}
-              onClick={() => {
-                setActive(2);
-              }}
             >
-              <FaRegEdit />
-            </a>
-          </span>
+              <MainTitle>Medical Details</MainTitle>
+              <a
+                css={`
+                  font-size: 20px;
+                  display: ${!proposalData[listOfForms[2]] && "none"};
+                  position: relative;
+                  color: black;
+                  top: -7px;
+                `}
+                onClick={() => {
+                  setActive(2);
+                }}
+              >
+                <FaRegEdit />
+              </a>
+            </span>
           )}
         </Card>
         <Card styledCss={`margin-bottom: 20px;`}>
           {activeForm === "Other Details" ? (
             <>
               {" "}
-              <h1>{activeForm}</h1>{" "}
+              <MainTitle bg>{activeForm}</MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
                 schema={currentSchema ? currentSchema[activeForm] : {}}
@@ -207,34 +230,37 @@ const ProposalPage = ({ history }) => {
             </>
           ) : (
             <span
-            css={`
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            `}
-          >
-            <h1>Other Details</h1>
-            <a
               css={`
-                font-size: 20px;
-                display: ${!proposalData[listOfForms[3]] && "none"};
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
               `}
-              onClick={() => {
-                setActive(3);
-              }}
             >
-              <FaRegEdit />
-            </a>
-          </span>
+              <MainTitle>Other Details</MainTitle>
+              <a
+                css={`
+                  font-size: 20px;
+                  display: ${!proposalData[listOfForms[3]] && "none"};
+                  position: relative;
+                  color: black;
+                  top: -7px;
+                `}
+                onClick={() => {
+                  setActive(3);
+                }}
+              >
+                <FaRegEdit />
+              </a>
+            </span>
           )}
         </Card>
-      </>
+      </span>
     );
     switch (activeForm) {
       case "Proposer Details":
         return (
           <Card styledCss={`margin-bottom: 20px;`}>
-            <h1>{activeForm}</h1>
+            <MainTitle>{activeForm}</MainTitle>
             <ProposerDetails
               key={activeForm}
               schema={
@@ -299,22 +325,37 @@ const ProposalPage = ({ history }) => {
           <i className="icon flaticon-back"></i> Proposal Form
         </MobileHeaderText>
       </MobileHeader>
-      <div className="container-fluid mt-20 pb-100 ">
-        <div className="element-section mb-30">
-          <p
+      <div className="container-fluid mt-20 pb-100" >
+        <div className="element-section mb-30" css={`margin: 30px`}>
+          <div
             className="go_back_prposal_p"
+            css={`
+              width: 100%;
+            `}
             onClick={() => {
               history.goBack();
             }}
           >
             <i className="icon flaticon-back" style={{ width: "27px" }}></i> Go
             Back
-          </p>
+          </div>
 
-          <Row>
-            <Col md={3}><ProductSummary cart={cart}/></Col>
-            <Col md={9}>{form(active, proposalData[listOfForms[active]])}</Col>
-          </Row>
+          <div
+           
+          >
+            <Row
+              // css={`
+              //   max-width: 1250px;
+              // `}
+            >
+              <Col md={3}>
+                <ProductSummary cart={cart} />
+              </Col>
+              <Col md={9}>
+                {form(active, proposalData[listOfForms[active]])}
+              </Col>
+            </Row>
+          </div>
 
           {/* <div
             className="element-tile-two"
@@ -371,3 +412,15 @@ const ProposalPage = ({ history }) => {
 };
 
 export default ProposalPage;
+
+const MainTitle = styled.h2`
+  margin-left: 3px;
+  margin-bottom: ${(props) => (props.bg ? "15px" : "10")};
+  margin-top: ${(props) => (props.bg ? "15px" : "10")};
+  font-weight: 900;
+  background: ${(props) =>
+    props.bg && " linear-gradient(90deg, #eaeef2 0%,rgb(255 255 255) 100%)"};
+  color: ${(props) => props.bg && "#7074a1"};
+  font-size: 21px;
+  padding: 10px;
+`;

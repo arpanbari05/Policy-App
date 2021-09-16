@@ -105,7 +105,7 @@ const InputContainer = styled.div`
   & input {
     border: ${props =>
       props.error ? "solid 1px #c7222a" : "solid 1px #ced4da"};
-    border-radius: 8px;
+    // border-radius: 8px;
     background: ${props => (props.error ? "#fff6f7" : "transparent")};
     height: 55px;
     font-family: inherit;

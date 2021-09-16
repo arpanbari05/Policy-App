@@ -9,16 +9,16 @@ import care from "./../../../../assets/images/Care_Health.png";
 import correct from "./../../../../assets/images/correct_icon.png";
 import "./ProductSummary.scss";
 import Card from "../../../../components/Card";
-const removeTotalPremium = cart => {
+const removeTotalPremium = (cart) => {
   let { totalPremium, ...y } = cart;
   return y;
 };
-const numToString = value => value.toLocaleString("en-IN");
+const numToString = (value) => value.toLocaleString("en-IN");
 const ProductSummary = ({ cart, setActive }) => {
   const [show, setShow] = useState(false);
-  const { frontendData } = useSelector(state => state.frontendBoot);
-  const { proposerDetails } = useSelector(state => state.greetingPage);
-  const { planDetails } = useSelector(state => state.proposalPage);
+  const { frontendData } = useSelector((state) => state.frontendBoot);
+  const { proposerDetails } = useSelector((state) => state.greetingPage);
+  const { planDetails } = useSelector((state) => state.proposalPage);
   const dispatch = useDispatch();
   useEffect(() => {
     setShow(planDetails.show);
@@ -31,7 +31,7 @@ const ProductSummary = ({ cart, setActive }) => {
       <div className="row">
         <div className="col-md-12 padding-none">
           <section
-            className="margin_top_14 light"
+            className="light"
             css={`
               padding: 10px !important;
             `}
@@ -60,6 +60,9 @@ const ProductSummary = ({ cart, setActive }) => {
                   >
                     <div className="logo_add_review float_left_addon_c">
                       <img
+                        css={`
+                          width: 74px;
+                        `}
                         src={
                           frontendData.data.companies[
                             item.product.company.alias
@@ -70,10 +73,12 @@ const ProductSummary = ({ cart, setActive }) => {
                       />
                     </div>
 
-                    <div className="float_left_addon_c ">
-                      <p className="paln_name_t_product_pro_medical">
-                        {item.product.name}
-                      </p>
+                    <div
+                      css={`
+                        font-size: 20px;
+                      `}
+                    >
+                      <p>{item.product.name}</p>
                     </div>
                   </div>
                   <hr />
@@ -128,7 +133,7 @@ const ProductSummary = ({ cart, setActive }) => {
                   </div>
                   {item.health_riders.length ? (
                     <div className="row bg_medical_box_row">
-                      {item.health_riders.map(riders => (
+                      {item.health_riders.map((riders) => (
                         <div className="col-md-6">
                           <img
                             src={correct}
@@ -163,7 +168,6 @@ const ProductSummary = ({ cart, setActive }) => {
                 {/* <br /> */}
                 {item.addons.map((addOns, addOnIndex) => (
                   <div className="rider-box_product_pro_medical">
-              
                     <div
                       className="row_display_pro_review"
                       css={`
@@ -211,11 +215,10 @@ const ProductSummary = ({ cart, setActive }) => {
                           }`}
                         >
                           <i className="fa fa-inr"></i>{" "}
-                          
                           {numToString(
                             prevCart[index]
                               ? prevCart[index].addons[addOnIndex].total_premium
-                              : addOns.premium,
+                              : addOns.premium
                           )}{" "}
                           / year
                         </span>
@@ -317,14 +320,14 @@ const ProductSummary = ({ cart, setActive }) => {
                         class="btn btn_continue_medi_revise_pop next"
                         value="Continue"
                         onClick={() => {
-                          setActive(prev => prev + 1);
+                          setActive((prev) => prev + 1);
                           dispatch(
                             setPlanDetails({
                               title: "Your Plan Details",
                               show: false,
                               prevCart: {},
                               isRenewed: false,
-                            }),
+                            })
                           );
                         }}
                       >
@@ -344,17 +347,22 @@ const ProductSummary = ({ cart, setActive }) => {
   );
   return (
     <>
-      <Card styledCss={`    position: sticky;
+      <Card
+        styledCss={`    position: sticky;
     top: 0;
-    width: 100%;`}>
-          {content}
-          <div>
-            Total Premium
-            <Price>
-              <i class="fa fa-inr"></i> {cart?.totalPremium}
-            </Price>
-          </div>
-    
+    width: 100%;`}
+      >
+        {content}
+        <div
+          css={`
+            font-weight: 900;
+            border: 1px dashed #dce2ec;
+            padding: 7px;
+          `}
+        >
+          Total Premium
+          <Price>₹ {cart?.totalPremium}</Price>
+        </div>
       </Card>
       {/* <ViewPlanDetailModal
         show={true}
@@ -402,7 +410,7 @@ const Button = styled.button`
   font-size: 18px !important;
   font-weight: 600;
   color: #000;
-  
+
   margin-top: 2px !important;
   display: inline-block;
 
@@ -424,7 +432,7 @@ const Price = styled.span`
   font-size: 21px;
   font-weight: 600;
   color: #c72229;
-  
+
   margin-top: -3px;
 `;
 const ViewPlanDetails = styled.span`
