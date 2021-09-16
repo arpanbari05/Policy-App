@@ -67,13 +67,13 @@ export const getProposalFields = () => {
       //data.data["Proposer Details"][11].validate = {required: true,matches:"alt/mobile"}
       // data.data["Other Details"]["10012578_self_spouse_son1"][0].populate = 'nominee_relation=self/Proposer Details.name'
       // data.data["Other Details"]["10012578_self_spouse_son1"][1].populate = 'nominee_relation=self/Proposer Details.mobile'
-      data.data["Other Details"]["10011082_self"][7] =  {
-        additionalOptions: { label: "dasf"},
-        render: { when: "nominee_dob", is: {minAge: '18' } },
-        name: "31413",
-        type: 'text',
-        validate:{required: true}
-      }
+      // data.data["Other Details"]["10011082_self"][7] =  {
+      //   additionalOptions: { label: "dasf"},
+      //   render: { when: "nominee_dob", is: {minAge: '18' } },
+      //   name: "31413",
+      //   type: 'text',
+      //   validate:{required: true}
+      // }
       // data.data["Insured Details"]["10012578_self_spouse_son1"][4].validate.matches =
       //   "validDigits/1/200";
       dispatch(setCurrentSchema(data.data || {}));
