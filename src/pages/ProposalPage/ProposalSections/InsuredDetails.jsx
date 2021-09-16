@@ -13,6 +13,9 @@ import ProposalCheckBox from "../../../components/Common/ProposalSummary/summary
 
 import "styled-components/macro";
 import { element } from "prop-types";
+import CheckBox from "../components/Checkbox/Checkbox";
+import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
+
 const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
   const [show, setShow] = useState(1);
   const {
@@ -29,7 +32,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
     name,
     defaultValue,
     Object.keys(schema).length,
-    setShow,
+    setShow
   );
 
   const [noForAll, setNoForAll] = useState({});
@@ -37,7 +40,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
     canProceed: false,
     canProceedArray: [],
   });
-  const { proposalData } = useSelector(state => state.proposalPage);
+  const { proposalData } = useSelector((state) => state.proposalPage);
   const [mutateValues, setMutateValues] = useState();
   const dispatch = useDispatch();
 
@@ -52,7 +55,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
 
     if (key.length !== key2.length) {
       let noForAll2 = {};
-      Object.keys(values || {}).forEach(element => {
+      Object.keys(values || {}).forEach((element) => {
         noForAll2[element] = noForAll[element] || false;
       });
 
@@ -61,7 +64,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
       let isNotChecked = {};
       let hasYes = {};
       let checkCanProceed = [];
-      key2.forEach(item => {
+      key2.forEach((item) => {
         if (noForAll[item] !== true) {
           isNotChecked[item] = false;
         } else {
@@ -70,7 +73,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
         const temp =
           values?.[item] &&
           Object.keys(values?.[item] || {})?.some(
-            data => values?.[item]?.[data]?.[`is${data}`] === "Y",
+            (data) => values?.[item]?.[data]?.[`is${data}`] === "Y"
           );
         if (temp === true) {
           hasYes[item] = true;
@@ -79,7 +82,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
         }
       });
 
-      key.forEach(item => {
+      key.forEach((item) => {
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed.push(item);
         }
@@ -103,12 +106,12 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
   useEffect(() => {
     if (
       name === "Insured Details" &&
-      Object.keys(schema).some(item => item === "self") &&
+      Object.keys(schema).some((item) => item === "self") &&
       proposalData["Proposer Details"]
     ) {
       console.log("hehe3he");
       let prefilledValues = {};
-      schema["self"].forEach(item => {
+      schema["self"].forEach((item) => {
         if (proposalData["Proposer Details"][item.name])
           prefilledValues = {
             ...prefilledValues,
@@ -128,8 +131,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
       !Object.keys(values ? values : {}).length
     ) {
       let initial = {};
-      Object.keys(schema).forEach(item =>
-        schema[item].forEach(innerItem => {
+      Object.keys(schema).forEach((item) =>
+        schema[item].forEach((innerItem) => {
           if (innerItem.name)
             initial = {
               ...initial,
@@ -138,7 +141,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
                 [innerItem.name]: "",
               },
             };
-        }),
+        })
       );
       setValues(initial);
     }
@@ -149,34 +152,33 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
   }, [values, noForAll]);
 
   useEffect(() => {
-    if (name === "Medical Details"){
-
+    if (name === "Medical Details") {
       const key = Object.keys(values || {});
       let tempObj = JSON.parse(JSON.stringify(values || {}));
-      key.forEach(keyValue => {
-        schema?.[keyValue]?.forEach(element => {
+      key.forEach((keyValue) => {
+        schema?.[keyValue]?.forEach((element) => {
           //'nominee_relation=self/Proposer Details.name'
           if (
             element?.populate &&
             tempObj[keyValue][element.populate.split("/")[0].split("=")[0]] ===
-            element.populate.split("/")[0].split("=")[1] &&
+              element.populate.split("/")[0].split("=")[1] &&
             tempObj[keyValue][element.name] !==
-            proposalData[element.populate.split("/")[1].split(".")[0]][
-              element.populate.split("/")[1].split(".")[1]
-            ]
-            ) {
-              tempObj[keyValue][element.name] =
+              proposalData[element.populate.split("/")[1].split(".")[0]][
+                element.populate.split("/")[1].split(".")[1]
+              ]
+          ) {
+            tempObj[keyValue][element.name] =
               proposalData[element.populate.split("/")[1].split(".")[0]][
                 element.populate.split("/")[1].split(".")[1]
               ];
-            }
-          });
+          }
         });
-        if (JSON.stringify(values) !== JSON.stringify(tempObj)) {
-          setValues({ ...tempObj });
-        }
+      });
+      if (JSON.stringify(values) !== JSON.stringify(tempObj)) {
+        setValues({ ...tempObj });
       }
-      }, [values]);
+    }
+  }, [values]);
 
   useEffect(() => {
     checkCanProceed();
@@ -191,45 +193,62 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
               Object.keys(values && values[item] ? values[item] : {}).length
             }
             values={Object.values(
-              values && values[item] ? values[item] : {},
+              values && values[item] ? values[item] : {}
             ).join(", ")}
             key={index}
             title={`${item}`}
             show={show === "all" ? true : show === index + 1 ? true : false}
             onClick={() =>
-              setShow(prev => (prev === index + 1 ? 0 : index + 1))
+              setShow((prev) => (prev === index + 1 ? 0 : index + 1))
             }
           >
             <div>
               {name === "Medical Details" && (
-                <>
-                  <NoCheckBox className="container">
-                    <ProposalCheckBox
+                <div css={`    margin: 20px 29px;
+                margin-top: -36px;`}> 
+                  <div
+                    css={`
+                      display: flex;
+                      justify-content: flex-end;
+                      & .container {
+                        margin: 0;
+                        width: max-content;
+                      }
+                    `}
+                  >
+                    <Checkbox2
+                      css
+                      showTitle={false}
                       title={"No" + item}
                       value={noForAll[item]}
-                      onChange={e => {
+                      onChange={(e) => {
                         setNoForAll({ ...noForAll, [item]: e.target.checked });
                       }}
-                    ></ProposalCheckBox>{" "}
-                    No For All Questions
-                    {!canProceed?.canProceed &&
-                      canProceed?.canProceedArray?.includes(item) && (
-                        <p className="formbuilder__error">
-                          Please select the checkbox if no for all questions
-                          item
-                        </p>
-                      )}
-                  </NoCheckBox>
-                </>
+                    ></Checkbox2>{" "}
+                    <span >No For All Questions </span>{" "}
+                  </div>
+                  {!canProceed?.canProceed &&
+                    canProceed?.canProceedArray?.includes(item) && (
+                      <p
+                        className="formbuilder__error"
+                        css={`
+                          display: flex;
+                          justify-content: flex-end;
+                        `}
+                      >
+                        Please select the checkbox if no for all questions item
+                      </p>
+                    )}
+                </div>
               )}
               <Form>
                 <FormBuilder
                   schema={schema[item]}
                   components={components}
-                  fetchValues={res => {
+                  fetchValues={(res) => {
                     setValues({ ...values, [item]: res });
                   }}
-                  fetchValid={res => {
+                  fetchValid={(res) => {
                     let valid = isValid;
                     valid[index] = res;
                     setValid(valid);
@@ -243,7 +262,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
                   setSubmit={setSubmit}
                   submitTrigger={submit}
                   noForAll={noForAll[item]}
-                  setNoForAll={value => {
+                  setNoForAll={(value) => {
                     setNoForAll({ ...noForAll, [item]: value });
                   }}
                 />
@@ -255,7 +274,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
       <div className="proposal_continue_back_margin">
         <BackBtn
           onClick={() => {
-            setActive(prev => {
+            setActive((prev) => {
               if (prev === 0) return 0;
               else return prev - 1;
             });

@@ -425,7 +425,7 @@ const HR = styled.hr`
   border-top: 0;
   border-bottom: 1px dashed #ddd;
   width: 100%;
-  margin-left: -12px;
+
   margin-top: 0px;
   @media (max-width: 767px) {
     margin-left: 0px;
@@ -471,7 +471,7 @@ const Title = styled.p`
   background-image: linear-gradient(to right, #ffe7e7 5%, #fff 15%);
   padding: 10px 18px;
   border-radius: 6px;
-  font-family: "PFEncoreSansPro-book";
+
   height: 40px;
   padding: 12px;
   text-transform: capitalize;
