@@ -79,7 +79,7 @@ const PencilWrapper = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: ${props => props.isMedical && "100px"};
+  width: ${props => props.isMedical && "116px"};
   background: ${props => (props.isMedical ? "#f6f7f9 !important" : "")};
   height: ${props => (props.isMedical ? "46px" : "")};
   color: ${props => (props.isMedical ? "#666e84" : "")};
@@ -89,7 +89,6 @@ const PencilWrapper = styled.div`
   }
   & span {
     position: absolute;
-    font-family: pf_handbook_proregular;
     font-weight: 400;
     right: 60px;
     top: 50%;
@@ -162,7 +161,7 @@ const StyledPanel = styled.a`
     props.isShowMedical &&
     !props.add &&
     "linear-gradient(to right, #ffe7e7 5%, #fff 15%)"};
-  color: ${props => (!props.isShowMedical ? "#000 !important" : "")};
+  color: #000 !important;
   position: relative;
   border: ${props => (!props.isShowMedical ? "1px solid #eeeff5" : "none")};
   width: 98%;

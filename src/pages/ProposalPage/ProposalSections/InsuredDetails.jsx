@@ -204,7 +204,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
           >
             <div>
               {name === "Medical Details" && (
-                <>
+                <div css={`    margin: 20px 29px;
+                margin-top: -36px;`}> 
                   <div
                     css={`
                       display: flex;
@@ -224,7 +225,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
                         setNoForAll({ ...noForAll, [item]: e.target.checked });
                       }}
                     ></Checkbox2>{" "}
-                    <span>No For All Questions </span>{" "}
+                    <span >No For All Questions </span>{" "}
                   </div>
                   {!canProceed?.canProceed &&
                     canProceed?.canProceedArray?.includes(item) && (
@@ -238,7 +239,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
                         Please select the checkbox if no for all questions item
                       </p>
                     )}
-                </>
+                </div>
               )}
               <Form>
                 <FormBuilder

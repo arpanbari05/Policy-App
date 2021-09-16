@@ -28,6 +28,15 @@ const ProductSummary = ({ cart, setActive }) => {
 
   const content = (
     <>
+      <h2
+        css={`
+          font-size: 25px;
+          font-weight: 900;
+        `}
+      >
+        {" "}
+        Your Plan Details
+      </h2>
       <div className="row">
         <div className="col-md-12 padding-none">
           <section
@@ -53,12 +62,35 @@ const ProductSummary = ({ cart, setActive }) => {
                   <div
                     className="row_display_pro_review"
                     css={`
-                      @media (max-width: 767px) {
-                        margin-bottom: 10px !important;
+                      display: flex;
+                      flex-direction: row;
+                      align-items: center;
+                      & img {
+                        height: 45px;
+                        width: 83px;
+                        margin-right: 11px;
+                        margin-left: 5px;
+                        object-fit: contain;
+                      }
+                      & span {
+                        font-size: 16px;
+                        font-weight: 900;
+                        line-height: 1.2;
                       }
                     `}
                   >
-                    <div className="logo_add_review float_left_addon_c">
+                    <span>
+                      <img
+                        src={
+                          frontendData.data.companies[
+                            item.product.company.alias
+                          ].logo
+                        }
+                      />{" "}
+                    </span>
+
+                    <span>{item.product.name}</span>
+                    {/* <div className="logo_add_review float_left_addon_c">
                       <img
                         css={`
                           width: 74px;
@@ -71,26 +103,25 @@ const ProductSummary = ({ cart, setActive }) => {
                         className="img_top_m_custom_medical"
                         alt="logo"
                       />
-                    </div>
-
-                    <div
+                    </div> */}
+                    {/* <div
                       css={`
                         font-size: 20px;
                       `}
                     >
                       <p>{item.product.name}</p>
-                    </div>
+                    </div> */}
                   </div>
                   <hr />
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <p className="p_cover_medical_pop">Cover: </p>
                       <span className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl">
                         <i className="fa fa-inr"></i>{" "}
                         {numToString(item.sum_insured)}
                       </span>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <p className={`p_cover_medical_pop `}>Premium: </p>
                       <span
                         className={`p_cover_medical_pop_span ${
@@ -106,8 +137,8 @@ const ProductSummary = ({ cart, setActive }) => {
                     </div>
                     {planDetails.isRenewed ? (
                       <>
-                        <div className="col-md-6"></div>
-                        <div className="col-md-6">
+                        <div className="col-md-12"></div>
+                        <div className="col-md-12">
                           <p className="p_cover_medical_pop revised-premium-title">
                             Revised Premium:{" "}
                           </p>
@@ -134,7 +165,13 @@ const ProductSummary = ({ cart, setActive }) => {
                   {item.health_riders.length ? (
                     <div className="row bg_medical_box_row">
                       {item.health_riders.map((riders) => (
-                        <div className="col-md-6">
+                        <div
+                          className="col-md-12"
+                          css={`
+                            align-items: center;
+                            display: flex;
+                          `}
+                        >
                           <img
                             src={correct}
                             className="display_in_m_medical"
@@ -196,14 +233,14 @@ const ProductSummary = ({ cart, setActive }) => {
                     </div>
                     <hr />
                     <div className="row">
-                      <div className="col-md-6">
+                      <div className="col-md-12">
                         <p className="p_cover_medical_pop">Cover: </p>
                         <span className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl">
                           <i className="fa fa-inr"></i>{" "}
                           {numToString(addOns.sum_insured)}
                         </span>
                       </div>
-                      <div className="col-md-6">
+                      <div className="col-md-12">
                         <p className="p_cover_medical_pop">Premium: </p>
                         <span
                           className={`p_cover_medical_pop_span text_decoration_line_through ${
@@ -226,8 +263,8 @@ const ProductSummary = ({ cart, setActive }) => {
                       {prevCart[index]?.addons[addOnIndex]?.total_premium !==
                         addOns.total_premium && planDetails.isRenewed ? (
                         <>
-                          <div className="col-md-6"></div>
-                          <div className="col-md-6">
+                          <div className="col-md-12"></div>
+                          <div className="col-md-12">
                             <p className="p_cover_medical_pop revised-premium-title">
                               Revised Premium:{" "}
                             </p>
@@ -244,7 +281,7 @@ const ProductSummary = ({ cart, setActive }) => {
                         <></>
                       )}
                       {addOns.product.insurance_type.alias === "top_up" && (
-                        <div className="col-md-6">
+                        <div className="col-md-12">
                           <p className="p_cover_medical_pop">Deductable: </p>
                           <span className="p_cover_medical_pop_span">
                             <i className="fa fa-inr"></i>{" "}

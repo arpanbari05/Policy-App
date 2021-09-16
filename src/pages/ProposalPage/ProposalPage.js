@@ -325,8 +325,13 @@ const ProposalPage = ({ history }) => {
           <i className="icon flaticon-back"></i> Proposal Form
         </MobileHeaderText>
       </MobileHeader>
-      <div className="container-fluid mt-20 pb-100" >
-        <div className="element-section mb-30" css={`margin: 30px`}>
+      <div className="container-fluid mt-20 pb-100">
+        <div
+          className="element-section mb-30"
+          css={`
+            margin: 30px;
+          `}
+        >
           <div
             className="go_back_prposal_p"
             css={`
@@ -340,15 +345,18 @@ const ProposalPage = ({ history }) => {
             Back
           </div>
 
-          <div
-           
-          >
+          <div>
             <Row
-              // css={`
-              //   max-width: 1250px;
-              // `}
+            // css={`
+            //   max-width: 1250px;
+            // `}
             >
-              <Col md={3}>
+              <Col
+                md={3}
+                css={`
+                  margin-bottom: 20px;
+                `}
+              >
                 <ProductSummary cart={cart} />
               </Col>
               <Col md={9}>

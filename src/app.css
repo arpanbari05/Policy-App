@@ -151,7 +151,7 @@ margin-right: 10px;
 }
 
 .middle input[type=radio]:checked+.box {
-  background-color: #c7222a;
+  background-color:  #0a87ff;
 }
 .middle input[type=radio]:checked+.box span {
   color: #fff;
@@ -174,4 +174,14 @@ margin-right: 10px;
 .middle .box span {
   font-size: 16px;
   top: -62px;
+}
+
+.p_propsal_form_r_q_m {
+  font-size: 16px!important;
+  text-align: inherit;
+  line-height: 27px!important;
+  color: #000;
+  font-weight: 400!important;
+  position: relative;
+  padding-left: 16px;
 }
