@@ -17,7 +17,7 @@ const SortByDD = ({ htmlFor, title, list, onSortByChange = () => { } }) => {
     return (
         <div
             css={`
-        margin-left: auto;
+        
         width: max-content;
       `}
             ref={dropdownRef}
