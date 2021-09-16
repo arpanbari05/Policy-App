@@ -236,7 +236,9 @@ const CheckDiscount = ({ groupCode }) => {
                           }
                         `}
                       >
-                        <div
+                      {
+                        item?.tenure !== 1?(
+                          <div
                           css={`
                             width: 100px;
                             height: 22px;
@@ -248,14 +250,20 @@ const CheckDiscount = ({ groupCode }) => {
                             display: flex;
                             justify-content: center;
                             align-items: center;
-
+                            font-weight:900;
                             color: #253858;
                             font-size: 10px;
                             right: -2px;
                           `}
                         >
-                          7.5% off
+                        {
+                          item?.tenure !== 3?"7.5% off":"10% off"
+                        }
+                         
                         </div>
+                        ):<></>
+                      }
+                        
                         <span
                           css={`
                             font-size: 15px;
