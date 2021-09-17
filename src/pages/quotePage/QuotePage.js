@@ -18,6 +18,7 @@ import SeeDetails from "../SeeDetails/SeeDetails";
 import CardSkeletonLoader from "../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import ComparePopup from "./components/ComparePopup/ComparePopup";
 import { useParams } from "react-router";
+import MobileHeader from "./quoteMobile/MobileHeader";
 
 
 function QuotePage() {
@@ -70,102 +71,118 @@ function QuotePage() {
     filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
 
   return (
-    <div>
-      <UpperModifier />
-      <LowerModifier />
+    <>
+      <div
+        css={`
+    @media (max-width:1023px) {
+      display: none;
+    }
+    `}>
+        <UpperModifier />
+        <LowerModifier />
 
-      <div className="container">
-        <div className="col-md-12 d-flex">
-          <div className="col-md-9" style={{ padding: "0px 5px", marginBottom: "120px" }}
-            css={`
+        <div className="container">
+          <div className="col-md-12 d-flex">
+            <div className="col-md-9" style={{ padding: "0px 5px", marginBottom: "120px" }}
+              css={`
                      @media (max-width: 1200px) {
            width: 100%;
                      }
                      `}
-          >
-            <div className=" d-flex justify-content-between align-items-center">
-              <TextLabel> Showing {selectedPlanType} Plan</TextLabel>
-              {/* <SortByButton>
+            >
+              <div className=" d-flex justify-content-between align-items-center">
+                <TextLabel> Showing {selectedPlanType} Plan</TextLabel>
+                {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
               </SortByButton> */}
-              {true && (
-                <SortByDD
-                  list={sortByData}
-                  title="Sort By"
-                  onSortByChange={setSortBy}
-                />
-              )}
-            </div>
-            {quotes?.length ?
-              (
-                firstQuoteFound && (
-                  filterQuotes.map(
-                    (item, index) =>
-                      item.length ? (
-                        <QuoteCard
-                          key={index}
-                          id={index}
-                          item={item}
-                          handleSeeDetails={quote => {
-                            setSeeDetailsQuote(quote);
-                            setShowSeeDetails(true);
-                          }}
-                          handleClick={() => setShowBuyNow(true)}
-                        />
-                      ) : <></>
+                {true && (
+                  <SortByDD
+                    list={sortByData}
+                    title="Sort By"
+                    onSortByChange={setSortBy}
+                  />
+                )}
+              </div>
+              {quotes?.length ?
+                (
+                  firstQuoteFound && (
+                    filterQuotes.map(
+                      (item, index) =>
+                        item.length ? (
+                          <QuoteCard
+                            key={index}
+                            id={index}
+                            item={item}
+                            handleSeeDetails={quote => {
+                              setSeeDetailsQuote(quote);
+                              setShowSeeDetails(true);
+                            }}
+                            handleClick={() => setShowBuyNow(true)}
+                          />
+                        ) : <></>
+                    )
                   )
-                )
-              ) : <CardSkeletonLoader noOfCards={3} />
-            }
+                ) : <CardSkeletonLoader noOfCards={3} />
+              }
 
-          </div>
-          <div className="col-md-3" style={{ padding: "0px 5px" }}
-            css={`
+            </div>
+            <div className="col-md-3" style={{ padding: "0px 5px" }}
+              css={`
           @media (max-width: 1200px) {
 display: none;
           }
           `}
-          >
-            <div className="d-flex justify-content-between align-items-center ">
-              <TextLabel className="my-2">
-                All Premium Plans are GST Inclusive
-              </TextLabel>
+            >
+              <div className="d-flex justify-content-between align-items-center ">
+                <TextLabel className="my-2">
+                  All Premium Plans are GST Inclusive
+                </TextLabel>
+              </div>
+              <AssistantCard>
+                <span className="head">Health Insurance Assistance</span>
+                <p className="my-2">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu
+                  nisl a lorem auctor ultrices auctor vel elit. Aliquam quis
+                  consequat tellus. Aliquam pellentesque ligula massa, aliquet
+                  fermentum nisl varius ac.
+                </p>
+                <button className="talk_to_us my-2">Talk to us</button>
+              </AssistantCard>
             </div>
-            <AssistantCard>
-              <span className="head">Health Insurance Assistance</span>
-              <p className="my-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu
-                nisl a lorem auctor ultrices auctor vel elit. Aliquam quis
-                consequat tellus. Aliquam pellentesque ligula massa, aliquet
-                fermentum nisl varius ac.
-              </p>
-              <button className="talk_to_us my-2">Talk to us</button>
-            </AssistantCard>
           </div>
         </div>
+        {showBuyNow && (
+          <BuyNowModal
+            showBuyNow={showBuyNow}
+            setShowBuyNow={setShowBuyNow}
+          />
+        )}
+        <ComparePopup showPopup={showPopup} groupCode={groupCode} />
+        {showSeeDetails && (
+          <SeeDetails
+            show={showSeeDetails}
+            handleClose={() => setShowSeeDetails(!showSeeDetails)}
+            quote={seeDetailsQuote.quote}
+            sum_insured={
+              seeDetailsQuote.quote.sum_insured[seeDetailsQuote.activeSum]
+            }
+            tenure={seeDetailsQuote.quote.tenure[seeDetailsQuote.activeSum]}
+            product={
+              seeDetailsQuote.quote.product[seeDetailsQuote.activeSum]
+            }
+          />
+        )}
       </div>
-      {showBuyNow && (
-        <BuyNowModal
-          showBuyNow={showBuyNow}
-          setShowBuyNow={setShowBuyNow}
-        />
-      )}
-      <ComparePopup showPopup={showPopup} groupCode={groupCode} />
-      {showSeeDetails && (
-        <SeeDetails
-          show={showSeeDetails}
-          handleClose={() => setShowSeeDetails(!showSeeDetails)}
-          quote={seeDetailsQuote.quote}
-          sum_insured={
-            seeDetailsQuote.quote.sum_insured[seeDetailsQuote.activeSum]
-          }
-          tenure={seeDetailsQuote.quote.tenure[seeDetailsQuote.activeSum]}
-          product={
-            seeDetailsQuote.quote.product[seeDetailsQuote.activeSum]
-          }
-        />
-      )}
-    </div>
+      <div
+        css={`
+      @media (min-width:1023px) {
+display:block;
+      }
+      `}
+      >
+        <MobileHeader groupCode={groupCode} />
+      </div>
+    </>
   );
 }
 
