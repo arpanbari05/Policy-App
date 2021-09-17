@@ -30,8 +30,13 @@ const ProductSummary = ({ cart, setActive }) => {
     <>
       <h2
         css={`
-          font-size: 25px;
-          font-weight: 900;
+        font-size: 20px;
+        font-weight: 900;
+        position: relative;
+        color: #2d3f5e;
+        padding: 12px 0px;
+        margin-bottom: -1px;
+        border-bottom: 1px solid #ddd;
         `}
       >
         {" "}
@@ -387,7 +392,10 @@ const ProductSummary = ({ cart, setActive }) => {
       <Card
         styledCss={`    position: sticky;
     top: 0;
-    width: 100%;`}
+    width: 100%;
+    
+    
+    `}
       >
         {content}
         <div

@@ -116,7 +116,7 @@ const InputContainer = styled.div`
     transition: all 0.3s ease-in-out;
     touch-action: manipulation;
     width: 100%;
-    font-size: 16px;
+    font-size: 14px;
     color: #939393;
     position: relative;
     padding: 0 25px;
@@ -151,7 +151,7 @@ const Label = styled.label`
   box-sizing: border-box;
   touch-action: manipulation;
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;
   color: #000;
   line-height: 14px;
   position: absolute;

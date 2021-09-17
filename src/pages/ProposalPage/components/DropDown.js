@@ -90,7 +90,7 @@ const Select = styled.select`
   height: ${props => (!props.height ? "55px" : "35px")};
   border-right: ${props => props.borderR && "1px solid #ced4da"};
 
-  font-size: 16px;
+  font-size: 14px;
   color: #939393;
   position: relative;
   padding: 0 25px;
@@ -117,7 +117,7 @@ const Label = styled.label`
   box-sizing: border-box;
   touch-action: manipulation;
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;
   color: #000;
   line-height: 14px;
   position: absolute;
