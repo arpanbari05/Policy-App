@@ -30,13 +30,13 @@ const ProductSummary = ({ cart, setActive }) => {
     <>
       <h2
         css={`
-        font-size: 20px;
-        font-weight: 900;
-        position: relative;
-        color: #2d3f5e;
-        padding: 12px 0px;
-        margin-bottom: -1px;
-        border-bottom: 1px solid #ddd;
+          font-size: 20px;
+          font-weight: 900;
+          position: relative;
+          color: #2d3f5e;
+          padding: 12px 0px;
+          margin-bottom: -1px;
+          border-bottom: 1px solid #ddd;
         `}
       >
         {" "}
@@ -390,10 +390,11 @@ const ProductSummary = ({ cart, setActive }) => {
   return (
     <>
       <Card
-        styledCss={`    position: sticky;
+        styledCss={`   
+    position: sticky;
     top: 0;
     width: 100%;
-    
+    padding: 10px 15px;
     
     `}
       >
@@ -402,11 +403,28 @@ const ProductSummary = ({ cart, setActive }) => {
           css={`
             font-weight: 900;
             border: 1px dashed #dce2ec;
-            padding: 7px;
+            display: flex;
+            padding: 7px 20px;
+            background-color: #f7f7f7;
+            justify-content: space-between;
+            align-items: center;
           `}
         >
-          Total Premium
-          <Price>₹ {cart?.totalPremium}</Price>
+          <span
+            css={`
+              color: #6d798f;
+            `}
+          >
+            Total Premium <br />
+            <small>*Inc. GST</small>
+          </span>
+          <Price
+            css={`
+              color: black;
+            `}
+          >
+            ₹ {cart?.totalPremium}
+          </Price>
         </div>
       </Card>
       {/* <ViewPlanDetailModal
