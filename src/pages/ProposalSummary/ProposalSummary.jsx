@@ -23,6 +23,7 @@ import styled from "styled-components";
 import ProductSummaryMobile from "../ProposalPage/ProposalSections/components/ProductSummaryMobile";
 import ProductSummaryTab from "../ProposalPage/ProposalSections/components/ProductSummaryTab";
 import useUrlQuery from "../../customHooks/useUrlQuery";
+import { Col, Row } from "react-bootstrap";
 const ProposalSummary = ({ history }) => {
   const { currentSchema } = useSelector(state => state.schema);
   const { proposalData, policyStatus, policyLoading } = useSelector(
@@ -123,7 +124,7 @@ const ProposalSummary = ({ history }) => {
                           singlePay(item.proposal_id);
                         }}
                       >
-                        <span>Pay Now</span>
+                        <span>Pay Now </span>
                         <div>{item.total_premium}</div>
                       </PayButton>
                     </PayItem>
@@ -135,17 +136,17 @@ const ProposalSummary = ({ history }) => {
             <div
               class="row btn_p_summary_pay_now"
               onClick={() => checked && onClick()}
-              // style={{ margin: "0 25px" }}
+            // style={{ margin: "0 25px" }}
             >
               <div class="col-md-6">
                 <button disabled={!checked && true} class="btn btn_p_s_pay_now">
-                  Pay Now{" "}
+                  Pay Now {" "}
                 </button>
               </div>
               <div class="col-md-6">
                 <button
                   disabled={!checked && true}
-                  class="btn btn-primary bg_dark_red"
+                  class="btn-primary btn"
                 >
                   Total Premium
                   <p class="p_dark_f_a">
@@ -170,20 +171,65 @@ const ProposalSummary = ({ history }) => {
       </MobileHeader>
 
       <div className="container-fluid mt-20 ">
-        <div className="element-section mb-30">
-          <div className="row">
+        <div className="element-section "
+          css={`
+         margin: 30px;
+         margin-bottom: 150px;
+       `}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div className="col-lg-2">
-              <p
+              {/* <p
                 class="go_back_prposal_p summary_proposal_back"
                 style={{ zIndex: 100 }}
                 onClick={() => history.goBack()}
               >
                 <i class="icon flaticon-back" style={{ width: "27px" }}></i> Go
                 Back
-              </p>
+              </p> */}
+              <button
+                className="btn"
+                type="button"
+                onClick={() => {
+                  history.goBack();
+                }}
+                css={`
+                width: max-content;
+                margin-left: -9px;
+
+                color: var(--abc-red);
+                font-size: 17px;
+                display: flex;
+                align-items: center;
+              `}
+              >
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  css={`
+                  background: #f1f4f8;
+                  width: 35px;
+                  margin-right: 20px;
+                  border-radius: 100%;
+                  height: 35px;
+                  color: #707b8b;
+                `}
+                >
+                  <i className="fas fa-chevron-left"></i>
+                </div>
+                <span
+                  css={`
+                  color: #3b4c69;
+                  font-weight: 600;
+                `}
+                >
+                  Go Back
+                </span>
+              </button>
+
+
             </div>
 
-            <div class="element_title_span_t element-tile-two">
+            <div class="col-lg-10 element-tile-two">
               <p
                 css={`
                   @media (min-width: 768px) and (max-width: 900px) {
@@ -205,16 +251,21 @@ const ProposalSummary = ({ history }) => {
                 proposal details before you proceed
               </p>
             </div>
-            <SummaryWrapper>
-              <ProductSummary cart={cart} />
-            </SummaryWrapper>
           </div>
+
           <br className="hide-on-mobile" />
-          <div className="row margin_top_tab_proposal">
-            <div class="col-lg-12 col-md-12 no-padding-mobile">
-              <div className="signUp-page signUp-minimal pb-70">
-                <p
-                  css={`
+          <Row>
+            <Col md={3}>
+              <SummaryWrapper>
+                <ProductSummary cart={cart} />
+              </SummaryWrapper>
+            </Col>
+            <Col md={9}>
+              <div className="row margin_top_tab_proposal">
+                <div class="col-lg-12 col-md-12 no-padding-mobile">
+                  <div className="signUp-page signUp-minimal pb-70">
+                    <p
+                      css={`
                     display: none;
                     @media (max-width: 767px) {
                       display: flex;
@@ -226,29 +277,29 @@ const ProposalSummary = ({ history }) => {
                       padding: 0px 20px;
                     }
                   `}
-                >
-                  Hi {proposerDetails?.name.split(" ")[0]}, please review your
-                  proposal details before you proceed
-                </p>
-                <div className="-wrapper pad_proposal_s">
-                  {allFields ? (
-                    allFields.map((item, index) => {
-                      return (
-                        <SummaryTab
-                          key={item}
-                          title={item}
-                          data={currentSchema[item]}
-                          values={proposalData[item]}
-                          index={index}
-                        ></SummaryTab>
-                      );
-                    })
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </div>
-              {/* <div
+                    >
+                      Hi {proposerDetails?.name.split(" ")[0]}, please review your
+                      proposal details before you proceed
+                    </p>
+                    <div className="-wrapper pad_proposal_s">
+                      {allFields ? (
+                        allFields.map((item, index) => {
+                          return (
+                            <SummaryTab
+                              key={item}
+                              title={item}
+                              data={currentSchema[item]}
+                              values={proposalData[item]}
+                              index={index}
+                            ></SummaryTab>
+                          );
+                        })
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </div>
+                  {/* <div
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -256,14 +307,16 @@ const ProposalSummary = ({ history }) => {
               >
                 <ProductSummaryTab cart={cart} />
               </div> */}
-            </div>
-            {/* <ProposalSummaryTab
+                </div>
+                {/* <ProposalSummaryTab
                 checked={checked}
                 onChange={() => setChecked(!checked)}
                 setTotalPremium={() => {}}
                 onPayment={onClick}
               /> */}
-          </div>
+              </div>
+            </Col>
+          </Row>
           <div
             css={`
               @media (max-width: 1199px) {
@@ -286,11 +339,7 @@ export default ProposalSummary;
 
 const SummaryWrapper = styled.div`
   width: 100%;
-  position: absolute;
-  & div {
-    width: 22%;
-    right: 40px;
-  }
+
 `;
 const MultipleWrapper = styled.div`
   width: 300px;

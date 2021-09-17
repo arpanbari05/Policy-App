@@ -231,10 +231,10 @@ const FilterModal = ({ show, handleClose }) => {
           <span>Clear Filters</span>
         </ClearBtn>
         {
-          filteredQuotes.length?(
-            <ApplyBtn className="btn apply_btn mx-auto h-100 w-50" onClick={() => handleSubmit()}>Show {filteredQuotes.length} plans</ApplyBtn>
+          filteredQuotes.length ? (
+            <ApplyBtn className=" apply_btn mx-auto h-100 w-50" onClick={() => handleSubmit()}>Show {filteredQuotes.length} plans</ApplyBtn>
 
-          ):<span className="w-50 text-center h-100">No Plan available</span>
+          ) : <span className="w-50 text-center h-100">No Plan available</span>
         }
       </Modal.Footer>
     </Modal>

@@ -453,7 +453,7 @@ const FilterModal = ({ show, handleClose }) => {
           ))}
         <ApplyBtn
           onClick={(e) => handleUpdate(e)}
-          className="btn apply_btn mx-auto h-100 w-100"
+          className="apply_btn mx-auto h-100 w-100"
         >
           Apply
         </ApplyBtn>
