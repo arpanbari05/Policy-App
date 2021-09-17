@@ -18,6 +18,7 @@ import TBody from "./components/tables/TBody";
 import THead from "./components/tables/THead";
 import useComparePage from "./useComparePage";
 import "./Compare.scss";
+import "styled-components/macro"
 import mail from "./../../assets/images/whatsapp.png";
 import whatsapp from "./../../assets/images/whatsapp01.png";
 import BuyNowModal from "../quotePage/components/BuyNowModal/BuyNowModal";
@@ -50,6 +51,7 @@ import {
 } from "./ComparePage.style";
 import DropDown from "./components/DropDown";
 import { useDispatch, useSelector } from "react-redux";
+import ShareQuoteModal from "../../components/ShareQuoteModal";
 
 const sendContent = (
   type,
@@ -602,7 +604,7 @@ const ComparePage = () => {
     removePlan2point0,
   } = useComparePage();
   const [windowHeight, windowWidth] = useWindowSize();
-
+  const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
   const [email, setEmail] = useState();
   const { groupCode } = useParams();
   const [send, setSend] = useState(false);
@@ -672,7 +674,28 @@ const ComparePage = () => {
                   </ul>
                 </li>
               </ul>
-              <GoBack path={"/quotes"} groupCode={groupCode} />
+              <div className="container"
+                css={`
+              display: flex;
+              justify-content:space-between;
+              align-items: center;
+              `}
+              >
+                <GoBack path={"/quotes"} groupCode={groupCode} />
+                <UpperModifier>
+                  <div className="right_midifiers d-flex justify-content-between align-items-center ">
+                    <button
+                      className="btn share_Quote_btn "
+                      onClick={() => setShowShareQuoteModal(true)}
+                    >
+                      <i class="fas fa-share "
+
+                      ></i> Share
+                    </button>
+
+                  </div>
+                </UpperModifier>
+              </div>
             </div>
 
             {/* mobile content ( visible on mobile screen )*/}
@@ -848,6 +871,12 @@ const ComparePage = () => {
         showButton={false}
         handleClose={() => setSend(false)}
       />
+      <ShareQuoteModal
+        show={showShareQuoteModal}
+        handleClose={() => setShowShareQuoteModal(false)}
+        imageSend={imageSend}
+        emailStatus={emailStatus}
+      />
     </>
   );
 };
@@ -860,3 +889,23 @@ const ImageLogo = styled.img`
   height: 40px;
   width: 40px;
 `;
+const UpperModifier = styled.div`
+
+  .right_midifiers {
+    
+    .btn {
+      background-color: white;
+      display: flex;
+      justify-content:space-between;
+      align-items: center;
+      padding:8px 25px;
+      margin-left: 7px;
+      border-radius: 31px;
+      font-weight: 500;
+    }
+    .share_Quote_btn {
+      border: solid 2px #0a87ff;
+      color: #0a87ff;
+    }
+  }
+`
