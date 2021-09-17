@@ -102,7 +102,7 @@ const Container = styled.div`
   padding: 60px 50px 30px;
   & p {
     font-weight: 400;
-    font-family: "pf_handbook_proregular";
+
     font-size: 20px;
   }
   & span {
@@ -115,7 +115,7 @@ const Container = styled.div`
    width:95%;
    & p{
     font-weight: 400;
-    font-family: "pf_handbook_proregular";
+
     font-size: 18px;
     line-height: 1.4;
    }

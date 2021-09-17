@@ -84,7 +84,7 @@ const Select = styled.select`
   border: ${props => !props.height && "1px solid #ced4da"};
 
   border: ${props => (props.error && "solid 1px #c7222a")};
-  border-radius: 8px;
+  // border-radius: 8px;
   background-color: ${props => props.error && "#fff6f7"};
 
   height: ${props => (!props.height ? "55px" : "35px")};
@@ -128,7 +128,7 @@ const Label = styled.label`
   transition: all 0.3s ease-in-out;
   font-weight: 900;
   padding: 0 5px;
-  font-family: "pf_handbook_proregular";
+  
   @media (max-width: 767px) {
     font-size: 14px;
     left: 10px;

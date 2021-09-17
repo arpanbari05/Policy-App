@@ -220,7 +220,7 @@ const Button = styled.button`
   font-size: 18px !important;
   font-weight: 600;
   color: #000;
-  font-family: "pf_handbook_proregular";
+  
   margin-top: 2px !important;
   display: inline-block;
 
@@ -242,7 +242,7 @@ const Price = styled.span`
   font-size: 21px;
   font-weight: 600;
   color: #c72229;
-  font-family: "pf_handbook_proregular";
+  
   margin-top: -3px;
 `;
 const ViewPlanDetails = styled.span`

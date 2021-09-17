@@ -61,7 +61,7 @@ const OtherTable = ({
 export default OtherTable;
 const Header = styled.p`
   font-size: 16px !important;
-  font-family: "PFEncoreSansProblck";
+
   margin-bottom: 23px;
   text-align: justify;
   line-height: 18px;
@@ -78,7 +78,7 @@ const TableHeader = styled.li`
   text-transform: initial;
 
   color: #57667e;
-  font-family: "PFEncoreSansProblck";
+
   border-radius: 3px;
   padding: 25px 16px;
   display: flex;

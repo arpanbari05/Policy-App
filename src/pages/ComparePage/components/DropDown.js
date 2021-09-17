@@ -67,7 +67,7 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
                   style={{
                     textAlign: "center",
                     marginTop: "18%",
-                    fontFamily: "pf_handbook_probold",
+              
                   }}
                 >
                   All plans are added
@@ -92,7 +92,7 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
                   style={{
                     textAlign: "center",
                     marginTop: "18%",
-                    fontFamily: "pf_handbook_probold",
+              
                   }}
                 >
                   All plans are added

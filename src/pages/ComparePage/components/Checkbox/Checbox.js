@@ -4,6 +4,7 @@ import "./Checkbox.css";
 const Checkbox2 = ({
   title,
   onChange,
+  checked,
   showTitle =true
 }) => {
 
@@ -14,7 +15,7 @@ const Checkbox2 = ({
           type="checkbox"
           id={title}
           onChange={onChange}
-
+          checked={checked}
         />
         <label htmlFor={title}> </label>
         {showTitle && title && <span

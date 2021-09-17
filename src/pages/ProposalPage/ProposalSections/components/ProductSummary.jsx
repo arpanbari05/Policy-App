@@ -8,16 +8,17 @@ import arrow from "./../../../../assets/images/arrow.png";
 import care from "./../../../../assets/images/Care_Health.png";
 import correct from "./../../../../assets/images/correct_icon.png";
 import "./ProductSummary.scss";
-const removeTotalPremium = cart => {
+import Card from "../../../../components/Card";
+const removeTotalPremium = (cart) => {
   let { totalPremium, ...y } = cart;
   return y;
 };
-const numToString = value => value.toLocaleString("en-IN");
+const numToString = (value) => value.toLocaleString("en-IN");
 const ProductSummary = ({ cart, setActive }) => {
   const [show, setShow] = useState(false);
-  const { frontendData } = useSelector(state => state.frontendBoot);
-  const { proposerDetails } = useSelector(state => state.greetingPage);
-  const { planDetails } = useSelector(state => state.proposalPage);
+  const { frontendData } = useSelector((state) => state.frontendBoot);
+  const { proposerDetails } = useSelector((state) => state.greetingPage);
+  const { planDetails } = useSelector((state) => state.proposalPage);
   const dispatch = useDispatch();
   useEffect(() => {
     setShow(planDetails.show);
@@ -27,10 +28,19 @@ const ProductSummary = ({ cart, setActive }) => {
 
   const content = (
     <>
+      <h2
+        css={`
+          font-size: 25px;
+          font-weight: 900;
+        `}
+      >
+        {" "}
+        Your Plan Details
+      </h2>
       <div className="row">
         <div className="col-md-12 padding-none">
           <section
-            className="margin_top_14 light"
+            className="light"
             css={`
               padding: 10px !important;
             `}
@@ -52,13 +62,39 @@ const ProductSummary = ({ cart, setActive }) => {
                   <div
                     className="row_display_pro_review"
                     css={`
-                      @media (max-width: 767px) {
-                        margin-bottom: 10px !important;
+                      display: flex;
+                      flex-direction: row;
+                      align-items: center;
+                      & img {
+                        height: 45px;
+                        width: 83px;
+                        margin-right: 11px;
+                        margin-left: 5px;
+                        object-fit: contain;
+                      }
+                      & span {
+                        font-size: 16px;
+                        font-weight: 900;
+                        line-height: 1.2;
                       }
                     `}
                   >
-                    <div className="logo_add_review float_left_addon_c">
+                    <span>
                       <img
+                        src={
+                          frontendData.data.companies[
+                            item.product.company.alias
+                          ].logo
+                        }
+                      />{" "}
+                    </span>
+
+                    <span>{item.product.name}</span>
+                    {/* <div className="logo_add_review float_left_addon_c">
+                      <img
+                        css={`
+                          width: 74px;
+                        `}
                         src={
                           frontendData.data.companies[
                             item.product.company.alias
@@ -67,24 +103,25 @@ const ProductSummary = ({ cart, setActive }) => {
                         className="img_top_m_custom_medical"
                         alt="logo"
                       />
-                    </div>
-
-                    <div className="float_left_addon_c ">
-                      <p className="paln_name_t_product_pro_medical">
-                        {item.product.name}
-                      </p>
-                    </div>
+                    </div> */}
+                    {/* <div
+                      css={`
+                        font-size: 20px;
+                      `}
+                    >
+                      <p>{item.product.name}</p>
+                    </div> */}
                   </div>
                   <hr />
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <p className="p_cover_medical_pop">Cover: </p>
                       <span className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl">
                         <i className="fa fa-inr"></i>{" "}
                         {numToString(item.sum_insured)}
                       </span>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <p className={`p_cover_medical_pop `}>Premium: </p>
                       <span
                         className={`p_cover_medical_pop_span ${
@@ -100,8 +137,8 @@ const ProductSummary = ({ cart, setActive }) => {
                     </div>
                     {planDetails.isRenewed ? (
                       <>
-                        <div className="col-md-6"></div>
-                        <div className="col-md-6">
+                        <div className="col-md-12"></div>
+                        <div className="col-md-12">
                           <p className="p_cover_medical_pop revised-premium-title">
                             Revised Premium:{" "}
                           </p>
@@ -127,8 +164,14 @@ const ProductSummary = ({ cart, setActive }) => {
                   </div>
                   {item.health_riders.length ? (
                     <div className="row bg_medical_box_row">
-                      {item.health_riders.map(riders => (
-                        <div className="col-md-6">
+                      {item.health_riders.map((riders) => (
+                        <div
+                          className="col-md-12"
+                          css={`
+                            align-items: center;
+                            display: flex;
+                          `}
+                        >
                           <img
                             src={correct}
                             className="display_in_m_medical"
@@ -162,7 +205,6 @@ const ProductSummary = ({ cart, setActive }) => {
                 {/* <br /> */}
                 {item.addons.map((addOns, addOnIndex) => (
                   <div className="rider-box_product_pro_medical">
-              
                     <div
                       className="row_display_pro_review"
                       css={`
@@ -191,14 +233,14 @@ const ProductSummary = ({ cart, setActive }) => {
                     </div>
                     <hr />
                     <div className="row">
-                      <div className="col-md-6">
+                      <div className="col-md-12">
                         <p className="p_cover_medical_pop">Cover: </p>
                         <span className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl">
                           <i className="fa fa-inr"></i>{" "}
                           {numToString(addOns.sum_insured)}
                         </span>
                       </div>
-                      <div className="col-md-6">
+                      <div className="col-md-12">
                         <p className="p_cover_medical_pop">Premium: </p>
                         <span
                           className={`p_cover_medical_pop_span text_decoration_line_through ${
@@ -210,11 +252,10 @@ const ProductSummary = ({ cart, setActive }) => {
                           }`}
                         >
                           <i className="fa fa-inr"></i>{" "}
-                          
                           {numToString(
                             prevCart[index]
                               ? prevCart[index].addons[addOnIndex].total_premium
-                              : addOns.premium,
+                              : addOns.premium
                           )}{" "}
                           / year
                         </span>
@@ -222,8 +263,8 @@ const ProductSummary = ({ cart, setActive }) => {
                       {prevCart[index]?.addons[addOnIndex]?.total_premium !==
                         addOns.total_premium && planDetails.isRenewed ? (
                         <>
-                          <div className="col-md-6"></div>
-                          <div className="col-md-6">
+                          <div className="col-md-12"></div>
+                          <div className="col-md-12">
                             <p className="p_cover_medical_pop revised-premium-title">
                               Revised Premium:{" "}
                             </p>
@@ -240,7 +281,7 @@ const ProductSummary = ({ cart, setActive }) => {
                         <></>
                       )}
                       {addOns.product.insurance_type.alias === "top_up" && (
-                        <div className="col-md-6">
+                        <div className="col-md-12">
                           <p className="p_cover_medical_pop">Deductable: </p>
                           <span className="p_cover_medical_pop_span">
                             <i className="fa fa-inr"></i>{" "}
@@ -316,14 +357,14 @@ const ProductSummary = ({ cart, setActive }) => {
                         class="btn btn_continue_medi_revise_pop next"
                         value="Continue"
                         onClick={() => {
-                          setActive(prev => prev + 1);
+                          setActive((prev) => prev + 1);
                           dispatch(
                             setPlanDetails({
                               title: "Your Plan Details",
                               show: false,
                               prevCart: {},
                               isRenewed: false,
-                            }),
+                            })
                           );
                         }}
                       >
@@ -343,21 +384,25 @@ const ProductSummary = ({ cart, setActive }) => {
   );
   return (
     <>
-      <Wrapper className="col-lg-3 product__summary hideOnMobile">
-        <Button onClick={() => setShow(true)}>
-          <div>
-            Total Premium
-            <Price>
-              <i class="fa fa-inr"></i> {cart?.totalPremium}
-            </Price>
-          </div>
-          <ViewPlanDetails>
-            View Plan Details <img alt="arrow" src={arrow} />
-          </ViewPlanDetails>
-        </Button>
-      </Wrapper>
-      <ViewPlanDetailModal
-        show={show}
+      <Card
+        styledCss={`    position: sticky;
+    top: 0;
+    width: 100%;`}
+      >
+        {content}
+        <div
+          css={`
+            font-weight: 900;
+            border: 1px dashed #dce2ec;
+            padding: 7px;
+          `}
+        >
+          Total Premium
+          <Price>₹ {cart?.totalPremium}</Price>
+        </div>
+      </Card>
+      {/* <ViewPlanDetailModal
+        show={true}
         title={planDetails.title}
         showButton={false}
         content={content}
@@ -375,7 +420,7 @@ const ProductSummary = ({ cart, setActive }) => {
         customClass="customClassModalDialog"
         revised={true}
 
-      />
+      /> */}
     </>
   );
 };
@@ -402,7 +447,7 @@ const Button = styled.button`
   font-size: 18px !important;
   font-weight: 600;
   color: #000;
-  font-family: "pf_handbook_proregular";
+
   margin-top: 2px !important;
   display: inline-block;
 
@@ -424,7 +469,7 @@ const Price = styled.span`
   font-size: 21px;
   font-weight: 600;
   color: #c72229;
-  font-family: "pf_handbook_proregular";
+
   margin-top: -3px;
 `;
 const ViewPlanDetails = styled.span`

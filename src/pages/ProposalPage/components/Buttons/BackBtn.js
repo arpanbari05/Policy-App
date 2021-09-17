@@ -1,19 +1,20 @@
 import React from "react";
-import "styled-components/macro"
+import "styled-components/macro";
+import BackButton from "../../../../components/BackButton";
+import GoBack from "../../../ComparePage/components/GoBackBtn/GoBack";
 const BackBtn = ({ onClick, hide }) => {
   return (
-    <button
+    <BackButton
       onClick={onClick}
       style={{ display: hide && "none" }}
       className="btn btn_start_proposal_back"
-      css={`
-      @media (max-width:767px){
-        margin-bottom:100px !important;
-      }
-      `}
+      styledCss={`
+      width: 200px;
+      margin: 10px 0;
+        `}
     >
       Back{" "}
-    </button>
+    </BackButton>
   );
 };
 

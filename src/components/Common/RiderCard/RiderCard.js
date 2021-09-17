@@ -44,10 +44,9 @@ function RiderCard({
             handleRiderClick();
           }}
           css={`
-          margin: 10px;
             /* transition: all 0.33s; */
             max-height: ${showMore ? "300px" : "max-content"};
-            min-height: 190px;
+            min-height: 145px;
             /* &:hover {
         max-height: 300px;
       } */
@@ -65,10 +64,10 @@ function RiderCard({
           >
             <div
               css={`
-                color: ${isRiderSelected ? "#0d6efd": "#253858"};
-                
+                color: #0a87ff;
+
                 font-weight: 900;
-                font-size: 23px;
+                font-size: 18px;
                 line-height: normal;
 
                 @media (max-width: 1024px) {
@@ -215,11 +214,9 @@ function RiderDescription({
     <div
       css={`
         margin-top: ${productPage ? "6px" : "10px"};
-        color: ${productPage ? "var(--abc-red)" : "var(--abc-red)"};
-
-        font-size: 16px;
+        color: #505f79;
+        font-size: 13px;
         overflow: hidden;
-
         ${mobile} {
           font-size: ${productPage ? "14px" : "12px"} !important;
           margin-top: 0;
@@ -274,12 +271,11 @@ function RiderDescription({
 const RiderCardWrap = styled.div`
   display: flex;
   position: relative;
-
+  width: 49%;
   margin: 10px 0;
-  flex: 0 0 48%;
   border: 1px solid
     ${({ isRiderSelected }) => (isRiderSelected ? "#0d6efd;" : "#d5dce5")};
-  padding: 20px 16px;
+  padding: 10px 16px;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
   cursor: pointer;
   &:hover {

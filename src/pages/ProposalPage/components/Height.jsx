@@ -80,7 +80,7 @@ const Height = ({ onChange, value, error }) => {
 export default Height;
 
 const Wrapper = styled.div`
-  border-radius: 8px;
+  // border-radius: 8px;
   margin-top: 5px;
   @media (max-width: 1023px) {
     margin-bottom: 8px;

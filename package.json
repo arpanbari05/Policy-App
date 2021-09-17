@@ -34,7 +34,9 @@
     "sweetalert": "^2.1.2",
     "uuid": "^8.3.2",
     "yup": "^0.32.9",
-    "yup-phone": "^1.2.19"
+    "yup-phone": "^1.2.19",
+    "react-datepicker": "^4.1.1",
+    "react-text-mask": "^5.4.3"
   },
   "scripts": {
     "start": "react-scripts start",

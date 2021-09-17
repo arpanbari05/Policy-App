@@ -16,19 +16,19 @@
 }
 .font_grey {
   color: #57667e;
-  font-family: "pf_handbook_proregular";
+  
 }
 .color_span_total_revise {
   color: #343434;
   font-weight: 600;
   font-size: 14px;
-  font-family: "pf_handbook_proregular";
+  
 }
 .color_span_total_blck_medical {
   color: #0f0f0f;
   font-weight: 900;
   font-size: 20px;
-  font-family: "pf_handbook_proregular";
+  
 }
 .btn_continue_medi_revise_pop {
   background: #ce1933;
@@ -51,7 +51,7 @@
     line-height: 28px;
     margin-bottom: 12px;
     font-weight: 900;
-    font-family: PFHandbookProbld;
+   
     background-image: linear-gradient(to right, #ffe7e7, #fff);
     padding: 10px;
     width: 100%;
@@ -67,10 +67,12 @@
 }
 .rider-box_product_pro_medical {
   border-radius: 8px;
+  color:#505f79;
+  font-size: 10px;
   border: 1px solid #dce2ec;
   background-color: #fff;
-  padding: 39px 3px 0px 17px;
-  margin: 10px 7px 7px;
+  padding: 10px;
+  margin: 10px 0;
   justify-content: space-between;
 }
 .paln_name_t_product_pro_medical {
@@ -78,7 +80,7 @@
   margin-top: 6px;
   color: #000;
   font-size: 17px;
-  font-family: "PFEncoreSansPromed";
+ 
   display: flex;
 }
 .float_left_addon_c {
@@ -98,26 +100,21 @@
   margin-left: -13px;
 }
 .p_cover_medical_pop {
-  color: #171717;
-  font-family: "PFEncoreSansPro-book";
+  color: #505f79;
+  font-weight: 900;
   font-size: 14px;
   float: left;
-  width: 120px;
   margin-top: -8px;
 }
 .p_cover_medical_pop_span {
   color: #000;
-  font-family: "PFEncoreSansPromed";
+
   top: -7px !important;
   font-weight: 600;
   position: relative;
   font-size: 14px;
 }
-.bg_medical_box_row {
-  background: #f8f8fa;
-  width: 103.4%;
-  padding: 10px 0;
-}
+
 .display_in_m_medical {
   display: inline-block;
   margin: 0 -1px 0 -3px;
@@ -126,7 +123,7 @@
   font-weight: normal !important;
   color: #000;
   font-size: 15px;
-  font-family: "PFEncoreSansPro-book";
+
 }
 .bottom_addon_cover_medical {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
