@@ -163,7 +163,7 @@ const Input = styled.input`
   // border-radius: 8px;
   background: ${props => (props.error ? "#fff6f7" : "transparent")};
   height: 55px;
-  font-size: 16px;
+  font-size: 14px;
   color: #939393;
   position: relative;
   padding: 0 25px;
@@ -187,7 +187,7 @@ const Label = styled.label`
   box-sizing: border-box;
   touch-action: manipulation;
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;
   color: #000;
   line-height: 14px;
   position: absolute;

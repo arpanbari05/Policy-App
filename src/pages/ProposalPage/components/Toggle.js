@@ -21,16 +21,14 @@ const Toggle = ({
   const [boolean, setBoolean] = useState("N");
   const [membersStatus, setMembersStatus] = useState({});
   const { mediUnderwritting } = useSelector(
-    state => state.proposalPage.proposalData,
+    (state) => state.proposalPage.proposalData
   );
   const membersToMap = customMembers instanceof Array ? customMembers : members;
   // const membersToMap = members;
   console.log(name, notAllowed, value);
   const dispatch = useDispatch();
   useEffect(() => {
-
-     if (value &&notAllowed && value[`is${name}`] === "Y") {
-
+    if (value && notAllowed && value[`is${name}`] === "Y") {
       setBoolean("N");
       setMembersStatus({});
     } else if (value instanceof Object && Object.keys(value).length) {
@@ -43,10 +41,8 @@ const Toggle = ({
     if (!value) {
       setBoolean("N");
       setMembersStatus({});
-
     }
     if (value && notAllowed && value[`is${name}`] === "Y") {
-
       setBoolean("N");
       setMembersStatus({});
     }
@@ -82,7 +78,7 @@ const Toggle = ({
                 <input
                   type="radio"
                   name={`is${name}`}
-                  onChange={e => {
+                  onChange={(e) => {
                     if (notAllowed) {
                       dispatch(setShowPlanNotAvail(true));
                     } else {
@@ -109,7 +105,7 @@ const Toggle = ({
                   type="radio"
                   name={`is${name}`}
                   value="N"
-                  onChange={e => {
+                  onChange={(e) => {
                     setBoolean(e.target.value);
                     setMembersStatus({});
                   }}
@@ -140,7 +136,7 @@ const Toggle = ({
                       type="checkbox"
                       name={item}
                       id={"rb1" + name + index + item}
-                      onChange={e =>
+                      onChange={(e) =>
                         setMembersStatus({
                           ...membersStatus,
                           [e.target.name]: e.target.checked,
@@ -151,11 +147,19 @@ const Toggle = ({
                     <label
                       for={"rb1" + name + index + item}
                       className="position-relative"
+                      css={`
+                        margin-bottom: 19px;
+                      `}
                     >
                       {item}
                       <p
                         className="formbuilder__error position-absolute"
-                        style={{ bottom: "-20px" }}
+                        css={`
+                          bottom: -46px;
+                          left: 0;
+                          right: 0;
+                          font-size: 14px;
+                        `}
                       >
                         {error}
                       </p>
