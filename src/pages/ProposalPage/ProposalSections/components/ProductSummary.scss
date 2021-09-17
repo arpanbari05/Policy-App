@@ -100,11 +100,13 @@
   margin-left: -13px;
 }
 .p_cover_medical_pop {
-  color: #505f79;
+  color: #0a87ff;
   font-weight: 900;
   font-size: 14px;
   float: left;
-  margin-top: -8px;
+  padding-left: 8px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 .p_cover_medical_pop_span {
   color: #000;
@@ -117,7 +119,7 @@
 
 .display_in_m_medical {
   display: inline-block;
-  margin: 0 -1px 0 -3px;
+  margin: 0 8px 0px -3px;
 }
 .font_weight_normal_mediacl {
   font-weight: normal !important;
@@ -129,12 +131,13 @@
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   position: absolute;
   border-radius: 50px;
+  width: 180px;
   left: 50%;
     transform: translate(-50%, 0);
   padding: 8px 12px;
-  bottom: -5px;
+  bottom: -18px;
   z-index: 111111;
-  color: #c7222a;
+  color: #0a87ff;
   font-size: 16px;
   background: #fff;
 }

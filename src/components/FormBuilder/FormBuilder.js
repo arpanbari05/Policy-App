@@ -135,7 +135,7 @@ const FormBuilder = ({
                                 renderField(innerItem, values, member) && (
                                   <Wrapper
                                     key={index + member + innerItem.name}
-                                    width={innerItem.width}
+                                    width={innerItem.width === "25%" ? '33%' : innerItem.width === "75%" ? "66%" : innerItem.width}
                                     medical
                                   >
                                     <Comp
@@ -320,7 +320,7 @@ const FormBuilder = ({
               return (
                 <>
                   {renderField(item, values) && (
-                    <Wrapper key={index} width={item.width}>
+                    <Wrapper key={index} width={item.width === "25%" ? '33%' : item.width === "75%" ? "66%" : item.width}>
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}
@@ -432,7 +432,7 @@ const HR = styled.hr`
   }
 `;
 const Wrapper = styled.div`
-  width: ${props => (props.width ? props.width : "25%")};
+  width: ${props => (props.width ? props.width : "33%")};
   display: inline-block;
   padding-left: ${props => (props.medical ? "0px" : "15px")};
   padding-right: 15px;

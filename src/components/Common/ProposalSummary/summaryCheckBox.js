@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "styled-components";
+import "./cbx.css"
 
 const ProposalCheckBox = ({ title, value, onChange, extraPadding }) => {
   return (

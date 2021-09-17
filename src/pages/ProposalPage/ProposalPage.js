@@ -18,6 +18,7 @@ import {
   setIsLoading,
   submitProposalData,
 } from "./ProposalSections/ProposalSections.slice";
+import PencilIcon from "../../assets/svg-icons/PencilIcon";
 import { getProposalFields } from "./schema.slice";
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import ProductSummaryMobile from "./ProposalSections/components/ProductSummaryMobile";
@@ -126,14 +127,20 @@ const ProposalPage = ({ history }) => {
                   font-size: 20px;
                   display: ${!proposalData[listOfForms[0]] && "none"};
                   position: relative;
+                  top: -5px;
+                  left: -11px;
                   color: black;
-                  top: -7px;
                 `}
                 onClick={() => {
                   setActive(0);
                 }}
               >
-                <FaRegEdit />
+                <PencilIcon
+                  style={{
+                    color: "#0a87ff",
+                  }}
+                  width="17px"
+                />
               </a>
             </span>
           )}
@@ -165,13 +172,20 @@ const ProposalPage = ({ history }) => {
                   font-size: 20px;
                   display: ${!proposalData[listOfForms[1]] && "none"};
                   position: relative;
-                  top: -7px;
+                  top: -5px;
+                  left: -11px;
+                  color: black;
                 `}
                 onClick={() => {
                   setActive(1);
                 }}
               >
-                <FaRegEdit />
+                <PencilIcon
+                  style={{
+                    color: "#0a87ff",
+                  }}
+                  width="17px"
+                />
               </a>
             </span>
           )}
@@ -203,14 +217,20 @@ const ProposalPage = ({ history }) => {
                   font-size: 20px;
                   display: ${!proposalData[listOfForms[2]] && "none"};
                   position: relative;
+                  top: -5px;
+                  left: -11px;
                   color: black;
-                  top: -7px;
                 `}
                 onClick={() => {
                   setActive(2);
                 }}
               >
-                <FaRegEdit />
+                <PencilIcon
+                  style={{
+                    color: "#0a87ff",
+                  }}
+                  width="17px"
+                />
               </a>
             </span>
           )}
@@ -242,77 +262,26 @@ const ProposalPage = ({ history }) => {
                   font-size: 20px;
                   display: ${!proposalData[listOfForms[3]] && "none"};
                   position: relative;
+                  top: -5px;
+                  left: -11px;
                   color: black;
-                  top: -7px;
                 `}
                 onClick={() => {
                   setActive(3);
                 }}
               >
-                <FaRegEdit />
+                <PencilIcon
+                  style={{
+                    color: "#0a87ff",
+                  }}
+                  width="17px"
+                />
               </a>
             </span>
           )}
         </Card>
       </span>
     );
-    switch (activeForm) {
-      case "Proposer Details":
-        return (
-          <Card styledCss={`margin-bottom: 20px;`}>
-            <MainTitle>{activeForm}</MainTitle>
-            <ProposerDetails
-              key={activeForm}
-              schema={
-                currentSchema ? Object.values(currentSchema[activeForm]) : []
-              }
-              setActive={setActive}
-              name={activeForm}
-              defaultValue={defaultData}
-            />
-          </Card>
-        );
-      case "Insured Details":
-        return (
-          <InsuredDetails
-            key={activeForm}
-            schema={currentSchema ? currentSchema[activeForm] : {}}
-            setActive={setActive}
-            name={activeForm}
-            defaultValue={defaultData}
-          />
-        );
-      case "Medical Details":
-        return (
-          <InsuredDetails
-            key={activeForm}
-            schema={currentSchema ? currentSchema[activeForm] : {}}
-            setActive={setActive}
-            name={activeForm}
-            defaultValue={defaultData}
-          />
-        );
-      case "Other Details":
-        return (
-          <InsuredDetails
-            key={activeForm}
-            schema={currentSchema ? currentSchema[activeForm] : {}}
-            setActive={setActive}
-            name={activeForm}
-            defaultValue={defaultData}
-          />
-        );
-      default:
-        return (
-          <ProposerDetails
-            key={activeForm}
-            schema={currentSchema ? currentSchema[activeForm] : []}
-            setActive={setActive}
-            name={activeForm}
-            defaultValue={defaultData}
-          />
-        );
-    }
   };
   return (
     <>
@@ -325,26 +294,75 @@ const ProposalPage = ({ history }) => {
           <i className="icon flaticon-back"></i> Proposal Form
         </MobileHeaderText>
       </MobileHeader>
-      <div className="container-fluid mt-20 pb-100">
+      <div
+        className="container-fluid mt-20 pb-100"
+        css={`
+          padding-bottom: 41px;
+        `}
+      >
         <div
           className="element-section mb-30"
           css={`
+            // margin: 30px auto;
+            // max-width: 1300px;
             margin: 30px;
           `}
         >
           <div
-            className="go_back_prposal_p"
             css={`
-              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 10px;
             `}
-            onClick={() => {
-              history.goBack();
-            }}
           >
-            <i className="icon flaticon-back" style={{ width: "27px" }}></i> Go
-            Back
-          </div>
+            <button
+              className="btn"
+              type="button"
+              onClick={() => {
+                history.goBack();
+              }}
+              css={`
+                width: max-content;
+                margin-left: -9px;
 
+                color: var(--abc-red);
+                font-size: 17px;
+                display: flex;
+                align-items: center;
+              `}
+            >
+              <div
+                className="d-flex justify-content-center align-items-center"
+                css={`
+                  background: #f1f4f8;
+                  width: 35px;
+                  margin-right: 20px;
+                  border-radius: 100%;
+                  height: 35px;
+                  color: #707b8b;
+                `}
+              >
+                <i className="fas fa-chevron-left"></i>
+              </div>
+              <span
+                css={`
+                  color: #3b4c69;
+                  font-weight: 600;
+                `}
+              >
+                Go Back
+              </span>
+            </button>
+            <span
+              css={`
+                font-weight: 900;
+                color: #505f79;
+              `}
+            >
+              You are Just 5 minutes away from investing for your future
+            </span>
+          </div>
           <div>
             <Row
             // css={`
@@ -426,9 +444,10 @@ const MainTitle = styled.h2`
   margin-bottom: ${(props) => (props.bg ? "15px" : "10")};
   margin-top: ${(props) => (props.bg ? "15px" : "10")};
   font-weight: 900;
+
   background: ${(props) =>
-    props.bg && " linear-gradient(90deg, #eaeef2 0%,rgb(255 255 255) 100%)"};
-  color: ${(props) => props.bg && "#7074a1"};
+    props.bg && " linear-gradient(90deg, #eff7ff 0%,rgb(255 255 255) 100%)"};
+  color: ${(props) => props.bg && "#0a87ff;"};
   font-size: 21px;
   padding: 10px;
 `;

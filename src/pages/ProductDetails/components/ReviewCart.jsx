@@ -137,11 +137,10 @@ function AddOnDetailsRow({ addOn }) {
           font-weight: 400;
         `}
       >
-        {`${product.name} ${
-          members.filter((member) => member !== "all").length
-            ? `(${members})`
-            : ""
-        }`}
+        {`${product.name} ${members.filter((member) => member !== "all").length
+          ? `(${members})`
+          : ""
+          }`}
       </span>
     </div>
   );
@@ -302,10 +301,10 @@ const ReviewCart = ({ groupCode }) => {
     displayPlanType_code === "M"
       ? "Multi Individual"
       : displayPlanType_code === "I"
-      ? "Individual"
-      : displayPlanType_code === "F"
-      ? "Family Floater"
-      : existingPlanType;
+        ? "Individual"
+        : displayPlanType_code === "F"
+          ? "Family Floater"
+          : existingPlanType;
 
   const memberGroups = useSelector((state) => state.greetingPage.memberGroups);
 
@@ -972,10 +971,11 @@ const ReviewCart = ({ groupCode }) => {
                   font-weight: 600px;
                   height: 44px;
                   margin: 10px auto;
+                 
                 `}
                 onClick={handleReviewCartClick}
                 id="review-cart-button"
-                className="btn"
+              // className="btn"
               >
                 {/* Review Your Cart <i className="flaticon-next" /> */}
                 Review Your Cart
@@ -1095,7 +1095,7 @@ export function ReviewCartButton() {
 function ProceedButton({
   loading = false,
   members = "",
-  onProceedClick = () => {},
+  onProceedClick = () => { },
 }) {
   return (
     <div
