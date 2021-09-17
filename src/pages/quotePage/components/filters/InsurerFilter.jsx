@@ -149,7 +149,7 @@ const FilterModal = ({ show, handleClose, filters }) => {
         </div>
       </Modal.Body>
       <Modal.Footer className="text-center">
-        <ApplyBtn className="btn apply_btn mx-auto h-100 w-100" onClick={(e) => handleApply(e)}>Apply</ApplyBtn>
+        <ApplyBtn className=" apply_btn mx-auto h-100 w-100" onClick={(e) => handleApply(e)}>Apply</ApplyBtn>
       </Modal.Footer>
     </Modal>
   );
