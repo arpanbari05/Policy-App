@@ -73,7 +73,12 @@ const Toggle = ({
                 {label}
               </Question>
             </div>
-            <div className="col-lg-4 col-md-12 middle no-padding mobile-left">
+            <div
+              className="col-lg-4 col-md-12 middle no-padding mobile-left"
+              css={`
+                text-align: end !important;
+              `}
+            >
               <label>
                 <input
                   type="radio"
@@ -128,7 +133,7 @@ const Toggle = ({
         </div>
         {membersToMap.length && !(showMembers === false) ? (
           boolean === "Y" && (
-            <Group>
+            <Group className="position-relative">
               {membersToMap.map((item, index) => (
                 <>
                   <Fragment key={index}>
@@ -142,11 +147,12 @@ const Toggle = ({
                           [e.target.name]: e.target.checked,
                         })
                       }
-                      checked={membersStatus[item]}
+                      checked={
+                       membersStatus[item]
+                      }
                     />
                     <label
                       for={"rb1" + name + index + item}
-                      className="position-relative"
                       css={`
                         margin-bottom: 19px;
                       `}
@@ -155,9 +161,10 @@ const Toggle = ({
                       <p
                         className="formbuilder__error position-absolute"
                         css={`
-                          bottom: -46px;
-                          left: 0;
-                          right: 0;
+                          bottom: -11px;
+                          left: 21px;
+                          /* right: 0; */
+                          background: white;
                           font-size: 14px;
                         `}
                       >
@@ -235,7 +242,7 @@ const Group = styled.div`
     &:checked + label {
       padding-left: 1em;
       color: #000000;
-      border: 2px solid #c7222a;
+      border: 2px solid #0a87ff;
       border-radius: 50px;
       padding: 7px 19px;
       font-size: 16px;
@@ -243,7 +250,7 @@ const Group = styled.div`
       width: 140px;
       text-align: center;
       margin-right: 11px;
-      background: #fff5f5;
+      background-color: #ecf6ff;
       @media (max-width: 767px) {
         width: 66px;
         padding: 4px 10px;

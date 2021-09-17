@@ -12,6 +12,28 @@ const Panel = ({
   isFilled,
   values,
 }) => {
+
+  let EditedName = "";
+
+  if (formName === "Insured Details" && title.includes("_")) {
+    EditedName = title.replace(/_/g, "-");
+  } else if (formName !== "Insured Details" && title.includes("_")) {
+    if (title.split("_").slice(1).join("-") === "mother-in-law") {
+      EditedName = "Mother-in-law";
+    } else if (title.split("_").slice(1).join("-") === "father-in-law") {
+      EditedName = "Father-in-law";
+    } else if (title.split("_").slice(1).join("-") === "grand-father") {
+      EditedName = "Grand-father";
+    } else if (title.split("_").slice(1).join("-") === "grand-mother") {
+      EditedName = "Grand-mother";
+    } else {
+      EditedName = title.split("_").slice(1).join(", ");
+    }
+  } else {
+    EditedName = title;
+  }
+
+
   return (
     <>
       <StyledPanel
@@ -20,9 +42,7 @@ const Panel = ({
         add={!show ? true : undefined}
         isShowMedical={formName === "Medical Details"}
       >
-        <span>
-          {title.includes("_") ? title.split("_").slice(1).join(", ") : title}
-        </span>
+           <span>{EditedName}</span>
         {formName === "Insured Details" &&
           (show ? (
             <>

@@ -30,13 +30,13 @@ const ProductSummary = ({ cart, setActive }) => {
     <>
       <h2
         css={`
-        font-size: 20px;
-        font-weight: 900;
-        position: relative;
-        color: #2d3f5e;
-        padding: 12px 0px;
-        margin-bottom: -1px;
-        border-bottom: 1px solid #ddd;
+          font-size: 20px;
+          font-weight: 900;
+          position: relative;
+          color: #2d3f5e;
+          padding: 12px 0px;
+          margin-bottom: -1px;
+          border-bottom: 1px solid #ddd;
         `}
       >
         {" "}
@@ -118,17 +118,43 @@ const ProductSummary = ({ cart, setActive }) => {
                     </div> */}
                   </div>
                   <hr />
-                  <div className="row">
-                    <div className="col-md-12">
+                  <div
+                    className="row"
+                    css={`
+                      margin-top: -9px;
+                    `}
+                  >
+                    <div
+                      className="col-md-6"
+                      css={`
+                        display: flex;
+                        flex-direction: column;
+                        border-right: 1px solid;
+                      `}
+                    >
                       <p className="p_cover_medical_pop">Cover: </p>
-                      <span className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl">
+                      <span
+                        className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                        css={`
+                          padding-left: 10px;
+                        `}
+                      >
                         <i className="fa fa-inr"></i>{" "}
                         {numToString(item.sum_insured)}
                       </span>
                     </div>
-                    <div className="col-md-12">
+                    <div
+                      className="col-md-6"
+                      css={`
+                        display: flex;
+                        flex-direction: column;
+                      `}
+                    >
                       <p className={`p_cover_medical_pop `}>Premium: </p>
                       <span
+                        css={`
+                          padding-left: 10px;
+                        `}
                         className={`p_cover_medical_pop_span ${
                           planDetails.isRenewed ? "revised-premium" : ""
                         }`}
@@ -237,15 +263,40 @@ const ProductSummary = ({ cart, setActive }) => {
                       </div>
                     </div>
                     <hr />
-                    <div className="row">
-                      <div className="col-md-12">
+                    <div
+                      className="row"
+                      css={`
+                        margin-top: -9px;
+                      `}
+                    >
+                      <div
+                        className="col-md-6"
+                        css={`
+                          display: flex;
+                          flex-direction: column;
+                        `}
+                      >
                         <p className="p_cover_medical_pop">Cover: </p>
-                        <span className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl">
+                        <span
+                          className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                          css={`
+                            padding-left: 10px;
+                          `}
+                        >
                           <i className="fa fa-inr"></i>{" "}
                           {numToString(addOns.sum_insured)}
                         </span>
                       </div>
-                      <div className="col-md-12">
+                      <div
+                        className="col-md-6"
+                        css={`
+                          display: flex;
+                          flex-direction: column;
+                        `}
+                        css={`
+                          padding-left: 10px;
+                        `}
+                      >
                         <p className="p_cover_medical_pop">Premium: </p>
                         <span
                           className={`p_cover_medical_pop_span text_decoration_line_through ${
@@ -390,10 +441,11 @@ const ProductSummary = ({ cart, setActive }) => {
   return (
     <>
       <Card
-        styledCss={`    position: sticky;
+        styledCss={`   
+    position: sticky;
     top: 0;
     width: 100%;
-    
+    padding: 10px 15px;
     
     `}
       >
@@ -402,11 +454,28 @@ const ProductSummary = ({ cart, setActive }) => {
           css={`
             font-weight: 900;
             border: 1px dashed #dce2ec;
-            padding: 7px;
+            display: flex;
+            padding: 7px 20px;
+            background-color: #f7f7f7;
+            justify-content: space-between;
+            align-items: center;
           `}
         >
-          Total Premium
-          <Price>₹ {cart?.totalPremium}</Price>
+          <span
+            css={`
+              color: #6d798f;
+            `}
+          >
+            Total Premium <br />
+            <small>*Inc. GST</small>
+          </span>
+          <Price
+            css={`
+              color: black;
+            `}
+          >
+            ₹ {cart?.totalPremium}
+          </Price>
         </div>
       </Card>
       {/* <ViewPlanDetailModal
