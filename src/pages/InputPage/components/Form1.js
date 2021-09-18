@@ -13,7 +13,7 @@ import {
 import "styled-components/macro";
 import { useHistory } from "react-router";
 import SecureLS from "secure-ls";
-const Form1 = ({ handleChange, currentForm }) => {
+const Form1 = ({ handleChange, currentForm,member }) => {
   const dispatch = useDispatch();
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const {
