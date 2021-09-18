@@ -22,7 +22,7 @@ function CartDetailRow({ title, value }) {
         justify-content: space-between;
         align-items: center;
         line-height: 26px;
-
+width:100%;
         ${mobile} {
           flex-direction: column;
           align-items: flex-start;
@@ -34,6 +34,7 @@ function CartDetailRow({ title, value }) {
         css={`
           font-size: 13px;
           color: #555555;
+          width:50%;
           ${mobile} {
             color: #5c5959;
           }
@@ -50,7 +51,8 @@ function CartDetailRow({ title, value }) {
         css={`
           font-weight: 900;
           font-size: 13px;
-
+          width:50%;
+          text-align:right;
           ${small} {
             font-size: 12px;
             line-height: 14px;
@@ -547,6 +549,8 @@ const ReviewCart = ({ groupCode }) => {
           border-radius: 12px;
           color: #000;
 
+          overflow: hidden;
+
           ${mobile} {
             width: 100%;
             position: fixed;
@@ -588,6 +592,7 @@ const ReviewCart = ({ groupCode }) => {
             justify-content: space-between;
             /* border-bottom: 1px solid #ddd; */
             padding-bottom: 10px;
+            position: relative;
 
             ${mobile} {
               justify-content: space-between;
@@ -597,6 +602,18 @@ const ReviewCart = ({ groupCode }) => {
             }
           `}
         >
+          <span
+            css={`
+              width: 100px;
+              height: 100px;
+              border-radius: 100%;
+              background: #eff7ff;
+              position: absolute;
+              top: -59px;
+              z-index: -1;
+              left: -56px;
+            `}
+          ></span>
           <div
             css={`
               font-size: 20px;
@@ -853,7 +870,7 @@ const ReviewCart = ({ groupCode }) => {
               display: flex;
               width: 100%;
               align-items: flex-start;
-
+              justify-content:space-between;
               border-bottom: 1px solid #ddd;
               padding: 20px 0px;
             `}
@@ -922,11 +939,13 @@ const ReviewCart = ({ groupCode }) => {
               border-radius: 2px;
               background-color: #f7f7f7;
               font-weight: 900;
+              margin-bottom: 100px;
             `}
           >
             <div
               css={`
                 color: #6d798f;
+
               `}
             >
               Total Premium <br />
@@ -943,14 +962,15 @@ const ReviewCart = ({ groupCode }) => {
           </div>
           <div
             css={`
-              bottom: -45px;
+              bottom: 0px;
               left: 0px;
               width: 100%;
+              
               position: absolute;
               border-top-left-radius: 0px;
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 8px;
-        border-bottom-left-radius: 8px;
+              border-top-right-radius: 0px;
+              border-bottom-right-radius: 8px;
+              border-bottom-left-radius: 8px;
             `}
           >
             {hasNextGroupProduct ? (
@@ -964,6 +984,7 @@ const ReviewCart = ({ groupCode }) => {
                 css={`
                   background-color: #0c88ff;
                   color: #fff;
+                  margin: 0 !important;
                   min-width: 100%;
                   border-radius: 2px;
                   box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
@@ -1053,15 +1074,13 @@ export function ReviewCartButton() {
       ) : (
         <button
           css={`
-           
-            
             min-width: 219px;
             width: 100%;
-        color: white;
+            color: white;
 
-        background-color: #0c88ff;
+            background-color: #0c88ff;
             border-radius: 2px;
-            
+
             font-size: 18px;
             font-weight: 600px;
             height: 44px;
@@ -1104,13 +1123,13 @@ function ProceedButton({
         align-items: center;
         justify-content: space-between;
         padding: 10px;
-
+        margin: 0 !important;
         width: 100%;
         color: white;
 
         background-color: #0c88ff;
         border: 1px dashed var(--abc-red);
-        
+
         margin-top: 20px;
       `}
       id="review-cart-button"
