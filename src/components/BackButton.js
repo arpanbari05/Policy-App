@@ -71,7 +71,7 @@ color: ${props.color};
   font-size: 20px;
  
   line-height: 35px;
-  z-index: 9999;
+  // z-index: 9999;
   float: left;
   left: 4px;
   position: inherit;

@@ -418,6 +418,7 @@ const Form2 = ({ handleChange, currentForm }) => {
             )}
         </div>
         <StyledButton
+        noIcon
           value={`Add Member`}
           onClick={() => {
             const tempArray = membersArray.map((data) => {
