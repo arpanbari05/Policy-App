@@ -298,6 +298,7 @@ const FilterModal = ({ show, handleClose }) => {
                   <label htmlFor="base_plan">{thisPlanType.display_name}</label>
                   <input type="radio" name="select_plan_type" id="base_plan"
                     value={thisPlanType.display_name}
+                    checked={thisPlanType.display_name === basePlanType ? true : false}
                     onChange={(e) =>
                       handleChange(thisPlanType.display_name)
                     }

@@ -126,7 +126,7 @@ const FilterModal = ({ show, handleClose }) => {
         }
         .modal-content {
           top: 248px;
-          left: 24.5vw;
+          left:325px;
          
         }
         .modal-footer {
