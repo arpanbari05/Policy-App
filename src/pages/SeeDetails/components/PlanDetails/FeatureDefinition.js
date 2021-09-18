@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Col, Collapse, Row } from "react-bootstrap";
 import { BiChevronDown } from "react-icons/bi";
 import styled from "styled-components/macro";
-import heartImg from "../../../../assets/images/heart-attack.png"
+import heartImg from "../../../../assets/images/heart-attack.png";
 function FeatureDefinition({ data }) {
   const [toggle, setToggle] = useState(false);
 
@@ -15,7 +15,7 @@ function FeatureDefinition({ data }) {
             alignItems: "center",
             width: "100%",
             position: "relative",
-            fontSize:"30px"
+            fontSize: "30px",
           }}
         >
           {/* <Col md={2}>
@@ -30,7 +30,7 @@ function FeatureDefinition({ data }) {
                 top: "6px",
                 position: "absolute",
                 transform: "rotate(180deg)",
-                fontSize:"30px"
+                fontSize: "30px",
               }}
               onClick={() => setToggle(!toggle)}
             >
@@ -54,73 +54,75 @@ function FeatureDefinition({ data }) {
               position: relative;
               width: 100%;
               display: flex;
-              align-items:center;
+              align-items: center;
             `}
           >
-          <div
-          css={`
-          width: 40px;
-          height:40px;
-          display: flex;
-              align-items:center;
-              justify-content:center;
-              top: 45px;
-    left: 27px;
-    position: absolute;
-          `}
-          >
-<img src={heartImg} alt="heart_img" className="w-100"/>
-          </div>
-          <div css={`
-          margin-left: 75px;
-          `}>
-            <h5
-              className="title inline__header"
-              style={{
-                lineHeight: "0px",
-                padding: "20px 0 5px",
-              }}
+            <div
               css={`
-                color: #253858;
-                margin-bottom: 1rem;
-               font-weight:900;
-               font-size:16px
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                top: 45px;
+                left: 27px;
+                position: absolute;
               `}
             >
-              {data.header} {": "}
-              {data.value}
-            </h5>
-
-            <p
-              className="feature-offer-box__p"
+              <img src={heartImg} alt="heart_img" className="w-100" />
+            </div>
+            <div
               css={`
-                width: 100%;
-                color: #253858;
-                opacity: 0.96;
+                margin-left: 75px;
               `}
             >
-              {data.short_description}
-            </p>
-
-            <Collapse in={toggle}>
-              <p
+              <h5
+                className="title inline__header"
                 style={{
-                  fontSize: "14px",
-                  lineHeight: "18px",
-                  fontWeight: "400",
-                  marginTop: "10px",
-                  width: "100%",
+                  lineHeight: "0px",
+                  padding: "20px 0 5px",
                 }}
                 css={`
+                  color: #253858;
+                  margin-bottom: 1rem;
+                  font-weight: 900;
+                  font-size: 16px;
+                `}
+              >
+                {data.header} {": "}
+                {data.value}
+              </h5>
+
+              <p
+                className="feature-offer-box__p"
+                css={`
+                  width: 100%;
                   color: #253858;
                   opacity: 0.96;
                 `}
               >
-                {data.description}
+                {data.short_description}
               </p>
-            </Collapse>
 
-            <ul></ul>
+              <Collapse in={toggle}>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    lineHeight: "18px",
+                    fontWeight: "400",
+                    marginTop: "10px",
+                    width: "100%",
+                  }}
+                  css={`
+                    color: #253858;
+                    opacity: 0.96;
+                  `}
+                >
+                  {data.description}
+                </p>
+              </Collapse>
+
+              <ul></ul>
             </div>
           </div>
         </div>

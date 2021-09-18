@@ -104,12 +104,15 @@ function Detail({ label, children }) {
   return (
     <div
       css={`
-        max-width: 49%;
+        width: 100%;
         flex: 1;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #b0bed0;
+        padding: 0px 10px;
 
         & .GreetingDD__Wrapper {
           left: 0;
@@ -157,6 +160,7 @@ function DetailDropDown({ options = [], selected, onChange = () => {} }) {
       list={options.map((option, idx) => ({ id: idx, title: option }))}
       selected={selected}
       handleChange={(_, value) => onChange(value)}
+      noBorder={true}
     />
   );
   // return (
@@ -228,45 +232,46 @@ function EditDetailsPopup({
             width: 100%;
             border-radius: 12px;
             padding: 16px 26px;
+            position: relative;
           `}
         >
           <div
             css={`
               display: flex;
+              position: absolute;
+              top:0;
+              left:0;
+              width: 100%;
+              padding: 10px 25px;
+
               align-items: center;
               justify-content: space-between;
+              background: #f5f7f9;
             `}
           >
-            <h3
+            <span
               css={`
-                font-size: 23px;
+                font-size: 20px;
                 font-weight: 900;
+                color:#344563;
               `}
             >
               Edit Details
-            </h3>
-            <div
-              className="x"
-              css={`
-                top: 0;
-                right: 0;
-              `}
-              onClick={onClose}
-            >
-              <div className="line1"></div>
-              <div className="line2"></div>
-            </div>
+            </span>
+            <i class="fas fa-times" onClick={onClose}></i>
           </div>
           <div
             css={`
-              border: 1px solid #f2f3f8;
+              
               border-radius: 12px;
-              padding: 12px 16px;
+              
               display: flex;
               justify-content: space-between;
               flex-wrap: wrap;
-              margin-top: 20px;
-
+              margin-top: 50px;
+              margin-bottom: 40px;
+            width:100%;
+            flex-direction:column;
               ${mobile} {
                 border: none;
                 flex-direction: column;
@@ -385,17 +390,24 @@ function EditDetailsPopup({
           </div>
           <button
             css={`
-              background: #c72229;
+              background: #0a87ff;
               color: #fff;
-              padding: 11px 12px;
-              width: 194px;
+              padding: 10px 12px;
+              width: 100%;
+              position:absolute;
+              bottom:0px;
               border-radius: 8px;
-              font-size: 22px;
+              font-size: 18px;
               font-weight: 400;
               margin: auto;
+              left:0;
               margin-top: 20px;
+              :hover{
+                color:white !important;
+              }
             `}
             onClick={handleUpdate}
+            className="btn"
           >
             Update
           </button>

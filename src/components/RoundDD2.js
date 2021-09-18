@@ -14,6 +14,7 @@ const RoundDD2 = ({
   selected,
   redBorder,
   code,
+  noBorder,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,6 +37,7 @@ const RoundDD2 = ({
     <label htmlFor={disabled && code} {...props}>
       <Wrapper ref={dropdownRef} className="GreetingDD__Wrapper">
         <Header
+        noBorder
           onClick={toggleList}
           css={`
             border: ${redBorder && "1px solid red !important"};
@@ -44,8 +46,8 @@ const RoundDD2 = ({
             }`}
         >
           <HeaderTitle
-
-            className={`${isOpen && "active"} GreetingDD__Title ${disabled && "font-gray"
+            
+            className={`${isOpen && "active"} GreetingDD__Title ${noBorder?"text-center":""} ${disabled && "font-gray"
               }`}
           >
             <span css={`
@@ -111,7 +113,7 @@ export const Header = styled.a`
   background-color:#fff;
   position: relative;
   color: #6b7789;
-  border: 1px solid #b0bed0;
+  border:${({noBorder}) => noBorder?`none`:`1px solid #b0bed0`} ;
   padding: ${(props) => (props.sortByDD ? "auto" : "12px 15px !important")};
   display: inline-block;
   width: ${(props) => (props.sortByDD ? "auto" : "175px")};

@@ -64,10 +64,10 @@ function RiderCard({
           >
             <div
               css={`
-                color: #0a87ff;
+                color:${ isRiderSelected? `#0a87ff`:`grey`};
 
                 font-weight: 900;
-                font-size: 18px;
+                font-size: 15px;
                 line-height: normal;
 
                 @media (max-width: 1024px) {
@@ -167,26 +167,30 @@ font-weight:bold;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 23px;
+                font-size: 20px;
                 font-weight: 900;
-                padding: 10px 28px;
+                padding: 10px 0;
                 border-radius: 0.25em;
                 cursor: pointer;
                 background-color: var(--light-pink);
                 margin: 0 3px;
-                width: 137px;
-                padding-left: 7px;
+                width: 160px;
                 min-width: fit-content;
                 border: none;
                 background-color: #eff7ff;
                 & span {
                   position: relative;
-                  top: 6px;
-                  left: 10px;
+                  top: 4px;
+                 
                 }
               `}
             >
-              {riderPremium}
+            {/* <span css={`
+            display:flex;
+            align-items:center;
+            `}> */}
+              {`₹ ${riderPremium}`}
+              {/* </span> */}
               <span>
                 <Checkbox checked={isRiderSelected} />
               </span>
@@ -244,7 +248,7 @@ function RiderDescription({
           ? description
           : windowWidth < 400
           ? description.slice(0, 40)
-          : description.slice(0, 90)}
+          : description.slice(0, 40)}
         {description.length > 90 ? (
           <p
             css={`

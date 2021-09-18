@@ -78,17 +78,20 @@ console.log(product,"product")
         {/* *************name*********** */}
         <div
           css={`
-            margin-left: 20px;
+            margin-left: 18px;
+            min-width:fit-content;
+            max-width: 250px;
             ${mobile} {
               margin-left: 10px;
             }
           `}
         >
-          <h3
+          <span
             css={`
-              font-size: 20px;
-              font-weight: 600;
-              color: #394a68;
+             
+    font-size: 17px;
+    font-weight: 600;
+    color: #394a68;
               ${mobile} {
                 font-size: 16px;
                 font-weight: 600;
@@ -99,7 +102,7 @@ console.log(product,"product")
             `}
           >
             {productName}
-          </h3>
+          </span>
         </div>
       </div>
 
