@@ -35,6 +35,7 @@ function QuotePage() {
     showBuyNow,
     showSeeDetails,
     sortByData,
+    imageSendQuote,
     quotesLength,
     member,
     setSortBy,
@@ -132,8 +133,10 @@ function QuotePage() {
     @media (max-width:1023px) {
       display: none;
     }
-    `}>
-        <UpperModifier />
+    `}
+    id="printQuotePage"
+    >
+        <UpperModifier sendQuote={imageSendQuote} />
         <LowerModifier />
 
 

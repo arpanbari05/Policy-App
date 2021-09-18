@@ -177,7 +177,7 @@ const ProductDetails = () => {
           `}
         >
           <Col
-            xl={3}
+            xl={4}
             lg={12}
             md={12}
             sm={12}
@@ -191,7 +191,7 @@ const ProductDetails = () => {
             <ReviewCart companies={companies} groupCode={groupCode} />
           </Col>
           <Col
-            xl={9}
+            xl={8}
             lg={12}
             // className="wow fadeInLeft animated"
             // data-wow-delay="0.9s"

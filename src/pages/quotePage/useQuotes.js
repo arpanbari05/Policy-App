@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import html2canvas from "html2canvas";
+import {sendEmailAction} from "../ComparePage/compare.slice" ;
 // import { updateQuotes } from "../ComparePage/compare.slice";
 // import { updateUser } from "../InputPage/ServiceApi/serviceApi";
 // import { getRecommendedQuotesOnMount } from "../RecommendedPage/recommendedPage.slice";
@@ -23,6 +25,20 @@ function useQuotesPage() {
         ({ frontendBoot }) => frontendBoot.frontendData.data,
     );
     
+
+
+    const imageSendQuote = email => {
+      const input = document.getElementById("printQuotePage");
+  
+      html2canvas(input, {
+        scrollX: 0,
+        scrollY: -window.scrollY,
+      }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        dispatch(sendEmailAction({ email, image: imgData, group_id: groupCode, share_quote : 'quote' }));
+      });
+    };
+
     const {
         fetchFilters,
         quotes,
@@ -350,6 +366,7 @@ function useQuotesPage() {
         showBuyNow,
         showSeeDetails,
         sortByData,
+        imageSendQuote,
         quotesLength,
         member,
         setSortBy,

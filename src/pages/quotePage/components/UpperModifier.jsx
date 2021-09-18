@@ -14,7 +14,8 @@ import {
   setSelectedGroup,
 } from "../quote.slice";
 
-const UpperModifier = () => {
+const UpperModifier = ({sendQuote}) => {
+  const successMsg = useSelector(({comparePage}) => comparePage.emailStatus)
   const dispatch = useDispatch();
   const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
   const { companies } = useSelector(
@@ -123,6 +124,8 @@ const UpperModifier = () => {
       <ShareQuoteModal
         show={showShareQuoteModal}
         handleClose={() => setShowShareQuoteModal(false)}
+        imageSend={sendQuote}
+        emailStatus={successMsg}
       />
     </>
   );
