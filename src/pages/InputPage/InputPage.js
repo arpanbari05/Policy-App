@@ -55,7 +55,7 @@ export const InputPage = () => {
 
             </div>
           </Card>
-          {currentForm === 5 && termsAndConditions(showmore, setShowmore)}
+          {currentForm === 1 && termsAndConditions(showmore, setShowmore)}
         </InnerWrapper>
       </Wrapper>
     </Container>
@@ -144,7 +144,7 @@ function termsAndConditions(showmore, setShowmore) {
           margin: 0 auto;
         `}
       >
-        <i class="termchk"></i>By clicking on View Quotes, I hereby authorise
+        <i class="termchk"></i>By clicking on Get Started, I hereby authorise
         FYNTUNE. and all of its affiliates, subsidiaries, group companies and
         related parties to access the details such as my name, address,
         telephone number,{" "}
