@@ -44,25 +44,25 @@ export const medicalHistoryRadioArr = [
   },
 ];
 
-const Form3 = ({ handleChange, currentForm }) => {
+const Form3 = ({ handleChange, currentForm,lastForm }) => {
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(false);
   const [diseaseArray, setDiseaseArray] = useState([]);
   const [customErrors, setCustomErrors] = useState(false);
-  const [isIndividualPlan, setIsIndividualPlan] = useState(false);
+  // const [isIndividualPlan, setIsIndividualPlan] = useState(false);
 
-  const greetingPage = useSelector((state) => state.greetingPage);
-  const {
-    proposerDetails: { member, plan_type },
-  } = greetingPage;
-  console.log(isIndividualPlan, "gdsa3", plan_type);
-  useEffect(() => {
-    if (plan_type && plan_type === "I") {
-      setIsIndividualPlan(true);
-    } else {
-      setIsIndividualPlan(false);
-    }
-  }, [plan_type]);
+  // const greetingPage = useSelector((state) => state.greetingPage);
+  // const {
+  //   proposerDetails: { member, plan_type },
+  // } = greetingPage;
+
+  // useEffect(() => {
+  //   if (plan_type && plan_type === "I") {
+  //     setIsIndividualPlan(true);
+  //   } else {
+  //     setIsIndividualPlan(false);
+  //   }
+  // }, [plan_type]);
 
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const { data } = frontendData || [""];
@@ -164,7 +164,7 @@ const Form3 = ({ handleChange, currentForm }) => {
         }, handleSubmit)} */}
         {formButtons(
           () => {
-            handleChange(currentForm - 1);
+            handleChange(`4.${lastForm}`);
           },
           handleSubmit,
           true
