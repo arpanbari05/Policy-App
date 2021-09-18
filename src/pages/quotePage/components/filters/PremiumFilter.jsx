@@ -41,7 +41,7 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
         }
         .modal-content {
           top: 248px;
-          left: 14.5vw;
+          left: 130px;
         }
         .modal-footer {
           padding: 0px !important;

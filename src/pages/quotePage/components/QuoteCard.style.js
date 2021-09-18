@@ -60,6 +60,10 @@ letter-spacing: normal;
 text-align: left;
 color: #808080;
 margin-bottom: 6px;
+@media (max-width:1400px)and (min-width:1200px) {
+  width:120px;
+  font-size:12px;
+}
 `
 export const ValueText = styled.span`
 
@@ -73,6 +77,10 @@ text-align: left;
 color: #000;
 margin-bottom: 16px;
 width:146px;
+@media (max-width:1400px)and (min-width:1200px) {
+  width:120px;
+  font-size:13px;
+}
 `
 
 export const TextWrapper = styled.div`
@@ -80,6 +88,10 @@ display:flex;
 flex-direction: column;
 min-width:146px;
 margin-right: 5px;
+
+@media (max-width:1400px) and (min-width:1200px) {
+  min-width:120px;
+}
 `
 export const SeeText = styled.span`
 font-size: 15px;
