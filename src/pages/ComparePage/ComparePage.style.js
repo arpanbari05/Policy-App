@@ -90,10 +90,11 @@ export const QuoteWrapper = styled.div`
   background-color: #ffffff;
 `;
 export const EmailSent = styled.div`
-  margin-top: -20px;
+  margin-top: 10px;
   width: max-content;
   display: inline-block;
-  width: 421px;
+  width: 100%;
+  text-align: center;
   border-radius: 7px;
   background-color: ${props => (props.status ? " #f0fff2" : "#fff")};
   padding: 8px 16px 8px;

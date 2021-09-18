@@ -4,8 +4,12 @@ import EmailIcon from "../assets/svg-icons/EmailIcon";
 import WhtsappIcon from "../assets/svg-icons/WhtsappIcon";
 import SmsIcon from "../assets/svg-icons/SmsIcon";
 import styled from "styled-components";
+import { useRef, useState } from "react";
+import { EmailSent } from "../pages/ComparePage/ComparePage.style";
 
-const ShareQuoteModal = ({ show, handleClose }) => {
+const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
+  const [email, setEmail] = useState();
+  const sendRef = useRef();
   return (
     <Modal
       show={show}
@@ -44,29 +48,46 @@ const ShareQuoteModal = ({ show, handleClose }) => {
       </Modal.Header>
       <Modal.Body>
         <div>
-          <ShareOption className="d-flex align-items-center justify-content-between p-3 mb-3">
+          <ShareOption className="d-flex align-items-center justify-content-between  mb-3">
             <div className="d-flex align-items-center">
               <div className="icon_wrapper">
                 <EmailIcon width="21" />
               </div>
-              <input type="text" placeholder="Email" />
+              <input type="email" onChange={e => setEmail(e.target.value)} placeholder="Email" />
             </div>
 
-            <button className="btn share_btn px-5">Share</button>
+            <button className="btn share_btn px-5"
+              onClick={() => {
+                imageSend(email);
+
+              }}
+            >
+              Share</button>
+
           </ShareOption>
 
-          <ShareOption className="d-flex mb-3 align-items-center justify-content-between p-3">
+          <ShareOption className="d-flex mb-3 align-items-center justify-content-between ">
             <div className="d-flex align-items-center">
               <div className="icon_wrapper">
                 <WhtsappIcon width="21" />
               </div>
-              <input type="text" placeholder="Mobile no." />
+              <input type="number" onChange={e => setEmail(e.target.value)} placeholder="Mobile no." />
             </div>
 
-            <button className="btn share_btn px-5">Share</button>
+
+            <a
+
+              target="_blank"
+              ref={sendRef}
+              rel="noreferrer"
+              href={`https://api.whatsapp.com/send?phone=91${email}&text=${window.location.href}`}
+            >
+              <button className="btn share_btn px-5">Share  </button>
+            </a>
+
           </ShareOption>
 
-          <ShareOption className="d-flex mb-3 align-items-center justify-content-between p-3">
+          <ShareOption className="d-flex mb-3 align-items-center justify-content-between ">
             <div className="d-flex align-items-center">
               <div className="icon_wrapper">
                 <SmsIcon width="21" />
@@ -78,8 +99,11 @@ const ShareQuoteModal = ({ show, handleClose }) => {
           </ShareOption>
 
           <InfoMessage className="p-3 text-center">
-              * Please note that the premium may vary in future.
+            * Please note that the premium may vary in future.
           </InfoMessage>
+          {emailStatus && <EmailSent status={emailStatus.status}>
+            {emailStatus.message}
+          </EmailSent>}
         </div>
       </Modal.Body>
     </Modal>
@@ -91,6 +115,7 @@ export default ShareQuoteModal;
 const ShareOption = styled.div`
  border-radius: 10px;
   border: solid 1px #d5dce5;
+  padding-left:10px;
   input{
       border: none;
       margin-left: 15px;
@@ -103,9 +128,11 @@ const ShareOption = styled.div`
 }
   }
   .share_btn{
-    border-radius: 6px;
-  border: solid 2px #52aaff;
-  color: #52aaff;
+    border-radius: 4px;
+    padding: 15px 10px;
+    background-color: #0a87ff;
+  border: solid 2px #0a87ff;
+  color: #fff;
   font-weight: 600;
   font-size: 14px;
   }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { setFilters, premiumFilterQuotes } from "../../quote.slice";
+import { setFilters, premiumFilterCards } from "../../quote.slice";
 import "styled-components/macro";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
@@ -24,8 +24,8 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
   };
 
   const handleApply = () => {
-    dispatch(setFilters({ premium: selectedPremium.displayName }));
-    dispatch(premiumFilterQuotes(selectedPremium));
+    dispatch(setFilters({ premium: selectedPremium }));
+    dispatch(premiumFilterCards(selectedPremium));
     handleClose();
   };
 
@@ -90,7 +90,7 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
       </Modal.Body>
       <Modal.Footer className="text-center">
         <ApplyBtn
-          className="btn apply_btn mx-auto h-100 w-100"
+          className=" apply_btn mx-auto h-100 w-100"
           onClick={() => handleApply()}
         >
           Apply
@@ -112,7 +112,7 @@ const PremiumFilter = () => {
       >
         <span className="filter_head">Premium</span>
         <span className="filter_sub_head">
-          {filters.premium ? filters.premium : "Select Premium"}{" "}
+          {filters.premium ? filters.premium.displayName : "Select Premium"}{" "}
           <i class="fas fa-chevron-down"></i>
         </span>
       </Filter>
