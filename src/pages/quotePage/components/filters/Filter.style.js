@@ -98,4 +98,5 @@ export const ApplyBtn = styled.button`
   padding: 10px 0px;
   font-size: 17px;
   font-weight: 600;
+  border: none;
 `;

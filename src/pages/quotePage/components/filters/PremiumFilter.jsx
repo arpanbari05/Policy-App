@@ -24,7 +24,7 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
   };
 
   const handleApply = () => {
-    dispatch(setFilters({ premium:selectedPremium }));
+    dispatch(setFilters({ premium: selectedPremium }));
     dispatch(premiumFilterCards(selectedPremium));
     handleClose();
   };
@@ -90,7 +90,7 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
       </Modal.Body>
       <Modal.Footer className="text-center">
         <ApplyBtn
-          className="btn apply_btn mx-auto h-100 w-100"
+          className=" apply_btn mx-auto h-100 w-100"
           onClick={() => handleApply()}
         >
           Apply

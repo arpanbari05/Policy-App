@@ -21,16 +21,14 @@ const Toggle = ({
   const [boolean, setBoolean] = useState("N");
   const [membersStatus, setMembersStatus] = useState({});
   const { mediUnderwritting } = useSelector(
-    state => state.proposalPage.proposalData,
+    (state) => state.proposalPage.proposalData
   );
   const membersToMap = customMembers instanceof Array ? customMembers : members;
   // const membersToMap = members;
   console.log(name, notAllowed, value);
   const dispatch = useDispatch();
   useEffect(() => {
-
-     if (value &&notAllowed && value[`is${name}`] === "Y") {
-
+    if (value && notAllowed && value[`is${name}`] === "Y") {
       setBoolean("N");
       setMembersStatus({});
     } else if (value instanceof Object && Object.keys(value).length) {
@@ -43,10 +41,8 @@ const Toggle = ({
     if (!value) {
       setBoolean("N");
       setMembersStatus({});
-
     }
     if (value && notAllowed && value[`is${name}`] === "Y") {
-
       setBoolean("N");
       setMembersStatus({});
     }
@@ -77,12 +73,17 @@ const Toggle = ({
                 {label}
               </Question>
             </div>
-            <div className="col-lg-4 col-md-12 middle no-padding mobile-left">
+            <div
+              className="col-lg-4 col-md-12 middle no-padding mobile-left"
+              css={`
+                text-align: end !important;
+              `}
+            >
               <label>
                 <input
                   type="radio"
                   name={`is${name}`}
-                  onChange={e => {
+                  onChange={(e) => {
                     if (notAllowed) {
                       dispatch(setShowPlanNotAvail(true));
                     } else {
@@ -109,7 +110,7 @@ const Toggle = ({
                   type="radio"
                   name={`is${name}`}
                   value="N"
-                  onChange={e => {
+                  onChange={(e) => {
                     setBoolean(e.target.value);
                     setMembersStatus({});
                   }}
@@ -132,7 +133,7 @@ const Toggle = ({
         </div>
         {membersToMap.length && !(showMembers === false) ? (
           boolean === "Y" && (
-            <Group>
+            <Group className="position-relative">
               {membersToMap.map((item, index) => (
                 <>
                   <Fragment key={index}>
@@ -140,22 +141,32 @@ const Toggle = ({
                       type="checkbox"
                       name={item}
                       id={"rb1" + name + index + item}
-                      onChange={e =>
+                      onChange={(e) =>
                         setMembersStatus({
                           ...membersStatus,
                           [e.target.name]: e.target.checked,
                         })
                       }
-                      checked={membersStatus[item]}
+                      checked={
+                       membersStatus[item]
+                      }
                     />
                     <label
                       for={"rb1" + name + index + item}
-                      className="position-relative"
+                      css={`
+                        margin-bottom: 19px;
+                      `}
                     >
                       {item}
                       <p
                         className="formbuilder__error position-absolute"
-                        style={{ bottom: "-20px" }}
+                        css={`
+                          bottom: -11px;
+                          left: 21px;
+                          /* right: 0; */
+                          background: white;
+                          font-size: 14px;
+                        `}
                       >
                         {error}
                       </p>
@@ -231,7 +242,7 @@ const Group = styled.div`
     &:checked + label {
       padding-left: 1em;
       color: #000000;
-      border: 2px solid #c7222a;
+      border: 2px solid #0a87ff;
       border-radius: 50px;
       padding: 7px 19px;
       font-size: 16px;
@@ -239,7 +250,7 @@ const Group = styled.div`
       width: 140px;
       text-align: center;
       margin-right: 11px;
-      background: #fff5f5;
+      background-color: #ecf6ff;
       @media (max-width: 767px) {
         width: 66px;
         padding: 4px 10px;

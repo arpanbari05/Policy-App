@@ -8,6 +8,7 @@ import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { setActiveIndex } from "../../ProposalSections/ProposalSections.slice";
+import Card from "../../../../components/Card";
 const convertToFt = value => {
   console.log(value);
   let feet = Math.floor(value / 12);
@@ -15,8 +16,8 @@ const convertToFt = value => {
   return `${feet} ft ${inches} in`;
 };
 const SummaryTab = ({ title, data, values, index }) => {
-  console.log('hehe',data)
-  console.log('hehe2',values)
+  console.log('hehe', data)
+  console.log('hehe2', values)
   const url = useUrlQuery();
   const enquiryId = url.get("enquiryId");
   const dispatch = useDispatch();
@@ -31,10 +32,10 @@ const SummaryTab = ({ title, data, values, index }) => {
       return value + " " + suffix;
     }
   }, []);
-  console.log('gegege',values)
+  console.log('gegege', values)
   const normalRender = useCallback((data, i) => {
     if (data.type === "title") return <TitleWrapper>{data.name}</TitleWrapper>;
-    if(data.type === 'date'){
+    if (data.type === 'date') {
       return (
         <Col
           md={4}
@@ -46,7 +47,7 @@ const SummaryTab = ({ title, data, values, index }) => {
         >
           <p className="font_15_p_s">{data.additionalOptions.label}</p>
           <p className="font_sub_p_s">
-          {values?.[data.name]}
+            {values?.[data.name]}
           </p>
         </Col>
       );
@@ -99,8 +100,8 @@ const SummaryTab = ({ title, data, values, index }) => {
         >
           <p className="text_b_black_g">{data.additionalOptions.label}</p>
           {values[data.name] instanceof Object &&
-          values[data.name].members &&
-          Object.keys(values[data.name].members).length ? (
+            values[data.name].members &&
+            Object.keys(values[data.name].members).length ? (
             Object.keys(values[data.name].members).map((item, _i) => {
               if (values[data.name].members[item] === true) {
                 return (
@@ -135,7 +136,7 @@ const SummaryTab = ({ title, data, values, index }) => {
     ) {
       return <></>;
     }
-    if(data.type === 'date'){
+    if (data.type === 'date') {
       return (
         <Col
           md={4}
@@ -145,9 +146,9 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s">{data.additionalOptions.label}</p>
+          <p className="font_15_p_s" >{data.additionalOptions.label}</p>
           <p className="font_sub_p_s">
-          {values?.[item]?.[data.name]}
+            {values?.[item]?.[data.name]}
           </p>
         </Col>
       );
@@ -178,47 +179,47 @@ const SummaryTab = ({ title, data, values, index }) => {
           <MedicalQuestionWrapper>
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
-          {console.log("gegegedd",values?.[item]?.[data.name])}
+          {console.log("gegegedd", values?.[item]?.[data.name])}
           {
-          // values?.[item]?.[data.name] instanceof Object &&
-          // values?.[item]?.[data.name]?.members &&
-          // values?.[item]?.[data.name]?.members.length
-          values?.[item]?.[data.name] instanceof Object &&
-          values?.[item]?.[data.name]?.members && values?.[item]?.[data.name]?.members
-           ? (
-            Object.keys(values?.[item]?.[data.name]?.members).map((_item, _i) => {
-              return (
-                <>
-                  <CustomMedicalTitle>{_item}</CustomMedicalTitle>
-                  <InnerWrapper>
-                    {schema[i + 1].map(additionalQuestion => (
-                      <AdditionalWrapper2 className="text-dark">
-                        <AdditionalQuestion className="font_15_p_s">
-                          {additionalQuestion.additionalOptions.label ||
-                            additionalQuestion.additionalOptions.placeholder}
-                        </AdditionalQuestion>
-                        <AdditionalAnswer className="font_sub_p_s">
-                        <p style={{
-                          overflowWrap: "break-word"
-                        }}>
-                          {
-                            values?.[item]?.[data.name]?.[_item]?.[
-                              additionalQuestion?.name
-                            ]
-                          }
-                          </p>
-                        </AdditionalAnswer>
-                      </AdditionalWrapper2>
-                    ))}
-                  </InnerWrapper>
-                </>
-              );
-            })
-          ) : (
-            <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
-              <MedicalAnswer>No</MedicalAnswer>
-            </div>
-          )}
+            // values?.[item]?.[data.name] instanceof Object &&
+            // values?.[item]?.[data.name]?.members &&
+            // values?.[item]?.[data.name]?.members.length
+            values?.[item]?.[data.name] instanceof Object &&
+              values?.[item]?.[data.name]?.members && values?.[item]?.[data.name]?.members
+              ? (
+                Object.keys(values?.[item]?.[data.name]?.members).map((_item, _i) => {
+                  return (
+                    <>
+                      <CustomMedicalTitle>{_item}</CustomMedicalTitle>
+                      <InnerWrapper>
+                        {schema[i + 1].map(additionalQuestion => (
+                          <AdditionalWrapper2 className="text-dark">
+                            <AdditionalQuestion className="font_15_p_s">
+                              {additionalQuestion.additionalOptions.label ||
+                                additionalQuestion.additionalOptions.placeholder}
+                            </AdditionalQuestion>
+                            <AdditionalAnswer className="font_sub_p_s">
+                              <p style={{
+                                overflowWrap: "break-word"
+                              }}>
+                                {
+                                  values?.[item]?.[data.name]?.[_item]?.[
+                                  additionalQuestion?.name
+                                  ]
+                                }
+                              </p>
+                            </AdditionalAnswer>
+                          </AdditionalWrapper2>
+                        ))}
+                      </InnerWrapper>
+                    </>
+                  );
+                })
+              ) : (
+                <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
+                  <MedicalAnswer>No</MedicalAnswer>
+                </div>
+              )}
         </Col>
       );
     }
@@ -262,8 +263,8 @@ const SummaryTab = ({ title, data, values, index }) => {
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
           {values?.[item]?.[data.name] instanceof Object &&
-          values?.[item]?.[data.name]?.members &&
-          Object.keys(values?.[item]?.[data.name]?.members).length ? (
+            values?.[item]?.[data.name]?.members &&
+            Object.keys(values?.[item]?.[data.name]?.members).length ? (
             Object.keys(values?.[item]?.[data.name]?.members).map((_item, _i) => {
               if (values?.[item]?.[data.name]?.members[_item] === true) {
                 return (
@@ -294,31 +295,34 @@ const SummaryTab = ({ title, data, values, index }) => {
   }, []);
 
   return (
-    <div className="card_proposal_summary  box-shadow_plan_box_p_s_s_proposal_form_l">
-      <EditWrapper
-        onClick={() => {
-          dispatch(setActiveIndex(index));
-          history.push("/proposal?enquiryId=" + enquiryId);
-        }}
-      >
-        {" "}
-        <span>Edit</span>
-        <img src={pencil} alt="edit"></img>
-      </EditWrapper>
-      <Row>
-        <Col md={11} className="bor_right_m_p_s_title_main">
-          <p className="proposal_summary_d_i">{title}</p>
-        </Col>
-      </Row>
-      <br className="hide-on-mobile" />
-      <Row>
-        {data instanceof Array
-          ? data.map(normalRender)
-          : Object.keys(data).map((item, index) => (
+    <Card styledCss={`margin-bottom: 20px;`}>
+      <div className="card_proposal_summary  box-shadow_plan_box_p_s_s_proposal_form_l">
+        <EditWrapper
+          onClick={() => {
+            dispatch(setActiveIndex(index));
+            history.push("/proposal?enquiryId=" + enquiryId);
+          }}
+        >
+          {" "}
+          <span>Edit</span>
+          <img src={pencil} alt="edit"></img>
+        </EditWrapper>
+        <Row>
+          <Col md={11} className="bor_right_m_p_s_title_main">
+            <MainTitle bg>{title}</MainTitle>
+          </Col>
+        </Row>
+        <br className="hide-on-mobile" />
+        <Row css={`
+      margin-left: 10px;
+      `} >
+          {data instanceof Array
+            ? data.map(normalRender)
+            : Object.keys(data).map((item, index) => (
               <>
                 <Border>
                   <InnerTextBorder>
-                    <span style={{ textTransform: "capitalize" }}>
+                    <span style={{ textTransform: "capitalize", }}>
                       {item.includes("_")
                         ? item.split("_").slice(1).join(", ")
                         : item}
@@ -330,8 +334,9 @@ const SummaryTab = ({ title, data, values, index }) => {
                 </Border>
               </>
             ))}
-      </Row>
-    </div>
+        </Row>
+      </div>
+    </Card>
   );
 };
 
@@ -341,7 +346,7 @@ const Border = styled.div`
     border-bottom: 1px dashed #c1c9d5;
   }
   /* margin-bottom: -15px; */
-  margin-top: 15px;
+  /* margin-top: 15px; */
   width: 100%;
   @media (max-width: 767px) {
     margin-bottom: 0px;
@@ -389,11 +394,11 @@ const EditWrapper = styled.div`
   }
 `;
 const InnerTextBorder = styled.div`
-  margin-bottom: 12px;
+  margin: 15px 0px;
+  text-decoration:underline;
   color: #69758d !important;
   font-weight: 600 !important;
   font-size: 18px;
-  margin-left: 14px;
 
   @media (max-width: 767px) {
 
@@ -444,7 +449,10 @@ const MedicalAnswer = styled.p`
   }
 `;
 const TitleWrapper = styled.p`
-  margin-bottom: 12px;
+  margin: 15px 0px;
+  margin-top: 0px;
+  padding-top: 15px;
+
   color: #69758d !important;
   font-weight: 600 !important;
   
@@ -456,7 +464,6 @@ const TitleWrapper = styled.p`
   @media (max-width: 767px) {
     margin-bottom: 0;
   }
-  margin-left: 14px;
 `;
 const CustomMedicalTitle = styled.div`
   font-family: "pf_handbook_probold";
@@ -487,4 +494,18 @@ margin-right: 13px;
 const AdditionalQuestion = styled.div``;
 const AdditionalAnswer = styled.div`
   font-family: "pf_handbook_probold";
+`;
+
+const MainTitle = styled.h2`
+  margin-left: 3px;
+  margin-bottom: ${(props) => (props.bg ? "15px" : "10")};
+  margin-top: ${(props) => (props.bg ? "15px" : "10")};
+  font-weight: 900;
+
+  background: ${(props) =>
+    props.bg && " linear-gradient(90deg, #eff7ff 0%,rgb(255 255 255) 100%)"};
+  color: ${(props) => props.bg && "#0a87ff;"};
+  font-size: 21px;
+  padding: 10px;
+  padding-bottom: 0px;
 `;

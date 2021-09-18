@@ -20,6 +20,7 @@ import ThankYouPage from "./pages/ThankYouPage/ThankYouPage";
 
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import ProposalPage from "./pages/ProposalPage/ProposalPage";
+import ProposalSummary from "./pages/ProposalSummary/ProposalSummary";
 
 
 function App() {
@@ -98,6 +99,8 @@ function App() {
         <Route exact path="/quotes/:groupCode" component={QuotePage} />
         <Route exact path="/compare/:groupCode" component={ComparePage} />
         <Route exact path="/proposal" component={ProposalPage} />
+
+        <Route exact path="/proposal_summary" component={ProposalSummary} />
         <Route exact path="/thankyou/" component={ThankYouPage} />
 
         <Route exact path="/productdetails/:groupCode" component={ProductDetails} />
