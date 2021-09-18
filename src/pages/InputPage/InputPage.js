@@ -3,6 +3,7 @@ import Card from "../../components/Card";
 import StyledButton from "../../components/StyledButton";
 import TextInput from "../../components/TextInput";
 import styled from "styled-components/macro";
+import { useSelector } from "react-redux";
 import RadioCapsule from "../../components/RadioCapsule";
 import { bg } from "../../assets/images";
 import RadioButton from "../../components/RadioButton";
@@ -19,11 +20,16 @@ import Slider from "../../components/Slider";
 export const InputPage = () => {
   const [currentForm, setCurrentForm] = useState(1);
   const [showmore, setShowmore] = useState(false);
-
+  const greetingPage = useSelector((state) => state.greetingPage);
+  const { memberGroups } = greetingPage;
+ 
+  console.log('ggg2',currentForm)
   const handleChange = (form) => {
     setCurrentForm(form);
   };
+  const members = Object.keys(memberGroups || {});
 
+  
   return (
     <Container>
       <Wrapper>
@@ -47,12 +53,24 @@ export const InputPage = () => {
             >
               <Form5 currentForm={currentForm} handleChange={handleChange} />
               <Form2 currentForm={currentForm} handleChange={handleChange} />
-
               <Form3 currentForm={currentForm} handleChange={handleChange} />
-              <Form1 currentForm={currentForm} handleChange={handleChange} />
+              {members &&
+                members.map((data, i) => (
+                  <Form1
+                    currentForm={currentForm}
+                    handleChange={handleChange}
+                    member={memberGroups[data]}
+                    index={i + 1}
+                    memberGroup={data}
+                    lastForm={members.length === i + 1}
+                  />
+                ))}
 
-              <Form4 currentForm={currentForm} handleChange={handleChange} />
-
+              <Form4
+                currentForm={currentForm}
+                handleChange={handleChange}
+                lastForm={members?.length || 1}
+              />
             </div>
           </Card>
           {currentForm === 1 && termsAndConditions(showmore, setShowmore)}

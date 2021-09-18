@@ -7,13 +7,14 @@ const RadioCapsule = ({
   onChange,
   onClick,
   styledCss,
+  id
 }) => {
   return (
     <>
       <RadioInput
         className="checkbox-tools"
         type={"radio"}
-        id={label}
+        id={id}
         value={value}
       checked={checked || false }
         onClick={onClick}
@@ -21,7 +22,7 @@ const RadioCapsule = ({
       />
       <RadioLabel
         className="for-checkbox-tools"
-        htmlFor={label}
+        htmlFor={id}
         css={styledCss}
       >
         {label}

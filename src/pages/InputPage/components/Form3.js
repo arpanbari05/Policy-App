@@ -32,7 +32,7 @@ const Form3 = ({ handleChange, currentForm }) => {
 
   const handleSubmit = () => {
     if (selected) {
-      handleChange(4);
+      handleChange(4.1);
       dispatch(saveForm4UserDetails({planType: selected}));
     }
   };

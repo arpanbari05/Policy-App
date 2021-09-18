@@ -13,7 +13,14 @@ import {
 import "styled-components/macro";
 import { useHistory } from "react-router";
 import SecureLS from "secure-ls";
-const Form1 = ({ handleChange, currentForm,member }) => {
+const Form1 = ({
+  handleChange,
+  currentForm,
+  member,
+  index,
+  lastForm,
+  memberGroup,
+}) => {
   const dispatch = useDispatch();
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const {
@@ -26,12 +33,20 @@ const Form1 = ({ handleChange, currentForm,member }) => {
   } = useSelector((state) => state.greetingPage);
   const { data } = frontendData || [""];
   const { popularcities } = data || [""];
-  console.log("aaaaa", memberGroups)
+
   const ls = new SecureLS();
   const history = useHistory();
-
+  const [isIndividualPlan, setIsIndividualPlan] = useState(false);
+  useEffect(() => {
+    if (proposerDetails.plan_type && proposerDetails.plan_type === "I") {
+      setIsIndividualPlan(true);
+    } else {
+      setIsIndividualPlan(false);
+    }
+  }, [proposerDetails.plan_type]);
   const [pinCode, setPinCode] = useState("");
   const [customErrors, setCustomErrors] = useState(false);
+  console.log(pinCode, "asdfa");
 
   useEffect(() => {
     if (pinCode?.length > 2) {
@@ -49,8 +64,8 @@ const Form1 = ({ handleChange, currentForm,member }) => {
   //   });
   // };
 
+  let form = lastForm ? 5 : parseFloat(`4.${index + 1}`);
   const handleSubmit = () => {
-    console.log("heheh");
     if (
       !isDisabled &&
       regionDetails?.city?.toLowerCase() === data?.pinCode?.toLowerCase()
@@ -62,7 +77,9 @@ const Form1 = ({ handleChange, currentForm,member }) => {
             pinCode: regionDetails.pincode,
             is_pincode_search: regionDetails.is_pincode_search,
           },
-          handleChange
+          handleChange,
+          memberGroup,
+          form
           // pushToQuotes
         )
       );
@@ -79,16 +96,22 @@ const Form1 = ({ handleChange, currentForm,member }) => {
   return (
     <div
       css={`
-        display: ${currentForm !== 4 && "none"};
+        display: ${`${currentForm}` !== `4.${index}` && "none"};
       `}
     >
-
       <div
         css={`
           padding: 17px;
         `}
       >
-        <Title>Tell Us Where You Live?</Title>
+        <Title>
+          Tell Us Where
+          {member.includes("self")
+            ? " You Live?"
+            : ` Your ${member.join(", ")}${
+                member.length > 1 ? " lives?" : " lives?"
+              }`}
+        </Title>
         <CustomProgressBar now={currentForm} total={5} />
         <div
           css={`
@@ -120,7 +143,8 @@ const Form1 = ({ handleChange, currentForm,member }) => {
           {!regionDetailsLoading &&
             regionDetails?.city &&
             pinCode?.length > 2 &&
-            proposerDetails.pincode !== regionDetails?.pincode && (
+            proposerDetails?.[memberGroup]?.pincode !==
+              regionDetails?.pincode && (
               <div
                 onClick={() => {
                   setPinCode(regionDetails.city);
@@ -132,7 +156,9 @@ const Form1 = ({ handleChange, currentForm,member }) => {
                         is_pincode_search: regionDetails.is_pincode_search,
                       },
                       // pushToQuotes
-                      handleChange
+                      handleChange,
+                      memberGroup,
+                      form
                     )
                   );
                 }}
@@ -149,9 +175,10 @@ const Form1 = ({ handleChange, currentForm,member }) => {
             label={name}
             styledCss={`margin-bottom: 10px; margin-right: 5px;`}
             value={name}
-            id={name}
+            id={name + memberGroup}
             checked={name === pinCode}
             onClick={(e) => {
+              console.log("asdg", member);
               setPinCode(`${e.target.value}`);
               dispatch(setIsDisabled(true));
               setCustomErrors(false);
@@ -162,7 +189,9 @@ const Form1 = ({ handleChange, currentForm,member }) => {
                     is_pincode_search: false,
                   },
                   // pushToQuotes
-                  handleChange
+                  handleChange,
+                  memberGroup,
+                  form
                 )
               );
             }}
@@ -177,9 +206,13 @@ const Form1 = ({ handleChange, currentForm,member }) => {
         true
       )} */}
       {formButtons(() => {
-
-        handleChange(3);
-
+        if (isIndividualPlan) {
+          handleChange(2);
+        } else if (index === 0) {
+          handleChange(3);
+        } else {
+          handleChange(parseFloat(`4.${index - 1}`));
+        }
       }, handleSubmit)}
       <div>
         {/* <StyledButton
