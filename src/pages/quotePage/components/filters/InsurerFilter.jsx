@@ -105,7 +105,7 @@ const FilterModal = ({ show, handleClose, filters }) => {
                         className="d-none"
                         id={insurerOptions.companies[key].alias}
                         onChange={() => handleChange(insurerOptions.companies[key])}
-                        checked={selectedinsurers.includes(insurerOptions.companies[key])}
+                        checked={selectedinsurers.includes(insurerOptions.companies[key]) && true}
 
                       />
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import "styled-components/macro"
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
@@ -95,6 +96,10 @@ const UpperModifier = () => {
                       });
                       dispatch(setSelectedGroup(group));
                     }}
+                    css={`
+                      text-transform:capitalize;
+                      font-weight: 900 !important;
+                    `}
                   >
                     {membersText}
                     <div className="active_bar"></div>

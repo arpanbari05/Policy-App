@@ -9,7 +9,7 @@ import BuyNowModal from "./components/BuyNowModal";
 import { SortByButton, TextLabel } from "./Quote.style";
 import { insurerFilter } from "./quote.slice";
 import useQuotesPage from "./useQuotes";
-
+import call from "../../assets/images/call-center-service.png";
 import { useDispatch, useSelector } from "react-redux";
 import SortByDD from "./components/SortBy/SortByDD";
 import { fetchQuotes, setFilters } from "./quote.slice";
@@ -46,7 +46,7 @@ function QuotePage() {
   const { memberGroups, proposerDetails } = useSelector(
     (state) => state.greetingPage
   );
-  
+
   const { groupCode } = useParams();
   const selectedGroup = groupCode;
 
@@ -74,8 +74,8 @@ function QuotePage() {
     quote: "",
     activeSum: "",
   });
-  
-  
+
+
   const { planType } = useSelector((state) => state.quotePage.filters);
   // const { selectedGroup } = useSelector(state => state.quotePage);
   const {
@@ -98,32 +98,32 @@ function QuotePage() {
 
   const isFiltersDefault =
     filters.premium === defaultfilters.premium &&
-    filters.cover === defaultfilters.cover &&
-    filters.basePlanType === defaultfilters.basePlanType &&
-    filters.insurers.length < 1 &&
-    filters.multiYear === defaultfilters.multiYear &&
-    Object.keys(filters.moreFilters).length === 0
+      filters.cover === defaultfilters.cover &&
+      filters.basePlanType === defaultfilters.basePlanType &&
+      filters.insurers.length < 1 &&
+      filters.multiYear === defaultfilters.multiYear &&
+      Object.keys(filters.moreFilters).length === 0
       ? true
       : false;
 
-      const handleClearFilters = () => {
-        dispatch(setFilters(defaultfilters));
-        dispatch(
-          fetchQuotes(companies?.companies, {
-            sum_insured: cover,
-            tenure,
-            member: selectedGroup,
-            plan_type:
-              memberGroups?.[selectedGroup].length === 1
-                ? "I"
-                : proposerDetails.plan_type
-                  ? proposerDetails.plan_type === "M"
-                    ? "M"
-                    : "F"
-                  : "F",
-          }),
-        );
-      };
+  const handleClearFilters = () => {
+    dispatch(setFilters(defaultfilters));
+    dispatch(
+      fetchQuotes(companies?.companies, {
+        sum_insured: cover,
+        tenure,
+        member: selectedGroup,
+        plan_type:
+          memberGroups?.[selectedGroup].length === 1
+            ? "I"
+            : proposerDetails.plan_type
+              ? proposerDetails.plan_type === "M"
+                ? "M"
+                : "F"
+              : "F",
+      }),
+    );
+  };
 
   return (
     <>
@@ -151,30 +151,30 @@ function QuotePage() {
                 {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
               </SortByButton> */}
-{!isFiltersDefault && (
-                <button
-                  onClick={handleClearFilters}
-                  className="btn"
-                  style={{
-                    background: "white",
-                    color: "#0a87ff",
-                    fontWeight: "bold",
-                    width: "max-content",
-                    padding: "8px 12px",
-                    borderRadius: "24px",
-                    display: "flex",
-                    border:"1px solid #0a87ff",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    fontSize:"12px",
-                   
-                  }}
-                 
-                >
-                  Clear all filters
-                  <i class="fas fa-sync mx-2"></i>
-                </button>
-              )}
+                {!isFiltersDefault && (
+                  <button
+                    onClick={handleClearFilters}
+                    className="btn"
+                    style={{
+                      background: "white",
+                      color: "#000",
+                      fontWeight: "bold",
+                      width: "max-content",
+                      padding: "8px 12px",
+                      borderRadius: "24px",
+                      display: "flex",
+                      border: "1px solid #0a87ff",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      fontSize: "12px",
+
+                    }}
+
+                  >
+                    Clear all filters
+                    <i class="fas fa-sync mx-2"></i>
+                  </button>
+                )}
                 {true && (
                   <SortByDD
                     list={sortByData}
@@ -214,7 +214,7 @@ display: none;
           `}
             >
               <div className="d-flex justify-content-between align-items-center ">
-                <TextLabel className="my-2">
+                <TextLabel className="my-2" style={{ fontSize: "17px" }}>
                   All Premium Plans are GST Inclusive
                 </TextLabel>
               </div>
@@ -226,7 +226,17 @@ display: none;
                   consequat tellus. Aliquam pellentesque ligula massa, aliquet
                   fermentum nisl varius ac.
                 </p>
-                <button className="talk_to_us my-2">Talk to us</button>
+                <div
+                  css={`
+                display:flex;
+                justify-content:space-between;
+                
+                `}
+                >
+                  <button className="talk_to_us my-2" style={{ padding: "8px 15px", height: "max-content" }}>Talk to us</button>
+
+                  <AssistantImage src={call} />
+                </div>
               </AssistantCard>
 
             </div>
@@ -293,3 +303,11 @@ const AssistantCard = styled.div`
     border-radius: 5px;
   }
 `;
+
+const AssistantImage = styled.img`
+width: 80px;
+height: 80px;
+
+margin-top: 20px;
+
+`
