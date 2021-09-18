@@ -94,27 +94,7 @@ function AddOnDetailsRow({ addOn }) {
         align-items: center;
       `}
     >
-      {/* <button
-        css={`
-          margin: 12px 6px 12px 0;
-        `}
-        onClick={handleRemoveAddOnClick}
-      >
-        <i
-          className="fa fa-close"
-          css={`
-            font-size: 11px;
-            color: #8b9ab0;
-            background: #c2d0d973;
-            width: 20px;
-            height: 20px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          `}
-        />
-      </button> */}
+      
       <div
         css={`
           width: 70px;
@@ -149,16 +129,39 @@ function AddOnDetailsRow({ addOn }) {
   return (
     <CartDetailRow
       title={logoTitle}
-      value={
-        <p
+      value={(
+        <div css={`
+        display: flex;
+        align-items:center;
+        justify-content: flex-end;
+        `}>
+        <span
           css={`
-            width: 60px;
             text-align: right;
           `}
         >
           {totalPremium}
-        </p>
-      }
+        </span>
+        <span
+        css={`
+          margin-left:20px;
+          font-size: 11px;
+            color: #8b9ab0;
+            background: #c2d0d973;
+            width: 25px;
+            height: 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `}
+        onClick={handleRemoveAddOnClick}
+        
+      >
+       <i class="fas fa-times"></i>
+      </span> 
+        </div>
+      )}
     />
   );
 }
@@ -659,12 +662,12 @@ const ReviewCart = ({ groupCode }) => {
               css={`
                 display: inline-block;
                 text-transform: capitalize;
-
+color:#616161;
                 margin-right: 12px;
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                font-size: 15px;
+                font-size: 12px;
                 font-weight: 900;
 
                 ${mobile} {
@@ -678,7 +681,7 @@ const ReviewCart = ({ groupCode }) => {
                 }
               `}
             >
-              {membersList.join(", ")}
+              {membersList.join(", ").legth > 10?`${membersList.join(", ").slice(0,10)} ...}`:membersList.join(", ")}
             </div>
             <div
               css={`
@@ -835,12 +838,13 @@ const ReviewCart = ({ groupCode }) => {
           >
             <div
               css={`
-                max-width: 80px;
+                max-width: 30%;
+                height: auto;
                 background-color: #fff;
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
-                padding: 2px 0px;
+                padding: 2px 10px;
                 border-radius: 2px;
 
                 ${small} {
@@ -996,7 +1000,7 @@ const ReviewCart = ({ groupCode }) => {
                 `}
                 onClick={handleReviewCartClick}
                 id="review-cart-button"
-              // className="btn"
+              className="btn"
               >
                 {/* Review Your Cart <i className="flaticon-next" /> */}
                 Review Your Cart
@@ -1118,6 +1122,7 @@ function ProceedButton({
 }) {
   return (
     <div
+    onClick={onProceedClick}
       css={`
         display: flex;
         align-items: center;
@@ -1151,13 +1156,14 @@ function ProceedButton({
           {`Plan for ${members}`}
         </div>
       </div>
-      <button
-        onClick={onProceedClick}
+      <span
+        
         css={`
           width: 100px;
           text-align: center;
           background-color: var(--abc-red);
           padding: 6px 12px;
+
           color: #fff;
           border: 1px solid var(--abc-red);
           font-size: 20px;
@@ -1169,7 +1175,7 @@ function ProceedButton({
         `}
       >
         {loading ? <i className="fas fa-circle-notch rotate" /> : "Proceed"}
-      </button>
+      </span>
     </div>
   );
 }
