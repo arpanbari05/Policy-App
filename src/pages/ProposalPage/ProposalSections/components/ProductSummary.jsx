@@ -193,7 +193,7 @@ const ProductSummary = ({ cart, setActive }) => {
                   </span>
                 </div> */}
                   </div>
-                  {item.health_riders.length && (
+                  {item.health_riders.length > 0 && (
                     <>
                       {" "}
                       <hr
