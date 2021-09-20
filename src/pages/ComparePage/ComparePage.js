@@ -690,7 +690,7 @@ const ComparePage = () => {
                     >
                       <i class="fas fa-share "
 
-                      ></i> Share
+                      ></i>{" "} Share
                     </button>
 
                   </div>
