@@ -24,6 +24,15 @@ export const Filter = styled.div`
       right: 0px;
     }
   }
+
+  @media(max-width: 1399px){
+    .filter_head{
+font-size:13px;
+    }
+    .filter_sub_head{
+font-size:14px;
+    }
+  }
 `;
 
 export const OptionWrapper = styled.ul`

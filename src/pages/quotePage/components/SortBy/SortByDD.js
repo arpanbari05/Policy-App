@@ -36,16 +36,8 @@ const SortByDD = ({ htmlFor, title, list, onSortByChange = () => { } }) => {
             >
                 <Label
                     css={`
-            position: absolute;
-            z-index: -1;
-            top: -12px;
-            background: #f5f5f5;
-            left: 10px;
-            font-size: 12px;
-            padding: 1px 6px;
-            border-radius: 30px;
-            color: #7074a1;
-          `}
+color:gray;
+`}
                 >
                     {title}
                 </Label>

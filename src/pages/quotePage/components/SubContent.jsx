@@ -219,7 +219,12 @@ const SubContent = ({
 
                                 <TextWrapper>
                                     <SmallLabel>Cashless Hospitals</SmallLabel>
-                                    <ValueText>{cashlessHospitalsCount[activeCover]}</ValueText>
+                                    <ValueText
+                                        onClick={() => handleSeeDetailsClick(4)}
+                                    >{cashlessHospitalsCount[activeCover]}
+                                        <span> <i class="fas fa-chevron-right " >
+                                        </i></span>
+                                    </ValueText>
                                 </TextWrapper>
                             </div>
                             <div className="d-flex justify-content-start">
@@ -277,7 +282,7 @@ const SubContent = ({
                                             total_premium[activeCover] + additionalPremium,
                                         ).toLocaleString("en-In")}
                                         <span>
-                                            /{tenure} {tenure > 1 ? "years" : "year"}
+                                            /{tenure > 1 ? `${tenure} "years"` : " year"}
                                         </span></strong>
                                 </RadioButton>
                                 <PlanName

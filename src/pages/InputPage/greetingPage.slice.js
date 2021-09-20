@@ -7,6 +7,7 @@ import {
   setShouldFetchQuotes,
   updateFetchedFilters,
 } from "../quotePage/quote.slice";
+import { updateGroups } from "../quotePage/serviceApi";
 
 // import {
 //   saveFilteredQuotes,
@@ -127,16 +128,27 @@ export const {
   setTraceId,
 } = greeting.actions;
 
-export const saveForm1UserDetails = (data2, handleChange) => {
+export const saveForm1UserDetails = (
+  data2,
+  handleChange,
+  memberGroup,
+  form
+) => {
   const { pinCode, is_pincode_search } = data2;
   return async (dispatch) => {
     try {
       if (pinCode) {
+       ( form === 4.2 || form === 5) &&
+          (await updateUser({
+            pincode: pinCode,
+            is_pincode_search,
+          }));
 
-        const { data } = await updateUser({
-
-          pincode: pinCode,
-          is_pincode_search,
+        const { data } = await updateGroups({
+          groupCode: memberGroup,
+          data: {
+            pincode: pinCode,
+          },
         });
         console.log("wwww", data);
         const {
@@ -144,27 +156,24 @@ export const saveForm1UserDetails = (data2, handleChange) => {
           access_token,
         } = data;
 
-        ls.set("token", access_token);
-        ls.set("enquiryId", enquiry_id);
+        // ls.set("token", access_token);
+        // ls.set("enquiryId", enquiry_id);
         dispatch(
           createUserData({
-            pincode: pinCode,
-            is_pincode_search,
+            [memberGroup]: { pincode: pinCode },
           })
         );
-        setTimeout(() => {
-          // const newMemberGroups = data.data.groups.reduce(
-          //   (groups, member) => ({
-          //     ...groups,
-          //     [member.id]: member.members,
-          //   }),
-          //   {}
-          // );
-          // pushToQuotes(Object.keys(newMemberGroups)[0]);
-          handleChange(5);
-          dispatch(setIsDisabled(false));
-        }, 500);
 
+        // const newMemberGroups = data.data.groups.reduce(
+        //   (groups, member) => ({
+        //     ...groups,
+        //     [member.id]: member.members,
+        //   }),
+        //   {}
+        // );
+        // pushToQuotes(Object.keys(newMemberGroups)[0]);
+        handleChange(form);
+        dispatch(setIsDisabled(false));
       }
     } catch {
       alert("something went wrong");
@@ -213,7 +222,7 @@ export const saveForm2UserDetails = (userDetails, handleChange) => {
         {}
       );
       // pushToQuotes(Object.keys(newMemberGroups)[0]);
-      handleChange(2)
+      handleChange(2);
       console.log("dgasgasd", 221);
       // dispatch(saveFilteredQuotes([]));
       // dispatch(createUserData(modUserDetails));
@@ -295,7 +304,7 @@ export const saveForm3UserDetails = (data, handleChange) => {
       } = response.data;
       dispatch(setTraceId(trace_id));
       if (data && !response.errors && data.length === 1) {
-        handleChange(4);
+        handleChange(4.1);
       }
       // dispatch(createUserData({ member: data }));
       // const newMemberGroups = response.data.data.members.reduce(
@@ -359,11 +368,10 @@ export const saveForm4UserDetails = (data) => {
             planType === "M"
               ? "Multi Individual"
               : planType === "F"
-                ? "Family Floater"
-                : "Individual",
+              ? "Family Floater"
+              : "Individual",
         })
       );
-
     } catch (err) {
       //alert(err);
     }
@@ -384,7 +392,6 @@ export const saveForm5UserDetails = (data, pushToQuotes) => {
         }),
         {}
       );
-
 
       dispatch(setMemberGroups(newMemberGroups));
       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));

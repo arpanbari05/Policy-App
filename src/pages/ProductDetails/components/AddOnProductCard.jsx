@@ -79,8 +79,10 @@ console.log(product,"product")
         <div
           css={`
             margin-left: 18px;
+
             min-width:fit-content;
             max-width: 250px;
+
             ${mobile} {
               margin-left: 10px;
             }
