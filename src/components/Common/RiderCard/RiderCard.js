@@ -172,12 +172,12 @@ font-weight:bold;
                 padding: 10px 0;
                 border-radius: 0.25em;
                 cursor: pointer;
-                background-color: var(--light-pink);
+                background-color: ${isRiderSelected ? `#eff7ff`:`#f3f3f3`};
                 margin: 0 3px;
                 width: 160px;
                 min-width: fit-content;
                 border: none;
-                background-color: #eff7ff;
+                
                 & span {
                   position: relative;
                   top: 4px;
