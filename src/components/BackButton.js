@@ -27,7 +27,7 @@ const BackButton = ({
       width={width}
       height={height}
       bg={bg}
-      color={color}
+      color={color?color:`#253858`}
       css={styledCss}
     >
       {icon ? icon : <IoArrowBackSharp />} {value ? value : children}
