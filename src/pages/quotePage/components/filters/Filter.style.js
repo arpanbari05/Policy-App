@@ -5,9 +5,15 @@ export const Filter = styled.div`
   
   &:hover{
     background-color:#eef1f4;
+    :not(:last-child) {
+    border-right: none;
+    
+  }
+ 
+ 
   }
   :not(:last-child) {
-    border-right: 1px solid #cacaca;
+    border-right: 1px solid #eef1f4;
   }
   .filter_head {
     color: #808080;

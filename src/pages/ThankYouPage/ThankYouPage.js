@@ -310,6 +310,13 @@ const ThankYouPage = () => {
                     <a
                       href="#"
                       className="btn_back_q_proposal"
+                      css={`
+                      background-color: #0a87ff;
+                      border: 1px solid #0a87ff;
+                      &:hover{
+                        color:#000;
+                      }
+                      `}
                       onClick={() => {
                         history.push({
                           pathname: "/quotes",
@@ -322,6 +329,12 @@ const ThankYouPage = () => {
                     <a
                       href="#"
                       className="btn_start_proposal_back_t"
+                      css={`
+                      color:#0a87ff;
+                      border: 1px solid #0a87ff;
+                      &:hover{
+                        color:#000;
+                      }`}
                       onClick={() => {
                         history.push({
                           pathname: "/proposal",
@@ -393,7 +406,7 @@ const ThankYouPage = () => {
                 href="#"
                 style={{
                   borderRadius: "4px",
-                  backgroundColor: "#c7222a",
+                  backgroundColor: "#0a87ff",
                   color: "#fff",
                   padding: "8px 16px",
                 }}

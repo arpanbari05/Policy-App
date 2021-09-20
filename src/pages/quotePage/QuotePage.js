@@ -106,7 +106,7 @@ function QuotePage() {
       Object.keys(filters.moreFilters).length === 0
       ? true
       : false;
-
+console.log("loading...",loadingQuotes)
   const handleClearFilters = () => {
     dispatch(setFilters(defaultfilters));
     dispatch(
@@ -159,8 +159,8 @@ function QuotePage() {
                     onClick={handleClearFilters}
                     className="btn"
                     style={{
-                      background: "white",
-                      color: "#000",
+                      backgroundColor: "#e2f0ff",
+                      color: "#0a87ff",
                       fontWeight: "bold",
                       width: "max-content",
                       padding: "8px 12px",
@@ -207,6 +207,7 @@ function QuotePage() {
                   )
                 ) : <CardSkeletonLoader noOfCards={3} />
               }
+               {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
 
             </div>
             <div className="col-md-3" style={{ padding: "0px 5px" }}
