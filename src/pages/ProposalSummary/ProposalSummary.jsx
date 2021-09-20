@@ -144,17 +144,22 @@ const ProposalSummary = ({ history }) => {
                 </button>
               </div>
               <div class="col-md-6">
-                <button
+                <div
                   disabled={!checked && true}
-                  class="btn-primary btn"
+                  css={`
+                      color: #fff;
+                      display:flex;
+                      flex-direction: column;
+                      align-items: center;
+                      `}
                 >
-                  Total Premium
+                  <span>Total Premium</span>
                   <p class="p_dark_f_a">
                     <span class="font_weight_normal text-white">
                       ₹ {cart?.totalPremium}
                     </span>
                   </p>{" "}
-                </button>
+                </div>
               </div>
             </div>
           </div>
