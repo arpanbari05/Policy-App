@@ -20,13 +20,13 @@ const GoBack = ({ productDetails, path, groupCode }) => {
         `}
       >
         <BackButton
-          styledCss={`width: 121px;`}
-          value={`Back`}
+          styledCss={`width: 200px; font-size:18px; display:flex; align-items:center;`}
+          value={`Go Back`}
           icon={
             <span
               css={`
                 color: #ebf5ff;
-                font-size: 43px;
+                font-size: 30px;
                 position: relative;
                 top: 4px;
               `}
