@@ -593,14 +593,15 @@ const EditMemberFilter = () => {
         <span css={`
           font-size: 17px;
         `}>Members</span>
-        <PencilWrapper className="d-flex justify-content-center align-items-center">
-          <PencilIcon
+        <PencilWrapper className="d-flex justify-content-center align-items-center" style={{color:"#0a87ff"}}>
+          {/* <PencilIcon
             style={{
               color: "#0a87ff",
 
             }}
             width="15px"
-          />
+          /> */}
+           <i class="fas fa-pen"></i>
         </PencilWrapper>
       </span>
 

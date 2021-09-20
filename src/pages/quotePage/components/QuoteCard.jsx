@@ -215,16 +215,23 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
 
                                 {!show ? (
                                     <>
-                                        <span>
+                                       {mergedQuotes.length-1 >1 ? (
+                                       <span>
                                             {mergedQuotes.length - 1}
                                             {" "}
 
-                                            more plans </span>
+                                            More Plans </span>):(
+                                                <span>
+                                                {mergedQuotes.length - 1}
+                                                {" "}
+    
+                                                More Plan </span>
+                                            )}
                                         <i class="fas fa-chevron-down"></i>
                                     </>
                                 ) :
                                     (<>
-                                        <span>hide plans </span>
+                                        <span>Hide Plans </span>
                                         <i class="fas fa-chevron-up"></i>
                                     </>
                                     )}
@@ -320,7 +327,10 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                             <RadioLabel
                                 //dynamic id
                                 htmlFor={`compare_${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`}
-                            >
+                           css={`
+                           color: #808080;
+                           `}
+                           >
                                 Compare
                             </RadioLabel>
                         </div>
