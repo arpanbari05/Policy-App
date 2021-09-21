@@ -180,8 +180,8 @@ const StyledPanel = styled.a`
   background-image: ${props =>
     props.isShowMedical &&
     !props.add &&
-    "linear-gradient(to right, #ffe7e7 5%, #fff 15%)"};
-  color: #000 !important;
+    "linear-gradient(90deg, #eff7ff 0%, white 100%)"};
+    color: #0a87ff !important;
   position: relative;
   border: ${props => (!props.isShowMedical ? "1px solid #eeeff5" : "none")};
   width: 98%;
