@@ -74,7 +74,9 @@ margin-right: 10px;
 }
 /* ==================res========================= */
 .tbody_bg_border_th {
-  padding-left: 10px;
+  margin-left: 10px;
+  width: fit-content;
+border-bottom: 2px dotted #505f79;
 }
 .hideOnMobile {
   display: block;

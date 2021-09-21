@@ -7,7 +7,8 @@ import { getProductBrochureAPI } from "../../../SeeDetails/serviceApi";
 import { getAddOnDetails } from "../../serviceApi";
 import DownloadIcon from "../../../../assets/images/download.png";
 
-export function useAddOnDetails({ addOn = {} }) {
+const useAddOnDetails = ({ addOn = {} }) => {
+  
   const [addOnDetails, setAddonDetails] = useState(null);
 
   const [downloads, setDownloads] = useState(null);
@@ -99,7 +100,14 @@ export const ListItem = styled.div`
   padding-left: 1em;
   font-weight: 900;
   margin: 1em 0;
-  &::before {
+  color: #505f79;
+  :before{
+                          position: absolute;
+    content: "•";
+    color: #ffcb00;
+    left: 0;
+                        }
+  /* &::before {
     content: "";
     left: 0;
     top: -0.1em;
@@ -108,7 +116,7 @@ export const ListItem = styled.div`
     width: 0.39em;
     height: 1.6em;
     position: absolute;
-  }
+  } */
 
   ${mq.mobile} {
   }
@@ -174,3 +182,5 @@ export function DownloadButton({ title, url }) {
     </div>
   );
 }
+
+export default useAddOnDetails;

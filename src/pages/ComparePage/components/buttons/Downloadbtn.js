@@ -33,7 +33,7 @@ const Downloadbtn = ({ onClick, downloading }) => {
 export default Downloadbtn;
 
 const Button = styled.button`
-border: solid 1px #70707073;
+border: solid 1px #e9e9e9;
 width: 136px;
 margin-top: 1rem;
 font-weight: 900;

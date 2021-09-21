@@ -9,7 +9,7 @@ const Checkbox2 = ({
 }) => {
 
   return (
-    <div class="container">
+    <div class="container d-flex align-items-center">
       <div class="round">
         <input
           type="checkbox"
@@ -22,7 +22,7 @@ const Checkbox2 = ({
           htmlFor={title}
           css={`
             left: 21px;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 900;
             top: 0px;
             position: relative;

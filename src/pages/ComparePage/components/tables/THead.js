@@ -95,29 +95,38 @@ const THead = ({
             css={`
               display: flex;
               flex-direction: column;
-              height: 145px;
+              height: 200px;
               & p {
-                font-size: 22px;
+                font-size: 20px;
                 color: #253858;
+                text-align: center;
               }
             `}
           >
+          <div style={{
+            width: "70%",
+            margin: "auto"
+          }}>
             <p>Product Comparision</p>
-            <CheckBox
-              checked={showDiffCbx}
-              title={`Show Difference`}
-              id={`show difference`}
-              handleChange={(e) => {
-                setshowDiffCbx(!showDiffCbx);
-              }}
-            />
-            <Downloadbtn
-              downloading={downloading}
-              onClick={() => {
-                dispatch(requestDownload());
-                download2();
-              }}
-            />
+           
+              <CheckBox
+                checked={showDiffCbx}
+                title={`Show Difference`}
+                id={`show difference`}
+                handleChange={(e) => {
+                  setshowDiffCbx(!showDiffCbx);
+                }}
+              />
+           
+            
+              <Downloadbtn
+                downloading={downloading}
+                onClick={() => {
+                  dispatch(requestDownload());
+                  download2();
+                }}
+              />
+            </div>
           </div>
         </th>
         {plansDataset(plans, removePlan, setShow, setShowBuyNowPopup)}
