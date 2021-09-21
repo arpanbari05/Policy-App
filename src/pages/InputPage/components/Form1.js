@@ -206,9 +206,10 @@ const Form1 = ({
         true
       )} */}
       {formButtons(() => {
+        console.log('asfdd',index)
         if (isIndividualPlan) {
           handleChange(2);
-        } else if (index === 0) {
+        } else if (index === 1) {
           handleChange(3);
         } else {
           handleChange(parseFloat(`4.${index - 1}`));
