@@ -89,7 +89,7 @@ export const validationIndex = {
 
       let endDate = moment(values[name], "DD-MM-YYYY");
       let calculatedValue = moment().diff(endDate, "y");
-     
+
       if (maxInt !== -1) {
         if (calculatedValue > maxInt)
           return {
@@ -117,7 +117,7 @@ export const validationIndex = {
         : param.split("/")[0] === "alt"
         ? "alt"
         : param;
-    console.log(values, parent, member,variableName)
+   
     let value =
       parent && member && variableName && values
         ? values?.[parent]?.[member]?.[variableName]
@@ -133,9 +133,13 @@ export const validationIndex = {
           ? values[parent][member]
           : values[param.split("/")[1]];
     }
-  
+
     if (value) {
       switch (checkParam) {
+        case "name":
+          if (!/^[a-zA-Z]+ [a-zA-Z]+$/.test(value)) {
+            return { status: false, message: "Please enter full name." };
+          } else break;
         case "mobile":
           if (!/^[6-9]\d{9}$/.test(value)) {
             return {
@@ -158,7 +162,7 @@ export const validationIndex = {
         case "validDigits":
           let min = parseInt(param.split("/")[1]);
           let max = parseInt(param.split("/")[2]);
-         
+
           if (!/^[0-9]*$/.test(value) || !(value >= min && value <= max)) {
             return {
               status: false,
@@ -168,7 +172,6 @@ export const validationIndex = {
             };
           } else break;
         case "validYear":
-         
           if (typeof value === "string" || value instanceof String) {
             let month = value?.split("-")[0];
             let year = value?.split("-")[1];
@@ -196,7 +199,7 @@ export const validationIndex = {
         case "date":
           if (
             !/^(0?[1-9]|[12][0-9]|3[01])[\-](0?[1-9]|1[012])[\-]\d{4}$/.test(
-              value,
+              value
             )
           ) {
             return {
@@ -207,7 +210,7 @@ export const validationIndex = {
         case "email":
           if (
             !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-              value,
+              value
             )
           ) {
             return {
@@ -218,7 +221,7 @@ export const validationIndex = {
         case "pan":
           if (
             !/^([a-zA-Z]{3}[P]{1}[a-zA-Z]{1})([0-9]{4})([a-zA-Z]{1})$/.test(
-              value,
+              value
             )
           ) {
             return {
@@ -236,7 +239,7 @@ export const validationIndex = {
         case "gst":
           if (
             !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
-              value,
+              value
             )
           ) {
             return {

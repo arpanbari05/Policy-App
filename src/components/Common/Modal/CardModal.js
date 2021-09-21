@@ -61,7 +61,7 @@ const CardModal = ({
         <i className="fa fa-close"></i>
       </CloseButton> */}
       <Modal.Body>
-        <Container>{content}</Container>
+        {content}
       </Modal.Body>
       <Modal.Footer
         style={{

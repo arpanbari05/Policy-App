@@ -100,8 +100,6 @@ const FeatureSectionSubHeading = styled("p")`
 
 const FeatureSectionContainer = styled("section")`
   display: block;
-
-  margin: 30px 0 0 0;
 `;
 
 export default FeatureSection;

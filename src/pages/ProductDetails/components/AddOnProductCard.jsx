@@ -158,7 +158,7 @@ function ProductCard({ groupCode }) {
           <span
             css={`
               color: #5a6981;
-              font-size: 11px;
+              font-size: 13px;
               /* width: 90px; */
 
               ${mobile} {
