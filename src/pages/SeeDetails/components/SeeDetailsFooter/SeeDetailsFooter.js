@@ -160,9 +160,12 @@ function SeeDetailsFooter({
         <div
           css={`
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             border-right: 1px solid grey;
-            padding-right: 10%;
+            padding:0 20px;
+            @media(max-width: 1320px){
+              flex-direction: column;
+            }
           `}
         >
           <span>Cover:</span>
@@ -181,9 +184,13 @@ function SeeDetailsFooter({
         <div
           css={`
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             border-right: 1px solid grey;
-            padding-right: 10%;
+            padding:0 20px ;
+            padding-left: 10px;
+            @media(max-width: 1320px){
+              flex-direction: column;
+            }
           `}
         >
           <span>Premium:</span>
@@ -202,11 +209,14 @@ function SeeDetailsFooter({
         <div
           css={`
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            @media(max-width: 1320px){
+              flex-direction: column;
+            }
           
           `}
         >
-          <span>claim settlement ratio</span>
+          <span>Claim settlement ratio:</span>
           <span
             css={`
               font-weight: bold;
