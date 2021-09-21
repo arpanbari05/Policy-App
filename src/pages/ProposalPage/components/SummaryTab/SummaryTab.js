@@ -45,7 +45,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s">{data.additionalOptions.label}</p>
+          <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
           <p className="font_sub_p_s">
             {values?.[data.name]}
           </p>
@@ -69,7 +69,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s">{data.additionalOptions.label}</p>
+          <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
           <p className="font_sub_p_s">
             {data.name === "town" || data.name === "area"
               ? values[data.name + "__value"]
@@ -87,7 +87,7 @@ const SummaryTab = ({ title, data, values, index }) => {
         style={{ display: "inline-block" }}
         key={i}
       >
-        <p className="font_15_p_s">{data.additionalOptions.label}</p>
+        <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
         <p className="font_sub_p_s">{values[data.name]}</p>
       </Col>
     ) : (
@@ -146,7 +146,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" >{data.additionalOptions.label}</p>
+          <p className="font_15_p_s" style={{fontWeight:"900"}} >{data.additionalOptions.label}</p>
           <p className="font_sub_p_s">
             {values?.[item]?.[data.name]}
           </p>
@@ -163,7 +163,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           key={i}
           style={{ display: "inline-block" }}
         >
-          <p className="font_15_p_s">{"Height"}</p>
+          <p className="font_15_p_s" style={{fontWeight:"900"}}>{"Height"}</p>
           <p className="font_sub_p_s">{convertToFt(values?.[item]?.[data.name])}</p>
         </Col>
       );
@@ -194,7 +194,7 @@ const SummaryTab = ({ title, data, values, index }) => {
                       <InnerWrapper>
                         {schema[i + 1].map(additionalQuestion => (
                           <AdditionalWrapper2 className="text-dark">
-                            <AdditionalQuestion className="font_15_p_s">
+                            <AdditionalQuestion className="font_15_p_s" style={{fontWeight:"900"}}>
                               {additionalQuestion.additionalOptions.label ||
                                 additionalQuestion.additionalOptions.placeholder}
                             </AdditionalQuestion>
@@ -233,7 +233,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s">{data.additionalOptions.label}</p>
+          <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
           <p className="font_sub_p_s">
             {getValueFromCode(values?.[item]?.[data.name], data)}
           </p>
@@ -248,7 +248,7 @@ const SummaryTab = ({ title, data, values, index }) => {
         key={i}
         style={{ display: "inline-block" }}
       >
-        <p className="font_15_p_s">{data.additionalOptions.label}</p>
+        <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
         <p className="font_sub_p_s">{values?.[item]?.[data.name]}</p>
       </Col>
     ) : (
@@ -413,7 +413,7 @@ const MedicalQuestionWrapper = styled.p`
   line-height: 27px !important;
   color: #000000;
   
-  font-weight: 400 !important;
+  font-weight: 900 !important;
   position: relative;
   padding-left: 12px;
   width: 78%;
@@ -442,6 +442,7 @@ const MedicalQuestionWrapper = styled.p`
 const MedicalAnswer = styled.p`
   margin: 0px 0 -15px;
   text-transform: capitalize;
+  padding-left:15px;
   
   font-size: 18px;
   @media (max-width: 767px) {
@@ -507,5 +508,5 @@ const MainTitle = styled.h2`
   color: ${(props) => props.bg && "#0a87ff;"};
   font-size: 21px;
   padding: 10px;
-  padding-bottom: 0px;
+  
 `;

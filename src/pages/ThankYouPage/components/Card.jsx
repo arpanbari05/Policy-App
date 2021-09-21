@@ -253,7 +253,9 @@ const PolicyWrapper = styled.div`
 `;
 const Title = styled.div`
   /* font-family: pf_handbook_proregular; */
-  font-size: 16px;
+  font-size: 17px;
+  font-weight: bold;
+  
   margin-bottom: 2px;
   @media (max-width: 1023px) {
     font-size: 13px;

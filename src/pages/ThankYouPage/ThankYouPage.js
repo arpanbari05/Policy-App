@@ -122,8 +122,9 @@ const ThankYouPage = () => {
                   <div className="thankmain__check">
                     <CheckMark />
                   </div>
-                  Your Payment for ₹{" "}
-                  {cart.totalPremium} was successful
+                  <span
+                  >Your Payment for ₹{" "}
+                  {cart.totalPremium} was successful</span>
                 </div>
                 <div>
                   <div className="yellow__line" />
@@ -176,7 +177,7 @@ const ThankYouPage = () => {
               </div>
               <div
                 style={{
-                  backgroundColor: "#e4fff0",
+                  backgroundColor: "linear-gradient(90deg, #eff7ff 0%,rgb(255 255 255) 100%) ",
                   display: "flex",
                   alignItems: "center",
                   color: "darkgreen",

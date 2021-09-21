@@ -139,7 +139,7 @@ const ProposalSummary = ({ history }) => {
             // style={{ margin: "0 25px" }}
             >
               <div class="col-md-6">
-                <button disabled={!checked && true} class="btn btn_p_s_pay_now">
+                <button disabled={!checked && true} class="btn btn_p_s_pay_now" style={{fontSize: "16px"}}>
                   Pay Now {" "}
                 </button>
               </div>
