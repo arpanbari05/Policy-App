@@ -57,7 +57,7 @@ function QuotePage() {
     cover: "3 to 5 Lacs",
     ownCover: "",
     planType:
-      memberGroups[selectedGroup].length === 1
+      memberGroups?.[selectedGroup]?.length === 1
         ? "Individual"
         : proposerDetails.plan_type
           ? proposerDetails.plan_type === "M"
@@ -196,9 +196,9 @@ console.log("loading...",loadingQuotes)
                             key={index}
                             id={index}
                             item={item}
-                            handleSeeDetails={quote => {
+                            handleSeeDetails={(quote, clickedFrom) => {
                               setSeeDetailsQuote(quote);
-                              setShowSeeDetails(true);
+                              setShowSeeDetails(clickedFrom || true);
                             }}
                             handleClick={() => setShowBuyNow(true)}
                           />

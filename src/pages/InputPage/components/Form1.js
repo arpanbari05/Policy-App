@@ -106,11 +106,21 @@ const Form1 = ({
       >
         <Title>
           Tell Us Where
-          {member.includes("self")
-            ? " You Live?"
-            : ` Your ${member.join(", ")}${
-                member.length > 1 ? " lives?" : " lives?"
-              }`}
+          {member.includes("self") ? (
+            " You Live?"
+          ) : (
+            <>
+              <span
+                css={`
+                  text-transform: capitalize;
+                `}
+              >
+                {" "}
+                Your {member.join(", ")}
+              </span>
+              {member.length > 1 ? " lives?" : " lives?"}
+            </>
+          )}
         </Title>
         <CustomProgressBar now={currentForm} total={5} />
         <div
@@ -206,7 +216,7 @@ const Form1 = ({
         true
       )} */}
       {formButtons(() => {
-        console.log('asfdd',index)
+        console.log("asfdd", index);
         if (isIndividualPlan) {
           handleChange(2);
         } else if (index === 1) {

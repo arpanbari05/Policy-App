@@ -7,6 +7,7 @@ import { setActiveIndex, setPlanDetails } from "../ProposalSections.slice";
 import arrow from "./../../../../assets/images/arrow.png";
 import care from "./../../../../assets/images/Care_Health.png";
 import correct from "./../../../../assets/images/correct_icon.png";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 import "./ProductSummary.scss";
 import Card from "../../../../components/Card";
 const removeTotalPremium = (cart) => {
@@ -201,7 +202,7 @@ const ProductSummary = ({ cart, setActive }) => {
                           margin-top: 8px;
                         `}
                       />
-                      <p className="p_cover_medical_pop" css={`width: 100%;`}>riders: </p>
+                      <p className="p_cover_medical_pop" css={`width: 100%;`}>Riders: </p>
                     </>
                   )}
                   {item.health_riders.length ? (
@@ -212,13 +213,15 @@ const ProductSummary = ({ cart, setActive }) => {
                           css={`
                             align-items: center;
                             display: flex;
+                            margin-bottom: 7px;
+                            & svg {
+                              font-size: 22px;
+                              margin-right: 6px;
+                              color: #0a87ff;
+                            }
                           `}
                         >
-                          <img
-                            src={correct}
-                            className="display_in_m_medical"
-                            alt="correct"
-                          />{" "}
+                          <AiOutlineCheckCircle />{" "}
                           <span className="font_weight_normal_mediacl">
                             {riders.name}
                           </span>

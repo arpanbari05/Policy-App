@@ -122,26 +122,26 @@ const ProposalPage = ({ history }) => {
               `}
             >
               <MainTitle>Proposer Details</MainTitle>
-              <a
+              <div
                 css={`
-                  font-size: 20px;
+                  width: 30px;
                   display: ${!proposalData[listOfForms[0]] && "none"};
-                  position: relative;
-                  top: -5px;
-                  left: -11px;
-                  color: black;
+                  height: 30px;
+                  background: #eff7ff;
+                  border-radius: 100%;
+                  display: flex;
+                  color: #369cff;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 13px;
                 `}
+                className="btn"
                 onClick={() => {
                   setActive(0);
                 }}
               >
-                <PencilIcon
-                  style={{
-                    color: "#0a87ff",
-                  }}
-                  width="17px"
-                />
-              </a>
+                <i class="fas fa-pen"></i>
+              </div>
             </span>
           )}
         </Card>
@@ -167,26 +167,27 @@ const ProposalPage = ({ history }) => {
               `}
             >
               <MainTitle>Insured Details</MainTitle>
-              <a
+              <div
                 css={`
-                  font-size: 20px;
+                  width: 30px;
                   display: ${!proposalData[listOfForms[1]] && "none"};
-                  position: relative;
-                  top: -5px;
-                  left: -11px;
-                  color: black;
+                  height: 30px;
+                  background: #eff7ff;
+                  border-radius: 100%;
+                  display: flex;
+                  color: #369cff;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 13px;
                 `}
+                className="btn"
                 onClick={() => {
                   setActive(1);
                 }}
               >
-                <PencilIcon
-                  style={{
-                    color: "#0a87ff",
-                  }}
-                  width="17px"
-                />
-              </a>
+                <i class="fas fa-pen"></i>
+              </div>
+             
             </span>
           )}
         </Card>
@@ -212,26 +213,27 @@ const ProposalPage = ({ history }) => {
               `}
             >
               <MainTitle>Medical Details</MainTitle>
-              <a
+            
+              <div
                 css={`
-                  font-size: 20px;
+                  width: 30px;
                   display: ${!proposalData[listOfForms[2]] && "none"};
-                  position: relative;
-                  top: -5px;
-                  left: -11px;
-                  color: black;
+                  height: 30px;
+                  background: #eff7ff;
+                  border-radius: 100%;
+                  display: flex;
+                  color: #369cff;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 13px;
                 `}
+                className="btn"
                 onClick={() => {
                   setActive(2);
                 }}
               >
-                <PencilIcon
-                  style={{
-                    color: "#0a87ff",
-                  }}
-                  width="17px"
-                />
-              </a>
+                <i class="fas fa-pen"></i>
+              </div>
             </span>
           )}
         </Card>
@@ -257,26 +259,26 @@ const ProposalPage = ({ history }) => {
               `}
             >
               <MainTitle>Other Details</MainTitle>
-              <a
+              <div
                 css={`
-                  font-size: 20px;
+                  width: 30px;
                   display: ${!proposalData[listOfForms[3]] && "none"};
-                  position: relative;
-                  top: -5px;
-                  left: -11px;
-                  color: black;
+                  height: 30px;
+                  background: #eff7ff;
+                  border-radius: 100%;
+                  display: flex;
+                  color: #369cff;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 13px;
                 `}
+                className="btn"
                 onClick={() => {
                   setActive(3);
                 }}
               >
-                <PencilIcon
-                  style={{
-                    color: "#0a87ff",
-                  }}
-                  width="17px"
-                />
-              </a>
+                <i class="fas fa-pen"></i>
+              </div>
             </span>
           )}
         </Card>
