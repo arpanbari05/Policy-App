@@ -362,7 +362,10 @@ const SubContent = ({
                                 <RadioLabel
                                     //dynamic id
                                     htmlFor={`compare_${id}${sum_insured[activeCover]}`}
-                                >
+                                    css={`
+                                    color: #808080;
+                                    `}
+                              >
                                     Compare
                                 </RadioLabel>
                             </div>
