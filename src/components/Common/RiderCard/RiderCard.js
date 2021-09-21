@@ -46,7 +46,7 @@ function RiderCard({
           css={`
             /* transition: all 0.33s; */
             max-height: ${showMore ? "300px" : "max-content"};
-            min-height: 145px;
+            min-height: fit-content;
             /* &:hover {
         max-height: 300px;
       } */
@@ -63,8 +63,9 @@ function RiderCard({
             `}
           >
             <div
+              className="riderName_productDetail_custmizePlan"
               css={`
-                color:${ isRiderSelected? `#0a87ff`:`grey`};
+                color: ${isRiderSelected ? `#0a87ff` : `grey`};
 
                 font-weight: 900;
                 font-size: 15px;
@@ -74,6 +75,7 @@ function RiderCard({
                   white-space: ${productPage ? "normal" : "nowrap"};
                   font-size: 18px;
                 }
+
                 ${small},${tablet} {
                   font-size: 13px;
                   font-weight: 900;
@@ -172,20 +174,19 @@ font-weight:bold;
                 padding: 10px 0;
                 border-radius: 0.25em;
                 cursor: pointer;
-                background-color: ${isRiderSelected ? `#eff7ff`:`#f3f3f3`};
+                background-color: ${isRiderSelected ? `#eff7ff` : `#f3f3f3`};
                 margin: 0 3px;
                 width: 160px;
                 min-width: fit-content;
                 border: none;
-                
+
                 & span {
                   position: relative;
                   top: 4px;
-                 
                 }
               `}
             >
-            {/* <span css={`
+              {/* <span css={`
             display:flex;
             align-items:center;
             `}> */}
@@ -284,24 +285,27 @@ const RiderCardWrap = styled.div`
   cursor: pointer;
   &:hover {
     border-color: #0d6efd;
-  }
-  box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
+    .riderName_productDetail_custmizePlan {
+      color: #0a87ff;
+    }
+    box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
 
-  background-color: #fff;
+    background-color: #fff;
 
-  ${mobile} {
-    flex: 0 0 100%;
-    margin: 10px 0;
-    padding: 0px 6px;
-  }
+    ${mobile} {
+      flex: 0 0 100%;
+      margin: 10px 0;
+      padding: 0px 6px;
+    }
 
-  ${small} {
-    border-radius: 11px;
-    padding: 12px 0 9px 0;
-  }
+    ${small} {
+      border-radius: 11px;
+      padding: 12px 0 9px 0;
+    }
 
-  @media (max-width: 900px) {
-    padding: 0px 6px;
+    @media (max-width: 900px) {
+      padding: 0px 6px;
+    }
   }
 `;
 

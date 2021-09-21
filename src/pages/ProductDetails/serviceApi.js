@@ -24,5 +24,8 @@ export const getAdditionalDiscounts = ({
     `products/${product_id}/additional-discounts?group=${groupCode}&sum_insured=${sum_insured}&tenure=${tenure}`,
   );
 
-export const getAddOnDetails = ({ productId }) =>
-  httpClient(`products/${productId}/features`);
+export const getAddOnDetails = ({ productId }) =>{
+  console.log(productId,"productId")
+  return httpClient(`products/${productId}/features`);
+}
+  

@@ -20,18 +20,25 @@ const GoBack = ({ productDetails, path, groupCode }) => {
         `}
       >
         <BackButton
-          styledCss={`width: 200px; font-size:18px; display:flex; align-items:center;`}
+          styledCss={`font-size:17px; display:flex; align-items:center;`}
           value={`Go Back`}
           icon={
             <span
               css={`
-                color: #ebf5ff;
-                font-size: 30px;
+                color: #4f5c6f;
+                font-size: 17px;
                 position: relative;
+                display:flex; 
+                align-items:center;
+                justify-content:center;
                 top: 4px;
+                width: 40px;
+                height:40px;
+                border-radius:100%;
+                background: #f1f4f8;
               `}
             >
-              <IoChevronBackCircleSharp />
+              <i class="fas fa-chevron-left"></i>
             </span>
           }
           onClick={() => {

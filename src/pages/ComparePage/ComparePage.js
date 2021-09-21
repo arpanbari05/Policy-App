@@ -221,10 +221,7 @@ const popupContent = (
                       )
                     }
                   >
-                    <span>
-                      {/* <i class="fa fa-close"></i> */}
-                      x
-                    </span>
+                    <i class="fas fa-times"></i>
                   </RemoveCross>
                   <LogoWrapper>
                     <img
@@ -237,25 +234,32 @@ const popupContent = (
                     ></img>
                   </LogoWrapper>
                   <NameWrapper>
-                    <CompanyName>
+                    <span style={{
+                      textAlign:"left",
+                      fontWeight:"900"
+                    }}>
                       {mergedQuotes[index].data.product.company.name}
-                    </CompanyName>
-                    <PlanName>
+                    </span>
+                    <br/>
+                    <span style={{
+                      color:"#505f79",
+                      fontSize:"14px"
+                    }}>
                       {" "}
                       {mergedQuotes[index].data.product.name}
-                    </PlanName>
+                    </span>
                     <PlanDetails>
                       <DetailWrapper>
-                        <Title>Sum Insured</Title>
+                        <Title>Sum Insured :</Title>
                         <Value>
-                          <i class="fa fa-inr"></i>{" "}
+                        ₹ {" "}
                           {mergedQuotes[index].data.sum_insured.toLocaleString(
                             "en-IN"
                           )}
                         </Value>
                       </DetailWrapper>
                       <DetailWrapper>
-                        <Title>Premium</Title>
+                        <Title>Premium :</Title>
                         <Value>
                           <i class="fa fa-inr"></i>{" "}
                           {(discount[
@@ -690,7 +694,7 @@ const ComparePage = () => {
                     >
                       <i class="fas fa-share "
 
-                      ></i> Share
+                      ></i>{" "} Share
                     </button>
 
                   </div>

@@ -104,22 +104,20 @@ export const EmailSent = styled.div`
 export const RemoveCross = styled.div`
   cursor: pointer;
   position: absolute;
-  padding: 12.2px 12.1px 12.1px 12.2px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   background-color: #ffffff;
   color: #000;
   font-size: 14px;
-  width: 12px;
+  width: 25px;
+  height:25px;
   right: 1px;
   top: -1px;
-  border-radius: 50%;
+  border-radius: 100%;
   transform: translate(50%, -50%);
-  & span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  
  @media (max-width: 768px) {
     top:12px;
     right:12px;
@@ -169,21 +167,22 @@ export const DetailWrapper = styled.div`
   }
 `;
 export const Title = styled.div`
-  font-size: 16px;
+  color:#505f79;
+                      font-size:14px;
 `;
 export const Value = styled.div`
-
-  font-size: 18px;
+font-weight: 900;
+  font-size: 16px;
 `;
 export const CompanyName = styled.div`
 
-  font-size: 17px;
+  font-size: 14px;
   font-stretch: normal;
   font-style: normal;
   line-height: 1;
   letter-spacing: normal;
-  text-align: left;
-  color: #000000;
+  text-align: center;
+  color: #253858;
   margin-bottom: 5px;
 `;
 export const PlanName = styled.div`
@@ -200,7 +199,7 @@ export const RiderWrapper = styled.div`
   }
   display: ${props => !props.show && "none"};
   position: relative;
-  padding: 6px 14px 6px 10px;
+  padding: 10px;
   border-radius: 10px;
   background-color: #eff7ff;
   margin-bottom: 32px;
