@@ -44,7 +44,7 @@ export const medicalHistoryRadioArr = [
   },
 ];
 
-const Form3 = ({ handleChange, currentForm,lastForm }) => {
+const Form3 = ({ handleChange, currentForm, lastForm }) => {
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(false);
   const [diseaseArray, setDiseaseArray] = useState([]);
@@ -79,15 +79,10 @@ const Form3 = ({ handleChange, currentForm,lastForm }) => {
   };
 
   const handleSubmit = () => {
-    console.log("aabbcc")
+    console.log("aabbcc");
     if (selected) {
       const medical_history = [...diseaseArray];
-      dispatch(
-        saveForm5UserDetails(medical_history, pushToQuotes)
-
-
-      );
-
+      dispatch(saveForm5UserDetails(medical_history, pushToQuotes));
     } else {
       setCustomErrors("Please Select One");
     }
@@ -130,8 +125,14 @@ const Form3 = ({ handleChange, currentForm,lastForm }) => {
               return (
                 <RadioButton
                   onClick={(e) => {
-                    customErrors && setCustomErrors(false);
-                    setSelected(code);
+                    if (display_name === "No") {
+                      const medical_history = [...diseaseArray];
+                      dispatch(
+                        saveForm5UserDetails(medical_history, pushToQuotes)
+                      );
+                    } else {
+                      setSelected(e.target.value);
+                    }
                   }}
                   id={display_name}
                   value={code}

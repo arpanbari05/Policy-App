@@ -242,6 +242,7 @@ const SeeDetails = ({
   const [brochureUrl, setBrochureUrl] = useState("");
   const [policyWordingUrl, setPolicyWordingUrl] = useState("");
 
+  console.log(show,'sgdagsd')
   useEffect(() => {
     const getdetails = async () => {
       if (show === 4) {
