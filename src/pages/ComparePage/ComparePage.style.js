@@ -167,11 +167,12 @@ export const DetailWrapper = styled.div`
   }
 `;
 export const Title = styled.div`
-  font-size: 16px;
+  color:#505f79;
+                      font-size:14px;
 `;
 export const Value = styled.div`
-
-  font-size: 18px;
+font-weight: 900;
+  font-size: 16px;
 `;
 export const CompanyName = styled.div`
 
@@ -180,9 +181,8 @@ export const CompanyName = styled.div`
   font-style: normal;
   line-height: 1;
   letter-spacing: normal;
-  text-align: left;
   text-align: center;
-  color: #6f7c91;
+  color: #253858;
   margin-bottom: 5px;
 `;
 export const PlanName = styled.div`

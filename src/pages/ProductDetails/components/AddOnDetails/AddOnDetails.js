@@ -20,9 +20,10 @@ import {
   DownloadButton,
   ErrorMessage,
   ListItem,
-  useAddOnDetails,
   useFetchDownloads,
 } from "./helpers";
+
+import useAddOnDetails from "./helpers";
 
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
@@ -31,7 +32,7 @@ const renderTooltipDesc = ({ props, desc }) => (
 function AddOnDetails({ addOn, handleClose }) {
   return (
     <Modal>
-      <AddOnDetailsMobile addOn={addOn} handleClose={handleClose} />
+      {/* <AddOnDetailsMobile addOn={addOn} handleClose={handleClose} /> */}
       <div
         css={`
           position: fixed;
@@ -73,8 +74,8 @@ function AddOnDetails({ addOn, handleClose }) {
 }
 
 AddOnDetails.Body = function Body({ addOn = {} }) {
-  const { status, addOnDetails, handleRetry, downloads, setDownloads } =
-    useAddOnDetails({ addOn });
+
+  const { status, addOnDetails, handleRetry, downloads, setDownloads } = useAddOnDetails({ addOn });
 
   return (
     <div
@@ -114,11 +115,11 @@ AddOnDetails.PlanHighlights = function PlanHighlights({
   sumInsured,
 }) {
   const { features } = addOnDetail.sum_insureds[sumInsured] || {};
-  console.log("hehehehe", features);
+ 
   return (
     <div>
       {features ? (
-        <ul>
+        <ul style={{listStyle:"none"}} >
           {features.map((feature) =>
             feature.feature_value
               ? feature.feature_value.split("\n").map((item) =>
@@ -127,6 +128,7 @@ AddOnDetails.PlanHighlights = function PlanHighlights({
                       css={`
                         margin: 1.6em 0;
                         margin-top: 1em;
+                        
                       `}
                     >
                       {" "}
@@ -355,13 +357,13 @@ AddOnDetails.NavBody = function NavBody({
               : null}
           </Tab.Pane>
         ))}
-        <Tab.Pane eventKey="downloads">
+        {/* <Tab.Pane eventKey="downloads">
           <AddOnDetails.Downloads
             addOn={addOn}
             downloads={downloads}
             setDownloads={setDownloads}
           />
-        </Tab.Pane>
+        </Tab.Pane> */}
       </Tab.Content>
     </Col>
   );
@@ -386,7 +388,7 @@ AddOnDetails.Nav = function Nav({ navItems = [] }) {
         height: calc(60px * ${navItems.length + 1});
       `}
     >
-      <div
+      {/* <div
         css={`
           position: absolute;
           height: 100%;
@@ -404,7 +406,7 @@ AddOnDetails.Nav = function Nav({ navItems = [] }) {
             transform: translateY(calc(100% * ${navItemPosition}));
           `}
         />
-      </div>
+      </div> */}
       <Nav
         className="flex-column"
         css={`
@@ -438,9 +440,13 @@ function NavItem({ eventKey, children, onClick = () => {} }) {
         css={`
           font-weight: normal;
           color: #000;
-          &:hover,
+          &:hover{
+            color: #0e89ff;
+          }
           &.active {
-            color: var(--abc-red);
+            border-left: 4px solid #0a87ff;
+    color: #0e89ff;
+    background-image: linear-gradient(89deg, #e2f0ff 44%, #fff 89%);
             font-weight: 900;
           }
         `}
@@ -469,7 +475,7 @@ AddOnDetails.Header = function Header({ addOn = {}, handleClose = () => {} }) {
   return (
     <div
       css={`
-        background-color: #f1f1f1;
+        background-color: #f5f7f9;
         border-radius: 10px;
         display: flex;
         justify-content: space-between;
@@ -483,7 +489,7 @@ AddOnDetails.Header = function Header({ addOn = {}, handleClose = () => {} }) {
           position: absolute;
           top: 1.2rem;
           right: 1rem;
-          background-color: #fff;
+          color:#485467;
         `}
         onClick={handleCloseClick}
       />
@@ -495,27 +501,33 @@ AddOnDetails.Header = function Header({ addOn = {}, handleClose = () => {} }) {
       >
         <div
           css={`
-            width: 60px;
-            margin-right: 1rem;
+            width: 65px;
+    display: flex;
+    height: 65px;
+    background: white;
+    margin-right: 1rem;
+    align-items: center;
+    justify-content: center;
+    border-radius:3px;
           `}
         >
           <img
             css={`
-              max-width: 100%;
+width: 100%;
             `}
             src={logoSrc}
             alt={alias}
           />
         </div>
-        <div
-          css={`
-            & p {
-              line-height: 20px;
-            }
-          `}
-        >
-          <p>{companyName}</p>
-          <p>{addOnName}</p>
+        <div>
+          <span css={`
+
+            font-size:18px;
+            font-weight:900;
+            color:#364865;
+          `}>{companyName}</span>
+          <br/>
+          <span>{addOnName}</span>
         </div>
       </div>
       <div
@@ -547,15 +559,16 @@ function Detail({ title, value }) {
         }
       `}
     >
-      <p
+      <span
         css={`
           margin-right: 1rem;
           font-weight: normal;
+          font-size:15px;
         `}
       >
         {title}:
-      </p>
-      <p>{value}</p>
+      </span>
+      <span style={{fontWeight:"900"}}>{value}</span>
     </div>
   );
 }

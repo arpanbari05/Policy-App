@@ -8,9 +8,10 @@ import "styled-components/macro";
 import {
   ErrorMessage,
   ListItem,
-  useAddOnDetails,
+
   useFetchDownloads,
 } from "./helpers";
+import useAddOnDetails from "./helpers";
 import AddOnDetails, { addOnDetailsComponents } from "./AddOnDetails";
 
 function AddOnDetailsMobile({ addOn, handleClose, ...props }) {
@@ -157,6 +158,44 @@ function HeaderDetails({ label, value, ...props }) {
   );
 }
 
+function DetailsTitle({ children, isOpen, eventKey }) {
+ 
+  return (
+    <Accordion.Toggle eventKey={eventKey} as="button" style={{ width: "100%" }}>
+      <div
+        css={`
+          background-color: #fff;
+          box-shadow: rgb(134 156 213 / 25%) 0px 10px 20px;
+          border-radius: 3em;
+          padding: 1em 1.2em;
+          font-size: 1.4em;
+          font-weight: 900;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          margin-bottom: 1em;
+        `}
+      >
+        <p
+          css={`
+            color: var(--abc-red);
+          `}
+        >
+          {children}
+        </p>
+        <i
+          className="fa fa-angle-down"
+          css={`
+            font-size: 1.6em;
+            transform: rotate(${isOpen ? "180deg" : 0});
+          `}
+        />
+      </div>
+    </Accordion.Toggle>
+  );
+}
+
 AddOnDetailsMobile.Body = function Body({ addOn, ...props }) {
   const { status, addOnDetails, handleRetry, downloads, setDownloads } =
     useAddOnDetails({ addOn });
@@ -206,42 +245,7 @@ AddOnDetailsMobile.Body = function Body({ addOn, ...props }) {
   );
 };
 
-function DetailsTitle({ children, isOpen, eventKey }) {
-  return (
-    <Accordion.Toggle eventKey={eventKey} as="button" style={{ width: "100%" }}>
-      <div
-        css={`
-          background-color: #fff;
-          box-shadow: rgb(134 156 213 / 25%) 0px 10px 20px;
-          border-radius: 3em;
-          padding: 1em 1.2em;
-          font-size: 1.4em;
-          font-weight: 900;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          width: 100%;
-          margin-bottom: 1em;
-        `}
-      >
-        <p
-          css={`
-            color: var(--abc-red);
-          `}
-        >
-          {children}
-        </p>
-        <i
-          className="fa fa-angle-down"
-          css={`
-            font-size: 1.6em;
-            transform: rotate(${isOpen ? "180deg" : 0});
-          `}
-        />
-      </div>
-    </Accordion.Toggle>
-  );
-}
+
 
 function DetailBody({ addOnDetail, children }) {
   const { name } = addOnDetail;

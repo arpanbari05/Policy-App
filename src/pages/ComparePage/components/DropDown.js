@@ -5,6 +5,7 @@ import { PlanName } from "../ComparePage.style";
 import down from "./../../../assets/images/down-arrow.svg";
 import { v4 as uuid } from "uuid";
 import useOutsiteClick from "../../../customHooks/useOutsideClick";
+import { Translate } from "canvg";
 
 const DropDown = ({ name, sum, value, onChange, covers }) => {
   const [plan, setPlan] = useState(false);
@@ -52,14 +53,31 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
                 name.map((item, i) => (
                   <div
                     key={uuid()}
-                    className={`options__item ${
+                    className={`options__item position-relative ${
                       item == value?.plan ? "checked" : ""
                     }`}
-                    onClick={e => {
+                    onClick={(e) => {
                       setPlan(e.target.innerText);
                     }}
                   >
                     {item}
+                    {
+                      item == value?.plan?(
+                        <span
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        color:"#2293ff"
+                      }}
+                    >
+                        <i class="fas fa-check"></i>
+                    </span>
+                      ):""
+                    }
+                   
+                  
                   </div>
                 ))
               ) : (
@@ -67,7 +85,6 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
                   style={{
                     textAlign: "center",
                     marginTop: "18%",
-              
                   }}
                 >
                   All plans are added
@@ -75,16 +92,18 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
               )
             ) : show === "sum" ? (
               name ? (
-                covers[plan].map(item => (
+                covers[plan].map((item) => (
                   <div
-                    className={`options__item ${
+                    className={`options__item position-relative ${
                       item == value?.sumInsured ? "checked" : ""
                     }`}
-                    onClick={e => {
+                    onClick={(e) => {
                       setSumInsured(e.target.innerText);
                     }}
                   >
+                 
                     {item}
+                   
                   </div>
                 ))
               ) : (
@@ -92,7 +111,6 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
                   style={{
                     textAlign: "center",
                     marginTop: "18%",
-              
                   }}
                 >
                   All plans are added
