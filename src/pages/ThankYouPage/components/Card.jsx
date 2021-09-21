@@ -39,7 +39,7 @@ const Card = ({ values, isLoading }) => {
             </DownloadPolicy>
           )
         ) : (
-          <DownloadPolicy track target="_blank" href={"#"}>
+          <DownloadPolicy track target="_blank" href={"http://fynixnew.benefitz.in/customer/login"}>
             Track Status <img src={paper} alt="track"></img>
           </DownloadPolicy>
         )}
