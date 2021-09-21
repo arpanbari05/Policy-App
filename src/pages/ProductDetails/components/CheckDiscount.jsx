@@ -175,25 +175,8 @@ const CheckDiscount = ({ groupCode }) => {
                           }
 
                           &::after {
-                            color: #fff;
-                            border: 2px solid #e4e7ec;
-                            content: ${selectedTenure === item.tenure
-                              ? '"\f00c"'
-                              : ""};
-                            font-size: 11px;
-                            position: absolute;
-                            bottom: 11px;
-                            right: 11px;
-                            transform: translateX(-50%);
-                            height: 30px;
-                            width: 30px;
-                            line-height: 30px;
-                            text-align: center;
-                            border-radius: 50%;
-                            background: #0a87ff;
-                            box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 25%);
-                            font-family: "font-awesome";
-                            border: 2px solid #fff;
+                            
+                          
 
                             @media (min-width: 769px) and (max-width: 900px) {
                               left: 50%;
@@ -235,7 +218,32 @@ const CheckDiscount = ({ groupCode }) => {
                             border-radius: 11px;
                           }
                         `}
-                      >
+                      >{
+                        selectedTenure === item.tenure ?
+                        (
+                          <span css={`
+                     font-size: 11px;
+                            position: absolute;
+                            bottom: 11px;
+                            right: 11px;
+                            transform: translateX(-50%);
+                            height: 30px;
+                            width: 30px;
+                            line-height: 30px;
+                            text-align: center;
+                            border-radius: 50%;
+                            background: #0a87ff;
+                            box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 25%);
+                            font-family: "font-awesome";
+                            border: 2px solid #fff;
+                      color: #fff;
+                            border: 2px solid #e4e7ec;
+                      `}>
+                      <i class="fas fa-check"></i>
+                      </span>
+                        ):""
+                      }
+                      
                       {
                         item?.tenure !== 1?(
                           <div

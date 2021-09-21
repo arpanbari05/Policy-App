@@ -46,7 +46,7 @@ function RiderCard({
           css={`
             /* transition: all 0.33s; */
             max-height: ${showMore ? "300px" : "max-content"};
-            min-height: 145px;
+            min-height: fit-content;
             /* &:hover {
         max-height: 300px;
       } */
@@ -63,17 +63,19 @@ function RiderCard({
             `}
           >
             <div
+              className="riderName_productDetail_custmizePlan"
               css={`
-                color: #0a87ff;
+                color: ${isRiderSelected ? `#0a87ff` : `grey`};
 
                 font-weight: 900;
-                font-size: 18px;
+                font-size: 15px;
                 line-height: normal;
 
                 @media (max-width: 1024px) {
                   white-space: ${productPage ? "normal" : "nowrap"};
                   font-size: 18px;
                 }
+
                 ${small},${tablet} {
                   font-size: 13px;
                   font-weight: 900;
@@ -167,26 +169,29 @@ font-weight:bold;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 23px;
+                font-size: 20px;
                 font-weight: 900;
-                padding: 10px 28px;
+                padding: 10px 0;
                 border-radius: 0.25em;
                 cursor: pointer;
-                background-color: var(--light-pink);
+                background-color: ${isRiderSelected ? `#eff7ff` : `#f3f3f3`};
                 margin: 0 3px;
-                width: 137px;
-                padding-left: 7px;
+                width: 160px;
                 min-width: fit-content;
                 border: none;
-                background-color: #eff7ff;
+
                 & span {
                   position: relative;
-                  top: 6px;
-                  left: 10px;
+                  top: 4px;
                 }
               `}
             >
-              {riderPremium}
+              {/* <span css={`
+            display:flex;
+            align-items:center;
+            `}> */}
+              {`₹ ${riderPremium}`}
+              {/* </span> */}
               <span>
                 <Checkbox checked={isRiderSelected} />
               </span>
@@ -244,7 +249,7 @@ function RiderDescription({
           ? description
           : windowWidth < 400
           ? description.slice(0, 40)
-          : description.slice(0, 90)}
+          : description.slice(0, 40)}
         {description.length > 90 ? (
           <p
             css={`
@@ -280,24 +285,27 @@ const RiderCardWrap = styled.div`
   cursor: pointer;
   &:hover {
     border-color: #0d6efd;
-  }
-  box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
+    .riderName_productDetail_custmizePlan {
+      color: #0a87ff;
+    }
+    box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
 
-  background-color: #fff;
+    background-color: #fff;
 
-  ${mobile} {
-    flex: 0 0 100%;
-    margin: 10px 0;
-    padding: 0px 6px;
-  }
+    ${mobile} {
+      flex: 0 0 100%;
+      margin: 10px 0;
+      padding: 0px 6px;
+    }
 
-  ${small} {
-    border-radius: 11px;
-    padding: 12px 0 9px 0;
-  }
+    ${small} {
+      border-radius: 11px;
+      padding: 12px 0 9px 0;
+    }
 
-  @media (max-width: 900px) {
-    padding: 0px 6px;
+    @media (max-width: 900px) {
+      padding: 0px 6px;
+    }
   }
 `;
 

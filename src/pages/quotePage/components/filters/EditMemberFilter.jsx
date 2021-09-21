@@ -589,15 +589,19 @@ const EditMemberFilter = () => {
         className="plans_for plans_for_editable d-flex align-items-center"
         onClick={() => setShowModal(true)}
       >
-        <div className="yellow_start_line"></div>Members
-        <PencilWrapper className="d-flex justify-content-center align-items-center">
-          <PencilIcon
+        <div className="yellow_start_line"></div>
+        <span css={`
+          font-size: 17px;
+        `}>Members</span>
+        <PencilWrapper className="d-flex justify-content-center align-items-center" style={{color:"#0a87ff"}}>
+          {/* <PencilIcon
             style={{
               color: "#0a87ff",
 
             }}
-            width="17px"
-          />
+            width="15px"
+          /> */}
+           <i class="fas fa-pen"></i>
         </PencilWrapper>
       </span>
 
@@ -610,8 +614,8 @@ export default EditMemberFilter;
 
 const PencilWrapper = styled.div`
   background-color: white;
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   border-radius: 100%;
   margin: 0px 5px;
 `;

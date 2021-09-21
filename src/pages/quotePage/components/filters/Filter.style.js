@@ -5,9 +5,15 @@ export const Filter = styled.div`
   
   &:hover{
     background-color:#eef1f4;
+    :not(:last-child) {
+    border-right: none;
+    
+  }
+ 
+ 
   }
   :not(:last-child) {
-    border-right: 1px solid #cacaca;
+    border-right: 1px solid #eef1f4;
   }
   .filter_head {
     color: #808080;
@@ -22,6 +28,15 @@ export const Filter = styled.div`
       top: 50%;
       transform: translateY(-50%);
       right: 0px;
+    }
+  }
+
+  @media(max-width: 1399px){
+    .filter_head{
+font-size:13px;
+    }
+    .filter_sub_head{
+font-size:14px;
     }
   }
 `;

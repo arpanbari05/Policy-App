@@ -34,7 +34,8 @@ function GoBackButton({ groupCode, ...props }) {
       }
       css={`
         width: max-content;
-        margin-left: 6px;
+        padding: 0 !important;
+        margin-right: 10px;
         margin-bottom: 10px;
         color: var(--abc-red);
         font-size: 17px;
@@ -50,10 +51,10 @@ function GoBackButton({ groupCode, ...props }) {
         className="d-flex justify-content-center align-items-center"
         css={`
           background: #f1f4f8;
-          width: 35px;
+          width: 45px;
           margin-right: 20px;
           border-radius: 100%;
-          height: 35px;
+          height: 45px;
           color: #707b8b;
         `}
       >
@@ -177,7 +178,7 @@ const ProductDetails = () => {
           `}
         >
           <Col
-            xl={3}
+            xl={4}
             lg={12}
             md={12}
             sm={12}
@@ -191,7 +192,7 @@ const ProductDetails = () => {
             <ReviewCart companies={companies} groupCode={groupCode} />
           </Col>
           <Col
-            xl={9}
+            xl={8}
             lg={12}
             // className="wow fadeInLeft animated"
             // data-wow-delay="0.9s"

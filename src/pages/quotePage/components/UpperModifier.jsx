@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import "styled-components/macro"
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
@@ -14,7 +15,8 @@ import {
   setSelectedGroup,
 } from "../quote.slice";
 
-const UpperModifier = () => {
+const UpperModifier = ({sendQuote}) => {
+  const successMsg = useSelector(({comparePage}) => comparePage.emailStatus)
   const dispatch = useDispatch();
   const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
   const { companies } = useSelector(
@@ -95,6 +97,10 @@ const UpperModifier = () => {
                       });
                       dispatch(setSelectedGroup(group));
                     }}
+                    css={`
+                      text-transform:capitalize;
+                      font-weight: 900 !important;
+                    `}
                   >
                     {membersText}
                     <div className="active_bar"></div>
@@ -123,6 +129,8 @@ const UpperModifier = () => {
       <ShareQuoteModal
         show={showShareQuoteModal}
         handleClose={() => setShowShareQuoteModal(false)}
+        imageSend={sendQuote}
+        emailStatus={successMsg}
       />
     </>
   );

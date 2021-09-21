@@ -22,7 +22,7 @@ function CartDetailRow({ title, value }) {
         justify-content: space-between;
         align-items: center;
         line-height: 26px;
-
+width:100%;
         ${mobile} {
           flex-direction: column;
           align-items: flex-start;
@@ -34,6 +34,7 @@ function CartDetailRow({ title, value }) {
         css={`
           font-size: 13px;
           color: #555555;
+          width:50%;
           ${mobile} {
             color: #5c5959;
           }
@@ -50,7 +51,8 @@ function CartDetailRow({ title, value }) {
         css={`
           font-weight: 900;
           font-size: 13px;
-
+          width:50%;
+          text-align:right;
           ${small} {
             font-size: 12px;
             line-height: 14px;
@@ -92,27 +94,7 @@ function AddOnDetailsRow({ addOn }) {
         align-items: center;
       `}
     >
-      {/* <button
-        css={`
-          margin: 12px 6px 12px 0;
-        `}
-        onClick={handleRemoveAddOnClick}
-      >
-        <i
-          className="fa fa-close"
-          css={`
-            font-size: 11px;
-            color: #8b9ab0;
-            background: #c2d0d973;
-            width: 20px;
-            height: 20px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          `}
-        />
-      </button> */}
+      
       <div
         css={`
           width: 70px;
@@ -147,16 +129,39 @@ function AddOnDetailsRow({ addOn }) {
   return (
     <CartDetailRow
       title={logoTitle}
-      value={
-        <p
+      value={(
+        <div css={`
+        display: flex;
+        align-items:center;
+        justify-content: flex-end;
+        `}>
+        <span
           css={`
-            width: 60px;
             text-align: right;
           `}
         >
           {totalPremium}
-        </p>
-      }
+        </span>
+        <span
+        css={`
+          margin-left:20px;
+          font-size: 11px;
+            color: #8b9ab0;
+            background: #c2d0d973;
+            width: 25px;
+            height: 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `}
+        onClick={handleRemoveAddOnClick}
+        
+      >
+       <i class="fas fa-times"></i>
+      </span> 
+        </div>
+      )}
     />
   );
 }
@@ -547,6 +552,8 @@ const ReviewCart = ({ groupCode }) => {
           border-radius: 12px;
           color: #000;
 
+          overflow: hidden;
+
           ${mobile} {
             width: 100%;
             position: fixed;
@@ -588,6 +595,7 @@ const ReviewCart = ({ groupCode }) => {
             justify-content: space-between;
             /* border-bottom: 1px solid #ddd; */
             padding-bottom: 10px;
+            position: relative;
 
             ${mobile} {
               justify-content: space-between;
@@ -597,6 +605,18 @@ const ReviewCart = ({ groupCode }) => {
             }
           `}
         >
+          <span
+            css={`
+              width: 100px;
+              height: 100px;
+              border-radius: 100%;
+              background: #eff7ff;
+              position: absolute;
+              top: -59px;
+              z-index: -1;
+              left: -56px;
+            `}
+          ></span>
           <div
             css={`
               font-size: 20px;
@@ -642,12 +662,12 @@ const ReviewCart = ({ groupCode }) => {
               css={`
                 display: inline-block;
                 text-transform: capitalize;
-
+color:#616161;
                 margin-right: 12px;
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                font-size: 15px;
+                font-size: 12px;
                 font-weight: 900;
 
                 ${mobile} {
@@ -661,7 +681,7 @@ const ReviewCart = ({ groupCode }) => {
                 }
               `}
             >
-              {membersList.join(", ")}
+              {membersList.join(", ").legth > 10?`${membersList.join(", ").slice(0,10)} ...}`:membersList.join(", ")}
             </div>
             <div
               css={`
@@ -818,12 +838,13 @@ const ReviewCart = ({ groupCode }) => {
           >
             <div
               css={`
-                max-width: 80px;
+                max-width: 30%;
+                height: auto;
                 background-color: #fff;
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
-                padding: 2px 0px;
+                padding: 2px 10px;
                 border-radius: 2px;
 
                 ${small} {
@@ -853,7 +874,7 @@ const ReviewCart = ({ groupCode }) => {
               display: flex;
               width: 100%;
               align-items: flex-start;
-
+              justify-content:space-between;
               border-bottom: 1px solid #ddd;
               padding: 20px 0px;
             `}
@@ -922,11 +943,13 @@ const ReviewCart = ({ groupCode }) => {
               border-radius: 2px;
               background-color: #f7f7f7;
               font-weight: 900;
+              margin-bottom: 100px;
             `}
           >
             <div
               css={`
                 color: #6d798f;
+
               `}
             >
               Total Premium <br />
@@ -943,14 +966,15 @@ const ReviewCart = ({ groupCode }) => {
           </div>
           <div
             css={`
-              bottom: -45px;
+              bottom: 0px;
               left: 0px;
               width: 100%;
+              
               position: absolute;
               border-top-left-radius: 0px;
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 8px;
-        border-bottom-left-radius: 8px;
+              border-top-right-radius: 0px;
+              border-bottom-right-radius: 8px;
+              border-bottom-left-radius: 8px;
             `}
           >
             {hasNextGroupProduct ? (
@@ -964,6 +988,7 @@ const ReviewCart = ({ groupCode }) => {
                 css={`
                   background-color: #0c88ff;
                   color: #fff;
+                  margin: 0 !important;
                   min-width: 100%;
                   border-radius: 2px;
                   box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
@@ -975,7 +1000,7 @@ const ReviewCart = ({ groupCode }) => {
                 `}
                 onClick={handleReviewCartClick}
                 id="review-cart-button"
-              // className="btn"
+              className="btn"
               >
                 {/* Review Your Cart <i className="flaticon-next" /> */}
                 Review Your Cart
@@ -1053,15 +1078,13 @@ export function ReviewCartButton() {
       ) : (
         <button
           css={`
-           
-            
             min-width: 219px;
             width: 100%;
-        color: white;
+            color: white;
 
-        background-color: #0c88ff;
+            background-color: #0c88ff;
             border-radius: 2px;
-            
+
             font-size: 18px;
             font-weight: 600px;
             height: 44px;
@@ -1099,18 +1122,19 @@ function ProceedButton({
 }) {
   return (
     <div
+    onClick={onProceedClick}
       css={`
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 10px;
-
+        margin: 0 !important;
         width: 100%;
         color: white;
 
         background-color: #0c88ff;
         border: 1px dashed var(--abc-red);
-        
+
         margin-top: 20px;
       `}
       id="review-cart-button"
@@ -1132,13 +1156,14 @@ function ProceedButton({
           {`Plan for ${members}`}
         </div>
       </div>
-      <button
-        onClick={onProceedClick}
+      <span
+        
         css={`
           width: 100px;
           text-align: center;
           background-color: var(--abc-red);
           padding: 6px 12px;
+
           color: #fff;
           border: 1px solid var(--abc-red);
           font-size: 20px;
@@ -1150,7 +1175,7 @@ function ProceedButton({
         `}
       >
         {loading ? <i className="fas fa-circle-notch rotate" /> : "Proceed"}
-      </button>
+      </span>
     </div>
   );
 }

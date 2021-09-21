@@ -23,14 +23,14 @@ const BackButton = ({
       name="next"
       value={value}
       onClick={onClick}
-      className={`styled__button ${customClass}`}
+      className={`styled__button ${customClass} d-flex align-items-center`}
       width={width}
       height={height}
       bg={bg}
-      color={color}
+      color={color?color:`#253858`}
       css={styledCss}
     >
-      {icon ? icon : <IoArrowBackSharp />} {value ? value : children}
+      {icon ? icon : <IoArrowBackSharp />}<div style={{    padding: "7px 0 0 10px"}}> {value ? value : children}</div>
     </Button>
   );
 };

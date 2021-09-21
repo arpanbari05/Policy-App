@@ -381,17 +381,12 @@ export function CloseButton({ css = ``, ...props }) {
         height: 36px;
         width: 36px;
         border-radius: 50%;
-        border: 1px solid #ddd;
+        border: none;
         ${css}
       `}
       {...props}
     >
-      <i
-        className="fa fa-close"
-        css={`
-          line-height: 1rem;
-        `}
-      />
+      <i class="fas fa-times"></i>
     </button>
   );
 }

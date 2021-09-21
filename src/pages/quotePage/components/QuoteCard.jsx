@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Col, Collapse, Row } from 'react-bootstrap';
+import { Col, Collapse, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import "styled-components/macro"
 import { maxbupa } from '../../../assets/images'
@@ -32,7 +32,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
     const [activeCover, setActiveCover] = useState(0);
     const { multiYear } = useSelector(state => state.quotePage.filters);
     console.log("active cover: " + activeCover)
-    console.log("dfeature", mergedQuotes.length)
+    console.log("dfeature", mergedQuotes)
 
     let additionalPremium = 0;
 
@@ -93,7 +93,11 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
     };
 
     const tenure = parseInt(multiYear) === 1 ? "" : parseInt(multiYear);
-
+    const renderTooltip = description => (
+        <Tooltip >
+            {description}
+        </Tooltip>
+    );
     return (
         <Outer>
             <div className="col-md-12 d-flex">
@@ -121,36 +125,74 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                             {mergedQuotes[0]?.features[activeCover].map((item, i) => {
                                 return (
                                     <>
-                                        {item.name === "Room Rent" && (<TextWrapper>
-                                            <SmallLabel>Room Rent</SmallLabel>
-                                            <ValueText>{item.value}</ValueText>
-                                        </TextWrapper>)}
-                                        {item.name === "No Claim Bonus" && (<TextWrapper>
-                                            <SmallLabel>No Claim Bonus</SmallLabel>
-                                            <ValueText>{item.value}</ValueText>
-                                        </TextWrapper>)}
+                                        {item.name === "Room Rent" && (
+                                            <OverlayTrigger className=""
+                                                placement={"right"}
+                                                overlay={renderTooltip(item.short_description)}
+                                            >
+                                                <TextWrapper>
+                                                    <SmallLabel>Room Rent</SmallLabel>
+                                                    <ValueText>{item.value}</ValueText>
+                                                </TextWrapper>
+                                            </OverlayTrigger>
+                                        )}
+                                        {item.name === "No Claim Bonus" && (
+
+                                            <OverlayTrigger className=""
+                                                placement={"right"}
+                                                overlay={renderTooltip(item.description)}
+                                            ><TextWrapper>
+                                                    <SmallLabel>No Claim Bonus</SmallLabel>
+                                                    <ValueText>{item.value}</ValueText>
+                                                </TextWrapper>
+                                            </OverlayTrigger>
+                                        )}
 
                                     </>
                                 )
                             })}
+                            <OverlayTrigger className=""
+                                placement={"right"}
+                                overlay={renderTooltip(mergedQuotes[0]?.features[activeCover][0].description)}
+                            >
+                                <TextWrapper>
+                                    <SmallLabel>Cashless Hospitals</SmallLabel>
+                                    <ValueText
+                                        onClick={() => handleSeeDetailsClick(4)}
+                                    >{mergedQuotes[0]?.cashlessHospitalsCount[activeCover]}
+                                        <span> <i class="fas fa-chevron-right " >
+                                        </i></span>
 
-                            <TextWrapper>
-                                <SmallLabel>Cashless Hospitals</SmallLabel>
-                                <ValueText>{mergedQuotes[0]?.cashlessHospitalsCount[activeCover]}</ValueText>
-                            </TextWrapper>
+                                    </ValueText>
+                                </TextWrapper>
+                            </OverlayTrigger>
                         </div>
                         <div className="d-flex justify-content-start">
                             {mergedQuotes[0]?.features[activeCover].map((item, i) => {
                                 return (
                                     <>
-                                        {item.name === "Co-Payment" && (<TextWrapper>
-                                            <SmallLabel>Co-Payment</SmallLabel>
-                                            <ValueText>{item.value}</ValueText>
-                                        </TextWrapper>)}
-                                        {item.name === "Pre Existing Disease" && (<TextWrapper>
-                                            <SmallLabel>Pre Existing Disease</SmallLabel>
-                                            <ValueText>{item.value}</ValueText>
-                                        </TextWrapper>)}
+                                        {item.name === "Co-Payment" && (
+
+                                            <OverlayTrigger className=""
+                                                placement={"right"}
+                                                overlay={renderTooltip(item.short_description)}
+                                            >
+                                                <TextWrapper>
+                                                    <SmallLabel>Co-Payment</SmallLabel>
+                                                    <ValueText>{item.value}</ValueText>
+                                                </TextWrapper>
+                                            </OverlayTrigger>)}
+                                        {item.name === "Pre Existing Disease" && (
+                                            <OverlayTrigger className=""
+                                                placement={"right"}
+                                                overlay={renderTooltip(item.short_description)}
+                                            >
+                                                <TextWrapper>
+                                                    <SmallLabel>Pre Existing Disease</SmallLabel>
+                                                    <ValueText>{item.value}</ValueText>
+                                                </TextWrapper>
+                                            </OverlayTrigger>
+                                        )}
 
                                     </>
                                 )
@@ -158,36 +200,44 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                         </div>
 
                     </EachWrapper>
-                    <CenterBottomToggle
+                    {mergedQuotes.length - 1 !== 0 &&
+                        <CenterBottomToggle
 
-                    >
-                        <SeeText
-                            css={`
+                        >
+                            <SeeText
+                                css={`
                             border-bottom: none !important;
                         `}
-                            onClick={() => {
-                                setShow(!show);
-                            }}
-                        >
+                                onClick={() => {
+                                    setShow(!show);
+                                }}
+                            >
 
-                            {!show ? (
-                                <>
-                                    <span>
-                                        {mergedQuotes.length - 1 === 0 ? "No" : mergedQuotes.length - 1}
-                                        {" "}
+                                {!show ? (
+                                    <>
+                                       {mergedQuotes.length-1 >1 ? (
+                                       <span>
+                                            {mergedQuotes.length - 1}
+                                            {" "}
 
-                                        more plans </span>
-                                    <i class="fas fa-chevron-down"></i>
-                                </>
-                            ) :
-                                (<>
-                                    <span>hide plans </span>
-                                    <i class="fas fa-chevron-up"></i>
-                                </>
-                                )}
+                                            More Plans </span>):(
+                                                <span>
+                                                {mergedQuotes.length - 1}
+                                                {" "}
+    
+                                                More Plan </span>
+                                            )}
+                                        <i class="fas fa-chevron-down"></i>
+                                    </>
+                                ) :
+                                    (<>
+                                        <span>Hide Plans </span>
+                                        <i class="fas fa-chevron-up"></i>
+                                    </>
+                                    )}
 
-                        </SeeText>
-                    </CenterBottomToggle>
+                            </SeeText>
+                        </CenterBottomToggle>}
                 </div>
                 <div className="col-md-3">
                     <EachWrapper>
@@ -277,7 +327,10 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                             <RadioLabel
                                 //dynamic id
                                 htmlFor={`compare_${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`}
-                            >
+                           css={`
+                           color: #808080;
+                           `}
+                           >
                                 Compare
                             </RadioLabel>
                         </div>
@@ -290,6 +343,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                     <div className="card-body card_body_padding margin_bottom_more_plan_card"
                         css={`
                     margin-top:0px;
+                    padding:0px;
                     `}
                     >
                         <Col md={12}>

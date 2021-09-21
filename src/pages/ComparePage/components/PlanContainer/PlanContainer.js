@@ -53,43 +53,54 @@ const PlanContainer = ({
     <>
       {product?.name ? (
         <Row
-          className="price_IC_box text-center "
+          className="price_IC_box text-center"
           css={`
             display: flex;
             align-items: center;
-            border-radius: 4px;
-            height: 185px;
-            width: 248px;
-            margin: 0 12px;
+            height: 200px;
+            width: 100%;
+            max-width:250px;
+            margin:0 !important;
             justify-content: space-around;
-            border: 2px solid #0a87ff;
+            border: 2px solid white;
+            box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
            position:relative;
+           :hover{
+            border: 2px solid #0a87ff;
+           }
             `}
         >
           <RemoveCross
             onClick={() => removePlan(`${product.id}${sum_insured}`)}
           >
-            <span>x</span>
+            <i class="fas fa-times"></i>
           </RemoveCross>
           <Col
             md={12}
             style={{
               display: "flex",
-              justifyContent: "flex-start",
+              justifyContent: "center",
             }}
           >
             <span
               css={`
-                width: 72px;
+               width: 90px;
+    display: flex;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
               `}
             >
-              <ImageLogo src={images[company_alias]} alt="" />
+              <img src={images[company_alias]} alt="" className="w-100"/>
             </span>
             {/* Dynamic ic name */}
-            <WrapperCompanyDetails>
-              <CompanyName>{product.company.name}</CompanyName>
+            {/* <WrapperCompanyDetails>
+              
               <PlanName className="hideTBody">{product.name}</PlanName>
-            </WrapperCompanyDetails>
+            </WrapperCompanyDetails> */}
+          </Col>
+          <Col md={12}>
+          <CompanyName>{product.company.name}</CompanyName>
           </Col>
           <Col md={12}>
             <CompareBtn
@@ -129,12 +140,15 @@ const PlanContainer = ({
         </Row>
       ) : (
         <Row>
-          <Col md={12}>
+          <div>
             <button
               onClick={() => setShow(true)}
               css={`
                 border: none;
                 background: none;
+                height: 200px;
+            width: 100%;
+            max-width:250px;
               `}
             >
               <div
@@ -144,9 +158,9 @@ const PlanContainer = ({
                   box-shadow: none;
                   cursor: pointer;
                   display: block;
-                  padding-top: 40px;
+                  padding-top: 50px;
                   transition: 0.45s;
-                  height: 160px;
+                  height: 100%;
                   width: 248px;
                   color: #0a87ff;
                   border-radius: 5px;
@@ -164,6 +178,7 @@ const PlanContainer = ({
                     css={`
                       border: 1px dashed #0a87ff;
                       width: 83px;
+                      background: #eaeff2;
                       height: 65px;
                       display: flex;
                       justify-content: center;
@@ -176,7 +191,7 @@ const PlanContainer = ({
                   </div>
                 </div>
                 <div
-                  style={{ fontWeight: "900" }}
+                  style={{ fontWeight: "900", marginTop:"15px" }}
                   className="add-compare text-center"
                 >
                   Add plans
@@ -194,7 +209,7 @@ const PlanContainer = ({
 							</select> */}
               </div>
             </button>
-          </Col>
+          </div>
         </Row>
       )}
     </>
