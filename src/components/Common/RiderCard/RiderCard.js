@@ -65,7 +65,7 @@ function RiderCard({
             <div
               className="riderName_productDetail_custmizePlan"
               css={`
-                color: ${isRiderSelected ? `#0a87ff` : `grey`};
+                color: #253858;
 
                 font-weight: 900;
                 font-size: 15px;
@@ -228,7 +228,7 @@ function RiderDescription({
         }
       `}
     >
-      <p
+      <span
         css={`
           line-height: normal;
           font-weight: 400;
@@ -251,7 +251,7 @@ function RiderDescription({
           ? description.slice(0, 40)
           : description.slice(0, 40)}
         {description.length > 90 ? (
-          <p
+          <span
             css={`
               color: #0d6efd;
               display: ${showMore ? "block" : "inline"};
@@ -266,9 +266,9 @@ function RiderDescription({
             type="button"
           >
             {showMore ? "Show less" : "...Show more"}
-          </p>
+          </span>
         ) : null}
-      </p>
+      </span>
     </div>
   );
 }
@@ -280,7 +280,7 @@ const RiderCardWrap = styled.div`
   margin: 10px 0;
   border: 1px solid
     ${({ isRiderSelected }) => (isRiderSelected ? "#0d6efd;" : "#d5dce5")};
-  padding: 10px 16px;
+  padding: 10px 10px;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
   cursor: pointer;
   &:hover {

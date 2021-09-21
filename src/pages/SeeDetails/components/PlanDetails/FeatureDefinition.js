@@ -57,7 +57,7 @@ function FeatureDefinition({ data }) {
               align-items: center;
             `}
           >
-            <div
+            {/* <div
               css={`
                 width: 40px;
                 height: 40px;
@@ -70,10 +70,10 @@ function FeatureDefinition({ data }) {
               `}
             >
               <img src={heartImg} alt="heart_img" className="w-100" />
-            </div>
+            </div> */}
             <div
               css={`
-                margin-left: 75px;
+                /* margin-left: 5px; */
               `}
             >
               <h5

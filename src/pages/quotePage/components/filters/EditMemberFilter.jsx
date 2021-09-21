@@ -43,7 +43,7 @@ const CustomDropdown = ({ member }) => {
   );
 };
 
-const FilterModal = ({ show, handleClose }) => {
+const FilterModal = ({ show, handleClose ,history}) => {
   const { error, proposerDetails } = useSelector((state) => state.greetingPage);
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const { data } = frontendData || [""];
@@ -302,14 +302,14 @@ const FilterModal = ({ show, handleClose }) => {
     }
   };
 
-  const history = useHistory();
+  // const history = useHistory();
 
-  const handleUpdate = (e) => {
+  const handleUpdate = e => {
     e.preventDefault();
 
     const ageErrorArray = [];
-    insurerCBXArray.forEach((data) => {
-      const hasAge = insurerDDArray.some((item) => item.insurer === data);
+    insurerCBXArray.forEach(data => {
+      const hasAge = insurerDDArray.some(item => item.insurer === data);
       if (!hasAge) {
         ageErrorArray.push(data);
       }
@@ -325,29 +325,21 @@ const FilterModal = ({ show, handleClose }) => {
     }
     if (ageErrorArray.length < 1 && !errors && insurerDDArray.length > 0) {
       const dataArray = [];
-      insurerDDArray.forEach((data) => {
-        const i = membersArray.findIndex((x) => x.code === data.insurer);
+      insurerDDArray.forEach(data => {
+        const i = membersArray.findIndex(x => x.code === data.insurer);
         dataArray.push({
           type: `${membersArray[i]?.code}`,
-          age: data.value.endsWith("months")
-            ? `0.${data.value.split(" ")[0]}`
-            : `${data.value.split(" ")[0]}`,
+          age: data.value.endsWith("months") ? `0.${data.value.split(" ")[0]}`: `${data.value.split(" ")[0]}` ,
         });
       });
 
       dispatch(
         updateUserMembersDetails(
           { ...proposerDetails, members: dataArray },
-          history
-        )
+          history,handleClose
+        ),
       );
-
-      console.log(dataArray, "dataArray");
-      dataArray.length === 1 ? dispatch(setFilters({ planType: "Individual" })) : dispatch(setFilters({ planType: "Family Floater" }))
-      handleClose()
-
     }
-
   };
 
   return (
@@ -463,6 +455,7 @@ const FilterModal = ({ show, handleClose }) => {
 };
 
 const EditMemberFilter = () => {
+  const history = useHistory()
   // const { error } = useSelector((state) => state.greetingPage);
   // const { frontendData } = useSelector((state) => state.frontendBoot);
   // const { data } = frontendData || [""];
@@ -605,7 +598,7 @@ const EditMemberFilter = () => {
         </PencilWrapper>
       </span>
 
-      <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
+      <FilterModal show={showModal} history={history} handleClose={() => setShowModal(false)} />
     </>
   );
 };

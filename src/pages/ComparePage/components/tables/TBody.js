@@ -584,7 +584,7 @@ const TBody = ({
                 })}
               >
                 <th scope="row ">
-                  <span className="tbody_bg_border_th ">Sum Insured</span>
+                  <span className="tbody_bg_border_th">Sum Insured</span>
                 </th>
               </OverlayTrigger>
               <td>

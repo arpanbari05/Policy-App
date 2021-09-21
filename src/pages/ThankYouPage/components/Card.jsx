@@ -10,7 +10,7 @@ import repolicy from "./../../../assets/svg/repolicy.svg";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 
 const Card = ({ values, isLoading }) => {
-  const { frontendData } = useSelector(state => state.frontendBoot);
+  const { frontendData } = useSelector((state) => state.frontendBoot);
   return values?.product ? (
     <CardWrapper>
       <LogoWrapper>
@@ -21,7 +21,7 @@ const Card = ({ values, isLoading }) => {
           }
           alt="logo"
           css={`
-          width:50px;
+            width: 50px;
           `}
         ></img>
       </LogoWrapper>
@@ -39,13 +39,7 @@ const Card = ({ values, isLoading }) => {
             </DownloadPolicy>
           )
         ) : (
-          <DownloadPolicy
-            track
-            target="_blank"
-            href={
-              "https://cpprod.adityabirlainsurancebrokers.com/sign-in?rurl=https://cpprod.adityabirlainsurancebrokers.com/"
-            }
-          >
+          <DownloadPolicy track target="_blank" href={"#"}>
             Track Status <img src={paper} alt="track"></img>
           </DownloadPolicy>
         )}
@@ -86,10 +80,12 @@ const Card = ({ values, isLoading }) => {
       {values?.status === "underwriting_approval" && (
         <StatusWrapper>
           <DocImage>
-            <img src={repolicy} alt="repolicy"
+            <img
+              src={repolicy}
+              alt="repolicy"
               css={`
-              width: 36px;
-            `}
+                width: 36px;
+              `}
             ></img>
           </DocImage>
           <DocMessage>
@@ -103,9 +99,11 @@ const Card = ({ values, isLoading }) => {
           <DocImage>
             <img
               css={`
-             width: 36px;
-           `}
-              src={mail} alt="mail"></img>
+                width: 36px;
+              `}
+              src={mail}
+              alt="mail"
+            ></img>
           </DocImage>
           <DocMessage>
             You will receive your policy in your inbox within 4 working hours.
@@ -216,7 +214,7 @@ const CompanyName = styled.div`
   /* font-family: pf_handbook_proregular; */
   font-weight: 900;
   font-size: 18px;
-  padding: ${props => (props.reducePadding ? "10px" : "14px")} 0 19px 10px;
+  padding: ${(props) => (props.reducePadding ? "10px" : "14px")} 0 19px 10px;
   line-height: 22px;
   max-width: 220px;
   @media (max-width: 1023px) {
@@ -228,8 +226,8 @@ const DownloadPolicy = styled.a`
   height: 58px;
   border-radius: 16px;
   background-color: #0a87ff;
-  padding: ${props => (props.track ? "14px" : "12px")} 22px 14px;
-  text-align: ${props => props.track && "center"};
+  padding: ${(props) => (props.track ? "14px" : "12px")} 22px 14px;
+  text-align: ${(props) => props.track && "center"};
   /* font-family: pf_handbook_proregular; */
   font-weight: 600;
   font-size: 20px;
@@ -259,7 +257,6 @@ const Title = styled.div`
   margin-bottom: 2px;
   @media (max-width: 1023px) {
     font-size: 13px;
-  
   }
 `;
 
@@ -269,7 +266,7 @@ const Value = styled.div`
   text-transform: capitalize;
   user-select: all;
   word-break: break-all;
-  //text-align: ${props => props.center && "center"};
+  //text-align: ${(props) => props.center && "center"};
   // white-space: pre;
   @media (max-width: 1023px) {
     font-size: 11px;
