@@ -12,7 +12,7 @@ function ProductCard({ groupCode }) {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
   const { product, totalPremium } = useCartProduct(groupCode || groupCodeParam);
-console.log(product,"product")
+
   if (!product) return <p>Empty Cart</p>;
 
   const {
@@ -36,7 +36,7 @@ console.log(product,"product")
         align-items: center;
         justify-content: space-between;
         /* padding: 0 20px; */
-        border-radius: 12px;
+        border-radius: 3px;
         padding: 8px 10px;
         background: white;
         border: 1px solid #dfdfdf;
@@ -80,7 +80,7 @@ console.log(product,"product")
           css={`
             margin-left: 18px;
 
-            min-width:fit-content;
+            min-width: fit-content;
             max-width: 250px;
 
             ${mobile} {
@@ -90,10 +90,9 @@ console.log(product,"product")
         >
           <span
             css={`
-             
-    font-size: 17px;
-    font-weight: 600;
-    color: #394a68;
+              font-size: 17px;
+              font-weight: 600;
+              color: #394a68;
               ${mobile} {
                 font-size: 16px;
                 font-weight: 600;
@@ -114,7 +113,7 @@ console.log(product,"product")
           <span
             css={`
               color: #5a6981;
-              font-size: 15px;
+              font-size: 13px;
               /* width: 90px; */
 
               ${mobile} {
@@ -132,9 +131,9 @@ console.log(product,"product")
             Cover :
           </span>
           <span
-          className="detail_amount"
+            className="detail_amount"
             css={`
-              font-size: 15px;
+              font-size: 13px;
               color: #565657;
               font-weight: 600;
               ${mobile} {
@@ -150,20 +149,20 @@ console.log(product,"product")
               }
             `}
           >
-            {" "}{amount(product.sum_insured)}
+            {" "}
+            {amount(product.sum_insured)}
           </span>
         </div>
 
         <div className="detail_child">
           <span
-          
             css={`
               color: #5a6981;
-              font-size: 15px;
+              font-size: 11px;
               /* width: 90px; */
 
               ${mobile} {
-                font-size: 14px;
+                font-size: 12px;
                 font-weight: 400;
               }
 
@@ -177,9 +176,9 @@ console.log(product,"product")
             Total Premium :
           </span>
           <span
-           className="detail_amount"
+            className="detail_amount"
             css={`
-              font-size: 15px;
+              font-size: 13px;
               color: #565657;
               font-weight: 600;
               ${mobile} {
@@ -195,7 +194,8 @@ console.log(product,"product")
               }
             `}
           >
-            {" "}{totalPremiumAmount}
+            {" "}
+            ₹ {totalPremiumAmount}/ Year
           </span>
         </div>
 
@@ -203,7 +203,7 @@ console.log(product,"product")
           <span
             css={`
               color: #5a6981;
-              font-size: 15px;
+              font-size: 13px;
               /* width: 90px; */
 
               ${mobile} {
@@ -221,9 +221,9 @@ console.log(product,"product")
             Claim Settlement Ratio :
           </span>
           <span
-           className="detail_amount"
+            className="detail_amount"
             css={`
-              font-size: 15px;
+              font-size: 13px;
               color: #565657;
               font-weight: 600;
               ${mobile} {
@@ -239,7 +239,8 @@ console.log(product,"product")
               }
             `}
           >
-            {" "}{companyCSR}%
+            {" "}
+            {companyCSR}%
           </span>
         </div>
       </DetailDispalyPanel>
@@ -288,7 +289,7 @@ console.log(product,"product")
         <span
           css={`
             color: #253858;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 900;
 
             ${mobile} {
@@ -300,7 +301,7 @@ console.log(product,"product")
             }
           `}
         >
-          ₹ {totalPremiumAmount}/Year
+          ₹ {totalPremiumAmount} / Year
         </span>
       </div>
     </div>
@@ -310,10 +311,7 @@ console.log(product,"product")
 export default ProductCard;
 
 const DetailDispalyPanel = styled.div`
-
-.detail_child:not(:last-child):after {
-    content:' | ';
-}
-
-
+  .detail_child:not(:last-child):after {
+    content: " | ";
+  }
 `;
