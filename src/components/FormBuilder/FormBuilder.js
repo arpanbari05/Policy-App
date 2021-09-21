@@ -104,6 +104,7 @@ const FormBuilder = ({
     <>
       {schema instanceof Array &&
         schema.map((item, index) => {
+         
           if (item instanceof Array) {
             return (
               <>
@@ -126,7 +127,7 @@ const FormBuilder = ({
                           </Title>
                           {item.map(innerItem => {
                             const Comp = components[innerItem.type];
-
+                            
                             if (!Comp) {
                               alert("Type :" + innerItem.type + "Not found");
                               return <></>;
@@ -138,9 +139,11 @@ const FormBuilder = ({
                                     width={innerItem.width === "25%" ? '33%' : innerItem.width === "75%" ? "66%" : innerItem.width}
                                     medical
                                   >
+                                  {}
                                     <Comp
                                       name={innerItem.name}
                                       onChange={e => {
+                                        
                                         if (
                                           innerItem.parent &&
                                           innerItem.type === "checkBox2"
