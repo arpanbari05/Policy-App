@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-const getMinOfArray = numArray => Math.max.apply(null, numArray);
+const getMinOfArray = (numArray) => Math.max.apply(null, numArray);
 
 const includesDigits = (str = "") => str.match(/(\d+)/);
 
@@ -10,19 +10,19 @@ const getNumberFromString = (str = "") =>
 
 const findSelectedFilterObject = (filters, selectedFilter) => {
   if (typeof selectedFilter === "object")
-    return selectedFilter.map(selected =>
-      filters.options.find(filter => selected.includes(filter.display_name)),
+    return selectedFilter.map((selected) =>
+      filters.options.find((filter) => selected.includes(filter.display_name))
     );
   if (typeof selectedFilter === "string")
     return filters.options.find(
-      filter => filter.display_name === selectedFilter,
+      (filter) => filter.display_name === selectedFilter
     );
 };
 
-const findFeature = quote => featureCode =>
-  quote.features.find(feature => feature.code === featureCode);
+const findFeature = (quote) => (featureCode) =>
+  quote.features.find((feature) => feature.code === featureCode);
 
-const checkFeature = quote => featureObject => {
+const checkFeature = (quote) => (featureObject) => {
   const feature = findFeature(quote)(featureObject.code);
 
   if (!feature) return false;
@@ -33,7 +33,7 @@ const checkFeature = quote => featureObject => {
   const valueToCompare =
     typeof value_to_compare === "string"
       ? value_to_compare.toUpperCase()
-      : value_to_compare.map(val => val.toUpperCase());
+      : value_to_compare.map((val) => val.toUpperCase());
 
   if (operator === "equals") return value === valueToCompare;
   if (operator === "not_equals") return value !== valueToCompare;
@@ -45,23 +45,23 @@ const checkFeature = quote => featureObject => {
 
 function useQuoteFilter({ givenMoreFilters } = {}) {
   const { insurers, premium, moreFilters } = useSelector(
-    state => state.quotePage.filters,
+    (state) => state.quotePage.filters
   );
 
   const morefilters = useSelector(
-    state => state.frontendBoot.frontendData.data.morefilters,
+    (state) => state.frontendBoot.frontendData.data.morefilters
   );
 
   const proposerDetailsMembers = useSelector(
-    state => state.greetingPage.proposerDetails.members,
+    (state) => state.greetingPage.proposerDetails.members
   );
 
-  const memberGroups = useSelector(state => state.greetingPage.memberGroups);
+  const memberGroups = useSelector((state) => state.greetingPage.memberGroups);
 
   const { groupCode } = useParams();
 
   const currentGroupMembersAge = memberGroups[groupCode]?.map(
-    member => proposerDetailsMembers?.find(m => m.type === member)?.age,
+    (member) => proposerDetailsMembers?.find((m) => m.type === member)?.age
   );
 
   const minAge = getMinOfArray(currentGroupMembersAge);
@@ -82,7 +82,7 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
 
   const popularFilter = popularFiltersSelected
     ? popularFiltersSelected.filter(
-        option => option !== "No Pre-policy Check up",
+        (option) => option !== "No Pre-policy Check up"
       )
     : popularFiltersSelected;
 
@@ -94,20 +94,20 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     {
       ...popularFilters,
       options: popularFilters.options.filter(
-        option => option.code !== "no pre policy check up",
+        (option) => option.code !== "no pre policy check up"
       ),
     },
-    popularFilter,
+    popularFilter
   );
 
   const selectedPreExistingFilter = findSelectedFilterObject(
     preExistingFilters,
-    preExisting,
+    preExisting
   );
 
   const selectedRenewalBonusFilter = findSelectedFilterObject(
     renewalBonusFilters,
-    renewalBonus,
+    renewalBonus
   );
 
   const selectedOtherFilters = findSelectedFilterObject(otherFilters, others);
@@ -120,12 +120,28 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     const { company_alias, total_premium: premium } = quote;
 
     if (insurers.length) {
-      if (insurers.some(i => i.alias === company_alias)) isCompanyMatch = true;
+      if (insurers.some((i) => i.alias === company_alias))
+        isCompanyMatch = true;
       else isCompanyMatch = false;
     } else isCompanyMatch = true;
 
     if (selectedPremiumCode) {
-      if (selectedPremiumCode.includes("-")) {
+      if (selectedPremiumCode.includes("<")) {
+        const tempPremium = selectedPremiumCode.split("<")[1];
+        if (premium <= parseInt(tempPremium)) {
+          isPremiumMatch = true;
+        } else isPremiumMatch = false;
+      } else if (selectedPremiumCode.includes(">")) {
+        const tempPremium = selectedPremiumCode.split(">")[1];
+        console.log(
+          "ewhweh",
+          selectedPremiumCode,
+          parseInt(premium) , parseInt(tempPremium)
+        );
+        if (parseInt(premium) >= parseInt(tempPremium)) {
+          isPremiumMatch = true;
+        } else isPremiumMatch = false;
+      } else if (selectedPremiumCode.includes("-")) {
         const lowest = selectedPremiumCode.split("-")[0];
         const highest = selectedPremiumCode.split("-")[1];
         if (premium > parseInt(lowest) && premium < parseInt(highest)) {
@@ -133,13 +149,13 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
         } else isPremiumMatch = false;
       }
     } else isPremiumMatch = true;
-
+    console.log(premium, isPremiumMatch, "agdasdg");
     const checkFeatureMatch = checkFeature(quote);
 
-    const filterMatch = filter => (filter ? checkFeatureMatch(filter) : true);
+    const filterMatch = (filter) => (filter ? checkFeatureMatch(filter) : true);
 
-    const filtersMatch = filters =>
-      filters ? filters.every(filter => checkFeatureMatch(filter)) : true;
+    const filtersMatch = (filters) =>
+      filters ? filters.every((filter) => checkFeatureMatch(filter)) : true;
 
     const isPopularFiltersMatch = filtersMatch(selectedPopularFilters);
     const isOtherFiltersMatch = filtersMatch(selectedOtherFilters);
