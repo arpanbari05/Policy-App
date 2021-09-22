@@ -204,8 +204,15 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
           >
             <div>
               {name === "Medical Details" && (
-                <div css={`    margin: 20px 29px;
-                margin-top: -36px;`}> 
+                <div
+                  css={`
+                    margin: 20px 29px;
+                    margin-top: -36px;
+                    @media(max-width:1024px){
+                      margin-top: 10px;
+                    }
+                  `}
+                >
                   <div
                     css={`
                       display: flex;
@@ -213,6 +220,10 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
                       & .container {
                         margin: 0;
                         width: max-content;
+                      }
+                      @media(max-width:1024px){
+                        justify-content: flex-start;
+                        margin-left: -26px;
                       }
                     `}
                   >
@@ -225,15 +236,15 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
                         setNoForAll({ ...noForAll, [item]: e.target.checked });
                       }}
                     ></Checkbox2>{" "}
-                    <span >No For All Questions </span>{" "}
+                    <span>No For All Questions </span>{" "}
                   </div>
                   {!canProceed?.canProceed &&
                     canProceed?.canProceedArray?.includes(item) && (
                       <p
-                        className="formbuilder__error"
                         css={`
                           display: flex;
                           justify-content: flex-end;
+                          color: #0a87ff;
                         `}
                       >
                         Please select the checkbox if no for all questions item
