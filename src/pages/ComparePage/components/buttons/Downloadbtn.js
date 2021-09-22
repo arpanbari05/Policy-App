@@ -1,5 +1,5 @@
 import React from "react";
-import print from "../../../../assets/images/print.png";
+import print from "../../../../assets/images/download_print.png";
 import styled from 'styled-components'
 const Downloadbtn = ({ onClick, downloading }) => {
   return (
