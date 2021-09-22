@@ -11,9 +11,9 @@ export const Label = styled.label`
 
 export const Wrapper = styled.div`
   position: relative;
-  left: -32px;
+ 
   top: -3px;
-  top: ${props => props.editM && "-11px"};
+ 
   @media (max-width: 767px) {
     left: unset;
   }

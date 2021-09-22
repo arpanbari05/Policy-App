@@ -198,7 +198,10 @@ const SubContent = ({
                     <div className="col-md-6">
                         <EachWrapper
                             css={`
-                        padding:20px 25px;
+                       padding: 20px 25px !important;
+              @media (max-width: 810px) {
+              padding-left: 8px !important;
+              }
                     `}>
                             <div className="d-flex justify-content-start">
                                 {features[activeCover].map((item, i) => {
