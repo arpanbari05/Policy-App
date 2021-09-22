@@ -88,6 +88,7 @@ export const dataset = (
           left: -50px;
           font-size: 19px;
           color: #000;
+          border: 1px solid black;
         `}
       >
         <a

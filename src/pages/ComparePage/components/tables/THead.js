@@ -15,6 +15,7 @@ const plansDataset = (plans, removePlan, setShow, setShowBuyNowPopup) => {
     containerArray.push(
       <th className={`${i === 2 && "showOnDesktopF"}`} scope="row" key={i}>
         <PlanContainer
+        
           setShow={setShow}
           removePlan={removePlan}
           plans={plans[i]?.data || undefined}

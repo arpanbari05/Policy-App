@@ -17,7 +17,7 @@ const CompareBtn = ({ value, onClick, windowWidth }) => {
         font-size: 18px;
         font-weight: 400;
         line-height: 26px;
-        height: 44px;
+        height: 50px;
     width: 88%;
     `}
       >
