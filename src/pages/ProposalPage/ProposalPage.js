@@ -90,7 +90,7 @@ const ProposalPage = ({ history }) => {
             align-items: center;
           }
           & .formbuilder__error {
-            color: #c7222a;
+            color: #0a87ff;
           }
         `}
       >
@@ -212,7 +212,7 @@ const ProposalPage = ({ history }) => {
                 align-items: center;
               `}
             >
-              <MainTitle>Medical Details</MainTitle>
+              <MainTitle>Medical Details !!</MainTitle>
             
               <div
                 css={`
