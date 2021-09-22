@@ -77,6 +77,10 @@ const Toggle = ({
               className="col-lg-4 col-md-12 middle no-padding mobile-left"
               css={`
                 text-align: end !important;
+                @media(max-width:767px){
+
+                  text-align: start !important;
+                }
               `}
             >
               <label>
@@ -166,6 +170,12 @@ const Toggle = ({
                           /* right: 0; */
                           background: white;
                           font-size: 14px;
+                          @media(max-width:767px){
+                            bottom: -15px;
+    left: 15px;
+  background: unset; 
+
+                          }
                         `}
                       >
                         {error}
