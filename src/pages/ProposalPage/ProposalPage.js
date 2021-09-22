@@ -187,7 +187,6 @@ const ProposalPage = ({ history }) => {
               >
                 <i class="fas fa-pen"></i>
               </div>
-             
             </span>
           )}
         </Card>
@@ -212,8 +211,9 @@ const ProposalPage = ({ history }) => {
                 align-items: center;
               `}
             >
-              <MainTitle>Medical Details !!</MainTitle>
-            
+
+              <MainTitle>Medical Details</MainTitle>
+
               <div
                 css={`
                   width: 30px;
@@ -288,18 +288,16 @@ const ProposalPage = ({ history }) => {
   return (
     <>
       <MobileHeader>
-        <MobileHeaderText
-          onClick={() => {
-            history.goBack();
-          }}
-        >
-          <i className="icon flaticon-back"></i> Proposal Form
-        </MobileHeaderText>
+        <MobileHeaderText>Proposal Form </MobileHeaderText>
       </MobileHeader>
       <div
         className="container-fluid mt-20 pb-100"
         css={`
           padding-bottom: 41px;
+          @media (max-width: 1024px) {
+            margin: 0;
+            padding: 0 !important;
+          }
         `}
       >
         <div
@@ -308,6 +306,10 @@ const ProposalPage = ({ history }) => {
             // margin: 30px auto;
             // max-width: 1300px;
             margin: 30px;
+            @media (max-width: 1024px) {
+              margin: 0;
+              padding: 0;
+            }
           `}
         >
           <div
@@ -332,6 +334,9 @@ const ProposalPage = ({ history }) => {
                 font-size: 17px;
                 display: flex;
                 align-items: center;
+                @media (max-width: 1024px) {
+                  padding: 10px 20px;
+                }
               `}
             >
               <div
@@ -360,6 +365,9 @@ const ProposalPage = ({ history }) => {
               css={`
                 font-weight: 900;
                 color: #505f79;
+                @media (max-width: 1024px) {
+                  display: none;
+                }
               `}
             >
               You are Just 5 minutes away from investing for your future
@@ -367,19 +375,40 @@ const ProposalPage = ({ history }) => {
           </div>
           <div>
             <Row
-            // css={`
-            //   max-width: 1250px;
-            // `}
+              css={`
+                @media (max-width: 1024px) {
+                  margin: 0;
+                  padding: 0;
+                  & > div {
+                    margin-right: 0;
+                    margin-left: 0;
+                    padding-right: 0;
+                    padding-left: 0;
+                  }
+                }
+              `}
             >
               <Col
-                md={3}
+                lg={3}
+                md={12}
                 css={`
                   margin-bottom: 20px;
+                  @media (max-width: 1024px) {
+                    width: 100%;
+                  }
                 `}
               >
                 <ProductSummary cart={cart} />
               </Col>
-              <Col md={9}>
+              <Col
+                lg={9}
+                md={12}
+                css={`
+                  @media (max-width: 1024px) {
+                    width: 100%;
+                  }
+                `}
+              >
                 {form(active, proposalData[listOfForms[active]])}
               </Col>
             </Row>
@@ -420,7 +449,7 @@ const ProposalPage = ({ history }) => {
         </div>
       </div>
 
-      <div
+      {/* <div
         css={`
           @media (max-width: 1199px) {
             display: block;
@@ -431,7 +460,7 @@ const ProposalPage = ({ history }) => {
         `}
       >
         <ProductSummaryMobile cart={cart} />
-      </div>
+      </div> */}
       <PlanUnavailable />
       <BMI />
       <NSTP />
