@@ -18,6 +18,8 @@ import CardSkeletonLoader from "../../components/Common/card-skeleton-loader/Car
 import ComparePopup from "./components/ComparePopup/ComparePopup";
 import { useParams } from "react-router";
 import MobileHeader from "./quoteMobile/MobileHeader";
+import MobilePlansFor from "./quoteMobile/MobilePlansFor";
+import MobileQuoteCard from "./quoteMobile/MobileQuoteCard";
 
 function QuotePage() {
   const {
@@ -271,12 +273,81 @@ display: none;
 
       <div
         css={`
-      @media (min-width:1023px) {
-display:block;
+      @media (min-width:1024px) {
+display:none;
       }
       `}
       >
         <MobileHeader groupCode={groupCode} />
+        <MobilePlansFor />
+        <div
+                css={`
+                padding:10px 15px;
+                @media (max-width:768px) {
+          display:none;
+                }
+                `}
+        >
+         {quotes?.length ?
+                (
+                  firstQuoteFound && (
+                    filterQuotes.map(
+                      (item, index) =>
+                        item.length ? (
+                          <QuoteCard
+                            key={index}
+                            id={index}
+                            item={item}
+                            handleSeeDetails={(quote, clickedFrom) => {
+                              setSeeDetailsQuote(quote);
+                              setShowSeeDetails(clickedFrom || true);
+                            }}
+                            handleClick={() => setShowBuyNow(true)}
+                          />
+                        ) : <></>
+                    )
+                  )
+                ) : <CardSkeletonLoader noOfCards={3} />
+              }
+               {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
+        </div>
+        <div
+           css={`
+         
+          
+           margin:25px 0px;
+           @media (min-width:769px) {
+     display:none !important;
+           }
+           `}
+        >
+        {quotes.length ? (
+            // filterQuotes.length > 1 ? (
+            firstQuoteFound ? (
+              filterQuotes.map(
+                (item, index) =>
+                  item.length > 0 && (
+                    <MobileQuoteCard
+                      key={index}
+                      id={index}
+                      item={item}
+                      handleClick={() => setShowBuyNow(true)}
+                      handleSeeDetails={quote => {
+                        setSeeDetailsQuote(quote);
+                        setShowSeeDetails(true);
+                      }}
+                    />
+                  ),
+              )
+            ) : (
+              <></>
+            )
+          ) : (
+            // filterQuotes.length > 1 && <p>No Quotes Found</p>
+            <CardSkeletonLoader noOfCards={3} />
+          )}
+          {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
+        </div>
       </div>
     </>
 

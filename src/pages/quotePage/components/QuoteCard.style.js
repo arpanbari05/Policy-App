@@ -64,6 +64,11 @@ margin-bottom: 6px;
   width:120px;
   font-size:12px;
 }
+@media (max-width:950px){
+  width:120px;
+  font-size:12px;
+}
+
 `
 export const ValueText = styled.span`
 
@@ -81,6 +86,10 @@ width:146px;
   width:120px;
   font-size:13px;
 }
+@media (max-width:950px){
+  width:120px;
+  font-size:13px;
+}
 `
 
 export const TextWrapper = styled.div`
@@ -91,6 +100,10 @@ margin-right: 5px;
 
 @media (max-width:1400px) and (min-width:1200px) {
   min-width:120px;
+}
+@media (max-width:950px){
+  min-width:120px;
+
 }
 `
 export const SeeText = styled.span`
