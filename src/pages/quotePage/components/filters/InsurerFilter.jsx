@@ -57,6 +57,10 @@ const FilterModal = ({ show, handleClose, filters }) => {
           top: 238px;
           left: 64.5vw;
         }
+        .modal-body{
+          max-height: 300px;
+          overflow-y:auto;
+        }
         .modal-footer {
           padding: 0px !important;
 
