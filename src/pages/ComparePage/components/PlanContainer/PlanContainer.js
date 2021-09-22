@@ -57,18 +57,18 @@ const PlanContainer = ({
           css={`
             display: flex;
             align-items: center;
-            height: 200px;
-            width: 100%;
-            max-width:250px;
-            margin:0 !important;
+            height: 210px;
+            
+          width: 270px;
+            margin: 0 !important;
             justify-content: space-around;
             border: 2px solid white;
             box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
-           position:relative;
-           :hover{
-            border: 2px solid #0a87ff;
-           }
-            `}
+            position: relative;
+            :hover {
+              border: 2px solid #0a87ff;
+            }
+          `}
         >
           <RemoveCross
             onClick={() => removePlan(`${product.id}${sum_insured}`)}
@@ -84,14 +84,14 @@ const PlanContainer = ({
           >
             <span
               css={`
-               width: 90px;
-    display: flex;
-    height: 100px;
-    align-items: center;
-    justify-content: center;
+                width: 90px;
+                display: flex;
+                height: 100px;
+                align-items: center;
+                justify-content: center;
               `}
             >
-              <img src={images[company_alias]} alt="" className="w-100"/>
+              <img src={images[company_alias]} alt="" className="w-100" />
             </span>
             {/* Dynamic ic name */}
             {/* <WrapperCompanyDetails>
@@ -100,7 +100,7 @@ const PlanContainer = ({
             </WrapperCompanyDetails> */}
           </Col>
           <Col md={12}>
-          <CompanyName>{product.company.name}</CompanyName>
+            <CompanyName>{product.company.name}</CompanyName>
           </Col>
           <Col md={12}>
             <CompareBtn
@@ -111,7 +111,7 @@ const PlanContainer = ({
                   product: product,
                   total_premium:
                     discount[`${product.id}${sum_insured}`]?.total_premium +
-                    additionalPremium || total_premium + additionalPremium,
+                      additionalPremium || total_premium + additionalPremium,
                   // premium: mergedQuotes[0]?.premium[activeCover],
                   sum_insured:
                     discount[`${product.id}${sum_insured}`]?.sum_insured ||
@@ -131,10 +131,11 @@ const PlanContainer = ({
                   riders: riders[`${product.id}${sum_insured}`],
                 }).then(() => setShowBuyNowPopup(true));
               }}
-              value={`${total_premium +
+              value={`${
+                total_premium +
                 additionalPremium +
                 (ridersPremium[`${product.id}${sum_insured}`] || 0)
-                } /${getYearsUsingTenure(tenure)}`}
+              } /${getYearsUsingTenure(tenure)}`}
             />
           </Col>
         </Row>
@@ -146,9 +147,9 @@ const PlanContainer = ({
               css={`
                 border: none;
                 background: none;
-                height: 200px;
-            width: 100%;
-            max-width:250px;
+                height: 210px;
+               
+                width: 270px;
               `}
             >
               <div
@@ -191,7 +192,7 @@ const PlanContainer = ({
                   </div>
                 </div>
                 <div
-                  style={{ fontWeight: "900", marginTop:"15px" }}
+                  style={{ fontWeight: "900", marginTop: "15px" }}
                   className="add-compare text-center"
                 >
                   Add plans

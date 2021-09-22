@@ -160,6 +160,8 @@ export const saveForm1UserDetails = (
         // ls.set("enquiryId", enquiry_id);
         dispatch(
           createUserData({
+            pincode: pinCode,
+            is_pincode_search: is_pincode_search,
             [memberGroup]: { pincode: pinCode },
           })
         );

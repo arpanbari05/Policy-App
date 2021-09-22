@@ -1,8 +1,8 @@
 import React from "react";
 import "./claimHover.css";
 import { Col, Row } from "react-bootstrap";
-import telephone from "../../../assets/images/telephone.png";
-import mail from "../../../assets/images/mail.png";
+import telephone from "../../../assets/images/landline_old_phone.png";
+import mail from "../../../assets/images/message_mail_blue_2.1.png";
 import mobile from "../../../assets/images/mobile.png";
 import ClaimMain from "../components/ClaimProcess/ClaimProcessMain/ClaimMain";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,8 +40,10 @@ const dataSet = (dataArray) => {
           css={`
             border: solid 1px #c9c9c9;
             border-radius: 9px;
-            margin-bottom: 10px;
+            margin: 0 auto 10px auto ;
             padding: 15px;
+            width: 96%;
+  
           `}
         >
           <div className="row">
@@ -50,7 +52,7 @@ const dataSet = (dataArray) => {
                 css={`
                   color: #253858;
                   font-weight: 900;
-                  font-size: 23px;
+                  font-size: 19px;
                 `}
               >
                 {data.header}
@@ -69,18 +71,18 @@ const dataSet = (dataArray) => {
               css={`
                 justify-content: center;
                 align-items: center;
-                background-color: #eff7ff;
+                /* background-color: #eff7ff; */
                 display: flex;
-                border-radius: 44px;
-                width: 66px;
-                & img {
-                  height: 24px;
-                }
+                border-radius:100%;
+                /* width: 66px;
+              height:66px; */
               `}
             >
-              <div>
-                <img src={data.image} />
-              </div>
+            
+                <img src={data.image}  
+                  className="w-100"
+                />
+             
             </div>
           </div>
         </div>

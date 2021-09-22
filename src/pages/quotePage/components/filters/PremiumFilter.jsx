@@ -25,7 +25,7 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
 
   const handleApply = () => {
     dispatch(setFilters({ premium: selectedPremium }));
-    dispatch(premiumFilterCards(selectedPremium));
+    // dispatch(premiumFilterCards(selectedPremium));
     handleClose();
   };
 

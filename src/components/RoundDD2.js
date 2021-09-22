@@ -15,6 +15,7 @@ const RoundDD2 = ({
   redBorder,
   code,
   noBorder,
+  product_detail,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +29,9 @@ const RoundDD2 = ({
     setIsOpen(!isOpen);
   };
   const handleSelect = (value) => {
-    handleChange(code, value, type);
+    console.log(value,"selectedAge")
+    let modifiedValue = value.includes("months") || value.includes("month")? `0.${parseInt(value)}`:value
+    handleChange(code, modifiedValue, type);
 
     setIsOpen(!isOpen);
   };
@@ -37,6 +40,7 @@ const RoundDD2 = ({
     <label htmlFor={disabled && code} {...props}>
       <Wrapper ref={dropdownRef} className="GreetingDD__Wrapper">
         <Header
+        product_detail={product_detail}
         noBorder
           onClick={toggleList}
           css={`
@@ -110,7 +114,7 @@ export const Wrapper = styled.div`
 
 export const Header = styled.a`
   cursor: pointer;
-  background-color:#fff;
+  background-color:${({product_detail}) => product_detail?"#f3f5f8":"#fff"};
   position: relative;
   color: #6b7789;
   border:${({noBorder}) => noBorder?`none`:`1px solid #b0bed0`} ;
