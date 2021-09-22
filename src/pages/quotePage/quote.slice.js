@@ -227,11 +227,19 @@ const quotePageSlice = createSlice({
 
         premiumFilterQuotes: (state, action) => {
             state.filterQuotes = state.quotes.map(item => {
-              return item.filter(
-                quote =>
-                  quote.premium > action.payload?.code?.split("-")[0] &&
-                  quote.premium < action.payload?.code?.split("-")[1],
-              );
+                if(action.payload?.code.includes("<")){
+                    console.log(action.payload,"action.payload")
+                    return item.filter(
+                        quote => Number(quote.premium) < Number(5000)
+                      );
+                }else{
+                    return item.filter(
+                        quote =>
+                          quote.premium > action.payload?.code?.split("-")[0] &&
+                          quote.premium < action.payload?.code?.split("-")[1],
+                      );
+                }
+             
             });
           },
     },
