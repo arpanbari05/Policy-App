@@ -10,8 +10,9 @@ function CustomDropDown({ option, handleChange }) {
     useOutsiteClick(ref, () => {
         setShowToggleOpptions(false);
     });
+    
     return (
-        <div>
+        <div ref={ref}>
             <button className="btn select_plan_btn d-flex align-items-center position-relative" style={{
                 fontWeight: "600", fontSize: "13px", padding: "0px 10px 5px",
             }}
@@ -27,7 +28,7 @@ function CustomDropDown({ option, handleChange }) {
                 )}
 
             </button>
-            <DropdownList ref={ref} className={` ${showToggleOpptions ? "d-block" : "d-none"
+            <DropdownList  className={` ${showToggleOpptions ? "d-block" : "d-none"
                 }`}>
                 {option.map((data, i) => {
                     return (

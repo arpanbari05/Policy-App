@@ -413,12 +413,14 @@ const MEditMember = ({ handleClose }) => {
             padding: 12px 21px;
             text-align: center;
             color: #fff;
+            border:none;
             text-transform: capitalize;
             box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
             font-size: 18px;
-            background: #c72229;
-            margin-left: unset !important;
+            background: #0a87ff;
+            
             margin: 10px !important;
+            margin-left: unset !important;
           `}
           type="button"
           value={"Confirm"}

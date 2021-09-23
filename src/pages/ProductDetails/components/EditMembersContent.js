@@ -79,12 +79,21 @@ function EditMembersContent({ closePopup = () => {} }) {
     proposerDetails: { members: allMembersWithAge },
   } = useSelector((state) => state.greetingPage);
 
-  const checkMember = (member) =>
-    thisGroupMembers.includes(member.type ?? member.code);
+  const checkMember = (member) => {
+    
+    if(member.type === "son" || member.code === "son"){
+      return thisGroupMembers.includes("son1") || thisGroupMembers.includes("son2")
+    }else if(member.type === "daughter" || member.code === "daughter"){
+      return thisGroupMembers.includes("daughter1") || thisGroupMembers.includes("daughter2")
+    }else return thisGroupMembers.includes(member.type ?? member.code);
+    
+  }
+    
 
-  const thisMembersData = allMembers.filter(checkMember);
+  const thisMembersData = allMembers.filter(member => checkMember(member));
 
-  const thismembersWithAge = allMembersWithAge.filter(checkMember);
+  const thismembersWithAge = allMembersWithAge.filter(member => checkMember(member));
+
 
   const [selectedMembers, setSelectedMembers] = useState(thismembersWithAge);
 
@@ -152,13 +161,16 @@ function EditMembersContent({ closePopup = () => {} }) {
   };
 
   return (
-    <div>
+    <div css={`
+    margin-bottom:70px;
+    `}>
       <div
         css={`
           display: flex;
           align-items: center;
-          justify-content: space-between;
-
+          flex-wrap:wrap;
+          justify-content: space-evenly;
+width: 100%;
           ${mobile} {
             flex-direction: column;
           }
@@ -166,17 +178,23 @@ function EditMembersContent({ closePopup = () => {} }) {
       >
         {thisMembersData.map((memberData) => {
           const selectedMember = selectedMembers.find(
-            (member) => memberData.code === member.type
+            (member) =>  member.type.includes(memberData.code)
+          
           );
-          const selectedMemberAge = selectedMember.age + " Years";
+       
+          
+          const selectedMemberAge = selectedMember.age.includes(".")? selectedMember.age.split(".")[1] + `${selectedMember.age.split(".")[1] === 1?" month":" months"}`: selectedMember.age + " year";
           return (
             <div
               css={`
                 display: flex;
                 align-items: center;
-                justify-content: space-around;
-                flex: 1;
-                max-width: 50%;
+                justify-content: space-between;
+                padding: 0 20px;
+              margin-bottom:10px;
+                width: 47%;
+                border:1px solid #bcc7d7;
+                border-radius:3px;
 
                 & .GreetingDD__Header {
                   margin: 0;
@@ -213,11 +231,12 @@ function EditMembersContent({ closePopup = () => {} }) {
               <GreetingFormDropdown
                 list={getAge(memberData.min_age, memberData.max_age)}
                 selected={selectedMemberAge}
+                product_detail={true}
                 handleChange={(_, selectedAge) =>
                   setSelectedMembers((selectedMembers) =>
                     selectedMembers.map((member) =>
-                      member.type === memberData.code
-                        ? { ...member, age: parseInt(selectedAge) }
+                    member.type.includes(memberData.code)
+                        ? { ...member, age: selectedAge }
                         : member
                     )
                   )
@@ -232,10 +251,13 @@ function EditMembersContent({ closePopup = () => {} }) {
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-top: 30px;
+          bottom: 0;
+          left:-4px;
+width: 100%;
+          position: absolute;
         `}
       >
-        <StyledButton width={"200px"} noIcon onClick={handleUpdateClick}>
+        <StyledButton width={"100%"} noIcon onClick={handleUpdateClick}>
           Update
           {loading ? (
             <i

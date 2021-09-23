@@ -40,7 +40,7 @@ const Form3CheckBox = ({
             <use xlinkHref="#check"></use>
           </svg>
         </span>
-        <span className="cbx__title">{title}</span>
+        <span style={{marginLeft:"10px"}} className="cbx__title">{title}</span>
       </label>
       <svg className="inline-svg">
         <symbol id="check" viewBox="0 0 12 10">
