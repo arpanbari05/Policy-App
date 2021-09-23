@@ -105,7 +105,7 @@ const FilterModal = ({ show, handleClose }) => {
           <OptionWrapper>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="1 Year">1 Year</label>
-              <input type="radio" id="1 Year" name="multiYear" onChange={() => handleChange(1, "1 Year")} />
+              <input type="radio" id="1 Year" name="multiYear" checked={selectedTenure.code === 1 || false} onChange={() => handleChange(1, "1 Year")} />
             </li>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="2 Year">
@@ -118,7 +118,7 @@ const FilterModal = ({ show, handleClose }) => {
                   (save upto 10%)
                 </span>
               </label>
-              <input type="radio" id="2 Year" name="multiYear" onChange={() => handleChange(2, "2 Years")} />
+              <input type="radio" id="2 Year" name="multiYear" checked={selectedTenure.code === 2 || false}  onChange={() => handleChange(2, "2 Years")} />
             </li>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="3 Year">
@@ -131,7 +131,7 @@ const FilterModal = ({ show, handleClose }) => {
                   (save upto 20%)
                 </span>
               </label>
-              <input type="radio" id="3 Year" name="multiYear" onChange={() => handleChange(3, "3 Years")} />
+              <input type="radio" id="3 Year" name="multiYear" checked={selectedTenure.code === 3 || false}  onChange={() => handleChange(3, "3 Years")} />
             </li>
           </OptionWrapper>
         </div>
