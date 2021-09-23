@@ -175,11 +175,12 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                   </>
                 );
               })}
-              <OverlayTrigger
+              { mergedQuotes[0]?.features[activeCover][0]&&
+              (<OverlayTrigger
                 className=""
                 placement={"right"}
                 overlay={renderTooltip(
-                  mergedQuotes[0]?.features[activeCover][0].description
+                  mergedQuotes[0]?.features[activeCover][0]?.description
                 )}
               >
                 <TextWrapper>
@@ -192,7 +193,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                     </span>
                   </ValueText>
                 </TextWrapper>
-              </OverlayTrigger>
+              </OverlayTrigger>)}
             </div>
             <div className="d-flex justify-content-start">
               {mergedQuotes[0]?.features[activeCover].map((item, i) => {
