@@ -492,7 +492,8 @@ const SeeDetails = ({
           {/* <Header /> */}
           <StyledHeader>
             <a>
-              <i class="flaticon-back" onClick={handleClose} />
+            <i class="fa fa-arrow-left"onClick={handleClose}  aria-hidden="true"></i>
+             
               <span> See Details</span>
             </a>
           </StyledHeader>
