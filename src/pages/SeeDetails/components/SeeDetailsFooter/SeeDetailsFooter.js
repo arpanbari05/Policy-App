@@ -139,7 +139,13 @@ function SeeDetailsFooter({
         <div>
           <p
             className="care_popup_title"
-            style={{ fontSize: "15px", margin: "10px", width: "100%" ,lineHeight: '20px',fontWeight: '900'}}
+            style={{
+              fontSize: "15px",
+              margin: "10px",
+              width: "100%",
+              lineHeight: "20px",
+              fontWeight: "900",
+            }}
           >
             {productName || quote.product.name}
           </p>
@@ -175,7 +181,7 @@ function SeeDetailsFooter({
             `}
           >
             {" "}
-            { numberToDigitWord(
+            {numberToDigitWord(
               sumInsured?.toString() || sum_insured?.toString(),
               "seeDetails"
             )}
@@ -201,7 +207,7 @@ function SeeDetailsFooter({
           >
             {" "}
             <i className="fa fa-inr"></i> ₹{" "}
-            {parseInt(selectedProduct.total_premium).toLocaleString("en-IN")}
+            {parseInt(totalPremium).toLocaleString("en-IN")}
           </span>
         </div>
         <div

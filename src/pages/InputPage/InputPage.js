@@ -41,7 +41,7 @@ export const InputPage = () => {
           box-shadow: 0px 0px 10px grey;
           padding: 10px;
           z-index: 9999;
-          
+
           align-items: center;
           justify-content: space-between;
           display: none;
@@ -115,15 +115,18 @@ export const InputPage = () => {
                 padding: 2px 5px;
                 border-radius: 20px;
                 font-size: 12px;
-                
               `}
             >
               HEALTH INSURANCE
             </div>
-            <p css={`
-            font-weight: 900;
-            font-size: 13px;
-            `}>Buy Health Insurance Plan In Few Simple Steps.</p>
+            <p
+              css={`
+                font-weight: 900;
+                font-size: 13px;
+              `}
+            >
+              Buy Health Insurance Plan In Few Simple Steps.
+            </p>
           </div>
           <div
             css={`
@@ -138,15 +141,12 @@ export const InputPage = () => {
           </div>
         </div>
         <Wrapper>
-          <InnerWrapper className="hide_on_mobile" >{planCard()}</InnerWrapper>
-
-          <InnerWrapper >
+          <InnerWrapper className="hide_on_mobile">{planCard()}</InnerWrapper>
+          <InnerWrapper>
             {" "}
             <Card
               padding={`0`}
               styledCss={`margin: 10px auto; margin-bottom: 30px; 
-            
-              
               @media (max-width: 480px) {
                 width: 100% !important;
                 box-shadow: 0 0px 1px 0 rgb(0 0 0 / 20%), 0 8px 126px 0 rgb(0 0 0 / 10%) !important;
@@ -235,12 +235,12 @@ const Wrapper = styled.div`
   & > div {
     width: 50%;
   }
-  @media (max-width: 830px){
+  @media (max-width: 830px) {
     flex-direction: column;
     & > div {
       margin: 0 auto;
-    width: 90%;
-  }
+      width: 90%;
+    }
   }
   @media (max-width: 480px) {
     margin: 0 auto;
@@ -273,7 +273,7 @@ const PlanCard = styled.div`
 `;
 const InnerWrapper = styled.div`
   display: block;
-  height:100%;
+  height: 100%;
   /* @media (max-width:480px){
     display:none;
   } */
