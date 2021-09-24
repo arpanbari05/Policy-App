@@ -13,6 +13,7 @@ const Card = ({
   children,
   boxShadow,
   styledCss,
+  
 }) => {
   return (
     <Container
