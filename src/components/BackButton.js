@@ -75,4 +75,15 @@ color: ${props.color};
   float: left;
   left: 4px;
   position: inherit;
+  @media (max-width: 480px) {
+    background:#eff3f5;
+    color:#465671;
+    display:flex;
+    align-items:center;
+    font-size:13px;
+    width:100%;
+    svg{
+      margin-top:5px;
+    }
+  }
 `;

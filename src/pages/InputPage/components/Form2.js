@@ -256,6 +256,9 @@ const Form2 = ({ handleChange, currentForm }) => {
                       border: solid 1px #b0bed0;
                       margin-bottom: 10px;
                       border-radius: 7px;
+                      @media (max-width: 480px) {
+                        padding: 2px 5px !important;
+                      }
                     `}
                   >
                     {dataset(
@@ -410,7 +413,8 @@ const Form2 = ({ handleChange, currentForm }) => {
                       code,
                       ageError,
                       childCount,
-                      addChild
+                      addChild,
+                    
                     )}
                   </div>
                 );
