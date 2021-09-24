@@ -139,7 +139,7 @@ function SeeDetailsFooter({
         <div>
           <p
             className="care_popup_title"
-            style={{ fontSize: "21px", margin: "0px", width: "100%" }}
+            style={{ fontSize: "15px", margin: "10px", width: "100%" ,lineHeight: '20px',fontWeight: '900'}}
           >
             {productName || quote.product.name}
           </p>
@@ -162,20 +162,20 @@ function SeeDetailsFooter({
             display: flex;
             flex-direction: row;
             border-right: 1px solid grey;
-            padding:0 20px;
-            @media(max-width: 1320px){
+            padding: 0 20px;
+            @media (max-width: 1320px) {
               flex-direction: column;
             }
           `}
         >
-          <span>Cover:</span>
+          <span>Cover: </span>
           <span
             css={`
               font-weight: bold;
             `}
           >
             {" "}
-            {numberToDigitWord(
+            { numberToDigitWord(
               sumInsured?.toString() || sum_insured?.toString(),
               "seeDetails"
             )}
@@ -186,9 +186,9 @@ function SeeDetailsFooter({
             display: flex;
             flex-direction: row;
             border-right: 1px solid grey;
-            padding:0 20px ;
+            padding: 0 20px;
             padding-left: 10px;
-            @media(max-width: 1320px){
+            @media (max-width: 1320px) {
               flex-direction: column;
             }
           `}
@@ -201,22 +201,19 @@ function SeeDetailsFooter({
           >
             {" "}
             <i className="fa fa-inr"></i> ₹{" "}
-                  {parseInt(selectedProduct.total_premium).toLocaleString(
-                    "en-IN"
-                  )}
+            {parseInt(selectedProduct.total_premium).toLocaleString("en-IN")}
           </span>
         </div>
         <div
           css={`
             display: flex;
             flex-direction: row;
-            @media(max-width: 1320px){
+            @media (max-width: 1320px) {
               flex-direction: column;
             }
-          
           `}
         >
-          <span>Claim settlement ratio:</span>
+          <span>Claim settlement ratio: </span>
           <span
             css={`
               font-weight: bold;

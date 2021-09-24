@@ -47,6 +47,13 @@ body {
   color: #000;
   
 }
+a {
+  cursor: pointer !important;
+}
+
+.cursor_pointer {
+  cursor: pointer !important;
+}
 
 /* p, span {
   cursor: default !important;

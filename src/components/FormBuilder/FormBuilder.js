@@ -47,10 +47,10 @@ const FormBuilder = ({
     noForAll,
     setNoForAll
   );
-    
+
   const [trigger, setTrigger] = useState(false);
   const { proposalData } = useSelector((state) => state.proposalPage);
-  console.log(schema,values,"sdags");
+  console.log(schema, values, "sdags");
   useEffect(() => {
     if (trigger) {
       triggerValidation(trigger);
@@ -107,15 +107,13 @@ const FormBuilder = ({
         item.validate.required &&
         Object.keys(item.additionalOptions.options || {}).length === 1
       ) {
-        const tempValue =
-          item.additionalOptions.options[
-            Object.keys(item.additionalOptions.options)[0]
-          ];
+        const tempValue = Object.keys(item.additionalOptions.options)[0];
+
         tempValues[item.name] = tempValue;
       }
     });
     updateValues(tempValues);
-  }, [schema,errors]);
+  }, [schema, errors]);
   useEffect(() => {
     let temp = {};
     if (schema instanceof Array)

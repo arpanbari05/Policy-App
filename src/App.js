@@ -42,7 +42,7 @@ function App() {
       // dispatch(setShouldFetchQuotes(true));
       if (pathname !== "/" && Object.keys(proposerDetails || {}).length < 1) {
         Promise.allSettled([
-          dispatch(getCart),
+          dispatch(getCart()),
           dispatch(getProposerDetails()),
         ]).then(() => setIsLoading(false));
       }

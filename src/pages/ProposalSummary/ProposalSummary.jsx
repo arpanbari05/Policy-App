@@ -179,7 +179,7 @@ const ProposalSummary = ({ history }) => {
         <div className="element-section "
           css={`
          margin: 30px;
-         margin-bottom: 150px;
+         padding-bottom: 150px;
        `}
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
