@@ -230,7 +230,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;
-  margin-top: 30px;
+  padding-top: 30px;
   width: 100%;
   & > div {
     width: 50%;
