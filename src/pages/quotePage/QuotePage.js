@@ -20,6 +20,8 @@ import { useParams } from "react-router";
 import MobileHeader from "./quoteMobile/MobileHeader";
 import MobilePlansFor from "./quoteMobile/MobilePlansFor";
 import MobileQuoteCard from "./quoteMobile/MobileQuoteCard";
+import QuoteFilterMobile from "./quoteMobile/QuoteFilter/QuoteFilterMobile";
+import { MobileQuoteFilterFooter } from "./quoteMobile/FilterFooter/FilterFooter";
 
 function QuotePage() {
   const {
@@ -283,6 +285,8 @@ display:none;
         <div
                 css={`
                 padding:10px 15px;
+
+           margin-bottom: 100px ;
                 @media (max-width:768px) {
           display:none;
                 }
@@ -315,7 +319,8 @@ display:none;
            css={`
          
           
-           margin:25px 0px;
+          
+           margin-bottom: 100px ;
            @media (min-width:769px) {
      display:none !important;
            }
@@ -348,6 +353,18 @@ display:none;
           )}
           {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
         </div>
+        <MobileQuoteFilterFooter 
+        handleFilterClick={() => setFilterMobile(true)}
+        />
+        {filterMobile && (
+        <QuoteFilterMobile
+          companies={arr}
+          coverFilter={companies?.covers}
+          setFilterMobile={setFilterMobile}
+          premiumFilter={companies?.premiums}
+          moreFilter={companies?.morefilters}
+          planType={companies?.plantypes}
+        />)}
       </div>
     </>
 
