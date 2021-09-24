@@ -137,6 +137,9 @@ const Form5 = ({ handleChange, currentForm }) => {
         <div
           css={`
             padding: 17px;
+            @media (max-width: 480px) {
+              padding: 10px !important;
+              }
           `}
         >
           <Title onClick={demoLogin}>Tell Us about yourself?</Title>
@@ -162,6 +165,7 @@ const Form5 = ({ handleChange, currentForm }) => {
                 & img {
                   height: 45px;
                 }
+                
               `}
             >
               <img
@@ -217,6 +221,10 @@ const Form5 = ({ handleChange, currentForm }) => {
                 <span
                   css={`
                     width: ${name !== "email" ? "221px" : "100%"};
+                    @media (max-width: 1100px) {
+                      width:100% !important;
+    /* margin: 0 11px; */
+              }
                   `}
                 >
                   {" "}
@@ -226,6 +234,9 @@ const Form5 = ({ handleChange, currentForm }) => {
                   & input {
                     text-transform:${name === "fullName" && "capitalize"};
                   }
+                  @media (max-width: 480px) {
+             width:100% !important;
+              }
                   `}
                     label={name === "fullName" ? "Full Name" : label}
                     name={name}
@@ -297,11 +308,15 @@ const Form5 = ({ handleChange, currentForm }) => {
             true
           )} */}
         </div>
+      
         <StyledButton
           styledCss={`margin:0; width: 100%;`}
           value={`Get Started`}
           onClick={handleSubmit}
+          className="hide_on_mobile"
         />
+       
+        
       </form>
     </div>
   );

@@ -74,4 +74,9 @@ color: ${props.color};
   float: left;
   left: 4px;
   position: inherit;
+  @media (max-width: 480px) {
+    font-size:13px;
+   width:100%;
+    padding: 5px 11px;
+  }
 `;

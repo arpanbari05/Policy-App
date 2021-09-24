@@ -12,7 +12,7 @@ import useUrlQuery from "../../../../customHooks/useUrlQuery";
 function calculateTotalPremium(riders) {
   let total = 0;
   if (riders instanceof Array && riders.length) {
-    riders.forEach(item => {
+    riders.forEach((item) => {
       total += item.total_premium;
     });
   }
@@ -20,36 +20,35 @@ function calculateTotalPremium(riders) {
 }
 function ProductCard({ product }) {
   const companies = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.companies,
-    );
-    
-    if (!product) return null;
-    
-    const {
-      sum_insured,
-      total_premium: premium,
-      tenure,
-      product: {
-        name: productName,
-        company: { alias: company_alias },
-      },
-      health_riders,
-    
-    } = product || { product: { company: {} } };
-    const ridersPremium = calculateTotalPremium(health_riders);
-    console.log(health_riders, "g1234");
-    console.log("g123", premium, ridersPremium);
-    const { logo } = companies[company_alias] || {};
-    return (
-      <>
+    ({ frontendBoot }) => frontendBoot.frontendData.data.companies
+  );
+
+  if (!product) return null;
+
+  const {
+    sum_insured,
+    total_premium: premium,
+    tenure,
+    product: {
+      name: productName,
+      company: { alias: company_alias },
+    },
+    health_riders,
+  } = product || { product: { company: {} } };
+  const ridersPremium = calculateTotalPremium(health_riders);
+  console.log(health_riders, "g1234");
+  console.log("g123", premium, ridersPremium);
+  const { logo } = companies[company_alias] || {};
+  return (
+    <>
       <div
         css={`
-        display: none;
-        @media (max-width: 767px) {
-          display: block;
-          box-shadow: 0 3px 15px 0 rgb(0 75 131 / 30%);
-          margin: 11px 0;
-        }
+          display: none;
+          @media (max-width: 767px) {
+            display: block;
+            box-shadow: 0 3px 15px 0 rgb(0 75 131 / 30%);
+            margin: 11px 0;
+          }
         `}
       >
         <span
@@ -129,7 +128,7 @@ function ProductCard({ product }) {
 
 function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
   const members = useSelector(
-    state => state.greetingPage.memberGroups[groupCode],
+    (state) => state.greetingPage.memberGroups[groupCode]
   );
 
   const { product, deleteProduct } = useCartProduct(groupCode);
@@ -144,17 +143,25 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
 
   return (
     <>
-      <Row>
-        <Col xs={8} md={8}>
-          <h5
-            className="text_title_filter p_modal_title_bg_filters_product"
-            style={{ textTransform: "capitalize" }}
-          >
-            {members.join(" + ")?.replaceAll("_", "-")}
-          </h5>
-        </Col>
+      <div className="d-flex justify-content-between">
+        <h5
+          className="text_title_filter p_modal_title_bg_filters_product d-flex align-items-center"
+          style={{ textTransform: "capitalize" }}
+        >
+          <div
+            css={`
+              height: 31px;
+              width: 6px;
+              border-radius:3px;
+              margin-right: 10px;
+              background: #fcd140;
+            `}
+          ></div>
+          {members.join(" + ")?.replaceAll("_", "-")}
+        </h5>
+
         {product ? (
-          <Col md={4} xs={4} className="text-right">
+          <>
             <a
               css={`
                 display: none !important;
@@ -171,14 +178,21 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
             <button
               css={`
                 justify-content: space-between;
+                width: 30px;
+                height: 30px;
+                color: #168cff;
+                background: #eff7ff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 100%;
               `}
-              className="btn btn-primary remove_review_btn"
+              className="btn"
               onClick={deleteProduct}
             >
-              <span>Remove </span>
-              <img src={remove} alt="remove" />
+              <i class="far fa-trash-alt"></i>
             </button>
-          </Col>
+          </>
         ) : (
           <Col
             md={4}
@@ -190,7 +204,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
           >
             <button
               type="submit"
-              className="btn btn-primary remove_review_btn"
+              className="btn remove_review_btn"
               css={`
                 justify-content: space-between;
               `}
@@ -229,18 +243,18 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
             </button>
           </Col>
         )}
-      </Row>
+      </div>
       <ProductCard product={product} />
     </>
   );
 }
 
 const PopupContent = (a, b, setShowBuyNow) => {
-  const { memberGroups } = useSelector(state => state.greetingPage);
+  const { memberGroups } = useSelector((state) => state.greetingPage);
 
   return (
     <div>
-      {Object.keys(memberGroups).map(groupCode => (
+      {Object.keys(memberGroups).map((groupCode) => (
         <BuyNowModalProduct
           groupCode={groupCode}
           setShowBuyNow={setShowBuyNow}
@@ -254,17 +268,17 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow }) => {
   const plan = useSelector(({ quotePage }) => quotePage.selectedPlan);
 
   const { companies } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data,
+    ({ frontendBoot }) => frontendBoot.frontendData.data
   );
-  const { memberGroups } = useSelector(state => state.greetingPage);
+  const { memberGroups } = useSelector((state) => state.greetingPage);
   const history = useHistory();
   const ls = new SecureLS();
-  const cart = useSelector(state => state.cart);
+  const cart = useSelector((state) => state.cart);
   const selectedGroupCodes = Object.keys(cart);
   const allMemberGroups = Object.keys(memberGroups);
   const firstMemberGroup = selectedGroupCodes.find(
-    groupCode =>
-      cart[groupCode] !== null && allMemberGroups.includes(groupCode),
+    (groupCode) =>
+      cart[groupCode] !== null && allMemberGroups.includes(groupCode)
   );
   return (
     <CardModal
@@ -276,9 +290,7 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow }) => {
       title={"Hey User, Take a minute and review your cart before you proceed"}
       handleClick={() =>
         history.push(
-          `/productdetails/${firstMemberGroup}?enquiryId=${ls.get(
-            "enquiryId",
-          )}`,
+          `/productdetails/${firstMemberGroup}?enquiryId=${ls.get("enquiryId")}`
         )
       }
       showButton={!!firstMemberGroup}
@@ -306,8 +318,8 @@ const ProductData = styled.div`
     font-weight: 900;
   }
   @media (max-width: 767px) {
-    border-left: ${props => props.noBorder && "unset"};
-    padding-left: ${props => props.noBorder && "unset"};
+    border-left: ${(props) => props.noBorder && "unset"};
+    padding-left: ${(props) => props.noBorder && "unset"};
     left: unset;
 
     & .label-add_product {
@@ -317,7 +329,7 @@ const ProductData = styled.div`
 `;
 const ProductName = styled.p`
   color: #000;
-  font-size: ${props => (props.flag ? "16px" : "20px")};
+  font-size: ${(props) => (props.flag ? "16px" : "20px")};
   width: 150px;
   margin-right: -26px;
 `;

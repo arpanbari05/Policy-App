@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Card from "../../components/Card";
+import { fyntune } from "../../assets/images";
+import mobile_input_first from "../../assets/images/mobile_input_first.png";
 import StyledButton from "../../components/StyledButton";
 import TextInput from "../../components/TextInput";
 import styled from "styled-components/macro";
@@ -22,61 +24,187 @@ export const InputPage = () => {
   const [showmore, setShowmore] = useState(false);
   const greetingPage = useSelector((state) => state.greetingPage);
   const { memberGroups } = greetingPage;
- 
-  console.log('ggg2',currentForm)
+
+  console.log("ggg2", currentForm);
   const handleChange = (form) => {
     setCurrentForm(form);
   };
   const members = Object.keys(memberGroups || {});
 
-  
   return (
-    <Container>
-      <Wrapper>
-        <InnerWrapper>{planCard()}</InnerWrapper>
-        <InnerWrapper>
-          {" "}
-          <Card
-            padding={`0`}
-            styledCss={`margin: 73px auto; margin-bottom: 30px`}
-            width={`499px`}
+    <>
+      <div
+        className="show_on_mobile"
+        css={`
+          background: white;
+          width: 100%;
+          box-shadow: 0px 0px 10px grey;
+          padding: 10px;
+          z-index: 9999;
+          
+          align-items: center;
+          justify-content: space-between;
+          display: none;
+          @media (max-width: 1022px) {
+            display: flex;
+          }
+        `}
+      >
+        <div
+          css={`
+            width: 110px;
+            height: auto;
+          `}
+        >
+          <img className="w-100" src={fyntune} alt="FYNTUNE_LOGO" />
+        </div>
+
+        <div
+          css={`
+            width: 30px;
+            height: 25px;
+            border: 1px solid #ebeff3;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: space-evenly;
+            .line_hamburger {
+              width: 70%;
+              height: 3px;
+              border-radius: 5px;
+              background: #161616;
+            }
+          `}
+        >
+          <span className="line_hamburger"></span>
+          <span className="line_hamburger"></span>
+
+          <span className="line_hamburger"></span>
+        </div>
+      </div>
+      <Container>
+        <div
+          css={`
+            background: #ebeff3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 10px;
+            padding: 10px;
+            width: 90%;
+            margin: auto;
+            margin-top: 20px;
+            display: none;
+            @media (max-width: 480px) {
+              display: flex;
+            }
+          `}
+        >
+          <div
+            css={`
+              width: 80%;
+            `}
           >
             <div
               css={`
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                & > div {
-                  width: 100%;
-                }
+                width: fit-content;
+                color: #0a87ff;
+                border: 1px solid #0a87ff;
+                background: #ecf6ff;
+                padding: 2px 5px;
+                border-radius: 20px;
+                font-size: 12px;
+                
               `}
             >
-              <Form5 currentForm={currentForm} handleChange={handleChange} />
-              <Form2 currentForm={currentForm} handleChange={handleChange} />
-              <Form3 currentForm={currentForm} handleChange={handleChange} />
-              {members &&
-                members.map((data, i) => (
-                  <Form1
-                    currentForm={currentForm}
-                    handleChange={handleChange}
-                    member={memberGroups[data]}
-                    index={i + 1}
-                    memberGroup={data}
-                    lastForm={members.length === i + 1}
-                  />
-                ))}
-
-              <Form4
-                currentForm={currentForm}
-                handleChange={handleChange}
-                lastForm={members?.length || 1}
-              />
+              HEALTH INSURANCE
             </div>
-          </Card>
-          {currentForm === 1 && termsAndConditions(showmore, setShowmore)}
-        </InnerWrapper>
-      </Wrapper>
-    </Container>
+            <p css={`
+            font-weight: 900;
+            font-size: 13px;
+            `}>Buy Health Insurance Plan In Few Simple Steps.</p>
+          </div>
+          <div
+            css={`
+              width: 80px;
+            `}
+          >
+            <img
+              src={mobile_input_first}
+              alt={"ICON_GROUP"}
+              className="w-100"
+            />
+          </div>
+        </div>
+        <Wrapper>
+          <InnerWrapper className="hide_on_mobile" >{planCard()}</InnerWrapper>
+
+          <InnerWrapper >
+            {" "}
+            <Card
+              padding={`0`}
+              styledCss={`margin: 10px auto; margin-bottom: 30px; 
+            
+              
+              @media (max-width: 480px) {
+                width: 100% !important;
+                box-shadow: 0 0px 1px 0 rgb(0 0 0 / 20%), 0 8px 126px 0 rgb(0 0 0 / 10%) !important;
+              }
+              @media (max-width: 1100px){
+
+                width:430px;
+              }
+              @media(max-width:885px){
+                width:400px;
+              }
+              @media(max-width:835px){
+      margin: 20px auto;
+      width: 96%;
+    }
+              `}
+              width={`499px`}
+            >
+              <div
+                css={`
+                  display: flex;
+                  flex-direction: column;
+                  width: 100%;
+                  & > div {
+                    width: 100%;
+                  }
+                  @media (max-width: 480px) {
+                    width: 100% !important;
+                  }
+                `}
+              >
+                <Form5 currentForm={currentForm} handleChange={handleChange} />
+                <Form2 currentForm={currentForm} handleChange={handleChange} />
+                <Form3 currentForm={currentForm} handleChange={handleChange} />
+                {members &&
+                  members.map((data, i) => (
+                    <Form1
+                      currentForm={currentForm}
+                      handleChange={handleChange}
+                      member={memberGroups[data]}
+                      index={i + 1}
+                      memberGroup={data}
+                      lastForm={members.length === i + 1}
+                    />
+                  ))}
+
+                <Form4
+                  currentForm={currentForm}
+                  handleChange={handleChange}
+                  lastForm={members?.length || 1}
+                />
+              </div>
+            </Card>
+            {currentForm === 1 && termsAndConditions(showmore, setShowmore)}
+          </InnerWrapper>
+        </Wrapper>
+      </Container>
+    </>
   );
 };
 
@@ -88,14 +216,38 @@ const Container = styled.div`
   width: 100%;
   background-size: contain;
   background-repeat: no-repeat;
+  @media (max-width: 480px) {
+    background: white;
+    .hide_on_mobile {
+      display: none;
+    }
+    .show_on_mobile {
+      display: block;
+    }
+  }
 `;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;
+  padding-top: 30px;
   width: 100%;
   & > div {
     width: 50%;
+  }
+  @media (max-width: 830px){
+    flex-direction: column;
+    & > div {
+      margin: 0 auto;
+    width: 90%;
+  }
+  }
+  @media (max-width: 480px) {
+    margin: 0 auto;
+    width: 90%;
+    & > div {
+      width: 100% !important;
+    }
   }
 `;
 const PlanCard = styled.div`
@@ -121,6 +273,10 @@ const PlanCard = styled.div`
 `;
 const InnerWrapper = styled.div`
   display: block;
+  height:100%;
+  /* @media (max-width:480px){
+    display:none;
+  } */
 `;
 
 function planCard() {
@@ -129,11 +285,29 @@ function planCard() {
       BgColor={`#edf0f49e`}
       padding={`27px`}
       styledCss={`
-    margin: 73px auto;
+    margin: 0 auto;
     box-shadow: none!important;
     width: 585px;
     @media(max-width:1200px){
       width: 500px;
+    }
+    @media(max-width:965px){
+      width: 98%;
+      margin: 0 auto;
+    }
+    @media(max-width:885px){
+      width: 95%;
+      margin: 0 auto;
+      width: 96%;
+    }
+    @media(max-width:835px){
+      margin: 20px auto;
+      width: 96%;
+      height:fit-content;
+      h1{
+        font-size:22px;
+      font-weight:900;
+      }
     }
     `}
       width={`500px`}
@@ -177,7 +351,7 @@ function termsAndConditions(showmore, setShowmore) {
           (to provide a contact number or email id or both){" "}
         </span>
         <a
-          style={{ color: "red", fontSize: "15px" }}
+          style={{ color: "#108aff", fontSize: "15px" }}
           onClick={() => {
             setShowmore(!showmore);
           }}
