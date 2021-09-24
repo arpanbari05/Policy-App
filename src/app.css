@@ -38,14 +38,27 @@
 }
 
 /* Fonts style ends */
-
 /* Generic Styles start here */
 body {
+
   font-size: 16px;
   font-weight: 400;
   font-family: "Inter-Regular";
   color: #000;
+  
 }
+a {
+  cursor: pointer !important;
+}
+
+.cursor_pointer {
+  cursor: pointer !important;
+}
+
+/* p, span {
+  cursor: default !important;
+} */
+
 .form-control:focus {
   border-color: unset !important;
   box-shadow: unset !important;

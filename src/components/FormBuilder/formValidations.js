@@ -42,20 +42,22 @@ function contains(target, pattern) {
 
 export const validationIndex = {
   required: (param, values, name) => {
+    console.log(name, param, "heheheh3");
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
 
       if (
-        !values ||
-        !values[parent] ||
-        !values[parent][member] ||
-        !values[parent][member][variableName]
+        (!values ||
+          !values[parent] ||
+          !values[parent][member] ||
+          !values[parent][member][variableName]) &&
+        param !== false
       )
         return {
           status: false,
           message: `This field is required.`,
         };
-    } else if (!values || !values[name])
+    } else if ((!values || !values[name]) && param !== false)
       return {
         status: false,
         message: `This field is required.`,
@@ -117,7 +119,7 @@ export const validationIndex = {
         : param.split("/")[0] === "alt"
         ? "alt"
         : param;
-   
+
     let value =
       parent && member && variableName && values
         ? values?.[parent]?.[member]?.[variableName]

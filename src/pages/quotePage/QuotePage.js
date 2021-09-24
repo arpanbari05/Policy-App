@@ -47,7 +47,6 @@ function QuotePage() {
   } = useQuotesPage();
   console.log("quotes", quotes);
 
-
   const { memberGroups, proposerDetails } = useSelector(
     (state) => state.greetingPage
   );
@@ -64,10 +63,10 @@ function QuotePage() {
       memberGroups?.[selectedGroup]?.length === 1
         ? "Individual"
         : proposerDetails.plan_type
-          ? proposerDetails.plan_type === "M"
-            ? "Multi Individual"
-            : "Family Floater"
-          : "Family Floater",
+        ? proposerDetails.plan_type === "M"
+          ? "Multi Individual"
+          : "Family Floater"
+        : "Family Floater",
     multiYear: "1 Year",
     basePlanType: "Base health",
     moreFilters: {},
@@ -80,7 +79,6 @@ function QuotePage() {
     activeSum: "",
   });
 
-
   const { planType } = useSelector((state) => state.quotePage.filters);
   // const { selectedGroup } = useSelector(state => state.quotePage);
   const {
@@ -90,7 +88,7 @@ function QuotePage() {
   } = useSelector((state) => state.frontendBoot.frontendData.data);
 
   const { cover, tenure, plan_type } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters,
+    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters
   );
 
   const selectedPlanType =
@@ -103,14 +101,14 @@ function QuotePage() {
 
   const isFiltersDefault =
     filters.premium === defaultfilters.premium &&
-      filters.cover === defaultfilters.cover &&
-      filters.basePlanType === defaultfilters.basePlanType &&
-      filters.insurers.length < 1 &&
-      filters.multiYear === defaultfilters.multiYear &&
-      Object.keys(filters.moreFilters).length === 0
+    filters.cover === defaultfilters.cover &&
+    filters.basePlanType === defaultfilters.basePlanType &&
+    filters.insurers.length < 1 &&
+    filters.multiYear === defaultfilters.multiYear &&
+    Object.keys(filters.moreFilters).length === 0
       ? true
       : false;
-console.log("loading...",loadingQuotes)
+  console.log("loading...", loadingQuotes);
   const handleClearFilters = () => {
     dispatch(setFilters(defaultfilters));
     dispatch(
@@ -122,11 +120,11 @@ console.log("loading...",loadingQuotes)
           memberGroups?.[selectedGroup].length === 1
             ? "I"
             : proposerDetails.plan_type
-              ? proposerDetails.plan_type === "M"
-                ? "M"
-                : "F"
-              : "F",
-      }),
+            ? proposerDetails.plan_type === "M"
+              ? "M"
+              : "F"
+            : "F",
+      })
     );
   };
 
@@ -134,24 +132,25 @@ console.log("loading...",loadingQuotes)
     <>
       <div
         css={`
-    @media (max-width:1023px) {
-      display: none;
-    }
-    `}
-    id="printQuotePage"
-    >
+          @media (max-width: 1023px) {
+            display: none;
+          }
+        `}
+        id="printQuotePage"
+      >
         <UpperModifier sendQuote={imageSendQuote} />
         <LowerModifier />
 
-
         <div className="container">
           <div className="col-md-12 d-flex">
-            <div className="col-md-9" style={{ padding: "0px 5px", marginBottom: "120px" }}
+            <div
+              className="col-md-9"
+              style={{ padding: "0px 5px", marginBottom: "120px" }}
               css={`
-                     @media (max-width: 1200px) {
-           width: 100%;
-                     }
-                     `}
+                @media (max-width: 1200px) {
+                  width: 100%;
+                }
+              `}
             >
               <div className=" d-flex justify-content-between align-items-center">
                 <TextLabel> Showing {selectedPlanType} Plan</TextLabel>
@@ -174,9 +173,7 @@ console.log("loading...",loadingQuotes)
                       alignItems: "center",
                       justifyContent: "space-between",
                       fontSize: "12px",
-
                     }}
-
                   >
                     Clear all filters
                     <i class="fas fa-sync mx-2"></i>
@@ -190,36 +187,37 @@ console.log("loading...",loadingQuotes)
                   />
                 )}
               </div>
-              {quotes?.length ?
-                (
-                  firstQuoteFound && (
-                    filterQuotes.map(
-                      (item, index) =>
-                        item.length ? (
-                          <QuoteCard
-                            key={index}
-                            id={index}
-                            item={item}
-                            handleSeeDetails={(quote, clickedFrom) => {
-                              setSeeDetailsQuote(quote);
-                              setShowSeeDetails(clickedFrom || true);
-                            }}
-                            handleClick={() => setShowBuyNow(true)}
-                          />
-                        ) : <></>
-                    )
+              {quotes?.length ? (
+                firstQuoteFound &&
+                filterQuotes.map((item, index) =>
+                  item.length ? (
+                    <QuoteCard
+                      key={index}
+                      id={index}
+                      item={item}
+                      handleSeeDetails={(quote, clickedFrom) => {
+                        setSeeDetailsQuote(quote);
+                        setShowSeeDetails(clickedFrom || true);
+                      }}
+                      handleClick={() => setShowBuyNow(true)}
+                    />
+                  ) : (
+                    <></>
                   )
-                ) : <CardSkeletonLoader noOfCards={3} />
-              }
-               {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
-
+                )
+              ) : (
+                <CardSkeletonLoader noOfCards={3} />
+              )}
+              {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
             </div>
-            <div className="col-md-3" style={{ padding: "0px 5px" }}
+            <div
+              className="col-md-3"
+              style={{ padding: "0px 5px" }}
               css={`
-          @media (max-width: 1200px) {
-display: none;
-          }
-          `}
+                @media (max-width: 1200px) {
+                  display: none;
+                }
+              `}
             >
               <div className="d-flex justify-content-between align-items-center ">
                 <TextLabel className="my-2" style={{ fontSize: "17px" }}>
@@ -229,32 +227,32 @@ display: none;
               <AssistantCard>
                 <span className="head">Health Insurance Assistance</span>
                 <p className="my-2">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu
-                  nisl a lorem auctor ultrices auctor vel elit. Aliquam quis
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                  eu nisl a lorem auctor ultrices auctor vel elit. Aliquam quis
                   consequat tellus. Aliquam pellentesque ligula massa, aliquet
                   fermentum nisl varius ac.
                 </p>
                 <div
                   css={`
-                display:flex;
-                justify-content:space-between;
-                
-                `}
+                    display: flex;
+                    justify-content: space-between;
+                  `}
                 >
-                  <button className="talk_to_us my-2" style={{ padding: "8px 15px", height: "max-content" }}>Talk to us</button>
+                  <button
+                    className="talk_to_us my-2"
+                    style={{ padding: "8px 15px", height: "max-content" }}
+                  >
+                    Talk to us
+                  </button>
 
                   <AssistantImage src={call} />
                 </div>
               </AssistantCard>
-
             </div>
           </div>
         </div>
         {showBuyNow && (
-          <BuyNowModal
-            showBuyNow={showBuyNow}
-            setShowBuyNow={setShowBuyNow}
-          />
+          <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} />
         )}
         <ComparePopup showPopup={showPopup} groupCode={groupCode} />
         {showSeeDetails && (
@@ -266,19 +264,17 @@ display: none;
               seeDetailsQuote.quote.sum_insured[seeDetailsQuote.activeSum]
             }
             tenure={seeDetailsQuote.quote.tenure[seeDetailsQuote.activeSum]}
-            product={
-              seeDetailsQuote.quote.product[seeDetailsQuote.activeSum]
-            }
+            product={seeDetailsQuote.quote.product[seeDetailsQuote.activeSum]}
           />
         )}
       </div>
 
       <div
         css={`
-      @media (min-width:1024px) {
-display:none;
-      }
-      `}
+          @media (min-width: 1024px) {
+            display: none;
+          }
+        `}
       >
         <MobileHeader groupCode={groupCode} />
         <MobilePlansFor />
@@ -292,28 +288,28 @@ display:none;
                 }
                 `}
         >
-         {quotes?.length ?
-                (
-                  firstQuoteFound && (
-                    filterQuotes.map(
-                      (item, index) =>
-                        item.length ? (
-                          <QuoteCard
-                            key={index}
-                            id={index}
-                            item={item}
-                            handleSeeDetails={(quote, clickedFrom) => {
-                              setSeeDetailsQuote(quote);
-                              setShowSeeDetails(clickedFrom || true);
-                            }}
-                            handleClick={() => setShowBuyNow(true)}
-                          />
-                        ) : <></>
-                    )
-                  )
-                ) : <CardSkeletonLoader noOfCards={3} />
-              }
-               {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
+          {quotes?.length ? (
+            firstQuoteFound &&
+            filterQuotes.map((item, index) =>
+              item.length ? (
+                <QuoteCard
+                  key={index}
+                  id={index}
+                  item={item}
+                  handleSeeDetails={(quote, clickedFrom) => {
+                    setSeeDetailsQuote(quote);
+                    setShowSeeDetails(clickedFrom || true);
+                  }}
+                  handleClick={() => setShowBuyNow(true)}
+                />
+              ) : (
+                <></>
+              )
+            )
+          ) : (
+            <CardSkeletonLoader noOfCards={3} />
+          )}
+          {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
         </div>
         <div
            css={`
@@ -326,7 +322,7 @@ display:none;
            }
            `}
         >
-        {quotes.length ? (
+          {quotes.length ? (
             // filterQuotes.length > 1 ? (
             firstQuoteFound ? (
               filterQuotes.map(
@@ -337,12 +333,12 @@ display:none;
                       id={index}
                       item={item}
                       handleClick={() => setShowBuyNow(true)}
-                      handleSeeDetails={quote => {
+                      handleSeeDetails={(quote) => {
                         setSeeDetailsQuote(quote);
                         setShowSeeDetails(true);
                       }}
                     />
-                  ),
+                  )
               )
             ) : (
               <></>
@@ -367,8 +363,6 @@ display:none;
         />)}
       </div>
     </>
-
-
   );
 }
 
@@ -376,7 +370,11 @@ export default QuotePage;
 
 const AssistantCard = styled.div`
   background: #eef1f4;
-  margin-top: 10px;
+  position: relative;
+  top: 26px;
+  @media(max-width: 1399px){
+    top: 7px;
+  }
   padding: 25px;
   .head {
     font-weight: 600;
@@ -397,9 +395,8 @@ const AssistantCard = styled.div`
 `;
 
 const AssistantImage = styled.img`
-width: 80px;
-height: 80px;
+  width: 80px;
+  height: 80px;
 
-margin-top: 20px;
-
-`
+  margin-top: 20px;
+`;

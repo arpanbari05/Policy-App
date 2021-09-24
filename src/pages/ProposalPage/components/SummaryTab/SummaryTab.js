@@ -23,8 +23,10 @@ const SummaryTab = ({ title, data, values, index }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const getValueFromCode = useCallback((value, data) => {
+    console.log(value,data,'asdg')
     if (data.additionalOptions.options) {
       let filteredOption = data.additionalOptions.options[value];
+      console.log(filteredOption,'asdg3333333333')
       return filteredOption;
     }
     if (data.additionalOptions.customOptions) {
@@ -71,7 +73,7 @@ const SummaryTab = ({ title, data, values, index }) => {
         >
           <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
           <p className="font_sub_p_s">
-            {data.name === "town" || data.name === "area"
+          {(data.name === "town" || data.name === "area")
               ? values[data.name + "__value"]
               : getValueFromCode(values[data.name], data)}
           </p>
