@@ -14,6 +14,7 @@ const RoundDD = ({
   selected,
   redBorder,
   code,
+ 
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,6 +45,7 @@ const RoundDD = ({
       <Wrapper ref={dropdownRef} className="GreetingDD__Wrapper">
         {isOpen && (
           <InputField
+         
             style={{ position: "absolute" }}
             value={searchText}
             placeholder={"type here..."}
@@ -114,7 +116,7 @@ const RoundDD = ({
 export default RoundDD;
 
 const InputField = styled.input`
-  poistion: absolute !important;
+  position: absolute !important;
   top: -3px !important;
   left: -7px !important;
   z-index: 99;
@@ -127,6 +129,7 @@ const InputField = styled.input`
   font-weight: 400 !important;
   background-color:#fff;
   color: #6b7789;
+  
   &:focus{
     outline: none;
   }
@@ -179,6 +182,10 @@ export const Header = styled.a`
     margin: unset;
     width: 130px;
   }
+  @media (max-width: 480px) {
+    background-color:#f3f5f8  !important;
+    border:none;
+                  }
 `;
 
 export const HeaderTitle = styled.div`

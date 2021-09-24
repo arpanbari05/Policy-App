@@ -34,7 +34,8 @@ export const dataset = (
   code,
   ageError,
   childCount,
-  addChild
+  addChild,
+  mobileInputStyle
 ) => {
   const age = [{ id: -1, title: "Select Age" }, ...list];
   let removeChild = false;
@@ -123,6 +124,7 @@ export const dataset = (
         </a>
       </div>
       <RoundDD
+      mobileInputStyle={mobileInputStyle}
         disabled={
           (title === "Son" || title === "Daughter") &&
           childCount === 4 &&

@@ -36,20 +36,33 @@ export function formButtons(handleChange, handleSubmit, lastForm) {
         justify-content: space-between;
         width: 100%;
         padding: 0px 17px 17px;
+        @media (max-width: 480px){
+          padding:0px !important;
+        }
       `}
     >
-      <BackButton
+    <div css={`
+    width:40%;
+    `}>
+    <BackButton
         value={`Back`}
         onClick={handleChange}
         width={`107px`}
         styledCss={`margin: 0;`}
       />
+   </div>
+
+    <div css={`
+    width:40%;
+    `}>
+      
       <StyledButton
         value={lastForm ? "View Quotes" : `Continue`}
         onClick={handleSubmit}
-        width={`173px`}
+        width={`100%`}
         styledCss={`margin: 0;`}
       />
+       </div>
     </div>
   );
 }

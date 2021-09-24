@@ -179,7 +179,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                 className=""
                 placement={"right"}
                 overlay={renderTooltip(
-                  mergedQuotes[0]?.features[activeCover][0].description
+                  mergedQuotes[0]?.features[activeCover][0]?.description
                 )}
               >
                 <TextWrapper>
