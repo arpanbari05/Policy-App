@@ -47,7 +47,7 @@ const PlanTypeFilter = () => {
         </span>
       </Filter>
 
-      <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
+      <FilterModal show={showModal} handleClose={() => setShowModal(false)}  />
     </>
   );
 };
@@ -61,9 +61,9 @@ const FilterModal = ({ show, handleClose }) => {
     cover,
     planType,
   } = useSelector((state) => state.quotePage.filters);
-  const [selectedPlanType, setselectedPlanType] = useState({});
+  const [selectedPlanType, setselectedPlanType] = useState({code: cover , display_name:basePlanType});
 
-  console.log(selectedPlanType, "agsd");
+  console.log(selectedPlanType, basePlanType, "agsd");
 
   const handleChange = (displayName) => {
     if (displayName) {
@@ -82,7 +82,7 @@ const FilterModal = ({ show, handleClose }) => {
     plantypes,
   } = useSelector((state) => state.frontendBoot.frontendData.data);
 
-  const sum_insured = covers.find((cov) => cov.code === cover);
+  const sum_insured = covers.find((cov) => cov.display_name === cover);
 
   const pt = plantypes.find((p) => p.display_name === planType);
 
@@ -91,6 +91,7 @@ const FilterModal = ({ show, handleClose }) => {
   const sendCover = sum_insured ? sum_insured.code : "";
 
   const handleClick = (evt) => {
+    console.log(sum_insured,cover, 'asdg33125')
     dispatch(setFilters({ basePlanType: evt.display_name }));
     dispatch(
       fetchQuotes(companies, {
@@ -158,7 +159,7 @@ const FilterModal = ({ show, handleClose }) => {
                     id={thisPlanType.code}
                     value={thisPlanType.display_name}
                     checked={
-                      selectedPlanType.code === thisPlanType.code || false
+                     selectedPlanType.display_name === thisPlanType.display_name || false
                     }
                     onChange={(e) => handleChange(thisPlanType)}
                   />

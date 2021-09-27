@@ -45,7 +45,6 @@ function QuotePage() {
     setSortBy,
     recFilterdQuotes,
   } = useQuotesPage();
-  console.log("quotes", quotes);
 
   const { memberGroups, proposerDetails } = useSelector(
     (state) => state.greetingPage
@@ -78,7 +77,7 @@ function QuotePage() {
     quote: "",
     activeSum: "",
   });
-
+  console.log("quoedtes", seeDetailsQuote);
   const { planType } = useSelector((state) => state.quotePage.filters);
   // const { selectedGroup } = useSelector(state => state.quotePage);
   const {
@@ -258,7 +257,13 @@ function QuotePage() {
         {showSeeDetails && (
           <SeeDetails
             show={showSeeDetails}
-            handleClose={() => setShowSeeDetails(!showSeeDetails)}
+            handleClose={() => {
+              setShowSeeDetails(!showSeeDetails);
+              setSeeDetailsQuote({
+                quote: "",
+                activeSum: "",
+              });
+            }}
             quote={seeDetailsQuote.quote}
             sum_insured={
               seeDetailsQuote.quote.sum_insured[seeDetailsQuote.activeSum]
@@ -279,14 +284,14 @@ function QuotePage() {
         <MobileHeader groupCode={groupCode} />
         <MobilePlansFor />
         <div
-                css={`
-                padding:10px 15px;
+          css={`
+            padding: 10px 15px;
 
-           margin-bottom: 100px ;
-                @media (max-width:768px) {
-          display:none;
-                }
-                `}
+            margin-bottom: 100px;
+            @media (max-width: 768px) {
+              display: none;
+            }
+          `}
         >
           {quotes?.length ? (
             firstQuoteFound &&
@@ -312,15 +317,12 @@ function QuotePage() {
           {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
         </div>
         <div
-           css={`
-         
-          
-          
-           margin-bottom: 100px ;
-           @media (min-width:769px) {
-     display:none !important;
-           }
-           `}
+          css={`
+            margin-bottom: 100px;
+            @media (min-width: 769px) {
+              display: none !important;
+            }
+          `}
         >
           {quotes.length ? (
             // filterQuotes.length > 1 ? (
@@ -349,18 +351,19 @@ function QuotePage() {
           )}
           {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
         </div>
-        <MobileQuoteFilterFooter 
-        handleFilterClick={() => setFilterMobile(true)}
+        <MobileQuoteFilterFooter
+          handleFilterClick={() => setFilterMobile(true)}
         />
         {filterMobile && (
-        <QuoteFilterMobile
-          companies={arr}
-          coverFilter={companies?.covers}
-          setFilterMobile={setFilterMobile}
-          premiumFilter={companies?.premiums}
-          moreFilter={companies?.morefilters}
-          planType={companies?.plantypes}
-        />)}
+          <QuoteFilterMobile
+            companies={arr}
+            coverFilter={companies?.covers}
+            setFilterMobile={setFilterMobile}
+            premiumFilter={companies?.premiums}
+            moreFilter={companies?.morefilters}
+            planType={companies?.plantypes}
+          />
+        )}
       </div>
     </>
   );
@@ -372,7 +375,7 @@ const AssistantCard = styled.div`
   background: #eef1f4;
   position: relative;
   top: 26px;
-  @media(max-width: 1399px){
+  @media (max-width: 1399px) {
     top: 7px;
   }
   padding: 25px;
