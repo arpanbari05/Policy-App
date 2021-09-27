@@ -604,7 +604,7 @@ const Price = styled.span`
   display: block;
   font-size: 21px;
   font-weight: 600;
-  color: #c72229;
+  color: #0a87ff;
 
   margin-top: -3px;
 `;
