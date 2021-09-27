@@ -170,20 +170,21 @@ const CheckDiscount = ({ groupCode }) => {
                             ? "#0a87ff"
                             : "#e5e5e5"};
 
-                          @media (max-width: 900px) {
-                            width: 190px;
+                          @media (max-width:768px){
+                            width:100% !important;
+                            margin:10px 0px;
                           }
 
-                          &::after {
+                          /* &::after { */
                             
                           
 
-                            @media (min-width: 769px) and (max-width: 900px) {
+                            /* @media (min-width: 769px) and (max-width: 900px) {
                               left: 50%;
                               right: unset;
-                            }
+                            } */
 
-                            ${mobile} {
+                            /* ${mobile} {
                               height: 21px;
                               width: 21px;
                               display: flex;
@@ -207,16 +208,16 @@ const CheckDiscount = ({ groupCode }) => {
                               border-color: ${selectedTenure === item.tenure
                                 ? "#fff"
                                 : "#ddd"};
-                            }
-                          }
+                            } */
+                          /* } */
 
-                          ${mobile} {
+                          /* ${mobile} {
                             margin-bottom: 16px;
                             width: 100%;
                           }
                           ${small} {
                             border-radius: 11px;
-                          }
+                          } */
                         `}
                       >{
                         selectedTenure === item.tenure ?
@@ -236,7 +237,7 @@ const CheckDiscount = ({ groupCode }) => {
                             box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 25%);
                             font-family: "font-awesome";
                             border: 2px solid #fff;
-                      color: #fff;
+                            color: #fff;
                             border: 2px solid #e4e7ec;
                       `}>
                       <i class="fas fa-check"></i>
@@ -278,6 +279,12 @@ const CheckDiscount = ({ groupCode }) => {
                             font-weight: 600;
                             color: #253858;
                             margin-bottom: 8px;
+                            @media (max-width:768px){
+                              color: #0a87ff;
+    background-color: #eff7ff;
+    border-radius:20px;
+    padding: 2px 5px;
+                            }
                           `}
                         >
                           {item?.tenure >= 2
@@ -310,7 +317,7 @@ const CheckDiscount = ({ groupCode }) => {
                           <span
                             css={`
                               display: none;
-                              ${mobile} {
+                              /* ${mobile} {
                                 display: inline;
                                 font-size: 14px;
                                 margin-left: 10px;
@@ -319,7 +326,7 @@ const CheckDiscount = ({ groupCode }) => {
 
                               ${small} {
                                 font-size: 11px;
-                              }
+                              } */
                             `}
                           >
                             Premium

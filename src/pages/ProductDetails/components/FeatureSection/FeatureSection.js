@@ -55,12 +55,13 @@ const FeatureSectionHeading = styled("p")`
    margin-bottom: 8px; 
    color: #253858;
   font-weight: 900;
-
+  display: flex;
+    align-items: center;
   position: relative;
   /* @media (max-width: 767px) {
     display: none;
   } */
-
+  @media (max-width: 767px) {
   &::before {
     content: "";
     height: 39px;
@@ -68,10 +69,11 @@ const FeatureSectionHeading = styled("p")`
     top: -7px;
     left: -20px;
     position: absolute;
-    /* background-color: #de9b9e; */
-    background-color: var(--yellow-one);
+   
+    background-color:#fecc28;
     border-radius: 0 15px 15px 0;
   }
+}
   margin-left: 20px;
 
   ${mobile} {

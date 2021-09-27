@@ -19,6 +19,7 @@ import {
 } from "../../serviceApi";
 import { mobile, small } from "../../../../utils/mediaQueries";
 import AddOnDetails from "../AddOnDetails/AddOnDetails";
+import AddOnDetailsMobile from "../AddOnDetails/AddOnDetailsMobile";
 import { getTopUpAddOnsApi } from "../../../quotePage/serviceApi";
 import GreetingFormDropdown from "../../../../components/RoundDD2";
 
@@ -45,19 +46,19 @@ export const AddOnBuyButton = ({ selected, onClick = () => {}, children }) => (
         display: flex;
         align-items: center;
         border-radius: 2px;
-        width: 86px;
+        width: 100%;
         font-size: 16px;
         font-weight: 900;
       }
       ${small} {
-        width: 76px;
+        width: 100%;
         height: 31px;
         padding: 8px 6px;
         font-size: 14px;
       }
       ${tabletMedia} {
         font-size: 16px;
-        width: 90px;
+        width: 100%;
       }
     `}
     onClick={onClick}
@@ -215,14 +216,7 @@ function EditDetailsPopup({
           width: 100%;
           top: 0;
           left: 0;
-
-          ${mobile} {
-            width: 90%;
-            margin: auto;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-          }
+       
         `}
       >
         <div
@@ -456,7 +450,7 @@ const AddOnTabContentWrap = styled.div`
   margin-top: 20px;
 
   ${mobile} {
-    background-color: #e1e1e1;
+    background-color: #eff7ff;
     border-radius: 19px;
 
     padding-bottom: 14px;
@@ -474,13 +468,14 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
         font-size: 14px;
         font-weight: 900;
         display: flex;
+        align-items:center;
         /* width: 48%; */
 
        color: #505f79;
         justify-content: space-between;
        
 
-        ${mobile} {
+        /* ${mobile} {
           flex: 1;
           justify-content: center;
           padding-bottom: 0;
@@ -491,7 +486,7 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
           &:not(:first-child) {
             padding-left: 10px;
           }
-        }
+        } */
       `}
     >
       <div
@@ -518,7 +513,7 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
           text-transform: capitalize;
 
           ${mobile} {
-            font-size: 16px;
+            font-size: 14px;
           }
 
           ${small} {
@@ -563,6 +558,7 @@ function AddOnCard({
   addOnData: { premium = [], product: addOn = {} },
   handleDataChange,
 }) {
+  const [showviewDetailMbile,setShowViewDetailMbile] = useState(false)
   const sumInsuredList = Object.keys(premium);
 
   const [sumInsured, setSumInsured] = useState(
@@ -715,35 +711,16 @@ function AddOnCard({
         css={`
           width: 90px;
           margin-right: 15px;
-          max-height: 45px;
-          ${mobile} {
-            width: 40px;
-            margin-right: 10px;
-          }
-          ${small} {
-            width: 30px;
-          }
-
-          ${tabletMedia} {
-            width: 60px;
-            height: 30px;
-            max-height: 39px;
-          }
+          max-height: 90px;
+          display:flex;
+align-items:center;
+         justify-content:space-between;
         `}
       >
         <img
           css={`
             width: 100%;
-            height: auto;
-            margin: auto;
-            display: block;
-            object-fit: contain;
-            ${mobile} {
-              margin: 0;
-              margin-right: auto;
-              height: auto;
-              width: 100%;
-            }
+            
           `}
           src={companyLogoSrc}
           alt={"company"}
@@ -768,10 +745,10 @@ function AddOnCard({
             white-space: nowrap;
             overflow: hidden;
 
-            ${mobile} {
+            /* ${mobile} {
               text-overflow: ellipsis;
               width: max-content;
-            }
+            } */
 
             /* @media (max-width: 460px) {
               width: 160px;
@@ -786,9 +763,7 @@ function AddOnCard({
               font-size: 11px;
               font-weight: 900;
             }
-            ${tabletMedia} {
-              font-size: 16px;
-            }
+
           `}
           title={addOn.name}
         >
@@ -804,19 +779,13 @@ function AddOnCard({
             color: #0a87ff;
             border-radius: 50px;
             ${mobile} {
-              font-size: 14px;
+              font-size: 11px;
               color: #000;
             }
 
-            ${small} {
-              font-size: 9px;
-            }
-
-            ${tabletMedia} {
-              font-size: 14px;
-            }
+          
           `}
-          onClick={toggleDetailsShow}
+          onClick={() => window.screen.width <769?setShowViewDetailMbile(true):toggleDetailsShow}
         >
           View Details
         </button>
@@ -829,14 +798,14 @@ function AddOnCard({
       <div
         css={`
           display: none;
-          ${mobile} {
+          /* ${mobile} {
             display: flex;
             justify-content: space-between;
             border-bottom: 1px solid #ddd;
             padding-bottom: 6px;
             width: 100%;
             align-items: center;
-          }
+          } */
         `}
       >
         <AddOnName />
@@ -850,9 +819,9 @@ function AddOnCard({
           justify-content: space-between;
           width: 100%;
           padding-top: 6px;
-          ${mobile} {
+          /* ${mobile} {
             display: flex;
-          }
+          } */
         `}
       >
         <AddOnDetailsTabs />
@@ -863,6 +832,7 @@ function AddOnCard({
   return (
     <>
       {showDetails ? (
+        <>
         <AddOnDetails
           addOn={{
             ...addOn,
@@ -874,7 +844,25 @@ function AddOnCard({
           }}
           handleClose={toggleDetailsShow}
         />
+        
+        </>
       ) : null}
+
+     {
+      showviewDetailMbile?(
+        <AddOnDetailsMobile 
+         addOn={{
+            ...addOn,
+            sum_insured: sumInsured,
+            total_premium:
+              addOn.insurance_type.alias === "top_up"
+                ? premium[sumInsured]["all"]["total_premium"]
+                : premium[sumInsured][member]["total_premium"],
+          }}
+          handleClose={() => setShowViewDetailMbile(false)}
+      />
+      ):null
+     }
       <div
         css={`
           border: 1px solid var(--addon-card-border-gray);
@@ -890,8 +878,12 @@ function AddOnCard({
           &:hover {
             background-color: #fff;
           }
+          @media (max-width:768px){
+            width: 100%;
+          background:white;
+          }
 
-          ${mobile} {
+          /* ${mobile} {
             border-radius: 8px;
             padding: 10px;
             flex-direction: column;
@@ -903,7 +895,7 @@ function AddOnCard({
 
           ${tabletMedia} {
             padding: 16px 12px;
-          }
+          } */
         `}
       >
         {editPopup && (
@@ -931,9 +923,7 @@ function AddOnCard({
             width: 100%;
 
             align-items: center;
-            ${mobile} {
-              display: none;
-            }
+          
           `}
         >
           <AddOnName />
@@ -948,9 +938,7 @@ function AddOnCard({
           css={`
           width: 100%;
             /* margin-right: 15px; */
-            ${mobile} {
-              display: none;
-            }
+            
           `}
           className="mt-4"
         >
@@ -1054,12 +1042,17 @@ function AddOns({ addOns = {} }) {
           width: 100%;
           display: flex;
           flex-wrap: wrap;
+          justify-content:space-evenly !important;
         `}
       >
         {Object.keys(addOns).map((addOnId) => (
           <div
             css={`
-              width: 50%;
+              width: 48%;
+             @media (max-width:500px){
+              width: 100%;
+
+             }
               &:not(:last-child) {
                 margin-bottom: 30px;
                 ${mobile} {
@@ -1067,13 +1060,7 @@ function AddOns({ addOns = {} }) {
                 }
               }
 
-              ${mobile} {
-                padding: 0 15px;
-              }
-
-              ${small} {
-                padding: 0 11px;
-              }
+             
             `}
             key={addOnId}
           >
@@ -1100,10 +1087,14 @@ const AddOnsNav = styled(Tabs)`
   /* justify-content: space-around; */
   border: none;
 
-  ${mobile} {
-    /* justify-content: space-between; */
+  
+@media (max-width:400px){
+  .nav-item {
+    font-size: 12px !important;
+    margin-right: 0px !important;
+   
   }
-
+}
   & .nav-item {
     position: relative;
     width: max-content;
@@ -1148,20 +1139,11 @@ const AddOnsNav = styled(Tabs)`
       }
     }
 
-    ${mobile} {
-      font-size: 16px;
-      margin: 0;
-      margin-right: 20px;
-      text-align: center;
-    }
+    
 
-    ${small} {
-      font-size: 13px;
-    }
+   
   }
-  ${small} {
-    padding-left: 11px;
-  }
+  
 `;
 
 const addOnsFetch = {

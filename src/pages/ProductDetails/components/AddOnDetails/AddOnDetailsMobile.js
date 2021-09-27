@@ -206,9 +206,10 @@ AddOnDetailsMobile.Body = function Body({ addOn, ...props }) {
       `}
       {...props}
     >
-      {status === "loading" || !addOnDetails ? (
+      {
+        status === "loading" || !addOnDetails ? (
         <p>Loading...</p>
-      ) : status === "error" ? (
+      ) :status === "error" ? (
         <ErrorMessage handleRetry={handleRetry} />
       ) : (
         <Accordion>
