@@ -421,9 +421,18 @@ const SeeDetails = ({
             <CloseButton
               type="button"
               className="btn btn-white recom_close_css"
+              css={`
+ 
+              `}
               onClick={handleClose}
             >
-              <i className="fa fa-close"></i>
+              {/* <i className="fa fa-close"></i>
+               */}
+              <span
+              css={`
+              font-size:25px;
+              `}
+              >  X</span>
             </CloseButton>
             <SeeDetailsTab
               activeFieldset={activeFieldset}
@@ -465,6 +474,7 @@ const SeeDetails = ({
             style={{
               position: "sticky",
               bottom: "0px",
+              backgroundColor: "#fff",
             }}
           >
             <SeedetailFooterMobile
@@ -546,6 +556,7 @@ const SeeDetails = ({
               bottom: "0px",
               padding: "10px !important",
               boxShadow: "0px -1px 5px #c2cbde",
+              backgroundColor:"#fff",
             }}
           >
             <SeedetailFooterMobile
@@ -593,6 +604,8 @@ const CloseButton = styled.button`
   border-radius: 50%;
   z-index: 9999;
   right: 36px;
+  top:15px;
+
 `;
 
 const ModalBodyMobile = styled.div`

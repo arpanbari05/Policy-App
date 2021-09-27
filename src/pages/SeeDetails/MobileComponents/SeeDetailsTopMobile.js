@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
+import "styled-components/macro"
 import { useCartProduct } from "./../../Cart";
 
 import { useParams } from "react-router";
@@ -50,6 +50,16 @@ function SeeDetailsTop({
         >
           <img
             src={logo}
+            css={`
+        
+    background: #fff;
+    padding: 0px 18px;
+    box-shadow: 0px 10px 25px 0px rgb(123 147 171 / 15%);
+    border-radius: 12px;
+    width: 86px;
+    margin: 13px 0;
+
+            `}
             style={{ boxShadow: "none" }}
             className="plan_details_ic"
             alt="plan_details_ic"

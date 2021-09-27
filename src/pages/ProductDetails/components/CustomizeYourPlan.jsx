@@ -238,8 +238,8 @@ const RidersContainer = styled.div`
   @media (max-width: 1024px) {
     display: block;
     padding: 0px;
-    margin-left: 10px;
-    margin-right: 10px;
+   
+    
   }
 
   ${small} {

@@ -299,18 +299,21 @@ padding: 5px 3px;
     /* ${mobile} {
       flex: 0 0 100%;
       margin: 10px 0;
-      padding: 0px 6px;
+      /* padding: 0px 6px; */
     }
 
     ${small} {
       border-radius: 11px;
-      padding: 12px 0 9px 0;
+      /* padding: 12px 0 9px 0; */
     }
 
-    @media (max-width: 900px) {
+    /* @media (max-width: 900px) {
       padding: 0px 6px;
     } */
   }
+  @media (max-width: 900px) {
+      width:inherit;
+    }
 `;
 
 export default RiderCard;

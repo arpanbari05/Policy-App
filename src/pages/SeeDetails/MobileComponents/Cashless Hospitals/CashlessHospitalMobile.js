@@ -63,7 +63,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                         >
                           <span
                             style={{
-                              color: "#c7222a",
+                              color: "#0a87ff",
                             }}
                           >
                             {el.name}
@@ -107,7 +107,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                   <input
                     className="bg_transparent border_none"
                     type="text"
-                    style={{ width: "100px", fontSize: "14px" }}
+                    style={{ fontSize: "14px" }}
                     value={searchText}
                     onChange={e => {
                       setSearchText(e.target.value);
@@ -167,7 +167,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                     style={{
                       paddingTop: "unset",
                       whiteSpace: "nowrap",
-                      paddingRight: "10px",
+         
                       width: "40%",
                       fontSize: "15px",
                     }}
@@ -261,8 +261,8 @@ const FeatureSection = styled.div`
   margin-left: 20px;
   display: flex;
   &::before {
-    content: "--";
-    color: var(--yellow-one);
+    content: "";
+    color: #fecc28;
     height: 39px;
     width: 9px;
     padding-right: 10px;
@@ -275,7 +275,7 @@ const FeatureSection = styled.div`
     /* left: -20px; */
     /* position: absolute; */
     /* background-color: #de9b9e; */
-    background-color: var(--yellow-one);
+    background-color: #fecc28;
     border-radius: 0 15px 15px 0;
   }
   @media (max-width: 767px) {

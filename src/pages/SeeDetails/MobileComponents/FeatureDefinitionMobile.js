@@ -15,7 +15,7 @@ function FeatureDefinitionMobile({
   if (windowWidth > 767)
     return (
       <FeatureT onClick={() => setToggle(!toggle)}>
-        <div
+        {/* <div
           className="icon-box"
           style={{
             top: "4px",
@@ -31,7 +31,7 @@ function FeatureDefinitionMobile({
           
         >
           <img style={{width:'100%'}} src={icon} alt="" />
-        </div>
+        </div> */}
         <div style={{ display: "flex", flexDirection: "column" }} >
           <h6>{header}</h6>
           <div>
@@ -102,7 +102,7 @@ function FeatureDefinitionMobile({
 
     else if(windowWidth < 767)  return (
     <Feature onClick={() => setToggle(!toggle)}>
-      <div
+      {/* <div
         className="icon-box"
         style={{
           top: "4px",
@@ -119,7 +119,7 @@ function FeatureDefinitionMobile({
 
       >
         <img style={{width:'100%'}} src={icon} alt="" />
-      </div>
+      </div> */}
       <div
         style={{ display: "flex", flexDirection: "column" }}
         

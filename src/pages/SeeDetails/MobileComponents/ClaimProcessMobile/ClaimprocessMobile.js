@@ -4,8 +4,8 @@ import "./ClaimProcessMobile.css"
 import styled from 'styled-components'
 import "styled-components/macro"
 import cashlessImg from "./../../../../assets/images/cashless_m.png";
-import telephone from "../../../../assets/images/telephone.png";
-import mail from "../../../../assets/images/mail.png";
+import telephone from "../../../../assets/images/landline_old_phone.png";
+import mail from "../../../../assets/images/message_mail_blue_2.1.png";
 import mobile from "../../../../assets/images/mobile.png";
 import { useSelector } from 'react-redux';
 import SpinLoader from '../../../../components/Common/SpinLoader/SpinLoader';
@@ -36,7 +36,7 @@ function ClaimprocessMobile({
 
                             <TabButton
                                 onClick={() => setActivebtn(1)}
-                                style={{ textAlign: 'center', backgroundColor: activebtn === 1 && "#c7222a", color: activebtn === 1 && "#fff" }}
+                                style={{ textAlign: 'center', backgroundColor: activebtn === 1 && "#0a87ff", color: activebtn === 1 && "#fff" }}
                                 className={`tab ${activebtn === 1 && "tab__active"} `}
 
                             >
@@ -44,7 +44,7 @@ function ClaimprocessMobile({
                             </TabButton>
                             <TabButton
                                 onClick={() => setActivebtn(2)}
-                                style={{ backgroundColor: activebtn === 2 && "#c7222a", color: activebtn === 2 && "#fff" }}
+                                style={{ backgroundColor: activebtn === 2 && "#0a87ff", color: activebtn === 2 && "#fff" }}
                                 className={`tab ${activebtn === 2 && "tab__active"} `}
                              
                             >
@@ -52,7 +52,7 @@ function ClaimprocessMobile({
                             </TabButton>
                             <TabButton
                                 onClick={() => setActivebtn(3)}
-                                style={{ backgroundColor: activebtn === 3 && "#c7222a", color: activebtn === 3 && "#fff" }}
+                                style={{ backgroundColor: activebtn === 3 && "#0a87ff", color: activebtn === 3 && "#fff" }}
                                 className={`tab ${activebtn === 3 && "tab__active"} `}
                              
                             >
@@ -61,7 +61,7 @@ function ClaimprocessMobile({
                         </ActiveBar>
                         {activebtn === 1 &&
                             <Inner>
-                                <img src={cashlessImg} style={{ width: "110px" }} alt="" />
+                                {/* <img src={cashlessImg} style={{ width: "110px" }} alt="" /> */}
                                 <h3 className="text-left cashless_t_r_t_main" style={{ marginBottom: "0px", fontFamily: "unset" }}>Cashless Claim</h3>
                                 <Paragraph
                                     className="leade_p"
@@ -76,8 +76,8 @@ function ClaimprocessMobile({
                         }
                         {activebtn === 2 &&
                             <Inner>
-                                <img src={cashlessImg} style={{ width: "110px" }} alt="" />
-                                <h3 className="text-left cashless_t_r_t_main" style={{ marginBottom: "0px", fontFamily: "pf_handbook_proregular" }}>Document Required</h3>
+                                {/* <img src={cashlessImg} style={{ width: "110px" }} alt="" /> */}
+                                <h3 className="text-left cashless_t_r_t_main" style={{ marginBottom: "0px",  }}>Document Required</h3>
                                 <Paragraph
                                     className="leade_p"
                                     style={{
@@ -91,7 +91,7 @@ function ClaimprocessMobile({
                         }
                         {activebtn === 3 &&
                             <Inner>
-                                <img src={cashlessImg} style={{ width: "110px" }} alt="" />
+                                {/* <img src={cashlessImg} style={{ width: "110px" }} alt="" /> */}
                                 <h3 className="text-left cashless_t_r_t_main" style={{ marginBottom: "0px", fontFamily: "unset" }}>Reimbursement Claim</h3>
                                 <Paragraph
                                     className="leade_p"
@@ -120,9 +120,14 @@ function ClaimprocessMobile({
                             </p>{" "}
                             <div style={{ padding: "30px 15px", display: "flex" }}>
                                 <div style={{ display: "flex", alignItems: "center" }}>
-                                    <div className='icon-box' style={{ top: "4px", padding: "15px", marginRight: "10px", backgroundColor: "#fff5f5", height: "100%", width: "100%", maxWidth: "50px", maxHeight: "50px", borderRadius: "50%", }}>
-                                        <img src={telephone} alt="" />
-                                    </div>
+                                <div>
+                                    <img
+                                    css={`
+                                    height:50px;
+                                    margin-right: 15px;
+                                    `}
+                                    src={telephone} alt="" />
+                                </div>
                                     <div style={{ marginTop: "10px", }}>
                                         <h4
                                             style={{
@@ -169,8 +174,13 @@ function ClaimprocessMobile({
                             </div>
 
                             <div style={{ display: "flex", alignItems: "center", padding: "0px 15px", }}>
-                                <div className='icon-box' style={{ top: "4px", padding: "15px", backgroundColor: "#fff5f5", height: "100%", width: "100%", maxWidth: "50px", maxHeight: "50px", borderRadius: "50%", marginRight: "10px" }}>
-                                    <img src={mail} alt="" />
+                                <div>
+                                    <img
+                                    css={`
+                                    height:50px;
+                                    margin-right: 15px;
+                                    `}
+                                    src={mail} alt="" />
                                 </div>
                                 <div style={{ marginTop: "10px", }}>
                                     <h4
@@ -212,8 +222,8 @@ padding-top:20px;
 margin-left: 20px;
 display: flex;
 &::before {
-    content: "--";
-    color:var(--yellow-one);
+    content: "";
+    color:#fecc28;
     height: 39px;
     width: 9px;
     padding-right: 10px;
@@ -226,7 +236,7 @@ display: flex;
     /* left: -20px; */
     /* position: absolute; */
     /* background-color: #de9b9e; */
-    background-color: var(--yellow-one);
+    background-color:#fecc28;
     border-radius: 0 15px 15px 0;
   }
   @media (max-width:1022px){
@@ -253,6 +263,7 @@ height: 40px;
 const TabButton = styled.button`
 /* width:100px; */
 font-size:12px;
+border: none;
 @media (max-width:400px){
     font-size:11px !important;
     padding:5px !important;

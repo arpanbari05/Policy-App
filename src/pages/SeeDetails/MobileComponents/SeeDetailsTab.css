@@ -1,5 +1,6 @@
 .plan {
   display: block;
+  text-align: center;
 }
 .plan__active {
   display: block;
