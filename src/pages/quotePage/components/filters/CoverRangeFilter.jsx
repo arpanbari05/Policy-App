@@ -173,6 +173,7 @@ const FilterModal = ({ show, handleClose }) => {
                     <input
                       type="radio"
                       id={option.code}
+                      checked={option.code === selectedCover.code || false}
                       name="selectCover"
                       onChange={(e) => {
                         setInputCover("");
@@ -200,6 +201,7 @@ const FilterModal = ({ show, handleClose }) => {
               placeholder="Enter your own cover."
               className="w-100"
               value={inputCover}
+             
               onChange={(e) => {
                 setInputCover(e.target.value);
                 setselectedCover("");

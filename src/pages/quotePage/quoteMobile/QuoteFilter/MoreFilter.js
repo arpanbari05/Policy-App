@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Col, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../../components/Common/Modal";
-import { setFilters } from "../../../QuotesPage/quotePage.slice";
+
 import useQuoteFilter from "./useQuoteFilter";
 import "styled-components/macro";
+import { setFilters } from "../../quote.slice";
 
 export function CustomRadio({
   label,

@@ -6,7 +6,7 @@ export const Filter = styled.div`
   &:hover{
     background-color:#eef1f4;
     :not(:last-child) {
-    border-right: none;
+    border-right: 1px solid transparent;
     
   }
  

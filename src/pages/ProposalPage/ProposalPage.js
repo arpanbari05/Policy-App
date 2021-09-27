@@ -38,6 +38,7 @@ const ProposalPage = ({ history }) => {
   //const currentSchema = starSchema;
   const cart = useSelector((state) => state.cart);
   const [listOfForms, setListOfForms] = useState([]);
+ 
   useEffect(() => {
     if (currentSchema instanceof Object)
       setListOfForms(Object.keys(currentSchema));

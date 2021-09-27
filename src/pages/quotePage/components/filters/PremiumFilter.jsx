@@ -85,6 +85,7 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
                     <input
                       type="radio"
                       id={option.code}
+                      checked={selectedPremium.code === option.code || false}
                       name="select_premium"
                       onChange={() => handleChange(option.code, option.display_name)}
                     />

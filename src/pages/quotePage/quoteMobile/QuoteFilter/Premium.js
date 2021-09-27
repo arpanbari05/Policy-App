@@ -1,11 +1,13 @@
 import React, { useRef, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { premiumFilterCards, setFilters } from "../../quotePage.slice";
-import useOutsideClick from "../../../../customHooks/useOutsiteClick";
+// import { premiumFilterCards, setFilters } from "../../quotePage.slice";
+
 import Modal from "../../../../components/Common/Modal";
 import "styled-components/macro";
 import { CustomRadio } from "./MoreFilter";
+import useOutsiteClick from "../../../../customHooks/useOutsideClick";
+import { premiumFilterCards,setFilters } from "../../quote.slice";
 
 const Premium = ({
   setExpandSelected,
@@ -19,7 +21,7 @@ const Premium = ({
 
   const premiumRef = useRef();
 
-  useOutsideClick(premiumRef, () => setExpandSelected(""));
+  useOutsiteClick(premiumRef, () => setExpandSelected(""));
 
   return (
     <Modal>

@@ -42,6 +42,7 @@ const RadioButton = ({
 export default RadioButton;
 
 export const RadioInput = styled.input`
+  cursor: pointer !important;
   &:not(:checked),
   &:checked {
     position: absolute;
@@ -62,6 +63,7 @@ export const RadioInput = styled.input`
 `;
 
 export const RadioLabel = styled.label`
+cursor: pointer !important;
   transition: all 0.3s linear 0s;
   border-radius: 5px;
   font-weight: 900;
