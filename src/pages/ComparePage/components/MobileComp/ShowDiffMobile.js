@@ -8,7 +8,9 @@ const ShowDiffMobile = ({ setshowDiffCbx, showDiffCbx }) => {
 			<Checbox
 				checked={showDiffCbx}
 				onChange={() => setshowDiffCbx(!showDiffCbx)}
+				title="Show difference"
 			/>
+			
 		</StyledDiv>
 	);
 };
@@ -18,6 +20,7 @@ export default ShowDiffMobile;
 const StyledDiv = styled.div`
 	background: #f3f4f9;
 	height: 32px;
+	display: flex;
 	& .agreement-checkbox_compare {
 		position: relative;
 		left: 45px;

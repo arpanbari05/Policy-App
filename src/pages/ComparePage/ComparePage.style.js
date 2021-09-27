@@ -102,13 +102,13 @@ export const EmailSent = styled.div`
   color: ${props => (props.status ? "#1f874c" : "#bd2b2b")};
 `;
 export const RemoveCross = styled.div`
-  cursor: pointer;
+  cursor: pointer !important;
   position: absolute;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-  background-color: #ffffff;
+  box-shadow: 0 3px 7px 0 rgb(0 0 0 / 16%) !important;
+  background-color: white !important;
   color: #000;
   font-size: 14px;
   width: 25px;
@@ -119,8 +119,13 @@ export const RemoveCross = styled.div`
   transform: translate(50%, -50%);
   
  @media (max-width: 768px) {
-    top:12px;
-    right:12px;
+    top:0px;
+    right:0px;
+  }
+  @media (max-width: 500px) {
+    font-size: 10px;
+    width: 20px;
+  height:20px;
   }
 `;
 export const CrossWrapper = styled.div`
@@ -184,6 +189,9 @@ export const CompanyName = styled.div`
   text-align: center;
   color: #253858;
   margin-bottom: 5px;
+  @media (max-width:767px){
+    font-size: 12px;
+  }
 `;
 export const PlanName = styled.div`
 

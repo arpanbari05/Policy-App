@@ -7,6 +7,7 @@ import useWindowSize from "../../../../customHooks/useWindowSize";
 import { useCartProduct } from "../../../Cart";
 import { CompanyName, PlanName, RemoveCross } from "../../ComparePage.style";
 import CompareBtn from "../buttons/CompareBtn";
+import "styled-components/macro";
 import "../PlanContainer/PlanContainer"
 // import { backgroundPosition } from "html2canvas/dist/types/css/property-descriptors/background-position";
 
@@ -20,7 +21,7 @@ const getYearsUsingTenure = tenure => {
     return "3 years";
   }
 };
-const PlanContainerM = ({
+const  PlanContainerM = ({
   plans,
   removePlan,
   setShowM,
@@ -45,21 +46,29 @@ const PlanContainerM = ({
   return (
     <>
       {product?.name ? (
-        <Row className="price_IC_box text-center " style={{boxShadow:"none",width:'48%'}}>
+        <Row className="price_IC_box text-center position-relative" style={{boxShadow:"none",width:'42%',minHeight: "180px"}} css={`
+            @media (max-width:767px){
+             border:1px solid #c2cbde;
+            }
+            `}>
         
           <RemoveCross
             onClick={() => removePlan(`${product.id}${sum_insured}`)}
             className="remove-btn"
           >
             <span>
-              <i class="fa fa-close"></i>
+            <i class="fas fa-times"></i>
             </span>
           </RemoveCross>
           
           
           
            
-            <img src={IcLogo} style={{width:'80px',marginTop:'8px'}}/>
+            <img src={IcLogo} style={{width:'80px',marginTop:'8px'}} css={`
+            @media (max-width:767px){
+              margin: auto !important;
+            }
+            `}/>
 
             {/* <ImageLogoWrapper style={{backgroundImage:`url(${IcLogo})`}}>
           </ImageLogoWrapper> */}
@@ -116,8 +125,8 @@ const PlanContainerM = ({
       ) : (
       
         
-        <EmptyContainer className="IC_product_compare_card blank" style={{width:'48%'}}>
-          <div className="plus" onClick={() => setShowM(true)}>
+        <EmptyContainer className="IC_product_compare_card blank" style={{width:'42% !important', minHeight: "180px", borderRadius:"none"}}>
+          <div className="plus mx-auto" onClick={() => setShowM(true)}>
             <i className="fa fa-plus"></i>
           </div>
           <div className="text-center mt-2">Add plans</div>
@@ -144,14 +153,14 @@ export default PlanContainerM;
 
 
 const EmptyContainer = styled.div`
-  width: 45% !important;
+ 
   border: 2px dashed #e2a6a9;
   color:#0d6efd;
-  background: #fff5f5;
+  background: #f3f4f9;
   border-radius: 12px;
   height: 157px;
   margin: 10px;
-  min-width:250px;
+  
   display:flex;
   justify-content:center;
   & .plus{
