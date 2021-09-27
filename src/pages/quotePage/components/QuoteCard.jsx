@@ -105,7 +105,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
       tax_amount: mergedQuotes[0]?.tax_amount[activeCover],
       tenure: mergedQuotes[0]?.tenure[activeCover],
     };
-
+    console.log(selectedPlan, selectedPlan.product?.id,'sgda')
     dispatch(
       saveSelectedPlan({
         ...selectedPlan,

@@ -113,8 +113,8 @@ const THead = ({
               <CheckBox
                 checked={showDiffCbx}
                 title={`Show Difference`}
-                id={`show difference`}
-                handleChange={(e) => {
+                id={`show differenced`}
+                onChange={(e) => {
                   setshowDiffCbx(!showDiffCbx);
                 }}
               />

@@ -196,6 +196,11 @@ function ProductSummaryMobile({ cart, payNow }) {
             css={`
               padding-top: 10px;
               padding-left: 20px;
+              position: absolute;
+              top:20px;
+              @media(max-width:768px){
+                position:unset;
+              }
             `}
           >
             <div>
@@ -225,7 +230,7 @@ function ProductSummaryMobile({ cart, payNow }) {
           `}
         /> */}
         <Outer>
-          <Premium onClick={() => setShow(true)}>
+          {/* <Premium onClick={() => setShow(true)}>
             <h6
               style={{
                 fontSize: "14px",
@@ -256,7 +261,7 @@ function ProductSummaryMobile({ cart, payNow }) {
               {" "}
               <i class="fa fa-inr"></i> {cart?.totalPremium}
             </p>
-          </Premium>
+          </Premium> */}
 
           {location.pathname === "/proposal_summary" ? (
             <View
@@ -285,20 +290,21 @@ function ProductSummaryMobile({ cart, payNow }) {
 }
 
 const Outer = styled.div`
-  border-top: 1px solid #f3f4f9;
+  /* border-top: 1px solid #f3f4f9; */
   padding: 15px 30px;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 const Premium = styled.button`
   text-align: left;
 `;
 const View = styled.button`
-  background-color: #c72229;
+  background-color: #0a87ff;
   color: #fff;
   padding: 10px 20px;
   border-radius: 10px;
+  border: none;
   @media (min-width: 768px) {
     font-size: 21px !important;
   }

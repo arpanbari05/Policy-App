@@ -16,6 +16,7 @@ function RiderCard({
   ...props
 }) {
   const riderName = rider.name;
+  console.log(isRiderSelected,selectedRiders,riderName,'dsgagasd' )
   const riderPremium = parseInt(rider.total_premium).toLocaleString("en-In");
   const riderDescription = rider.description;
   console.log(health_riders, "gege3");

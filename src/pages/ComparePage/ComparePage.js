@@ -440,7 +440,7 @@ const popupContentM = (
         >
           {[0, 1].map((item, index) => (
             <div
-              style={windowWidth < 400 ? { width: "48%" } : { width: "46%" }}
+              style={windowWidth < 400 ? { width: "50%" } : { width: "49%" }}
             >
               {mergedQuotes[index] ? (
                 <SelectedProduct first={index === 0}>
@@ -452,7 +452,7 @@ const popupContentM = (
                     }
                   >
                     <span>
-                      <i class="fa fa-close"></i>
+                    <i class="fas fa-times"></i>
                     </span>
                   </RemoveCross>
                   <div
@@ -463,7 +463,7 @@ const popupContentM = (
                     }}
                   >
                     <LogoWrapper>
-                      <img src={mergedQuotes[index].data.logo} alt="logo"></img>
+                      <img src={mergedQuotes[index].data.logo} className="w-100" alt="logo"></img>
                     </LogoWrapper>
 
                     <CompanyName
@@ -537,7 +537,7 @@ const popupContentM = (
                   <div className="col-lg-4">
                     <QuoteWrapperM>
                       <LogoWrapper>
-                        <img src={companyWiseLogos[index]} alt="logo"></img>
+                        <img src={companyWiseLogos[index]} className="w-100" alt="logo"></img>
                       </LogoWrapper>
                       <QuoteNameM>{item}</QuoteNameM>
                       <DropDownWrapper>

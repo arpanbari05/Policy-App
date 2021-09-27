@@ -38,14 +38,27 @@
 }
 
 /* Fonts style ends */
-
 /* Generic Styles start here */
 body {
+
   font-size: 16px;
   font-weight: 400;
   font-family: "Inter-Regular";
   color: #000;
+  
 }
+a {
+  cursor: pointer !important;
+}
+
+.cursor_pointer {
+  cursor: pointer !important;
+}
+
+/* p, span {
+  cursor: default !important;
+} */
+
 .form-control:focus {
   border-color: unset !important;
   box-shadow: unset !important;
@@ -617,4 +630,19 @@ border-bottom: 2px dotted #505f79;
   float: right;
   margin-bottom: 6px;
   line-height: 13px;
+}
+/* ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, */
+
+.icon {
+  margin-top: 1px;
+  display: inline-block;
+  width: 54px;
+  height: 54px;
+  border-radius: 100%;
+  background-size: 100px 50px;
+  box-sizing: border-box;
+  margin-left: 28px;
+  margin-left: 4px !important;
+  font-weight: 900;
+  margin: 0 0px 0 21px;
 }

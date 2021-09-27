@@ -63,17 +63,21 @@ const MobileHeader = ({
           });
         }}
       >
-        <i class="flaticon-back" />
+        <i class="fas fa-arrow-circle-left"></i>
         <span> Compare Plan</span>
       </a>
       <span className="second-container">
         <Link
-          onClick={() => {
-            dispatch(requestDownload());
-            download();
-          }}
+          // onClick={() => {
+          //   dispatch(requestDownload());
+          //   download();
+          // }}
         >
-          <img src={print} />
+        <span style={{
+          fontSize:"30px"
+        }}>
+          <i class="bi bi-printer"></i>
+          </span>
         </Link>
 
         <Link>
@@ -95,21 +99,23 @@ const MobileHeader = ({
               <li>
                 <button
                   onClick={() => {
-                    setShareState(false);
-                    setSend("email");
+                    // setShareState(false);
+                    // setSend("email");
                   }}
+                  className="btn"
                 >
-                  <i class="fa fa-envelope-o"></i>
+                 <i class="far fa-envelope"></i>
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => {
-                    setShareState(false);
-                    setSend("whatsapp");
+                    // setShareState(false);
+                    // setSend("whatsapp");
                   }}
+                  className="btn"
                 >
-                  <i class="fa fa-whatsapp"></i>
+                  <i class="fab fa-whatsapp"></i>
                 </button>
               </li>
             </Styledul>
@@ -152,10 +158,11 @@ const Styledul = styled.ul`
   opacity: 1;
   z-index: 2000;
   top: 60px;
+  right:8px;
   & li {
     background-color:#0d6efd;
-    border-radius: 50%;
-    padding: 5px 10px;
+    border-radius: 100%;
+    
     box-shadow: 0px 1px 2px grey;
     margin-bottom: 2px;
     display: flex;

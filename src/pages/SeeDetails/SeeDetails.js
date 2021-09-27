@@ -41,9 +41,10 @@ import { addSelectedRiders } from "../quotePage/quote.slice";
 
 export const getRiders = async (
   { productId, sum_insured, tenure, group },
+
   callback = () => {},
 ) => {
-  
+  console.log(productId,'agsdasgd2')
   try {
     const response = await getRidersApi({
       productId,
@@ -142,6 +143,7 @@ const SeeDetails = ({
   tenure,
   product,
 }) => {
+  console.log(quote,'jejejejj')
 
   const [addedRiders, setAddedRiders] = useState([]);
   const dispatch = useDispatch();
@@ -279,11 +281,10 @@ const SeeDetails = ({
       }
       if (activeFieldset === 2) {
         dispatch(requestDetails());
-
+        console.log('hehehehhe', quote.product.id)
         await getRiders(
-
           {
-            productId: quote.productId,
+            productId: quote.product.id,
             sum_insured,
             tenure,
             group: groupCode,

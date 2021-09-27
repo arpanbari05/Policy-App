@@ -19,6 +19,15 @@ const CompareBtn = ({ value, onClick, windowWidth }) => {
         line-height: 26px;
         height: 50px;
     width: 88%;
+    @media (max-width:767px){
+      font-size: 14px !important;
+      width: 60%;
+      height: 40px;
+    }
+    @media (max-width:550px){
+      font-size: 11px !important;
+      width: 80%;
+    }
     `}
       >
         ₹ {value}

@@ -45,11 +45,12 @@ const FormBuilder = ({
     fetchValues,
     options.defaultValues,
     noForAll,
-    setNoForAll,
+    setNoForAll
   );
 
   const [trigger, setTrigger] = useState(false);
-  const { proposalData } = useSelector(state => state.proposalPage);
+  const { proposalData } = useSelector((state) => state.proposalPage);
+  console.log(schema, values, "sdags");
   useEffect(() => {
     if (trigger) {
       triggerValidation(trigger);
@@ -85,13 +86,38 @@ const FormBuilder = ({
   // }, [values]);
 
   const [fillBus, setFillBus] = useState([]);
-  const { asyncOptions, asyncValues } = useSelector(state => state.formBuilder);
+  const { asyncOptions, asyncValues } = useSelector(
+    (state) => state.formBuilder
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
+    const tempValues = { ...values };
+    schema.forEach((item) => {
+      console.log(
+        item.name,
+        !values?.[item.name],
+        item?.validate?.required,
+        Object.keys(item?.additionalOptions?.options || {}).length === 1,
+        "333"
+      );
+      // if (
+      //   item.type === "select" &&
+      //   !values[item.name] &&
+      //   item.validate.required &&
+      //   Object.keys(item.additionalOptions.options || {}).length === 1
+      // ) {
+      //   const tempValue = Object.keys(item.additionalOptions.options)[0];
+
+      //   tempValues[item.name] = tempValue;
+      // }
+    });
+    updateValues(tempValues);
+  }, [schema, errors]);
+  useEffect(() => {
     let temp = {};
     if (schema instanceof Array)
-      schema.forEach(item => {
+      schema.forEach((item) => {
         if (item.fill) temp = Object.assign(temp, { [item.name]: item.fill });
       });
     setFillBus(temp);
@@ -104,11 +130,10 @@ const FormBuilder = ({
     <>
       {schema instanceof Array &&
         schema.map((item, index) => {
-         
           if (item instanceof Array) {
             return (
               <>
-                {item[0]?.additionalOptions?.members?.map(member => {
+                {item[0]?.additionalOptions?.members?.map((member) => {
                   if (
                     values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
@@ -125,9 +150,9 @@ const FormBuilder = ({
                               ]?.name?.split(" ")[0]
                             }
                           </Title>
-                          {item.map(innerItem => {
+                          {item.map((innerItem) => {
                             const Comp = components[innerItem.type];
-                            
+
                             if (!Comp) {
                               alert("Type :" + innerItem.type + "Not found");
                               return <></>;
@@ -136,32 +161,35 @@ const FormBuilder = ({
                                 renderField(innerItem, values, member) && (
                                   <Wrapper
                                     key={index + member + innerItem.name}
-                                    width={innerItem.width === "25%" ? '33%' : innerItem.width === "75%" ? "66%" : innerItem.width}
+                                    width={
+                                      innerItem.width === "25%"
+                                        ? "33%"
+                                        : innerItem.width === "75%"
+                                        ? "66%"
+                                        : innerItem.width
+                                    }
                                     medical
                                   >
-                                  {}
+                                    {}
                                     <Comp
                                       name={innerItem.name}
-                                      onChange={e => {
-                                        
+                                      onChange={(e) => {
                                         if (
                                           innerItem.parent &&
                                           innerItem.type === "checkBox2"
                                         ) {
-                                       
-
                                           insertValue(
                                             innerItem.parent,
                                             member,
                                             innerItem.name,
-                                            e.target.checked ? "Y" : "N",
+                                            e.target.checked ? "Y" : "N"
                                           );
                                         } else if (innerItem.parent) {
                                           insertValue(
                                             innerItem.parent,
                                             member,
                                             innerItem.name,
-                                            e.target.value,
+                                            e.target.value
                                           );
                                         } else {
                                           if (
@@ -169,7 +197,7 @@ const FormBuilder = ({
                                           ) {
                                             updateValue(
                                               innerItem.name,
-                                              e.target.value,
+                                              e.target.value
                                             );
                                           } else updateValue(innerItem.name, e);
                                         }
@@ -190,9 +218,9 @@ const FormBuilder = ({
                                                     fillBus[innerItem.name]
                                                       .alsoUse
                                                   ],
-                                              },
+                                              }
                                             ),
-                                            fillBus[innerItem.name],
+                                            fillBus[innerItem.name]
                                           );
                                         }
                                         if (options.validateOn === "change") {
@@ -206,40 +234,40 @@ const FormBuilder = ({
                                           checkAllow(
                                             innerItem.allow,
                                             e,
-                                            "change",
+                                            "change"
                                           );
                                         }
                                       }}
                                       readOnly={innerItem.readOnly}
-                                      onInput={e => {
+                                      onInput={(e) => {
                                         if (innerItem.allow) {
                                           checkAllow(
                                             innerItem.allow,
                                             e,
-                                            "input",
+                                            "input"
                                           );
                                         }
                                       }}
-                                      onBlur={e => {
+                                      onBlur={(e) => {
                                         if (options.validateOn === "blur") {
                                           setTrigger(innerItem.name);
                                         }
                                       }}
-                                      onKeyDown={e => {
+                                      onKeyDown={(e) => {
                                         if (innerItem.allow) {
                                           checkAllow(
                                             innerItem.allow,
                                             e,
-                                            "down",
+                                            "down"
                                           );
                                         }
                                       }}
-                                      onKeyPress={e => {
+                                      onKeyPress={(e) => {
                                         if (innerItem.allow) {
                                           checkAllow(
                                             innerItem.allow,
                                             e,
-                                            "press",
+                                            "press"
                                           );
                                         }
                                       }}
@@ -250,7 +278,7 @@ const FormBuilder = ({
                                         generateRange(
                                           innerItem.additionalOptions
                                             .customOptions,
-                                          values,
+                                          values
                                         )
                                       }
                                       asyncOptions={
@@ -297,7 +325,7 @@ const FormBuilder = ({
               values[item.name] &&
               values[item.name][`is${item.name}`] === "Y"
             ) {
-              setValues(prev => {
+              setValues((prev) => {
                 return { ...prev, [item.name]: "" };
               });
             } else if (
@@ -308,11 +336,11 @@ const FormBuilder = ({
               !fetchMembers(item.render.when, values).length &&
               !(
                 "showMembers" in
-                schema.find(_i => _i.name === item.render.when.split(".")[0])
+                schema.find((_i) => _i.name === item.render.when.split(".")[0])
                   .additionalOptions
               )
             ) {
-              setValues(prev => {
+              setValues((prev) => {
                 return { ...prev, [item.name]: "" };
               });
             }
@@ -323,18 +351,27 @@ const FormBuilder = ({
               return (
                 <>
                   {renderField(item, values) && (
-                    <Wrapper key={index} width={item.width === "25%" ? '33%' : item.width === "75%" ? "66%" : item.width}>
+                    <Wrapper
+                      key={index}
+                      width={
+                        item.width === "25%"
+                          ? "33%"
+                          : item.width === "75%"
+                          ? "66%"
+                          : item.width
+                      }
+                    >
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}
                         onChange={(e, value) => {
-                          
+                          console.log(e, value, "hegege");
                           if (item.parent && item.members) {
                             insertValue(
                               item.parent,
                               item.members,
                               item.name,
-                              e.target.value,
+                              e.target.value
                             );
                           } else {
                             if (item.name === "town" || item.name === "area") {
@@ -357,7 +394,7 @@ const FormBuilder = ({
                                 [fillBus[item.name].alsoUse]:
                                   values[fillBus[item.name].alsoUse],
                               }),
-                              fillBus[item.name],
+                              fillBus[item.name]
                             );
                           }
                           if (options.validateOn === "change") {
@@ -375,27 +412,27 @@ const FormBuilder = ({
                           !(
                             "showMembers" in
                             schema.find(
-                              _i => _i.name === item.render.when.split(".")[0],
+                              (_i) => _i.name === item.render.when.split(".")[0]
                             ).additionalOptions
                           ) &&
                           fetchMembers(item.render.when, values)
                         }
-                        onInput={e => {
+                        onInput={(e) => {
                           if (item.allow) {
                             checkAllow(item.allow, e, "input");
                           }
                         }}
-                        onBlur={e => {
+                        onBlur={(e) => {
                           if (options.validateOn === "blur") {
                             setTrigger(item.name);
                           }
                         }}
-                        onKeyDown={e => {
+                        onKeyDown={(e) => {
                           if (item.allow) {
                             checkAllow(item.allow, e, "down");
                           }
                         }}
-                        onKeyPress={e => {
+                        onKeyPress={(e) => {
                           if (item.allow) {
                             checkAllow(item.allow, e, "press");
                           }
@@ -435,9 +472,9 @@ const HR = styled.hr`
   }
 `;
 const Wrapper = styled.div`
-  width: ${props => (props.width ? props.width : "33%")};
+  width: ${(props) => (props.width ? props.width : "33%")};
   display: inline-block;
-  padding-left: ${props => (props.medical ? "0px" : "15px")};
+  padding-left: ${(props) => (props.medical ? "0px" : "15px")};
   padding-right: 15px;
   @media (max-width: 1023px) {
     width: 100%;

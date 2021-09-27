@@ -605,7 +605,7 @@ const TBody = ({
                       );
                     }}
                   >
-                    <option>₹ {plans[0]?.data?.sum_insured}</option>
+                    <option>{plans[0]?.data?.sum_insured}</option>
                     {mergedCover.length > 0 &&
                       mergedCover[0]?.map((data) => {
                         if (
@@ -614,7 +614,7 @@ const TBody = ({
                             `${plans[0]?.data?.product.id}${data}`
                           )
                         ) {
-                          return <option>₹ {data}</option>;
+                          return <option>{data}</option>;
                         }
                       })}
                   </select>
@@ -644,7 +644,7 @@ const TBody = ({
                       // console.log("33",`${plans[1]?.data?.product.id}${e.target.value}`);
                     }}
                   >
-                    <option>₹ {plans[1]?.data?.sum_insured}</option>
+                    <option>{plans[1]?.data?.sum_insured}</option>
                     {mergedCover.length > 0 &&
                       mergedCover[1]?.map((data) => {
                         if (
@@ -653,7 +653,7 @@ const TBody = ({
                             `${plans[1]?.data?.product.id}${data}`
                           )
                         ) {
-                          return <option>₹ {data}</option>;
+                          return <option>{data}</option>;
                         }
                       })}
                   </select>
@@ -682,7 +682,7 @@ const TBody = ({
                       );
                     }}
                   >
-                    <option>₹ {plans[2]?.data?.sum_insured}</option>
+                    <option>{plans[2]?.data?.sum_insured}</option>
                     {mergedCover.length > 0 &&
                       mergedCover[2]?.map((data) => {
                         if (
@@ -691,7 +691,7 @@ const TBody = ({
                             `${plans[2]?.data?.product.id}${data}`
                           )
                         ) {
-                          return <option>₹ {data}</option>;
+                          return <option>{data}</option>;
                         }
                       })}
                   </select>

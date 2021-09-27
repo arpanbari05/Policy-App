@@ -49,16 +49,18 @@ const MobileModal = styled(Modal)`
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   font-family: "PFHandbookPro";
   border-radius: 10px;
+  left:50%;
+  transform:translateX(-50%);
 `;
 
 const ModalTitle = styled.h5`
   font-size: 13px;
   font-weight: bold;
-  color:  #3e593c;
+  color:  #0d6efd;
   font-size: 18px;
   font-weight: 900;
   text-align:center;
   width: fit-content;
   margin:auto;
-  border-bottom:dotted 2px #3e593c; 
+  border-bottom:dotted 2px #0d6efd; 
 `;
