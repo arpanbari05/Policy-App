@@ -8,7 +8,7 @@ export const Form = styled.form`
 `;
 export const MobileHeader = styled.div`
   display: none;
-  @media (max-width: 1024px) {
+  @media (max-width: 769px) {
     display: flex;
     align-items:center;
     padding: 10px;
@@ -18,6 +18,8 @@ export const MobileHeader = styled.div`
 `;
 export const MobileHeaderText = styled.p`
   color: #fff;
-  font-size: 19px;
+  font-size: 17px;
   margin: 0;
+  display:flex;
+  align-items:center;
 `;

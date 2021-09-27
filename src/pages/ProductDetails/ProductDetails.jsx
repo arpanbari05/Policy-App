@@ -149,7 +149,7 @@ const ProductDetails = () => {
             history.goBack();
           }}
         >
-          <i className="icon flaticon-back"></i> Go Back
+         <i class="fas fa-chevron-circle-left"></i>{" "}<span className="mx-2"> Go Back</span>
         </MobileHeaderText>
       </MobileHeader>
       <main
@@ -161,11 +161,19 @@ const ProductDetails = () => {
         `}
       >
         {showNav && <ProductDetailsNavbar />}
-        <div className="d-flex align-items-center justify-content-between my-3">
+        <div className="d-flex align-items-center justify-content-between my-3" css={`
+        @media (max-width:1200px){
+          flex-direction: column;
+    align-items: flex-start !important;
+        }
+        `}>
           <GoBackButton groupCode={groupCode} />
           <div
             css={`
               width: 70%;
+              @media (max-width:1200px){
+                width: 100%;
+              }
             `}
             className="flex-fill"
           >
@@ -215,6 +223,9 @@ const ProductDetails = () => {
               // }}
               // id="customize-your-plan-section"
               css={`
+              @media (max-width:1200px){
+                margin-top:15px;
+              }
                 ${mobile} {
                   padding: 0;
                   margin-bottom: 127px;
