@@ -53,10 +53,12 @@ width:100%;
           font-size: 13px;
           width:50%;
           text-align:right;
-          ${small} {
+          @media (max-width:768px){
+            text-align:left !important;
             font-size: 12px;
             line-height: 14px;
             margin-top: 7px;
+            width:100%;
           }
         `}
       >
@@ -562,6 +564,7 @@ const ReviewCart = ({ groupCode }) => {
             top: unset;
             border-radius: 12px 12px 0 0;
             padding-top: ${expand ? "18px" : "0"};
+            overflow: inherit;
           }
         `}
       >
@@ -578,7 +581,8 @@ const ReviewCart = ({ groupCode }) => {
             display: none;
             align-items: center;
             justify-content: center;
-
+          border: none;
+          z-index:999;
             ${mobile} {
               display: flex;
             }
@@ -615,6 +619,9 @@ const ReviewCart = ({ groupCode }) => {
               top: -59px;
               z-index: -1;
               left: -56px;
+              @media (max-width:768px){
+                display:none;
+              }
             `}
           ></span>
           <div
@@ -790,7 +797,7 @@ color:#616161;
               </span>
               <div
                 css={`
-                  color: var(--abc-red);
+                  color: #0a87ff;
                   font-weight: 900;
 
                   ${small} {
@@ -803,13 +810,14 @@ color:#616161;
             </div>
             <button
               css={`
-                background-color: var(--abc-red);
+                background-color: #0a87ff;
                 padding: 10px 12px;
                 color: #fff;
                 border-radius: 6px;
                 font-size: 16px;
                 font-weight: 900;
               `}
+              className="btn"
               onClick={
                 hasNextGroupProduct ? handleProceedClick : handleReviewCartClick
               }
@@ -846,7 +854,9 @@ color:#616161;
                 justify-content: flex-start;
                 padding: 2px 10px;
                 border-radius: 2px;
-
+                @media (max-width:1200px){
+                  max-width: 15% !important;
+                }
                 ${small} {
                   max-width: 33px;
                 }

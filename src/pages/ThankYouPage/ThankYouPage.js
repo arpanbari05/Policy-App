@@ -180,7 +180,7 @@ const ThankYouPage = () => {
                   backgroundColor: "linear-gradient(90deg, #eff7ff 0%,rgb(255 255 255) 100%) ",
                   display: "flex",
                   alignItems: "center",
-                  color: "darkgreen",
+                  color: "#0a87ff",
                   padding: "10px 10px",
                   fontSize: "15px",
                   whiteSpace: "nowrap",

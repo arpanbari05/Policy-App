@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <div
       css={`
-    @media (max-width: 1023px){
+    @media (max-width: 769px){
       display: none;
     }
     `}

@@ -48,6 +48,8 @@ function ProductCard({ groupCode }) {
         ${small} {
           padding: 16px 6px;
           border-radius: 7px;
+          border: 1px solid #0a87ff;
+          background-color: #eff7ff;
         }
       `}
     >
@@ -60,7 +62,7 @@ function ProductCard({ groupCode }) {
         {/* ************logo******** */}
         <div
           css={`
-            max-width: 90px;
+            max-width: 150px;
             background-color: #fff;
             display: flex;
             align-items: center;
@@ -69,7 +71,7 @@ function ProductCard({ groupCode }) {
             border-radius: 2px;
 
             ${small} {
-              max-width: 33px;
+              max-width: 45px;
             }
           `}
         >
@@ -81,14 +83,14 @@ function ProductCard({ groupCode }) {
             margin-left: 18px;
 
             min-width: fit-content;
-            max-width: 250px;
+            max-width: 150px;
 
             ${mobile} {
               margin-left: 10px;
             }
           `}
         >
-          <span
+          <div
             css={`
               font-size: 17px;
               font-weight: 600;
@@ -98,12 +100,24 @@ function ProductCard({ groupCode }) {
                 font-weight: 600;
               }
               ${small} {
-                font-size: 13px;
+                font-size: 14px;
               }
             `}
           >
             {productName}
-          </span>
+          </div>
+          <div css={`
+          display:none;
+          @media (max-width:1200px){
+            display: block;
+          }
+          @media (max-width:536px){
+            font-size: 10px;
+
+          }
+          `}>
+          {amount(product.sum_insured)}
+          </div>
         </div>
       </div>
 
@@ -263,6 +277,7 @@ function ProductCard({ groupCode }) {
             height: 37px;
             /* width: 67px; */
             border-radius: 7px;
+            background-color: white;
           }
         `}
       >
@@ -297,11 +312,13 @@ function ProductCard({ groupCode }) {
             }
 
             ${small} {
-              font-size: 13px;
+              font-size: 12px;
+              color:#0a87ff;
+              
             }
           `}
         >
-          ₹ {totalPremiumAmount} / Year
+          ₹ {totalPremiumAmount}
         </span>
       </div>
     </div>
@@ -311,6 +328,9 @@ function ProductCard({ groupCode }) {
 export default ProductCard;
 
 const DetailDispalyPanel = styled.div`
+@media (max-width:1200px){
+ display:none !important; 
+}
   .detail_child:not(:last-child):after {
     content: " | ";
   }
