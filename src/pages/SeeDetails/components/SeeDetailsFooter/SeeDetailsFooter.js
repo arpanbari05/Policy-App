@@ -166,7 +166,7 @@ function SeeDetailsFooter({
         <div
           css={`
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             border-right: 1px solid grey;
             padding: 0 20px;
             @media (max-width: 1320px) {
@@ -190,7 +190,7 @@ function SeeDetailsFooter({
         <div
           css={`
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             border-right: 1px solid grey;
             padding: 0 20px;
             padding-left: 10px;
@@ -213,7 +213,7 @@ function SeeDetailsFooter({
         <div
           css={`
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             @media (max-width: 1320px) {
               flex-direction: column;
             }

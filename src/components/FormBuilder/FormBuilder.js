@@ -101,16 +101,16 @@ const FormBuilder = ({
         Object.keys(item?.additionalOptions?.options || {}).length === 1,
         "333"
       );
-      if (
-        item.type === "select" &&
-        !values[item.name] &&
-        item.validate.required &&
-        Object.keys(item.additionalOptions.options || {}).length === 1
-      ) {
-        const tempValue = Object.keys(item.additionalOptions.options)[0];
+      // if (
+      //   item.type === "select" &&
+      //   !values[item.name] &&
+      //   item.validate.required &&
+      //   Object.keys(item.additionalOptions.options || {}).length === 1
+      // ) {
+      //   const tempValue = Object.keys(item.additionalOptions.options)[0];
 
-        tempValues[item.name] = tempValue;
-      }
+      //   tempValues[item.name] = tempValue;
+      // }
     });
     updateValues(tempValues);
   }, [schema, errors]);
