@@ -60,7 +60,8 @@ function SeedetailFooterMobile({
   };
   return (
     <div style={{
-      width: "100%"
+      width: "100%",
+      backgroundColor:"#fff"
       
     }}>
       <Outer>
@@ -79,13 +80,13 @@ function SeedetailFooterMobile({
           <p
             className="color_red"
             css={`
-              font-family: pf_handbook_probold !important;
+           
               font-size: 17px;
     line-height: 1.2;
             `}
           >
             {" "}
-            <i className="fa fa-inr"></i> {totalPremium}
+            ₹{" "}{totalPremium}
           </p>
         </div>
         <div >
@@ -101,7 +102,9 @@ function SeedetailFooterMobile({
               box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
               font-size: 18px;
               white-space: nowrap;
-              background: #c72229;
+              background: #0a87ff;
+              border-radius:4px;
+              border:none;
               
             `}
             onClick={handleProceed}

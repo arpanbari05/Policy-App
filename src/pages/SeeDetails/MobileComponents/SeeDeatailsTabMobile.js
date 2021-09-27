@@ -13,23 +13,23 @@ function SeeDeatailsTabMobile({ activeFieldset, setActiveFieldset }) {
     <Outer>
       <div className="scroll">
         <div className={` plan ${activeFieldset === 1 && "plan__active"}`}>
-          <img src={planDetails} alt="" />{" "}
+          {/* <img src={planDetails} alt="" />{" "} */}
           <span onClick={() => setActiveFieldset(1)}>Plan Details</span>
         </div>
         <div className={` plan ${activeFieldset === 2 && "plan__active"}`}>
-          <img src={addOn} alt="" />{" "}
+          {/* <img src={addOn} alt="" />{" "} */}
           <span onClick={() => setActiveFieldset(2)}>Add-on Coverages</span>
         </div>
         <div className={` plan ${activeFieldset === 3 && "plan__active"}`}>
-          <img src={cashless} alt="" />{" "}
+          {/* <img src={cashless} alt="" />{" "} */}
           <span onClick={() => setActiveFieldset(3)}>Cashless Hospital</span>
         </div>
         <div className={` plan ${activeFieldset === 4 && "plan__active"}`}>
-          <img src={claim} alt="" />{" "}
+          {/* <img src={claim} alt="" />{" "} */}
           <span onClick={() => setActiveFieldset(4)}>Claim Process</span>
         </div>
         <div className={` plan ${activeFieldset === 5 && "plan__active"}`}>
-          <img src={aboutCompany} alt="" />{" "}
+          {/* <img src={aboutCompany} alt="" />{" "} */}
           <span onClick={() => setActiveFieldset(5)}>About Company</span>
         </div>
       </div>

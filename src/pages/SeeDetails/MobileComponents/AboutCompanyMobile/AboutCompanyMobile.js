@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
 import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
+import ProgessBar from "../../components/AboutCompany/ProgessBar";
 import BarGroupMobile from "./BarGroupMobile";
 import BarMarketMobile from "./BarMarketMobile";
 import ProgressBarMobile from "./ProgressBarMobile";
@@ -23,7 +24,7 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
           <>
             <CompanyDetails>
               <h2 style={{ fontSize: "19px", marginBottom: "16px" }}>
-                About <span style={{ color: "#c7222a" }}>{company_name}</span>{" "}
+                About <span style={{ color: "#0a87ff" }}>{company_name}</span>{" "}
                 insurance
               </h2>
               <p
@@ -31,14 +32,14 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                   fontSize: "12px",
                   lineHeight: "1.3",
                   color: "gray",
-                  fontFamily: "pf_handbook_proregular",
+
                 }}
                 css={`
                   & p {
                     line-height: 1.3;
                   }
                   & span {
-                    font-family: "pf_handbook_proregular" !important;
+
                   }
                 `}
                 dangerouslySetInnerHTML={{
@@ -56,10 +57,11 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                   css={`
                     font-size: 13px;
                     width: 100px;
+                    border:none;
                   `}
                   onClick={() => setActivebtn(1)}
                   style={{
-                    backgroundColor: activebtn === 1 && "#c7222a",
+                    backgroundColor: activebtn === 1 && "#0a87ff",
                     color: activebtn === 1 && "#fff",
                   }}
                 >
@@ -69,10 +71,11 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                   css={`
                     font-size: 13px;
                     width: 100px;
+                    border:none;
                   `}
                   onClick={() => setActivebtn(2)}
                   style={{
-                    backgroundColor: activebtn === 2 && "#c7222a",
+                    backgroundColor: activebtn === 2 && "#0a87ff",
                     color: activebtn === 2 && "#fff",
                   }}
                 >
@@ -82,10 +85,11 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                   css={`
                     font-size: 13px;
                     width: 100px;
+                    border:none;
                   `}
                   onClick={() => setActivebtn(3)}
                   style={{
-                    backgroundColor: activebtn === 3 && "#c7222a",
+                    backgroundColor: activebtn === 3 && "#0a87ff",
                     color: activebtn === 3 && "#fff",
                   }}
                 >
@@ -115,6 +119,11 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                     >
                       <span
                         className="span_square_red"
+                        css={`
+                          background: #0a87ff;
+                          border-radius: 6px;
+                          padding: 4px 8px;
+                        `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
@@ -124,6 +133,11 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                       &nbsp; &nbsp;{" "}
                       <span
                         className="span_square_pink"
+                        css={`
+                        background: #ffe7e7;
+                        border-radius: 6px;
+                        padding: 4px 8px;
+                      `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
@@ -172,6 +186,11 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                     >
                       <span
                         className="span_square_red"
+                        css={`
+                        background: #0a87ff;
+                        border-radius: 6px;
+                        padding: 4px 8px;
+                      `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
@@ -181,6 +200,11 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                       &nbsp; &nbsp;{" "}
                       <span
                         className="span_square_pink"
+                        css={`
+                        background: #ffe7e7;
+                        border-radius: 6px;
+                        padding: 4px 8px;
+                      `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
@@ -218,11 +242,16 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                         (data, i) => {
                           return (
                             data.year !== null && (
-                              <ProgressBarMobile
-                                year={data.year}
-                                value={`${parseFloat(data.percent)}`}
-                                color={data.color}
-                              />
+                              // <ProgressBarMobile
+                              //   year={data.year}
+                              //   value={`${parseFloat(data.percent)}`}
+                              //   color={data.color}
+                              // />
+                              <ProgessBar
+                              year={data.year}
+                              value={`${parseFloat(data.percent)}`}
+                              color={data.color}
+                            />
                             )
                           );
                         },
@@ -241,6 +270,11 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                     >
                       <span
                         className="span_square_red"
+                        css={`
+                        background: #0a87ff;
+                        border-radius: 6px;
+                        padding: 4px 8px;
+                      `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
@@ -250,6 +284,11 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                       &nbsp; &nbsp;{" "}
                       <span
                         className="span_square_pink"
+                        css={`
+                        background: #ffe7e7;
+                        border-radius: 6px;
+                        padding: 4px 8px;
+                      `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
