@@ -646,3 +646,18 @@ border-bottom: 2px dotted #505f79;
   font-weight: 900;
   margin: 0 0px 0 21px;
 }
+/* ................ */
+
+.rotate {
+  animation: rotate linear 1s infinite;
+ 
+}
+/* .................... */ 
+@keyframes rotate {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
