@@ -102,7 +102,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
       }
     }
   };
-  console.log("hehe3he", values);
+  // console.log("hehe3he", values);
   useEffect(() => {
     if (
       name === "Insured Details" &&
