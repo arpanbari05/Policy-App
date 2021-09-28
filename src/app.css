@@ -650,7 +650,10 @@ border-bottom: 2px dotted #505f79;
 
 .rotate {
   animation: rotate linear 1s infinite;
-  @keyframes rotate {
+ 
+}
+/* .................... */ 
+@keyframes rotate {
     0% {
       transform: rotate(0);
     }
@@ -658,4 +661,3 @@ border-bottom: 2px dotted #505f79;
       transform: rotate(360deg);
     }
   }
-}
