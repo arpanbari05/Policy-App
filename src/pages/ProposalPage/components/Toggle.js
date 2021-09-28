@@ -158,6 +158,7 @@ const Toggle = ({
                     <label
                       for={"rb1" + name + index + item}
                       css={`
+                        color:#0a87ff !important;
                         margin-bottom: 19px;
                       `}
                     >
@@ -172,8 +173,8 @@ const Toggle = ({
                           font-size: 14px;
                           @media(max-width:767px){
                             bottom: -15px;
-    left: 15px;
-  background: unset; 
+                            left: 15px;
+                          background: unset; 
 
                           }
                         `}
