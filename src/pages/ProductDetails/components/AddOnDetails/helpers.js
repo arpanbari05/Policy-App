@@ -8,25 +8,29 @@ import { getAddOnDetails } from "../../serviceApi";
 import DownloadIcon from "../../../../assets/images/download.png";
 
 const useAddOnDetails = ({ addOn = {} }) => {
-  
   const [addOnDetails, setAddonDetails] = useState(null);
 
   const [downloads, setDownloads] = useState(null);
 
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState("");
 
   const fetchAddOnDetails = useCallback(() => {
     setStatus("loading");
+    
     getAddOnDetails({ productId: addOn.id })
-      .then(res => {
+      .then((res) => {
+        console.log(res.data,"productId78")
         if (res.data) {
+          
           setAddonDetails(res.data);
-          setStatus("success");
-          return;
+          return setStatus("success");
+          
+        }else{
+          setStatus("error");
         }
-        setStatus("error");
+        
       })
-      .catch(e => {
+      .catch((e) => {
         setStatus("error");
         console.error(e);
       });
@@ -38,6 +42,8 @@ const useAddOnDetails = ({ addOn = {} }) => {
 
   const handleRetry = () => fetchAddOnDetails();
 
+  
+
   return {
     status,
     addOnDetails,
@@ -46,7 +52,7 @@ const useAddOnDetails = ({ addOn = {} }) => {
     downloads,
     setDownloads,
   };
-}
+};
 
 export function useFetchDownloads({ addOn, setDownloads }) {
   const [status, setStatus] = useState("idle");
@@ -54,7 +60,7 @@ export function useFetchDownloads({ addOn, setDownloads }) {
   const fetchDownloads = useCallback(() => {
     setStatus("loading");
     getProductBrochureAPI({ productId: addOn.id })
-      .then(res => {
+      .then((res) => {
         if (res.data) {
           setDownloads(res.data);
           setStatus("success");
@@ -62,7 +68,7 @@ export function useFetchDownloads({ addOn, setDownloads }) {
         }
         setStatus("error");
       })
-      .catch(e => {
+      .catch((e) => {
         setStatus("error");
         console.error(e);
       });
@@ -101,12 +107,12 @@ export const ListItem = styled.div`
   font-weight: 900;
   margin: 1em 0;
   color: #505f79;
-  :before{
-                          position: absolute;
+  :before {
+    position: absolute;
     content: "•";
     color: #ffcb00;
     left: 0;
-                        }
+  }
   /* &::before {
     content: "";
     left: 0;

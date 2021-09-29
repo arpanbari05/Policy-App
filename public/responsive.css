@@ -2391,6 +2391,15 @@
         color: #000;
         font-size: 11px;
         line-height: 21px;
+        @media (max-width:900px){
+              font-size: 13px;
+            }
+            
+    }
+    .label-add_product_pro .edit_css_product{
+        @media (max-width:900px){
+            font-size: 13px !important;
+          }
     }
     .mt-21 {
         margin-top: 21px;
