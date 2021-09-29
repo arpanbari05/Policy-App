@@ -4,7 +4,8 @@ import "styled-components/macro";
 import { useCartProduct } from "./../../Cart";
 
 import { useParams } from "react-router";
-import BuyNowModal from "../../quotePage/components/BuyNowModal/BuyNowModal";
+import BuyNowModal from "../../quotePage/components/BuyNowModal";
+// import BuyNowModal from "../../quotePage/components/BuyNowModal/BuyNowModal";
 //import BuyNowModal from "../../QuotesPage/components/BuyNowModal/BuyNowModal";
 
 function SeedetailFooterMobile({

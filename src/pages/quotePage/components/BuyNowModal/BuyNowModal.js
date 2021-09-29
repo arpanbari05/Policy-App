@@ -162,7 +162,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
 
         {product ? (
           <>
-            <a
+            {/* <a
               css={`
                 display: none !important;
                 @media (max-width: 767px) {
@@ -174,7 +174,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
             >
               {" "}
               <img src={remove} alt="remove" />
-            </a>
+            </a> */}
             <button
               css={`
                 justify-content: space-between;
@@ -200,6 +200,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               display: flex;
               justify-content: flex-end;
               margin-bottom: 11px;
+             
             `}
           >
             <button
@@ -207,6 +208,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               className="btn remove_review_btn"
               css={`
                 justify-content: space-between;
+              
               `}
               onClick={() => {
                 setShowBuyNow(false);
@@ -216,7 +218,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 });
               }}
             >
-              <span>Add Plan</span> <img src={addBtn} alt="addbtn" />
+              <span> Add Plan</span> <img src={addBtn} alt="addbtn" />
             </button>
             <button
               css={`

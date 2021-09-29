@@ -1921,7 +1921,7 @@
         border: 1.2px solid #e9edf6 !important;
     }
     .theme-tab-basic.theme-tab .tabs-menu li.z-active a {
-        color: #c7222a !important;
+        color: #0a87ff!important;
         font-size: 13px !important;
         text-align: center !important;
     }
@@ -3094,7 +3094,7 @@
         flex-direction: column;
         align-items: center;
         position: absolute;
-        top: -10px;
+        top: -20px;
         right: 5px;
         /* border: 1px solid #b6b6b6; */
         width: 25px;
