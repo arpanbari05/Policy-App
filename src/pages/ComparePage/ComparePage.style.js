@@ -1,13 +1,13 @@
 import styled from "styled-components";
 export const PopupWrapper = styled.div`
   padding: 0 24px;
-  @media (max-width:1170px){
+  @media (max-width: 1170px) {
     padding: 0px;
   }
 `;
 export const PopupWrapperM = styled.div`
   padding: 0;
-  width:100%;
+  width: 100%;
 `;
 export const MergedQuotes = styled.div`
   margin-bottom: 18px;
@@ -17,11 +17,14 @@ export const SelectedProduct = styled.div`
   border-radius: 4px;
   position: relative;
   height: 150px;
-  box-shadow: ${props =>
+  box-shadow: ${(props) =>
     props.first
       ? " 0 10px 20px 0 #ffe7e8"
       : "0 10px 20px 0 rgba(143, 143, 143, 0.16)"};
-  border: ${props => (props.first ? "solid 2px #c7222a" : "none")};
+  border: solid 2px white;
+  &:hover {
+    border: solid 2px #0a87ff;
+  }
   background-color: #ffffff;
 `;
 export const LogoWrapper = styled.div`
@@ -74,7 +77,7 @@ export const ErrorAddPlan = styled.div`
 export const QuoteWrapperM = styled.div`
   height: 117px;
   margin-bottom: 10px;
-  padding: 10px 15px ;
+  padding: 10px 15px;
   border-radius: 4px;
   position: relative;
   box-shadow: 0 10px 20px 0 rgba(143, 143, 143, 0.16);
@@ -96,36 +99,36 @@ export const EmailSent = styled.div`
   width: 100%;
   text-align: center;
   border-radius: 7px;
-  background-color: ${props => (props.status ? " #f0fff2" : "#fff")};
+  background-color: ${(props) => (props.status ? " #f0fff2" : "#fff")};
   padding: 8px 16px 8px;
 
-  color: ${props => (props.status ? "#1f874c" : "#bd2b2b")};
+  color: ${(props) => (props.status ? "#1f874c" : "#bd2b2b")};
 `;
 export const RemoveCross = styled.div`
   cursor: pointer !important;
   position: absolute;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 3px 7px 0 rgb(0 0 0 / 16%) !important;
   background-color: white !important;
   color: #000;
   font-size: 14px;
   width: 25px;
-  height:25px;
+  height: 25px;
   right: 1px;
   top: -1px;
   border-radius: 100%;
   transform: translate(50%, -50%);
-  
- @media (max-width: 768px) {
-    top:0px;
-    right:0px;
+
+  @media (max-width: 768px) {
+    top: 0px;
+    right: 0px;
   }
   @media (max-width: 500px) {
     font-size: 10px;
     width: 20px;
-  height:20px;
+    height: 20px;
   }
 `;
 export const CrossWrapper = styled.div`
@@ -172,15 +175,14 @@ export const DetailWrapper = styled.div`
   }
 `;
 export const Title = styled.div`
-  color:#505f79;
-                      font-size:14px;
+  color: #505f79;
+  font-size: 14px;
 `;
 export const Value = styled.div`
-font-weight: 900;
+  font-weight: 900;
   font-size: 16px;
 `;
 export const CompanyName = styled.div`
-
   font-size: 14px;
   font-stretch: normal;
   font-style: normal;
@@ -189,12 +191,11 @@ export const CompanyName = styled.div`
   text-align: center;
   color: #253858;
   margin-bottom: 5px;
-  @media (max-width:767px){
+  @media (max-width: 767px) {
     font-size: 12px;
   }
 `;
 export const PlanName = styled.div`
-
   font-size: 14px;
   line-height: 1.19;
 `;
@@ -205,7 +206,7 @@ export const RiderWrapper = styled.div`
     clear: both;
     display: table;
   }
-  display: ${props => !props.show && "none"};
+  display: ${(props) => !props.show && "none"};
   position: relative;
   padding: 10px;
   border-radius: 10px;
@@ -213,7 +214,7 @@ export const RiderWrapper = styled.div`
   margin-bottom: 32px;
   min-height: fit-content;
   display: flex;
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     margin-bottom: 4px !important;
   }
 `;
@@ -227,7 +228,10 @@ export const RiderPremium = styled.div`
   display: inline-block;
   position: absolute;
   right: 10px;
-  top: 6px;
+  top: 0;
+  bottom: 0;
+  height: 27px;
+  margin: auto 0;
   & > div {
     display: inline-block;
   }

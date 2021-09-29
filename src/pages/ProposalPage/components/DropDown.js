@@ -38,7 +38,7 @@ const DropDown = ({
         height={height}
         borderR={borderR}
       >
-        {((Object.keys(selectOption).length !== 1 && checkValidation?.required )|| !checkValidation?.required )&& (
+        {((Object.keys(selectOption).length !== 1 && checkValidation?.required && !asyncOptions ) ||asyncOptions || !checkValidation?.required )&& (
           <option value={""}>{dropPlaceholder || "- Select -"}</option>
         )}
         {Object.keys(selectOption).map((item) => (
