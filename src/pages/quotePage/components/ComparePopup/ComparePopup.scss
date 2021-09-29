@@ -11,6 +11,8 @@
   padding-bottom: 20px;
   background: #fff;
   z-index: 9999999;
+
+
 }
 
 .quotes_compare_container .quotes_compare_container_wrapper {
@@ -51,6 +53,11 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  @media(max-width: 768px){
+   width:inherit;
+   background-color:unset !important;
+  }
+
 }
 
 .quotes_compare_button {

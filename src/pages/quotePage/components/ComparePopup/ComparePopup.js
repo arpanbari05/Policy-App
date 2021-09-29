@@ -81,7 +81,7 @@ const ComparePopup = ({ groupCode }) => {
           .quotes_compare_image1 {
             width: unset;
             border-radius: unset;
-            display: unset;
+            
             height: unset;
             & img {
               width: 59px;
@@ -112,7 +112,11 @@ const ComparePopup = ({ groupCode }) => {
       className="quotes_compare_container"
       style={{ display: show ? "block" : "none" }}
     >
-      <div className="quotes_compare_container_wrapper">
+      <div className="quotes_compare_container_wrapper"
+      css={`
+      margin-top:18px !important;
+      `}
+      >
         <div className="quotes_compare_div">
           {dislayPlanContainer(selectedQuotes)}
         </div>

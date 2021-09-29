@@ -14,8 +14,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { useCartProduct } from "../../../Cart";
 import "styled-components/macro";
-import BuyNowModal from "../../../quotePage/components/BuyNowModal/BuyNowModal";
+// import BuyNowModal from "../../../quotePage/components/BuyNowModal/BuyNowModal";
 import StyledButton from "../../../../components/StyledButton";
+import BuyNowModal from "../../../quotePage/components/BuyNowModal";
 
 function SeeDetailsFooter({
   logo,
@@ -107,7 +108,7 @@ function SeeDetailsFooter({
       <div
         css={`
           position: absolute;
-          right: 26px;
+          right: 12px;
           top: 25px;
           font-size: 34px;
         `}
@@ -161,16 +162,20 @@ function SeeDetailsFooter({
           width: 45%;
           height: 75px;
           justify-content: space-around;
+          @media (max-width: 1050px) {
+
+            width:50%;
+          }
         `}
       >
         <div
           css={`
             display: flex;
-            flex-direction: column;
+            /* flex-direction: column; */
             border-right: 1px solid grey;
             padding: 0 20px;
-            @media (max-width: 1320px) {
-              flex-direction: column;
+            @media (max-width: 1325px) {
+            font-size:12px;
             }
           `}
         >
@@ -178,6 +183,7 @@ function SeeDetailsFooter({
           <span
             css={`
               font-weight: bold;
+              margin-left: 5px;
             `}
           >
             {" "}
@@ -190,16 +196,16 @@ function SeeDetailsFooter({
         <div
           css={`
             display: flex;
-            flex-direction: column;
+            /* flex-direction: column; */
             border-right: 1px solid grey;
             padding: 0 20px;
             padding-left: 10px;
-            @media (max-width: 1320px) {
-              flex-direction: column;
+            @media (max-width: 1325px) {
+            font-size:12px;
             }
           `}
         >
-          <span>Premium:</span>
+          <span>Premium:{" "}</span>
           <span
             css={`
               font-weight: bold;
@@ -213,19 +219,20 @@ function SeeDetailsFooter({
         <div
           css={`
             display: flex;
-            flex-direction: column;
-            @media (max-width: 1320px) {
-              flex-direction: column;
+            /* flex-direction: column; */
+            @media (max-width: 1325px) {
+            font-size:12px;
             }
           `}
         >
-          <span>Claim settlement ratio: </span>
+          <span>Claim settlement ratio:</span>
           <span
             css={`
               font-weight: bold;
+              margin-left: 5px;
             `}
           >
-            {" "}
+         
             {claim_settlement_ratio}%
           </span>
         </div>
@@ -343,6 +350,11 @@ function SeeDetailsFooter({
       <div
         className="col-md-9 col-lg-4 bg_pink_f_f "
         style={{ borderRadius: "10px", maxWidth: "300px" }}
+      css={`
+      @media (max-width:1200px){
+        max-width:220px !important;
+      }
+      `}
       >
         <div
           className="row"

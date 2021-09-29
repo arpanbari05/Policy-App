@@ -9,7 +9,7 @@
     cursor: pointer;
     height: 23px;
     width: 23px;
-    left: 0;
+    left: -10px;
     position: absolute;
     top: 0;
   }

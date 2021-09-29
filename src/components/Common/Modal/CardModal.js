@@ -29,13 +29,19 @@ const CardModal = ({
         borderRadius: "12px",
         border: "none",
         marginBottom: revised ? "70px" : "0px",
+        background: "rgba(0,0,0,0.5)",
+     
       }}
-      // css={`
-      // @media(max-width: 767px){
-      //  margin-left:0px;
-      //  margin-right:0px;
-      // }
-      // `}
+
+      css={`
+      .modal-dialog {
+        @media(max-width:991px){
+        max-width:600px !important;
+      }}
+     .modal-content {
+       width:auto;
+       
+      `}
       className={`${customClass}`}
     >
       <Modal.Header
@@ -60,7 +66,7 @@ const CardModal = ({
       >
         <i className="fa fa-close"></i>
       </CloseButton> */}
-      <Modal.Body>
+      <Modal.Body >
         {content}
       </Modal.Body>
       <Modal.Footer

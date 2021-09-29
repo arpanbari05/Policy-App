@@ -354,6 +354,9 @@ function QuotePage() {
         <MobileQuoteFilterFooter
           handleFilterClick={() => setFilterMobile(true)}
         />
+         {/* <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} /> */}
+       
+          <ComparePopup showPopup={showPopup} groupCode={groupCode} />
         {filterMobile && (
           <QuoteFilterMobile
             companies={arr}
