@@ -147,8 +147,12 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
         <h5
           className="text_title_filter p_modal_title_bg_filters_product d-flex align-items-center"
           style={{ textTransform: "capitalize" }}
+          css={`
+            font-family:unset;
+            background-image:unset;
+          `}
         >
-          <span
+          {/* <span
             style={{
               height: "33px",
               width: "7px",
@@ -156,7 +160,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               backgroundColor: "#fecc28",
               borderRadius: "50px",
             }}
-          ></span>
+          ></span> */}
           {members.join(" + ")?.replaceAll("_", "-")}
         </h5>
 
@@ -186,10 +190,13 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 width: 35px;
                 height: 35px;
                 border-radius: 100%;
-                color: #2c97ff;
+                color: #2c97ff !important;
                 font-size: 22px;
+@media (max-width:768px){
+  display:none !important;
+}
               `}
-              className="remove_review_btn d-flex justify-content-center align-items-center"
+              className=" d-flex justify-content-center align-items-center"
               onClick={deleteProduct}
             >
               <i class="far fa-trash-alt"></i>
@@ -199,9 +206,12 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
           <div>
             <button
               type="submit"
-              className="btn remove_review_btn"
+              className="btn "
               css={`
                 justify-content: space-between;
+                @media (max-width:768px){
+  display:none !important;
+}
               `}
               onClick={() => {
                 setShowBuyNow(false);
@@ -218,7 +228,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 display: none;
                 @media (max-width: 767px) {
                   display: block;
-                  width: 100%;
+                  width: 150px;
                   border-radius: 7px;
                   padding: 10px;
                   border: 1px dashed #e2a6a9;
@@ -233,7 +243,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 });
               }}
             >
-              Add Plan
+                          <span>Add Plan</span> <img src={addBtn} alt="addbtn" />
             </button>
           </div>
         )}
@@ -247,7 +257,9 @@ const PopupContent = (a, b, setShowBuyNow) => {
   const { memberGroups } = useSelector((state) => state.greetingPage);
 
   return (
-    <div>
+    <div css={`
+    width:auto !important;
+    `}>
       {Object.keys(memberGroups).map((groupCode) => (
         <BuyNowModalProduct
           groupCode={groupCode}
@@ -276,6 +288,7 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow }) => {
   );
   return (
     <CardModal
+
       show={showBuyNow}
       handleClose={() => {
         setShowBuyNow(false);

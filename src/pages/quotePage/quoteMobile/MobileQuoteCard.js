@@ -317,7 +317,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
                 ) : (
                   <span
                     css={`
-                      color: #c7222a;
+                      color: #0a87ff;
                     `}
                   >
                     {parseInt(

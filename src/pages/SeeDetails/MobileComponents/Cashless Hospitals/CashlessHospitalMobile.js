@@ -151,13 +151,13 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
 
             <table className="table  table_pro_search">
               <tbody>
-                <tr className="tr_table_search_hospital">
+                <tr className="tr_table_search_hospital ">
                   <th
                     style={{
                       paddingTop: "unset",
                       whiteSpace: "nowrap",
                       paddingRight: "10px",
-                      width: "60%",
+                     
                       fontSize: "15px",
                     }}
                   >
@@ -168,7 +168,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                       paddingTop: "unset",
                       whiteSpace: "nowrap",
          
-                      width: "40%",
+                     
                       fontSize: "15px",
                     }}
                   >
@@ -206,8 +206,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                       style={{
                         fontSize: "14px",
                         fontWeight: "400",
-                        padding: "10px",
-                        paddingLeft: "20px",
+                      
                       }}
                     >
                       {item.phone}
