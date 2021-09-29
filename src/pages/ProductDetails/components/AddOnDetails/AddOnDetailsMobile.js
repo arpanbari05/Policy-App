@@ -15,6 +15,7 @@ import useAddOnDetails from "./helpers";
 import AddOnDetails, { addOnDetailsComponents } from "./AddOnDetails";
 
 function AddOnDetailsMobile({ addOn, handleClose, ...props }) {
+  
   return (
     <div
       css={`
@@ -36,7 +37,7 @@ function AddOnDetailsMobile({ addOn, handleClose, ...props }) {
       {...props}
     >
       <Header addOn={addOn} handleClose={handleClose} />
-      <AddOnDetailsMobile.Body addOn={addOn} handleClose={handleClose} />
+      {/* <AddOnDetailsMobile.Body addOn={addOn}/> */}
     </div>
   );
 }
@@ -196,22 +197,24 @@ function DetailsTitle({ children, isOpen, eventKey }) {
   );
 }
 
-AddOnDetailsMobile.Body = function Body({ addOn, ...props }) {
-  const { status, addOnDetails, handleRetry, downloads, setDownloads } =
+AddOnDetailsMobile.Body = function Body({ addOn}) {
+  const { status, addOnDetails, handleRetry} =
     useAddOnDetails({ addOn });
+
+    // console.log(downloads,"addOndefects")
   return (
     <div
       css={`
         padding: 2em 1.5em;
       `}
-      {...props}
+      
     >
       {
         status === "loading" || !addOnDetails ? (
         <p>Loading...</p>
       ) :status === "error" ? (
         <ErrorMessage handleRetry={handleRetry} />
-      ) : (
+      ) :status === "success"? (
         <Accordion>
           {addOnDetails.map(addOnDetail =>
             addOnDetailsComponents[addOnDetail.name] ? (
@@ -231,17 +234,17 @@ AddOnDetailsMobile.Body = function Body({ addOn, ...props }) {
                 font-size: 1.2em;
               `}
             >
-              <div>
+              {/* <div>
                 <AddOnDetails.Downloads
                   addOn={addOn}
                   setDownloads={setDownloads}
                   downloads={downloads}
                 />
-              </div>
+              </div> */}
             </Accordion.Collapse>
           </div>
         </Accordion>
-      )}
+      ):""}
     </div>
   );
 };
