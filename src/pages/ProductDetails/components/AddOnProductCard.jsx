@@ -62,7 +62,8 @@ function ProductCard({ groupCode }) {
         {/* ************logo******** */}
         <div
           css={`
-            max-width: 150px;
+            width: 70px;
+            height:70px;
             background-color: #fff;
             display: flex;
             align-items: center;

@@ -147,8 +147,6 @@ console.log("semding....",isSending)
             </div>
 
             {Number(wtsappNo.length) === 10 ? (
-              <button className="btn share_btn px-5">Share </button>
-            ) : (
               <a
                 target="_blank"
                 ref={sendRef}
@@ -157,6 +155,9 @@ console.log("semding....",isSending)
               >
                 <button className="btn share_btn px-5">Share </button>
               </a>
+              
+            ) : (
+              <button className="btn share_btn px-5">Share</button>
             )}
           </ShareOption>
 
@@ -200,6 +201,17 @@ const ShareOption = styled.div`
   border-radius: 10px;
   border: solid 1px #d5dce5;
   padding-left: 10px;
+  /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
   input {
     border: none;
     margin-left: 15px;
