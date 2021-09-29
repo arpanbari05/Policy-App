@@ -100,7 +100,7 @@ const PlanContainer = ({
             </WrapperCompanyDetails> */}
           </Col>
           <Col md={12}>
-            <CompanyName>{product.company.name}</CompanyName>
+            <CompanyName>{product?.name}</CompanyName>
           </Col>
           <Col md={12}>
             <CompareBtn
