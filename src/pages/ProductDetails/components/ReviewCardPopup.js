@@ -50,6 +50,7 @@ function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
           font-weight: 600;
           ${mobile} {
             border: none;
+            padding: 10px;
           }
         `}
       >
@@ -58,14 +59,20 @@ function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
             css={`
               margin: 10px 9px;
               font-size: 18px;
-              ${tabletMedia} {
-                font-size: 21px;
+              @media (max-width: 600px) {
+                font-size: 15px;
+                margin: 0px;
+              }
+              @media (max-width: 450px) {
+                font-size: 13px;
+             
               }
             `}
           >
             {title}
           </ModalTitle>
         )}
+        <i class="fas fa-times"></i>
       </Modal.Header>
       <Modal.Body
         style={{ borderRadius: "12px" }}
@@ -246,25 +253,29 @@ function ProductDetailsCardMobile({ cartItem }) {
           >
             <div
               css={`
-                width: 30px;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
               `}
             >
               <img
                 src={logoSrc}
                 alt={name}
                 css={`
-                  max-width: 100%;
+                  width: 100%;
                 `}
               />
             </div>
-            <p
+            <span
               css={`
                 font-size: 16x;
                 margin-left: 1em;
               `}
             >
               {name}
-            </p>
+            </span>
           </div>
           <div
             css={`
@@ -288,17 +299,24 @@ function ProductDetailsCardMobile({ cartItem }) {
               >
                 <div
                   css={`
-                    font-size: 14px;
+                    font-size: 12px;
                   `}
                 >
                   Cover:
                 </div>
-                <div>{amount(sum_insured)}</div>
+                <div
+                  css={`
+                    font-size: 12px;
+                  `}
+                >
+                  {amount(sum_insured)}
+                </div>
               </div>
               {insurance_type.alias === "top_up" ? (
                 <div
                   css={`
                     display: flex;
+                    font-size: 12px;
                     justify-content: space-between;
                   `}
                 >
@@ -320,12 +338,18 @@ function ProductDetailsCardMobile({ cartItem }) {
               >
                 <div
                   css={`
-                    font-size: 14px;
+                    font-size: 12px;
                   `}
                 >
                   Premium:
                 </div>
-                <div>{amount(total_premium)}</div>
+                <div
+                  css={`
+                    font-size: 12px;
+                  `}
+                >
+                  {amount(total_premium)}
+                </div>
               </div>
             </div>
           </div>
@@ -333,10 +357,10 @@ function ProductDetailsCardMobile({ cartItem }) {
 
         <div
           css={`
-            background: #ddd;
+            background: #f5f7f9;
             display: flex;
-            align-items: center;
-            flex-wrap: wrap;
+
+            flex-direction: column;
           `}
         >
           {health_riders.map((health_rider) => (
@@ -347,10 +371,20 @@ function ProductDetailsCardMobile({ cartItem }) {
                 margin: 3px;
               `}
             >
-              <img src={CorrectIcon} class="display_in_m" alt="" />
+              <span
+                css={`
+                  margin-right: 10px;
+                  color: #419bf9;
+                `}
+              >
+                <i class="far fa-check-circle"></i>
+              </span>
               <span
                 css={`
                   font-size: 14px;
+                  @media (max-width: 500px) {
+                    font-size: 11px;
+                  }
                 `}
               >
                 {health_rider.name}
@@ -421,7 +455,11 @@ function ProductDetailsCardMobile({ cartItem }) {
                 >
                   <div
                     css={`
-                      width: 30px;
+                      width: 50px;
+                      height: 50px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
                     `}
                   >
                     <img
@@ -432,14 +470,14 @@ function ProductDetailsCardMobile({ cartItem }) {
                       `}
                     />
                   </div>
-                  <p
+                  <span
                     css={`
-                      font-size: 16x;
+                      font-size: 15x;
                       margin-left: 1em;
                     `}
                   >
                     {addon.product.name}
-                  </p>
+                  </span>
                 </div>
                 <div
                   css={`
@@ -459,15 +497,10 @@ function ProductDetailsCardMobile({ cartItem }) {
                       css={`
                         display: flex;
                         justify-content: space-between;
+                        font-size: 12px;
                       `}
                     >
-                      <div
-                        css={`
-                          font-size: 14px;
-                        `}
-                      >
-                        Cover:
-                      </div>
+                      <div>Cover:</div>
                       <div>{amount(addon.sum_insured)}</div>
                     </div>
                     {insurance_type.alias === "top_up" ? (
@@ -475,6 +508,7 @@ function ProductDetailsCardMobile({ cartItem }) {
                         css={`
                           display: flex;
                           justify-content: space-between;
+                          font-size: 12px;
                         `}
                       >
                         <div>Deductible:</div>
@@ -491,15 +525,10 @@ function ProductDetailsCardMobile({ cartItem }) {
                       css={`
                         display: flex;
                         justify-content: space-between;
+                        font-size: 12px;
                       `}
                     >
-                      <div
-                        css={`
-                          font-size: 14px;
-                        `}
-                      >
-                        Premium:
-                      </div>
+                      <div>Premium:</div>
                       <div>{amount(addon.total_premium)}</div>
                     </div>
                   </div>
@@ -552,7 +581,6 @@ function ProductDetailsCard({ cartItem }) {
         >
           <div class="">
             <img
-          
               css={`
                 width: 60px;
               `}
@@ -561,9 +589,8 @@ function ProductDetailsCard({ cartItem }) {
             />
           </div>
 
-          <div >
+          <div>
             <span
-              
               css={`
                 margin-top: "0";
                 font-weight: 900;
@@ -605,7 +632,7 @@ function ProductDetailsCard({ cartItem }) {
             </span>
           </div>
 
-          <div
+          {/* <div
             className="float_product_premium_pro"
             css={`
               border-left: 1px solid #ddd;
@@ -632,7 +659,7 @@ function ProductDetailsCard({ cartItem }) {
                 </span>
               </span>
             </div>
-          </div>
+          </div> */}
 
           <div
             className="float_product_premium_pro"
@@ -738,7 +765,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
             css={`
               text-transform: capitalize;
               ${mobile} {
-                display: none;
+                /* display: none; */
               }
             `}
           >
@@ -799,7 +826,6 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           <div
             css={`
               font-weight: 900;
-         
 
               ${mobile} {
                 display: flex;
@@ -998,6 +1024,12 @@ function GradientTitle({ title = "" }) {
         marginBottom: "20px",
         fontWeight: "900",
       }}
+      css={`
+        @media (max-width: 769px) {
+          margin-top: 20px;
+          margin-bottom: 10px !important;
+        }
+      `}
     >
       <span
         css={`

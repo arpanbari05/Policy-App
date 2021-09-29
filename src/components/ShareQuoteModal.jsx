@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +18,13 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
   const [smsNo, setSmsNo] = useState(details4autopopulate?.mobile?details4autopopulate.mobile:"");
   const sendRef = useRef();
   
+useEffect(() => {
+  if(emailStatus.status){
+    setIsSending(false);
+  }
+},[emailStatus])
+
+  console.log(emailStatus,"emailStatus")
 
   const  handleNumberCheck = (e, setAction) => {
     e.preventDefault();
@@ -102,20 +110,25 @@ console.log("semding....",isSending)
             </div>
 
             <button
-              className="btn share_btn px-5"
+              className="btn share_btn px-5 position-relative"
               onClick={(e) => {
                 
                 handleSendViaEmail(e);
               }}
             >
               Share
-              {isSending ? (
+              {isSending  ? (
+                <span  css={`
+                      position:absolute;
+                      top:50%;
+                      right:20px;
+                      transform:translateY(-50%) !important;
+                    `}>
                   <i
                     className="fa fa-circle-notch rotate"
-                    css={`
-                      margin-left: 1rem;
-                    `}
+                   
                   />
+                  </span>
                 ) : null}
             </button>
           </ShareOption>

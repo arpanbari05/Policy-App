@@ -28,7 +28,7 @@ const ProductSummaryTab = ({ cart }) => {
                       className="text_title_filter p_modal_title_bg_filters_product product_summary__title"
                       style={{ textTransform: "capitalize" }}
                     >
-                      {item.group.members.join(" + ")}
+                     !!! {item.group.members.join(" + ")}
                     </h5>
                   </div>
                   <div className="col-md-3 text-right"></div>
