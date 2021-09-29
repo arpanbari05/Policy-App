@@ -10,6 +10,7 @@ import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
 import { calculateTotalPremium } from "../../../utils/helper";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -699,7 +700,12 @@ function ProductDetailsCard({ cartItem }) {
               margin: 10px;
             `}
           >
-            <img src={CorrectIcon} class="display_in_m" alt="" />
+            {/* <img src={CorrectIcon} class="display_in_m" alt="" /> */}
+            <span
+            css={`
+            color:#0a87ff;
+            `}
+            ><AiOutlineCheckCircle /></span>{" "}
             <span class="font_weight_normal">{health_rider.name}</span>
           </div>
         ))}

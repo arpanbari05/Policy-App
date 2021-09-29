@@ -105,7 +105,7 @@ const Title = styled.p`
   color: #3b3838;
   font-weight: 900 !important;
   margin-top: -3px;
-  background-image: linear-gradient(to right, #ffe7e7 5%, #fff 15%);
+  background-image:  linear-gradient(90deg, #eff7ff 0%,rgb(255 255 255) 100%);
   padding: 10px 18px;
   border-radius: 6px;
 

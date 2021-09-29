@@ -101,16 +101,16 @@ const FormBuilder = ({
         Object.keys(item?.additionalOptions?.options || {}).length === 1,
         "333"
       );
-      if (
-        item.type === "select" &&
-        !values[item.name] &&
-        item.validate.required &&
-        Object.keys(item.additionalOptions.options || {}).length === 1
-      ) {
-        const tempValue = Object.keys(item.additionalOptions.options)[0];
+      // if (
+      //   item.type === "select" &&
+      //   !values[item.name] &&
+      //   item.validate.required &&
+      //   Object.keys(item.additionalOptions.options || {}).length === 1
+      // ) {
+      //   const tempValue = Object.keys(item.additionalOptions.options)[0];
 
-        tempValues[item.name] = tempValue;
-      }
+      //   tempValues[item.name] = tempValue;
+      // }
     });
     updateValues(tempValues);
   }, [schema, errors]);
@@ -508,7 +508,7 @@ const Title = styled.p`
   color: #3b3838;
   font-weight: 900 !important;
   margin-top: -3px;
-  background-image: linear-gradient(to right, #ffe7e7 5%, #fff 15%);
+  background-image: , #ffe7e7 5%, #fff 15%);
   padding: 10px 18px;
   border-radius: 6px;
 

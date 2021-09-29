@@ -11,6 +11,7 @@ import { EmailSent } from "../pages/ComparePage/ComparePage.style";
 const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
   const details4autopopulate = useSelector(({greetingPage}) => greetingPage.proposerDetails);
   const [errorMsg, setErrorMsg] = useState("");
+  const [isSending, setIsSending] = useState(false);
   const [email, setEmail] = useState(details4autopopulate?.email?details4autopopulate.email:"");
   const [wtsappNo, setWtsappNo] = useState(details4autopopulate?.mobile?details4autopopulate.mobile:"");
   const [smsNo, setSmsNo] = useState(details4autopopulate?.mobile?details4autopopulate.mobile:"");
@@ -30,6 +31,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
 
   const handleSendViaEmail = (e) => {
     e.preventDefault();
+    
     const validator =
       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
     if (!email) {
@@ -37,12 +39,17 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
     } else if (!validator.test(email)) {
       return setErrorMsg("Enter valid email.");
     } else setErrorMsg("");
-
+   
     if (!errorMsg && email) {
+      setIsSending(true);
       return imageSend(email);
+      
     }
   };
-
+  // if(emailStatus){
+  //   setIsSending(false);
+  // 
+console.log("semding....",isSending)
   return (
     <Modal
       show={show}
@@ -97,10 +104,19 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
             <button
               className="btn share_btn px-5"
               onClick={(e) => {
+                
                 handleSendViaEmail(e);
               }}
             >
               Share
+              {isSending ? (
+                  <i
+                    className="fa fa-circle-notch rotate"
+                    css={`
+                      margin-left: 1rem;
+                    `}
+                  />
+                ) : null}
             </button>
           </ShareOption>
 
@@ -143,7 +159,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
 
             <button className="btn share_btn px-5">Share</button>
           </ShareOption>
-
+        
           <InfoMessage className="p-3 text-center">
             * Please note that the premium may vary in future.
           </InfoMessage>
@@ -152,10 +168,12 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
           ) : (
             ""
           )}
-          {emailStatus && (
-            <EmailSent status={emailStatus.status}>
+          {emailStatus  && (
+         <EmailSent status={emailStatus.status}>
+          
               {emailStatus.message}
             </EmailSent>
+        
           )}
         </div>
       </Modal.Body>

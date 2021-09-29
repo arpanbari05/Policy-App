@@ -139,7 +139,7 @@ const ProposalSummary = ({ history }) => {
             // style={{ margin: "0 25px" }}
             >
               <div class="col-md-6">
-                <button disabled={!checked && true} class="btn btn_p_s_pay_now" style={{fontSize: "16px"}}>
+                <button disabled={!checked && true} class="btn btn_p_s_pay_now" style={{fontSize: "16px",width:"max-content"}}>
                   Pay Now {" "}
                 </button>
               </div>
@@ -167,11 +167,12 @@ const ProposalSummary = ({ history }) => {
       </div>
       <MobileHeader>
         <MobileHeaderText
+
           onClick={() => {
             history.goBack();
           }}
         >
-          <i className="icon flaticon-back"></i> Review
+          <i class="fa fa-arrow-left" style={{marginRight:"10px",cursor:"pointer"}}></i> Review
         </MobileHeaderText>
       </MobileHeader>
 
@@ -180,9 +181,21 @@ const ProposalSummary = ({ history }) => {
           css={`
          margin: 30px;
          padding-bottom: 150px;
+
+         @media (max-width: 769px) {
+           margin:0px !important;
+           margin-top: 10px !important;
+         }
        `}
         >
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}
+          css={`
+            
+            @media(max-width:769px){
+              display:none !important;
+            }
+          `}
+          >
             <div className="col-lg-2">
               {/* <p
                 class="go_back_prposal_p summary_proposal_back"
@@ -237,17 +250,20 @@ const ProposalSummary = ({ history }) => {
             <div class="col-lg-10 element-tile-two">
               <p
                 css={`
-                  @media (min-width: 768px) and (max-width: 900px) {
+                  /* @media (min-width: 768px) and (max-width: 900px) {
                     font-size: 18px;
                     text-align: center;
                     position: absolute;
                     left: 22.5%;
-                  }
-                  @media (min-width: 901px) and (max-width: 1200px) {
+                  } */
+                  @media (min-width: 1024px) and (max-width: 1200px) {
                     font-size: 18px;
                     text-align: center;
                     position: absolute;
                     left: 28%;
+                  }
+                  @media(max-width: 1023px){
+                    display:none;
                   }
                 `}
               >
@@ -259,20 +275,38 @@ const ProposalSummary = ({ history }) => {
           </div>
 
           <br className="hide-on-mobile" />
-          <Row>
-            <Col md={3}>
+          <Row 
+          css={`
+          @media (max-width: 1023px){
+            flex-direction: column;
+          }
+          `}
+          >
+            <Col md={3}
+             css={`
+             @media (max-width: 1023px){
+              width: 100%;
+             }
+             `}
+            >
               <SummaryWrapper>
                 <ProductSummary cart={cart} />
               </SummaryWrapper>
             </Col>
-            <Col md={9}>
+            <Col md={9}
+             css={`
+             @media (max-width: 1023px){
+              width: 100%;
+             }
+             `}
+            >
               <div className="row margin_top_tab_proposal">
                 <div class="col-lg-12 col-md-12 no-padding-mobile">
                   <div className="signUp-page signUp-minimal pb-70">
                     <p
                       css={`
                     display: none;
-                    @media (max-width: 767px) {
+                    @media (max-width: 1023px) {
                       display: flex;
                       justify-content: center;
                       margin-top: 20px;
@@ -366,7 +400,7 @@ const PayItem = styled.li`
   display: flex;
 `;
 const ItemName = styled.div`
-  font-family: pf_handbook_proregular;
+
   font-size: 20px;
   background-color: #f6f7f9;
   padding: 12px;
@@ -379,7 +413,7 @@ const PayButton = styled.div`
   color: #fff;
   display: inline-block;
   padding: 6px;
-  background-color: #c72229;
+  background-color: #0a87ff;
   text-align: center;
   border-radius: 0 6px 6px 0px;
   & span {

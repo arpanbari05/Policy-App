@@ -13,7 +13,7 @@
 /coverage
 
 # production
-/build-last
+# /build-last
 debug.log
 # misc
 
@@ -28,5 +28,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-build
+
 node_modules

@@ -24,18 +24,19 @@ const FilterModal = ({ show, handleClose }) => {
   const companies = useSelector(
     (state) => state.frontendBoot.frontendData.data.companies
   );
-  const existingPlanTypeCode = filters.planType === "Individual"
-    ? "I"
-    : filters.planType === "Family Floater"
+  const existingPlanTypeCode =
+    filters.planType === "Individual"
+      ? "I"
+      : filters.planType === "Family Floater"
       ? "F"
       : "M";
   const existingPlanTypeDisplayname = filters.planType;
   const [selectedPlanType, setselectedPlanType] = useState(
     filters.planType
       ? {
-        code: existingPlanTypeCode,
-        displayName: existingPlanTypeDisplayname,
-      }
+          code: existingPlanTypeCode,
+          displayName: existingPlanTypeDisplayname,
+        }
       : {}
   );
 
@@ -101,25 +102,31 @@ const FilterModal = ({ show, handleClose }) => {
       <Modal.Body>
         <div>
           <OptionWrapper>
-            {plantypeOptions ? plantypeOptions.plantypes.map((option, i) => {
-              return option.code !== "I" ? (
-                <li
-                  className="option d-flex align-items-center justify-content-between"
-                  key={i}
-                >
-                  <label htmlFor={option.code}>{option.display_name}</label>
-                  <input
-                    type="radio"
-                    id={option.code}
-                    name="policyType"
-                    onChange={(e) =>
-                      handleChange(option.code, option.display_name)
-                    }
-
-                  />
-                </li>
-              ) : <></>
-            })
+            {plantypeOptions
+              ? plantypeOptions.plantypes.map((option, i) => {
+                  return option.code !== "I" ? (
+                    <li
+                      className="option d-flex align-items-center justify-content-between"
+                      key={i}
+                    >
+                      <label htmlFor={option.code}>{option.display_name}</label>
+                      <input
+                        type="radio"
+                        id={option.code}
+                        name="policyType"
+                        checked={
+                          selectedPlanType.displayName ===
+                            option.display_name || false
+                        }
+                        onChange={(e) =>
+                          handleChange(option.code, option.display_name)
+                        }
+                      />
+                    </li>
+                  ) : (
+                    <></>
+                  );
+                })
               : ""}
           </OptionWrapper>
         </div>
@@ -152,10 +159,7 @@ const PolicyTypeFilter = () => {
         </span>
       </Filter>
 
-      <FilterModal
-        show={showModal}
-        handleClose={() => setShowModal(false)}
-      />
+      <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
     </>
   );
 };

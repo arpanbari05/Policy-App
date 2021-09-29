@@ -631,3 +631,33 @@ border-bottom: 2px dotted #505f79;
   margin-bottom: 6px;
   line-height: 13px;
 }
+/* ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, */
+
+.icon {
+  margin-top: 1px;
+  display: inline-block;
+  width: 54px;
+  height: 54px;
+  border-radius: 100%;
+  background-size: 100px 50px;
+  box-sizing: border-box;
+  margin-left: 28px;
+  margin-left: 4px !important;
+  font-weight: 900;
+  margin: 0 0px 0 21px;
+}
+/* ................ */
+
+.rotate {
+  animation: rotate linear 1s infinite;
+ 
+}
+/* .................... */ 
+@keyframes rotate {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
