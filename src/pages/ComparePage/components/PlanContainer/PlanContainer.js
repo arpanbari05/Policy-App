@@ -38,6 +38,8 @@ const PlanContainer = ({
     tenure,
   } = plans || {};
 
+ 
+
   const { discount, ridersPremium, riders } = useSelector(
     (state) => state.comparePage
   );
