@@ -104,7 +104,7 @@ const FormBuilder = ({
       if (
         item.type === "select" &&
         !values[item.name] &&
-        item.validate.required &&
+        item?.validate?.required &&
         !item.fill &&
         !item.additionalOptions.options.length &&
         Object.keys(item.additionalOptions.options || {}).length === 1

@@ -131,6 +131,8 @@ function QuotePage() {
     <>
       <div
         css={`
+
+        background-color: rgba(255,255,255) ;
           @media (max-width: 1023px) {
             display: none;
           }
