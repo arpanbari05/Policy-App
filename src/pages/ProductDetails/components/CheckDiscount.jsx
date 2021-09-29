@@ -164,7 +164,7 @@ const CheckDiscount = ({ groupCode }) => {
                           padding-bottom: 0.7rem;
                           text-align: center;
                           position: relative;
-                          width: 218px;
+                          width: 200px;
                           border: 2px solid;
                           border-color: ${selectedTenure === item.tenure
                             ? "#0a87ff"
@@ -242,7 +242,28 @@ const CheckDiscount = ({ groupCode }) => {
                       `}>
                       <i class="fas fa-check"></i>
                       </span>
-                        ):""
+                        ):(
+                          <span css={`
+                     font-size: 11px;
+                            position: absolute;
+                            bottom: 11px;
+                            right: 11px;
+                            transform: translateX(-50%);
+                            height: 30px;
+                            width: 30px;
+                            line-height: 30px;
+                            text-align: center;
+                            border-radius: 50%;
+                            background: white;
+                          
+                            font-family: "font-awesome";
+                            border: 2px solid #fff;
+                            color: #fff;
+                            border: 2px solid #e4e7ec;
+                      `}>
+                      <i class="fas fa-check"></i>
+                      </span>
+                        )
                       }
                       
                       {

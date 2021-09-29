@@ -17,10 +17,7 @@ export const SelectedProduct = styled.div`
   border-radius: 4px;
   position: relative;
   height: 150px;
-  box-shadow: ${(props) =>
-    props.first
-      ? " 0 10px 20px 0 #ffe7e8"
-      : "0 10px 20px 0 rgba(143, 143, 143, 0.16)"};
+  box-shadow: 0 10px 20px 0 rgba(143, 143, 143, 0.16);
   border: solid 2px white;
   &:hover {
     border: solid 2px #0a87ff;
