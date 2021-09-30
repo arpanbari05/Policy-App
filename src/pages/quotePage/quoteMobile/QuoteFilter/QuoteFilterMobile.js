@@ -85,7 +85,7 @@ const QuoteFilterMobile = ({
     const thisSelectedCover = covers.filter(
       thisCover => thisCover.display_name === cover,
     );
-  
+      console.log("fetchQuotes filter")
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
     dispatch(
