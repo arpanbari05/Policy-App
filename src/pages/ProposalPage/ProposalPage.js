@@ -87,7 +87,7 @@ const ProposalPage = ({ history }) => {
         css={`
           & .proposal_continue_back_margin {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
           }
           & .formbuilder__error {

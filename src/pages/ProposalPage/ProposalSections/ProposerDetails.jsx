@@ -66,7 +66,7 @@ const ProposerDetails = ({
           />
         </Form>
       </div>
-      <div class="proposal_continue_back_margin"
+      <div class="proposal_continue_back_margin container"
 
       >
         <BackBtn
