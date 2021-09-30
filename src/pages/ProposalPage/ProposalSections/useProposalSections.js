@@ -111,6 +111,10 @@ const useProposalSections = (
             }
           },
           errors => {
+            if (name === "Other Details" && errors) {
+              const err = errors[Object.keys(errors || {})[0]];
+              swal(`${err}`);
+            }
             if (name === "Insured Details") {
               let errorsTemp = {};
               setShow("all");
