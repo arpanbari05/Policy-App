@@ -11,6 +11,9 @@ const BackBtn = ({ onClick, hide }) => {
       styledCss={`
       width: 200px;
       margin: 10px 0;
+      @media(max-width:400px){
+        width:150px;
+      }
         `}
     >
       Back{" "}
