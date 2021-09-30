@@ -261,6 +261,7 @@ function useQuotesPage() {
 
   useEffect(() => {
     dispatch(clearFilterQuotes());
+    console.log('fetchQuotes useQUotes')
     dispatch(
       fetchQuotes(companies?.companies, {
         sum_insured: cover,
@@ -278,7 +279,6 @@ function useQuotesPage() {
     );
   }, [
     filters.insurers,
-    filters.cover,
     filters.ownCover,
     filters.planType,
     filters.multiYear,

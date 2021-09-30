@@ -96,7 +96,7 @@ const FilterModal = ({ show, handleClose }) => {
 
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
-
+    console.log("fetchQuotes cover range",selectedCover.code)
     dispatch(
       fetchQuotes(companies, {
         plan_type:

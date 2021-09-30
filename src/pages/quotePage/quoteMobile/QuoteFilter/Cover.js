@@ -66,7 +66,7 @@ const Cover = ({
     if (ownCover || thisSelectedCover[0]) {
       dispatch(replaceQuotes([]));
       dispatch(replaceFilterQuotes([]));
-    
+      console.log("fetchQuotes cover",thisSelectedCover,owncover)
       dispatch(
         fetchQuotes(companies, {
           plan_type: plantypes.find(
