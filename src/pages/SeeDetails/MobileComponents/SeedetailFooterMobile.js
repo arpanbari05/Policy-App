@@ -79,11 +79,12 @@ function SeedetailFooterMobile({
             Total Premium
           </p>
           <p
-            className="color_red"
+            
             css={`
            
               font-size: 17px;
     line-height: 1.2;
+    color:#0a87ff;
             `}
           >
             {" "}

@@ -53,7 +53,7 @@ export const Header = styled.a`
 
 export const HeaderTitle = styled.div`
   position: "relative";
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 400;
   line-height: 18px;
   color: #000;
@@ -83,6 +83,10 @@ export const HeaderTitle = styled.div`
     position: absolute;
     border: none;
     outline: none;
+  }
+
+  @media (max-width: 458px) {
+    font-size:13px;
   }
 `;
 export const List = styled.div`
