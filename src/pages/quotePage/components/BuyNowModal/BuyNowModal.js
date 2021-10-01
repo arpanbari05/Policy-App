@@ -186,11 +186,14 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 align-items: center;
                 justify-content: center;
                 border-radius: 100%;
+               
               `}
               className="btn"
               onClick={deleteProduct}
             >
-              <i class="far fa-trash-alt"></i>
+              <i class="far fa-trash-alt" css={`
+               cursor:pointer !important;
+              `}></i>
             </button>
           </>
         ) : (

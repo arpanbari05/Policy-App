@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Filter = styled.div`
   padding: 5px 20px;
-  
+  cursor: pointer;
   &:hover{
     background-color:#eef1f4;
     :not(:last-child) {

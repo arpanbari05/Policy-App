@@ -117,7 +117,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
   const tenure = parseInt(multiYear) === 1 ? "" : parseInt(multiYear);
   const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   return (
-    <Outer>
+    <Outer >
       <div className="col-md-12 d-flex">
         <div className="col-md-3">
           <EachWrapper>
@@ -233,6 +233,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
               <SeeText
                 css={`
                   border-bottom: none !important;
+                  cursor: pointer;
                 `}
                 onClick={() => {
                   setShow(!show);

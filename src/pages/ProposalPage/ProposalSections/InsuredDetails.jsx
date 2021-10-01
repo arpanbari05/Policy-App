@@ -282,7 +282,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
           </Panel>
         );
       })}
-      <div className="proposal_continue_back_margin">
+      <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
             setActive((prev) => {

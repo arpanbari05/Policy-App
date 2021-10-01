@@ -38,11 +38,9 @@ const CardModal = ({
         @media(max-width:991px){
         max-width:600px !important;
       }}
-     .modal-content {
-       width:auto;
-       
+    
       `}
-      className={`${customClass}`}
+      className={`${customClass} noselect`}
     >
       <Modal.Header
         closeButton

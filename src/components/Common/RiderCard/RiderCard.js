@@ -122,6 +122,7 @@ font-weight:bold;
                   font-size: 15px;
                   margin-top: 13px;
                   width: 100%;
+                  max-width: 200px;
                   background-color: #eff7ff;
                 `}
                 value={
