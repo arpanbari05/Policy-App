@@ -357,6 +357,7 @@ function QuotePage() {
         </div>
         <MobileQuoteFilterFooter
           handleFilterClick={() => setFilterMobile(true)}
+          sendQuote={imageSendQuote}
         />
          {/* <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} /> */}
        

@@ -96,7 +96,9 @@ console.log("semding....",isSending)
       </Modal.Header>
       <Modal.Body>
         <div>
-          <ShareOption className="d-flex align-items-center justify-content-between  mb-3">
+          <ShareOption className="d-flex align-items-center justify-content-between  mb-3"
+          
+          >
             <div className="d-flex align-items-center">
               <div className="icon_wrapper">
                 <EmailIcon width="21" />
@@ -110,7 +112,7 @@ console.log("semding....",isSending)
             </div>
 
             <button
-              className="btn share_btn px-5 position-relative"
+              className="btn share_btn  position-relative"
               onClick={(e) => {
                 
                 handleSendViaEmail(e);
@@ -153,7 +155,7 @@ console.log("semding....",isSending)
                 rel="noreferrer"
                 href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
               >
-                <button className="btn share_btn px-5">Share </button>
+                <button className="btn share_btn">Share </button>
               </a>
               
             ) : (
@@ -171,7 +173,7 @@ console.log("semding....",isSending)
                 value={smsNo} />
             </div>
 
-            <button className="btn share_btn px-5">Share</button>
+            <button className="btn share_btn ">Share</button>
           </ShareOption>
         
           <InfoMessage className="p-3 text-center">
@@ -225,7 +227,7 @@ input[type=number] {
   }
   .share_btn {
     border-radius: 4px;
-    padding: 15px 10px;
+    padding: 15px 40px!important;
     background-color: #0a87ff;
     border: solid 2px #0a87ff;
     color: #fff;
@@ -242,6 +244,21 @@ input[type=number] {
     background-color: #e6f3ff;
     color: #52aaff;
   }
+  @media(max-width:768px){
+    input{
+      max-width:150px;
+    }
+      }
+
+      @media(max-width:400px){
+.icon_wrapper{
+  width:35px;
+  height:35px;
+}
+.share_btn{
+padding:15px 15px !important;
+}
+      }
 `;
 
 const InfoMessage = styled.div`
