@@ -3,6 +3,21 @@ import { validationIndex } from "./formValidations";
 export const renderField = (item, value, member) => {
   if (item.render) {
     const { when, is } = item.render;
+
+    // console.log('item3',item.parent,item.name)
+    // if (item.parent && item.parent.includes("||") && member) {
+    //   let check = false;
+
+    //   const temp = item.parent.split("||");
+    //   check = temp.some(
+    //     data =>
+    //       value[data] &&
+    //       value[data].members instanceof Object &&
+    //       value[data].members[member],
+    //   );
+    //   if (check) return true;
+    //   else return false;
+    // } else
     if (item.parent && member) {
       if (
         value[item.parent] &&
@@ -15,12 +30,10 @@ export const renderField = (item, value, member) => {
       if (is && is.constructor === Object) {
         const { minAge, maxAge } = is;
         const today = new Date();
-        const age = today.getFullYear() - value?.[when]?.split("-")[2]
-        console.log("heheh",age ,today.getFullYear())
-        if (minAge && age < minAge && minAge !== -1)
-          return true;
-        if (maxAge && age > maxAge && maxAge !== -1)
-          return true;
+        const age = today.getFullYear() - value?.[when]?.split("-")[2];
+        console.log("heheh", age, today.getFullYear());
+        if (minAge && age < minAge && minAge !== -1) return true;
+        if (maxAge && age > maxAge && maxAge !== -1) return true;
       }
       if (typeof is === "object" && is instanceof Array) {
         const [min, max] = is;
@@ -28,10 +41,34 @@ export const renderField = (item, value, member) => {
         if (value[when] >= min && min !== -1) return true;
         if (value[when] <= max && max !== -1) return true;
       }
-      if (when.includes(".")) {
-        let temp = when.split(".");
-        if (value[temp[0]] && value[temp[0]][temp[1]] === is) return true;
+      if (when.includes("||")) {
+        const temp = when.split("||");
+        let check = false;
+        check = temp.some(
+          data => value[data] && value[data][`is${data}`] === is,
+        );
+        console.log(item);
+        if (check) return true;
         else return false;
+      } else if (when.includes(".")) {
+        let temp = when.split(".");
+        if (temp?.[2] && value[temp[0]]?.[temp[1]]?.[temp[2]] === is) {
+          console.log("asda312", is, value[temp[0]]?.[temp[1]]?.[temp[2]]);
+          return true;
+        } else if (value[temp[0]] && value[temp[0]][temp[1]] === is) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      if (when.includes("||")) {
+        let temp = when.split("||");
+        let check = temp.some(data => value[data] === is);
+        if (check) {
+          return true;
+        } else {
+          return false;
+        }
       }
       if (value[when] === is) return true;
       else return false;

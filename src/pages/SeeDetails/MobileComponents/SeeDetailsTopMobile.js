@@ -111,7 +111,7 @@ function SeeDetailsTop({
 const Outer = styled.div`
 margin-top:0px;
 box-shadow: 0px 0px 10px #d8d8d8;
-height: 100px;
+height: 110px;
 background-color:#fff;
 position: sticky;
 z-index: 9999;

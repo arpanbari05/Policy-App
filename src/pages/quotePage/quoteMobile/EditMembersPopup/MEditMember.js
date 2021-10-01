@@ -305,6 +305,14 @@ const MEditMember = ({ handleClose }) => {
       animation={false}
       style={{ zIndex: "2000", borderRadius: "12px", border: "none" }}
       className={"greetings-form__modal"}
+      css={`
+      .modal-dialog {
+        @media (min-width:990px)
+        {
+          max-width: 850px;
+        }
+      }
+      `}
     >
       <Modal.Header
         style={{

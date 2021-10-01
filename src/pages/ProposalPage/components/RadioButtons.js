@@ -63,7 +63,7 @@ const RadioButtons = ({
                     //     }
                     //   }}
                     onChange={e => {
-                      onChange(e);
+                      onChange(e.target.value);
                       setBoolean(e.target.value);
                     }}
                     value={data}
