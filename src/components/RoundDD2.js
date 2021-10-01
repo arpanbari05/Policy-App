@@ -140,7 +140,7 @@ export const Header = styled.a`
   }
   @media (max-width: 767px) {
     margin: unset;
-    width: 130px;
+    width: 130px !important;
   }
 `;
 

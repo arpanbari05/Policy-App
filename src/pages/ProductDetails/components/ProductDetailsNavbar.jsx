@@ -128,8 +128,8 @@ function ProductDetailsNavbar() {
         {showReviewButton ? (
           <div
             css={`
-              margin-right: 70px;
-              width: 21%;
+             
+              width: fit-content;
             `}
           >
             <ReviewCartButton />
@@ -190,7 +190,7 @@ function ClickToScroll({ label, scrollToElementId }) {
           } */
         }
         @media (max-width: 1024px) {
-          font-size: 16px;
+          font-size: 12px;
         }
       `}
       onClick={handleClick}

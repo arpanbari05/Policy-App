@@ -243,6 +243,8 @@ const FilterModal = ({ show, handleClose }) => {
 
 const MoreFilters = () => {
   const [showModal, setShowModal] = useState(false);
+  const {moreFilters} = useSelector(({quotePage}) => quotePage.filters);
+  const noOfSelectedFilters = Object.keys(moreFilters).reduce((acc,item) => moreFilters[item].length?acc+1:acc+0 ,0);
   return (
     <>
       <Filter
@@ -251,7 +253,23 @@ const MoreFilters = () => {
       >
         <span className="filter_head">More Filters</span>
         <span className="filter_sub_head">
-          Select Filters <i class="fas fa-chevron-down"></i>
+        {
+          noOfSelectedFilters > 0
+          ?(
+            <>
+{
+  `${noOfSelectedFilters === 1?noOfSelectedFilters+" Filter":noOfSelectedFilters+" Filters"} Selected`
+} <i class="fas fa-chevron-down"></i>
+</>
+          )
+          
+          :
+          (<>
+            Select Filters <i class="fas fa-chevron-down"></i>
+            </>
+          )
+        }
+          
         </span>
       </Filter>
 
