@@ -23,6 +23,7 @@ const Navbar = () => {
             alt={`companylogo`}
             css={`
             height: 34px;
+            cursor: pointer;
           `}
           />
         </div>

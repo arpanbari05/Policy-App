@@ -111,6 +111,7 @@ font-size: 15px;
 font-weight: normal;
 font-stretch: normal;
 font-style: normal;
+cursor: pointer;
 line-height: normal;
 letter-spacing: normal;
 color: #0a87ff;

@@ -97,7 +97,7 @@ const ProposalPage = ({ history }) => {
       >
         <Card
           styledCss={`margin-bottom: 20px; 
-    
+          cursor:pointer;
         `}
         >
           {activeForm === "Proposer Details" ? (

@@ -154,6 +154,7 @@ const CheckDiscount = ({ groupCode }) => {
                       <label
                         htmlFor={item?.total_premium}
                         css={`
+                        cursor:pointer;
                           display: flex;
                           flex-direction: column;
                           align-items: flex-start;

@@ -109,7 +109,7 @@ const FilterModal = ({ show, handleClose }) => {
             </li>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="2 Year">
-                2 Year{" "}
+                2 Years{" "}
                 <span
                   style={{
                     color: "#0a87ff",
@@ -122,7 +122,7 @@ const FilterModal = ({ show, handleClose }) => {
             </li>
             <li className="option d-flex align-items-center justify-content-between">
               <label htmlFor="3 Year">
-                3 Year{" "}
+                3 Years{" "}
                 <span
                   style={{
                     color: "#0a87ff",

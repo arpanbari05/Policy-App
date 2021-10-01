@@ -138,6 +138,8 @@ function QuotePage() {
           }
         `}
         id="printQuotePage"
+
+        className="noselect"
       >
         <UpperModifier sendQuote={imageSendQuote} />
         <LowerModifier />

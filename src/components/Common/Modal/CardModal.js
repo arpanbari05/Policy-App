@@ -40,7 +40,7 @@ const CardModal = ({
       }}
     
       `}
-      className={`${customClass}`}
+      className={`${customClass} noselect`}
     >
       <Modal.Header
         closeButton

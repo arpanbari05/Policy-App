@@ -153,7 +153,7 @@ const ProductDetails = () => {
         </MobileHeaderText>
       </MobileHeader>
       <main
-        className="container"
+        className="container noselect"
         css={`
           ${mobile} {
             background-color: #fff;
