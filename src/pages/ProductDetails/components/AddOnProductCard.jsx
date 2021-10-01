@@ -210,7 +210,7 @@ function ProductCard({ groupCode }) {
             `}
           >
             {" "}
-            ₹ {totalPremiumAmount}/ Year
+            ₹ {totalPremiumAmount}/ {(product.tenure >= 2 ? `${product.tenure} Years` : "Year")}
           </span>
         </div>
 
