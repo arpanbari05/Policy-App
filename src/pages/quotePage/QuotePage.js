@@ -110,6 +110,7 @@ function QuotePage() {
   console.log("loading...", loadingQuotes);
   const handleClearFilters = () => {
     dispatch(setFilters(defaultfilters));
+    console.log("fetctquotes QuotesPage")
     dispatch(
       fetchQuotes(companies?.companies, {
         sum_insured: cover,
@@ -357,6 +358,7 @@ function QuotePage() {
         </div>
         <MobileQuoteFilterFooter
           handleFilterClick={() => setFilterMobile(true)}
+          sendQuote={imageSendQuote}
         />
          {/* <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} /> */}
        

@@ -68,7 +68,7 @@ const Multiyear = ({
     if (thisSelectedYear[0]) {
       dispatch(replaceQuotes([]));
       dispatch(replaceFilterQuotes([]));
-
+      console.log("fetctquotes multiyear")
       dispatch(
         fetchQuotes(companies, {
           plan_type: plantypes.find(

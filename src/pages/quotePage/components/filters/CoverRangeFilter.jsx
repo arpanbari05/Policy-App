@@ -23,21 +23,30 @@ const FilterModal = ({ show, handleClose }) => {
     (state) => state.frontendBoot.frontendData.data.companies
   );
   const [inputCover, setInputCover] = useState(false);
-  const existingCoverCode = coverRangeOptions.covers.find(
-    (filter) => filter.display_name === filters.cover
-  )?.code;
-  const existingCoverDisplayname = filters.cover;
   const dispatch = useDispatch();
 
   const [selectedCover, setselectedCover] = useState(
     filters.cover
       ? {
-        code: existingCoverCode,
-        displayName: existingCoverDisplayname,
-      }
+          code: coverRangeOptions.covers.find(
+            (filter) => filter.display_name === filters.cover
+          )?.code,
+          displayName: filters.cover,
+        }
       : {}
   );
+  console.log(selectedCover, "hehwe3");
 
+  useEffect(() => {
+    if (filters.cover !== selectedCover.displayName) {
+      setselectedCover({
+        code: coverRangeOptions.covers.find(
+          (filter) => filter.display_name === filters.cover
+        )?.code,
+        displayName: filters.cover,
+      });
+    }
+  }, [filters.cover]);
   useEffect(() => {
     if (inputCover) {
       if (inputCover < 200000) {
@@ -94,22 +103,22 @@ const FilterModal = ({ show, handleClose }) => {
     e.preventDefault();
     dispatch(setFilters({ cover: selectedCover.displayName }));
 
-    dispatch(replaceQuotes([]));
-    dispatch(replaceFilterQuotes([]));
-    console.log("fetchQuotes cover range",selectedCover.code)
-    dispatch(
-      fetchQuotes(companies, {
-        plan_type:
-          filters.planType === "Individual"
-            ? "I"
-            : filters.planType === "Family Floater"
-              ? "F"
-              : "M",
-        tenure: parseInt(filters.multiYear),
-        sum_insured: selectedCover.code,
-        member: selectedGroup,
-      })
-    );
+    // dispatch(replaceQuotes([]));
+    // dispatch(replaceFilterQuotes([]));
+    // console.log("fetchQuotes cover range", selectedCover.code);
+    // dispatch(
+    //   fetchQuotes(companies, {
+    //     plan_type:
+    //       filters.planType === "Individual"
+    //         ? "I"
+    //         : filters.planType === "Family Floater"
+    //         ? "F"
+    //         : "M",
+    //     tenure: parseInt(filters.multiYear),
+    //     sum_insured: selectedCover.code,
+    //     member: selectedGroup,
+    //   })
+    // );
 
     handleClose();
   };
@@ -126,16 +135,16 @@ const FilterModal = ({ show, handleClose }) => {
         }
         .modal-content {
           top: 248px;
-          
+
           left: 24.5vw;
-          @media(min-width: 1400px){
-            left:21.5vw;
+          @media (min-width: 1400px) {
+            left: 21.5vw;
           }
-          @media(min-width: 1550px){
-            left:24.5vw;
+          @media (min-width: 1550px) {
+            left: 24.5vw;
           }
-          @media(min-width: 1700px){
-            left:26.5vw;
+          @media (min-width: 1700px) {
+            left: 26.5vw;
           }
         }
         .modal-footer {
@@ -164,25 +173,25 @@ const FilterModal = ({ show, handleClose }) => {
           <OptionWrapper>
             {coverRangeOptions
               ? coverRangeOptions.covers.map((option, i) => {
-                return (
-                  <li
-                    className="option d-flex align-items-center justify-content-between"
-                    key={i}
-                  >
-                    <label htmlFor={option.code}>{option.display_name}</label>
-                    <input
-                      type="radio"
-                      id={option.code}
-                      checked={option.code === selectedCover.code || false}
-                      name="selectCover"
-                      onChange={(e) => {
-                        setInputCover("");
-                        handleChange(option.code, option.display_name);
-                      }}
-                    />
-                  </li>
-                );
-              })
+                  return (
+                    <li
+                      className="option d-flex align-items-center justify-content-between"
+                      key={i}
+                    >
+                      <label htmlFor={option.code}>{option.display_name}</label>
+                      <input
+                        type="radio"
+                        id={option.code}
+                        checked={option.code === selectedCover.code || false}
+                        name="selectCover"
+                        onChange={(e) => {
+                          setInputCover("");
+                          handleChange(option.code, option.display_name);
+                        }}
+                      />
+                    </li>
+                  );
+                })
               : ""}
           </OptionWrapper>
           <div
@@ -201,7 +210,6 @@ const FilterModal = ({ show, handleClose }) => {
               placeholder="Enter your own cover."
               className="w-100"
               value={inputCover}
-             
               onChange={(e) => {
                 setInputCover(e.target.value);
                 setselectedCover("");

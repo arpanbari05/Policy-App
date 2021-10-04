@@ -36,6 +36,7 @@ function useFetchQuotes({ groupCode }) {
   const member = groupCode;
 
   const callFetchQuotes = () => {
+    console.log("fetctquotes EditMembersCOntent")
     dispatch(
       fetchQuotes(companies, {
         sum_insured,

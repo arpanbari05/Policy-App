@@ -1112,7 +1112,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                 font-size: 17px;
               `}
             >
-              {totalPremiumAmount}/ Year
+              {totalPremiumAmount}/ {(tenure >= 2 ? `${tenure} Years` : "Year")}
             </div>
           </div>
           <div

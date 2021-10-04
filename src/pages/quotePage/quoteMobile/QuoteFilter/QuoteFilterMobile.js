@@ -85,9 +85,10 @@ const QuoteFilterMobile = ({
     const thisSelectedCover = covers.filter(
       thisCover => thisCover.display_name === cover,
     );
-      console.log("fetchQuotes filter")
+     
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
+    console.log("fetctquotes quotefiltermobile")
     dispatch(
       fetchQuotes(companies, {
         plan_type: plantypes.find(filter => filter.display_name === planType)
@@ -163,7 +164,7 @@ const QuoteFilterMobile = ({
     // );
     setFilterMobile(false);
   };
-
+  console.log("cover..",selectedCover)
   return (
     <>
       <div className="mobile-filter-wrapper">
