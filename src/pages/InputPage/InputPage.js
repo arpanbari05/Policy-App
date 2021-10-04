@@ -34,8 +34,8 @@ export const InputPage = () => {
   return (
     <>
       <div
-        className="show_on_mobile"
         css={`
+        display:none;
           background: white;
           width: 100%;
           box-shadow: 0px 0px 10px grey;
@@ -45,7 +45,7 @@ export const InputPage = () => {
           align-items: center;
           justify-content: space-between;
           display: none;
-          @media (max-width: 1022px) {
+          @media (max-width: 769px) {
             display: flex;
           }
         `}

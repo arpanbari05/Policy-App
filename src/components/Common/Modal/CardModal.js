@@ -11,7 +11,7 @@ const CardModal = ({
   content,
   buttonValue,
   handleClick,
-  handleClose,
+ handleClose ,
   BtnArrow,
   noFooter,
   showButton = true,

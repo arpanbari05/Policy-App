@@ -74,7 +74,7 @@ function GoBackButton({ groupCode, ...props }) {
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
-
+  const expand = useSelector(({productPage}) => productPage.expandMobile);
   const location = useLocation();
 
   const dispatch = useDispatch();
@@ -154,7 +154,11 @@ const ProductDetails = () => {
       </MobileHeader>
       <main
         className="container noselect"
-        css={`
+        css={expand?`
+        position:fixed;
+        opacity:0.5;
+        `:`
+
           ${mobile} {
             background-color: #fff;
           }
