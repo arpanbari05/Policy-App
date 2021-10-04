@@ -1281,7 +1281,7 @@ function ProceedButton({
         margin: 0 !important;
         width: 100%;
         color: white;
-
+display:flex;
         background-color: #0c88ff;
         border: 1px dashed var(--abc-red);
 
