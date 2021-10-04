@@ -91,7 +91,7 @@ const FilterModal = ({ show, handleClose }) => {
   const sendCover = sum_insured ? sum_insured.code : "";
 
   const handleClick = (evt) => {
-    console.log(sum_insured,cover, 'asdg33125')
+    console.log("fetctquotes plantypefilter")
     dispatch(setFilters({ basePlanType: evt.display_name }));
     dispatch(
       fetchQuotes(companies, {

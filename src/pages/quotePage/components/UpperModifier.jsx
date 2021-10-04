@@ -8,6 +8,7 @@ import PlanTypeFilter from "./filters/PlanTypeFilter";
 import EditMemberFilter from "./filters/EditMemberFilter";
 import ShareQuoteModal from "../../../components/ShareQuoteModal";
 import {
+  deleteQuotes,
   fetchQuotes,
   replaceQuotes,
   saveQuotesData,
@@ -44,6 +45,8 @@ const UpperModifier = ({sendQuote}) => {
     if (!initRef.current)
       // getQuotes(members.filter((m) => m.group === selectedGroup));
       console.log("Plans for fetching quotes...");
+      console.log("fetctquotes upper modifier")
+    dispatch(deleteQuotes())
     dispatch(
       fetchQuotes(companies, {
         sum_insured: ownCover

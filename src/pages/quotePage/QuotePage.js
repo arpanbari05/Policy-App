@@ -110,6 +110,7 @@ function QuotePage() {
   console.log("loading...", loadingQuotes);
   const handleClearFilters = () => {
     dispatch(setFilters(defaultfilters));
+    console.log("fetctquotes QuotesPage")
     dispatch(
       fetchQuotes(companies?.companies, {
         sum_insured: cover,
