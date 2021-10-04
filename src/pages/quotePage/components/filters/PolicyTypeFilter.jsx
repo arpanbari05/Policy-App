@@ -50,6 +50,7 @@ const FilterModal = ({ show, handleClose }) => {
     dispatch(setFilters({ planType: selectedPlanType.displayName }));
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
+    console.log("fetctquotes Policy typefilter")
     dispatch(
       fetchQuotes(companies, {
         plan_type: selectedPlanType.code,

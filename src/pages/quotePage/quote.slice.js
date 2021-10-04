@@ -166,6 +166,9 @@ const quotePageSlice = createSlice({
     replaceQuotes: (state, action) => {
       state.quotes = action.payload;
     },
+    deleteQuotes: (state, action) => {
+      state.quotes = [];
+    },
     replaceFilterQuotes: (state, action) => {
       state.filterQuotes = action.payload;
     },
@@ -275,6 +278,7 @@ export const {
   setQuotes,
   setAppLoading,
   clearFilterQuotes,
+  deleteQuotes
 } = quotePageSlice.actions;
 
 const cancelTokens = {};
@@ -333,6 +337,7 @@ export const fetchQuotes =
           // count++;
 
           if (quoteData) {
+           
             quoteData.map((item) => {
               if (item.product.insurance_type.name === "Health Insurance") {
                 flag = true;

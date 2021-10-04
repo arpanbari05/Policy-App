@@ -1587,14 +1587,14 @@
     }
     .clr_span_footer_fixed {
         color: #40494f;
-        font-family: PFEncoreSansPromed;
+   
     }
     .mobileViewStaticChat {
         margin: auto;
         background: #fff;
         position: fixed;
         bottom: 0;
-        z-index: 99;
+       
         left: 0;
         width: 100%;
         border-radius: 7px;
@@ -2632,7 +2632,7 @@
         background: #fff;
         position: fixed;
         bottom: 0;
-        z-index: 99;
+       
         left: 0;
         width: 100%;
         border-radius: 7px;
@@ -2708,7 +2708,7 @@
     }
     .clr_span_footer_fixed {
         color: #40494f;
-        font-family: PFEncoreSansPromed;
+        /* font-family: PFEncoreSansPromed; */
     }
     /*.chat-div-containers:hover {
     display: flex;
@@ -2769,11 +2769,11 @@
         margin-top: 4px;
         color: #000;
         font-size: 20px;
-        font-family: 'PFEncoreSansPromed';
+        /* font-family: 'PFEncoreSansPromed'; */
     }
     .p_modal_header {
         font-size: 23px;
-        font-family: 'PFEncoreSansProblck';
+        /* font-family: 'PFEncoreSansProblck'; */
     }
     .rider-box_product {
         border-radius: 8px;
@@ -2899,7 +2899,7 @@
         line-height: 28px;
         margin-bottom: 12px;
         font-weight: 900;
-        font-family: PFHandbookProbld;
+        /* font-family: PFHandbookProbld; */
         background-image: linear-gradient(to right, #ffe7e7 11%, #fff 19%);
         padding: 5px 7px;
         width: 100%;
@@ -5350,7 +5350,7 @@
         margin-left: 27px;
     }
     .proposal_continue_back_margin {
-        margin: -20px auto 8px !important;
+
         text-align: center;
     }
     .proposal_continue_back_margin_proposal {
@@ -7867,7 +7867,7 @@
     .proposal_continue_back_margin_medical {
         margin: 10px -24px 8px !important;
     }
-  
+    
     .font_15_p_s {
         font-size: 9px;
         line-height: 22px;

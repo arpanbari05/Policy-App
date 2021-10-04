@@ -42,22 +42,23 @@ const FilterModal = ({ show, handleClose }) => {
     e.preventDefault();
     dispatch(setFilters({ multiYear: selectedTenure.displayName }));
 
-    dispatch(replaceQuotes([]));
-    dispatch(replaceFilterQuotes([]));
-    dispatch(
-      fetchQuotes(companies, {
-        plan_type: filters.planType === "Individual"
-          ? "I"
-          : filters.planType === "Family Floater"
-            ? "F"
-            : "M",
-        tenure: selectedTenure.code,
-        sum_insured: frontEndData.covers.find(
-          (filter) => filter.display_name === filters.cover
-        )?.code,
-        member: selectedGroup,
-      })
-    );
+    // dispatch(replaceQuotes([]));
+    // dispatch(replaceFilterQuotes([]));
+    // console.log("fetctquotes multiyearOption")
+    // dispatch(
+    //   fetchQuotes(companies, {
+    //     plan_type: filters.planType === "Individual"
+    //       ? "I"
+    //       : filters.planType === "Family Floater"
+    //         ? "F"
+    //         : "M",
+    //     tenure: selectedTenure.code,
+    //     sum_insured: frontEndData.covers.find(
+    //       (filter) => filter.display_name === filters.cover
+    //     )?.code,
+    //     member: selectedGroup,
+    //   })
+    //);
 
     handleClose();
   };

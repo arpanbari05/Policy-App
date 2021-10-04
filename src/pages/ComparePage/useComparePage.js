@@ -106,6 +106,7 @@ const useComparePage = () => {
   useEffect(() => {
     if (shoutGetCompare) {
       if (!QuotesToAdd.length) {
+        console.log("fetctquotes useComparePage")
         dispatch(
           fetchQuotes(companies, {
             sum_insured: cover,

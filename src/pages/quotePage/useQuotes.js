@@ -17,6 +17,7 @@ import {
   premiumFilterCards,
   setShouldFetchQuotes,
   insurerFilter,
+  deleteQuotes,
 } from "./quote.slice";
 import { updateGroups } from "./serviceApi";
 
@@ -222,8 +223,8 @@ function useQuotesPage() {
     if (Object.keys(memberGroups) && !initRef.current) {
       dispatch(
         fetchQuotes(companies?.companies, {
-          sum_insured: cover,
-          tenure,
+          sum_insured: findCode("covers", filters.cover),
+          tenure: filters.multiYear.charAt(0),
           member: selectedGroup,
           plan_type:
             memberGroups?.[selectedGroup]?.length === 1
@@ -264,8 +265,8 @@ function useQuotesPage() {
     console.log('fetchQuotes useQUotes')
     dispatch(
       fetchQuotes(companies?.companies, {
-        sum_insured: cover,
-        tenure,
+        sum_insured: findCode("covers", filters.cover),
+        tenure: filters.multiYear.charAt(0),
         member: selectedGroup,
         plan_type:
           memberGroups[selectedGroup].length === 1
@@ -284,6 +285,7 @@ function useQuotesPage() {
     filters.multiYear,
     filters.basePlanType,
     filters.moreFilters,
+    filters.cover,
   ]);
 
   //  const members = useSelector(({greetingPage}) => greetingPage.proposerDetails.members);

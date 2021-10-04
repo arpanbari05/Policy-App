@@ -88,6 +88,7 @@ const QuoteFilterMobile = ({
      
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
+    console.log("fetctquotes quotefiltermobile")
     dispatch(
       fetchQuotes(companies, {
         plan_type: plantypes.find(filter => filter.display_name === planType)
