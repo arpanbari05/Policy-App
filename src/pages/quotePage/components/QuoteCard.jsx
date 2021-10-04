@@ -379,12 +379,12 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                   {console.log("ssssssss3", item)}
                   {item && (
                     <SubContent
-                      // addProduct={addProduct}
+                       addProduct={addProduct}
                       key={index}
                       id={index}
                       quoteCardData={item}
                       quotesForCompare={quotesForCompare}
-                      // // handleClick={handleClick}
+                      handleClick={handleClick}
                       handleSeeDetails={handleSeeDetails}
                     />
                   )}
