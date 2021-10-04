@@ -214,7 +214,7 @@ const CustomizeYourPlan = ({
               rider={rider}
               handleRiderChange={handleRiderChange}
               isMandatory={rider.is_mandatory}
-              isRiderSelected={health_riders.some(
+              isRiderSelected={rider.is_mandatory || health_riders.some(
                 health_rider => health_rider.rider_id === rider.rider_id,
               )}
               health_riders={health_riders}

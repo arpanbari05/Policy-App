@@ -46,7 +46,6 @@ const Form1 = ({
   }, [proposerDetails.plan_type]);
   const [pinCode, setPinCode] = useState("");
   const [customErrors, setCustomErrors] = useState(false);
-  console.log(pinCode, "asdfa");
 
   useEffect(() => {
     if (pinCode?.length > 2) {
@@ -83,6 +82,11 @@ const Form1 = ({
           // pushToQuotes
         )
       );
+    } else if (
+      proposerDetails?.[memberGroup]?.city?.toLowerCase() ===
+      pinCode?.toLowerCase()
+    ) {
+      handleChange(form);
     } else if (
       !isDisabled &&
       regionDetails?.city?.toLowerCase() !== data?.pinCode?.toLowerCase()
@@ -195,6 +199,7 @@ const Form1 = ({
               dispatch(
                 saveForm1UserDetails(
                   {
+                    city: name,
                     pinCode: pincode,
                     is_pincode_search: false,
                   },
