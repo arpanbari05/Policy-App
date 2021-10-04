@@ -8,6 +8,7 @@ import { removeQuotesForCompare, saveSelectedPlan, setQuotesForCompare, setQuote
 import CustomDropDown from './filters/CustomDropdown'
 import { CenterBottomStyle, EachWrapper, Logo, LogoWrapper, Outer, PlanName, RadioButton, RadioInput, RadioLabel, SeeText, SmallLabel, TextWrapper, ValueText } from './QuoteCard.style'
 import useQuoteCard from './useQuoteCard';
+import useCartProduct from '../../Cart/hooks/useCartProduct';
 
 // function SubContent({ item, handleSeeDetails }) {
 //     console.log("ssssssss1", item);
@@ -92,7 +93,7 @@ const SubContent = ({
 
     const tenure = parseInt(multiYear) === 1 ? 1 : parseInt(multiYear);
     const { selectedGroup, cartItems } = useSelector(state => state.quotePage);
-
+   
     const { memberGroups } = useSelector(state => state.greetingPage);
 
     const members = memberGroups[selectedGroup];
@@ -127,27 +128,26 @@ const SubContent = ({
     const handleBuyNowClick = () => {
         setIsLoading(true);
         const selectedPlan = {
-            // company_alias: mergedQuotes[0]?.company_alias,
-            // logo: mergedQuotes[0]?.logo,
-            product: { name, id },
-            total_premium: total_premium[activeCover],
-            // premium: premium[activeCover],
-            sum_insured: sum_insured[activeCover],
-            tax_amount: tax_amount[activeCover],
-            tenure: tenure,
+          // company_alias: mergedQuotes[0]?.company_alias,
+          // logo: mergedQuotes[0]?.logo,
+          product: { name, id },
+          total_premium: total_premium[activeCover],
+          // premium: premium[activeCover],
+          sum_insured: sum_insured[activeCover],
+          tax_amount: tax_amount[activeCover],
+          tenure: tenure,
         };
-
-
+    
+    
         addProduct({
-            ...selectedPlan,
-            product_id: selectedPlan.product?.id,
-            premium: selectedPlan.total_premium,
-            group_id: parseInt(selectedGroup),
-            service_tax: selectedPlan.tax_amount,
+          ...selectedPlan,
+          product_id: selectedPlan.product?.id,
+          premium: selectedPlan.total_premium,
+          group_id: parseInt(selectedGroup),
+          service_tax: selectedPlan.tax_amount,
         }).then(handleClick);
         setIsLoading(false);
-    };
-
+      };
     const [checked, setChecked] = useState(
         quotesForCompare.includes(`${id}${sum_insured}`) ? true : false,
     );
@@ -279,13 +279,13 @@ const SubContent = ({
                     <div className="col-md-3">
                         <EachWrapper>
                             <LogoWrapper>
-                                <RadioButton>
+                                <RadioButton onClick={() => handleBuyNowClick()}>
                                     <strong>₹{" "}
                                         {parseInt(
                                             total_premium[activeCover] + additionalPremium,
                                         ).toLocaleString("en-In")}
                                         <span>
-                                            /{tenure > 1 ? `${tenure} "years"` : " year"}
+                                            /{tenure > 1 ? `${tenure} years` : "year"}
                                         </span></strong>
                                 </RadioButton>
                                 <PlanName
