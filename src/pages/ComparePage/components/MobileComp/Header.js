@@ -12,6 +12,7 @@ import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import CardModal from "../../../../components/Common/Modal/CardModal";
 import mail from "../../../../assets/images/mail.png";
 import whatsapp from "../../../../assets/images/whatsapp.png";
+import ShareQuoteModal from "../../../../components/ShareQuoteModal";
 
 const MobileHeader = ({
   emailStatus,
@@ -30,6 +31,7 @@ const MobileHeader = ({
   const sendRef = useRef();
   const [send, setSend] = useState(false);
   const [shareState, setShareState] = useState(false);
+  const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
   const download = () => {
     const input = document.getElementById("printCompareM");
     html2canvas(input).then(canvas => {
@@ -67,20 +69,22 @@ const MobileHeader = ({
         <span> Compare Plan</span>
       </a>
       <span className="second-container">
-        <Link
-          // onClick={() => {
-          //   dispatch(requestDownload());
-          //   download();
-          // }}
+        <a href="#"
+      
         >
-        <span style={{
+        <span 
+            onClick={() => {
+              dispatch(requestDownload());
+              download();
+            }}
+        style={{
           fontSize:"30px"
         }}>
           <i class="bi bi-printer"></i>
           </span>
-        </Link>
+        </a>
 
-        <Link>
+        <a href="#">
           <div
             style={{
               display: "flex",
@@ -88,11 +92,13 @@ const MobileHeader = ({
               alignItems: "center",
             }}
           >
-            <span onClick={() => setShareState(!shareState)}>
+            <span
+            onClick={() => setShowShareQuoteModal(true)}
+            >
               {shareSvgIcon()}
             </span>
 
-            <Styledul
+            {/* <Styledul
               class="submenu"
               style={shareState ? { display: "block" } : { display: "none" }}
             >
@@ -117,10 +123,10 @@ const MobileHeader = ({
                 >
                   <i class="fab fa-whatsapp"></i>
                 </button>
-              </li>
-            </Styledul>
+              </li> */}
+            {/* </Styledul> */}
           </div>
-        </Link>
+        </a>
       </span>
       <CardModal
         show={send}
@@ -135,6 +141,12 @@ const MobileHeader = ({
         )}
         showButton={false}
         handleClose={() => setSend(false)}
+      />
+       <ShareQuoteModal
+        show={showShareQuoteModal}
+        handleClose={() => setShowShareQuoteModal(false)}
+        imageSend={imageSend}
+        emailStatus={emailStatus}
       />
     </StyledHeader>
   );
