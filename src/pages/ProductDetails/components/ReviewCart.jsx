@@ -693,11 +693,12 @@ const ReviewCart = ({ groupCode, unEditable }) => {
 
           ${mobile} {
             width: 100%;
+            height: ${expand ? "100%" : "auto"};
             position: fixed;
             bottom: 0;
             z-index: 11;
             top: unset;
-            border-radius: 12px 12px 0 0;
+            border-radius: ${expand ? "0px" : "12px 12px 0 0"};
             padding-top: ${expand ? "18px" : "0"};
             overflow: inherit;
           }
@@ -706,7 +707,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
         <button
           css={`
             position: absolute;
-            top: 0;
+            top: ${expand ? "20px" : "0"};
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: #dbe1ee;
@@ -754,6 +755,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               position: absolute;
               top: -59px;
               z-index: -1;
+
               left: -56px;
               @media (max-width: 768px) {
                 display: none;
@@ -854,6 +856,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
         <div
           css={`
             display: none;
+
             ${mobile} {
               display: block;
             }
@@ -863,7 +866,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             css={`
               ${mobile} {
                 display: ${expand ? "static" : "none"};
-                height: 69vh;
+
                 overflow-y: auto;
 
                 &::-webkit-scrollbar {
@@ -883,94 +886,113 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             {health_riders.length > 0 ? <RidersListMobile /> : null}
             {addons.length > 0 ? <AddOnsCoversListMobile /> : null}
           </div>
+
           <div
-            css={`
-              margin-top: 10px;
+            css={
+              expand &&
+              `
+         width: 94%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-              ${mobile} {
-                border-top: ${expand ? "1px solid #ddd" : "none"};
-                margin-top: ${expand ? "10px" : "0"};
-              }
-            `}
+
+          `
+            }
           >
-            <span
-              css={`
-                font-size: 14px;
-                font-weight: 400;
-
-                ${small} {
-                  font-weight: 400;
-                  font-size: 10px;
-                  line-height: 16px;
-                }
-              `}
-            >
-              Next step:
-            </span>
             <div
               css={`
-                ${small} {
-                  font-size: 14px;
-                  line-height: 16px;
-                  font-weight: 900;
+                margin-top: 10px;
+
+                ${mobile} {
+                  border-top: ${expand ? "1px solid #ddd" : "none"};
+                  margin-top: ${expand ? "10px" : "0"};
                 }
               `}
             >
-              Plan for: {memberGroups[nextGroup]?.join(", ")}
-            </div>
-          </div>
-          <div
-            css={`
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            `}
-          >
-            <div>
               <span
                 css={`
                   font-size: 14px;
+                  font-weight: 400;
 
                   ${small} {
-                    font-size: 11px;
+                    font-weight: 400;
+                    font-size: 10px;
+                    line-height: 16px;
+                  }
+                `}
+              >
+                Next step:
+              </span>
+              <div
+                css={`
+                  ${small} {
+                    font-size: 14px;
+                    line-height: 16px;
                     font-weight: 900;
                   }
                 `}
               >
-                Total Premium
-              </span>
-              <div
-                css={`
-                  color: #0a87ff;
-                  font-weight: 900;
-
-                  ${small} {
-                    font-size: 21px;
-                  }
-                `}
-              >
-                {totalPremiumAmount}
+                Plan for: {memberGroups[nextGroup]?.join(", ")}
               </div>
             </div>
-            <button
+            <div
               css={`
-                background-color: #0a87ff;
-                padding: 10px 12px;
-                color: #fff;
-                border-radius: 6px;
-                font-size: 16px;
-                font-weight: 900;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
               `}
-              className="btn"
-              onClick={
-                hasNextGroupProduct ? handleProceedClick : handleReviewCartClick
-              }
             >
-              {hasNextGroupProduct ? "Proceed" : "Review Your Cart"}{" "}
-              {isCartProductLoading ? (
-                <i className="fa fa-circle-notch rotate" />
-              ) : null}
-            </button>
+              <div>
+                <span
+                  css={`
+                    font-size: 14px;
+
+                    ${small} {
+                      font-size: 11px;
+                      font-weight: 900;
+                    }
+                  `}
+                >
+                  Total Premium
+                </span>
+                <div
+                  css={`
+                    color: #0a87ff;
+                    font-weight: 900;
+
+                    ${small} {
+                      font-size: 21px;
+                    }
+                  `}
+                >
+                  {totalPremiumAmount}
+                </div>
+              </div>
+              <button
+                css={`
+                  background-color: #0a87ff;
+                  padding: 10px 12px;
+                  color: #fff;
+                  border-radius: 6px;
+                  font-size: 16px;
+                  font-weight: 900;
+                `}
+                className="btn"
+                onClick={
+                  hasNextGroupProduct
+                    ? handleProceedClick
+                    : handleReviewCartClick
+                }
+              >
+                {hasNextGroupProduct ? "Proceed" : "Review Your Cart"}{" "}
+                {isCartProductLoading ? (
+                  <i className="fa fa-circle-notch rotate" />
+                ) : null}
+              </button>
+            </div>
           </div>
         </div>
         <div
@@ -1112,7 +1134,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                 font-size: 17px;
               `}
             >
-              {totalPremiumAmount}/ {(tenure >= 2 ? `${tenure} Years` : "Year")}
+              {totalPremiumAmount}/ {tenure >= 2 ? `${tenure} Years` : "Year"}
             </div>
           </div>
           <div
@@ -1281,7 +1303,7 @@ function ProceedButton({
         margin: 0 !important;
         width: 100%;
         color: white;
-display:flex;
+        display: flex;
         background-color: #0c88ff;
         border: 1px dashed var(--abc-red);
 
