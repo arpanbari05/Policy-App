@@ -18,13 +18,13 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
   const [smsNo, setSmsNo] = useState(details4autopopulate?.mobile?details4autopopulate.mobile:"");
   const sendRef = useRef();
   
-useEffect(() => {
-  if(emailStatus.status){
-    setIsSending(false);
-  }
-},[emailStatus])
+// useEffect(() => {
+//   if(emailStatus.status){
+//     setIsSending(false);
+//   }
+// },[emailStatus])
 
-  console.log(emailStatus,"emailStatus")
+  console.log(emailStatus,isSending,"emailStatus")
 
   const  handleNumberCheck = (e, setAction) => {
     e.preventDefault();
@@ -50,10 +50,18 @@ useEffect(() => {
    
     if (!errorMsg && email) {
       setIsSending(true);
+      setTimeout(() => {
+        handleRotation()
+              }, 2000);
       return imageSend(email);
       
     }
+    
   };
+
+  const handleRotation=()=>{
+    setIsSending(false);
+  }
   // if(emailStatus){
   //   setIsSending(false);
   // 
@@ -119,19 +127,20 @@ console.log("semding....",isSending)
               }}
             >
               Share
-              {isSending  ? (
+              
                 <span  css={`
                       position:absolute;
                       top:50%;
                       right:20px;
                       transform:translateY(-50%) !important;
+                      display: ${isSending ? 'block' : 'none'};
                     `}>
                   <i
                     className="fa fa-circle-notch rotate"
                    
                   />
                   </span>
-                ) : null}
+              
             </button>
           </ShareOption>
 
@@ -185,8 +194,9 @@ console.log("semding....",isSending)
             ""
           )}
           {emailStatus  && (
-         <EmailSent status={emailStatus.status}>
           
+         <EmailSent status={emailStatus.status}>
+            {/* {handleRotation()} */}
               {emailStatus.message}
             </EmailSent>
         

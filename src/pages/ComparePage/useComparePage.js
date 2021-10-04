@@ -73,6 +73,17 @@ const useComparePage = () => {
       dispatch(sendEmailAction({ email, image: imgData, group_id: groupCode }));
     });
   };
+  const imageSendM = email => {
+    const input = document.getElementById("printCompareM");
+
+    html2canvas(input, {
+      scrollX: 0,
+      scrollY: -window.scrollY,
+    }).then(canvas => {
+      const imgData = canvas.toDataURL("image/png");
+      dispatch(sendEmailAction({ email, image: imgData, group_id: groupCode }));
+    });
+  };
   
   const download = () => {
     const input = document.getElementById("printCompare");
@@ -273,6 +284,7 @@ const useComparePage = () => {
     showBuyNowPopup,
     setShowBuyNowPopup,
     imageSend,
+    imageSendM,
     emailStatus,
     errors,
     setErrors,
