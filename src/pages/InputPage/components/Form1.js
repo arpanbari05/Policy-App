@@ -183,35 +183,41 @@ const Form1 = ({
             )}
         </div>
         <SubTitle>Popular Cities</SubTitle>
-        {popularcities?.map(({ pincode, name }) => (
-          <RadioCapsule
-            key={name}
-            label={name}
-            styledCss={`margin-bottom: 10px; margin-right: 5px;`}
-            value={name}
-            id={name + memberGroup}
-            checked={name === pinCode}
-            onClick={(e) => {
-              console.log("asdg", member);
-              setPinCode(`${e.target.value}`);
-              dispatch(setIsDisabled(true));
-              setCustomErrors(false);
-              dispatch(
-                saveForm1UserDetails(
-                  {
-                    city: name,
-                    pinCode: pincode,
-                    is_pincode_search: false,
-                  },
-                  // pushToQuotes
-                  handleChange,
-                  memberGroup,
-                  form
-                )
-              );
-            }}
-          />
-        ))}
+        <div
+          css={`
+            display: flex;
+            flex-wrap:wrap;
+          `}
+        >
+          {popularcities?.map(({ pincode, name }) => (
+            <RadioCapsule
+              key={name}
+              label={name}
+              styledCss={`margin-bottom: 10px; margin-right: 5px;`}
+              value={name}
+              id={name + memberGroup}
+              checked={name === pinCode}
+              onClick={(e) => {
+                setPinCode(`${e.target.value}`);
+                dispatch(setIsDisabled(true));
+                setCustomErrors(false);
+                dispatch(
+                  saveForm1UserDetails(
+                    {
+                      city: name,
+                      pinCode: pincode,
+                      is_pincode_search: false,
+                    },
+                    // pushToQuotes
+                    handleChange,
+                    memberGroup,
+                    form
+                  )
+                );
+              }}
+            />
+          ))}
+        </div>
       </div>
       {/* {formButtons(
         () => {

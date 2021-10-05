@@ -688,11 +688,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           padding-bottom: 20px;
           border-radius: 12px;
           color: #000;
-
-          overflow: hidden;
-
           ${mobile} {
             width: 100%;
+
             height: ${expand ? "100%" : "auto"};
             position: fixed;
             bottom: 0;
@@ -700,7 +698,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             top: unset;
             border-radius: ${expand ? "0px" : "12px 12px 0 0"};
             padding-top: ${expand ? "18px" : "0"};
-            overflow: inherit;
+            overflow: ${expand ? "scroll" : "inherit"};
           }
         `}
       >
@@ -859,6 +857,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
 
             ${mobile} {
               display: block;
+              margin-bottom: ${expand ? "200px" : "0px"};
             }
           `}
         >
@@ -891,8 +890,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             css={
               expand &&
               `
+             background:white;
          width: 94%;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);

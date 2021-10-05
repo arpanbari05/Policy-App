@@ -33,8 +33,8 @@ import { Col, Container, Row } from "react-bootstrap";
 
 /* ===============================test================================= */
 const ProposalPage = ({ history }) => {
-  const groupCode  = useSelector(({quotePage}) => quotePage.selectedGroup);
-  console.log(groupCode, "groupCode")
+  let groupCode  = useSelector(({quotePage}) => quotePage.selectedGroup);
+  
   const [active, setActive] = useState(0);
   const { currentSchema } = useSelector((state) => state.schema);
   const queryStrings = useUrlQuery();
@@ -62,9 +62,11 @@ const ProposalPage = ({ history }) => {
   }, [active]);
 
   useEffect(() => {
+    
     dispatch(getProposalFields());
     if (!Object.keys(proposalData).length) dispatch(getProposalData());
     dispatch(getCart());
+
   }, []);
   useEffect(() => {
     setActive(activeIndex);
@@ -404,7 +406,11 @@ const ProposalPage = ({ history }) => {
                   }
                 `}
               >
-                <ReviewCart groupCode={groupCode} unEditable={true}/>
+              {console.log(groupCode,"groupCode")}
+              {
+                groupCode?<ReviewCart groupCode={groupCode} unEditable={true} />:""
+              } 
+                
               </Col>
               <Col
                 lg={8}

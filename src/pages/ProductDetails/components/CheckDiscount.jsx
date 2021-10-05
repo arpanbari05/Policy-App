@@ -131,7 +131,7 @@ const CheckDiscount = ({ groupCode }) => {
                 `}
               >
                 {discounts?.map((item) => {
-                  console.log(item,"item")
+                  console.log(item, "item");
                   return (
                     <div
                       key={item?.total_premium}
@@ -154,7 +154,7 @@ const CheckDiscount = ({ groupCode }) => {
                       <label
                         htmlFor={item?.total_premium}
                         css={`
-                        cursor:pointer;
+                          cursor: pointer;
                           display: flex;
                           flex-direction: column;
                           align-items: flex-start;
@@ -171,21 +171,19 @@ const CheckDiscount = ({ groupCode }) => {
                             ? "#0a87ff"
                             : "#e5e5e5"};
 
-                          @media (max-width:768px){
-                            width:100% !important;
-                            margin:10px 0px;
+                          @media (max-width: 768px) {
+                            width: 100% !important;
+                            margin: 10px 0px;
                           }
 
                           /* &::after { */
-                            
-                          
 
-                            /* @media (min-width: 769px) and (max-width: 900px) {
+                          /* @media (min-width: 769px) and (max-width: 900px) {
                               left: 50%;
                               right: unset;
                             } */
 
-                            /* ${mobile} {
+                          /* ${mobile} {
                               height: 21px;
                               width: 21px;
                               display: flex;
@@ -194,21 +192,21 @@ const CheckDiscount = ({ groupCode }) => {
                               padding: 0;
                               font-size: 10px;
                               content: ${selectedTenure === item.tenure
-                                ? '"\f00c"'
-                                : '""'};
+                            ? '"\f00c"'
+                            : '""'};
                               background: ${selectedTenure === item.tenure
-                                ? "#de9b9e"
-                                : "#fff"};
+                            ? "#de9b9e"
+                            : "#fff"};
                               box-shadow: ${selectedTenure === item.tenure
-                                ? "0px 2px 5px -2px rgb(0 0 0 / 25%)"
-                                : "none"};
+                            ? "0px 2px 5px -2px rgb(0 0 0 / 25%)"
+                            : "none"};
                               top: 50%;
                               right: 3%;
                               transform: translate(-50%, -50%);
                               border: 1px solid;
                               border-color: ${selectedTenure === item.tenure
-                                ? "#fff"
-                                : "#ddd"};
+                            ? "#fff"
+                            : "#ddd"};
                             } */
                           /* } */
 
@@ -220,92 +218,91 @@ const CheckDiscount = ({ groupCode }) => {
                             border-radius: 11px;
                           } */
                         `}
-                      >{
-                        selectedTenure === item.tenure ?
-                        (
-                          <span css={`
-                     font-size: 11px;
-                            position: absolute;
-                            bottom: 11px;
-                            right: 11px;
-                            transform: translateX(-50%);
-                            height: 30px;
-                            width: 30px;
-                            line-height: 30px;
-                            text-align: center;
-                            border-radius: 50%;
-                            background: #0a87ff;
-                            box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 25%);
-                            font-family: "font-awesome";
-                            border: 2px solid #fff;
-                            color: #fff;
-                            border: 2px solid #e4e7ec;
-                      `}>
-                      <i class="fas fa-check"></i>
-                      </span>
-                        ):(
-                          <span css={`
-                     font-size: 11px;
-                            position: absolute;
-                            bottom: 11px;
-                            right: 11px;
-                            transform: translateX(-50%);
-                            height: 30px;
-                            width: 30px;
-                            line-height: 30px;
-                            text-align: center;
-                            border-radius: 50%;
-                            background: white;
-                          
-                            font-family: "font-awesome";
-                            border: 2px solid #fff;
-                            color: #fff;
-                            border: 2px solid #e4e7ec;
-                      `}>
-                      <i class="fas fa-check"></i>
-                      </span>
-                        )
-                      }
-                      
-                      {
-                        item?.tenure !== 1?(
+                      >
+                        {selectedTenure === item.tenure ? (
+                          <span
+                            css={`
+                              font-size: 11px;
+                              position: absolute;
+                              bottom: 11px;
+                              right: 11px;
+                              transform: translateX(-50%);
+                              height: 30px;
+                              width: 30px;
+                              line-height: 30px;
+                              text-align: center;
+                              border-radius: 50%;
+                              background: #0a87ff;
+                              box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 25%);
+                              font-family: "font-awesome";
+                              border: 2px solid #fff;
+                              color: #fff;
+                              border: 2px solid #e4e7ec;
+                            `}
+                          >
+                            <i class="fas fa-check"></i>
+                          </span>
+                        ) : (
+                          <span
+                            css={`
+                              font-size: 11px;
+                              position: absolute;
+                              bottom: 11px;
+                              right: 11px;
+                              transform: translateX(-50%);
+                              height: 30px;
+                              width: 30px;
+                              line-height: 30px;
+                              text-align: center;
+                              border-radius: 50%;
+                              background: white;
+
+                              font-family: "font-awesome";
+                              border: 2px solid #fff;
+                              color: #fff;
+                              border: 2px solid #e4e7ec;
+                            `}
+                          >
+                            <i class="fas fa-check"></i>
+                          </span>
+                        )}
+
+                        {item?.tenure !== 1 ? (
                           <div
-                          css={`
-                            width: 100px;
-                            height: 22px;
-                            background: #ffcb00;
-                            border-bottom-left-radius: 300px;
-                            border-top-right-radius: 180px;
-                            position: absolute;
-                            top: -2px;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            font-weight:900;
-                            color: #253858;
-                            font-size: 10px;
-                            right: -2px;
-                          `}
-                        >
-                        {
-                          item?.tenure !== 3?"7.5% off":"10% off"
-                        }
-                         
-                        </div>
-                        ):<></>
-                      }
-                        
+                            css={`
+                              width: 100px;
+                              height: 22px;
+                              background: #ffcb00;
+                              border-bottom-left-radius: 300px;
+                              border-top-right-radius: 180px;
+                              position: absolute;
+                              top: -2px;
+                              display: flex;
+                              justify-content: center;
+                              align-items: center;
+                              font-weight: 900;
+                              color: #253858;
+                              font-size: 10px;
+                              right: -2px;
+                            `}
+                          >
+                            {item?.tenure !== 3 ? "7.5% off" : "10% off"}
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+
                         <span
                           css={`
                             font-size: 15px;
                             font-weight: 600;
                             color: #253858;
                             margin-bottom: 8px;
-                            @media (max-width:768px){
+                            @media (max-width: 768px) {
                               color: #0a87ff;
-    background-color: #eff7ff;
-    border-radius:20px;
-    padding: 2px 5px;
+                              background-color: #eff7ff;
+                              border-radius: 20px;
+                              padding: 2px 5px;
                             }
                           `}
                         >
@@ -460,6 +457,11 @@ function AdditionalDiscount({ additionalDiscount }) {
           border-radius: 6px;
           padding: 12px 30px;
           color: #fff;
+          :focus{
+            color:white;
+          }
+          display: flex;
+          align-items: center;
         `}
         onClick={handleApply}
         selected={
@@ -468,7 +470,19 @@ function AdditionalDiscount({ additionalDiscount }) {
         }
         className="btn"
       >
-        Apply
+        <span
+          css={`
+            margin-right: 5px;
+          `}
+        >
+          Apply
+        </span>
+        {product.discounts &&
+        product.discounts.some((discount) => discount.alias === alias) ? (
+          <i class="fas fa-check"></i>
+        ) : (
+          <i class="fas fa-plus"></i>
+        )}
       </button>
     </div>
   );

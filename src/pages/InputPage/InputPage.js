@@ -35,7 +35,7 @@ export const InputPage = () => {
     <>
       <div
         css={`
-        display:none;
+          display: none;
           background: white;
           width: 100%;
           box-shadow: 0px 0px 10px grey;
