@@ -58,7 +58,7 @@ function useQuotesPage() {
   const { data } = useSelector(({ frontendBoot }) => frontendBoot.frontendData);
 
   const findCode = (fitlerName, fitlerValue) => {
-    let code;
+    let code = `${fitlerValue}-${fitlerValue}`;
     data[fitlerName].forEach((data) => {
       if (data.display_name === fitlerValue) {
         code = data.code;
@@ -97,7 +97,7 @@ function useQuotesPage() {
         fetchQuotes(companies?.companies, {
           sum_insured:
             tempfilter?.cover !== null
-                ? findCode("covers", tempfilter?.cover)
+                ? findCode("covers", tempfilter?.cover) 
                 : cover,
           tenure,
           member: selectedGroup,
