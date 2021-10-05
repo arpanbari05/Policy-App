@@ -639,7 +639,9 @@ html {
   margin: 0 0px 0 21px;
 }
 /* ................ */
-
+.btn-check:focus+.btn, .btn:focus {
+  border: none !important;
+}
 .rotate {
   animation: rotate linear 1s infinite;
 }

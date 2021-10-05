@@ -121,7 +121,7 @@ const useComparePage = () => {
   const { data } = useSelector(({ frontendBoot }) => frontendBoot.frontendData);
 
   const findCode = (fitlerName, fitlerValue) => {
-    let code;
+    let code = `${fitlerValue}-${fitlerValue}`;
     data[fitlerName].forEach((data) => {
       if (data.display_name === fitlerValue) {
         code = data.code;
