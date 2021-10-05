@@ -96,11 +96,10 @@ function useQuotesPage() {
       dispatch(
         fetchQuotes(companies?.companies, {
           sum_insured:
-            // tempfilter?.cover !== null
-            //     ? findCode("covers", tempfilter?.cover)
-            //     :
-            cover,
-          tenure,
+          tempfilter?.cover !== null
+          ? findCode("covers", tempfilter?.cover)
+          : cover,
+          tenure: tempfilter.multiYear.charAt(0),
           member: selectedGroup,
           plan_type:
             memberGroups[selectedGroup].length === 1
