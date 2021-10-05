@@ -74,18 +74,18 @@ const useComparePage = () => {
       dispatch(sendEmailAction({ email, image: imgData, group_id: groupCode }));
     });
   };
-  const imageSendM = email => {
+  const imageSendM = (email) => {
     const input = document.getElementById("printCompareM");
 
     html2canvas(input, {
       scrollX: 0,
       scrollY: -window.scrollY,
-    }).then(canvas => {
+    }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       dispatch(sendEmailAction({ email, image: imgData, group_id: groupCode }));
     });
   };
-  
+
   const download = () => {
     const input = document.getElementById("printCompare");
 
@@ -145,13 +145,13 @@ const useComparePage = () => {
         dispatch(
           fetchQuotes(companies, {
             sum_insured:
-              tempfilter?.cover !== null
+            tempfilter?.cover !== null
                 ? findCode("covers", tempfilter?.cover)
                 : cover,
-            tenure: tempfilter.multiYear.charAt(0),
+            tenure: tempfilter?.multiYear?.charAt(0) || tenure,
             member: groupCode,
             plan_type:
-              memberGroups[groupCode].length === 1
+              memberGroups?.[groupCode]?.length === 1
                 ? "I"
                 : proposerDetails.plan_type
                 ? proposerDetails.plan_type === "M"

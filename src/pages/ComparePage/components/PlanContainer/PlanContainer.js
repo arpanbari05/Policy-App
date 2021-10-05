@@ -60,7 +60,7 @@ const PlanContainer = ({
             display: flex;
             align-items: center;
             height: 210px;
-            
+         
           width: 270px;
             margin: 0 !important;
             justify-content: space-around;
@@ -69,6 +69,9 @@ const PlanContainer = ({
             position: relative;
             :hover {
               border: 2px solid #0a87ff;
+            }
+            @media(max-width:1200px){
+              width: unset;
             }
           `}
         >
@@ -152,6 +155,9 @@ const PlanContainer = ({
                 height: 210px;
                
                 width: 270px;
+                @media(max-width:1200px){
+                  width: 100%;
+                }
               `}
             >
               <div
@@ -167,6 +173,9 @@ const PlanContainer = ({
                   width: 248px;
                   color: #0a87ff;
                   border-radius: 5px;
+                  @media(max-width:1200px){
+                    width: 100%;
+                  }
                 `}
               >
                 <div
