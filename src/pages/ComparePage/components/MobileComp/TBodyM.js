@@ -21,7 +21,7 @@ import wrong from "../../../../assets/images/wrong2.png";
 
 import { getProductDiscount,removeQuotesForCompare,setQuotesForCompare } from "../../../quotePage/quote.slice.js";
 import Checkbox from "../Checkbox/Checbox.js";
-
+import Checkbox2 from "../Checkbox/Checbox";
 // tooltip show information on hover
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
@@ -195,37 +195,29 @@ const AdditionalBenefits = ({
                         <i className="fa fa-inr"></i>{" "}
                         <div>{innerItem.total_premium} </div>{" "}
                         <div>
-                          <Checkbox
-                          code={ 
-                            "mob" +
-                            innerItem.name +
-                            plans[item].data.product.id}
-                            title={
-                              "mob" +
-                              innerItem.name +
-                              plans[item].data.product.id
+                        <Checkbox2
+                         showTitle={false}
+                          title={innerItem.name + plans[item].data.product.id}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              dispatch(
+                                insertRider(
+                                  plans[item].data.product.id,
+                                  plans[item].data.sum_insured,
+                                  innerItem
+                                )
+                              );
+                            } else {
+                              dispatch(
+                                removeRider(
+                                  plans[item].data.product.id,
+                                  plans[item].data.sum_insured,
+                                  innerItem
+                                )
+                              );
                             }
-                            showTitle={false}
-                            handleChange={e => {
-                              if (e.target.checked) {
-                                dispatch(
-                                  insertRider(
-                                    plans[item].data.product.id,
-                                    plans[item].data.sum_insured,
-                                    innerItem,
-                                  ),
-                                );
-                              } else {
-                                dispatch(
-                                  removeRider(
-                                    plans[item].data.product.id,
-                                    plans[item].data.sum_insured,
-                                    innerItem,
-                                  ),
-                                );
-                              }
-                            }}
-                          />
+                          }}
+                        />
                         </div>
                       </RiderPremium>
                     </RiderWrapper>
