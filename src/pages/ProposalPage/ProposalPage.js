@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SecureLS from "secure-ls";
 import styled from "styled-components/macro";
+import { useParams } from "react-router-dom";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
@@ -18,6 +19,7 @@ import {
   setIsLoading,
   submitProposalData,
 } from "./ProposalSections/ProposalSections.slice";
+import ReviewCart from "../ProductDetails/components/ReviewCart";
 import PencilIcon from "../../assets/svg-icons/PencilIcon";
 import { getProposalFields } from "./schema.slice";
 import useUrlQuery from "../../customHooks/useUrlQuery";
@@ -31,6 +33,8 @@ import { Col, Container, Row } from "react-bootstrap";
 
 /* ===============================test================================= */
 const ProposalPage = ({ history }) => {
+  let groupCode  = useSelector(({quotePage}) => quotePage.selectedGroup);
+  
   const [active, setActive] = useState(0);
   const { currentSchema } = useSelector((state) => state.schema);
   const queryStrings = useUrlQuery();
@@ -58,9 +62,11 @@ const ProposalPage = ({ history }) => {
   }, [active]);
 
   useEffect(() => {
+    
     dispatch(getProposalFields());
     if (!Object.keys(proposalData).length) dispatch(getProposalData());
     dispatch(getCart());
+
   }, []);
   useEffect(() => {
     setActive(activeIndex);
@@ -96,7 +102,8 @@ const ProposalPage = ({ history }) => {
         `}
       >
         <Card
-          styledCss={`margin-bottom: 20px; 
+          styledCss={`
+          margin-bottom: 20px; 
           cursor:pointer;
         `}
         >
@@ -390,7 +397,7 @@ const ProposalPage = ({ history }) => {
               `}
             >
               <Col
-                lg={3}
+                lg={4}
                 md={12}
                 css={`
                   margin-bottom: 20px;
@@ -399,10 +406,14 @@ const ProposalPage = ({ history }) => {
                   }
                 `}
               >
-                <ProductSummary cart={cart} />
+              {console.log(groupCode,"groupCode")}
+              {
+                groupCode?<ReviewCart groupCode={groupCode} unEditable={true} />:""
+              } 
+                
               </Col>
               <Col
-                lg={9}
+                lg={8}
                 md={12}
                 css={`
                   @media (max-width: 1024px) {

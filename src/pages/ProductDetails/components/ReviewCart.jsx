@@ -1,8 +1,9 @@
 import { useHistory, useParams } from "react-router-dom";
 import { useCartProduct } from "../../Cart";
 import "styled-components/macro";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Pencil from "../../../assets/images/pencil_pink.png";
+import { setexpandMobile } from "../productDetails.slice";
 import { useState } from "react";
 import ReviewCartPopup from "./ReviewCardPopup";
 // import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
@@ -281,25 +282,38 @@ function Discounts({ discounts = [] }) {
     <>
       <div
         css={`
-          margin: 37px 0;
+          display: flex;
+          justify-content: space-between;
+          padding: 20px 0px;
+          border-bottom: 1px solid #ddd;
         `}
       >
-        <BackgroundBorderTitle title="Discounts" />
-      </div>
-      <div
-        css={`
-          margin-top: 30px;
-        `}
-      >
-        {discounts.map(({ name }) => (
-          <CartDetailRow title={name} />
-        ))}
+        <div
+          css={`
+            width: 30%;
+            max-width: 80px;
+            padding-left: 12px;
+          `}
+        >
+          <BackgroundBorderTitle title="Discounts" />
+        </div>
+        <div
+          css={`
+            width: 70%;
+            font-size: 13px;
+            color: #555555;
+          `}
+        >
+          {discounts.map(({ name }) => (
+            <span>{name}</span>
+          ))}
+        </div>
       </div>
     </>
   ) : null;
 }
 
-const ReviewCart = ({ groupCode }) => {
+const ReviewCart = ({ groupCode, unEditable }) => {
   const [reviewCartPopup, setReviewCartPopup] = useState(false);
 
   const cart = useSelector((state) => state.cart);
@@ -524,7 +538,7 @@ const ReviewCart = ({ groupCode }) => {
       <div>
         <h3
           css={`
-            color: var(--abc-red);
+            color: #0a87ff;
             font-size: 18px;
             font-weight: 900;
             margin-top: 10px;
@@ -537,6 +551,7 @@ const ReviewCart = ({ groupCode }) => {
         >
           Addon Covers
         </h3>
+
         {addons.map((addon) => (
           <AddOnDetailMobile addOn={addon} />
         ))}
@@ -544,7 +559,121 @@ const ReviewCart = ({ groupCode }) => {
     );
   };
 
-  const [expand, setExpand] = useState(false);
+  const RiderMobile = ({ rider }) => {
+    const { name, premium } = rider;
+    return (
+      <>
+        <div className="d-flex justify-content-between">
+          <span
+            css={`
+              font-size: 14px;
+              color: #5c5959;
+              margin-left: 43px;
+              @media (max-width: 537px) {
+                font-size: 12px !important;
+              }
+            `}
+          >
+            {name}
+          </span>
+          <span
+            css={`
+              @media (max-width: 537px) {
+                font-size: 12px;
+                font-weight: 900;
+              }
+            `}
+          >
+            ₹ {premium}
+          </span>
+        </div>
+      </>
+    );
+  };
+
+  const RidersListMobile = () => {
+    return (
+      <div>
+        <h3
+          css={`
+            color: #0a87ff;
+            font-size: 18px;
+            font-weight: 900;
+            margin-top: 10px;
+
+            ${small} {
+              font-size: 15px;
+              line-height: 18px;
+            }
+          `}
+        >
+          Riders
+        </h3>
+
+        {health_riders.map((rider) => (
+          <RiderMobile rider={rider} />
+        ))}
+      </div>
+    );
+  };
+
+  const DiscountsMobile = ({ discounts }) => {
+    console.log(discounts, "discount");
+    return (
+      <>
+        <div>
+          <h3
+            css={`
+              color: #0a87ff;
+              font-size: 18px;
+              font-weight: 900;
+              margin-top: 10px;
+
+              ${small} {
+                font-size: 15px;
+                line-height: 18px;
+              }
+            `}
+          >
+            Discount
+          </h3>
+
+          {discounts.map(({ name, percent }) => (
+            <div className="d-flex justify-content-between">
+              <span
+                css={`
+                  font-size: 14px;
+                  color: #5c5959;
+                  margin-left: 43px;
+                  @media (max-width: 537px) {
+                    font-size: 12px !important;
+                  }
+                `}
+              >
+                {name}
+              </span>
+              <span
+                css={`
+                  @media (max-width: 537px) {
+                    font-size: 12px;
+                    font-weight: 900;
+                  }
+                `}
+              >
+                {percent}%
+              </span>
+            </div>
+          ))}
+        </div>
+      </>
+    );
+  };
+
+  const expand = useSelector(({ productPage }) => productPage.expandMobile);
+  const dispatch = useDispatch();
+  const setExpand = () => dispatch(setexpandMobile(!expand));
+
+  // const [expand, setExpand] = useState(false);
 
   return (
     <>
@@ -559,25 +688,24 @@ const ReviewCart = ({ groupCode }) => {
           padding-bottom: 20px;
           border-radius: 12px;
           color: #000;
-
-          overflow: hidden;
-
           ${mobile} {
             width: 100%;
+
+            height: ${expand ? "100%" : "auto"};
             position: fixed;
             bottom: 0;
             z-index: 11;
             top: unset;
-            border-radius: 12px 12px 0 0;
+            border-radius: ${expand ? "0px" : "12px 12px 0 0"};
             padding-top: ${expand ? "18px" : "0"};
-            overflow: inherit;
+            overflow: ${expand ? "scroll" : "inherit"};
           }
         `}
       >
         <button
           css={`
             position: absolute;
-            top: 0;
+            top: ${expand ? "20px" : "0"};
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: #dbe1ee;
@@ -600,6 +728,7 @@ const ReviewCart = ({ groupCode }) => {
         <div
           css={`
             display: flex;
+
             flex-direction: column;
             align-items: flex-start;
             justify-content: space-between;
@@ -624,6 +753,7 @@ const ReviewCart = ({ groupCode }) => {
               position: absolute;
               top: -59px;
               z-index: -1;
+
               left: -56px;
               @media (max-width: 768px) {
                 display: none;
@@ -704,11 +834,12 @@ const ReviewCart = ({ groupCode }) => {
                 height: 30px;
                 background: #eff7ff;
                 border-radius: 100%;
-                display: flex;
+                display: ${unEditable ? "none" : "flex"};
                 color: #369cff;
                 align-items: center;
                 justify-content: center;
                 font-size: 13px;
+
                 ${small} {
                   width: 11px;
                 }
@@ -723,8 +854,10 @@ const ReviewCart = ({ groupCode }) => {
         <div
           css={`
             display: none;
+
             ${mobile} {
               display: block;
+              margin-bottom: ${expand ? "200px" : "0px"};
             }
           `}
         >
@@ -732,7 +865,7 @@ const ReviewCart = ({ groupCode }) => {
             css={`
               ${mobile} {
                 display: ${expand ? "static" : "none"};
-                max-height: 60vh;
+
                 overflow-y: auto;
 
                 &::-webkit-scrollbar {
@@ -745,96 +878,121 @@ const ReviewCart = ({ groupCode }) => {
             `}
           >
             <DetailsListMobile />
+            {discounts?.length > 0 ? (
+              <DiscountsMobile discounts={discounts} />
+            ) : null}
+
+            {health_riders.length > 0 ? <RidersListMobile /> : null}
             {addons.length > 0 ? <AddOnsCoversListMobile /> : null}
           </div>
+
           <div
-            css={`
-              margin-top: 10px;
+            css={
+              expand &&
+              `
+             background:white;
+         width: 94%;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-              ${mobile} {
-                border-top: ${expand ? "1px solid #ddd" : "none"};
-                margin-top: ${expand ? "10px" : "0"};
-              }
-            `}
+
+          `
+            }
           >
-            <span
-              css={`
-                font-size: 14px;
-                font-weight: 400;
-
-                ${small} {
-                  font-weight: 400;
-                  font-size: 10px;
-                  line-height: 16px;
-                }
-              `}
-            >
-              Next step:
-            </span>
             <div
               css={`
-                ${small} {
-                  font-size: 14px;
-                  line-height: 16px;
-                  font-weight: 900;
+                margin-top: 10px;
+
+                ${mobile} {
+                  border-top: ${expand ? "1px solid #ddd" : "none"};
+                  margin-top: ${expand ? "10px" : "0"};
                 }
               `}
             >
-              Plan for: {memberGroups[nextGroup]?.join(", ")}
-            </div>
-          </div>
-          <div
-            css={`
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            `}
-          >
-            <div>
               <span
                 css={`
                   font-size: 14px;
+                  font-weight: 400;
 
                   ${small} {
-                    font-size: 11px;
+                    font-weight: 400;
+                    font-size: 10px;
+                    line-height: 16px;
+                  }
+                `}
+              >
+                Next step:
+              </span>
+              <div
+                css={`
+                  ${small} {
+                    font-size: 14px;
+                    line-height: 16px;
                     font-weight: 900;
                   }
                 `}
               >
-                Total Premium
-              </span>
-              <div
-                css={`
-                  color: #0a87ff;
-                  font-weight: 900;
-
-                  ${small} {
-                    font-size: 21px;
-                  }
-                `}
-              >
-                {totalPremiumAmount}
+                Plan for: {memberGroups[nextGroup]?.join(", ")}
               </div>
             </div>
-            <button
+            <div
               css={`
-                background-color: #0a87ff;
-                padding: 10px 12px;
-                color: #fff;
-                border-radius: 6px;
-                font-size: 16px;
-                font-weight: 900;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
               `}
-              className="btn"
-              onClick={
-                hasNextGroupProduct ? handleProceedClick : handleReviewCartClick
-              }
             >
-              {hasNextGroupProduct ? "Proceed" : "Review Your Cart"}{" "}
-              {isCartProductLoading ? (
-                <i className="fa fa-circle-notch rotate" />
-              ) : null}
-            </button>
+              <div>
+                <span
+                  css={`
+                    font-size: 14px;
+
+                    ${small} {
+                      font-size: 11px;
+                      font-weight: 900;
+                    }
+                  `}
+                >
+                  Total Premium
+                </span>
+                <div
+                  css={`
+                    color: #0a87ff;
+                    font-weight: 900;
+
+                    ${small} {
+                      font-size: 21px;
+                    }
+                  `}
+                >
+                  {totalPremiumAmount}
+                </div>
+              </div>
+              <button
+                css={`
+                  background-color: #0a87ff;
+                  padding: 10px 12px;
+                  color: #fff;
+                  border-radius: 6px;
+                  font-size: 16px;
+                  font-weight: 900;
+                `}
+                className="btn"
+                onClick={
+                  hasNextGroupProduct
+                    ? handleProceedClick
+                    : handleReviewCartClick
+                }
+              >
+                {hasNextGroupProduct ? "Proceed" : "Review Your Cart"}{" "}
+                {isCartProductLoading ? (
+                  <i className="fa fa-circle-notch rotate" />
+                ) : null}
+              </button>
+            </div>
           </div>
         </div>
         <div
@@ -854,7 +1012,7 @@ const ReviewCart = ({ groupCode }) => {
           >
             <div
               css={`
-                max-width: 30%;
+                width: 100px;
                 height: auto;
                 background-color: #fff;
                 display: flex;
@@ -862,9 +1020,7 @@ const ReviewCart = ({ groupCode }) => {
                 justify-content: flex-start;
                 padding: 2px 10px;
                 border-radius: 2px;
-                @media (max-width: 1200px) {
-                  max-width: 15% !important;
-                }
+
                 ${small} {
                   max-width: 33px;
                 }
@@ -961,7 +1117,7 @@ const ReviewCart = ({ groupCode }) => {
               border-radius: 2px;
               background-color: #f7f7f7;
               font-weight: 900;
-              margin-bottom: 100px;
+              margin-bottom: ${unEditable ? "10px" : "100px"};
             `}
           >
             <div
@@ -978,7 +1134,7 @@ const ReviewCart = ({ groupCode }) => {
                 font-size: 17px;
               `}
             >
-              {totalPremiumAmount}/ {(tenure >= 2 ? `${tenure} Years` : "Year")}
+              {totalPremiumAmount}/ {tenure >= 2 ? `${tenure} Years` : "Year"}
             </div>
           </div>
           <div
@@ -986,7 +1142,7 @@ const ReviewCart = ({ groupCode }) => {
               bottom: 0px;
               left: 0px;
               width: 100%;
-
+              display: ${unEditable ? "none" : "flex"};
               position: absolute;
               border-top-left-radius: 0px;
               border-top-right-radius: 0px;
@@ -1005,6 +1161,7 @@ const ReviewCart = ({ groupCode }) => {
                 css={`
                   background-color: #0c88ff;
                   color: #fff;
+
                   margin: 0 !important;
                   min-width: 100%;
                   border-radius: 2px;
@@ -1140,14 +1297,13 @@ function ProceedButton({
     <div
       onClick={onProceedClick}
       css={`
-        display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 10px;
         margin: 0 !important;
         width: 100%;
         color: white;
-
+        display: flex;
         background-color: #0c88ff;
         border: 1px dashed var(--abc-red);
 

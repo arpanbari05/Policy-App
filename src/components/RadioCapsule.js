@@ -11,6 +11,7 @@ const RadioCapsule = ({
 }) => {
   return (
     <>
+    
       <RadioInput
         className="checkbox-tools"
         type={"radio"}
@@ -27,6 +28,7 @@ const RadioCapsule = ({
       >
         {label}
       </RadioLabel>
+     
     </>
   );
 };
@@ -78,4 +80,11 @@ const RadioLabel = styled.label`
   margin-bottom: 10px;
   height: 40px;
   font-size: 14px;
+  @media (max-width:480px){
+    width:44%;
+    min-width:fit-content;
+    padding: 13px 20px;
+    justify-content: space-between;
+    font-size: 12px !important;
+  }
 `;

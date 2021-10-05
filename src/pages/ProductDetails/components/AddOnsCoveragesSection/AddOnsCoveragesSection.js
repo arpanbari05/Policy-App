@@ -1105,7 +1105,7 @@ const AddOnsNav = styled(Tabs)`
     font-weight: 900;
 
     border: none !important;
-    margin-right: 100px;
+    margin-right: 10px;
     &::after {
       content: "";
       position: absolute;
@@ -1238,7 +1238,7 @@ function AddOnCoveragesSection() {
           ${small} {
             section > & {
               padding: 0;
-            }
+          
           }
         `}
       >

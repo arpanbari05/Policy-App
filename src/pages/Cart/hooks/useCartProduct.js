@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addQuoteToCart, removeQuoteFromCart } from "../cart.slice";
 import { createCartApi, deleteCartApi, updateCartApi } from "../serviceApi";
 
+
 function cartSendData(cartData) {
   if (!cartData) return;
   const {
@@ -50,12 +51,15 @@ function cartSendData(cartData) {
 }
 
 function useCartProduct(groupCode, selectedProduct) {
-  if (!groupCode)
+  console.log(groupCode,"groupCode")
+  const groupCodeState = useSelector(({quotePage}) => quotePage.selectedGroup);
+  // var groupCode = groupCode?groupCode:useSelector(({quotePage}) => quotePage.selectedGroup) ;
+  if (!groupCode && !groupCodeState)
     throw new Error("argument 'groupCode' is missing for useCartProduct");
 
-  const product = useSelector(({ cart }) => cart[groupCode] || selectedProduct);
+  const product = useSelector(({ cart }) => cart[groupCode || groupCodeState] || selectedProduct);
 
-  const cartProduct = useSelector(({ cart }) => cart[groupCode]);
+  const cartProduct = useSelector(({ cart }) => cart[groupCode || groupCodeState]);
 
   let totalRidersPremium = null;
 

@@ -37,7 +37,7 @@ export function formButtons(handleChange, handleSubmit, lastForm) {
         width: 100%;
         padding: 0px 17px 17px;
         @media (max-width: 480px){
-          padding:0px !important;
+          padding:10px !important;
         }
       `}
     >

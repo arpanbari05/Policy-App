@@ -70,7 +70,7 @@ color: ${props.color};
   border-radius: 2px;
   font-size: 20px;
   font-weight: 400;
-  line-height: 35px;
+  
   float: left;
   left: 4px;
   position: inherit;
