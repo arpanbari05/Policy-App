@@ -28,6 +28,7 @@ import ProductSummaryTab from "./ProposalSections/components/ProductSummaryTab";
 import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
 import Card from "../../components/Card";
 import { Col, Container, Row } from "react-bootstrap";
+import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
 
 /* ===============================test================================= */
 
@@ -78,7 +79,10 @@ const ProposalPage = ({ history }) => {
     if (active >= listOfForms.length && listOfForms.length) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
-          <span className="lds-dual-ring colored--loader"></span>
+          {/* <span className="lds-dual-ring colored--loader"></span> */}
+          <SpinLoader
+         proposalpage={true}
+          />
           <p>Submitting Proposal, Please Wait</p>
         </div>
       );
