@@ -155,7 +155,11 @@ function QuotePage() {
               `}
             >
               <div className=" d-flex justify-content-between align-items-center">
-                <TextLabel> Showing {selectedPlanType} Plan</TextLabel>
+                <TextLabel>
+                  {" "}
+                  {loadingQuotes ? "Loading" : "Showing"} {selectedPlanType}{" "}
+                  Plan{loadingQuotes && "..."}
+                </TextLabel>
                 {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
               </SortByButton> */}
