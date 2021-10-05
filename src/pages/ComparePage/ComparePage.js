@@ -601,6 +601,7 @@ const ComparePage = () => {
     showBuyNowPopup,
     setShowBuyNowPopup,
     imageSend,
+    imageSendM,
     emailStatus,
     errors,
     setErrors,
@@ -644,7 +645,7 @@ const ComparePage = () => {
             <MobileHeader
               emailStatus={emailStatus}
               EmailSent={EmailSent}
-              imageSend={imageSend}
+              imageSend={imageSendM}
               sendContent={sendContent}
               groupCode={groupCode}
               path={"/quotes"}

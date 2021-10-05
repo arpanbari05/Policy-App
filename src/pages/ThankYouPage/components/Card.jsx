@@ -26,7 +26,8 @@ const Card = ({ values, isLoading }) => {
         ></img>
       </LogoWrapper>
       <CompanyName reducePadding>{values?.product?.name}</CompanyName>
-      <div style={{ float: "right" }}>
+      <div style={{ float: "right" }}
+      >
         {values?.pdf_path ? (
           values?.pdf_path && (
             <DownloadPolicy target="_blank" href={values?.pdf_path} download>
@@ -179,8 +180,14 @@ const DocImage = styled.div`
 `;
 const DocMessage = styled.div`
   margin-left: 12px;
+  font-size: 15px;
+
   width: calc(100% - 46px);
   display: inline-block;
+@media (max-width: 768px){
+  font-size: 12px;
+}
+
 `;
 const LogoWrapper = styled.div`
   display: inline-block;
@@ -239,6 +246,10 @@ const DownloadPolicy = styled.a`
   & svg {
     transform: translateY(4px);
   }
+
+  @media(max-width: 768px){
+    font-size:15px;
+  }
 `;
 const PolicyWrapper = styled.div`
   display: inline-block;
@@ -251,7 +262,7 @@ const PolicyWrapper = styled.div`
 `;
 const Title = styled.div`
   /* font-family: pf_handbook_proregular; */
-  font-size: 17px;
+  font-size: 15px;
   font-weight: bold;
   
   margin-bottom: 2px;
@@ -262,7 +273,7 @@ const Title = styled.div`
 
 const Value = styled.div`
   /* font-family: pf_handbook_probold; */
-  font-size: 18px;
+  font-size: 16px;
   text-transform: capitalize;
   user-select: all;
   word-break: break-all;
