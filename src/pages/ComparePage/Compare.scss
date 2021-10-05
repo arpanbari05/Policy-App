@@ -309,3 +309,10 @@ th{
 select { 
   border: none;
 }
+
+@media (max-width: 1200px) {
+  .table thead tr th {
+    width: 20.667%;
+ 
+}
+}

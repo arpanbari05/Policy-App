@@ -100,7 +100,7 @@ const THead = ({
               & p {
                 font-size: 20px;
                 color: #253858;
-                text-align: center;
+               
               }
             `}
           >
