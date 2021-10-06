@@ -18,7 +18,7 @@ export default PlansTab;
 const Anchor = styled.a`
   border: solid 1px #dde5ea;
   & span {
-    font-size: 22px;
+    font-size: 20px;
     color: #253858;
     font-weight: 900;
     &.active {
