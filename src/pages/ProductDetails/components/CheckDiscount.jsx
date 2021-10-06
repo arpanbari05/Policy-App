@@ -3,6 +3,7 @@ import CardSkeletonLoader from "./../../../components/Common/card-skeleton-loade
 import { useCallback, useEffect, useState } from "react";
 import FeatureSection from "./FeatureSection/FeatureSection";
 import { useCartProduct } from "../../Cart";
+
 import ErrorMessage from "../../../components/Common/ErrorMessage/ErrorMessage";
 import "styled-components/macro";
 import { mobile, small } from "../../../utils/mediaQueries";

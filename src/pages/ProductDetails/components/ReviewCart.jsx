@@ -22,7 +22,7 @@ function CartDetailRow({ title, value }) {
         display: flex;
         justify-content: space-between;
         align-items: center;
-      
+
         width: 100%;
         ${mobile} {
           flex-direction: column;
@@ -54,7 +54,7 @@ function CartDetailRow({ title, value }) {
         css={`
           font-weight: 900;
           font-size: 13px;
-          min-width:100px;
+          min-width: 100px;
           text-align: right;
           @media (max-width: 768px) {
             text-align: left !important;
@@ -109,7 +109,6 @@ function AddOnDetailsRow({ addOn }) {
           align-items: center;
           justify-content: center;
           height: 50px;
-       
         `}
       >
         <img
@@ -125,10 +124,10 @@ function AddOnDetailsRow({ addOn }) {
           font-size: 12px;
           font-weight: 400;
           width: 165px;
-          
+
           display: flex;
-    align-items: center;
-    padding: 0px 5px;
+          align-items: center;
+          padding: 0px 5px;
         `}
       >
         {`${product.name} ${
@@ -282,7 +281,7 @@ function useReviewCartButton({ groupCode }) {
   };
 }
 
-function Discounts({ discounts = [] }) {
+function Discounts({ discounts = [], premium }) {
   return discounts.length > 0 ? (
     <>
       <div
@@ -291,26 +290,50 @@ function Discounts({ discounts = [] }) {
           justify-content: space-between;
           padding: 20px 0px;
           border-bottom: 1px solid #ddd;
+          flex-direction: column;
+          padding-left: 12px;
         `}
       >
         <div
           css={`
             width: 30%;
             max-width: 80px;
-            padding-left: 12px;
           `}
         >
           <BackgroundBorderTitle title="Discounts" />
         </div>
         <div
           css={`
-            width: 70%;
-            font-size: 13px;
+            font-size: 12px;
             color: #555555;
+            /* padding-left: 12px; */
+            margin-top: 7px;
+            width: 100%;
           `}
         >
-          {discounts.map(({ name }) => (
-            <span>{name}</span>
+          {discounts.map(({ name, percent }) => (
+            <>
+              <div
+                css={`
+                  display: flex;
+                  justify-content: space-between;
+                  width: 100%;
+                `}
+              >
+                <span>{name}</span>
+                <span
+                  css={`
+                    font-weight: 900;
+                    font-size: 13px;
+                    min-width: 100px;
+                    text-align: right;
+                    color: black;
+                  `}
+                >
+                  - ₹ {(premium / 100) * percent}
+                </span>
+              </div>
+            </>
           ))}
         </div>
       </div>
@@ -622,7 +645,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
     );
   };
 
-  const DiscountsMobile = ({ discounts }) => {
+  const DiscountsMobile = ({ discounts, premium }) => {
     console.log(discounts, "discount");
     return (
       <>
@@ -665,7 +688,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                   }
                 `}
               >
-                {percent}%
+                 - ₹ {(premium / 100) * percent}
               </span>
             </div>
           ))}
@@ -885,7 +908,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           >
             <DetailsListMobile />
             {discounts?.length > 0 ? (
-              <DiscountsMobile discounts={discounts} />
+              <DiscountsMobile discounts={discounts} premium={premium} />
             ) : null}
 
             {health_riders.length > 0 ? <RidersListMobile /> : null}
@@ -1049,7 +1072,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               <CartDetailRow title="Premium" value={premiumAmount} />
             </div>
           </div>
-          <Discounts discounts={discounts} />
+
           <div
             css={`
               display: flex;
@@ -1090,6 +1113,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               )}
             </div>
           </div>
+
+          <Discounts discounts={discounts} premium={premium} />
+
           <div
             css={`
               width: 100%;

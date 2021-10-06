@@ -37,7 +37,7 @@ function ProductCard({ groupCode }) {
         justify-content: space-between;
         /* padding: 0 20px; */
         border-radius: 3px;
-        padding: 8px 10px;
+        padding: 0px 10px;
         background: white;
         border: 1px solid #dfdfdf;
 
@@ -189,7 +189,7 @@ function ProductCard({ groupCode }) {
               }
             `}
           >
-            Total Premium :
+            Premium :
           </span>
           <span
             className="detail_amount"
@@ -330,13 +330,17 @@ function ProductCard({ groupCode }) {
 export default ProductCard;
 
 const DetailDispalyPanel = styled.div`
-background:#f3f9ff;
+background:#fafbfc;
 padding: 17px;
     border-radius: 10px;
+    margin:5px 0px;
 @media (max-width:1200px){
  display:none !important; 
 }
   .detail_child:not(:last-child):after {
     content: " | ";
+    font-size:15px;
+    margin: 0px 15px;
+    color:#dedfe0;
   }
 `;
