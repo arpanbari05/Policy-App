@@ -284,6 +284,7 @@ export const {
 
 const cancelTokens = {};
 var flag = false;
+
 export const fetchQuotes =
   (companies, { sum_insured, tenure, plan_type, member, basePlanType }) =>
   async (dispatch, store) => {

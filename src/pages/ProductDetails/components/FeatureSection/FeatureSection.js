@@ -74,7 +74,7 @@ const FeatureSectionHeading = styled("p")`
     border-radius: 0 15px 15px 0;
   }
 }
-  margin-left: 20px;
+  margin-left: 2px;
 
   ${mobile} {
     font-size: 17px;
@@ -88,7 +88,7 @@ const FeatureSectionSubHeading = styled("p")`
   /* color: #929296; */
   color: #76797e;
   font-size: 14px;
-  margin-left: 20px;
+  margin-left: 2px;
   color: #253858;
   ${mobile} {
     line-height: normal;

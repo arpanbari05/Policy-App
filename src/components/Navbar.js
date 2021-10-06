@@ -12,12 +12,13 @@ const Navbar = () => {
     `}
     >
       <Card width={"100%"} height={"80px"}    >
-        <div css={`
+        <a css={`
             display: flex;
             align-items: center;
             height: 100%;
             padding: 0px 100px;
-          `}>
+          `}
+          href="/">
           <img
             src={fyntune}
             alt={`companylogo`}
@@ -26,7 +27,7 @@ const Navbar = () => {
             cursor: pointer;
           `}
           />
-        </div>
+        </a>
       </Card>
     </div>
   );

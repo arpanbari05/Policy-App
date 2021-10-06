@@ -89,7 +89,7 @@ const Select = styled.select`
 
   border: ${(props) => props.error && "solid 1px #c7222a"};
   // border-radius: 8px;
-  background-color: ${(props) => props.error && "#fff6f7"};
+ // background-color: ${(props) => props.error && "#fff6f7"};
 
   height: ${(props) => (!props.height ? "55px" : "35px")};
   border-right: ${(props) => props.borderR && "1px solid #ced4da"};

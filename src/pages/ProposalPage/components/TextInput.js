@@ -161,7 +161,7 @@ const Input = styled.input`
   width: 100%;
   border: ${props => (props.error ? "solid 1px #c7222a" : "solid 1px #ced4da")};
   // border-radius: 8px;
-  background: ${props => (props.error ? "#fff6f7" : "transparent")};
+  // background: ${props => (props.error ? "#fff6f7" : "transparent")};
   height: 55px;
   font-size: 14px;
   color: #939393;

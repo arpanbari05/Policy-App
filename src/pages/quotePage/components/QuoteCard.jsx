@@ -105,7 +105,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
       tax_amount: mergedQuotes[0]?.tax_amount[activeCover],
       tenure: mergedQuotes[0]?.tenure[activeCover],
     };
-    console.log(selectedPlan, selectedPlan.product?.id,'sgda')
+    console.log(selectedPlan, selectedPlan.product?.id, "sgda");
     dispatch(
       saveSelectedPlan({
         ...selectedPlan,
@@ -114,10 +114,10 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
     );
   };
 
-  const tenure = parseInt(multiYear) === 1 ? "" : parseInt(multiYear);
+  // const tenure = parseInt(multiYear) === 1 ? "" : parseInt(multiYear);
   const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   return (
-    <Outer >
+    <Outer>
       <div className="col-md-12 d-flex">
         <div className="col-md-3">
           <EachWrapper>
@@ -139,9 +139,8 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             css={`
               padding: 20px 25px !important;
               @media (max-width: 810px) {
-              padding-left: 8px !important;
+                padding-left: 8px !important;
               }
-            
             `}
           >
             <div className="d-flex justify-content-start">
@@ -175,25 +174,26 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                   </>
                 );
               })}
-              { mergedQuotes[0]?.features[activeCover][0]&&
-              (<OverlayTrigger
-                className=""
-                placement={"right"}
-                overlay={renderTooltip(
-                  mergedQuotes[0]?.features[activeCover][0]?.description
-                )}
-              >
-                <TextWrapper>
-                  <SmallLabel>Cashless Hospitals</SmallLabel>
-                  <ValueText onClick={() => handleSeeDetailsClick(4)}>
-                    {mergedQuotes[0]?.cashlessHospitalsCount[activeCover]}
-                    <span>
-                      {" "}
-                      <i class="fas fa-chevron-right "></i>
-                    </span>
-                  </ValueText>
-                </TextWrapper>
-              </OverlayTrigger>)}
+              {mergedQuotes[0]?.features[activeCover][0] && (
+                <OverlayTrigger
+                  className=""
+                  placement={"right"}
+                  overlay={renderTooltip(
+                    mergedQuotes[0]?.features[activeCover][0]?.description
+                  )}
+                >
+                  <TextWrapper>
+                    <SmallLabel>Cashless Hospitals</SmallLabel>
+                    <ValueText onClick={() => handleSeeDetailsClick(4)}>
+                      {mergedQuotes[0]?.cashlessHospitalsCount[activeCover]}
+                      <span>
+                        {" "}
+                        <i class="fas fa-chevron-right "></i>
+                      </span>
+                    </ValueText>
+                  </TextWrapper>
+                </OverlayTrigger>
+              )}
             </div>
             <div className="d-flex justify-content-start">
               {mergedQuotes[0]?.features[activeCover].map((item, i) => {
@@ -269,7 +269,10 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                       additionalPremium
                   ).toLocaleString("en-In")}
                   <span>
-                    /{tenure} {tenure > 1 ? "years" : "year"}
+                    / {mergedQuotes[0]?.tenure?.[activeCover]}{" "}
+                    {mergedQuotes[0]?.tenure?.[activeCover] > 1
+                      ? "years"
+                      : "year"}
                   </span>
                 </strong>
               </RadioButton>
@@ -279,7 +282,14 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                   display: flex;
                 `}
               >
-                <span>Cover of: ₹</span>
+                <span
+                  css={`
+                    position: relative;
+                    left: 6px;
+                  `}
+                >
+                  Cover of: ₹
+                </span>
                 {/* <select
                                     onChange={e => setActiveCover(e.target.value)}
                                 >
@@ -379,7 +389,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                   {console.log("ssssssss3", item)}
                   {item && (
                     <SubContent
-                       addProduct={addProduct}
+                      addProduct={addProduct}
                       key={index}
                       id={index}
                       quoteCardData={item}

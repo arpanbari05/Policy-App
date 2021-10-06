@@ -1,4 +1,34 @@
-export const numOnly = event => {
+export const formatCurrency = (number,decimals,recursiveCall) => {
+  const decimalPoints = decimals || 2;
+  const noOfLakhs = number / 100000;
+  let displayStr;
+  let isPlural;
+
+  // Rounds off digits to decimalPoints decimal places
+  function roundOf(integer) {
+      return +integer.toLocaleString(undefined, {
+          minimumFractionDigits: decimalPoints,
+          maximumFractionDigits: decimalPoints,
+      });
+  }
+
+  if (noOfLakhs >= 1 && noOfLakhs <= 99) {
+      const lakhs = roundOf(noOfLakhs);
+      isPlural = lakhs > 1 && !recursiveCall;
+      displayStr = `${lakhs} Lakh${isPlural ? 's' : ''}`;
+  } else if (noOfLakhs >= 100) {
+      const crores = roundOf(noOfLakhs / 100);
+      const crorePrefix = crores >= 100000 ? formatCurrency(crores, decimals, true) : crores;
+      isPlural = crores > 1 && !recursiveCall;
+      displayStr = `${crorePrefix} Crore${isPlural ? 's' : ''}`;
+  } else {
+      displayStr = roundOf(+number);
+  }
+
+  return displayStr;
+};
+
+export const numOnly = (event) => {
   let key = event.keyCode || event.which;
   if (
     (key >= 48 && key <= 58) ||
@@ -15,7 +45,7 @@ export const numOnly = event => {
   }
 };
 
-export const noSpclChars = event => {
+export const noSpclChars = (event) => {
   let key = event.keyCode;
 
   if (
@@ -59,7 +89,7 @@ export const numberToDigitWord = (
   number,
   type,
   multiple = 50000,
-  roundTo = false,
+  roundTo = false
 ) => {
   let rounded = Math.round(number / multiple) * multiple;
   const value = String(rounded);
@@ -81,7 +111,7 @@ export const numberToDigitWord = (
   }
 };
 
-export const dateUtil = e => {
+export const dateUtil = (e) => {
   if (e.which !== 8) {
     var numChars = e.target.value.length;
     if (numChars === 2 || numChars === 5) {
@@ -118,7 +148,7 @@ export function calculateTotalPremium({
   health_riders = [],
   addons = [],
 } = {}) {
-  const totalPremium = items =>
+  const totalPremium = (items) =>
     items.reduce((totalPremium, item) => totalPremium + item.total_premium, 0);
   const ridersPremium = totalPremium(health_riders);
   const addOnsPremium = totalPremium(addons);
