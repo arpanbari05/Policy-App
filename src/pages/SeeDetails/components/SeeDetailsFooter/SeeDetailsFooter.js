@@ -109,6 +109,7 @@ function SeeDetailsFooter({
         css={`
           position: absolute;
           right: 12px;
+          cursor: pointer;
           top: 25px;
           font-size: 34px;
         `}
@@ -170,7 +171,7 @@ font-size: 13px !important;
           border-radius: 10px;
           display: flex;
           align-items: center;
-          width: 45%;
+          width: 46%;
           height: 75px;
           justify-content: space-around;
           @media (max-width: 1190px) {
@@ -190,7 +191,7 @@ width:50%;
             border-right: 1px solid grey;
             padding: 0 20px;
             @media (max-width: 1485px) {
-            font-size:13px;
+            font-size:14px;
             }
             @media (max-width: 1325px) {
             font-size:12px;
@@ -219,7 +220,7 @@ width:50%;
             padding: 0 20px;
             padding-left: 10px;
             @media (max-width: 1485px) {
-            font-size:13px;
+            font-size:14px;
             }
             @media (max-width: 1325px) {
             font-size:12px;
@@ -242,7 +243,7 @@ width:50%;
             display: flex;
             /* flex-direction: column; */
             @media (max-width: 1485px) {
-            font-size:13px;
+            font-size:14px;
             }
             @media (max-width: 1325px) {
             font-size:12px;

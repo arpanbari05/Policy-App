@@ -12,6 +12,7 @@ function FeatureDefinition({ data }) {
         <div
           style={{
             display: "flex",
+            cursor: "pointer",
             alignItems: "center",
             width: "100%",
             position: "relative",
