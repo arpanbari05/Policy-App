@@ -1,7 +1,7 @@
 import React from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "styled-components/macro";
-import { closeImg } from "../assets/images";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 const TextInput = ({
   label,
@@ -26,7 +26,9 @@ const TextInput = ({
         position: relative;
         & span {
           position: absolute;
-          top: 15px;
+          top: 11px;
+          font-size: 28px;
+          color: #0a87ff;
           right: 14px;
           cursor: pointer;
           & img {
@@ -60,7 +62,7 @@ const TextInput = ({
       </FloatingLabel>
       {value?.length > 1 && clear && (
         <span onClick={clear}>
-          <img src={closeImg} alt={"close"} />
+         <AiOutlineCloseCircle/>
         </span>
       )}
     </div>
