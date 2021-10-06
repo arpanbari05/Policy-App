@@ -78,6 +78,7 @@ function QuotePage() {
     activeSum: "",
   });
   console.log("quoedtes", seeDetailsQuote);
+  console.log("loading...", loadingQuotes);
   const { planType } = useSelector((state) => state.quotePage.filters);
   // const { selectedGroup } = useSelector(state => state.quotePage);
   const {
@@ -107,7 +108,7 @@ function QuotePage() {
     Object.keys(filters.moreFilters).length === 0
       ? true
       : false;
-  console.log("loading...", loadingQuotes);
+
   const handleClearFilters = () => {
     dispatch(setFilters(defaultfilters));
     console.log("fetctquotes QuotesPage");
@@ -193,6 +194,7 @@ function QuotePage() {
                   />
                 )}
               </div>
+              {console.log(filterQuotes.flat(),'13hagsd')}
               {quotes?.length ? (
                 firstQuoteFound &&
                 filterQuotes.map((item, index) =>

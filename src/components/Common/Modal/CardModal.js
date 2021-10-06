@@ -34,6 +34,10 @@ const CardModal = ({
       }}
 
       css={`
+      .btn-close{
+        position: relative;
+        left: 16px;
+      }
       .modal-dialog {
         @media(max-width:991px){
         max-width:600px !important;

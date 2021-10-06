@@ -23,9 +23,9 @@ function CustomDropDown({ option, handleChange }) {
           padding: "0px 10px 5px",
         }}
         css={`
-          position: relative !important;
-          top: -1px;
-          left: -5px;
+          // position: relative !important;
+          // top: -1px;
+          // left: -5px;
           border: none !important;
         `}
         onClick={() => setShowToggleOpptions(!showToggleOpptions)}
