@@ -129,7 +129,7 @@ const PencilWrapper = styled.div`
 `;
 
 const Values = styled.div`
-  background-image: linear-gradient(to right, #eff1f3 33%, #fff 60%);
+  background-image: linear-gradient(to right, #eff7ff 33%, #fff 60%);
   padding: 6px 20px;
   border-radius: 34px;
   width: 280px;
@@ -161,7 +161,7 @@ const ChevronWrapper = styled.div`
     top: 50%;
     transform: translate(-50%, -50%);
   }
-  background: rgb(235, 235, 235);
+  background: #eff7ff ;
   border-radius: 50%;
   right: 24px;
 `;

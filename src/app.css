@@ -145,7 +145,7 @@ html {
 .middle .box {
   width: 60px;
   height: 30px;
-  background-color: #ededed;
+  background-color: #eff7ff ;
   transition: all 0.25s ease;
   will-change: transition;
   display: inline-block;
