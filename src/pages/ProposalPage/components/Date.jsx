@@ -34,6 +34,8 @@ const DateComp = ({
     <InputContainer error={error}>
       <DatePicker
         showYearDropdown
+        yearDropdownItemNumber={100}
+        scrollableYearDropdown={true}
         dateFormat={"dd-MM-yyyy"}
         selected={
           (value && value !== "Invalid date" && value !== "value")
@@ -106,7 +108,7 @@ const InputContainer = styled.div`
     border: ${props =>
       props.error ? "solid 1px #c7222a" : "solid 1px #ced4da"};
     // border-radius: 8px;
-    background: ${props => (props.error ? "#fff6f7" : "transparent")};
+   // background: ${props => (props.error ? "#fff6f7" : "transparent")};
     height: 55px;
     font-family: inherit;
     line-height: inherit;
