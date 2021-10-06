@@ -42,10 +42,18 @@ const FilterModal = ({ show, handleClose }) => {
     },
   });
 
-  const quotes = useSelector(state => state.quotePage.quotes);
+  const quotes = useSelector((state) => state.quotePage.quotes);
 
-  const filteredQuotes = quotes.map(icQuotes => filterQuotes(icQuotes)).flat();
-
+  const filteredQuotes = quotes
+    .map((icQuotes) => filterQuotes(icQuotes))
+    .flat();
+  let filteredPlans=[];
+  filteredQuotes.forEach((data) => {
+    if (!filteredPlans?.includes(data.product.name)) {
+      filteredPlans.push(data.product.name);
+    }
+  });
+  console.log(filteredQuotes, filteredPlans,"h12dsga");
   const handleSubmit = () => {
     dispatch(
       setFilters({
@@ -55,7 +63,7 @@ const FilterModal = ({ show, handleClose }) => {
           renewalBonus,
           others,
         },
-      }),
+      })
     );
     handleClose();
   };
@@ -227,15 +235,22 @@ const FilterModal = ({ show, handleClose }) => {
           padding: "10px",
         }}
       >
-        <ClearBtn className="text-center w-50 h-100" onClick={() => handleReset()}>
+        <ClearBtn
+          className="text-center w-50 h-100"
+          onClick={() => handleReset()}
+        >
           <span>Clear Filters</span>
         </ClearBtn>
-        {
-          filteredQuotes.length ? (
-            <ApplyBtn className=" apply_btn mx-auto h-100 w-50" onClick={() => handleSubmit()}>Show {filteredQuotes.length} plans</ApplyBtn>
-
-          ) : <span className="w-50 text-center h-100">No Plan available</span>
-        }
+        {filteredPlans.length ? (
+          <ApplyBtn
+            className=" apply_btn mx-auto h-100 w-50"
+            onClick={() => handleSubmit()}
+          >
+            Show {filteredPlans.length-1} plans
+          </ApplyBtn>
+        ) : (
+          <span className="w-50 text-center h-100">No Plan available</span>
+        )}
       </Modal.Footer>
     </Modal>
   );
@@ -243,8 +258,11 @@ const FilterModal = ({ show, handleClose }) => {
 
 const MoreFilters = () => {
   const [showModal, setShowModal] = useState(false);
-  const {moreFilters} = useSelector(({quotePage}) => quotePage.filters);
-  const noOfSelectedFilters = Object.keys(moreFilters).reduce((acc,item) => moreFilters[item].length?acc+1:acc+0 ,0);
+  const { moreFilters } = useSelector(({ quotePage }) => quotePage.filters);
+  const noOfSelectedFilters = Object.keys(moreFilters).reduce(
+    (acc, item) => (moreFilters[item].length ? acc + 1 : acc + 0),
+    0
+  );
   return (
     <>
       <Filter
@@ -253,23 +271,20 @@ const MoreFilters = () => {
       >
         <span className="filter_head">More Filters</span>
         <span className="filter_sub_head">
-        {
-          noOfSelectedFilters > 0
-          ?(
+          {noOfSelectedFilters > 0 ? (
             <>
-{
-  `${noOfSelectedFilters === 1?noOfSelectedFilters+" Filter":noOfSelectedFilters+" Filters"} Selected`
-} <i class="fas fa-chevron-down"></i>
-</>
-          )
-          
-          :
-          (<>
-            Select Filters <i class="fas fa-chevron-down"></i>
+              {`${
+                noOfSelectedFilters === 1
+                  ? noOfSelectedFilters + " Filter"
+                  : noOfSelectedFilters + " Filters"
+              } Selected`}{" "}
+              <i class="fas fa-chevron-down"></i>
             </>
-          )
-        }
-          
+          ) : (
+            <>
+              Select Filters <i class="fas fa-chevron-down"></i>
+            </>
+          )}
         </span>
       </Filter>
 

@@ -163,7 +163,7 @@ function QuotePage() {
                 {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
               </SortByButton> */}
-                {!isFiltersDefault && (
+                {!isFiltersDefault && !loadingQuotes && (
                   <button
                     onClick={handleClearFilters}
                     className="btn"
