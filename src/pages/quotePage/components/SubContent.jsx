@@ -321,7 +321,14 @@ const SubContent = ({
                     display: flex;
                   `}
                 >
-                  <span>Cover of: </span>
+                  <span
+                    css={`
+                      position: relative;
+                      left: 6px;
+                    `}
+                  >
+                    Cover of: ₹
+                  </span>
                   {/* <select
                                     onChange={e => setActiveCover(e.target.value)}
                                 >

@@ -236,20 +236,20 @@ function useQuotesPage() {
         })
       );
 
-      if (filterQuotes.length < 2) {
-        arr?.forEach((item) =>
-          dispatch(
-            saveQuotesData({
-              alias: item,
-              type: "normal",
-              sum_insured: cover,
-              tenure,
-              member: member.filter((m) => m.group === "group_code_1"),
-              plan_type,
-            })
-          )
-        );
-      }
+      // if (filterQuotes.length < 2) {
+      //   arr?.forEach((item) =>
+      //     dispatch(
+      //       fetchQuotes({
+      //         alias: item,
+      //         type: "normal",
+      //         sum_insured: cover,
+      //         tenure,
+      //         member: member.filter((m) => m.group === "group_code_1"),
+      //         plan_type,
+      //       })
+      //     )
+      //   );
+      // }
     }
     if (fetchFilters.length < 1) {
       if (initRef.current) {
@@ -261,7 +261,7 @@ function useQuotesPage() {
 
   useEffect(() => {
     dispatch(clearFilterQuotes());
-    console.log('fetchQuotes useQUotes')
+    console.log('fetchQuotes useQUotes',filters.multiYear.charAt(0),findCode("covers", filters.cover))
     dispatch(
       fetchQuotes(companies?.companies, {
         sum_insured: findCode("covers", filters.cover),

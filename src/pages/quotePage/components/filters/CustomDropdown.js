@@ -2,12 +2,11 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import "styled-components/macro";
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
+import { formatCurrency } from "../../../../utils/helper";
 function CustomDropDown({ option, handleChange }) {
   const [showToggleOpptions, setShowToggleOpptions] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState(
-    parseInt(option[0]).toLocaleString("en-In")
-  );
+  const [selectedOption, setSelectedOption] = useState(parseInt(option[0]));
   const ref = useRef();
   useOutsiteClick(ref, () => {
     setShowToggleOpptions(false);
@@ -23,9 +22,9 @@ function CustomDropDown({ option, handleChange }) {
           padding: "0px 10px 5px",
         }}
         css={`
-          position: relative !important;
-          top: -1px;
-          left: -5px;
+          // position: relative !important;
+          // top: -1px;
+          // left: -5px;
           border: none !important;
         `}
         onClick={() => setShowToggleOpptions(!showToggleOpptions)}
@@ -35,7 +34,7 @@ function CustomDropDown({ option, handleChange }) {
             margin-right: 5px;
           `}
         >
-          {selectedOption}
+          {formatCurrency(selectedOption)}
         </span>
         {showToggleOpptions ? (
           <i class="fas fa-chevron-up  mx-2"></i>
@@ -51,7 +50,7 @@ function CustomDropDown({ option, handleChange }) {
               onClick={() => {
                 // console.log("helo", i);
                 handleChange(i);
-                setSelectedOption(parseInt(data).toLocaleString("en-In"));
+                setSelectedOption(parseInt(data));
                 setShowToggleOpptions(false);
               }}
               css={`
@@ -60,7 +59,7 @@ function CustomDropDown({ option, handleChange }) {
                 }
               `}
             >
-              <label>{parseInt(data).toLocaleString("en-In")}</label>
+              <label>{formatCurrency(data)}</label>
             </li>
           );
         })}
