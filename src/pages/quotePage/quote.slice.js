@@ -282,22 +282,23 @@ export const {
   deleteQuotes
 } = quotePageSlice.actions;
 
-const cancelTokens = {};
+
 var flag = false;
+
 export const fetchQuotes =
   (companies, { sum_insured, tenure, plan_type, member, basePlanType }) =>
   async (dispatch, store) => {
+    const cancelTokens = {};
     try {
       const filters = store().quotePage.filters;
       const baseplantypes =
         store().frontendBoot.frontendData.data.baseplantypes;
       const selectedBasePlanType = baseplantypes.find(
-        (bpt) => bpt.display_name === filters.basePlanType
+        bpt => bpt.display_name === filters.basePlanType,
       );
-      console.log("base", basePlanType, plan_type);
 
       dispatch(setLoadingQuotes(true));
-      Object.keys(cancelTokens).forEach((cancelToken) => {
+      Object.keys(cancelTokens).forEach(cancelToken => {
         cancelTokens[cancelToken].cancel("Cancelled due to new request made");
       });
       // let count = 0;
@@ -324,11 +325,11 @@ export const fetchQuotes =
             },
             {
               cancelToken,
-            }
+            },
           );
           const cashlessHospitalsCount =
             response.data?.cashless_hospitals_count;
-          const quoteData = response?.data?.data.map((data) => {
+          const quoteData = response?.data?.data.map(data => {
             return {
               logo: companies[data.company_alias].logo,
               cashlessHospitalsCount,
@@ -336,17 +337,8 @@ export const fetchQuotes =
             };
           });
           // count++;
-
           if (quoteData) {
-           
-            quoteData.map((item) => {
-              if (item.product.insurance_type.name === "Health Insurance") {
-                flag = true;
-              }
-            });
-            if (flag) {
-              dispatch(saveQuotes(quoteData));
-            }
+            dispatch(saveQuotes(quoteData));
           }
           delete cancelTokens[alias];
           if (Object.keys(cancelTokens).length === 0) {
@@ -360,7 +352,7 @@ export const fetchQuotes =
 
       dispatch(replaceQuotes([]));
 
-      Object.keys(companies).forEach((alias) => {
+      Object.keys(companies).forEach(alias => {
         const cancelTokenSource = axios.CancelToken.source();
         cancelTokens[alias] = cancelTokenSource;
         fetchQuote({
@@ -374,6 +366,7 @@ export const fetchQuotes =
       });
     } catch (error) {}
   };
+
 
 export const saveQuotesData = (data) => {
   const { alias, sum_insured, tenure, member, plan_type } = data;
