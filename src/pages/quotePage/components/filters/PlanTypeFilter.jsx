@@ -47,7 +47,7 @@ const PlanTypeFilter = () => {
         </span>
       </Filter>
 
-      <FilterModal show={showModal} handleClose={() => setShowModal(false)}  />
+      <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
     </>
   );
 };
@@ -61,7 +61,10 @@ const FilterModal = ({ show, handleClose }) => {
     cover,
     planType,
   } = useSelector((state) => state.quotePage.filters);
-  const [selectedPlanType, setselectedPlanType] = useState({code: cover , display_name:basePlanType});
+  const [selectedPlanType, setselectedPlanType] = useState({
+    code: cover,
+    display_name: basePlanType,
+  });
 
   console.log(selectedPlanType, basePlanType, "agsd");
 
@@ -91,17 +94,26 @@ const FilterModal = ({ show, handleClose }) => {
   const sendCover = sum_insured ? sum_insured.code : "";
 
   const handleClick = (evt) => {
-    console.log("fetctquotes plantypefilter")
-    dispatch(setFilters({ basePlanType: evt.display_name }));
-    dispatch(
-      fetchQuotes(companies, {
-        sum_insured: sendCover,
-        tenure: parseInt(tenure),
-        member: groupCode,
-        plan_type: sendPlanType,
-        basePlanType: evt.code,
-      })
-    );
+    console.log("fetctquotes plantypefilter");
+    if (evt.display_name === "1 crore plan") {
+      dispatch(
+        setFilters({
+          cover: "More than 25 Lacs",
+          basePlanType: evt.display_name,
+        })
+      );
+    } else {
+      dispatch(setFilters({ basePlanType: evt.display_name }));
+    }
+    // dispatch(
+    //   fetchQuotes(companies, {
+    //     sum_insured: sendCover,
+    //     tenure: parseInt(tenure),
+    //     member: groupCode,
+    //     plan_type: sendPlanType,
+    //     basePlanType: evt.code,
+    //   })
+    // );
     // setShowDropdown(false);
     handleClose();
   };
@@ -159,7 +171,8 @@ const FilterModal = ({ show, handleClose }) => {
                     id={thisPlanType.code}
                     value={thisPlanType.display_name}
                     checked={
-                     selectedPlanType.display_name === thisPlanType.display_name || false
+                      selectedPlanType.display_name ===
+                        thisPlanType.display_name || false
                     }
                     onChange={(e) => handleChange(thisPlanType)}
                   />
