@@ -6,9 +6,7 @@ import { formatCurrency } from "../../../../utils/helper";
 function CustomDropDown({ option, handleChange }) {
   const [showToggleOpptions, setShowToggleOpptions] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState(
-    parseInt(option[0]).toLocaleString("en-In")
-  );
+  const [selectedOption, setSelectedOption] = useState(parseInt(option[0]));
   const ref = useRef();
   useOutsiteClick(ref, () => {
     setShowToggleOpptions(false);
@@ -52,7 +50,7 @@ function CustomDropDown({ option, handleChange }) {
               onClick={() => {
                 // console.log("helo", i);
                 handleChange(i);
-                setSelectedOption(parseInt(data).toLocaleString("en-In"));
+                setSelectedOption(parseInt(data));
                 setShowToggleOpptions(false);
               }}
               css={`
