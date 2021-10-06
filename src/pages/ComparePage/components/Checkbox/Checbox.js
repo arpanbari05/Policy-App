@@ -7,7 +7,10 @@ const Checkbox2 = ({
   checked,
   showTitle =true
 }) => {
-
+console.log(
+  title,
+  onChange,
+  checked,"heelp");
   return (
     <div class="container d-flex align-items-center">
       <div class="round">

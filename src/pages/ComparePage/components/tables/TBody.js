@@ -392,7 +392,10 @@ const dataset = (
   }
   return dataArray;
 };
-const additionalBenefits = (plans, title, index, dispatch, windowWidth) => {
+const AdditionalBenefits = ({plans, title, index, windowWidth}) => {
+  const dispatch = useDispatch();
+  const riders = useSelector(({comparePage}) => comparePage.riders);
+  
   return (
     <>
       {" "}
@@ -425,7 +428,9 @@ const additionalBenefits = (plans, title, index, dispatch, windowWidth) => {
                 style={{ whiteSpace: "break-spaces" }}
                 className={`${item === 2 ? "showOnDesktopF" : ""}`}
               >
-                {plans[item]?.features[index]?.riders?.map((innerItem) => (
+                {plans[item]?.features[index]?.riders?.map((innerItem) => {
+                  
+                  return(
                   <RiderWrapper show={innerItem.total_premium}>
                     <OverlayTrigger
                       placement={"right"}
@@ -439,9 +444,13 @@ const additionalBenefits = (plans, title, index, dispatch, windowWidth) => {
                       <i className="fa fa-inr"></i>{" "}
                       <div style={{fontWeight:"900"}}>₹ {innerItem.total_premium} </div>{" "}
                       <div>
+                      {console.log(plans[item],"riders+++")}
                         <Checkbox2
                          showTitle={false}
                           title={innerItem.name + plans[item].data.product.id}
+                          // checked={
+                          //   riders[`${plans[item].data.product.id}${plans[item].data.sum_insured}`].filter(item => )
+                          // }
                           onChange={(e) => {
                             if (e.target.checked) {
                               dispatch(
@@ -465,7 +474,7 @@ const additionalBenefits = (plans, title, index, dispatch, windowWidth) => {
                       </div>
                     </RiderPremium>
                   </RiderWrapper>
-                ))}
+                )})}
               </td>
             );
         })}
@@ -761,7 +770,7 @@ const TBody = ({
         ) : title === "Key Benefits" ? (
           keyBenefits(plans, title, windowWidth)
         ) : title === "Additional Benefits" ? (
-          additionalBenefits(plans, title, index, dispatch, windowWidth)
+          <AdditionalBenefits plans={plans} title={title} index={index}  windowWidth={windowWidth} />
         ) : (
           dataset(
             plans,

@@ -944,7 +944,25 @@ align-items:center;
         >
           <AddOnBuyButton onClick={handleBuy} selected={selected.length}>
           <div className="d-flex align-items-center w-100 justify-content-center">
-          {displayPremium} <div><Checkbox checked={selected.length} /></div>
+          {displayPremium} <span
+                css={`
+                  font-size: 11px;
+                  margin-left: 10px;
+                  height: 30px;
+                  width: 30px;
+                  line-height: 30px;
+                  text-align: center;
+                  border-radius: 50%;
+                  background: ${selected.length ? "#0a87ff" : "white"};
+                  box-shadow: ${selected.length ? "0px 2px 5px -2px rgb(0 0 0 / 25%)" : ""};
+                  font-family: "font-awesome";
+                  border: 2px solid #fff;
+                  color: #fff;
+                  border: 2px solid #e4e7ec;
+                `}
+              >
+                <i class="fas fa-check"></i>
+              </span>
           </div>
 
             

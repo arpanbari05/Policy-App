@@ -62,8 +62,8 @@ function ProductCard({ groupCode }) {
         {/* ************logo******** */}
         <div
           css={`
-            width: 70px;
-            height:70px;
+            width: 50px;
+            height:50px;
             background-color: #fff;
             display: flex;
             align-items: center;
@@ -83,8 +83,9 @@ function ProductCard({ groupCode }) {
           css={`
             margin-left: 18px;
 
-            min-width: fit-content;
-            max-width: 150px;
+            /* width: fit-content; */
+            width: 170px;
+            max-width:100%;
 
             ${mobile} {
               margin-left: 10px;
@@ -93,7 +94,7 @@ function ProductCard({ groupCode }) {
         >
           <div
             css={`
-              font-size: 17px;
+              font-size: 15px;
               font-weight: 600;
               color: #394a68;
               ${mobile} {
@@ -329,6 +330,9 @@ function ProductCard({ groupCode }) {
 export default ProductCard;
 
 const DetailDispalyPanel = styled.div`
+background:#f3f9ff;
+padding: 17px;
+    border-radius: 10px;
 @media (max-width:1200px){
  display:none !important; 
 }

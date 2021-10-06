@@ -79,16 +79,18 @@ function ProductDetailsNavbar() {
            
             `}
           >
+  <ClickToScroll
+              label="Check Discounts"
+              scrollToElementId="check-discounts"
+              className="btn"
+            />
+
             <ClickToScroll
               label="Additional Riders"
               scrollToElementId="additional-riders"
               className="btn"
             />
-            <ClickToScroll
-              label="Check Discounts"
-              scrollToElementId="check-discounts"
-              className="btn"
-            />
+          
             <ClickToScroll
               label="Add-on Coverages"
               scrollToElementId="add-on-coverages"

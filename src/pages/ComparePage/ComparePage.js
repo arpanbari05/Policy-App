@@ -238,16 +238,17 @@ const popupContent = (
                       textAlign:"left",
                       fontWeight:"900"
                     }}>
-                      {mergedQuotes[index].data.product.company.name}
+                    {mergedQuotes[index].data.product.name}
+                      
                     </span>
-                    <br/>
-                    <span style={{
+                    {/* <br/> */}
+                    {/* <span style={{
                       color:"#505f79",
                       fontSize:"14px"
                     }}>
                       {" "}
-                      {mergedQuotes[index].data.product.name}
-                    </span>
+                      {mergedQuotes[index].data.product.company.name}
+                    </span> */}
                     <PlanDetails>
                       <DetailWrapper>
                         <Title>Sum Insured :</Title>

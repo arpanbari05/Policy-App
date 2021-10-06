@@ -22,7 +22,7 @@ function CartDetailRow({ title, value }) {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        line-height: 26px;
+      
         width: 100%;
         ${mobile} {
           flex-direction: column;
@@ -33,9 +33,9 @@ function CartDetailRow({ title, value }) {
     >
       <div
         css={`
-          font-size: 13px;
+          font-size: 12px;
           color: #555555;
-          width: 50%;
+          /* width: 70%; */
           ${mobile} {
             color: #5c5959;
           }
@@ -54,7 +54,7 @@ function CartDetailRow({ title, value }) {
         css={`
           font-weight: 900;
           font-size: 13px;
-          width: 50%;
+          min-width:100px;
           text-align: right;
           @media (max-width: 768px) {
             text-align: left !important;
@@ -99,17 +99,17 @@ function AddOnDetailsRow({ addOn }) {
     <div
       css={`
         display: flex;
-        align-items: center;
+        align-items: space-between;
       `}
     >
       <div
         css={`
-          width: 70px;
+          width: 50px;
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 70px;
-          margin-right: 10px;
+          height: 50px;
+       
         `}
       >
         <img
@@ -122,8 +122,13 @@ function AddOnDetailsRow({ addOn }) {
       </div>
       <span
         css={`
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 400;
+          width: 165px;
+          
+          display: flex;
+    align-items: center;
+    padding: 0px 5px;
         `}
       >
         {`${product.name} ${
@@ -152,7 +157,7 @@ function AddOnDetailsRow({ addOn }) {
           >
             {totalPremium}
           </span>
-          <span
+          {/* <span
             css={`
               margin-left: 20px;
               font-size: 11px;
@@ -168,7 +173,7 @@ function AddOnDetailsRow({ addOn }) {
             onClick={handleRemoveAddOnClick}
           >
             <i class="fas fa-times"></i>
-          </span>
+          </span> */}
         </div>
       }
     />
@@ -688,6 +693,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           padding-bottom: 20px;
           border-radius: 12px;
           color: #000;
+          overflow: hidden;
           ${mobile} {
             width: 100%;
 
@@ -698,7 +704,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             top: unset;
             border-radius: ${expand ? "0px" : "12px 12px 0 0"};
             padding-top: ${expand ? "18px" : "0"};
-            overflow: ${expand ? "scroll" : "inherit"};
+            overflow: ${expand ? "scroll" : "inherit"}!important;
           }
         `}
       >
@@ -808,7 +814,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                 color: #616161;
                 margin-right: 12px;
                 overflow: hidden;
-                white-space: nowrap;
+                /* white-space: nowrap; */
                 text-overflow: ellipsis;
                 font-size: 12px;
                 font-weight: 900;
@@ -1003,7 +1009,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           `}
         >
           <div
-            className="d-flex justify-content-between"
+            className="d-flex justify-content-between flex-column"
             css={`
               margin-top: 10px;
               display: flex;
@@ -1030,7 +1036,8 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             </div>
             <div
               style={{
-                width: "70%",
+                width: "100%",
+                paddingLeft: "12px",
               }}
             >
               <CartDetailRow title="Plan Type" value={displayPlanType} />
@@ -1051,13 +1058,14 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               justify-content: space-between;
               border-bottom: 1px solid #ddd;
               padding: 20px 0px;
+              padding-left: 12px;
+              flex-direction: column;
             `}
           >
             <div
               css={`
-                width: 30%;
+                width: 100%;
                 max-width: 80px;
-                padding-left: 12px;
               `}
             >
               <BackgroundBorderTitle title="Riders" />
@@ -1065,7 +1073,8 @@ const ReviewCart = ({ groupCode, unEditable }) => {
 
             <div
               css={`
-                width: 70%;
+                width: 100%;
+                margin-top: 5px;
               `}
             >
               {!health_riders.length ? (
@@ -1117,7 +1126,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               border-radius: 2px;
               background-color: #f7f7f7;
               font-weight: 900;
-              margin-bottom: ${unEditable ? "10px" : "100px"};
+              margin-bottom: ${unEditable ? "10px" : "40px"};
             `}
           >
             <div

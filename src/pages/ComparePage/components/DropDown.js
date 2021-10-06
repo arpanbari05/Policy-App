@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-
+import "styled-components/macro";
 import { PlanName } from "../ComparePage.style";
 import down from "./../../../assets/images/down-arrow.svg";
 import { v4 as uuid } from "uuid";
@@ -29,6 +29,11 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
         <div
           className="compare-custom-select first"
           onClick={() => setShow("plans")}
+          css={`
+          :hover{
+            background:white !important;
+          }
+          `}
         >
           <div className="custom-placeholder">
             <span>{value?.plan || "Select Plan"}</span>
@@ -40,6 +45,11 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
           onClick={() => {
             if (value?.plan) setShow("sum");
           }}
+          css={`
+          :hover{
+            background:white !important;
+          }
+          `}
         >
           <div className="custom-placeholder">
             <span>{value?.sumInsured || "Select Sum Insured"}</span>
