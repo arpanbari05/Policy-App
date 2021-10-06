@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchQuotes,
+  setFilters,
   updateQuotesForCompare,
 } from "../quotePage/quote.slice";
 
@@ -30,7 +31,7 @@ const useComparePage = () => {
     quotesForCompare,
     quotes,
     filterQuotes: QuotesToAdd,
-  } = useSelector(state => state.quotePage);
+  } = useSelector((state) => state.quotePage);
 
   const {
     loading,
@@ -40,10 +41,10 @@ const useComparePage = () => {
     discount,
     shoutGetCompare,
     shouldNotFetch,
-  } = useSelector(state => state.comparePage);
+  } = useSelector((state) => state.comparePage);
 
-  const { memberGroups,proposerDetails } = useSelector(
-    state => state.greetingPage,
+  const { memberGroups, proposerDetails } = useSelector(
+    (state) => state.greetingPage
   );
 
   const [hideCells, setHideCells] = useState([]);
@@ -62,26 +63,41 @@ const useComparePage = () => {
     download();
   };
 
-  const imageSend = email => {
+  const imageSend = (email) => {
     const input = document.getElementById("printCompare");
 
     html2canvas(input, {
       scrollX: 0,
       scrollY: -window.scrollY,
-    }).then(canvas => {
+    }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       dispatch(sendEmailAction({ email, image: imgData, group_id: groupCode }));
     });
   };
-  
+  const imageSendM = (email) => {
+    const input = document.getElementById("printCompareM");
+
+    html2canvas(input, {
+      scrollX: 0,
+      scrollY: -window.scrollY,
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      dispatch(sendEmailAction({ email, image: imgData, group_id: groupCode }));
+    });
+  };
+
   const download = () => {
     const input = document.getElementById("printCompare");
 
-    html2canvas(input,{ useCORS: true }, {
-      scrollX: 0,
-      scrollY: -window.scrollY,
-      useCORS: true
-    }).then(canvas => {
+    html2canvas(
+      input,
+      { useCORS: true },
+      {
+        scrollX: 0,
+        scrollY: -window.scrollY,
+        useCORS: true,
+      }
+    ).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "px", "a4");
       const imgProps = pdf.getImageProperties(imgData);
@@ -96,39 +112,61 @@ const useComparePage = () => {
 
   // reload functionality work
   const { cover, tenure, plan_type } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters,
+    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters
   );
   const { companies } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data,
+    ({ frontendBoot }) => frontendBoot.frontendData.data
   );
-  const { filters } = useSelector(({ quotePage }) => quotePage);
+  const { filters, fetchFilters } = useSelector(({ quotePage }) => quotePage);
+  const { data } = useSelector(({ frontendBoot }) => frontendBoot.frontendData);
+
+  const findCode = (fitlerName, fitlerValue) => {
+    let code = `${fitlerValue}-${fitlerValue}`;
+    data[fitlerName].forEach((data) => {
+      if (data.display_name === fitlerValue) {
+        code = data.code;
+      }
+    });
+    return code;
+  };
 
   useEffect(() => {
     if (shoutGetCompare) {
+      let tempfilter;
+      fetchFilters.forEach((data) => {
+        if (`${data.id}` === groupCode) {
+          tempfilter = data.extras;
+        }
+      });
+
+      tempfilter !== null && dispatch(setFilters(tempfilter));
       if (!QuotesToAdd.length) {
-        console.log("fetctquotes useComparePage")
+        console.log("fetctquotes useComparePage");
         dispatch(
           fetchQuotes(companies, {
-            sum_insured: cover,
-            tenure,
+            sum_insured:
+            tempfilter?.cover !== null
+                ? findCode("covers", tempfilter?.cover)
+                : cover,
+            tenure: tempfilter?.multiYear?.charAt(0) || tenure,
             member: groupCode,
             plan_type:
-              memberGroups[groupCode].length === 1
+              memberGroups?.[groupCode]?.length === 1
                 ? "I"
                 : proposerDetails.plan_type
                 ? proposerDetails.plan_type === "M"
                   ? "M"
                   : "F"
                 : "F",
-          }),
+          })
         );
       }
       dispatch(getCompare());
       dispatch(setShoutGetCompare(false));
     }
-  }, []);
+  }, [fetchFilters]);
 
-  const removePlan2point0 = id => {
+  const removePlan2point0 = (id) => {
     dispatch(setShouldNotFetch(true));
     dispatch(removeQuotesForCompare(id));
     // dispatch(resetFeature());
@@ -136,7 +174,7 @@ const useComparePage = () => {
     setErrors({});
   };
 
-  const removePlan = id => {
+  const removePlan = (id) => {
     dispatch(removeQuotesForCompare(id));
     dispatch(resetFeature());
     //dispatch(removeFeature(id))
@@ -165,12 +203,11 @@ const useComparePage = () => {
 
   useEffect(() => {
     if (selectedQuotes.length > 0) {
- 
       const tempMergedCover = [];
       selectedQuotes?.map((data, i) => {
-        quotes?.map(quotedata => {
+        quotes?.map((quotedata) => {
           const tempArray = [];
-          quotedata?.map(quote => {
+          quotedata?.map((quote) => {
             if (data?.product.id === quote?.product.id) {
               tempArray.push(quote.sum_insured);
             }
@@ -185,8 +222,8 @@ const useComparePage = () => {
             data,
             i,
             groupCode,
-            discount[`${data.product.id}${data.sum_insured}`],
-          ),
+            discount[`${data.product.id}${data.sum_insured}`]
+          )
         );
       });
 
@@ -207,14 +244,13 @@ const useComparePage = () => {
     // const shouldFetch = selectedQuotes.some(data =>
     //   quotesForCompare.includes(`${data.product.id}${data.sum_insured}`),
     // );
-    
+
     if (!shouldNotFetch) {
-    
-      quotes.map(quote => {
-        quote.map(data => {
+      quotes.map((quote) => {
+        quote.map((data) => {
           if (
             quotesForCompare?.includes(
-              `${data.product.id}${data.sum_insured}`,
+              `${data.product.id}${data.sum_insured}`
             ) &&
             filteredQuotes.length < 3
           ) {
@@ -223,7 +259,7 @@ const useComparePage = () => {
         });
       });
       if (quotesForCompare?.length && quotes?.length) {
-        const data = quotesForCompare.map(id => {
+        const data = quotesForCompare.map((id) => {
           if (typeof id === `string`) {
             return {
               product_id: id,
@@ -236,14 +272,14 @@ const useComparePage = () => {
           //  updateQuotes({ product_id: quotesForCompare, group_id: groupCode }),
           updateQuotes({
             products: data,
-          }),
+          })
         );
       }
       dispatch(resetFeature());
       setMergedCover([]);
       setSelectedQuotes(filteredQuotes);
     }
-  
+
     if (shouldNotFetch) {
       dispatch(setShouldNotFetch(false));
     }
@@ -273,6 +309,7 @@ const useComparePage = () => {
     showBuyNowPopup,
     setShowBuyNowPopup,
     imageSend,
+    imageSendM,
     emailStatus,
     errors,
     setErrors,

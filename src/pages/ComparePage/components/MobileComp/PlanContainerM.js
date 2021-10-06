@@ -8,11 +8,10 @@ import { useCartProduct } from "../../../Cart";
 import { CompanyName, PlanName, RemoveCross } from "../../ComparePage.style";
 import CompareBtn from "../buttons/CompareBtn";
 import "styled-components/macro";
-import "../PlanContainer/PlanContainer"
+import "../PlanContainer/PlanContainer";
 // import { backgroundPosition } from "html2canvas/dist/types/css/property-descriptors/background-position";
 
-
-const getYearsUsingTenure = tenure => {
+const getYearsUsingTenure = (tenure) => {
   if (tenure == 1) {
     return "year";
   } else if (tenure == 2) {
@@ -21,7 +20,7 @@ const getYearsUsingTenure = tenure => {
     return "3 years";
   }
 };
-const  PlanContainerM = ({
+const PlanContainerM = ({
   plans,
   removePlan,
   setShowM,
@@ -34,98 +33,110 @@ const  PlanContainerM = ({
     sum_insured,
     logo: IcLogo,
     total_premium,
+    mandatory_riders,
     tax_amount,
     tenure,
   } = plans || {};
   const { discount, ridersPremium, riders } = useSelector(
-    state => state.comparePage,
+    (state) => state.comparePage
   );
-  const [windowHeight,windowWidth] = useWindowSize();
+  const [windowHeight, windowWidth] = useWindowSize();
   const { groupCode: selectedGroup } = useParams();
   const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
+  let additionalPremium = 0;
+
+  mandatory_riders?.forEach((element) => {
+    additionalPremium += element.total_premium;
+  });
+
   return (
     <>
       {product?.name ? (
-        <Row className="price_IC_box text-center position-relative" style={{boxShadow:"none",width:'42%',minHeight: "180px"}} css={`
-            @media (max-width:767px){
-             border:1px solid #c2cbde;
+        <Row
+          className="price_IC_box text-center position-relative"
+          style={{ boxShadow: "none", width: "42%", minHeight: "180px" }}
+          css={`
+            @media (max-width: 767px) {
+              border: 1px solid #c2cbde;
             }
-            `}>
-        
+          `}
+        >
           <RemoveCross
             onClick={() => removePlan(`${product.id}${sum_insured}`)}
             className="remove-btn"
           >
             <span>
-            <i class="fas fa-times"></i>
+              <i class="fas fa-times"></i>
             </span>
           </RemoveCross>
-          
-          
-          
-           
-            <img src={IcLogo} style={{width:'80px',marginTop:'8px'}} css={`
-            @media (max-width:767px){
-              margin: auto !important;
-            }
-            `}/>
 
-            {/* <ImageLogoWrapper style={{backgroundImage:`url(${IcLogo})`}}>
+          <img
+            src={IcLogo}
+            style={{ width: "80px", marginTop: "8px" }}
+            css={`
+              @media (max-width: 767px) {
+                margin: auto !important;
+              }
+            `}
+          />
+
+          {/* <ImageLogoWrapper style={{backgroundImage:`url(${IcLogo})`}}>
           </ImageLogoWrapper> */}
 
- 
-          
-           
-            <Col md={12}>
+          <Col md={12}>
             {/* Dynamic ic name */}
             <WrapperCompanyDetails>
-              <CompanyName style={{textAlign:"center"}}>{product.company.name}</CompanyName>    
+              <CompanyName style={{ textAlign: "center" }}>
+                {product.company.name}
+              </CompanyName>
             </WrapperCompanyDetails>
           </Col>
-            
-            
-            <CompareBtn
+
+          <CompareBtn
             windowWidth={windowWidth}
-              onClick={() => {
-                const selectedPlan = {
-                  // company_alias: mergedQuotes[0]?.company_alias,
-                  // logo: mergedQuotes[0]?.logo,
-                  product: product,
-                  total_premium:
-                    discount[`${product.id}${sum_insured}`]?.total_premium ||
-                    total_premium,
-                  // premium: mergedQuotes[0]?.premium[activeCover],
-                  sum_insured:
-                    discount[`${product.id}${sum_insured}`]?.sum_insured ||
-                    sum_insured,
-                  tax_amount:
-                    discount[`${product.id}${sum_insured}`]?.tax_amount ||
-                    tax_amount,
-                  tenure:
-                    discount[`${product.id}${sum_insured}`]?.tenure || tenure,
-                };
-                addProduct({
-                  ...selectedPlan,
-                  product_id: selectedPlan.product?.id,
-                  premium: selectedPlan.total_premium,
-                  group_id: parseInt(selectedGroup),
-                  service_tax: selectedPlan.tax_amount,
-                  riders: riders[`${product.id}${sum_insured}`],
-                }).then(() => setShowBuyNowPopup(true));
-              }}
-              value={`${((Object.keys(discount).length &&
-                discount[`${product.id}${sum_insured}`]?.premium) ||
-                premium) + (ridersPremium[`${product.id}${sum_insured}`] || 0)
-                } /${getYearsUsingTenure(
+            onClick={() => {
+              const selectedPlan = {
+                // company_alias: mergedQuotes[0]?.company_alias,
+                // logo: mergedQuotes[0]?.logo,
+                product: product,
+                total_premium:
+                  discount[`${product.id}${sum_insured}`]?.total_premium +
+                    additionalPremium || total_premium + additionalPremium,
+                // premium: mergedQuotes[0]?.premium[activeCover],
+                sum_insured:
+                  discount[`${product.id}${sum_insured}`]?.sum_insured ||
+                  sum_insured,
+                tax_amount:
+                  discount[`${product.id}${sum_insured}`]?.tax_amount ||
+                  tax_amount,
+                tenure:
                   discount[`${product.id}${sum_insured}`]?.tenure || tenure,
-                )}`}
-            />
-  
+              };
+              addProduct({
+                ...selectedPlan,
+                product_id: selectedPlan.product?.id,
+                premium: selectedPlan.total_premium + additionalPremium,
+                group_id: parseInt(selectedGroup),
+                service_tax: selectedPlan.tax_amount,
+                riders: riders[`${product.id}${sum_insured}`],
+              }).then(() => setShowBuyNowPopup(true));
+            }}
+            value={`${
+              total_premium +
+              additionalPremium +
+              (ridersPremium[`${product.id}${sum_insured}`] || 0)
+            } /${getYearsUsingTenure(tenure)}`}
+          />
         </Row>
       ) : (
-      
-        
-        <EmptyContainer className="IC_product_compare_card blank" style={{width:'42% !important', minHeight: "180px", borderRadius:"none"}}>
+        <EmptyContainer
+          className="IC_product_compare_card blank"
+          style={{
+            width: "42% !important",
+            minHeight: "180px",
+            borderRadius: "none",
+          }}
+        >
           <div className="plus mx-auto" onClick={() => setShowM(true)}>
             <i className="fa fa-plus"></i>
           </div>
@@ -141,8 +152,6 @@ const  PlanContainerM = ({
             <option>Son</option>
           </select> */}
         </EmptyContainer>
-
-
       )}
     </>
   );
@@ -150,20 +159,17 @@ const  PlanContainerM = ({
 
 export default PlanContainerM;
 
-
-
 const EmptyContainer = styled.div`
- 
   border: 2px dashed #e2a6a9;
-  color:#0d6efd;
+  color: #0d6efd;
   background: #f3f4f9;
   border-radius: 12px;
   height: 157px;
   margin: 10px;
-  
-  display:flex;
-  justify-content:center;
-  & .plus{
+
+  display: flex;
+  justify-content: center;
+  & .plus {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     background-color: white;
     width: 50px;
@@ -175,24 +181,20 @@ const EmptyContainer = styled.div`
   }
 `;
 
-
-
 const ImageLogo = styled.img`
-  width:100%;
-  height:auto;
+  width: 100%;
+  height: auto;
 `;
-
 
 const ImageLogoWrapper = styled.div`
   border-radius: unset !important;
   margin-top: 8px;
   height: 50px;
   width: 100px;
-  background-position:center;
-    background-repeat: no-repeat;
-    background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
-
 
 const WrapperCompanyDetails = styled.div`
   color: #111;

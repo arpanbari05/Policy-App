@@ -601,6 +601,7 @@ const ComparePage = () => {
     showBuyNowPopup,
     setShowBuyNowPopup,
     imageSend,
+    imageSendM,
     emailStatus,
     errors,
     setErrors,
@@ -644,7 +645,7 @@ const ComparePage = () => {
             <MobileHeader
               emailStatus={emailStatus}
               EmailSent={EmailSent}
-              imageSend={imageSend}
+              imageSend={imageSendM}
               sendContent={sendContent}
               groupCode={groupCode}
               path={"/quotes"}
@@ -760,6 +761,9 @@ const ComparePage = () => {
             <Container
               className="tab-content tab-content_mt_comapre hideOnMobile"
               id="printCompare"
+              css={`@media(max-width:1300px){
+                max-width: unset;
+              }`}
             >
               <div>
                 <div className="table-wrapper">

@@ -181,6 +181,7 @@ const quotePageSlice = createSlice({
     },
     clearFilterQuotes: (state, action) => {
       state.filterQuotes = [];
+      state.quotes = [];
       state.quotesForCompare = [];
       state.quotesOnCompare = false;
     },

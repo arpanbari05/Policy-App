@@ -57,7 +57,7 @@ const UpperModifier = ({sendQuote}) => {
         tenure: multiYear ? multiYear[0] : tenure,
         member: selectedGroup,
         plan_type:
-          memberGroups[selectedGroup].length === 1
+          memberGroups?.[selectedGroup]?.length === 1
             ? "I"
             : proposerDetails.plan_type
               ? proposerDetails.plan_type === "M"

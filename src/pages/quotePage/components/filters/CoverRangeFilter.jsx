@@ -51,37 +51,13 @@ const FilterModal = ({ show, handleClose }) => {
     if (inputCover) {
       if (inputCover < 200000) {
         setinputCoverError("Minimum should be 2 lac");
-      } else if (inputCover > 200000 && inputCover < 300000) {
-        setselectedCover({
-          code: `${inputCover}-${300000}`,
-          displayName: `₹ ${inputCover}`,
-        });
-      } else if (inputCover > 300000 && inputCover < 500000) {
-        setselectedCover({
-          code: `${300000}-${500000}`,
-          displayName: `₹ ${inputCover}`,
-        });
-      } else if (inputCover > 1000000 && inputCover < 1500000) {
-        setselectedCover({
-          code: `${1500000}-${1500000}`,
-          displayName: `₹ ${inputCover}`,
-        });
-      } else if (inputCover > 1500000 && inputCover < 2500000) {
-        setselectedCover({
-          code: `${1500000}-${2500000}`,
-          displayName: `₹ ${inputCover}`,
-        });
-      } else if (inputCover > 2500000) {
-        setselectedCover({
-          code: `${2500000}-${10000000}`,
-          displayName: `₹ ${inputCover}`,
-        });
       } else if (inputCover > 10000000) {
         setinputCoverError("Maximum should be 1 Crore");
       } else if (inputCover % 100000 != 0) {
         setinputCoverError("Enter in multiples of 1 lac");
       } else {
         setinputCoverError(false);
+        setselectedCover({ code: inputCover, displayName: inputCover });
       }
     } else {
       setinputCoverError(false);

@@ -279,7 +279,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                   display: flex;
                 `}
               >
-                <span>Cover of: </span>
+                <span>Cover of: ₹</span>
                 {/* <select
                                     onChange={e => setActiveCover(e.target.value)}
                                 >

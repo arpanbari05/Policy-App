@@ -110,7 +110,7 @@ function QuotePage() {
   console.log("loading...", loadingQuotes);
   const handleClearFilters = () => {
     dispatch(setFilters(defaultfilters));
-    console.log("fetctquotes QuotesPage")
+    console.log("fetctquotes QuotesPage");
     dispatch(
       fetchQuotes(companies?.companies, {
         sum_insured: cover,
@@ -132,14 +132,12 @@ function QuotePage() {
     <>
       <div
         css={`
-
-        background-color: rgba(255,255,255) ;
+          background-color: rgba(255, 255, 255);
           @media (max-width: 1023px) {
             display: none;
           }
         `}
         id="printQuotePage"
-
         className="noselect"
       >
         <UpperModifier sendQuote={imageSendQuote} />
@@ -157,7 +155,11 @@ function QuotePage() {
               `}
             >
               <div className=" d-flex justify-content-between align-items-center">
-                <TextLabel> Showing {selectedPlanType} Plan</TextLabel>
+                <TextLabel>
+                  {" "}
+                  {loadingQuotes ? "Loading" : "Showing"} {selectedPlanType}{" "}
+                  Plan{loadingQuotes && "..."}
+                </TextLabel>
                 {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
               </SortByButton> */}
@@ -360,9 +362,9 @@ function QuotePage() {
           handleFilterClick={() => setFilterMobile(true)}
           sendQuote={imageSendQuote}
         />
-         {/* <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} /> */}
-       
-          <ComparePopup showPopup={showPopup} groupCode={groupCode} />
+        {/* <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} /> */}
+
+        <ComparePopup showPopup={showPopup} groupCode={groupCode} />
         {filterMobile && (
           <QuoteFilterMobile
             companies={arr}

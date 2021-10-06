@@ -307,7 +307,17 @@ const SummaryTab = ({ title, data, values, index }) => {
         >
           {" "}
           <span>Edit</span>
-          <img src={pencil} alt="edit"></img>
+          {/* <img src={pencil} alt="edit"></img> */}
+          <PencilWrapper className="d-flex justify-content-center align-items-center" style={{color:"#0a87ff"}}>
+          {/* <PencilIcon
+            style={{
+              color: "#0a87ff",
+
+            }}
+            width="15px"
+          /> */}
+           <i class="fas fa-pen"></i>
+        </PencilWrapper>
         </EditWrapper>
         <Row>
           <Col md={11} className="bor_right_m_p_s_title_main">
@@ -359,12 +369,15 @@ const Border = styled.div`
 `;
 const EditWrapper = styled.div`
   position: absolute;
+  display:flex;
+  align-items: center;
   right: 20px;
   top: 40px;
   transform: translateY(-50%);
   border-radius: 31px;
   background-color: #f6f7f9;
   padding-top: 2px;
+  color:#0a87ff;
   cursor: pointer;
   padding-left: 10px;
   z-index: 50;
@@ -394,6 +407,13 @@ const EditWrapper = styled.div`
   &:after {
     display: none;
   }
+`;
+const PencilWrapper = styled.div`
+  background-color: white;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  margin: 0px 5px;
 `;
 const InnerTextBorder = styled.div`
   margin: 15px 0px;

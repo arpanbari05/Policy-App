@@ -126,6 +126,7 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
                 <RadioButton
                   onClick={(e) => {
                     if (display_name === "No") {
+                      setSelected(e.target.value);
                       const medical_history = [...diseaseArray];
                       dispatch(
                         saveForm5UserDetails(medical_history, pushToQuotes)

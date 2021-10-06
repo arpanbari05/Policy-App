@@ -141,12 +141,23 @@ function SeeDetailsFooter({
           <p
             className="care_popup_title"
             style={{
-              fontSize: "15px",
+              fontSize: "17px",
               margin: "10px",
               width: "100%",
               lineHeight: "20px",
               fontWeight: "900",
             }}
+
+            css={`
+                      @media (max-width: 1200px) {
+
+font-size: 15px !important;
+}
+@media (max-width: 1100px) {
+
+font-size: 13px !important;
+}
+            `}
           >
             {productName || quote.product.name}
           </p>
@@ -162,9 +173,13 @@ function SeeDetailsFooter({
           width: 45%;
           height: 75px;
           justify-content: space-around;
+          @media (max-width: 1190px) {
+
+width:50%;
+}
           @media (max-width: 1050px) {
 
-            width:50%;
+            width:60%;
           }
         `}
       >
@@ -174,6 +189,9 @@ function SeeDetailsFooter({
             /* flex-direction: column; */
             border-right: 1px solid grey;
             padding: 0 20px;
+            @media (max-width: 1485px) {
+            font-size:13px;
+            }
             @media (max-width: 1325px) {
             font-size:12px;
             }
@@ -186,7 +204,7 @@ function SeeDetailsFooter({
               margin-left: 5px;
             `}
           >
-            {" "}
+            {" "} ₹{" "}
             {numberToDigitWord(
               sumInsured?.toString() || sum_insured?.toString(),
               "seeDetails"
@@ -200,6 +218,9 @@ function SeeDetailsFooter({
             border-right: 1px solid grey;
             padding: 0 20px;
             padding-left: 10px;
+            @media (max-width: 1485px) {
+            font-size:13px;
+            }
             @media (max-width: 1325px) {
             font-size:12px;
             }
@@ -213,13 +234,16 @@ function SeeDetailsFooter({
           >
             {" "}
             <i className="fa fa-inr"></i> ₹{" "}
-            {parseInt(totalPremium).toLocaleString("en-IN")}
+            {parseInt(totalPremium).toLocaleString("en-IN")}/ {(product.tenure >= 2 ? `${product.tenure} Years` : "Year")}
           </span>
         </div>
         <div
           css={`
             display: flex;
             /* flex-direction: column; */
+            @media (max-width: 1485px) {
+            font-size:13px;
+            }
             @media (max-width: 1325px) {
             font-size:12px;
             }
@@ -388,7 +412,9 @@ function SeeDetailsFooter({
 
           <StyledButton
             styledCss={`font-size: 12px;    font-size: 15px;
-    padding: 12px 51px;`}
+    padding: 12px 51px;
+    border-radius:6px;
+    `}
             onClick={handleProceed}
             noIcon
           >

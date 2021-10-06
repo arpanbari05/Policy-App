@@ -366,7 +366,7 @@ const Form2 = ({ handleChange, currentForm }) => {
               position: relative;
               color: #ebf5ff;
               font-size: 32px;
-              font-size: 43px;
+              font-size: 31px;
               top: -11px;
             `}
           >

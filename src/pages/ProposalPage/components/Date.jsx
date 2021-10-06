@@ -163,6 +163,7 @@ const Label = styled.label`
   font-weight: 900;
   padding: 0 5px;
   
+
   @media (max-width: 767px) {
     left: 10px;
     font-size: 14px;
