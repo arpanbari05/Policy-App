@@ -86,7 +86,7 @@ const PlanDetails = ({
                             >
                               <h2
                                 css={`
-                                  font-size: 22px;
+                                  font-size: 20px;
                                   color: #253858;
                                   font-weight: 900;
                                 `}
@@ -169,7 +169,7 @@ function DownloadCard({ url, title }) {
     >
       <h4
         css={`
-          font-size: 22px;
+          font-size: 20px;
           color: #253858;
           font-weight: 900;
           margin: 0;
