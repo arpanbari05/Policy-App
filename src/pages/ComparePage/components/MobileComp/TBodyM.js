@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import tooltipImg from  '../../../../assets/svg/tooltip-icon.js';
+import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
 import PlansDetailsM from "./PlansDetailsM";
 import { useDispatch, useSelector } from "react-redux";
 import useWindowSize from "../../../../customHooks/useWindowSize.js";
 import { RiderName, RiderPremium, RiderWrapper } from "../../ComparePage.style";
 
 import TooltipMobileModal from "../../../../components/Common/Modal/TooltipMobileModal";
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from "uuid";
 
 import {
   addPremium,
@@ -19,14 +19,17 @@ import {
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import wrong from "../../../../assets/images/wrong2.png";
 
-import { getProductDiscount,removeQuotesForCompare,setQuotesForCompare } from "../../../quotePage/quote.slice.js";
+import {
+  getProductDiscount,
+  removeQuotesForCompare,
+  setQuotesForCompare,
+} from "../../../quotePage/quote.slice.js";
 import Checkbox from "../Checkbox/Checbox.js";
 import Checkbox2 from "../Checkbox/Checbox";
 // tooltip show information on hover
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
 );
-
 
 // for sum assured functionality
 const SumAssured = ({
@@ -38,7 +41,7 @@ const SumAssured = ({
   setHideCells,
 }) => {
   const dispatch = useDispatch();
-  const { quotesForCompare } = useSelector(state => state.quotePage);
+  const { quotesForCompare } = useSelector((state) => state.quotePage);
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipTitle, setTooltipTitle] = useState("");
@@ -61,7 +64,7 @@ const SumAssured = ({
             onClick={() => {
               setShowTooltipMobile(true);
               setTooltipContent(
-                "Cover Amount of the selected plan is the maximum pay out the Insurance company will offer",
+                "Cover Amount of the selected plan is the maximum pay out the Insurance company will offer"
               );
               setTooltipTitle("Sum insured");
             }}
@@ -70,7 +73,7 @@ const SumAssured = ({
           </span>
         </div>
         <div class="col-xs-12 padding_inner_row_c_t">
-          {[0, 1]?.map(item => {
+          {[0, 1]?.map((item) => {
             if (plans[item])
               return (
                 <>
@@ -79,36 +82,36 @@ const SumAssured = ({
                     style={{ display: "flex", justifyContent: "flex-start" }}
                   >
                     <select
-                    style={{
-                    fontSize: "16px",
-                    fontWeight: '500'
-                    }}
-                      onChange={e => {
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "500",
+                      }}
+                      onChange={(e) => {
                         dispatch(
                           removeQuotesForCompare(
-                            `${plans[item]?.data?.product?.id}${plans[item]?.data?.sum_insured}`,
-                          ),
+                            `${plans[item]?.data?.product?.id}${plans[item]?.data?.sum_insured}`
+                          )
                         );
                         dispatch(
                           setQuotesForCompare([
                             `${plans[item]?.data?.product.id}${e.target.value}`,
                             2,
-                          ]),
+                          ])
                         );
                       }}
                     >
                       <option>{plans[item]?.data?.sum_insured}</option>
                       {mergedCover.length > 0 &&
-                      mergedCover[item]?.map(data => {
-                        if (
-                          plans[item]?.data.sum_insured !== data &&
-                          !quotesForCompare.includes(
-                            `${plans[item]?.data?.product.id}${data}`,
-                          )
-                        ) {
-                          return <option>{data}</option>;
-                        }
-                      })}
+                        mergedCover[item]?.map((data) => {
+                          if (
+                            plans[item]?.data.sum_insured !== data &&
+                            !quotesForCompare.includes(
+                              `${plans[item]?.data?.product.id}${data}`
+                            )
+                          ) {
+                            return <option>{data}</option>;
+                          }
+                        })}
                     </select>
                   </div>
                 </>
@@ -130,7 +133,7 @@ const AdditionalBenefits = ({
   setHideCells,
   title,
   dispatch,
-  windowWidth
+  windowWidth,
 }) => {
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
@@ -150,19 +153,22 @@ const AdditionalBenefits = ({
       />
       <div class="col-xs-12 no-padding padding_vertical_10 border_top_dark">
         <div class="col-xs-12 font-bold bg_row_table_c bg_row_table_c">
-          <span class="tbody_bg_border_th_bor_bootom"
-          onClick={() => {
+          <span
+            class="tbody_bg_border_th_bor_bootom"
+            onClick={() => {
               setShowTooltipMobile(true);
               setTooltipContent(
-                "You can add ‘Riders’ to your basic health insurance plan for additional benefits.",
+                "You can add ‘Riders’ to your basic health insurance plan for additional benefits."
               );
               setTooltipTitle("Optional Covers");
             }}
-          >Optional Covers {tooltipImg()}</span>
+          >
+            Optional Covers {tooltipImg()}
+          </span>
         </div>
 
         <div class="col-xs-12 padding_inner_row_c_t">
-          {[0, 1]?.map(item => {
+          {[0, 1]?.map((item) => {
             if (!plans[item]) return "";
             else
               return (
@@ -173,9 +179,9 @@ const AdditionalBenefits = ({
                     justifyContent: "flex-start",
                     flexDirection: "column",
                     padding: "0px 10px 0px 5px",
-                }}
+                  }}
                 >
-                  {plans[item]?.features[index]?.riders?.map(innerItem => (
+                  {plans[item]?.features[index]?.riders?.map((innerItem) => (
                     <RiderWrapper
                       show={innerItem.total_premium}
                       className="rider-wrapper"
@@ -186,7 +192,7 @@ const AdditionalBenefits = ({
                           setTooltipContent(innerItem.description);
                           setTooltipTitle(innerItem.name);
                         }}
-                        style={{width:windowWidth<420?'40%':''}}
+                        style={{ width: windowWidth < 420 ? "40%" : "" }}
                       >
                         {innerItem.name} {tooltipImg()}
                       </RiderName>
@@ -195,29 +201,30 @@ const AdditionalBenefits = ({
                         <i className="fa fa-inr"></i>{" "}
                         <div>{innerItem.total_premium} </div>{" "}
                         <div>
-                        <Checkbox2
-                         showTitle={false}
-                          title={innerItem.name + plans[item].data.product.id}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              dispatch(
-                                insertRider(
-                                  plans[item].data.product.id,
-                                  plans[item].data.sum_insured,
-                                  innerItem
-                                )
-                              );
-                            } else {
-                              dispatch(
-                                removeRider(
-                                  plans[item].data.product.id,
-                                  plans[item].data.sum_insured,
-                                  innerItem
-                                )
-                              );
-                            }
-                          }}
-                        />
+                          <Checkbox2
+                            showTitle={false}
+                            title={innerItem.name + plans[item].data.product.id}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                
+                                dispatch(
+                                  insertRider(
+                                    plans[item].data.product.id,
+                                    plans[item].data.sum_insured,
+                                    innerItem
+                                  )
+                                );
+                              } else {
+                                dispatch(
+                                  removeRider(
+                                    plans[item].data.product.id,
+                                    plans[item].data.sum_insured,
+                                    innerItem
+                                  )
+                                );
+                              }
+                            }}
+                          />
                         </div>
                       </RiderPremium>
                     </RiderWrapper>
@@ -245,17 +252,17 @@ const TBodyM = ({
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipTitle, setTooltipTitle] = useState("");
-  const [windowHeight,windowWidth] = useWindowSize();
+  const [windowHeight, windowWidth] = useWindowSize();
   const [tenureData, setTenureData] = useState([
-    plans.map(item => item.data.tenure),
+    plans.map((item) => item.data.tenure),
   ]);
   const { quotesForCompare, selectedGroup, productDiscounts } = useSelector(
-    state => state.quotePage,
+    (state) => state.quotePage
   );
-  const { discount, riders } = useSelector(state => state.comparePage);
+  const { discount, riders } = useSelector((state) => state.comparePage);
   const [tenureChangedFor, setTenureChangedFor] = useState(-1);
   const [trigger, setTrigger] = useState(false);
-  const { memberGroups } = useSelector(state => state.greetingPage);
+  const { memberGroups } = useSelector((state) => state.greetingPage);
   const members = memberGroups[selectedGroup].join(",");
   useEffect(() => {
     if (tenureChangedFor !== -1 && trigger) {
@@ -269,8 +276,8 @@ const TBodyM = ({
         }),
         clearRiders(
           plans[tenureChangedFor].data.product.id,
-          plans[tenureChangedFor].data.sum_insured,
-        ),
+          plans[tenureChangedFor].data.sum_insured
+        )
       );
     }
     setTrigger(false);
@@ -282,8 +289,8 @@ const TBodyM = ({
         updatePremiumQuote(
           tenureChangedFor,
           tenureData[tenureChangedFor],
-          `${plans[tenureChangedFor].data.product.id}${plans[tenureChangedFor].data.sum_insured}`,
-        ),
+          `${plans[tenureChangedFor].data.product.id}${plans[tenureChangedFor].data.sum_insured}`
+        )
       );
     }
   }, [productDiscounts]);
@@ -318,7 +325,7 @@ const TBodyM = ({
               onClick={() => {
                 setShowTooltipMobile(true);
                 setTooltipContent(
-                  " Policy term for which you can buy this policy",
+                  " Policy term for which you can buy this policy"
                 );
                 setTooltipTitle("Tenure");
               }}
@@ -335,17 +342,17 @@ const TBodyM = ({
                   style={{ display: "flex", justifyContent: "flex-start" }}
                 >
                   <select
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: '500'
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "500",
                     }}
                     value={
                       discount[
                         `${plans[index].data.product.id}${plans[index].data.sum_insured}`
                       ]?.tenure
                     }
-                    onChange={e => {
-                      setTenureData(prev => {
+                    onChange={(e) => {
+                      setTenureData((prev) => {
                         prev[index] = e.target.value;
                         return prev;
                       });
@@ -360,8 +367,8 @@ const TBodyM = ({
                   </select>
                 </div>
               ) : (
-                ''
-              ),
+                ""
+              )
             )}
           </div>
         </div>
@@ -397,7 +404,7 @@ const TBodyM = ({
           </div>
           <div class="col-xs-12 padding_inner_row_c_t">
             {console.log(plans)}
-            {[0, 1].map(item => {
+            {[0, 1].map((item) => {
               if (!plans[item]) return "";
               else
                 return (
@@ -459,6 +466,39 @@ const TBodyM = ({
   }
 };
 
+const ExclusionDescModifier = ({ desc, index }) => {
+  const [showMore, setShowMore] = useState(false);
+  const showMoreDesc = desc;
+  const showLessDesc = desc.slice(0, 100);
+  return (
+    <div
+      key={uuid()}
+      className={`col-xs-6 ${index === 0 && "border_right_dark"}`}
+      style={{
+        display: "flex",
+        justifyContent: "flex-start",
+        whiteSpace: "pre-wrap",
+        padding: "0px 10px",
+        flexDirection: "column",
+      }}
+    >
+    <p>
+      <span id={"exclusionValue" + index}>
+        {showMore ? showMoreDesc : showLessDesc + "..."}
+      </span>
+
+      <span
+        style={{ color: "#0d6efd" }}
+        id={`${"exclusionBtn" + index}`}
+        onClick={() => setShowMore(!showMore)}
+      >
+        {showMore ? "Show Less" : "Show More"}
+      </span>
+      </p>
+    </div>
+  );
+};
+
 const PermanentExclusion = ({
   plans,
   index,
@@ -498,10 +538,11 @@ const PermanentExclusion = ({
           </span>
         </div>
         <div class="col-xs-12 padding_inner_row_c_t font-bold">
-          {[0, 1].map(index => {
+          {[0, 1].map((index) => {
             if (!plans[index]) return "";
             else {
-              const showMoreExclusion = (index, id, btnId) => {
+              {
+                /* const showMoreExclusion = (index, id, btnId) => {
                 setShowExclusion(!showExclusion);
                 let elId = document.getElementById(id);
                 let elBtnId = document.getElementById(btnId);
@@ -518,39 +559,17 @@ const PermanentExclusion = ({
                   elBtnId.innerHTML = "Show More";
                   elId.innerHTML = pollutedExclusionValue;
                 }
-              };
+              }; */
+              }
               return (
-                <div
-                  key={uuid()}
-                  className={`col-xs-6 ${index === 0 && "border_right_dark"}`}
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    whiteSpace: "pre-wrap",
-                    padding: "0px 10px",
-                    flexDirection: "column",
-                  }}
-                >
-                  <span id={"exclusionValue" + index}>
-                    {plans[index]?.features[4]?.sum_insureds[
+                <ExclusionDescModifier
+                  desc={
+                    plans[index]?.features[4]?.sum_insureds[
                       plans[index]?.data?.sum_insured
-                    ]?.features[0]?.feature_value.slice(0, 100) + "..."}
-                  </span>
-
-                  <span
-                    style={{ color: "#c7222a" }}
-                    id={`${"exclusionBtn" + index}`}
-                    onClick={() => {
-                      showMoreExclusion(
-                        index,
-                        `${"exclusionValue" + index}`,
-                        `${"exclusionBtn" + index}`,
-                      );
-                    }}
-                  >
-                    Show More
-                  </span>
-                </div>
+                    ]?.features[0]?.feature_value
+                  }
+                  index={index}
+                />
               );
             }
           })}
@@ -628,7 +647,7 @@ const Other = ({
                     </span>
                   </div>
                   <div class="col-xs-12 padding_inner_row_c_t font-bold">
-                    {[0, 1].map(item => {
+                    {[0, 1].map((item) => {
                       if (!plans[item]) return "";
                       else
                         return (

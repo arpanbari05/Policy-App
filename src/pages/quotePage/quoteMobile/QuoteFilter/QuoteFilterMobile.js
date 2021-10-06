@@ -218,30 +218,14 @@ const QuoteFilterMobile = ({
           </div>
         </div>
         <div className="tabordion">
-          <section id="section1">
-            <input
-              type="radio"
-              name="sections"
-              id="option1"
-              defaultChecked={true}
-            />
-            <label htmlFor="option1">Insurers</label>
-            <InsurerMobile
-              sortedCompanies={sortedCompanies}
-              data={data}
-              selected={selectedInsurer}
-              setSelected={setSelectedInsurer}
-            />
-          </section>
-          <section id="section2">
-            <input type="radio" name="sections" id="option2" />
-            <label htmlFor="option2">Popular Filters</label>
-            <PopularFilterMobile
-              moreFilter={moreFilter}
-              codeIndexMapMoreFilter={codeIndexMapMoreFilter}
-              selected={popularFilter}
-              setSelected={setPopularFilter}
-            />
+        <section id="section4">
+            <input type="radio" name="sections" id="option4"   defaultChecked={true}/>
+            <label htmlFor="option4">Premium</label>
+            <PremiumMobile
+              premiumFilter={premiumFilter}
+              selected={selectedPremium}
+              setSelected={setSelectedPremium}
+            ></PremiumMobile>
           </section>
           <section id="section3">
             <input type="radio" name="sections" id="option3" />
@@ -257,15 +241,6 @@ const QuoteFilterMobile = ({
               setOwnCover={setCustomCover}
             />
           </section>
-          <section id="section4">
-            <input type="radio" name="sections" id="option4" />
-            <label htmlFor="option4">Premium</label>
-            <PremiumMobile
-              premiumFilter={premiumFilter}
-              selected={selectedPremium}
-              setSelected={setSelectedPremium}
-            ></PremiumMobile>
-          </section>
           <section
             id="section5"           
           >
@@ -278,6 +253,9 @@ const QuoteFilterMobile = ({
               setSelected={setSelectedFloater}
             ></PlanMobile>
           </section>
+         
+         
+          
           <section id="section6">
             <input type="radio" name="sections" id="option6" />
             <label htmlFor="option6">Multiyear Options</label>
@@ -287,6 +265,37 @@ const QuoteFilterMobile = ({
               setSelected={setSelectedYear}
             ></MultiyearMobile>
           </section>
+
+          <section id="section1">
+            <input
+              type="radio"
+              name="sections"
+              id="option1"
+            
+            />
+            <label htmlFor="option1">Insurers</label>
+            <InsurerMobile
+              sortedCompanies={sortedCompanies}
+              data={data}
+              selected={selectedInsurer}
+              setSelected={setSelectedInsurer}
+            />
+          </section>
+
+          <section id="section2">
+            <input type="radio" name="sections" id="option2" />
+            <label htmlFor="option2">Popular Filters</label>
+            <PopularFilterMobile
+              moreFilter={moreFilter}
+              codeIndexMapMoreFilter={codeIndexMapMoreFilter}
+              selected={popularFilter}
+              setSelected={setPopularFilter}
+            />
+          </section>
+          
+          
+
+
           <section id="section7">
             <input type="radio" name="sections" id="option7" />
             <label htmlFor="option7">Pre-existing ailments</label>
@@ -334,6 +343,7 @@ const QuoteFilterMobile = ({
               </Row>
             </article>
           </section>
+          
         </div>
       </div>
     </>

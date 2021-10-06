@@ -16,7 +16,7 @@ function RiderCard({
   ...props
 }) {
   const riderName = rider.name;
-  console.log(isRiderSelected,selectedRiders,riderName,'dsgagasd' )
+  console.log(rider, "dsgagasd");
   const riderPremium = parseInt(rider.total_premium).toLocaleString("en-In");
   const riderDescription = rider.description;
   console.log(health_riders, "gege3");
@@ -172,27 +172,33 @@ font-weight:bold;
                 width: 160px;
                 min-width: fit-content;
                 border: none;
-                @media (max-width:500px){
-                  font-size:15px;
+                @media (max-width: 500px) {
+                  font-size: 15px;
                   width: 100px;
                 }
-               
               `}
             >
-              {/* <span css={`
-            display:flex;
-            align-items:center;
-            `}> */}
+              {/* <span > */}
               {`₹ ${riderPremium}`}
               {/* </span> */}
-              <span css={`
-              @media (max-width:500px){
-                position:absolute;
-                top: -6px;
-    right: -20px;
-              }
-              `}>
-                <Checkbox checked={isRiderSelected} />
+              <span
+                css={`
+                  font-size: 11px;
+                  margin-left: 10px;
+                  height: 30px;
+                  width: 30px;
+                  line-height: 30px;
+                  text-align: center;
+                  border-radius: 50%;
+                  background: ${isRiderSelected ? "#0a87ff" : "white"};
+                  box-shadow: ${isRiderSelected ? "0px 2px 5px -2px rgb(0 0 0 / 25%)" : ""};
+                  font-family: "font-awesome";
+                  border: 2px solid #fff;
+                  color: #fff;
+                  border: 2px solid #e4e7ec;
+                `}
+              >
+                <i class="fas fa-check"></i>
               </span>
             </button>
           </div>
