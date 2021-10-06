@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import "styled-components/macro";
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
+import { formatCurrency } from "../../../../utils/helper";
 function CustomDropDown({ option, handleChange }) {
   const [showToggleOpptions, setShowToggleOpptions] = useState(false);
 
@@ -35,7 +36,7 @@ function CustomDropDown({ option, handleChange }) {
             margin-right: 5px;
           `}
         >
-          {selectedOption}
+          {formatCurrency(selectedOption)}
         </span>
         {showToggleOpptions ? (
           <i class="fas fa-chevron-up  mx-2"></i>
@@ -60,7 +61,7 @@ function CustomDropDown({ option, handleChange }) {
                 }
               `}
             >
-              <label>{parseInt(data).toLocaleString("en-In")}</label>
+              <label>{formatCurrency(data)}</label>
             </li>
           );
         })}
