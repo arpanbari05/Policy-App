@@ -72,6 +72,7 @@ function FeatureDefinitionMobile({
                     width: "12px",
                     right: "20px",
                     top: "42px",
+                    cursor: "pointer",
                     position: "absolute",
                     transform: "rotate(180deg)",
                   }}
@@ -85,6 +86,7 @@ function FeatureDefinitionMobile({
                     width: "12px",
                     right: "20px",
                     top: "42px",
+                    cursor: "pointer",
                     position: "absolute",
                   }}
                   src={downarrow}
@@ -194,7 +196,7 @@ const Feature = styled.div`
   align-items: center;
   margin-top: 12px;
   border-top: 1px solid lightgray;
-  padding-top: 5px;
+  padding-top: 10px;
   width:100%;
   position:relative;
 `;

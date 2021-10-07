@@ -33,7 +33,7 @@ const dataSet = (dataArray, type) => {
                           font-size: 14px;
                         }
                         &:hover {
-                          background-color: #de9b9e29;
+                          background-color: #eff9fc;
                         }
                       `}
                     >

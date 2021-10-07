@@ -21,7 +21,7 @@ const SeeDetailsTabContainer = ({
           style={{ paddingRight: "0px" }}
           onClick={() => handleClick(id)}
         >
-          <span>{title}</span>
+          <span> {title}</span>
         </a>
       </li>
     </SeeDetailsTabContainerStyle>

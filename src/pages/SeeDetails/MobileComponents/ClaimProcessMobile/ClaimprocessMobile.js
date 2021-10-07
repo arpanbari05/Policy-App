@@ -12,7 +12,7 @@ import SpinLoader from '../../../../components/Common/SpinLoader/SpinLoader';
 // import "../ClaimProcessMobile/ClaimProcessMobile.css"
 
 function ClaimprocessMobile({
-    ActiveMainTab, claimProccess
+    ActiveMainTab, claimProccess,claimform
 }) {
     const [activebtn, setActivebtn] = useState(1)
     const { loading } = useSelector(state => state.seeDetails);
@@ -112,14 +112,73 @@ function ClaimprocessMobile({
                         <Info>
                             <div>
                                 <h4 className="title imp_title_row_l" >
-                                    Important Number and email address
+                                Please Contact on below details in case of further queries
                                 </h4>
                             </div>
-                            <p className="p_important_sub">
+                            <p className="p_important_sub" 
+                            css={`
+                            margin-top:0px !important;
+                            `}
+                            >
                                 Don't Hesitate to contact us for any information.
                             </p>{" "}
-                            <div style={{ padding: "30px 15px", display: "flex" }}>
-                                <div style={{ display: "flex", alignItems: "center" }}>
+                            <div style={{ padding: "30px 15px", display: "flex",flexDirection: "column" }}>
+
+                            <div style={{ display: "flex", marginBottom:"20px"}}>
+                                <div>
+                                <div
+            className="col-md-2"
+            css={`
+              justify-content: center;
+              align-items: center;
+              background-color: #eff7ff;
+              display: flex;
+              border-radius:100%;
+              width: 50px;
+            height:50px; 
+            color:#0a837f;
+            margin-right:20px;
+          
+            `}
+          >
+                                {claimform.claim_url ? (
+              <a target="_blank" rel="noopener noreferrer" href={claimform.claim_url}>
+          
+          <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21"
+              height="21"
+              fill="currentColor"
+              className="bi bi-download"
+              viewBox="0 0 16 16"
+            >
+              <path  d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+              <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+            </svg>
+            </a>)
+            :
+            <span>Loading...</span>}
+            </div>
+                                </div>
+                                <div style={{ marginTop: "10px", }}>
+                                    <h4
+                                        style={{
+                                            lineHeight: "0px",
+                                            padding: " 0px ",
+                                            whiteSpace: "nowrap",
+                                            fontSize: "unset",
+                                            fontWeight: "bold"
+                                        }}
+                                    >
+                                       Claim Form
+                                    </h4>
+                                    <p className="feature-offer-box__p break-on-overflow " style={{ marginTop: "15px" }} >
+                                    Download Claim Form here.{" "}
+                                    </p>
+                                </div>
+
+                            </div>
+                                <div style={{ display: "flex",  }}>
                                 <div>
                                     <img
                                     css={`
@@ -173,7 +232,7 @@ function ClaimprocessMobile({
 
                             </div>
 
-                            <div style={{ display: "flex", alignItems: "center", padding: "0px 15px", }}>
+                            <div style={{ display: "flex",  padding: "0px 15px", }}>
                                 <div>
                                     <img
                                     css={`

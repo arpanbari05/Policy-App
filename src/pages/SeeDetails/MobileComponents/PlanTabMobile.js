@@ -73,6 +73,7 @@ const PlanTabMobile = ({ data, item }) => {
                             borderRadius: "3px",
                             padding: "3px",
                             lineHeight: "1.1",
+                            
                           }}
                           css={`
                           text-indent: -1.2em;
