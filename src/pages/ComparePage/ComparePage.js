@@ -470,7 +470,7 @@ const popupContentM = (
                     <CompanyName
                       style={{ fontSize: "13px", textAlign: "center" }}
                     >
-                      {mergedQuotes[index].data.product.company.name}
+                      {mergedQuotes[index].data.product.name}
                     </CompanyName>
 
                     <div

@@ -197,6 +197,7 @@ export const PlanName = styled.div`
   line-height: 1.19;
 `;
 export const RiderWrapper = styled.div`
+cursor: pointer;
   &:before,
   &:after {
     content: "";

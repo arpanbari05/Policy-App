@@ -86,8 +86,11 @@ const PlanContainerM = ({
           <Col md={12}>
             {/* Dynamic ic name */}
             <WrapperCompanyDetails>
+            {console.log()}
+            {console.log()}
+            {console.log(plans,"++++product")}
               <CompanyName style={{ textAlign: "center" }}>
-                {product.company.name}
+                {plans.product.name}
               </CompanyName>
             </WrapperCompanyDetails>
           </Col>

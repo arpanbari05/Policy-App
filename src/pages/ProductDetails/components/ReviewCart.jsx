@@ -1,6 +1,7 @@
 import { useHistory, useParams } from "react-router-dom";
 import { useCartProduct } from "../../Cart";
 import "styled-components/macro";
+import care_health from "../../../assets/logos/Care.png";
 import { useSelector, useDispatch } from "react-redux";
 import Pencil from "../../../assets/images/pencil_pink.png";
 import { setexpandMobile } from "../productDetails.slice";
@@ -22,7 +23,7 @@ function CartDetailRow({ title, value }) {
         display: flex;
         justify-content: space-between;
         align-items: center;
-
+margin-bottom: 4px;
         width: 100%;
         ${mobile} {
           flex-direction: column;
@@ -53,7 +54,7 @@ function CartDetailRow({ title, value }) {
       <div
         css={`
           font-weight: 900;
-          font-size: 13px;
+          font-size: 12px;
           min-width: 100px;
           text-align: right;
           @media (max-width: 768px) {
@@ -115,7 +116,7 @@ function AddOnDetailsRow({ addOn }) {
           css={`
             width: 100%;
           `}
-          src={logo}
+          src={product.company.alias==="care_health"?care_health:logo}
           alt={product.company.alias}
         />
       </div>
@@ -123,11 +124,10 @@ function AddOnDetailsRow({ addOn }) {
         css={`
           font-size: 12px;
           font-weight: 400;
-          width: 165px;
-
-          display: flex;
-          align-items: center;
+          width: 100%;
           padding: 0px 5px;
+          display:flex;
+          align-items:center;
         `}
       >
         {`${product.name} ${
@@ -291,7 +291,7 @@ function Discounts({ discounts = [], premium }) {
           padding: 20px 0px;
           border-bottom: 1px solid #ddd;
           flex-direction: column;
-          padding-left: 12px;
+          /* padding-left: 12px; */
         `}
       >
         <div
@@ -714,7 +714,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           padding: 10px 20px;
           padding-top: 18px;
           padding-bottom: 20px;
-          border-radius: 12px;
+          border-radius: 2px;
           color: #000;
           overflow: hidden;
           ${mobile} {
@@ -762,7 +762,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             align-items: flex-start;
             justify-content: space-between;
             /* border-bottom: 1px solid #ddd; */
-            padding-bottom: 10px;
+            /* padding-bottom: 10px; */
             position: relative;
 
             ${mobile} {
@@ -1034,20 +1034,23 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           <div
             className="d-flex justify-content-between flex-column"
             css={`
-              margin-top: 10px;
+             
               display: flex;
+              padding-bottom: 5px;
+              margin-bottom:5px;
               border-bottom: 1px solid #ddd;
             `}
           >
             <div
               css={`
-                width: 100px;
+                width: 50px;
                 height: auto;
                 background-color: #fff;
                 display: flex;
+                margin: 5px 0px 10px;
                 align-items: center;
                 justify-content: flex-start;
-                padding: 2px 10px;
+                /* padding: 2px 10px; */
                 border-radius: 2px;
 
                 ${small} {
@@ -1055,12 +1058,14 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                 }
               `}
             >
-              <img src={logoSrc} alt={companyAlias} class="w-100" />
+              <img src={companyAlias==="care_health"?care_health:logoSrc} alt={companyAlias} class="w-100" />
+      
+              {console.log(companyAlias,"logoSrc")}
             </div>
             <div
               style={{
                 width: "100%",
-                paddingLeft: "12px",
+                // paddingLeft: "12px",
               }}
             >
               <CartDetailRow title="Plan Type" value={displayPlanType} />
@@ -1080,9 +1085,10 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               align-items: flex-start;
               justify-content: space-between;
               border-bottom: 1px solid #ddd;
-              padding: 20px 0px;
-              padding-left: 12px;
+              padding-bottom: 5px;
+              /* padding-left: 12px; */
               flex-direction: column;
+              margin-bottom:5px;
             `}
           >
             <div
@@ -1098,6 +1104,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               css={`
                 width: 100%;
                 margin-top: 5px;
+                
               `}
             >
               {!health_riders.length ? (
@@ -1118,17 +1125,22 @@ const ReviewCart = ({ groupCode, unEditable }) => {
 
           <div
             css={`
+             display: flex;
               width: 100%;
               align-items: flex-start;
+              justify-content: space-between;
               border-bottom: 1px solid #ddd;
-              padding: 20px 0px;
-              padding-left: 12px;
+              padding-bottom: 5px;
+              /* padding-left: 12px; */
+              flex-direction: column;
             `}
           >
             <div>
               <BackgroundBorderTitle title="Add-On Coverages" />
             </div>
-            <div>
+            <div css={`
+            width:100%;
+            `}>
               {!addons.length ? (
                 <CartDetailRow title="No Add-Ons Selected" />
               ) : (

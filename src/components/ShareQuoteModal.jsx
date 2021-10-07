@@ -10,36 +10,42 @@ import { useRef, useState } from "react";
 import { EmailSent } from "../pages/ComparePage/ComparePage.style";
 
 const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
-  const details4autopopulate = useSelector(({greetingPage}) => greetingPage.proposerDetails);
+  const details4autopopulate = useSelector(
+    ({ greetingPage }) => greetingPage.proposerDetails
+  );
   const [errorMsg, setErrorMsg] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [email, setEmail] = useState(details4autopopulate?.email?details4autopopulate.email:"");
-  const [wtsappNo, setWtsappNo] = useState(details4autopopulate?.mobile?details4autopopulate.mobile:"");
-  const [smsNo, setSmsNo] = useState(details4autopopulate?.mobile?details4autopopulate.mobile:"");
+  const [email, setEmail] = useState(
+    details4autopopulate?.email ? details4autopopulate.email : ""
+  );
+  const [wtsappNo, setWtsappNo] = useState(
+    details4autopopulate?.mobile ? details4autopopulate.mobile : ""
+  );
+  const [smsNo, setSmsNo] = useState(
+    details4autopopulate?.mobile ? details4autopopulate.mobile : ""
+  );
   const sendRef = useRef();
-  
-// useEffect(() => {
-//   if(emailStatus.status){
-//     setIsSending(false);
-//   }
-// },[emailStatus])
 
-  console.log(emailStatus,isSending,"emailStatus")
+  // useEffect(() => {
+  //   if(emailStatus.status){
+  //     setIsSending(false);
+  //   }
+  // },[emailStatus])
 
-  const  handleNumberCheck = (e, setAction) => {
+  console.log(emailStatus, isSending, "emailStatus");
+
+  const handleNumberCheck = (e, setAction) => {
     e.preventDefault();
-    if(Number(e.target.value.length) <= 10){
-      if(![0,1,2,3,4,5,6].includes(Number(e.target.value[0]))){
+    if (Number(e.target.value.length) <= 10) {
+      if (![0, 1, 2, 3, 4, 5, 6].includes(Number(e.target.value[0]))) {
         return setAction(e.target.value);
       }
-     
-    } 
-    
-  }
+    }
+  };
 
   const handleSendViaEmail = (e) => {
     e.preventDefault();
-    
+
     const validator =
       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
     if (!email) {
@@ -47,25 +53,23 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
     } else if (!validator.test(email)) {
       return setErrorMsg("Enter valid email.");
     } else setErrorMsg("");
-   
+
     if (!errorMsg && email) {
       setIsSending(true);
       setTimeout(() => {
-        handleRotation()
-              }, 2000);
+        handleRotation();
+      }, 2000);
       return imageSend(email);
-      
     }
-    
   };
 
-  const handleRotation=()=>{
+  const handleRotation = () => {
     setIsSending(false);
-  }
+  };
   // if(emailStatus){
   //   setIsSending(false);
-  // 
-console.log("semding....",isSending)
+  //
+  console.log("semding....", isSending);
   return (
     <Modal
       show={show}
@@ -98,16 +102,19 @@ console.log("semding....",isSending)
             fontWeight: "600",
             color: "black",
           }}
+          css={`
+            @media (max-width: 440px) {
+              font-size: 15px !important;
+            }
+          `}
         >
           Hi, please choose the way you wish to share the quotes.
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div>
-          <ShareOption className="d-flex align-items-center justify-content-between  mb-3"
-          
-          >
-            <div className="d-flex align-items-center">
+          <ShareOption className="d-flex align-items-center justify-content-between  mb-3">
+            <div className="d-flex align-items-center position-relative w-100">
               <div className="icon_wrapper">
                 <EmailIcon width="21" />
               </div>
@@ -116,31 +123,49 @@ console.log("semding....",isSending)
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
                 value={email}
+                css={``}
               />
+              <span
+                css={`
+                  position: absolute; 
+                  top: 50%;
+                  right: 20px;
+                  color:black;
+                  transform: translateY(-50%) !important;
+                  display:none;
+                  @media (max-width:400px){
+                    display: ${isSending ? "block" : "none"} !important;
+                  }
+                  
+                `}
+              >
+                <i className="fa fa-circle-notch rotate" />
+              </span>
             </div>
+
+
 
             <button
               className="btn share_btn  position-relative"
               onClick={(e) => {
-                
                 handleSendViaEmail(e);
               }}
             >
               Share
-              
-                <span  css={`
-                      position:absolute;
-                      top:50%;
-                      right:20px;
-                      transform:translateY(-50%) !important;
-                      display: ${isSending ? 'block' : 'none'};
-                    `}>
-                  <i
-                    className="fa fa-circle-notch rotate"
-                   
-                  />
-                  </span>
-              
+              <span
+                css={`
+                  position: absolute;
+                  top: 50%;
+                  right: 20px;
+                  transform: translateY(-50%) !important;
+                  display: ${isSending ? "block" : "none"};
+                  @media (max-width:400px){
+                    display:none !important;
+                  }
+                `}
+              >
+                <i className="fa fa-circle-notch rotate" />
+              </span>
             </button>
           </ShareOption>
 
@@ -151,7 +176,7 @@ console.log("semding....",isSending)
               </div>
               <input
                 type="number"
-                onChange={(e) => handleNumberCheck(e,setWtsappNo)}
+                onChange={(e) => handleNumberCheck(e, setWtsappNo)}
                 placeholder="Mobile no."
                 value={wtsappNo}
               />
@@ -166,7 +191,6 @@ console.log("semding....",isSending)
               >
                 <button className="btn share_btn">Share </button>
               </a>
-              
             ) : (
               <button className="btn share_btn px-5">Share</button>
             )}
@@ -177,14 +201,18 @@ console.log("semding....",isSending)
               <div className="icon_wrapper">
                 <SmsIcon width="21" />
               </div>
-              <input type="number" placeholder="Mobile no." onChange={(e) => handleNumberCheck(e,setSmsNo)}
+              <input
+                type="number"
                 placeholder="Mobile no."
-                value={smsNo} />
+                onChange={(e) => handleNumberCheck(e, setSmsNo)}
+                placeholder="Mobile no."
+                value={smsNo}
+              />
             </div>
 
             <button className="btn share_btn ">Share</button>
           </ShareOption>
-        
+
           <InfoMessage className="p-3 text-center">
             * Please note that the premium may vary in future.
           </InfoMessage>
@@ -193,13 +221,11 @@ console.log("semding....",isSending)
           ) : (
             ""
           )}
-          {emailStatus  && (
-          
-         <EmailSent status={emailStatus.status}>
-            {/* {handleRotation()} */}
+          {emailStatus && (
+            <EmailSent status={emailStatus.status}>
+              {/* {handleRotation()} */}
               {emailStatus.message}
             </EmailSent>
-        
           )}
         </div>
       </Modal.Body>
@@ -214,20 +240,23 @@ const ShareOption = styled.div`
   border: solid 1px #d5dce5;
   padding-left: 10px;
   /* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
   input {
     border: none;
     margin-left: 15px;
     font-weight: 600;
+    @media (max-width: 440px) {
+      font-size: 12px !important;
+    }
     :focus {
       outline: none;
     }
@@ -237,7 +266,7 @@ input[type=number] {
   }
   .share_btn {
     border-radius: 4px;
-    padding: 15px 40px!important;
+    padding: 15px 40px !important;
     background-color: #0a87ff;
     border: solid 2px #0a87ff;
     color: #fff;
@@ -253,22 +282,27 @@ input[type=number] {
     border-radius: 100%;
     background-color: #e6f3ff;
     color: #52aaff;
-  }
-  @media(max-width:768px){
-    input{
-      max-width:150px;
-    }
-      }
+    @media (max-width: 440px) {
+      width: 35px;
 
-      @media(max-width:400px){
-.icon_wrapper{
-  width:35px;
-  height:35px;
-}
-.share_btn{
-padding:15px 15px !important;
-}
-      }
+      width: 35px;
+    }
+  }
+  @media (max-width: 768px) {
+    input {
+      max-width: 150px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .icon_wrapper {
+      width: 35px;
+      height: 35px;
+    }
+    .share_btn {
+      padding: 15px 15px !important;
+    }
+  }
 `;
 
 const InfoMessage = styled.div`

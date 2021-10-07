@@ -400,7 +400,7 @@ const AdditionalBenefits = ({plans, title, index, windowWidth}) => {
     <>
       {" "}
       <tr
-        className="nohover "
+        className="nohover"
         css={`
           border-bottom: 1px solid #ebf5ff !important;
         `}
@@ -444,13 +444,15 @@ const AdditionalBenefits = ({plans, title, index, windowWidth}) => {
                       <i className="fa fa-inr"></i>{" "}
                       <div style={{fontWeight:"900"}}>₹ {innerItem.total_premium} </div>{" "}
                       <div>
-                      {console.log(plans[item],"riders+++")}
+
+                      {/* {console.log(,"+++++++++")} */}
                         <Checkbox2
                          showTitle={false}
+                      
                           title={innerItem.name + plans[item].data.product.id}
-                          // checked={
-                          //   riders[`${plans[item].data.product.id}${plans[item].data.sum_insured}`].filter(item => )
-                          // }
+                          checked={
+                            riders[`${plans[item].data.product.id}${plans[item].data.sum_insured}`]?.some(item => item.name===innerItem.name)
+                          }
                           onChange={(e) => {
                             if (e.target.checked) {
                               dispatch(
@@ -525,6 +527,7 @@ const TBody = ({
   }, [trigger]);
   useEffect(() => {
     if (productDiscounts.length && tenureChangedFor !== -1) {
+      
       dispatch(
         updatePremiumQuote(
           tenureChangedFor,
@@ -743,18 +746,31 @@ const TBody = ({
                         ]?.tenure
                       }
                       onChange={(e) => {
+                        
                         setTenureData((prev) => {
                           prev[index] = e.target.value;
+                          
                           return prev;
                         });
-
                         setTenureChangedFor(index);
                         setTrigger(true);
                       }}
                     >
-                      <option value="1">1 year</option>
-                      <option value="2">2 years</option>
-                      <option value="3">3 years</option>
+                      {plans[index].data.product.name ===
+                        "Health Companion Variant 1 (Individual)" ||
+                      plans[index].data.product.name ===
+                        "Health Companion Family First (Family)" ? (
+                        <>
+                          <option value="1">1 year</option>
+                          <option value="2">2 years</option>
+                        </>
+                      ) : (
+                        <>
+                          <option value="1">1 year</option>
+                          <option value="2">2 years</option>
+                          <option value="3">3 years</option>
+                        </>
+                      )}
                     </select>
                   </td>
                 ) : !plans[item] && item === 1 ? (
