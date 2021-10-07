@@ -171,9 +171,12 @@ const ThankYouPage = () => {
               <div style={{ padding: "20px 0px 30px" }}>
                 {<img src={Success} alt="" className="img_success"></img>}
               </div>
-              <div style={{ padding: "20px 0px", marginTop: "20px" }}>
-                <h5>Thankyou for choosing</h5>
-                <h5>Fyntune!</h5>
+              <div style={{ padding: "20px 0px", marginTop: "20px",fontWeight: "bold",
+            fontSize: "21px"
+            }}>
+                <span>Thankyou for choosing</span>
+                <br/>
+                <span>Fyntune!</span>
               </div>
               <div
                 style={{
@@ -181,9 +184,12 @@ const ThankYouPage = () => {
                   display: "flex",
                   alignItems: "center",
                   color: "#0a87ff",
-                  padding: "10px 10px",
+                  padding: "8px 10px",
                   fontSize: "15px",
                   whiteSpace: "nowrap",
+                  fontWeight: "bold",
+                  backgroundColor: "#b4dfff",
+                  borderRadius: "55px",
                   // letterSpacing: "1px"
                 }}
               >
@@ -195,6 +201,7 @@ const ThankYouPage = () => {
                     height: "40px",
                     width: "40px",
                     marginRight: "5px",
+                    fontWeight: "bold",
                   }}
                 >
                   {<img
@@ -245,6 +252,7 @@ const ThankYouPage = () => {
                   style={{
                     color: "#0a87ff",
                     borderBottom: "1px dashed #0a87ff",
+                    fontWeight: "bold",
                   }}
                 >
                   My Account Page.
@@ -259,6 +267,7 @@ const ThankYouPage = () => {
                   style={{
                     color: "#0a87ff",
                     borderBottom: "1px dashed #0a87ff",
+                    fontWeight: "bold",
                   }}
                 >
                   Shop More {">"}

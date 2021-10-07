@@ -48,6 +48,7 @@ const Outer = styled.div`
   .plan {
     display: flex;
     align-items: center;
+    cursor: pointer;
     padding-bottom: 5px;
     border-bottom: 5px solid #f4f5f7;
   }

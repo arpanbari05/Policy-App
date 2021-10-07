@@ -306,7 +306,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           }}
         >
           {" "}
-          <span>Edit</span>
+          {/* <span>Edit</span> */}
           {/* <img src={pencil} alt="edit"></img> */}
           <PencilWrapper className="d-flex justify-content-center align-items-center" style={{color:"#0a87ff"}}>
           {/* <PencilIcon
@@ -376,10 +376,10 @@ const EditWrapper = styled.div`
   transform: translateY(-50%);
   border-radius: 31px;
   background-color: #f6f7f9;
-  padding-top: 2px;
+  padding: 4px 0px;
   color:#0a87ff;
   cursor: pointer;
-  padding-left: 10px;
+  /* padding-left: 10px; */
   z-index: 50;
   @media (max-width: 767px) {
     top: 30px;
