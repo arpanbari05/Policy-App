@@ -60,9 +60,13 @@ export const ViewQuotesWrapper = styled.div`
   text-align: center;
   margin-top: 12px;
   & button {
-    color: #c72229;
+    color: #0a87ff;
     display: inline-block;
-    border-bottom: 1px dashed #c72229;
+    border-bottom: 1px dashed #0a87ff;
+    outline: none;
+    box-shadow: none;
+    background:none;
+    
   }
 `;
 export const PopupWrapper = styled.div`
@@ -133,7 +137,7 @@ export const ButtonWrapper = styled.div`
 
   & button {
     padding: 5px 20px;
-    background: #c72229;
+    background: #0a87ff;
     color: #fff;
     border-radius: 8px;
     display: inline-block;

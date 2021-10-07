@@ -110,8 +110,8 @@ function SeeDetailsFooter({
           position: absolute;
           right: 12px;
           cursor: pointer;
-          top: 25px;
-          font-size: 34px;
+          top: 35px;
+          font-size: 22px;
         `}
         onClick={handleClose}
       >

@@ -1,11 +1,15 @@
 import React from "react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
+import "styled-components/macro";
 
 const PlansTab = ({ isActive, title, description, onClick }) => {
   return (
     <Anchor
       onClick={onClick}
-      className={`nav-link mb-3 p-3 shadow ${isActive && "active"}`}
+      className={`nav-link mb-3 p-3 ${isActive && "active"}`}
+      css={`
+      border: 1px solid #dbd8d8 !important;
+      `}
     >
       <span className={`${isActive && "active"}`}>{title}</span>
       <p className={`${isActive && "active"}`}>{description}</p>
@@ -16,7 +20,7 @@ const PlansTab = ({ isActive, title, description, onClick }) => {
 export default PlansTab;
 
 const Anchor = styled.a`
-  border: solid 1px #dde5ea;
+
   & span {
     font-size: 20px;
     color: #253858;
@@ -34,6 +38,7 @@ const Anchor = styled.a`
     color: unset !important;
     background-color: unset !important;
     position: relative;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
     
     // &:after {
     //   content: "";

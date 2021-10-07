@@ -94,19 +94,13 @@ const FormBuilder = ({
   useEffect(() => {
     const tempValues = { ...values };
     schema.forEach((item) => {
-      console.log(
-        item.name,
-        !values?.[item.name],
-        item?.validate?.required,
-        Object.keys(item?.additionalOptions?.options || {}).length === 1,
-        "333"
-      );
+     
       if (
         item.type === "select" &&
         !values[item.name] &&
         item?.validate?.required &&
         !item.fill &&
-        !item.additionalOptions.options.length &&
+        !item?.additionalOptions?.options?.length &&
         Object.keys(item.additionalOptions.options || {}).length === 1
       ) {
         const tempValue = Object.keys(item.additionalOptions.options)[0];
