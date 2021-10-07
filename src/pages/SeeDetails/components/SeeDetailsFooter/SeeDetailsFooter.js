@@ -108,10 +108,16 @@ function SeeDetailsFooter({
       <div
         css={`
           position: absolute;
-          right: 12px;
+          right: 9px;
           cursor: pointer;
           top: 35px;
-          font-size: 22px;
+          font-size: 18px;
+          background-color: #eff2f5;
+          border-radius:50px;
+          padding:3px 8px;
+          @media (max-width: 1250px) {
+            right:5px;
+          }
         `}
         onClick={handleClose}
       >

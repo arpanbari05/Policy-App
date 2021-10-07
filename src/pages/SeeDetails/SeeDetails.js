@@ -428,7 +428,11 @@ const [hey, sethey] = useState("");
               type="button"
               className="btn btn-white recom_close_css"
               css={`
- font-size:22px !important;
+              top:35px;
+ font-size: 18px ;
+          background-color: #eff2f5;
+          border-radius:50px;
+          padding:3px 8px;
               `}
               onClick={handleClose}
             >
