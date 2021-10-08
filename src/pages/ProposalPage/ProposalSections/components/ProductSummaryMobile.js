@@ -258,7 +258,7 @@ const enquiryId = url.get("enquiryId");
                 onChange={() => setChecked(!checked)}
               />{" "}
               <span className="Iaccept">I Accept the&nbsp;</span>
-              <span class="TermsAndConditions"> Terms &amp; Conditions !!</span>
+              <span class="TermsAndConditions"> Terms &amp; Conditions </span>
             </div>
           </div>
         )}

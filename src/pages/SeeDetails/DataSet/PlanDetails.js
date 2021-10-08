@@ -182,7 +182,7 @@ function DownloadCard({ url, title }) {
           <div
             css={`
               background-color: white;
-              padding: 7px 12px;
+              /* padding: 7px 12px; */
               border-radius: 82px;
             `}
           >
