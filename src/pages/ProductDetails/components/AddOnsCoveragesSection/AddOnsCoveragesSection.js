@@ -709,9 +709,9 @@ function AddOnCard({
     <>
       <div
         css={`
-          width: 90px;
+          width: 60px;
           margin-right: 15px;
-          max-height: 90px;
+          height: 60px;
           display:flex;
 align-items:center;
          justify-content:space-between;

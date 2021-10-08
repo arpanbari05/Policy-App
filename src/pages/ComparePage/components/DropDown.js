@@ -8,6 +8,7 @@ import useOutsiteClick from "../../../customHooks/useOutsideClick";
 import { Translate } from "canvg";
 
 const DropDown = ({ name, sum, value, onChange, covers }) => {
+  console.log(value,"++++value")
   const [plan, setPlan] = useState(false);
   const [sumInsured, setSumInsured] = useState(false);
   const [show, setShow] = useState(false);

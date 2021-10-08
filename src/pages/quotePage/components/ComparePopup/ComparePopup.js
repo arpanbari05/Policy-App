@@ -69,6 +69,11 @@ const ComparePopup = ({ groupCode }) => {
   return (
     <div
       css={`
+      @media (max-width:500px){
+        .quotes_compare_plan_name{
+          margin:0px 5px !important;
+        }
+      }
         @media (max-width: 767px) {
           & .quotes_compare_plan_name {
             align-items: center;
@@ -79,13 +84,10 @@ const ComparePopup = ({ groupCode }) => {
           }
           & .quotes_compare_image,
           .quotes_compare_image1 {
-            width: unset;
-            border-radius: unset;
-            
-            height: unset;
+          
+            height:50px;
             & img {
-              width: 59px;
-              height: 100%;
+              width: 100%;
             }
           }
           height: 182px;

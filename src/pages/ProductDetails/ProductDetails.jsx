@@ -187,25 +187,43 @@ const ProductDetails = () => {
         <Row
           css={`
             justify-content: center;
+            @media (max-width:1200px){
+             flex-direction:column;
+             }
           `}
         >
-          <Col
-            xl={4}
-            lg={12}
-            md={12}
-            sm={12}
-            xs={12}
+          <div
+            
             css={`
+             width:33%;
+             @media (max-width:1350px){
+              width:30%;
+
+             }
+             @media (max-width:1200px){
+              width:100%;
+
+             }
               ${mobile} {
                 display: none;
+               
               }
             `}
           >
             <ReviewCart companies={companies} groupCode={groupCode} />
-          </Col>
-          <Col
-            xl={8}
-            lg={12}
+          </div>
+          <div
+           css={`
+            width:67%;
+            @media (max-width:1350px){
+              width:70%;
+
+             }
+             @media (max-width:1200px){
+              width:100%;
+
+             }
+           `}
             // className="wow fadeInLeft animated"
             // data-wow-delay="0.9s"
             // style={{
@@ -243,7 +261,7 @@ const ProductDetails = () => {
 
               <AddOnsCoveragesSection groupCode={groupCode} />
             </Col>
-          </Col>
+          </div>
         </Row>
         <hr />
       </main>

@@ -121,12 +121,20 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
       <div className="col-md-12 d-flex">
         <div className="col-md-3">
           <EachWrapper>
-            <LogoWrapper
-              css={`
-                margin-top: 25px;
-              `}
-            >
-              <Logo src={mergedQuotes[0]?.logo} />
+            <LogoWrapper>
+              <div
+                css={`
+                  width: 80px;
+                  min-height:80px;
+                  display:flex;
+                  align-items:center;
+                  justify-content:space-between;
+                  height: auto;
+                  margin-bottom: 10px;
+                `}
+              >
+                <Logo src={mergedQuotes[0]?.logo} />
+              </div>
               <PlanName>{mergedQuotes[0]?.product.name}</PlanName>
             </LogoWrapper>
           </EachWrapper>
