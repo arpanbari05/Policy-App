@@ -184,7 +184,10 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                 >
                   <TextWrapper>
                     <SmallLabel>Cashless Hospitals</SmallLabel>
-                    <ValueText onClick={() => handleSeeDetailsClick(4)}>
+                    <ValueText
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleSeeDetailsClick(4)}
+                    >
                       {mergedQuotes[0]?.cashlessHospitalsCount[activeCover]}
                       <span>
                         {" "}
