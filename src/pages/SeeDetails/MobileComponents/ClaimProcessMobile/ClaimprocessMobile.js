@@ -4,6 +4,7 @@ import "./ClaimProcessMobile.css"
 import styled from 'styled-components'
 import "styled-components/macro"
 import cashlessImg from "./../../../../assets/images/cashless_m.png";
+import download from "../../../../assets/images/downloadclaim.png";
 import telephone from "../../../../assets/images/landline_old_phone.png";
 import mail from "../../../../assets/images/message_mail_blue_2.1.png";
 import mobile from "../../../../assets/images/mobile.png";
@@ -144,17 +145,10 @@ function ClaimprocessMobile({
                                 {claimform.claim_url ? (
               <a target="_blank" rel="noopener noreferrer" href={claimform.claim_url}>
           
-          <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="21"
-              height="21"
-              fill="currentColor"
-              className="bi bi-download"
-              viewBox="0 0 16 16"
-            >
-              <path  d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-              <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-            </svg>
+          <img src={download} css={`
+            width:31px;
+            height:31px;
+            `} alt="" />
             </a>)
             :
             <span>Loading...</span>}
