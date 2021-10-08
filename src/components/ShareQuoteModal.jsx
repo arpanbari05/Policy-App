@@ -133,6 +133,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
                   color:black;
                   transform: translateY(-50%) !important;
                   display:none;
+                  background: #ffffff9e;
                   @media (max-width:400px){
                     display: ${isSending ? "block" : "none"} !important;
                   }
