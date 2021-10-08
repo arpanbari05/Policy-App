@@ -709,12 +709,16 @@ function AddOnCard({
     <>
       <div
         css={`
-          width: 90px;
+          width: 60px;
           margin-right: 15px;
-          max-height: 90px;
+          height: 60px;
           display:flex;
 align-items:center;
          justify-content:space-between;
+         @media (max-width:768px){
+          width: 40px;
+          height: 40px;
+            }
         `}
       >
         <img
@@ -744,6 +748,11 @@ align-items:center;
             font-weight: 900;
             white-space: nowrap;
             overflow: hidden;
+
+            @media (max-width:768px){
+              white-space: break-spaces;
+              font-size:13px !important;
+            }
 
             /* ${mobile} {
               text-overflow: ellipsis;

@@ -378,8 +378,18 @@ const popupContentM = (
   let companyWiseSumAssured = {};
   let companyWiseLogos = [];
   let ProductWiseId = {};
+  let covers = {};
 
   fitlerQuotes.forEach((item) => {
+
+    item.forEach((innerItem) => {
+      if (!(innerItem.product.name in covers)) {
+        covers[innerItem.product.name] = [innerItem.sum_insured];
+      } else {
+        covers[innerItem.product.name].push(innerItem.sum_insured);
+      }
+    });
+
     if (item[0]) {
       companies.push(item[0].product.company.name);
       companyWiseLogos.push(item[0].logo);
@@ -441,7 +451,7 @@ const popupContentM = (
         >
           {[0, 1].map((item, index) => (
             <div
-              style={windowWidth < 400 ? { width: "50%" } : { width: "49%" }}
+              style={windowWidth < 400 ? { width: "50%", } : { width: "49%", }}
             >
               {mergedQuotes[index] ? (
                 <SelectedProduct first={index === 0}>
@@ -470,7 +480,7 @@ const popupContentM = (
                     <CompanyName
                       style={{ fontSize: "13px", textAlign: "center" }}
                     >
-                      {mergedQuotes[index].data.product.company.name}
+                      {mergedQuotes[index].data.product.name}
                     </CompanyName>
 
                     <div
@@ -522,7 +532,11 @@ const popupContentM = (
                     <PlusWrapper>
                       <i class="fa fa-plus"></i>
                     </PlusWrapper>
-                    <div>No Plans Added</div>
+                    <div css={`
+                    @media(max-width:410px){]
+                    font-size:12px;
+                    }
+                    `}>No Plans Added</div>
                   </CrossWrapper>
                 </AddPlan>
               )}
@@ -542,9 +556,10 @@ const popupContentM = (
                       </LogoWrapper>
                       <QuoteNameM>{item}</QuoteNameM>
                       <DropDownWrapper>
-                        <DropDown
+                      <DropDown
                           name={companyWisePlans[item]}
                           sum={companyWiseSumAssured[item]}
+                          covers={covers}
                           onChange={(value) => {
                             setValue((prev) => {
                               return { ...prev, [item]: value };
@@ -561,6 +576,7 @@ const popupContentM = (
                                 `${ProductWiseId[value.plan]}${value?.sumInsured
                                 }`
                               );
+                              setValue({});
                             }
                           }}
                           value={value[item]}

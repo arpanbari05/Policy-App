@@ -46,7 +46,7 @@ export const OptionWrapper = styled.ul`
   padding-left: 0rem;
   .option {
     border-bottom: 1px solid #d5dce5;
-    padding: 15px 5px;
+    padding: 5px;
     font-weight: 600;
     input[type="radio"] {
       width: 20px;
@@ -56,7 +56,10 @@ export const OptionWrapper = styled.ul`
   .insurer_option {
     .insurer_logo {
       width: 80px;
-      height: 40px;
+    display: flex;
+    height: 80px;
+    justify-content: center;
+    align-items: center;
     }
   }
   .custom_checkbox {

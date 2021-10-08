@@ -409,7 +409,7 @@ const EditWrapper = styled.div`
   }
 `;
 const PencilWrapper = styled.div`
-  background-color: white;
+  /* background-color: white; */
   width: 25px;
   height: 25px;
   border-radius: 100%;
@@ -417,7 +417,7 @@ const PencilWrapper = styled.div`
 `;
 const InnerTextBorder = styled.div`
   margin: 15px 0px;
-  text-decoration:underline;
+  /* text-decoration:underline; */
   color: #69758d !important;
   font-weight: 600 !important;
   font-size: 18px;

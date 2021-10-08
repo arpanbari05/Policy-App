@@ -110,7 +110,7 @@ const ProposalSummary = ({ history }) => {
               onChange={() => setChecked(!checked)}
             />{" "}
             <span className="Iaccept">I Accept the&nbsp;</span>
-            <span class="TermsAndConditions"> Terms &amp; Conditions</span>
+            <span class="TermsAndConditions"> Terms &amp; Conditions </span>
           </div>
           {show && (
             <MultipleWrapper>

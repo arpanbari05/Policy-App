@@ -562,7 +562,7 @@ function ProductDetailsCard({ cartItem }) {
       className="rider-box_product_pro"
       css={`
         border: 1px solid #d5dce5;
-        padding: 20px;
+        padding: 10px 20px;
         border-radius: 10px;
         ${mobile} {
           display: none;
@@ -579,10 +579,17 @@ function ProductDetailsCard({ cartItem }) {
             align-items: center;
           `}
         >
-          <div class="">
+          <div css={`
+          width: 80px;
+    display: flex;
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+    margin-right:10px;
+          `}>
             <img
               css={`
-                width: 60px;
+                width:100%;
               `}
               src={logoSrc}
               alt={alias}

@@ -85,6 +85,7 @@ const SumAssured = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "500",
+                        background:"white",
                       }}
                       onChange={(e) => {
                         dispatch(
@@ -345,6 +346,8 @@ const TBodyM = ({
                     style={{
                       fontSize: "16px",
                       fontWeight: "500",
+                      background:"white"
+
                     }}
                     value={
                       discount[
