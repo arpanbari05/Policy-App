@@ -113,7 +113,7 @@ function ClaimprocessMobile({
                         <Info>
                             <div>
                                 <h4 className="title imp_title_row_l" style={{fontSize:"21px"}} >
-                                Please Contact on below details in case of further queries
+                                Please reach out on details below for further queries.
                                 </h4>
                             </div>
                             {/* <p className="p_important_sub" 

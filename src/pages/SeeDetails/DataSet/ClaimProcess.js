@@ -213,7 +213,7 @@ console.log(claimform.claim_url,"ayush")
                             }
                           `}
                         >
-                          <h2> Please contact on below details in case of further queries</h2>
+                          <h2> Please reach out on details below for further queries.</h2>
                           {/* <p className="p_important_sub">
                             Don't Hesitate to contact us for any information.
                           </p>{" "} */}
