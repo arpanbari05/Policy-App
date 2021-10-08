@@ -87,9 +87,9 @@ const PlanContainer = ({
           >
             <span
               css={`
-                width: 90px;
+                width: 80px;
                 display: flex;
-                height: 100px;
+                height: 80px;
                 align-items: center;
                 justify-content: center;
               `}

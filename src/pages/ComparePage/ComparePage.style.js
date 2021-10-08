@@ -23,7 +23,9 @@ export const SelectedProduct = styled.div`
     border: solid 2px #0a87ff;
   }
   background-color: #ffffff;
-
+  @media (max-width:400px){
+    padding: 19px 3px 32px 3px !important;
+  }
           
 `;
 export const LogoWrapper = styled.div`
@@ -67,8 +69,9 @@ export const DropDownWrapper = styled.div`
   & > div {
     height: 50px;
   }
-  bottom: 30px;
+  bottom: 15px;
   left: 12px;
+ 
 `;
 export const ErrorAddPlan = styled.div`
   color: #bd2b2b;
@@ -77,7 +80,7 @@ export const ErrorAddPlan = styled.div`
   bottom: -6px;
 `;
 export const QuoteWrapperM = styled.div`
-  height: 117px;
+  height: 110px;
   margin-bottom: 10px;
   padding: 10px 15px;
   border-radius: 4px;

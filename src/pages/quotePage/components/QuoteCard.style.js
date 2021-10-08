@@ -23,13 +23,13 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
-
+height:100%;
 `
 export const Logo = styled.img`
-height:45px;
-margin-bottom: 10px;
+width:100%;
+
 `
-export const PlanName = styled.p`
+export const PlanName = styled.span`
 font-size:14px;
 text-align:center;
 font-weight:bold ;

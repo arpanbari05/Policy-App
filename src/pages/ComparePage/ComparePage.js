@@ -451,7 +451,7 @@ const popupContentM = (
         >
           {[0, 1].map((item, index) => (
             <div
-              style={windowWidth < 400 ? { width: "49%", paddingLeft:"0px !important", paddingRight:"0px !important" } : { width: "49%", }}
+              style={windowWidth < 400 ? { width: "50%", } : { width: "49%", }}
             >
               {mergedQuotes[index] ? (
                 <SelectedProduct first={index === 0}>

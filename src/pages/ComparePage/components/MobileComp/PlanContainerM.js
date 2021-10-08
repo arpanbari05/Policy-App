@@ -56,11 +56,12 @@ const PlanContainerM = ({
           className="price_IC_box text-center position-relative"
           style={{ boxShadow: "none", width: "42%", minHeight: "180px" }}
           css={`
+            margin: 0px !important;
             @media (max-width: 767px) {
               border: 1px solid #c2cbde;
             }
             @media (max-width: 420px) {
-                width:44%;
+              width: 44%;
             }
           `}
         >
@@ -73,15 +74,19 @@ const PlanContainerM = ({
             </span>
           </RemoveCross>
 
-          <img
-            src={IcLogo}
-            style={{ width: "80px", marginTop: "8px" }}
+          <div
             css={`
-              @media (max-width: 767px) {
-                margin: auto !important;
-              }
+              width: 60px;
+              height: 60px;
+              padding: 0px !important;
+              display: flex;
+              margin: auto;
+              justify-content: center;
+              align-items: center;
             `}
-          />
+          >
+            <img src={IcLogo} className="w-100" />
+          </div>
 
           {/* <ImageLogoWrapper style={{backgroundImage:`url(${IcLogo})`}}>
           </ImageLogoWrapper> */}
@@ -89,9 +94,6 @@ const PlanContainerM = ({
           <Col md={12}>
             {/* Dynamic ic name */}
             <WrapperCompanyDetails>
-            {console.log()}
-            {console.log()}
-            {console.log(plans,"++++product")}
               <CompanyName style={{ textAlign: "center" }}>
                 {plans.product.name}
               </CompanyName>
@@ -101,37 +103,42 @@ const PlanContainerM = ({
           <CompareBtn
             windowWidth={windowWidth}
             onClick={() => {
-              const selectedPlan = {
-                // company_alias: mergedQuotes[0]?.company_alias,
-                // logo: mergedQuotes[0]?.logo,
-                product: product,
-                total_premium:
-                  discount[`${product.id}${sum_insured}`]?.total_premium +
-                    additionalPremium || total_premium + additionalPremium,
-                // premium: mergedQuotes[0]?.premium[activeCover],
-                sum_insured:
-                  discount[`${product.id}${sum_insured}`]?.sum_insured ||
-                  sum_insured,
-                tax_amount:
-                  discount[`${product.id}${sum_insured}`]?.tax_amount ||
-                  tax_amount,
-                tenure:
-                  discount[`${product.id}${sum_insured}`]?.tenure || tenure,
-              };
-              addProduct({
-                ...selectedPlan,
-                product_id: selectedPlan.product?.id,
-                premium: selectedPlan.total_premium + additionalPremium,
-                group_id: parseInt(selectedGroup),
-                service_tax: selectedPlan.tax_amount,
-                riders: riders[`${product.id}${sum_insured}`],
-              }).then(() => setShowBuyNowPopup(true));
-            }}
+                const selectedPlan = {
+                  // company_alias: mergedQuotes[0]?.company_alias,
+                  // logo: mergedQuotes[0]?.logo,
+                  product: product,
+                  total_premium:
+                    discount[`${product.id}${sum_insured}`]?.total_premium +
+                      additionalPremium || total_premium + additionalPremium,
+                  // premium: mergedQuotes[0]?.premium[activeCover],
+                  sum_insured:
+                    discount[`${product.id}${sum_insured}`]?.sum_insured ||
+                    sum_insured,
+                  tax_amount:
+                    discount[`${product.id}${sum_insured}`]?.tax_amount ||
+                    tax_amount,
+                  tenure:
+                    discount[`${product.id}${sum_insured}`]?.tenure || tenure,
+                };
+                addProduct({
+                  ...selectedPlan,
+                  product_id: selectedPlan.product?.id,
+                  premium: selectedPlan.total_premium + additionalPremium,
+                  group_id: parseInt(selectedGroup),
+                  service_tax: selectedPlan.tax_amount,
+                  riders: riders[`${product.id}${sum_insured}`],
+                }).then(() => setShowBuyNowPopup(true));
+              }}
             value={`${
+              discount[`${product.id}${sum_insured}`]?.total_premium +
+                additionalPremium +
+                (ridersPremium[`${product.id}${sum_insured}`] || 0) ||
               total_premium +
-              additionalPremium +
-              (ridersPremium[`${product.id}${sum_insured}`] || 0)
-            } /${getYearsUsingTenure(tenure)}`}
+                additionalPremium +
+                (ridersPremium[`${product.id}${sum_insured}`] || 0)
+            } /${getYearsUsingTenure(
+              discount[`${product.id}${sum_insured}`]?.tenure || tenure
+            )}`}
           />
         </Row>
       ) : (
@@ -141,11 +148,10 @@ const PlanContainerM = ({
             width: "42% !important",
             minHeight: "180px",
             borderRadius: "none",
-           
           }}
           css={`
-           @media (max-width: 420px) {
-                width:44%;
+            @media (max-width: 420px) {
+              width: 44%;
             }
           `}
         >
@@ -177,7 +183,7 @@ const EmptyContainer = styled.div`
   background: #f3f4f9;
   border-radius: 12px;
   height: 157px;
-  margin: 10px;
+  /* margin: 10px; */
 
   display: flex;
   justify-content: center;

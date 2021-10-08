@@ -2871,13 +2871,13 @@
     }
     .remove_review_btn {
         background-color: #fff3f3 !important;
-        color: #c7222a !important;
+        color:#0d6efd !important;
         border: 2px dashed #de9b9e!important;
         font-size: 16px;
         border-radius: 8px;
         font-family: PFEncoreSansPromed;
         /* display: inline-flex; */
-        width: 376px;
+        width: fit-content;
         padding: 10px 103px;
         line-height: 38px;
         margin-left: auto;
@@ -2900,7 +2900,7 @@
         margin-bottom: 12px;
         font-weight: 900;
         /* font-family: PFHandbookProbld; */
-        background-image: linear-gradient(to right, #ffe7e7 11%, #fff 19%);
+        /* background-image: linear-gradient(to right, #ffe7e7 11%, #fff 19%); */
         padding: 5px 7px;
         width: 100%;
         margin: 0 -2px;
