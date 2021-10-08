@@ -9,6 +9,10 @@ import correct from "./../../../../assets/images/correct_icon.png";
 import { useLocation } from "react-router";
 import ProposalCheckBox from "../../../../components/Common/ProposalSummary/summaryCheckBox";
 import CheckBox from "../../components/Checkbox/Checkbox";
+import useUrlQuery from "../../../../customHooks/useUrlQuery";
+import SecureLS from "secure-ls";
+
+
 
 const removeTotalPremium = cart => {
   let { totalPremium, ...y } = cart;
@@ -20,8 +24,50 @@ function ProductSummaryMobile({ cart, payNow }) {
   const location = useLocation();
 
   const [show, setShow] = useState(false);
+  const [showP, setShowP] = useState(false);
 
   const { frontendData } = useSelector(state => state.frontendBoot);
+  const ls = new SecureLS();
+  const url = useUrlQuery();
+  const { proposalData, policyStatus, policyLoading } = useSelector(
+    state => state.proposalPage,
+  );
+const enquiryId = url.get("enquiryId");
+  const onClick = mobile => {
+    if (
+      frontendData?.data?.settings?.journey_type === "single" &&
+      (checked || mobile)
+    ) {
+      setShowP(prev => !prev);
+    } else if (checked || mobile) {
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = process.env.REACT_APP_API_BASE_URL + "payments";
+      form.style.display = "none";
+      const input = document.createElement("input");
+      input.name = "enquiry_id";
+      input.value = enquiryId || ls.get("enquiryId");
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+    }
+  };
+  const singlePay = id => {
+    if (checked) {
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = process.env.REACT_APP_API_BASE_URL + "payments";
+      form.style.display = "none";
+      const input = document.createElement("input");
+      input.name = "proposal_id";
+      input.value = id;
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+    }
+  };
   
   const content = (
     <>
@@ -212,7 +258,7 @@ function ProductSummaryMobile({ cart, payNow }) {
                 onChange={() => setChecked(!checked)}
               />{" "}
               <span className="Iaccept">I Accept the&nbsp;</span>
-              <span class="TermsAndConditions"> Terms &amp; Conditions</span>
+              <span class="TermsAndConditions"> Terms &amp; Conditions !!</span>
             </div>
           </div>
         )}
@@ -265,13 +311,33 @@ function ProductSummaryMobile({ cart, payNow }) {
 
           {location.pathname === "/proposal_summary" ? (
             <View
-              onClick={() => checked?payNow(true):payNow(false)}
+            onClick={() => checked && onClick()}
               // style={{ color: checked ? "white" : "lightgray" }}
             >
               Pay Now
             </View>
           ) : (
             <View onClick={() => setShow(true)}>View detail</View>
+          )}
+              {showP && (
+            <MultipleWrapper>
+              <PayList>
+                {policyStatus &&
+                  policyStatus.map(item => (
+                    <PayItem>
+                      <ItemName>{item?.product?.name}</ItemName>
+                      <PayButton
+                        onClick={() => {
+                          singlePay(item.proposal_id);
+                        }}
+                      >
+                        <span>Pay Now </span>
+                        <div>{item.total_premium}</div>
+                      </PayButton>
+                    </PayItem>
+                  ))}
+              </PayList>
+            </MultipleWrapper>
           )}
         </Outer>
       </div>
@@ -311,3 +377,44 @@ const View = styled.button`
 `;
 
 export default ProductSummaryMobile;
+
+const MultipleWrapper = styled.div`
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  background-color: #fff;
+  right: 60px;
+  border-radius: 8px;
+  bottom: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0 6px 12px #d4d8e4b5 !important;
+`;
+const PayList = styled.ul`
+  padding: 10px;
+`;
+const PayItem = styled.li`
+  margin-bottom: 12px;
+  display: flex;
+`;
+const ItemName = styled.div`
+
+  font-size: 20px;
+  background-color: #f6f7f9;
+  padding: 12px;
+  border-radius: 8px;
+  display: inline-block;
+  width: 60%;
+`;
+const PayButton = styled.div`
+  width: 40%;
+  color: #fff;
+  display: inline-block;
+  padding: 6px;
+  background-color: #0a87ff;
+  text-align: center;
+  border-radius: 0 6px 6px 0px;
+  & span {
+    display: inline-block;
+  }
+`;
