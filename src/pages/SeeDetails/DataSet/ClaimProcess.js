@@ -205,17 +205,17 @@ console.log(claimform.claim_url,"ayush")
                             background-color: #eaeef2;
                             color: #253858;
                             padding: 22px;
-                            padding-right: 82px;
+                            /* padding-right: 82px; */
                             & h2 {
                               font-weight: 900;
-                              font-size: 23px;
+                              font-size: 21px;
                             }
                           `}
                         >
-                          <h2> Please Contact on below details in case of further queries</h2>
-                          <p className="p_important_sub">
+                          <h2> Please contact on below details in case of further queries</h2>
+                          {/* <p className="p_important_sub">
                             Don't Hesitate to contact us for any information.
-                          </p>{" "}
+                          </p>{" "} */}
                         </div>
                         <hr className="hr_p_b_cliam" />
                         <div
@@ -260,9 +260,13 @@ console.log(claimform.claim_url,"ayush")
               background-color: #eff7ff;
               display: flex;
               border-radius:100%;
-              width: 31px;
-            height:31px; 
+              width: 42px;
+            height:42px; 
             color:#0a837f;
+            @media (max-width:1200px){
+              width:31px;
+               height: 31px;
+            }
           
             `}
           >
