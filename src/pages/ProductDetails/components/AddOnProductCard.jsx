@@ -37,7 +37,8 @@ function ProductCard({ groupCode }) {
         justify-content: space-between;
         /* padding: 0 20px; */
         border-radius: 3px;
-        padding: 0px 10px;
+        padding: 5px 10px;
+
         background: white;
         border: 1px solid #dfdfdf;
 
@@ -333,7 +334,7 @@ const DetailDispalyPanel = styled.div`
 background:#fafbfc;
 padding: 17px;
     border-radius: 10px;
-    margin:5px 0px;
+   
 @media (max-width:1200px){
  display:none !important; 
 }
