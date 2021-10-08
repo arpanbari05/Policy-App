@@ -195,7 +195,7 @@ const ProductDetails = () => {
           <div
             
             css={`
-             width:27%;
+             width:33%;
              @media (max-width:1350px){
               width:30%;
 
@@ -214,7 +214,7 @@ const ProductDetails = () => {
           </div>
           <div
            css={`
-            width:73%;
+            width:67%;
             @media (max-width:1350px){
               width:70%;
 

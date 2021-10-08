@@ -23,6 +23,8 @@ export const SelectedProduct = styled.div`
     border: solid 2px #0a87ff;
   }
   background-color: #ffffff;
+
+          
 `;
 export const LogoWrapper = styled.div`
   width: 50px;
@@ -35,6 +37,9 @@ export const AddPlan = styled.div`
   background-color: #f4f4f4;
   height: 150px;
   position: relative;
+
+       
+          
 `;
 export const Line = styled.div`
   border-bottom: dashed 1px #74778a;
@@ -174,10 +179,16 @@ export const DetailWrapper = styled.div`
 export const Title = styled.div`
   color: #505f79;
   font-size: 14px;
+  @media (max-width:400px){
+    font-size: 10px;
+  }
 `;
 export const Value = styled.div`
   font-weight: 900;
   font-size: 16px;
+  @media (max-width:400px){
+    font-size: 10px;
+  }
 `;
 export const CompanyName = styled.div`
   font-size: 14px;

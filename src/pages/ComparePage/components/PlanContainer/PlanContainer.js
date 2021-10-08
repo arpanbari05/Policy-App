@@ -38,8 +38,6 @@ const PlanContainer = ({
     tenure,
   } = plans || {};
 
- 
-
   const { discount, ridersPremium, riders } = useSelector(
     (state) => state.comparePage
   );
@@ -60,8 +58,8 @@ const PlanContainer = ({
             display: flex;
             align-items: center;
             height: 210px;
-         
-          width: 270px;
+
+            width: 270px;
             margin: 0 !important;
             justify-content: space-around;
             border: 2px solid white;
@@ -70,7 +68,7 @@ const PlanContainer = ({
             :hover {
               border: 2px solid #0a87ff;
             }
-            @media(max-width:1200px){
+            @media (max-width: 1200px) {
               width: unset;
             }
           `}
@@ -137,10 +135,15 @@ const PlanContainer = ({
                 }).then(() => setShowBuyNowPopup(true));
               }}
               value={`${
+                discount[`${product.id}${sum_insured}`]?.total_premium +
+                  additionalPremium +
+                  (ridersPremium[`${product.id}${sum_insured}`] || 0) ||
                 total_premium +
-                additionalPremium +
-                (ridersPremium[`${product.id}${sum_insured}`] || 0)
-              } /${getYearsUsingTenure(tenure)}`}
+                  additionalPremium +
+                  (ridersPremium[`${product.id}${sum_insured}`] || 0)
+              } /${getYearsUsingTenure(
+                discount[`${product.id}${sum_insured}`]?.tenure || tenure
+              )}`}
             />
           </Col>
         </Row>
@@ -153,9 +156,9 @@ const PlanContainer = ({
                 border: none;
                 background: none;
                 height: 210px;
-               
+
                 width: 270px;
-                @media(max-width:1200px){
+                @media (max-width: 1200px) {
                   width: 100%;
                 }
               `}
@@ -173,7 +176,7 @@ const PlanContainer = ({
                   width: 248px;
                   color: #0a87ff;
                   border-radius: 5px;
-                  @media(max-width:1200px){
+                  @media (max-width: 1200px) {
                     width: 100%;
                   }
                 `}

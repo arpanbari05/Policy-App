@@ -59,6 +59,9 @@ const PlanContainerM = ({
             @media (max-width: 767px) {
               border: 1px solid #c2cbde;
             }
+            @media (max-width: 420px) {
+                width:44%;
+            }
           `}
         >
           <RemoveCross
@@ -138,7 +141,13 @@ const PlanContainerM = ({
             width: "42% !important",
             minHeight: "180px",
             borderRadius: "none",
+           
           }}
+          css={`
+           @media (max-width: 420px) {
+                width:44%;
+            }
+          `}
         >
           <div className="plus mx-auto" onClick={() => setShowM(true)}>
             <i className="fa fa-plus"></i>

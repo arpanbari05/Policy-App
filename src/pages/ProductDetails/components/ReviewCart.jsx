@@ -105,11 +105,11 @@ function AddOnDetailsRow({ addOn }) {
     >
       <div
         css={`
-          width: 50px;
+          width: 30px;
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 50px;
+          height: 30px;
         `}
       >
         <img
