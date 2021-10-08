@@ -56,6 +56,9 @@ function FeatureDefinition({ data }) {
               width: 100%;
               display: flex;
               align-items: center;
+              padding-left: 25px;
+              padding-top: 8px;
+              padding-bottom: 12px;
             `}
           >
             {/* <div
