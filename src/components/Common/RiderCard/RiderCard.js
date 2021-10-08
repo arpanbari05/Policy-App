@@ -270,7 +270,7 @@ function RiderDescription({
             onClick={handleShowMore}
             type="button"
           >
-            {showMore ? "Show less" : "...Show more"}
+            {showMore ? "Read less" : "...Read more"}
           </span>
         ) : null}
       </span>
