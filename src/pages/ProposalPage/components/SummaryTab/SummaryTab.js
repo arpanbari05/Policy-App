@@ -409,7 +409,7 @@ const EditWrapper = styled.div`
   }
 `;
 const PencilWrapper = styled.div`
-  background-color: white;
+  /* background-color: white; */
   width: 25px;
   height: 25px;
   border-radius: 100%;
