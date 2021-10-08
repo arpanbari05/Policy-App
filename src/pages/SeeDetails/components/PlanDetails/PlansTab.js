@@ -6,9 +6,9 @@ const PlansTab = ({ isActive, title, description, onClick }) => {
   return (
     <Anchor
       onClick={onClick}
-      className={`nav-link mb-3 p-3 ${isActive && "active"}`}
+      className={`nav-link mb-3 p-3  ${isActive && "active"}`}
       css={`
-      border: 1px solid #dbd8d8 !important;
+      border: 1px solid #eee !important;
       `}
     >
       <span className={`${isActive && "active"}`}>{title}</span>
@@ -20,7 +20,7 @@ const PlansTab = ({ isActive, title, description, onClick }) => {
 export default PlansTab;
 
 const Anchor = styled.a`
-
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
   & span {
     font-size: 20px;
     color: #253858;
@@ -38,7 +38,8 @@ const Anchor = styled.a`
     color: unset !important;
     background-color: unset !important;
     position: relative;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+  
+    box-shadow: unset !important;
     
     // &:after {
     //   content: "";

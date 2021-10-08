@@ -111,17 +111,17 @@ function ClaimprocessMobile({
 
                         <Info>
                             <div>
-                                <h4 className="title imp_title_row_l" >
+                                <h4 className="title imp_title_row_l" style={{fontSize:"21px"}} >
                                 Please Contact on below details in case of further queries
                                 </h4>
                             </div>
-                            <p className="p_important_sub" 
+                            {/* <p className="p_important_sub" 
                             css={`
                             margin-top:0px !important;
                             `}
                             >
                                 Don't Hesitate to contact us for any information.
-                            </p>{" "}
+                            </p>{" "} */}
                             <div style={{ padding: "30px 15px", display: "flex",flexDirection: "column" }}>
 
                             <div style={{ display: "flex", marginBottom:"20px"}}>
