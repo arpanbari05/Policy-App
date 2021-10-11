@@ -24,6 +24,7 @@ import ProductSummaryMobile from "../ProposalPage/ProposalSections/components/Pr
 import ProductSummaryTab from "../ProposalPage/ProposalSections/components/ProductSummaryTab";
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { Col, Row } from "react-bootstrap";
+import TermModal from "./TermsModal";
 const ProposalSummary = ({ history }) => {
   const { currentSchema } = useSelector(state => state.schema);
   const { proposalData, policyStatus, policyLoading } = useSelector(
@@ -31,6 +32,7 @@ const ProposalSummary = ({ history }) => {
   );
   const { proposerDetails } = useSelector(state => state.greetingPage);
   const [show, setShow] = useState(false);
+  const [termShow, setTermShow] = useState(false);
   const { frontendData } = useSelector(state => state.frontendBoot);
 
   const [allFields, setAllFields] = useState([]);
@@ -110,7 +112,9 @@ const ProposalSummary = ({ history }) => {
               onChange={() => setChecked(!checked)}
             />{" "}
             <span className="Iaccept">I Accept the&nbsp;</span>
-            <span class="TermsAndConditions"> Terms &amp; Conditions </span>
+            <span class="TermsAndConditions" onClick={() => setTermShow(true)}> Terms &amp; Conditions </span>
+{termShow && <TermModal show={termShow} handleClose={()=>{setTermShow(false)}}/>}
+
           </div>
           {show && (
             <MultipleWrapper>

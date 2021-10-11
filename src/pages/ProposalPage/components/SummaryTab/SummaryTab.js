@@ -382,7 +382,7 @@ const EditWrapper = styled.div`
   /* padding-left: 10px; */
   z-index: 50;
   @media (max-width: 767px) {
-    top: 30px;
+    top: 52px;
   }
   & span {
     text-align: left;
