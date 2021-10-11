@@ -159,7 +159,7 @@ function QuotePage() {
                 <TextLabel>
                   {" "}
                   {loadingQuotes ? "Loading" : "Showing"} {selectedPlanType}{" "}
-                  Plan{loadingQuotes && "..."}
+                  Plans{loadingQuotes && "..."}
                 </TextLabel>
                 {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
@@ -194,7 +194,7 @@ function QuotePage() {
                   />
                 )}
               </div>
-              {console.log(filterQuotes.flat(),'13hagsd')}
+              {console.log(filterQuotes.flat(), "13hagsd")}
               {quotes?.length ? (
                 firstQuoteFound &&
                 filterQuotes.map((item, index) =>
@@ -296,7 +296,7 @@ function QuotePage() {
           css={`
             padding: 10px 15px;
 
-            margin-bottom: 100px;
+            padding-bottom: 71px;
             @media (max-width: 768px) {
               display: none;
             }
@@ -327,7 +327,8 @@ function QuotePage() {
         </div>
         <div
           css={`
-            margin-bottom: 100px;
+            padding-bottom: 71px;
+
             @media (min-width: 769px) {
               display: none !important;
             }

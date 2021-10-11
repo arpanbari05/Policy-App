@@ -35,24 +35,22 @@ import AddOnCoverageMobile from "./MobileComponents/AddOnCoverageMobile/AddOnCov
 import CashlessHospitalMobile from "./MobileComponents/Cashless Hospitals/CashlessHospitalMobile";
 import ClaimprocessMobile from "./MobileComponents/ClaimProcessMobile/ClaimprocessMobile";
 import AboutCompanyMobile from "./MobileComponents/AboutCompanyMobile/AboutCompanyMobile";
-import { getAbhiRidersApi,getRidersApi } from "../quotePage/serviceApi";
+import { getAbhiRidersApi, getRidersApi } from "../quotePage/serviceApi";
 import { addSelectedRiders } from "../quotePage/quote.slice";
 import { AiOutlineClose } from "react-icons/ai";
-
 
 export const getRiders = async (
   { productId, sum_insured, tenure, group },
 
-  callback = () => {},
+  callback = () => {}
 ) => {
-  console.log(productId,'agsdasgd2')
+  console.log(productId, "agsdasgd2");
   try {
     const response = await getRidersApi({
       productId,
       sum_insured,
       tenure,
       group,
-    
     });
     if (response.message) {
       callback(null, response.message);
@@ -66,8 +64,8 @@ export const getRiders = async (
 };
 
 export const getAbhiRiders = async (
-  { productId, sum_insured, tenure, group, string},
-  callback = () => {},
+  { productId, sum_insured, tenure, group, string },
+  callback = () => {}
 ) => {
   try {
     const response = await getAbhiRidersApi({
@@ -75,7 +73,7 @@ export const getAbhiRiders = async (
       sum_insured,
       tenure,
       group,
-      string
+      string,
     });
     if (response.message) {
       callback(null, response.message);
@@ -94,7 +92,7 @@ const getHospitalsData = async ({ company_alias }, callback = () => {}) => {
   let searchByName = {};
   let searchByPincode = {};
   const displayHospitals = hospitals.slice(0, 6);
-  hospitals.forEach(item => {
+  hospitals.forEach((item) => {
     searchByName = {
       ...searchByName,
       ...{
@@ -144,13 +142,13 @@ const SeeDetails = ({
   tenure,
   product,
 }) => {
-  console.log(quote,'jejejejj')
+  console.log(quote, "jejejejj");
 
   const [addedRiders, setAddedRiders] = useState([]);
   const dispatch = useDispatch();
   const { groupCode } = useParams();
   const [activeFieldset, setActiveFieldset] = useState(1);
- 
+
   /*========================================================= */
 
   // const sumInsuredIndex = quote.sum_insured.indexOf(sum_insured);
@@ -175,17 +173,17 @@ const SeeDetails = ({
     logo,
     csr: claim_settlement_ratio,
   } = useSelector(
-    state =>
-      state.frontendBoot.frontendData.data.companies[quote.company_alias],
+    (state) =>
+      state.frontendBoot.frontendData.data.companies[quote.company_alias]
   );
 
-  const { selectedPlan } = useSelector(state => state.quotePage);
+  const { selectedPlan } = useSelector((state) => state.quotePage);
 
-  const { selectedRiders } = useSelector(state => state.quotePage);
+  const { selectedRiders } = useSelector((state) => state.quotePage);
 
   const getPlanDetails = async (
     { productId, sum_insured },
-    callback = () => {},
+    callback = () => {}
   ) => {
     const { data } = await getFeatures(productId);
     let featureList = [];
@@ -196,7 +194,7 @@ const SeeDetails = ({
         title: item.name,
         description: item.description,
       });
-      item?.sum_insureds[sum_insured]?.features?.forEach(innerItem => {
+      item?.sum_insureds[sum_insured]?.features?.forEach((innerItem) => {
         innerData[item.name] = [
           ...(innerData[item.name] ? innerData[item.name] : []),
           {
@@ -244,15 +242,15 @@ const SeeDetails = ({
   const [aboutCompany, setAboutCompany] = useState({});
   const [brochureUrl, setBrochureUrl] = useState("");
   const [policyWordingUrl, setPolicyWordingUrl] = useState("");
-const [hey, sethey] = useState("");
-  console.log(show,'sgdagsd')
+  const [hey, sethey] = useState("");
+  console.log(show, "sgdagsd");
   useEffect(() => {
     const getdetails = async () => {
       if (show === 4) {
         dispatch(requestDetails());
         await getPlanDetails(
           { productId: quote.product.id, sum_insured: sum_insured },
-          setPlanDetails,
+          setPlanDetails
         );
         setActiveFieldset(3);
       }
@@ -266,12 +264,12 @@ const [hey, sethey] = useState("");
         dispatch(requestDetails());
         await getPlanDetails(
           { productId: quote.product.id, sum_insured: sum_insured },
-          setPlanDetails,
+          setPlanDetails
         );
-        await getProductBrochure({ productId: quote.product.id }, data => {
+        await getProductBrochure({ productId: quote.product.id }, (data) => {
           if (data) {
             if (data[0]) {
-          sethey(data[0]);
+              sethey(data[0]);
               setBrochureUrl(data[0].brochure_url);
               setPolicyWordingUrl(data[0].policy_wording_url);
             }
@@ -282,7 +280,7 @@ const [hey, sethey] = useState("");
       }
       if (activeFieldset === 2) {
         dispatch(requestDetails());
-        console.log('hehehehhe', quote.product.id)
+        console.log("hehehehhe", quote.product.id);
         await getRiders(
           {
             productId: quote.product.id,
@@ -290,9 +288,9 @@ const [hey, sethey] = useState("");
             tenure,
             group: groupCode,
           },
-          riders => {
+          (riders) => {
             setRiders(riders);
-          },
+          }
         );
         dispatch(requestDetailsSuccess());
       }
@@ -300,7 +298,7 @@ const [hey, sethey] = useState("");
         dispatch(requestDetails());
         await getHospitalsData(
           { company_alias: quote.company_alias },
-          setHospitals,
+          setHospitals
         );
         dispatch(requestDetailsSuccess());
       }
@@ -318,7 +316,6 @@ const [hey, sethey] = useState("");
     };
     getdetails();
   }, [activeFieldset]);
- 
 
   return (
     <div>
@@ -340,7 +337,6 @@ const [hey, sethey] = useState("");
               display: none;
             }
           `}
-       
         >
           <div>
             <CloseButton
@@ -377,6 +373,7 @@ const [hey, sethey] = useState("");
                 tenure={tenure}
                 product={product}
                 riders={riders}
+                setRiders={setRiders}
                 setAddedRiders={setAddedRiders}
               />
               <CashlessHospital
@@ -411,9 +408,7 @@ const [hey, sethey] = useState("");
             }
           `}
         >
-         
           <div>
-         
             <SeeDetailsTopMobile
               style={{ top: "0px" }}
               logo={logo}
@@ -428,17 +423,17 @@ const [hey, sethey] = useState("");
               type="button"
               className="btn btn-white recom_close_css"
               css={`
-              top:35px;
- font-size: 18px ;
-          background-color: #eff2f5;
-          border-radius:50px;
-          padding:3px 8px;
+                top: 35px;
+                font-size: 18px;
+                background-color: #eff2f5;
+                border-radius: 50px;
+                padding: 3px 8px;
               `}
               onClick={handleClose}
             >
               {/* <i className="fa fa-close"></i>
                */}
-                  <AiOutlineClose />
+              <AiOutlineClose />
             </CloseButton>
             <SeeDetailsTab
               activeFieldset={activeFieldset}
@@ -470,7 +465,6 @@ const [hey, sethey] = useState("");
               ActiveMainTab={activeFieldset === 4 ? true : false}
               claimProccess={claimProccess}
               claimform={hey}
-            
             />
             <AboutCompanyMobile
               ActiveMainTab={activeFieldset === 5 ? true : false}
@@ -510,8 +504,12 @@ const [hey, sethey] = useState("");
           {/* <Header /> */}
           <StyledHeader>
             <a>
-            <i class="fa fa-arrow-left"onClick={handleClose}  aria-hidden="true"></i>
-             
+              <i
+                class="fa fa-arrow-left"
+                onClick={handleClose}
+                aria-hidden="true"
+              ></i>
+
               <span> See Details</span>
             </a>
           </StyledHeader>
@@ -565,7 +563,7 @@ const [hey, sethey] = useState("");
               bottom: "0px",
               padding: "10px !important",
               boxShadow: "0px -1px 5px #c2cbde",
-              backgroundColor:"#fff",
+              backgroundColor: "#fff",
             }}
           >
             <SeedetailFooterMobile
@@ -587,7 +585,7 @@ const [hey, sethey] = useState("");
       </Modal>
 
       <SeeDetailsFooter
-      handleClose={handleClose}
+        handleClose={handleClose}
         quote={quote}
         sum_insured={sum_insured}
         logo={logo}
@@ -613,8 +611,7 @@ const CloseButton = styled.button`
   border-radius: 50%;
   z-index: 9999;
   right: 36px;
-  top:15px;
-
+  top: 15px;
 `;
 
 const ModalBodyMobile = styled.div`
@@ -637,7 +634,7 @@ const StyledHeader = styled.div`
     color: #fff;
   }
 
-  background:#0d6efd;
+  background: #0d6efd;
   align-items: center;
   justify-content: space-between;
 `;
