@@ -204,7 +204,19 @@ const SubContent = ({
           <div className="col-md-3">
             <EachWrapper>
               <LogoWrapper>
-                <Logo src={logo} />
+                <div
+                  css={`
+                    width: 80px;
+                    min-height: 80px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    height: auto;
+                    margin-bottom: 10px;
+                  `}
+                >
+                  <Logo src={logo} />
+                </div>
                 <PlanName>{name}</PlanName>
               </LogoWrapper>
             </EachWrapper>

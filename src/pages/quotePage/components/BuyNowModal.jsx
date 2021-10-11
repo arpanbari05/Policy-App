@@ -343,9 +343,10 @@ const ProductData = styled.div`
 `;
 const ProductName = styled.p`
   color: #000;
-  font-size: ${(props) => (props.flag ? "14px" : "20px")};
+  font-size: ${(props) => (props.flag ? "15px" : "20px")};
   width: 150px;
-  margin-right: -26px;
+  font-weight: bolder;
+  margin: unset;
   text-align: left;
 `;
 
