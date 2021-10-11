@@ -132,7 +132,7 @@ const AddOnCoverages = ({
                     )}
                   </div>
                 </section> */}
-                <CustomizeYourPlan groupCode={groupCode} product={product} seeDetails />
+                <CustomizeYourPlan groupCode={groupCode} product={product} seeDetails={quote.product.id} />
                 {/* <AddOnsCoveragesSection
                   groupCode={groupCode}
                   product={product}

@@ -101,7 +101,7 @@ const ProposalPage = ({ history }) => {
             align-items: center;
           }
           & .formbuilder__error {
-            color: #0a87ff;
+            color: #c7222a;
           }
         `}
       >

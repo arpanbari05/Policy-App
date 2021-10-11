@@ -139,6 +139,7 @@ const quotePageSlice = createSlice({
       state.selectedGroup = action.payload;
     },
     setFilters: (state, action) => {
+      console.log('fetchquotes setfilters',action.payload)
       state.filters = { ...state.filters, ...action.payload };
     },
     updateFetchedFilters: (state, action) => {
@@ -288,6 +289,7 @@ var flag = false;
 export const fetchQuotes =
   (companies, { sum_insured, tenure, plan_type, member, basePlanType }) =>
   async (dispatch, store) => {
+    console.log('hashahh3',cancelTokens)
     try {
       const filters = store().quotePage.filters;
       const baseplantypes =

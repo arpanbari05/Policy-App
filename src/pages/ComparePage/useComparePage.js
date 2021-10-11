@@ -141,7 +141,7 @@ const useComparePage = () => {
 
       tempfilter !== null && dispatch(setFilters(tempfilter));
       if (!QuotesToAdd.length) {
-        console.log("fetctquotes useComparePage");
+        console.log("fetchquotes useComparePage");
         dispatch(
           fetchQuotes(companies, {
             sum_insured:

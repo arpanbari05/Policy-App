@@ -44,7 +44,7 @@ const FilterModal = ({ show, handleClose }) => {
 
     // dispatch(replaceQuotes([]));
     // dispatch(replaceFilterQuotes([]));
-    // console.log("fetctquotes multiyearOption")
+    // console.log("fetchquotes multiyearOption")
     // dispatch(
     //   fetchQuotes(companies, {
     //     plan_type: filters.planType === "Individual"

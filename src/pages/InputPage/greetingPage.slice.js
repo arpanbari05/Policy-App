@@ -454,12 +454,12 @@ export const getProposerDetails = (data) => {
             plan_type: response?.data?.data?.groups?.[0]?.plan_type,
           })
         );
-        dispatch(
-          setFilters({
-            ...response?.data?.data?.groups,
-            plan_type: response?.data?.data?.groups?.[0]?.plan_type,
-          })
-        );
+        // dispatch(
+        //   setFilters({
+        //     ...response?.data?.data?.groups,
+        //     plan_type: response?.data?.data?.groups?.[0]?.plan_type,
+        //   })
+        // );
         dispatch(updateFetchedFilters(response?.data?.data?.groups));
         const newMemberGroups = response.data.data.groups.reduce(
           (groups, member) => ({
