@@ -45,6 +45,7 @@ const CardModal = ({
             margin: unset;
           }
           .modal-dialog > div {
+            
             height: 100vh;
             position: fixed;
             top: 0%;
