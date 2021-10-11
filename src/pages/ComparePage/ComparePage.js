@@ -213,7 +213,7 @@ const popupContent = (
           {[0, 1, 2].map((item, index) => (
             <div className="col-lg-4">
               {mergedQuotes[index] ? (
-                <SelectedProduct first={index === 0}>
+                <SelectedProduct first={index === 0} >
                   <RemoveCross
                     onClick={() =>
                       removePlan(
@@ -223,14 +223,11 @@ const popupContent = (
                   >
                     <i class="fas fa-times"></i>
                   </RemoveCross>
-                  <LogoWrapper>
+                  <LogoWrapper className="logo_style_common">
                     <img
                       src={mergedQuotes[index].data.logo}
                       alt="logo"
-                      css={`
-                        width: 57px;
-                        object-fit: contain;
-                      `}
+                      
                     ></img>
                   </LogoWrapper>
                   <NameWrapper>
@@ -262,7 +259,7 @@ const popupContent = (
                       <DetailWrapper>
                         <Title>Premium :</Title>
                         <Value>
-                          <i class="fa fa-inr"></i>{" "}
+                        ₹ {" "}
                           {(discount[
                             `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
                           ]
@@ -303,7 +300,7 @@ const popupContent = (
                 return (
                   <div className="col-lg-4">
                     <QuoteWrapper>
-                      <LogoWrapper>
+                      <LogoWrapper className="logo_style_common">
                         <img
                           src={companyWiseLogos[index]}
                           alt="logo"
@@ -473,7 +470,7 @@ const popupContentM = (
                       alignItems: "center",
                     }}
                   >
-                    <LogoWrapper>
+                    <LogoWrapper  className="logo_style_commo_m" style={{ marginRight:"0px"}}>
                       <img src={mergedQuotes[index].data.logo} className="w-100" alt="logo"></img>
                     </LogoWrapper>
 
@@ -551,7 +548,7 @@ const popupContentM = (
                 return (
                   <div className="col-lg-4">
                     <QuoteWrapperM>
-                      <LogoWrapper>
+                      <LogoWrapper  className="logo_style_common_m">
                         <img src={companyWiseLogos[index]} className="w-100" alt="logo"></img>
                       </LogoWrapper>
                       <QuoteNameM>{item}</QuoteNameM>

@@ -109,7 +109,7 @@ function AddOnDetailsRow({ addOn }) {
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 30px;
+          height:30px;
         `}
       >
         <img
@@ -1043,7 +1043,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           >
             <div
               css={`
-                width: 50px;
+                width: 80px;
                 height: auto;
                 background-color: #fff;
                 display: flex;
@@ -1058,9 +1058,8 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                 }
               `}
             >
-              <img src={companyAlias==="care_health"?care_health:logoSrc} alt={companyAlias} class="w-100" />
+              <img src={logoSrc} alt={companyAlias} class="w-100" />
       
-              {console.log(companyAlias,"logoSrc")}
             </div>
             <div
               style={{

@@ -32,6 +32,7 @@ export const LogoWrapper = styled.div`
   width: 50px;
   height: 50px;
   float: left;
+  margin-right:5px;
 `;
 export const AddPlan = styled.div`
   padding: 30px 220px 53px 27px;
@@ -173,7 +174,7 @@ export const DetailWrapper = styled.div`
   width: calc(50% - 28px);
   &:first-child {
     border-right: 1px solid #a4a4a4;
-    margin-right: 40px;
+    margin-right: 15px;
   }
   &:nth-child(2) {
     width: calc(50% - 12px);

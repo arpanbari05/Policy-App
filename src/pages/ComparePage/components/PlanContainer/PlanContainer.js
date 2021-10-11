@@ -85,15 +85,8 @@ const PlanContainer = ({
               justifyContent: "center",
             }}
           >
-            <span
-              css={`
-                width: 80px;
-                display: flex;
-                height: 80px;
-                align-items: center;
-                justify-content: center;
-              `}
-            >
+            <span className="logo_style_common">
+           
               <img src={images[company_alias]} alt="" className="w-100" />
             </span>
             {/* Dynamic ic name */}
