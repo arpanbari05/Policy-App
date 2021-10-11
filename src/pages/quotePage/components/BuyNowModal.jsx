@@ -95,6 +95,7 @@ function ProductCard({ product }) {
           </ProductData>
         </span>
       </div>
+
       <ProductContainer>
         <div>
           <img className="contain" src={logo} alt="logo" />
@@ -148,8 +149,8 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
           className="text_title_filter p_modal_title_bg_filters_product d-flex align-items-center"
           style={{ textTransform: "capitalize" }}
           css={`
-            font-family:unset;
-            background-image:unset;
+            font-family: unset;
+            background-image: unset;
           `}
         >
           {/* <span
@@ -192,9 +193,9 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 border-radius: 100%;
                 color: #2c97ff !important;
                 font-size: 22px;
-@media (max-width:768px){
-  display:none !important;
-}
+                @media (max-width: 768px) {
+                  display: none !important;
+                }
               `}
               className=" d-flex justify-content-center align-items-center"
               onClick={deleteProduct}
@@ -209,9 +210,9 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               className="btn "
               css={`
                 justify-content: space-between;
-                @media (max-width:768px){
-  display:none !important;
-}
+                @media (max-width: 768px) {
+                  display: none !important;
+                }
               `}
               onClick={() => {
                 setShowBuyNow(false);
@@ -243,7 +244,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 });
               }}
             >
-                          <span>Add Plan</span> <img src={addBtn} alt="addbtn" />
+              <span>Add Plan</span> <img src={addBtn} alt="addbtn" />
             </button>
           </div>
         )}
@@ -257,9 +258,11 @@ const PopupContent = (a, b, setShowBuyNow) => {
   const { memberGroups } = useSelector((state) => state.greetingPage);
 
   return (
-    <div css={`
-    width:auto !important;
-    `}>
+    <div
+      css={`
+        width: auto !important;
+      `}
+    >
       {Object.keys(memberGroups).map((groupCode) => (
         <BuyNowModalProduct
           groupCode={groupCode}
@@ -288,7 +291,6 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow }) => {
   );
   return (
     <CardModal
-
       show={showBuyNow}
       handleClose={() => {
         setShowBuyNow(false);
@@ -313,8 +315,9 @@ const ProductData = styled.div`
   display: flex;
   flex-direction: column;
   color: black;
+  margin: 2px;
   border-left: 1px solid #dce2ec;
-  padding-left: 34px;
+  padding-left: 8px;
 
   position: relative;
   left: -16px;
@@ -333,12 +336,17 @@ const ProductData = styled.div`
       font-size: 15px;
     }
   }
+
+  @media (min-width: 1012px) {
+    padding-left: 34px;
+  }
 `;
 const ProductName = styled.p`
   color: #000;
-  font-size: ${(props) => (props.flag ? "16px" : "20px")};
+  font-size: ${(props) => (props.flag ? "14px" : "20px")};
   width: 150px;
   margin-right: -26px;
+  text-align: left;
 `;
 
 const ProductContainer = styled.div`
@@ -349,7 +357,6 @@ const ProductContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-
   & img {
     width: 68px;
   }

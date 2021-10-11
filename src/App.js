@@ -22,7 +22,6 @@ import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import ProposalPage from "./pages/ProposalPage/ProposalPage";
 import ProposalSummary from "./pages/ProposalSummary/ProposalSummary";
 
-
 function App() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -103,8 +102,11 @@ function App() {
         <Route exact path="/proposal_summary" component={ProposalSummary} />
         <Route exact path="/thankyou/" component={ThankYouPage} />
 
-        <Route exact path="/productdetails/:groupCode" component={ProductDetails} />
-
+        <Route
+          exact
+          path="/productdetails/:groupCode"
+          component={ProductDetails}
+        />
       </Switch>
     </>
   ) : (

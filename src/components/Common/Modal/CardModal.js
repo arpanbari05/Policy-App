@@ -11,7 +11,7 @@ const CardModal = ({
   content,
   buttonValue,
   handleClick,
- handleClose ,
+  handleClose,
   BtnArrow,
   noFooter,
   showButton = true,
@@ -20,26 +20,35 @@ const CardModal = ({
   return (
     <Modal
       centered
+      //fullscreen
       show={show}
       size="lg"
       onHide={handleClose}
       animation={false}
+      //dialogClassName="modal-box"
       style={{
         zIndex: "2000",
         borderRadius: "12px",
         border: "none",
         marginBottom: revised ? "70px" : "0px",
         background: "rgba(0,0,0,0.5)",
-     
       }}
-
       css={`
-      
-      .modal-dialog {
-        @media(max-width:991px){
-        max-width:600px !important;
-      }}
-    
+        @media (min-width: 767px) and (max-width: 990px) {
+          .modal-dialog {
+            max-width: 700px !important;
+          }
+        }
+        @media (max-width: 767px) {
+          .modal-dialog {
+            max-width: 100% !important;
+          }
+          .modal-dialog > div {
+            height: 100vh;
+            position: fixed;
+            top: 0%;
+          }
+        }
       `}
       className={`${customClass} noselect`}
     >
@@ -52,7 +61,6 @@ const CardModal = ({
           borderToprightRadius: "14px",
           borderBottomRightRadius: "0px",
           borderBottomLeftRadius: "0px",
-          backgroundColor: "#ebf5ff",
         }}
       >
         {title && <ModalTitle className="modal-headerz">{title}</ModalTitle>}
@@ -65,9 +73,7 @@ const CardModal = ({
       >
         <i className="fa fa-close"></i>
       </CloseButton> */}
-      <Modal.Body >
-        {content}
-      </Modal.Body>
+      <Modal.Body>{content}</Modal.Body>
       <Modal.Footer
         style={{
           display: noFooter && "none",
@@ -114,7 +120,7 @@ const ModalTitle = styled.h5`
   line-height: 1.5;
   color: #000;
   font-size: 20px;
-  color:#304261;
+  color: #304261;
   font-weight: 900;
   width: 80%;
   @media (max-width: 767px) {
