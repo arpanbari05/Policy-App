@@ -1,5 +1,6 @@
 {
   "files": {
+
     "main.css": "/static/css/main.78205ef0.chunk.css",
     "main.js": "/static/js/main.c0906789.chunk.js",
     "main.js.map": "/static/js/main.c0906789.chunk.js.map",
@@ -15,6 +16,7 @@
     "static/css/main.78205ef0.chunk.css.map": "/static/css/main.78205ef0.chunk.css.map",
     "static/js/2.2dcc1a1d.chunk.js.LICENSE.txt": "/static/js/2.2dcc1a1d.chunk.js.LICENSE.txt",
     "static/js/3.ce356a15.chunk.js.LICENSE.txt": "/static/js/3.ce356a15.chunk.js.LICENSE.txt",
+
     "static/media/app.css": "/static/media/Inter-Regular.f93ebd02.woff2",
     "static/media/Maxbupa.905841a6.png": "/static/media/Maxbupa.905841a6.png",
     "static/media/Maxbupa.f5e778be.png": "/static/media/Maxbupa.f5e778be.png",
@@ -36,10 +38,12 @@
     "static/media/whatsapp01.a80b94b6.png": "/static/media/whatsapp01.a80b94b6.png"
   },
   "entrypoints": [
+
     "static/js/runtime-main.153302c0.js",
     "static/css/2.0130d929.chunk.css",
     "static/js/2.2dcc1a1d.chunk.js",
     "static/css/main.78205ef0.chunk.css",
     "static/js/main.c0906789.chunk.js"
+
   ]
 }
