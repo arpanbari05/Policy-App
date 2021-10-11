@@ -125,10 +125,10 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
               <div
                 css={`
                   width: 80px;
-                  min-height:80px;
-                  display:flex;
-                  align-items:center;
-                  justify-content:space-between;
+                  min-height: 80px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
                   height: auto;
                   margin-bottom: 10px;
                 `}
@@ -239,7 +239,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
               })}
             </div>
           </EachWrapper>
-          {mergedQuotes.length - 1 !== 0 && (
+          {mergedQuotes.length - 1 !== 0 && !show && (
             <CenterBottomToggle>
               <SeeText
                 css={`
@@ -250,21 +250,14 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                   setShow(!show);
                 }}
               >
-                {!show ? (
-                  <>
-                    {mergedQuotes.length - 1 > 1 ? (
-                      <span>{mergedQuotes.length - 1} More Plans </span>
-                    ) : (
-                      <span>{mergedQuotes.length - 1} More Plan </span>
-                    )}
-                    <i class="fas fa-chevron-down"></i>
-                  </>
-                ) : (
-                  <>
-                    <span>Hide Plans </span>
-                    <i class="fas fa-chevron-up"></i>
-                  </>
-                )}
+                <>
+                  {mergedQuotes.length - 1 > 1 ? (
+                    <span>{mergedQuotes.length - 1} More Plans </span>
+                  ) : (
+                    <span>{mergedQuotes.length - 1} More Plan </span>
+                  )}
+                  <i class="fas fa-chevron-down"></i>
+                </>
               </SeeText>
             </CenterBottomToggle>
           )}
@@ -399,15 +392,36 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                 <>
                   {console.log("ssssssss3", item)}
                   {item && (
-                    <SubContent
-                      addProduct={addProduct}
-                      key={index}
-                      id={index}
-                      quoteCardData={item}
-                      quotesForCompare={quotesForCompare}
-                      handleClick={handleClick}
-                      handleSeeDetails={handleSeeDetails}
-                    />
+                    <>
+                      <SubContent
+                        addProduct={addProduct}
+                        key={index}
+                        id={index}
+                        quoteCardData={item}
+                        quotesForCompare={quotesForCompare}
+                        handleClick={handleClick}
+                        handleSeeDetails={handleSeeDetails}
+                      />
+
+                      {show && index === mergedQuotes.slice(1).length - 1 && (
+                        <>
+                          <CenterBottomToggle>
+                            <SeeText
+                              css={`
+                                border-bottom: none !important;
+                                cursor: pointer;
+                              `}
+                              onClick={() => {
+                                setShow(!show);
+                              }}
+                            >
+                              <span>Hide Plans </span>
+                              <i class="fas fa-chevron-up"></i>
+                            </SeeText>
+                          </CenterBottomToggle>
+                        </>
+                      )}
+                    </>
                   )}
                 </>
               ))}
