@@ -80,7 +80,15 @@ function useQuotesPage() {
         }
       });
 
-      tempfilter !== null && dispatch(setFilters(tempfilter));
+      tempfilter !== null &&
+        dispatch(
+          setFilters({
+            hehe:'hehehe',
+            ...tempfilter,
+            cover: tempfilter.cover || defaultfilters.cover,
+            multiYear: tempfilter.multiYear || defaultfilters.multiYear,
+          })
+        );
       console.log(
         "company",
         companies,
@@ -93,24 +101,24 @@ function useQuotesPage() {
         "ses",
         selectedGroup
       );
-      dispatch(
-        fetchQuotes(companies?.companies, {
-          sum_insured:
-            tempfilter?.cover !== null
-                ? findCode("covers", tempfilter?.cover) 
-                : cover,
-          tenure,
-          member: selectedGroup,
-          plan_type:
-            memberGroups[selectedGroup].length === 1
-              ? "I"
-              : proposerDetails.plan_type
-              ? proposerDetails.plan_type === "M"
-                ? "M"
-                : "F"
-              : "F",
-        })
-      );
+      //   dispatch(
+      //     fetchQuotes(companies?.companies, {
+      //       sum_insured:
+      //         tempfilter?.cover !== null
+      //             ? findCode("covers", tempfilter?.cover)
+      //             : cover,
+      //       tenure,
+      //       member: selectedGroup,
+      //       plan_type:
+      //         memberGroups[selectedGroup].length === 1
+      //           ? "I"
+      //           : proposerDetails.plan_type
+      //           ? proposerDetails.plan_type === "M"
+      //             ? "M"
+      //             : "F"
+      //           : "F",
+      //     })
+      //   );
     }
 
     dispatch(setShouldFetchQuotes(false));
@@ -218,15 +226,62 @@ function useQuotesPage() {
   useEffect(() => {
     dispatch(clearFilterQuotes());
   }, [groupCode]);
+  // useEffect(() => {
+  //   if (Object.keys(memberGroups) && !initRef.current) {
+  //     dispatch(
+  //       fetchQuotes(companies?.companies, {
+  //         sum_insured: findCode("covers", filters.cover),
+  //         tenure: filters.multiYear.charAt(0),
+  //         member: selectedGroup,
+  //         plan_type:
+  //           memberGroups?.[selectedGroup]?.length === 1
+  //             ? "I"
+  //             : proposerDetails.plan_type
+  //             ? proposerDetails.plan_type === "M"
+  //               ? "M"
+  //               : "F"
+  //             : "F",
+  //       })
+  //     );
+
+  //     // if (filterQuotes.length < 2) {
+  //     //   arr?.forEach((item) =>
+  //     //     dispatch(
+  //     //       fetchQuotes({
+  //     //         alias: item,
+  //     //         type: "normal",
+  //     //         sum_insured: cover,
+  //     //         tenure,
+  //     //         member: member.filter((m) => m.group === "group_code_1"),
+  //     //         plan_type,
+  //     //       })
+  //     //     )
+  //     //   );
+  //     // }
+  //   }
+  //   if (fetchFilters.length < 1) {
+  //     if (initRef.current) {
+  //       dispatch(setFilters(defaultfilters));
+  //     }
+  //     initRef.current = false;
+  //   }
+  // }, [memberGroups]);
+
   useEffect(() => {
-    if (Object.keys(memberGroups) && !initRef.current) {
+    if (filters.cover && filters.multiYear) {
+      dispatch(clearFilterQuotes());
+      console.log(
+        "fetchQuotes useQUotes",
+        filters?.multiYear?.charAt(0),
+        findCode("covers", filters?.cover)
+      );
       dispatch(
         fetchQuotes(companies?.companies, {
           sum_insured: findCode("covers", filters.cover),
           tenure: filters.multiYear.charAt(0),
           member: selectedGroup,
           plan_type:
-            memberGroups?.[selectedGroup]?.length === 1
+            memberGroups[selectedGroup].length === 1
               ? "I"
               : proposerDetails.plan_type
               ? proposerDetails.plan_type === "M"
@@ -235,48 +290,7 @@ function useQuotesPage() {
               : "F",
         })
       );
-
-      // if (filterQuotes.length < 2) {
-      //   arr?.forEach((item) =>
-      //     dispatch(
-      //       fetchQuotes({
-      //         alias: item,
-      //         type: "normal",
-      //         sum_insured: cover,
-      //         tenure,
-      //         member: member.filter((m) => m.group === "group_code_1"),
-      //         plan_type,
-      //       })
-      //     )
-      //   );
-      // }
     }
-    if (fetchFilters.length < 1) {
-      if (initRef.current) {
-        dispatch(setFilters(defaultfilters));
-      }
-      initRef.current = false;
-    }
-  }, [memberGroups]);
-
-  useEffect(() => {
-    dispatch(clearFilterQuotes());
-    console.log('fetchQuotes useQUotes',filters.multiYear.charAt(0),findCode("covers", filters.cover))
-    dispatch(
-      fetchQuotes(companies?.companies, {
-        sum_insured: findCode("covers", filters.cover),
-        tenure: filters.multiYear.charAt(0),
-        member: selectedGroup,
-        plan_type:
-          memberGroups[selectedGroup].length === 1
-            ? "I"
-            : proposerDetails.plan_type
-            ? proposerDetails.plan_type === "M"
-              ? "M"
-              : "F"
-            : "F",
-      })
-    );
   }, [
     filters.insurers,
     filters.ownCover,

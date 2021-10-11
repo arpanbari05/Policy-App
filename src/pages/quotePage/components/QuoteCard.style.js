@@ -7,7 +7,7 @@ box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
 border: solid 1px #dfdfdf;
 background-color: #fff;
 &:hover{
-    border:1px solid #0a87ff;
+  box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.26);
 }
 `
 
@@ -72,7 +72,7 @@ margin-bottom: 6px;
 `
 export const ValueText = styled.span`
 
-font-size: 15px;
+font-size: 13px;
 font-weight: normal;
 font-stretch: normal;
 font-style: normal;

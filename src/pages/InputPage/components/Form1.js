@@ -47,6 +47,8 @@ const Form1 = ({
   const [pinCode, setPinCode] = useState("");
   const [customErrors, setCustomErrors] = useState(false);
 
+  
+
   useEffect(() => {
     if (pinCode?.length > 2) {
       dispatch(getRegion(pinCode));

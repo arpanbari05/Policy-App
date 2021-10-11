@@ -24,6 +24,7 @@ import BackButton from "../../../components/BackButton";
 import RadioButton from "../../../components/RadioButton";
 import SecureLS from "secure-ls";
 import { useHistory } from "react-router";
+import { setFilters } from "../../quotePage/quote.slice";
 
 export const medicalHistoryRadioArr = [
   {
@@ -67,7 +68,21 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const { data } = frontendData || [""];
   const { existingdiseases } = data || [""];
-
+  const {
+    defaultfilters,
+    covers,
+    plantypes,
+  } = frontendData.data
+  const { cover, tenure, plan_type } =defaultfilters
+  useEffect(() => {
+    dispatch(
+      setFilters({
+        cover: covers.find((c) => c.code === cover).display_name,
+        planType: plantypes.find((p) => p.code === plan_type).display_name,
+        multiYear: `${tenure} Year`,
+      })
+    );
+  }, []);
   console.log(diseaseArray);
   const ls = new SecureLS();
   const history = useHistory();

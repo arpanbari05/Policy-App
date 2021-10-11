@@ -166,13 +166,13 @@ const QuoteFilter = ({
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  // useEffect(() => {
    
-    if (showPlanTypeFilter && planTypeFilter === "Individual") {
-      dispatch(setFilters({ planType: "Family Floater" }));
-    }
-    if (!showPlanTypeFilter) dispatch(setFilters({ planType: "Individual" }));
-  }, [dispatch, groupCode, planTypeFilter, showPlanTypeFilter]);
+  //   if (showPlanTypeFilter && planTypeFilter === "Individual") {
+  //     dispatch(setFilters({ planType: "Family Floater" }));
+  //   }
+  //   if (!showPlanTypeFilter) dispatch(setFilters({ planType: "Individual" }));
+  // }, [dispatch, groupCode, planTypeFilter, showPlanTypeFilter]);
 
   if (!memberGroupsList[0]) return null;
 

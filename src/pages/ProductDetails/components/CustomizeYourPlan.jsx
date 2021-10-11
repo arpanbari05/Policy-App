@@ -64,7 +64,7 @@ const CustomizeYourPlan = ({
         setRidersError(false);
         getAbhiRiders(
           {
-            productId: product?.id,
+            productId: seeDetails|| product?.id,
             sum_insured,
             tenure,
             group: groupCode,
