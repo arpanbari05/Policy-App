@@ -3931,7 +3931,7 @@
         padding: 0 0px 0 15px !important;
     }
     .font_sub_p_s {
-        font-family: 'PFEncoreSansPromed';
+        /* font-family: 'PFEncoreSansPromed'; */
         font-size: 12px;
         line-height: 20px;
     }
