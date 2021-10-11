@@ -42,11 +42,13 @@ const CardModal = ({
         @media (max-width: 767px) {
           .modal-dialog {
             max-width: 100% !important;
+            margin: unset;
           }
           .modal-dialog > div {
             height: 100vh;
             position: fixed;
             top: 0%;
+            left: 0%;
           }
         }
       `}

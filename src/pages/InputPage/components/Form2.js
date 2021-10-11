@@ -27,9 +27,9 @@ const Form2 = ({ handleChange, currentForm }) => {
   const { members } = data || [""];
 
   const [membersArray, setMembersArray] = useState([]);
- 
+
   const [childCount, setChildCount] = useState(0);
-  
+
   const [ageError, setAgeError] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
@@ -45,7 +45,7 @@ const Form2 = ({ handleChange, currentForm }) => {
 
   // Will contain list of insurer names that are checked
   const [insurerCBXArray, setInsurerCBXArray] = useState([]);
-  console.log(insurerCBXArray,"insurerCBXArray")
+  console.log(insurerCBXArray, "insurerCBXArray");
   // Will contain list of insurer Dropdown values if checkbox is checked
   const [insurerDDArray, setInsurerDDArray] = useState([]);
 
@@ -332,12 +332,28 @@ const Form2 = ({ handleChange, currentForm }) => {
             min-height: 100%;
             padding: 20px;
           }
+
+          @media screen and (min-width: 395px) and (max-width: 501px) {
+            .modal-dialog {
+              width: 100%;
+            }
+          }
+          @media screen and (max-width: 395px) {
+            .modal-dialog {
+              width: 100%;
+            }
+          }
         `}
         show={showModal}
       >
         <Modal.Header
           css={`
             padding: 0rem 1rem;
+            @media screen and (max-width: 395px) {
+              & > h3 {
+                font-size: 20px;
+              }
+            }
           `}
         >
           <Title>All your family members</Title>{" "}
@@ -346,7 +362,7 @@ const Form2 = ({ handleChange, currentForm }) => {
               position: relative;
             `}
           >
-            <span
+            {/*<span
               css={`
                 &:before {
                   position: absolute;
@@ -358,7 +374,7 @@ const Form2 = ({ handleChange, currentForm }) => {
                   width: 18px;
                 }
               `}
-            ></span>
+              ></span>*/}
           </div>
           <a
             onClick={() => setShowModal(false)}
@@ -401,6 +417,21 @@ const Form2 = ({ handleChange, currentForm }) => {
                       border: solid 1px #b0bed0;
                       margin-bottom: 10px;
                       border-radius: 7px;
+
+                      @media screen and (max-width: 395px) {
+                        & > div {
+                          box-sizing: border-box;
+                          padding: 1vh;
+                        }
+                        & > div > div > span {
+                          font-size: 13px;
+                        }
+                        width: 100%;
+                        padding: 2px 10px;
+                        box-sizing: border-box;
+                        display: flex;
+                        flex-direction: column;
+                      }
                     `}
                   >
                     {dataset(
@@ -413,8 +444,7 @@ const Form2 = ({ handleChange, currentForm }) => {
                       code,
                       ageError,
                       childCount,
-                      addChild,
-                    
+                      addChild
                     )}
                   </div>
                 );
@@ -422,7 +452,7 @@ const Form2 = ({ handleChange, currentForm }) => {
             )}
         </div>
         <StyledButton
-        noIcon
+          noIcon
           value={`Add Member`}
           onClick={() => {
             const tempArray = membersArray.map((data) => {

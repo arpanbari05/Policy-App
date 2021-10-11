@@ -11,7 +11,7 @@ import {
 import { useHistory } from "react-router-dom";
 import SecureLS from "secure-ls";
 import { resetFeature } from "../../../ComparePage/compare.slice";
-const dislayPlanContainer = selectedQuotes => {
+const dislayPlanContainer = (selectedQuotes) => {
   const containerArray = [];
 
   for (let i = 0; i < 3; i++) {
@@ -20,7 +20,7 @@ const dislayPlanContainer = selectedQuotes => {
         customClassName={`${i === 2 && "showOnDesktopFlex"}`}
         key={i}
         id={selectedQuotes[i] ? selectedQuotes[i] : undefined}
-      />,
+      />
     );
   }
   return containerArray;
@@ -29,9 +29,9 @@ const dislayPlanContainer = selectedQuotes => {
 const ComparePopup = ({ groupCode }) => {
   const ls = new SecureLS();
   const history = useHistory();
-  const { quotesOnCompare } = useSelector(state => state.quotePage);
-  const { quotesForCompare } = useSelector(state => state.quotePage);
-  const { quotes } = useSelector(state => state.quotePage);
+  const { quotesOnCompare } = useSelector((state) => state.quotePage);
+  const { quotesForCompare } = useSelector((state) => state.quotePage);
+  const { quotes } = useSelector((state) => state.quotePage);
 
   const dispatch = useDispatch();
   const filteredQuotes = [];
@@ -41,8 +41,8 @@ const ComparePopup = ({ groupCode }) => {
   const [show, setShow] = useState(quotesOnCompare);
 
   useEffect(() => {
-    quotes.map(quote => {
-      quote?.map(data => {
+    quotes.map((quote) => {
+      quote?.map((data) => {
         if (
           quotesForCompare.includes(`${data.product.id}${data.sum_insured}`) &&
           filteredQuotes.length < 3
@@ -69,11 +69,11 @@ const ComparePopup = ({ groupCode }) => {
   return (
     <div
       css={`
-      @media (max-width:500px){
-        .quotes_compare_plan_name{
-          margin:0px 5px !important;
+        @media (max-width: 500px) {
+          .quotes_compare_plan_name {
+            margin: 0px 5px !important;
+          }
         }
-      }
         @media (max-width: 767px) {
           & .quotes_compare_plan_name {
             align-items: center;
@@ -84,8 +84,7 @@ const ComparePopup = ({ groupCode }) => {
           }
           & .quotes_compare_image,
           .quotes_compare_image1 {
-          
-            height:50px;
+            height: 50px;
             & img {
               width: 100%;
             }
@@ -94,6 +93,7 @@ const ComparePopup = ({ groupCode }) => {
 
           & .quotes_compare_container_wrapper {
             flex-direction: column;
+            background-color: voilet;
           }
           & .quotes_compare_buttons_div {
             width: unset;
@@ -114,10 +114,11 @@ const ComparePopup = ({ groupCode }) => {
       className="quotes_compare_container"
       style={{ display: show ? "block" : "none" }}
     >
-      <div className="quotes_compare_container_wrapper"
-      css={`
-      margin-top:18px !important;
-      `}
+      <div
+        className="quotes_compare_container_wrapper"
+        css={`
+          margin-top: 18px !important;
+        `}
       >
         <div className="quotes_compare_div">
           {dislayPlanContainer(selectedQuotes)}
@@ -137,7 +138,8 @@ const ComparePopup = ({ groupCode }) => {
                 });
               }}
               style={{
-                backgroundColor: selectedQuotes.length < 2 ? "#dfe1e6" : "#0a87ff",
+                backgroundColor:
+                  selectedQuotes.length < 2 ? "#dfe1e6" : "#0a87ff",
                 color: selectedQuotes.length < 2 && "#7a869a",
               }}
               disabled={selectedQuotes.length > 1 ? false : true}
