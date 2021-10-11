@@ -71,7 +71,7 @@ function useCartProduct(groupCode, selectedProduct) {
     const { total_premium, health_riders, addons } = product;
 
     totalRidersPremium = health_riders.reduce(
-      (sum, rider) => sum + parseInt(rider.total_premium),
+      (sum, rider) => sum + parseInt(rider?.total_premium),
       0,
     );
 
