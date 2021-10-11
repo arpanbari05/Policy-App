@@ -159,7 +159,7 @@ function QuotePage() {
                 <TextLabel>
                   {" "}
                   {loadingQuotes ? "Loading" : "Showing"} {selectedPlanType}{" "}
-                  Plan{loadingQuotes && "..."}
+                  Plans{loadingQuotes && "..."}
                 </TextLabel>
                 {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
