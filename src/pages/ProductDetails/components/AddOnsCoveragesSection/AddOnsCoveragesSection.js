@@ -711,7 +711,7 @@ function AddOnCard({
         css={`
           width: 60px;
           margin-right: 15px;
-          height: 60px;
+          height: 35px;
           display:flex;
 align-items:center;
          justify-content:space-between;
@@ -724,11 +724,12 @@ align-items:center;
         <img
           css={`
             width: 100%;
-            
+            height: 100%;
+            object-fit:contain;
           `}
           src={companyLogoSrc}
           alt={"company"}
-          width="75px"
+         
         />
       </div>
       <div
