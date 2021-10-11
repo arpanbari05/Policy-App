@@ -88,7 +88,12 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
           </Row>
         </div>
         {summary && (
-          <div className="terms-summary-card">
+          <div className="terms-summary-card"
+          css={`
+          display: flex !important;
+          align-items: center !important;
+          `}
+          >
             {/* <label class="cbx" for="self1">
 						 <svg width="12px" height="10px">
 							<use xlinkHref="#check"></use>
@@ -101,10 +106,12 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
               value={checked}
               onChange={onChange}
             />
+            <div>
             <span className="iaccept-text-proposal">I Accept the </span>
             <span class="p_dark_f_a_check terms-propposal-card">
               Terms &amp; Conditions
             </span>
+            </div>
           </div>
         )}
         <ul>

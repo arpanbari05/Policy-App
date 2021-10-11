@@ -110,7 +110,7 @@ const ProposalSummary = ({ history }) => {
               onChange={() => setChecked(!checked)}
             />{" "}
             <span className="Iaccept">I Accept the&nbsp;</span>
-            <span class="TermsAndConditions"> Terms &amp; Conditions</span>
+            <span class="TermsAndConditions"> Terms &amp; Conditions </span>
           </div>
           {show && (
             <MultipleWrapper>
@@ -138,8 +138,10 @@ const ProposalSummary = ({ history }) => {
               onClick={() => checked && onClick()}
             // style={{ margin: "0 25px" }}
             >
-              <div class="col-md-6">
-                <button disabled={!checked && true} class="btn btn_p_s_pay_now" style={{fontSize: "16px",width:"max-content"}}>
+              <div class="col-md-6"
+  
+              >
+                <button disabled={!checked && true} class="btn btn_p_s_pay_now" style={{fontSize: "16px",width:"max-content",paddingTop: "8px"}}>
                   Pay Now {" "}
                 </button>
               </div>
@@ -154,7 +156,7 @@ const ProposalSummary = ({ history }) => {
                       `}
                 >
                   <span>Total Premium</span>
-                  <p class="p_dark_f_a">
+                  <p class="p_dark_f_a" style={{marginBottom:"unset"}}>
                     <span class="font_weight_normal text-white">
                       ₹ {cart?.totalPremium}
                     </span>

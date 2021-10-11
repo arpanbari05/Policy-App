@@ -37,6 +37,7 @@ import ClaimprocessMobile from "./MobileComponents/ClaimProcessMobile/Claimproce
 import AboutCompanyMobile from "./MobileComponents/AboutCompanyMobile/AboutCompanyMobile";
 import { getAbhiRidersApi,getRidersApi } from "../quotePage/serviceApi";
 import { addSelectedRiders } from "../quotePage/quote.slice";
+import { AiOutlineClose } from "react-icons/ai";
 
 
 export const getRiders = async (
@@ -243,7 +244,7 @@ const SeeDetails = ({
   const [aboutCompany, setAboutCompany] = useState({});
   const [brochureUrl, setBrochureUrl] = useState("");
   const [policyWordingUrl, setPolicyWordingUrl] = useState("");
-
+const [hey, sethey] = useState("");
   console.log(show,'sgdagsd')
   useEffect(() => {
     const getdetails = async () => {
@@ -270,7 +271,7 @@ const SeeDetails = ({
         await getProductBrochure({ productId: quote.product.id }, data => {
           if (data) {
             if (data[0]) {
-          
+          sethey(data[0]);
               setBrochureUrl(data[0].brochure_url);
               setPolicyWordingUrl(data[0].policy_wording_url);
             }
@@ -317,6 +318,7 @@ const SeeDetails = ({
     };
     getdetails();
   }, [activeFieldset]);
+ 
 
   return (
     <div>
@@ -384,6 +386,7 @@ const SeeDetails = ({
               <ClaimProcess
                 ActiveMainTab={activeFieldset === 4 ? true : false}
                 claimProccess={claimProccess}
+                claimform={hey}
               />
               <AboutCompany
                 ActiveMainTab={activeFieldset === 5 ? true : false}
@@ -408,7 +411,9 @@ const SeeDetails = ({
             }
           `}
         >
+         
           <div>
+         
             <SeeDetailsTopMobile
               style={{ top: "0px" }}
               logo={logo}
@@ -423,17 +428,17 @@ const SeeDetails = ({
               type="button"
               className="btn btn-white recom_close_css"
               css={`
- 
+              top:35px;
+ font-size: 18px ;
+          background-color: #eff2f5;
+          border-radius:50px;
+          padding:3px 8px;
               `}
               onClick={handleClose}
             >
               {/* <i className="fa fa-close"></i>
                */}
-              <span
-              css={`
-              font-size:25px;
-              `}
-              >  X</span>
+                  <AiOutlineClose />
             </CloseButton>
             <SeeDetailsTab
               activeFieldset={activeFieldset}
@@ -464,6 +469,8 @@ const SeeDetails = ({
             <ClaimprocessMobile
               ActiveMainTab={activeFieldset === 4 ? true : false}
               claimProccess={claimProccess}
+              claimform={hey}
+            
             />
             <AboutCompanyMobile
               ActiveMainTab={activeFieldset === 5 ? true : false}
@@ -544,6 +551,7 @@ const SeeDetails = ({
             <ClaimprocessMobile
               ActiveMainTab={activeFieldset === 4 ? true : false}
               claimProccess={claimProccess}
+              claimform={hey}
             />
             <AboutCompanyMobile
               ActiveMainTab={activeFieldset === 5 ? true : false}

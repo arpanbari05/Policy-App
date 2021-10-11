@@ -191,9 +191,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               className="btn"
               onClick={deleteProduct}
             >
-              <i class="far fa-trash-alt" css={`
-               cursor:pointer !important;
-              `}></i>
+              <i class="far fa-trash-alt"></i>
             </button>
           </>
         ) : (
@@ -208,10 +206,16 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
           >
             <button
               type="submit"
-              className="btn remove_review_btn"
+              className="btn"
+              
               css={`
                 justify-content: space-between;
-              
+                display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    background: rgb(235, 245, 255);
+    color:#0d6efd;
               `}
               onClick={() => {
                 setShowBuyNow(false);
@@ -221,31 +225,9 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 });
               }}
             >
-              <span> Add Plan</span> <img src={addBtn} alt="addbtn" />
+              <span css={`margin-right:5px;`}> Add Plan</span> <i class="fas fa-plus-circle"></i>
             </button>
-            <button
-              css={`
-                display: none;
-                @media (max-width: 767px) {
-                  display: block;
-                  width: 100%;
-                  border-radius: 7px;
-                  padding: 10px;
-                  border: 1px dashed #e2a6a9;
-                  background: #fff5f5;
-                  margin: 10px 0;
-                }
-              `}
-              onClick={() => {
-                setShowBuyNow(false);
-                history.replace({
-                  pathname: `/quotes/${groupCode}`,
-                  search: `enquiryId=${enquiryId}`,
-                });
-              }}
-            >
-              Add Plan
-            </button>
+           
           </Col>
         )}
       </div>

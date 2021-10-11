@@ -23,6 +23,10 @@ export const SelectedProduct = styled.div`
     border: solid 2px #0a87ff;
   }
   background-color: #ffffff;
+  @media (max-width:400px){
+    padding: 19px 3px 32px 3px !important;
+  }
+          
 `;
 export const LogoWrapper = styled.div`
   width: 50px;
@@ -35,6 +39,9 @@ export const AddPlan = styled.div`
   background-color: #f4f4f4;
   height: 150px;
   position: relative;
+
+       
+          
 `;
 export const Line = styled.div`
   border-bottom: dashed 1px #74778a;
@@ -62,8 +69,9 @@ export const DropDownWrapper = styled.div`
   & > div {
     height: 50px;
   }
-  bottom: 30px;
+  bottom: 15px;
   left: 12px;
+ 
 `;
 export const ErrorAddPlan = styled.div`
   color: #bd2b2b;
@@ -72,7 +80,7 @@ export const ErrorAddPlan = styled.div`
   bottom: -6px;
 `;
 export const QuoteWrapperM = styled.div`
-  height: 117px;
+  height: 110px;
   margin-bottom: 10px;
   padding: 10px 15px;
   border-radius: 4px;
@@ -174,10 +182,16 @@ export const DetailWrapper = styled.div`
 export const Title = styled.div`
   color: #505f79;
   font-size: 14px;
+  @media (max-width:400px){
+    font-size: 10px;
+  }
 `;
 export const Value = styled.div`
   font-weight: 900;
   font-size: 16px;
+  @media (max-width:400px){
+    font-size: 10px;
+  }
 `;
 export const CompanyName = styled.div`
   font-size: 14px;
@@ -197,6 +211,7 @@ export const PlanName = styled.div`
   line-height: 1.19;
 `;
 export const RiderWrapper = styled.div`
+cursor: pointer;
   &:before,
   &:after {
     content: "";

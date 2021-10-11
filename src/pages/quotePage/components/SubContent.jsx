@@ -274,7 +274,6 @@ const SubContent = ({
               </div>
             </EachWrapper>
             {/* <CenterBottomToggle
-
                     >
                         <SeeText
                             css={`
@@ -284,7 +283,6 @@ const SubContent = ({
                                 setShow(!show);
                             }}
                         >
-
                             {!show ? (
                                 <>
                                     <span>2 more plans </span>
@@ -296,7 +294,6 @@ const SubContent = ({
                                     <i class="fas fa-chevron-up"></i>
                                 </>
                                 )}
-
                         </SeeText>
                     </CenterBottomToggle> */}
           </div>

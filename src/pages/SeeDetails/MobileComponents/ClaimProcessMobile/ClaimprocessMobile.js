@@ -4,6 +4,7 @@ import "./ClaimProcessMobile.css"
 import styled from 'styled-components'
 import "styled-components/macro"
 import cashlessImg from "./../../../../assets/images/cashless_m.png";
+import download from "../../../../assets/images/downloadclaim.png";
 import telephone from "../../../../assets/images/landline_old_phone.png";
 import mail from "../../../../assets/images/message_mail_blue_2.1.png";
 import mobile from "../../../../assets/images/mobile.png";
@@ -12,7 +13,7 @@ import SpinLoader from '../../../../components/Common/SpinLoader/SpinLoader';
 // import "../ClaimProcessMobile/ClaimProcessMobile.css"
 
 function ClaimprocessMobile({
-    ActiveMainTab, claimProccess
+    ActiveMainTab, claimProccess,claimform
 }) {
     const [activebtn, setActivebtn] = useState(1)
     const { loading } = useSelector(state => state.seeDetails);
@@ -111,15 +112,67 @@ function ClaimprocessMobile({
 
                         <Info>
                             <div>
-                                <h4 className="title imp_title_row_l" >
-                                    Important Number and email address
+                                <h4 className="title imp_title_row_l" style={{fontSize:"21px"}} >
+                                Please reach out on details below for further queries.
                                 </h4>
                             </div>
-                            <p className="p_important_sub">
+                            {/* <p className="p_important_sub" 
+                            css={`
+                            margin-top:0px !important;
+                            `}
+                            >
                                 Don't Hesitate to contact us for any information.
-                            </p>{" "}
-                            <div style={{ padding: "30px 15px", display: "flex" }}>
-                                <div style={{ display: "flex", alignItems: "center" }}>
+                            </p>{" "} */}
+                            <div style={{ padding: "30px 15px", display: "flex",flexDirection: "column" }}>
+
+                            <div style={{ display: "flex", marginBottom:"20px"}}>
+                                <div>
+                                <div
+            className="col-md-2"
+            css={`
+              justify-content: center;
+              align-items: center;
+              background-color: #eff7ff;
+              display: flex;
+              border-radius:100%;
+              width: 50px;
+            height:50px; 
+            color:#0a837f;
+            margin-right:20px;
+          
+            `}
+          >
+                                {claimform.claim_url ? (
+              <a target="_blank" rel="noopener noreferrer" href={claimform.claim_url}>
+          
+          <img src={download} css={`
+            width:31px;
+            height:31px;
+            `} alt="" />
+            </a>)
+            :
+            <span>Loading...</span>}
+            </div>
+                                </div>
+                                <div style={{ marginTop: "10px", }}>
+                                    <h4
+                                        style={{
+                                            lineHeight: "0px",
+                                            padding: " 0px ",
+                                            whiteSpace: "nowrap",
+                                            fontSize: "unset",
+                                            fontWeight: "bold"
+                                        }}
+                                    >
+                                       Claim Form
+                                    </h4>
+                                    <p className="feature-offer-box__p break-on-overflow " style={{ marginTop: "15px" }} >
+                                    Download Claim Form here.{" "}
+                                    </p>
+                                </div>
+
+                            </div>
+                                <div style={{ display: "flex",  }}>
                                 <div>
                                     <img
                                     css={`
@@ -173,7 +226,7 @@ function ClaimprocessMobile({
 
                             </div>
 
-                            <div style={{ display: "flex", alignItems: "center", padding: "0px 15px", }}>
+                            <div style={{ display: "flex",  padding: "0px 15px", }}>
                                 <div>
                                     <img
                                     css={`

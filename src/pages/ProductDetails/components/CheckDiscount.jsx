@@ -463,6 +463,10 @@ function AdditionalDiscount({ additionalDiscount }) {
           }
           display: flex;
           align-items: center;
+          @media (max-width:537px){
+            padding: 4px 8px;
+            font-size: 13px;
+          }
         `}
         onClick={handleApply}
         selected={

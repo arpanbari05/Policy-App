@@ -23,7 +23,7 @@ restClient.interceptors.response.use(
       ls.remove("user");
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 const httpClient = async (url = "", options = defaultOptions) => {
@@ -54,7 +54,7 @@ const httpClient = async (url = "", options = defaultOptions) => {
     method: options.method || "GET",
     data: options.data,
   })
-    .then(response => ({
+    .then((response) => ({
       data: response.data,
       errors: response.data.errors,
       error: response.data.error,
@@ -64,7 +64,7 @@ const httpClient = async (url = "", options = defaultOptions) => {
         (response.status === 200 || response.status === 201) &&
         response.data.status,
     }))
-    .catch(err => {
+    .catch((err) => {
       // alert(err);
       return {
         data: null,
