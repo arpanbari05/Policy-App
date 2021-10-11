@@ -112,6 +112,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
       <label
         htmlFor={`${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`}
         css={`
+        cursor:pointer;
           position: absolute;
           display: flex;
           background-color: #eef1f5;
