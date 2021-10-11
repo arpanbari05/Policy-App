@@ -84,8 +84,9 @@ const ComparePopup = ({ groupCode }) => {
           }
           & .quotes_compare_image,
           .quotes_compare_image1 {
-            height: 50px;
-            & img {
+            width: 59px;
+            height: 100%
+             & img {
               width: 100%;
             }
           }
@@ -108,6 +109,9 @@ const ComparePopup = ({ groupCode }) => {
           }
           & .quotes_compare_div {
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
           }
         }
       `}
@@ -158,6 +162,7 @@ const ComparePopup = ({ groupCode }) => {
                 position: absolute;
                 top: 6px;
                 left: 17px;
+                font-size: 15px;
               }
             `}
           >
