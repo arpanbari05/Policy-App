@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Card from "../../components/Card";
 import { fyntune } from "../../assets/images";
 import mobile_input_first from "../../assets/images/mobile_input_first.png";
@@ -11,6 +11,7 @@ import { bg } from "../../assets/images";
 import RadioButton from "../../components/RadioButton";
 import RoundDD from "../../components/RoundDD";
 import Checkbox from "../../components/Checkbox";
+import { useDispatch } from "react-redux";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import Form1 from "./components/Form1";
 import Form2 from "./components/Form2";
@@ -18,18 +19,20 @@ import Form3 from "./components/Form3";
 import Form4 from "./components/Form4";
 import Form5 from "./components/Form5";
 import Slider from "../../components/Slider";
+import { setFilters } from "../quotePage/quote.slice";
 
 export const InputPage = () => {
   const [currentForm, setCurrentForm] = useState(1);
   const [showmore, setShowmore] = useState(false);
   const greetingPage = useSelector((state) => state.greetingPage);
   const { memberGroups } = greetingPage;
-
+  const dispatch = useDispatch();
   console.log("ggg2", currentForm);
   const handleChange = (form) => {
     setCurrentForm(form);
   };
   const members = Object.keys(memberGroups || {});
+ 
 
   return (
     <>

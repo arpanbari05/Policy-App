@@ -139,6 +139,7 @@ const quotePageSlice = createSlice({
       state.selectedGroup = action.payload;
     },
     setFilters: (state, action) => {
+      console.log('fetchquotes setfilters',action.payload)
       state.filters = { ...state.filters, ...action.payload };
     },
     updateFetchedFilters: (state, action) => {

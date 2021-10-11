@@ -111,22 +111,22 @@ function QuotePage() {
 
   const handleClearFilters = () => {
     dispatch(setFilters(defaultfilters));
-    console.log("fetctquotes QuotesPage");
-    dispatch(
-      fetchQuotes(companies?.companies, {
-        sum_insured: cover,
-        tenure,
-        member: selectedGroup,
-        plan_type:
-          memberGroups?.[selectedGroup].length === 1
-            ? "I"
-            : proposerDetails.plan_type
-            ? proposerDetails.plan_type === "M"
-              ? "M"
-              : "F"
-            : "F",
-      })
-    );
+    console.log("fetchquotes QuotesPage");
+    // dispatch(
+    //   fetchQuotes(companies?.companies, {
+    //     sum_insured: cover,
+    //     tenure,
+    //     member: selectedGroup,
+    //     plan_type:
+    //       memberGroups?.[selectedGroup].length === 1
+    //         ? "I"
+    //         : proposerDetails.plan_type
+    //         ? proposerDetails.plan_type === "M"
+    //           ? "M"
+    //           : "F"
+    //         : "F",
+    //   })
+    // );
   };
 
   return (

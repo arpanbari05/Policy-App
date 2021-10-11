@@ -60,7 +60,7 @@ const Plan = ({
     if (planTypeTenure[floater]) {
       dispatch(replaceQuotes([]));
       dispatch(replaceFilterQuotes([]));
-      console.log("fetctquotes plan")
+      console.log("fetchquotes plan")
       dispatch(
         fetchQuotes(companies, {
           plan_type: planTypeTenure[floater],

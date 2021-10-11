@@ -37,13 +37,7 @@ export const fetchFrontendData = (onFetch = () => {}) => {
       const { cover, plan_type, tenure } = data.data.defaultfilters;
       const { covers, plantypes } = data.data;
 
-      dispatch(
-        setFilters({
-          cover: covers.find(c => c.code === cover).display_name,
-          planType: plantypes.find(p => p.code === plan_type).display_name,
-          multiYear: `${tenure} Year`,
-        }),
-      );
+     
 
       dispatch(saveFrontendData(data));
 

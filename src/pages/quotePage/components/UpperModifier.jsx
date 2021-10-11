@@ -39,38 +39,38 @@ const UpperModifier = ({sendQuote}) => {
     (state) => state.greetingPage
   );
 
-  const initRef = useRef(true);
+  // const initRef = useRef(true);
 
-  useEffect(() => {
-    if (!initRef.current)
-      // getQuotes(members.filter((m) => m.group === selectedGroup));
-      console.log("Plans for fetching quotes...");
-      console.log("fetctquotes upper modifier")
-    dispatch(deleteQuotes())
-    dispatch(
-      fetchQuotes(companies, {
-        sum_insured: ownCover
-          ? `${ownCover}-${ownCover}`
-          : sumAssured
-            ? covers.filter((cover) => cover.display_name === sumAssured)[0]?.code
-            : cover,
-        tenure: multiYear ? multiYear[0] : tenure,
-        member: selectedGroup,
-        plan_type:
-          memberGroups?.[selectedGroup]?.length === 1
-            ? "I"
-            : proposerDetails.plan_type
-              ? proposerDetails.plan_type === "M"
-                ? "M"
-                : "F"
-              : "F",
-        // plan_type: planType
-        //   ? plantypes.filter(plan => plan.display_name === planType)[0].code
-        //   : plan_type,
-      })
-    );
-    initRef.current = false;
-  }, [selectedGroup]);
+  // useEffect(() => {
+  //   if (!initRef.current)
+  //     // getQuotes(members.filter((m) => m.group === selectedGroup));
+  //     console.log("Plans for fetching quotes...");
+  //     console.log("fetchquotes upper modifier")
+  //   dispatch(deleteQuotes())
+  //    dispatch(
+  //     fetchQuotes(companies, {
+  //       sum_insured: ownCover
+  //         ? `${ownCover}-${ownCover}`
+  //         : sumAssured
+  //           ? covers.filter((cover) => cover.display_name === sumAssured)[0]?.code
+  //           : cover,
+  //       tenure: multiYear ? multiYear[0] : tenure,
+  //       member: selectedGroup,
+  //       plan_type:
+  //         memberGroups?.[selectedGroup]?.length === 1
+  //           ? "I"
+  //           : proposerDetails.plan_type
+  //             ? proposerDetails.plan_type === "M"
+  //               ? "M"
+  //               : "F"
+  //             : "F",
+  //       // plan_type: planType
+  //       //   ? plantypes.filter(plan => plan.display_name === planType)[0].code
+  //       //   : plan_type,
+  //     })
+  //   );
+  //   initRef.current = false;
+  // }, [selectedGroup]);
 
   const history = useHistory();
 
