@@ -429,29 +429,31 @@ const AdditionalBenefits = ({plans, title, index, windowWidth}) => {
                 className={`${item === 2 ? "showOnDesktopF" : ""}`}
               >
                 {plans[item]?.features[index]?.riders?.map((innerItem) => {
-                  
-                  return(
-                  <RiderWrapper show={innerItem.total_premium}>
+            
+                  if(innerItem.total_premium > 0){
+
+                    return(
+                      <RiderWrapper show={innerItem.total_premium}>
                     <OverlayTrigger
                       placement={"right"}
                       overlay={renderTooltipDesc({
                         desc: innerItem.description,
                       })}
-                    >
+                      >
                       <RiderName>{innerItem.name}</RiderName>
                     </OverlayTrigger>
                     <RiderPremium>
                       <i className="fa fa-inr"></i>{" "}
-                      <div style={{fontWeight:"900"}}>₹ {innerItem.total_premium} </div>{" "}
+                    {innerItem.total_premium > 0 &&  <div style={{fontWeight:"900"}}>₹ {innerItem.total_premium} </div>}
                       <div>
 
                       {/* {console.log(,"+++++++++")} */}
                         <Checkbox2
                          showTitle={false}
-                      
-                          title={innerItem.name + plans[item].data.product.id}
-                          checked={
-                            riders[`${plans[item].data.product.id}${plans[item].data.sum_insured}`]?.some(item => item.name===innerItem.name)
+                         
+                         title={innerItem.name + plans[item].data.product.id}
+                         checked={
+                           riders[`${plans[item].data.product.id}${plans[item].data.sum_insured}`]?.some(item => item.name===innerItem.name)
                           }
                           onChange={(e) => {
                             if (e.target.checked) {
@@ -460,29 +462,32 @@ const AdditionalBenefits = ({plans, title, index, windowWidth}) => {
                                   plans[item].data.product.id,
                                   plans[item].data.sum_insured,
                                   innerItem
-                                )
-                              );
-                            } else {
-                              dispatch(
-                                removeRider(
-                                  plans[item].data.product.id,
-                                  plans[item].data.sum_insured,
-                                  innerItem
-                                )
-                              );
-                            }
-                          }}
-                        />
+                                  )
+                                  );
+                                } else {
+                                  dispatch(
+                                    removeRider(
+                                      plans[item].data.product.id,
+                                      plans[item].data.sum_insured,
+                                      innerItem
+                                      )
+                                      );
+                                    }
+                                  }}
+                                  />
                       </div>
                     </RiderPremium>
                   </RiderWrapper>
-                )})}
+                )
+                
+              }
+              })}
               </td>
-            );
+              );
         })}
       </tr>
     </>
-  );
+    );
 };
 const TBody = ({
   title,
