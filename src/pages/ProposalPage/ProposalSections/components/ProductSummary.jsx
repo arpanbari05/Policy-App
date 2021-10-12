@@ -29,6 +29,19 @@ const ProductSummary = ({ cart, setActive }) => {
 
   const content = (
     <>
+             <span
+            css={`
+              width: 100px;
+              height: 100px;
+              border-radius: 100%;
+              background: #eff7ff;
+              position: absolute;
+              top: -41px;
+              z-index: -3;
+              left: -38px;
+                          
+            `}
+          ></span>
       <h2
         css={`
           font-size: 20px;
@@ -37,7 +50,7 @@ const ProductSummary = ({ cart, setActive }) => {
           color: #2d3f5e;
           padding: 12px 0px;
           margin-bottom: -1px;
-          border-bottom: 1px solid #ddd;
+          /* border-bottom: 1px solid #ddd; */
         `}
       >
         {" "}
@@ -56,10 +69,10 @@ const ProductSummary = ({ cart, setActive }) => {
                 <div className="row" key={index}>
                   <div className="col-md-9">
                     <h5
-                      className="text_title_filter p_modal_title_bg_filters_product product_summary__title"
-                      style={{ textTransform: "capitalize" }}
+                      className="text_title_filter p_modal_title_bg_filters_product "
+                      style={{ textTransform: "capitalize", fontSize:"14px"}}
                     >
-                      {item.group.members.join(" + ")}
+                      {item.group.members.join(" , ")}
                     </h5>
                   </div>
                   <div className="col-md-3 text-right"></div>
@@ -505,6 +518,7 @@ const ProductSummary = ({ cart, setActive }) => {
     top: 0;
     width: 100%;
     padding: 10px 15px;
+    overflow: hidden;
     
     `}
       >
