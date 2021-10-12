@@ -8,10 +8,13 @@ import useOutsiteClick from "../../../customHooks/useOutsideClick";
 import { Translate } from "canvg";
 
 const DropDown = ({ name, sum, value, onChange, covers }) => {
-  console.log(value,"++++value")
+  console.log(value, "++++value");
   const [plan, setPlan] = useState(false);
   const [sumInsured, setSumInsured] = useState(false);
   const [show, setShow] = useState(false);
+  {
+    console.log(show, "show");
+  }
   const ref = useRef();
   useEffect(() => {
     if (show) {
@@ -26,19 +29,26 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
 
   return (
     <>
-      <div style={{ position: "relative", height: "fit-content" }}>
+      <div
+      ref={ref}
+        style={{
+          position: "relative",
+          height: "fit-content",
+          backgroundColor: "#f9f9f9",
+          padding: "10px",
+          borderRadius: "10px",
+        }}
+      >
+        {/* */}
         <div
           className="compare-custom-select first"
-          onClick={() => setShow("plans")}
-          css={`
-          :hover{
-            background:white !important;
-          }
-          `}
+          onClick={() => show?setShow(false):setShow("plans")}
         >
-          <div className="custom-placeholder">
+          <div className="custom-placeholder d-flex align-items-center">
             <span>{value?.plan || "Select Plan"}</span>
-            <DownArrow src={down} alt={down}></DownArrow>
+            <div className="arrow-conrtainer">
+              <DownArrow src={down} alt={down} plans={show==="plans"?true:false}></DownArrow>
+            </div>
           </div>
         </div>
         <div
@@ -46,19 +56,15 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
           onClick={() => {
             if (value?.plan) setShow("sum");
           }}
-          css={`
-          :hover{
-            background:white !important;
-          }
-          `}
         >
-          <div className="custom-placeholder">
+          <div className="custom-placeholder d-flex align-items-center">
             <span>{value?.sumInsured || "Select Sum Insured"}</span>
-            <DownArrow src={down} alt={down}></DownArrow>
+           
+            <DownArrow src={down} alt={down} plans={show==="sum"?true:false}></DownArrow>
           </div>{" "}
         </div>
         {show && (
-          <div className="options" ref={ref}>
+          <div className="options" >
             {show === "plans" ? (
               name ? (
                 name.map((item, i) => (
@@ -72,23 +78,21 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
                     }}
                   >
                     {item}
-                    {
-                      item == value?.plan?(
-                        <span
-                      style={{
-                        position: "absolute",
-                        right: "10px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        color:"#2293ff"
-                      }}
-                    >
+                    {item == value?.plan ? (
+                      <span
+                        style={{
+                          position: "absolute",
+                          right: "10px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          color: "#2293ff",
+                        }}
+                      >
                         <i class="fas fa-check"></i>
-                    </span>
-                      ):""
-                    }
-                   
-                  
+                      </span>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 ))
               ) : (
@@ -112,9 +116,7 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
                       setSumInsured(e.target.innerText);
                     }}
                   >
-                 
                     {item}
-                   
                   </div>
                 ))
               ) : (
@@ -141,6 +143,8 @@ export default DropDown;
 
 const DownArrow = styled.img`
   width: 25px;
+  transform: ${({ plans }) => (plans ? `rotate(180deg)` : `rotate(0deg)`)};
+  transition: transform 200ms ease-in-out;
   @media (max-width: 767px) {
     width: 17px;
   }

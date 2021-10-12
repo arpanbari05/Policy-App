@@ -34,6 +34,7 @@ const PlanContainer = ({
     total_premium,
     mandatory_riders,
     tax_amount,
+    
     company_alias,
     tenure,
   } = plans || {};
