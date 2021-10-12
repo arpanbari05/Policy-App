@@ -39,7 +39,7 @@ const TermModal = ({
           left:35px;
           width:95%;
         
-        overflow:scroll;
+        
           @media(max-width: 767px){
               left:10px;
               top:unset !important;
@@ -91,10 +91,15 @@ const TermModal = ({
       >
         <i className="fa fa-close"></i>
       </CloseButton> */}
-      <Modal.Body>
+      <Modal.Body
+      css={`
+       overflow:scroll;
+      `}
+      >
           <span
           css={`
               position: absolute;
+             
             `}
           >
              <i class="fa fa-check color-orange"></i></span>
