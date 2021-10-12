@@ -136,14 +136,20 @@ const ProductSummary = ({ cart, setActive }) => {
                     className="row"
                     css={`
                       margin-top: -9px;
+                      display: flex;
+flex-direction: column;
+
                     `}
                   >
                     <div
-                      className="col-md-6"
+                    
                       css={`
                         display: flex;
-                        flex-direction: column;
-                        border-right: 1px solid #dce2ec;
+                        flex-direction: row;
+                        align-items: end;
+                        justify-content:space-between;
+
+                        /* border-right: 1px solid #dce2ec; */
                       `}
                     >
                       <p className="p_cover_medical_pop">Cover: </p>
@@ -158,10 +164,12 @@ const ProductSummary = ({ cart, setActive }) => {
                       </span>
                     </div>
                     <div
-                      className="col-md-6"
+                      
                       css={`
                         display: flex;
-                        flex-direction: column;
+                        flex-direction: row;
+                        align-items: end;
+                        justify-content:space-between;
                       `}
                     >
                       <p className={`p_cover_medical_pop `}>Premium: </p>
@@ -180,6 +188,28 @@ const ProductSummary = ({ cart, setActive }) => {
                         / {item.tenure > 1 ? item.tenure + " years" : "year"}{" "}
                       </span>
                     </div>
+                    <div
+                    
+                    css={`
+                      display: flex;
+                      flex-direction: row;
+                      align-items: end;
+                      justify-content:space-between;
+
+                      /* border-right: 1px solid #dce2ec; */
+                    `}
+                  >
+                    <p className="p_cover_medical_pop">Policy Term: </p>
+                    <span
+                      className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                      css={`
+                        padding-left: 10px;
+                      `}
+                    >
+                   {item.tenure > 1 ? item.tenure + " years" : "1 year"}
+                    </span>
+                  </div>
+                  
                     {planDetails.isRenewed ? (
                       <>
                         <div className="col-md-12"></div>
