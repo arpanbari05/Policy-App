@@ -485,11 +485,11 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth }) => {
                   );
                 })}
               </td>
-            );
+              );
         })}
       </tr>
     </>
-  );
+    );
 };
 const TBody = ({
   title,
