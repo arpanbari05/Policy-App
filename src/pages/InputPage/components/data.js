@@ -8,7 +8,7 @@ for (let i = 0; i <= 10; i++) {
 }
 
 export const getAge = (min, max) => {
-  console.log(min,max,"+++")
+  console.log(min, max, "+++");
   const age = [];
   const checkMin = Number(min) >= 1 ? min : `${Number(min?.split(".")[0]) + 1}`;
   const checkMinMonths = Number(min) < 1 && min?.split(".")[1];
@@ -77,7 +77,7 @@ export const dataset = (
         }
       />
       <div
-      className='addChild'
+        className="addChild"
         css={`
           ${((title === "Son" && code === "son") ||
             (title == "Daughter" && code === "daughter")) &&
@@ -92,13 +92,13 @@ export const dataset = (
           // border: 1px solid black;
         `}
       >
-        <a
+        <IoAddCircle
           onClick={() => {
             addChild(title);
           }}
-        >
-          <IoAddCircle />
-        </a>{" "}
+          color="#eaeef2"
+        />
+
         <span
           css={`
             color: #6b7789;
@@ -110,7 +110,7 @@ export const dataset = (
         >
           {count}
         </span>
-        <a
+        <IoRemoveCircle
           onClick={() => {
             removeChild &&
               handleInput(
@@ -119,12 +119,11 @@ export const dataset = (
                 "checkbox"
               );
           }}
-        >
-          <IoRemoveCircle />
-        </a>
+          color="#eaeef2"
+        />
       </div>
       <RoundDD
-      mobileInputStyle={mobileInputStyle}
+        mobileInputStyle={mobileInputStyle}
         disabled={
           (title === "Son" || title === "Daughter") &&
           childCount === 4 &&
