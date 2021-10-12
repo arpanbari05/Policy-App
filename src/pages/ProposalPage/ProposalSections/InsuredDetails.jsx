@@ -36,6 +36,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
   );
 
   const [noForAll, setNoForAll] = useState({});
+  const [initColor, setInitColor] = useState("#0a87ff");
   const [canProceed, setCanProceed] = useState({
     canProceed: false,
     canProceedArray: [],
@@ -208,7 +209,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
                   css={`
                     margin: 20px 29px;
                     margin-top: -36px;
-                    @media(max-width:1024px){
+                    @media (max-width: 1024px) {
                       margin-top: 10px;
                     }
                   `}
@@ -221,7 +222,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
                         margin: 0;
                         width: max-content;
                       }
-                      @media(max-width:1024px){
+                      @media (max-width: 1024px) {
                         justify-content: flex-start;
                         margin-left: -26px;
                       }
@@ -244,7 +245,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
                         css={`
                           display: flex;
                           justify-content: flex-end;
-                          color: #0a87ff;
+                          color: ${initColor};
                         `}
                       >
                         Please select the checkbox if no for all questions item
@@ -293,6 +294,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue }) => {
         />
         <ContinueBtn
           onClick={() => {
+            setInitColor("#c7222a");
             if (name === "Medical Details" && canProceed.canProceed) {
               setSubmit("PARTIAL");
             } else if (name !== "Medical Details") {

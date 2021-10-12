@@ -34,8 +34,8 @@ import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
 
 /* ===============================test================================= */
 const ProposalPage = ({ history }) => {
-  let groupCode  = useSelector(({quotePage}) => quotePage.selectedGroup);
-  
+  let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
+
   const [active, setActive] = useState(0);
   const { currentSchema } = useSelector((state) => state.schema);
   const queryStrings = useUrlQuery();
@@ -43,7 +43,7 @@ const ProposalPage = ({ history }) => {
   //const currentSchema = starSchema;
   const cart = useSelector((state) => state.cart);
   const [listOfForms, setListOfForms] = useState([]);
- 
+
   useEffect(() => {
     if (currentSchema instanceof Object)
       setListOfForms(Object.keys(currentSchema));
@@ -63,11 +63,9 @@ const ProposalPage = ({ history }) => {
   }, [active]);
 
   useEffect(() => {
-    
     dispatch(getProposalFields());
     if (!Object.keys(proposalData).length) dispatch(getProposalData());
     dispatch(getCart());
-
   }, []);
   useEffect(() => {
     setActive(activeIndex);
@@ -76,14 +74,13 @@ const ProposalPage = ({ history }) => {
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
     console.log(activeForm, active, "dgsaadsg");
+
     if (active >= listOfForms.length && listOfForms.length) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
           {/* <span className="lds-dual-ring colored--loader"></span> */}
-          <SpinLoader
-         proposalpage={true}
-          />
           <p>Submitting Proposal, Please Wait</p>
+          <SpinLoader proposalpage={true} />
         </div>
       );
     }
@@ -102,10 +99,14 @@ const ProposalPage = ({ history }) => {
           }
           & .formbuilder__error {
             color: #c7222a;
+            
           }
         `}
       >
         <Card
+          onClick={() => {
+            setActive(0);
+          }}
           styledCss={`
           margin-bottom: 20px; 
           cursor:pointer;
@@ -148,16 +149,18 @@ const ProposalPage = ({ history }) => {
                   font-size: 13px;
                 `}
                 className="btn"
-                onClick={() => {
-                  setActive(0);
-                }}
               >
                 <i class="fas fa-pen"></i>
               </div>
             </span>
           )}
         </Card>
-        <Card styledCss={`margin-bottom: 20px;`}>
+        <Card
+          styledCss={`margin-bottom: 20px;`}
+          onClick={() => {
+            setActive(1);
+          }}
+        >
           {activeForm === "Insured Details" ? (
             <>
               {" "}
@@ -193,16 +196,18 @@ const ProposalPage = ({ history }) => {
                   font-size: 13px;
                 `}
                 className="btn"
-                onClick={() => {
-                  setActive(1);
-                }}
               >
                 <i class="fas fa-pen"></i>
               </div>
             </span>
           )}
         </Card>
-        <Card styledCss={`margin-bottom: 20px;`}>
+        <Card
+          styledCss={`margin-bottom: 20px;`}
+          onClick={() => {
+            setActive(2);
+          }}
+        >
           {activeForm === "Medical Details" ? (
             <>
               {" "}
@@ -223,7 +228,6 @@ const ProposalPage = ({ history }) => {
                 align-items: center;
               `}
             >
-
               <MainTitle>Medical Details</MainTitle>
 
               <div
@@ -240,16 +244,18 @@ const ProposalPage = ({ history }) => {
                   font-size: 13px;
                 `}
                 className="btn"
-                onClick={() => {
-                  setActive(2);
-                }}
               >
                 <i class="fas fa-pen"></i>
               </div>
             </span>
           )}
         </Card>
-        <Card styledCss={`margin-bottom: 20px;`}>
+        <Card
+          styledCss={`margin-bottom: 20px;`}
+          onClick={() => {
+            setActive(3);
+          }}
+        >
           {activeForm === "Other Details" ? (
             <>
               {" "}
@@ -285,9 +291,6 @@ const ProposalPage = ({ history }) => {
                   font-size: 13px;
                 `}
                 className="btn"
-                onClick={() => {
-                  setActive(3);
-                }}
               >
                 <i class="fas fa-pen"></i>
               </div>
@@ -410,11 +413,12 @@ const ProposalPage = ({ history }) => {
                   }
                 `}
               >
-              {console.log(groupCode,"groupCode")}
-              {
-                groupCode?<ReviewCart groupCode={groupCode} unEditable={true} />:""
-              } 
-                
+                {console.log(groupCode, "groupCode")}
+                {groupCode ? (
+                  <ReviewCart groupCode={groupCode} unEditable={true} />
+                ) : (
+                  ""
+                )}
               </Col>
               <Col
                 lg={8}

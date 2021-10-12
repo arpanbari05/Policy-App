@@ -85,14 +85,16 @@
 }
 .proposal{
   margin: auto 0;
-  width: 70px;
+  width: 100%;
   text-align: center;
   height: 200px;
   padding-top: 0px;
   position: relative;
+  display: flex;
   z-index: 99;
-  top: 23%;
-  left: 63%;
+  /* top: 23%; */
+  /* left: 63%; */
+  justify-content: center;
 
   > div {
     width: 18px;

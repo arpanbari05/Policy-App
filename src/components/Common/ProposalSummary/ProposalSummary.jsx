@@ -6,9 +6,11 @@ import { useLocation } from "react-router";
 import care from "./../../../assets/images/Care_Health.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItem } from "../../../pages/quotePage/quote.slice";
+import TermModal from "../../../pages/ProposalSummary/TermsModal";
 
 const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
   const [show, setShow] = useState(false);
+  const [termShow, setTermShow] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCartItem());
@@ -108,9 +110,12 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
             />
             <div>
             <span className="iaccept-text-proposal">I Accept the </span>
-            <span class="p_dark_f_a_check terms-propposal-card">
-              Terms &amp; Conditions
+            <span class="p_dark_f_a_check terms-propposal-card"
+            style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}
+            >
+             !! Terms &amp; Conditions
             </span>
+            {termShow && <TermModal show={termShow} handleClose={()=>{setTermShow(false)}}/>}
             </div>
           </div>
         )}

@@ -25,7 +25,9 @@ import ProductSummaryTab from "../ProposalPage/ProposalSections/components/Produ
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { Col, Row } from "react-bootstrap";
 import TermModal from "./TermsModal";
+import ReviewCart from "../ProductDetails/components/ReviewCart";
 const ProposalSummary = ({ history }) => {
+  let groupCode  = useSelector(({quotePage}) => quotePage.selectedGroup);
   const { currentSchema } = useSelector(state => state.schema);
   const { proposalData, policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
@@ -112,7 +114,7 @@ const ProposalSummary = ({ history }) => {
               onChange={() => setChecked(!checked)}
             />{" "}
             <span className="Iaccept">I Accept the&nbsp;</span>
-            <span class="TermsAndConditions" onClick={() => setTermShow(true)}> Terms &amp; Conditions </span>
+            <span class="TermsAndConditions" style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}> Terms &amp; Conditions </span>
 {termShow && <TermModal show={termShow} handleClose={()=>{setTermShow(false)}}/>}
 
           </div>
@@ -290,6 +292,7 @@ const ProposalSummary = ({ history }) => {
           >
             <Col md={3}
              css={`
+             padding:0px;
              @media (max-width: 1023px){
               width: 100%;
              }
@@ -297,6 +300,9 @@ const ProposalSummary = ({ history }) => {
             >
               <SummaryWrapper>
                 <ProductSummary cart={cart} />
+                {/* {
+                groupCode?<ReviewCart groupCode={groupCode} unEditable={true} />:""
+              }  */}
               </SummaryWrapper>
             </Col>
             <Col md={9}
