@@ -11,6 +11,7 @@ import ProposalCheckBox from "../../../../components/Common/ProposalSummary/summ
 import CheckBox from "../../components/Checkbox/Checkbox";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import SecureLS from "secure-ls";
+import TermModal from "../../../ProposalSummary/TermsModal";
 
 
 
@@ -25,6 +26,8 @@ function ProductSummaryMobile({ cart, payNow }) {
 
   const [show, setShow] = useState(false);
   const [showP, setShowP] = useState(false);
+
+  const [termShow, setTermShow] = useState(false);
 
   const { frontendData } = useSelector(state => state.frontendBoot);
   const ls = new SecureLS();
@@ -258,7 +261,12 @@ const enquiryId = url.get("enquiryId");
                 onChange={() => setChecked(!checked)}
               />{" "}
               <span className="Iaccept">I Accept the&nbsp;</span>
-              <span class="TermsAndConditions"> Terms &amp; Conditions </span>
+              <span class="TermsAndConditions"       
+                   style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}
+            >
+              Terms &amp; Conditions
+            </span>
+            {termShow && <TermModal show={termShow} handleClose={()=>{setTermShow(false)}}/>}
             </div>
           </div>
         )}
