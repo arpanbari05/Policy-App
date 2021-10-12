@@ -99,7 +99,7 @@ const ProposalPage = ({ history }) => {
           }
           & .formbuilder__error {
             color: #c7222a;
-            //
+            
           }
         `}
       >
