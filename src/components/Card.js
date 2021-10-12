@@ -13,7 +13,7 @@ const Card = ({
   children,
   boxShadow,
   styledCss,
-  
+  onClick
 }) => {
   return (
     <Container
@@ -27,6 +27,7 @@ const Card = ({
       BgColor={BgColor}
       boxShadow={boxShadow}
       css={styledCss}
+      onClick={onClick}
     >
       {children}
     </Container>
