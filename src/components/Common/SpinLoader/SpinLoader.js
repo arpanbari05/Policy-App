@@ -1,12 +1,17 @@
 import React from "react";
 import "./Loader.scss";
+import 'styled-components/macro'
 
-const SpinLoader = ({ style = {},proposalpage }) => {
+const SpinLoader = ({ style = {}, proposalpage }) => {
   return (
-    <div className="loader" style={style}>
-      <div className={!proposalpage?"spinner":"proposal"}
-  
-      >
+    <div
+      className="loader"
+      style={style}
+      css={`
+        position: ${proposalpage && "unset !important"};
+      `}
+    >
+      <div className={!proposalpage ? "spinner" : "proposal"}>
         <div className="bounce1"></div>
         <div className="bounce2"></div>
         <div className="bounce3"></div>
