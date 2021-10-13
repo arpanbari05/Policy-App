@@ -3,6 +3,7 @@ import { useLocation, Switch, Route } from "react-router-dom";
 import { InputPage } from "./pages/InputPage/InputPage";
 import ComparePage from "./pages/ComparePage/ComparePage";
 import "bootstrap/dist/css/bootstrap.min.css";
+import CustomModal1 from "./components/Common/Modal/CustomModal1";
 import "./app.css";
 import FilterSkeletonLoader from "./components/Common/filter-skeleton-loader/FilterSkeletonLoader";
 import CardSkeletonLoader from "./components/Common/card-skeleton-loader/CardSkeletonLoader";
@@ -147,6 +148,7 @@ function App() {
           <CardSkeletonLoader noOfCards={3} />
         </div>
       </div>
+      <CustomModal1 />
     </>
   );
 }

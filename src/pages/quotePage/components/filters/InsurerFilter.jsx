@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal } from "react-bootstrap";
+import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
@@ -14,25 +14,18 @@ const FilterModal = ({ show, handleClose, filters }) => {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
-  const [selectedinsurers, setSelectedinsurers] = useState(filters.insurers.length ? filters.insurers : []);
+  const [selectedinsurers, setSelectedinsurers] = useState(
+    filters.insurers.length ? filters.insurers : []
+  );
 
   const handleChange = (insurer) => {
-
-
     selectedinsurers !== [] &&
-      selectedinsurers.filter(co => co.alias === insurer.alias).length === 0 ?
-      setSelectedinsurers([...selectedinsurers, insurer])
-      :
-      setSelectedinsurers([
-        ...selectedinsurers.filter(co => co.alias !== insurer.alias)
-      ])
-
-
-
-  }
-
-
-
+    selectedinsurers.filter((co) => co.alias === insurer.alias).length === 0
+      ? setSelectedinsurers([...selectedinsurers, insurer])
+      : setSelectedinsurers([
+          ...selectedinsurers.filter((co) => co.alias !== insurer.alias),
+        ]);
+  };
 
   const handleApply = (e) => {
     e.stopPropagation();
@@ -44,7 +37,95 @@ const FilterModal = ({ show, handleClose, filters }) => {
   };
 
   return (
-    <Modal
+    <>
+      {show && (
+        <CustomModal1
+          header="Insurers"
+          footerJSX={
+            <ApplyBtn
+              className=" apply_btn mx-auto h-100 w-100"
+              onClick={(e) => handleApply(e)}
+            >
+              Apply
+            </ApplyBtn>
+          }
+          handleClose={handleClose}
+          leftAlignmnetMargin="-22"
+        >
+          <div>
+            <OptionWrapper>
+              {insurerOptions && selectedinsurers ? (
+                Object.keys(insurerOptions.companies)
+                  .sort(
+                    (a, b) =>
+                      insurerOptions?.companies[b].csr -
+                      insurerOptions?.companies[a].csr
+                  )
+                  .map((key, i) => {
+                    return insurerOptions.companies[key].insurance_types[0] ===
+                      "health" ||
+                      insurerOptions.companies[key].insurance_types[0] ===
+                        "top_up" ||
+                      insurerOptions.companies[key].insurance_types[0] ===
+                        "cancer" ||
+                      insurerOptions.companies[key].insurance_types[0] ===
+                        "critical_illness" ||
+                      insurerOptions.companies[key].insurance_types[0] ===
+                        "personal_accident" ? (
+                      <>
+                        <input
+                          type="checkbox"
+                          className="d-none"
+                          id={insurerOptions.companies[key].alias}
+                          onChange={() =>
+                            handleChange(insurerOptions.companies[key])
+                          }
+                          checked={
+                            selectedinsurers.includes(
+                              insurerOptions.companies[key]
+                            ) && true
+                          }
+                        />
+
+                        <label
+                          htmlFor={insurerOptions.companies[key].alias}
+                          className="w-100"
+                        >
+                          <li className="option insurer_option d-flex align-items-center justify-content-between">
+                            <div className="d-flex align-items-center">
+                              <div className="insurer_logo">
+                                <img
+                                  src={insurerOptions.companies[key].logo}
+                                  alt="COMPANY_LOGO"
+                                  className="w-100"
+                                />
+                              </div>
+                              <span className="mx-3">
+                                {insurerOptions.companies[key].short_name}
+                              </span>
+                            </div>
+
+                            <div className="d-flex align-items-center ">
+                              <span className="plan_csr">
+                                {insurerOptions.companies[key].csr}%
+                              </span>
+                              <div className="custom_checkbox"></div>
+                            </div>
+                          </li>
+                        </label>
+                      </>
+                    ) : (
+                      <></>
+                    );
+                  })
+              ) : (
+                <></>
+              )}
+            </OptionWrapper>
+          </div>
+        </CustomModal1>
+      )}
+      {/*<Modal
       show={show}
       onHide={handleClose}
       animation={false}
@@ -148,14 +229,15 @@ const FilterModal = ({ show, handleClose, filters }) => {
               <></>
             )}
 
-            {/* */}
+            
           </OptionWrapper>
         </div>
       </Modal.Body>
       <Modal.Footer className="text-center">
         <ApplyBtn className=" apply_btn mx-auto h-100 w-100" onClick={(e) => handleApply(e)}>Apply</ApplyBtn>
       </Modal.Footer>
-    </Modal>
+            </Modal>*/}
+    </>
   );
 };
 
@@ -164,18 +246,21 @@ const InsurerFilter = () => {
   const filters = useSelector(({ quotePage }) => quotePage.filters);
   return (
     <>
-      <Filter
-        className="filter d-flex flex-column flex-fill"
-        onClick={() => setShowModal(true)}
-      >
+      <Filter className="filter d-flex flex-column flex-fill">
         <span className="filter_head">Insurers</span>
-        <span className="filter_sub_head">
-          {filters.insurers.length ? `${filters.insurers.length} Insurers selected` : "Select Insurers"}<i class="fas fa-chevron-down"></i>
+        <span onClick={() => setShowModal(true)} className="filter_sub_head">
+          {filters.insurers.length
+            ? `${filters.insurers.length} Insurers selected`
+            : "Select Insurers"}
+          <i class="fas fa-chevron-down"></i>
         </span>
+
+        <FilterModal
+          show={showModal}
+          handleClose={() => setShowModal(false)}
+          filters={filters}
+        />
       </Filter>
-
-      <FilterModal show={showModal} handleClose={() => setShowModal(false)} filters={filters} />
-
     </>
   );
 };
