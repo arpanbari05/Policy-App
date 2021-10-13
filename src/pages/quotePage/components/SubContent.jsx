@@ -194,8 +194,9 @@ const SubContent = ({
       <Outer
         css={`
           border: none;
-          box-shadow: none;
+          box-shadow: none !important;
           &:hover {
+            box-shadow: none !important;
             border: none;
           }
         `}

@@ -42,7 +42,7 @@ const quotePageSlice = createSlice({
       ownCover: "",
       planType: "",
       multiYear: "",
-      basePlanType: "Base health",
+      basePlanType: "Base Health",
       moreFilters: {},
     },
     productDiscounts: [],
@@ -139,7 +139,7 @@ const quotePageSlice = createSlice({
       state.selectedGroup = action.payload;
     },
     setFilters: (state, action) => {
-      console.log('fetchquotes setfilters',action.payload)
+      console.log("fetchquotes setfilters", action.payload);
       state.filters = { ...state.filters, ...action.payload };
     },
     updateFetchedFilters: (state, action) => {
@@ -280,7 +280,7 @@ export const {
   setQuotes,
   setAppLoading,
   clearFilterQuotes,
-  deleteQuotes
+  deleteQuotes,
 } = quotePageSlice.actions;
 
 const cancelTokens = {};
@@ -289,7 +289,7 @@ var flag = false;
 export const fetchQuotes =
   (companies, { sum_insured, tenure, plan_type, member, basePlanType }) =>
   async (dispatch, store) => {
-    console.log('hashahh3',cancelTokens)
+    console.log("hashahh3", cancelTokens);
     try {
       const filters = store().quotePage.filters;
       const baseplantypes =
@@ -341,7 +341,6 @@ export const fetchQuotes =
           // count++;
 
           if (quoteData) {
-           
             quoteData.map((item) => {
               if (item.product.insurance_type.name === "Health Insurance") {
                 flag = true;

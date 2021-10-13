@@ -91,7 +91,12 @@ const FilterModal = ({ show, handleClose, filters }) => {
                           htmlFor={insurerOptions.companies[key].alias}
                           className="w-100"
                         >
-                          <li className="option insurer_option d-flex align-items-center justify-content-between">
+                          <li
+                            css={`
+                              margin: 25px 0;
+                            `}
+                            className="option insurer_option d-flex align-items-center justify-content-between"
+                          >
                             <div className="d-flex align-items-center">
                               <div className="insurer_logo">
                                 <img
@@ -107,7 +112,7 @@ const FilterModal = ({ show, handleClose, filters }) => {
 
                             <div className="d-flex align-items-center ">
                               <span className="plan_csr">
-                                {insurerOptions.companies[key].csr}%
+                                {insurerOptions.companies[key].csr}%&nbsp;CSR
                               </span>
                               <div className="custom_checkbox"></div>
                             </div>

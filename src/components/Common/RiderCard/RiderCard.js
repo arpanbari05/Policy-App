@@ -7,7 +7,7 @@ import Checkbox from "../../../pages/ComparePage/components/Checkbox/Checbox";
 function RiderCard({
   rider,
   productPage,
-  isRiderSelected,
+  //isRiderSelected,
   isMandatory,
   selectedRiders,
   health_riders,
@@ -27,10 +27,12 @@ function RiderCard({
     (data) => data.alias === parent_rider
   );
   const [windowHeight, windowWidth] = useWindowSize();
-  const handleRiderClick = (riderAsId = rider) => {
-    console.log("Rider Card index", riderAsId);
+  const [isRiderSelectedCorrected, setIsRiderSelectedCorrected] =
+    useState(false);
+  const handleRiderClick = () => {
     !isMandatory &&
-      handleRiderChange({ rider, isRiderSelected: !isRiderSelected });
+      handleRiderChange({ rider, isRiderSelected: !isRiderSelectedCorrected });
+    setIsRiderSelectedCorrected((currentState) => !currentState);
   };
 
   const [showMore, setShowMore] = useState(false);
@@ -40,7 +42,7 @@ function RiderCard({
       {(!parent_rider || parent_selected) && (
         <RiderCardWrap
           {...props}
-          isRiderSelected={isRiderSelected}
+          isRiderSelected={isRiderSelectedCorrected}
           htmlFor={(options.length > 0 && `${riderName}"hehe"`) || undefined}
           onClick={() => {
             handleRiderClick();
@@ -168,7 +170,9 @@ font-weight:bold;
                 padding: 10px 0;
                 border-radius: 0.25em;
                 cursor: pointer;
-                background-color: ${isRiderSelected ? `#eff7ff` : `#f3f3f3`};
+                background-color: ${isRiderSelectedCorrected
+                  ? `#eff7ff`
+                  : `#f3f3f3`};
                 margin: 0 3px;
                 width: 160px;
                 min-width: fit-content;
@@ -191,8 +195,8 @@ font-weight:bold;
                   line-height: 30px;
                   text-align: center;
                   border-radius: 50%;
-                  background: ${isRiderSelected ? "#0a87ff" : "white"};
-                  box-shadow: ${isRiderSelected
+                  background: ${isRiderSelectedCorrected ? "#0a87ff" : "white"};
+                  box-shadow: ${isRiderSelectedCorrected
                     ? "0px 2px 5px -2px rgb(0 0 0 / 25%)"
                     : ""};
                   font-family: "font-awesome";
@@ -287,7 +291,8 @@ const RiderCardWrap = styled.div`
   width: 49%;
   margin: 10px 0;
   border: 1px solid
-    ${({ isRiderSelected }) => (isRiderSelected ? "#0d6efd;" : "#d5dce5")};
+    ${({ isRiderSelectedCorrected }) =>
+      isRiderSelectedCorrected ? "#0d6efd;" : "#d5dce5"};
   padding: 10px 10px;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
   cursor: pointer;
