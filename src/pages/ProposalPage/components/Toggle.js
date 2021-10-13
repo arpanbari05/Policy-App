@@ -209,7 +209,7 @@ const Question = styled.p`
     position: absolute;
     left: -2px;
     top: 2px;
-    background-color: #fecc28;
+    background-color: #2cd44a;;
     border-radius: 50px;
     @media (max-width: 767px) {
       height: calc(100% - 6px);

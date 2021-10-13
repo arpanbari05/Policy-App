@@ -110,7 +110,7 @@ export const ListItem = styled.div`
   :before {
     position: absolute;
     content: "•";
-    color: #ffcb00;
+    color: #2cd44a;;
     left: 0;
   }
   /* &::before {

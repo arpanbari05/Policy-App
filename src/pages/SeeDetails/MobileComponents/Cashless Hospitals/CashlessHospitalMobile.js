@@ -261,7 +261,7 @@ const FeatureSection = styled.div`
   display: flex;
   &::before {
     content: "";
-    color: #fecc28;
+    color:#2cd44a;
     height: 39px;
     width: 9px;
     padding-right: 10px;
@@ -274,7 +274,7 @@ const FeatureSection = styled.div`
     /* left: -20px; */
     /* position: absolute; */
     /* background-color: #de9b9e; */
-    background-color: #fecc28;
+    background-color: #2cd44a;
     border-radius: 0 15px 15px 0;
   }
   @media (max-width: 767px) {
