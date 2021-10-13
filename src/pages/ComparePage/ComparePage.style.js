@@ -61,8 +61,10 @@ export const QuoteNameM = styled.div`
 `;
 export const QuoteName = styled.div`
   margin-left: 60px;
-
-  font-size: 18px;
+height:45px;
+display:flex;
+align-items: center;
+  font-size: 15px;
 `;
 export const DropDownWrapper = styled.div`
   position: absolute;
@@ -233,7 +235,7 @@ cursor: pointer;
 `;
 export const RiderName = styled.div`
   display: inline-block;
-
+font-size:14px;
   max-width: 64%;
   float: left;
 `;
