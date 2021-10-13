@@ -7,7 +7,7 @@ box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
 border: solid 1px #dfdfdf;
 background-color: #fff;
 &:hover{
-  box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.26);
+  box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.21);
 }
 `
 

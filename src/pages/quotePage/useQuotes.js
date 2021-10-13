@@ -83,7 +83,7 @@ function useQuotesPage() {
       tempfilter !== null &&
         dispatch(
           setFilters({
-            hehe:'hehehe',
+            hehe: "hehehe",
             ...tempfilter,
             cover: tempfilter.cover || defaultfilters.cover,
             multiYear: tempfilter.multiYear || defaultfilters.multiYear,
@@ -268,7 +268,7 @@ function useQuotesPage() {
   // }, [memberGroups]);
 
   useEffect(() => {
-    if (filters.cover && filters.multiYear) {
+    if (filters.cover && filters.multiYear && memberGroups && memberGroups?.[selectedGroup]) {
       dispatch(clearFilterQuotes());
       console.log(
         "fetchQuotes useQUotes",
@@ -281,7 +281,7 @@ function useQuotesPage() {
           tenure: filters.multiYear.charAt(0),
           member: selectedGroup,
           plan_type:
-            memberGroups[selectedGroup].length === 1
+            memberGroups?.[selectedGroup]?.length === 1
               ? "I"
               : proposerDetails.plan_type
               ? proposerDetails.plan_type === "M"
@@ -299,6 +299,7 @@ function useQuotesPage() {
     filters.basePlanType,
     filters.moreFilters,
     filters.cover,
+    selectedGroup,
   ]);
 
   //  const members = useSelector(({greetingPage}) => greetingPage.proposerDetails.members);
