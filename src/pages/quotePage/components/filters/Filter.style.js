@@ -46,7 +46,8 @@ export const OptionWrapper = styled.ul`
   padding-left: 0rem;
   .option {
     border-bottom: 1px solid #d5dce5;
-    padding: 5px;
+    text-transform: capitalize;
+    padding:14px 5px;
     font-weight: 600;
     input[type="radio"] {
       width: 20px;
