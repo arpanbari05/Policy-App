@@ -191,7 +191,9 @@ font-weight:bold;
                   text-align: center;
                   border-radius: 50%;
                   background: ${isRiderSelected ? "#0a87ff" : "white"};
-                  box-shadow: ${isRiderSelected ? "0px 2px 5px -2px rgb(0 0 0 / 25%)" : ""};
+                  box-shadow: ${isRiderSelected
+                    ? "0px 2px 5px -2px rgb(0 0 0 / 25%)"
+                    : ""};
                   font-family: "font-awesome";
                   border: 2px solid #fff;
                   color: #fff;

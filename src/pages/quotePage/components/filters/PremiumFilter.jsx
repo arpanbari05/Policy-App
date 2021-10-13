@@ -4,18 +4,21 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { setFilters, premiumFilterCards } from "../../quote.slice";
 import "styled-components/macro";
+import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
-const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
-  const premiumOptions = useSelector(({ frontendBoot }) => frontendBoot.frontendData.data)
+const FilterModal = ({ show, handleClose }) => {
+  const premiumOptions = useSelector(
+    ({ frontendBoot }) => frontendBoot.frontendData.data
+  );
   const dispatch = useDispatch();
 
   const [selectedPremium, setSelectedPremium] = useState({
     code: "",
-    displayName: ""
+    displayName: "",
   });
 
-  console.log(selectedPremium, "selectedPremium")
+  console.log(selectedPremium, "selectedPremium");
 
   const handleChange = (code, displayName) => {
     if (displayName) {
@@ -30,7 +33,53 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
   };
 
   return (
-    <Modal
+    <>
+      {show && (
+        <CustomModal1
+          header="Premium"
+          footerJSX={
+            <ApplyBtn
+              className=" apply_btn mx-auto h-100 w-100"
+              onClick={() => handleApply()}
+            >
+              Apply
+            </ApplyBtn>
+          }
+          handleClose={handleClose}
+        >
+          <div>
+            <OptionWrapper>
+              {premiumOptions
+                ? premiumOptions.premiums.map((option, i) => {
+                    return (
+                      <li
+                        className="option d-flex align-items-center justify-content-between"
+                        key={i}
+                      >
+                        <label htmlFor={option.code}>
+                          {option.display_name}
+                        </label>
+                        <input
+                          type="radio"
+                          id={option.code}
+                          checked={
+                            selectedPremium.code === option.code || false
+                          }
+                          name="select_premium"
+                          onChange={() =>
+                            handleChange(option.code, option.display_name)
+                          }
+                        />
+                      </li>
+                    );
+                  })
+                : ""}
+            </OptionWrapper>
+          </div>
+        </CustomModal1>
+      )}
+    </>
+    /*<Modal
       show={show}
       onHide={handleClose}
       animation={false}
@@ -42,14 +91,14 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
         .modal-content {
           top: 248px;
           left: 8.5vw;
-          @media(min-width: 1400px){
-            left:5.5vw;
+          @media (min-width: 1400px) {
+            left: 5.5vw;
           }
-          @media(min-width: 1550px){
-            left:9.5vw;
+          @media (min-width: 1550px) {
+            left: 9.5vw;
           }
-          @media(min-width: 1700px){
-            left:13.5vw;
+          @media (min-width: 1700px) {
+            left: 13.5vw;
           }
         }
         .modal-footer {
@@ -76,25 +125,27 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
       <Modal.Body>
         <div>
           <OptionWrapper>
-
-            {
-              premiumOptions ? premiumOptions.premiums.map((option, i) => {
-                return (
-                  <li className="option d-flex align-items-center justify-content-between" key={i}>
-                    <label htmlFor={option.code}>{option.display_name}</label>
-                    <input
-                      type="radio"
-                      id={option.code}
-                      checked={selectedPremium.code === option.code || false}
-                      name="select_premium"
-                      onChange={() => handleChange(option.code, option.display_name)}
-                    />
-                  </li>
-                )
-              }) : ""
-            }
-
-
+            {premiumOptions
+              ? premiumOptions.premiums.map((option, i) => {
+                  return (
+                    <li
+                      className="option d-flex align-items-center justify-content-between"
+                      key={i}
+                    >
+                      <label htmlFor={option.code}>{option.display_name}</label>
+                      <input
+                        type="radio"
+                        id={option.code}
+                        checked={selectedPremium.code === option.code || false}
+                        name="select_premium"
+                        onChange={() =>
+                          handleChange(option.code, option.display_name)
+                        }
+                      />
+                    </li>
+                  );
+                })
+              : ""}
           </OptionWrapper>
         </div>
       </Modal.Body>
@@ -106,7 +157,7 @@ const FilterModal = ({ show, handleClose, existingPremium, filters }) => {
           Apply
         </ApplyBtn>
       </Modal.Footer>
-    </Modal>
+    </Modal>*/
   );
 };
 
@@ -116,12 +167,9 @@ const PremiumFilter = () => {
 
   return (
     <>
-      <Filter
-        className="filter d-flex flex-column flex-fill"
-        onClick={() => setShowModal(true)}
-      >
+      <Filter className="filter d-flex flex-column flex-fill">
         <span className="filter_head">Premium</span>
-        <span className="filter_sub_head">
+        <span onClick={() => setShowModal(true)} className="filter_sub_head">
           {filters.premium ? filters.premium.displayName : "Select Premium"}{" "}
           <i class="fas fa-chevron-down"></i>
         </span>
@@ -130,8 +178,8 @@ const PremiumFilter = () => {
       <FilterModal
         show={showModal}
         handleClose={() => setShowModal(false)}
-        existingPremium={filters.premium}
-        filters={filters}
+        //existingPremium={filters.premium}
+        //filters={filters}
       />
     </>
   );

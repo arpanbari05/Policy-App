@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import {
   setFilters,
   fetchQuotes,
@@ -100,134 +101,217 @@ const FilterModal = ({ show, handleClose }) => {
   };
 
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      animation={false}
-      css={`
-        .modal-dialog {
-          margin: 0px !important;
-          max-width: 440px;
-        }
-        .modal-content {
-          top: 248px;
-
-          left: 24.5vw;
-          @media (min-width: 1400px) {
-            left: 21.5vw;
+    <>
+      {show && (
+        <CustomModal1
+          header="Choose Your Cover Range"
+          footerJSX={
+            <ApplyBtn
+              className="apply_btn mx-auto h-100 w-100"
+              onClick={(e) => handleApply(e)}
+            >
+              Apply
+            </ApplyBtn>
           }
-          @media (min-width: 1550px) {
-            left: 24.5vw;
-          }
-          @media (min-width: 1700px) {
-            left: 26.5vw;
-          }
-        }
-        .modal-footer {
-          padding: 0px !important;
-
-          border-top: none !important;
-        }
-        .modal-footer > * {
-          margin: 0px !important;
-        }
-      `}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title
-          style={{
-            fontSize: "20px",
-            fontWeight: "600",
-            color: "black",
-          }}
+          handleClose={handleClose}
+          leftAlignmnetMargin="-22"
         >
-          Choose Your Cover Range
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div>
-          <OptionWrapper>
-            {coverRangeOptions
-              ? coverRangeOptions.covers.map((option, i) => {
-                  return (
-                    <li
-                      className="option d-flex align-items-center justify-content-between"
-                      key={i}
-                    >
-                      <label htmlFor={option.code}>{option.display_name}</label>
-                      <input
-                        type="radio"
-                        id={option.code}
-                        checked={option.code === selectedCover.code || false}
-                        name="selectCover"
-                        onChange={(e) => {
-                          setInputCover("");
-                          handleChange(option.code, option.display_name);
-                        }}
-                      />
-                    </li>
-                  );
-                })
-              : ""}
-          </OptionWrapper>
-          <div
-            style={{
-              fontWeight: "600",
-            }}
-            className="text-center w-100"
-          >
-            OR
-          </div>
-
-          {/* custom input range for plan */}
-          <CustomInputWrapper>
-            <input
-              type="number"
-              placeholder="Enter your own cover."
-              className="w-100"
-              value={inputCover}
-              onChange={(e) => {
-                setInputCover(e.target.value);
-                setselectedCover("");
+          <div>
+            <OptionWrapper>
+              {coverRangeOptions
+                ? coverRangeOptions.covers.map((option, i) => {
+                    return (
+                      <li
+                        className="option d-flex align-items-center justify-content-between"
+                        key={i}
+                      >
+                        <label htmlFor={option.code}>
+                          {option.display_name}
+                        </label>
+                        <input
+                          type="radio"
+                          id={option.code}
+                          checked={option.code === selectedCover.code || false}
+                          name="selectCover"
+                          onChange={(e) => {
+                            setInputCover("");
+                            handleChange(option.code, option.display_name);
+                          }}
+                        />
+                      </li>
+                    );
+                  })
+                : ""}
+            </OptionWrapper>
+            <div
+              style={{
+                fontWeight: "600",
               }}
-            />
-            {inputCoverError ? (
-              <div className="bottom_msg">{inputCoverError}</div>
-            ) : (
-              <></>
-            )}
-          </CustomInputWrapper>
-        </div>
-      </Modal.Body>
-      <Modal.Footer className="text-center">
-        <ApplyBtn
-          className="apply_btn mx-auto h-100 w-100"
-          onClick={(e) => handleApply(e)}
-        >
-          Apply
-        </ApplyBtn>
-      </Modal.Footer>
-    </Modal>
+              className="text-center w-100"
+            >
+              OR
+            </div>
+
+            <CustomInputWrapper>
+              <input
+                type="number"
+                placeholder="Enter your own cover."
+                className="w-100"
+                value={inputCover}
+                onChange={(e) => {
+                  setInputCover(e.target.value);
+                  setselectedCover("");
+                }}
+              />
+              {inputCoverError ? (
+                <div className="bottom_msg">{inputCoverError}</div>
+              ) : (
+                <></>
+              )}
+            </CustomInputWrapper>
+          </div>
+        </CustomModal1>
+      )}
+
+      {/*<Modal
+        show={show}
+        onHide={handleClose}
+        animation={false}
+        css={`
+          .modal-dialog {
+            margin: 0px !important;
+            max-width: 440px;
+          }
+          .modal-content {
+            top: 248px;
+
+            left: 24.5vw;
+            @media (min-width: 1400px) {
+              left: 21.5vw;
+            }
+            @media (min-width: 1550px) {
+              left: 24.5vw;
+            }
+            @media (min-width: 1700px) {
+              left: 26.5vw;
+            }
+          }
+          .modal-footer {
+            padding: 0px !important;
+
+            border-top: none !important;
+          }
+          .modal-footer > * {
+            margin: 0px !important;
+          }
+        `}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title
+            style={{
+              fontSize: "20px",
+              fontWeight: "600",
+              color: "black",
+            }}
+          >
+            Choose Your Cover Range
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <OptionWrapper>
+              {coverRangeOptions
+                ? coverRangeOptions.covers.map((option, i) => {
+                    return (
+                      <li
+                        className="option d-flex align-items-center justify-content-between"
+                        key={i}
+                      >
+                        <label htmlFor={option.code}>
+                          {option.display_name}
+                        </label>
+                        <input
+                          type="radio"
+                          id={option.code}
+                          checked={option.code === selectedCover.code || false}
+                          name="selectCover"
+                          onChange={(e) => {
+                            setInputCover("");
+                            handleChange(option.code, option.display_name);
+                          }}
+                        />
+                      </li>
+                    );
+                  })
+                : ""}
+            </OptionWrapper>
+            <div
+              style={{
+                fontWeight: "600",
+              }}
+              className="text-center w-100"
+            >
+              OR
+            </div>
+
+            //custom input range for plan
+            <CustomInputWrapper>
+              <input
+                type="number"
+                placeholder="Enter your own cover."
+                className="w-100"
+                value={inputCover}
+                onChange={(e) => {
+                  setInputCover(e.target.value);
+                  setselectedCover("");
+                }}
+              />
+              {inputCoverError ? (
+                <div className="bottom_msg">{inputCoverError}</div>
+              ) : (
+                <></>
+              )}
+            </CustomInputWrapper>
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="text-center">
+          <ApplyBtn
+            className="apply_btn mx-auto h-100 w-100"
+            onClick={(e) => handleApply(e)}
+          >
+            Apply
+          </ApplyBtn>
+        </Modal.Footer>
+              </Modal>*/}
+    </>
   );
 };
 
 const CoverRangeFilter = () => {
   const [showModal, setShowModal] = useState(false);
   const filters = useSelector(({ quotePage }) => quotePage.filters);
+
   return (
     <>
-      <Filter
-        className="filter d-flex flex-column flex-fill"
-        onClick={() => setShowModal(true)}
-      >
+      <Filter className="filter d-flex flex-column flex-fill">
         <span className="filter_head">Cover</span>
-        <span className="filter_sub_head">
+        <span
+          onClick={() => {
+            setShowModal(true);
+          }}
+          className="filter_sub_head"
+        >
           {filters.cover ? filters.cover : "Select cover"}{" "}
           <i class="fas fa-chevron-down"></i>
         </span>
-      </Filter>
 
-      <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
+        <FilterModal
+          show={showModal}
+          handleClose={() => {
+            setShowModal(false);
+          }}
+        />
+      </Filter>
     </>
   );
 };
