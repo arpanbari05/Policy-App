@@ -457,7 +457,7 @@ const MedicalQuestionWrapper = styled.p`
     position: absolute;
     left: -4px;
     top: -2px;
-    background-color: #ffc60a;
+    background-color: #2cd44a;
     border-radius: 50px;
   }
 `;

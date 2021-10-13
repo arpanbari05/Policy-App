@@ -286,19 +286,27 @@ const ThankYouPage = () => {
           <div className="agn-counter-section-pay">
             <Container className="">
               <Row>
-                <div className="bottom-banner">
-                  <div className="text">
-                    {<img src={Unsuccess} className="img_unsuccess"></img>}
+                <div className="bottom-banner"
+               style={{margin:"unset"}}
+                >
+                  {/* <div className="text"
+                
+                  >
+                    
+                    <img src={Unsuccess}  className="img_unsuccess"
+                    alt="Unsuccess" 
+                  
+                    ></img>
+                   
 
-                    <img src={CutL} className="img_left_cut"></img>
-                    <img src={CurR} className={"img_right_cut_f"}></img>
-                    {
+                
+                    
                       <h3 className="title text-center unsuccess-text">
                         Uh-oh! We were unable to <br></br>
                         Process Your Payment{" "}
                       </h3>
-                    }
-                    {
+                    
+                    
                       <>
                         {" "}
                         <p className="text-p">
@@ -307,10 +315,52 @@ const ThankYouPage = () => {
                           looking at its layout.
                         </p>
                       </>
-                    }
+                    
+                  </div> */}
+                  <div
+                  css={`
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                  `}
+                  >
+                  <img src={Unsuccess}  className="img_unsuccess"
+                    alt="Unsuccess" 
+                  css={`
+                  border-radius:100px;
+                  `}
+                    ></img> 
+                     <h3 className="title text-center unsuccess-text"
+                  css={`
+                  margin:none;
+                  `}
+                     >
+                      Uh OH! Payment Faiiled.
+                      </h3>
+                      <p className="text-p"
+                      style={{textAlign: "center"}}
+                      >
+                          {/* It is a long established fact that a reader will be
+                          distracted by the readable content of a page when
+                          looking at its layout. */}
+                                Don't worry. Please try again.
+                        </p>
+                        <div>
+                <div
+                  className="yellow__line"
+                  style={{
+                    marginLeft: "0px",
+                    width: "50px",
+                    height: "9px",
+                    marginTop: "20px",
+                  }}
+                />
+              </div>
                   </div>
                 </div>
               </Row>
+             
               {/* <Row>
 
           </Row> */}
@@ -321,8 +371,10 @@ const ThankYouPage = () => {
                       href="#"
                       className="btn_back_q_proposal"
                       css={`
+                      display: inline-block;
                       background-color: #0a87ff;
                       border: 1px solid #0a87ff;
+                      width:158px;
                       &:hover{
                         color:#000;
                       }
@@ -341,7 +393,9 @@ const ThankYouPage = () => {
                       className="btn_start_proposal_back_t"
                       css={`
                       color:#0a87ff;
+                      display: inline-block;
                       border: 1px solid #0a87ff;
+                      width:158px !important;
                       &:hover{
                         color:#000;
                       }`}
@@ -382,7 +436,7 @@ const ThankYouPage = () => {
                 {<img src={Unsuccess} alt="" className="img_success"></img>}
               </div>
               <div style={{ padding: "20px 0px 0px" }}>
-                <h5>Oh no, your payment failed</h5>
+                <h5> Uh OH! Payment Faiiled.</h5>
                 <p
                   style={{
                     fontSize: "14px",

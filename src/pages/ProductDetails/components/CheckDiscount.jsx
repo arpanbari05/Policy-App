@@ -273,7 +273,7 @@ const CheckDiscount = ({ groupCode }) => {
                             css={`
                               width: 100px;
                               height: 22px;
-                              background: #ffcb00;
+                              background: #2cd44a;;
                               border-bottom-left-radius: 300px;
                               border-top-right-radius: 180px;
                               position: absolute;
@@ -282,7 +282,7 @@ const CheckDiscount = ({ groupCode }) => {
                               justify-content: center;
                               align-items: center;
                               font-weight: 900;
-                              color: #253858;
+                              color: #000;
                               font-size: 10px;
                               right: -2px;
                             `}
