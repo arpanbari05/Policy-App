@@ -300,6 +300,7 @@ const popupContent = (
                 return (
                   <div className="col-lg-4">
                     <QuoteWrapper>
+                    <div>
                       <LogoWrapper className="logo_style_common">
                         <img
                           src={companyWiseLogos[index]}
@@ -311,6 +312,7 @@ const popupContent = (
                         ></img>
                       </LogoWrapper>
                       <QuoteName>{item}</QuoteName>
+                      </div>
                       <DropDownWrapper>
                         <DropDown
                           name={companyWisePlans[item]}

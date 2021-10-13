@@ -55,9 +55,9 @@ export const OptionWrapper = styled.ul`
   }
   .insurer_option {
     .insurer_logo {
-      width: 80px;
+      width: 40px;
     display: flex;
-    height: 80px;
+    height: 40px;
     justify-content: center;
     align-items: center;
     }

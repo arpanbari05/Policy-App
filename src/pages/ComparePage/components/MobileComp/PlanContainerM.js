@@ -8,6 +8,7 @@ import { useCartProduct } from "../../../Cart";
 import { CompanyName, PlanName, RemoveCross } from "../../ComparePage.style";
 import CompareBtn from "../buttons/CompareBtn";
 import "styled-components/macro";
+import { images } from "../../../../assets/logos/logo.js";
 import "../PlanContainer/PlanContainer";
 // import { backgroundPosition } from "html2canvas/dist/types/css/property-descriptors/background-position";
 
@@ -35,6 +36,7 @@ const PlanContainerM = ({
     total_premium,
     mandatory_riders,
     tax_amount,
+    company_alias,
     tenure,
   } = plans || {};
   const { discount, ridersPremium, riders } = useSelector(
@@ -85,7 +87,7 @@ const PlanContainerM = ({
               align-items: center;
             `}
           >
-            <img src={IcLogo} className="w-100" />
+            <img src={images[company_alias]} className="w-100" />
           </div>
 
           {/* <ImageLogoWrapper style={{backgroundImage:`url(${IcLogo})`}}>

@@ -62,6 +62,7 @@ const keyBenefits = (plans, title, windowWidth) => {
                 className={`${item === 2 && "showOnDesktopF"}`}
                 css={`
                   border-bottom: 1px solid #ebf5ff !important;
+                  color: #647188;
                 `}
               >
                 {plans[item]?.data?.features[1]?.value}
@@ -166,6 +167,7 @@ const dataset = (
                           className={`${item === 2 && "showOnDesktopF"}`}
                           css={`
                             border-bottom: 1px solid #ebf5ff !important;
+                            color: #647188;
                           `}
                         >
                           <>
@@ -304,6 +306,7 @@ const dataset = (
                   style={{ whiteSpace: "break-spaces" }}
                   css={`
                     border-bottom: 1px solid #ebf5ff !important;
+                    color: #647188;
                   `}
                 >
                   <OverlayTrigger
@@ -331,6 +334,7 @@ const dataset = (
                   style={{ whiteSpace: "break-spaces" }}
                   css={`
                     border-bottom: 1px solid #ebf5ff !important;
+                    color: #647188;
                   `}
                 >
                   <OverlayTrigger
@@ -359,6 +363,7 @@ const dataset = (
                   style={{ whiteSpace: "break-spaces" }}
                   css={`
                     border-bottom: 1px solid #ebf5ff !important;
+                    color: #647188;
                   `}
                 >
                   <OverlayTrigger
@@ -392,10 +397,10 @@ const dataset = (
   }
   return dataArray;
 };
-const AdditionalBenefits = ({plans, title, index, windowWidth}) => {
+const AdditionalBenefits = ({ plans, title, index, windowWidth }) => {
   const dispatch = useDispatch();
-  const riders = useSelector(({comparePage}) => comparePage.riders);
-  
+  const riders = useSelector(({ comparePage }) => comparePage.riders);
+
   return (
     <>
       {" "}
@@ -425,63 +430,60 @@ const AdditionalBenefits = ({plans, title, index, windowWidth}) => {
           else
             return (
               <td
-                style={{ whiteSpace: "break-spaces" }}
+                style={{ whiteSpace: "break-spaces", color: "#647188" }}
                 className={`${item === 2 ? "showOnDesktopF" : ""}`}
               >
                 {plans[item]?.features[index]?.riders?.map((innerItem) => {
-            
-                  if(innerItem.total_premium > 0){
-
-                    return(
-                      <RiderWrapper show={innerItem.total_premium}>
-                    <OverlayTrigger
-                      placement={"right"}
-                      overlay={renderTooltipDesc({
-                        desc: innerItem.description,
-                      })}
+                  return innerItem.total_premium? (
+                    <RiderWrapper show={innerItem.total_premium}>
+                      <OverlayTrigger
+                        placement={"right"}
+                        overlay={renderTooltipDesc({
+                          desc: innerItem.description,
+                        })}
                       >
-                      <RiderName>{innerItem.name}</RiderName>
-                    </OverlayTrigger>
-                    <RiderPremium>
-                      <i className="fa fa-inr"></i>{" "}
-                    {innerItem.total_premium > 0 &&  <div style={{fontWeight:"900"}}>₹ {innerItem.total_premium} </div>}
-                      <div>
-
-                      {/* {console.log(,"+++++++++")} */}
-                        <Checkbox2
-                         showTitle={false}
-                         
-                         title={innerItem.name + plans[item].data.product.id}
-                         checked={
-                           riders[`${plans[item].data.product.id}${plans[item].data.sum_insured}`]?.some(item => item.name===innerItem.name)
-                          }
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              dispatch(
-                                insertRider(
-                                  plans[item].data.product.id,
-                                  plans[item].data.sum_insured,
-                                  innerItem
+                        <RiderName>{innerItem.name}</RiderName>
+                      </OverlayTrigger>
+                      <RiderPremium>
+                        <i className="fa fa-inr"></i>{" "}
+                        <div style={{ fontWeight: "900" }}>
+                          ₹ {innerItem.total_premium}{" "}
+                        </div>{" "}
+                        <div>
+                          {/* {console.log(,"+++++++++")} */}
+                          <Checkbox2
+                            showTitle={false}
+                            title={innerItem.name + plans[item].data.product.id}
+                            checked={riders[
+                              `${plans[item].data.product.id}${plans[item].data.sum_insured}`
+                            ]?.some((item) => item.name === innerItem.name)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                dispatch(
+                                  insertRider(
+                                    plans[item].data.product.id,
+                                    plans[item].data.sum_insured,
+                                    innerItem
                                   )
-                                  );
-                                } else {
-                                  dispatch(
-                                    removeRider(
-                                      plans[item].data.product.id,
-                                      plans[item].data.sum_insured,
-                                      innerItem
-                                      )
-                                      );
-                                    }
-                                  }}
-                                  />
-                      </div>
-                    </RiderPremium>
-                  </RiderWrapper>
-                )
-                
-              }
-              })}
+                                );
+                              } else {
+                                dispatch(
+                                  removeRider(
+                                    plans[item].data.product.id,
+                                    plans[item].data.sum_insured,
+                                    innerItem
+                                  )
+                                );
+                              }
+                            }}
+                          />
+                        </div>
+                      </RiderPremium>
+                    </RiderWrapper>
+                  ) : (
+                    ""
+                  );
+                })}
               </td>
               );
         })}
@@ -532,7 +534,6 @@ const TBody = ({
   }, [trigger]);
   useEffect(() => {
     if (productDiscounts.length && tenureChangedFor !== -1) {
-      
       dispatch(
         updatePremiumQuote(
           tenureChangedFor,
@@ -563,7 +564,7 @@ const TBody = ({
               font-size: 20px;
               padding: 12px 16px !important;
               position: relative;
-              color:#505f79;
+              color: #505f79;
               z-index: -1;
             `}
           >
@@ -608,6 +609,7 @@ const TBody = ({
                 {" "}
                 {plans[0]?.data?.sum_insured ? (
                   <select
+                    style={{ color: "#647188" }}
                     onChange={(e) => {
                       dispatch(
                         removeQuotesForCompare(
@@ -646,6 +648,7 @@ const TBody = ({
                 {" "}
                 {plans[1]?.data?.sum_insured ? (
                   <select
+                    style={{ color: "#647188" }}
                     onChange={(e) => {
                       dispatch(
                         removeQuotesForCompare(
@@ -684,6 +687,7 @@ const TBody = ({
               {plans[2]?.data?.sum_insured ? (
                 <td className={`${plans[2] && "showOnDesktopF"}`}>
                   <select
+                  style={{ color: "#647188" }}
                     onChange={(e) => {
                       // console.log("33",`${plans[2]?.data?.product.id}${e.target.value}`);
                       dispatch(
@@ -745,16 +749,16 @@ const TBody = ({
                     className={`${item === 2 && "showOnDesktopF"}`}
                   >
                     <select
+                      style={{ color: "#647188" }}
                       value={
                         discount[
                           `${plans[index].data.product.id}${plans[index].data.sum_insured}`
                         ]?.tenure
                       }
                       onChange={(e) => {
-                        
                         setTenureData((prev) => {
                           prev[index] = e.target.value;
-                          
+
                           return prev;
                         });
                         setTenureChangedFor(index);
@@ -791,7 +795,12 @@ const TBody = ({
         ) : title === "Key Benefits" ? (
           keyBenefits(plans, title, windowWidth)
         ) : title === "Additional Benefits" ? (
-          <AdditionalBenefits plans={plans} title={title} index={index}  windowWidth={windowWidth} />
+          <AdditionalBenefits
+            plans={plans}
+            title={title}
+            index={index}
+            windowWidth={windowWidth}
+          />
         ) : (
           dataset(
             plans,

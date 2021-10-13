@@ -112,6 +112,7 @@ function AddOnDetailsRow({ addOn }) {
           height:30px;
         `}
       >
+    
         <img
           css={`
             width: 100%;
@@ -1043,7 +1044,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           >
             <div
               css={`
-                width: 80px;
+                width: 55px;
                 height: auto;
                 background-color: #fff;
                 display: flex;

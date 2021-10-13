@@ -123,6 +123,7 @@ body, html {
   margin-left: 10px;
   width: fit-content;
   border-bottom: 2px dotted #505f79;
+  color:#273a5a;
 }
 
 .hideOnMobile {
