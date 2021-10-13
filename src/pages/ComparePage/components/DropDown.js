@@ -5,6 +5,7 @@ import { PlanName } from "../ComparePage.style";
 import down from "./../../../assets/images/down-arrow.svg";
 import { v4 as uuid } from "uuid";
 import useOutsiteClick from "../../../customHooks/useOutsideClick";
+import { numToLakh } from "../useComparePage";
 import { Translate } from "canvg";
 
 const DropDown = ({ name, sum, value, onChange, covers }) => {
@@ -12,20 +13,24 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
   const [plan, setPlan] = useState(false);
   const [sumInsured, setSumInsured] = useState(false);
   const [show, setShow] = useState(false);
+  
+
   {
     console.log(show, "show");
   }
+
   const ref = useRef();
-  useEffect(() => {
-    if (show) {
-      ref.current.scrollIntoView({ block: "end" });
-    }
-  }, [show]);
+  // useEffect(() => {
+  //   if (show) {
+  //     ref.current.scrollIntoView({ block: "end" });
+  //   }
+  // }, [show]);
   useEffect(() => {
     onChange({ plan, sumInsured });
     setShow(false);
   }, [plan, sumInsured]);
   useOutsiteClick(ref, () => setShow(false));
+  
 
   return (
     <>
@@ -73,7 +78,9 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
                     className={`options__item position-relative ${
                       item == value?.plan ? "checked" : ""
                     }`}
+                    
                     onClick={(e) => {
+               
                       setPlan(e.target.innerText);
                     }}
                   >
@@ -112,11 +119,13 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
                     className={`options__item position-relative ${
                       item == value?.sumInsured ? "checked" : ""
                     }`}
+                    id={item}
                     onClick={(e) => {
-                      setSumInsured(e.target.innerText);
+                      console.log(e.target.id,"hilroror")
+                      setSumInsured(e.target.id);
                     }}
                   >
-                    {item}
+                    ₹ {numToLakh(item)}
                   </div>
                 ))
               ) : (

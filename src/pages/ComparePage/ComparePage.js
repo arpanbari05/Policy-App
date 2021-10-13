@@ -16,7 +16,7 @@ import useUrlQuery from "../../customHooks/useUrlQuery";
 import TBlank from "./components/tables/TBlank";
 import TBody from "./components/tables/TBody";
 import THead from "./components/tables/THead";
-import useComparePage from "./useComparePage";
+import useComparePage, { numToLakh } from "./useComparePage";
 import "./Compare.scss";
 import "styled-components/macro"
 import mail from "./../../assets/images/whatsapp.png";
@@ -205,6 +205,7 @@ const popupContent = (
       });
     }
   });
+  
 
   return (
     <>
@@ -251,7 +252,7 @@ const popupContent = (
                         <Title>Sum Insured :</Title>
                         <Value>
                         ₹ {" "}
-                          {mergedQuotes[index].data.sum_insured.toLocaleString(
+                          {numToLakh(mergedQuotes[index].data.sum_insured).toLocaleString(
                             "en-IN"
                           )}
                         </Value>
