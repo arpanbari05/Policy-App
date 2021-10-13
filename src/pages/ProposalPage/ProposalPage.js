@@ -414,11 +414,12 @@ const ProposalPage = ({ history }) => {
                 `}
               >
                 {console.log(groupCode, "groupCode")}
-                {groupCode ? (
+                <ProductSummary cart={cart} setActive={setActive} />
+                {/* {groupCode ? (
                   <ReviewCart groupCode={groupCode} unEditable={true} />
                 ) : (
                   ""
-                )}
+                )} */}
               </Col>
               <Col
                 lg={8}
