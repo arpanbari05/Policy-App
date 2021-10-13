@@ -296,7 +296,7 @@ function QuotePage() {
           css={`
             padding: 10px 15px;
 
-            padding-bottom: 71px;
+            padding-bottom: 300px;
             @media (max-width: 768px) {
               display: none;
             }

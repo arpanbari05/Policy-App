@@ -7,7 +7,7 @@ import { useParams } from "react-router";
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 import { useDispatch, useSelector } from "react-redux";
 import { ApplyBtn, Filter, OptionWrapper } from "./Filter.style";
-import { Modal } from "react-bootstrap";
+import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 
 const PlanTypeFilter = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -36,18 +36,14 @@ const PlanTypeFilter = () => {
 
   return (
     <>
-      <Filter
-        className="filter d-flex flex-column flex-fill"
-        onClick={() => setShowModal(true)}
-      >
+      <Filter className="filter d-flex flex-column flex-fill">
         <span className="filter_head">Plan Type</span>
-        <span className="filter_sub_head">
+        <span onClick={() => setShowModal(true)} className="filter_sub_head">
           {basePlanType}
           <i class="fas fa-chevron-down"></i>
         </span>
+        <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
       </Filter>
-
-      <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
     </>
   );
 };
@@ -119,7 +115,51 @@ const FilterModal = ({ show, handleClose }) => {
   };
 
   return (
-    <Modal
+    <>
+      {show && (
+        <CustomModal1
+          header="Chose Your Plan Type"
+          footerJSX={
+            <ApplyBtn
+              className="apply_btn mx-auto h-100 w-100"
+              onClick={() => handleClick(selectedPlanType)}
+            >
+              Apply
+            </ApplyBtn>
+          }
+          handleClose={handleClose}
+          leftAlignmnetMargin="-22"
+        >
+          <div>
+            <OptionWrapper>
+              {basePlanTypes.map((thisPlanType, i) => {
+                return (
+                  <li
+                    className="option d-flex align-items-center justify-content-between"
+                    key={i}
+                  >
+                    <label htmlFor={thisPlanType.code}>
+                      {thisPlanType.display_name}
+                    </label>
+                    <input
+                      type="radio"
+                      name="select_plan_type"
+                      id={thisPlanType.code}
+                      value={thisPlanType.display_name}
+                      checked={
+                        selectedPlanType.display_name ===
+                          thisPlanType.display_name || false
+                      }
+                      onChange={(e) => handleChange(thisPlanType)}
+                    />
+                  </li>
+                );
+              })}
+            </OptionWrapper>
+          </div>
+        </CustomModal1>
+      )}
+      {/*<Modal
       show={show}
       onHide={handleClose}
       animation={false}
@@ -190,6 +230,7 @@ const FilterModal = ({ show, handleClose }) => {
           Apply
         </ApplyBtn>
       </Modal.Footer>
-    </Modal>
+          </Modal>*/}
+    </>
   );
 };

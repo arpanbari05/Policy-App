@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addQuoteToCart, removeQuoteFromCart } from "../cart.slice";
 import { createCartApi, deleteCartApi, updateCartApi } from "../serviceApi";
 
-
 function cartSendData(cartData) {
   if (!cartData) return;
   const {
@@ -18,13 +17,19 @@ function cartSendData(cartData) {
     discounts,
   } = cartData;
   const riders = health_riders
-    ? health_riders.map(health_rider => ({
+    ? health_riders.map((health_rider) => ({
         ...health_rider,
         id: health_rider.rider_id,
       }))
     : [];
+
+  // ADD THIS AMOUNT TO THE TOTAL PREMIUM AMOUNTS
+  const ridersTotalPremiumAmount = riders.reduce(
+    (acc = 0, obj) => (acc += obj["total_premium"])
+  );
+  console.log("ridersTotalPremiumAmount", ridersTotalPremiumAmount);
   const addons = addOns
-    ? addOns.map(addOn => ({
+    ? addOns.map((addOn) => ({
         product_id: addOn.product.id,
         tenure: addOn.tenure,
         sum_insured: addOn.sum_insured,
@@ -45,21 +50,27 @@ function cartSendData(cartData) {
     riders,
     addons,
     discounts: discounts
-      ? discounts.map(discount => discount.alias)
+      ? discounts.map((discount) => discount.alias)
       : undefined,
   };
 }
 
 function useCartProduct(groupCode, selectedProduct) {
-  console.log(groupCode,"groupCode")
-  const groupCodeState = useSelector(({quotePage}) => quotePage.selectedGroup);
+  console.log(groupCode, "groupCode");
+  const groupCodeState = useSelector(
+    ({ quotePage }) => quotePage.selectedGroup
+  );
   // var groupCode = groupCode?groupCode:useSelector(({quotePage}) => quotePage.selectedGroup) ;
   if (!groupCode && !groupCodeState)
     throw new Error("argument 'groupCode' is missing for useCartProduct");
 
-  const product = useSelector(({ cart }) => cart[groupCode || groupCodeState] || selectedProduct);
+  const product = useSelector(
+    ({ cart }) => cart[groupCode || groupCodeState] || selectedProduct
+  );
 
-  const cartProduct = useSelector(({ cart }) => cart[groupCode || groupCodeState]);
+  const cartProduct = useSelector(
+    ({ cart }) => cart[groupCode || groupCodeState]
+  );
 
   let totalRidersPremium = null;
 
@@ -72,12 +83,12 @@ function useCartProduct(groupCode, selectedProduct) {
 
     totalRidersPremium = health_riders.reduce(
       (sum, rider) => sum + parseInt(rider?.total_premium),
-      0,
+      0
     );
 
     totalAddOnsPremium = addons.reduce(
       (sum, addon) => sum + parseInt(addon.total_premium || addon.premium),
-      0,
+      0
     );
 
     totalPremium =
@@ -89,14 +100,14 @@ function useCartProduct(groupCode, selectedProduct) {
   const dispatch = useDispatch();
 
   const updateProductRedux = useCallback(
-    productData => {
+    (productData) => {
       dispatch(addQuoteToCart({ groupCode, product: productData }));
     },
-    [dispatch, groupCode],
+    [dispatch, groupCode]
   );
 
   const updateProduct = useCallback(
-    async productData => {
+    async (productData) => {
       if (!cartProduct) {
         throw new Error("cart is not created");
       }
@@ -123,11 +134,11 @@ function useCartProduct(groupCode, selectedProduct) {
         return false;
       }
     },
-    [dispatch, groupCode, product],
+    [dispatch, groupCode, product]
   );
 
   const addProduct = useCallback(
-    async productData => {
+    async (productData) => {
       // if (cartProduct?.id) {
       //   return updateProduct(productData);
       // }
@@ -147,7 +158,7 @@ function useCartProduct(groupCode, selectedProduct) {
         setIsCartProductLoading(false);
       }
     },
-    [dispatch, groupCode, product, updateProduct],
+    [dispatch, groupCode, product, updateProduct]
   );
 
   const deleteProduct = useCallback(async () => {
@@ -163,7 +174,7 @@ function useCartProduct(groupCode, selectedProduct) {
   }, [dispatch, groupCode, product]);
 
   const updateRiders = useCallback(
-    riders =>
+    (riders) =>
       updateProduct({
         ...product,
         health_riders: undefined,
@@ -174,7 +185,7 @@ function useCartProduct(groupCode, selectedProduct) {
         product_id: product.product.id,
         riders,
       }),
-    [product, updateProduct],
+    [product, updateProduct]
   );
 
   return {

@@ -11,8 +11,6 @@
   padding-bottom: 20px;
   background: #fff;
   z-index: 9999999;
-
-
 }
 
 .quotes_compare_container .quotes_compare_container_wrapper {
@@ -53,11 +51,23 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  @media(max-width: 768px){
-   width:inherit;
-   background-color:unset !important;
+  @media (max-width: 768px) {
+    width: inherit;
+    background-color: unset !important;
+    font-size: 15px;
   }
-
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    color: white;
+    margin: 16px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 40px;
+  }
 }
 
 .quotes_compare_button {
