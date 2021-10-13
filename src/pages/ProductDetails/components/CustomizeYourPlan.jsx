@@ -116,7 +116,7 @@ const CustomizeYourPlan = ({
     let newRiders;
     if (!hasOptions && isRiderSelected) {
       newRiders = [...health_riders, rider];
-      console.log("newnewnew",  newRiders);
+      console.log("newnewnew", newRiders);
     } else if (hasOptions && isRiderSelected) {
       console.log("gege3312", rider, hasOptions);
       const temp = health_riders.filter(

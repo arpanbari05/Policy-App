@@ -102,21 +102,22 @@ th{
   display: inline-block;
   padding: 0px 8px;
   border-radius: 8px;
-  border: solid 1px #d0d2df;
+  
   background-color: #f9f9f9;
   :hover{
-    background:white !important;
+    background:#f9f9f9 !important;
   }
   &.first {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-right: solid 1px #d0d2df;
   }
   &.second {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
   & .custom-placeholder {
-    padding: 10px 12px 2px;
+    // padding: 10px 12px 2px;
     border-radius: 8px;
     position: relative;
     & span {
@@ -135,14 +136,14 @@ th{
       text-align: left;
       color: #5d5d5d;
     }
-    & img {
+    & .arrow-conrtainer {
       position: absolute;
       right: -4px;
       top: 50%;
       transform: translateY(-50%);
     }
     &:hover {
-      background-color: #fff;
+      background-color: #f9f9f9;
     }
   }
 }

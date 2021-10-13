@@ -44,7 +44,7 @@ function cartSendData(cartData) {
     product_id: product.id,
     tenure,
     sum_insured,
-    premium: premium,
+    premium: premium + 3,
     service_tax,
     total_premium,
     riders,

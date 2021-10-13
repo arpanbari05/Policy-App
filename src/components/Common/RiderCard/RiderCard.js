@@ -27,7 +27,8 @@ function RiderCard({
     (data) => data.alias === parent_rider
   );
   const [windowHeight, windowWidth] = useWindowSize();
-  const handleRiderClick = () => {
+  const handleRiderClick = (riderAsId = rider) => {
+    console.log("Rider Card index", riderAsId);
     !isMandatory &&
       handleRiderChange({ rider, isRiderSelected: !isRiderSelected });
   };
