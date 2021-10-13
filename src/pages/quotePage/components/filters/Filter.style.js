@@ -21,7 +21,7 @@ export const Filter = styled.div`
   }
   .filter_sub_head {
     position: relative;
-
+    text-transform: capitalize;
     font-weight: 600;
     i {
       position: absolute;
