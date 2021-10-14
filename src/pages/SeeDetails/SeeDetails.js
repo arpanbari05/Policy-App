@@ -379,6 +379,7 @@ const SeeDetails = ({
               <CashlessHospital
                 ActiveMainTab={activeFieldset === 3 ? true : false}
                 hospitals={hospitals}
+                company={quote.company_alias}
               />
               <ClaimProcess
                 ActiveMainTab={activeFieldset === 4 ? true : false}
