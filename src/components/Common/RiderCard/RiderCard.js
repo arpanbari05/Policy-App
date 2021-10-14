@@ -7,7 +7,7 @@ import Checkbox from "../../../pages/ComparePage/components/Checkbox/Checbox";
 function RiderCard({
   rider,
   productPage,
-  isRiderSelected,
+  //isRiderSelected,
   isMandatory,
   selectedRiders,
   health_riders,
@@ -27,9 +27,12 @@ function RiderCard({
     (data) => data.alias === parent_rider
   );
   const [windowHeight, windowWidth] = useWindowSize();
+  const [isRiderSelectedCorrected, setIsRiderSelectedCorrected] =
+    useState(false);
   const handleRiderClick = () => {
     !isMandatory &&
-      handleRiderChange({ rider, isRiderSelected: !isRiderSelected });
+      handleRiderChange({ rider, isRiderSelected: !isRiderSelectedCorrected });
+    setIsRiderSelectedCorrected((currentState) => !currentState);
   };
 
   const [showMore, setShowMore] = useState(false);
@@ -39,7 +42,7 @@ function RiderCard({
       {(!parent_rider || parent_selected) && (
         <RiderCardWrap
           {...props}
-          isRiderSelected={isRiderSelected}
+          isRiderSelected={isRiderSelectedCorrected}
           htmlFor={(options.length > 0 && `${riderName}"hehe"`) || undefined}
           onClick={() => {
             handleRiderClick();
@@ -167,7 +170,9 @@ font-weight:bold;
                 padding: 10px 0;
                 border-radius: 0.25em;
                 cursor: pointer;
-                background-color: ${isRiderSelected ? `#eff7ff` : `#f3f3f3`};
+                background-color: ${isRiderSelectedCorrected
+                  ? `#eff7ff`
+                  : `#f3f3f3`};
                 margin: 0 3px;
                 position: relative;
                 width: 130px;
@@ -199,8 +204,8 @@ font-weight:bold;
                   justify-content: center;
                   align-items: center;
                   border-radius: 50%;
-                  background: ${isRiderSelected ? "#0a87ff" : "white"};
-                  box-shadow: ${isRiderSelected
+                  background: ${isRiderSelectedCorrected ? "#0a87ff" : "white"};
+                  box-shadow: ${isRiderSelectedCorrected
                     ? "0px 2px 5px -2px rgb(0 0 0 / 25%)"
                     : ""};
                   font-family: "font-awesome";
@@ -316,10 +321,10 @@ padding: 5px 3px;
     background-color: #fff;
 
     /* ${mobile} {
-      flex: 0 0 100%;
+ flex: 0 0 100%;
       margin: 10px 0;
-      /* padding: 0px 6px; */
-    }
+      padding: 0px 6px;
+    } */
 
     ${small} {
       border-radius: 11px;

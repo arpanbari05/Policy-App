@@ -116,7 +116,7 @@ const CustomizeYourPlan = ({
     let newRiders;
     if (!hasOptions && isRiderSelected) {
       newRiders = [...health_riders, rider];
-      console.log("newnewnew",  newRiders);
+      console.log("newnewnew", newRiders);
     } else if (hasOptions && isRiderSelected) {
       console.log("gege3312", rider, hasOptions);
       const temp = health_riders.filter(
@@ -214,12 +214,12 @@ const CustomizeYourPlan = ({
               rider={rider}
               handleRiderChange={handleRiderChange}
               isMandatory={rider.is_mandatory}
-              isRiderSelected={
-                rider.is_mandatory ||
-                health_riders.some(
-                  (health_rider) => health_rider.rider_id === rider.rider_id
-                )
-              }
+              // isRiderSelected={
+              // rider.is_mandatory ||
+              //health_riders.some(
+              //(health_rider) => health_rider.rider_id === rider.rider_id
+              //)
+              //}
               health_riders={health_riders}
               selectedRiders={selectedRiders}
               isAbhiRidersLoading={isAbhiRidersLoading}

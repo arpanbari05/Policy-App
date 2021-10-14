@@ -23,13 +23,11 @@ function cartSendData(cartData) {
       }))
     : [];
 
-  // ADD THIS AMOUNT TO THE TOTAL PREMIUM AMOUNTS
-  { console.log(riders,"clicked review btn")}
-  
-  // const ridersTotalPremiumAmount = riders.reduce(
-  //   (acc = 0, obj) => (acc += obj["total_premium"])
-  // );
-  // console.log("ridersTotalPremiumAmount", ridersTotalPremiumAmount);
+  // ADD THIS AMOUNT TO THE TOTAL PREMIUM AMOUNTS (X)
+  //const ridersTotalPremiumAmount = riders.reduce(
+  //  (acc = 0, obj) => (acc += obj["total_premium"])
+  //);
+  //console.log("ridersTotalPremiumAmount", ridersTotalPremiumAmount);
   const addons = addOns
     ? addOns.map((addOn) => ({
         product_id: addOn.product.id,
@@ -46,7 +44,7 @@ function cartSendData(cartData) {
     product_id: product.id,
     tenure,
     sum_insured,
-    premium: premium,
+    premium,
     service_tax,
     total_premium,
     riders,

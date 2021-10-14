@@ -53,6 +53,9 @@ const FilterModal = ({ show, handleClose }) => {
                 ? premiumOptions.premiums.map((option, i) => {
                     return (
                       <li
+                        css={`
+                          margin: 25px 0;
+                        `}
                         className="option d-flex align-items-center justify-content-between"
                         key={i}
                       >

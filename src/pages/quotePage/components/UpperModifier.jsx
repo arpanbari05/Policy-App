@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import "styled-components/macro"
+import "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
@@ -16,8 +16,8 @@ import {
   setSelectedGroup,
 } from "../quote.slice";
 
-const UpperModifier = ({sendQuote}) => {
-  const successMsg = useSelector(({comparePage}) => comparePage.emailStatus)
+const UpperModifier = ({ sendQuote }) => {
+  const successMsg = useSelector(({ comparePage }) => comparePage.emailStatus);
   const dispatch = useDispatch();
   const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
   const { companies } = useSelector(
@@ -39,6 +39,7 @@ const UpperModifier = ({sendQuote}) => {
     (state) => state.greetingPage
   );
 
+  console.log("Member Group", memberGroups);
   // const initRef = useRef(true);
 
   // useEffect(() => {
@@ -87,27 +88,38 @@ const UpperModifier = ({sendQuote}) => {
             {Object.keys(memberGroups)
               .sort()
               .map((group) => {
-                const membersText = memberGroups[group]
+                let membersText = memberGroups[group]
                   .join(", ")
                   .replaceAll("_", "-");
+
+                if (membersText.length > 20) {
+                  membersText = `${membersText.slice(0, 18)}...`;
+                }
+
                 return (
-                  <span
-                    className={selectedGroup === group ? `plans_for plans_for_members active position-relative` : "plans_for plans_for_members"}
-                    onClick={() => {
-                      history.push({
-                        pathname: `/quotes/${group}`,
-                        search: `enquiryId=${enquiryId}`,
-                      });
-                      dispatch(setSelectedGroup(group));
-                    }}
-                    css={`
-                      text-transform:capitalize;
-                      font-weight: 900 !important;
-                    `}
-                  >
-                    {membersText}
-                    <div className="active_bar"></div>
-                  </span>
+                  <>
+                    <span
+                      className={
+                        selectedGroup === group
+                          ? `plans_for plans_for_members active position-relative`
+                          : "plans_for plans_for_members"
+                      }
+                      onClick={() => {
+                        history.push({
+                          pathname: `/quotes/${group}`,
+                          search: `enquiryId=${enquiryId}`,
+                        });
+                        dispatch(setSelectedGroup(group));
+                      }}
+                      css={`
+                        text-transform: capitalize;
+                        font-weight: 900 !important;
+                      `}
+                    >
+                      {membersText}
+                      <div className="active_bar"></div>
+                    </span>
+                  </>
                 );
               })}
 
@@ -123,7 +135,6 @@ const UpperModifier = ({sendQuote}) => {
             >
               <i class="fas fa-share"></i> Share Quote
             </button>
-
           </div>
         </div>
       </UpperModifierWrapper>
@@ -154,20 +165,21 @@ const UpperModifierWrapper = styled.div`
     }
     .plans_for_members {
       font-weight: 500;
-      height: 50px;
+      height: 57px;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-width: 150px;
+      min-width: 165px;
       max-width: fit-content;
       text-align: center;
     }
     .plans_for_members.active {
-      color: #0a87ff;
+      background-color: green;
       text-align: center;
       background-color: white;
       border-radius: 27px;
       padding: 3px 10px;
+      height: 50px;
       & .active_bar {
         width: 90%;
         bottom: -16px;
