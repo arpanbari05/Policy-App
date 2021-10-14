@@ -208,7 +208,7 @@
   border: 1px solid #fff;
   border-radius: 5px;
   margin: -38px 244px;
-  padding: 62px 22px 28px 105px;
+  padding: 62px 22px 28px 72px;
   width: 100%;
 }
 .p_payment_succcess_p {
@@ -246,9 +246,9 @@
   line-height: 25px !important;
 }
 .unsuccess-text {
-  font-size: 32px !important;
+  font-size: 36px !important;
   padding-bottom: 2px;
-  margin: -53px -24px 23px !important;
+  // margin: -53px -24px 23px !important;
   // font-family: "PFEncoreSansPromed";
   line-height: 43px;
 }
@@ -278,7 +278,7 @@
   border: 1px solid #c7222a;
 }
 .margin_top_unsuccess {
-  margin: 70px 40px;
+  margin: 30px 40px;
 }
 .footer-text-unsuccess {
   font-size: 14px;

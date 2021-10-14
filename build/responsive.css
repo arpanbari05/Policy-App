@@ -5144,7 +5144,7 @@
         /* box-shadow: 1px 1px 10px 1px #c9cad3; */
         border-radius: 12px;
         padding: 17px 0px 0;
-        margin: -13px -1px;
+     
         width: 92%;
     }
     .p_propsal_form_r_q_m {
@@ -5857,7 +5857,7 @@
         position: absolute;
         left: 6px;
         top: 64px;
-        background-color: #fecc28;
+        background-color: #2cd44a;;
         border-radius: 50px;
     }
     .page_five_padding_t {
