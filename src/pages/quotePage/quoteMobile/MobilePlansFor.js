@@ -7,7 +7,7 @@ import useUrlQuery from "../../../customHooks/useUrlQuery";
 const MobilePlansFor = () => {
   const dispatch = useDispatch();
   const { memberGroups, proposerDetails } = useSelector(
-    state => state.greetingPage,
+    (state) => state.greetingPage
   );
   const { groupCode: selectedGroup } = useParams();
 
@@ -29,7 +29,7 @@ const MobilePlansFor = () => {
     >
       {Object.keys(memberGroups)
         .sort()
-        .map(group => (
+        .map((group) => (
           <span
             onClick={() => {
               history.push({
@@ -42,10 +42,10 @@ const MobilePlansFor = () => {
             css={`
               font-weight: 900;
               position: relative;
-              min-width: 30%;
+              min-width: 110px;
               text-transform: capitalize;
               text-align: center;
-              &:after {
+              &::after {
                 display: ${selectedGroup !== group && "none"};
                 content: "";
                 height: 3px;
@@ -59,8 +59,12 @@ const MobilePlansFor = () => {
               }
             `}
           >
-
-            {memberGroups[group]?.join(", ")?.replaceAll("_", "-")}
+            {memberGroups[group]?.join(", ")?.replaceAll("_", "-").length > 20
+              ? `${memberGroups[group]
+                  ?.join(", ")
+                  ?.replaceAll("_", "-")
+                  .slice(0, 18)}...`
+              : memberGroups[group]?.join(", ")?.replaceAll("_", "-")}
           </span>
         ))}
     </div>

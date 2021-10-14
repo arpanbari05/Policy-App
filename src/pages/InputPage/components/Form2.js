@@ -386,7 +386,7 @@ const Form2 = ({ handleChange, currentForm }) => {
               top: -11px;
             `}
           >
-            <AiFillCloseCircle />
+            <AiFillCloseCircle color="#eaeef2" />
           </a>
         </Modal.Header>
 

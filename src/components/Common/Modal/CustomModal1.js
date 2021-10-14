@@ -12,6 +12,7 @@ const BackdropDiv = styled.div`
 `;
 const ModalContent = styled.div`
   min-height: 20vh;
+
   z-index: 1055;
   width: 440px;
   position: absolute;
@@ -45,7 +46,9 @@ const ModalTitle = styled.div`
 const ModalBody = styled.div`
   position: relative;
   flex: 1 1 auto;
-  padding: 1rem;
+  padding: 0 1rem;
+  overflow: auto;
+  max-height: 472px;
 `;
 const ModalFooter = styled.div`
   padding: 0px !important;

@@ -71,9 +71,8 @@ function CustomDropDown({ option, handleChange }) {
 export default CustomDropDown;
 
 const DropdownList = styled.ul`
-  width: 100%;
-  position: relative;
-  bottom: -10px;
+  width: fit-content;
+  position: absolute;
   background-color: white;
   box-shadow: 0 3px 9px 0 rgba(193, 203, 218, 0.52);
   z-index: 9999;

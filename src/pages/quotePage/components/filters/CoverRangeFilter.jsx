@@ -122,6 +122,9 @@ const FilterModal = ({ show, handleClose }) => {
                 ? coverRangeOptions.covers.map((option, i) => {
                     return (
                       <li
+                        css={`
+                          margin: 25px 0;
+                        `}
                         className="option d-flex align-items-center justify-content-between"
                         key={i}
                       >

@@ -83,7 +83,12 @@ const FilterModal = ({ show, handleClose }) => {
         >
           <div>
             <OptionWrapper>
-              <li className="option d-flex align-items-center justify-content-between">
+              <li
+                css={`
+                  margin: 25px 0;
+                `}
+                className="option d-flex align-items-center justify-content-between"
+              >
                 <label htmlFor="1 Year">1 Year</label>
                 <input
                   type="radio"
@@ -93,7 +98,12 @@ const FilterModal = ({ show, handleClose }) => {
                   onChange={() => handleChange(1, "1 Year")}
                 />
               </li>
-              <li className="option d-flex align-items-center justify-content-between">
+              <li
+                css={`
+                  margin: 25px 0;
+                `}
+                className="option d-flex align-items-center justify-content-between"
+              >
                 <label htmlFor="2 Year">
                   2 Years{" "}
                   <span
@@ -112,7 +122,12 @@ const FilterModal = ({ show, handleClose }) => {
                   onChange={() => handleChange(2, "2 Years")}
                 />
               </li>
-              <li className="option d-flex align-items-center justify-content-between">
+              <li
+                css={`
+                  margin: 25px 0;
+                `}
+                className="option d-flex align-items-center justify-content-between"
+              >
                 <label htmlFor="3 Year">
                   3 Years{" "}
                   <span

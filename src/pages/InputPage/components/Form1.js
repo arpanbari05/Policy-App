@@ -47,8 +47,6 @@ const Form1 = ({
   const [pinCode, setPinCode] = useState("");
   const [customErrors, setCustomErrors] = useState(false);
 
-  
-
   useEffect(() => {
     if (pinCode?.length > 2) {
       dispatch(getRegion(pinCode));
@@ -93,6 +91,7 @@ const Form1 = ({
       !isDisabled &&
       regionDetails?.city?.toLowerCase() !== data?.pinCode?.toLowerCase()
     ) {
+      console.log("I executed");
       setCustomErrors("Invalid Pincode or city");
     } else if (isDisabled) {
       setCustomErrors(false);
@@ -152,6 +151,7 @@ const Form1 = ({
             value={pinCode}
             label={`Pincode/City`}
             onChange={(e) => {
+              console.log("Change occured", e.target.value);
               setPinCode(e.target.value);
             }}
           />
@@ -188,7 +188,7 @@ const Form1 = ({
         <div
           css={`
             display: flex;
-            flex-wrap:wrap;
+            flex-wrap: wrap;
           `}
         >
           {popularcities?.map(({ pincode, name }) => (
