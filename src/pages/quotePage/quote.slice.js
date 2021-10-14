@@ -51,6 +51,7 @@ const quotePageSlice = createSlice({
     selectedGroup: "group_code_1",
     selectedRiders: [],
     selectedAddOns: {},
+    
   },
   name: "quote",
   reducers: {

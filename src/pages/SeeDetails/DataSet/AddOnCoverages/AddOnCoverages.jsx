@@ -88,7 +88,7 @@ const AddOnCoverages = ({
       isRiderSelected,
       hasOptions = false,
     }) => {
-      const { health_riders } = cartItem;
+      // const { health_riders } = cartItem;
       // const newRiders =
       //   !hasOptions && isRiderSelected
       //     ? [...health_riders, rider]
@@ -137,10 +137,10 @@ const AddOnCoverages = ({
         newRiders = [...temp2];
       }
      
-      updateProductRedux({
-        ...cartItem,
-        health_riders: newRiders,
-      });
+      // updateProductRedux({
+      //   ...cartItem,
+      //   health_riders: newRiders,
+      // });
     };
   
     useEffect(() => {
@@ -223,11 +223,14 @@ const AddOnCoverages = ({
             ) : (
               <form className="form cf">
                 <section className="plan cf plan_cf_g_m">
-                  <div className="row" css={`justify-content: space-between`}>
+                  <div className="row"
+                   css={`
+                   justify-content: space-between
+                   `}>
                     {loading ? (
                       <CardSkeletonLoader />
                     ) : riders && riders?.data?.length ? (
-                      riders?.data?.map(rider => (
+                      riders?.data?.map((rider) => (
                         <RiderCard
                         productPage={false}
                         key={rider.name + rider.total_premium}

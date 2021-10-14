@@ -27,7 +27,7 @@ function useFetchQuotes({ groupCode }) {
   );
 
   const getCode = (display_name, list) =>
-    list.find((item) => item.display_name === display_name).code;
+    list.find((item) => item.display_name === display_name)?.code;
 
   const plan_type = getCode(quoteFilters.planType, plantypes);
   const sum_insured = getCode(quoteFilters.cover, covers);
@@ -170,7 +170,7 @@ function EditMembersContent({ closePopup = () => {} }) {
           display: flex;
           align-items: center;
           flex-wrap:wrap;
-          justify-content: space-evenly;
+          justify-content: space-between;
 width: 100%;
           ${mobile} {
             flex-direction: column;
@@ -184,7 +184,7 @@ width: 100%;
           );
        
           
-          const selectedMemberAge = selectedMember.age.includes(".")? selectedMember.age.split(".")[1] + `${selectedMember.age.split(".")[1] === 1?" month":" months"}`: selectedMember.age + " year";
+          const selectedMemberAge = selectedMember.age.includes(".")? selectedMember.age.split(".")[1] + `${selectedMember.age.split(".")[1] === 1?" month":" months"}`: selectedMember.age;
           return (
             <div
               css={`
