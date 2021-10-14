@@ -17,6 +17,7 @@ const removeTotalPremium = (cart) => {
 const numToString = (value) => value.toLocaleString("en-IN");
 const ProductSummary = ({ cart, setActive }) => {
   const [show, setShow] = useState(false);
+  const [collapse, setCollapse] = useState(false);
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const { proposerDetails } = useSelector((state) => state.greetingPage);
   const { planDetails } = useSelector((state) => state.proposalPage);
@@ -24,7 +25,7 @@ const ProductSummary = ({ cart, setActive }) => {
   useEffect(() => {
     setShow(planDetails.show);
   }, [planDetails]);
-
+  console.log(collapse, "sadgsadg3");
   const prevCart = Object.values(removeTotalPremium(planDetails.prevCart));
 
   const content = (
@@ -41,21 +42,55 @@ const ProductSummary = ({ cart, setActive }) => {
           left: -38px;
         `}
       ></span>
-      <h2
+      <span
+        onClick={() => {
+          setCollapse(!collapse);
+        }}
         css={`
-          font-size: 20px;
-          font-weight: 900;
-          position: relative;
-          color: #2d3f5e;
-          padding: 12px 0px;
-          margin-bottom: -1px;
-          /* border-bottom: 1px solid #ddd; */
+          display: flex;
+          justify-content: space-between;
+          flex-direction: row;
         `}
       >
-        {" "}
-        Your Plan Details
-      </h2>
-      <div className="row">
+        <h2
+          css={`
+            font-size: 20px;
+            font-weight: 900;
+            position: relative;
+            color: #2d3f5e;
+            padding: 12px 0px;
+            margin-bottom: -1px;
+            /* border-bottom: 1px solid #ddd; */
+          `}
+        >
+          {" "}
+          Your Plan Details
+        </h2>
+        <span
+          css={`
+            display: none;
+            @media (max-width: 767px) {
+              display: block;
+              position: absolute;
+              right: 27px;
+              top: 19px;
+              transform: rotate(${collapse ? "-90deg" : "90deg"});
+            }
+          `}
+        >
+          <i class="fas fa-chevron-left"></i>
+        </span>
+      </span>
+      <div
+        className="row"
+        css={`
+          display: block;
+          @media (max-width: 767px) {
+            display: ${collapse ? "block" : "none"};
+            transition: all 2s linear;
+          }
+        `}
+      >
         <div className="col-md-12 padding-none">
           <section
             className="light"

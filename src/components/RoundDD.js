@@ -73,6 +73,7 @@ const RoundDD = ({
           >
             <span css={`
               visibility: ${isOpen && "hidden"};
+              user-select: none;
             `}>
 
               {selected}
