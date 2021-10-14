@@ -478,7 +478,7 @@ const popupContentM = (
                     </LogoWrapper>
 
                     <CompanyName
-                      style={{ fontSize: "13px", textAlign: "center" }}
+                      style={{ fontSize: "11px", textAlign: "center" }}
                     >
                       {mergedQuotes[index].data.product.name}
                     </CompanyName>
@@ -490,10 +490,11 @@ const popupContentM = (
                         width: "100%",
                       }}
                     >
-                      <Title style={{ fontSize: "12px" }}>Sum Insured :</Title>
-                      <Value style={{ fontSize: "12px" }}>
-                        <i class="fa fa-inr"></i>{" "}
-                        {mergedQuotes[index].data.sum_insured.toLocaleString(
+                      <Title style={{ fontSize: "11px" }}>Sum Insured :</Title>
+                      <Value style={{ fontSize: "11px" }}>
+                      ₹ {" "}
+                          {" "}
+                        {numToLakh(mergedQuotes[index].data.sum_insured).toLocaleString(
                           "en-IN"
                         )}
                       </Value>

@@ -31,6 +31,7 @@ export const SelectedProduct = styled.div`
 export const LogoWrapper = styled.div`
   width: 50px;
   height: 50px;
+  padding:2px;
   float: left;
   margin-right:5px;
 `;
@@ -201,6 +202,11 @@ export const CompanyName = styled.div`
   font-stretch: normal;
   font-style: normal;
   line-height: 1;
+ 
+    height: 30px;
+    display: flex;
+    text-align: center;
+    align-items: center;
   letter-spacing: normal;
   text-align: center;
   color: #253858;
