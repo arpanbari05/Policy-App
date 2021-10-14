@@ -41,6 +41,12 @@ export const AddOnBuyButton = ({ selected, onClick = () => {}, children }) => (
       text-align:center;
       padding: 10px;
      
+      :hover{
+        .premium{
+        color: #0a87ff !important;
+        }
+      }
+     
 
       ${mobile} {
         display: flex;
@@ -954,7 +960,8 @@ align-items:center;
         >
           <AddOnBuyButton onClick={handleBuy} selected={selected.length}>
           <div className="d-flex align-items-center w-100 justify-content-center">
-          {displayPremium} <span
+          <span className="premium">
+          {displayPremium}</span> <span
                 css={`
                   font-size: 9px;
                   margin-left: 10px;
@@ -1072,7 +1079,7 @@ function AddOns({ addOns = {} }) {
           width: 100%;
           display: flex;
           flex-wrap: wrap;
-          justify-content:space-evenly !important;
+          justify-content:${Object.keys(addOns).length > 1?"space-evenly":"flex-start"} !important;
         `}
       >
         {Object.keys(addOns).map((addOnId) => (

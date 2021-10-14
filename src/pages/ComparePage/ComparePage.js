@@ -930,10 +930,22 @@ const UpperModifier = styled.div`
       margin-left: 7px;
       border-radius: 31px;
       font-weight: 500;
+      border: solid 2px #0a87ff !important;
     }
     .share_Quote_btn {
-      border: solid 2px #0a87ff;
+      border: solid 2px #0a87ff !important;
       color: #0a87ff;
+      
+      :focus{
+        border: solid 2px #0a87ff !important;
+        
+      }
+      :active{
+        border: solid 2px #0a87ff !important;
+      }
+      :hover{
+        border: solid 2px #0a87ff !important;
+      }
     }
   }
 `
