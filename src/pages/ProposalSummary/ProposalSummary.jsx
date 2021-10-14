@@ -131,7 +131,7 @@ const ProposalSummary = ({ history }) => {
                         }}
                       >
                         <span>Pay Now </span>
-                        <div>{item.total_premium}</div>
+                        <div> ₹ {cart?.totalPremium}</div>
                       </PayButton>
                     </PayItem>
                   ))}
