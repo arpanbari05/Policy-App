@@ -202,7 +202,7 @@ export const CompanyName = styled.div`
   font-stretch: normal;
   font-style: normal;
   line-height: 1;
- 
+ justify-content:center;
     height: 30px;
     display: flex;
     text-align: center;

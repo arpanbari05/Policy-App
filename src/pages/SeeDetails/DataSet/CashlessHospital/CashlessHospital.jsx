@@ -4,7 +4,7 @@ import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
 import "styled-components/macro";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
-const CashlessHospital = ({ ActiveMainTab, hospitals }) => {
+const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
   const { loading } = useSelector((state) => state.seeDetails);
   const [searchText, setSearchText] = useState("");
   const [searchByNameKeys, setSearchByNameKeys] = useState([]);
@@ -63,6 +63,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals }) => {
     //   }
     // }
   }, [searchText]);
+  console.log("hero",company)
   return (
     <div
       className={`z-content ${ActiveMainTab && "z-active"}`}
@@ -266,7 +267,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals }) => {
                     >
                       <th style={{ paddingTop: "unset" }}>Hospital Name</th>
                       <th>Address</th>
-                      <th>Phone Number</th>
+                      {((company!=="max_bupa")  && (company!=="aditya_birla" )) &&  <th>Phone Number</th>}
                     </tr>
                     {foundHospital?.length > 0 &&
                       foundHospital?.map((item) => (

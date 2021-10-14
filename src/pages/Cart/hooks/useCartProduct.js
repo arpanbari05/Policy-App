@@ -117,6 +117,7 @@ function useCartProduct(groupCode, selectedProduct) {
           cartId: product.id,
           ...cartSendData(productData),
         });
+       
         setIsCartProductLoading(false);
         if (!data) {
           return false;
