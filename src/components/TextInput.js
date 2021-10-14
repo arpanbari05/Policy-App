@@ -1,3 +1,5 @@
+// TRY ADDING THE SCROLL TOP BEHAVIOR
+
 import React from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "styled-components/macro";
@@ -17,7 +19,6 @@ const TextInput = ({
   onKeyDown,
   onBlur,
   maxLength,
-  
 }) => {
   return (
     <div
@@ -48,7 +49,7 @@ const TextInput = ({
     >
       <FloatingLabel controlId="floatingInput" label={label}>
         <Form.Control
-        autoComplete={autoComplete}
+          autoComplete={autoComplete}
           type={type}
           placeholder={placeholder}
           value={value}
@@ -62,7 +63,7 @@ const TextInput = ({
       </FloatingLabel>
       {value?.length > 1 && clear && (
         <span onClick={clear}>
-         <AiOutlineCloseCircle/>
+          <AiOutlineCloseCircle />
         </span>
       )}
     </div>

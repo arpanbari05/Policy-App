@@ -99,7 +99,6 @@ const ProposalPage = ({ history }) => {
           }
           & .formbuilder__error {
             color: #c7222a;
-            
           }
         `}
       >
@@ -225,6 +224,7 @@ const ProposalPage = ({ history }) => {
               css={`
                 display: flex;
                 justify-content: space-between;
+
                 align-items: center;
               `}
             >
