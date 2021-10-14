@@ -7,7 +7,7 @@ import Checkbox from "../../../pages/ComparePage/components/Checkbox/Checbox";
 function RiderCard({
   rider,
   productPage,
-  //isRiderSelected,
+  isRiderSelected,
   isMandatory,
   selectedRiders,
   health_riders,
@@ -16,7 +16,7 @@ function RiderCard({
   ...props
 }) {
   const riderName = rider.name;
-  console.log(rider, "dsgagasd");
+  console.log(isRiderSelected, "dsgagasd",isMandatory);
   const riderPremium = parseInt(rider.total_premium).toLocaleString("en-In");
   const riderDescription = rider.description;
   console.log(health_riders, "gege3");
@@ -28,11 +28,12 @@ function RiderCard({
   );
   const [windowHeight, windowWidth] = useWindowSize();
   const [isRiderSelectedCorrected, setIsRiderSelectedCorrected] =
-    useState(false);
+    useState(isRiderSelected);
   const handleRiderClick = () => {
-    !isMandatory &&
+    if(!isMandatory){
       handleRiderChange({ rider, isRiderSelected: !isRiderSelectedCorrected });
     setIsRiderSelectedCorrected((currentState) => !currentState);
+    }
   };
 
   const [showMore, setShowMore] = useState(false);
