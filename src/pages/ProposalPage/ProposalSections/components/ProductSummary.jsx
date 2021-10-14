@@ -29,19 +29,18 @@ const ProductSummary = ({ cart, setActive }) => {
 
   const content = (
     <>
-             <span
-            css={`
-              width: 100px;
-              height: 100px;
-              border-radius: 100%;
-              background: #eff7ff;
-              position: absolute;
-              top: -41px;
-              z-index: -3;
-              left: -38px;
-                          
-            `}
-          ></span>
+      <span
+        css={`
+          width: 100px;
+          height: 100px;
+          border-radius: 100%;
+          background: #eff7ff;
+          position: absolute;
+          top: -41px;
+          z-index: -3;
+          left: -38px;
+        `}
+      ></span>
       <h2
         css={`
           font-size: 20px;
@@ -69,8 +68,19 @@ const ProductSummary = ({ cart, setActive }) => {
                 <div className="row" key={index}>
                   <div className="col-md-9">
                     <h5
+                      css={`
+                        display: inline-block;
+                        text-transform: capitalize;
+                        color: #616161;
+                        margin-bottom: 0;
+                        margin-right: 12px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        font-size: 12px;
+                        font-weight: 900;
+                      `}
                       className="text_title_filter p_modal_title_bg_filters_product "
-                      style={{ textTransform: "capitalize", fontSize:"14px"}}
+                      style={{ textTransform: "capitalize", fontSize: "14px" }}
                     >
                       {item.group.members.join(" , ")}
                     </h5>
@@ -86,9 +96,9 @@ const ProductSummary = ({ cart, setActive }) => {
                       align-items: center;
                       & img {
                         height: 45px;
-                        width: 83px;
+                        // width: 83px;
                         margin-right: 11px;
-                        margin-left: 5px;
+                        // margin-left: 5px;
                         object-fit: contain;
                       }
                       & span {
@@ -131,23 +141,21 @@ const ProductSummary = ({ cart, setActive }) => {
                       <p>{item.product.name}</p>
                     </div> */}
                   </div>
-                  <hr />
+                  {/* <hr /> */}
                   <div
                     className="row"
                     css={`
-                      margin-top: -9px;
+                      margin-top: 10px;
                       display: flex;
-flex-direction: column;
-
+                      flex-direction: column;
                     `}
                   >
                     <div
-                    
                       css={`
                         display: flex;
                         flex-direction: row;
                         align-items: end;
-                        justify-content:space-between;
+                        justify-content: space-between;
 
                         /* border-right: 1px solid #dce2ec; */
                       `}
@@ -159,17 +167,15 @@ flex-direction: column;
                           padding-left: 10px;
                         `}
                       >
-                      ₹{" "}
-                        {numToString(item.sum_insured)}
+                        ₹ {numToString(item.sum_insured)}
                       </span>
                     </div>
                     <div
-                      
                       css={`
                         display: flex;
                         flex-direction: row;
                         align-items: end;
-                        justify-content:space-between;
+                        justify-content: space-between;
                       `}
                     >
                       <p className={`p_cover_medical_pop `}>Premium: </p>
@@ -181,7 +187,7 @@ flex-direction: column;
                           planDetails.isRenewed ? "revised-premium" : ""
                         }`}
                       >
-                      ₹{" "}
+                        ₹{" "}
                         {planDetails.isRenewed
                           ? numToString(prevCart[index].total_premium)
                           : numToString(item.total_premium)}{" "}
@@ -189,27 +195,26 @@ flex-direction: column;
                       </span>
                     </div>
                     <div
-                    
-                    css={`
-                      display: flex;
-                      flex-direction: row;
-                      align-items: end;
-                      justify-content:space-between;
-
-                      /* border-right: 1px solid #dce2ec; */
-                    `}
-                  >
-                    <p className="p_cover_medical_pop">Policy Term: </p>
-                    <span
-                      className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
                       css={`
-                        padding-left: 10px;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: end;
+                        justify-content: space-between;
+
+                        /* border-right: 1px solid #dce2ec; */
                       `}
                     >
-                   {item.tenure > 1 ? item.tenure + " years" : "1 year"}
-                    </span>
-                  </div>
-                  
+                      <p className="p_cover_medical_pop">Policy Term: </p>
+                      <span
+                        className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                        css={`
+                          padding-left: 10px;
+                        `}
+                      >
+                        {item.tenure > 1 ? item.tenure + " years" : "1 year"}
+                      </span>
+                    </div>
+
                     {planDetails.isRenewed ? (
                       <>
                         <div className="col-md-12"></div>
@@ -218,8 +223,7 @@ flex-direction: column;
                             Revised Premium:{" "}
                           </p>
                           <span className="p_cover_medical_pop_span ">
-                          ₹{" "}
-                            {numToString(item.total_premium)} /{" "}
+                            ₹ {numToString(item.total_premium)} /{" "}
                             {item.tenure > 1 ? item.tenure + " years" : "year"}{" "}
                           </span>
                         </div>
@@ -242,37 +246,43 @@ flex-direction: column;
                       {" "}
                       <hr
                         css={`
-                          margin-top: 8px;
+                          border-bottom: #ddd;
                         `}
                       />
-                      <p className="p_cover_medical_pop" css={`width: 100%;`}>Riders: </p>
+                      <p
+                        className="p_cover_medical_pop"
+                        css={`
+                          width: 100%;
+                          color: #0a87ff;
+                          font-weight: 900;
+                          margin-bottom: 5px;
+                        `}
+                      >
+                        Riders:{" "}
+                      </p>
                     </>
                   )}
                   {item.health_riders.length ? (
-                    <div className="row bg_medical_box_row" css={`padding: 0 10px;`}>
+                    <div
+                      className="row bg_medical_box_row"
+                      css={`
+                        // padding: 0 10px;
+                      `}
+                    >
                       {item.health_riders.map((riders) => (
                         <div
-                          className="col-md-12"
                           css={`
-                            align-items: center;
                             display: flex;
-                            margin-bottom: 7px;
-                            & svg {
-                              font-size: 22px;
-                              margin-right: 6px;
-                              color: #0a87ff;
-                            }
+                            flex-direction: row;
+
+                            justify-content: space-between;
                           `}
                         >
-                          <AiOutlineCheckCircle />{" "}
-                          <span className="font_weight_normal_mediacl">
-                            {riders.name}
-                          </span>
+                          <p className="p_cover_medical_pop">{riders.name}</p>
                           <span
-                            className="font_weight_normal_mediacl"
+                            className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
                             css={`
-                              margin-left: auto;
-                              font-weight: 900 !important;
+                              padding-left: 10px;
                             `}
                           >
                             ₹ {riders.premium}
@@ -297,7 +307,11 @@ flex-direction: column;
                       <p class="bottom_addon_cover_medical">
                         Add-ons Coverages
                       </p>
-                      <hr />
+                      <hr
+                        css={`
+                          border-bottom: #ddd;
+                        `}
+                      />
                     </div>
                   </div>
                 ) : (
@@ -322,9 +336,9 @@ flex-direction: column;
                           align-items: center;
                           & img {
                             height: 45px;
-                            width: 83px;
+                            // width: 83px;
                             margin-right: 11px;
-                            margin-left: 5px;
+                            // margin-left: 5px;
                             object-fit: contain;
                           }
                           & span {
@@ -349,7 +363,12 @@ flex-direction: column;
                         <span> {addOns.product.name}</span>
                       </div>
                     </div>
-                    <hr />
+                    <hr
+                      css={`
+                        border-bottom: #ddd;
+                      `}
+                    />
+
                     <div
                       className="row"
                       css={`
@@ -357,11 +376,13 @@ flex-direction: column;
                       `}
                     >
                       <div
-                        className="col-md-6"
                         css={`
                           display: flex;
-                          flex-direction: column;
-                          border-right: 1px solid #dce2ec;
+                          flex-direction: row;
+                          align-items: end;
+                          justify-content: space-between;
+
+                          /* border-right: 1px solid #dce2ec; */
                         `}
                       >
                         <p className="p_cover_medical_pop">Cover: </p>
@@ -371,11 +392,37 @@ flex-direction: column;
                             padding-left: 10px;
                           `}
                         >
-                        ₹{" "}
-                          {numToString(addOns.sum_insured)}
+                          ₹ {numToString(addOns.sum_insured)}
                         </span>
                       </div>
                       <div
+                        css={`
+                          display: flex;
+                          flex-direction: row;
+                          align-items: end;
+                          justify-content: space-between;
+
+                          /* border-right: 1px solid #dce2ec; */
+                        `}
+                      >
+                        <p className="p_cover_medical_pop">Premium: </p>
+                        <span
+                          className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                          css={`
+                            padding-left: 10px;
+                          `}
+                        >
+                          ₹{" "}
+                          {numToString(
+                            prevCart[index]
+                              ? prevCart[index].addons[addOnIndex].total_premium
+                              : addOns.premium
+                          )}{" "}
+                          / year
+                        </span>
+                      </div>
+
+                      {/* <div
                         className="col-md-6"
                         css={`
                           display: flex;
@@ -398,7 +445,7 @@ flex-direction: column;
                               : ""
                           }`}
                         >
-                        ₹{" "}
+                          ₹{" "}
                           {numToString(
                             prevCart[index]
                               ? prevCart[index].addons[addOnIndex].total_premium
@@ -406,7 +453,7 @@ flex-direction: column;
                           )}{" "}
                           / year
                         </span>
-                      </div>
+                      </div> */}
                       {prevCart[index]?.addons[addOnIndex]?.total_premium !==
                         addOns.total_premium && planDetails.isRenewed ? (
                         <>
@@ -416,8 +463,7 @@ flex-direction: column;
                               Revised Premium:{" "}
                             </p>
                             <span className="p_cover_medical_pop_span ">
-                            ₹{" "}
-                              {numToString(addOns.total_premium)} /{" "}
+                              ₹ {numToString(addOns.total_premium)} /{" "}
                               {item.tenure > 1
                                 ? item.tenure + " years"
                                 : "year"}{" "}
@@ -442,8 +488,7 @@ flex-direction: column;
                               padding-left: 10px;
                             `}
                           >
-                          ₹{" "}
-                            {numToString(addOns.deductible)}
+                            ₹ {numToString(addOns.deductible)}
                           </span>
                         </div>
                       )}
@@ -479,8 +524,7 @@ flex-direction: column;
                             }
                           `}
                         >
-                          ₹{" "}
-                          {planDetails.prevCart.totalPremium} / year
+                          ₹ {planDetails.prevCart.totalPremium} / year
                         </span>
                       </button>
                     </div>
@@ -547,7 +591,7 @@ flex-direction: column;
     position: sticky;
     top: 0;
     width: 100%;
-    padding: 10px 15px;
+    padding: 10px 20px;
     overflow: hidden;
     
     `}
@@ -562,6 +606,8 @@ flex-direction: column;
             background-color: #f7f7f7;
             justify-content: space-between;
             align-items: center;
+            margin: 0 -20px;
+            margin-bottom: -10px;
           `}
         >
           <span
