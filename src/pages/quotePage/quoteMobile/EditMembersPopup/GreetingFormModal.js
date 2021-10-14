@@ -208,7 +208,7 @@ const ModalTitle = styled.h5`
     position: absolute;
     left: 0px;
     top: 13px;
-    background-color: #fecc28;
+    background-color: #2cd44a;
     border-radius: 50px;
   }
 `;

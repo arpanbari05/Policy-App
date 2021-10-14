@@ -206,7 +206,7 @@ const StyledPanel = styled.a`
     position: absolute;
     left: -2px;
     top: 16px;
-    background-color: #fecc28;
+    background-color: #2cd44a;;
     border-radius: 50px;
     @media (max-width: 767px) {
       top: 15px;

@@ -1043,7 +1043,7 @@ function GradientTitle({ title = "" }) {
           width: 5px;
           height: 25px;
           position: absolute;
-          background-color: #ffcb00;
+          background-color:#2cd44a;;
           border-radius: 5px;
         `}
       ></span>

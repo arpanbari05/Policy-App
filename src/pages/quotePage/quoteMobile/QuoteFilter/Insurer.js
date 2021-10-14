@@ -248,7 +248,7 @@ const StyledInsurerHead = styled.p`
     position: absolute;
     left: 0px;
     top: 14px;
-    background-color: #fecc28;
+    background-color:#2cd44a;
     border-radius: 10px;
   }
 `;

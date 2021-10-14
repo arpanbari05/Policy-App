@@ -74,10 +74,7 @@ const CustomModal1 = ({
   return (
     <>
       <BackdropDiv onClick={handleClose} />
-      <ModalContent
-      
-        leftAlignmnetMargin={leftAlignmnetMargin}
-      >
+      <ModalContent leftAlignmnetMargin={leftAlignmnetMargin}>
         <ModalHeader>
           <ModalTitle>{header}</ModalTitle>
           <button
