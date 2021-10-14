@@ -26,6 +26,7 @@ import { removeQuotesForCompare } from "../quotePage/quote.slice";
 
 const useComparePage = () => {
   const dispatch = useDispatch();
+  
   const { groupCode } = useParams();
   const {
     quotesForCompare,
@@ -74,6 +75,7 @@ const useComparePage = () => {
       dispatch(sendEmailAction({ email, image: imgData, group_id: groupCode }));
     });
   };
+  
   const imageSendM = (email) => {
     const input = document.getElementById("printCompareM");
 
@@ -311,6 +313,7 @@ const useComparePage = () => {
     imageSend,
     imageSendM,
     emailStatus,
+    numToLakh,
     errors,
     setErrors,
     discount,
@@ -318,3 +321,18 @@ const useComparePage = () => {
 };
 
 export default useComparePage;
+
+export const numToLakh = (SItoConvert) => {
+
+  if(SItoConvert > 9999999){
+    let calculated = Number(SItoConvert)/Number(10000000);
+  return `${calculated} ${calculated>1?"Crores":"Crore"}`
+  }else if(SItoConvert > 99999){
+    let calculated = Number(SItoConvert)/Number(100000);
+  return `${calculated} ${calculated>1?"Lakhs":"Lakh"}`
+  }else{
+    return SItoConvert;
+  }
+ 
+  
+}

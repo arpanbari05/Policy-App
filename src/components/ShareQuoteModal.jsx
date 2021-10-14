@@ -135,7 +135,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
                   display:none;
                   background: #ffffff9e;
                   @media (max-width:400px){
-                    display: ${isSending ? "block" : "none"} !important;
+                    display: ${isSending && !emailStatus.message ? "block" : "none"} !important;
                   }
                   
                 `}
@@ -159,7 +159,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
                   top: 50%;
                   right: 20px;
                   transform: translateY(-50%) !important;
-                  display: ${isSending ? "block" : "none"};
+                  display: ${isSending && !emailStatus.message ? "block" : "none"};
                   @media (max-width:400px){
                     display:none !important;
                   }

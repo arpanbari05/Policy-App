@@ -1127,7 +1127,7 @@ const AddOnsNav = styled(Tabs)`
     position: relative;
     width: max-content;
     background: none;
-    color: #9ea6b5 !important;
+    color: #3c434f !important;
     padding: 0;
     font-size: 16px;
     font-weight: 900;

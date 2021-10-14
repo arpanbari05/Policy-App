@@ -34,7 +34,7 @@ const PlanContainer = ({
     total_premium,
     mandatory_riders,
     tax_amount,
-    
+
     company_alias,
     tenure,
   } = plans || {};
@@ -50,6 +50,7 @@ const PlanContainer = ({
 
   const { groupCode: selectedGroup } = useParams();
   const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
+  
   return (
     <>
       {product?.name ? (
