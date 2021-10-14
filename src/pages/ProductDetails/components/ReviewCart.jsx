@@ -116,6 +116,7 @@ function AddOnDetailsRow({ addOn }) {
         <img
           css={`
             width: 100%;
+            margin-bottom: 5px;
           `}
           src={product.company.alias==="care_health"?care_health:logo}
           alt={product.company.alias}
@@ -490,7 +491,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           font-size: 14px;
           color: #5c5959;
           margin-left: 43px;
-
+          @media(max-width:767px){
+            margin-left: unset;
+          }
           ${small} {
             font-size: 12px;
           }
@@ -535,6 +538,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             <img
               css={`
                 width: 100%;
+                margin-bottom: 5px;
               `}
               src={logoSrc}
               alt={addOn.product.company.alias}
@@ -600,6 +604,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               font-size: 14px;
               color: #5c5959;
               margin-left: 43px;
+              @media(max-width:767px){
+                margin-left: unset;
+              }
               @media (max-width: 537px) {
                 font-size: 12px !important;
               }
@@ -676,6 +683,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                   font-size: 14px;
                   color: #5c5959;
                   margin-left: 43px;
+                  @media(max-width:767px){
+                    margin-left: unset;
+                  }
                   @media (max-width: 537px) {
                     font-size: 12px !important;
                   }
