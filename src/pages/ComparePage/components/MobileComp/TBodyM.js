@@ -4,7 +4,7 @@ import PlansDetailsM from "./PlansDetailsM";
 import { useDispatch, useSelector } from "react-redux";
 import useWindowSize from "../../../../customHooks/useWindowSize.js";
 import { RiderName, RiderPremium, RiderWrapper } from "../../ComparePage.style";
-
+import { numToLakh } from "../../useComparePage";
 import TooltipMobileModal from "../../../../components/Common/Modal/TooltipMobileModal";
 import { v4 as uuid } from "uuid";
 
@@ -45,6 +45,7 @@ const SumAssured = ({
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipTitle, setTooltipTitle] = useState("");
+ 
   return (
     <>
       <TooltipMobileModal
@@ -95,13 +96,13 @@ const SumAssured = ({
                         );
                         dispatch(
                           setQuotesForCompare([
-                            `${plans[item]?.data?.product.id}${e.target.value}`,
+                            `${plans[item]?.data?.product.id}${e.target.selectedOptions[0].id}`,
                             2,
                           ])
                         );
                       }}
                     >
-                      <option>{plans[item]?.data?.sum_insured}</option>
+                      <option id={plans[item]?.data?.sum_insured}>₹ {numToLakh(plans[item]?.data?.sum_insured)}</option>
                       {mergedCover.length > 0 &&
                         mergedCover[item]?.map((data) => {
                           if (
@@ -110,7 +111,7 @@ const SumAssured = ({
                               `${plans[item]?.data?.product.id}${data}`
                             )
                           ) {
-                            return <option>{data}</option>;
+                            return <option id={data}>₹ {numToLakh(data)}</option>;
                           }
                         })}
                     </select>

@@ -3,6 +3,7 @@ import useWindowSize from "../../../../customHooks/useWindowSize";
 import wrong from "../../../../assets/images/wrong2.png";
 import { useDispatch, useSelector } from "react-redux";
 import "styled-components/macro";
+import { numToLakh } from "../../useComparePage";
 
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useCartProduct } from "./../../../Cart/index";
@@ -434,7 +435,7 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth }) => {
                 className={`${item === 2 ? "showOnDesktopF" : ""}`}
               >
                 {plans[item]?.features[index]?.riders?.map((innerItem) => {
-                  return innerItem.total_premium? (
+                  return innerItem.total_premium ? (
                     <RiderWrapper show={innerItem.total_premium}>
                       <OverlayTrigger
                         placement={"right"}
@@ -446,7 +447,7 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth }) => {
                       </OverlayTrigger>
                       <RiderPremium>
                         <i className="fa fa-inr"></i>{" "}
-                        <div style={{ fontWeight: "900" }}>
+                        <div style={{ fontWeight: "900", fontSize:"14px" }}>
                           ₹ {innerItem.total_premium}{" "}
                         </div>{" "}
                         <div>
@@ -485,11 +486,11 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth }) => {
                   );
                 })}
               </td>
-              );
+            );
         })}
       </tr>
     </>
-    );
+  );
 };
 const TBody = ({
   title,
@@ -544,6 +545,8 @@ const TBody = ({
     }
   }, [productDiscounts]);
   console.log("dddd", mergedCover);
+
+ 
 
   return (
     <>
@@ -611,6 +614,7 @@ const TBody = ({
                   <select
                     style={{ color: "#647188" }}
                     onChange={(e) => {
+                 
                       dispatch(
                         removeQuotesForCompare(
                           `${plans[0]?.data?.product.id}${plans[0]?.data?.sum_insured}`
@@ -618,13 +622,13 @@ const TBody = ({
                       );
                       dispatch(
                         setQuotesForCompare([
-                          `${plans[0]?.data?.product.id}${e.target.value}`,
+                          `${plans[0]?.data?.product.id}${e.target.selectedOptions[0].id}`,
                           3,
                         ])
                       );
                     }}
                   >
-                    <option>{plans[0]?.data?.sum_insured}</option>
+                    <option id={plans[0]?.data?.sum_insured}> ₹ {numToLakh(plans[0]?.data?.sum_insured)}</option>
                     {mergedCover.length > 0 &&
                       mergedCover[0]?.map((data) => {
                         if (
@@ -633,7 +637,7 @@ const TBody = ({
                             `${plans[0]?.data?.product.id}${data}`
                           )
                         ) {
-                          return <option>{data}</option>;
+                          return <option id={data} > ₹ {numToLakh(data)}</option>;
                         }
                       })}
                   </select>
@@ -650,6 +654,7 @@ const TBody = ({
                   <select
                     style={{ color: "#647188" }}
                     onChange={(e) => {
+                      
                       dispatch(
                         removeQuotesForCompare(
                           `${plans[1]?.data?.product.id}${plans[1]?.data?.sum_insured}`
@@ -657,14 +662,14 @@ const TBody = ({
                       );
                       dispatch(
                         setQuotesForCompare([
-                          `${plans[1]?.data?.product.id}${e.target.value}`,
+                          `${plans[1]?.data?.product.id}${e.target.selectedOptions[0].id}`,
                           3,
                         ])
                       );
                       // console.log("33",`${plans[1]?.data?.product.id}${e.target.value}`);
                     }}
                   >
-                    <option>{plans[1]?.data?.sum_insured}</option>
+                    <option> ₹ {numToLakh(plans[1]?.data?.sum_insured)}</option>
                     {mergedCover.length > 0 &&
                       mergedCover[1]?.map((data) => {
                         if (
@@ -673,7 +678,7 @@ const TBody = ({
                             `${plans[1]?.data?.product.id}${data}`
                           )
                         ) {
-                          return <option>{data}</option>;
+                          return <option id={data}> ₹ {numToLakh(data)}</option>;
                         }
                       })}
                   </select>
@@ -687,9 +692,9 @@ const TBody = ({
               {plans[2]?.data?.sum_insured ? (
                 <td className={`${plans[2] && "showOnDesktopF"}`}>
                   <select
-                  style={{ color: "#647188" }}
+                    style={{ color: "#647188" }}
                     onChange={(e) => {
-                      // console.log("33",`${plans[2]?.data?.product.id}${e.target.value}`);
+                   
                       dispatch(
                         removeQuotesForCompare(
                           `${plans[2]?.data?.product.id}${plans[2]?.data?.sum_insured}`
@@ -697,13 +702,17 @@ const TBody = ({
                       );
                       dispatch(
                         setQuotesForCompare([
-                          `${plans[2]?.data?.product.id}${e.target.value}`,
+                          `${plans[2]?.data?.product.id}${e.target.selectedOptions[0].id}`,
                           3,
                         ])
                       );
                     }}
                   >
-                    <option>{plans[2]?.data?.sum_insured}</option>
+                    <option>
+                      {" "}
+                      ₹{" "}
+                      {numToLakh(plans[2]?.data?.sum_insured)}
+                    </option>
                     {mergedCover.length > 0 &&
                       mergedCover[2]?.map((data) => {
                         if (
@@ -712,7 +721,13 @@ const TBody = ({
                             `${plans[2]?.data?.product.id}${data}`
                           )
                         ) {
-                          return <option>{data}</option>;
+                          return (
+                            <option id={data}>
+                              {" "}
+                              ₹
+                              {numToLakh(data)}
+                            </option>
+                          );
                         }
                       })}
                   </select>

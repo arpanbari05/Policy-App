@@ -69,10 +69,28 @@ const MobileHeader = ({
         <span> Compare Plan</span>
       </a>
       <span className="second-container">
-        <a href="#"
-      
-        >
-        <span 
+        <a href="#">
+        {
+          downloading?(
+            <span
+                css={`
+                  position: absolute; 
+                  top: 50%;
+                  /* right: 20px; */
+                  color:black;
+                  transform: translateY(-50%) !important;
+                  display:none;
+                  background: #ffffff9e;
+                  @media (max-width:400px){
+                    display: block !important;
+                  }
+                  
+                `}
+              >
+                <i className="fa fa-circle-notch rotate" />
+              </span>
+          ):(
+            <span 
             onClick={() => {
               dispatch(requestDownload());
               download();
@@ -82,6 +100,10 @@ const MobileHeader = ({
         }}>
           <i class="bi bi-printer"></i>
           </span>
+          )
+        }
+        
+        
         </a>
 
         <a href="#">

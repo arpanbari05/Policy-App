@@ -162,14 +162,15 @@ font-weight:bold;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 20px;
+                font-size: 16px;
                 font-weight: 900;
                 padding: 10px 0;
                 border-radius: 0.25em;
                 cursor: pointer;
                 background-color: ${isRiderSelected ? `#eff7ff` : `#f3f3f3`};
                 margin: 0 3px;
-                width: 160px;
+                position: relative;
+                width: 140px;
                 min-width: fit-content;
                 border: none;
                 @media (max-width: 500px) {
@@ -183,12 +184,20 @@ font-weight:bold;
               {/* </span> */}
               <span
                 css={`
+                  right: 15px;
+                  top: 50%;
+                  transform: translateY(-50%);
+
                   font-size: 11px;
                   margin-left: 10px;
-                  height: 30px;
-                  width: 30px;
+                  height: 20px;
+                  width: 20px;
                   line-height: 30px;
                   text-align: center;
+                  position: absolute;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
                   border-radius: 50%;
                   background: ${isRiderSelected ? "#0a87ff" : "white"};
                   box-shadow: ${isRiderSelected
