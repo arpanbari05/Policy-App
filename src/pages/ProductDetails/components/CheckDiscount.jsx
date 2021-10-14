@@ -223,22 +223,24 @@ const CheckDiscount = ({ groupCode }) => {
                         {selectedTenure === item.tenure ? (
                           <span
                             css={`
-                              font-size: 11px;
+                              font-size: 9px;
                               position: absolute;
                               bottom: 11px;
                               right: 11px;
                               transform: translateX(-50%);
-                              height: 30px;
-                              width: 30px;
+                              height: 23px;
+                              width: 23px;
                               line-height: 30px;
                               text-align: center;
                               border-radius: 50%;
                               background: #0a87ff;
                               box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 25%);
                               font-family: "font-awesome";
-                              border: 2px solid #fff;
+                              justify-content: center;
+    align-items: center;
+    display:flex;
                               color: #fff;
-                              border: 2px solid #e4e7ec;
+                              
                             `}
                           >
                             <i class="fas fa-check"></i>

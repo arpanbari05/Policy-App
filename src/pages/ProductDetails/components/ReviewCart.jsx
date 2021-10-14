@@ -429,7 +429,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
   };
 
   const handleReviewCartClick = () => {
+    
     addProduct(product).then((status) => {
+     
       if (status) setReviewCartPopup(true);
     });
   };
@@ -1239,10 +1241,13 @@ const ReviewCart = ({ groupCode, unEditable }) => {
       </div>
 
       {!hasNextGroupProduct && reviewCartPopup ? (
+       <>
+      
         <ReviewCartPopup
           propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
           onClose={handleReviewPopupClose}
         />
+        </>
       ) : null}
       {showEditMembers && (
         <CardModal

@@ -170,7 +170,7 @@ font-weight:bold;
                 background-color: ${isRiderSelected ? `#eff7ff` : `#f3f3f3`};
                 margin: 0 3px;
                 position: relative;
-                width: 140px;
+                width: 130px;
                 min-width: fit-content;
                 border: none;
                 @media (max-width: 500px) {
@@ -184,17 +184,17 @@ font-weight:bold;
               {/* </span> */}
               <span
                 css={`
-                  right: 15px;
+                  /* right: 15px;
                   top: 50%;
-                  transform: translateY(-50%);
+                  transform: translateY(-50%); */
 
-                  font-size: 11px;
+                  font-size: 9px;
                   margin-left: 10px;
-                  height: 20px;
-                  width: 20px;
+                  height: 23px;
+                  width: 23px;
                   line-height: 30px;
                   text-align: center;
-                  position: absolute;
+                  /* position: absolute; */
                   display: flex;
                   justify-content: center;
                   align-items: center;
@@ -204,9 +204,9 @@ font-weight:bold;
                     ? "0px 2px 5px -2px rgb(0 0 0 / 25%)"
                     : ""};
                   font-family: "font-awesome";
-                  border: 2px solid #fff;
+                  /* border: 2px solid #fff; */
                   color: #fff;
-                  border: 2px solid #e4e7ec;
+                  /* border: 2px solid #e4e7ec; */
                 `}
               >
                 <i class="fas fa-check"></i>
@@ -294,8 +294,8 @@ const RiderCardWrap = styled.div`
   position: relative;
   width: 49%;
   margin: 10px 0;
-  border: 1px solid
-    ${({ isRiderSelected }) => (isRiderSelected ? "#0d6efd;" : "#d5dce5")};
+  /* border: 1px solid
+    ${({ isRiderSelected }) => (isRiderSelected ? "#0d6efd;" : "#d5dce5")}; */
   padding: 10px 10px;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
   cursor: pointer;

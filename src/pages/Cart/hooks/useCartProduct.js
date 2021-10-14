@@ -24,10 +24,12 @@ function cartSendData(cartData) {
     : [];
 
   // ADD THIS AMOUNT TO THE TOTAL PREMIUM AMOUNTS
-  const ridersTotalPremiumAmount = riders.reduce(
-    (acc = 0, obj) => (acc += obj["total_premium"])
-  );
-  console.log("ridersTotalPremiumAmount", ridersTotalPremiumAmount);
+  { console.log(riders,"clicked review btn")}
+  
+  // const ridersTotalPremiumAmount = riders.reduce(
+  //   (acc = 0, obj) => (acc += obj["total_premium"])
+  // );
+  // console.log("ridersTotalPremiumAmount", ridersTotalPremiumAmount);
   const addons = addOns
     ? addOns.map((addOn) => ({
         product_id: addOn.product.id,
@@ -117,6 +119,7 @@ function useCartProduct(groupCode, selectedProduct) {
           cartId: product.id,
           ...cartSendData(productData),
         });
+       
         setIsCartProductLoading(false);
         if (!data) {
           return false;
