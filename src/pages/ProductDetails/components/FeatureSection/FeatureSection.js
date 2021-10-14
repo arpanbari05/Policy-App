@@ -56,7 +56,7 @@ const FeatureSectionHeading = styled("p")`
    color: #253858;
   font-weight: 900;
   display: flex;
-  margin-left:20px !important;
+  /* margin-left:20px !important; */
     align-items: center;
   position: relative;
   /* @media (max-width: 767px) {
@@ -89,7 +89,7 @@ const FeatureSectionSubHeading = styled("p")`
   /* color: #929296; */
   color: #76797e;
   font-size: 14px;
-  margin-left:20px !important;
+  margin-left:2px !important;
   color: #253858;
   ${mobile} {
     line-height: normal;
