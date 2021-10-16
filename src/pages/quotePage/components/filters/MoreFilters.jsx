@@ -85,7 +85,7 @@ const FilterModal = ({ show, handleClose }) => {
         }
       `}
     >
-      <Modal.Header closeButton>
+      <Modal.Header >
         <Modal.Title
           style={{
             fontSize: "20px",
@@ -95,6 +95,7 @@ const FilterModal = ({ show, handleClose }) => {
         >
           More Filters
         </Modal.Title>
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </Modal.Header>
       <Modal.Body>
         <MoreFilterWrapper>

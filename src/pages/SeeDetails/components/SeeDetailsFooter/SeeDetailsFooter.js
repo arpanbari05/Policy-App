@@ -110,18 +110,19 @@ function SeeDetailsFooter({
           position: absolute;
           right: 9px;
           cursor: pointer;
-          top: 35px;
+          /* top: 35px; */
           font-size: 18px;
-          background-color: #eff2f5;
-          border-radius:50px;
+          /* background-color: #eff2f5; */
+          /* border-radius:50px; */
           padding:3px 8px;
           @media (max-width: 1250px) {
             right:5px;
           }
         `}
-        onClick={handleClose}
+   
       >
-        <AiOutlineClose />
+        
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </div>
       <div
         style={{

@@ -91,7 +91,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
       `}
     >
       <Modal.Header
-        closeButton
+        // closeButton
         style={{
           backgroundColor: "#f5f7f9",
         }}
@@ -110,6 +110,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
         >
           Hi, please choose the way you wish to share the quotes.
         </Modal.Title>
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </Modal.Header>
       <Modal.Body>
         <div>
