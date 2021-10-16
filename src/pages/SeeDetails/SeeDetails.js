@@ -420,22 +420,22 @@ const SeeDetails = ({
               sumInsured={selectedPlan?.sum_insured}
             />
 
-            <CloseButton
-              type="button"
-              className="btn btn-white recom_close_css"
-              css={`
-                top: 35px;
-                font-size: 18px;
-                background-color: #eff2f5;
-                border-radius: 50px;
-                padding: 3px 8px;
-              `}
-              onClick={handleClose}
-            >
-              {/* <i className="fa fa-close"></i>
-               */}
-              <AiOutlineClose />
-            </CloseButton>
+<div
+        css={`
+            position: absolute;
+    right: 33px;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 3px 8px;
+    z-index: 9999;
+    top: 35px;
+}
+        `}
+   
+      >
+        
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
+      </div>
             <SeeDetailsTab
               activeFieldset={activeFieldset}
               setActiveFieldset={setActiveFieldset}

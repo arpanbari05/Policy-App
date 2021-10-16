@@ -26,6 +26,9 @@ import useUrlQuery from "../../customHooks/useUrlQuery";
 import { Col, Row } from "react-bootstrap";
 import TermModal from "./TermsModal";
 import ReviewCart from "../ProductDetails/components/ReviewCart";
+import { getAboutCompany } from "../SeeDetails/serviceApi";
+import { getTermConditions } from "../ProposalPage/serviceApi";
+
 const ProposalSummary = ({ history }) => {
   let groupCode  = useSelector(({quotePage}) => quotePage.selectedGroup);
   const { currentSchema } = useSelector(state => state.schema);
@@ -38,9 +41,25 @@ const ProposalSummary = ({ history }) => {
   const { frontendData } = useSelector(state => state.frontendBoot);
 
   const [allFields, setAllFields] = useState([]);
+  const [term, setTerm] = useState({});
   const url = useUrlQuery();
   const enquiryId = url.get("enquiryId");
   const dispatch = useDispatch();
+
+
+
+
+const getTermConditionData = async (company_id, callback = () => {}) => {
+  try {
+    const { data } = await getTermConditions(company_id);
+
+    callback(data.company_terms_and_conditions);
+  } catch (error) {
+    alert(error);
+    console.error(error);
+  }
+};
+
 
   useEffect(() => {
     if (!Object.keys(currentSchema).length) {
@@ -91,6 +110,13 @@ const ProposalSummary = ({ history }) => {
     }
   };
   const cart = useSelector(state => state.cart);
+const prod_id=Object.keys(cart)[0];
+  console.log("hkjm",term);
+  useEffect(() => {
+    if(cart[prod_id].product.company.id){
+    getTermConditionData(cart[prod_id].product.company.id, setTerm);
+    }
+ },[])
   // if (!Object.keys(proposalData).length) {
   //   return <Redirect to="/proposal" />;
   // } else
@@ -115,7 +141,7 @@ const ProposalSummary = ({ history }) => {
             />{" "}
             <span className="Iaccept">I Accept the&nbsp;</span>
             <span class="TermsAndConditions" style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}> Terms &amp; Conditions </span>
-{termShow && <TermModal show={termShow} handleClose={()=>{setTermShow(false)}}/>}
+{termShow &&  <TermModal show={termShow}  handleClose={()=>{setTermShow(false)}}/>}
 
           </div>
           {show && (
@@ -206,7 +232,7 @@ const ProposalSummary = ({ history }) => {
           >
             <div className="col-lg-2">
               {/* <p
-                class="go_back_prposal_p summary_proposal_back"
+                class="go_back_prposal_p summary_proposal_bquoteack"
                 style={{ zIndex: 100 }}
                 onClick={() => history.goBack()}
               >

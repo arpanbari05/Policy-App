@@ -77,12 +77,7 @@ const CustomModal1 = ({
       <ModalContent leftAlignmnetMargin={leftAlignmnetMargin}>
         <ModalHeader>
           <ModalTitle>{header}</ModalTitle>
-          <button
-            type="button"
-            class="btn-close"
-            onClick={handleClose}
-            aria-label="Close"
-          ></button>
+          <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
         </ModalHeader>
         <ModalBody>{children}</ModalBody>
         <ModalFooter>{footerJSX}</ModalFooter>

@@ -89,7 +89,7 @@ const FilterModal = ({ show, handleClose }) => {
         }
       `}
     >
-      <Modal.Header closeButton>
+      <Modal.Header >
         <Modal.Title
           style={{
             fontSize: "20px",
@@ -99,6 +99,7 @@ const FilterModal = ({ show, handleClose }) => {
         >
           Chose Your Policy Type
         </Modal.Title>
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </Modal.Header>
       <Modal.Body>
         <div>
