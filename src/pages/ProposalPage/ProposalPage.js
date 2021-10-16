@@ -438,6 +438,7 @@ const ProposalPage = ({ history }) => {
                 // lg={8}
                 // md={12}
                 css={`
+                width: 100%;
                 @media (max-width: 1024px) {
                   width: 100%;
                 }

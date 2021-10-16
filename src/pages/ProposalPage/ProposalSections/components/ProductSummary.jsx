@@ -329,7 +329,7 @@ const ProductSummary = ({ cart, setActive }) => {
                     <></>
                   )}
                 </div>
-                {/* <br /> */}
+                {console.log(item.addons,'asdg32')}
                 {item.addons.length ? (
                   <>
                     {" "}
