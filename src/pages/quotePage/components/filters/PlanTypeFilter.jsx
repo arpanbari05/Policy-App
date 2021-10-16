@@ -121,6 +121,9 @@ const FilterModal = ({ show, handleClose }) => {
           header="Chose Your Plan Type"
           footerJSX={
             <ApplyBtn
+              css={`
+                height: 65px !important;
+              `}
               className="apply_btn mx-auto h-100 w-100"
               onClick={() => handleClick(selectedPlanType)}
             >
@@ -136,7 +139,7 @@ const FilterModal = ({ show, handleClose }) => {
                 return (
                   <li
                     css={`
-                      margin: 25px 0;
+                      margin: 5px 0;
                     `}
                     className="option d-flex align-items-center justify-content-between"
                     key={i}

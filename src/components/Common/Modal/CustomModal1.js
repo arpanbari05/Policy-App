@@ -21,8 +21,9 @@ const ModalContent = styled.div`
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
-  margin-top: 70px;
+
+  margin-top: ${(props) =>
+    props.customizedTopMargin ? `${props.customizedTopMargin}px` : "60px"};
   margin-left: ${(props) =>
     props.leftAlignmnetMargin ? `${props.leftAlignmnetMargin}px` : "-7px"};
 `;
@@ -49,6 +50,7 @@ const ModalBody = styled.div`
   padding: 0 1rem;
   overflow: auto;
   max-height: 472px;
+  margin-bottom: 10px;
 `;
 const ModalFooter = styled.div`
   padding: 0px !important;
@@ -60,9 +62,9 @@ const ModalFooter = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding: 0.75rem;
+  background-color: green;
+  height: 65px;
   border-top: 1px solid #dee2e6;
-  border-bottom-right-radius: calc(0.3rem - 1px);
-  border-bottom-left-radius: calc(0.3rem - 1px);
 `;
 const CustomModal1 = ({
   children,
@@ -70,11 +72,15 @@ const CustomModal1 = ({
   footerJSX,
   handleClose,
   leftAlignmnetMargin,
+  customizedTopMargin,
 }) => {
   return (
     <>
       <BackdropDiv onClick={handleClose} />
-      <ModalContent leftAlignmnetMargin={leftAlignmnetMargin}>
+      <ModalContent
+        leftAlignmnetMargin={leftAlignmnetMargin}
+        customizedTopMargin={customizedTopMargin}
+      >
         <ModalHeader>
           <ModalTitle>{header}</ModalTitle>
           <button

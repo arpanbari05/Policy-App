@@ -43,6 +43,9 @@ const FilterModal = ({ show, handleClose, filters }) => {
           header="Insurers"
           footerJSX={
             <ApplyBtn
+              css={`
+                height: 65px !important;
+              `}
               className=" apply_btn mx-auto h-100 w-100"
               onClick={(e) => handleApply(e)}
             >
@@ -93,7 +96,7 @@ const FilterModal = ({ show, handleClose, filters }) => {
                         >
                           <li
                             css={`
-                              margin: 25px 0;
+                              margin: 5px 0;
                             `}
                             className="option insurer_option d-flex align-items-center justify-content-between"
                           >

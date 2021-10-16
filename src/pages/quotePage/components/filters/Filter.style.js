@@ -3,14 +3,11 @@ import styled from "styled-components";
 export const Filter = styled.div`
   padding: 5px 20px;
   cursor: pointer;
-  &:hover{
-    background-color:#eef1f4;
+  &:hover {
+    background-color: #eef1f4;
     :not(:last-child) {
-    border-right: 1px solid transparent;
-    
-  }
- 
- 
+      border-right: 1px solid transparent;
+    }
   }
   :not(:last-child) {
     border-right: 1px solid #eef1f4;
@@ -31,12 +28,12 @@ export const Filter = styled.div`
     }
   }
 
-  @media(max-width: 1399px){
-    .filter_head{
-font-size:13px;
+  @media (max-width: 1399px) {
+    .filter_head {
+      font-size: 13px;
     }
-    .filter_sub_head{
-font-size:14px;
+    .filter_sub_head {
+      font-size: 14px;
     }
   }
 `;
@@ -47,7 +44,7 @@ export const OptionWrapper = styled.ul`
   .option {
     border-bottom: 1px solid #d5dce5;
     text-transform: capitalize;
-    padding:14px 5px;
+    padding: 14px 5px;
     font-weight: 600;
     input[type="radio"] {
       width: 20px;
@@ -57,10 +54,10 @@ export const OptionWrapper = styled.ul`
   .insurer_option {
     .insurer_logo {
       width: 40px;
-    display: flex;
-    height: 40px;
-    justify-content: center;
-    align-items: center;
+      display: flex;
+      height: 40px;
+      justify-content: center;
+      align-items: center;
     }
   }
   .custom_checkbox {
@@ -95,17 +92,16 @@ export const OptionWrapper = styled.ul`
       /* background-color: #0a87ff; */
       border: 1px solid #0a87ff;
       display: flex;
-        justify-content: center;
-        align-items: center;
-        
+      justify-content: center;
+      align-items: center;
+
       ::before {
         content: "";
         border-radius: 100%;
         background-color: #0a87ff;
         width: 13px;
-  
+
         height: 13px;
-    
       }
     }
   }
