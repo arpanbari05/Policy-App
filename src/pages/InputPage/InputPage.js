@@ -369,7 +369,7 @@ function termsAndConditions(showmore, setShowmore) {
 function planList() {
   const planArray = [
     `Compare Health Insurance plans`,
-    `Instant policy inssuance`,
+    `Instant policy Insurance`,
     `Free claims assistance`,
     `Get plan recommendation in seconds`,
   ];

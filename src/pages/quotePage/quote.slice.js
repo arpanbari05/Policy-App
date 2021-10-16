@@ -37,7 +37,7 @@ const quotePageSlice = createSlice({
     shouldFetchQuotes: false,
     filters: {
       insurers: [],
-      premium: "",
+      premium: null,
       cover: "",
       ownCover: "",
       planType: "",

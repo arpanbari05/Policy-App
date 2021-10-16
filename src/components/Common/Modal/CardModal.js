@@ -57,7 +57,7 @@ const CardModal = ({
       className={`${customClass} noselect`}
     >
       <Modal.Header
-        closeButton
+        // closeButton
         style={{
           borderBottomColor: !title && "#fff",
           padding: !title && "28px",
@@ -78,6 +78,7 @@ const CardModal = ({
             width={`200px`}
           />
         )}
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </Modal.Header>
       {/* <CloseButton
         type="button"

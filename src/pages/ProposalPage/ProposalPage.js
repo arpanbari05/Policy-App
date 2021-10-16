@@ -99,7 +99,6 @@ const ProposalPage = ({ history }) => {
           }
           & .formbuilder__error {
             color: #c7222a;
-            
           }
         `}
       >
@@ -327,70 +326,10 @@ const ProposalPage = ({ history }) => {
             }
           `}
         >
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              margin-bottom: 10px;
-            `}
-          >
-            <button
-              className="btn"
-              type="button"
-              onClick={() => {
-                history.goBack();
-              }}
-              css={`
-                width: max-content;
-                margin-left: -9px;
-
-                color: var(--abc-red);
-                font-size: 17px;
-                display: flex;
-                align-items: center;
-                @media (max-width: 1024px) {
-                  padding: 10px 20px;
-                }
-              `}
-            >
-              <div
-                className="d-flex justify-content-center align-items-center"
-                css={`
-                  background: #f1f4f8;
-                  width: 35px;
-                  margin-right: 20px;
-                  border-radius: 100%;
-                  height: 35px;
-                  color: #707b8b;
-                `}
-              >
-                <i className="fas fa-chevron-left"></i>
-              </div>
-              <span
-                css={`
-                  color: #3b4c69;
-                  font-weight: 600;
-                `}
-              >
-                Go Back
-              </span>
-            </button>
-            <span
-              css={`
-                font-weight: 900;
-                color: #505f79;
-                @media (max-width: 1024px) {
-                  display: none;
-                }
-              `}
-            >
-              You are Just 5 minutes away from investing for your future
-            </span>
-          </div>
           <div>
             <Row
               css={`
+              justify-content: center;
                 @media (max-width: 1024px) {
                   margin: 0;
                   padding: 0;
@@ -403,35 +342,111 @@ const ProposalPage = ({ history }) => {
                 }
               `}
             >
-              <Col
-                lg={4}
-                md={12}
+              
+                <div
+                  css={`
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 10px;
+                  `}
+                >
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={() => {
+                      history.goBack();
+                    }}
+                    css={`
+                      width: max-content;
+                      margin-left: -9px;
+
+                      color: var(--abc-red);
+                      font-size: 17px;
+                      display: flex;
+                      align-items: center;
+                      @media (max-width: 1024px) {
+                        padding: 10px 20px;
+                      }
+                    `}
+                  >
+                    <div
+                      className="d-flex justify-content-center align-items-center"
+                      css={`
+                        background: #f1f4f8;
+                        width: 35px;
+                        margin-right: 20px;
+                        border-radius: 100%;
+                        height: 35px;
+                        color: #707b8b;
+                      `}
+                    >
+                      <i className="fas fa-chevron-left"></i>
+                    </div>
+                    <span
+                      css={`
+                        color: #3b4c69;
+                        font-weight: 600;
+                      `}
+                    >
+                      Go Back
+                    </span>
+                  </button>
+                  <span
+                    css={`
+                      font-weight: 900;
+                      color: #505f79;
+                      @media (max-width: 1024px) {
+                        display: none;
+                      }
+                    `}
+                  >
+                    You are Just 5 minutes away from investing for your future
+                  </span>
+                </div>
+             <div css={` @media (min-width: 1025px) {
+                 display:flex; flex-direction: row; 
+                }`}>
+
+              <div
+                // lg={4}
+                // md={12}
                 css={`
-                  margin-bottom: 20px;
-                  @media (max-width: 1024px) {
-                    width: 100%;
-                  }
+
+                @media (min-width: 1025px) {
+                  max-width: 330px;
+                  min-width: 330px;
+                  margin-right: 26px;
+                 }
+
+                margin-bottom: 20px;
+               
+                @media (max-width: 1024px) {
+                  width: 100%;
+                }
                 `}
-              >
+                >
                 {console.log(groupCode, "groupCode")}
                 <ProductSummary cart={cart} setActive={setActive} />
                 {/* {groupCode ? (
                   <ReviewCart groupCode={groupCode} unEditable={true} />
-                ) : (
-                  ""
-                )} */}
-              </Col>
-              <Col
-                lg={8}
-                md={12}
+                  ) : (
+                    ""
+                  )} */}
+              </div>
+              <div
+                // lg={8}
+                // md={12}
                 css={`
-                  @media (max-width: 1024px) {
-                    width: 100%;
-                  }
+                width: 100%;
+                @media (max-width: 1024px) {
+                  width: 100%;
+                }
                 `}
-              >
+                >
                 {form(active, proposalData[listOfForms[active]])}
-              </Col>
+              </div>
+          </div>
             </Row>
           </div>
 

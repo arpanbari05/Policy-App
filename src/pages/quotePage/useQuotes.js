@@ -71,6 +71,35 @@ function useQuotesPage() {
     ({ greetingPage }) => greetingPage.proposerDetails
   );
 
+  const [filterMobile, setFilterMobile] = useState(false);
+
+  const arr = [];
+
+  for (let company in companies?.companies) {
+    arr.push(company);
+  }
+
+  const [showTalkModal, setShowTalkModal] = useState(false);
+
+  const { filterQuotes: filterGivenQuotes } = useQuoteFilter();
+
+  const filterQuotes = quotes.map((icQuotes) => filterGivenQuotes(icQuotes));
+
+  const dispatch = useDispatch();
+  const [showPopup, setShowPopup] = useState(false);
+  const [showSeeDetails, setShowSeeDetails] = useState(false);
+  const [showBuyNow, setShowBuyNow] = useState(false);
+  const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
+
+  const { memberGroups, proposerDetails } = useSelector(
+    ({ greetingPage }) => greetingPage
+  );
+  const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
+
+  const initRef = useRef(true);
+
+  const { groupCode } = useParams();
+  console.log(memberGroups?.[selectedGroup], ",23523");
   useEffect(() => {
     if (shouldFetchQuotes) {
       let tempfilter;
@@ -87,6 +116,14 @@ function useQuotesPage() {
             ...tempfilter,
             cover: tempfilter.cover || defaultfilters.cover,
             multiYear: tempfilter.multiYear || defaultfilters.multiYear,
+            planType:
+              memberGroups?.[selectedGroup]?.length === 1
+                ? "Individual"
+                : tempfilter.plan_type
+                ? tempfilter.plan_type === "M"
+                  ? "Multi Individual"
+                  : "Family Floater"
+                : "Family Floater",
           })
         );
       console.log(
@@ -123,36 +160,6 @@ function useQuotesPage() {
 
     dispatch(setShouldFetchQuotes(false));
   }, [fetchFilters]);
-
-  const [filterMobile, setFilterMobile] = useState(false);
-
-  const arr = [];
-
-  for (let company in companies?.companies) {
-    arr.push(company);
-  }
-
-  const [showTalkModal, setShowTalkModal] = useState(false);
-
-  const { filterQuotes: filterGivenQuotes } = useQuoteFilter();
-
-  const filterQuotes = quotes.map((icQuotes) => filterGivenQuotes(icQuotes));
-
-  const dispatch = useDispatch();
-  const [showPopup, setShowPopup] = useState(false);
-  const [showSeeDetails, setShowSeeDetails] = useState(false);
-  const [showBuyNow, setShowBuyNow] = useState(false);
-  const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
-
-  const { memberGroups, proposerDetails } = useSelector(
-    ({ greetingPage }) => greetingPage
-  );
-  const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
-
-  const initRef = useRef(true);
-
-  const { groupCode } = useParams();
-
   // const recommendedQuotes = useSelector(
   //     ({ recommendedPage }) => recommendedPage.recommendedQuotes[groupCode],
   // );
@@ -268,7 +275,12 @@ function useQuotesPage() {
   // }, [memberGroups]);
 
   useEffect(() => {
-    if (filters.cover && filters.multiYear && memberGroups && memberGroups?.[selectedGroup]) {
+    if (
+      filters.cover &&
+      filters.multiYear &&
+      memberGroups &&
+      memberGroups?.[selectedGroup]
+    ) {
       dispatch(clearFilterQuotes());
       console.log(
         "fetchQuotes useQUotes",
@@ -283,8 +295,8 @@ function useQuotesPage() {
           plan_type:
             memberGroups?.[selectedGroup]?.length === 1
               ? "I"
-              : proposerDetails.plan_type
-              ? proposerDetails.plan_type === "M"
+              : filters.planType
+              ? filters.planType === "Multi Individual"
                 ? "M"
                 : "F"
               : "F",
@@ -299,8 +311,28 @@ function useQuotesPage() {
     filters.basePlanType,
     filters.moreFilters,
     filters.cover,
-    selectedGroup,
   ]);
+
+  useEffect(() => {
+    console.log("hehehehhe", memberGroups?.[selectedGroup]);
+    if (memberGroups?.[selectedGroup]?.length === 1) {
+      dispatch(
+        setFilters({
+          planType: "Individual",
+        })
+      );
+    } else {
+      dispatch(
+        setFilters({
+          planType: fetchFilters.plan_type
+            ? fetchFilters.plan_type === "M"
+              ? "Multi Individual"
+              : "Family Floater"
+            : "Family Floater",
+        })
+      );
+    }
+  }, [selectedGroup]);
 
   //  const members = useSelector(({greetingPage}) => greetingPage.proposerDetails.members);
 

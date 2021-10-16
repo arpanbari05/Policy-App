@@ -344,7 +344,7 @@ const MEditMember = ({ handleClose }) => {
   font-size: 18px;
   background-color:#fff;
   border-radius:50px;
-  padding:0px 8px ;
+  padding:2px 10px ;
   position: absolute;
   top: 20px;
   right: 20px;
@@ -353,7 +353,8 @@ const MEditMember = ({ handleClose }) => {
         style={{ marginTop: "-8px" }}
         onClick={handleClose}
       >
-        {/* <i className="fa fa-close"></i> */}{"x"}
+        {/* <i className="fa fa-close"></i>{"x"} */}
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </CloseButton>
       <Modal.Body
         css={`

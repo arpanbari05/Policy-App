@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Container } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
+import { getTermConditions } from "../ProposalPage/serviceApi";
 
 const TermModal = ({
   title,
   show,
   customClass,
+ 
   content,
   buttonValue,
   handleClick,
@@ -16,6 +19,28 @@ const TermModal = ({
   showButton = true,
   revised = false,
 }) => {
+  const [term, setTerm] = useState("");
+const getTermConditionData = async (company_id, callback = () => {}) => {
+  try {
+    const { data } = await getTermConditions(company_id);
+
+    callback(data.company_terms_and_conditions);
+  } catch (error) {
+    alert(error);
+    console.error(error);
+  }
+};
+
+  const cart = useSelector(state => state.cart);
+  const prod_id=Object.keys(cart)[0];
+    console.log("hkjm",term);
+    useEffect(() => {
+      if(cart[prod_id].product.company.id){
+      getTermConditionData(cart[prod_id].product.company.id, setTerm);
+      }
+   },[])
+
+  // console.log("mkmk",term)
   return (
     <Modal
       centered
@@ -70,7 +95,7 @@ const TermModal = ({
       className={`${customClass} noselect`}
     >
       <Modal.Header
-        closeButton
+       
         style={{
           borderBottomColor: !title && "000",
           padding: !title && "28px",
@@ -82,6 +107,7 @@ const TermModal = ({
         }}
       >
        <ModalTitle className="modal-headerz">Terms and Conditions</ModalTitle>
+       <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </Modal.Header>
       {/* <CloseButton
         type="button"
@@ -96,7 +122,17 @@ const TermModal = ({
        overflow:scroll;
       `}
       >
-          <span
+          {term ?   <Paragraph 
+     
+        css={`
+          color: #253858;
+        `}
+      
+        dangerouslySetInnerHTML={{ __html: term }}
+      ></Paragraph>
+    : <span>Loading...</span>
+    }
+          {/* <span
           css={`
               position: absolute;
              
@@ -141,19 +177,19 @@ const TermModal = ({
             `}
           >
              <i class="fa fa-check color-orange"></i></span>
-          <div
+          {/* <div
           css={`
           padding-left:20px !important;
           padding-bottom: 20px !important;
           `}
-          >
-            
+          > */}
+{/*             
             <span
             css={`
             font-size:15px;
             `}
-            ><strong>DISCLAIMER</strong> <br/> I agree that this proposal and the declarations shall be the basis of the contract between me / us and Aditya Birla Health Insurance Company Ltd. I further consent and authorize Aditya Birla Health Insurance Co. Ltd. and / or any of its authorized representatives to seek medical information from any hospital / consultant that I or any person proposed to be insured has attended or may attend in future concerning any disease or illness or injury. The information provided will be the basis of any insurance policy that We may issue. Proposer must disclose all facts relevant to all persons proposed to be insured that may affect our decision to issue a policy or its terms. Non-compliance may result in the avoidance of the policy. I / we, have proposed for this insurance policy with Aditya Birla Health insurance company ltd. I / We have read &amp; understood the full terms, conditions &amp; exclusions of the policy.</span>  </div>
-             </Modal.Body>
+            ><strong>DISCLAIMER</strong> <br/> I agree that this proposal and the declarations shall be the basis of the contract between me / us and Aditya Birla Health Insurance Company Ltd. I further consent and authorize Aditya Birla Health Insurance Co. Ltd. and / or any of its authorized representatives to seek medical information from any hospital / consultant that I or any person proposed to be insured has attended or may attend in future concerning any disease or illness or injury. The information provided will be the basis of any insurance policy that We may issue. Proposer must disclose all facts relevant to all persons proposed to be insured that may affect our decision to issue a policy or its terms. Non-compliance may result in the avoidance of the policy. I / we, have proposed for this insurance policy with Aditya Birla Health insurance company ltd. I / We have read &amp; understood the full terms, conditions &amp; exclusions of the policy.</span>  </div> */}
+             </Modal.Body> 
       <Modal.Footer
         style={{
           display: noFooter && "none",
@@ -208,4 +244,15 @@ const ModalTitle = styled.h5`
     background-color: #fecc28;
     border-radius: 50px;
   } */
+`;
+
+const Paragraph = styled.div`
+& li{
+  font-size:15px;
+  color:black;
+  margin-bottom:20px;
+  & ::marker{
+    display: none !important;
+  }
+}
 `;
