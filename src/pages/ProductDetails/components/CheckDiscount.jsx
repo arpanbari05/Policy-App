@@ -20,9 +20,7 @@ const CheckDiscount = ({ groupCode }) => {
     memberGroups,
     proposerDetails: { members: membersWithAge },
   } = useSelector((state) => state.greetingPage);
-
   const members = memberGroups[groupCode].join(",");
-
   const [discounts, setDiscounts] = useState([]);
   const [additionalDiscounts, setAdditionalDiscounts] = useState([]);
 
@@ -444,7 +442,7 @@ function AdditionalDiscount({ additionalDiscount }) {
             background-color: #eff7ff;
             padding: 3px 10px;
             margin-top: 6px;
-
+            border-radius: 10px;
             ${small} {
               font-size: 9px;
               padding: 3px 6px;

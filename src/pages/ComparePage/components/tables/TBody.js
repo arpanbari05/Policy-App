@@ -612,7 +612,7 @@ const TBody = ({
                 {" "}
                 {plans[0]?.data?.sum_insured ? (
                   <select
-                    style={{ color: "#647188" }}
+                    style={{ color: "#647188", background:"white" }}
                     onChange={(e) => {
                  
                       dispatch(
@@ -652,7 +652,7 @@ const TBody = ({
                 {" "}
                 {plans[1]?.data?.sum_insured ? (
                   <select
-                    style={{ color: "#647188" }}
+                    style={{ color: "#647188", background:"white" }}
                     onChange={(e) => {
                       
                       dispatch(
@@ -692,7 +692,7 @@ const TBody = ({
               {plans[2]?.data?.sum_insured ? (
                 <td className={`${plans[2] && "showOnDesktopF"}`}>
                   <select
-                    style={{ color: "#647188" }}
+                    style={{ color: "#647188", background:"white" }}
                     onChange={(e) => {
                    
                       dispatch(
@@ -764,7 +764,7 @@ const TBody = ({
                     className={`${item === 2 && "showOnDesktopF"}`}
                   >
                     <select
-                      style={{ color: "#647188" }}
+                      style={{ color: "#647188",  background:"white" }}
                       value={
                         discount[
                           `${plans[index].data.product.id}${plans[index].data.sum_insured}`
