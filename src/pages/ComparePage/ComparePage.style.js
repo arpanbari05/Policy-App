@@ -241,15 +241,17 @@ cursor: pointer;
 `;
 export const RiderName = styled.div`
   display: inline-block;
-font-size:14px;
+font-size:12px;
   max-width: 64%;
   float: left;
 `;
 export const RiderPremium = styled.div`
-  display: inline-block;
+ 
   position: absolute;
+  display: flex;
+    align-items: center;
   right: 10px;
-  top: 0;
+  top: -1px;
   bottom: 0;
   height: 27px;
   margin: auto 0;

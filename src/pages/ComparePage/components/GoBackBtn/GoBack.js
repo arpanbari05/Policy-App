@@ -13,7 +13,7 @@ const GoBack = ({ productDetails, path, groupCode }) => {
   const urlQueries = useUrlQuery();
   const enquiryID = urlQueries.get("enquiryId");
   return (
-    <Container>
+   
       <div
         css={`
           height: 66px;
@@ -51,7 +51,7 @@ const GoBack = ({ productDetails, path, groupCode }) => {
           }
         ></BackButton>
       </div>
-    </Container>
+   
   );
 };
 

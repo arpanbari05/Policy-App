@@ -56,9 +56,9 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
 
     if (!errorMsg && email) {
       setIsSending(true);
-      setTimeout(() => {
-        handleRotation();
-      }, 2000);
+      // setTimeout(() => {
+      //   handleRotation();
+      // }, 2000);
       return imageSend(email);
     }
   };

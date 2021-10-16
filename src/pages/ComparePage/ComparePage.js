@@ -697,34 +697,12 @@ const ComparePage = () => {
                   </ul>
                 </li>
               </ul>
-              <div className="container"
-                css={`
-              display: flex;
-              justify-content:space-between;
-              align-items: center;
-              `}
-              >
-                <GoBack path={"/quotes"} groupCode={groupCode} />
-                <UpperModifier>
-                  <div className="right_midifiers d-flex justify-content-between align-items-center ">
-                    <button
-                      className="btn share_Quote_btn "
-                      onClick={() => setShowShareQuoteModal(true)}
-                    >
-                      <i class="fas fa-share "
-
-                      ></i>{" "}<span css={`
-                      margin-left:10px;
-                      `}>Share</span>
-                    </button>
-
-                  </div>
-                </UpperModifier>
-              </div>
+              
             </div>
 
             {/* mobile content ( visible on mobile screen )*/}
             <div id="printCompareM">
+
               <div className="table-wrapper showOnMobile">
                 <table className="table table-hover">
                   <THeadM
@@ -783,6 +761,33 @@ const ComparePage = () => {
                 max-width: unset;
               }`}
             >
+            <div 
+              
+              css={`
+            display: flex;
+            justify-content:space-between;
+            align-items: center;
+            width:100% !important;
+            padding-right:15px;
+            `}
+            >
+              <GoBack path={"/quotes"} groupCode={groupCode} />
+              <UpperModifier>
+                <div className="right_midifiers d-flex justify-content-between align-items-center ">
+                  <button
+                    className="btn share_Quote_btn "
+                    onClick={() => setShowShareQuoteModal(true)}
+                  >
+                    <i class="fas fa-share "
+
+                    ></i>{" "}<span css={`
+                    margin-left:10px;
+                    `}>Share</span>
+                  </button>
+
+                </div>
+              </UpperModifier>
+            </div>
               <div>
                 <div className="table-wrapper">
                   <table className="table table-hover">
@@ -858,6 +863,7 @@ const ComparePage = () => {
       />
 
       <CardModal
+      CompareBtnOnTop={true}
         className="hideOnMobile"
         show={show}
         title={"Add upto 3 plans to compare"}
