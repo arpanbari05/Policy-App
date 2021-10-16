@@ -50,17 +50,17 @@ const FilterModal = ({ show, handleClose }) => {
     dispatch(setFilters({ planType: selectedPlanType.displayName }));
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
-    console.log("fetchquotes Policy typefilter")
-    dispatch(
-      fetchQuotes(companies, {
-        plan_type: selectedPlanType.code,
-        tenure: parseInt(filters.multiYear),
-        sum_insured: coverRangeOptions.covers.find(
-          (filter) => filter.display_name === filters.cover
-        )?.code,
-        member: selectedGroup,
-      })
-    );
+    // console.log("fetchquotes Policy typefilter")
+    // dispatch(
+    //   fetchQuotes(companies, {
+    //     plan_type: selectedPlanType.code,
+    //     tenure: parseInt(filters.multiYear),
+    //     sum_insured: coverRangeOptions.covers.find(
+    //       (filter) => filter.display_name === filters.cover
+    //     )?.code,
+    //     member: selectedGroup,
+    //   })
+    // );
 
     handleClose();
   };
