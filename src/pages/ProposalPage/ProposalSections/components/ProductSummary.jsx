@@ -331,24 +331,25 @@ const ProductSummary = ({ cart, setActive }) => {
                 </div>
                 {/* <br /> */}
                 {item.addons.length ? (
-                  <div class="row">
-                    <div
-                      class="col-md-12  text-center"
+                  <>
+                    {" "}
+                    <hr
                       css={`
-                        position: relative;
-                        margin: 10px 0;
+                        border-bottom: #ddd;
+                      `}
+                    />
+                    <p
+                      className="p_cover_medical_pop"
+                      css={`
+                        width: 100%;
+                        color: #0a87ff;
+                        font-weight: 900;
+                        margin-bottom: 5px;
                       `}
                     >
-                      <p class="bottom_addon_cover_medical">
-                        Add-ons Coverages
-                      </p>
-                      <hr
-                        css={`
-                          border-bottom: #ddd;
-                        `}
-                      />
-                    </div>
-                  </div>
+                      Add-ons Coverages:
+                    </p>
+                  </>
                 ) : (
                   <></>
                 )}
@@ -366,9 +367,9 @@ const ProductSummary = ({ cart, setActive }) => {
                     >
                       <div
                         css={`
-                          display: flex;
-                          flex-direction: row;
-                          align-items: center;
+                          // display: flex;
+                          // flex-direction: row;
+                          // align-items: center;
                           & img {
                             height: 45px;
                             // width: 83px;
@@ -510,15 +511,18 @@ const ProductSummary = ({ cart, setActive }) => {
                       )}
                       {addOns.product.insurance_type.alias === "top_up" && (
                         <div
-                          className="col-md-6"
                           css={`
                             display: flex;
-                            flex-direction: column;
+                            flex-direction: row;
+                            align-items: end;
+                            justify-content: space-between;
+
+                            /* border-right: 1px solid #dce2ec; */
                           `}
                         >
                           <p className="p_cover_medical_pop">Deductable: </p>
                           <span
-                            className="p_cover_medical_pop_span"
+                            className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
                             css={`
                               padding-left: 10px;
                             `}
