@@ -363,7 +363,7 @@ const FilterModal = ({ show, handleClose ,history}) => {
       `}
     >
       <Modal.Header
-        closeButton
+        // closeButton
         style={{
           backgroundColor: "#f5f7f9",
         }}
@@ -377,6 +377,7 @@ const FilterModal = ({ show, handleClose ,history}) => {
         >
           Edit Members
         </Modal.Title>
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </Modal.Header>
       <Modal.Body>
         <OptionWrapper>

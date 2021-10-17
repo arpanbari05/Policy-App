@@ -72,7 +72,7 @@ function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
             {title}
           </ModalTitle>
         )}
-        <i class="fas fa-times"></i>
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </Modal.Header>
       <Modal.Body
         style={{ borderRadius: "12px" }}

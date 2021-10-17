@@ -100,16 +100,16 @@ function AddOnDetailsRow({ addOn }) {
     <div
       css={`
         display: flex;
-        align-items: space-between;
+        align-items:center;
       `}
     >
       <div
         css={`
-          width: 30px;
+          width: 25px;
           display: flex;
           align-items: center;
           justify-content: center;
-          height:30px;
+          height:25px;
         `}
       >
     

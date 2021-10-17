@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { setFilters } from "../../quote.slice";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,7 +25,7 @@ const FilterModal = ({ show, handleClose }) => {
   );
 
   const [others, setOthers] = useState(moreFilterData.others || []);
-
+  const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   const handleReset = () => {
     setPopularFilter([]);
     setPreExisting("");
@@ -47,13 +47,13 @@ const FilterModal = ({ show, handleClose }) => {
   const filteredQuotes = quotes
     .map((icQuotes) => filterQuotes(icQuotes))
     .flat();
-  let filteredPlans=[];
+  let filteredPlans = [];
   filteredQuotes.forEach((data) => {
     if (!filteredPlans?.includes(data.product.name)) {
       filteredPlans.push(data.product.name);
     }
   });
-  console.log(filteredQuotes, filteredPlans,"h12dsga");
+  console.log(filteredQuotes, filteredPlans, "h12dsga");
   const handleSubmit = () => {
     dispatch(
       setFilters({
@@ -85,7 +85,7 @@ const FilterModal = ({ show, handleClose }) => {
         }
       `}
     >
-      <Modal.Header closeButton>
+      <Modal.Header >
         <Modal.Title
           style={{
             fontSize: "20px",
@@ -95,6 +95,7 @@ const FilterModal = ({ show, handleClose }) => {
         >
           More Filters
         </Modal.Title>
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </Modal.Header>
       <Modal.Body>
         <MoreFilterWrapper>
@@ -172,7 +173,19 @@ const FilterModal = ({ show, handleClose }) => {
                                 className="d-flex align-items-center"
                               >
                                 <span className="option_name">
-                                  {option.display_name}
+                                  <OverlayTrigger
+                                    placement="right"
+                                    overlay={renderTooltip(option.description)}
+                                  >
+                                    <p
+                                      css={`
+                                        width: max-content;
+                                        margin: auto 0;
+                                      `}
+                                    >
+                                      {option.display_name}
+                                    </p>
+                                  </OverlayTrigger>
                                 </span>
                                 <div className="custom_checkbox"></div>
                               </label>
@@ -210,8 +223,21 @@ const FilterModal = ({ show, handleClose }) => {
                                 htmlFor={`${option.display_name}_${filter.group_name}`}
                                 className="d-flex align-items-center"
                               >
+                                {" "}
                                 <span className="option_name">
-                                  {option.display_name}
+                                  <OverlayTrigger
+                                    placement="right"
+                                    overlay={renderTooltip(option.description)}
+                                  >
+                                    <p
+                                      css={`
+                                        width: max-content;
+                                        margin: auto 0;
+                                      `}
+                                    >
+                                      {option.display_name}
+                                    </p>
+                                  </OverlayTrigger>
                                 </span>
                                 <div className="custom_radio"></div>
                               </label>
@@ -246,7 +272,7 @@ const FilterModal = ({ show, handleClose }) => {
             className=" apply_btn mx-auto h-100 w-50"
             onClick={() => handleSubmit()}
           >
-            Show {filteredPlans.length-1} plans
+            Show {filteredPlans.length - 1} plans
           </ApplyBtn>
         ) : (
           <span className="w-50 text-center h-100">No Plan available</span>

@@ -63,7 +63,7 @@ color: ${props.color};
   box-shadow: none;
   border: 0 none;
   cursor: pointer;
-  padding: 10px 11px;
+  /* padding: 10px 11px; */
   margin: 10px auto;
   transition: all 0.3s linear 0s;
   display: block;

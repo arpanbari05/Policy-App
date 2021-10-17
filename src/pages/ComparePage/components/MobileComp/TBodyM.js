@@ -86,7 +86,7 @@ const SumAssured = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "500",
-                        background:"white",
+                        background:"white !important",
                       }}
                       onChange={(e) => {
                         dispatch(

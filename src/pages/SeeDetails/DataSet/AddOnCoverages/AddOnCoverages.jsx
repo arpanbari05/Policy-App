@@ -16,6 +16,7 @@ import "styled-components/macro"
 import RiderCard from "../../../../components/Common/RiderCard/RiderCard";
 import CardSkeletonLoader from "../../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import { useCartProduct } from "../../../Cart";
+import FeatureSection from "../../../ProductDetails/components/FeatureSection/FeatureSection";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
@@ -221,6 +222,12 @@ const AddOnCoverages = ({
             {loading ? (
               <SpinLoader />
             ) : (
+              <>
+              <FeatureSection
+              heading="Customize Your Plan"
+              subHeading="You can add ‘Riders’ to you basic health insurance plan for additional benefits."
+              id="additional-riders"
+            ></FeatureSection>
               <form className="form cf">
                 <section className="plan cf plan_cf_g_m">
                   <div className="row"
@@ -256,6 +263,7 @@ const AddOnCoverages = ({
                   product={product}
                 /> */}
               </form>
+              </>
             )}
           </div>
         </div>

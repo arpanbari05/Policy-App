@@ -16,6 +16,7 @@ const CardModal = ({
   noFooter,
   showButton = true,
   revised = false,
+  CompareBtnOnTop = false,
 }) => {
   return (
     <Modal
@@ -56,7 +57,7 @@ const CardModal = ({
       className={`${customClass} noselect`}
     >
       <Modal.Header
-        closeButton
+        // closeButton
         style={{
           borderBottomColor: !title && "#fff",
           padding: !title && "28px",
@@ -67,6 +68,17 @@ const CardModal = ({
         }}
       >
         {title && <ModalTitle className="modal-headerz">{title}</ModalTitle>}
+        {showButton && CompareBtnOnTop && (
+          <StyledButton
+            customClass={`button${customClass}`}
+            type="button"
+            value={buttonValue}
+            onClick={handleClick}
+            noIcon={BtnArrow ? false : true}
+            width={`200px`}
+          />
+        )}
+        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
       </Modal.Header>
       {/* <CloseButton
         type="button"
@@ -76,7 +88,9 @@ const CardModal = ({
       >
         <i className="fa fa-close"></i>
       </CloseButton> */}
-      <Modal.Body>{content}</Modal.Body>
+      <Modal.Body style={{
+        padding:"0.3rem !important",
+      }}>{content}</Modal.Body>
       <Modal.Footer
         style={{
           display: noFooter && "none",
@@ -85,6 +99,7 @@ const CardModal = ({
           borderTopLeftRadius: "0px",
           borderToprightRadius: "0px",
           borderBottomRightRadius: "14px",
+          padding:"0px !important",
           borderBottomLeftRadius: "14px",
         }}
       >
