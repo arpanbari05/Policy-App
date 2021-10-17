@@ -5,7 +5,7 @@ import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
 import QuoteCard from "./components/QuoteCard";
 import BuyNowModal from "./components/BuyNowModal";
-
+import { BiLoaderCircle } from "react-icons/bi";
 import { SortByButton, TextLabel } from "./Quote.style";
 import { insurerFilter } from "./quote.slice";
 import useQuotesPage from "./useQuotes";
@@ -99,14 +99,15 @@ function QuotePage() {
   const firstQuoteFound =
     filterQuotes.some((quotes) => quotes?.length > 0) || !loadingQuotes;
 
- console.log("d32fasg", filters.premium === null ,
- filters.cover === defaultfilters.cover ,
- filters.basePlanType === "Base Health" ,
- filters.insurers.length < 1 ,
- filters.multiYear === defaultfilters.multiYear ,
- Object.keys(filters.moreFilters).length === 0
-   ? true
-   : false)
+  console.log(
+    "d32fasg",
+    filters.premium === null,
+    filters.cover === defaultfilters.cover,
+    filters.basePlanType === "Base Health",
+    filters.insurers.length < 1,
+    filters.multiYear === defaultfilters.multiYear,
+    Object.keys(filters.moreFilters).length === 0 ? true : false
+  );
 
   const isFiltersDefault =
     filters.premium === null &&
@@ -164,11 +165,24 @@ function QuotePage() {
                 }
               `}
             >
-              <div className=" d-flex justify-content-between align-items-center">
+              <div
+                css={`
+                  box-sizing: none !important;
+                  padding: 1vh;
+                `}
+                className=" d-flex justify-content-between align-items-center"
+              >
                 <TextLabel>
                   {" "}
-                  {loadingQuotes ? "Loading" : "Showing"} {selectedPlanType}{" "}
-                  Plans{loadingQuotes && "..."}
+                  {loadingQuotes ? (
+                    <>
+                      {`Loading ${selectedPlanType} plans `}
+                      <BiLoaderCircle className="rotate" />
+                    </>
+                  ) : (
+                    `Showing ${selectedPlanType}
+                  Plans`
+                  )}
                 </TextLabel>
                 {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
