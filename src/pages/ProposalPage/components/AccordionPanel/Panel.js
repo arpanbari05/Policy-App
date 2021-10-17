@@ -12,7 +12,6 @@ const Panel = ({
   isFilled,
   values,
 }) => {
-
   let EditedName = "";
 
   if (formName === "Insured Details" && title.includes("_")) {
@@ -33,7 +32,6 @@ const Panel = ({
     EditedName = title;
   }
 
-
   return (
     <>
       <StyledPanel
@@ -42,7 +40,7 @@ const Panel = ({
         add={!show ? true : undefined}
         isShowMedical={formName === "Medical Details"}
       >
-           <span>{EditedName}</span>
+        <span>{EditedName}</span>
         {formName === "Insured Details" &&
           (show ? (
             <>
@@ -99,13 +97,13 @@ const PencilWrapper = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: ${props => props.isMedical && "116px"};
-  background: ${props => (props.isMedical ? "#f6f7f9 !important" : "")};
-  height: ${props => (props.isMedical ? "46px" : "")};
-  color: ${props => (props.isMedical ? "#666e84" : "")};
-  border-radius: ${props => (props.isMedical ? "50px" : "")};
+  width: ${(props) => props.isMedical && "116px"};
+  background: ${(props) => (props.isMedical ? "#0a87ff !important" : "")};
+  height: ${(props) => (props.isMedical ? "46px" : "")};
+  color: ${(props) => (props.isMedical ? "white" : "")};
+  border-radius: ${(props) => (props.isMedical ? "50px" : "")};
   @media (max-width: 767px) {
-    width: ${props => (props.isMedical ? "80px" : "46px")};
+    width: ${(props) => (props.isMedical ? "80px" : "46px")};
   }
   & span {
     position: absolute;
@@ -118,12 +116,12 @@ const PencilWrapper = styled.div`
     }
   }
   & img {
-    position: ${props => props.isMedical && "absolute"};
-    right: ${props => props.isMedical && "0px"};
-    top: ${props => props.isMedical && "50%"};
-    ${props => props.isMedical && "transform: translateY(-50%)"};
+    position: ${(props) => props.isMedical && "absolute"};
+    right: ${(props) => props.isMedical && "0px"};
+    top: ${(props) => props.isMedical && "50%"};
+    ${(props) => props.isMedical && "transform: translateY(-50%)"};
     @media (max-width: 767px) {
-      height: ${props => props.isMedical && "46px"};
+      height: ${(props) => props.isMedical && "46px"};
     }
   }
 `;
@@ -161,52 +159,52 @@ const ChevronWrapper = styled.div`
     top: 50%;
     transform: translate(-50%, -50%);
   }
-  background: #eff7ff ;
+  background: #eff7ff;
   border-radius: 50%;
   right: 24px;
 `;
 const StyledPanel = styled.a`
   display: block;
-  margin-top: ${props => props.isShowMedical && !props.add && "8px"};
-  padding: ${props =>
+  margin-top: ${(props) => props.isShowMedical && !props.add && "8px"};
+  padding: ${(props) =>
     props.isShowMedical
       ? props.add
         ? "20px 10px"
         : "10px 10px"
       : "20px 40px 22px 45px"};
-      margin-left: 15px;
-      margin-right: 15px;
+  margin-left: 15px;
+  margin-right: 15px;
   font-size: 22px;
-  background-image: ${props =>
+  background-image: ${(props) =>
     props.isShowMedical &&
     !props.add &&
     "linear-gradient(90deg, #eff7ff 0%, white 100%)"};
-    color: #0a87ff !important;
+  color: #0a87ff !important;
   position: relative;
-  border: ${props => (!props.isShowMedical ? "1px solid #eeeff5" : "none")};
+  border: ${(props) => (!props.isShowMedical ? "1px solid #eeeff5" : "none")};
   width: 98%;
   position: relative;
 
-  box-shadow: ${props =>
+  box-shadow: ${(props) =>
     !props.isShowMedical || props.add
       ? "0 3px 10px rgb(211 220 232 / 60%) !important;"
       : ""};
   font-weight: 900;
-  
+
   text-transform: capitalize;
   margin-bottom: 22px;
   & span {
     font-size: 22px;
   }
   &:after {
-    ${props => props.isShowMedical && "content:''"}
+    ${(props) => props.isShowMedical && "content:''"}
     content: "";
     height: 38px;
     width: 6px;
     position: absolute;
     left: -2px;
     top: 16px;
-    background-color: #2cd44a;;
+    background-color: #2cd44a;
     border-radius: 50px;
     @media (max-width: 767px) {
       top: 15px;

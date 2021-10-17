@@ -224,6 +224,7 @@ const ProposalPage = ({ history }) => {
               css={`
                 display: flex;
                 justify-content: space-between;
+
                 align-items: center;
               `}
             >

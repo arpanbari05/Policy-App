@@ -34,7 +34,7 @@ const proposal = createSlice({
       state.proposalData = { ...state.proposalData, ...action.payload };
       state.isLoading = false;
     },
-    clearProposalData: state => {
+    clearProposalData: (state) => {
       state.proposalData = {};
     },
     setIsLoading: (state, { payload }) => {
@@ -82,23 +82,25 @@ export const {
 } = proposal.actions;
 const ls = new SecureLS();
 export const saveProposalData = (proposalData, next, failure) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       dispatch(setIsLoading(true));
       const response = await saveProposal(proposalData);
       dispatch(setProposalData(proposalData));
 
+      //console.log("saveProposalData success", response);
       if (response.statusCode === 200) next(response.data);
       else if (!response.data) failure(response.errors);
       console.log(response);
     } catch (err) {
-      console.error(err);
+      //console.error("saveProposalData error", err);
+      dispatch(setIsLoading(false));
       alert(err.message);
     }
   };
 };
-export const fetchPdf = options => {
-  return async dispatch => {
+export const fetchPdf = (options) => {
+  return async (dispatch) => {
     try {
       console.log("triggered");
       const { data } = await policyPdf();
@@ -118,12 +120,12 @@ export const fetchPdf = options => {
   };
 };
 export const getProposalData = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const { data } = await getProposal();
       const responseData = {};
 
-      Object.keys(data.data).forEach(item => {
+      Object.keys(data.data).forEach((item) => {
         if (!(data.data[item] instanceof Array)) {
           responseData[item] = data.data[item];
         }
@@ -134,16 +136,17 @@ export const getProposalData = () => {
         setActiveIndex(
           Object.keys(responseData).length >= 4
             ? 3
-            : Object.keys(responseData).length,
-        ),
+            : Object.keys(responseData).length
+        )
       );
     } catch (err) {
       console.error(err);
     }
   };
 };
-export const submitProposalData = next => {
-  return async dispatch => {
+export const submitProposalData = (next) => {
+  console.log("Executed submitProposal data");
+  return async (dispatch) => {
     try {
       const res = await submitProposal({ enquiryId: ls.get("enquiryId") });
 
@@ -151,6 +154,7 @@ export const submitProposalData = next => {
         next();
       } else throw new Error(res.message);
     } catch (err) {
+      console.log("Error occured in submitProposal data");
       console.error(err);
       swal(err.message).then(dispatch(setActiveIndex(0)));
     }
@@ -166,8 +170,8 @@ export const submitProposalData = next => {
 //   };
 // };
 
-export const getPaymentStatus = data => {
-  return async dispatch => {
+export const getPaymentStatus = (data) => {
+  return async (dispatch) => {
     try {
       const response = await PaymentStatus(data);
 
