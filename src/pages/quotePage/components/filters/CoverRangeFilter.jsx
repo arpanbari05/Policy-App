@@ -107,6 +107,9 @@ const FilterModal = ({ show, handleClose }) => {
           header="Choose Your Cover Range"
           footerJSX={
             <ApplyBtn
+              css={`
+                height: 65px !important;
+              `}
               className="apply_btn mx-auto h-100 w-100"
               onClick={(e) => handleApply(e)}
             >
@@ -123,7 +126,7 @@ const FilterModal = ({ show, handleClose }) => {
                     return (
                       <li
                         css={`
-                          margin: 25px 0;
+                          margin: 5px 0;
                         `}
                         className="option d-flex align-items-center justify-content-between"
                         key={i}

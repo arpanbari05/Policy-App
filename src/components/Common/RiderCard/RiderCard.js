@@ -42,6 +42,7 @@ function RiderCard({
     <>
       {(!parent_rider || parent_selected) && (
         <RiderCardWrap
+          isMandatory={isMandatory}
           {...props}
           isRiderSelected={isRiderSelectedCorrected}
           htmlFor={(options.length > 0 && `${riderName}"hehe"`) || undefined}
@@ -171,7 +172,7 @@ font-weight:bold;
                 padding: 10px 0;
                 border-radius: 0.25em;
                 cursor: pointer;
-                background-color: ${isRiderSelectedCorrected
+                background-color: ${isMandatory || isRiderSelectedCorrected
                   ? `#eff7ff`
                   : `#f3f3f3`};
                 margin: 0 3px;
@@ -205,8 +206,10 @@ font-weight:bold;
                   justify-content: center;
                   align-items: center;
                   border-radius: 50%;
-                  background: ${isRiderSelectedCorrected ? "#0a87ff" : "white"};
-                  box-shadow: ${isRiderSelectedCorrected
+                  background: ${isMandatory || isRiderSelectedCorrected
+                    ? "#0a87ff"
+                    : "white"};
+                  box-shadow: ${isMandatory || isRiderSelectedCorrected
                     ? "0px 2px 5px -2px rgb(0 0 0 / 25%)"
                     : ""};
                   font-family: "font-awesome";
@@ -300,8 +303,14 @@ const RiderCardWrap = styled.div`
   position: relative;
   width: 49%;
   margin: 10px 0;
+<<<<<<< HEAD
+  border: 1px solid
+    ${({ isRiderSelectedCorrected, isMandatory }) =>
+      isMandatory || isRiderSelectedCorrected ? "#0d6efd;" : "#d5dce5"};
+=======
   /* border: 1px solid
     ${({ isRiderSelected }) => (isRiderSelected ? "#0d6efd;" : "#d5dce5")}; */
+>>>>>>> 179d172d3d38da9289752cb49c6f06d9c3d774e8
   padding: 10px 10px;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
   cursor: pointer;

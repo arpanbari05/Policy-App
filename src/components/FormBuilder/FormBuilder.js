@@ -12,6 +12,7 @@ import useFormBuilder from "./useFormBuilder";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "./FormBuilder.slice";
 import { render } from "@testing-library/react";
+import "styled-components/macro";
 
 const FormBuilder = ({
   components = {},
@@ -94,7 +95,6 @@ const FormBuilder = ({
   useEffect(() => {
     const tempValues = { ...values };
     schema.forEach((item) => {
-     
       if (
         item.type === "select" &&
         !values[item.name] &&
@@ -455,7 +455,7 @@ const FormBuilder = ({
                     </Wrapper>
                   )}
                   {item.type === "custom_toggle" &&
-                    renderField(item, values) && <HR></HR>}
+                    renderField(item, values) && <HR />}
                 </>
               );
           }
@@ -497,8 +497,8 @@ const CustomWrapper = styled.div`
   @media (max-width: 767px) {
     width: calc(100% - 17px);
     margin-left: 8px;
+
     box-shadow: unset !important;
-    background-color: #f7f9fa;
     & input,
     & select {
       background-color: #fff;
@@ -534,6 +534,7 @@ const Title = styled.p`
       border-radius: 50px;
     }
     height: 20px;
+    
     font-size: 16px !important;
     padding: 4px 0 0;
     background-image: unset;

@@ -96,7 +96,7 @@ export const dataset = (
           onClick={() => {
             addChild(title);
           }}
-          color="#eaeef2"
+          color="grey"
         />
 
         <span
@@ -119,7 +119,7 @@ export const dataset = (
                 "checkbox"
               );
           }}
-          color="#eaeef2"
+          color="grey"
         />
       </div>
       <RoundDD

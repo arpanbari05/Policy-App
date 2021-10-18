@@ -77,8 +77,7 @@ const Toggle = ({
               className="col-lg-4 col-md-12 middle no-padding mobile-left"
               css={`
                 text-align: end !important;
-                @media(max-width:767px){
-
+                @media (max-width: 767px) {
                   text-align: start !important;
                 }
               `}
@@ -98,7 +97,7 @@ const Toggle = ({
                   checked={boolean === "Y"}
                 />
                 <div
-                  className="front-end box capitalize-mobile"
+                  className="front-end  box capitalize-mobile"
                   css={`
                     width: ${customOptions?.[0]?.length > 4 &&
                     "144px !important"};
@@ -151,14 +150,12 @@ const Toggle = ({
                           [e.target.name]: e.target.checked,
                         })
                       }
-                      checked={
-                       membersStatus[item]
-                      }
+                      checked={membersStatus[item]}
                     />
                     <label
-                      for={"rb1" + name + index + item}
+                      htmlFor={"rb1" + name + index + item}
                       css={`
-                        color:#0a87ff !important;
+                        color: #0a87ff !important;
                         margin-bottom: 19px;
                       `}
                     >
@@ -171,11 +168,10 @@ const Toggle = ({
                           /* right: 0; */
                           background: white;
                           font-size: 14px;
-                          @media(max-width:767px){
+                          @media (max-width: 767px) {
                             bottom: -15px;
                             left: 15px;
-                          background: unset; 
-
+                            background: unset;
                           }
                         `}
                       >
@@ -209,7 +205,7 @@ const Question = styled.p`
     position: absolute;
     left: -2px;
     top: 2px;
-    background-color: #2cd44a;;
+    background-color: #2cd44a;
     border-radius: 50px;
     @media (max-width: 767px) {
       height: calc(100% - 6px);
@@ -217,6 +213,7 @@ const Question = styled.p`
   }
   @media (max-width: 767px) {
     font-size: 14px !important;
+    font-family: "Inter-Regular";
   }
 `;
 const Group = styled.div`
@@ -244,9 +241,7 @@ const Group = styled.div`
       cursor: pointer;
       background: #fff;
       @media (max-width: 767px) {
-        width: 66px;
         padding: 4px 10px;
-
         font-size: 14px;
       }
     }
