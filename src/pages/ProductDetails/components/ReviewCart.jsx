@@ -34,7 +34,7 @@ margin-bottom: 4px;
     >
       <div
         css={`
-          font-size: 12px;
+          font-size: 11px;
           color: #555555;
           /* width: 70%; */
           ${mobile} {
@@ -54,12 +54,12 @@ margin-bottom: 4px;
       <div
         css={`
           font-weight: 900;
-          font-size: 12px;
-          min-width: 100px;
+          font-size: 11px;
+          min-width: 80px;
           text-align: right;
           @media (max-width: 768px) {
             text-align: left !important;
-            font-size: 12px;
+           
             line-height: 14px;
             margin-top: 7px;
             width: 100%;
@@ -116,7 +116,7 @@ function AddOnDetailsRow({ addOn }) {
         <img
           css={`
             width: 100%;
-            margin-bottom: 5px;
+            /* margin-bottom: 5px; */
           `}
           src={product.company.alias==="care_health"?care_health:logo}
           alt={product.company.alias}
@@ -124,7 +124,7 @@ function AddOnDetailsRow({ addOn }) {
       </div>
       <span
         css={`
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 400;
           width: 100%;
           padding: 0px 5px;
@@ -290,7 +290,7 @@ function Discounts({ discounts = [], premium }) {
         css={`
           display: flex;
           justify-content: space-between;
-          padding: 20px 0px;
+          /* padding: 5px 0px; */
           border-bottom: 1px solid #ddd;
           flex-direction: column;
           /* padding-left: 12px; */
@@ -306,7 +306,7 @@ function Discounts({ discounts = [], premium }) {
         </div>
         <div
           css={`
-            font-size: 12px;
+            font-size: 11px;
             color: #555555;
             /* padding-left: 12px; */
             margin-top: 7px;
@@ -320,13 +320,14 @@ function Discounts({ discounts = [], premium }) {
                   display: flex;
                   justify-content: space-between;
                   width: 100%;
+                  margin-bottom: 4px;
                 `}
               >
                 <span>{name}</span>
                 <span
                   css={`
                     font-weight: 900;
-                    font-size: 13px;
+                    font-size: 11px;
                     min-width: 100px;
                     text-align: right;
                     color: black;
@@ -724,9 +725,10 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           top: 110px;
           background-color: #fff;
           box-shadow: 0 2px 6px 0 hsl(0deg 0% 64% / 50%);
-          padding: 10px 20px;
+          padding: 10px;
           padding-top: 18px;
-          padding-bottom: 20px;
+          padding-bottom:${hasNextGroupProduct ? "40px" : "20px"};
+          /* padding-bottom: 20px; */
           border-radius: 2px;
           color: #000;
           overflow: hidden;
@@ -907,7 +909,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             css={`
               ${mobile} {
                 display: ${expand ? "static" : "none"};
-
+               
                 overflow-y: auto;
 
                 &::-webkit-scrollbar {
@@ -970,14 +972,15 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               </span>
               <div
                 css={`
+                font-size: 12px; 
                   ${small} {
-                    font-size: 14px;
+                    font-size: 12px;
                     line-height: 16px;
                     font-weight: 900;
                   }
                 `}
               >
-                Plan for: {memberGroups[nextGroup]?.join(", ")}
+                Plan for: {memberGroups[nextGroup]?.map(item => item.replace("_"," ")).join(", ")}
               </div>
             </div>
             <div
@@ -1211,7 +1214,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           >
             {hasNextGroupProduct ? (
               <ProceedButton
-                members={memberGroups[nextGroup]?.join(", ")}
+                members={memberGroups[nextGroup]?.map(item => item.replace("_"," ")).join(", ")}
                 loading={isCartProductLoading}
                 onProceedClick={handleProceedClick}
               />
@@ -1305,7 +1308,7 @@ export function ReviewCartButton() {
           `}
         >
           <ProceedButton
-            members={memberGroups[nextGroup]?.join(", ")}
+            members={memberGroups[nextGroup]?.map(item => item.replace("_"," ")).join(", ")}
             loading={isCartProductLoading}
             onProceedClick={handleProceedClick}
           />
@@ -1384,7 +1387,7 @@ function ProceedButton({
         <div
           css={`
             text-transform: capitalize;
-            font-size: 13px;
+            font-size: 12px;
           `}
         >
           {`Plan for ${members}`}
@@ -1394,16 +1397,16 @@ function ProceedButton({
         css={`
           width: 100px;
           text-align: center;
-          background-color: var(--abc-red);
+          background-color: #5fb0ff;
           padding: 6px 12px;
-
+cursor:pointer;
           color: #fff;
           border: 1px solid var(--abc-red);
-          font-size: 20px;
+          font-size: 16px;
           border-radius: 2px;
           &:hover {
-            color: var(--abc-red);
-            background-color: #fff;
+            color: white;
+            background-color: #a2d1ff;
           }
         `}
       >

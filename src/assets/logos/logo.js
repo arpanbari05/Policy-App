@@ -15,6 +15,8 @@ import future_generl from "./FG logo.png"
 import edilwiese from "./edelewaisee_logo.jpeg";
 import reliance_group from "./Reliance logo.png"
 import chola_ms_logo from "./Chola logo.png";
+import royalSunderLogo from "./royal-sundaram-logo.png";
+
 const images = {
   go_digit: digit,
   max_bupa: max_bupa,
@@ -33,6 +35,7 @@ const images = {
   reliance_general:reliance_group,
   edelweiss_general:edilwiese,
   cholmandalam_ms:chola_ms_logo,
+  royal_sundaram: royalSunderLogo,
 };
 
 export { images };

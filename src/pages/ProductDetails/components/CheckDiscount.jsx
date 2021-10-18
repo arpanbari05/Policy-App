@@ -251,8 +251,8 @@ const CheckDiscount = ({ groupCode }) => {
                               bottom: 11px;
                               right: 11px;
                               transform: translateX(-50%);
-                              height: 30px;
-                              width: 30px;
+                              height: 23px;
+                              width: 23px;
                               line-height: 30px;
                               text-align: center;
                               border-radius: 50%;
