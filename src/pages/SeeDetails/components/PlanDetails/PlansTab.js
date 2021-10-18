@@ -6,7 +6,7 @@ const PlansTab = ({ isActive, title, description, onClick }) => {
   return (
     <Anchor
       onClick={onClick}
-      className={`nav-link mb-3 p-3  ${isActive && "active"}`}
+      className={`nav-link  p-3  ${isActive && "active"}`}
    
     >
       <span className={`${isActive && "active"}`}>{title}</span>

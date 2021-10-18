@@ -388,10 +388,10 @@ export default ProductSummaryMobile;
 
 const MultipleWrapper = styled.div`
   width: 300px;
-  height: 300px;
+  height: 100px;
   position: absolute;
   background-color: #fff;
-  right: 60px;
+  right: 10px;
   border-radius: 8px;
   bottom: 100%;
   overflow-y: auto;
@@ -407,7 +407,7 @@ const PayItem = styled.li`
 `;
 const ItemName = styled.div`
 
-  font-size: 20px;
+  font-size: 15px;
   background-color: #f6f7f9;
   padding: 12px;
   border-radius: 8px;

@@ -140,7 +140,7 @@ const prod_id=Object.keys(cart)[0];
               onChange={() => setChecked(!checked)}
             />{" "}
             <span className="Iaccept">I Accept the&nbsp;</span>
-            <span class="TermsAndConditions" style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}> Terms &amp; Conditions </span>
+            <span class="TermsAndConditions" style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}>  Terms &amp; Conditions </span>
 {termShow &&  <TermModal show={termShow}  handleClose={()=>{setTermShow(false)}}/>}
 
           </div>
@@ -152,6 +152,7 @@ const prod_id=Object.keys(cart)[0];
                     <PayItem>
                       <ItemName>{item?.product?.name}</ItemName>
                       <PayButton
+                      style={{cursor: 'pointer'}}
                         onClick={() => {
                           singlePay(item.proposal_id);
                         }}

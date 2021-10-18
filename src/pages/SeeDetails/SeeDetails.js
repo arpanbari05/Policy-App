@@ -444,6 +444,8 @@ const SeeDetails = ({
           </div>
           <div className="tab-container z-container">
             <PlanDetailsMobile
+            
+        
               ActiveMainTab={activeFieldset === 1 ? true : false}
               planDetails={planDetails}
               brochureUrl={brochureUrl}
