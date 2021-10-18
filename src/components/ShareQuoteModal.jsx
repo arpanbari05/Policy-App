@@ -8,11 +8,19 @@ import SmsIcon from "../assets/svg-icons/SmsIcon";
 import styled from "styled-components";
 import { useRef, useState } from "react";
 import { EmailSent } from "../pages/ComparePage/ComparePage.style";
+import { setEmail as setlEmaiStatus }  from "../pages/ComparePage/compare.slice";
 
 const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+   dispatch(setlEmaiStatus(""));
+   setErrorMsg("");
+  //  setyShowMsgs(false)
+  },[show])
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails
   );
+  const [showMsgs, setyShowMsgs] =  useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [email, setEmail] = useState(
@@ -32,7 +40,6 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
   //   }
   // },[emailStatus])
 
-  console.log(emailStatus, isSending, "emailStatus");
 
   const handleNumberCheck = (e, setAction) => {
     e.preventDefault();
@@ -223,7 +230,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
           ) : (
             ""
           )}
-          {emailStatus && (
+          { emailStatus && (
             <EmailSent status={emailStatus.status}>
               {/* {handleRotation()} */}
               {emailStatus.message}
