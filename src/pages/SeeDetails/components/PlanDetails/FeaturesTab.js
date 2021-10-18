@@ -22,7 +22,7 @@ const dataSet = (dataArray, type) => {
                   return (
                     <li
                       style={{
-                        fontSize: "14px",
+                        fontSize: "13px",
                         borderRadius: "3px",
                         padding: "5px 8px",
                       }}

@@ -37,7 +37,7 @@ function FeatureDefinitionMobile({
           <div>
             <p
               style={{
-                fontSize: "12px",
+                fontSize: "11px",
                 lineHeight: "1.2",
                 fontWeight: "300",
                 width: "85%",
@@ -46,10 +46,13 @@ function FeatureDefinitionMobile({
             >
               {short_description}
               {toggle ? (
-                <div>
+                <div
+                style={{  marginTop: "10px",}}
+                >
                   <span
                     style={{
-                      fontSize: "12px",
+                      fontSize: "11px",
+                    
                       lineHeight: "1.2",
                       fontWeight: "300",
                       width: "85%",
@@ -130,7 +133,7 @@ function FeatureDefinitionMobile({
         <div>
           <p
             style={{
-              fontSize: "12px",
+              fontSize: "11px",
               lineHeight: "1",
               fontWeight: "300",
               width: "85%",
@@ -174,7 +177,7 @@ function FeatureDefinitionMobile({
             >
               <p
                 style={{
-                  fontSize: "12px",
+                  fontSize: "11px",
                   lineHeight: "1",
                   fontWeight: "300",
                   width: "85%",

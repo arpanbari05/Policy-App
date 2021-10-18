@@ -18,7 +18,7 @@ const PlanTabMobile = ({ data, item }) => {
             <p
               onClick={() => setToggle(!toggle)}
               style={{
-                fontSize: "12px",
+                fontSize: "11px",
                 fontWeight: "300",
                 width: "240px",
                 lineHeight: "1.1",

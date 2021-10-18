@@ -100,6 +100,7 @@ function FeatureDefinition({ data }) {
               <p
                 className="feature-offer-box__p"
                 css={`
+                font-size: 13px;
                   width: 100%;
                   color: #253858;
                   opacity: 0.96;
@@ -111,7 +112,7 @@ function FeatureDefinition({ data }) {
               <Collapse in={toggle}>
                 <p
                   style={{
-                    fontSize: "14px",
+                    fontSize: "13px",
                     lineHeight: "18px",
                     fontWeight: "400",
                     marginTop: "10px",

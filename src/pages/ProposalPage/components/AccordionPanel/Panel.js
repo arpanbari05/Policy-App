@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import "styled-components/macro"
 import { Collapse } from "react-bootstrap";
 import pencil from "../../../../assets/images/pencil_pro.png";
 import ProposalCheckBox from "../../../../components/Common/ProposalSummary/summaryCheckBox";
@@ -58,7 +59,23 @@ const Panel = ({
             <>
               <PencilWrapper>
                 <Values>{values}</Values>
-                <img src={pencil} alt={"pencil"}></img>
+                <div
+                css={`
+                  width: 30px;
+                 
+                  height: 30px;
+                  background: #eff7ff !important;
+                  border-radius: 100%;
+                  display: flex;
+                  color: #369cff;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 13px;
+                `}
+                className="btn"
+              >
+                <i class="fas fa-pen"></i>
+              </div>
               </PencilWrapper>
             </>
           ))}
@@ -77,9 +94,26 @@ const Panel = ({
             </>
           ) : (
             <>
-              <PencilWrapper isMedical={formName === "Medical Details"}>
+              {/* <PencilWrapper isMedical={formName === "Medical Details"}>
                 <span>Edit</span> <img src={pencil} alt={"pencil"}></img>
-              </PencilWrapper>
+              </PencilWrapper> */}
+                     <div
+                css={`
+                  width: 30px;
+                 
+                  height: 30px;
+                  background: #eff7ff !important;
+                  border-radius: 100%;
+                  display: flex;
+                  color: #369cff;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 13px;
+                `}
+                className="btn"
+              >
+                <i class="fas fa-pen"></i>
+              </div>
             </>
           ))}
       </StyledPanel>
@@ -164,7 +198,9 @@ const ChevronWrapper = styled.div`
   right: 24px;
 `;
 const StyledPanel = styled.a`
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-top: ${(props) => props.isShowMedical && !props.add && "8px"};
   padding: ${(props) =>
     props.isShowMedical
