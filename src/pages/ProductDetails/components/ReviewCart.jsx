@@ -1404,10 +1404,7 @@ cursor:pointer;
           border: 1px solid var(--abc-red);
           font-size: 16px;
           border-radius: 2px;
-          &:hover {
-            color: white;
-            background-color: #a2d1ff;
-          }
+         
         `}
       >
         {loading ? <i className="fas fa-circle-notch rotate" /> : "Proceed"}
