@@ -303,17 +303,12 @@ const RiderCardWrap = styled.div`
   position: relative;
   width: 49%;
   margin: 10px 0;
-<<<<<<< HEAD
-  border: 1px solid
-    ${({ isRiderSelectedCorrected, isMandatory }) =>
-      isMandatory || isRiderSelectedCorrected ? "#0d6efd;" : "#d5dce5"};
-=======
   /* border: 1px solid
     ${({ isRiderSelected }) => (isRiderSelected ? "#0d6efd;" : "#d5dce5")}; */
->>>>>>> 179d172d3d38da9289752cb49c6f06d9c3d774e8
   padding: 10px 10px;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
   cursor: pointer;
+  min-height: 130px !important;
   @media (max-width:1100px){
     width:100% !important;
   }
