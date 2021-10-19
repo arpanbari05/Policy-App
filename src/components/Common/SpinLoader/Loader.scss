@@ -19,6 +19,10 @@
   }
 }
 
+.inlineBehaviour {
+  display: inline !important;
+}
+
 .spinner {
   margin: auto 0;
   width: 70px;
@@ -33,7 +37,7 @@
   > div {
     width: 18px;
     height: 18px;
-    background-color:#0d6efd;
+    background-color: #0d6efd;
     border-radius: 100%;
     display: inline-block;
     -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -81,9 +85,8 @@
   .spinner {
     left: 43%;
   }
-
 }
-.proposal{
+.proposal {
   margin: auto 0;
   width: 100%;
   text-align: center;
@@ -99,7 +102,7 @@
   > div {
     width: 18px;
     height: 18px;
-    background-color:#0d6efd;
+    background-color: #0d6efd;
     border-radius: 100%;
     display: inline-block;
     -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -115,13 +118,11 @@
     -webkit-animation-delay: -0.16s;
     animation-delay: -0.16s;
   }
-  @media (max-width: 1023px){
-    left:0% !important;
-    top:78% !important;
+  @media (max-width: 1023px) {
+    left: 0% !important;
+    top: 78% !important;
   }
-  @media (max-width: 768px){
-    left:0% !important;
+  @media (max-width: 768px) {
+    left: 0% !important;
   }
 }
-
-

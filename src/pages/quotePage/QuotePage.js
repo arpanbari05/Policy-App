@@ -18,6 +18,7 @@ import CardSkeletonLoader from "../../components/Common/card-skeleton-loader/Car
 import ComparePopup from "./components/ComparePopup/ComparePopup";
 import { useParams } from "react-router";
 import MobileHeader from "./quoteMobile/MobileHeader";
+import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
 import MobilePlansFor from "./quoteMobile/MobilePlansFor";
 import MobileQuoteCard from "./quoteMobile/MobileQuoteCard";
 import QuoteFilterMobile from "./quoteMobile/QuoteFilter/QuoteFilterMobile";
@@ -175,10 +176,21 @@ function QuotePage() {
                 <TextLabel>
                   {" "}
                   {loadingQuotes ? (
-                    <>
-                      {`Loading ${selectedPlanType} plans `}
-                      <BiLoaderCircle className="rotate" />
-                    </>
+                    <div
+                      css={`
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: flex-start;
+                      `}
+                    >
+                      <span>Loading {selectedPlanType} Plans &nbsp;</span>
+                      <SpinLoader
+                        customWidth="fit-content"
+                        customHeight="fit-content"
+                        proposalpage={"used for styling purpose"}
+                      />
+                    </div>
                   ) : (
                     `Showing ${selectedPlanType}
                   Plans`

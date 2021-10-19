@@ -420,8 +420,8 @@ const SeeDetails = ({
               sumInsured={selectedPlan?.sum_insured}
             />
 
-<div
-        css={`
+            <div
+              css={`
             position: absolute;
     right: 33px;
     cursor: pointer;
@@ -431,11 +431,13 @@ const SeeDetails = ({
     top: 35px;
 }
         `}
-   
-      >
-        
-        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
-      </div>
+            >
+              <i
+                onClick={handleClose}
+                style={{ cursor: "pointer" }}
+                class="fas fa-times"
+              ></i>
+            </div>
             <SeeDetailsTab
               activeFieldset={activeFieldset}
               setActiveFieldset={setActiveFieldset}

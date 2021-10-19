@@ -134,11 +134,11 @@ export const saveForm1UserDetails = (
   memberGroup,
   form
 ) => {
-  const { pinCode, is_pincode_search,city } = data2;
+  const { pinCode, is_pincode_search, city } = data2;
   return async (dispatch) => {
     try {
       if (pinCode) {
-       ( form === 4.2 || form === 5) &&
+        (form === 4.2 || form === 5) &&
           (await updateUser({
             pincode: pinCode,
             is_pincode_search,
@@ -162,7 +162,7 @@ export const saveForm1UserDetails = (
           createUserData({
             pincode: pinCode,
             is_pincode_search: is_pincode_search,
-            [memberGroup]: { pincode: pinCode,city },
+            [memberGroup]: { pincode: pinCode, city },
           })
         );
 

@@ -186,10 +186,14 @@ function DownloadCard({ url, title }) {
               border-radius: 82px;
             `}
           >
-         <img src={download} css={`
-            width:31px;
-            height:31px;
-            `} alt="" />
+            <img
+              src={download}
+              css={`
+                width: 31px;
+                height: 31px;
+              `}
+              alt=""
+            />
           </div>
         </a>
       ) : (
