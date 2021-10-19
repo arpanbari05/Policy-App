@@ -1365,6 +1365,7 @@ function ProceedButton({
         align-items: center;
         justify-content: space-between;
         padding: 10px;
+        cursor:pointer;
         margin: 0 !important;
         width: 100%;
         color: white;
@@ -1397,11 +1398,11 @@ function ProceedButton({
         css={`
           width: 100px;
           text-align: center;
-          background-color: #5fb0ff;
+          /* background-color: #5fb0ff; */
           padding: 6px 12px;
-cursor:pointer;
+
           color: #fff;
-          border: 1px solid var(--abc-red);
+          /* border: 1px solid var(--abc-red); */
           font-size: 16px;
           border-radius: 2px;
          

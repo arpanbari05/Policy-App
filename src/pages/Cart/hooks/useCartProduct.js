@@ -56,7 +56,7 @@ function cartSendData(cartData) {
 }
 
 function useCartProduct(groupCode, selectedProduct) {
-  console.log(groupCode, "groupCode");
+ 
   const groupCodeState = useSelector(
     ({ quotePage }) => quotePage.selectedGroup
   );
