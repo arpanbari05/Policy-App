@@ -46,7 +46,6 @@ const CardModal = ({
             margin: unset;
           }
           .modal-dialog > div {
-            
             height: 100vh;
             position: fixed;
             top: 0%;
@@ -75,10 +74,15 @@ const CardModal = ({
             value={buttonValue}
             onClick={handleClick}
             noIcon={BtnArrow ? false : true}
-            width={`200px`}
+            width={`180px`}
+            styledCss={`margin-right: 15px !important; `}
           />
         )}
-        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
+        <i
+          onClick={handleClose}
+          style={{ cursor: "pointer" }}
+          class="fas fa-times"
+        ></i>
       </Modal.Header>
       {/* <CloseButton
         type="button"
@@ -88,9 +92,13 @@ const CardModal = ({
       >
         <i className="fa fa-close"></i>
       </CloseButton> */}
-      <Modal.Body style={{
-        padding:"0.3rem !important",
-      }}>{content}</Modal.Body>
+      <Modal.Body
+        style={{
+          padding: "0.3rem !important",
+        }}
+      >
+        {content}
+      </Modal.Body>
       <Modal.Footer
         style={{
           display: noFooter && "none",
@@ -99,7 +107,7 @@ const CardModal = ({
           borderTopLeftRadius: "0px",
           borderToprightRadius: "0px",
           borderBottomRightRadius: "14px",
-          padding:"0px !important",
+          padding: "0px !important",
           borderBottomLeftRadius: "14px",
         }}
       >
