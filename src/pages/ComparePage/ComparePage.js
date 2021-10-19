@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Redirect, useHistory, useLocation, useParams } from "react-router-dom";
 import CardSkeletonLoader from "../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import CardModal from "../../components/Common/Modal/CardModal";
 import CardModalM from "../../components/Common/Modal/CardModelM";
 import useWindowSize from "../../customHooks/useWindowSize";
+
 import GoBack from "./components/GoBackBtn/GoBack";
 import MobileHeader from "./components/MobileComp/Header";
 import ShowDiffMobile from "./components/MobileComp/ShowDiffMobile";
@@ -234,7 +235,8 @@ const popupContent = (
                   <NameWrapper>
                     <span style={{
                       textAlign:"left",
-                      fontWeight:"900"
+                      fontWeight:"900",
+                      fontFamily:"Inter-SemiBold"
                     }}>
                     {mergedQuotes[index].data.product.name}
                       
@@ -597,6 +599,59 @@ const popupContentM = (
   );
 };
 
+function GoBackButton({ groupCode, ...props }) {
+  const groupCodes = Object.keys(useSelector(({greetingPage}) => greetingPage.memberGroups));
+  const urlQuery = useUrlQuery();
+  const enquiryId = urlQuery.get("enquiryId");
+  
+  const history = useHistory();
+  return (
+    <button
+      className="btn"
+      type="button"
+      onClick={() => {
+        groupCodes[1] && groupCodes[1] === groupCode?history.replace(`/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`):history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`)
+        
+      }
+      }
+      css={`
+        width: max-content;
+        padding: 0 !important;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        color: var(--abc-red);
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+        
+      `}
+      {...props}
+    >
+      <div
+        className="d-flex justify-content-center align-items-center"
+        css={`
+          background: #f1f4f8;
+          width: 45px;
+          margin-right: 20px;
+          border-radius: 100%;
+          height: 45px;
+          color: #707b8b;
+        `}
+      >
+        <i className="fas fa-chevron-left"></i>
+      </div>
+      <span
+        css={`
+          color: #3b4c69;
+          font-weight: 600;
+        `}
+      >
+        Go Back
+      </span>
+    </button>
+  );
+}
+
 const ComparePage = () => {
   const {
     loading,
@@ -650,8 +705,8 @@ const ComparePage = () => {
 
       {loading ? (
         <div>
-          <GoBack path={"/quotes"} groupCode={groupCode} />
-          <Container>
+          <Container style={{marginTop:"10px"}}>
+            <GoBackButton groupCode={groupCode} />
             <CardSkeletonLoader noOfCards={3} />
           </Container>
         </div>
@@ -674,7 +729,7 @@ const ComparePage = () => {
             />
           </div>
           <div className="agn-our-pricing pb-200 mgt-5 ">
-            {/* will visible only on desktop screen by media query*/}
+            {/* will visible only on desktop screen*/}
             <div className="desktop-header hideOnMobile">
               <ul className="menu topRight" css={`display: none;`}>
                 <li class="share bottom">
@@ -769,9 +824,10 @@ const ComparePage = () => {
             align-items: center;
             width:100% !important;
             padding-right:15px;
+            margin-top: 10px;
             `}
             >
-              <GoBack path={"/quotes"} groupCode={groupCode} />
+              <GoBackButton groupCode={groupCode} />
               <UpperModifier>
                 <div className="right_midifiers d-flex justify-content-between align-items-center ">
                   <button
