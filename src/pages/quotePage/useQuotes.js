@@ -34,7 +34,7 @@ function useQuotesPage() {
       scrollY: -window.scrollY,
     }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
-dispatch(
+      dispatch(
         sendEmailAction({
           email,
           image: imgData,
@@ -42,10 +42,8 @@ dispatch(
           share_quote: "quote",
         })
       );
-        });
+    });
   };
-
-  
 
   const {
     fetchFilters,
@@ -125,7 +123,6 @@ dispatch(
       tempfilter !== null &&
         dispatch(
           setFilters({
-           
             ...tempfilter,
             cover: tempfilter.cover || defaultfilters.cover,
             multiYear: tempfilter.multiYear || defaultfilters.multiYear,
@@ -233,8 +230,6 @@ dispatch(
   //     setRecFilterdQuotes(tempArray);
   //   }, [recommendedQuotes, quotes]);
 
-  
-
   useEffect(() => {
     dispatch(clearFilterQuotes());
   }, [groupCode]);
@@ -314,7 +309,7 @@ dispatch(
     filters.planType,
     filters.multiYear,
     filters.basePlanType,
-    filters.moreFilters,
+    // filters.moreFilters,
     filters.cover,
   ]);
 

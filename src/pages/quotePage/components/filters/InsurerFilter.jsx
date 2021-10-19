@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -17,6 +17,13 @@ const FilterModal = ({ show, handleClose, filters }) => {
   const [selectedinsurers, setSelectedinsurers] = useState(
     filters.insurers.length ? filters.insurers : []
   );
+
+  useEffect(() => {
+    if(filters.insurers.length < 1){
+      setSelectedinsurers([])
+    }
+  }, [filters.insurers])
+
 
   const handleChange = (insurer) => {
     selectedinsurers !== [] &&

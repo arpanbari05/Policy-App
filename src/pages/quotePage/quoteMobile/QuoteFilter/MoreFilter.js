@@ -491,7 +491,7 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                         width: 150px;
                       `}
                     >
-                      Show {filteredQuotes.length} Plans
+                      Show {filteredQuotes.length + 1} Plans
                     </button>
                   )}
                 </Col>

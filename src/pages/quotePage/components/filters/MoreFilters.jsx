@@ -25,7 +25,7 @@ const FilterModal = ({ show, handleClose }) => {
   );
 
   const [others, setOthers] = useState(filters.moreFilters.others || []);
-  
+
   const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   const handleReset = () => {
     setPopularFilter([]);
@@ -36,7 +36,7 @@ const FilterModal = ({ show, handleClose }) => {
   useEffect(() => {
     if (
       Object.keys(filters.moreFilters).length < 1 &&
-      (popularFilter.length > 0 || preExisting !== "" || renewalBonus !== "")
+      (popularFilter.length > 0 || preExisting !== "" || renewalBonus !== "" || others.length > 0)
     ) {
       console.log(filters.moreFilters, "3h32h32dffeg");
       handleReset();
@@ -281,7 +281,7 @@ const FilterModal = ({ show, handleClose }) => {
             className=" apply_btn mx-auto h-100 w-50"
             onClick={() => handleSubmit()}
           >
-            Show {filteredPlans.length - 1} plans
+            Show {filteredPlans.length} plans
           </ApplyBtn>
         ) : (
           <span className="w-50 text-center h-100">No Plan available</span>
