@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { setFilters } from "../../quote.slice";
 import styled from "styled-components";
@@ -9,22 +9,23 @@ import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 
 const FilterModal = ({ show, handleClose }) => {
   const dispatch = useDispatch();
-
+  const filters = useSelector((state) => state.quotePage.filters);
   const moreFilterData = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data.morefilters
   );
 
   const [popularFilter, setPopularFilter] = useState(
-    moreFilterData.popularFilter || []
+    filters.moreFilters.popularFilter || []
   );
   const [preExisting, setPreExisting] = useState(
-    moreFilterData.preExisting || ""
+    filters.moreFilters.preExisting || ""
   );
   const [renewalBonus, setRenewalBonus] = useState(
-    moreFilterData.renewalBonus || ""
+    filters.moreFilters.renewalBonus || ""
   );
 
-  const [others, setOthers] = useState(moreFilterData.others || []);
+  const [others, setOthers] = useState(filters.moreFilters.others || []);
+  
   const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   const handleReset = () => {
     setPopularFilter([]);
@@ -32,7 +33,15 @@ const FilterModal = ({ show, handleClose }) => {
     setRenewalBonus("");
     setOthers([]);
   };
-
+  useEffect(() => {
+    if (
+      Object.keys(filters.moreFilters).length < 1 &&
+      (popularFilter.length > 0 || preExisting !== "" || renewalBonus !== "")
+    ) {
+      console.log(filters.moreFilters, "3h32h32dffeg");
+      handleReset();
+    }
+  }, [filters.moreFilters]);
   const { filterQuotes } = useQuoteFilter({
     givenMoreFilters: {
       preExisting,
