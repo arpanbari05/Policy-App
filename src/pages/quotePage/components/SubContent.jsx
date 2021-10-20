@@ -266,7 +266,9 @@ const SubContent = ({
                   // border-left: 1px solid #dfdfdf;
                   top: 16px;
                   &:after {
-                    top: 6px;
+                    top: 6px !important;
+                    width: unset;
+                    left: 486px;
                   }
                   padding: 10px 25px !important;
                   @media (max-width: 810px) {
