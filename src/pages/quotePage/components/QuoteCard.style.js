@@ -144,7 +144,6 @@ export const RadioInput = styled.input`
     height: 20px;
     line-height: 19px;
     border-radius: 50px;
-
     font-size: 11px;
     text-align: center;
     position: absolute;

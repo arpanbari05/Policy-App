@@ -54,6 +54,7 @@ const Form1 = ({
   useEffect(() => {
     console.log("useEffect 2 executed");
     if (pinCode?.length > 2) {
+      //console.log('disptached getRegion')
       dispatch(getRegion(pinCode));
     }
   }, [pinCode]);
@@ -159,7 +160,7 @@ const Form1 = ({
             value={pinCode}
             label={`Pincode/City`}
             onChange={(e) => {
-              console.log("Change occured", e.target.value);
+              console.log("Change occured in input", e.target.value);
               setPinCode(e.target.value);
             }}
           />

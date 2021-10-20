@@ -7,6 +7,7 @@ const SpinLoader = ({
   proposalpage,
   customHeight,
   customWidth,
+  zIndexGiven,
 }) => {
   return (
     <div
@@ -17,6 +18,7 @@ const SpinLoader = ({
 
         width: ${customWidth && `${customWidth} !important`};
         display: inline !important;
+        z-index: ${zIndexGiven};
       `}
     >
       <div
