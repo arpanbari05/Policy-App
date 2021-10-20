@@ -224,7 +224,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                   pathname: `/quotes/${groupCode}`,
                   search: `enquiryId=${enquiryId}`,
                 });
-                // dispatch(setSelectedGroup(groupCode));
+               dispatch(setSelectedGroup(groupCode));
               }}
             >
               <span
