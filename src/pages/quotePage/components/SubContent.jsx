@@ -29,6 +29,7 @@ import {
 } from "./QuoteCard.style";
 import useQuoteCard from "./useQuoteCard";
 import useCartProduct from "../../Cart/hooks/useCartProduct";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 // function SubContent({ item, handleSeeDetails }) {
 //     console.log("ssssssss1", item);
@@ -127,7 +128,7 @@ const SubContent = ({
   mandatory_riders[activeCover]?.forEach((element) => {
     additionalPremium += element.total_premium;
   });
-
+  const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   const handleSeeDetailsClick = (clickedFrom) => {
     handleSeeDetails(
       {
@@ -199,13 +200,13 @@ const SubContent = ({
       {
         <hr
           css={`
-          width: 88%;
-          margin: unset;
-          color: #c5c2c2;
-          position: relative;
-          top: 13px;
-          height: 1px !important;
-          margin: 0 auto !important;
+            width: 88%;
+            margin: unset;
+            color: #c5c2c2;
+            position: relative;
+            top: 13px;
+            height: 1px !important;
+            margin: 0 auto !important;
           `}
         />
       }
@@ -261,12 +262,14 @@ const SubContent = ({
               <EachWrapper
                 css={`
                   /*background-color: pink;*/
-             
+
                   // border-right: 1px solid #dfdfdf;
                   // border-left: 1px solid #dfdfdf;
                   top: 16px;
                   &:after {
-                    top: 6px;
+                    top: 6px !important;
+                    // width: unset;
+                    // right: 0;
                   }
                   padding: 10px 25px !important;
                   @media (max-width: 810px) {
@@ -279,45 +282,63 @@ const SubContent = ({
                     return (
                       <>
                         {item.name === "Room Rent" && (
-                          <TextWrapper>
-                            <SmallLabel
-                              css={`
-                                font-size: 11px !important;
-                              `}
-                            >
-                              Room Rent
-                            </SmallLabel>
-                            <ValueText
-                              css={`
-                                font-size: 11px !important;
-                              `}
-                            >
-                              {item.value}
-                            </ValueText>
-                          </TextWrapper>
+                          <OverlayTrigger
+                            className=""
+                            placement={"right"}
+                            overlay={renderTooltip(item.short_description)}
+                          >
+                            <TextWrapper>
+                              <SmallLabel
+                                css={`
+                                  font-size: 11px !important;
+                                `}
+                              >
+                                Room Rent
+                              </SmallLabel>
+                              <ValueText
+                                css={`
+                                font-size: 12px !important;
+                                `}
+                              >
+                                {item.value}
+                              </ValueText>
+                            </TextWrapper>
+                          </OverlayTrigger>
                         )}
                         {item.name === "No Claim Bonus" && (
-                          <TextWrapper>
-                            <SmallLabel
-                              css={`
-                                font-size: 11px !important;
-                              `}
-                            >
-                              No Claim Bonus
-                            </SmallLabel>
-                            <ValueText
-                              css={`
-                                font-size: 11px !important;
-                              `}
-                            >
-                              {item.value}
-                            </ValueText>
-                          </TextWrapper>
+                          <OverlayTrigger
+                            className=""
+                            placement={"right"}
+                            overlay={renderTooltip(item.description)}
+                          >
+                            <TextWrapper>
+                              <SmallLabel
+                                css={`
+                                  font-size: 11px !important;
+                                `}
+                              >
+                                No Claim Bonus
+                              </SmallLabel>
+                              <ValueText
+                                css={`
+                                font-size: 12px !important;
+                                `}
+                              >
+                                {item.value}
+                              </ValueText>
+                            </TextWrapper>
+                          </OverlayTrigger>
                         )}
                       </>
                     );
                   })}
-
+  <OverlayTrigger
+                  className=""
+                  placement={"right"}
+                  overlay={renderTooltip(
+                    mergedQuotes[0]?.features[activeCover][0]?.description
+                  )}
+                >
                   <TextWrapper>
                     <SmallLabel
                       css={`
@@ -328,7 +349,7 @@ const SubContent = ({
                     </SmallLabel>
                     <ValueText
                       css={`
-                        font-size: 11px !important;
+                      font-size: 12px !important;
                       `}
                       onClick={() => handleSeeDetailsClick(4)}
                     >
@@ -339,12 +360,18 @@ const SubContent = ({
                       </span>
                     </ValueText>
                   </TextWrapper>
+                  </OverlayTrigger>
                 </div>
                 <div className="d-flex justify-content-start">
                   {features[activeCover].map((item, i) => {
                     return (
                       <>
                         {item.name === "Co-Payment" && (
+                            <OverlayTrigger
+                            className=""
+                            placement={"right"}
+                            overlay={renderTooltip(item.short_description)}
+                          >
                           <TextWrapper>
                             <SmallLabel
                               css={`
@@ -355,14 +382,20 @@ const SubContent = ({
                             </SmallLabel>
                             <ValueText
                               css={`
-                                font-size: 11px !important;
+                              font-size: 12px !important;
                               `}
                             >
                               {item.value}
                             </ValueText>
                           </TextWrapper>
+                          </OverlayTrigger>
                         )}
                         {item.name === "Pre Existing Disease" && (
+                            <OverlayTrigger
+                            className=""
+                            placement={"right"}
+                            overlay={renderTooltip(item.short_description)}
+                          >
                           <TextWrapper>
                             <SmallLabel
                               css={`
@@ -373,12 +406,13 @@ const SubContent = ({
                             </SmallLabel>
                             <ValueText
                               css={`
-                                font-size: 11px !important;
+                              font-size: 12px !important;
                               `}
                             >
                               {item.value}
                             </ValueText>
                           </TextWrapper>
+                          </OverlayTrigger>
                         )}
                       </>
                     );
@@ -414,7 +448,6 @@ const SubContent = ({
                     css={`
                       position: relative;
                       bottom: -15px;
-                    
                     `}
                   >
                     <SeeText
