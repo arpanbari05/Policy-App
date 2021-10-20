@@ -217,7 +217,8 @@ const Form2 = ({ handleChange, currentForm }) => {
           });
         }
       });
-      
+
+     
       dispatch(saveForm3UserDetails(dataArray, handleChange));
     }
   };
