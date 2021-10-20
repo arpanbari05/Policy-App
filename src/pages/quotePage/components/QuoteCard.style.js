@@ -176,7 +176,7 @@ export const RadioLabel = styled.label`
     content: "";
     width: 17px;
     height: 17px;
-    line-height: 19px;
+    line-height: 17px;
     border-radius: 50px;
     border: 1px solid #0a87ff;
     font-size: 11px;
