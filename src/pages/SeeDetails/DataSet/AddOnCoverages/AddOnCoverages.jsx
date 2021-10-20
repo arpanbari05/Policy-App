@@ -78,7 +78,7 @@ const AddOnCoverages = ({
   const { health_riders } = cartItem;
   const handleAddRider = riderToAdd =>
     setAddedRiders(prevRiders => [...prevRiders, riderToAdd]);
-
+    console.log("gege3312", selectedRiders,health_riders);
   const handleRemoveRider = riderToRemove =>
     setAddedRiders(prevRiders =>
       prevRiders.filter(rider => rider.name !== riderToRemove.name),
@@ -105,7 +105,7 @@ const AddOnCoverages = ({
       if (!hasOptions && isRiderSelected) {
         newRiders = [...health_riders, rider];
       } else if (hasOptions && isRiderSelected) {
-        console.log("gege3312", rider, hasOptions);
+        
         const temp = health_riders.filter(
           health_rider => health_rider.rider_id !== rider.rider_id,
         );

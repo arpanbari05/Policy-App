@@ -152,6 +152,9 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
               top: 16px;
               &:after {
                 top: 6px !important;
+                // width: unset;
+                // right: 0;
+               
               }
               @media (max-width: 810px) {
                 padding-left: 8px !important;
@@ -178,7 +181,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                           </SmallLabel>
                           <ValueText
                             css={`
-                              font-size: 11px !important;
+                            font-size: 12px !important;
                             `}
                           >
                             {item.value}
@@ -202,7 +205,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                           </SmallLabel>
                           <ValueText
                             css={`
-                              font-size: 11px !important;
+                            font-size: 12px !important;
                             `}
                           >
                             {item.value}
@@ -231,7 +234,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                     </SmallLabel>
                     <ValueText
                       css={`
-                        font-size: 11px !important;
+                      font-size: 12px !important;
                       `}
                       style={{ cursor: "pointer" }}
                       onClick={() => handleSeeDetailsClick(4)}
@@ -266,7 +269,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                           </SmallLabel>
                           <ValueText
                             css={`
-                              font-size: 11px !important;
+                            font-size: 12px !important;
                             `}
                           >
                             {item.value}
@@ -290,7 +293,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                           </SmallLabel>
                           <ValueText
                             css={`
-                              font-size: 11px !important;
+                            font-size: 12px !important;
                             `}
                           >
                             {item.value}

@@ -224,7 +224,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                   pathname: `/quotes/${groupCode}`,
                   search: `enquiryId=${enquiryId}`,
                 });
-                // dispatch(setSelectedGroup(groupCode));
+               dispatch(setSelectedGroup(groupCode));
               }}
             >
               <span
@@ -251,10 +251,11 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               `}
               onClick={() => {
                 setShowBuyNow(false);
-                history.replace({
+                history.push({
                   pathname: `/quotes/${groupCode}`,
                   search: `enquiryId=${enquiryId}`,
                 });
+                dispatch(setSelectedGroup(groupCode));
               }}
             >
               <span>Add Plan</span> <img src={addBtn} alt="addbtn" />
