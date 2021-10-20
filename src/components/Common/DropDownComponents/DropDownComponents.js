@@ -11,9 +11,9 @@ export const Label = styled.label`
 
 export const Wrapper = styled.div`
   position: relative;
- 
+
   top: -3px;
- 
+
   @media (max-width: 767px) {
     left: unset;
   }
@@ -24,9 +24,9 @@ export const Header = styled.a`
   background-color: #fff;
   position: relative;
   border: 0.2px solid #dfe1f2;
-  padding: ${props => (props.sortByDD ? "auto" : "12px 15px !important")};
+  padding: ${(props) => (props.sortByDD ? "auto" : "12px 15px !important")};
   display: inline-block;
-  width: ${props => (props.sortByDD ? "auto" : "175px")};
+  width: ${(props) => (props.sortByDD ? "auto" : "175px")};
   overflow: hidden;
   position: relative;
   z-index: 1;
@@ -86,7 +86,7 @@ export const HeaderTitle = styled.div`
   }
 
   @media (max-width: 458px) {
-    font-size:13px;
+    font-size: 13px;
   }
 `;
 export const List = styled.div`
@@ -114,11 +114,12 @@ export const ListItem = styled.div`
   font-size: 13px;
   font-weight: 400;
   line-height: 18px;
+  color: black;
   padding: 5px 8px 8px 14px;
 
   &:hover,
   &.active {
-    background-color: #fff5f6;
+    background-color: #e2f0ff;
     color: #495c68;
   }
 `;

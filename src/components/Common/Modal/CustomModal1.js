@@ -20,8 +20,6 @@ const ModalContent = styled.div`
   pointer-events: auto;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-
   margin-top: ${(props) =>
     props.customizedTopMargin ? `${props.customizedTopMargin}px` : "60px"};
   margin-left: ${(props) =>
@@ -62,7 +60,6 @@ const ModalFooter = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding: 0.75rem;
-  background-color: green;
   height: 65px;
   border-top: 1px solid #dee2e6;
 `;
@@ -83,7 +80,11 @@ const CustomModal1 = ({
       >
         <ModalHeader>
           <ModalTitle>{header}</ModalTitle>
-          <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
+          <i
+            onClick={handleClose}
+            style={{ cursor: "pointer" }}
+            class="fas fa-times"
+          ></i>
         </ModalHeader>
         <ModalBody>{children}</ModalBody>
         <ModalFooter>{footerJSX}</ModalFooter>

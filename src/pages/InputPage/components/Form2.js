@@ -116,6 +116,7 @@ const Form2 = ({ handleChange, currentForm }) => {
         handleinsurerDDArray(insurer, "Select Age");
       }
     }
+    console.log("insurers cbx array", tempArray);
     setInsurerCBXArray(tempArray);
   };
 
@@ -216,6 +217,7 @@ const Form2 = ({ handleChange, currentForm }) => {
           });
         }
       });
+
       dispatch(saveForm3UserDetails(dataArray, handleChange));
     }
   };
@@ -245,6 +247,7 @@ const Form2 = ({ handleChange, currentForm }) => {
               code,
             }) => {
               const age = getAge(min_age, max_age);
+              //let checked = insurerCBXArray.includes(code);
 
               return (
                 (is_primary || is_primary_modal) && (
@@ -272,6 +275,7 @@ const Form2 = ({ handleChange, currentForm }) => {
                       ageError,
                       childCount,
                       addChild
+                      //checked
                     )}
                   </div>
                 )
@@ -395,6 +399,7 @@ const Form2 = ({ handleChange, currentForm }) => {
             margin-top: 10px;
           `}
         >
+          {console.log("Insurers CBX array from Modal", insurerCBXArray)}
           {membersArray &&
             membersArray.map(
               ({
@@ -407,7 +412,7 @@ const Form2 = ({ handleChange, currentForm }) => {
                 code,
               }) => {
                 const age = getAge(min_age, max_age);
-
+                //let checked = insurerCBXArray.includes(code);
                 return (
                   <div
                     css={`
@@ -445,6 +450,7 @@ const Form2 = ({ handleChange, currentForm }) => {
                       ageError,
                       childCount,
                       addChild
+                      //checked
                     )}
                   </div>
                 );

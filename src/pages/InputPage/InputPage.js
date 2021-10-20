@@ -32,7 +32,8 @@ export const InputPage = () => {
     setCurrentForm(form);
   };
   const members = Object.keys(memberGroups || {});
- 
+  //console.log("member groups", memberGroups);
+  //console.log("members", members);
 
   return (
     <>

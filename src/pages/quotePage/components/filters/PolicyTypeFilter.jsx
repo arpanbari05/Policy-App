@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import {
   setFilters,
   fetchQuotes,
@@ -66,7 +67,62 @@ const FilterModal = ({ show, handleClose }) => {
   };
 
   return (
-    <Modal
+    <>
+      {show && (
+        <CustomModal1
+          header="Chose Your Policy Type"
+          footerJSX={
+            <ApplyBtn
+              css={`
+                height: 65px !important;
+              `}
+              className=" apply_btn mx-auto h-100 w-100"
+              onClick={() => handleApply()}
+            >
+              Apply
+            </ApplyBtn>
+          }
+          handleClose={handleClose}
+          leftAlignmnetMargin="-20"
+        >
+          <div>
+            <OptionWrapper>
+              {plantypeOptions
+                ? plantypeOptions.plantypes.map((option, i) => {
+                    return option.code !== "I" ? (
+                      <li
+                        css={`
+                          margin: 5px 0;
+                        `}
+                        className="option d-flex align-items-center justify-content-between"
+                        key={i}
+                      >
+                        <label htmlFor={option.code}>
+                          {option.display_name}
+                        </label>
+                        <input
+                          type="radio"
+                          id={option.code}
+                          name="policyType"
+                          checked={
+                            selectedPlanType.displayName ===
+                              option.display_name || false
+                          }
+                          onChange={(e) =>
+                            handleChange(option.code, option.display_name)
+                          }
+                        />
+                      </li>
+                    ) : (
+                      <></>
+                    );
+                  })
+                : ""}
+            </OptionWrapper>
+          </div>
+        </CustomModal1>
+      )}
+      {/*<Modal
       show={show}
       onHide={handleClose}
       animation={false}
@@ -141,7 +197,8 @@ const FilterModal = ({ show, handleClose }) => {
           Apply
         </ApplyBtn>
       </Modal.Footer>
-    </Modal>
+    </Modal>*/}
+    </>
   );
 };
 
@@ -150,18 +207,20 @@ const PolicyTypeFilter = () => {
   const filters = useSelector(({ quotePage }) => quotePage.filters);
   return (
     <>
-      <Filter
-        className="filter d-flex flex-column flex-fill"
-        onClick={() => setShowModal(true)}
-      >
+      <Filter className="filter d-flex flex-column flex-fill">
         <span className="filter_head">Policy Type</span>
-        <span className="filter_sub_head">
+        <span onClick={() => setShowModal(true)} className="filter_sub_head">
           {filters.planType ? filters.planType : "Select"}{" "}
           <i class="fas fa-chevron-down"></i>
         </span>
+        <FilterModal
+          show={showModal}
+          handleClose={() => {
+            console.log("i executed");
+            setShowModal(false);
+          }}
+        />
       </Filter>
-
-      <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
     </>
   );
 };
