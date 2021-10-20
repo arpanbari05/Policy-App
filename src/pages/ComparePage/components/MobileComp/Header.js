@@ -59,10 +59,7 @@ const MobileHeader = ({
       <a style={{color: 'white'}}
         className="first-container"
         onClick={() => {
-          history.push({
-            pathname: `${path}/${groupCode}`,
-            search: `enquiryId=${enquiryID}`,
-          });
+          history.replace(`/quotes/${groupCode}?enquiryId=${enquiryID}`)
         }}
       >
         <i class="fas fa-arrow-circle-left"></i>

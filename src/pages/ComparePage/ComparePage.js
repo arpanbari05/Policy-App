@@ -211,6 +211,7 @@ const popupContent = (
   return (
     <>
       <PopupWrapper>
+      {console.log(errors,"errors+++heo")}
         <MergedQuotes className="row">
           {[0, 1, 2].map((item, index) => (
             <div className="col-lg-4">
@@ -301,6 +302,7 @@ const popupContent = (
             {companies.map((item, index) => {
               if (companyWisePlans[item])
                 return (
+                  <>
                   <div className="col-lg-4">
                     <QuoteWrapper>
                     <div>
@@ -344,10 +346,12 @@ const popupContent = (
                         ></DropDown>
                       </DropDownWrapper>
                     </QuoteWrapper>
-                    <ErrorAddPlan>
+                    
+                  </div>
+                  <ErrorAddPlan>
                       {errors[item] ? errors[item] : ""}
                     </ErrorAddPlan>
-                  </div>
+                  </>
                 );
               else return <></>;
             })}
@@ -938,6 +942,7 @@ const ComparePage = () => {
           setErrors,
           discount
         )}
+        errorsFromCompare={Object.keys(errors).length?"You can add only upto 3 plans":""}
         handleClose={() => {
           setShow(false);
           setSelectedAddPlan("");

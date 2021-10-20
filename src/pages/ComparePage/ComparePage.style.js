@@ -81,7 +81,7 @@ export const ErrorAddPlan = styled.div`
   color: #bd2b2b;
   font-size: 16px;
   position: absolute;
-  bottom: -6px;
+  bottom: -3px;
 `;
 export const QuoteWrapperM = styled.div`
   height: 110px;
