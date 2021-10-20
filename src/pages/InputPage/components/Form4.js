@@ -50,6 +50,9 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
   const [selected, setSelected] = useState(false);
   const [diseaseArray, setDiseaseArray] = useState([]);
   const [customErrors, setCustomErrors] = useState(false);
+  const planTypeSelected = useSelector(
+    (state) => state.quotePage.filters.planType
+  );
   // const [isIndividualPlan, setIsIndividualPlan] = useState(false);
 
   // const greetingPage = useSelector((state) => state.greetingPage);
@@ -68,12 +71,8 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const { data } = frontendData || [""];
   const { existingdiseases } = data || [""];
-  const {
-    defaultfilters,
-    covers,
-    plantypes,
-  } = frontendData.data
-  const { cover, tenure, plan_type } =defaultfilters
+  const { defaultfilters, covers, plantypes } = frontendData.data;
+  const { cover, tenure, plan_type } = defaultfilters;
   useEffect(() => {
     dispatch(
       setFilters({
@@ -143,8 +142,17 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
                     if (display_name === "No") {
                       setSelected(e.target.value);
                       const medical_history = [...diseaseArray];
+                      //console.log("mediacal_hiostory on no", medical_history);
+                      //console.log(
+                      //  "Again set plan type by form 4",
+                      //  planTypeSelected
+                      //);
                       dispatch(
-                        saveForm5UserDetails(medical_history, pushToQuotes)
+                        saveForm5UserDetails(
+                          medical_history,
+                          pushToQuotes,
+                          planTypeSelected
+                        )
                       );
                     } else {
                       setSelected(e.target.value);

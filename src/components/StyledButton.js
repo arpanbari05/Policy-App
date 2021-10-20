@@ -70,13 +70,13 @@ color: ${props.color};
   border-radius: 2px;
   font-size: 20px;
   font-weight: 400;
-  
+
   float: left;
   left: 4px;
   position: inherit;
   @media (max-width: 480px) {
-    font-size:13px;
-   width:100%;
+    font-size: 13px;
+    width: 100%;
     padding: 5px 11px;
   }
 `;
