@@ -58,6 +58,7 @@ function ProductCard({ product }) {
             width: 100%;
             display: flex;
             flex-direction: row;
+            
             align-items: flex-start;
             & img {
               width: 48px;
@@ -65,6 +66,7 @@ function ProductCard({ product }) {
             }
             & span {
               font-weight: 900;
+             
             }
           `}
         >
@@ -155,7 +157,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               width: 6px;
               border-radius: 3px;
               margin-right: 10px;
-              background: #fcd140;
+              background: #2cd44a;
             `}
           ></div>
           {members.join(" + ")?.replaceAll("_", "-")}
@@ -179,11 +181,12 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
             <button
               css={`
                 justify-content: space-between;
-                width: 30px;
-                height: 30px;
+                width: 35px;
+                height: 35px;
                 color: #168cff;
                 background: #eff7ff;
                 display: flex;
+                font-size:22px;
                 align-items: center;
                 justify-content: center;
                 border-radius: 100%;
@@ -320,10 +323,10 @@ const ProductData = styled.div`
     }
   }
 `;
-const ProductName = styled.p`
+const ProductName = styled.span`
   color: #000;
-  font-size: ${(props) => (props.flag ? "16px" : "20px")};
-  width: 150px;
+  font-size:15px;
+  font-weight:900;
   margin-right: -26px;
 `;
 

@@ -104,7 +104,7 @@ function QuotePage() {
     "d32fasg",
     filters.premium === null || filters.premium === "",
     filters.cover === defaultfilters.cover,
-    filters.basePlanType === "Base health",
+    filters.basePlanType.toLowerCase() === "base health",
     filters.insurers.length < 1,
     filters.multiYear === defaultfilters.multiYear,
     Object.keys(filters.moreFilters).length === 0 ? true : false
@@ -113,7 +113,7 @@ function QuotePage() {
   const isFiltersDefault =
     (filters.premium === null || filters.premium === "") &&
     filters.cover === defaultfilters.cover &&
-    filters.basePlanType === "Base health" &&
+    filters.basePlanType.toLowerCase() === "base health" &&
     filters.insurers.length < 1 &&
     filters.multiYear === defaultfilters.multiYear &&
     Object.keys(filters.moreFilters).length === 0

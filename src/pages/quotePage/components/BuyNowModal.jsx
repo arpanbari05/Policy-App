@@ -154,15 +154,15 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
             background-image: unset;
           `}
         >
-          {/* <span
-            style={{
-              height: "33px",
-              width: "7px",
-              marginRight: "10px",
-              backgroundColor: "#fecc28",
-              borderRadius: "50px",
-            }}
-          ></span> */}
+          <div
+            css={`
+              height: 31px;
+              width: 6px;
+              border-radius: 3px;
+              margin-right: 10px;
+              background: #2cd44a;
+            `}
+          ></div>
           {members.join(" + ")?.replaceAll("_", "-")}
         </h5>
 
@@ -206,14 +206,17 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
           </div>
         ) : (
           <div>
-            <button
+          <button
               type="submit"
-              className="btn "
+              className="btn"
               css={`
                 justify-content: space-between;
-                @media (max-width: 768px) {
-                  display: none !important;
-                }
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 120px;
+                background: rgb(235, 245, 255);
+                color: #0d6efd;
               `}
               onClick={() => {
                 setShowBuyNow(false);
@@ -221,12 +224,20 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                   pathname: `/quotes/${groupCode}`,
                   search: `enquiryId=${enquiryId}`,
                 });
-                // dispatch(setSelectedGroup(groupCode));
+               dispatch(setSelectedGroup(groupCode));
               }}
             >
-              <span>Add Plan</span> <img src={addBtn} alt="addbtn" />
+              <span
+                css={`
+                  margin-right: 5px;
+                `}
+              >
+                {" "}
+                Add Plan
+              </span>{" "}
+              <i class="fas fa-plus-circle"></i>
             </button>
-            <button
+            {/* <button
               css={`
                 display: none;
                 @media (max-width: 767px) {
@@ -240,14 +251,15 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               `}
               onClick={() => {
                 setShowBuyNow(false);
-                history.replace({
+                history.push({
                   pathname: `/quotes/${groupCode}`,
                   search: `enquiryId=${enquiryId}`,
                 });
+                dispatch(setSelectedGroup(groupCode));
               }}
             >
               <span>Add Plan</span> <img src={addBtn} alt="addbtn" />
-            </button>
+            </button> */}
           </div>
         )}
       </div>

@@ -17,6 +17,7 @@ const CardModal = ({
   showButton = true,
   revised = false,
   CompareBtnOnTop = false,
+  errorsFromCompare = false,
 }) => {
   return (
     <Modal
@@ -63,10 +64,27 @@ const CardModal = ({
           borderTopLeftRadius: "14px",
           borderToprightRadius: "14px",
           borderBottomRightRadius: "0px",
+          position:"relative",
           borderBottomLeftRadius: "0px",
         }}
       >
-        {title && <ModalTitle className="modal-headerz">{title}</ModalTitle>}
+        {title && <ModalTitle className="modal-headerz">{title}
+        
+        </ModalTitle>}
+
+        {errorsFromCompare?(
+          <span css={`
+          position: absolute;
+    bottom: 11px;
+    left: 32px;
+    border-radius: 10px;
+    font-size: 14px;
+    /* padding: 1px 10px; */
+    /* background-color: #ffeeee; */
+    color: red;
+          `}>{errorsFromCompare}</span>
+        ):""}
+        
         {showButton && CompareBtnOnTop && (
           <StyledButton
             customClass={`button${customClass}`}
@@ -142,6 +160,7 @@ const CloseButton = styled.button`
 const ModalTitle = styled.h5`
   // font-family: "PFEncoreSansProblck";
   margin: 0 17px;
+  position:relative;
   margin-bottom: 0;
   line-height: 1.5;
   color: #000;

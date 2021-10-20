@@ -235,10 +235,9 @@ const CheckDiscount = ({ groupCode }) => {
                               box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 25%);
                               font-family: "font-awesome";
                               justify-content: center;
-    align-items: center;
-    display:flex;
+                              align-items: center;
+                              display: flex;
                               color: #fff;
-                              
                             `}
                           >
                             <i class="fas fa-check"></i>
@@ -273,7 +272,7 @@ const CheckDiscount = ({ groupCode }) => {
                             css={`
                               width: 100px;
                               height: 22px;
-                              background: #2cd44a;;
+                              background: #2cd44a;
                               border-bottom-left-radius: 300px;
                               border-top-right-radius: 180px;
                               position: absolute;
@@ -282,7 +281,7 @@ const CheckDiscount = ({ groupCode }) => {
                               justify-content: center;
                               align-items: center;
                               font-weight: 900;
-                              color: #000;
+                              color: white;
                               font-size: 10px;
                               right: -2px;
                             `}
@@ -458,12 +457,12 @@ function AdditionalDiscount({ additionalDiscount }) {
           border-radius: 6px;
           padding: 12px 30px;
           color: #fff;
-          :focus{
-            color:white;
+          :focus {
+            color: white;
           }
           display: flex;
           align-items: center;
-          @media (max-width:537px){
+          @media (max-width: 537px) {
             padding: 4px 8px;
             font-size: 13px;
           }
