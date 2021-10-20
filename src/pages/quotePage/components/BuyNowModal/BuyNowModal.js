@@ -249,7 +249,11 @@ const PopupContent = (a, b, setShowBuyNow) => {
   const { memberGroups } = useSelector((state) => state.greetingPage);
 
   return (
-    <div>
+    <div css={`
+    :not(:last-child){
+      margin-bottom:10px;
+    }
+    `}>
       {Object.keys(memberGroups).map((groupCode) => (
         <BuyNowModalProduct
           groupCode={groupCode}

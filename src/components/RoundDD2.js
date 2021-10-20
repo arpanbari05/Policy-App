@@ -24,13 +24,15 @@ const RoundDD2 = ({
   const dropdownRef = useRef(null);
   useOutsiteClick(isOpen && dropdownRef, () => setIsOpen(false));
 
-
   const toggleList = () => {
     setIsOpen(!isOpen);
   };
   const handleSelect = (value) => {
-    console.log(value,"selectedAge")
-    let modifiedValue = value.includes("months") || value.includes("month")? `0.${parseInt(value)}`:value
+    console.log(value, "selectedAge");
+    let modifiedValue =
+      value.includes("months") || value.includes("month")
+        ? `0.${parseInt(value)}`
+        : value;
     handleChange(code, modifiedValue, type);
 
     setIsOpen(!isOpen);
@@ -40,25 +42,30 @@ const RoundDD2 = ({
     <label htmlFor={disabled && code} {...props}>
       <Wrapper ref={dropdownRef} className="GreetingDD__Wrapper">
         <Header
-        product_detail={product_detail}
-        noBorder
+          product_detail={product_detail}
+          noBorder
           onClick={toggleList}
           css={`
             border: ${redBorder && "1px solid red !important"};
           `}
-          className={`${isOpen && "active"} GreetingDD__Header ${disabled && "disabled"
-            }`}
+          className={`${isOpen && "active"} GreetingDD__Header ${
+            disabled && "disabled"
+          }`}
         >
           <HeaderTitle
-            
-            className={`${isOpen && "active"} GreetingDD__Title ${noBorder?"text-center":""} ${disabled && "font-gray"
-              }`}
+            className={`${isOpen && "active"} GreetingDD__Title ${
+              noBorder ? "text-center" : ""
+            } ${disabled && "font-gray"}`}
           >
-            <span css={`
-           
-            `}>
-
-              {selected}
+            <span css={``}>
+              {selected.includes("Years") ||
+              selected.includes("Year") ||
+              selected.includes("months") ||
+              selected.includes("month")
+                ? selected
+                : selected === 1
+                ? `${selected} Year`
+                : `${selected} Years`}
             </span>
           </HeaderTitle>
         </Header>
@@ -114,10 +121,11 @@ export const Wrapper = styled.div`
 
 export const Header = styled.a`
   cursor: pointer;
-  background-color:${({product_detail}) => product_detail?"#f3f5f8":"#fff"};
+  background-color: ${({ product_detail }) =>
+    product_detail ? "#f3f5f8" : "#fff"};
   position: relative;
   color: #6b7789;
-  border:${({noBorder}) => noBorder?`none`:`1px solid #b0bed0`} ;
+  border: ${({ noBorder }) => (noBorder ? `none` : `1px solid #b0bed0`)};
   padding: ${(props) => (props.sortByDD ? "auto" : "12px 15px !important")};
   display: inline-block;
   width: ${(props) => (props.sortByDD ? "auto" : "175px")};
@@ -127,16 +135,16 @@ export const Header = styled.a`
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
- // -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
+  // -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
   // box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
   // -webkit-border-radius: 3px;
   // -moz-border-radius: 3px;
-   border-radius: 50px;
+  border-radius: 50px;
   // box-shadow: 0 12px 12px -11px #004b8347;
 
   &.active {
     border-radius: 3px 3px 0 0;
-   // box-shadow: inset 0 1px 2px rgb(0 0 0 / 15%);
+    // box-shadow: inset 0 1px 2px rgb(0 0 0 / 15%);
   }
   @media (max-width: 767px) {
     margin: unset;
@@ -203,7 +211,7 @@ export const ListItem = styled.div`
   font-weight: 400;
   line-height: 18px;
   padding: 5px 8px 8px 14px;
-  background-color:#fff;
+  background-color: #fff;
 
   &:hover,
   &.active {
