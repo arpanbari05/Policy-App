@@ -120,6 +120,7 @@ const sendContent = (
     </div>
   );
 };
+
 const getYearsUsingTenure = (tenure) => {
   if (tenure == 1) {
     return "year";
@@ -229,8 +230,7 @@ const popupContent = (
                   <LogoWrapper className="logo_style_common">
                     <img
                       src={mergedQuotes[index].data.logo}
-                      alt="logo"
-                      
+                      alt="logo"  
                     ></img>
                   </LogoWrapper>
                   <NameWrapper>
@@ -348,9 +348,9 @@ const popupContent = (
                     </QuoteWrapper>
                     
                   </div>
-                  <ErrorAddPlan>
+                  {/* <ErrorAddPlan>
                       {errors[item] ? errors[item] : ""}
-                    </ErrorAddPlan>
+                    </ErrorAddPlan> */}
                   </>
                 );
               else return <></>;
@@ -590,9 +590,9 @@ const popupContentM = (
                         ></DropDown>
                       </DropDownWrapper>
                     </QuoteWrapperM>
-                    <ErrorAddPlan>
+                    {/* <ErrorAddPlan>
                       {errors[item] ? errors[item] : ""}
-                    </ErrorAddPlan>
+                    </ErrorAddPlan> */}
                   </div>
                 );
             })}
