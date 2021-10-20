@@ -13,6 +13,7 @@ import {
 import "styled-components/macro";
 import { useHistory } from "react-router";
 import SecureLS from "secure-ls";
+
 const Form1 = ({
   handleChange,
   currentForm,
@@ -31,6 +32,8 @@ const Form1 = ({
     regionDetailsError,
     memberGroups,
   } = useSelector((state) => state.greetingPage);
+  //console.log("The prosper details", proposerDetails);
+  //console.log("The member group", memberGroup);
   const { data } = frontendData || [""];
   const { popularcities } = data || [""];
 
@@ -38,6 +41,7 @@ const Form1 = ({
   const history = useHistory();
   const [isIndividualPlan, setIsIndividualPlan] = useState(false);
   useEffect(() => {
+    console.log("useEffect 1 executed");
     if (proposerDetails.plan_type && proposerDetails.plan_type === "I") {
       setIsIndividualPlan(true);
     } else {
@@ -48,11 +52,13 @@ const Form1 = ({
   const [customErrors, setCustomErrors] = useState(false);
 
   useEffect(() => {
+    console.log("useEffect 2 executed");
     if (pinCode?.length > 2) {
       dispatch(getRegion(pinCode));
     }
   }, [pinCode]);
   useEffect(() => {
+    console.log("useEffect 3 executed");
     setCustomErrors(regionDetailsError);
   }, [regionDetailsError]);
 
@@ -97,6 +103,8 @@ const Form1 = ({
       setCustomErrors(false);
     }
   };
+
+  const displayDropDownDecider = "";
 
   return (
     <div
@@ -156,13 +164,29 @@ const Form1 = ({
             }}
           />
           {customErrors && <ErrorMessage>{customErrors}</ErrorMessage>}
+          {/*console.log(
+            "!regionDetailsLoading,regionDetails.city,pinCode.length > 2,proposerDetails?.[memberGroup]?.pincode,regionDetails?.pincode",
+            !regionDetailsLoading,
+            regionDetails.city,
+            pinCode.length > 2,
+            proposerDetails?.[memberGroup]?.pincode,
+            regionDetails?.pincode,
+            "Result of evaluation",
+            !regionDetailsLoading &&
+              regionDetails?.city &&
+              pinCode.length > 2 &&
+              proposerDetails?.[memberGroup]?.pincode !== regionDetails?.pincode
+          )*/}
+          {console.log("prosperDeatials ", proposerDetails)}
+          {console.log("memeber group", memberGroup)}
           {!regionDetailsLoading &&
             regionDetails?.city &&
-            pinCode?.length > 2 &&
+            pinCode.length > 2 &&
             proposerDetails?.[memberGroup]?.pincode !==
               regionDetails?.pincode && (
               <div
                 onClick={() => {
+                  console.log("click detected");
                   setPinCode(regionDetails.city);
                   setCustomErrors(false);
                   dispatch(

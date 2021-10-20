@@ -20,24 +20,26 @@ const Checkbox = ({
         <input
           type="checkbox"
           id={code}
-          checked={checked || undefined}
+          checked={checked}
           onClick={handleChecked}
-          onChange={() => { }}
+          onChange={() => {}}
           disabled={disabled || undefined}
         />
         <label htmlFor={code}> </label>
-        {title && <span
-          htmlFor={code}
-          css={`
-            left: 21px;
-            font-size: 15px;
-            font-weight: 900;
-            top: 0px;
-            position: relative;
-          `}
-        >
-          {title}
-        </span>}
+        {title && (
+          <span
+            htmlFor={code}
+            css={`
+              left: 21px;
+              font-size: 15px;
+              font-weight: 900;
+              top: 0px;
+              position: relative;
+            `}
+          >
+            {title}
+          </span>
+        )}
       </div>
     </div>
   );

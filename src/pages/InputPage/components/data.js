@@ -2,6 +2,7 @@ import Checkbox from "../../../components/Checkbox";
 import RoundDD from "../../../components/RoundDD";
 import StyledComponent from "styled-components/macro";
 import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
+
 export const age = [];
 for (let i = 0; i <= 10; i++) {
   age[i] = { id: i, title: `${24 + i} Years` };
@@ -35,6 +36,7 @@ export const dataset = (
   ageError,
   childCount,
   addChild,
+  //checked,
   mobileInputStyle
 ) => {
   const age = [{ id: -1, title: "Select Age" }, ...list];
@@ -61,6 +63,7 @@ export const dataset = (
     });
   }
   console.log("hadgs", title);
+
   return (
     <>
       <Checkbox
@@ -68,7 +71,7 @@ export const dataset = (
         code={code}
         type={"checkbox"}
         handleChange={handleInput}
-        checked={insurerCBXArray.includes(code) && true}
+        checked={insurerCBXArray.includes(code)}
         disabled={
           (title === "Son" || title === "Daughter") &&
           childCount === 4 &&

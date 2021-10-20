@@ -5,7 +5,7 @@ import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
 import QuoteCard from "./components/QuoteCard";
 import BuyNowModal from "./components/BuyNowModal";
-
+import { BiLoaderCircle } from "react-icons/bi";
 import { SortByButton, TextLabel } from "./Quote.style";
 import { insurerFilter } from "./quote.slice";
 import useQuotesPage from "./useQuotes";
@@ -18,6 +18,7 @@ import CardSkeletonLoader from "../../components/Common/card-skeleton-loader/Car
 import ComparePopup from "./components/ComparePopup/ComparePopup";
 import { useParams } from "react-router";
 import MobileHeader from "./quoteMobile/MobileHeader";
+import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
 import MobilePlansFor from "./quoteMobile/MobilePlansFor";
 import MobileQuoteCard from "./quoteMobile/MobileQuoteCard";
 import QuoteFilterMobile from "./quoteMobile/QuoteFilter/QuoteFilterMobile";
@@ -164,11 +165,35 @@ function QuotePage() {
                 }
               `}
             >
-              <div className=" d-flex justify-content-between align-items-center">
+              <div
+                css={`
+                  box-sizing: none !important;
+                  padding: 1vh;
+                `}
+                className=" d-flex justify-content-between align-items-center"
+              >
                 <TextLabel>
                   {" "}
-                  {loadingQuotes ? "Loading" : "Showing"} {selectedPlanType}{" "}
-                  Plans{loadingQuotes && "..."}
+                  {loadingQuotes ? (
+                    <div
+                      css={`
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: flex-start;
+                      `}
+                    >
+                      <span>Loading {selectedPlanType} Plans &nbsp;</span>
+                      <SpinLoader
+                        customWidth="fit-content"
+                        customHeight="fit-content"
+                        proposalpage={"used for styling purpose"}
+                      />
+                    </div>
+                  ) : (
+                    `Showing ${selectedPlanType}
+                  Plans`
+                  )}
                 </TextLabel>
                 {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
