@@ -54,6 +54,7 @@ const greeting = createSlice({
     },
 
     setMemberGroups: (state, action) => {
+      console.log("member group set to", action.payload);
       state.memberGroups = action.payload;
     },
     createUserData: (state, action) => {
@@ -318,6 +319,7 @@ export const saveForm3UserDetails = (data, handleChange) => {
       //   }),
       //   {},
       // );
+      console.log("response data", response.data.data.groups);
       const newMemberGroups = response.data.data.groups.reduce(
         (groups, member) => ({
           ...groups,
@@ -338,7 +340,17 @@ export const saveForm3UserDetails = (data, handleChange) => {
           })
         );
       }
+      const members = Object.keys(newMemberGroups || {});
+      console.log(
+        "Members form save user form 3 data",
+        "newMemberGroups",
+        "selected group",
+        members,
+        newMemberGroups,
+        Object.keys(newMemberGroups)[0]
+      );
       dispatch(setMemberGroups(newMemberGroups));
+
       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
     } catch (err) {
       // alert(err.message);
@@ -468,6 +480,7 @@ export const getProposerDetails = (data) => {
           }),
           {}
         );
+
         dispatch(setMemberGroups(newMemberGroups));
         dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
       }
@@ -497,6 +510,7 @@ export const updateProposerDetails = (response) => (dispatch) => {
       }),
       {}
     );
+
     dispatch(setMemberGroups(newMemberGroups));
     dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
   }

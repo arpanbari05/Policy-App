@@ -117,11 +117,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
   // const tenure = parseInt(multiYear) === 1 ? "" : parseInt(multiYear);
   const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   return (
-    <Outer
-      css={`
-        /*background-color: green;*/
-      `}
-    >
+    <Outer>
       <div className="col-md-12 d-flex">
         <div className="col-md-3">
           <EachWrapper>
@@ -375,16 +371,6 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
           </CenterBottomStyle>
         </div>
       </div>
-      {show && (
-        <hr
-          css={`
-            width: 45%;
-            margin: 0 auto;
-            margin-bottom: 18px;
-            color: lightgrey;
-          `}
-        />
-      )}
       <Collapse in={show}>
         <div id="collapseOne">
           <div
@@ -404,15 +390,31 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                       <SubContent
                         addProduct={addProduct}
                         key={index}
-                        index={index}
+                        id={index}
                         quoteCardData={item}
-                        showHideButton={show}
-                        setShow={setShow}
-                        mergedQuotes={mergedQuotes}
                         quotesForCompare={quotesForCompare}
                         handleClick={handleClick}
                         handleSeeDetails={handleSeeDetails}
                       />
+
+                      {show && index === mergedQuotes.slice(1).length - 1 && (
+                        <>
+                          <CenterBottomToggle>
+                            <SeeText
+                              css={`
+                                border-bottom: none !important;
+                                cursor: pointer;
+                              `}
+                              onClick={() => {
+                                setShow(!show);
+                              }}
+                            >
+                              <span>Hide Plans </span>
+                              <i class="fas fa-chevron-up"></i>
+                            </SeeText>
+                          </CenterBottomToggle>
+                        </>
+                      )}
                     </>
                   )}
                 </>

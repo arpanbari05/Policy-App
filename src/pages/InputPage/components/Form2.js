@@ -217,6 +217,7 @@ const Form2 = ({ handleChange, currentForm }) => {
           });
         }
       });
+      
       dispatch(saveForm3UserDetails(dataArray, handleChange));
     }
   };
@@ -273,7 +274,7 @@ const Form2 = ({ handleChange, currentForm }) => {
                       code,
                       ageError,
                       childCount,
-                      addChild,
+                      addChild
                       //checked
                     )}
                   </div>
@@ -448,7 +449,7 @@ const Form2 = ({ handleChange, currentForm }) => {
                       code,
                       ageError,
                       childCount,
-                      addChild,
+                      addChild
                       //checked
                     )}
                   </div>
