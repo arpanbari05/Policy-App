@@ -211,6 +211,7 @@ const popupContent = (
   return (
     <>
       <PopupWrapper>
+      {console.log(errors,"errors+++heo")}
         <MergedQuotes className="row">
           {[0, 1, 2].map((item, index) => (
             <div className="col-lg-4">
@@ -941,6 +942,7 @@ const ComparePage = () => {
           setErrors,
           discount
         )}
+        errorsFromCompare={Object.keys(errors).length?"You can add only upto 3 plans":""}
         handleClose={() => {
           setShow(false);
           setSelectedAddPlan("");
