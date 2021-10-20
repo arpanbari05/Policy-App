@@ -54,6 +54,7 @@ const greeting = createSlice({
     },
 
     setMemberGroups: (state, action) => {
+      console.log("member group set to", action.payload);
       state.memberGroups = action.payload;
     },
     createUserData: (state, action) => {
@@ -134,11 +135,11 @@ export const saveForm1UserDetails = (
   memberGroup,
   form
 ) => {
-  const { pinCode, is_pincode_search,city } = data2;
+  const { pinCode, is_pincode_search, city } = data2;
   return async (dispatch) => {
     try {
       if (pinCode) {
-       ( form === 4.2 || form === 5) &&
+        (form === 4.2 || form === 5) &&
           (await updateUser({
             pincode: pinCode,
             is_pincode_search,
@@ -162,7 +163,7 @@ export const saveForm1UserDetails = (
           createUserData({
             pincode: pinCode,
             is_pincode_search: is_pincode_search,
-            [memberGroup]: { pincode: pinCode,city },
+            [memberGroup]: { pincode: pinCode, city },
           })
         );
 
@@ -318,6 +319,7 @@ export const saveForm3UserDetails = (data, handleChange) => {
       //   }),
       //   {},
       // );
+      console.log("response data", response.data.data.groups);
       const newMemberGroups = response.data.data.groups.reduce(
         (groups, member) => ({
           ...groups,
@@ -338,7 +340,17 @@ export const saveForm3UserDetails = (data, handleChange) => {
           })
         );
       }
+      const members = Object.keys(newMemberGroups || {});
+      console.log(
+        "Members form save user form 3 data",
+        "newMemberGroups",
+        "selected group",
+        members,
+        newMemberGroups,
+        Object.keys(newMemberGroups)[0]
+      );
       dispatch(setMemberGroups(newMemberGroups));
+
       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
     } catch (err) {
       // alert(err.message);
@@ -468,6 +480,7 @@ export const getProposerDetails = (data) => {
           }),
           {}
         );
+
         dispatch(setMemberGroups(newMemberGroups));
         dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
       }
@@ -497,6 +510,7 @@ export const updateProposerDetails = (response) => (dispatch) => {
       }),
       {}
     );
+
     dispatch(setMemberGroups(newMemberGroups));
     dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
   }

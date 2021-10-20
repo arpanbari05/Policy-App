@@ -118,7 +118,12 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
   const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   return (
     <Outer>
-      <div className="col-md-12 d-flex">
+      <div
+        className="col-md-12 d-flex"
+        css={`
+          /* background-color: green;*/
+        `}
+      >
         <div className="col-md-3">
           <EachWrapper>
             <LogoWrapper>
@@ -132,10 +137,17 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             <SeeText onClick={handleSeeDetailsClick}>See Details</SeeText>
           </CenterBottomStyle>
         </div>
-        <div className="col-md-6">
+        <div
+          className="col-md-6"
+          css={`
+            /* background-color: yellow; */
+          `}
+        >
           <EachWrapper
             css={`
-              padding: 20px 25px !important;
+              border-right: 1px solid #dfdfdf;
+              border-left: 1px solid #dfdfdf;
+              padding: 10px 25px !important;
               @media (max-width: 810px) {
                 padding-left: 8px !important;
               }
@@ -152,8 +164,20 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                         overlay={renderTooltip(item.short_description)}
                       >
                         <TextWrapper>
-                          <SmallLabel>Room Rent</SmallLabel>
-                          <ValueText>{item.value}</ValueText>
+                          <SmallLabel
+                            css={`
+                              font-size: 11px !important;
+                            `}
+                          >
+                            Room Rent
+                          </SmallLabel>
+                          <ValueText
+                            css={`
+                              font-size: 11px !important;
+                            `}
+                          >
+                            {item.value}
+                          </ValueText>
                         </TextWrapper>
                       </OverlayTrigger>
                     )}
@@ -164,8 +188,20 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                         overlay={renderTooltip(item.description)}
                       >
                         <TextWrapper>
-                          <SmallLabel>No Claim Bonus</SmallLabel>
-                          <ValueText>{item.value}</ValueText>
+                          <SmallLabel
+                            css={`
+                              font-size: 11px !important;
+                            `}
+                          >
+                            No Claim Bonus
+                          </SmallLabel>
+                          <ValueText
+                            css={`
+                              font-size: 11px !important;
+                            `}
+                          >
+                            {item.value}
+                          </ValueText>
                         </TextWrapper>
                       </OverlayTrigger>
                     )}
@@ -181,8 +217,17 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                   )}
                 >
                   <TextWrapper>
-                    <SmallLabel>Cashless Hospitals</SmallLabel>
+                    <SmallLabel
+                      css={`
+                        font-size: 11px !important;
+                      `}
+                    >
+                      Cashless Hospitals
+                    </SmallLabel>
                     <ValueText
+                      css={`
+                        font-size: 11px !important;
+                      `}
                       style={{ cursor: "pointer" }}
                       onClick={() => handleSeeDetailsClick(4)}
                     >
@@ -207,8 +252,20 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                         overlay={renderTooltip(item.short_description)}
                       >
                         <TextWrapper>
-                          <SmallLabel>Co-Payment</SmallLabel>
-                          <ValueText>{item.value}</ValueText>
+                          <SmallLabel
+                            css={`
+                              font-size: 11px !important;
+                            `}
+                          >
+                            Co-Payment
+                          </SmallLabel>
+                          <ValueText
+                            css={`
+                              font-size: 11px !important;
+                            `}
+                          >
+                            {item.value}
+                          </ValueText>
                         </TextWrapper>
                       </OverlayTrigger>
                     )}
@@ -219,8 +276,20 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                         overlay={renderTooltip(item.short_description)}
                       >
                         <TextWrapper>
-                          <SmallLabel>Pre Existing Disease</SmallLabel>
-                          <ValueText>{item.value}</ValueText>
+                          <SmallLabel
+                            css={`
+                              font-size: 11px !important;
+                            `}
+                          >
+                            Pre Existing Disease
+                          </SmallLabel>
+                          <ValueText
+                            css={`
+                              font-size: 11px !important;
+                            `}
+                          >
+                            {item.value}
+                          </ValueText>
                         </TextWrapper>
                       </OverlayTrigger>
                     )}
@@ -230,7 +299,12 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             </div>
           </EachWrapper>
           {mergedQuotes.length - 1 !== 0 && !show && (
-            <CenterBottomToggle>
+            <CenterBottomToggle
+              css={`
+                position: relative;
+                bottom: -0px;
+              `}
+            >
               <SeeText
                 css={`
                   border-bottom: none !important;
@@ -252,7 +326,12 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             </CenterBottomToggle>
           )}
         </div>
-        <div className="col-md-3">
+        <div
+          className="col-md-3"
+          css={`
+            /*background-color: pink;*/
+          `}
+        >
           <EachWrapper>
             <LogoWrapper>
               <RadioButton onClick={() => handleBuyNowClick()}>
@@ -371,6 +450,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
           </CenterBottomStyle>
         </div>
       </div>
+
       <Collapse in={show}>
         <div id="collapseOne">
           <div
@@ -395,26 +475,11 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                         quotesForCompare={quotesForCompare}
                         handleClick={handleClick}
                         handleSeeDetails={handleSeeDetails}
+                        showHideToggle={show}
+                        mergedQuotes={mergedQuotes}
+                        index={index}
+                        setShow={setShow}
                       />
-
-                      {show && index === mergedQuotes.slice(1).length - 1 && (
-                        <>
-                          <CenterBottomToggle>
-                            <SeeText
-                              css={`
-                                border-bottom: none !important;
-                                cursor: pointer;
-                              `}
-                              onClick={() => {
-                                setShow(!show);
-                              }}
-                            >
-                              <span>Hide Plans </span>
-                              <i class="fas fa-chevron-up"></i>
-                            </SeeText>
-                          </CenterBottomToggle>
-                        </>
-                      )}
                     </>
                   )}
                 </>

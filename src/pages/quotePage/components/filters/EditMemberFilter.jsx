@@ -30,8 +30,9 @@ const CustomDropdown = ({ member }) => {
         )}
       </div>
       <div
-        className={`age_dropdown position-absolute ${showDropDown ? "d-block" : "d-none"
-          }`}
+        className={`age_dropdown position-absolute ${
+          showDropDown ? "d-block" : "d-none"
+        }`}
       >
         {ageRows.map((year, i) => (
           <div key={i} className="text-center py-2">
@@ -43,7 +44,7 @@ const CustomDropdown = ({ member }) => {
   );
 };
 
-const FilterModal = ({ show, handleClose ,history}) => {
+const FilterModal = ({ show, handleClose, history }) => {
   const { error, proposerDetails } = useSelector((state) => state.greetingPage);
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const { data } = frontendData || [""];
@@ -304,12 +305,12 @@ const FilterModal = ({ show, handleClose ,history}) => {
 
   // const history = useHistory();
 
-  const handleUpdate = e => {
+  const handleUpdate = (e) => {
     e.preventDefault();
 
     const ageErrorArray = [];
-    insurerCBXArray.forEach(data => {
-      const hasAge = insurerDDArray.some(item => item.insurer === data);
+    insurerCBXArray.forEach((data) => {
+      const hasAge = insurerDDArray.some((item) => item.insurer === data);
       if (!hasAge) {
         ageErrorArray.push(data);
       }
@@ -325,19 +326,22 @@ const FilterModal = ({ show, handleClose ,history}) => {
     }
     if (ageErrorArray.length < 1 && !errors && insurerDDArray.length > 0) {
       const dataArray = [];
-      insurerDDArray.forEach(data => {
-        const i = membersArray.findIndex(x => x.code === data.insurer);
+      insurerDDArray.forEach((data) => {
+        const i = membersArray.findIndex((x) => x.code === data.insurer);
         dataArray.push({
           type: `${membersArray[i]?.code}`,
-          age: data.value.endsWith("months") ? `0.${data.value.split(" ")[0]}`: `${data.value.split(" ")[0]}` ,
+          age: data.value.endsWith("months")
+            ? `0.${data.value.split(" ")[0]}`
+            : `${data.value.split(" ")[0]}`,
         });
       });
 
       dispatch(
         updateUserMembersDetails(
           { ...proposerDetails, members: dataArray },
-          history,handleClose
-        ),
+          history,
+          handleClose
+        )
       );
     }
   };
@@ -377,7 +381,11 @@ const FilterModal = ({ show, handleClose ,history}) => {
         >
           Edit Members
         </Modal.Title>
-        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
+        <i
+          onClick={handleClose}
+          style={{ cursor: "pointer" }}
+          class="fas fa-times"
+        ></i>
       </Modal.Header>
       <Modal.Body>
         <OptionWrapper>
@@ -410,11 +418,10 @@ const FilterModal = ({ show, handleClose ,history}) => {
                         margin-bottom: 10px;
                         border-radius: 7px;
                         width: 400px;
-                        & .addChild{
+                        & .addChild {
                           left: -12px;
                         }
                       `}
-
                     >
                       {dataset(
                         display_name,
@@ -441,7 +448,7 @@ const FilterModal = ({ show, handleClose ,history}) => {
         )}
 
         {error &&
-          error.map(msg => (
+          error.map((msg) => (
             <ErrorMessage style={{ fontSize: "15px" }}>{msg}</ErrorMessage>
           ))}
         <ApplyBtn
@@ -456,7 +463,7 @@ const FilterModal = ({ show, handleClose ,history}) => {
 };
 
 const EditMemberFilter = () => {
-  const history = useHistory()
+  const history = useHistory();
   // const { error } = useSelector((state) => state.greetingPage);
   // const { frontendData } = useSelector((state) => state.frontendBoot);
   // const { data } = frontendData || [""];
@@ -575,7 +582,6 @@ const EditMemberFilter = () => {
   //   setInsurerDDArray(tempArray);
   // };
 
-
   const [showModal, setShowModal] = useState(false);
   return (
     <>
@@ -584,10 +590,17 @@ const EditMemberFilter = () => {
         onClick={() => setShowModal(true)}
       >
         <div className="yellow_start_line"></div>
-        <span css={`
-          font-size: 17px;
-        `}>Members</span>
-        <PencilWrapper className="d-flex justify-content-center align-items-center" style={{color:"#0a87ff"}}>
+        <span
+          css={`
+            font-size: 17px;
+          `}
+        >
+          Members
+        </span>
+        <PencilWrapper
+          className="d-flex justify-content-center align-items-center"
+          style={{ color: "#0a87ff" }}
+        >
           {/* <PencilIcon
             style={{
               color: "#0a87ff",
@@ -595,11 +608,15 @@ const EditMemberFilter = () => {
             }}
             width="15px"
           /> */}
-           <i class="fas fa-pen"></i>
+          <i class="fas fa-pen"></i>
         </PencilWrapper>
       </span>
 
-      <FilterModal show={showModal} history={history} handleClose={() => setShowModal(false)} />
+      <FilterModal
+        show={showModal}
+        history={history}
+        handleClose={() => setShowModal(false)}
+      />
     </>
   );
 };

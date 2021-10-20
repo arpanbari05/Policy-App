@@ -10,6 +10,7 @@ import {
   setQuotesForCompare,
   setQuotesOnCompare,
 } from "../quote.slice";
+import { CenterBottomToggle } from "./QuoteCard.style";
 import CustomDropDown from "./filters/CustomDropdown";
 import {
   CenterBottomStyle,
@@ -87,6 +88,10 @@ const SubContent = ({
   handleClick,
   handleSeeDetails,
   addProduct,
+  index,
+  showHideToggle,
+  setShow,
+  mergedQuotes,
 }) => {
   const {
     product: { name, id },
@@ -190,105 +195,191 @@ const SubContent = ({
   }, [quotesForCompare, checked, activeCover]);
 
   return (
-    <div>
-      <Outer
-        css={`
-          border: none;
-          border-top: 1px solid lightgrey;
-          box-shadow: none !important;
-
-          &:hover {
+    <>
+      {
+        <hr
+          css={`
+            width: 88%;
+            margin: unset;
+            color: lightgrey;
+            height: 2px !important;
+            margin: 0 auto !important;
+          `}
+        />
+      }
+      <div>
+        <Outer
+          css={`
+            border: none;
+            margin-top: 0px !important;
+            padding-top: 10px;
+            /*border-top: 1px solid lightgrey;*/
             box-shadow: none !important;
-            /* border: none;*/
-          }
-        `}
-      >
-        <div className="col-md-12 d-flex">
-          <div className="col-md-3">
-            <EachWrapper>
-              <LogoWrapper>
-                <div
-                  css={`
-                    width: 80px;
-                    min-height: 80px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    height: auto;
-                    margin-bottom: 10px;
-                  `}
-                >
-                  <Logo src={logo} />
-                </div>
-                <PlanName>{name}</PlanName>
-              </LogoWrapper>
-            </EachWrapper>
-            <CenterBottomStyle>
-              <SeeText onClick={handleSeeDetailsClick}>See Details</SeeText>
-            </CenterBottomStyle>
-          </div>
-          <div className="col-md-6">
-            <EachWrapper
+            &:hover {
+              box-shadow: none !important;
+              /* border: none;*/
+            }
+          `}
+        >
+          <div className="col-md-12 d-flex">
+            <div
+              className="col-md-3"
               css={`
-                padding: 20px 25px !important;
-                @media (max-width: 810px) {
-                  padding-left: 8px !important;
-                }
+                height: 152px !important;
               `}
             >
-              <div className="d-flex justify-content-start">
-                {features[activeCover].map((item, i) => {
-                  return (
-                    <>
-                      {item.name === "Room Rent" && (
-                        <TextWrapper>
-                          <SmallLabel>Room Rent</SmallLabel>
-                          <ValueText>{item.value}</ValueText>
-                        </TextWrapper>
-                      )}
-                      {item.name === "No Claim Bonus" && (
-                        <TextWrapper>
-                          <SmallLabel>No Claim Bonus</SmallLabel>
-                          <ValueText>{item.value}</ValueText>
-                        </TextWrapper>
-                      )}
-                    </>
-                  );
-                })}
+              <EachWrapper
+                css={`
+                  /*background-color: blue;*/
+                  height: 114px !important;
+                `}
+              >
+                <LogoWrapper>
+                  <div className="logo_style_common">
+                    <Logo src={logo} />
+                  </div>
+                  <PlanName>{name}</PlanName>
+                </LogoWrapper>
+              </EachWrapper>
+              <CenterBottomStyle
+                css={`
+                  position: relative;
+                  top: -2px;
+                `}
+              >
+                <SeeText onClick={handleSeeDetailsClick}>See Details</SeeText>
+              </CenterBottomStyle>
+            </div>
+            <div
+              className="col-md-6"
+              css={`
+                height: 152px !important;
+              `}
+            >
+              <EachWrapper
+                css={`
+                  /*background-color: pink;*/
 
-                <TextWrapper>
-                  <SmallLabel>Cashless Hospitals</SmallLabel>
-                  <ValueText onClick={() => handleSeeDetailsClick(4)}>
-                    {cashlessHospitalsCount[activeCover]}
-                    <span>
-                      {" "}
-                      <i class="fas fa-chevron-right "></i>
-                    </span>
-                  </ValueText>
-                </TextWrapper>
-              </div>
-              <div className="d-flex justify-content-start">
-                {features[activeCover].map((item, i) => {
-                  return (
-                    <>
-                      {item.name === "Co-Payment" && (
-                        <TextWrapper>
-                          <SmallLabel>Co-Payment</SmallLabel>
-                          <ValueText>{item.value}</ValueText>
-                        </TextWrapper>
-                      )}
-                      {item.name === "Pre Existing Disease" && (
-                        <TextWrapper>
-                          <SmallLabel>Pre Existing Disease</SmallLabel>
-                          <ValueText>{item.value}</ValueText>
-                        </TextWrapper>
-                      )}
-                    </>
-                  );
-                })}
-              </div>
-            </EachWrapper>
-            {/* <CenterBottomToggle
+                  border-right: 1px solid #dfdfdf;
+                  border-left: 1px solid #dfdfdf;
+                  padding: 10px 25px !important;
+                  @media (max-width: 810px) {
+                    padding-left: 8px !important;
+                  }
+                `}
+              >
+                <div className="d-flex justify-content-start">
+                  {features[activeCover].map((item, i) => {
+                    return (
+                      <>
+                        {item.name === "Room Rent" && (
+                          <TextWrapper>
+                            <SmallLabel
+                              css={`
+                                font-size: 11px !important;
+                              `}
+                            >
+                              Room Rent
+                            </SmallLabel>
+                            <ValueText
+                              css={`
+                                font-size: 11px !important;
+                              `}
+                            >
+                              {item.value}
+                            </ValueText>
+                          </TextWrapper>
+                        )}
+                        {item.name === "No Claim Bonus" && (
+                          <TextWrapper>
+                            <SmallLabel
+                              css={`
+                                font-size: 11px !important;
+                              `}
+                            >
+                              No Claim Bonus
+                            </SmallLabel>
+                            <ValueText
+                              css={`
+                                font-size: 11px !important;
+                              `}
+                            >
+                              {item.value}
+                            </ValueText>
+                          </TextWrapper>
+                        )}
+                      </>
+                    );
+                  })}
+
+                  <TextWrapper>
+                    <SmallLabel
+                      css={`
+                        font-size: 11px !important;
+                      `}
+                    >
+                      Cashless Hospitals
+                    </SmallLabel>
+                    <ValueText
+                      css={`
+                        font-size: 11px !important;
+                      `}
+                      onClick={() => handleSeeDetailsClick(4)}
+                    >
+                      {cashlessHospitalsCount[activeCover]}
+                      <span>
+                        {" "}
+                        <i class="fas fa-chevron-right "></i>
+                      </span>
+                    </ValueText>
+                  </TextWrapper>
+                </div>
+                <div className="d-flex justify-content-start">
+                  {features[activeCover].map((item, i) => {
+                    return (
+                      <>
+                        {item.name === "Co-Payment" && (
+                          <TextWrapper>
+                            <SmallLabel
+                              css={`
+                                font-size: 11px !important;
+                              `}
+                            >
+                              Co-Payment
+                            </SmallLabel>
+                            <ValueText
+                              css={`
+                                font-size: 11px !important;
+                              `}
+                            >
+                              {item.value}
+                            </ValueText>
+                          </TextWrapper>
+                        )}
+                        {item.name === "Pre Existing Disease" && (
+                          <TextWrapper>
+                            <SmallLabel
+                              css={`
+                                font-size: 11px !important;
+                              `}
+                            >
+                              Pre Existing Disease
+                            </SmallLabel>
+                            <ValueText
+                              css={`
+                                font-size: 11px !important;
+                              `}
+                            >
+                              {item.value}
+                            </ValueText>
+                          </TextWrapper>
+                        )}
+                      </>
+                    );
+                  })}
+                </div>
+              </EachWrapper>
+              {/* <CenterBottomToggle
                     >
                         <SeeText
                             css={`
@@ -311,37 +402,73 @@ const SubContent = ({
                                 )}
                         </SeeText>
                     </CenterBottomToggle> */}
-          </div>
-          <div className="col-md-3">
-            <EachWrapper>
-              <LogoWrapper>
-                <RadioButton onClick={() => handleBuyNowClick()}>
-                  <strong>
-                    ₹{" "}
-                    {parseInt(
-                      total_premium[activeCover] + additionalPremium
-                    ).toLocaleString("en-In")}
-                    <span>
-                      / {tenure?.[activeCover]}{" "}
-                      {tenure?.[activeCover] > 1 ? "years" : "year"}
-                    </span>
-                  </strong>
-                </RadioButton>
-                <PlanName
-                  css={`
-                    font-size: 13px;
-                    display: flex;
-                  `}
-                >
-                  <span
+              {showHideToggle && index === mergedQuotes.slice(1).length - 1 && (
+                <>
+                  <CenterBottomToggle
                     css={`
                       position: relative;
-                      left: 6px;
+                      bottom: -1px;
                     `}
                   >
-                    Cover : ₹
-                  </span>
-                  {/* <select
+                    <SeeText
+                      css={`
+                        border-bottom: none !important;
+                        cursor: pointer;
+                      `}
+                      onClick={() => {
+                        setShow(!showHideToggle);
+                      }}
+                    >
+                      <span>Hide Plans </span>
+                      <i class="fas fa-chevron-up"></i>
+                    </SeeText>
+                  </CenterBottomToggle>
+                </>
+              )}
+            </div>
+            <div
+              className="col-md-3"
+              css={`
+                height: 152px !important;
+              `}
+            >
+              <EachWrapper
+                css={`
+                  height: 114px !important;
+                  /*background-color: green;*/
+                `}
+              >
+                <LogoWrapper>
+                  <RadioButton onClick={() => handleBuyNowClick()}>
+                    <strong>
+                      ₹{" "}
+                      {parseInt(
+                        total_premium[activeCover] + additionalPremium
+                      ).toLocaleString("en-In")}{" "}
+                      <span>
+                        /{" "}
+                        {tenure?.[activeCover] === 1
+                          ? ""
+                          : tenure?.[activeCover]}
+                        {tenure?.[activeCover] > 1 ? "years" : "year"}
+                      </span>
+                    </strong>
+                  </RadioButton>
+                  <PlanName
+                    css={`
+                      font-size: 13px;
+                      display: flex;
+                    `}
+                  >
+                    <span
+                      css={`
+                        position: relative;
+                        left: 6px;
+                      `}
+                    >
+                      Cover : ₹
+                    </span>
+                    {/* <select
                                     onChange={e => setActiveCover(e.target.value)}
                                 >
                                     {mergedQuotes[0]?.sum_insured.map((data, i) => {
@@ -352,82 +479,85 @@ const SubContent = ({
                                         );
                                     })}
                                 </select> */}
-                  {sum_insured && (
-                    <CustomDropDown
-                      option={sum_insured}
-                      handleChange={(e) => {
-                        setActiveCover(e);
-                      }}
-                    />
-                  )}
-                </PlanName>
-              </LogoWrapper>
-            </EachWrapper>
-            <CenterBottomStyle
-              css={`
-                padding: 5px;
-              `}
-            >
-              <div>
-                {/* <input type="checkbox" css={`
+                    {sum_insured && (
+                      <CustomDropDown
+                        option={sum_insured}
+                        handleChange={(e) => {
+                          setActiveCover(e);
+                        }}
+                      />
+                    )}
+                  </PlanName>
+                </LogoWrapper>
+              </EachWrapper>
+              <CenterBottomStyle
+                css={`
+                  position: relative;
+                  top: -2px;
+                  padding: 5px;
+                `}
+              >
+                <div>
+                  {/* <input type="checkbox" css={`
                                 border-radius:50px;
                             `} /> */}
-                {/* <Checkbox title="Compare"
+                  {/* <Checkbox title="Compare"
                                     checked={check}
                                     onClick={() => { setCheck(true) }}
                                 /> */}
-                {/* <SeeText
+                  {/* <SeeText
                                 css={`
                             color: black !important;
                             border:none !important;
                             padding:0px 20px !important;
                         `}
                             >Compare</SeeText> */}
-                <RadioInput
-                  type="checkbox"
-                  id={`compare_${id}${sum_insured[activeCover]}`}
-                  className="compare-checkbox"
-                  checked={checked}
-                  onChange={() => {
-                    dispatch(setQuotesOnCompare());
+                  <RadioInput
+                    type="checkbox"
+                    id={`compare_${id}${sum_insured[activeCover]}`}
+                    className="compare-checkbox"
+                    checked={checked}
+                    onChange={() => {
+                      dispatch(setQuotesOnCompare());
 
-                    if (!checked) {
-                      const numberOfPlans = window.matchMedia(
-                        "(max-width: 1023px)"
-                      ).matches
-                        ? 2
-                        : 3;
-                      dispatch(
-                        setQuotesForCompare([
-                          `${id}${sum_insured[activeCover]}`,
-                          numberOfPlans,
-                        ])
-                      );
-                    } else {
-                      dispatch(
-                        removeQuotesForCompare(
-                          `${id}${sum_insured[activeCover]}`
-                        )
-                      );
-                    }
-                  }}
-                />
+                      if (!checked) {
+                        const numberOfPlans = window.matchMedia(
+                          "(max-width: 1023px)"
+                        ).matches
+                          ? 2
+                          : 3;
+                        dispatch(
+                          setQuotesForCompare([
+                            `${id}${sum_insured[activeCover]}`,
+                            numberOfPlans,
+                          ])
+                        );
+                      } else {
+                        dispatch(
+                          removeQuotesForCompare(
+                            `${id}${sum_insured[activeCover]}`
+                          )
+                        );
+                      }
+                    }}
+                  />
 
-                <RadioLabel
-                  //dynamic id
-                  htmlFor={`compare_${id}${sum_insured[activeCover]}`}
-                  css={`
-                    color: #808080;
-                  `}
-                >
-                  Compare
-                </RadioLabel>
-              </div>
-            </CenterBottomStyle>
+                  <RadioLabel
+                    //dynamic id
+                    htmlFor={`compare_${id}${sum_insured[activeCover]}`}
+                    css={`
+                      color: #808080;
+                    `}
+                  >
+                    Compare
+                  </RadioLabel>
+                </div>
+              </CenterBottomStyle>
+            </div>
           </div>
-        </div>
-      </Outer>
-    </div>
+        </Outer>
+      </div>
+    </>
   );
 };
 

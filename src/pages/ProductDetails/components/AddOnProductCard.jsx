@@ -22,6 +22,8 @@ function ProductCard({ groupCode }) {
     },
   } = product;
 
+
+
   const logoSrc = companies[companyAlias].logo;
 
   const totalPremiumAmount = parseInt(totalPremium).toLocaleString("en-In");
