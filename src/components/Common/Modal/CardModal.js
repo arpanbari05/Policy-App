@@ -160,7 +160,7 @@ const CloseButton = styled.button`
 const ModalTitle = styled.h5`
   // font-family: "PFEncoreSansProblck";
   margin: 0 17px;
-  position
+  position:relative;
   margin-bottom: 0;
   line-height: 1.5;
   color: #000;
