@@ -259,7 +259,6 @@ const SubContent = ({
               <EachWrapper
                 css={`
                   /*background-color: pink;*/
-
                   border-right: 1px solid #dfdfdf;
                   border-left: 1px solid #dfdfdf;
                   padding: 10px 25px !important;

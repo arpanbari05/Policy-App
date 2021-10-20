@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const Outer = styled.div`
   margin-top: 13px;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
-
   background-color: #fff;
   &:hover {
     box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.21);
@@ -133,7 +132,6 @@ export const RadioInput = styled.input`
     height: 20px;
     line-height: 19px;
     border-radius: 50px;
-
     font-size: 11px;
     text-align: center;
     position: absolute;
