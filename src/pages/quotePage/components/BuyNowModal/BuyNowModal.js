@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import addBtn from "../../../../assets/images/add_btn.png";
 import CardModal from "../../../../components/Common/Modal/CardModal";
 import remove from "../../../../assets/images/remove.png";
@@ -9,6 +9,7 @@ import SecureLS from "secure-ls";
 import styled from "styled-components/macro";
 import { useCartProduct } from "../../../Cart";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
+import { setSelectedGroup } from "../../quote.slice";
 function calculateTotalPremium(riders) {
   let total = 0;
   if (riders instanceof Array && riders.length) {
@@ -130,7 +131,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
   const members = useSelector(
     (state) => state.greetingPage.memberGroups[groupCode]
   );
-
+  const dispatch = useDispatch();
   const { product, deleteProduct } = useCartProduct(groupCode);
 
   const history = useHistory();
@@ -152,7 +153,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
             css={`
               height: 31px;
               width: 6px;
-              border-radius:3px;
+              border-radius: 3px;
               margin-right: 10px;
               background: #fcd140;
             `}
@@ -186,7 +187,6 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 align-items: center;
                 justify-content: center;
                 border-radius: 100%;
-               
               `}
               className="btn"
               onClick={deleteProduct}
@@ -201,33 +201,39 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               display: flex;
               justify-content: flex-end;
               margin-bottom: 11px;
-             
             `}
           >
             <button
               type="submit"
               className="btn"
-              
               css={`
                 justify-content: space-between;
                 display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 120px;
-    background: rgb(235, 245, 255);
-    color:#0d6efd;
+                justify-content: center;
+                align-items: center;
+                width: 120px;
+                background: rgb(235, 245, 255);
+                color: #0d6efd;
               `}
               onClick={() => {
                 setShowBuyNow(false);
-                history.replace({
+                history.push({
                   pathname: `/quotes/${groupCode}`,
                   search: `enquiryId=${enquiryId}`,
                 });
+                dispatch(setSelectedGroup(groupCode));
               }}
             >
-              <span css={`margin-right:5px;`}> Add Plan</span> <i class="fas fa-plus-circle"></i>
+              <span
+                css={`
+                  margin-right: 5px;
+                `}
+              >
+                {" "}
+                Add Plan
+              </span>{" "}
+              <i class="fas fa-plus-circle"></i>
             </button>
-           
           </Col>
         )}
       </div>
