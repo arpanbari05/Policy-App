@@ -77,7 +77,7 @@ export const SmallLabel = styled.span`
   }
 `;
 export const ValueText = styled.span`
-  font-size: 13px;
+  font-size: 11px !important;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;

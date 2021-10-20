@@ -297,7 +297,7 @@ const SubContent = ({
                               </SmallLabel>
                               <ValueText
                                 css={`
-                                  font-size: 11px !important;
+                                font-size: 12px !important;
                                 `}
                               >
                                 {item.value}
@@ -321,7 +321,7 @@ const SubContent = ({
                               </SmallLabel>
                               <ValueText
                                 css={`
-                                  font-size: 11px !important;
+                                font-size: 12px !important;
                                 `}
                               >
                                 {item.value}
@@ -349,7 +349,7 @@ const SubContent = ({
                     </SmallLabel>
                     <ValueText
                       css={`
-                        font-size: 11px !important;
+                      font-size: 12px !important;
                       `}
                       onClick={() => handleSeeDetailsClick(4)}
                     >
@@ -382,7 +382,7 @@ const SubContent = ({
                             </SmallLabel>
                             <ValueText
                               css={`
-                                font-size: 11px !important;
+                              font-size: 12px !important;
                               `}
                             >
                               {item.value}
@@ -406,7 +406,7 @@ const SubContent = ({
                             </SmallLabel>
                             <ValueText
                               css={`
-                                font-size: 11px !important;
+                              font-size: 12px !important;
                               `}
                             >
                               {item.value}
