@@ -100,6 +100,17 @@ function useQuotesPage() {
 
   const { groupCode } = useParams();
   console.log(memberGroups?.[selectedGroup], ",23523");
+
+  const defaultfilters = {
+    insurers: [],
+    premium: "",
+    cover: "3 to 5 Lacs",
+    ownCover: "",
+    multiYear: "1 Year",
+    basePlanType: "Base health",
+    moreFilters: {},
+  };
+
   useEffect(() => {
     if (shouldFetchQuotes) {
       let tempfilter;
@@ -112,7 +123,6 @@ function useQuotesPage() {
       tempfilter !== null &&
         dispatch(
           setFilters({
-            hehe: "hehehe",
             ...tempfilter,
             cover: tempfilter.cover || defaultfilters.cover,
             multiYear: tempfilter.multiYear || defaultfilters.multiYear,
@@ -220,16 +230,6 @@ function useQuotesPage() {
   //     setRecFilterdQuotes(tempArray);
   //   }, [recommendedQuotes, quotes]);
 
-  const defaultfilters = {
-    insurers: [],
-    premium: "",
-    cover: "3 to 5 Lacs",
-    ownCover: "",
-    multiYear: "1 Year",
-    basePlanType: "Base health",
-    moreFilters: {},
-  };
-
   useEffect(() => {
     dispatch(clearFilterQuotes());
   }, [groupCode]);
@@ -309,7 +309,7 @@ function useQuotesPage() {
     filters.planType,
     filters.multiYear,
     filters.basePlanType,
-    filters.moreFilters,
+    // filters.moreFilters,
     filters.cover,
   ]);
 

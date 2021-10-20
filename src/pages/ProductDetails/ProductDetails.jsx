@@ -22,15 +22,19 @@ import { setFilters, setShouldFetchQuotes } from "../quotePage/quote.slice";
 //import { setFilters, setShouldFetchQuotes } from "../QuotesPage/quotePage.slice";
 
 function GoBackButton({ groupCode, ...props }) {
+  const groupCodes = Object.keys(useSelector(({greetingPage}) => greetingPage.memberGroups));
   const urlQuery = useUrlQuery();
   const enquiryId = urlQuery.get("enquiryId");
+  
   const history = useHistory();
   return (
     <button
       className="btn"
       type="button"
-      onClick={() =>
-        history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`)
+      onClick={() => {
+        groupCodes[1] && groupCodes[1] === groupCode?history.replace(`/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`):history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`)
+        
+      }
       }
       css={`
         width: max-content;
@@ -171,6 +175,7 @@ const ProductDetails = () => {
     align-items: flex-start !important;
         }
         `}>
+       
           <GoBackButton groupCode={groupCode} />
           <div
             css={`
@@ -195,7 +200,7 @@ const ProductDetails = () => {
           <div
             
             css={`
-             width:28%;
+             width:26%;
              @media (max-width:1350px){
               width:30%;
 
@@ -214,7 +219,7 @@ const ProductDetails = () => {
           </div>
           <div
            css={`
-            width:72%;
+            width:74%;
             @media (max-width:1350px){
               width:70%;
 

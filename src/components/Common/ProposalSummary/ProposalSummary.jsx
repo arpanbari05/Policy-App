@@ -113,7 +113,7 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
             <span class="p_dark_f_a_check terms-propposal-card"
             style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}
             >
-             !! Terms &amp; Conditions
+              Terms &amp; Conditions
             </span>
             {termShow && <TermModal show={termShow} handleClose={()=>{setTermShow(false)}}/>}
             </div>

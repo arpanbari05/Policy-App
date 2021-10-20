@@ -165,6 +165,7 @@ export const PlusWrapper = styled.div`
 `;
 export const NameWrapper = styled.div`
   margin-left: 60px;
+ 
 `;
 export const PlanDetails = styled.div`
   width: calc(100% - 60px);
@@ -193,6 +194,7 @@ export const Title = styled.div`
 export const Value = styled.div`
   font-weight: 900;
   font-size: 16px;
+  font-family:"Inter-SemiBold";
   @media (max-width:400px){
     font-size: 10px;
   }
@@ -241,9 +243,13 @@ cursor: pointer;
 `;
 export const RiderName = styled.div`
   display: inline-block;
-font-size:12px;
+font-size:15px;
   max-width: 64%;
   float: left;
+
+  @media (max-width:767px){
+font-size:12px;
+  }
 `;
 export const RiderPremium = styled.div`
  

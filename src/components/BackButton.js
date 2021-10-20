@@ -64,7 +64,7 @@ color: ${props.color};
   border: 0 none;
   cursor: pointer;
   padding: 10px 11px;
-  margin: 10px auto;
+  /* margin: 10px auto; */
   transition: all 0.3s linear 0s;
   display: block;
   border-radius: 2px;

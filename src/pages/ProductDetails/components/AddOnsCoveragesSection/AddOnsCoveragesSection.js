@@ -1079,7 +1079,7 @@ function AddOns({ addOns = {} }) {
           width: 100%;
           display: flex;
           flex-wrap: wrap;
-          justify-content:${Object.keys(addOns).length > 1?"space-evenly":"flex-start"} !important;
+          justify-content:${Object.keys(addOns).length > 1?"flex-start":"flex-start"} !important;
         `}
       >
         {Object.keys(addOns).map((addOnId) => (
