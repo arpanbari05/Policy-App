@@ -122,6 +122,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
         className="col-md-12 d-flex"
         css={`
           /* background-color: green;*/
+      
         `}
       >
         <div className="col-md-3">
@@ -145,9 +146,13 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
         >
           <EachWrapper
             css={`
-              border-right: 1px solid #dfdfdf;
-              border-left: 1px solid #dfdfdf;
+              // border-right: 1px solid #dfdfdf;
+              // border-left: 1px solid #dfdfdf;
               padding: 10px 25px !important;
+              top: 16px;
+              &:after {
+                top: 6px !important;
+              }
               @media (max-width: 810px) {
                 padding-left: 8px !important;
               }
@@ -302,14 +307,16 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             <CenterBottomToggle
               css={`
                 position: relative;
-                bottom: -0px;
+                bottom: -5px;
+                margin-top: 14px;
               `}
             >
               <SeeText
                 css={`
                   border-bottom: none !important;
                   cursor: pointer;
-                `}
+                  font-size: 12px
+                  `}
                 onClick={() => {
                   setShow(!show);
                 }}
@@ -332,7 +339,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             /*background-color: pink;*/
           `}
         >
-          <EachWrapper>
+          <EachWrapper css={`&:after{display:none;}`}>
             <LogoWrapper>
               <RadioButton onClick={() => handleBuyNowClick()}>
                 <strong>

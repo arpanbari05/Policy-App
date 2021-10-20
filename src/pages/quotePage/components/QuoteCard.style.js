@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Outer = styled.div`
   margin-top: 13px;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
-
+  padding-bottom: 5px;
   background-color: #fff;
   &:hover {
     box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.21);
@@ -15,6 +15,17 @@ export const EachWrapper = styled.div`
   margin: 5px 0px 0px;
   padding: 0px;
   height: 110px;
+  position:relative;
+  &:after {
+    content: "";
+    position: absolute;
+    top: 23px;
+    left: 13px;
+    z-index: 0; 
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    border-right: 1px solid #c5c2c254;
+  }
 `;
 export const LogoWrapper = styled.div`
   display: flex;
@@ -99,7 +110,7 @@ export const TextWrapper = styled.div`
   }
 `;
 export const SeeText = styled.span`
-  font-size: 15px;
+  font-size: 12px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -151,7 +162,7 @@ export const RadioInput = styled.input`
 `;
 export const RadioLabel = styled.label`
   position: relative;
-  font-size: 17px;
+  font-size: 12px;
   font-weight: 900;
   color: #000;
   cursor: pointer;
@@ -163,16 +174,16 @@ export const RadioLabel = styled.label`
   margin-top: 5px;
   &:before {
     content: "";
-    width: 20px;
-    height: 20px;
-    line-height: 19px;
+    width: 17px;
+    height: 17px;
+    line-height: 17px;
     border-radius: 50px;
     border: 1px solid #0a87ff;
     font-size: 11px;
     text-align: center;
     position: absolute;
-    left: 0;
-    top: 0px;
+    left: 8px;
+    top: -1px;
     transition: all 0.1s ease-in-out;
   }
   @media (max-width: 1023px) {

@@ -17,6 +17,7 @@ import "styled-components/macro";
 // import BuyNowModal from "../../../quotePage/components/BuyNowModal/BuyNowModal";
 import StyledButton from "../../../../components/StyledButton";
 import BuyNowModal from "../../../quotePage/components/BuyNowModal";
+import { removeQuoteFromCart } from "../../../Cart/cart.slice";
 
 function SeeDetailsFooter({
   logo,
@@ -32,6 +33,7 @@ function SeeDetailsFooter({
   sum_insured,
   handleProceedClick = () => {},
 }) {
+  const dispatch = useDispatch()
   const [showBuyNow, setShowBuyNow] = useState(false);
   // const dispatch = useDispatch();
   // const { memberGroups } = useSelector(state => state.greetingPage);
@@ -77,6 +79,7 @@ function SeeDetailsFooter({
   const handleProceed = () => {
     handleProceedClick();
     setShowBuyNow(true);
+    dispatch(removeQuoteFromCart(groupCode))
     addProduct({
       ...selectedProduct,
       service_tax: selectedProduct.tax_amount,

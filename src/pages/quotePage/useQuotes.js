@@ -332,7 +332,8 @@ function useQuotesPage() {
         })
       );
     }
-  }, [selectedGroup]);
+    console.log(selectedGroup,memberGroups,'fetchQuotes215')
+  }, [selectedGroup,memberGroups]);
 
   //  const members = useSelector(({greetingPage}) => greetingPage.proposerDetails.members);
 

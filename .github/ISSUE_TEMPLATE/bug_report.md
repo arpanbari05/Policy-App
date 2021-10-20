@@ -1,38 +1,40 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ''
+title: IC-Product-Page-Issue
 labels: bug
-assignees: ''
+assignees: siddhijavalkar
 
 ---
 
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**Combination Details**
-
-***Member Details***
-self(M)-46, spouse - 44
+**Input Details**
+Gender- Male/Female
+Members- self(M)-46, spouse - 44, father-70, mother-70
+Pincode/City - Mumbai
 
 ***Tenure*** 
 1 Year
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
+*To Reproduce*
+Steps to reproduce the behaviour:
+1. Go to '...' (page)
+2. Click on '....' (components)
 3. Scroll down to '....'
 4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+*Page on which the defect is raised* : Input / Quote / See Details / Compare / Product Details / Proposal / Summary / Thank You
 
-***URL***
-
+**URL**
+The URL of the page where the issue occurred
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
+
+**Expected behaviour**
+A clear and concise description of what you expected to happen.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
