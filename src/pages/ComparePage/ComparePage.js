@@ -301,6 +301,7 @@ const popupContent = (
             {companies.map((item, index) => {
               if (companyWisePlans[item])
                 return (
+                  <>
                   <div className="col-lg-4">
                     <QuoteWrapper>
                     <div>
@@ -344,10 +345,12 @@ const popupContent = (
                         ></DropDown>
                       </DropDownWrapper>
                     </QuoteWrapper>
-                    <ErrorAddPlan>
+                    
+                  </div>
+                  <ErrorAddPlan>
                       {errors[item] ? errors[item] : ""}
                     </ErrorAddPlan>
-                  </div>
+                  </>
                 );
               else return <></>;
             })}
