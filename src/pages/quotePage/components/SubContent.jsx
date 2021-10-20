@@ -199,11 +199,13 @@ const SubContent = ({
       {
         <hr
           css={`
-            width: 88%;
-            margin: unset;
-            color: lightgrey;
-            height: 2px !important;
-            margin: 0 auto !important;
+          width: 88%;
+          margin: unset;
+          color: #c5c2c2;
+          position: relative;
+          top: 13px;
+          height: 1px !important;
+          margin: 0 auto !important;
           `}
         />
       }
@@ -259,8 +261,13 @@ const SubContent = ({
               <EachWrapper
                 css={`
                   /*background-color: pink;*/
-                  border-right: 1px solid #dfdfdf;
-                  border-left: 1px solid #dfdfdf;
+             
+                  // border-right: 1px solid #dfdfdf;
+                  // border-left: 1px solid #dfdfdf;
+                  top: 16px;
+                  &:after {
+                    top: 6px;
+                  }
                   padding: 10px 25px !important;
                   @media (max-width: 810px) {
                     padding-left: 8px !important;
@@ -406,13 +413,15 @@ const SubContent = ({
                   <CenterBottomToggle
                     css={`
                       position: relative;
-                      bottom: -1px;
+                      bottom: -15px;
+                    
                     `}
                   >
                     <SeeText
                       css={`
                         border-bottom: none !important;
                         cursor: pointer;
+                        font-size: 12px;
                       `}
                       onClick={() => {
                         setShow(!showHideToggle);

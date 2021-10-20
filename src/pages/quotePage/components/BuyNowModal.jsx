@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import addBtn from "../../../assets/images/add_btn.png";
 import CardModal from "../../../components/Common/Modal/CardModal";
 import remove from "../../../assets/images/remove.png";
@@ -9,6 +9,7 @@ import SecureLS from "secure-ls";
 import styled from "styled-components/macro";
 import useCartProduct from "../../Cart/hooks/useCartProduct";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
+import { setSelectedGroup } from "../quote.slice";
 function calculateTotalPremium(riders) {
   let total = 0;
   if (riders instanceof Array && riders.length) {
@@ -137,7 +138,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
   const history = useHistory();
 
   const urlSearchParams = useUrlQuery();
-
+  const dispatch = useDispatch();
   const enquiryId = urlSearchParams.get("enquiryId");
 
   if (!members) return <p>No Members found for groupCode {groupCode}</p>;
@@ -216,10 +217,11 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               `}
               onClick={() => {
                 setShowBuyNow(false);
-                history.replace({
+                history.push({
                   pathname: `/quotes/${groupCode}`,
                   search: `enquiryId=${enquiryId}`,
                 });
+                // dispatch(setSelectedGroup(groupCode));
               }}
             >
               <span>Add Plan</span> <img src={addBtn} alt="addbtn" />
