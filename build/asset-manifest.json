@@ -42,10 +42,18 @@
     "static/media/whatsapp01.a80b94b6.png": "/static/media/whatsapp01.a80b94b6.png"
   },
   "entrypoints": [
+<<<<<<< HEAD
     "static/js/runtime-main.153302c0.js",
     "static/css/2.0130d929.chunk.css",
     "static/js/2.995d487d.chunk.js",
     "static/css/main.16c4344d.chunk.css",
     "static/js/main.919b472d.chunk.js"
+=======
+    "static/js/runtime-main.acd8edfb.js",
+    "static/css/2.b225bda4.chunk.css",
+    "static/js/2.f4b09151.chunk.js",
+    "static/css/main.fd55c349.chunk.css",
+    "static/js/main.5f7b22cd.chunk.js"
+>>>>>>> 60a7f48997d5d21d1aa66ff1181bc347695a7557
   ]
 }

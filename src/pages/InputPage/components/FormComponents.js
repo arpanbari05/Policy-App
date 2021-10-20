@@ -36,33 +36,43 @@ export function formButtons(handleChange, handleSubmit, lastForm) {
         justify-content: space-between;
         width: 100%;
         padding: 0px 17px 17px;
-        @media (max-width: 480px){
-          padding:10px !important;
+        @media (max-width: 480px) {
+          padding: 10px 17px !important;
         }
       `}
     >
-    <div css={`
-    width:40%;
-    `}>
-    <BackButton
-        value={`Back`}
-        onClick={handleChange}
-        width={`107px`}
-        styledCss={`margin: 0;`}
-      />
-   </div>
+      <div
+        css={`
+          width: 40%;
+          @media (max-width: 480px) {
+            width: 30%;
+          }
+        `}
+      >
+        <BackButton
+          value={`Back`}
+          onClick={handleChange}
+          width={`100%`}
+          styledCss={`margin: 0;`}
+          height={"fit-content"}
+        />
+      </div>
 
-    <div css={`
-    width:40%;
-    `}>
-      
-      <StyledButton
-        value={lastForm ? "View Quotes" : `Continue`}
-        onClick={handleSubmit}
-        width={`100%`}
-        styledCss={`margin: 0;`}
-      />
-       </div>
+      <div
+        css={`
+          width: 40%;
+          @media (max-width: 480px) {
+            width: 30%;
+          }
+        `}
+      >
+        <StyledButton
+          value={lastForm ? "View Quotes" : `Continue`}
+          onClick={handleSubmit}
+          width={`100%`}
+          styledCss={`margin: 0; margin-right : 4px !important; height : 54.4px !important`}
+        />
+      </div>
     </div>
   );
 }
