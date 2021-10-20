@@ -100,14 +100,15 @@ function QuotePage() {
   const firstQuoteFound =
     filterQuotes.some((quotes) => quotes?.length > 0) || !loadingQuotes;
 
- console.log("d32fasg", (filters.premium === null || filters.premium === "") ,
- filters.cover === defaultfilters.cover ,
- filters.basePlanType === "Base health" ,
- filters.insurers.length < 1 ,
- filters.multiYear === defaultfilters.multiYear ,
- Object.keys(filters.moreFilters).length === 0
-   ? true
-   : false)
+  console.log(
+    "d32fasg",
+    filters.premium === null || filters.premium === "",
+    filters.cover === defaultfilters.cover,
+    filters.basePlanType === "Base health",
+    filters.insurers.length < 1,
+    filters.multiYear === defaultfilters.multiYear,
+    Object.keys(filters.moreFilters).length === 0 ? true : false
+  );
 
   const isFiltersDefault =
     (filters.premium === null || filters.premium === "") &&
@@ -188,6 +189,7 @@ function QuotePage() {
                         customWidth="fit-content"
                         customHeight="fit-content"
                         proposalpage={"used for styling purpose"}
+                        zIndexGiven="0"
                       />
                     </div>
                   ) : (

@@ -580,7 +580,7 @@ const TBody = ({
                   position: absolute;
                   left: 1px;
                   top: 0px;
-                  background-color: rgb(254, 204, 40);
+                  background-color: #2cd44a;
                 }
               `}
             >

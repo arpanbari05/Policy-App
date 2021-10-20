@@ -27,10 +27,36 @@ const BackButton = ({
       width={width}
       height={height}
       bg={bg}
-      color={color?color:`#253858`}
+      color={color ? color : `#253858`}
       css={styledCss}
     >
-      {icon ? icon : <IoArrowBackSharp />}<div style={{    padding: "7px 0 0 10px"}}> {value ? value : children}</div>
+      <div
+        css={`
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        `}
+      >
+        {icon ? (
+          icon
+        ) : (
+          <div
+            css={`
+              position: relative;
+              top: -1px;
+              right: 5px;
+              @media screen and (max-width: 480px) {
+                position: relative;
+                top: -4px;
+                right: 4px;
+              }
+            `}
+          >
+            <IoArrowBackSharp />
+          </div>
+        )}
+        <div>{value ? value : children}</div>
+      </div>
     </Button>
   );
 };
@@ -38,7 +64,7 @@ const BackButton = ({
 BackButton.defaultProps = {
   height: "58px",
   width: "100%",
-  bg: 'unset'
+  bg: "unset",
 };
 
 export default BackButton;
@@ -69,21 +95,21 @@ color: ${props.color};
   display: block;
   border-radius: 2px;
   font-size: 20px;
- 
+
   line-height: 35px;
   // z-index: 9999;
   float: left;
   left: 4px;
   position: inherit;
   @media (max-width: 480px) {
-    background:#eff3f5;
-    color:#465671;
-    display:flex;
-    align-items:center;
-    font-size:13px;
-    width:100%;
-    svg{
-      margin-top:5px;
+    background: #eff3f5;
+    color: #465671;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    width: 100%;
+    svg {
+      margin-top: 5px;
     }
   }
 `;
