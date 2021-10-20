@@ -152,8 +152,8 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
               top: 16px;
               &:after {
                 top: 6px !important;
-                width: unset;
-                left: 486px;
+                // width: unset;
+                // right: 0;
                
               }
               @media (max-width: 810px) {

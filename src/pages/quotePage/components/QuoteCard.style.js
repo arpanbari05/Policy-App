@@ -101,6 +101,7 @@ export const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 146px;
+  z-index: 88;
   margin-right: 5px;
   @media (max-width: 1400px) and (min-width: 1200px) {
     min-width: 120px;
