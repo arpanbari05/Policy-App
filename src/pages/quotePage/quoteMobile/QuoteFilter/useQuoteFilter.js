@@ -115,6 +115,7 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   const selectedPremiumCode = premium?.code;
 
   function filterQuote(quote) {
+    console.log('dsafdsf325dfgdggggggggggggggggggggg')
     let isCompanyMatch = false;
     let isPremiumMatch = false;
     const { company_alias, total_premium: premium } = quote;

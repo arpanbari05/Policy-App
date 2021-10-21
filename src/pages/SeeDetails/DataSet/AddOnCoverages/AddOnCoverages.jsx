@@ -1,4 +1,4 @@
-import { useEffect, useState,useCallback} from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useRouteMatch } from "react-router";
 import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
@@ -12,7 +12,7 @@ import CustomizeYourPlan from "../../../ProductDetails/components/CustomizeYourP
 // import { getRidersApi } from "../../../../QuotesPage/ServiceApi/serviceApi";
 import { getAbhiRiders, getRiders } from "../../SeeDetails";
 import "./AddOnCoverage.scss";
-import "styled-components/macro"
+import "styled-components/macro";
 import RiderCard from "../../../../components/Common/RiderCard/RiderCard";
 import CardSkeletonLoader from "../../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import { useCartProduct } from "../../../Cart";
@@ -37,18 +37,18 @@ const AddOnCoverages = ({
   ActiveMainTab,
   // riders,
   quote,
-  sum_insured,setRiders,
+  sum_insured,
+  setRiders,
   // product,
   tenure,
   riders,
-  setAddedRiders = () => { },
+  setAddedRiders = () => {},
   selectedAddOns = [],
-  addAddOn = () => { },
-  addRider = () => { },
+  addAddOn = () => {},
+  addRider = () => {},
 }) => {
+  console.log(riders, "23g32hg");
 
-  console.log(riders,'23g32hg')
-  
   const sumInsuredIndex = quote.sum_insured.indexOf(sum_insured);
   const product = {
     premium: quote.premium[sumInsuredIndex],
@@ -65,7 +65,7 @@ const AddOnCoverages = ({
     health_riders: [],
     addons: [],
   };
-  const { loading } = useSelector(state => state.seeDetails);
+  const { loading } = useSelector((state) => state.seeDetails);
   const [isRidersLoading, setIsRidersLoading] = useState(true);
   const [isAbhiRidersLoading, setIsAbhiRidersLoading] = useState(false);
   const [ridersError, setRidersError] = useState(false);
@@ -73,99 +73,95 @@ const AddOnCoverages = ({
   const { groupCode } = useParams();
   const { updateProductRedux, product: cartItem } = useCartProduct(
     groupCode,
-    product,
+    product
   );
   const { health_riders } = cartItem;
-  const handleAddRider = riderToAdd =>
-    setAddedRiders(prevRiders => [...prevRiders, riderToAdd]);
-    console.log("gege3312", selectedRiders,health_riders);
-  const handleRemoveRider = riderToRemove =>
-    setAddedRiders(prevRiders =>
-      prevRiders.filter(rider => rider.name !== riderToRemove.name),
+  const handleAddRider = (riderToAdd) =>
+    setAddedRiders((prevRiders) => [...prevRiders, riderToAdd]);
+  console.log("gege3312", selectedRiders, health_riders);
+  const handleRemoveRider = (riderToRemove) =>
+    setAddedRiders((prevRiders) =>
+      prevRiders.filter((rider) => rider.name !== riderToRemove.name)
     );
+  const handleRiderChange = ({
+    rider,
+    isRiderSelected,
+    hasOptions = false,
+  }) => {
+    //console.warning("Your rider is below");
+    const { health_riders } = cartItem;
+    // const newRiders =
+    //   !hasOptions && isRiderSelected
+    //     ? [...health_riders, rider]
+    //     : hasOptions && isRiderSelected
+    //     ? health_riders.filter(
+    //         health_rider => health_rider.rider_id !== rider.rider_id,
+    //       )
+    //     : health_riders.filter(
+    //         health_rider => health_rider.rider_id !== rider.rider_id,
+    //       );
 
-    const handleRiderChange = ({
-      rider,
-      isRiderSelected,
-      hasOptions = false,
-    }) => {
-      // const { health_riders } = cartItem;
-      // const newRiders =
-      //   !hasOptions && isRiderSelected
-      //     ? [...health_riders, rider]
-      //     : hasOptions && isRiderSelected
-      //     ? health_riders.filter(
-      //         health_rider => health_rider.rider_id !== rider.rider_id,
-      //       )
-      //     : health_riders.filter(
-      //         health_rider => health_rider.rider_id !== rider.rider_id,
-      //       );
-  
-      let newRiders;
-      if (!hasOptions && isRiderSelected) {
-        newRiders = [...health_riders, rider];
-      } else if (hasOptions && isRiderSelected) {
-        
-        const temp = health_riders.filter(
-          health_rider => health_rider.rider_id !== rider.rider_id,
-        );
-        newRiders = [
-          ...temp,
-          {
-            ...rider,
-            option_selected: {
-              [hasOptions.key]: hasOptions.selectedOption,
-            },
+    let newRiders;
+    if (!hasOptions && isRiderSelected) {
+      newRiders = [...health_riders, rider];
+      console.log("newnewnew", newRiders);
+    } else if (hasOptions && isRiderSelected) {
+      console.log("gege3312", rider, hasOptions);
+      const temp = health_riders.filter(
+        (health_rider) => health_rider.rider_id !== rider.rider_id
+      );
+      newRiders = [
+        ...temp,
+        {
+          ...rider,
+          option_selected: {
+            [hasOptions.key]: hasOptions.selectedOption,
           },
-        ];
-        const tempObj = { ...selectedRiders };
-        tempObj[hasOptions.key] = hasOptions.selectedOption;
-        setSelectedRiders(tempObj);
-      } else {
-        const temp = health_riders.filter(
-          health_rider => health_rider.rider_id !== rider.rider_id,
-        );
-  
-        let temp2 = [];
-        temp.forEach(data => {
-          if (data.parent_rider) {
-            temp.some(data2 => data2.alias === data.parent_rider) &&
-              temp2.push(data);
-          } else {
+        },
+      ];
+      const tempObj = { ...selectedRiders };
+      tempObj[hasOptions.key] = hasOptions.selectedOption;
+      setSelectedRiders(tempObj);
+    } else {
+      const temp = health_riders.filter(
+        (health_rider) => health_rider.rider_id !== rider.rider_id
+      );
+
+      let temp2 = [];
+      temp.forEach((data) => {
+        if (data.parent_rider) {
+          temp.some((data2) => data2.alias === data.parent_rider) &&
             temp2.push(data);
-          }
-        });
-        newRiders = [...temp2];
-      }
-     
-      // updateProductRedux({
-      //   ...cartItem,
-      //   health_riders: newRiders,
-      // });
-    };
-  
-    useEffect(() => {
-      const keys = Object.keys(selectedRiders);
-      const string = keys.reduce((a, b) => a + `&${b}=${selectedRiders[b]}`, "");
-      fetchAbhiRiders(string);
-    }, [selectedRiders]);
+        } else {
+          temp2.push(data);
+        }
+      });
+      newRiders = [...temp2];
+    }
+
+    updateProductRedux({
+      ...cartItem,
+      health_riders: newRiders,
+    });
+  };
+
+  useEffect(() => {
+    const keys = Object.keys(selectedRiders);
+    const string = keys.reduce((a, b) => a + `&${b}=${selectedRiders[b]}`, "");
+    fetchAbhiRiders(string);
+  }, [selectedRiders]);
 
   // const { selectedGroup } = useSelector(({ quotePage }) => quotePage);
 
-
-
-
-
-
   const fetchAbhiRiders = useCallback(
-    string => {
+    (string) => {
       if (product) {
         // setIsRidersLoading(true);
         setIsAbhiRidersLoading(true);
         setRidersError(false);
         getAbhiRiders(
           {
-            productId:  quote?.product?.id,
+            productId: quote?.product?.id,
             sum_insured,
             tenure,
             group: groupCode,
@@ -180,16 +176,16 @@ const AddOnCoverages = ({
             //make premium != 0
             setRiders(
               riders.data
-                .filter(rider => rider.total_premium !== 0 || rider.options)
-                .map(rider => ({ ...rider, rider_id: rider.id })),
+                .filter((rider) => rider.total_premium !== 0 || rider.options)
+                .map((rider) => ({ ...rider, rider_id: rider.id }))
             );
             setRidersError(false);
             setIsAbhiRidersLoading(false);
-          },
+          }
         );
       }
     },
-    [groupCode, product, sum_insured, tenure],
+    [groupCode, product, sum_insured, tenure]
   );
   return (
     <div
@@ -201,15 +197,18 @@ const AddOnCoverages = ({
         top: "0px",
         padding: "0 70px",
       }}
-      css={`justify-content: center;`}
+      css={`
+        justify-content: center;
+      `}
     >
-      <div className="col-12 box_shadow_box_without"
+      <div
+        className="col-12 box_shadow_box_without"
         css={`
-             @media (max-width: 767px) {
-               display: block;
-               padding:0px;
-             }
-           `}
+          @media (max-width: 767px) {
+            display: block;
+            padding: 0px;
+          }
+        `}
       >
         <div className="product-showcase">
           {/* <div className="plan_a_t_addon">
@@ -218,51 +217,57 @@ const AddOnCoverages = ({
           {/* <p className="color_gray_sub mb-15 title_h4_title">
             Save Upto 20% on your premium
           </p> */}
-          <div className="row" >
+          <div className="row">
             {loading ? (
               <SpinLoader />
             ) : (
               <>
-              <FeatureSection
-              heading="Customize Your Plan"
-              subHeading="You can add ‘Riders’ to you basic health insurance plan for additional benefits."
-              id="additional-riders"
-            ></FeatureSection>
-              <form className="form cf">
-                <section className="plan cf plan_cf_g_m">
-                  <div className="row"
-                   css={`
-                   justify-content: space-between
-                   `}>
-                    {loading ? (
-                      <CardSkeletonLoader />
-                    ) : riders && riders?.data?.length ? (
-                      riders?.data?.map((rider) => (
-                        <RiderCard
-                        productPage={false}
-                        key={rider.name + rider.total_premium}
-                        rider={rider}
-                        handleRiderChange={handleRiderChange}
-                        isMandatory={rider.is_mandatory}
-                        isRiderSelected={rider.is_mandatory || health_riders.some(
-                          health_rider => health_rider.rider_id === rider.rider_id,
-                        )}
-                        health_riders={health_riders}
-                        selectedRiders={selectedRiders}
-                        isAbhiRidersLoading={isAbhiRidersLoading}
-                        />
-                      ))
-                    ) : (
-                      <div>No Riders Found</div>
-                    )}
-                  </div>
-                </section>
-                {/* <CustomizeYourPlan groupCode={groupCode} product={product} seeDetails={quote.product.id} /> */}
-                {/* <AddOnsCoveragesSection
+                <FeatureSection
+                  heading="Customize Your Plan"
+                  subHeading="You can add ‘Riders’ to you basic health insurance plan for additional benefits."
+                  id="additional-riders"
+                ></FeatureSection>
+                <form className="form cf">
+                  <section className="plan cf plan_cf_g_m">
+                    <div
+                      className="row"
+                      css={`
+                        justify-content: space-between;
+                      `}
+                    >
+                      {loading ? (
+                        <CardSkeletonLoader />
+                      ) : riders && riders.length ? (
+                        riders?.map((rider) => (
+                          <RiderCard
+                            productPage={true}
+                            key={rider.name + rider.total_premium}
+                            rider={rider}
+                            handleRiderChange={handleRiderChange}
+                            isMandatory={rider.is_mandatory}
+                            isRiderSelected={
+                              rider.is_mandatory ||
+                              health_riders.some(
+                                (health_rider) =>
+                                  health_rider.rider_id === rider.rider_id
+                              )
+                            }
+                            health_riders={health_riders}
+                            selectedRiders={selectedRiders}
+                            isAbhiRidersLoading={isAbhiRidersLoading}
+                          />
+                        ))
+                      ) : (
+                        <div>No Riders Found</div>
+                      )}
+                    </div>
+                  </section>
+                  {/* <CustomizeYourPlan groupCode={groupCode} product={product} seeDetails={quote.product.id} /> */}
+                  {/* <AddOnsCoveragesSection
                   groupCode={groupCode}
                   product={product}
                 /> */}
-              </form>
+                </form>
               </>
             )}
           </div>
@@ -304,7 +309,7 @@ const AddOnCoverages = ({
 //             className="free-label four col rider-card-label"
 //             htmlFor={name}
 //           >
-           
+
 //             <div className="row">
 //               <div className="col-md-7">
 //                 <p className=" addon_plan_details_t_c_c">{name}</p>
