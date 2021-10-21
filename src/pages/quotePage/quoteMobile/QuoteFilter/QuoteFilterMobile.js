@@ -18,7 +18,7 @@ import {
 import PopularFilterMobile from "./PopularFilterMobile";
 import PreExistingMobile from "./PreExistingMobile";
 import NoClaimMobile from "./NoClaimMobile";
-const assignIndextoCode = moreFilter => {
+const assignIndextoCode = (moreFilter) => {
   let x = {};
   moreFilter.forEach((item, index) => {
     x = { ...x, [item.code]: index };
@@ -39,14 +39,14 @@ const QuoteFilterMobile = ({
     defaultfilters: { cover: sum_insured, tenure, plan_type },
   } = useSelector(({ frontendBoot }) => frontendBoot.frontendData.data);
   const data = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data,
+    ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
   const { memberGroups, proposerDetails } = useSelector(
-    state => state.greetingPage,
+    (state) => state.greetingPage
   );
   const sortedCompanies = companies.sort(
-    (a, b) => data?.companies[b].csr - data?.companies[a].csr,
+    (a, b) => data?.companies[b].csr - data?.companies[a].csr
   );
   const dispatch = useDispatch();
   const codeIndexMapMoreFilter = assignIndextoCode(moreFilter);
@@ -59,10 +59,20 @@ const QuoteFilterMobile = ({
     multiYear,
     moreFilters,
     basePlanType,
-  } = useSelector(state => state.quotePage.filters);
-  const { selectedGroup } = useSelector(state => state.quotePage);
+  } = useSelector((state) => state.quotePage.filters);
+  /*console.log(
+    "The Filters and their types",
+    typeof insurers,
+    typeof premium,
+    typeof cover,
+    typeof ownCover,
+    typeof planTypeFilter,
+    typeof multiYear,
+    typeof moreFilters
+  );*/
+  const { selectedGroup } = useSelector((state) => state.quotePage);
 
-  const handleMobileFilterUpdate = e => {
+  const handleMobileFilterUpdate = (e) => {
     e.preventDefault();
     dispatch(
       setFilters({
@@ -78,37 +88,36 @@ const QuoteFilterMobile = ({
           renewalBonus,
           others,
         },
-      }),
+      })
     );
   };
   useEffect(() => {
+    console.log("I Executed cover");
     const thisSelectedCover = covers.filter(
-      thisCover => thisCover.display_name === cover,
+      (thisCover) => thisCover.display_name === cover
     );
-     
+
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
-    console.log("fetchquotes quotefiltermobile")
+    console.log("fetchquotes quotefiltermobile");
     dispatch(
       fetchQuotes(companies, {
-        plan_type: plantypes.find(filter => filter.display_name === planType)
+        plan_type: plantypes.find((filter) => filter.display_name === planType)
           ?.code,
         tenure: parseInt(multiYear),
         sum_insured: ownCover
           ? `${ownCover}-${ownCover}`
           : thisSelectedCover[0].code,
         member: selectedGroup,
-      }),
+      })
     );
   }, [multiYear, planType, cover, ownCover]);
   useEffect(() => {
     if (insurers) dispatch(insurerFilter(insurers));
   }, [insurers]);
-  useEffect(() => {
-    if (premium) dispatch(premiumFilterCards(premium));
-  }, [premium]);
+
   const { member } = useSelector(
-    ({ greetingPage }) => greetingPage.proposerDetails,
+    ({ greetingPage }) => greetingPage.proposerDetails
   );
   const [customCover, setCustomCover] = useState(ownCover);
   const [selectedInsurer, setSelectedInsurer] = useState(insurers);
@@ -117,11 +126,11 @@ const QuoteFilterMobile = ({
   const [selectedFloater, setSelectedFloater] = useState(planTypeFilter);
   const [selectedYear, setSelectedYear] = useState(multiYear);
   const [popularFilter, setPopularFilter] = useState(
-    moreFilters.popularFilter || [],
+    moreFilters.popularFilter || []
   );
   const [preExisting, setPreExisting] = useState(moreFilters.preExisting || "");
   const [renewalBonus, setRenewalBonus] = useState(
-    moreFilters.renewalBonus || "",
+    moreFilters.renewalBonus || ""
   );
 
   const [others, setOthers] = useState(moreFilters.others || []);
@@ -145,7 +154,6 @@ const QuoteFilterMobile = ({
   };
 
   const handleClearFilters = () => {
-   
     dispatch(setFilters(defaultfilters));
     // dispatch(
     //   fetchQuotes(companies?.companies, {
@@ -164,15 +172,18 @@ const QuoteFilterMobile = ({
     // );
     setFilterMobile(false);
   };
-  console.log("cover..",selectedCover)
+  console.log("cover..", selectedCover);
+  /*useEffect(() => {
+    if (premium) {
+      //console.log("Executed Premium filter");
+      dispatch(premiumFilterCards(premium));
+    }
+  }, [premium, cover, ownCover, planType, multiYear, basePlanType]);*/
   return (
     <>
       <div className="mobile-filter-wrapper">
         <div className="shrt-menu shrt-menu-one light-bg text-dark">
-          <div
-            className="quotes_compare_container"
-            style={{  height: "58px" }}
-          >
+          <div className="quotes_compare_container" style={{ height: "58px" }}>
             <div
               className="quotes_compare_container_wrapper"
               style={{
@@ -197,7 +208,7 @@ const QuoteFilterMobile = ({
               </div>
               <button
                 className="btn-mobile-show-plan"
-                onClick={e => {
+                onClick={(e) => {
                   // alert("clicked");
                   setFilterMobile(false);
                   handleMobileFilterUpdate(e);
@@ -210,16 +221,24 @@ const QuoteFilterMobile = ({
           <div className="d-flex justify-content-between align-items-center main-header shrt_without_h_w height_bg_red_r">
             <Col md={6}>
               <div onClick={() => setFilterMobile(false)}>
-                <p className="text-white select_plan_options_p" style={{marginTop:"20px"}}>
-                <i class="fa fa-arrow-left" aria-hidden="true"></i> Filters
+                <p
+                  className="text-white select_plan_options_p"
+                  style={{ marginTop: "20px" }}
+                >
+                  <i class="fa fa-arrow-left" aria-hidden="true"></i> Filters
                 </p>
               </div>
             </Col>
           </div>
         </div>
         <div className="tabordion">
-        <section id="section4">
-            <input type="radio" name="sections" id="option4"   defaultChecked={true}/>
+          <section id="section4">
+            <input
+              type="radio"
+              name="sections"
+              id="option4"
+              defaultChecked={true}
+            />
             <label htmlFor="option4">Premium</label>
             <PremiumMobile
               premiumFilter={premiumFilter}
@@ -241,9 +260,7 @@ const QuoteFilterMobile = ({
               setOwnCover={setCustomCover}
             />
           </section>
-          <section
-            id="section5"           
-          >
+          <section id="section5">
             <input type="radio" name="sections" id="option5" />
             <label htmlFor="option5">Plan Type</label>
             <PlanMobile
@@ -253,9 +270,7 @@ const QuoteFilterMobile = ({
               setSelected={setSelectedFloater}
             ></PlanMobile>
           </section>
-         
-         
-          
+
           <section id="section6">
             <input type="radio" name="sections" id="option6" />
             <label htmlFor="option6">Multiyear Options</label>
@@ -267,12 +282,7 @@ const QuoteFilterMobile = ({
           </section>
 
           <section id="section1">
-            <input
-              type="radio"
-              name="sections"
-              id="option1"
-            
-            />
+            <input type="radio" name="sections" id="option1" />
             <label htmlFor="option1">Insurers</label>
             <InsurerMobile
               sortedCompanies={sortedCompanies}
@@ -292,9 +302,6 @@ const QuoteFilterMobile = ({
               setSelected={setPopularFilter}
             />
           </section>
-          
-          
-
 
           <section id="section7">
             <input type="radio" name="sections" id="option7" />
@@ -338,12 +345,11 @@ const QuoteFilterMobile = ({
                         </label>
                       </div>
                     </Col>
-                  ),
+                  )
                 )}
               </Row>
             </article>
           </section>
-          
         </div>
       </div>
     </>

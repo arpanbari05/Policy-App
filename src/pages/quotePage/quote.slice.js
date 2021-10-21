@@ -51,7 +51,6 @@ const quotePageSlice = createSlice({
     selectedGroup: "group_code_1",
     selectedRiders: [],
     selectedAddOns: {},
-    
   },
   name: "quote",
   reducers: {
@@ -141,7 +140,7 @@ const quotePageSlice = createSlice({
     },
     setFilters: (state, action) => {
       console.log("fetchquotes setfilters", action.payload);
-      
+
       state.filters = { ...state.filters, ...action.payload };
     },
     updateFetchedFilters: (state, action) => {
@@ -229,9 +228,13 @@ const quotePageSlice = createSlice({
     },
 
     premiumFilterQuotes: (state, action) => {
+      //console.log("I m running here");
       state.filterQuotes = state.quotes.map((item) => {
+        //console.log("Andddd here we go");
         if (action.payload?.code.includes("<")) {
-          return item.filter((quote) => quote.premium < 5000);
+          return item.filter((quote) => {
+            return quote.premium < 5000;
+          });
         } else {
           return item.filter(
             (quote) =>

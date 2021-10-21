@@ -117,13 +117,24 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   function filterQuote(quote) {
     let isCompanyMatch = false;
     let isPremiumMatch = false;
-    const { company_alias, total_premium: premium } = quote;
+    console.log("I_M_a_Quote", quote);
+    const { company_alias, total_premium: premiumOriginal } = quote;
+    let premium = premiumOriginal;
 
     if (insurers.length) {
       if (insurers.some((i) => i.alias === company_alias))
         isCompanyMatch = true;
       else isCompanyMatch = false;
     } else isCompanyMatch = true;
+
+    // will calulate the total overall premium.
+    if (quote.mandatory_riders.length > 0) {
+      premium =
+        premium +
+        quote.mandatory_riders
+          .map((item) => item.total_premium)
+          .reduce((acc, item) => (acc += item));
+    }
 
     if (selectedPremiumCode) {
       if (selectedPremiumCode.includes("<")) {
@@ -136,7 +147,8 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
         console.log(
           "ewhweh",
           selectedPremiumCode,
-          parseInt(premium) , parseInt(tempPremium)
+          parseInt(premium),
+          parseInt(tempPremium)
         );
         if (parseInt(premium) >= parseInt(tempPremium)) {
           isPremiumMatch = true;
