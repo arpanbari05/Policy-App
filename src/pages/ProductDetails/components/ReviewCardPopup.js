@@ -65,14 +65,17 @@ function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
               }
               @media (max-width: 450px) {
                 font-size: 13px;
-             
               }
             `}
           >
             {title}
           </ModalTitle>
         )}
-        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
+        <i
+          onClick={handleClose}
+          style={{ cursor: "pointer" }}
+          class="fas fa-times"
+        ></i>
       </Modal.Header>
       <Modal.Body
         style={{ borderRadius: "12px" }}
@@ -583,7 +586,7 @@ function ProductDetailsCard({ cartItem }) {
          <div className="logo_style_common" style={{ marginBottom: "0px" }}>
             <img
               css={`
-                width:100%;
+                width: 100%;
               `}
               src={logoSrc}
               alt={alias}
@@ -706,10 +709,12 @@ function ProductDetailsCard({ cartItem }) {
           >
             {/* <img src={CorrectIcon} class="display_in_m" alt="" /> */}
             <span
-            css={`
-            color:#0a87ff;
-            `}
-            ><AiOutlineCheckCircle /></span>{" "}
+              css={`
+                color: #0a87ff;
+              `}
+            >
+              <AiOutlineCheckCircle />
+            </span>{" "}
             <span class="font_weight_normal">{health_rider.name}</span>
           </div>
         ))}
@@ -762,6 +767,11 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
     onClose();
   };
 
+  console.log("The groupCodes", groupCodes);
+
+  const { product } = useCartProduct(groupCodes[0]);
+  const { tenure } = product;
+
   return (
     <PopUpWithCloseButton
       title={
@@ -796,7 +806,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
             groupCode={groupCode}
             onClose={onClose}
           />
-        ))}
+        ))}{" "}
         {/* {Object.keys(reducedAddOns).length > 0 && (
           <>
             <GradientTitle title="Add-on Coverages (Valid only 1 year)" />
@@ -1041,7 +1051,7 @@ function GradientTitle({ title = "" }) {
           width: 5px;
           height: 25px;
           position: absolute;
-          background-color:#2cd44a;;
+          background-color: #2cd44a;
           border-radius: 5px;
         `}
       ></span>

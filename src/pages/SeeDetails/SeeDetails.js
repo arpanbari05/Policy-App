@@ -289,7 +289,10 @@ const SeeDetails = ({
             group: groupCode,
           },
           (riders) => {
-            setRiders(riders);
+            console.log(riders,'sadg32')
+            const fltriders = riders.data.filter(rider => rider.total_premium !== 0 || rider.options)
+            .map(rider => ({ ...rider, rider_id: rider.id }));
+            setRiders(fltriders)
           }
         );
         dispatch(requestDetailsSuccess());

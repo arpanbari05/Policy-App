@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -21,11 +21,11 @@ const FilterModal = ({ show, handleClose }) => {
 
   console.log(selectedPremium, "selectedPremium");
   useEffect(() => {
-    if(filters.premium === "" && selectedPremium.code !== ""){
-      setSelectedPremium({ code: "",
-      displayName: ""})
+    if (filters.premium === "" && selectedPremium.code !== "") {
+      setSelectedPremium({ code: "", displayName: "" });
     }
-  }, [filters.premium])
+  }, [filters.premium]);
+  
   const handleChange = (code, displayName) => {
     if (displayName) {
       setSelectedPremium({ code, displayName });
