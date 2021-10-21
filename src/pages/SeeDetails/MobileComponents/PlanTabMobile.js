@@ -21,7 +21,7 @@ const PlanTabMobile = ({ data, item }) => {
                 fontSize: "11px",
                 fontWeight: "300",
                 width: "240px",
-                lineHeight: "1.1",
+                lineHeight: "1.3",
                 color: "gray",
               }}
             >
@@ -69,14 +69,14 @@ const PlanTabMobile = ({ data, item }) => {
                       return (
                         <li
                           style={{
-                            fontSize: "14px",
+                            fontSize: "11px",
                             borderRadius: "3px",
                             padding: "3px",
                             lineHeight: "1.1",
                             
                           }}
                           css={`
-                          text-indent: -1.2em;
+                          text-indent: -0.8em;
                             &::marker {
                               color: #f7a600;
 

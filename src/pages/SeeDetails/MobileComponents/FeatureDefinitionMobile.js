@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Collapse } from "react-bootstrap";
 import useWindowSize from "../../../customHooks/useWindowSize";
 import styled from "styled-components";
+import "styled-components/macro";
 import downarrow from "./../../../assets/images/downarrow.png";
 function FeatureDefinitionMobile({
   description,
@@ -38,7 +39,7 @@ function FeatureDefinitionMobile({
             <p
               style={{
                 fontSize: "11px",
-                lineHeight: "1.2",
+                lineHeight: "1.3",
                 fontWeight: "300",
                 width: "85%",
                 color:"grey"
@@ -53,7 +54,7 @@ function FeatureDefinitionMobile({
                     style={{
                       fontSize: "11px",
                     
-                      lineHeight: "1.2",
+                      lineHeight: "1.3",
                       fontWeight: "300",
                       width: "85%",
                       color:"grey"
@@ -134,7 +135,7 @@ function FeatureDefinitionMobile({
           <p
             style={{
               fontSize: "11px",
-              lineHeight: "1",
+              lineHeight: "1.2",
               fontWeight: "300",
               width: "85%",
               color:"grey"
@@ -149,7 +150,7 @@ function FeatureDefinitionMobile({
               style={{
                 width: "12px",
                     right: "20px",
-                    top: "32px",
+                    top: "36px",
                     position: "absolute",
                 transform: "rotate(180deg)",
               }}
@@ -162,7 +163,7 @@ function FeatureDefinitionMobile({
               style={{
                 width: "12px",
                     right: "20px",
-                    top: "32px",
+                    top: "36px",
                     position: "absolute",
                 position: "absolute",
               }}
@@ -173,12 +174,11 @@ function FeatureDefinitionMobile({
           )}
 
           {toggle ? (
-            <div
-            >
+            <div>
               <p
                 style={{
                   fontSize: "11px",
-                  lineHeight: "1",
+                  lineHeight: "1.2",
                   fontWeight: "300",
                   width: "85%",
                   color:"grey"

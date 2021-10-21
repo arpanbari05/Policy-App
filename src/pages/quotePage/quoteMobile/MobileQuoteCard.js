@@ -285,7 +285,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
                 css={`
                   font-weight: 900;
                   line-height: 16px;
-                  max-height: 37px;
+                  max-height: 34px;
                   font-size: 13px;
                   overflow:hidden;
 
@@ -357,7 +357,8 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
           >
             <div
               css={`
-                font-size: 10px;
+              font-size: 8px;
+              line-height: 2;
                 width: 100%;
                 & .feature-cell:first-child {
                   padding-left: 0 !important;
