@@ -115,6 +115,7 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   const selectedPremiumCode = premium?.code;
 
   function filterQuote(quote) {
+
     let isCompanyMatch = false;
     let isPremiumMatch = false;
     const { company_alias, total_premium: premium } = quote;
@@ -126,6 +127,7 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     } else isCompanyMatch = true;
 
     if (selectedPremiumCode) {
+      console.log('dsafdsf325dfgdhihihihi')
       if (selectedPremiumCode.includes("<")) {
         const tempPremium = selectedPremiumCode.split("<")[1];
         if (premium <= parseInt(tempPremium)) {

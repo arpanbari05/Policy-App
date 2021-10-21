@@ -105,6 +105,7 @@ const QuoteFilterMobile = ({
     if (insurers) dispatch(insurerFilter(insurers));
   }, [insurers]);
   useEffect(() => {
+    console.log('hehe3325')
     if (premium) dispatch(premiumFilterCards(premium));
   }, [premium]);
   const { member } = useSelector(
