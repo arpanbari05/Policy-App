@@ -118,7 +118,7 @@ const FilterModal = ({ show, handleClose }) => {
     <>
       {show && (
         <CustomModal1
-          header="Chose Your Plan Type"
+          header="Choose Your Plan Type"
           footerJSX={
             <ApplyBtn
               css={`
