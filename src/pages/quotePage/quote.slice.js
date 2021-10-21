@@ -208,6 +208,7 @@ const quotePageSlice = createSlice({
       state.productDiscounts = action.payload;
     },
     saveFilteredPremium: (state, action) => {
+      console.log('hehe3325321t3dsg')
       state.quotes = state.quotes.map((item) =>
         item.filter((quote) =>
           action.payload.code.includes("-")
@@ -228,13 +229,11 @@ const quotePageSlice = createSlice({
     },
 
     premiumFilterQuotes: (state, action) => {
-      //console.log("I m running here");
+      console.log('hehe3325premiumFilterQuotes')
       state.filterQuotes = state.quotes.map((item) => {
         //console.log("Andddd here we go");
         if (action.payload?.code.includes("<")) {
-          return item.filter((quote) => {
-            return quote.premium < 5000;
-          });
+          return item.filter((quote) => quote.premium  < 5000);
         } else {
           return item.filter(
             (quote) =>
@@ -665,3 +664,4 @@ export const getProductDiscount =
   };
 
 export default quotePageSlice.reducer;
+
