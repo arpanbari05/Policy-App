@@ -90,16 +90,15 @@ function useQuotesPage() {
   const [showSeeDetails, setShowSeeDetails] = useState(false);
   const [showBuyNow, setShowBuyNow] = useState(false);
   const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
-
+  
   const { memberGroups, proposerDetails } = useSelector(
     ({ greetingPage }) => greetingPage
-  );
-  const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
-
-  const initRef = useRef(true);
-
-  const { groupCode } = useParams();
-  console.log(memberGroups?.[selectedGroup], ",23523");
+    );
+    const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
+    
+    const initRef = useRef(true);
+    
+    const { groupCode } = useParams();
 
   const defaultfilters = {
     insurers: [],
@@ -119,7 +118,6 @@ function useQuotesPage() {
           tempfilter = data.extras;
         }
       });
-
       tempfilter !== null &&
         dispatch(
           setFilters({
@@ -127,7 +125,7 @@ function useQuotesPage() {
             cover: tempfilter.cover || defaultfilters.cover,
             multiYear: tempfilter.multiYear || defaultfilters.multiYear,
             planType:
-              memberGroups?.[selectedGroup]?.length === 1
+              memberGroups?.[groupCode]?.length === 1
                 ? "Individual"
                 : tempfilter.plan_type
                 ? tempfilter.plan_type === "M"
@@ -279,7 +277,7 @@ function useQuotesPage() {
       filters.cover &&
       filters.multiYear &&
       memberGroups &&
-      memberGroups?.[selectedGroup]
+      memberGroups?.[groupCode]
     ) {
       dispatch(clearFilterQuotes());
       console.log(
@@ -291,9 +289,9 @@ function useQuotesPage() {
         fetchQuotes(companies?.companies, {
           sum_insured: findCode("covers", filters.cover),
           tenure: filters.multiYear.charAt(0),
-          member: selectedGroup,
+          member: groupCode,
           plan_type:
-            memberGroups?.[selectedGroup]?.length === 1
+            memberGroups?.[groupCode]?.length === 1
               ? "I"
               : filters.planType
               ? filters.planType === "Multi Individual"
@@ -314,8 +312,8 @@ function useQuotesPage() {
   ]);
 
   useEffect(() => {
-    console.log("hehehehhe", memberGroups?.[selectedGroup]);
-    if (memberGroups?.[selectedGroup]?.length === 1) {
+    console.log("hehehehhe", memberGroups?.[groupCode]);
+    if (memberGroups?.[groupCode]?.length === 1) {
       dispatch(
         setFilters({
           planType: "Individual",
@@ -333,7 +331,7 @@ function useQuotesPage() {
       );
     }
     console.log(selectedGroup,memberGroups,'fetchQuotes215')
-  }, [selectedGroup,memberGroups]);
+  }, [groupCode,memberGroups]);
 
   //  const members = useSelector(({greetingPage}) => greetingPage.proposerDetails.members);
 
