@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import addBtn from "../../../assets/images/add_btn.png";
 import CardModal from "../../../components/Common/Modal/CardModal";
 import remove from "../../../assets/images/remove.png";
@@ -206,7 +206,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
           </div>
         ) : (
           <div>
-          <button
+            <button
               type="submit"
               className="btn"
               css={`
@@ -224,7 +224,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                   pathname: `/quotes/${groupCode}`,
                   search: `enquiryId=${enquiryId}`,
                 });
-               dispatch(setSelectedGroup(groupCode));
+                dispatch(setSelectedGroup(groupCode));
               }}
             >
               <span

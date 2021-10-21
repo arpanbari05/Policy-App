@@ -332,9 +332,22 @@ function useQuotesPage() {
         })
       );
     }
-    console.log(selectedGroup,memberGroups,'fetchQuotes215')
-  }, [selectedGroup,memberGroups]);
+    console.log(selectedGroup, memberGroups, "fetchQuotes215");
+  }, [selectedGroup, memberGroups]);
 
+  useEffect(() => {
+    if (filters.premium) {
+      console.log("Executed Premium filter");
+      dispatch(premiumFilterCards(filters.premium));
+    }
+  }, [
+    filters.premium,
+    filters.cover,
+    filters.ownCover,
+    filters.planType,
+    filters.multiYear,
+    filters.basePlanType,
+  ]);
   //  const members = useSelector(({greetingPage}) => greetingPage.proposerDetails.members);
 
   //  useEffect(() => {
