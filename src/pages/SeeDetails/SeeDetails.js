@@ -142,7 +142,7 @@ const SeeDetails = ({
   tenure,
   product,
 }) => {
-  console.log(quote, "jejejejj");
+ 
 
   const [addedRiders, setAddedRiders] = useState([]);
   const dispatch = useDispatch();
@@ -327,6 +327,7 @@ const SeeDetails = ({
         backdropClassName="ModalBackdrop"
         show={show}
       >
+      {console.log(show,"newnenwenw")}
         <Modal.Body
           className="background_transparent p-lg showOnDesktop"
           style={{

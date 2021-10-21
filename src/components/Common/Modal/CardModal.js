@@ -14,6 +14,7 @@ const CardModal = ({
   handleClose,
   BtnArrow,
   noFooter,
+
   showButton = true,
   revised = false,
   CompareBtnOnTop = false,
@@ -34,6 +35,7 @@ const CardModal = ({
         border: "none",
         marginBottom: revised ? "70px" : "0px",
         background: "rgba(0,0,0,0.5)",
+        zIndex:"9999999"
       }}
       css={`
         @media (min-width: 767px) and (max-width: 990px) {
