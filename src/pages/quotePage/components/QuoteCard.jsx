@@ -122,7 +122,6 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
         className="col-md-12 d-flex"
         css={`
           /* background-color: green;*/
-      
         `}
       >
         <div className="col-md-3">
@@ -154,7 +153,6 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                 top: 6px !important;
                 // width: unset;
                 // right: 0;
-               
               }
               @media (max-width: 810px) {
                 padding-left: 8px !important;
@@ -181,7 +179,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                           </SmallLabel>
                           <ValueText
                             css={`
-                            font-size: 12px !important;
+                              font-size: 12px !important;
                             `}
                           >
                             {item.value}
@@ -205,7 +203,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                           </SmallLabel>
                           <ValueText
                             css={`
-                            font-size: 12px !important;
+                              font-size: 12px !important;
                             `}
                           >
                             {item.value}
@@ -234,7 +232,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                     </SmallLabel>
                     <ValueText
                       css={`
-                      font-size: 12px !important;
+                        font-size: 12px !important;
                       `}
                       style={{ cursor: "pointer" }}
                       onClick={() => handleSeeDetailsClick(4)}
@@ -269,7 +267,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                           </SmallLabel>
                           <ValueText
                             css={`
-                            font-size: 12px !important;
+                              font-size: 12px !important;
                             `}
                           >
                             {item.value}
@@ -293,7 +291,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                           </SmallLabel>
                           <ValueText
                             css={`
-                            font-size: 12px !important;
+                              font-size: 12px !important;
                             `}
                           >
                             {item.value}
@@ -318,8 +316,8 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                 css={`
                   border-bottom: none !important;
                   cursor: pointer;
-                  font-size: 12px
-                  `}
+                  font-size: 12px;
+                `}
                 onClick={() => {
                   setShow(!show);
                 }}
@@ -342,7 +340,13 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             /*background-color: pink;*/
           `}
         >
-          <EachWrapper css={`&:after{display:none;}`}>
+          <EachWrapper
+            css={`
+              &:after {
+                display: none;
+              }
+            `}
+          >
             <LogoWrapper>
               <RadioButton onClick={() => handleBuyNowClick()}>
                 <strong>
@@ -358,7 +362,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                       ? ""
                       : mergedQuotes[0]?.tenure?.[activeCover]}
                     {mergedQuotes[0]?.tenure?.[activeCover] > 1
-                      ? "years"
+                      ? " years"
                       : "year"}
                   </span>
                 </strong>
