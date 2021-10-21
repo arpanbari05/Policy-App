@@ -727,7 +727,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           box-shadow: 0 2px 6px 0 hsl(0deg 0% 64% / 50%);
           padding: 10px;
           padding-top: 18px;
-          padding-bottom:${hasNextGroupProduct ? "40px" : "20px"};
+          padding-bottom:${hasNextGroupProduct ? "20px" : "10px"};
           /* padding-bottom: 20px; */
           border-radius: 2px;
           color: #000;

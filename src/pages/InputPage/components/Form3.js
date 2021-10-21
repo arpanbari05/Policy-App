@@ -25,7 +25,7 @@ const Form3 = ({ handleChange, currentForm }) => {
   const dispatch = useDispatch();
   const { frontendData } = useSelector((state) => state.frontendBoot);
   const [selected, setSelected] = useState("F");
-  const [selectedText, setSelectedText] = useState("F");
+  //const [selectedText, setSelectedText] = useState("F");
 
   const { data } = frontendData || [""];
   const { plantypes, description } = data || [""];
@@ -33,7 +33,8 @@ const Form3 = ({ handleChange, currentForm }) => {
   const handleSubmit = () => {
     if (selected) {
       handleChange(4.1);
-      dispatch(saveForm4UserDetails({planType: selected}));
+
+      dispatch(saveForm4UserDetails({ planType: selected }));
     }
   };
 
@@ -48,6 +49,7 @@ const Form3 = ({ handleChange, currentForm }) => {
           padding: 17px;
         `}
       >
+        {console.log("The plantypes", plantypes)}
         <Title>Which plan would you like to opt for?</Title>
         <CustomProgressBar now={currentForm} total={5} />
         <div

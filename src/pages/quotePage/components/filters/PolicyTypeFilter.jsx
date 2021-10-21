@@ -205,6 +205,7 @@ const FilterModal = ({ show, handleClose }) => {
 const PolicyTypeFilter = () => {
   const [showModal, setShowModal] = useState(false);
   const filters = useSelector(({ quotePage }) => quotePage.filters);
+  console.log("Type of plan", filters.planType);
   return (
     <>
       <Filter className="filter d-flex flex-column flex-fill">

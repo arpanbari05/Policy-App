@@ -81,7 +81,7 @@ const CardModal = ({
     font-size: 14px;
     /* padding: 1px 10px; */
     /* background-color: #ffeeee; */
-    color: red;
+    color:  #bd2b2b;
           `}>{errorsFromCompare}</span>
         ):""}
         

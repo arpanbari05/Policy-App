@@ -360,6 +360,7 @@ export const saveForm3UserDetails = (data, handleChange) => {
 
 export const saveForm4UserDetails = (data) => {
   const { planType } = data;
+
   return async (dispatch) => {
     try {
       const response = await updateUser({
@@ -392,7 +393,7 @@ export const saveForm4UserDetails = (data) => {
   };
 };
 
-export const saveForm5UserDetails = (data, pushToQuotes) => {
+export const saveForm5UserDetails = (data, pushToQuotes, planType) => {
   return async (dispatch, getState) => {
     try {
       const response = await updateUser({
@@ -412,6 +413,16 @@ export const saveForm5UserDetails = (data, pushToQuotes) => {
       pushToQuotes(Object.keys(newMemberGroups)[0]);
       dispatch(setShouldFetchQuotes(true));
       dispatch(createUserData({ medical_history: [...data] }));
+      dispatch(
+        setFilters({
+          planType:
+            planType === "Multi Individual"
+              ? "Multi Individual"
+              : planType === "Family Floater"
+              ? "Family Floater"
+              : "Individual",
+        })
+      );
     } catch (err) {
       //alert(err);
     }

@@ -57,14 +57,13 @@ const useProposalSections = (
     }
     if (
       submit === "SUBMIT" &&
-      setShow &&
-      !isValid.some(item => item === undefined || item === false)
+      setShow && !isValid.some(item => item === undefined || item === false)
     ) {
       dispatch(
         saveProposalData(
           { [name]: values },
           response => {
-            console.log(response, "h13115");
+            
             dispatch(setMedUnderwritting(response?.is_medical_under_writing));
            
             if (
