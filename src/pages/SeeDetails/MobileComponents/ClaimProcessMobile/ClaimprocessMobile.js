@@ -41,7 +41,7 @@ function ClaimprocessMobile({
                                 className={`tab ${activebtn === 1 && "tab__active"} `}
 
                             >
-                                Cashless Claim
+                               <span> Cashless Claim</span>
                             </TabButton>
                             <TabButton
                                 onClick={() => setActivebtn(2)}
@@ -49,7 +49,7 @@ function ClaimprocessMobile({
                                 className={`tab ${activebtn === 2 && "tab__active"} `}
                              
                             >
-                                Document Required
+                             <span>   Document Required</span>
                             </TabButton>
                             <TabButton
                                 onClick={() => setActivebtn(3)}
@@ -57,7 +57,7 @@ function ClaimprocessMobile({
                                 className={`tab ${activebtn === 3 && "tab__active"} `}
                              
                             >
-                                Reimbursement Claim
+                                <span>Reimbursement Claim</span>
                             </TabButton>
                         </ActiveBar>
                         {activebtn === 1 &&
