@@ -729,6 +729,7 @@ function ProductDetailsCard({ cartItem }) {
 }
 
 function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
+  
   const name = useSelector((state) => state.greetingPage.proposerDetails.name);
   const firstName = name.split(" ")[0];
   const cart = useSelector((state) => state.cart);
@@ -736,7 +737,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
   const groupCodes = Object.keys(cart).filter((item) =>
     Object.keys(memberGroups).includes(item)
   );
-
+ 
   const allAddOns = groupCodes.reduce(
     (allAddOns, groupCode) => [...allAddOns, ...cart[groupCode].addons],
     []
@@ -875,8 +876,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
                 }
               `}
             >
-              {amount(totalPremium)}/{" "}
-              {tenure === 1 ? "year" : `${tenure} years`}
+              {amount(totalPremium)}
             </div>
           </div>
           <Link
