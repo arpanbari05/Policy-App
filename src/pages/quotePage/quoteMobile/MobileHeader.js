@@ -224,6 +224,7 @@ const MobileHeader = ({ groupCode }) => {
                   overflow: hidden;
                   white-space: nowrap;
                   text-overflow: ellipsis;
+                      max-width: 87px;
                   text-transform: capitalize;
                 `}
               >
