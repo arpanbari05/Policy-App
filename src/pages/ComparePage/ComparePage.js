@@ -676,7 +676,7 @@ const ComparePage = () => {
     hideCells,
     setHideCells,
     showBuyNowPopup,
-    setShowBuyNowPopup,
+  setShowBuyNowPopup,
     imageSend,
     imageSendM,
     emailStatus,

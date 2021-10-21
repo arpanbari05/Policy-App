@@ -727,7 +727,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           box-shadow: 0 2px 6px 0 hsl(0deg 0% 64% / 50%);
           padding: 10px;
           padding-top: 18px;
-          padding-bottom:${hasNextGroupProduct ? "20px" : "10px"};
+          padding-bottom:${hasNextGroupProduct ? "25px" : "10px"};
           /* padding-bottom: 20px; */
           border-radius: 2px;
           color: #000;
@@ -1396,14 +1396,14 @@ function ProceedButton({
       </div>
       <span
         css={`
-          width: 100px;
+          width: 75px;
           text-align: center;
           /* background-color: #5fb0ff; */
           padding: 6px 12px;
 
           color: #fff;
           /* border: 1px solid var(--abc-red); */
-          font-size: 16px;
+          font-size: 15px;
           border-radius: 2px;
          
         `}
