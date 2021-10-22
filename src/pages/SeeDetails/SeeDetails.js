@@ -320,7 +320,7 @@ const SeeDetails = ({
     };
     getdetails();
   }, [activeFieldset]);
-
+  console.log(planDetails,'sadg321')
   return (
     <div>
       <Modal
