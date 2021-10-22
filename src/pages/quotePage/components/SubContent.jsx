@@ -128,6 +128,9 @@ const SubContent = ({
   mandatory_riders[activeCover]?.forEach((element) => {
     additionalPremium += element.total_premium;
   });
+
+  console.log('testquote123',name,features)
+
   const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   const handleSeeDetailsClick = (clickedFrom) => {
     handleSeeDetails(

@@ -8,7 +8,7 @@ const Form3CheckBox = ({
   type,
   handleChange,
   checked,
-  childCount
+  childCount,
 }) => {
   const handleChecked = () => {
     handleChange(code, checked, type);
@@ -35,12 +35,32 @@ const Form3CheckBox = ({
           }
         `}
       >
-        <span>
+        <span css={`
+         @media (max-width: 767px) { 
+           & svg{
+
+             top: 3px !important;
+             left: 2px !important;
+            }
+        }
+        `}>
           <svg width="12px" height="10px">
             <use xlinkHref="#check"></use>
           </svg>
         </span>
-        <span style={{marginLeft:"10px"}} className="cbx__title">{title}</span>
+        <span
+          style={{ marginLeft: "10px" }}
+          className="cbx__title"
+          css={`
+          
+              font-weight: 900;
+              font-size: 13px !important;
+              margin-left: 0 !important;
+            }
+          `}
+        >
+          {title}
+        </span>
       </label>
       <svg className="inline-svg">
         <symbol id="check" viewBox="0 0 12 10">

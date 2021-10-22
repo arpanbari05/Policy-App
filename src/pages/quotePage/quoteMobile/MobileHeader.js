@@ -219,8 +219,7 @@ const MobileHeader = ({ groupCode }) => {
               `}
             >
               <span
-                css={`
-                 
+                css={`               
                   overflow: hidden;
                   white-space: nowrap;
                   text-overflow: ellipsis;

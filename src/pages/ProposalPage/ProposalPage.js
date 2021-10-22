@@ -52,6 +52,9 @@ const ProposalPage = ({ history }) => {
   const { activeIndex, proposalData } = useSelector(
     (state) => state.proposalPage
   );
+
+  console.log(active,activeIndex,'adsgh321')
+
   useEffect(() => {
     if (listOfForms.length && active >= listOfForms.length) {
       dispatch(
@@ -102,6 +105,7 @@ const ProposalPage = ({ history }) => {
           }
         `}
       >
+        <button onClick={()=>{setActive(active-1)}}>gojooo backk</button>
         <Card
           onClick={() => {
             setActive(0);
@@ -122,6 +126,7 @@ const ProposalPage = ({ history }) => {
                 }
                 active={active}
                 setActive={setActive}
+              
                 name={activeForm}
                 defaultValue={defaultData}
               />
@@ -170,6 +175,7 @@ const ProposalPage = ({ history }) => {
                 schema={currentSchema ? currentSchema[activeForm] : {}}
                 setActive={setActive}
                 name={activeForm}
+                setBack={()=>{  setActive(active-1)}}
                 defaultValue={defaultData}
               />
             </>

@@ -128,7 +128,7 @@ function useQuotesPage() {
         dispatch(
           setFilters({
             ...tempfilter,
-            cover: tempfilter.cover || defaultfilters.cover,
+            cover: tempfilter?.cover || defaultfilters.cover,
             multiYear: tempfilter.multiYear || defaultfilters.multiYear,
             planType:
               memberGroups?.[groupCode]?.length === 1
