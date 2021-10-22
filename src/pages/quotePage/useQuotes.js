@@ -26,6 +26,12 @@ function useQuotesPage() {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
+  const filtersForTest = useSelector((state) => state.quotePage.filters);
+  console.log(
+    "Filters PlanType applied to the quotes page",
+    filtersForTest.planType
+  );
+
   const imageSendQuote = (email) => {
     const input = document.getElementById("printQuotePage");
 
@@ -91,19 +97,14 @@ function useQuotesPage() {
   const [showBuyNow, setShowBuyNow] = useState(false);
   const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
 
-const handleCloseSeeDetail = () => {
-  setShowSeeDetails(false);
- 
-}
-
   const { memberGroups, proposerDetails } = useSelector(
     ({ greetingPage }) => greetingPage
-    );
-    const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
-    
-    const initRef = useRef(true);
-    
-    const { groupCode } = useParams();
+  );
+  const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
+
+  const initRef = useRef(true);
+
+  const { groupCode } = useParams();
 
   const defaultfilters = {
     insurers: [],
@@ -289,7 +290,6 @@ const handleCloseSeeDetail = () => {
         "fetchQuotes useQUotes",
         filters?.multiYear?.charAt(0),
         findCode("covers", filters?.cover)
-        ,plan_type
       );
       dispatch(
         fetchQuotes(companies?.companies, {
@@ -336,8 +336,8 @@ const handleCloseSeeDetail = () => {
         })
       );
     }
-    console.log(selectedGroup,memberGroups,'fetchQuotes215')
-  }, [groupCode,memberGroups]);
+    console.log(selectedGroup, memberGroups, "fetchQuotes215");
+  }, [groupCode, memberGroups]);
 
   useEffect(() => {
     if (filters.premium) {
@@ -455,7 +455,6 @@ const handleCloseSeeDetail = () => {
     member,
     setSortBy,
     recFilterdQuotes,
-    handleCloseSeeDetail
   };
 }
 

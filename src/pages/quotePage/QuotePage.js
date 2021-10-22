@@ -53,7 +53,8 @@ function QuotePage() {
 
   const { groupCode } = useParams();
   const selectedGroup = groupCode;
-
+  const { loadingQuotes, filters } = useSelector((state) => state.quotePage);
+  console.log("Filters plantype on quote page", filters);
   const defaultfilters = {
     insurers: [],
     premium: "",
@@ -63,7 +64,7 @@ function QuotePage() {
       memberGroups?.[selectedGroup]?.length === 1
         ? "Individual"
         : proposerDetails.plan_type
-        ? proposerDetails.plan_type === "M"
+        ? proposerDetails.plan_type === "Multi Individual"
           ? "Multi Individual"
           : "Family Floater"
         : "Family Floater",
@@ -73,7 +74,7 @@ function QuotePage() {
   };
 
   const dispatch = useDispatch();
-  const { loadingQuotes, filters } = useSelector((state) => state.quotePage);
+
   const [seeDetailsQuote, setSeeDetailsQuote] = useState({
     quote: "",
     activeSum: "",

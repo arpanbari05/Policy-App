@@ -8,7 +8,11 @@ import ContinueBtn from "../components/Buttons/ContinueBtn";
 import BackBtn from "../components/Buttons/BackBtn";
 import useProposalSections from "./useProposalSections";
 import { useDispatch, useSelector } from "react-redux";
-import { setProposalData } from "./ProposalSections.slice";
+import {
+  noForAllCheckedFalse,
+  noForAllCheckedTrue,
+  setProposalData,
+} from "./ProposalSections.slice";
 import ProposalCheckBox from "../../../components/Common/ProposalSummary/summaryCheckBox";
 
 import "styled-components/macro";
@@ -44,6 +48,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue,setBack }) => {
   const { proposalData } = useSelector((state) => state.proposalPage);
   const [mutateValues, setMutateValues] = useState();
   const dispatch = useDispatch();
+  const { noForAllChecked } = useSelector((state) => state.proposalPage);
 
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
@@ -232,9 +237,15 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue,setBack }) => {
                       css
                       showTitle={false}
                       title={"No" + item}
-                      value={noForAll[item]}
+                      //value={noForAll[item]}
+                      checked={noForAllChecked}
                       onChange={(e) => {
                         setNoForAll({ ...noForAll, [item]: e.target.checked });
+                        if (noForAllChecked) {
+                          dispatch(noForAllCheckedFalse());
+                        } else {
+                          dispatch(noForAllCheckedTrue());
+                        }
                       }}
                     ></Checkbox2>{" "}
                     <span>No For All Questions </span>{" "}
