@@ -31,15 +31,16 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                 style={{
                   fontSize: "12px",
                   lineHeight: "1.3",
-                  color: "gray",
-
+                  color: "black",
+fontFamily:"unset"
                 }}
                 css={`
                   & p {
                     line-height: 1.3;
+                    font-family:unset !important;
                   }
                   & span {
-
+                    font-family:unset !important;
                   }
                 `}
                 dangerouslySetInnerHTML={{
@@ -58,6 +59,7 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                     font-size: 13px;
                     width: 100px;
                     border:none;
+                    font-weight: bold;
                   `}
                   onClick={() => setActivebtn(1)}
                   style={{
@@ -72,6 +74,7 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                     font-size: 13px;
                     width: 100px;
                     border:none;
+                    font-weight: bold;
                   `}
                   onClick={() => setActivebtn(2)}
                   style={{
@@ -86,6 +89,7 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                     font-size: 13px;
                     width: 100px;
                     border:none;
+                    font-weight: bold;
                   `}
                   onClick={() => setActivebtn(3)}
                   style={{
@@ -330,7 +334,8 @@ const CompanyDetails = styled.div`
 `;
 
 const TabFor = styled.div`
-  border: 1px solid #aaa;
+  /* border: 1px solid #aaa; */
+  font-weight:bold;
   width: 300px;
   height: 40px;
   margin-left: auto;

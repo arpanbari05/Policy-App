@@ -72,7 +72,13 @@ function ProductCard({ product }) {
           
             <img src={logo} />
          
-          <span> {productName}</span>
+          <span
+          css={`
+          @media(max-width: 767px){
+            font-size:14px !important;
+          }
+          `}
+          > {productName}</span>
         </span>
         <span
           css={`
@@ -85,17 +91,37 @@ function ProductCard({ product }) {
         >
           <ProductData noBorder>
             <span class="label-add_product">Sum Insured</span>
-            <span>₹ {parseInt(sum_insured).toLocaleString("en-IN")}</span>
+            <span
+            css={`
+            @media(max-width: 767px){
+              font-size:13px !important;
+            }
+            `}
+            >₹ {parseInt(sum_insured).toLocaleString("en-IN")}</span>
           </ProductData>
           <ProductData>
             <span class="label-add_product">Premium</span>
-            <span>
+            <span
+            css={`
+            @media(max-width: 767px){
+              font-size:13px !important;
+            }
+            `}
+            >
+
+
               ₹ {parseInt(premium + health_riders).toLocaleString("en-IN")}
             </span>
           </ProductData>
           <ProductData>
             <span class="label-add_product">Tenure</span>
-            <span> {tenure} Year</span>
+            <span
+            css={`
+            @media(max-width: 767px){
+              font-size:13px !important;
+            }
+            `}
+            > {tenure} Year</span>
           </ProductData>
         </span>
       </div>
@@ -121,7 +147,13 @@ function ProductCard({ product }) {
         </ProductData>
         <ProductData>
           <span class="label-add_product">Tenure</span>
-          <span>
+          <span
+          css={`
+          @media(max-width: 767px){
+            font-size:13px !important;
+          }
+          `}
+          >
             {" "}
             {tenure >= 2 ? `${tenure + " Years"}` : `${tenure + " Year"}`}
           </span>
@@ -367,7 +399,7 @@ const ProductData = styled.div`
     left: unset;
 
     & .label-add_product {
-      font-size: 15px;
+      font-size: 13px;
     }
   }
 
