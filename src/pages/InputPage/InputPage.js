@@ -144,7 +144,7 @@ export const InputPage = () => {
             />
           </div>
         </div>
-        <Wrapper>
+        <Wrapper currentForm={currentForm}>
           <InnerWrapper className="hide_on_mobile">{planCard()}</InnerWrapper>
           <InnerWrapper>
             {" "}
@@ -248,7 +248,7 @@ const Wrapper = styled.div`
   }
   @media (max-width: 480px) {
     margin: 0 auto;
-    width: 90%;
+    width: ${(props)=> props.currentForm === 2 ? "100%" : "90%"};
     & > div {
       width: 100% !important;
     }
