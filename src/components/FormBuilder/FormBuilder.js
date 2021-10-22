@@ -30,6 +30,7 @@ const FormBuilder = ({
   setCustomValid = () => {},
   noForAll,
   setNoForAll,
+  setNoForAllEmpty,
 }) => {
   const {
     updateValue,

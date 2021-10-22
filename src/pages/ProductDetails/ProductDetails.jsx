@@ -22,20 +22,24 @@ import { setFilters, setShouldFetchQuotes } from "../quotePage/quote.slice";
 //import { setFilters, setShouldFetchQuotes } from "../QuotesPage/quotePage.slice";
 
 function GoBackButton({ groupCode, ...props }) {
-  const groupCodes = Object.keys(useSelector(({greetingPage}) => greetingPage.memberGroups));
+  const groupCodes = Object.keys(
+    useSelector(({ greetingPage }) => greetingPage.memberGroups)
+  );
   const urlQuery = useUrlQuery();
   const enquiryId = urlQuery.get("enquiryId");
-  
+
   const history = useHistory();
   return (
     <button
       className="btn"
       type="button"
       onClick={() => {
-        groupCodes[1] && groupCodes[1] === groupCode?history.replace(`/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`):history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`)
-        
-      }
-      }
+        groupCodes[1] && groupCodes[1] === groupCode
+          ? history.replace(
+              `/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`
+            )
+          : history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
+      }}
       css={`
         width: max-content;
         padding: 0 !important;
@@ -78,7 +82,7 @@ function GoBackButton({ groupCode, ...props }) {
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
-  const expand = useSelector(({productPage}) => productPage.expandMobile);
+  const expand = useSelector(({ productPage }) => productPage.expandMobile);
   const location = useLocation();
 
   const dispatch = useDispatch();
@@ -153,34 +157,41 @@ const ProductDetails = () => {
             history.goBack();
           }}
         >
-         <i class="fas fa-chevron-circle-left"></i>{" "}<span className="mx-2"> Go Back</span>
+          <i class="fas fa-chevron-circle-left"></i>{" "}
+          <span className="mx-2"> Go Back</span>
         </MobileHeaderText>
       </MobileHeader>
       <main
         className="container noselect"
-        css={expand?`
+        css={
+          expand
+            ? `
         position:fixed;
         opacity:0.5;
-        `:`
+        `
+            : `
 
           ${mobile} {
             background-color: #fff;
           }
-        `}
+        `
+        }
       >
         {showNav && <ProductDetailsNavbar />}
-        <div className="d-flex align-items-center justify-content-between my-3" css={`
-        @media (max-width:1200px){
-          flex-direction: column;
-    align-items: flex-start !important;
-        }
-        `}>
-       
+        <div
+          className="d-flex align-items-center justify-content-between my-3"
+          css={`
+            @media (max-width: 1200px) {
+              flex-direction: column;
+              align-items: flex-start !important;
+            }
+          `}
+        >
           <GoBackButton groupCode={groupCode} />
           <div
             css={`
               width: 70%;
-              @media (max-width:1200px){
+              @media (max-width: 1200px) {
                 width: 100%;
               }
             `}
@@ -192,43 +203,37 @@ const ProductDetails = () => {
         <Row
           css={`
             justify-content: center;
-            @media (max-width:1200px){
-             flex-direction:column;
-             }
+            @media (max-width: 1200px) {
+              flex-direction: column;
+            }
           `}
         >
           <div
-            
             css={`
-             width:26%;
-             @media (max-width:1350px){
-              width:30%;
-
-             }
-             @media (max-width:1200px){
-              width:100%;
-
-             }
+              width: 26%;
+              @media (max-width: 1350px) {
+                width: 30%;
+              }
+              @media (max-width: 1200px) {
+                width: 100%;
+              }
               ${mobile} {
                 display: none;
-               
               }
             `}
           >
             <ReviewCart companies={companies} groupCode={groupCode} />
           </div>
           <div
-           css={`
-            width:74%;
-            @media (max-width:1350px){
-              width:70%;
-
-             }
-             @media (max-width:1200px){
-              width:100%;
-
-             }
-           `}
+            css={`
+              width: 74%;
+              @media (max-width: 1350px) {
+                width: 70%;
+              }
+              @media (max-width: 1200px) {
+                width: 100%;
+              }
+            `}
             // className="wow fadeInLeft animated"
             // data-wow-delay="0.9s"
             // style={{
@@ -250,9 +255,9 @@ const ProductDetails = () => {
               // }}
               // id="customize-your-plan-section"
               css={`
-              @media (max-width:1200px){
-                margin-top:15px;
-              }
+                @media (max-width: 1200px) {
+                  margin-top: 15px;
+                }
                 ${mobile} {
                   padding: 0;
                   margin-bottom: 127px;

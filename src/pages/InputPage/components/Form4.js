@@ -24,7 +24,7 @@ import BackButton from "../../../components/BackButton";
 import RadioButton from "../../../components/RadioButton";
 import SecureLS from "secure-ls";
 import { useHistory } from "react-router";
-import { setFilters } from "../../quotePage/quote.slice";
+import { setFilters, setPlanType } from "../../quotePage/quote.slice";
 
 export const medicalHistoryRadioArr = [
   {
@@ -154,6 +154,8 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
                           planTypeSelected
                         )
                       );
+                      console.log("I m executed here in form 4");
+                      dispatch(setPlanType(planTypeSelected));
                     } else {
                       setSelected(e.target.value);
                     }

@@ -26,6 +26,9 @@ function useQuotesPage() {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
+  //const filtersForTest = useSelector((state) => state.quotePage.planType);
+  //console.log("Filters PlanType applied to the quotes page", filtersForTest);
+
   const imageSendQuote = (email) => {
     const input = document.getElementById("printQuotePage");
 
@@ -84,6 +87,7 @@ function useQuotesPage() {
   const { filterQuotes: filterGivenQuotes } = useQuoteFilter();
 
   const filterQuotes = quotes.map((icQuotes) => filterGivenQuotes(icQuotes));
+  const planType = useSelector((state) => state.quotePage.planType);
 
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
@@ -98,12 +102,12 @@ const handleCloseSeeDetail = () => {
 
   const { memberGroups, proposerDetails } = useSelector(
     ({ greetingPage }) => greetingPage
-    );
-    const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
-    
-    const initRef = useRef(true);
-    
-    const { groupCode } = useParams();
+  );
+  const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
+
+  const initRef = useRef(true);
+
+  const { groupCode } = useParams();
 
   const defaultfilters = {
     insurers: [],
@@ -328,16 +332,12 @@ const handleCloseSeeDetail = () => {
     } else {
       dispatch(
         setFilters({
-          planType: fetchFilters.plan_type
-            ? fetchFilters.plan_type === "M"
-              ? "Multi Individual"
-              : "Family Floater"
-            : "Family Floater",
+          planType: planType,
         })
       );
     }
-    console.log(selectedGroup,memberGroups,'fetchQuotes215')
-  }, [groupCode,memberGroups]);
+    console.log(selectedGroup, memberGroups, "fetchQuotes215");
+  }, [groupCode, memberGroups]);
 
   useEffect(() => {
     if (filters.premium) {

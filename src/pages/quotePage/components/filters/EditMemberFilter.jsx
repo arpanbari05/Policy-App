@@ -599,7 +599,7 @@ const EditMemberFilter = () => {
         </span>
         <PencilWrapper
           className="d-flex justify-content-center align-items-center"
-          style={{ color: "#0a87ff" }}
+          style={{ color: "#0a87ff" /* background: "rgb(239,247,255)"*/ }}
         >
           {/* <PencilIcon
             style={{
