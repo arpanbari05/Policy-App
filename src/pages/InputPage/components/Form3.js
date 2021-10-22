@@ -21,6 +21,7 @@ import {
 import "styled-components/macro";
 import BackButton from "../../../components/BackButton";
 import RadioButton from "../../../components/RadioButton";
+import { setPlanType } from "../../quotePage/quote.slice";
 const Form3 = ({ handleChange, currentForm }) => {
   const dispatch = useDispatch();
   const { frontendData } = useSelector((state) => state.frontendBoot);
@@ -35,6 +36,13 @@ const Form3 = ({ handleChange, currentForm }) => {
       handleChange(4.1);
 
       dispatch(saveForm4UserDetails({ planType: selected }));
+      const toBeGivePlan =
+        selected === "M"
+          ? "Multi Individual"
+          : selected === "F"
+          ? "Family Floater"
+          : "Individual";
+      dispatch(setPlanType(toBeGivePlan));
     }
   };
 

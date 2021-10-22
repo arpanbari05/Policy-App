@@ -33,6 +33,7 @@ const quotePageSlice = createSlice({
     createCartData: {},
     cartItems: [],
     filterQuotes: [],
+    planType: "Individual",
     fetchFilters: [],
     shouldFetchQuotes: false,
     filters: {
@@ -68,6 +69,10 @@ const quotePageSlice = createSlice({
         ...state.selectedAddOns,
         [state.selectedGroup]: action.payload,
       };
+    },
+    setPlanType(state, { payload }) {
+      console.log("PlanType To be used for filter", payload);
+      state.planType = payload;
     },
     addSelectedAddOn: (state, action) => {
       const currentAddOns = state.selectedAddOns[state.selectedGroup];
@@ -208,7 +213,7 @@ const quotePageSlice = createSlice({
       state.productDiscounts = action.payload;
     },
     saveFilteredPremium: (state, action) => {
-      console.log('hehe3325321t3dsg')
+      console.log("hehe3325321t3dsg");
       state.quotes = state.quotes.map((item) =>
         item.filter((quote) =>
           action.payload.code.includes("-")
@@ -229,11 +234,11 @@ const quotePageSlice = createSlice({
     },
 
     premiumFilterQuotes: (state, action) => {
-      console.log('hehe3325premiumFilterQuotes')
+      console.log("hehe3325premiumFilterQuotes");
       state.filterQuotes = state.quotes.map((item) => {
         //console.log("Andddd here we go");
         if (action.payload?.code.includes("<")) {
-          return item.filter((quote) => quote.premium  < 5000);
+          return item.filter((quote) => quote.premium < 5000);
         } else {
           return item.filter(
             (quote) =>
@@ -263,6 +268,7 @@ export const {
   insurerFilterQuotes,
   premiumFilterQuotes,
   ChangeUi,
+  setPlanType,
   replaceQuotes,
   replaceFilterQuotes,
   updateQuotesForCompare,
@@ -664,4 +670,3 @@ export const getProductDiscount =
   };
 
 export default quotePageSlice.reducer;
-

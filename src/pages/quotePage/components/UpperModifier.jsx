@@ -205,14 +205,13 @@ const UpperModifierWrapper = styled.div`
       border: solid 2px #0a87ff !important;
       color: #0a87ff;
 
-      :focus{
-        border: solid 2px #0a87ff !important;
-        
-      }
-      :active{
+      :focus {
         border: solid 2px #0a87ff !important;
       }
-      :hover{
+      :active {
+        border: solid 2px #0a87ff !important;
+      }
+      :hover {
         border: solid 2px #0a87ff !important;
       }
     }
