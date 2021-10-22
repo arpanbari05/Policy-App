@@ -497,7 +497,7 @@ const SubContent = ({
                         {tenure?.[activeCover] === 1
                           ? ""
                           : tenure?.[activeCover]}
-                        {tenure?.[activeCover] > 1 ? "years" : "year"}
+                        {tenure?.[activeCover] > 1 ? " years" : "year"}
                       </span>
                     </strong>
                   </RadioButton>
