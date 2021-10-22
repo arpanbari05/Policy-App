@@ -94,15 +94,20 @@ export const dataset = (
           color: #000;
           // border: 1px solid black;
           @media (max-width: 480px) {
-            left: -12px;
+            left: -8px;
           }
         `}
       >
-        <IoAddCircle
+        <IoRemoveCircle
           onClick={() => {
-            addChild(title);
+            removeChild &&
+              handleInput(
+                removeChild,
+                insurerCBXArray.includes(removeChild) && true,
+                "checkbox"
+              );
           }}
-          color="grey"
+          color="lightgrey"
         />
 
         <span
@@ -120,16 +125,11 @@ export const dataset = (
         >
           {count}
         </span>
-        <IoRemoveCircle
+        <IoAddCircle
           onClick={() => {
-            removeChild &&
-              handleInput(
-                removeChild,
-                insurerCBXArray.includes(removeChild) && true,
-                "checkbox"
-              );
+            addChild(title);
           }}
-          color="grey"
+          color="lightgrey"
         />
       </div>
       <RoundDD
