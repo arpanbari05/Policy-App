@@ -8,7 +8,6 @@ import {
   fetchQuotes,
   replaceQuotes,
   replaceFilterQuotes,
-  setPlanType,
 } from "../../quote.slice";
 import "styled-components/macro";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
@@ -49,7 +48,6 @@ const FilterModal = ({ show, handleClose }) => {
   };
 
   const handleApply = () => {
-    dispatch(setPlanType(selectedPlanType.displayName));
     dispatch(setFilters({ planType: selectedPlanType.displayName }));
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));

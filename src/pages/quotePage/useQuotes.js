@@ -26,8 +26,11 @@ function useQuotesPage() {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
-  //const filtersForTest = useSelector((state) => state.quotePage.planType);
-  //console.log("Filters PlanType applied to the quotes page", filtersForTest);
+  const filtersForTest = useSelector((state) => state.quotePage.filters);
+  console.log(
+    "Filters PlanType applied to the quotes page",
+    filtersForTest.planType
+  );
 
   const imageSendQuote = (email) => {
     const input = document.getElementById("printQuotePage");
@@ -87,18 +90,12 @@ function useQuotesPage() {
   const { filterQuotes: filterGivenQuotes } = useQuoteFilter();
 
   const filterQuotes = quotes.map((icQuotes) => filterGivenQuotes(icQuotes));
-  const planType = useSelector((state) => state.quotePage.planType);
 
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
   const [showSeeDetails, setShowSeeDetails] = useState(false);
   const [showBuyNow, setShowBuyNow] = useState(false);
   const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
-
-const handleCloseSeeDetail = () => {
-  setShowSeeDetails(false);
- 
-}
 
   const { memberGroups, proposerDetails } = useSelector(
     ({ greetingPage }) => greetingPage
@@ -293,7 +290,6 @@ const handleCloseSeeDetail = () => {
         "fetchQuotes useQUotes",
         filters?.multiYear?.charAt(0),
         findCode("covers", filters?.cover)
-        ,plan_type
       );
       dispatch(
         fetchQuotes(companies?.companies, {
@@ -332,7 +328,11 @@ const handleCloseSeeDetail = () => {
     } else {
       dispatch(
         setFilters({
-          planType: planType,
+          planType: fetchFilters.plan_type
+            ? fetchFilters.plan_type === "M"
+              ? "Multi Individual"
+              : "Family Floater"
+            : "Family Floater",
         })
       );
     }
@@ -455,7 +455,6 @@ const handleCloseSeeDetail = () => {
     member,
     setSortBy,
     recFilterdQuotes,
-    handleCloseSeeDetail
   };
 }
 

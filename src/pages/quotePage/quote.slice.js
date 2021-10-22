@@ -33,7 +33,6 @@ const quotePageSlice = createSlice({
     createCartData: {},
     cartItems: [],
     filterQuotes: [],
-    planType: "Individual",
     fetchFilters: [],
     shouldFetchQuotes: false,
     filters: {
@@ -69,10 +68,6 @@ const quotePageSlice = createSlice({
         ...state.selectedAddOns,
         [state.selectedGroup]: action.payload,
       };
-    },
-    setPlanType(state, { payload }) {
-      console.log("PlanType To be used for filter", payload);
-      state.planType = payload;
     },
     addSelectedAddOn: (state, action) => {
       const currentAddOns = state.selectedAddOns[state.selectedGroup];
@@ -268,7 +263,6 @@ export const {
   insurerFilterQuotes,
   premiumFilterQuotes,
   ChangeUi,
-  setPlanType,
   replaceQuotes,
   replaceFilterQuotes,
   updateQuotesForCompare,

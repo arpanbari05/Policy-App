@@ -10,6 +10,7 @@ import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 import PencilIcon from "../../../../assets/svg-icons/PencilIcon";
 import { useHistory } from "react-router";
 import { ErrorMessage } from "../../../InputPage/components/FormComponents";
+import { setPlanType } from "../../../quotePage/quote.slice";
 
 const CustomDropdown = ({ member }) => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -56,6 +57,7 @@ const FilterModal = ({ show, handleClose, history }) => {
   const [sonCount, setSonCount] = useState(2);
   const [daughterCount, setDaughterCount] = useState(2);
   const [showModal, setShow] = useState(false);
+  const planType = useSelector((state) => state.quotePage.planType);
 
   const dispatch = useDispatch();
 
@@ -335,6 +337,12 @@ const FilterModal = ({ show, handleClose, history }) => {
             : `${data.value.split(" ")[0]}`,
         });
       });
+
+      //console.log("prosperDetails , members", proposerDetails, members);
+
+      //if (planType === "Individual" && proposerDetails.member) {
+      //  dispatch(setPlanType("Family Floater"));
+      //}
 
       dispatch(
         updateUserMembersDetails(
