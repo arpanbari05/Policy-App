@@ -36,14 +36,14 @@ export const dataSet = (
   code,
   ageError,
   childCount,
-  addChild,
+  addChild
 ) => {
   const age = [{ id: -1, title: "Select Age" }, ...list];
   let removeChild = false;
   let count = 1;
 
   if (title === "Son" || title === "Daughter") {
-    insurerCBXArray.forEach(element => {
+    insurerCBXArray.forEach((element) => {
       if (
         title === "Son" &&
         element.slice(0, 3) === "son" &&
@@ -69,7 +69,7 @@ export const dataSet = (
       className={"proposal_members__member"}
       css={`
         @media (max-width: 767px) {
-          padding-right: 5px;
+          padding-right: 10px;
         }
       `}
     >
@@ -120,6 +120,7 @@ export const dataSet = (
                         : "display: none;"}
                       align-items: center;
                       margin-right: -17px;
+                      align-items: flex-end;
                       // position: relative;
                       // left: 16px;
                     }
@@ -131,13 +132,16 @@ export const dataSet = (
                         handleInput(
                           removeChild,
                           insurerCBXArray.includes(removeChild) && true,
-                          "checkbox",
+                          "checkbox"
                         );
                     }}
                   >
                     <img
                       css={`
                         width: 35px;
+                        @media (max-width: 767px) {
+                          width: 18px;
+                        }
                       `}
                       src={removeChildImage}
                     />
@@ -147,6 +151,9 @@ export const dataSet = (
                       color: black;
                       margin: 0 4px;
                       font-size: 20px;
+                      @media (max-width: 767px) {
+                        font-size: 15px;
+                      }
                     `}
                   >
                     {count}
@@ -160,6 +167,9 @@ export const dataSet = (
                       src={addChildImage}
                       css={`
                         width: 35px;
+                        @media (max-width: 767px) {
+                          width: 18px;
+                        }
                       `}
                     />
                   </a>
@@ -197,7 +207,7 @@ export const dataSet = (
                 handleChange={handleInput}
                 selected={
                   insurerDDArray[
-                    insurerDDArray.map(o => o.insurer).indexOf(code)
+                    insurerDDArray.map((o) => o.insurer).indexOf(code)
                   ]?.value || "Select Age"
                 }
                 // disabled={!insurerCBXArray.includes(code) && true}

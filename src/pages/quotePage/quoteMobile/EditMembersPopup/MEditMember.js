@@ -15,8 +15,8 @@ import { useHistory } from "react-router";
 // import SolidBuyButton from "../Button/SolidBuyButton";
 
 const MEditMember = ({ handleClose }) => {
-  const { error, proposerDetails } = useSelector(state => state.greetingPage);
-  const { frontendData } = useSelector(state => state.frontendBoot);
+  const { error, proposerDetails } = useSelector((state) => state.greetingPage);
+  const { frontendData } = useSelector((state) => state.frontendBoot);
   const { data } = frontendData || [""];
   const { members } = data || [""];
   const [ageError, setAgeError] = useState([]);
@@ -36,7 +36,6 @@ const MEditMember = ({ handleClose }) => {
     const tempArray = [];
   }, [membersArray]);
 
-
   // Will contain list of insurer names that are checked
   const [insurerCBXArray, setInsurerCBXArray] = useState(
     proposerDetails.members.map(
@@ -54,12 +53,12 @@ const MEditMember = ({ handleClose }) => {
         )
           return m.type + index;
         else return m.type;
-      },
+      }
       // capitalize(m.type)
       //   .replaceAll("_", "-")
       //   .replace("Grand-mother", "Grand Mother")
       //   .replace("Grand-father", "Grand Father"),
-    ),
+    )
   );
 
   // Will contain list of insurer Dropdown values if checkbox is checked
@@ -78,7 +77,7 @@ const MEditMember = ({ handleClose }) => {
       )
         return { insurer: m.type + index, value: m.age + " Years" };
       else return { insurer: m.type, value: m.age + " Years" };
-    }),
+    })
   );
 
   // To find additional Sons And Daughters
@@ -86,7 +85,7 @@ const MEditMember = ({ handleClose }) => {
     if (members?.length) {
       let sons = [];
       let daughters = [];
-      insurerCBXArray.forEach(item => {
+      insurerCBXArray.forEach((item) => {
         if (item !== "son" && item.includes("son")) {
           sons = [
             ...sons,
@@ -116,9 +115,9 @@ const MEditMember = ({ handleClose }) => {
       });
       let tempArray = [...members];
 
-      const index = tempArray.findIndex(x => x.display_name === "Son");
+      const index = tempArray.findIndex((x) => x.display_name === "Son");
       tempArray.splice(index + 1, 0, ...sons);
-      const index2 = tempArray.findIndex(x => x.display_name === "Daughter");
+      const index2 = tempArray.findIndex((x) => x.display_name === "Daughter");
       tempArray.splice(index2 + 1, 0, ...daughters);
 
       setMembersArray(tempArray);
@@ -127,7 +126,7 @@ const MEditMember = ({ handleClose }) => {
 
   useEffect(() => {
     let count = 0;
-    insurerCBXArray.forEach(element => {
+    insurerCBXArray.forEach((element) => {
       if (element.slice(0, 8) === "daughter" || element.slice(0, 3) === "son") {
         count += 1;
       }
@@ -136,15 +135,13 @@ const MEditMember = ({ handleClose }) => {
     setChildCount(count);
   }, [insurerCBXArray]);
   useEffect(() => {
-    proposerDetails.members.forEach(item => {
-
-    });
+    proposerDetails.members.forEach((item) => {});
   }, []);
-  const addChild = name => {
+  const addChild = (name) => {
     const code = name.toLowerCase();
     if (childCount < 4) {
       const { max_age, min_age } = membersArray.filter(
-        item => item.code === code,
+        (item) => item.code === code
       )[0];
       setChildCount(childCount + 1);
       const genCode = `${code + uuidv4()}`;
@@ -159,7 +156,7 @@ const MEditMember = ({ handleClose }) => {
         //   ["hasClose"]: true,
         // },
       ];
-      const index = tempArray.findIndex(x => x.display_name === name);
+      const index = tempArray.findIndex((x) => x.display_name === name);
       tempArray.splice(index + 1, 0, {
         [`code`]: genCode,
         [`display_name`]: name,
@@ -174,8 +171,7 @@ const MEditMember = ({ handleClose }) => {
     }
   };
 
-  const handleinsurerCBXArray = insurer => {
-
+  const handleinsurerCBXArray = (insurer) => {
     const tempArray = [...insurerCBXArray];
 
     if (!tempArray.includes(insurer)) {
@@ -193,7 +189,7 @@ const MEditMember = ({ handleClose }) => {
 
   const handleinsurerDDArray = (insurer, value) => {
     const tempArray = [...insurerDDArray];
-    var index = tempArray.map(o => o.insurer).indexOf(insurer);
+    var index = tempArray.map((o) => o.insurer).indexOf(insurer);
     if (value !== "Select Age") {
       if (index > -1) {
         tempArray[index].value = value;
@@ -224,7 +220,7 @@ const MEditMember = ({ handleClose }) => {
         (insurer.slice(0, 8) === "daughter" && insurer !== "daughter")
       ) {
         const tempArray = [...membersArray];
-        var index = tempArray.map(o => o.code).indexOf(insurer);
+        var index = tempArray.map((o) => o.code).indexOf(insurer);
         if (index > -1) {
           tempArray.splice(index, 1);
           setMembersArray(tempArray);
@@ -235,7 +231,7 @@ const MEditMember = ({ handleClose }) => {
         insurerCBXArray.includes(insurer)
       ) {
         if (insurer === "son") {
-          const tempArray = membersArray.filter(element => {
+          const tempArray = membersArray.filter((element) => {
             return (
               element.display_name !== "Son" ||
               (element.display_name === "Son" && element.code === "son")
@@ -244,10 +240,10 @@ const MEditMember = ({ handleClose }) => {
           setMembersArray(tempArray);
         } else if (insurer === "daughter") {
           const tempArray = membersArray.filter(
-            element =>
+            (element) =>
               element.display_name !== "Daughter" ||
               (element.display_name === "Daughter" &&
-                element.code === "daughter"),
+                element.code === "daughter")
           );
           setMembersArray(tempArray);
         }
@@ -260,12 +256,12 @@ const MEditMember = ({ handleClose }) => {
 
   const history = useHistory();
 
-  const handleUpdate = e => {
+  const handleUpdate = (e,handleClose) => {
     e.preventDefault();
 
     const ageErrorArray = [];
-    insurerCBXArray.forEach(data => {
-      const hasAge = insurerDDArray.some(item => item.insurer === data);
+    insurerCBXArray.forEach((data) => {
+      const hasAge = insurerDDArray.some((item) => item.insurer === data);
       if (!hasAge) {
         ageErrorArray.push(data);
       }
@@ -281,8 +277,8 @@ const MEditMember = ({ handleClose }) => {
     }
     if (ageErrorArray.length < 1 && !errors && insurerDDArray.length > 0) {
       const dataArray = [];
-      insurerDDArray.forEach(data => {
-        const i = membersArray.findIndex(x => x.code === data.insurer);
+      insurerDDArray.forEach((data) => {
+        const i = membersArray.findIndex((x) => x.code === data.insurer);
         dataArray.push({
           type: `${membersArray[i].code}`,
           age: `${data.value.split(" ")[0]}`,
@@ -291,8 +287,8 @@ const MEditMember = ({ handleClose }) => {
       dispatch(
         updateUserMembersDetails(
           { ...proposerDetails, members: dataArray },
-          history,
-        ),
+          history,handleClose
+        )
       );
     }
   };
@@ -306,20 +302,31 @@ const MEditMember = ({ handleClose }) => {
       style={{ zIndex: "2000", borderRadius: "12px", border: "none" }}
       className={"greetings-form__modal"}
       css={`
-      .modal-dialog {
-        @media (min-width:990px)
-        {
-          max-width: 850px;
+        .modal-dialog {
+          height: 100%;
+          margin: unset;
+          @media (min-width: 990px) {
+            max-width: 850px;
+          }
         }
-      }
+        .modal-body {
+          margin-top: 1px;
+          overflow-x: hidden;
+          left: unset;
+          width: unset !important;
+        }
+        .modal-content {
+          border-radius: 0 !important;
+          height: 100%;
+        }
       `}
     >
       <Modal.Header
         style={{
           backgroundColor: "#0a87ff",
           borderBottomColor: "#fff",
-          borderTopLeftRadius: "14px",
-          borderToprightRadius: "14px",
+          // borderTopLeftRadius: "14px",
+          // borderToprightRadius: "14px",
           borderBottomRightRadius: "0px",
           borderBottomLeftRadius: "0px",
         }}
@@ -340,21 +347,25 @@ const MEditMember = ({ handleClose }) => {
         css={`
           display: block !important;
           border: 1px solid rgba(0, 0, 0, 0.05) !important;
-  color: #000;
-  font-size: 18px;
-  background-color:#fff;
-  border-radius:50px;
-  padding:2px 10px ;
-  position: absolute;
-  top: 20px;
-  right: 20px;
+          color: #000;
+          font-size: 18px;
+          background-color: #fff;
+          border-radius: 50px;
+          padding: 2px 10px;
+          position: absolute;
+          top: 20px;
+          right: 20px;
         `}
         className="btn btn-white recom_close_css"
         style={{ marginTop: "-8px" }}
         onClick={handleClose}
       >
         {/* <i className="fa fa-close"></i>{"x"} */}
-        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
+        <i
+          onClick={handleClose}
+          style={{ cursor: "pointer" }}
+          class="fas fa-times"
+        ></i>
       </CloseButton>
       <Modal.Body
         css={`
@@ -386,9 +397,9 @@ const MEditMember = ({ handleClose }) => {
                     code,
                     ageError,
                     childCount,
-                    addChild,
+                    addChild
                   );
-                },
+                }
               )}
           </Row>
         </Container>
@@ -398,8 +409,8 @@ const MEditMember = ({ handleClose }) => {
           borderBottomColor: "#fff",
           borderTopLeftRadius: "0px",
           borderToprightRadius: "0px",
-          borderBottomRightRadius: "14px",
-          borderBottomLeftRadius: "14px",
+          borderBottomRightRadius: "0px",
+          borderBottomLeftRadius: "0px",
         }}
         css={`
           display: flex;
@@ -411,29 +422,29 @@ const MEditMember = ({ handleClose }) => {
           <ErrorMessage2 style={{ fontSize: "15px" }}>{errors}</ErrorMessage2>
         )}
         {error &&
-          error.map(msg => (
+          error.map((msg) => (
             <ErrorMessage2 style={{ fontSize: "15px" }}>{msg}</ErrorMessage2>
           ))}
         <button
           css={`
             width: 100%;
             line-height: 32px;
-            border-radius: 2px;
+            // border-radius: 2px;
             padding: 12px 21px;
             text-align: center;
             color: #fff;
-            border:none;
+            border: none;
             text-transform: capitalize;
             box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
             font-size: 18px;
             background: #0a87ff;
-            
+
             margin: 10px !important;
             margin-left: unset !important;
           `}
           type="button"
           value={"Confirm"}
-          onClick={handleUpdate}
+          onClick={(e)=>handleUpdate(e,handleClose)}
         >
           Apply
         </button>
@@ -462,7 +473,7 @@ const ModalTitle = styled.h5`
     position: absolute;
     left: 0px;
     top: 13px;
-    background-color: #2cd44a;;
+    background-color: #2cd44a;
     border-radius: 50px;
   }
 `;

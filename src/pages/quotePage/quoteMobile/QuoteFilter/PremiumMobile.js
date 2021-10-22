@@ -1,5 +1,6 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
+import "styled-components/macro"
 const PremiumMobile = ({ premiumFilter, selected, setSelected }) => {
   return (
     <>
@@ -18,6 +19,12 @@ const PremiumMobile = ({ premiumFilter, selected, setSelected }) => {
                   className="label--before mobile-filter-label"
                   htmlFor={item.code}
                   onClick={() => setSelected(item)}
+                  css={`
+                  font-size: 10px !important;
+                  font-weight: 900!important;
+                  &:after {
+                    right: 7px;
+                  }`}
                 >
                   {`${item.display_name}`}
                   <div className="checkbox--button"></div>
