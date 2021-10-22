@@ -328,8 +328,8 @@ function useQuotesPage() {
     } else {
       dispatch(
         setFilters({
-          planType: fetchFilters.plan_type
-            ? fetchFilters.plan_type === "M"
+          planType: filters.planType
+            ? filters.planType === "Multi Individual"
               ? "Multi Individual"
               : "Family Floater"
             : "Family Floater",
