@@ -45,7 +45,7 @@ export function formButtons(handleChange, handleSubmit, lastForm) {
         css={`
           width: 40%;
           @media screen and (max-width: 480px) {
-            width: 132px;
+            width: 120px;
             height: 40px;
           }
         `}
@@ -67,7 +67,7 @@ export function formButtons(handleChange, handleSubmit, lastForm) {
         css={`
           width: 40%;
           @media screen and (max-width: 480px) {
-            width: 132px;
+            width: 120px;
             height: 40px;
           }
         `}

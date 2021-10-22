@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/static/css/main.ba182b3a.chunk.css",
-    "main.js": "/static/js/main.cab7231f.chunk.js",
-    "main.js.map": "/static/js/main.cab7231f.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.1c007df4.js",
-    "runtime-main.js.map": "/static/js/runtime-main.1c007df4.js.map",
+    "main.js": "/static/js/main.fb1be8a8.chunk.js",
+    "main.js.map": "/static/js/main.fb1be8a8.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.acd8edfb.js",
+    "runtime-main.js.map": "/static/js/runtime-main.acd8edfb.js.map",
     "static/css/2.b225bda4.chunk.css": "/static/css/2.b225bda4.chunk.css",
-    "static/js/2.b99ff1b6.chunk.js": "/static/js/2.b99ff1b6.chunk.js",
-    "static/js/2.b99ff1b6.chunk.js.map": "/static/js/2.b99ff1b6.chunk.js.map",
-    "static/js/3.7b2a71bb.chunk.js": "/static/js/3.7b2a71bb.chunk.js",
-    "static/js/3.7b2a71bb.chunk.js.map": "/static/js/3.7b2a71bb.chunk.js.map",
+    "static/js/2.6a845402.chunk.js": "/static/js/2.6a845402.chunk.js",
+    "static/js/2.6a845402.chunk.js.map": "/static/js/2.6a845402.chunk.js.map",
+    "static/js/3.1629dbe6.chunk.js": "/static/js/3.1629dbe6.chunk.js",
+    "static/js/3.1629dbe6.chunk.js.map": "/static/js/3.1629dbe6.chunk.js.map",
     "static/js/4.607fd496.chunk.js": "/static/js/4.607fd496.chunk.js",
     "static/js/4.607fd496.chunk.js.map": "/static/js/4.607fd496.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.b225bda4.chunk.css.map": "/static/css/2.b225bda4.chunk.css.map",
     "static/css/main.ba182b3a.chunk.css.map": "/static/css/main.ba182b3a.chunk.css.map",
-    "static/js/2.b99ff1b6.chunk.js.LICENSE.txt": "/static/js/2.b99ff1b6.chunk.js.LICENSE.txt",
-    "static/js/3.7b2a71bb.chunk.js.LICENSE.txt": "/static/js/3.7b2a71bb.chunk.js.LICENSE.txt",
+    "static/js/2.6a845402.chunk.js.LICENSE.txt": "/static/js/2.6a845402.chunk.js.LICENSE.txt",
+    "static/js/3.1629dbe6.chunk.js.LICENSE.txt": "/static/js/3.1629dbe6.chunk.js.LICENSE.txt",
     "static/js/4.607fd496.chunk.js.LICENSE.txt": "/static/js/4.607fd496.chunk.js.LICENSE.txt",
     "static/media/Chola logo.64413d51.png": "/static/media/Chola logo.64413d51.png",
     "static/media/FG logo.8fba0e90.png": "/static/media/FG logo.8fba0e90.png",
@@ -45,10 +45,10 @@
     "static/media/whatsapp01.a80b94b6.png": "/static/media/whatsapp01.a80b94b6.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.1c007df4.js",
+    "static/js/runtime-main.acd8edfb.js",
     "static/css/2.b225bda4.chunk.css",
-    "static/js/2.b99ff1b6.chunk.js",
+    "static/js/2.6a845402.chunk.js",
     "static/css/main.ba182b3a.chunk.css",
-    "static/js/main.cab7231f.chunk.js"
+    "static/js/main.fb1be8a8.chunk.js"
   ]
 }

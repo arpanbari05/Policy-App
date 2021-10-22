@@ -140,6 +140,10 @@ const quotePageSlice = createSlice({
     },
     setFilters: (state, action) => {
       console.log("fetchquotes setfilters", action.payload);
+      console.log("Total filters each time", {
+        ...state.filters,
+        ...action.payload,
+      });
 
       state.filters = { ...state.filters, ...action.payload };
     },

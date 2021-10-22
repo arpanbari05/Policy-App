@@ -414,7 +414,7 @@ export const saveForm5UserDetails = (data, pushToQuotes, planType) => {
       pushToQuotes(Object.keys(newMemberGroups)[0]);
       dispatch(setShouldFetchQuotes(true));
       dispatch(createUserData({ medical_history: [...data] }));
-      dispatch(
+      /*dispatch(
         setFilters({
           planType:
             planType === "Multi Individual"
@@ -423,7 +423,7 @@ export const saveForm5UserDetails = (data, pushToQuotes, planType) => {
               ? "Family Floater"
               : "Individual",
         })
-      );
+      );*/
     } catch (err) {
       //alert(err);
     }
