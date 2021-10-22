@@ -548,7 +548,7 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
         const errorsList = Object.values(errors);
         dispatch(ageError(errorsList));
       } else {
-        handleClose();
+         handleClose();
       }
 
       // const { data } = response;

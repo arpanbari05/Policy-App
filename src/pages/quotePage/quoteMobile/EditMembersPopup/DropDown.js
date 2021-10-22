@@ -65,6 +65,7 @@ const GreetingFormDropdown = ({
             css={`
               left: 0px;
               @media (max-width: 767px) {
+                width: 129.562px !important;
                 left: -1px;
               }
             `}
