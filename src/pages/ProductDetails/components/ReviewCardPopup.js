@@ -171,13 +171,14 @@ function AddOnDetailsCard({
           width: 40%;
         `}
       >
-        <div>
-          <img src={logoSrc} style={{ width: "50px" }} alt={alias} />
+        <div className="logo_style_common" style={{ marginBottom: "0px" }}>
+          <img src={logoSrc} alt={alias} />
         </div>
         <div
           css={`
             margin-left: 10px;
             font-weight: 900;
+            width:65%;
           `}
         >
           {name}
@@ -582,16 +583,7 @@ function ProductDetailsCard({ cartItem }) {
             align-items: center;
           `}
         >
-          <div
-            css={`
-              width: 80px;
-              display: flex;
-              height: 80px;
-              justify-content: center;
-              align-items: center;
-              margin-right: 10px;
-            `}
-          >
+         <div className="logo_style_common" style={{ marginBottom: "0px" }}>
             <img
               css={`
                 width: 100%;
@@ -705,11 +697,14 @@ function ProductDetailsCard({ cartItem }) {
         <div class="rider-box1"></div>
       </div>
       {health_riders.length > 0 ? <hr /> : null}
-      <div class="row">
+      <div class="row w-100 flex-row">
         {health_riders.map((health_rider) => (
           <div
             css={`
-              margin: 10px;
+              margin: 2px;
+              width:fit-content;
+              font-size:14px;
+              width:48%;
             `}
           >
             {/* <img src={CorrectIcon} class="display_in_m" alt="" /> */}

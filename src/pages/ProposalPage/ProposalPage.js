@@ -120,6 +120,7 @@ const ProposalPage = ({ history }) => {
                 schema={
                   currentSchema ? Object.values(currentSchema[activeForm]) : []
                 }
+                active={active}
                 setActive={setActive}
                 name={activeForm}
                 defaultValue={defaultData}

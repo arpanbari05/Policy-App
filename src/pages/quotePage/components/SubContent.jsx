@@ -477,6 +477,9 @@ const SubContent = ({
                 css={`
                   height: 114px !important;
                   /*background-color: green;*/
+                  &:after {
+                    display: none;
+                  }
                 `}
               >
                 <LogoWrapper>
@@ -530,7 +533,7 @@ const SubContent = ({
                     )}
                   </PlanName>
                 </LogoWrapper>
-              </EachWrapper>
+              </EachWrapper  >
               <CenterBottomStyle
                 css={`
                   position: relative;

@@ -95,6 +95,11 @@ function useQuotesPage() {
   const [showBuyNow, setShowBuyNow] = useState(false);
   const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
 
+const handleCloseSeeDetail = () => {
+  setShowSeeDetails(false);
+ 
+}
+
   const { memberGroups, proposerDetails } = useSelector(
     ({ greetingPage }) => greetingPage
   );
@@ -288,6 +293,7 @@ function useQuotesPage() {
         "fetchQuotes useQUotes",
         filters?.multiYear?.charAt(0),
         findCode("covers", filters?.cover)
+        ,plan_type
       );
       dispatch(
         fetchQuotes(companies?.companies, {
@@ -449,6 +455,7 @@ function useQuotesPage() {
     member,
     setSortBy,
     recFilterdQuotes,
+    handleCloseSeeDetail
   };
 }
 

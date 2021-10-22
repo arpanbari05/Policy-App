@@ -7,6 +7,7 @@ import remove from "../../../assets/images/remove.png";
 import { useHistory } from "react-router-dom";
 import SecureLS from "secure-ls";
 import styled from "styled-components/macro";
+import useQuotesPage from "../useQuotes";
 import useCartProduct from "../../Cart/hooks/useCartProduct";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { setSelectedGroup } from "../quote.slice";
@@ -68,7 +69,9 @@ function ProductCard({ product }) {
             }
           `}
         >
-          <img src={logo} />
+          
+            <img src={logo} />
+         
           <span> {productName}</span>
         </span>
         <span
@@ -98,7 +101,7 @@ function ProductCard({ product }) {
       </div>
 
       <ProductContainer>
-        <div>
+      <div className="logo_style_common" style={{ marginBottom: "0px" }}>
           <img className="contain" src={logo} alt="logo" />
         </div>
         <div>
@@ -128,7 +131,17 @@ function ProductCard({ product }) {
   );
 }
 
-function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
+function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {}, handleCloseSeeDetail }) {
+
+const {
+  setShowSeeDetails,
+  showSeeDetails,
+  setSeeDetailsQuote,
+  
+} = useQuotesPage();
+
+console.log(showSeeDetails,"ulipeu")
+
   const members = useSelector(
     (state) => state.greetingPage.memberGroups[groupCode]
   );
@@ -146,6 +159,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
   return (
     <>
       <div className="d-flex justify-content-between">
+      
         <h5
           className="text_title_filter p_modal_title_bg_filters_product d-flex align-items-center"
           style={{ textTransform: "capitalize" }}
@@ -206,7 +220,8 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
           </div>
         ) : (
           <div>
-            <button
+          
+          <button
               type="submit"
               className="btn"
               css={`
@@ -224,9 +239,12 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                   pathname: `/quotes/${groupCode}`,
                   search: `enquiryId=${enquiryId}`,
                 });
-                dispatch(setSelectedGroup(groupCode));
+               dispatch(setSelectedGroup(groupCode));
+               handleCloseSeeDetail();
+
               }}
             >
+            
               <span
                 css={`
                   margin-right: 5px;
@@ -268,7 +286,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
   );
 }
 
-const PopupContent = (a, b, setShowBuyNow) => {
+const PopupContent = (a, b, setShowBuyNow, c, handleCloseSeeDetail) => {
   const { memberGroups } = useSelector((state) => state.greetingPage);
 
   return (
@@ -281,15 +299,16 @@ const PopupContent = (a, b, setShowBuyNow) => {
         <BuyNowModalProduct
           groupCode={groupCode}
           setShowBuyNow={setShowBuyNow}
+          handleCloseSeeDetail={handleCloseSeeDetail}
         />
       ))}
     </div>
   );
 };
 
-const BuyNowModal = ({ showBuyNow, setShowBuyNow }) => {
+const BuyNowModal = ({ showBuyNow, setShowBuyNow, handleClose }) => {
   const plan = useSelector(({ quotePage }) => quotePage.selectedPlan);
-
+console.log(handleClose,"handleClosehandleClose")
   const { companies } = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
@@ -309,7 +328,7 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow }) => {
       handleClose={() => {
         setShowBuyNow(false);
       }}
-      content={PopupContent(showBuyNow, companies, setShowBuyNow, plan)}
+      content={PopupContent(showBuyNow, companies, setShowBuyNow, plan, handleClose)}
       title={"Hey User, Take a minute and review your cart before you proceed"}
       handleClick={() =>
         history.push(
@@ -319,6 +338,7 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow }) => {
       showButton={!!firstMemberGroup}
       buttonValue={"Continue"}
       customClass={"buynow-modal"}
+      
     />
   );
 };
@@ -357,7 +377,7 @@ const ProductData = styled.div`
 `;
 const ProductName = styled.p`
   color: #000;
-  font-size: ${(props) => (props.flag ? "15px" : "20px")};
+  font-size: ${(props) => (props.flag ? "15px" : "16px")};
   width: 150px;
   font-weight: bolder;
   margin: unset;
@@ -372,9 +392,9 @@ const ProductContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  & img {
+  /* & img {
     width: 68px;
-  }
+  } */
   @media (max-width: 767px) {
     display: none;
   }

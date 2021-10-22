@@ -122,7 +122,7 @@ const MobileHeader = ({ groupCode }) => {
           `}
         >
           <Link to="/" className="first-container">
-            <i className="flaticon-back" />
+          <i class="fas fa-arrow-circle-left"></i>
           </Link>
           <span
             css={`
