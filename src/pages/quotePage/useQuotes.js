@@ -284,6 +284,7 @@ function useQuotesPage() {
         "fetchQuotes useQUotes",
         filters?.multiYear?.charAt(0),
         findCode("covers", filters?.cover)
+        ,plan_type
       );
       dispatch(
         fetchQuotes(companies?.companies, {

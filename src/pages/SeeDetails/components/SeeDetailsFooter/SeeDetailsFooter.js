@@ -33,7 +33,7 @@ function SeeDetailsFooter({
   sum_insured,
   handleProceedClick = () => {},
 }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [showBuyNow, setShowBuyNow] = useState(false);
   // const dispatch = useDispatch();
   // const { memberGroups } = useSelector(state => state.greetingPage);
@@ -53,6 +53,8 @@ function SeeDetailsFooter({
 
   const sumInsuredIndex = quote.sum_insured.indexOf(sum_insured);
 
+  console.log(quote,'sadg323126')
+
   const product = {
     premium: quote.premium[sumInsuredIndex],
     sum_insured: sum_insured,
@@ -69,6 +71,14 @@ function SeeDetailsFooter({
     addons: [],
   };
 
+  let additionalPremium = 0;
+
+  quote.mandatory_riders?.forEach((element) => {
+    console.log(additionalPremium,"sadg31")
+    additionalPremium += parseInt(element.total_premium);
+    console.log(additionalPremium,element.total_premium,"sadg32")
+  });
+  console.log(additionalPremium, quote.mandatory_riders, "sadg32");
   const {
     isCartProductLoading,
     totalPremium,
@@ -79,7 +89,7 @@ function SeeDetailsFooter({
   const handleProceed = () => {
     handleProceedClick();
     setShowBuyNow(true);
-    dispatch(removeQuoteFromCart(groupCode))
+    dispatch(removeQuoteFromCart(groupCode));
     addProduct({
       ...selectedProduct,
       service_tax: selectedProduct.tax_amount,
@@ -117,15 +127,17 @@ function SeeDetailsFooter({
           font-size: 18px;
           /* background-color: #eff2f5; */
           /* border-radius:50px; */
-          padding:3px 8px;
+          padding: 3px 8px;
           @media (max-width: 1250px) {
-            right:5px;
+            right: 5px;
           }
         `}
-   
       >
-        
-        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
+        <i
+          onClick={handleClose}
+          style={{ cursor: "pointer" }}
+          class="fas fa-times"
+        ></i>
       </div>
       <div
         style={{
@@ -158,16 +170,13 @@ function SeeDetailsFooter({
               lineHeight: "20px",
               fontWeight: "900",
             }}
-
             css={`
-                      @media (max-width: 1200px) {
-
-font-size: 15px !important;
-}
-@media (max-width: 1100px) {
-
-font-size: 13px !important;
-}
+              @media (max-width: 1200px) {
+                font-size: 15px !important;
+              }
+              @media (max-width: 1100px) {
+                font-size: 13px !important;
+              }
             `}
           >
             {productName || quote.product.name}
@@ -185,12 +194,10 @@ font-size: 13px !important;
           height: 75px;
           justify-content: space-around;
           @media (max-width: 1190px) {
-
-width:50%;
-}
+            width: 50%;
+          }
           @media (max-width: 1050px) {
-
-            width:60%;
+            width: 60%;
           }
         `}
       >
@@ -201,10 +208,10 @@ width:50%;
             border-right: 1px solid grey;
             padding: 0 20px;
             @media (max-width: 1485px) {
-            font-size:14px;
+              font-size: 14px;
             }
             @media (max-width: 1325px) {
-            font-size:12px;
+              font-size: 12px;
             }
           `}
         >
@@ -215,7 +222,8 @@ width:50%;
               margin-left: 5px;
             `}
           >
-            {" "} ₹{" "}
+            {" "}
+            ₹{" "}
             {numberToDigitWord(
               sumInsured?.toString() || sum_insured?.toString(),
               "seeDetails"
@@ -230,14 +238,14 @@ width:50%;
             padding: 0 20px;
             padding-left: 10px;
             @media (max-width: 1485px) {
-            font-size:14px;
+              font-size: 14px;
             }
             @media (max-width: 1325px) {
-            font-size:12px;
+              font-size: 12px;
             }
           `}
         >
-          <span>Premium:{" "}</span>
+          <span>Premium: </span>
           <span
             css={`
               font-weight: bold;
@@ -245,7 +253,8 @@ width:50%;
           >
             {" "}
             <i className="fa fa-inr"></i> ₹{" "}
-            {parseInt(totalPremium).toLocaleString("en-IN")}/ {(product.tenure >= 2 ? `${product.tenure} Years` : "Year")}
+            {parseInt(totalPremium) + additionalPremium}/{" "}
+            {product.tenure >= 2 ? `${product.tenure} Years` : "Year"}
           </span>
         </div>
         <div
@@ -253,10 +262,10 @@ width:50%;
             display: flex;
             /* flex-direction: column; */
             @media (max-width: 1485px) {
-            font-size:14px;
+              font-size: 14px;
             }
             @media (max-width: 1325px) {
-            font-size:12px;
+              font-size: 12px;
             }
           `}
         >
@@ -267,7 +276,6 @@ width:50%;
               margin-left: 5px;
             `}
           >
-         
             {claim_settlement_ratio}%
           </span>
         </div>
@@ -385,11 +393,11 @@ width:50%;
       <div
         className="col-md-9 col-lg-4 bg_pink_f_f "
         style={{ borderRadius: "10px", maxWidth: "300px" }}
-      css={`
-      @media (max-width:1200px){
-        max-width:220px !important;
-      }
-      `}
+        css={`
+          @media (max-width: 1200px) {
+            max-width: 220px !important;
+          }
+        `}
       >
         <div
           className="row"
