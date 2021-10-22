@@ -93,6 +93,9 @@ export const dataset = (
           font-size: 19px;
           color: #000;
           // border: 1px solid black;
+          @media (max-width: 480px) {
+            left: -12px;
+          }
         `}
       >
         <IoAddCircle
@@ -109,6 +112,10 @@ export const dataset = (
             position: relative;
             font-size: 14px;
             font-weight: 900;
+
+            @media (max-width: 480px) {
+              margin: 0 4px;
+            }
           `}
         >
           {count}
