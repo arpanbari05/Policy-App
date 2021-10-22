@@ -253,16 +253,23 @@ const Form1 = ({
         handleSubmit,
         true
       )} */}
-      {formButtons(() => {
-        console.log("asfdd", index);
-        if (isIndividualPlan) {
-          handleChange(2);
-        } else if (index === 1) {
-          handleChange(3);
-        } else {
-          handleChange(parseFloat(`4.${index - 1}`));
-        }
-      }, handleSubmit)}
+      <div
+        css={`
+          margin: 0px 17px !important;
+        `}
+      >
+        {formButtons(() => {
+          console.log("asfdd", index);
+          if (isIndividualPlan) {
+            handleChange(2);
+          } else if (index === 1) {
+            handleChange(3);
+          } else {
+            handleChange(parseFloat(`4.${index - 1}`));
+          }
+        }, handleSubmit)}
+      </div>
+
       <div>
         {/* <StyledButton
           styledCss={`margin:0; width: 100%;`}
