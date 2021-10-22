@@ -141,6 +141,7 @@ const SeeDetails = ({
   tenure,
   product,
 }) => {
+ 
 
   console.log('ahaheh3h2h32',quote)
   
@@ -327,6 +328,7 @@ const SeeDetails = ({
         backdropClassName="ModalBackdrop"
         show={show}
       >
+      {console.log(show,"newnenwenw")}
         <Modal.Body
           className="background_transparent p-lg showOnDesktop"
           style={{

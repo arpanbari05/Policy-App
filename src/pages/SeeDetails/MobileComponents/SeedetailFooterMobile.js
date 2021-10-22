@@ -85,6 +85,7 @@ function SeedetailFooterMobile({
               font-size: 17px;
     line-height: 1.2;
     color:#0a87ff;
+    font-weight: bold;
             `}
           >
             {" "}
@@ -101,7 +102,7 @@ function SeedetailFooterMobile({
               text-align: center;
               color: #fff;
               text-transform: capitalize;
-              box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
+              box-shadow: 0px 13px 27px 0px rgb(48 67 163 / 25%);
               font-size: 18px;
               white-space: nowrap;
               background: #0a87ff;

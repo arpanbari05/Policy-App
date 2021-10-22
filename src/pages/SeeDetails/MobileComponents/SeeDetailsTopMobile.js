@@ -81,7 +81,7 @@ function SeeDetailsTop({
           <br />
           <span>
             <b>
-              <i className="fa fa-inr"></i>{" "}
+            ₹{" "}
               {numberToDigitWord(sumInsured?.toString(), "seeDetails")}
             </b>
           </span>
@@ -91,7 +91,7 @@ function SeeDetailsTop({
           <br />
           <span>
             <b>
-              <i className="fa fa-inr"></i>{" "}
+            ₹{" "}
               {parseInt(selectedProduct.total_premium).toLocaleString("en-IN")}/
               year
             </b>

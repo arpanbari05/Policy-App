@@ -148,17 +148,18 @@ function SeeDetailsFooter({
         }}
       >
         <h5 className="modal-title">
+        <div className="logo_style_common" style={{marginBottom:"0px"}}>
           <img
             src={logo}
             style={{
               boxShadow: "none",
               width: "100%",
-              maxWidth: "120px",
-              minWidth: "100px",
+              
             }}
-            className="plan_details_ic"
+            
             alt="plan_details_ic"
           />
+          </div>
         </h5>
         <div>
           <p
@@ -443,7 +444,7 @@ function SeeDetailsFooter({
       </div>
 
       {showBuyNow && (
-        <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} />
+        <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} handleClose={handleClose} />
       )}
     </div>
   );

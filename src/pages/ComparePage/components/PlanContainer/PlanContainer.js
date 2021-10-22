@@ -88,7 +88,7 @@ const PlanContainer = ({
             }}
           >
             <span className="logo_style_common">
-           {console.log(company_alias,"company_alias")}
+        
               <img src={images[company_alias]} alt="" className="w-100" />
             </span>
             {/* Dynamic ic name */}

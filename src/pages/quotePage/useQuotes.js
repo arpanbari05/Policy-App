@@ -90,7 +90,12 @@ function useQuotesPage() {
   const [showSeeDetails, setShowSeeDetails] = useState(false);
   const [showBuyNow, setShowBuyNow] = useState(false);
   const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
-  
+
+const handleCloseSeeDetail = () => {
+  setShowSeeDetails(false);
+ 
+}
+
   const { memberGroups, proposerDetails } = useSelector(
     ({ greetingPage }) => greetingPage
     );
@@ -450,6 +455,7 @@ function useQuotesPage() {
     member,
     setSortBy,
     recFilterdQuotes,
+    handleCloseSeeDetail
   };
 }
 
