@@ -154,6 +154,8 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
                           planTypeSelected
                         )
                       );
+                      //console.log("I m executed here in form 4");
+                      //dispatch(setPlanType(planTypeSelected));
                     } else {
                       setSelected(e.target.value);
                     }

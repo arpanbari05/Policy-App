@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import "styled-components/macro"
+import "styled-components/macro";
 import { Collapse } from "react-bootstrap";
 import pencil from "../../../../assets/images/pencil_pro.png";
 import ProposalCheckBox from "../../../../components/Common/ProposalSummary/summaryCheckBox";
@@ -60,22 +60,22 @@ const Panel = ({
               <PencilWrapper>
                 <Values>{values}</Values>
                 <div
-                css={`
-                  width: 30px;
-                 
-                  height: 30px;
-                  background: #eff7ff !important;
-                  border-radius: 100%;
-                  display: flex;
-                  color: #369cff;
-                  align-items: center;
-                  justify-content: center;
-                  font-size: 13px;
-                `}
-                className="btn"
-              >
-                <i class="fas fa-pen"></i>
-              </div>
+                  css={`
+                    width: 30px;
+
+                    height: 30px;
+                    background: #eff7ff !important;
+                    border-radius: 100%;
+                    display: flex;
+                    color: #369cff;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 13px;
+                  `}
+                  className="btn"
+                >
+                  <i class="fas fa-pen"></i>
+                </div>
               </PencilWrapper>
             </>
           ))}
@@ -97,10 +97,10 @@ const Panel = ({
               {/* <PencilWrapper isMedical={formName === "Medical Details"}>
                 <span>Edit</span> <img src={pencil} alt={"pencil"}></img>
               </PencilWrapper> */}
-                     <div
+              <div
                 css={`
                   width: 30px;
-                 
+
                   height: 30px;
                   background: #eff7ff !important;
                   border-radius: 100%;
@@ -117,7 +117,13 @@ const Panel = ({
             </>
           ))}
       </StyledPanel>
-      <Collapse style={{ padding: "22px 0 0", position: "relative" }} in={show}>
+      <Collapse
+        style={{
+          padding: "22px 0 0",
+          position: "relative",
+        }}
+        in={show}
+      >
         {children}
       </Collapse>
       {(formName !== "Medical Details" || !show) && <HR />}

@@ -366,6 +366,7 @@ html {
   display: flex !important;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 42px 10px 8px !important;
 }
 
 .mobile-filter-wrapper-inner {
@@ -388,6 +389,7 @@ html {
 
 .mobile-filter-title {
   font-size: 12px;
+  font-weight: 900;
 }
 
 .tabordion {
@@ -489,9 +491,10 @@ html {
     width: 160px;
   }
   .tabordion section article {
-    left: 104px;
+    left: 104px;       left: 98px;
     min-width: 214px;
     padding: 8px 42px 0 62px;
+    padding: 8px 25px 0 62px;
   }
   .tabordion section article:after {
     background-color: #fff;

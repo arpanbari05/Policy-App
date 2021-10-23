@@ -53,6 +53,8 @@ function SeeDetailsFooter({
 
   const sumInsuredIndex = quote.sum_insured.indexOf(sum_insured);
 
+  console.log(quote,'sadg323126')
+
   const product = {
     premium: quote.premium[sumInsuredIndex],
     sum_insured: sum_insured,
@@ -69,6 +71,14 @@ function SeeDetailsFooter({
     addons: [],
   };
 
+  let additionalPremium = 0;
+
+  quote.mandatory_riders?.forEach((element) => {
+    console.log(additionalPremium,"sadg31")
+    additionalPremium += parseInt(element.total_premium);
+    console.log(additionalPremium,element.total_premium,"sadg32")
+  });
+  console.log(additionalPremium, quote.mandatory_riders, "sadg32");
   const {
     isCartProductLoading,
     totalPremium,
@@ -244,7 +254,7 @@ function SeeDetailsFooter({
           >
             {" "}
             <i className="fa fa-inr"></i> ₹{" "}
-            {parseInt(totalPremium).toLocaleString("en-IN")}/{" "}
+            {parseInt(totalPremium) + additionalPremium}/{" "}
             {product.tenure >= 2 ? `${product.tenure} Years` : "Year"}
           </span>
         </div>

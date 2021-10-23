@@ -21,6 +21,7 @@ const proposal = createSlice({
     showNSTP: false,
     activeIndex: 0,
     policyStatus: [],
+    noForAllChecked: true,
     policyLoading: true,
     planDetails: {
       title: "Your Plan Details",
@@ -33,6 +34,13 @@ const proposal = createSlice({
     setProposalData: (state, action) => {
       state.proposalData = { ...state.proposalData, ...action.payload };
       state.isLoading = false;
+    },
+
+    noForAllCheckedFalse: (state) => {
+      state.noForAllChecked = false;
+    },
+    noForAllCheckedTrue: (state) => {
+      state.noForAllChecked = true;
     },
     clearProposalData: (state) => {
       state.proposalData = {};
@@ -79,6 +87,8 @@ export const {
   setActiveIndex,
   setPolicyStatus,
   setPlanDetails,
+  noForAllCheckedFalse,
+  noForAllCheckedTrue,
 } = proposal.actions;
 const ls = new SecureLS();
 export const saveProposalData = (proposalData, next, failure) => {

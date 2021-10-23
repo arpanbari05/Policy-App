@@ -35,6 +35,13 @@ const Form3 = ({ handleChange, currentForm }) => {
       handleChange(4.1);
 
       dispatch(saveForm4UserDetails({ planType: selected }));
+      /* const toBeGivePlan =
+        selected === "M"
+          ? "Multi Individual"
+          : selected === "F"
+          ? "Family Floater"
+          : "Individual";
+      dispatch(setPlanType(toBeGivePlan));*/
     }
   };
 

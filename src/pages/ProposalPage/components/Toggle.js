@@ -6,6 +6,7 @@ import {
   setShowNSTP,
   setShowPlanNotAvail,
 } from "../ProposalSections/ProposalSections.slice";
+import { noForAllCheckedFalse } from "../ProposalSections/ProposalSections.slice";
 const Toggle = ({
   label,
   customOptions,
@@ -82,7 +83,11 @@ const Toggle = ({
                 }
               `}
             >
-              <label>
+              <label
+                onClick={() => {
+                  dispatch(noForAllCheckedFalse());
+                }}
+              >
                 <input
                   type="radio"
                   name={`is${name}`}

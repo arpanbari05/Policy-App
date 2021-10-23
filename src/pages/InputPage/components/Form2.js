@@ -259,8 +259,11 @@ const Form2 = ({ handleChange, currentForm }) => {
                       border: solid 1px #b0bed0;
                       margin-bottom: 10px;
                       border-radius: 7px;
+
                       @media (max-width: 480px) {
                         padding: 2px 5px !important;
+                        // border: none;
+                        margin: 10px -16px;
                       }
                     `}
                   >
@@ -416,27 +419,17 @@ const Form2 = ({ handleChange, currentForm }) => {
                 return (
                   <div
                     css={`
-                      display: flex;
-                      align-items: center;
-                      padding: 2px 10px;
-                      border: solid 1px #b0bed0;
-                      margin-bottom: 10px;
-                      border-radius: 7px;
+                    display: flex;
+                    align-items: center;
+                    padding: 2px 10px;
+                    border: solid 1px #b0bed0;
+                    margin-bottom: 10px;
+                    border-radius: 7px;
 
-                      @media screen and (max-width: 395px) {
-                        & > div {
-                          box-sizing: border-box;
-                          padding: 1vh;
-                        }
-                        & > div > div > span {
-                          font-size: 13px;
-                        }
-                        width: 100%;
-                        padding: 2px 10px;
-                        box-sizing: border-box;
-                        display: flex;
-                        flex-direction: column;
-                      }
+                    @media (max-width: 480px) {
+                      padding: 2px 3px !important;
+                      // border: none;
+                      margin: 10px -16px;
                     `}
                   >
                     {dataset(

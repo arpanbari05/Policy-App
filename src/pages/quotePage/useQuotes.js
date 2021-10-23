@@ -26,6 +26,12 @@ function useQuotesPage() {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
+  const filtersForTest = useSelector((state) => state.quotePage.filters);
+  console.log(
+    "Filters PlanType applied to the quotes page",
+    filtersForTest.planType
+  );
+
   const imageSendQuote = (email) => {
     const input = document.getElementById("printQuotePage");
 
@@ -91,19 +97,14 @@ function useQuotesPage() {
   const [showBuyNow, setShowBuyNow] = useState(false);
   const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
 
-const handleCloseSeeDetail = () => {
-  setShowSeeDetails(false);
- 
-}
-
   const { memberGroups, proposerDetails } = useSelector(
     ({ greetingPage }) => greetingPage
-    );
-    const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
-    
-    const initRef = useRef(true);
-    
-    const { groupCode } = useParams();
+  );
+  const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
+
+  const initRef = useRef(true);
+
+  const { groupCode } = useParams();
 
   const defaultfilters = {
     insurers: [],
@@ -127,7 +128,7 @@ const handleCloseSeeDetail = () => {
         dispatch(
           setFilters({
             ...tempfilter,
-            cover: tempfilter.cover || defaultfilters.cover,
+            cover: tempfilter?.cover || defaultfilters.cover,
             multiYear: tempfilter.multiYear || defaultfilters.multiYear,
             planType:
               memberGroups?.[groupCode]?.length === 1
@@ -327,16 +328,16 @@ const handleCloseSeeDetail = () => {
     } else {
       dispatch(
         setFilters({
-          planType: fetchFilters.plan_type
-            ? fetchFilters.plan_type === "M"
+          planType: filters.planType
+            ? filters.planType === "Multi Individual"
               ? "Multi Individual"
               : "Family Floater"
             : "Family Floater",
         })
       );
     }
-    console.log(selectedGroup,memberGroups,'fetchQuotes215')
-  }, [groupCode,memberGroups]);
+    console.log(selectedGroup, memberGroups, "fetchQuotes215");
+  }, [groupCode, memberGroups]);
 
   useEffect(() => {
     if (filters.premium) {
@@ -454,7 +455,6 @@ const handleCloseSeeDetail = () => {
     member,
     setSortBy,
     recFilterdQuotes,
-    handleCloseSeeDetail
   };
 }
 

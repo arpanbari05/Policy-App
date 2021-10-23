@@ -74,6 +74,8 @@ function SeedetailFooterMobile({
           
               font-size: 14px;
     line-height: 1.2;
+    margin-bottom: 5px;
+    font-weight: bold;
             `}
           >
             Total Premium

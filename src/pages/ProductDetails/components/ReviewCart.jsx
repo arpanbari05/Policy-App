@@ -11,6 +11,7 @@ import ReviewCartPopup from "./ReviewCardPopup";
 import EditMembersContent from "./EditMembersContent";
 import { mobile, small } from "../../../utils/mediaQueries";
 import CardModal from "../../../components/Common/Modal/CardModal";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 
 export function amount(number = 0) {
   return `₹ ${parseInt(number).toLocaleString("en-In")}`;
@@ -23,7 +24,7 @@ function CartDetailRow({ title, value }) {
         display: flex;
         justify-content: space-between;
         align-items: center;
-margin-bottom: 4px;
+        margin-bottom: 4px;
         width: 100%;
         ${mobile} {
           flex-direction: column;
@@ -59,7 +60,7 @@ margin-bottom: 4px;
           text-align: right;
           @media (max-width: 768px) {
             text-align: left !important;
-           
+
             line-height: 14px;
             margin-top: 7px;
             width: 100%;
@@ -100,7 +101,7 @@ function AddOnDetailsRow({ addOn }) {
     <div
       css={`
         display: flex;
-        align-items:center;
+        align-items: center;
       `}
     >
       <div
@@ -109,16 +110,15 @@ function AddOnDetailsRow({ addOn }) {
           display: flex;
           align-items: center;
           justify-content: center;
-          height:25px;
+          height: 25px;
         `}
       >
-    
         <img
           css={`
             width: 100%;
             /* margin-bottom: 5px; */
           `}
-          src={product.company.alias==="care_health"?care_health:logo}
+          src={product.company.alias === "care_health" ? care_health : logo}
           alt={product.company.alias}
         />
       </div>
@@ -128,8 +128,8 @@ function AddOnDetailsRow({ addOn }) {
           font-weight: 400;
           width: 100%;
           padding: 0px 5px;
-          display:flex;
-          align-items:center;
+          display: flex;
+          align-items: center;
         `}
       >
         {`${product.name} ${
@@ -346,6 +346,8 @@ function Discounts({ discounts = [], premium }) {
 
 const ReviewCart = ({ groupCode, unEditable }) => {
   const [reviewCartPopup, setReviewCartPopup] = useState(false);
+  const [showRiders, setShowRiders] = useState(false);
+  const [showAddOns, setShowAddOns] = useState(false);
 
   const cart = useSelector((state) => state.cart);
   const displayPlanType_code = useSelector(
@@ -431,9 +433,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
   };
 
   const handleReviewCartClick = () => {
-    
     addProduct(product).then((status) => {
-     
       if (status) setReviewCartPopup(true);
     });
   };
@@ -492,7 +492,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           font-size: 14px;
           color: #5c5959;
           margin-left: 43px;
-          @media(max-width:767px){
+          @media (max-width: 767px) {
             margin-left: unset;
           }
           ${small} {
@@ -605,7 +605,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               font-size: 14px;
               color: #5c5959;
               margin-left: 43px;
-              @media(max-width:767px){
+              @media (max-width: 767px) {
                 margin-left: unset;
               }
               @media (max-width: 537px) {
@@ -684,7 +684,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                   font-size: 14px;
                   color: #5c5959;
                   margin-left: 43px;
-                  @media(max-width:767px){
+                  @media (max-width: 767px) {
                     margin-left: unset;
                   }
                   @media (max-width: 537px) {
@@ -702,7 +702,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                   }
                 `}
               >
-                 - ₹ {(premium / 100) * percent}
+                - ₹ {(premium / 100) * percent}
               </span>
             </div>
           ))}
@@ -909,7 +909,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             css={`
               ${mobile} {
                 display: ${expand ? "static" : "none"};
-               
+
                 overflow-y: auto;
 
                 &::-webkit-scrollbar {
@@ -935,15 +935,11 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               expand &&
               `
              background:white;
-         width: 94%;
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-
-          `
+             width: 94%;
+             position: fixed;
+             bottom: 0;
+             left: 50%;
+             transform: translateX(-50%);`
             }
           >
             <div
@@ -972,7 +968,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               </span>
               <div
                 css={`
-                font-size: 12px; 
+                  font-size: 12px;
                   ${small} {
                     font-size: 12px;
                     line-height: 16px;
@@ -980,7 +976,10 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                   }
                 `}
               >
-                Plan for: {memberGroups[nextGroup]?.map(item => item.replace("_"," ")).join(", ")}
+                Plan for:{" "}
+                {memberGroups[nextGroup]
+                  ?.map((item) => item.replace("_", " "))
+                  .join(", ")}
               </div>
             </div>
             <div
@@ -1050,10 +1049,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           <div
             className="d-flex justify-content-between flex-column"
             css={`
-             
               display: flex;
               padding-bottom: 5px;
-              margin-bottom:5px;
+              margin-bottom: 5px;
               border-bottom: 1px solid #ddd;
             `}
           >
@@ -1075,7 +1073,6 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               `}
             >
               <img src={logoSrc} alt={companyAlias} class="w-100" />
-      
             </div>
             <div
               style={{
@@ -1103,44 +1100,79 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               padding-bottom: 5px;
               /* padding-left: 12px; */
               flex-direction: column;
-              margin-bottom:5px;
+              margin-bottom: 5px;
             `}
           >
             <div
               css={`
                 width: 100%;
-                max-width: 80px;
+
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
               `}
             >
               <BackgroundBorderTitle title="Riders" />
-            </div>
 
-            <div
-              css={`
-                width: 100%;
-                margin-top: 5px;
-                
-              `}
-            >
-              {!health_riders.length ? (
-                <CartDetailRow title="No Riders Selected" />
+              {health_riders.length ? (
+                <>
+                  {!showRiders && (
+                    <AiOutlineDown
+                      color="lightgrey"
+                      onClick={setShowRiders.bind(null, true)}
+                    />
+                  )}
+                  {showRiders && (
+                    <AiOutlineUp
+                      color="lightgrey"
+                      onClick={setShowRiders.bind(null, false)}
+                    />
+                  )}
+                </>
               ) : (
-                health_riders.map(({ name, total_premium }) => (
-                  <CartDetailRow
-                    key={name + total_premium}
-                    title={name}
-                    value={amount(total_premium)}
-                  />
-                ))
+                ""
               )}
             </div>
+
+            {/* IT SHOULD BE COLLAPSIBLE */}
+            {showRiders && health_riders ? (
+              <div
+                css={`
+                  width: 100%;
+                  margin-top: 5px;
+                `}
+              >
+                {!health_riders.length ? (
+                  <CartDetailRow title="No Riders Selected" />
+                ) : (
+                  health_riders.map(({ name, total_premium }) => (
+                    <CartDetailRow
+                      key={name + total_premium}
+                      title={name}
+                      value={amount(total_premium)}
+                    />
+                  ))
+                )}
+              </div>
+            ) : (
+              <div
+                css={`
+                  width: 100%;
+                  margin-top: 5px;
+                `}
+              >
+                {!health_riders.length && (
+                  <CartDetailRow title="No Riders Selected" />
+                )}
+              </div>
+            )}
           </div>
 
           <Discounts discounts={discounts} premium={premium} />
 
           <div
             css={`
-             display: flex;
+              display: flex;
               width: 100%;
               align-items: flex-start;
               justify-content: space-between;
@@ -1150,23 +1182,63 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               flex-direction: column;
             `}
           >
-            <div>
+            <div
+              css={`
+                width: 100%;
+
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+              `}
+            >
               <BackgroundBorderTitle title="Add-On Coverages" />
-            </div>
-            <div css={`
-            width:100%;
-            `}>
-              {!addons.length ? (
-                <CartDetailRow title="No Add-Ons Selected" />
+              {addons.length ? (
+                <>
+                  {!showAddOns && (
+                    <AiOutlineDown
+                      color="lightgrey"
+                      onClick={setShowAddOns.bind(null, true)}
+                    />
+                  )}
+                  {showAddOns && (
+                    <AiOutlineUp
+                      color="lightgrey"
+                      onClick={setShowAddOns.bind(null, false)}
+                    />
+                  )}
+                </>
               ) : (
-                addons.map((addOn, idx) => (
-                  <AddOnDetailsRow
-                    key={addOn.product.name + addOn.premium + idx}
-                    addOn={addOn}
-                  />
-                ))
+                ""
               )}
             </div>
+            {showAddOns && addons ? (
+              <div
+                css={`
+                  width: 100%;
+                `}
+              >
+                {!addons.length ? (
+                  <CartDetailRow title="No Add-Ons Selected" />
+                ) : (
+                  addons.map((addOn, idx) => (
+                    <AddOnDetailsRow
+                      key={addOn.product.name + addOn.premium + idx}
+                      addOn={addOn}
+                    />
+                  ))
+                )}
+              </div>
+            ) : (
+              <div
+                css={`
+                  width: 100%;
+                `}
+              >
+                {!addons.length && (
+                  <CartDetailRow title="No Add-Ons Selected" />
+                )}
+              </div>
+            )}
           </div>
 
           <div
@@ -1214,7 +1286,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           >
             {hasNextGroupProduct ? (
               <ProceedButton
-                members={memberGroups[nextGroup]?.map(item => item.replace("_"," ")).join(", ")}
+                members={memberGroups[nextGroup]
+                  ?.map((item) => item.replace("_", " "))
+                  .join(", ")}
                 loading={isCartProductLoading}
                 onProceedClick={handleProceedClick}
               />
@@ -1257,12 +1331,11 @@ const ReviewCart = ({ groupCode, unEditable }) => {
       </div>
 
       {!hasNextGroupProduct && reviewCartPopup ? (
-       <>
-      
-        <ReviewCartPopup
-          propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
-          onClose={handleReviewPopupClose}
-        />
+        <>
+          <ReviewCartPopup
+            propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
+            onClose={handleReviewPopupClose}
+          />
         </>
       ) : null}
       {showEditMembers && (
@@ -1311,7 +1384,9 @@ export function ReviewCartButton() {
           `}
         >
           <ProceedButton
-            members={memberGroups[nextGroup]?.map(item => item.replace("_"," ")).join(", ")}
+            members={memberGroups[nextGroup]
+              ?.map((item) => item.replace("_", " "))
+              .join(", ")}
             loading={isCartProductLoading}
             onProceedClick={handleProceedClick}
           />
@@ -1370,7 +1445,7 @@ function ProceedButton({
         align-items: center;
         justify-content: space-between;
         padding: 10px;
-        cursor:pointer;
+        cursor: pointer;
         margin: 0 !important;
         width: 100%;
         color: white;
@@ -1410,7 +1485,6 @@ function ProceedButton({
           /* border: 1px solid var(--abc-red); */
           font-size: 15px;
           border-radius: 2px;
-         
         `}
       >
         {loading ? <i className="fas fa-circle-notch rotate" /> : "Proceed"}

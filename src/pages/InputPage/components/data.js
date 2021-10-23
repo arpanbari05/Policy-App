@@ -93,26 +93,11 @@ export const dataset = (
           font-size: 19px;
           color: #000;
           // border: 1px solid black;
+          @media (max-width: 480px) {
+            left: -8px;
+          }
         `}
       >
-        <IoAddCircle
-          onClick={() => {
-            addChild(title);
-          }}
-          color="grey"
-        />
-
-        <span
-          css={`
-            color: #6b7789;
-            margin: 0 12px;
-            position: relative;
-            font-size: 14px;
-            font-weight: 900;
-          `}
-        >
-          {count}
-        </span>
         <IoRemoveCircle
           onClick={() => {
             removeChild &&
@@ -122,7 +107,29 @@ export const dataset = (
                 "checkbox"
               );
           }}
-          color="grey"
+          color="lightgrey"
+        />
+
+        <span
+          css={`
+            color: #6b7789;
+            margin: 0 12px;
+            position: relative;
+            font-size: 14px;
+            font-weight: 900;
+
+            @media (max-width: 480px) {
+              margin: 0 4px;
+            }
+          `}
+        >
+          {count}
+        </span>
+        <IoAddCircle
+          onClick={() => {
+            addChild(title);
+          }}
+          color="lightgrey"
         />
       </div>
       <RoundDD

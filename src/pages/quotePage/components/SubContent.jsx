@@ -128,6 +128,9 @@ const SubContent = ({
   mandatory_riders[activeCover]?.forEach((element) => {
     additionalPremium += element.total_premium;
   });
+
+  console.log('testquote123',name,features)
+
   const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   const handleSeeDetailsClick = (clickedFrom) => {
     handleSeeDetails(
@@ -297,7 +300,7 @@ const SubContent = ({
                               </SmallLabel>
                               <ValueText
                                 css={`
-                                font-size: 12px !important;
+                                  font-size: 12px !important;
                                 `}
                               >
                                 {item.value}
@@ -321,7 +324,7 @@ const SubContent = ({
                               </SmallLabel>
                               <ValueText
                                 css={`
-                                font-size: 12px !important;
+                                  font-size: 12px !important;
                                 `}
                               >
                                 {item.value}
@@ -332,34 +335,34 @@ const SubContent = ({
                       </>
                     );
                   })}
-  <OverlayTrigger
-                  className=""
-                  placement={"right"}
-                  overlay={renderTooltip(
-                    mergedQuotes[0]?.features[activeCover][0]?.description
-                  )}
-                >
-                  <TextWrapper>
-                    <SmallLabel
-                      css={`
-                        font-size: 11px !important;
-                      `}
-                    >
-                      Cashless Hospitals
-                    </SmallLabel>
-                    <ValueText
-                      css={`
-                      font-size: 12px !important;
-                      `}
-                      onClick={() => handleSeeDetailsClick(4)}
-                    >
-                      {cashlessHospitalsCount[activeCover]}
-                      <span>
-                        {" "}
-                        <i class="fas fa-chevron-right "></i>
-                      </span>
-                    </ValueText>
-                  </TextWrapper>
+                  <OverlayTrigger
+                    className=""
+                    placement={"right"}
+                    overlay={renderTooltip(
+                      mergedQuotes[0]?.features[activeCover][0]?.description
+                    )}
+                  >
+                    <TextWrapper>
+                      <SmallLabel
+                        css={`
+                          font-size: 11px !important;
+                        `}
+                      >
+                        Cashless Hospitals
+                      </SmallLabel>
+                      <ValueText
+                        css={`
+                          font-size: 12px !important;
+                        `}
+                        onClick={() => handleSeeDetailsClick(4)}
+                      >
+                        {cashlessHospitalsCount[activeCover]}
+                        <span>
+                          {" "}
+                          <i class="fas fa-chevron-right "></i>
+                        </span>
+                      </ValueText>
+                    </TextWrapper>
                   </OverlayTrigger>
                 </div>
                 <div className="d-flex justify-content-start">
@@ -367,51 +370,51 @@ const SubContent = ({
                     return (
                       <>
                         {item.name === "Co-Payment" && (
-                            <OverlayTrigger
+                          <OverlayTrigger
                             className=""
                             placement={"right"}
                             overlay={renderTooltip(item.short_description)}
                           >
-                          <TextWrapper>
-                            <SmallLabel
-                              css={`
-                                font-size: 11px !important;
-                              `}
-                            >
-                              Co-Payment
-                            </SmallLabel>
-                            <ValueText
-                              css={`
-                              font-size: 12px !important;
-                              `}
-                            >
-                              {item.value}
-                            </ValueText>
-                          </TextWrapper>
+                            <TextWrapper>
+                              <SmallLabel
+                                css={`
+                                  font-size: 11px !important;
+                                `}
+                              >
+                                Co-Payment
+                              </SmallLabel>
+                              <ValueText
+                                css={`
+                                  font-size: 12px !important;
+                                `}
+                              >
+                                {item.value}
+                              </ValueText>
+                            </TextWrapper>
                           </OverlayTrigger>
                         )}
                         {item.name === "Pre Existing Disease" && (
-                            <OverlayTrigger
+                          <OverlayTrigger
                             className=""
                             placement={"right"}
                             overlay={renderTooltip(item.short_description)}
                           >
-                          <TextWrapper>
-                            <SmallLabel
-                              css={`
-                                font-size: 11px !important;
-                              `}
-                            >
-                              Pre Existing Disease
-                            </SmallLabel>
-                            <ValueText
-                              css={`
-                              font-size: 12px !important;
-                              `}
-                            >
-                              {item.value}
-                            </ValueText>
-                          </TextWrapper>
+                            <TextWrapper>
+                              <SmallLabel
+                                css={`
+                                  font-size: 11px !important;
+                                `}
+                              >
+                                Pre Existing Disease
+                              </SmallLabel>
+                              <ValueText
+                                css={`
+                                  font-size: 12px !important;
+                                `}
+                              >
+                                {item.value}
+                              </ValueText>
+                            </TextWrapper>
                           </OverlayTrigger>
                         )}
                       </>
@@ -477,6 +480,9 @@ const SubContent = ({
                 css={`
                   height: 114px !important;
                   /*background-color: green;*/
+                  &:after {
+                    display: none;
+                  }
                 `}
               >
                 <LogoWrapper>
@@ -491,7 +497,7 @@ const SubContent = ({
                         {tenure?.[activeCover] === 1
                           ? ""
                           : tenure?.[activeCover]}
-                        {tenure?.[activeCover] > 1 ? "years" : "year"}
+                        {tenure?.[activeCover] > 1 ? " years" : "year"}
                       </span>
                     </strong>
                   </RadioButton>

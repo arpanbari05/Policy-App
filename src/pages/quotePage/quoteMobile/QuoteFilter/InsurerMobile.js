@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import "styled-components/macro"
+import "styled-components/macro";
 
 const InsurerMobile = ({
   sortedCompanies,
@@ -13,7 +13,7 @@ const InsurerMobile = ({
       {" "}
       <article>
         <Row>
-          {sortedCompanies?.map(item => (
+          {sortedCompanies?.map((item) => (
             <Col md={12} className="padding-none">
               <div className="inputGroup">
                 <input
@@ -25,6 +25,10 @@ const InsurerMobile = ({
                 <label
                   css={`
                     @media (max-width: 375px) {
+                      &:after {
+                        top: 40px !important;
+                        right: 13px  !important;
+                      }
                       display: flex !important;
                       flex-direction: column;
                     }
@@ -34,7 +38,7 @@ const InsurerMobile = ({
                   onClick={() => {
                     if (selected.includes(data?.companies[item]))
                       setSelected(
-                        selected.filter(ins => ins !== data?.companies[item]),
+                        selected.filter((ins) => ins !== data?.companies[item])
                       );
                     else setSelected([...selected, data?.companies[item]]);
                   }}

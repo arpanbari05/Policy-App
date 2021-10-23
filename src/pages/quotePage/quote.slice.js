@@ -140,6 +140,10 @@ const quotePageSlice = createSlice({
     },
     setFilters: (state, action) => {
       console.log("fetchquotes setfilters", action.payload);
+      console.log("Total filters each time", {
+        ...state.filters,
+        ...action.payload,
+      });
 
       state.filters = { ...state.filters, ...action.payload };
     },
@@ -208,7 +212,7 @@ const quotePageSlice = createSlice({
       state.productDiscounts = action.payload;
     },
     saveFilteredPremium: (state, action) => {
-      console.log('hehe3325321t3dsg')
+      console.log("hehe3325321t3dsg");
       state.quotes = state.quotes.map((item) =>
         item.filter((quote) =>
           action.payload.code.includes("-")
@@ -229,11 +233,11 @@ const quotePageSlice = createSlice({
     },
 
     premiumFilterQuotes: (state, action) => {
-      console.log('hehe3325premiumFilterQuotes')
+      console.log("hehe3325premiumFilterQuotes");
       state.filterQuotes = state.quotes.map((item) => {
         //console.log("Andddd here we go");
         if (action.payload?.code.includes("<")) {
-          return item.filter((quote) => quote.premium  < 5000);
+          return item.filter((quote) => quote.premium < 5000);
         } else {
           return item.filter(
             (quote) =>
@@ -548,7 +552,7 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
         const errorsList = Object.values(errors);
         dispatch(ageError(errorsList));
       } else {
-        handleClose();
+         handleClose();
       }
 
       // const { data } = response;
@@ -664,4 +668,3 @@ export const getProductDiscount =
   };
 
 export default quotePageSlice.reducer;
-

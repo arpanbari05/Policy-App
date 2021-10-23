@@ -131,9 +131,14 @@ const Label = styled.label`
   transition: all 0.3s ease-in-out;
   font-weight: 900;
   padding: 0 5px;
-
+  @media (max-width: 1200px){
+    font-size:15px !important;
+  }
+  @media (max-width: 1100px){
+    font-size:14px !important;
+  }
   @media (max-width: 767px) {
-    font-size: 14px;
     left: 10px;
+    font-size: 14px;
   }
 `;
