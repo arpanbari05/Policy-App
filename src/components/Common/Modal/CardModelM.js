@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Container } from "react-bootstrap";
 import styled from "styled-components";
 import StyledButtonM from "../Button/StyledButtonM";
+import "styled-components/macro";
 
 const CardModal = ({
   title,
@@ -13,6 +14,7 @@ const CardModal = ({
   handleClose,
   BtnArrow,
   showButton = true,
+  errorsFromCompare,
 }) => {
   return (
     <MobileModal
@@ -39,11 +41,25 @@ const CardModal = ({
         }}
       >
         {title && <ModalTitle>{title}</ModalTitle>}
+
+        {errorsFromCompare ? (
+          <span
+            css={`
+              position: absolute;
+              top: 36px;
+              border-radius: 10px;
+              font-size: 11px;
+              color: #bd2b2b;
+            `}
+          >
+            {errorsFromCompare}
+          </span>
+        ) : (
+          ""
+        )}
       </Modal.Header>
 
-      <Modal.Body>
-        {content}
-      </Modal.Body>
+      <Modal.Body>{content}</Modal.Body>
 
       {/* compare btn */}
       {showButton && (
@@ -60,30 +76,29 @@ const CardModal = ({
 
 export default CardModal;
 
-
 const MobileModal = styled(Modal)`
   width: 100%;
 
- height: 100%;
+  height: 100%;
 
   z-index: 1040;
   background-color: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 
-  @media(min-width: 767px){
-    width:80%;
-    height:80%;
-    padding:0px 20px;
-    position:absolute;
-    left:10%;
+  @media (min-width: 767px) {
+    width: 80%;
+    height: 80%;
+    padding: 0px 20px;
+    position: absolute;
+    left: 10%;
     &::-webkit-scrollbar {
-    display: none;
-  }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-    top:10%;
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    top: 10%;
     overflow-y: hidden;
-    border-radius:20px;
+    border-radius: 20px;
   }
 `;
 
@@ -99,9 +114,9 @@ const CloseButton = styled.button`
   border-radius: 50%;
 `;
 const ModalTitle = styled.h5`
-
   color: #000;
   font-size: 15px;
+  /* position:relative; */
   font-weight: 900;
   width: 80%;
   &:after {
