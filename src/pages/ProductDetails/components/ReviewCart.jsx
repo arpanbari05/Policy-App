@@ -1306,6 +1306,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                   font-weight: 600px;
                   height: 44px;
                   margin: 10px auto;
+                  :hover{
+  color:white !important;
+}
                 `}
                 onClick={handleReviewCartClick}
                 id="review-cart-button"
@@ -1397,7 +1400,9 @@ export function ReviewCartButton() {
 
             background-color: #0c88ff;
             border-radius: 2px;
-
+:hover{
+  color:white !important;
+}
             font-size: 18px;
             font-weight: 600px;
             height: 44px;

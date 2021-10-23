@@ -55,8 +55,8 @@ const PlanContainerM = ({
     <>
       {product?.name ? (
         <Row
-          className="price_IC_box text-center position-relative"
-          style={{ boxShadow: "none", width: "42%", minHeight: "180px" }}
+          className="price_IC_box text-center position-relative "
+          style={{ boxShadow: "none", width: "42%", minHeight: "180px", maxHeight:"200px" }}
           css={`
             margin: 0px !important;
             @media (max-width: 767px) {
@@ -148,7 +148,7 @@ const PlanContainerM = ({
           className="IC_product_compare_card blank"
           style={{
             width: "42% !important",
-            minHeight: "180px",
+            minHeight: "200px",
             borderRadius: "none",
           }}
           css={`

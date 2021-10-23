@@ -84,6 +84,7 @@ const THeadM = ({
         display: "flex",
         marginTop:'20px',
         alignItems: "center",
+        alignItems: "stretch",
         justifyContent: "space-evenly",
         flexWrap: "nowrap",
       }}
