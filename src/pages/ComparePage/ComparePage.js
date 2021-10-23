@@ -496,8 +496,8 @@ const popupContentM = (
                         width: "100%",
                       }}
                     >
-                      <Title style={{ fontSize: "11px" }}>Sum Insured :</Title>
-                      <Value style={{ fontSize: "11px" }}>
+                      <Title style={{ fontSize: "10px" }}>Sum Insured :</Title>
+                      <Value style={{ fontSize: "10px" }}>
                       ₹ {" "}
                           {" "}
                         {numToLakh(mergedQuotes[index].data.sum_insured).toLocaleString(
@@ -512,8 +512,8 @@ const popupContentM = (
                         width: "100%",
                       }}
                     >
-                      <Title style={{ fontSize: "12px" }}>Premium :</Title>
-                      <Value style={{ fontSize: "12px" }}>
+                      <Title style={{ fontSize: "10px" }}>Premium :</Title>
+                      <Value style={{ fontSize: "10px" }}>
                         <i class="fa fa-inr"></i>{" "}
                         {(discount[
                           `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`

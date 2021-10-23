@@ -140,7 +140,7 @@ const AdditionalBenefits = ({
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipTitle, setTooltipTitle] = useState("");
-
+ 
   return (
     <>
       <TooltipMobileModal
@@ -431,7 +431,9 @@ const TBodyM = ({
       </>
     );
   }
-  if (title === "Additional Benefits") {
+  
+  if (title === "Additional Benefits" && plans[0]) {
+    
     return (
       <AdditionalBenefits
         plans={plans}

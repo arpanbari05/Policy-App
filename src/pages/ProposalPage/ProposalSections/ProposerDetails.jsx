@@ -7,7 +7,7 @@ import ContinueBtn from "../components/Buttons/ContinueBtn";
 import useProposalSections from "./useProposalSections";
 import { useDispatch, useSelector } from "react-redux";
 
-import "styled-components/macro"
+import "styled-components/macro";
 import BMI from "./components/BMI";
 import { callApi } from "../../../components/FormBuilder/FormBuilder.slice";
 import { setActiveIndex } from "./ProposalSections.slice";
@@ -22,8 +22,8 @@ const ProposerDetails = ({
 }) => {
   const { values, setValues, setValid, submit, setSubmit, setCustomValid } =
     useProposalSections(setActive, name, defaultValue);
-  const { proposerDetails } = useSelector(state => state.greetingPage);
-// const {activeIndex} = useSelector(({propselPage}) => propselPage)
+  const { proposerDetails } = useSelector((state) => state.greetingPage);
+  // const {activeIndex} = useSelector(({propselPage}) => propselPage)
   const dispatch = useDispatch();
   useEffect(() => {
     if (name === "Proposer Details") {
@@ -36,7 +36,7 @@ const ProposerDetails = ({
         //   ? proposerDetails.pincode.split("-")[1]
         //   : proposerDetails.pincode,
       };
-      schema.forEach(item => {
+      schema.forEach((item) => {
         if (item.value)
           prefilledValues = { ...prefilledValues, [item.name]: item.value };
         if (item.fill && item.name === "pincode") {
@@ -45,7 +45,7 @@ const ProposerDetails = ({
               [item.name]: item.value,
               [item.fill.alsoUse]: values[item.fill.alsoUse],
             }),
-            item.fill,
+            item.fill
           );
         }
       });
@@ -69,17 +69,15 @@ const ProposerDetails = ({
           />
         </Form>
       </div>
-      <div class="proposal_continue_back_margin container"
-
-      >
-      {console.log(active,"dgsaadsg")}
+      <div class="proposal_continue_back_margin container">
+        {console.log(active, "dgsaadsg")}
         <BackBtn
           hide={name === "Proposer Details"}
           onClick={() => {
-// console.log(active,"hellohello")
+            // console.log(active,"hellohello")
             // dispatch(setActiveIndex(active?active-1:active))
             // setActive(active + 1);
-            setActive(prev => {
+            setActive((prev) => {
               if (prev === 0) return 0;
               else return prev - 1;
             });
