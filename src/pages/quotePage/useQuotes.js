@@ -133,8 +133,8 @@ function useQuotesPage() {
             planType:
               memberGroups?.[groupCode]?.length === 1
                 ? "Individual"
-                : tempfilter.plan_type
-                ? tempfilter.plan_type === "M"
+                : tempfilter?.plan_type
+                ? tempfilter?.plan_type === "M"
                   ? "Multi Individual"
                   : "Family Floater"
                 : "Family Floater",
