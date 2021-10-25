@@ -40,88 +40,88 @@ import { AiOutlineClose } from "react-icons/ai";
 
 export const getRiders = async (
   { productId, sum_insured, tenure, group },
-  
-  callback = () => {}
-  ) => {
-    console.log(productId, "agsdasgd2");
-    try {
-      const response = await getRidersApi({
-        productId,
-        sum_insured,
-        tenure,
-        group,
-      });
-      if (response.message) {
-        callback(null, response.message);
-        return;
-      }
-      callback(response.data);
-    } catch (error) {
-      alert(error);
-      console.error(error);
-    }
-  };
-  
-  export const getAbhiRiders = async (
-    { productId, sum_insured, tenure, group, string },
-    callback = () => {}
-    ) => {
-      try {
-        const response = await getAbhiRidersApi({
-          productId,
-          sum_insured,
-          tenure,
-          group,
-          string,
-        });
-        if (response.message) {
-          callback(null, response.message);
-          return;
-        }
-        callback(response.data);
-      } catch (error) {
-        alert(error);
-        console.error(error);
-      }
-    };
-    
-    const getHospitalsData = async ({ company_alias }, callback = () => {}) => {
-      const { data } = await getHospitals(company_alias);
-      let hospitals = data?.data || [];
-      let searchByName = {};
-      let searchByPincode = {};
-      const displayHospitals = hospitals.slice(0, 6);
-      hospitals.forEach((item) => {
-        searchByName = {
-          ...searchByName,
-          ...{
-            [item.name]: [
-              ...(searchByName[item.name] ? searchByName[item.name] : []),
-              item,
-            ],
-          },
-        };
-        searchByPincode = {
-          ...searchByPincode,
-          ...{
-            [item.pincode]: [
-              ...(searchByPincode[item.pincode]
-                ? searchByPincode[item.pincode]
-                : []),
-                item,
-              ],
-            },
-          };
-        });
-        const rows = displayHospitals.reduce(function (rows, key, index) {
-          return (
-            (index % 2 === 0 ? rows.push([key]) : rows[rows.length - 1].push(key)) &&
-            rows
-            );
-          }, []);
 
-          callback({
-            displayHospitals: rows,
+  callback = () => {}
+) => {
+  console.log(productId, "agsdasgd2");
+  try {
+    const response = await getRidersApi({
+      productId,
+      sum_insured,
+      tenure,
+      group,
+    });
+    if (response.message) {
+      callback(null, response.message);
+      return;
+    }
+    callback(response.data);
+  } catch (error) {
+    alert(error);
+    console.error(error);
+  }
+};
+
+export const getAbhiRiders = async (
+  { productId, sum_insured, tenure, group, string },
+  callback = () => {}
+) => {
+  try {
+    const response = await getAbhiRidersApi({
+      productId,
+      sum_insured,
+      tenure,
+      group,
+      string,
+    });
+    if (response.message) {
+      callback(null, response.message);
+      return;
+    }
+    callback(response.data);
+  } catch (error) {
+    alert(error);
+    console.error(error);
+  }
+};
+
+const getHospitalsData = async ({ company_alias }, callback = () => {}) => {
+  const { data } = await getHospitals(company_alias);
+  let hospitals = data?.data || [];
+  let searchByName = {};
+  let searchByPincode = {};
+  const displayHospitals = hospitals.slice(0, 6);
+  hospitals.forEach((item) => {
+    searchByName = {
+      ...searchByName,
+      ...{
+        [item.name]: [
+          ...(searchByName[item.name] ? searchByName[item.name] : []),
+          item,
+        ],
+      },
+    };
+    searchByPincode = {
+      ...searchByPincode,
+      ...{
+        [item.pincode]: [
+          ...(searchByPincode[item.pincode]
+            ? searchByPincode[item.pincode]
+            : []),
+          item,
+        ],
+      },
+    };
+  });
+  const rows = displayHospitals.reduce(function (rows, key, index) {
+    return (
+      (index % 2 === 0 ? rows.push([key]) : rows[rows.length - 1].push(key)) &&
+      rows
+    );
+  }, []);
+
+  callback({
+    displayHospitals: rows,
     searchByName,
     searchByPincode,
     hospitals,
@@ -141,10 +141,8 @@ const SeeDetails = ({
   tenure,
   product,
 }) => {
- 
+  console.log("ahaheh3h2h32", quote);
 
-  console.log('ahaheh3h2h32',quote)
-  
   const [addedRiders, setAddedRiders] = useState([]);
   const dispatch = useDispatch();
   const { groupCode } = useParams();
@@ -290,10 +288,11 @@ const SeeDetails = ({
             group: groupCode,
           },
           (riders) => {
-            console.log(riders,'sadg32')
-            const fltriders = riders.data.filter(rider => rider.total_premium !== 0 || rider.options)
-            .map(rider => ({ ...rider, rider_id: rider.id }));
-            setRiders(fltriders)
+            console.log(riders, "sadg32");
+            const fltriders = riders.data
+              .filter((rider) => rider.total_premium !== 0 || rider.options)
+              .map((rider) => ({ ...rider, rider_id: rider.id }));
+            setRiders(fltriders);
           }
         );
         dispatch(requestDetailsSuccess());
@@ -320,7 +319,7 @@ const SeeDetails = ({
     };
     getdetails();
   }, [activeFieldset]);
-  console.log(planDetails,'sadg321')
+  console.log(planDetails, "sadg321");
   return (
     <div>
       <Modal
@@ -328,7 +327,7 @@ const SeeDetails = ({
         backdropClassName="ModalBackdrop"
         show={show}
       >
-      {console.log(show,"newnenwenw")}
+        {console.log(show, "newnenwenw")}
         <Modal.Body
           className="background_transparent p-lg showOnDesktop"
           style={{
@@ -371,16 +370,18 @@ const SeeDetails = ({
                 brochureUrl={brochureUrl}
                 policyWordingUrl={policyWordingUrl}
               />
-              <AddOnCoverages
-                ActiveMainTab={activeFieldset === 2 ? true : false}
-                quote={quote}
-                sum_insured={sum_insured}
-                tenure={tenure}
-                product={product}
-                riders={riders}
-                setRiders={setRiders}
-                setAddedRiders={setAddedRiders}
-              />
+              {activeFieldset === 2 && (
+                <AddOnCoverages
+                  ActiveMainTab={activeFieldset === 2 ? true : false}
+                  quote={quote}
+                  sum_insured={sum_insured}
+                  tenure={tenure}
+                  product={product}
+                  riders={riders}
+                  setRiders={setRiders}
+                  setAddedRiders={setAddedRiders}
+                />
+              )}
               <CashlessHospital
                 ActiveMainTab={activeFieldset === 3 ? true : false}
                 hospitals={hospitals}
@@ -451,8 +452,6 @@ const SeeDetails = ({
           </div>
           <div className="tab-container z-container">
             <PlanDetailsMobile
-            
-        
               ActiveMainTab={activeFieldset === 1 ? true : false}
               planDetails={planDetails}
               brochureUrl={brochureUrl}
@@ -515,7 +514,7 @@ const SeeDetails = ({
           <StyledHeader>
             <a>
               <i
-                class="fa fa-arrow-left"
+                class="fas fa-arrow-circle-left"
                 onClick={handleClose}
                 aria-hidden="true"
               ></i>

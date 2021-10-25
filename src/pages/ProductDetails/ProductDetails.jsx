@@ -157,7 +157,7 @@ const ProductDetails = () => {
             history.goBack();
           }}
         >
-          <i class="fas fa-chevron-circle-left"></i>{" "}
+          <i class="fas fa-arrow-circle-left"></i>{" "}
           <span className="mx-2"> Go Back</span>
         </MobileHeaderText>
       </MobileHeader>

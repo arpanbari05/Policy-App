@@ -138,6 +138,7 @@ function EditMembersContent({ closePopup = () => {} }) {
             group,
             health_riders,
             addons,
+            page: 'edit members',
           });
         // updateCartApi({
         //   cartId,

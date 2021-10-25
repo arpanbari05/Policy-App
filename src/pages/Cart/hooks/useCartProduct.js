@@ -101,6 +101,7 @@ function useCartProduct(groupCode, selectedProduct) {
 
   const updateProductRedux = useCallback(
     (productData) => {
+    console.log(productData,'gsagsd32t32')
       dispatch(addQuoteToCart({ groupCode, product: productData }));
     },
     [dispatch, groupCode]
