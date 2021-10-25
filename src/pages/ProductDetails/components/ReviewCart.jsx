@@ -346,8 +346,6 @@ function Discounts({ discounts = [], premium }) {
 
 const ReviewCart = ({ groupCode, unEditable }) => {
   const [reviewCartPopup, setReviewCartPopup] = useState(false);
-  const [showRiders, setShowRiders] = useState(false);
-  const [showAddOns, setShowAddOns] = useState(false);
 
   const cart = useSelector((state) => state.cart);
   const displayPlanType_code = useSelector(
@@ -727,7 +725,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           box-shadow: 0 2px 6px 0 hsl(0deg 0% 64% / 50%);
           padding: 10px;
           padding-top: 18px;
-          padding-bottom:${hasNextGroupProduct ? "25px" : "10px"};
+          padding-bottom: ${hasNextGroupProduct ? "25px" : "10px"};
           /* padding-bottom: 20px; */
           border-radius: 2px;
           color: #000;
@@ -1113,46 +1111,24 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               `}
             >
               <BackgroundBorderTitle title="Riders" />
-
-              {health_riders.length ? (
-                <>
-                  {!showRiders && (
-                    <AiOutlineDown
-                      color="lightgrey"
-                      onClick={setShowRiders.bind(null, true)}
-                    />
-                  )}
-                  {showRiders && (
-                    <AiOutlineUp
-                      color="lightgrey"
-                      onClick={setShowRiders.bind(null, false)}
-                    />
-                  )}
-                </>
-              ) : (
-                ""
-              )}
             </div>
 
             {/* IT SHOULD BE COLLAPSIBLE */}
-            {showRiders && health_riders ? (
+            {health_riders.length > 0 ? (
               <div
                 css={`
                   width: 100%;
                   margin-top: 5px;
                 `}
               >
-                {!health_riders.length ? (
-                  <CartDetailRow title="No Riders Selected" />
-                ) : (
+                {health_riders.length &&
                   health_riders.map(({ name, total_premium }) => (
                     <CartDetailRow
                       key={name + total_premium}
                       title={name}
                       value={amount(total_premium)}
                     />
-                  ))
-                )}
+                  ))}
               </div>
             ) : (
               <div
@@ -1192,41 +1168,20 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               `}
             >
               <BackgroundBorderTitle title="Add-On Coverages" />
-              {addons.length ? (
-                <>
-                  {!showAddOns && (
-                    <AiOutlineDown
-                      color="lightgrey"
-                      onClick={setShowAddOns.bind(null, true)}
-                    />
-                  )}
-                  {showAddOns && (
-                    <AiOutlineUp
-                      color="lightgrey"
-                      onClick={setShowAddOns.bind(null, false)}
-                    />
-                  )}
-                </>
-              ) : (
-                ""
-              )}
             </div>
-            {showAddOns && addons ? (
+            {addons.length > 0 ? (
               <div
                 css={`
                   width: 100%;
                 `}
               >
-                {!addons.length ? (
-                  <CartDetailRow title="No Add-Ons Selected" />
-                ) : (
+                {addons.length &&
                   addons.map((addOn, idx) => (
                     <AddOnDetailsRow
                       key={addOn.product.name + addOn.premium + idx}
                       addOn={addOn}
                     />
-                  ))
-                )}
+                  ))}
               </div>
             ) : (
               <div
@@ -1306,9 +1261,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                   font-weight: 600px;
                   height: 44px;
                   margin: 10px auto;
-                  :hover{
-  color:white !important;
-}
+                  :hover {
+                    color: white !important;
+                  }
                 `}
                 onClick={handleReviewCartClick}
                 id="review-cart-button"
@@ -1400,9 +1355,9 @@ export function ReviewCartButton() {
 
             background-color: #0c88ff;
             border-radius: 2px;
-:hover{
-  color:white !important;
-}
+            :hover {
+              color: white !important;
+            }
             font-size: 18px;
             font-weight: 600px;
             height: 44px;
