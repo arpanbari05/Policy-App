@@ -44,7 +44,7 @@ export const fieldSet1Data = [
     maxLength: "60",
   },
   {
-    type: "tel",
+    type: "number",
     name: "mobile",
     label: "Mobile No.",
     placeHolder: "Enter mobile no.",
@@ -139,7 +139,7 @@ const Form5 = ({ handleChange, currentForm }) => {
             padding: 17px;
             @media (max-width: 480px) {
               padding: 10px !important;
-              }
+            }
           `}
         >
           <Title onClick={demoLogin}>Tell Us about yourself?</Title>
@@ -165,7 +165,6 @@ const Form5 = ({ handleChange, currentForm }) => {
                 & img {
                   height: 45px;
                 }
-                
               `}
             >
               <img
@@ -222,12 +221,12 @@ const Form5 = ({ handleChange, currentForm }) => {
                   css={`
                     width: ${name !== "email" ? "221px" : "100%"};
                     @media (max-width: 1100px) {
-                      width:100% !important;
-    /* margin: 0 11px; */
-              }
+                      width: 100% !important;
+                      /* margin: 0 11px; */
+                    }
                   `}
                 >
-                  {" "}
+                  {console.log("The type of input feild renders", type)}{" "}
                   <TextInput2
                     styledCss={`  
                   margin-bottom: 19px;
@@ -258,19 +257,24 @@ const Form5 = ({ handleChange, currentForm }) => {
                     onBlur={(e) => {
                       name === "fullName" && setFullName(e.target.value.trim());
                       name === "email" && setEmail(e.target.value);
+                      //name === "mobile" && setMobile(e.target.value);
                     }}
                     onChange={(e) => {
-                      name === "fullName" &&
+                      if (name === "fullName") {
                         checkPreviousChar(e.target.value, " ", fullName) &&
-                        checkPreviousChar(e.target.value, ".", fullName) &&
-                        //    checkDoubleChar(e, ".", " ") &&
-                        checkAllChar(e.target.value, forbiddedSymbols2) &&
-                        setFullName(e.target.value);
+                          checkPreviousChar(e.target.value, ".", fullName) &&
+                          checkAllChar(e.target.value, forbiddedSymbols2) &&
+                          /^[a-zA-Z\s]*$/.test(e.target.value) &&
+                          setFullName(e.target.value);
+                      }
                       name === "email" &&
                         checkAllChar(e.target.value, forbiddedSymbols) &&
                         setEmail(e.target.value);
 
-                      name === "mobile" && setMobile(e.target.value);
+                      if (name === "mobile") {
+                        !/^\d*(\d)\1{3}\d*$/.test(e.target.value) &&
+                          setMobile(e.target.value);
+                      }
                     }}
                     // onBlur={(e) => {
                     //   checkValidation(name, e.target.value);
@@ -308,15 +312,13 @@ const Form5 = ({ handleChange, currentForm }) => {
             true
           )} */}
         </div>
-      
+
         <StyledButton
           styledCss={`margin:0; width: 100%;`}
           value={`Get Started`}
           onClick={handleSubmit}
           className="hide_on_mobile"
         />
-       
-        
       </form>
     </div>
   );

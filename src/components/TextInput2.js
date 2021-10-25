@@ -46,12 +46,24 @@ const TextInput2 = React.forwardRef(
           color: #505b6d;
           font-weight: 900;
         }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        /* Firefox */
+        input[type="number"] {
+          -moz-appearance: textfield;
+        }
       `}
     >
       <FloatingLabel controlId="floatingInput" label={label}>
         <Form.Control
           name={name}
           type={type}
+          step="none"
           placeholder={"text"}
           autoComplete={autoComplete}
           value={value}
