@@ -76,7 +76,7 @@ function SeeDetailsFooter({
   quote.mandatory_riders?.forEach((element) => {
     console.log(additionalPremium,"sadg31")
     additionalPremium += parseInt(element.total_premium);
-    console.log(additionalPremium,element.total_premium,"sadg32")
+    console.log(additionalPremium,element.total_premium,"sadg35")
   });
   console.log(additionalPremium, quote.mandatory_riders,quote, "sadg32");
   const {
@@ -254,7 +254,8 @@ function SeeDetailsFooter({
           >
             {" "}
             <i className="fa fa-inr"></i> ₹{" "}
-            {parseInt(totalPremium) + additionalPremium}/{" "}
+            {parseInt(product.total_premium)}/{" "}
+   
             {product.tenure >= 2 ? `${product.tenure} Years` : "Year"}
           </span>
         </div>
