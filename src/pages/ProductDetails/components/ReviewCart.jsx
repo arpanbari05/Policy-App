@@ -405,7 +405,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
 
   const planType = memberGroups[groupCode]?.length;
 
-  const membersList = group.members;
+  const membersList = group?.members;
 
   const coverAmount = amount(sum_insured);
 

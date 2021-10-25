@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { useParams } from "react-router";
-import CustomizeYourPlan from "../../../ProductDetails/components/CustomizeYourPlan";
+
 import { useSelector } from "react-redux";
 import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
 function AddOnCoverageMobile({
@@ -58,7 +58,7 @@ function AddOnCoverageMobile({
               </div>
             </FeatureSection> */}
             <div style={{ padding: "10px" }}>
-              <CustomizeYourPlan groupCode={groupCode} product={product} />
+              {/* <CustomizeYourPlan groupCode={groupCode} product={product} /> */}
             </div>
           </>
         )}

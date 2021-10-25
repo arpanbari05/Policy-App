@@ -1023,6 +1023,7 @@ function AddOns({ addOns = {} }) {
     }
     updateProductRedux({
       ...product,
+      page: 'product details',
       addons: [...newAddOns, ...addOns],
     });
   };
@@ -1030,6 +1031,7 @@ function AddOns({ addOns = {} }) {
   const removeAddOn = (addOnId) => {
     updateProductRedux({
       ...product,
+      page: 'product details 2',
       addons: product.addons.filter((addon) => addon.product.id !== addOnId),
     });
   };
@@ -1060,7 +1062,7 @@ function AddOns({ addOns = {} }) {
           )
       );
     }
-    updateProductRedux({ ...product, addons: [...newAddOns, ...addOns] });
+    updateProductRedux({ ...product, addons: [...newAddOns, ...addOns] ,  page: 'product details 4',});
   };
 
   const handleBuyNow = (selected, addons) => {

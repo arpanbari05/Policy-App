@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { numberToDigitWord } from "../../../../utils/helper";
 //import BuyNowModal from "./../../../quotesPage/components/BuyNowModal/BuyNowModal";
 import SecureLS from "secure-ls";
@@ -18,6 +18,7 @@ import "styled-components/macro";
 import StyledButton from "../../../../components/StyledButton";
 import BuyNowModal from "../../../quotePage/components/BuyNowModal";
 import { removeQuoteFromCart } from "../../../Cart/cart.slice";
+import { object } from "yup/lib/locale";
 
 function SeeDetailsFooter({
   logo,
@@ -78,6 +79,24 @@ function SeeDetailsFooter({
     additionalPremium += parseInt(element.total_premium);
     console.log(additionalPremium, element.total_premium, "sadg32");
   });
+  const { updateProductRedux, product: cartItem } = useCartProduct(
+    groupCode,
+    product
+  );
+
+  useEffect(() => {
+    const newRiders = quote.mandatory_riders?.[sumInsuredIndex]?.filter(
+      (element) => element !== null && element
+    );
+    console.log(newRiders,'sagd3223g23g23g23g')
+
+
+    updateProductRedux({
+      ...cartItem,
+      page: 'seedetails',
+      health_riders: [...newRiders],
+    });
+  }, []);
   const {
     isCartProductLoading,
     totalPremium,
@@ -85,7 +104,13 @@ function SeeDetailsFooter({
     product: selectedProduct,
   } = useCartProduct(groupCode, product);
 
-  console.log(additionalPremium, quote, totalPremium, "sadg32");
+  let riderPremium =
+    selectedProduct.health_riders.reduce(
+      (acc, obj) => obj?.total_premium !== NaN && acc + obj?.total_premium,
+      0
+    ) || 0;
+
+  console.log(selectedProduct, riderPremium, quote, "sadg32521");
 
   const handleProceed = () => {
     handleProceedClick();
@@ -253,8 +278,7 @@ function SeeDetailsFooter({
           >
             {" "}
             <i className="fa fa-inr"></i> ₹{" "}
-            {parseInt(product.total_premium)}/{" "}
-   
+            {parseInt(quote.total_premium) + riderPremium}/{" "}
             {product.tenure >= 2 ? `${product.tenure} Years` : "Year"}
           </span>
         </div>

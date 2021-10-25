@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useRouteMatch } from "react-router";
 import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
 //import AddOnsCoveragesSection from "../../../ProductDetails/components/AddOnsCoveragesSection/AddOnsCoveragesSection";
-import CustomizeYourPlan from "../../../ProductDetails/components/CustomizeYourPlan";
+
 // import {
 //   addSelectedRider,
 //   removeSelectedRider,
@@ -75,21 +75,26 @@ const AddOnCoverages = ({
     groupCode,
     product
   );
-  const { health_riders } = cartItem;
+
   const handleAddRider = (riderToAdd) =>
     setAddedRiders((prevRiders) => [...prevRiders, riderToAdd]);
-  console.log("gege3312", selectedRiders, health_riders);
+
   const handleRemoveRider = (riderToRemove) =>
     setAddedRiders((prevRiders) =>
       prevRiders.filter((rider) => rider.name !== riderToRemove.name)
     );
+    
+    const { health_riders } = cartItem;
   const handleRiderChange = ({
     rider,
     isRiderSelected,
     hasOptions = false,
   }) => {
+    
+    
     //console.warning("Your rider is below");
     const { health_riders } = cartItem;
+    
     // const newRiders =
     //   !hasOptions && isRiderSelected
     //     ? [...health_riders, rider]
@@ -101,7 +106,7 @@ const AddOnCoverages = ({
     //         health_rider => health_rider.rider_id !== rider.rider_id,
     //       );
 
-    let newRiders;
+    let newRiders=[];
     if (!hasOptions && isRiderSelected) {
       newRiders = [...health_riders, rider];
       console.log("newnewnew", newRiders);
@@ -138,18 +143,21 @@ const AddOnCoverages = ({
       });
       newRiders = [...temp2];
     }
-
+    console.log('sagd3223g23g23g23gupdateProductRedux',cartItem,newRiders)
     updateProductRedux({
       ...cartItem,
+      page: 'seedetails handleupdate',
       health_riders: newRiders,
     });
   };
-
   useEffect(() => {
     const keys = Object.keys(selectedRiders);
     const string = keys.reduce((a, b) => a + `&${b}=${selectedRiders[b]}`, "");
     fetchAbhiRiders(string);
   }, [selectedRiders]);
+ 
+
+
 
   // const { selectedGroup } = useSelector(({ quotePage }) => quotePage);
 
@@ -262,7 +270,7 @@ const AddOnCoverages = ({
                       )}
                     </div>
                   </section>
-                  {/* <CustomizeYourPlan groupCode={groupCode} product={product} seeDetails={quote.product.id} /> */}
+        
                   {/* <AddOnsCoveragesSection
                   groupCode={groupCode}
                   product={product}
