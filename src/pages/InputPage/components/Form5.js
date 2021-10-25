@@ -272,7 +272,7 @@ const Form5 = ({ handleChange, currentForm }) => {
                         setEmail(e.target.value);
 
                       if (name === "mobile") {
-                        !/^\d*(\d)\1{3}\d*$/.test(e.target.value) &&
+                        !/^\d*(\d)\1{9}\d*$/.test(e.target.value) &&
                           setMobile(e.target.value);
                       }
                     }}
