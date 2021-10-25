@@ -249,7 +249,7 @@ const AddOnCoverages = ({
                               rider.is_mandatory ||
                               health_riders.some(
                                 (health_rider) =>
-                                  health_rider.rider_id === rider.rider_id
+                                  health_rider?.rider_id === rider?.rider_id
                               )
                             }
                             health_riders={health_riders}
