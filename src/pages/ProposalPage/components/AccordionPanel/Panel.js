@@ -51,9 +51,26 @@ const Panel = ({
             </>
           ) : !isFilled ? (
             <>
-              <ChevronWrapper>
-                <i class="fas fa-chevron-down"></i>
-              </ChevronWrapper>
+              <PencilWrapper>
+                {/*<Values>{values}</Values>*/}
+                <div
+                  css={`
+                    width: 30px;
+
+                    height: 30px;
+                    background: #eff7ff !important;
+                    border-radius: 100%;
+                    display: flex;
+                    color: #369cff;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 13px;
+                  `}
+                  className="btn"
+                >
+                  <i class="fas fa-pen"></i>
+                </div>
+              </PencilWrapper>
             </>
           ) : (
             <>
