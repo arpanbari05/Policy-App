@@ -69,7 +69,7 @@ function QuotePage() {
           : "Family Floater"
         : "Family Floater",
     multiYear: "1 Year",
-    basePlanType: "Base health",
+    basePlanType: "Base Health",
     moreFilters: {},
   };
 
@@ -124,6 +124,7 @@ function QuotePage() {
   const handleClearFilters = () => {
     dispatch(setFilters(defaultfilters));
     console.log("fetchquotes QuotesPage");
+
     // dispatch(
     //   fetchQuotes(companies?.companies, {
     //     sum_insured: cover,
