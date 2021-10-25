@@ -870,6 +870,7 @@ const ComparePage = () => {
               <div>
                 <div className="table-wrapper">
                   <table className="table table-hover">
+                  {console.log(mergedQuotes,"mergedQuotes")}
                     <THead
                       plans={mergedQuotes}
                       setshowDiffCbx={setshowDiffCbx}

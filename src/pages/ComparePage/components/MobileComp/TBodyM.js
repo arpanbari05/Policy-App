@@ -128,7 +128,6 @@ const SumAssured = ({
 
 // additional banefits section
 const AdditionalBenefits = ({
-  plans,
   index,
   showDiffCbx = true,
   hideCells,
@@ -137,6 +136,7 @@ const AdditionalBenefits = ({
   dispatch,
   windowWidth,
 }) => {
+  const plans = useSelector(({comparePage}) => comparePage.quotes);
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipTitle, setTooltipTitle] = useState("");
@@ -169,8 +169,80 @@ const AdditionalBenefits = ({
           </span>
         </div>
 
-        <div class="col-xs-12 padding_inner_row_c_t">
-          {[0, 1]?.map((item) => {
+        <div class="col-xs-12 d-flex padding_inner_row_c_t">
+        {
+          plans.length && plans.map((plan,planIndex) => {
+            let riders = plan.features.filter(feature => feature.name === "Additional Benefits")[0].riders;
+            console.log(riders,"ridersronak")
+            return(
+              <div
+                  className={`col-xs-6 ${planIndex === 0 && "border_right_dark"}`}
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    flexDirection: "column",
+                    padding: "0px 10px 0px 5px",
+                  }}
+                >
+                  {
+                    riders.length?riders.map(rider => {
+                      return(
+                        <RiderWrapper
+                      show={rider.total_premium}
+                      className="rider-wrapper"
+                    >
+                      <RiderName
+                        onClick={() => {
+                          setShowTooltipMobile(true);
+                          setTooltipContent(rider.description);
+                          setTooltipTitle(rider.name);
+                        }}
+                        style={{ width: windowWidth < 420 ? "40%" : "" }}
+                      >
+                        {rider.name} {tooltipImg()}
+                      </RiderName>
+
+                      <RiderPremium>
+                      ₹ {" "}
+                        <div>{rider.total_premium} </div>{" "}
+                        <div>
+                          <Checkbox2
+                            showTitle={false}
+                            title={rider.name + plan.data.product.id}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                
+                                dispatch(
+                                  insertRider(
+                                    plan.data.product.id,
+                                    plan.data.sum_insured,
+                                    rider
+                                  )
+                                );
+                              } else {
+                                dispatch(
+                                  removeRider(
+                                    plan.data.product.id,
+                                    plan.data.sum_insured,
+                                    rider
+                                  )
+                                );
+                              }
+                            }}
+                          />
+                        </div>
+                      </RiderPremium>
+                    </RiderWrapper>
+                      )
+                    }):(
+                      <></>
+                    )
+                  }
+                </div>
+            );
+          })
+        }
+          {/* {[0, 1]?.map((item) => {
             if (!plans[item]) return "";
             else
               return (
@@ -200,7 +272,7 @@ const AdditionalBenefits = ({
                       </RiderName>
 
                       <RiderPremium>
-                        <i className="fa fa-inr"></i>{" "}
+                      ₹ {" "}
                         <div>{innerItem.total_premium} </div>{" "}
                         <div>
                           <Checkbox2
@@ -233,7 +305,7 @@ const AdditionalBenefits = ({
                   ))}
                 </div>
               );
-          })}
+          })} */}
         </div>
       </div>
     </>
@@ -250,6 +322,7 @@ const TBodyM = ({
   setHideCells,
   hideCells,
 }) => {
+  console.log(plans, "plansforcompaare");
   const dispatch = useDispatch();
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
@@ -432,7 +505,7 @@ const TBodyM = ({
     );
   }
   
-  if (title === "Additional Benefits" && plans[0]) {
+  if (title === "Additional Benefits") {
     
     return (
       <AdditionalBenefits
@@ -553,7 +626,7 @@ const PermanentExclusion = ({
                 let elId = document.getElementById(id);
                 let elBtnId = document.getElementById(btnId);
                 const exclusion =
-                  plans[index]?.features[4]?.sum_insureds[
+                  plans[index]?.features[4]?.fsum_insureds[
                     plans[index]?.data?.sum_insured
                   ]?.features[0]?.feature_value;
                 let pollutedExclusionValue = exclusion.slice(0, 100) + "...";

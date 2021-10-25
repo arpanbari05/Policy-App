@@ -4,7 +4,7 @@ import "styled-components/macro";
 import UpperModifier from "./components/UpperModifier";
 import LowerModifier from "./components/LowerModifier";
 import QuoteCard from "./components/QuoteCard";
-import BuyNowModal from "./components/BuyNowModal";
+import BuyNowModal from "./components/BuyNowModal/BuyNowModal";
 import { BiLoaderCircle } from "react-icons/bi";
 import { SortByButton, TextLabel } from "./Quote.style";
 import { insurerFilter } from "./quote.slice";

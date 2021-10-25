@@ -7,7 +7,7 @@ import remove from "../../../../assets/images/remove.png";
 import { useHistory } from "react-router-dom";
 import SecureLS from "secure-ls";
 import styled from "styled-components";
-import "styled-components/macro"
+import "styled-components/macro";
 import { useCartProduct } from "../../../Cart";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { setSelectedGroup } from "../../quote.slice";
@@ -38,8 +38,7 @@ function ProductCard({ product }) {
     health_riders,
   } = product || { product: { company: {} } };
   const ridersPremium = calculateTotalPremium(health_riders);
-  console.log(health_riders, "g1234");
-  console.log("g123", premium, ridersPremium);
+
   const { logo } = companies[company_alias] || {};
   return (
     <>
@@ -48,18 +47,20 @@ function ProductCard({ product }) {
           display: none;
           @media (max-width: 767px) {
             display: block;
-            box-shadow: 0 3px 15px 0 rgb(0 75 131 / 30%);
+            padding: 10px;
             margin: 11px 0;
+            border: 1px solid #ddd;
+            border-radius: 12px;
           }
         `}
       >
         <span
           css={`
-            padding: 20px;
+            padding: 10px 0px;
             width: 100%;
             display: flex;
             flex-direction: row;
-            
+            border-bottom:1px solid #ddd;
             align-items: flex-start;
             & img {
               width: 48px;
@@ -67,26 +68,27 @@ function ProductCard({ product }) {
             }
             & span {
               font-weight: 900;
-             
             }
           `}
         >
           <img src={logo} />
           <span
-          css={`
-          @media(max-width: 767px){
-            font-size:14px !important;
-          }
-          `}
-          > {productName}</span>
+            css={`
+              @media (max-width: 767px) {
+                font-size: 12px !important;
+              }
+            `}
+          >
+            {" "}
+            {productName}
+          </span>
         </span>
         <span
           css={`
             display: flex;
             width: 100%;
-            padding: 10px 18px;
+            padding: 5px 0;
             justify-content: space-between;
-            background: rgb(240 243 247);
           `}
         >
           <ProductData noBorder>
@@ -157,14 +159,22 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
         <h5
           className="text_title_filter p_modal_title_bg_filters_product d-flex align-items-center"
           style={{ textTransform: "capitalize" }}
+          css={`
+       
+            @media (max-width: 400px) {
+                font-size: 10px !important;
+              }
+          
+          `}
         >
           <div
             css={`
               height: 31px;
               width: 6px;
               border-radius: 3px;
-              margin-right: 10px;
+              margin-right: 14px;
               background: #2cd44a;
+              
             `}
           ></div>
           {members.join(" + ")?.replaceAll("_", "-")}
@@ -193,10 +203,15 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 color: #168cff;
                 background: #eff7ff;
                 display: flex;
-                font-size:22px;
+                font-size: 22px;
                 align-items: center;
                 justify-content: center;
                 border-radius: 100%;
+                @media (max-width: 400px) {
+                  font-size: 15px;
+                  width: 30px;
+                  height: 30px;
+                }
               `}
               className="btn"
               onClick={deleteProduct}
@@ -224,6 +239,10 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 width: 120px;
                 background: rgb(235, 245, 255);
                 color: #0d6efd;
+                @media (max-width:400px){
+                  font-size:10px;
+                  width: 100px;
+                }
               `}
               onClick={() => {
                 setShowBuyNow(false);
@@ -256,11 +275,13 @@ const PopupContent = (a, b, setShowBuyNow) => {
   const { memberGroups } = useSelector((state) => state.greetingPage);
 
   return (
-    <div css={`
-    :not(:last-child){
-      margin-bottom:10px;
-    }
-    `}>
+    <div
+      css={`
+        :not(:last-child) {
+          margin-bottom: 10px;
+        }
+      `}
+    >
       {Object.keys(memberGroups).map((groupCode) => (
         <BuyNowModalProduct
           groupCode={groupCode}
@@ -326,18 +347,25 @@ const ProductData = styled.div`
   }
   @media (max-width: 767px) {
     border-left: ${(props) => props.noBorder && "unset"};
-    padding-left: ${(props) => props.noBorder && "unset"};
+    padding-left: 0px;
     left: unset;
-
+    font-size: 12px;
+    width:31%;
+    text-align: center;
     & .label-add_product {
-      font-size: 13px;
+      
+      font-size: 12px;
+    
     }
+  }
+  @media (max-width:400px){
+    
   }
 `;
 const ProductName = styled.span`
   color: #000;
-  font-size:15px;
-  font-weight:900;
+  font-size: 15px;
+  font-weight: 900;
   margin-right: -26px;
 `;
 
