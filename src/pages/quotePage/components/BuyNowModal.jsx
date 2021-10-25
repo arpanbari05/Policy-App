@@ -67,6 +67,9 @@ function ProductCard({ product }) {
             & span {
               font-weight: 900;
             }
+            @media(max-width:767px){
+              align-items: center
+            }
           `}
         >
           
@@ -94,7 +97,7 @@ function ProductCard({ product }) {
             <span
             css={`
             @media(max-width: 767px){
-              font-size:13px !important;
+              font-size:10px !important;
             }
             `}
             >₹ {parseInt(sum_insured).toLocaleString("en-IN")}</span>
@@ -104,7 +107,7 @@ function ProductCard({ product }) {
             <span
             css={`
             @media(max-width: 767px){
-              font-size:13px !important;
+              font-size:10px !important;
             }
             `}
             >
@@ -118,7 +121,7 @@ function ProductCard({ product }) {
             <span
             css={`
             @media(max-width: 767px){
-              font-size:13px !important;
+              font-size:10px !important;
             }
             `}
             > {tenure} Year</span>
@@ -198,6 +201,11 @@ console.log(showSeeDetails,"ulipeu")
           css={`
             font-family: unset;
             background-image: unset;
+            @media(max-width: 767px){
+             
+              font-size: 12px;
+              line-height: 1;
+            }
           `}
         >
           <div
@@ -378,6 +386,7 @@ console.log(handleClose,"handleClosehandleClose")
 export default BuyNowModal;
 
 const ProductData = styled.div`
+
   display: flex;
   flex-direction: column;
   color: black;
@@ -397,9 +406,9 @@ const ProductData = styled.div`
     border-left: ${(props) => props.noBorder && "unset"};
     padding-left: ${(props) => props.noBorder && "unset"};
     left: unset;
-
+    font-size: 10px !important;
     & .label-add_product {
-      font-size: 13px;
+      font-size: 10px;
     }
   }
 

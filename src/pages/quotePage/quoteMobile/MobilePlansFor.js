@@ -41,6 +41,7 @@ const MobilePlansFor = () => {
             }}
             css={`
               font-weight: 900;
+              font-size: 10px;
               position: relative;
               min-width: 110px;
               text-transform: capitalize;
@@ -52,7 +53,7 @@ const MobilePlansFor = () => {
                 width: 58%;
                 position: absolute;
                 left: 0px;
-                top: 32px;
+                bottom: -14px;
                 background-color: #0a87ff;
                 margin: auto;
                 right: 0px;
