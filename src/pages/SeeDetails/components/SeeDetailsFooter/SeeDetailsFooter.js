@@ -78,7 +78,7 @@ function SeeDetailsFooter({
     additionalPremium += parseInt(element.total_premium);
     console.log(additionalPremium,element.total_premium,"sadg32")
   });
-  console.log(additionalPremium, quote.mandatory_riders, "sadg32");
+  console.log(additionalPremium, quote.mandatory_riders,quote, "sadg32");
   const {
     isCartProductLoading,
     totalPremium,
