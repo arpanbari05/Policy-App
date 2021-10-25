@@ -100,6 +100,7 @@ const ProductSummary = ({ cart, setActive }) => {
             className="light"
             css={`
               padding: 10px !important;
+              padding-bottom: 0px !important;
             `}
           >
             {Object.values(removeTotalPremium(cart)).map((item, index) => (
@@ -375,7 +376,7 @@ const ProductSummary = ({ cart, setActive }) => {
                       css={`
                         display: flex;
                         position: relative;
-                        top: -15px;
+                        top: -17px;
                         align-items: center;
                         justify-content: center;
                       `}
@@ -701,7 +702,7 @@ const ProductSummary = ({ cart, setActive }) => {
             font-weight: 900;
             border: 1px dashed #dce2ec;
             display: flex;
-            padding: 7px 20px;
+            padding: 7px 20px 7px 20px;
             background-color: #f7f7f7;
             justify-content: space-between;
             align-items: center;
