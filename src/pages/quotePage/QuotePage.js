@@ -23,6 +23,7 @@ import MobilePlansFor from "./quoteMobile/MobilePlansFor";
 import MobileQuoteCard from "./quoteMobile/MobileQuoteCard";
 import QuoteFilterMobile from "./quoteMobile/QuoteFilter/QuoteFilterMobile";
 import { MobileQuoteFilterFooter } from "./quoteMobile/FilterFooter/FilterFooter";
+import { removeQuoteFromCart } from "../Cart/cart.slice";
 
 function QuotePage() {
   const {
@@ -241,6 +242,7 @@ function QuotePage() {
                       id={index}
                       item={item}
                       handleSeeDetails={(quote, clickedFrom) => {
+                        dispatch(removeQuoteFromCart(groupCode));
                         setSeeDetailsQuote(quote);
                         setShowSeeDetails(clickedFrom || true);
                       }}
@@ -348,6 +350,7 @@ function QuotePage() {
                   id={index}
                   item={item}
                   handleSeeDetails={(quote, clickedFrom) => {
+                    dispatch(removeQuoteFromCart(groupCode));
                     setSeeDetailsQuote(quote);
                     setShowSeeDetails(clickedFrom || true);
                   }}

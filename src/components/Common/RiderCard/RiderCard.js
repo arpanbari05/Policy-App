@@ -24,7 +24,7 @@ function RiderCard({
   const options = rider?.options?.[Object.keys(rider?.options)[0]] || [];
   // const parent_selected = true
   const parent_selected = health_riders.some(
-    (data) => data.alias === parent_rider
+    (data) => data !== null && data?.alias === parent_rider
   );
   const [windowHeight, windowWidth] = useWindowSize();
   const [isRiderSelectedCorrected, setIsRiderSelectedCorrected] =
