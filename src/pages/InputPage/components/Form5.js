@@ -260,12 +260,13 @@ const Form5 = ({ handleChange, currentForm }) => {
                       //name === "mobile" && setMobile(e.target.value);
                     }}
                     onChange={(e) => {
-                      name === "fullName" &&
+                      if (name === "fullName") {
                         checkPreviousChar(e.target.value, " ", fullName) &&
-                        checkPreviousChar(e.target.value, ".", fullName) &&
-                        //    checkDoubleChar(e, ".", " ") &&
-                        checkAllChar(e.target.value, forbiddedSymbols2) &&
-                        setFullName(e.target.value);
+                          checkPreviousChar(e.target.value, ".", fullName) &&
+                          checkAllChar(e.target.value, forbiddedSymbols2) &&
+                          /^[a-zA-Z\s]*$/.test(e.target.value) &&
+                          setFullName(e.target.value);
+                      }
                       name === "email" &&
                         checkAllChar(e.target.value, forbiddedSymbols) &&
                         setEmail(e.target.value);
