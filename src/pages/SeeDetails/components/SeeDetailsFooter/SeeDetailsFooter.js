@@ -253,7 +253,8 @@ function SeeDetailsFooter({
           >
             {" "}
             <i className="fa fa-inr"></i> ₹{" "}
-            {parseInt(totalPremium) + additionalPremium}/{" "}
+            {parseInt(product.total_premium)}/{" "}
+   
             {product.tenure >= 2 ? `${product.tenure} Years` : "Year"}
           </span>
         </div>

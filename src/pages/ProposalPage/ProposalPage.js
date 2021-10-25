@@ -19,6 +19,7 @@ import {
   setIsLoading,
   submitProposalData,
 } from "./ProposalSections/ProposalSections.slice";
+
 import ReviewCart from "../ProductDetails/components/ReviewCart";
 import PencilIcon from "../../assets/svg-icons/PencilIcon";
 import { getProposalFields } from "./schema.slice";
