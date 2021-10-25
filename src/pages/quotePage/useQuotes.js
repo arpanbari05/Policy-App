@@ -129,7 +129,7 @@ function useQuotesPage() {
           setFilters({
             ...tempfilter,
             cover: tempfilter?.cover || defaultfilters.cover,
-            multiYear: tempfilter.multiYear || defaultfilters.multiYear,
+            multiYear: tempfilter?.multiYear || defaultfilters.multiYear,
             planType:
               memberGroups?.[groupCode]?.length === 1
                 ? "Individual"
