@@ -19,7 +19,7 @@ import TBody from "./components/tables/TBody";
 import THead from "./components/tables/THead";
 import useComparePage, { numToLakh } from "./useComparePage";
 import "./Compare.scss";
-import "styled-components/macro"
+import "styled-components/macro";
 import mail from "./../../assets/images/whatsapp.png";
 import whatsapp from "./../../assets/images/whatsapp01.png";
 import BuyNowModal from "../quotePage/components/BuyNowModal/BuyNowModal";
@@ -207,17 +207,15 @@ const popupContent = (
       });
     }
   });
-  
 
   return (
     <>
       <PopupWrapper>
-      {console.log(errors,"errors+++heo")}
         <MergedQuotes className="row">
           {[0, 1, 2].map((item, index) => (
             <div className="col-lg-4">
               {mergedQuotes[index] ? (
-                <SelectedProduct first={index === 0} >
+                <SelectedProduct first={index === 0}>
                   <RemoveCross
                     onClick={() =>
                       removePlan(
@@ -228,19 +226,17 @@ const popupContent = (
                     <i class="fas fa-times"></i>
                   </RemoveCross>
                   <LogoWrapper className="logo_style_common">
-                    <img
-                      src={mergedQuotes[index].data.logo}
-                      alt="logo"  
-                    ></img>
+                    <img src={mergedQuotes[index].data.logo} alt="logo"></img>
                   </LogoWrapper>
                   <NameWrapper>
-                    <span style={{
-                      textAlign:"left",
-                      fontWeight:"900",
-                      fontFamily:"Inter-SemiBold"
-                    }}>
-                    {mergedQuotes[index].data.product.name}
-                      
+                    <span
+                      style={{
+                        textAlign: "left",
+                        fontWeight: "900",
+                        fontFamily: "Inter-SemiBold",
+                      }}
+                    >
+                      {mergedQuotes[index].data.product.name}
                     </span>
                     {/* <br/> */}
                     {/* <span style={{
@@ -254,22 +250,22 @@ const popupContent = (
                       <DetailWrapper>
                         <Title>Sum Insured :</Title>
                         <Value>
-                        ₹ {" "}
-                          {numToLakh(mergedQuotes[index].data.sum_insured).toLocaleString(
-                            "en-IN"
-                          )}
+                          ₹{" "}
+                          {numToLakh(
+                            mergedQuotes[index].data.sum_insured
+                          ).toLocaleString("en-IN")}
                         </Value>
                       </DetailWrapper>
                       <DetailWrapper>
                         <Title>Premium :</Title>
                         <Value>
-                        ₹ {" "}
+                          ₹{" "}
                           {(discount[
                             `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
                           ]
                             ? discount[
-                              `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
-                            ].premium
+                                `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
+                              ].premium
                             : mergedQuotes[index].data.premium
                           ).toLocaleString("en-IN") +
                             "/" +
@@ -303,52 +299,52 @@ const popupContent = (
               if (companyWisePlans[item])
                 return (
                   <>
-                  <div className="col-lg-4">
-                    <QuoteWrapper>
-                    <div>
-                      <LogoWrapper className="logo_style_common">
-                        <img
-                          src={companyWiseLogos[index]}
-                          alt="logo"
-                          css={`
-                            width: 57px;
-                            object-fit: contain;
-                          `}
-                        ></img>
-                      </LogoWrapper>
-                      <QuoteName>{item}</QuoteName>
-                      </div>
-                      <DropDownWrapper>
-                        <DropDown
-                          name={companyWisePlans[item]}
-                          sum={companyWiseSumAssured[item]}
-                          covers={covers}
-                          onChange={(value) => {
-                            setValue((prev) => {
-                              return { ...prev, [item]: value };
-                            });
-                            if (mergedQuotes.length >= 3) {
-                              setErrors((prev) => {
-                                return {
-                                  ...prev,
-                                  [item]: "You can add only upto 3 plans",
-                                };
+                    <div className="col-lg-4">
+                      <QuoteWrapper>
+                        <div>
+                          <LogoWrapper className="logo_style_common">
+                            <img
+                              src={companyWiseLogos[index]}
+                              alt="logo"
+                              css={`
+                                width: 57px;
+                                object-fit: contain;
+                              `}
+                            ></img>
+                          </LogoWrapper>
+                          <QuoteName>{item}</QuoteName>
+                        </div>
+                        <DropDownWrapper>
+                          <DropDown
+                            name={companyWisePlans[item]}
+                            sum={companyWiseSumAssured[item]}
+                            covers={covers}
+                            onChange={(value) => {
+                              setValue((prev) => {
+                                return { ...prev, [item]: value };
                               });
-                            } else if (value?.plan && value?.sumInsured) {
-                              setSelectedAddPlan(
-                                `${ProductWiseId[value.plan]}${value?.sumInsured
-                                }`
-                              );
-                              setValue({});
-                            }
-                          }}
-                          value={value[item]}
-                        ></DropDown>
-                      </DropDownWrapper>
-                    </QuoteWrapper>
-                    
-                  </div>
-                  {/* <ErrorAddPlan>
+                              if (mergedQuotes.length >= 3) {
+                                setErrors((prev) => {
+                                  return {
+                                    ...prev,
+                                    [item]: "You can add only upto 3 plans",
+                                  };
+                                });
+                              } else if (value?.plan && value?.sumInsured) {
+                                setSelectedAddPlan(
+                                  `${ProductWiseId[value.plan]}${
+                                    value?.sumInsured
+                                  }`
+                                );
+                                setValue({});
+                              }
+                            }}
+                            value={value[item]}
+                          ></DropDown>
+                        </DropDownWrapper>
+                      </QuoteWrapper>
+                    </div>
+                    {/* <ErrorAddPlan>
                       {errors[item] ? errors[item] : ""}
                     </ErrorAddPlan> */}
                   </>
@@ -387,7 +383,6 @@ const popupContentM = (
   let covers = {};
 
   fitlerQuotes.forEach((item) => {
-
     item.forEach((innerItem) => {
       if (!(innerItem.product.name in covers)) {
         covers[innerItem.product.name] = [innerItem.sum_insured];
@@ -457,7 +452,7 @@ const popupContentM = (
         >
           {[0, 1].map((item, index) => (
             <div
-              style={windowWidth < 400 ? { width: "50%", } : { width: "49%", }}
+              style={windowWidth < 400 ? { width: "50%" } : { width: "49%" }}
             >
               {mergedQuotes[index] ? (
                 <SelectedProduct first={index === 0}>
@@ -469,7 +464,7 @@ const popupContentM = (
                     }
                   >
                     <span>
-                    <i class="fas fa-times"></i>
+                      <i class="fas fa-times"></i>
                     </span>
                   </RemoveCross>
                   <div
@@ -479,8 +474,15 @@ const popupContentM = (
                       alignItems: "center",
                     }}
                   >
-                    <LogoWrapper  className="logo_style_commo_m" style={{ marginRight:"0px"}}>
-                      <img src={mergedQuotes[index].data.logo} className="w-100" alt="logo"></img>
+                    <LogoWrapper
+                      className="logo_style_commo_m"
+                      style={{ marginRight: "0px" }}
+                    >
+                      <img
+                        src={mergedQuotes[index].data.logo}
+                        className="w-100"
+                        alt="logo"
+                      ></img>
                     </LogoWrapper>
 
                     <CompanyName
@@ -496,13 +498,12 @@ const popupContentM = (
                         width: "100%",
                       }}
                     >
-                      <Title style={{ fontSize: "11px" }}>Sum Insured :</Title>
-                      <Value style={{ fontSize: "11px" }}>
-                      ₹ {" "}
-                          {" "}
-                        {numToLakh(mergedQuotes[index].data.sum_insured).toLocaleString(
-                          "en-IN"
-                        )}
+                      <Title style={{ fontSize: "10px" }}>Sum Insured :</Title>
+                      <Value style={{ fontSize: "10px" }}>
+                        ₹{" "}
+                        {numToLakh(
+                          mergedQuotes[index].data.sum_insured
+                        ).toLocaleString("en-IN")}
                       </Value>
                     </div>
                     <div
@@ -512,15 +513,15 @@ const popupContentM = (
                         width: "100%",
                       }}
                     >
-                      <Title style={{ fontSize: "12px" }}>Premium :</Title>
-                      <Value style={{ fontSize: "12px" }}>
+                      <Title style={{ fontSize: "10px" }}>Premium :</Title>
+                      <Value style={{ fontSize: "10px" }}>
                         <i class="fa fa-inr"></i>{" "}
                         {(discount[
                           `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
                         ]
                           ? discount[
-                            `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
-                          ].premium
+                              `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
+                            ].premium
                           : mergedQuotes[index].data.premium
                         ).toLocaleString("en-IN") +
                           "/" +
@@ -539,11 +540,15 @@ const popupContentM = (
                     <PlusWrapper>
                       <i class="fa fa-plus"></i>
                     </PlusWrapper>
-                    <div css={`
-                    @media(max-width:410px){]
-                    font-size:12px;
-                    }
-                    `}>No Plans Added</div>
+                    <div
+                      css={`
+                        @media (max-width: 410px) {
+                          font-size: 12px;
+                        }
+                      `}
+                    >
+                      No Plans Added
+                    </div>
                   </CrossWrapper>
                 </AddPlan>
               )}
@@ -558,12 +563,16 @@ const popupContentM = (
                 return (
                   <div className="col-lg-4">
                     <QuoteWrapperM>
-                      <LogoWrapper  className="logo_style_common_m">
-                        <img src={companyWiseLogos[index]} className="w-100" alt="logo"></img>
+                      <LogoWrapper className="logo_style_common_m">
+                        <img
+                          src={companyWiseLogos[index]}
+                          className="w-100"
+                          alt="logo"
+                        ></img>
                       </LogoWrapper>
                       <QuoteNameM>{item}</QuoteNameM>
                       <DropDownWrapper>
-                      <DropDown
+                        <DropDown
                           name={companyWisePlans[item]}
                           sum={companyWiseSumAssured[item]}
                           covers={covers}
@@ -571,16 +580,17 @@ const popupContentM = (
                             setValue((prev) => {
                               return { ...prev, [item]: value };
                             });
-                            if (mergedQuotes.length >= 3) {
+                            if (mergedQuotes.length >= 2) {
                               setErrors((prev) => {
                                 return {
                                   ...prev,
-                                  [item]: "You can add only upto 3 plans",
+                                  [item]: "You can add only upto 2 plans",
                                 };
                               });
                             } else if (value?.plan && value?.sumInsured) {
                               setSelectedAddPlan(
-                                `${ProductWiseId[value.plan]}${value?.sumInsured
+                                `${ProductWiseId[value.plan]}${
+                                  value?.sumInsured
                                 }`
                               );
                               setValue({});
@@ -604,20 +614,24 @@ const popupContentM = (
 };
 
 function GoBackButton({ groupCode, ...props }) {
-  const groupCodes = Object.keys(useSelector(({greetingPage}) => greetingPage.memberGroups));
+  const groupCodes = Object.keys(
+    useSelector(({ greetingPage }) => greetingPage.memberGroups)
+  );
   const urlQuery = useUrlQuery();
   const enquiryId = urlQuery.get("enquiryId");
-  
+
   const history = useHistory();
   return (
     <button
       className="btn"
       type="button"
       onClick={() => {
-        groupCodes[1] && groupCodes[1] === groupCode?history.replace(`/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`):history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`)
-        
-      }
-      }
+        groupCodes[1] && groupCodes[1] === groupCode
+          ? history.replace(
+              `/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`
+            )
+          : history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
+      }}
       css={`
         width: max-content;
         padding: 0 !important;
@@ -627,7 +641,6 @@ function GoBackButton({ groupCode, ...props }) {
         font-size: 17px;
         display: flex;
         align-items: center;
-        
       `}
       {...props}
     >
@@ -676,7 +689,7 @@ const ComparePage = () => {
     hideCells,
     setHideCells,
     showBuyNowPopup,
-  setShowBuyNowPopup,
+    setShowBuyNowPopup,
     imageSend,
     imageSendM,
     emailStatus,
@@ -709,7 +722,7 @@ const ComparePage = () => {
 
       {loading ? (
         <div>
-          <Container style={{marginTop:"10px"}}>
+          <Container style={{ marginTop: "10px" }}>
             <GoBackButton groupCode={groupCode} />
             <CardSkeletonLoader noOfCards={3} />
           </Container>
@@ -735,7 +748,12 @@ const ComparePage = () => {
           <div className="agn-our-pricing pb-200 mgt-5 ">
             {/* will visible only on desktop screen*/}
             <div className="desktop-header hideOnMobile">
-              <ul className="menu topRight" css={`display: none;`}>
+              <ul
+                className="menu topRight"
+                css={`
+                  display: none;
+                `}
+              >
                 <li class="share bottom">
                   <i class="fa fa-share-alt share"></i>
                   <ul class="submenu">
@@ -756,12 +774,10 @@ const ComparePage = () => {
                   </ul>
                 </li>
               </ul>
-              
             </div>
 
             {/* mobile content ( visible on mobile screen )*/}
             <div id="printCompareM">
-
               <div className="table-wrapper showOnMobile">
                 <table className="table table-hover">
                   <THeadM
@@ -816,38 +832,41 @@ const ComparePage = () => {
             <Container
               className="tab-content tab-content_mt_comapre hideOnMobile"
               id="printCompare"
-              css={`@media(max-width:1300px){
-                max-width: unset;
-              }`}
-            >
-            <div 
-              
               css={`
-            display: flex;
-            justify-content:space-between;
-            align-items: center;
-            width:100% !important;
-            padding-right:15px;
-            margin-top: 10px;
-            `}
+                @media (max-width: 1300px) {
+                  max-width: unset;
+                }
+              `}
             >
-              <GoBackButton groupCode={groupCode} />
-              <UpperModifier>
-                <div className="right_midifiers d-flex justify-content-between align-items-center ">
-                  <button
-                    className="btn share_Quote_btn "
-                    onClick={() => setShowShareQuoteModal(true)}
-                  >
-                    <i class="fas fa-share "
-
-                    ></i>{" "}<span css={`
-                    margin-left:10px;
-                    `}>Share</span>
-                  </button>
-
-                </div>
-              </UpperModifier>
-            </div>
+              <div
+                css={`
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  width: 100% !important;
+                  padding-right: 15px;
+                  margin-top: 10px;
+                `}
+              >
+                <GoBackButton groupCode={groupCode} />
+                <UpperModifier>
+                  <div className="right_midifiers d-flex justify-content-between align-items-center ">
+                    <button
+                      className="btn share_Quote_btn "
+                      onClick={() => setShowShareQuoteModal(true)}
+                    >
+                      <i class="fas fa-share "></i>{" "}
+                      <span
+                        css={`
+                          margin-left: 10px;
+                        `}
+                      >
+                        Share
+                      </span>
+                    </button>
+                  </div>
+                </UpperModifier>
+              </div>
               <div>
                 <div className="table-wrapper">
                   <table className="table table-hover">
@@ -912,6 +931,9 @@ const ComparePage = () => {
           discount,
           windowWidth
         )}
+        errorsFromCompare={
+          Object.keys(errors).length ? "You can add only upto 2 plans" : ""
+        }
         handleClose={() => {
           setShowM(false);
           setSelectedAddPlan("");
@@ -923,7 +945,7 @@ const ComparePage = () => {
       />
 
       <CardModal
-      CompareBtnOnTop={true}
+        CompareBtnOnTop={true}
         className="hideOnMobile"
         show={show}
         title={"Add upto 3 plans to compare"}
@@ -942,7 +964,9 @@ const ComparePage = () => {
           setErrors,
           discount
         )}
-        errorsFromCompare={Object.keys(errors).length?"You can add only upto 3 plans":""}
+        errorsFromCompare={
+          Object.keys(errors).length ? "You can add only upto 3 plans" : ""
+        }
         handleClose={() => {
           setShow(false);
           setSelectedAddPlan("");
@@ -985,15 +1009,13 @@ const ImageLogo = styled.img`
   width: 40px;
 `;
 const UpperModifier = styled.div`
-
   .right_midifiers {
-    
     .btn {
       background-color: white;
       display: flex;
-      justify-content:space-between;
+      justify-content: space-between;
       align-items: center;
-      padding:8px 25px;
+      padding: 8px 25px;
       margin-left: 7px;
       border-radius: 31px;
       font-weight: 500;
@@ -1002,17 +1024,16 @@ const UpperModifier = styled.div`
     .share_Quote_btn {
       border: solid 2px #0a87ff !important;
       color: #0a87ff;
-      
-      :focus{
-        border: solid 2px #0a87ff !important;
-        
-      }
-      :active{
+
+      :focus {
         border: solid 2px #0a87ff !important;
       }
-      :hover{
+      :active {
+        border: solid 2px #0a87ff !important;
+      }
+      :hover {
         border: solid 2px #0a87ff !important;
       }
     }
   }
-`
+`;

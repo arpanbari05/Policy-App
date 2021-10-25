@@ -41,7 +41,16 @@ function ClaimprocessMobile({
                                 className={`tab ${activebtn === 1 && "tab__active"} `}
 
                             >
-                               <span> Cashless Claim</span>
+                               <span
+
+                                                     css={`
+                                                     @media (max-width:350px){
+                            white-space:pre-line !important;
+                           
+                        }
+                                                     `}
+                               
+                               > Cashless Claim</span>
                             </TabButton>
                             <TabButton
                                 onClick={() => setActivebtn(2)}
@@ -49,7 +58,15 @@ function ClaimprocessMobile({
                                 className={`tab ${activebtn === 2 && "tab__active"} `}
                              
                             >
-                             <span>   Document Required</span>
+                             <span
+        
+        css={`
+        @media (max-width:350px){
+white-space:pre-line !important;
+
+}
+        `}
+                             >   Document Required</span>
                             </TabButton>
                             <TabButton
                                 onClick={() => setActivebtn(3)}
@@ -57,7 +74,14 @@ function ClaimprocessMobile({
                                 className={`tab ${activebtn === 3 && "tab__active"} `}
                              
                             >
-                                <span>Reimbursement Claim</span>
+                                <span
+                                                     css={`
+                                                     @media (max-width:350px){
+                            white-space:pre-line !important;
+                           
+                        }
+                                                     `}
+                                >Reimbursement Claim</span>
                             </TabButton>
                         </ActiveBar>
                         {activebtn === 1 &&
@@ -78,7 +102,7 @@ function ClaimprocessMobile({
                         {activebtn === 2 &&
                             <Inner>
                                 {/* <img src={cashlessImg} style={{ width: "110px" }} alt="" /> */}
-                                <h3 className="text-left cashless_t_r_t_main" style={{ marginBottom: "0px",  }}>Document Required</h3>
+                                <h3 className="text-left cashless_t_r_t_main" style={{ marginBottom: "0px",  fontFamily:"unset"}}>Document Required</h3>
                                 <Paragraph
                                     className="leade_p"
                                     style={{
@@ -112,7 +136,13 @@ function ClaimprocessMobile({
 
                         <Info>
                             <div>
-                                <h4 className="title imp_title_row_l" style={{fontSize:"21px"}} >
+                                <h4 className="title imp_title_row_l" style={{fontSize:"21px"}}
+                                css={`
+                                @media (max-width:600px){
+                                    font-size:16px !important;
+                                }
+                                `}
+                                >
                                 Please reach out on details below for further queries.
                                 </h4>
                             </div>
@@ -163,6 +193,7 @@ function ClaimprocessMobile({
                                             fontSize: "unset",
                                             fontWeight: "bold"
                                         }}
+                                        
                                     >
                                        Claim Form
                                     </h4>
@@ -325,6 +356,7 @@ border: none;
 white-space: nowrap;
 padding:10px;
 
+
 /* &:after{
     content: "";
   border-left: 10px solid transparent;
@@ -348,19 +380,30 @@ const Paragraph = styled.p`
 & div{
     font-size:14px;
     line-height:1.2;
+    @media (max-width:600px){
+        font-size: 12px !important;
+    }
 }
 & p{
     font-size:14px;
     line-height:1.2;
-
+    @media (max-width:600px){
+        font-size: 12px !important;
+    }
     & span{
-        font-size:14px !important;
+        font-size:14px;
     line-height:1.2;
+    @media (max-width:600px){
+        font-size: 12px !important;
+    }
     }
 }
 & b{
     font-size:16px;
     line-height:1.3;
+    @media (max-width:600px){
+        font-size: 14px !important;
+    }
 }
   & u {
     color: black;

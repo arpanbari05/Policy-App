@@ -6,7 +6,8 @@ import CardModal from "../../../../components/Common/Modal/CardModal";
 import remove from "../../../../assets/images/remove.png";
 import { useHistory } from "react-router-dom";
 import SecureLS from "secure-ls";
-import styled from "styled-components/macro";
+import styled from "styled-components";
+import "styled-components/macro"
 import { useCartProduct } from "../../../Cart";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { setSelectedGroup } from "../../quote.slice";
@@ -71,7 +72,13 @@ function ProductCard({ product }) {
           `}
         >
           <img src={logo} />
-          <span> {productName}</span>
+          <span
+          css={`
+          @media(max-width: 767px){
+            font-size:14px !important;
+          }
+          `}
+          > {productName}</span>
         </span>
         <span
           css={`
@@ -323,7 +330,7 @@ const ProductData = styled.div`
     left: unset;
 
     & .label-add_product {
-      font-size: 15px;
+      font-size: 13px;
     }
   }
 `;
