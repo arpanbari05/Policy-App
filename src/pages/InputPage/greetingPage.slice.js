@@ -436,6 +436,7 @@ export const getRegion = (data) => {
       dispatch(requestRegionData());
       const response = await checkpinCode(data);
 
+      console.log("The response", response);
       if (!response?.message) {
         dispatch(createRegionData(response?.data));
       } else {
