@@ -10,6 +10,8 @@ import correct from "./../../../../assets/images/correct_icon.png";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import "./ProductSummary.scss";
 import Card from "../../../../components/Card";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import { BackgroundBorderTitle } from "../../../ProductDetails/components/ReviewCart";
 const removeTotalPremium = (cart) => {
   let { totalPremium, ...y } = cart;
   return y;
@@ -27,6 +29,8 @@ const ProductSummary = ({ cart, setActive }) => {
   }, [planDetails]);
   console.log(collapse, "sadgsadg3");
   const prevCart = Object.values(removeTotalPremium(planDetails.prevCart));
+  const [showRiders, setShowRiders] = useState(false);
+  const [showAddOns, setShowAddOns] = useState(false);
 
   const content = (
     <>
@@ -96,6 +100,7 @@ const ProductSummary = ({ cart, setActive }) => {
             className="light"
             css={`
               padding: 10px !important;
+              padding-bottom: 0px !important;
             `}
           >
             {Object.values(removeTotalPremium(cart)).map((item, index) => (
@@ -182,6 +187,7 @@ const ProductSummary = ({ cart, setActive }) => {
                     css={`
                       margin-top: 10px;
                       display: flex;
+
                       flex-direction: column;
                     `}
                   >
@@ -284,20 +290,46 @@ const ProductSummary = ({ cart, setActive }) => {
                           border-bottom: #ddd;
                         `}
                       />
-                      <p
-                        className="p_cover_medical_pop"
+                      <div
                         css={`
-                          width: 100%;
-                          color: #0a87ff;
-                          font-weight: 900;
-                          margin-bottom: 5px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          position: relative;
+                          top: -5px;
                         `}
                       >
-                        Riders:{" "}
-                      </p>
+                        {/*<p
+                          className="p_cover_medical_pop"
+                          css={`
+                            width: 100%;
+                            color: #0a87ff;
+                            font-weight: 900;
+                            margin-bottom: 5px;
+                          `}
+                        >
+                          Riders:{" "}
+                        </p>*/}
+                        <BackgroundBorderTitle title="Riders:" />
+
+                        {!showRiders && (
+                          <AiOutlineDown
+                            color="gray"
+                            size={"2.5vh"}
+                            onClick={setShowRiders.bind(null, true)}
+                          />
+                        )}
+                        {showRiders && (
+                          <AiOutlineUp
+                            color="gray"
+                            size={"2.5vh"}
+                            onClick={setShowRiders.bind(null, false)}
+                          />
+                        )}
+                      </div>
                     </>
                   )}
-                  {item.health_riders.length ? (
+                  {item.health_riders.length && showRiders ? (
                     <div
                       className="row bg_medical_box_row"
                       css={`
@@ -329,136 +361,165 @@ const ProductSummary = ({ cart, setActive }) => {
                     <></>
                   )}
                 </div>
-                {console.log(item.addons,'asdg32')}
+                {console.log(item.addons, "asdg32")}
                 {item.addons.length ? (
                   <>
                     {" "}
                     <hr
                       css={`
                         border-bottom: #ddd;
+                        position: relative;
+                        top: -15px;
                       `}
                     />
-                    <p
-                      className="p_cover_medical_pop"
+                    <div
                       css={`
-                        width: 100%;
-                        color: #0a87ff;
-                        font-weight: 900;
-                        margin-bottom: 5px;
+                        display: flex;
+                        position: relative;
+                        top: -17px;
+                        align-items: center;
+                        justify-content: center;
                       `}
                     >
-                      Add-ons Coverages:
-                    </p>
+                      {/*<p
+                        className="p_cover_medical_pop"
+                        css={`
+                          width: 100%;
+                          color: #0a87ff;
+                          font-weight: 900;
+                          margin-bottom: 8px;
+                        `}
+                      >
+                        Add-ons Coverages:
+                      </p>*/}
+                      <BackgroundBorderTitle title="Add-ons Coverages:" />
+                      {!showAddOns && (
+                        <AiOutlineDown
+                          size={"2.5vh"}
+                          color="grey"
+                          onClick={setShowAddOns.bind(null, true)}
+                        />
+                      )}
+                      {showAddOns && (
+                        <AiOutlineUp
+                          size={"2.5vh"}
+                          color="grey"
+                          onClick={setShowAddOns.bind(null, false)}
+                        />
+                      )}
+                    </div>
                   </>
                 ) : (
                   <></>
                 )}
 
                 {/* <br /> */}
-                {item.addons.map((addOns, addOnIndex) => (
-                  <div className="rider-box_product_pro_medical">
-                    <div
-                      className="row_display_pro_review"
-                      css={`
-                        @media (max-width: 767px) {
-                          margin-bottom: 10px !important;
-                        }
-                      `}
-                    >
+                {showAddOns &&
+                  item.addons.map((addOns, addOnIndex) => (
+                    <div className="rider-box_product_pro_medical">
                       <div
+                        className="row_display_pro_review"
                         css={`
-                          // display: flex;
-                          // flex-direction: row;
-                          // align-items: center;
-                          & img {
-                            height: 45px;
-                            // width: 83px;
-                            margin-right: 11px;
-                            // margin-left: 5px;
-                            object-fit: contain;
-                          }
-                          & span {
-                            font-size: 16px;
-                            font-weight: 900;
-                            line-height: 1.2;
+                          @media (max-width: 767px) {
+                            margin-bottom: 10px !important;
                           }
                         `}
                       >
-                        <span>
-                          <img
-                            src={
-                              frontendData.data.companies[
-                                addOns.product.company.alias
-                              ].logo
+                        <div
+                          css={`
+                            // display: flex;
+                            // flex-direction: row;
+                            // align-items: center;
+                            & img {
+                              height: 45px;
+                              // width: 83px;
+                              margin-right: 11px;
+                              // margin-left: 5px;
+                              object-fit: contain;
                             }
-                            className="img_top_m_custom_medical"
-                            alt="logo"
-                          />
-                        </span>
-
-                        <span> {addOns.product.name}</span>
-                      </div>
-                    </div>
-                    <hr
-                      css={`
-                        border-bottom: #ddd;
-                      `}
-                    />
-
-                    <div
-                      className="row"
-                      css={`
-                        margin-top: -9px;
-                      `}
-                    >
-                      <div
-                        css={`
-                          display: flex;
-                          flex-direction: row;
-                          align-items: end;
-                          justify-content: space-between;
-
-                          /* border-right: 1px solid #dce2ec; */
-                        `}
-                      >
-                        <p className="p_cover_medical_pop">Cover: </p>
-                        <span
-                          className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
-                          css={`
-                            padding-left: 10px;
+                            & span {
+                              font-size: 16px;
+                              font-weight: 900;
+                              line-height: 1.2;
+                            }
                           `}
                         >
-                          ₹ {numToString(addOns.sum_insured)}
-                        </span>
-                      </div>
-                      <div
-                        css={`
-                          display: flex;
-                          flex-direction: row;
-                          align-items: end;
-                          justify-content: space-between;
+                          <span>
+                            <img
+                              src={
+                                frontendData.data.companies[
+                                  addOns.product.company.alias
+                                ].logo
+                              }
+                              className="img_top_m_custom_medical"
+                              alt="logo"
+                            />
+                          </span>
 
-                          /* border-right: 1px solid #dce2ec; */
+                          <span> {addOns.product.name}</span>
+                        </div>
+                      </div>
+                      <hr
+                        css={`
+                          border-bottom: #ddd;
+                        `}
+                      />
+
+                      <div
+                        className="row"
+                        css={`
+                          margin-top: -9px;
                         `}
                       >
-                        <p className="p_cover_medical_pop">Premium: </p>
-                        <span
-                          className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                        <div
                           css={`
-                            padding-left: 10px;
+                            display: flex;
+                            flex-direction: row;
+                            align-items: end;
+                            justify-content: space-between;
+
+                            /* border-right: 1px solid #dce2ec; */
                           `}
                         >
-                          ₹{" "}
-                          {numToString(
-                            prevCart[index]
-                              ? prevCart[index].addons[addOnIndex].total_premium
-                              : addOns.premium
-                          )}{" "}
-                          / year
-                        </span>
-                      </div>
+                          <p className="p_cover_medical_pop">Cover: </p>
+                          <span
+                            className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                            css={`
+                              padding-left: 10px;
+                            `}
+                          >
+                            ₹ {numToString(addOns.sum_insured)}
+                          </span>
+                        </div>
+                        <div
+                          css={`
+                            display: flex;
+                            flex-direction: row;
+                            align-items: end;
+                            justify-content: space-between;
 
-                      {/* <div
+                            /* border-right: 1px solid #dce2ec; */
+                          `}
+                        >
+                          <p className="p_cover_medical_pop">Premium: </p>
+                          <span
+                            className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                            css={`
+                              padding-left: 10px;
+                            `}
+                          >
+                            ₹{" "}
+                            {numToString(
+                              prevCart[index]
+                                ? prevCart[index].addons[addOnIndex]
+                                    .total_premium
+                                : addOns.premium
+                            )}{" "}
+                            / year
+                          </span>
+                        </div>
+
+                        {/* <div
                         className="col-md-6"
                         css={`
                           display: flex;
@@ -490,50 +551,50 @@ const ProductSummary = ({ cart, setActive }) => {
                           / year
                         </span>
                       </div> */}
-                      {prevCart[index]?.addons[addOnIndex]?.total_premium !==
-                        addOns.total_premium && planDetails.isRenewed ? (
-                        <>
-                          <div className="col-md-12"></div>
-                          <div className="col-md-12">
-                            <p className="p_cover_medical_pop revised-premium-title">
-                              Revised Premium:{" "}
-                            </p>
-                            <span className="p_cover_medical_pop_span ">
-                              ₹ {numToString(addOns.total_premium)} /{" "}
-                              {item.tenure > 1
-                                ? item.tenure + " years"
-                                : "year"}{" "}
-                            </span>
-                          </div>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                      {addOns.product.insurance_type.alias === "top_up" && (
-                        <div
-                          css={`
-                            display: flex;
-                            flex-direction: row;
-                            align-items: end;
-                            justify-content: space-between;
-
-                            /* border-right: 1px solid #dce2ec; */
-                          `}
-                        >
-                          <p className="p_cover_medical_pop">Deductable: </p>
-                          <span
-                            className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                        {prevCart[index]?.addons[addOnIndex]?.total_premium !==
+                          addOns.total_premium && planDetails.isRenewed ? (
+                          <>
+                            <div className="col-md-12"></div>
+                            <div className="col-md-12">
+                              <p className="p_cover_medical_pop revised-premium-title">
+                                Revised Premium:{" "}
+                              </p>
+                              <span className="p_cover_medical_pop_span ">
+                                ₹ {numToString(addOns.total_premium)} /{" "}
+                                {item.tenure > 1
+                                  ? item.tenure + " years"
+                                  : "year"}{" "}
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                        {addOns.product.insurance_type.alias === "top_up" && (
+                          <div
                             css={`
-                              padding-left: 10px;
+                              display: flex;
+                              flex-direction: row;
+                              align-items: end;
+                              justify-content: space-between;
+
+                              /* border-right: 1px solid #dce2ec; */
                             `}
                           >
-                            ₹ {numToString(addOns.deductible)}
-                          </span>
-                        </div>
-                      )}
+                            <p className="p_cover_medical_pop">Deductable: </p>
+                            <span
+                              className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                              css={`
+                                padding-left: 10px;
+                              `}
+                            >
+                              ₹ {numToString(addOns.deductible)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </>
             ))}
             {planDetails.isRenewed ? (
@@ -641,7 +702,7 @@ const ProductSummary = ({ cart, setActive }) => {
             font-weight: 900;
             border: 1px dashed #dce2ec;
             display: flex;
-            padding: 7px 20px;
+            padding: 7px 20px 7px 20px;
             background-color: #f7f7f7;
             justify-content: space-between;
             align-items: center;

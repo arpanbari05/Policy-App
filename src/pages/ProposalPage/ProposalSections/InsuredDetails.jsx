@@ -20,7 +20,7 @@ import { element } from "prop-types";
 import CheckBox from "../components/Checkbox/Checkbox";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 
-const InsuredDetails = ({ schema, setActive, name, defaultValue,setBack }) => {
+const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   const [show, setShow] = useState(1);
   const {
     values,
@@ -297,9 +297,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue,setBack }) => {
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
-
-            console.log('testing active')
-            setBack()
+            console.log("testing active");
+            setBack();
             // setActive((prev) => {
             //   if (prev === 0) return 0;
             //   else return prev - 1;

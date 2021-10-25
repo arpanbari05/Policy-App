@@ -52,9 +52,9 @@ const Form1 = ({
   const [customErrors, setCustomErrors] = useState(false);
 
   useEffect(() => {
-    console.log("useEffect 2 executed");
+    console.log("I m executed with pincode", pinCode);
     if (pinCode?.length > 2) {
-      //console.log('disptached getRegion')
+      console.log("disptached getRegion");
       dispatch(getRegion(pinCode));
     }
   }, [pinCode]);

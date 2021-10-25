@@ -47,7 +47,7 @@ function SeedetailFooterMobile({
     addProduct,
     product: selectedProduct,
   } = useCartProduct(groupCode, product);
-
+ console.log(totalPremium,'asdg3')
   const handleProceed = () => {
     handleProceedClick();
     setShowBuyNow(true);

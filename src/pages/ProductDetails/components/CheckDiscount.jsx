@@ -83,6 +83,7 @@ const CheckDiscount = ({ groupCode }) => {
   const handleTenureClick = (item) => {
     updateProductRedux({
       ...cartProduct,
+      page: 'checkDiscount',
       tenure: item.tenure,
       total_premium: item.total_premium,
       service_tax: item.tax_amount,

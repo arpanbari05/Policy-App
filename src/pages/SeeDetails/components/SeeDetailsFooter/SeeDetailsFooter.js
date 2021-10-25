@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { numberToDigitWord } from "../../../../utils/helper";
 //import BuyNowModal from "./../../../quotesPage/components/BuyNowModal/BuyNowModal";
 import SecureLS from "secure-ls";
@@ -18,6 +18,7 @@ import "styled-components/macro";
 import StyledButton from "../../../../components/StyledButton";
 import BuyNowModal from "../../../quotePage/components/BuyNowModal";
 import { removeQuoteFromCart } from "../../../Cart/cart.slice";
+import { object } from "yup/lib/locale";
 
 function SeeDetailsFooter({
   logo,
@@ -53,7 +54,7 @@ function SeeDetailsFooter({
 
   const sumInsuredIndex = quote.sum_insured.indexOf(sum_insured);
 
-  console.log(quote,'sadg323126')
+  console.log(quote, "sadg323126");
 
   const product = {
     premium: quote.premium[sumInsuredIndex],
@@ -73,18 +74,43 @@ function SeeDetailsFooter({
 
   let additionalPremium = 0;
 
-  quote.mandatory_riders?.forEach((element) => {
-    console.log(additionalPremium,"sadg31")
+  quote.mandatory_riders?.[sumInsuredIndex]?.forEach((element) => {
+    console.log(additionalPremium, "sadg31");
     additionalPremium += parseInt(element.total_premium);
-    console.log(additionalPremium,element.total_premium,"sadg32")
+    console.log(additionalPremium, element.total_premium, "sadg32");
   });
-  console.log(additionalPremium, quote.mandatory_riders, "sadg32");
+  const { updateProductRedux, product: cartItem } = useCartProduct(
+    groupCode,
+    product
+  );
+
+  useEffect(() => {
+    const newRiders = quote.mandatory_riders?.[sumInsuredIndex]?.filter(
+      (element) => element !== null && element
+    );
+    console.log(newRiders,'sagd3223g23g23g23g')
+
+
+    updateProductRedux({
+      ...cartItem,
+      page: 'seedetails',
+      health_riders: [...newRiders],
+    });
+  }, []);
   const {
     isCartProductLoading,
     totalPremium,
     addProduct,
     product: selectedProduct,
   } = useCartProduct(groupCode, product);
+
+  let riderPremium =
+    selectedProduct.health_riders.reduce(
+      (acc, obj) => obj?.total_premium !== NaN && acc + obj?.total_premium,
+      0
+    ) || 0;
+
+  console.log(selectedProduct, riderPremium, quote, "sadg32521");
 
   const handleProceed = () => {
     handleProceedClick();
@@ -148,17 +174,15 @@ function SeeDetailsFooter({
         }}
       >
         <h5 className="modal-title">
-        <div className="logo_style_common" style={{marginBottom:"0px"}}>
-          <img
-            src={logo}
-            style={{
-              boxShadow: "none",
-              width: "100%",
-              
-            }}
-            
-            alt="plan_details_ic"
-          />
+          <div className="logo_style_common" style={{ marginBottom: "0px" }}>
+            <img
+              src={logo}
+              style={{
+                boxShadow: "none",
+                width: "100%",
+              }}
+              alt="plan_details_ic"
+            />
           </div>
         </h5>
         <div>
@@ -254,7 +278,7 @@ function SeeDetailsFooter({
           >
             {" "}
             <i className="fa fa-inr"></i> ₹{" "}
-            {parseInt(totalPremium) + additionalPremium}/{" "}
+            {parseInt(quote.total_premium) + riderPremium}/{" "}
             {product.tenure >= 2 ? `${product.tenure} Years` : "Year"}
           </span>
         </div>
@@ -281,115 +305,6 @@ function SeeDetailsFooter({
           </span>
         </div>
       </div>
-      {/* <div
-        css={`
-          border: solid 1px #bac3cf;
-        `}
-        style={{
-          borderRadius: "10px",
-          width: "43%",
-          padding: "14px 5px",
-        }}
-      >
-        <div
-          className="row"
-          style={{
-            justifyContent: "space-around",
-            padding: "5px",
-          }}
-          css={`
-            display: flex;
-            align-items: center;
-          `}
-        >
-          <div style={{ width: "30%", borderRight: "1px solid grey" }}>
-            <h6
-              className="color_white_font border_right_effect font_22"
-              css={`
-                & span {
-                  font-size: 16px !important;
-                  line-height: 0;
-                }
-                margin-bottom: 0;
-              `}
-            >
-              <span>Cover: </span>
-              <br />
-              <span className="color_white_font font_20">
-                <b>
-                  {numberToDigitWord(
-                    sumInsured?.toString() || sum_insured?.toString(),
-                    "seeDetails"
-                  )}
-                </b>
-              </span>
-            </h6>
-          </div>
-
-          <div
-            style={{
-              width: "30%",
-              borderRight: "1px solid grey",
-              marginLeft: "7px",
-            }}
-            css={`
-              display: flex;
-              align-items: center;
-            `}
-          >
-            <h6
-              className="color_white_font border_right_effect_2 font_22"
-              css={`
-                & span {
-                  font-size: 16px !important;
-                  line-height: 0;
-                }
-                margin-bottom: 0;
-              `}
-            >
-              <span>Premium:</span>
-              <br />
-              <span className="color_white_font font_20">
-                <b>
-                  <i className="fa fa-inr"></i> ₹{" "}
-                  {parseInt(selectedProduct.total_premium).toLocaleString(
-                    "en-IN"
-                  )}
-                  / year
-                </b>
-              </span>
-            </h6>
-          </div>
-
-          <div
-            css={`
-              display: ${product.product.company.alias === "star" && "none"};
-            `}
-            style={{ width: "30%", marginLeft: "7px" }}
-            css={`
-              display: flex;
-              align-items: center;
-            `}
-          >
-            <h6
-              className="color_white_font  font_22"
-              css={`
-                & span {
-                  font-size: 16px !important;
-                  line-height: 0;
-                }
-                margin-bottom: 0;
-              `}
-            >
-              <span>Claim Settlement Ratio:</span>
-              <br />
-              <span className="color_white_font font_20">
-                <b>{claim_settlement_ratio}%</b>
-              </span>
-            </h6>
-          </div>
-        </div>
-      </div> */}
 
       <div
         className="col-md-9 col-lg-4 bg_pink_f_f "
@@ -408,28 +323,6 @@ function SeeDetailsFooter({
             width: "fit-content",
           }}
         >
-          {/* <div>
-            <p
-              className="color_black bg_premium_txt_btn_f_p_d"
-              css={`
-                font-size: 17px;
-                line-height: 1.2;
-              `}
-            >
-              Total Premium
-            </p>
-            <p
-              className="color_red font_22"
-              css={`
-                font-size: 18px !important;
-                line-height: 1.2;
-              `}
-            >
-              {" "}
-              <i className="fa fa-inr"></i> {totalPremium}
-            </p>
-          </div> */}
-
           <StyledButton
             styledCss={`font-size: 12px;    font-size: 15px;
     padding: 12px 51px;
@@ -444,7 +337,11 @@ function SeeDetailsFooter({
       </div>
 
       {showBuyNow && (
-        <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} handleClose={handleClose} />
+        <BuyNowModal
+          showBuyNow={showBuyNow}
+          setShowBuyNow={setShowBuyNow}
+          handleClose={handleClose}
+        />
       )}
     </div>
   );
