@@ -137,6 +137,9 @@ const Label = styled.label`
   @media (max-width: 1100px){
     font-size:14px !important;
   }
+  @media (max-width: 1050px){
+    font-size:13px !important;
+  }
   @media (max-width: 767px) {
     left: 10px;
     font-size: 14px;

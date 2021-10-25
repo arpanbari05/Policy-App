@@ -242,6 +242,8 @@ const SummaryTab = ({ title, data, values, index }) => {
         </Col>
       );
     return data.type === "text" || data.type === "checkbox" ? (
+      
+      <>{values?.[item]?.[data.name] &&
       <Col
         md={4}
         sm={4}
@@ -252,7 +254,7 @@ const SummaryTab = ({ title, data, values, index }) => {
       >
         <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
         <p className="font_sub_p_s">{values?.[item]?.[data.name]}</p>
-      </Col>
+      </Col>}</>
     ) : (
       data.type === "custom_toggle" && (
         <Col
