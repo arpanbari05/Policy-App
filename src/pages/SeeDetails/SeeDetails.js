@@ -515,7 +515,7 @@ const SeeDetails = ({
           <StyledHeader>
             <a>
               <i
-                class="fa fa-arrow-left"
+                class="fas fa-arrow-circle-left"
                 onClick={handleClose}
                 aria-hidden="true"
               ></i>
