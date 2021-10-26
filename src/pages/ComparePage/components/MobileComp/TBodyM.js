@@ -87,6 +87,7 @@ const SumAssured = ({
                         fontSize: "16px",
                         fontWeight: "500",
                         background:"white !important",
+                        color:"rgb(100, 113, 136)"
                       }}
                       onChange={(e) => {
                         dispatch(
@@ -182,6 +183,7 @@ const AdditionalBenefits = ({
                     justifyContent: "flex-start",
                     flexDirection: "column",
                     padding: "0px 10px 0px 5px",
+                    color:"rgb(100, 113, 136)"
                   }}
                 >
                   {
@@ -420,8 +422,8 @@ const TBodyM = ({
                     style={{
                       fontSize: "16px",
                       fontWeight: "500",
-                      background:"white"
-
+                      background:"white",
+                      color:"rgb(100, 113, 136)"
                     }}
                     value={
                       discount[
@@ -480,7 +482,7 @@ const TBodyM = ({
             </span>
           </div>
           <div class="col-xs-12 padding_inner_row_c_t">
-            {console.log(plans)}
+  
             {[0, 1].map((item) => {
               if (!plans[item]) return "";
               else
@@ -493,6 +495,7 @@ const TBodyM = ({
                       justifyContent: "flex-start",
                       whiteSpace: "pre-wrap",
                       padding: "0px 10px",
+                      color:"rgb(100, 113, 136)"
                     }}
                   >
                     {plans[item].data.features[1].value}
@@ -559,6 +562,7 @@ const ExclusionDescModifier = ({ desc, index }) => {
         whiteSpace: "pre-wrap",
         padding: "0px 10px",
         flexDirection: "column",
+        color:"rgb(100, 113, 136)"
       }}
     >
     <p>
@@ -740,6 +744,7 @@ const Other = ({
                               justifyContent: "flex-start",
                               whiteSpace: "pre-wrap",
                               padding: "0px 10px",
+                              color:"rgb(100, 113, 136) !important"
                             }}
                           >
                             {

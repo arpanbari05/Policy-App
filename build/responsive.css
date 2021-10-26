@@ -3738,7 +3738,7 @@
         padding: 0px !important;
         margin: 0px !important;
         /* margin: -19px 0 0 21px; */
-        color: #3e593c !important;
+        color: #505f79 !important;
         font-family: "Inter-Regular" !important;
         font-weight: 400 !important;
     font-size: 14px !important;
@@ -3750,7 +3750,9 @@
     .padding_inner_row_c_t {
         padding: 16px 8px 16px 8px;
         font-size: 12px;
+        
     }
+    
     .border_right_dark {
         border-right: 1px solid #d5d5d5;
         margin-left: -5px;

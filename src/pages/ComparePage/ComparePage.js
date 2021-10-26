@@ -22,7 +22,7 @@ import "./Compare.scss";
 import "styled-components/macro";
 import mail from "./../../assets/images/whatsapp.png";
 import whatsapp from "./../../assets/images/whatsapp01.png";
-import BuyNowModal from "../quotePage/components/BuyNowModal/BuyNowModal";
+import BuyNowModal from "../quotePage/components/BuyNowModal";
 import {
   AddPlan,
   CompanyName,
