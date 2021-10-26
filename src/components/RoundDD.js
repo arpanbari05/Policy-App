@@ -133,7 +133,7 @@ const InputField = styled.input`
   color: #6b7789;
 
   @media screen and (max-width: 480px) {
-    background-color: #f3f5f8;
+    background-color: #fff;
     color: #6b7789;
   }
 
@@ -190,8 +190,8 @@ export const Header = styled.a`
     width: 130px;
   }
   @media (max-width: 480px) {
-    background-color: #f3f5f8 !important;
-    border: none;
+    background-color: #fff !important;
+    border: 1px solid #b0bed0;
   }
 `;
 
