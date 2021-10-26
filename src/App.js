@@ -27,7 +27,7 @@ function App() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { proposerDetails } = useSelector((state) => state.greetingPage);
-  const { frontendData } = useSelector((state) => state.frontendBoot);
+  const { frontendData, theme } = useSelector((state) => state.frontendBoot);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ function App() {
     });
   }, []);
 
-  if (isLoading)
+  if (isLoading && theme)
     return (
       <>
         <Navbar />
@@ -93,22 +93,26 @@ function App() {
 
   return Object.keys(frontendData || {}).length > 0 ? (
     <>
-      <Navbar />
-      <Switch>
-        <Route exact path="/" component={InputPage} />
-        <Route exact path="/quotes/:groupCode" component={QuotePage} />
-        <Route exact path="/compare/:groupCode" component={ComparePage} />
-        <Route exact path="/proposal" component={ProposalPage} />
+      {theme && (
+        <>
+          <Navbar />
+          <Switch>
+            <Route exact path="/" component={InputPage} />
+            <Route exact path="/quotes/:groupCode" component={QuotePage} />
+            <Route exact path="/compare/:groupCode" component={ComparePage} />
+            <Route exact path="/proposal" component={ProposalPage} />
 
-        <Route exact path="/proposal_summary" component={ProposalSummary} />
-        <Route exact path="/thankyou/" component={ThankYouPage} />
+            <Route exact path="/proposal_summary" component={ProposalSummary} />
+            <Route exact path="/thankyou/" component={ThankYouPage} />
 
-        <Route
-          exact
-          path="/productdetails/:groupCode"
-          component={ProductDetails}
-        />
-      </Switch>
+            <Route
+              exact
+              path="/productdetails/:groupCode"
+              component={ProductDetails}
+            />
+          </Switch>
+        </>
+      )}{" "}
     </>
   ) : (
     <>

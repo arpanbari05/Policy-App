@@ -13,7 +13,9 @@ const FilterModal = ({ show, handleClose }) => {
   );
   const filters = useSelector(({ quotePage }) => quotePage.filters);
   const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const [selectedPremium, setSelectedPremium] = useState({
     code: "",
     displayName: "",
@@ -48,6 +50,7 @@ const FilterModal = ({ show, handleClose }) => {
               css={`
                 height: 65px !important;
               `}
+              PrimaryColor={PrimaryColor}
               className=" apply_btn mx-auto h-100 w-100"
               onClick={() => handleApply()}
             >
@@ -58,7 +61,7 @@ const FilterModal = ({ show, handleClose }) => {
           customizedTopMargin="65"
         >
           <div>
-            <OptionWrapper>
+            <OptionWrapper PrimaryColor={PrimaryColor}>
               {premiumOptions
                 ? premiumOptions.premiums.map((option, i) => {
                     return (

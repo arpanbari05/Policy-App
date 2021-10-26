@@ -8,19 +8,23 @@ import SmsIcon from "../assets/svg-icons/SmsIcon";
 import styled from "styled-components";
 import { useRef, useState } from "react";
 import { EmailSent } from "../pages/ComparePage/ComparePage.style";
-import { setEmail as setlEmaiStatus }  from "../pages/ComparePage/compare.slice";
+import { setEmail as setlEmaiStatus } from "../pages/ComparePage/compare.slice";
 
 const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   const dispatch = useDispatch();
   useEffect(() => {
-   dispatch(setlEmaiStatus(""));
-   setErrorMsg("");
-  //  setyShowMsgs(false)
-  },[show])
+    dispatch(setlEmaiStatus(""));
+    setErrorMsg("");
+    //  setyShowMsgs(false)
+  }, [show]);
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails
   );
-  const [showMsgs, setyShowMsgs] =  useState(true);
+  const [showMsgs, setyShowMsgs] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [email, setEmail] = useState(
@@ -39,7 +43,6 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
   //     setIsSending(false);
   //   }
   // },[emailStatus])
-
 
   const handleNumberCheck = (e, setAction) => {
     e.preventDefault();
@@ -117,11 +120,22 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
         >
           Hi, please choose the way you wish to share the quotes.
         </Modal.Title>
-        <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
+        <i
+          onClick={handleClose}
+          style={{ cursor: "pointer" }}
+          class="fas fa-times"
+        ></i>
       </Modal.Header>
       <Modal.Body>
-        <div>
-          <ShareOption className="d-flex align-items-center justify-content-between  mb-3">
+        <div
+          css={`
+            .icon_wrapper {
+              background-color: ${PrimaryShade};
+              color: ${PrimaryColor};
+            }
+          `}
+        >
+          <ShareOption className="d-flex align-items-center justify-content-between  mb-3" PrimaryColor={PrimaryColor}>
             <div className="d-flex align-items-center position-relative w-100">
               <div className="icon_wrapper">
                 <EmailIcon width="21" />
@@ -135,24 +149,23 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
               />
               {/* <span
                 css={`
-                  position: absolute; 
+                  position: absolute;
                   top: 50%;
                   right: 20px;
-                  color:black;
+                  color: black;
                   transform: translateY(-50%) !important;
-                  display:none;
+                  display: none;
                   background: #ffffff9e;
-                  @media (max-width:400px){
-                    display: ${isSending && !emailStatus.message ? "block" : "none"} !important;
+                  @media (max-width: 400px) {
+                    display: ${isSending && !emailStatus.message
+                      ? "block"
+                      : "none"} !important;
                   }
-                  
                 `}
               >
                 <i className="fa fa-circle-notch rotate" />
               </span> */}
             </div>
-
-
 
             <button
               className="btn share_btn  position-relative"
@@ -183,9 +196,11 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
                   top: 50%;
                   right: 20px;
                   transform: translateY(-50%) !important;
-                  display: ${isSending && !emailStatus.message ? "block" : "none"};
-                  @media (max-width:400px){
-                    display:none !important;
+                  display: ${isSending && !emailStatus.message
+                    ? "block"
+                    : "none"};
+                  @media (max-width: 400px) {
+                    display: none !important;
                   }
                 `}
               >
@@ -194,7 +209,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
             </button>
           </ShareOption>
 
-          <ShareOption className="d-flex mb-3 align-items-center justify-content-between ">
+          <ShareOption className="d-flex mb-3 align-items-center justify-content-between " PrimaryColor={PrimaryColor}>
             <div className="d-flex align-items-center">
               <div className="icon_wrapper">
                 <WhtsappIcon width="21" />
@@ -241,7 +256,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
             )}
           </ShareOption>
 
-          <ShareOption className="d-flex mb-3 align-items-center justify-content-between ">
+          <ShareOption className="d-flex mb-3 align-items-center justify-content-between " PrimaryColor={PrimaryColor}>
             <div className="d-flex align-items-center">
               <div className="icon_wrapper">
                 <SmsIcon width="21" />
@@ -268,7 +283,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
               `}><i className="fas fa-share"></i></span> </button>
           </ShareOption>
 
-          <InfoMessage className="p-3 text-center">
+          <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>
             * Please note that the premium may vary in future.
           </InfoMessage>
           {errorMsg ? (
@@ -276,7 +291,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
           ) : (
             ""
           )}
-          { emailStatus && (
+          {emailStatus && (
             <EmailSent status={emailStatus.status}>
               {/* {handleRotation()} */}
               {emailStatus.message}
@@ -322,8 +337,8 @@ const ShareOption = styled.div`
   .share_btn {
     border-radius: 4px;
     padding: 15px 40px !important;
-    background-color: #0a87ff;
-    border: solid 2px #0a87ff;
+    background-color: ${props=>props.PrimaryColor};
+    border: solid 2px ${props=>props.PrimaryColor};
     color: #fff;
     font-weight: 600;
     font-size: 14px;
@@ -363,7 +378,7 @@ const ShareOption = styled.div`
 `;
 
 const InfoMessage = styled.div`
-  background-color: #f1f3f8;
+  background-color: ${props=>props.PrimaryShade};
   font-weight: 600;
   color: #778291;
   font-size: 13px;

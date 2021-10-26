@@ -174,7 +174,9 @@ const {
   setSeeDetailsQuote,
   
 } = useQuotesPage();
+const { theme } = useSelector((state) => state.frontendBoot);
 
+const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
 console.log(showSeeDetails,"ulipeu")
 
   const members = useSelector(
@@ -214,7 +216,7 @@ console.log(showSeeDetails,"ulipeu")
               width: 6px;
               border-radius: 3px;
               margin-right: 10px;
-              background: #2cd44a;
+              background: ${SecondaryColor};
             `}
           ></div>
           {members.join(" + ")?.replaceAll("_", "-")}
@@ -242,11 +244,11 @@ console.log(showSeeDetails,"ulipeu")
             <div
               css={`
                 justify-content: space-between;
-                background: #eff7ff !important;
+                background: ${PrimaryShade} !important;
                 width: 35px;
                 height: 35px;
                 border-radius: 100%;
-                color: #2c97ff !important;
+                color: ${PrimaryColor} !important;
                 font-size: 22px;
                 @media (max-width: 768px) {
                   display: none !important;

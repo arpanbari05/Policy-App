@@ -226,7 +226,11 @@ const QuoteFilterMobile = ({
               <div onClick={() => setFilterMobile(false)}>
                 <p
                   className="text-white select_plan_options_p"
-                  style={{ marginTop: "20px" }}
+                  style={{
+                    marginTop: "20px",
+                    position: "relative",
+                    left: "-25px",
+                  }}
                 >
                   <i class="fa fa-arrow-left" aria-hidden="true"></i> Filters
                 </p>

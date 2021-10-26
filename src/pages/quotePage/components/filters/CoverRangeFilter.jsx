@@ -17,6 +17,9 @@ const FilterModal = ({ show, handleClose }) => {
   const coverRangeOptions = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const [ownCover, setOwnCover] = useState(filters.ownCover);
 
   const [inputCoverError, setinputCoverError] = useState(false);
@@ -107,6 +110,7 @@ const FilterModal = ({ show, handleClose }) => {
           header="Choose Your Cover Range"
           footerJSX={
             <ApplyBtn
+            PrimaryColor={PrimaryColor}
               css={`
                 height: 65px !important;
               `}

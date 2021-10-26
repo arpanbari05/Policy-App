@@ -8,12 +8,22 @@ const InsurerMobile = ({
   selected = [],
   setSelected,
 }) => {
+  const sortedCompaniesMobile = sortedCompanies
+    .filter(
+      (comp) =>
+        data?.companies[comp].insurance_types.includes("top_up") ||
+        data?.companies[comp].insurance_types.includes("health") ||
+        data?.companies[comp].insurance_types.includes("cancer") ||
+        data?.companies[comp].insurance_types.includes("critical_illness") ||
+        data?.companies[comp].insurance_types.includes("personal_accident")
+    )
+    .sort((a, b) => data?.companies[b].csr - data?.companies[a].csr);
   return (
     <>
       {" "}
       <article>
         <Row>
-          {sortedCompanies?.map((item) => (
+          {sortedCompaniesMobile?.map((item) => (
             <Col md={12} className="padding-none">
               <div className="inputGroup">
                 <input
@@ -22,13 +32,10 @@ const InsurerMobile = ({
                   type="checkbox"
                   checked={selected.includes(data?.companies[item])}
                 />
+
                 <label
                   css={`
                     @media (max-width: 375px) {
-                      &:after {
-                        top: 40px !important;
-                        right: 13px  !important;
-                      }
                       display: flex !important;
                       flex-direction: column;
                     }
@@ -49,11 +56,26 @@ const InsurerMobile = ({
                       className="mobile-filter-logo"
                       src={data?.companies[item].logo}
                     ></img>
-                    <span className="mobile-filter-title">
+                    <span
+                      className="mobile-filter-title"
+                      css={`
+                        @media screen and (max-width: 463px) {
+                          font-size: 11.5px;
+                        }
+                      `}
+                    >
                       {data?.companies[item].short_name}
                     </span>
                   </div>
-                  <span className="mobile-filter-value">
+                  <span
+                    className="mobile-filter-value"
+                    css={`
+                      margin-right: 15px !important;
+                      @media screen and (max-width: 463px) {
+                        font-size: 12px;
+                      }
+                    `}
+                  >
                     {data?.companies[item].csr}% CSR
                   </span>{" "}
                 </label>

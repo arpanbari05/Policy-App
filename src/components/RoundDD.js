@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import { v4 as uuidv4 } from "uuid";
+import { useSelector } from "react-redux";
 
 import styled from "styled-components/macro";
 import useOutsiteClick from "../customHooks/useOutsideClick";
@@ -20,7 +21,9 @@ const RoundDD = ({
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [ageList, setAgeList] = useState(list);
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const dropdownRef = useRef(null);
   useOutsiteClick(isOpen && dropdownRef, () => setIsOpen(false));
 
@@ -100,6 +103,7 @@ const RoundDD = ({
             {ageList.map((data) => {
               return (
                 <ListItem
+                  PrimaryColor={PrimaryColor}
                   className={`GreetingDD__ListItem`}
                   onClick={() => handleSelect(data.title)}
                   key={uuidv4()}
@@ -258,7 +262,7 @@ export const ListItem = styled.div`
 
   &:hover,
   &.active {
-    background-color: #0a87ff;
+    background-color: ${(props) => props.PrimaryColor};
     color: #fff;
   }
 `;

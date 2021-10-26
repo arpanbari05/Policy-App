@@ -108,6 +108,9 @@ const SubContent = ({
     features,
     tenure,
   } = quoteCardData;
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const dispatch = useDispatch();
   const history = useHistory();
   const ls = new SecureLS();
@@ -253,7 +256,7 @@ const SubContent = ({
                   top: -2px;
                 `}
               >
-                <SeeText onClick={handleSeeDetailsClick}>See Details</SeeText>
+                <SeeText PrimaryColor={PrimaryColor} onClick={handleSeeDetailsClick}>See Details</SeeText>
               </CenterBottomStyle>
             </div>
             <div
@@ -486,7 +489,7 @@ const SubContent = ({
                 `}
               >
                 <LogoWrapper>
-                  <RadioButton onClick={() => handleBuyNowClick()}>
+                  <RadioButton PrimaryColor={PrimaryColor} onClick={() => handleBuyNowClick()}>
                     <strong>
                       ₹{" "}
                       {parseInt(
@@ -560,6 +563,7 @@ const SubContent = ({
                         `}
                             >Compare</SeeText> */}
                   <RadioInput
+                  PrimaryColor={PrimaryColor}
                     type="checkbox"
                     id={`compare_${id}${sum_insured[activeCover]}`}
                     className="compare-checkbox"
@@ -590,6 +594,7 @@ const SubContent = ({
                   />
 
                   <RadioLabel
+                    PrimaryColor={PrimaryColor}
                     //dynamic id
                     htmlFor={`compare_${id}${sum_insured[activeCover]}`}
                     css={`

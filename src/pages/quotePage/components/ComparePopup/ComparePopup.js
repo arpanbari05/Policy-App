@@ -27,6 +27,10 @@ const dislayPlanContainer = (selectedQuotes) => {
 };
 
 const ComparePopup = ({ groupCode }) => {
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const ls = new SecureLS();
   const history = useHistory();
   const { quotesOnCompare } = useSelector((state) => state.quotePage);
@@ -143,7 +147,7 @@ const ComparePopup = ({ groupCode }) => {
               }}
               style={{
                 backgroundColor:
-                  selectedQuotes.length < 2 ? "#dfe1e6" : "#0a87ff",
+                  selectedQuotes.length < 2 ? "#dfe1e6" : PrimaryColor,
                 color: selectedQuotes.length < 2 && "#7a869a",
               }}
               disabled={selectedQuotes.length > 1 ? false : true}

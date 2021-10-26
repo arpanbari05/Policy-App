@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
+import {useSelector} from 'react-redux'
+
 const RadioCapsule = ({
   label,
   checked,
@@ -9,10 +11,16 @@ const RadioCapsule = ({
   styledCss,
   id
 }) => {
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+
   return (
     <>
     
       <RadioInput
+      PrimaryColor={PrimaryColor}
         className="checkbox-tools"
         type={"radio"}
         id={id}
@@ -52,9 +60,9 @@ const RadioInput = styled.input`
   &:checked + label,
   &:not(:checked) + label:hover {
     background-color: #fff;
-    color: #0a87ff;
+    color: ${props=>props.PrimaryColor};
     text-align: center !important;
-    border: 1px solid #0a87ff;
+    border: 1px solid ${props=>props.PrimaryColor};
     border-radius: 50px;
     line-height: 12px;
   }

@@ -50,7 +50,9 @@ const FilterModal = ({ show, handleClose }) => {
       popularFilter,
     },
   });
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const quotes = useSelector((state) => state.quotePage.quotes);
 
   const filteredQuotes = quotes
@@ -290,6 +292,7 @@ const FilterModal = ({ show, handleClose }) => {
         </ClearBtn>
         {filteredPlans.length ? (
           <ApplyBtn
+          PrimaryColor={PrimaryColor}
             className=" apply_btn mx-auto h-100 w-50"
             onClick={() => handleSubmit()}
           >

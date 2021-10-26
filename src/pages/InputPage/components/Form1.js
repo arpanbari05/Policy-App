@@ -23,7 +23,8 @@ const Form1 = ({
   memberGroup,
 }) => {
   const dispatch = useDispatch();
-  const { frontendData } = useSelector((state) => state.frontendBoot);
+  const { frontendData ,theme} = useSelector((state) => state.frontendBoot);
+  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const {
     regionDetailsLoading,
     regionDetails,
@@ -32,7 +33,9 @@ const Form1 = ({
     regionDetailsError,
     memberGroups,
   } = useSelector((state) => state.greetingPage);
-  //console.log("The prosper details", proposerDetails);
+
+ 
+ 
   //console.log("The member group", memberGroup);
   const { data } = frontendData || [""];
   const { popularcities } = data || [""];
@@ -142,9 +145,9 @@ const Form1 = ({
             position: relative;
             & .dropdown {
               position: absolute;
-              background: #5da400;
+              background:  ${SecondaryColor};
               width: 100%;
-              border: 1px solid #5da400;
+              border: 1px solid  ${SecondaryColor};
               color: #fff;
               top: 57px;
               height: 51px;

@@ -4,7 +4,7 @@ import React from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "styled-components/macro";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-
+import {useSelector} from 'react-redux'
 const TextInput = ({
   label,
   type,
@@ -20,6 +20,10 @@ const TextInput = ({
   onBlur,
   maxLength,
 }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+
   return (
     <div
       css={`
@@ -29,7 +33,7 @@ const TextInput = ({
           position: absolute;
           top: 11px;
           font-size: 28px;
-          color: #0a87ff;
+          color: ${PrimaryColor};
           right: 14px;
           cursor: pointer;
           & img {

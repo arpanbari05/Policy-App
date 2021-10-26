@@ -80,7 +80,9 @@ const Form5 = ({ handleChange, currentForm }) => {
   const dispatch = useDispatch();
   const ls = new SecureLS();
   const history = useHistory();
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
@@ -177,15 +179,15 @@ const Form5 = ({ handleChange, currentForm }) => {
               <span
                 css={`
                   margin-left: 10px;
-                  color: ${gender === "M" && "#2693e6"};
+                  color: ${gender === "M" && PrimaryColor};
                 `}
               >
                 Male
               </span>
               <ReactSwitch
-                onColor="#2693e6"
-                offColor="#2693e6"
-                onHandleColor="#86d3ff"
+                onColor={PrimaryColor}
+                offColor={PrimaryColor}
+                onHandleColor={PrimaryShade}
                 handleDiameter={25}
                 uncheckedIcon={false}
                 checkedIcon={false}
@@ -201,7 +203,7 @@ const Form5 = ({ handleChange, currentForm }) => {
               <span
                 css={`
                   margin-right: 10px;
-                  color: ${gender === "F" && "#2693e6"};
+                  color: ${gender === "F" && PrimaryColor};
                 `}
               >
                 Female

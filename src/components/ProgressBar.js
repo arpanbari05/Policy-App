@@ -1,7 +1,12 @@
 import React from "react";
 import { ProgressBar } from "react-bootstrap";
 import "styled-components/macro";
+import { useSelector } from "react-redux";
+
 const CustomProgressBar = ({ now, total }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   return (
     <span
       css={`
@@ -19,7 +24,7 @@ const CustomProgressBar = ({ now, total }) => {
           height: 9px;
           width: 132px;
           & .progress-bar {
-            background: #5da400;
+            background: ${SecondaryColor};
           }
         `}
         now={`${(now * 100) / total}`}
