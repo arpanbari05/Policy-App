@@ -52,6 +52,10 @@ function QuotePage() {
     (state) => state.greetingPage
   );
 
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+
   const { groupCode } = useParams();
   const selectedGroup = groupCode;
   const { loadingQuotes, filters } = useSelector((state) => state.quotePage);
@@ -272,7 +276,7 @@ function QuotePage() {
                   All Premium Plans are GST Inclusive
                 </TextLabel>
               </div>
-              <AssistantCard>
+              <AssistantCard PrimaryColor={PrimaryColor} SecondaryShade={SecondaryShade}>
                 <span className="head">Health Insurance Assistance</span>
                 <p className="my-2">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
@@ -427,7 +431,7 @@ function QuotePage() {
 export default QuotePage;
 
 const AssistantCard = styled.div`
-  background: #eef1f4;
+  background: ${props=>props.SecondaryShade};
   position: relative;
   top: 26px;
   @media (max-width: 1399px) {
@@ -443,8 +447,8 @@ const AssistantCard = styled.div`
   }
   .talk_to_us {
     font-weight: 600;
-    color: #0c88ff;
-    border: 2px solid #0c88ff;
+    color: ${props=>props.PrimaryColor};
+    border: 2px solid  ${props=>props.PrimaryColor};
     background: white;
     font-size: 18px;
     padding: 10px 20px;
