@@ -45,6 +45,7 @@ const quotePageSlice = createSlice({
       basePlanType: "Base Health",
       moreFilters: {},
     },
+
     productDiscounts: [],
     selectedDiscount: {},
     selectedQuotes: {},
@@ -147,6 +148,7 @@ const quotePageSlice = createSlice({
 
       state.filters = { ...state.filters, ...action.payload };
     },
+
     updateFetchedFilters: (state, action) => {
       state.fetchFilters = action.payload;
     },
@@ -271,6 +273,7 @@ export const {
   replaceFilterQuotes,
   updateQuotesForCompare,
   setFilters,
+
   saveProductDiscountResponse,
   setSelectedGroup,
   addSelectedQuote,
@@ -552,7 +555,7 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
         const errorsList = Object.values(errors);
         dispatch(ageError(errorsList));
       } else {
-         handleClose();
+        handleClose();
       }
 
       // const { data } = response;

@@ -348,6 +348,7 @@ const TabButton = styled.button`
 /* width:100px; */
 font-size:12px;
 border: none;
+font-weight:bold;
 @media (max-width:400px){
     font-size:11px !important;
     padding:5px !important;

@@ -65,13 +65,15 @@ function SeeDetailsTop({
             alt="plan_details_ic"
           />
         </div>
-        <div>
-          <p
+        <div
+          style={{ fontSize: "18px", marginTop: "0px",marginBottom: "-5px" }}
+        >
+          <span
             className="care_popup_title"
-            style={{ fontSize: "18px", marginTop: "0px" }}
+          
           >
             {companyName}
-          </p>
+          </span>
         </div>
       </Company>
 
@@ -111,7 +113,7 @@ function SeeDetailsTop({
 const Outer = styled.div`
 margin-top:0px;
 box-shadow: 0px 0px 10px #d8d8d8;
-height: 110px;
+height: 120px;
 background-color:#fff;
 position: sticky;
 z-index: 9999;
@@ -136,6 +138,7 @@ const Details = styled.div`
   display: flex;
   font-size: 12px;
   margin-left: 10px;
+  margin-top:10px;
 `;
 const Inner = styled.div`
   margin-left: 10px;

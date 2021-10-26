@@ -42,7 +42,7 @@ const PlanTypeFilter = () => {
           {basePlanType}
           <i class="fas fa-chevron-down"></i>
         </span>
-        <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
+        {showModal && <FilterModal handleClose={() => setShowModal(false)} />}
       </Filter>
     </>
   );
@@ -50,7 +50,7 @@ const PlanTypeFilter = () => {
 
 export default PlanTypeFilter;
 
-const FilterModal = ({ show, handleClose }) => {
+const FilterModal = ({ handleClose }) => {
   const {
     basePlanType,
     multiYear: tenure,
@@ -62,7 +62,12 @@ const FilterModal = ({ show, handleClose }) => {
     display_name: basePlanType,
   });
 
-  console.log(selectedPlanType, basePlanType, "agsd");
+  // console.log(selectedPlanType, basePlanType, "agsd");
+  //console.log(
+  //  "The initial baseplantype, selectedPlantype",
+  //  basePlanType,
+  //  selectedPlanType
+  //);
 
   const handleChange = (displayName) => {
     if (displayName) {
@@ -116,7 +121,7 @@ const FilterModal = ({ show, handleClose }) => {
 
   return (
     <>
-      {show && (
+      {
         <CustomModal1
           header="Choose Your Plan Type"
           footerJSX={
@@ -136,6 +141,10 @@ const FilterModal = ({ show, handleClose }) => {
           <div>
             <OptionWrapper>
               {basePlanTypes.map((thisPlanType, i) => {
+                const toBeCheckedPlan =
+                  thisPlanType.display_name === "Base health"
+                    ? "Base Health"
+                    : thisPlanType.display_name;
                 return (
                   <li
                     css={`
@@ -153,8 +162,8 @@ const FilterModal = ({ show, handleClose }) => {
                       id={thisPlanType.code}
                       value={thisPlanType.display_name}
                       checked={
-                        selectedPlanType.display_name ===
-                          thisPlanType.display_name || false
+                        selectedPlanType.display_name === toBeCheckedPlan ||
+                        false
                       }
                       onChange={(e) => handleChange(thisPlanType)}
                     />
@@ -164,7 +173,7 @@ const FilterModal = ({ show, handleClose }) => {
             </OptionWrapper>
           </div>
         </CustomModal1>
-      )}
+      }
       {/*<Modal
       show={show}
       onHide={handleClose}
@@ -180,7 +189,6 @@ const FilterModal = ({ show, handleClose }) => {
         }
         .modal-footer {
           padding: 0px !important;
-
           border-top: none !important;
         }
         .modal-footer > * {

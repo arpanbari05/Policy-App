@@ -207,7 +207,7 @@ const prod_id=Object.keys(cart)[0];
             history.goBack();
           }}
         >
-          <i class="fa fa-arrow-left" style={{marginRight:"10px",cursor:"pointer"}}></i> Review
+          <i class="fa fa-arrow-circle-left" style={{marginRight:"10px",cursor:"pointer"}}></i> Review
         </MobileHeaderText>
       </MobileHeader>
 
