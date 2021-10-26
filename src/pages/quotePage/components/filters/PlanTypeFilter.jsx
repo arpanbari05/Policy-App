@@ -85,7 +85,9 @@ const FilterModal = ({ handleClose }) => {
     covers,
     plantypes,
   } = useSelector((state) => state.frontendBoot.frontendData.data);
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const sum_insured = covers.find((cov) => cov.display_name === cover);
 
   const pt = plantypes.find((p) => p.display_name === planType);
@@ -126,6 +128,7 @@ const FilterModal = ({ handleClose }) => {
           header="Choose Your Plan Type"
           footerJSX={
             <ApplyBtn
+            PrimaryColor={PrimaryColor}
               css={`
                 height: 65px !important;
               `}

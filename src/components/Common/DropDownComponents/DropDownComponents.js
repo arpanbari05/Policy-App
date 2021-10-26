@@ -119,7 +119,8 @@ export const ListItem = styled.div`
 
   &:hover,
   &.active {
-    background-color: #e2f0ff;
+    background-color: ${(props) =>
+      props.PrimaryShade ? props.PrimaryShade : "#e2f0ff"};
     color: #495c68;
   }
 `;

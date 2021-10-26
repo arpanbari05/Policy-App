@@ -8,12 +8,15 @@ import {
   Label,
 } from "../../../../components/Common/DropDownComponents/DropDownComponents";
 import useSortByDD from "./useSort";
+import {useSelector} from 'react-redux'
 import "styled-components/macro";
 
 const SortByDD = ({ htmlFor, title, list, onSortByChange = () => {} }) => {
   const { dropdownRef, toggleList, isOpen, selected, handleSelect } =
     useSortByDD({ onSortByChange });
+    const { theme } = useSelector((state) => state.frontendBoot);
 
+    const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   return (
     <div
       css={`
@@ -70,11 +73,13 @@ const SortByDD = ({ htmlFor, title, list, onSortByChange = () => {} }) => {
               width: "100%",
               margin: 0,
             }}
+          
             className="SortByDD__List"
           >
             {list.map((data) => {
               return (
                 <ListItem
+                PrimaryShade={PrimaryShade}
                   className={` SortByDD__ListItem`}
                   // className={`${
                   //   data.title === selected && "active"

@@ -21,7 +21,9 @@ const FilterModal = ({ show, handleClose }) => {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
   const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const companies = useSelector(
     (state) => state.frontendBoot.frontendData.data.companies
   );
@@ -73,6 +75,7 @@ const FilterModal = ({ show, handleClose }) => {
           header="Chose Your Policy Type"
           footerJSX={
             <ApplyBtn
+            PrimaryColor={PrimaryColor}
               css={`
                 height: 65px !important;
               `}

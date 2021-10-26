@@ -20,6 +20,9 @@ const FilterModal = ({ show, handleClose }) => {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
   const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
 
   const [selectedTenure, setSelectedTenure] = useState(
     filters.multiYear
@@ -72,6 +75,7 @@ const FilterModal = ({ show, handleClose }) => {
           header="Multiyear Options"
           footerJSX={
             <ApplyBtn
+            PrimaryColor={PrimaryColor}
               css={`
                 height: 65px !important;
               `}

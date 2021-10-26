@@ -47,6 +47,7 @@ export const OptionWrapper = styled.ul`
     padding: 14px 5px;
     font-weight: 600;
     input[type="radio"] {
+      
       width: 20px;
       height: 20px;
     }
@@ -76,7 +77,7 @@ export const OptionWrapper = styled.ul`
   }
   input[type="checkbox"]:checked + label {
     .custom_checkbox {
-      background-color: #0a87ff;
+      background-color: ${props=>props.PrimaryColor};
       border: 1px solid white;
       ::before {
         content: "\u2713";
@@ -90,7 +91,7 @@ export const OptionWrapper = styled.ul`
   input[type="radio"]:checked + label {
     .custom_radio {
       /* background-color: #0a87ff; */
-      border: 1px solid #0a87ff;
+      border: 1px solid ${props=>props.PrimaryColor};
       display: flex;
       justify-content: center;
       align-items: center;
@@ -98,7 +99,7 @@ export const OptionWrapper = styled.ul`
       ::before {
         content: "";
         border-radius: 100%;
-        background-color: #0a87ff;
+        background-color: ${props=>props.PrimaryColor};
         width: 13px;
 
         height: 13px;

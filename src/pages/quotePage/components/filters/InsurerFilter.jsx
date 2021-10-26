@@ -13,7 +13,9 @@ const FilterModal = ({ show, handleClose, filters }) => {
   const insurerOptions = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const [selectedinsurers, setSelectedinsurers] = useState(
     filters.insurers.length ? filters.insurers : []
   );
@@ -50,6 +52,7 @@ const FilterModal = ({ show, handleClose, filters }) => {
           header="Insurers"
           footerJSX={
             <ApplyBtn
+            PrimaryColor={PrimaryColor}
               css={`
                 height: 65px !important;
               `}
