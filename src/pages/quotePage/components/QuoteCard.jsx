@@ -33,6 +33,9 @@ import useQuoteCard from "./useQuoteCard";
 import useCartProduct from "../../Cart/hooks/useCartProduct";
 
 function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const {
     dispatch,
     show,
@@ -134,7 +137,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             </LogoWrapper>
           </EachWrapper>
           <CenterBottomStyle>
-            <SeeText onClick={handleSeeDetailsClick}>See Details</SeeText>
+            <SeeText PrimaryColor={PrimaryColor} onClick={handleSeeDetailsClick}>See Details</SeeText>
           </CenterBottomStyle>
         </div>
         <div
@@ -310,7 +313,8 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                 position: relative;
                 bottom: -5px;
                 margin-top: 14px;
-              `}
+                background-color:${PrimaryShade} !important;
+                `}
             >
               <SeeText
                 css={`
@@ -348,7 +352,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             `}
           >
             <LogoWrapper>
-              <RadioButton onClick={() => handleBuyNowClick()}>
+              <RadioButton PrimaryColor={PrimaryColor} onClick={() => handleBuyNowClick()}>
                 <strong>
                   ₹{" "}
                   {parseInt(
@@ -422,6 +426,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                         `}
                             >Compare</SeeText> */}
               <RadioInput
+              PrimaryColor={PrimaryColor}
                 type="checkbox"
                 id={`compare_${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`}
                 className="compare-checkbox"
@@ -453,6 +458,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
 
               <RadioLabel
                 //dynamic id
+                PrimaryColor={PrimaryColor}
                 htmlFor={`compare_${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`}
                 css={`
                   color: #808080;

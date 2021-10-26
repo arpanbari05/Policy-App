@@ -28,6 +28,7 @@ const ThemeModal = ({ show, setShow }) => {
           PrimaryColor: primaryColor,
           SecondaryColor: secondaryColor,
           PrimaryShade: primaryShade,
+          SecondaryShade: secondaryShade,
         })
       );
     }
