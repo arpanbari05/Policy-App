@@ -1,11 +1,11 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
-import "styled-components/macro"
+import "styled-components/macro";
 const PremiumMobile = ({ premiumFilter, selected, setSelected }) => {
   return (
     <>
       <article>
-        <Row className=" mt--38">
+        <Row className="mt--38">
           {premiumFilter?.map((item, index) => (
             <Col md={6} key={index} className="padding-none">
               <div className="inputGroup">
@@ -20,11 +20,12 @@ const PremiumMobile = ({ premiumFilter, selected, setSelected }) => {
                   htmlFor={item.code}
                   onClick={() => setSelected(item)}
                   css={`
-                  font-size: 10px !important;
-                  font-weight: 900!important;
-                  &:after {
-                    right: 7px;
-                  }`}
+                    font-size: 10px !important;
+                    font-weight: 900 !important;
+                    &:after {
+                      right: 7px;
+                    }
+                  `}
                 >
                   {`${item.display_name}`}
                   <div className="checkbox--button"></div>
