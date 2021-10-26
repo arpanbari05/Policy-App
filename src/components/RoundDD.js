@@ -136,6 +136,11 @@ const InputField = styled.input`
   background-color: #fff;
   color: #6b7789;
 
+  @media screen and (max-width: 480px) {
+    background-color: #fff;
+    color: #6b7789;
+  }
+
   &:focus {
     outline: none;
   }
@@ -189,8 +194,8 @@ export const Header = styled.a`
     width: 130px;
   }
   @media (max-width: 480px) {
-    background-color: #f3f5f8 !important;
-    border: none;
+    background-color: #fff !important;
+    border: 1px solid #b0bed0;
   }
 `;
 
