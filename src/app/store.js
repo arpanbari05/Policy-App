@@ -22,6 +22,6 @@ const store = configureStore({
     }),
 });
 // let persistor = persistStore(store);
-
+console.log('h32yg2332',store.getState())
 // export { store, persistor };
 export { store };
