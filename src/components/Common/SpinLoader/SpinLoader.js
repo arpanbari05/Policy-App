@@ -1,7 +1,7 @@
 import React from "react";
 import "./Loader.scss";
 import "styled-components/macro";
-
+import { useSelector } from "react-redux";
 const SpinLoader = ({
   style = {},
   proposalpage,
@@ -9,6 +9,11 @@ const SpinLoader = ({
   customWidth,
   zIndexGiven,
 }) => {
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+
   return (
     <div
       className="loader"
@@ -25,6 +30,9 @@ const SpinLoader = ({
         className={!proposalpage ? "spinner" : "proposal"}
         css={`
           height: ${customHeight} !important ;
+          &  > div {
+            background-color: ${PrimaryColor};
+          }
         `}
       >
         <div className="bounce1"></div>

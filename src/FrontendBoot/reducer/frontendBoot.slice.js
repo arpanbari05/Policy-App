@@ -10,34 +10,57 @@ const ls = new SecureLS();
 
 const frontEndBoot = createSlice({
   name: "frontendBoot",
-  initialState: { frontendData: {}, loading: false, error: false },
+  initialState: {
+    frontendData: {},
+    theme: {
+      PrimaryColor: "#0a87ff",
+      SecondaryColor: "#5da400",
+      PrimaryShade: "#ecf6ff",
+      SecondaryShade: "#eef1f4",
+    },
+    loading: false,
+    error: false,
+  },
   reducers: {
     requestFrontendData: (state, action) => {
-      return { loading: true, frontendData: [], error: false };
+      state.loading = true;
+      state.error = false;
+      // return { loading: true, frontendData: [], error: false };
     },
     saveFrontendData: (state, action) => {
-      return { loading: false, frontendData: action.payload, error: false };
+      state.loading = false;
+      state.frontendData = action.payload;
+      state.error = false;
+      // return { loading: false, frontendData: action.payload, error: false };
     },
     catchFrontendData: (state, action) => {
-      return { loading: false, error: action.payload, error: false };
+      state.loading = false;
+      state.error = action.payload;
+
+      //return { loading: false, error: action.payload, error: false };
+    },
+    updateTheme: (state, action) => {
+      state.theme = { ...state.theme, ...action.payload };
     },
   },
 });
 
-export const { requestFrontendData, saveFrontendData, catchFrontendData } =
-  frontEndBoot.actions;
+export const {
+  requestFrontendData,
+  saveFrontendData,
+  catchFrontendData,
+  updateTheme,
+} = frontEndBoot.actions;
 
 export default frontEndBoot.reducer;
 
 export const fetchFrontendData = (onFetch = () => {}) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       dispatch(requestFrontendData());
       const data = await getFrontendData();
       const { cover, plan_type, tenure } = data.data.defaultfilters;
       const { covers, plantypes } = data.data;
-
-     
 
       dispatch(saveFrontendData(data));
 
@@ -48,5 +71,5 @@ export const fetchFrontendData = (onFetch = () => {}) => {
   };
 };
 
-export const selectCompany = company_alias => state =>
+export const selectCompany = (company_alias) => (state) =>
   state.frontendBoot.frontendData.data.companies[company_alias];

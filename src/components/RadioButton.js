@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components/macro";
-
+import { useSelector } from "react-redux";
 import { FaCheck } from "react-icons/fa";
 const RadioButton = ({
   onChange,
@@ -11,9 +11,15 @@ const RadioButton = ({
   onClick,
   itemsCentered,
 }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+
   return (
     <>
       <RadioInput
+      PrimaryColor={PrimaryColor}
+      PrimaryShade={PrimaryShade}
         type="radio"
         name={label}
         id={id}
@@ -29,7 +35,7 @@ const RadioButton = ({
             css={`
               position: absolute;
               right: 20px;
-              color: #0a87ff;
+              color: ${PrimaryColor};
               font-size: 20px;
             `}
           />
@@ -55,15 +61,15 @@ export const RadioInput = styled.input`
     margin-bottom: 10px;
     color: #000;
     opacity: 1;
-    border: solid 1px #0a87ff;
-    background-color: #e2f0ff;
+    border: solid 1px ${props=>props.PrimaryColor};
+    background-color: ${props=>props.PrimaryShade};
     font-size: 15px;
     font-weight: 900;
   }
 `;
 
 export const RadioLabel = styled.label`
-cursor: pointer !important;
+  cursor: pointer !important;
   transition: all 0.3s linear 0s;
   border-radius: 5px;
   font-weight: 900;

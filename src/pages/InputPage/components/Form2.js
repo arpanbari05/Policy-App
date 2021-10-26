@@ -22,7 +22,10 @@ import { Modal } from "react-bootstrap";
 const Form2 = ({ handleChange, currentForm }) => {
   const { error } = useSelector((state) => state.greetingPage);
 
-  const { frontendData } = useSelector((state) => state.frontendBoot);
+  const { frontendData,theme } = useSelector((state) => state.frontendBoot);
+
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const { data } = frontendData || [""];
   const { members } = data || [""];
 
@@ -296,7 +299,7 @@ const Form2 = ({ handleChange, currentForm }) => {
             setShowModal(true);
           }}
           styledCss={`
-            background-color:#ebf5ff;
+            background-color:${PrimaryShade};
             display: flex;
             align-items: center;
             justify-content: center;
@@ -309,7 +312,7 @@ const Form2 = ({ handleChange, currentForm }) => {
               top: -3px;
               left: -3px;
               font-size: 25px;
-              color:#0a87ff;
+              color:${PrimaryColor};
             }
           `}
           noIcon

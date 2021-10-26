@@ -25,6 +25,8 @@ export const InputPage = () => {
   const [currentForm, setCurrentForm] = useState(1);
   const [showmore, setShowmore] = useState(false);
   const greetingPage = useSelector((state) => state.greetingPage);
+  const { theme } = useSelector((state) => state.frontendBoot);
+  const { PrimaryColor, PrimaryShade } = theme;
   const { memberGroups } = greetingPage;
   const dispatch = useDispatch();
   console.log("ggg2", currentForm);
@@ -34,6 +36,8 @@ export const InputPage = () => {
   const members = Object.keys(memberGroups || {});
   //console.log("member groups", memberGroups);
   //console.log("members", members);
+
+
 
   return (
     <>
@@ -113,9 +117,9 @@ export const InputPage = () => {
             <div
               css={`
                 width: fit-content;
-                color: #0a87ff;
-                border: 1px solid #0a87ff;
-                background: #ecf6ff;
+                color: ${PrimaryColor};
+                border: 1px solid ${PrimaryColor};
+                background: ${PrimaryShade};
                 padding: 2px 5px;
                 border-radius: 20px;
                 font-size: 12px;
@@ -145,7 +149,9 @@ export const InputPage = () => {
           </div>
         </div>
         <Wrapper currentForm={currentForm}>
-          <InnerWrapper className="hide_on_mobile">{planCard()}</InnerWrapper>
+          <InnerWrapper className="hide_on_mobile">
+            {planCard(PrimaryColor,PrimaryShade)}
+          </InnerWrapper>
           <InnerWrapper>
             {" "}
             <Card
@@ -204,7 +210,7 @@ export const InputPage = () => {
                 />
               </div>
             </Card>
-            {currentForm === 1 && termsAndConditions(showmore, setShowmore)}
+            {currentForm === 1 && termsAndConditions(showmore, setShowmore,PrimaryColor)}
           </InnerWrapper>
         </Wrapper>
       </Container>
@@ -248,7 +254,7 @@ const Wrapper = styled.div`
   }
   @media (max-width: 480px) {
     margin: 0 auto;
-    width: ${(props)=> props.currentForm === 2 ? "100%" : "90%"};
+    width: ${(props) => (props.currentForm === 2 ? "100%" : "90%")};
     & > div {
       width: 100% !important;
     }
@@ -256,9 +262,9 @@ const Wrapper = styled.div`
 `;
 const PlanCard = styled.div`
   & h3 {
-    color: #0a87ff;
-    background-color: #ecf6ff;
-    border: 1px solid #0a87ff;
+    color: ${(props) => props.PrimaryColor};
+    background-color: ${(props) => props.PrimaryShade};
+    border: 1px solid ${(props) => props.PrimaryColor};
     border-radius: 15px;
     width: max-content;
     font-size: 24px;
@@ -270,7 +276,7 @@ const PlanCard = styled.div`
     margin-bottom: 37px;
   }
   & svg {
-    color: #0a87ff;
+    color: ${(props) => props.PrimaryColor};
     width: 23px;
     height: 22px;
   }
@@ -283,7 +289,7 @@ const InnerWrapper = styled.div`
   } */
 `;
 
-function planCard() {
+function planCard(PrimaryColor, PrimaryShade) {
   return (
     <Card
       BgColor={`#edf0f49e`}
@@ -317,16 +323,16 @@ function planCard() {
       width={`500px`}
       height={`400px`}
     >
-      <PlanCard>
+      <PlanCard PrimaryColor={PrimaryColor} PrimaryShade={PrimaryShade}>
         <h3>HEALTH INSURANCE</h3>
         <h1>Buy Health Insurance plan in few simple steps</h1>
-        {planList()}
+        {planList(PrimaryColor, PrimaryShade)}
       </PlanCard>
     </Card>
   );
 }
 
-function termsAndConditions(showmore, setShowmore) {
+function termsAndConditions(showmore, setShowmore,PrimaryColor) {
   return (
     <div
       css={`
@@ -355,7 +361,7 @@ function termsAndConditions(showmore, setShowmore) {
           (to provide a contact number or email id or both){" "}
         </span>
         <a
-          style={{ color: "#108aff", fontSize: "15px" }}
+          style={{ color: PrimaryColor, fontSize: "15px" }}
           onClick={() => {
             setShowmore(!showmore);
           }}
@@ -367,7 +373,7 @@ function termsAndConditions(showmore, setShowmore) {
   );
 }
 
-function planList() {
+function planList(PrimaryColor, PrimaryShade) {
   const planArray = [
     `Compare Health Insurance plans`,
     `Instant policy Insurance`,
