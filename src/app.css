@@ -359,14 +359,14 @@ html {
   border-radius: 6px !important;
   width: 100% !important;
   margin: 10px 0px !important;
-  border: 0.3px solid #d9c59e !important;
-  background-color: #e9f4f9 !important;
+  border: 0.1px solid #0a87ff !important;
+  background-color: #fff !important;
   font-size: 12px !important;
   padding: 10px 8px !important;
   display: flex !important;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 42px 10px 8px !important;
+  padding: 10px 31px 10px 8px !important;
 }
 
 .mobile-filter-wrapper-inner {
@@ -382,14 +382,15 @@ html {
 }
 
 .mobile-filter-value {
-  margin-left: -12px;
-  padding-right: 40px;
+  /* margin-left: -12px;*/
+  padding-right: 0px;
   padding-top: 3px;
 }
 
 .mobile-filter-title {
   font-size: 12px;
   font-weight: 900;
+  min-width: 140px;
 }
 
 .tabordion {
@@ -413,7 +414,7 @@ html {
 }
 
 .tabordion section label {
-  background: #fffbfb;
+  background: white;
   border: 1px solid #fff;
   cursor: pointer;
   display: block;
@@ -421,7 +422,7 @@ html {
   font-weight: bold;
   padding: 15px 20px;
   position: relative;
-  width: 180px;
+  width: 150px;
   z-index: 100;
 }
 
@@ -488,10 +489,11 @@ html {
   }
   .tabordion section label {
     font-size: 1em;
-    width: 160px;
+    width: 120px;
   }
   .tabordion section article {
-    left: 104px;       left: 98px;
+    left: 104px;
+    left: 90px;
     min-width: 214px;
     padding: 8px 42px 0 62px;
     padding: 8px 25px 0 62px;
@@ -504,7 +506,7 @@ html {
     left: -189px;
     position: absolute;
     top: 0;
-    width: 218px;
+    width: 200px;
     box-shadow: 0 11px 21px #d4d8e4b5 !important;
     height: 120%;
   }
@@ -540,7 +542,8 @@ html {
 
 .inputGroup input:checked ~ label {
   color: #000;
-  background: #ffffff !important;
+  background: #f2f7ff !important;
+
   border: 1px solid #0a87ff !important;
   /* padding: 14px 5px; */
   width: 100%;
@@ -556,6 +559,13 @@ html {
   margin: -5px 1px;
   position: relative;
   border-radius: 6px;
+}
+
+@media screen and (max-width: 786px) {
+  .inputGroup {
+    margin-left: -27px;
+    min-width: 200px;
+  }
 }
 
 .inputGroup label {
@@ -577,7 +587,8 @@ html {
 }
 
 .inputGroup label:before {
-  width: 10px;
+  /*width: 10px;
+*/
   height: 10px;
   border-radius: 14%;
   content: "";
@@ -603,7 +614,7 @@ html {
   border-radius: 50%;
   z-index: 2;
   position: absolute;
-  right: 25px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;

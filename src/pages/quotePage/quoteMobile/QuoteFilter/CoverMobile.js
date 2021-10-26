@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
+import "styled-components/macro";
 const CoverMobile = ({
   coverFilter,
   selected,
@@ -9,7 +10,7 @@ const CoverMobile = ({
   setOwnCover,
   resetPremium,
 }) => {
-  const { filters, selectedGroup } = useSelector(state => state.quotePage);
+  const { filters, selectedGroup } = useSelector((state) => state.quotePage);
 
   const [inputCover, setInputCover] = useState(ownCover);
   const [inputCoverError, setinputCoverError] = useState(false);
@@ -33,7 +34,7 @@ const CoverMobile = ({
     <>
       <article>
         <Row className=" mt--38">
-          {coverFilter?.map(item => (
+          {coverFilter?.map((item) => (
             <Col md={6} className="padding-none">
               <div className="inputGroup">
                 <input
@@ -59,15 +60,38 @@ const CoverMobile = ({
             </Col>
           ))}
           <Col md={12} className=" text-center">
-            <p className="mb-10">OR</p>
+            <p
+              css={`
+                @media screen and (max-width: 753px) {
+                  margin-left: -25px;
+                }
+              `}
+              className="mb-10"
+            >
+              OR
+            </p>
           </Col>
-          <Col md={12} id="myDIV" className="en padding-none">
+          <Col
+            md={12}
+            id="myDIV"
+            className="en padding-none"
+            css={`
+              @media screen and (min-width: 359px) and (max-width: 753px) {
+                margin-left: -27px;
+                width: 110%;
+              }
+              @media screen and (max-width: 359px) {
+                min-width: 200px;
+                margin-left: -27px;
+              }
+            `}
+          >
             {/* <!-- <p className="p_title_cover">Enter value of your choice</p> --> */}
             <input
               type="text"
               placeholder="e.g. Enter your own cover"
               className="custom__cover--mobile"
-              onChange={e => {
+              onChange={(e) => {
                 setInputCover(e.target.value);
                 setSelected("");
               }}
@@ -75,6 +99,7 @@ const CoverMobile = ({
             {inputCoverError && (
               <p className="formbuilder__error">{inputCoverError}</p>
             )}
+
             <p className="float_value custom__cover--text ">
               Enter value between 2 Lac to 1 Crore in multiples of 1 Lac{" "}
             </p>
