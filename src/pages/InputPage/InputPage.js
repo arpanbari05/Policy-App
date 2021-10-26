@@ -37,8 +37,6 @@ export const InputPage = () => {
   //console.log("member groups", memberGroups);
   //console.log("members", members);
 
-
-
   return (
     <>
       <div
@@ -67,7 +65,7 @@ export const InputPage = () => {
           <img className="w-100" src={fyntune} alt="FYNTUNE_LOGO" />
         </div>
 
-        <div
+        {/*<div
           css={`
             width: 30px;
             height: 25px;
@@ -89,7 +87,7 @@ export const InputPage = () => {
           <span className="line_hamburger"></span>
 
           <span className="line_hamburger"></span>
-        </div>
+        </div>*/}
       </div>
       <Container>
         <div
@@ -150,7 +148,7 @@ export const InputPage = () => {
         </div>
         <Wrapper currentForm={currentForm}>
           <InnerWrapper className="hide_on_mobile">
-            {planCard(PrimaryColor,PrimaryShade)}
+            {planCard(PrimaryColor, PrimaryShade)}
           </InnerWrapper>
           <InnerWrapper>
             {" "}
@@ -210,7 +208,8 @@ export const InputPage = () => {
                 />
               </div>
             </Card>
-            {currentForm === 1 && termsAndConditions(showmore, setShowmore,PrimaryColor)}
+            {currentForm === 1 &&
+              termsAndConditions(showmore, setShowmore, PrimaryColor)}
           </InnerWrapper>
         </Wrapper>
       </Container>
@@ -332,7 +331,7 @@ function planCard(PrimaryColor, PrimaryShade) {
   );
 }
 
-function termsAndConditions(showmore, setShowmore,PrimaryColor) {
+function termsAndConditions(showmore, setShowmore, PrimaryColor) {
   return (
     <div
       css={`
