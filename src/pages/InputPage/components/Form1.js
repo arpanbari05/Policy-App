@@ -145,9 +145,9 @@ const Form1 = ({
             position: relative;
             & .dropdown {
               position: absolute;
-              background: #5da400;
+              background:  ${SecondaryColor};
               width: 100%;
-              border: 1px solid #5da400;
+              border: 1px solid  ${SecondaryColor};
               color: #fff;
               top: 57px;
               height: 51px;

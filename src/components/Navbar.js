@@ -62,6 +62,7 @@ const Navbar = () => {
               right: 14px;
               bottom: 2px;
               font-size: 12px;
+              opacity: 0.1;
             `}
           >
             Theme

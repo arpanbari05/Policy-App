@@ -108,7 +108,7 @@ export const OptionWrapper = styled.ul`
 `;
 
 export const ApplyBtn = styled.button`
-  background-color: #0a87ff;
+  background-color: ${props=>props.PrimaryColor};
   color: white;
   padding: 10px 0px;
   font-size: 17px;

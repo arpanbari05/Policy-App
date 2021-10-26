@@ -10,16 +10,18 @@ const ThemeModal = ({ show, setShow }) => {
 
   const { theme } = useSelector((state) => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const [primaryColor, setPrimaryColor] = useState(PrimaryColor);
   const [secondaryColor, setSecondaryColor] = useState(SecondaryColor);
   const [primaryShade, setPrimaryShade] = useState(PrimaryShade);
+  const [secondaryShade, setSecondaryShade] = useState(SecondaryShade);
 
   const handleSubmit = () => {
     if (
       primaryColor !== PrimaryColor ||
       secondaryColor !== SecondaryColor ||
-      primaryShade !== PrimaryShade
+      primaryShade !== PrimaryShade ||
+      secondaryShade !== SecondaryShade
     ) {
       dispatch(
         updateTheme({
@@ -77,7 +79,7 @@ const ThemeModal = ({ show, setShow }) => {
           />
         </InputWrapper>
         <InputWrapper>
-          <span>Select Secondary Color</span>
+          <span>Select Primary Shade</span>
           <input
             type="text"
             value={primaryShade}
@@ -91,6 +93,23 @@ const ThemeModal = ({ show, setShow }) => {
             type="color"
             value={primaryShade}
             onChange={(e) => setPrimaryShade(e.target.value)}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <span>Select Secondary Shade</span>
+          <input
+            type="text"
+            value={secondaryShade}
+            onChange={(e) => setSecondaryShade(e.target.value)}
+          />
+          <input
+            css={`
+              position: absolute;
+              right: 0;
+            `}
+            type="color"
+            value={secondaryShade}
+            onChange={(e) => setSecondaryShade(e.target.value)}
           />
         </InputWrapper>
         <InputWrapper>

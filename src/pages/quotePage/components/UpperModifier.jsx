@@ -18,6 +18,7 @@ import {
 
 const UpperModifier = ({ sendQuote }) => {
   const successMsg = useSelector(({ comparePage }) => comparePage.emailStatus);
+
   const dispatch = useDispatch();
   const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
   const { companies } = useSelector(
@@ -38,40 +39,10 @@ const UpperModifier = ({ sendQuote }) => {
   const { memberGroups, proposerDetails } = useSelector(
     (state) => state.greetingPage
   );
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   console.log("Member Group", memberGroups);
-  // const initRef = useRef(true);
-
-  // useEffect(() => {
-  //   if (!initRef.current)
-  //     // getQuotes(members.filter((m) => m.group === selectedGroup));
-  //     console.log("Plans for fetching quotes...");
-  //     console.log("fetchquotes upper modifier")
-  //   dispatch(deleteQuotes())
-  //    dispatch(
-  //     fetchQuotes(companies, {
-  //       sum_insured: ownCover
-  //         ? `${ownCover}-${ownCover}`
-  //         : sumAssured
-  //           ? covers.filter((cover) => cover.display_name === sumAssured)[0]?.code
-  //           : cover,
-  //       tenure: multiYear ? multiYear[0] : tenure,
-  //       member: selectedGroup,
-  //       plan_type:
-  //         memberGroups?.[selectedGroup]?.length === 1
-  //           ? "I"
-  //           : proposerDetails.plan_type
-  //             ? proposerDetails.plan_type === "M"
-  //               ? "M"
-  //               : "F"
-  //             : "F",
-  //       // plan_type: planType
-  //       //   ? plantypes.filter(plan => plan.display_name === planType)[0].code
-  //       //   : plan_type,
-  //     })
-  //   );
-  //   initRef.current = false;
-  // }, [selectedGroup]);
 
   const history = useHistory();
 
@@ -81,7 +52,7 @@ const UpperModifier = ({ sendQuote }) => {
 
   return (
     <>
-      <UpperModifierWrapper>
+      <UpperModifierWrapper PrimaryColor={PrimaryColor} SecondaryShade={SecondaryShade}>
         <div className="container d-flex justify-content-between align-items-center py-3">
           <div className="left_modifiers  d-flex align-items-center">
             <EditMemberFilter />
@@ -153,7 +124,7 @@ const UpperModifier = ({ sendQuote }) => {
 export default UpperModifier;
 
 const UpperModifierWrapper = styled.div`
-  background-color: #eaeef2;
+  background-color: ${props=>props.SecondaryShade};
   .left_modifiers {
     font-size: 15px;
     .plans_for {
@@ -186,7 +157,7 @@ const UpperModifierWrapper = styled.div`
         left: 50%;
         transform: translateX(-50%);
         height: 5px;
-        background-color: #0a87ff;
+        background-color: ${props=>props.PrimaryColor};
         position: absolute;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
@@ -202,17 +173,17 @@ const UpperModifierWrapper = styled.div`
       font-weight: 500;
     }
     .share_Quote_btn {
-      border: solid 2px #0a87ff !important;
-      color: #0a87ff;
+      border: solid 2px ${props=>props.PrimaryColor} !important;
+      color: ${props=>props.PrimaryColor};
 
       :focus {
-        border: solid 2px #0a87ff !important;
+        border: solid 2px ${props=>props.PrimaryColor} !important;
       }
       :active {
-        border: solid 2px #0a87ff !important;
+        border: solid 2px ${props=>props.PrimaryColor} !important;
       }
       :hover {
-        border: solid 2px #0a87ff !important;
+        border: solid 2px ${props=>props.PrimaryColor} !important;
       }
     }
   }

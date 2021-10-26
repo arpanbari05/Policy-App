@@ -16,6 +16,7 @@ const frontEndBoot = createSlice({
       PrimaryColor: "#0a87ff",
       SecondaryColor: "#5da400",
       PrimaryShade: "#ecf6ff",
+      SecondaryShade: "#eef1f4",
     },
     loading: false,
     error: false,
