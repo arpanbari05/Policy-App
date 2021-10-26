@@ -14,7 +14,7 @@ const RoundDD = ({
   selected,
   redBorder,
   code,
- 
+
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +45,6 @@ const RoundDD = ({
       <Wrapper ref={dropdownRef} className="GreetingDD__Wrapper">
         {isOpen && (
           <InputField
-         
             style={{ position: "absolute" }}
             value={searchText}
             placeholder={"type here..."}
@@ -63,19 +62,21 @@ const RoundDD = ({
           css={`
             border: ${redBorder && "1px solid red !important"};
           `}
-          className={`${isOpen && "active"} GreetingDD__Header ${disabled && "disabled"
-            }`}
+          className={`${isOpen && "active"} GreetingDD__Header ${
+            disabled && "disabled"
+          }`}
         >
           <HeaderTitle
-
-            className={`${isOpen && "active"} GreetingDD__Title ${disabled && "font-gray"
-              }`}
+            className={`${isOpen && "active"} GreetingDD__Title ${
+              disabled && "font-gray"
+            }`}
           >
-            <span css={`
-              visibility: ${isOpen && "hidden"};
-              user-select: none;
-            `}>
-
+            <span
+              css={`
+                visibility: ${isOpen && "hidden"};
+                user-select: none;
+              `}
+            >
               {selected}
             </span>
           </HeaderTitle>
@@ -128,10 +129,15 @@ const InputField = styled.input`
   width: 58% !important;
   font-size: 12px;
   font-weight: 400 !important;
-  background-color:#fff;
+  background-color: #fff;
   color: #6b7789;
-  
-  &:focus{
+
+  @media screen and (max-width: 480px) {
+    background-color: #fff;
+    color: #6b7789;
+  }
+
+  &:focus {
     outline: none;
   }
   &:focus::placeholder {
@@ -155,7 +161,7 @@ export const Wrapper = styled.div`
 
 export const Header = styled.a`
   cursor: pointer;
-  background-color:#fff;
+  background-color: #fff;
   position: relative;
   color: #6b7789;
   border: 1px solid #b0bed0;
@@ -168,25 +174,25 @@ export const Header = styled.a`
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
- // -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
+  // -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
   // box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
   // -webkit-border-radius: 3px;
   // -moz-border-radius: 3px;
-   border-radius: 50px;
+  border-radius: 50px;
   // box-shadow: 0 12px 12px -11px #004b8347;
 
   &.active {
     border-radius: 3px 3px 0 0;
-   // box-shadow: inset 0 1px 2px rgb(0 0 0 / 15%);
+    // box-shadow: inset 0 1px 2px rgb(0 0 0 / 15%);
   }
   @media (max-width: 767px) {
     margin: unset;
     width: 130px;
   }
   @media (max-width: 480px) {
-    background-color:#f3f5f8  !important;
-    border:none;
-                  }
+    background-color: #fff !important;
+    border: 1px solid #b0bed0;
+  }
 `;
 
 export const HeaderTitle = styled.div`
@@ -248,7 +254,7 @@ export const ListItem = styled.div`
   font-weight: 400;
   line-height: 18px;
   padding: 5px 8px 8px 14px;
-  background-color:#fff;
+  background-color: #fff;
 
   &:hover,
   &.active {
