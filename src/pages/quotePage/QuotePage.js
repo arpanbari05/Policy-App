@@ -84,8 +84,7 @@ function QuotePage() {
     quote: "",
     activeSum: "",
   });
-  console.log("quoedtes", seeDetailsQuote);
-  console.log("loading...", loadingQuotes);
+  
   const { planType } = useSelector((state) => state.quotePage.filters);
   // const { selectedGroup } = useSelector(state => state.quotePage);
   const {

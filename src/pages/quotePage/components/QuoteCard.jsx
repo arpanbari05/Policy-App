@@ -47,7 +47,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
     // activeCover,
     // setActiveCover,
   } = useQuoteCard({ item });
-  console.log("mergedquotes", mergedQuotes);
+
   const [check, setCheck] = useState(false);
   const { groupCode: selectedGroup } = useParams();
   const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
@@ -62,7 +62,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
   mergedQuotes[0]?.mandatory_riders[activeCover]?.forEach((element) => {
     additionalPremium += element.total_premium;
   });
-  console.log(mergedQuotes, "test quote");
+ 
   const handleBuyNowClick = () => {
     setIsLoading(true);
     const selectedPlan = {

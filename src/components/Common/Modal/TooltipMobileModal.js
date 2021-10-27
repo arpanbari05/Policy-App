@@ -33,6 +33,7 @@ export default ToolTipMobileModal;
 const ModalContent = styled.p`
 line-height: 1.33;
 text-align: center;
+font-family: "Inter-Regular";
   color: #3e593c;
   font-size: 12px;
   margin-top:20px;
@@ -55,9 +56,10 @@ const MobileModal = styled(Modal)`
 
 const ModalTitle = styled.h5`
   font-size: 13px;
+  font-family: "Inter-Regular";
   font-weight: bold;
   color:  #0d6efd;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 900;
   text-align:center;
   width: fit-content;
