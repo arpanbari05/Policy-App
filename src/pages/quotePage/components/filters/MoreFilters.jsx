@@ -13,7 +13,7 @@ const FilterModal = ({ show, handleClose }) => {
   const moreFilterData = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data.morefilters
   );
-
+ 
   const [popularFilter, setPopularFilter] = useState(
     filters.moreFilters.popularFilter || []
   );
@@ -114,7 +114,7 @@ const FilterModal = ({ show, handleClose }) => {
       </Modal.Header>
       <Modal.Body>
         <MoreFilterWrapper>
-          <OptionWrapper>
+          <OptionWrapper PrimaryColor={PrimaryColor}>
             {moreFilterData ? (
               moreFilterData.map((filter, i) => {
                 return (

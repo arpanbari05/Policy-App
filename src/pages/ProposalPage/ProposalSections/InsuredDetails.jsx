@@ -38,9 +38,12 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     Object.keys(schema).length,
     setShow
   );
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
 
   const [noForAll, setNoForAll] = useState({});
-  const [initColor, setInitColor] = useState("#0a87ff");
+  const [initColor, setInitColor] = useState(PrimaryColor);
   const [canProceed, setCanProceed] = useState({
     canProceed: false,
     canProceedArray: [],

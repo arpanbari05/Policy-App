@@ -14,6 +14,10 @@ const MobileHeader = ({ groupCode }) => {
     (state) => state.quotePage.filters
   );
 
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+
   const { cover, tenure } = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters
   );
@@ -114,7 +118,7 @@ const MobileHeader = ({ groupCode }) => {
 
   return (
     <>
-      <MobileStyledHeader>
+      <MobileStyledHeader PrimaryColor={PrimaryColor}>
         <div
           css={`
             display: flex;
@@ -250,7 +254,7 @@ const MobileStyledHeader = styled.div`
   @media (max-width: 1023px) {
     display: flex;
     height: 62px;
-    background: #0a87ff;
+    background: ${props=>props.PrimaryColor};
     padding: 0 8px;
     align-items: center;
     justify-content: space-between;

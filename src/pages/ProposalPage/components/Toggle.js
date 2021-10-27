@@ -19,6 +19,10 @@ const Toggle = ({
   showMembers,
   customMembers,
 }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   const [boolean, setBoolean] = useState("N");
   const [membersStatus, setMembersStatus] = useState({});
   const { mediUnderwritting } = useSelector(
@@ -70,13 +74,23 @@ const Toggle = ({
         <div className="box_shadow_box_card_medical">
           <div className="row">
             <div className="col-lg-8 col-md-12">
-              <Question className="mb-10 p_propsal_form_r_q_m toggle_question">
+              <Question
+                className="mb-10 p_propsal_form_r_q_m toggle_question"
+                SecondaryColor={SecondaryColor}
+              >
                 {label}
               </Question>
             </div>
             <div
               className="col-lg-4 col-md-12 middle no-padding mobile-left"
               css={`
+                & input[type="radio"]:checked + .box {
+                  background-color: ${PrimaryColor};
+                }
+                & .box {
+                  background-color: ${PrimaryShade};
+                }
+
                 text-align: end !important;
                 @media (max-width: 767px) {
                   text-align: start !important;
@@ -210,7 +224,7 @@ const Question = styled.p`
     position: absolute;
     left: -2px;
     top: 2px;
-    background-color: #2cd44a;
+    background-color: ${(props) => props.SecondaryColor};
     border-radius: 50px;
     @media (max-width: 767px) {
       height: calc(100% - 6px);

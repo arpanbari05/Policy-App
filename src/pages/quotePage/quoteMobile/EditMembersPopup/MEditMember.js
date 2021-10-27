@@ -24,6 +24,10 @@ const MEditMember = ({ handleClose }) => {
   const [membersArray, setMembersArray] = useState([]);
   const [errors, setErrors] = useState(false);
 
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -323,7 +327,7 @@ const MEditMember = ({ handleClose }) => {
     >
       <Modal.Header
         style={{
-          backgroundColor: "#0a87ff",
+          backgroundColor: PrimaryColor,
           borderBottomColor: "#fff",
           // borderTopLeftRadius: "14px",
           // borderToprightRadius: "14px",
@@ -437,7 +441,7 @@ const MEditMember = ({ handleClose }) => {
             text-transform: capitalize;
             box-shadow: 0px 13px 27px 0px rgb(163 48 53 / 25%);
             font-size: 18px;
-            background: #0a87ff;
+            background: ${PrimaryColor};
 
             margin: 10px !important;
             margin-left: unset !important;

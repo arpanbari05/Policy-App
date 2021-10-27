@@ -14,6 +14,7 @@ import {
 } from "../quote.slice";
 import { useCartProduct } from "../../Cart";
 import { useParams } from "react-router";
+import {useSelector} from 'react-redux'
 import useQuoteCard from "../components/useQuoteCard";
 
 const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) => {
@@ -30,7 +31,9 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
   } = useQuoteCard({ item });
   const { groupCode: selectedGroup } = useParams();
   const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const handleBuyNowClick = () => {
     const selectedPlan = {
       // company_alias: mergedQuotes[0]?.company_alias,
@@ -134,7 +137,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
             border: 1px solid;
             border-radius: 50%;
             background: #fff;
-            border-color: ${checked ? "#0a87ff" : "#d2d8e2"};
+            border-color: ${checked ? PrimaryColor : "#d2d8e2"};
             align-items: center;
             justify-content: center;
 
@@ -145,7 +148,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
               content: "\u2713";
               height: 9px;
               width: 9px;
-              background-color: #0a87ff;
+              background-color:${PrimaryColor};
               color: #fff;
               border-radius: 50%;
             }
@@ -318,7 +321,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
                 ) : (
                   <span
                     css={`
-                      color: #0a87ff;
+                      color: ${PrimaryColor};
                     `}
                   >
                     {parseInt(
@@ -335,7 +338,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
               height: 100%;
             `}
           >
-            <Button onClick={handleBuyNowClick}>
+            <Button onClick={handleBuyNowClick} PrimaryColor={PrimaryColor}>
             ₹{" "}
               {parseInt(
                 mergedQuotes[0]?.total_premium[activeCover],
@@ -388,11 +391,12 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
                           mergedQuotes[0]?.cashlessHospitalsCount[activeCover],
                       },
                       index,
+                      PrimaryColor
                     );
                   }
 
                   if (data.is_featured_on_card)
-                    return quoteCardDataset(data, index);
+                    return quoteCardDataset(data, index,PrimaryColor);
                   return null;
                 })}
               {/* <span
@@ -564,6 +568,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
           <span id="example-collapse-text">
             {mergedQuotes?.slice(1).map((item, index) => (
               <MobileSubContent
+              
                 addProduct={addProduct}
                 key={index}
                 id={index}
@@ -587,7 +592,7 @@ const Button = styled.button.attrs(props => ({
 }))`
   box-sizing: border-box;
   user-select: none;
-  background: #0a87ff;
+  background: ${props=>props.PrimaryColor};
   color: white;
   width: 100%;
   cursor: pointer;
@@ -602,7 +607,7 @@ const Button = styled.button.attrs(props => ({
   z-index: 9999;
 `;
 
-export function quoteCardDataset({ name, value, description }, index) {
+export function quoteCardDataset({ name, value, description }, index,PrimaryColor) {
   const renderTooltip = props => <Tooltip {...props}>{description}</Tooltip>;
 
   return (
@@ -622,7 +627,7 @@ export function quoteCardDataset({ name, value, description }, index) {
       <span>{name}: </span>
       <span
         css={`
-          color: #0a87ff;
+          color: ${PrimaryColor};
         `}
       >
         {value}{" "}

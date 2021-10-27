@@ -30,7 +30,9 @@ const MobileSubContent = ({
   } = quoteCardData;
   const dispatch = useDispatch();
   const history = useHistory();
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const ls = new SecureLS();
   const [isLoading, setIsLoading] = useState(false);
   const [activeCover, setActiveCover] = useState(0);
@@ -148,7 +150,7 @@ const MobileSubContent = ({
             border: 1px solid;
             border-radius: 50%;
             background: #fff;
-            border-color: ${checked ? "#0a87ff" : "#d2d8e2"};
+            border-color: ${checked ? PrimaryColor : "#d2d8e2"};
             align-items: center;
             justify-content: center;
 
@@ -158,7 +160,7 @@ const MobileSubContent = ({
               content: "\u2713";
               height: 9px;
               width: 9px;
-              background-color: #0a87ff;
+              background-color: ${PrimaryColor};
               color: #fff;
               border-radius: 50%;
             }
@@ -288,7 +290,7 @@ const MobileSubContent = ({
                 ) : (
                   <span
                     css={`
-                      color: #0a87ff;
+                      color: ${PrimaryColor};
                     `}
                   >
                     {sum_insured[activeCover]}
@@ -303,7 +305,7 @@ const MobileSubContent = ({
               height: 100%;
             `}
           >
-            <Button onClick={handleBuyNowClick}>
+            <Button onClick={handleBuyNowClick} PrimaryColor={PrimaryColor}>
               {" "}
               <i className="fa fa-inr"></i> {total_premium[activeCover]}
             </Button>
@@ -335,7 +337,7 @@ const MobileSubContent = ({
                 }
               `}
             >
-              {plansData.map((data, index) => quoteCardDataset(data, index))}
+              {plansData.map((data, index) => quoteCardDataset(data, index,PrimaryColor))}
               {/* <span
                 className={"feature-cell"}
                 css={`
@@ -495,7 +497,7 @@ const Button = styled.button.attrs(props => ({
 }))`
 box-sizing: border-box;
 user-select: none;
-background: #0a87ff;
+background: ${props=>props.PrimaryColor};
 border: none;
 color: white;
 width: 100%;

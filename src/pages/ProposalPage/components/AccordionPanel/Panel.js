@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import "styled-components/macro";
 import { Collapse } from "react-bootstrap";
+import {useSelector} from 'react-redux'
 import pencil from "../../../../assets/images/pencil_pro.png";
 import ProposalCheckBox from "../../../../components/Common/ProposalSummary/summaryCheckBox";
 const Panel = ({
@@ -13,6 +14,10 @@ const Panel = ({
   isFilled,
   values,
 }) => {
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   let EditedName = "";
 
   if (formName === "Insured Details" && title.includes("_")) {
@@ -39,6 +44,9 @@ const Panel = ({
         aria-expanded={show}
         onClick={onClick}
         add={!show ? true : undefined}
+        PrimaryColor={PrimaryColor}
+        SecondaryColor={SecondaryColor}
+        PrimaryShade={`linear-gradient(90deg, ${PrimaryShade} 0%, white 100%)`}
         isShowMedical={formName === "Medical Details"}
       >
         <span>{EditedName}</span>
@@ -237,8 +245,9 @@ const StyledPanel = styled.a`
   background-image: ${(props) =>
     props.isShowMedical &&
     !props.add &&
-    "linear-gradient(90deg, #eff7ff 0%, white 100%)"};
-  color: #0a87ff !important;
+    props.PrimaryShade};
+
+  color: ${props=>props.PrimaryColor} !important;
   position: relative;
   border: ${(props) => (!props.isShowMedical ? "1px solid #eeeff5" : "none")};
   width: 98%;
@@ -263,7 +272,7 @@ const StyledPanel = styled.a`
     position: absolute;
     left: -2px;
     top: 16px;
-    background-color: #2cd44a;
+    background-color: ${props=>props.SecondaryColor};
     border-radius: 50px;
     @media (max-width: 767px) {
       top: 15px;

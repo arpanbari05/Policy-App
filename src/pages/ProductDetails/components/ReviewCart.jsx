@@ -182,6 +182,11 @@ function AddOnDetailsRow({ addOn }) {
 }
 
 export function BackgroundBorderTitle({ title, ...props }) {
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   return (
     <div
       {...props}
@@ -190,7 +195,7 @@ export function BackgroundBorderTitle({ title, ...props }) {
         width: 100%;
         margin-top: 2px;
 
-        color: #0c88ff;
+        color: ${PrimaryColor};
       `}
     >
       <div
@@ -712,7 +717,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
   const dispatch = useDispatch();
   const setExpand = () => dispatch(setexpandMobile(!expand));
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   // const [expand, setExpand] = useState(false);
 
   return (
@@ -791,7 +798,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               width: 100px;
               height: 100px;
               border-radius: 100%;
-              background: #eff7ff;
+              background: ${PrimaryShade};
               position: absolute;
               top: -59px;
               z-index: -1;
@@ -874,10 +881,10 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               css={`
                 width: 30px;
                 height: 30px;
-                background: #eff7ff;
+                background: ${PrimaryShade};
                 border-radius: 100%;
                 display: ${unEditable ? "none" : "flex"};
-                color: #369cff;
+                color: ${PrimaryColor};
                 align-items: center;
                 justify-content: center;
                 font-size: 13px;
@@ -1250,7 +1257,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             ) : (
               <button
                 css={`
-                  background-color: #0c88ff;
+                  background-color: ${PrimaryColor};
                   color: #fff;
 
                   margin: 0 !important;

@@ -7,6 +7,7 @@ import InsurerMobile from "./InsurerMobile";
 import PremiumMobile from "./PremiumMobile";
 import PlanMobile from "./PlanMobile";
 import MultiyearMobile from "./MultiyearMobile";
+import "styled-components/macro";
 import {
   fetchQuotes,
   insurerFilter,
@@ -44,6 +45,9 @@ const QuoteFilterMobile = ({
 
   const [initialRenderCheck, setInitialRenderCheck] = useState(true);
 
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { memberGroups, proposerDetails } = useSelector(
     (state) => state.greetingPage
   );
@@ -224,6 +228,7 @@ const QuoteFilterMobile = ({
                 </a>
               </div>
               <button
+              css={`background: ${PrimaryColor}`}
                 className="btn-mobile-show-plan"
                 onClick={(e) => {
                   // alert("clicked");
@@ -235,7 +240,12 @@ const QuoteFilterMobile = ({
               </button>
             </div>
           </div>
-          <div className="d-flex justify-content-between align-items-center main-header shrt_without_h_w height_bg_red_r">
+          <div
+            css={`
+              background: ${PrimaryColor} !important;
+            `}
+            className="d-flex justify-content-between align-items-center main-header shrt_without_h_w height_bg_red_r"
+          >
             <Col md={6}>
               <div onClick={() => setFilterMobile(false)}>
                 <p
@@ -252,7 +262,10 @@ const QuoteFilterMobile = ({
             </Col>
           </div>
         </div>
-        <div className="tabordion">
+        <div
+          className="tabordion"
+          
+        >
           <section id="section4">
             <input
               type="radio"

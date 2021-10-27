@@ -142,7 +142,7 @@ const FilterModal = ({ handleClose }) => {
           leftAlignmnetMargin="-22"
         >
           <div>
-            <OptionWrapper>
+            <OptionWrapper PrimaryColor={PrimaryColor}>
               {basePlanTypes.map((thisPlanType, i) => {
                 const toBeCheckedPlan =
                   thisPlanType.display_name === "Base health"
