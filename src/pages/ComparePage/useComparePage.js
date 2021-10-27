@@ -44,6 +44,8 @@ const useComparePage = () => {
     shouldNotFetch,
   } = useSelector((state) => state.comparePage);
 
+  
+
   const { memberGroups, proposerDetails } = useSelector(
     (state) => state.greetingPage
   );

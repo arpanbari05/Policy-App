@@ -223,6 +223,7 @@ export const PlanName = styled.div`
 `;
 export const RiderWrapper = styled.div`
 cursor: pointer;
+color:rgb(100, 113, 136) !important;
   &:before,
   &:after {
     content: "";

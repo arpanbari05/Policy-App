@@ -75,6 +75,7 @@ const ProposalPage = ({ history }) => {
     setActive(activeIndex);
   }, [activeIndex]);
 
+
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
     console.log(activeForm, active, "dgsaadsg");
@@ -106,17 +107,9 @@ const ProposalPage = ({ history }) => {
           }
         `}
       >
-        <button
-          onClick={() => {
-            setActive(active - 1);
-          }}
-        >
-          gojooo backk
-        </button>
+    
         <Card
-          onClick={() => {
-            setActive(0);
-          }}
+         
           styledCss={`
           margin-bottom: 20px; 
           cursor:pointer;
@@ -135,6 +128,7 @@ const ProposalPage = ({ history }) => {
                 setActive={setActive}
                 name={activeForm}
                 defaultValue={defaultData}
+              
               />
             </>
           ) : (
@@ -144,6 +138,9 @@ const ProposalPage = ({ history }) => {
                 justify-content: space-between;
                 align-items: center;
               `}
+               onClick={() => {
+            setActive(0);
+          }}
             >
               <MainTitle>Proposer Details</MainTitle>
               <div
@@ -166,12 +163,7 @@ const ProposalPage = ({ history }) => {
             </span>
           )}
         </Card>
-        <Card
-          styledCss={`margin-bottom: 20px;`}
-          onClick={() => {
-            setActive(1);
-          }}
-        >
+        <Card styledCss={`margin-bottom: 20px;`}>
           {activeForm === "Insured Details" ? (
             <>
               {" "}
@@ -185,6 +177,7 @@ const ProposalPage = ({ history }) => {
                   setActive(active - 1);
                 }}
                 defaultValue={defaultData}
+              
               />
             </>
           ) : (
@@ -194,6 +187,9 @@ const ProposalPage = ({ history }) => {
                 justify-content: space-between;
                 align-items: center;
               `}
+              onClick={() => {
+                setActive(1);
+              }}
             >
               <MainTitle>Insured Details</MainTitle>
               <div
@@ -218,9 +214,7 @@ const ProposalPage = ({ history }) => {
         </Card>
         <Card
           styledCss={`margin-bottom: 20px;`}
-          onClick={() => {
-            setActive(2);
-          }}
+          
         >
           {activeForm === "Medical Details" ? (
             <>
@@ -242,6 +236,9 @@ const ProposalPage = ({ history }) => {
 
                 align-items: center;
               `}
+              onClick={() => {
+            setActive(2);
+          }}
             >
               <MainTitle>Medical Details</MainTitle>
 
@@ -267,9 +264,7 @@ const ProposalPage = ({ history }) => {
         </Card>
         <Card
           styledCss={`margin-bottom: 20px;`}
-          onClick={() => {
-            setActive(3);
-          }}
+         
         >
           {activeForm === "Other Details" ? (
             <>
@@ -290,6 +285,9 @@ const ProposalPage = ({ history }) => {
                 justify-content: space-between;
                 align-items: center;
               `}
+               onClick={() => {
+            setActive(3);
+          }}
             >
               <MainTitle>Other Details</MainTitle>
               <div

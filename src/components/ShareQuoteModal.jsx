@@ -147,7 +147,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
                 value={email}
                 css={``}
               />
-              <span
+              {/* <span
                 css={`
                   position: absolute;
                   top: 50%;
@@ -164,7 +164,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
                 `}
               >
                 <i className="fa fa-circle-notch rotate" />
-              </span>
+              </span> */}
             </div>
 
             <button
@@ -173,7 +173,23 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
                 handleSendViaEmail(e);
               }}
             >
-              Share
+              <span css={`
+              @media (max-width:400px){
+                display:none;
+              }
+              `}>Share</span>
+              <span css={`
+              display:none;
+              @media (max-width:400px){
+                display:block;
+              }
+              `}>
+              {
+                isSending && !emailStatus.message?<i className="fa fa-circle-notch rotate" />:<i className="fas fa-share"></i>
+              }
+              
+              
+              </span> 
               <span
                 css={`
                   position: absolute;
@@ -213,10 +229,30 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
                 rel="noreferrer"
                 href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
               >
-                <button className="btn share_btn">Share </button>
+                <button className="btn share_btn"><span css={`
+              @media (max-width:400px){
+                display:none;
+              }
+              `}>Share</span>
+              <span css={`
+              display:none;
+              @media (max-width:400px){
+                display:block;
+              }
+              `}><i className="fas fa-share"></i></span> </button>
               </a>
             ) : (
-              <button className="btn share_btn px-5">Share</button>
+              <button className="btn share_btn px-5"><span css={`
+              @media (max-width:400px){
+                display:none;
+              }
+              `}>Share</span>
+              <span css={`
+              display:none;
+              @media (max-width:400px){
+                display:block;
+              }
+              `}><i className="fas fa-share"></i></span> </button>
             )}
           </ShareOption>
 
@@ -234,7 +270,17 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
               />
             </div>
 
-            <button className="btn share_btn ">Share</button>
+            <button className="btn share_btn "><span css={`
+              @media (max-width:400px){
+                display:none;
+              }
+              `}>Share</span>
+              <span css={`
+              display:none;
+              @media (max-width:400px){
+                display:block;
+              }
+              `}><i className="fas fa-share"></i></span> </button>
           </ShareOption>
 
           <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>
@@ -278,6 +324,7 @@ const ShareOption = styled.div`
     border: none;
     margin-left: 15px;
     font-weight: 600;
+    width:85%;
     @media (max-width: 440px) {
       font-size: 12px !important;
     }
@@ -296,6 +343,7 @@ const ShareOption = styled.div`
     color: #fff;
     font-weight: 600;
     font-size: 14px;
+   
   }
   .icon_wrapper {
     width: 42px;
@@ -324,7 +372,8 @@ const ShareOption = styled.div`
       height: 35px;
     }
     .share_btn {
-      padding: 15px 15px !important;
+      padding: 13px 15px !important;
+      font-size: 10px;
     }
   }
 `;
