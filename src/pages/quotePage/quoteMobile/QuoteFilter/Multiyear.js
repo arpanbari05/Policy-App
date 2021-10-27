@@ -43,11 +43,11 @@ const Multiyear = ({
     defaultfilters: { cover: sum_insured, tenure, plan_type },
   } = useSelector(({ frontendBoot }) => frontendBoot.frontendData.data);
   const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
+    (state) => state.frontendBoot.frontendData.data.companies
   );
   const multiYearRef = useRef();
 
-  const { filters, selectedGroup } = useSelector(state => state.quotePage);
+  const { filters, selectedGroup } = useSelector((state) => state.quotePage);
 
   useOutsideClick(multiYearRef, () => setExpandSelected(""));
 
@@ -55,33 +55,34 @@ const Multiyear = ({
 
   const dispatch = useDispatch();
 
-  const { memberGroups } = useSelector(state => state.greetingPage);
+  const { memberGroups } = useSelector((state) => state.greetingPage);
 
-  const handleYearChange = e => {
-    const thisSelectedYear = yearPlan.filter(yPlan => yPlan.year === year);
+  const handleYearChange = (e) => {
+    const thisSelectedYear = yearPlan.filter((yPlan) => yPlan.year === year);
     setExpandSelected("");
     e.stopPropagation();
     e.preventDefault();
     setSelectedYear(year);
     dispatch(setFilters({ multiYear: year }));
-   
+
     if (thisSelectedYear[0]) {
       dispatch(replaceQuotes([]));
       dispatch(replaceFilterQuotes([]));
-      console.log("fetchquotes multiyear")
+      console.log("fetchquotes multiyear");
+      console.log("I executed");
       dispatch(
         fetchQuotes(companies, {
           plan_type: plantypes.find(
-            filter => filter.display_name === filters.planType,
+            (filter) => filter.display_name === filters.planType
           )?.code,
           tenure: thisSelectedYear[0].code,
           sum_insured:
             covers.filter(
-              item =>
-                item.display_name.toLowerCase() === filters.cover.toLowerCase(),
+              (item) =>
+                item.display_name.toLowerCase() === filters.cover.toLowerCase()
             )?.[0]?.code || sum_insured,
           member: selectedGroup,
-        }),
+        })
       );
 
       // Object.keys(companies).forEach((companyAlias) =>
@@ -113,7 +114,7 @@ const Multiyear = ({
     }
   };
 
-  const handleYearReset = e => {
+  const handleYearReset = (e) => {
     setExpandSelected("");
     e.stopPropagation();
     e.preventDefault();
@@ -124,22 +125,22 @@ const Multiyear = ({
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
 
-    Object.keys(companies).forEach(companyAlias =>
+    Object.keys(companies).forEach((companyAlias) =>
       getQutoes({
         plan_type,
         alias: companyAlias,
-        member: member.filter(m => m.group === selectedGroup),
+        member: member.filter((m) => m.group === selectedGroup),
         sum_insured,
         tenure,
-      }).then(response => {
-        const newData = response?.data?.data.map(data => {
+      }).then((response) => {
+        const newData = response?.data?.data.map((data) => {
           return { ...data, logo: companies[data.company_alias].logo };
         });
 
         if (response?.data) {
           dispatch(saveQuotes(newData));
         }
-      }),
+      })
     );
   };
 
@@ -159,7 +160,7 @@ const Multiyear = ({
             <div className="avatar-large me"></div>
             <div
               className="x-touch"
-              onClick={event => {
+              onClick={(event) => {
                 setExpandSelected("");
                 event.stopPropagation();
               }}
@@ -183,8 +184,8 @@ const Multiyear = ({
                 <Col md={12}>
                   <hr className="hr_width_pop" />
                 </Col>
-            
-                {yearPlan.map(d => (
+
+                {yearPlan.map((d) => (
                   <Col md={12}>
                     {/* <div
                       onClick={() => {
@@ -226,7 +227,6 @@ const Multiyear = ({
                     <CustomRadio
                       label={
                         <span>
-                        
                           {d.year}{" "}
                           {d.discount && (
                             <span

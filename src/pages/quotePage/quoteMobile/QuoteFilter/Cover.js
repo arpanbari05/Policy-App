@@ -30,54 +30,52 @@ const Cover = ({
   useOutsideClick(coverRef, () => setExpandSelected(""));
 
   const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
+    (state) => state.frontendBoot.frontendData.data.companies
   );
 
   const {
     covers,
     defaultfilters: { cover: sum_insured, tenure, plan_type },
     plantypes,
-  } = useSelector(state => state.frontendBoot.frontendData.data);
-
+  } = useSelector((state) => state.frontendBoot.frontendData.data);
 
   const dispatch = useDispatch();
 
-  const { filters, selectedGroup } = useSelector(state => state.quotePage);
+  const { filters, selectedGroup } = useSelector((state) => state.quotePage);
 
   const [ownCover, setOwnCover] = useState(filters.ownCover);
   const [inputCover, setInputCover] = useState(false);
   const [inputCoverError, setinputCoverError] = useState(false);
 
-  const { memberGroups } = useSelector(state => state.greetingPage);
+  const { memberGroups } = useSelector((state) => state.greetingPage);
 
-  const handleCoverUpdate = e => {
+  const handleCoverUpdate = (e) => {
     const thisSelectedCover = covers.filter(
-      thisCover => thisCover.display_name === cover,
+      (thisCover) => thisCover.display_name === cover
     );
 
     setExpandSelected("");
     e.stopPropagation();
     e.preventDefault();
     setSelectedCover(ownCover ? "" : cover);
-    dispatch(
-      setFilters({ ownCover, cover: ownCover ? "" : cover}),
-    );
+    dispatch(setFilters({ ownCover, cover: ownCover ? "" : cover }));
 
     if (ownCover || thisSelectedCover[0]) {
       dispatch(replaceQuotes([]));
       dispatch(replaceFilterQuotes([]));
-      console.log("fetchQuotes cover",thisSelectedCover,owncover)
+      console.log("fetchQuotes cover", thisSelectedCover, owncover);
+      console.log("I executed");
       dispatch(
         fetchQuotes(companies, {
           plan_type: plantypes.find(
-            filter => filter.display_name === filters.planType,
+            (filter) => filter.display_name === filters.planType
           )?.code,
           tenure: parseInt(filters.multiYear) || tenure,
           sum_insured: ownCover
             ? `${ownCover}-${ownCover}`
             : thisSelectedCover[0].code,
           member: selectedGroup,
-        }),
+        })
       );
 
       // Object.keys(companies).forEach((companyAlias) =>
@@ -124,36 +122,35 @@ const Cover = ({
     }
   }, [inputCover]);
 
-  const handleCoverReset = e => {
+  const handleCoverReset = (e) => {
     setExpandSelected("");
     e.stopPropagation();
     e.preventDefault();
     setOwnCover(sum_insured);
     setCover(sum_insured);
 
-  
     setSelectedCover(sum_insured);
     dispatch(setFilters({ ownCover: "", cover: "" }));
 
     dispatch(replaceQuotes([]));
     dispatch(replaceFilterQuotes([]));
 
-    Object.keys(companies).forEach(companyAlias =>
+    Object.keys(companies).forEach((companyAlias) =>
       getQutoes({
         sum_insured,
         alias: companyAlias,
-        member: member.filter(m => m.group === selectedGroup),
+        member: member.filter((m) => m.group === selectedGroup),
         tenure,
         plan_type,
-      }).then(response => {
-        const newData = response?.data?.data.map(data => {
+      }).then((response) => {
+        const newData = response?.data?.data.map((data) => {
           return { ...data, logo: companies[data.company_alias].logo };
         });
 
         if (response?.data) {
           dispatch(saveQuotes(newData));
         }
-      }),
+      })
     );
   };
 
@@ -173,7 +170,7 @@ const Cover = ({
             <div className="avatar-large me"></div>
             <div
               className="x-touch"
-              onClick={event => {
+              onClick={(event) => {
                 setExpandSelected("");
                 event.stopPropagation();
               }}
@@ -197,7 +194,7 @@ const Cover = ({
                 <Col md={12}>
                   <hr className="hr_width_pop" />
                 </Col>
-                {coverFilter?.map(item => (
+                {coverFilter?.map((item) => (
                   <Col
                     md={6}
                     css={`
@@ -257,7 +254,7 @@ const Cover = ({
                     className="form-control_product_pop mb_12"
                     value={ownCover}
                     maxLength="8"
-                    onChange={e => {
+                    onChange={(e) => {
                       setOwnCover(e.target.value);
                       setInputCover(e.target.value);
                       setCover("");

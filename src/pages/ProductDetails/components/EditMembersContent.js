@@ -36,7 +36,8 @@ function useFetchQuotes({ groupCode }) {
   const member = groupCode;
 
   const callFetchQuotes = () => {
-    console.log("fetchquotes EditMembersCOntent")
+    console.log("fetchquotes EditMembersCOntent");
+    console.log("I executed");
     dispatch(
       fetchQuotes(companies, {
         sum_insured,
@@ -81,20 +82,23 @@ function EditMembersContent({ closePopup = () => {} }) {
   } = useSelector((state) => state.greetingPage);
 
   const checkMember = (member) => {
-    
-    if(member.type === "son" || member.code === "son"){
-      return thisGroupMembers.includes("son1") || thisGroupMembers.includes("son2")
-    }else if(member.type === "daughter" || member.code === "daughter"){
-      return thisGroupMembers.includes("daughter1") || thisGroupMembers.includes("daughter2")
-    }else return thisGroupMembers.includes(member.type ?? member.code);
-    
-  }
-    
+    if (member.type === "son" || member.code === "son") {
+      return (
+        thisGroupMembers.includes("son1") || thisGroupMembers.includes("son2")
+      );
+    } else if (member.type === "daughter" || member.code === "daughter") {
+      return (
+        thisGroupMembers.includes("daughter1") ||
+        thisGroupMembers.includes("daughter2")
+      );
+    } else return thisGroupMembers.includes(member.type ?? member.code);
+  };
 
-  const thisMembersData = allMembers.filter(member => checkMember(member));
+  const thisMembersData = allMembers.filter((member) => checkMember(member));
 
-  const thismembersWithAge = allMembersWithAge.filter(member => checkMember(member));
-
+  const thismembersWithAge = allMembersWithAge.filter((member) =>
+    checkMember(member)
+  );
 
   const [selectedMembers, setSelectedMembers] = useState(thismembersWithAge);
 
@@ -138,7 +142,7 @@ function EditMembersContent({ closePopup = () => {} }) {
             group,
             health_riders,
             addons,
-            page: 'edit members',
+            page: "edit members",
           });
         // updateCartApi({
         //   cartId,
@@ -163,29 +167,32 @@ function EditMembersContent({ closePopup = () => {} }) {
   };
 
   return (
-    <div css={`
-    margin-bottom:70px;
-    `}>
+    <div
+      css={`
+        margin-bottom: 70px;
+      `}
+    >
       <div
         css={`
           display: flex;
           align-items: center;
-          flex-wrap:wrap;
+          flex-wrap: wrap;
           justify-content: space-between;
-width: 100%;
+          width: 100%;
           ${mobile} {
             flex-direction: column;
           }
         `}
       >
         {thisMembersData.map((memberData) => {
-          const selectedMember = selectedMembers.find(
-            (member) =>  member.type.includes(memberData.code)
-          
+          const selectedMember = selectedMembers.find((member) =>
+            member.type.includes(memberData.code)
           );
-       
-          
-          const selectedMemberAge = selectedMember.age.includes(".")? selectedMember.age.split(".")[1] + `${selectedMember.age.split(".")[1] === 1?" month":" months"}`: selectedMember.age;
+
+          const selectedMemberAge = selectedMember.age.includes(".")
+            ? selectedMember.age.split(".")[1] +
+              `${selectedMember.age.split(".")[1] === 1 ? " month" : " months"}`
+            : selectedMember.age;
           return (
             <div
               css={`
@@ -193,10 +200,10 @@ width: 100%;
                 align-items: center;
                 justify-content: space-between;
                 padding: 0 20px;
-              margin-bottom:10px;
+                margin-bottom: 10px;
                 width: 47%;
-                border:1px solid #bcc7d7;
-                border-radius:3px;
+                border: 1px solid #bcc7d7;
+                border-radius: 3px;
 
                 & .GreetingDD__Header {
                   margin: 0;
@@ -237,7 +244,7 @@ width: 100%;
                 handleChange={(_, selectedAge) =>
                   setSelectedMembers((selectedMembers) =>
                     selectedMembers.map((member) =>
-                    member.type.includes(memberData.code)
+                      member.type.includes(memberData.code)
                         ? { ...member, age: selectedAge }
                         : member
                     )
@@ -254,8 +261,8 @@ width: 100%;
           align-items: center;
           justify-content: center;
           bottom: 0;
-          left:-4px;
-width: 100%;
+          left: -4px;
+          width: 100%;
           position: absolute;
         `}
       >

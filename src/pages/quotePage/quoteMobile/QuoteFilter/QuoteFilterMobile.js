@@ -42,6 +42,8 @@ const QuoteFilterMobile = ({
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
+  const [initialRenderCheck, setInitialRenderCheck] = useState(true);
+
   const { memberGroups, proposerDetails } = useSelector(
     (state) => state.greetingPage
   );
@@ -97,20 +99,32 @@ const QuoteFilterMobile = ({
       (thisCover) => thisCover.display_name === cover
     );
 
-    dispatch(replaceQuotes([]));
-    dispatch(replaceFilterQuotes([]));
     console.log("fetchquotes quotefiltermobile");
-    dispatch(
-      fetchQuotes(companies, {
-        plan_type: plantypes.find((filter) => filter.display_name === planType)
-          ?.code,
-        tenure: parseInt(multiYear),
-        sum_insured: ownCover
-          ? `${ownCover}-${ownCover}`
-          : thisSelectedCover[0].code,
-        member: selectedGroup,
-      })
-    );
+    console.log("I executed");
+    /*console.log(
+      "is something chnaged here",
+      multiYear,
+      planType,
+      cover,
+      ownCover
+    );*/
+    if (!initialRenderCheck) {
+      dispatch(replaceQuotes([]));
+      dispatch(replaceFilterQuotes([]));
+      dispatch(
+        fetchQuotes(companies, {
+          plan_type: plantypes.find(
+            (filter) => filter.display_name === planType
+          )?.code,
+          tenure: parseInt(multiYear),
+          sum_insured: ownCover
+            ? `${ownCover}-${ownCover}`
+            : thisSelectedCover[0].code,
+          member: selectedGroup,
+        })
+      );
+      setInitialRenderCheck(false);
+    }
   }, [multiYear, planType, cover, ownCover]);
   useEffect(() => {
     if (insurers) dispatch(insurerFilter(insurers));
@@ -184,7 +198,7 @@ const QuoteFilterMobile = ({
   }, [premium, cover, ownCover, planType, multiYear, basePlanType]);*/
   return (
     <>
-      <div className="mobile-filter-wrapper">
+      <div className="mobile-filter-wrapper" id="yoyo">
         <div className="shrt-menu shrt-menu-one light-bg text-dark">
           <div className="quotes_compare_container" style={{ height: "58px" }}>
             <div
