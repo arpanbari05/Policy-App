@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components/macro";
+import { useSelector } from "react-redux";
 
 const Form3CheckBox = ({
   disabled,
@@ -10,12 +11,26 @@ const Form3CheckBox = ({
   checked,
   childCount,
 }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   const handleChecked = () => {
     handleChange(code, checked, type);
   };
 
   return (
-    <>
+    <span
+      css={`
+        .inp-cbx:checked + .cbx span:first-child,
+        .cbx span:first-child {
+          border-color: ${PrimaryColor};
+        }
+        .cbx span:first-child svg {
+          stroke: ${PrimaryColor};
+        }
+      `}
+    >
       <input
         className="inp-cbx"
         id={code}
@@ -35,15 +50,16 @@ const Form3CheckBox = ({
           }
         `}
       >
-        <span css={`
-         @media (max-width: 767px) { 
-           & svg{
-
-             top: 3px !important;
-             left: 2px !important;
+        <span
+          css={`
+            @media (max-width: 767px) {
+              & svg {
+                top: 3px !important;
+                left: 2px !important;
+              }
             }
-        }
-        `}>
+          `}
+        >
           <svg width="12px" height="10px">
             <use xlinkHref="#check"></use>
           </svg>
@@ -67,7 +83,7 @@ const Form3CheckBox = ({
           <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
         </symbol>
       </svg>
-    </>
+    </span>
   );
 };
 export default Form3CheckBox;

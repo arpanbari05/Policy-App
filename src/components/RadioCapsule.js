@@ -14,13 +14,14 @@ const RadioCapsule = ({
 
   const { theme } = useSelector((state) => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
 
   return (
     <>
     
       <RadioInput
       PrimaryColor={PrimaryColor}
+      SecondaryShade={SecondaryShade}
         className="checkbox-tools"
         type={"radio"}
         id={id}
@@ -45,7 +46,7 @@ export default RadioCapsule;
 
 const RadioInput = styled.input`
   &:not(:checked) + label {
-    background-color: #f0f0f0;
+    background-color: ${props=>props.SecondaryShade};
     /* box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%); */
     color: #000;
     text-align: center;

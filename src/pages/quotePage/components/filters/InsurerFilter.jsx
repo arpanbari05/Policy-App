@@ -66,7 +66,7 @@ const FilterModal = ({ show, handleClose, filters }) => {
           leftAlignmnetMargin="-22"
         >
           <div>
-            <OptionWrapper>
+            <OptionWrapper PrimaryColor={PrimaryColor}>
               {insurerOptions && selectedinsurers ? (
                 Object.keys(insurerOptions.companies)
                   .sort(

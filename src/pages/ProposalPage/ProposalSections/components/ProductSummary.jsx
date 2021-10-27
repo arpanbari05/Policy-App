@@ -31,7 +31,9 @@ const ProductSummary = ({ cart, setActive }) => {
   const prevCart = Object.values(removeTotalPremium(planDetails.prevCart));
   const [showRiders, setShowRiders] = useState(false);
   const [showAddOns, setShowAddOns] = useState(false);
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const content = (
     <>
       <span
@@ -39,7 +41,7 @@ const ProductSummary = ({ cart, setActive }) => {
           width: 100px;
           height: 100px;
           border-radius: 100%;
-          background: #eff7ff;
+          background: ${PrimaryShade};
           position: absolute;
           top: -41px;
           z-index: -3;

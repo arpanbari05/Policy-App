@@ -120,7 +120,7 @@ export const dataSet = (
                         : "display: none;"}
                       align-items: center;
                       margin-right: -17px;
-                      align-items: flex-end;
+                      // align-items: flex-end;
                       // position: relative;
                       // left: 16px;
                     }
@@ -183,7 +183,7 @@ export const dataSet = (
               css={`
                 @media (max-width: 767px) {
                      display: flex;
-                     justify-content: flex-end;
+                    //  justify-content: flex-end;
                 }
                 }
               `}

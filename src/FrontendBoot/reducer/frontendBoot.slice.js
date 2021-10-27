@@ -14,7 +14,7 @@ const frontEndBoot = createSlice({
     frontendData: {},
     theme: {
       PrimaryColor: "#0a87ff",
-      SecondaryColor: "#5da400",
+      SecondaryColor: "#2cd44a",
       PrimaryShade: "#ecf6ff",
       SecondaryShade: "#eef1f4",
     },

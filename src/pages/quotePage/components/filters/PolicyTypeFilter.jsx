@@ -89,7 +89,7 @@ const FilterModal = ({ show, handleClose }) => {
           leftAlignmnetMargin="-20"
         >
           <div>
-            <OptionWrapper>
+            <OptionWrapper PrimaryColor={PrimaryColor}>
               {plantypeOptions
                 ? plantypeOptions.plantypes.map((option, i) => {
                     return option.code !== "I" ? (

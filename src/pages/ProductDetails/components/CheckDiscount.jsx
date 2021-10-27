@@ -79,7 +79,9 @@ const CheckDiscount = ({ groupCode }) => {
     useCartProduct(groupCode);
 
   const selectedTenure = parseInt(cartProduct.tenure);
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const handleTenureClick = (item) => {
     updateProductRedux({
       ...cartProduct,
@@ -168,7 +170,7 @@ const CheckDiscount = ({ groupCode }) => {
                           width: 200px;
                           border: 2px solid;
                           border-color: ${selectedTenure === item.tenure
-                            ? "#0a87ff"
+                            ? PrimaryColor
                             : "#e5e5e5"};
 
                           @media (max-width: 768px) {
@@ -232,7 +234,7 @@ const CheckDiscount = ({ groupCode }) => {
                               line-height: 30px;
                               text-align: center;
                               border-radius: 50%;
-                              background: #0a87ff;
+                              background: ${PrimaryColor};
                               box-shadow: 0px 2px 5px -2px rgb(0 0 0 / 25%);
                               font-family: "font-awesome";
                               justify-content: center;
@@ -273,7 +275,7 @@ const CheckDiscount = ({ groupCode }) => {
                             css={`
                               width: 100px;
                               height: 22px;
-                              background: #2cd44a;
+                              background: ${SecondaryColor};
                               border-bottom-left-radius: 300px;
                               border-top-right-radius: 180px;
                               position: absolute;

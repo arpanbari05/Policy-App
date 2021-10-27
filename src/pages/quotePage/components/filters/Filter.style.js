@@ -77,14 +77,16 @@ export const OptionWrapper = styled.ul`
   }
   input[type="checkbox"]:checked + label {
     .custom_checkbox {
+      overflow: hidden;
       background-color: ${props=>props.PrimaryColor};
       border: 1px solid white;
-      ::before {
+      &::before {
         content: "\u2713";
         color: white;
         display: flex;
         justify-content: center;
         margin: -3.5px auto;
+        background-color: ${props=>props.PrimaryColor};
       }
     }
   }
@@ -96,7 +98,7 @@ export const OptionWrapper = styled.ul`
       justify-content: center;
       align-items: center;
 
-      ::before {
+      &::before {
         content: "";
         border-radius: 100%;
         background-color: ${props=>props.PrimaryColor};

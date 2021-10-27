@@ -10,7 +10,9 @@ const MobilePlansFor = () => {
     (state) => state.greetingPage
   );
   const { groupCode: selectedGroup } = useParams();
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   const history = useHistory();
 
   const urlQueryStrings = useUrlQuery();
@@ -54,7 +56,7 @@ const MobilePlansFor = () => {
                 position: absolute;
                 left: 0px;
                 bottom: -14px;
-                background-color: #0a87ff;
+                background-color: ${PrimaryColor};
                 margin: auto;
                 right: 0px;
               }
