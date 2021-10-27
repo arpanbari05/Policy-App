@@ -324,6 +324,7 @@ const ShareOption = styled.div`
     border: none;
     margin-left: 15px;
     font-weight: 600;
+    width:85%;
     @media (max-width: 440px) {
       font-size: 12px !important;
     }
