@@ -11,13 +11,13 @@ import MEditMember from "./EditMembersPopup/MEditMember";
 const MobileHeader = ({ groupCode }) => {
   const dispatch = useDispatch();
   const { basePlanType, planType } = useSelector(
-    state => state.quotePage.filters,
+    (state) => state.quotePage.filters
   );
 
   const { cover, tenure } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters,
+    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters
   );
-  const { memberGroups } = useSelector(state => state.greetingPage);
+  const { memberGroups } = useSelector((state) => state.greetingPage);
 
   const plansFor = memberGroups[groupCode]?.join(", ") || "";
 
@@ -32,21 +32,21 @@ const MobileHeader = ({ groupCode }) => {
     companies,
     covers,
     plantypes,
-  } = useSelector(state => state.frontendBoot.frontendData.data);
+  } = useSelector((state) => state.frontendBoot.frontendData.data);
 
-  const sum_insured = covers.find(cov => cov.code === cover);
+  const sum_insured = covers.find((cov) => cov.code === cover);
 
-  const pt = plantypes.find(p => p.display_name === planType);
+  const pt = plantypes.find((p) => p.display_name === planType);
 
   const sendPlanType = pt ? pt.code : "F";
 
   const sendCover = sum_insured ? sum_insured.code : "";
 
-  const handleClick = evt => {
-
+  const handleClick = (evt) => {
     if (basePlanType !== evt.target.value) {
       dispatch(setFilters({ basePlanType: evt.target.value }));
-      console.log("fetchquotes mobileHeader")
+      //console.log("fetchquotes mobileHeader")
+      console.log("I executed");
       dispatch(
         fetchQuotes(companies, {
           sum_insured: sendCover,
@@ -54,7 +54,7 @@ const MobileHeader = ({ groupCode }) => {
           member: groupCode,
           plan_type: sendPlanType,
           basePlanType: evt.target.id,
-        }),
+        })
       );
     }
     setOpenArogyaDropdown(false);
@@ -72,7 +72,7 @@ const MobileHeader = ({ groupCode }) => {
           className="check checkbox-custom"
           id={value + "t"}
           css={`
-          display: none;
+            display: none;
           `}
         />
         <label
@@ -122,7 +122,7 @@ const MobileHeader = ({ groupCode }) => {
           `}
         >
           <Link to="/" className="first-container">
-          <i class="fas fa-arrow-circle-left"></i>
+            <i class="fas fa-arrow-circle-left"></i>
           </Link>
           <span
             css={`
@@ -175,11 +175,9 @@ const MobileHeader = ({ groupCode }) => {
                   border-radius: 8px;
                   width: 190px !important;
                   box-shadow: 0px 6px 25px #869cd54d;
-
-               
                 `}
               >
-                {basePlanTypes.map(thisBasePlanType =>
+                {basePlanTypes.map((thisBasePlanType) =>
                   thisBasePlanType.code !== "arogya_sanjeevani" ? (
                     <PlanTypeCheckbox
                       key={thisBasePlanType.code}
@@ -190,7 +188,7 @@ const MobileHeader = ({ groupCode }) => {
                         basePlanType === thisBasePlanType.display_name
                       }
                     />
-                  ) : null,
+                  ) : null
                 )}
               </div>
             </span>
@@ -219,11 +217,11 @@ const MobileHeader = ({ groupCode }) => {
               `}
             >
               <span
-                css={`               
+                css={`
                   overflow: hidden;
                   white-space: nowrap;
                   text-overflow: ellipsis;
-                      max-width: 87px;
+                  max-width: 87px;
                   text-transform: capitalize;
                 `}
               >

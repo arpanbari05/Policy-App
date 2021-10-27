@@ -291,6 +291,7 @@ function useQuotesPage() {
         filters?.multiYear?.charAt(0),
         findCode("covers", filters?.cover)
       );
+      console.log("I executed");
       dispatch(
         fetchQuotes(companies?.companies, {
           sum_insured: findCode("covers", filters.cover),

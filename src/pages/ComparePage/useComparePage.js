@@ -26,7 +26,7 @@ import { removeQuotesForCompare } from "../quotePage/quote.slice";
 
 const useComparePage = () => {
   const dispatch = useDispatch();
-  
+
   const { groupCode } = useParams();
   const {
     quotesForCompare,
@@ -75,7 +75,7 @@ const useComparePage = () => {
       dispatch(sendEmailAction({ email, image: imgData, group_id: groupCode }));
     });
   };
-  
+
   const imageSendM = (email) => {
     const input = document.getElementById("printCompareM");
 
@@ -143,11 +143,11 @@ const useComparePage = () => {
 
       tempfilter !== null && dispatch(setFilters(tempfilter));
       if (!QuotesToAdd.length) {
-        console.log("fetchquotes useComparePage");
+        console.log("I executed");
         dispatch(
           fetchQuotes(companies, {
             sum_insured:
-            tempfilter?.cover !== null
+              tempfilter?.cover !== null
                 ? findCode("covers", tempfilter?.cover)
                 : cover,
             tenure: tempfilter?.multiYear?.charAt(0) || tenure,
@@ -323,16 +323,13 @@ const useComparePage = () => {
 export default useComparePage;
 
 export const numToLakh = (SItoConvert) => {
-
-  if(SItoConvert > 9999999){
-    let calculated = Number(SItoConvert)/Number(10000000);
-  return `${calculated} ${calculated>1?"Crores":"Crore"}`
-  }else if(SItoConvert > 99999){
-    let calculated = Number(SItoConvert)/Number(100000);
-  return `${calculated} ${calculated>1?"Lakhs":"Lakh"}`
-  }else{
+  if (SItoConvert > 9999999) {
+    let calculated = Number(SItoConvert) / Number(10000000);
+    return `${calculated} ${calculated > 1 ? "Crores" : "Crore"}`;
+  } else if (SItoConvert > 99999) {
+    let calculated = Number(SItoConvert) / Number(100000);
+    return `${calculated} ${calculated > 1 ? "Lakhs" : "Lakh"}`;
+  } else {
     return SItoConvert;
   }
- 
-  
-}
+};
