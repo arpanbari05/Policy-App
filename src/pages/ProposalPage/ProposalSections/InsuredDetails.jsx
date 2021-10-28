@@ -40,7 +40,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   );
   const { theme } = useSelector((state) => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
   const [noForAll, setNoForAll] = useState({});
   const [initColor, setInitColor] = useState(PrimaryColor);
@@ -300,12 +300,11 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
-            console.log("testing active");
-            setBack();
-            // setActive((prev) => {
-            //   if (prev === 0) return 0;
-            //   else return prev - 1;
-            // });
+           
+            setActive((prev) => {
+              if (prev === 0) return 0;
+              else return prev - 1;
+            });
           }}
         />
         <ContinueBtn

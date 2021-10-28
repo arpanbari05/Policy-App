@@ -330,13 +330,15 @@ console.log(showSeeDetails,"ulipeu")
 
 const PopupContent = (a, b, setShowBuyNow, c, handleCloseSeeDetail) => {
   const { memberGroups } = useSelector((state) => state.greetingPage);
-
+  const {quotes} = useSelector(({comparePage}) => comparePage);
+  
   return (
     <div
       css={`
         width: auto !important;
       `}
     >
+     
       {Object.keys(memberGroups).map((groupCode) => (
         <BuyNowModalProduct
           groupCode={groupCode}
@@ -348,15 +350,15 @@ const PopupContent = (a, b, setShowBuyNow, c, handleCloseSeeDetail) => {
   );
 };
 
-const BuyNowModal = ({ showBuyNow, setShowBuyNow, handleClose }) => {
+const BuyNowModal = ({ showBuyNow, setShowBuyNow, handleCloseSeeDetail }) => {
   const plan = useSelector(({ quotePage }) => quotePage.selectedPlan);
-console.log(handleClose,"handleClosehandleClose")
+
   const { companies } = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
   const { memberGroups } = useSelector((state) => state.greetingPage);
-  const history = useHistory();
-  const ls = new SecureLS();
+  // const history = useHistory();
+  // const ls = new SecureLS();
   const cart = useSelector((state) => state.cart);
   const selectedGroupCodes = Object.keys(cart);
   const allMemberGroups = Object.keys(memberGroups);
@@ -370,15 +372,15 @@ console.log(handleClose,"handleClosehandleClose")
       handleClose={() => {
         setShowBuyNow(false);
       }}
-      content={PopupContent(showBuyNow, companies, setShowBuyNow, plan, handleClose)}
+      content={PopupContent(showBuyNow, companies, setShowBuyNow, plan, handleCloseSeeDetail)}
       title={"Hey User, Take a minute and review your cart before you proceed"}
-      handleClick={() =>
-        history.push(
-          `/productdetails/${firstMemberGroup}?enquiryId=${ls.get("enquiryId")}`
-        )
+      handleClick={() => {}
+        // history.push(
+        //   `/productdetails/${firstMemberGroup}?enquiryId=${ls.get("enquiryId")}`
+        // )
       }
       showButton={!!firstMemberGroup}
-      buttonValue={"Continue"}
+      buttonValue={"Continue"}  
       customClass={"buynow-modal"}
       
     />
