@@ -159,9 +159,18 @@ const quotePageSlice = createSlice({
       state.quotesForCompare = action.payload;
     },
     setQuotesForCompare: (state, action) => {
-      state.quotesForCompare.indexOf(action.payload[0]) === -1 &&
-        state.quotesForCompare.length < action.payload[1] &&
-        state.quotesForCompare.push(action.payload[0]);
+     if( state.quotesForCompare.indexOf(action.payload[0]) === -1 &&
+        state.quotesForCompare.length < action.payload[1]){
+          state.quotesForCompare = [
+            ...state.quotesForCompare,
+            action.payload[0]
+          ]
+        }
+        
+        
+
+
+        // .push(action.payload[0]);
     },
     removeQuotesForCompare: (state, action) => {
       state.quotesForCompare = state.quotesForCompare.filter(

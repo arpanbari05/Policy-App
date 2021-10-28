@@ -179,6 +179,7 @@ const useComparePage = () => {
   };
 
   const removePlan = (id) => {
+    dispatch(setShouldNotFetch(true));
     dispatch(removeQuotesForCompare(id));
     dispatch(resetFeature());
     //dispatch(removeFeature(id))

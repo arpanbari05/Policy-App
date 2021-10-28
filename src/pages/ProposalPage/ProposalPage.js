@@ -38,7 +38,7 @@ const ProposalPage = ({ history }) => {
   let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
 
   const [active, setActive] = useState(0);
-  const [proposerDactive, setProposerDactive] = useState(false)
+  const [proposerDactive, setProposerDactive] = useState(true)
   const { currentSchema } = useSelector((state) => state.schema);
   const queryStrings = useUrlQuery();
   const enquiryId = queryStrings.get("enquiryId");
@@ -177,11 +177,7 @@ const ProposalPage = ({ history }) => {
                 schema={currentSchema ? currentSchema[activeForm] : {}}
                 setActive={setActive}
                 name={activeForm}
-                setBack={() => {
-                  setActive(active - 1);
-                }}
                 defaultValue={defaultData}
-              
               />
             </>
           ) : (
