@@ -67,21 +67,23 @@ function ProductCard({ product }) {
             & span {
               font-weight: 900;
             }
-            @media(max-width:767px){
-              align-items: center
+            @media (max-width: 767px) {
+              align-items: center;
             }
           `}
         >
-          
-            <img src={logo} />
-         
+          <img src={logo} />
+
           <span
-          css={`
-          @media(max-width: 767px){
-            font-size:14px !important;
-          }
-          `}
-          > {productName}</span>
+            css={`
+              @media (max-width: 767px) {
+                font-size: 14px !important;
+              }
+            `}
+          >
+            {" "}
+            {productName}
+          </span>
         </span>
         <span
           css={`
@@ -95,42 +97,45 @@ function ProductCard({ product }) {
           <ProductData noBorder>
             <span class="label-add_product">Sum Insured</span>
             <span
-            css={`
-            @media(max-width: 767px){
-              font-size:10px !important;
-            }
-            `}
-            >₹ {parseInt(sum_insured).toLocaleString("en-IN")}</span>
+              css={`
+                @media (max-width: 767px) {
+                  font-size: 10px !important;
+                }
+              `}
+            >
+              ₹ {parseInt(sum_insured).toLocaleString("en-IN")}
+            </span>
           </ProductData>
           <ProductData>
             <span class="label-add_product">Premium</span>
             <span
-            css={`
-            @media(max-width: 767px){
-              font-size:10px !important;
-            }
-            `}
+              css={`
+                @media (max-width: 767px) {
+                  font-size: 10px !important;
+                }
+              `}
             >
-
-
               ₹ {parseInt(premium + health_riders).toLocaleString("en-IN")}
             </span>
           </ProductData>
           <ProductData>
             <span class="label-add_product">Tenure</span>
             <span
-            css={`
-            @media(max-width: 767px){
-              font-size:10px !important;
-            }
-            `}
-            > {tenure} Year</span>
+              css={`
+                @media (max-width: 767px) {
+                  font-size: 10px !important;
+                }
+              `}
+            >
+              {" "}
+              {tenure} Year
+            </span>
           </ProductData>
         </span>
       </div>
 
       <ProductContainer>
-      <div className="logo_style_common" style={{ marginBottom: "0px" }}>
+        <div className="logo_style_common" style={{ marginBottom: "0px" }}>
           <img className="contain" src={logo} alt="logo" />
         </div>
         <div>
@@ -151,11 +156,11 @@ function ProductCard({ product }) {
         <ProductData>
           <span class="label-add_product">Tenure</span>
           <span
-          css={`
-          @media(max-width: 767px){
-            font-size:13px !important;
-          }
-          `}
+            css={`
+              @media (max-width: 767px) {
+                font-size: 13px !important;
+              }
+            `}
           >
             {" "}
             {tenure >= 2 ? `${tenure + " Years"}` : `${tenure + " Year"}`}
@@ -166,18 +171,17 @@ function ProductCard({ product }) {
   );
 }
 
-function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {}, handleCloseSeeDetail }) {
+function BuyNowModalProduct({
+  groupCode,
+  setShowBuyNow = () => {},
+  handleCloseSeeDetail,
+}) {
+  const { setShowSeeDetails, showSeeDetails, setSeeDetailsQuote } =
+    useQuotesPage();
+  const { theme } = useSelector((state) => state.frontendBoot);
 
-const {
-  setShowSeeDetails,
-  showSeeDetails,
-  setSeeDetailsQuote,
-  
-} = useQuotesPage();
-const { theme } = useSelector((state) => state.frontendBoot);
-
-const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
-console.log(showSeeDetails,"ulipeu")
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  console.log(showSeeDetails, "ulipeu");
 
   const members = useSelector(
     (state) => state.greetingPage.memberGroups[groupCode]
@@ -196,15 +200,13 @@ console.log(showSeeDetails,"ulipeu")
   return (
     <>
       <div className="d-flex justify-content-between">
-      
         <h5
           className="text_title_filter p_modal_title_bg_filters_product d-flex align-items-center"
           style={{ textTransform: "capitalize" }}
           css={`
             font-family: unset;
             background-image: unset;
-            @media(max-width: 767px){
-             
+            @media (max-width: 767px) {
               font-size: 12px;
               line-height: 1;
             }
@@ -262,8 +264,7 @@ console.log(showSeeDetails,"ulipeu")
           </div>
         ) : (
           <div>
-          
-          <button
+            <button
               type="submit"
               className="btn"
               css={`
@@ -281,12 +282,10 @@ console.log(showSeeDetails,"ulipeu")
                   pathname: `/quotes/${groupCode}`,
                   search: `enquiryId=${enquiryId}`,
                 });
-               dispatch(setSelectedGroup(groupCode));
-               handleCloseSeeDetail();
-
+                dispatch(setSelectedGroup(groupCode));
+                handleCloseSeeDetail();
               }}
             >
-            
               <span
                 css={`
                   margin-right: 5px;
@@ -330,15 +329,14 @@ console.log(showSeeDetails,"ulipeu")
 
 const PopupContent = (a, b, setShowBuyNow, c, handleCloseSeeDetail) => {
   const { memberGroups } = useSelector((state) => state.greetingPage);
-  const {quotes} = useSelector(({comparePage}) => comparePage);
-  
+  const { quotes } = useSelector(({ comparePage }) => comparePage);
+
   return (
     <div
       css={`
         width: auto !important;
       `}
     >
-     
       {Object.keys(memberGroups).map((groupCode) => (
         <BuyNowModalProduct
           groupCode={groupCode}
@@ -357,8 +355,8 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow, handleCloseSeeDetail }) => {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
   const { memberGroups } = useSelector((state) => state.greetingPage);
-  // const history = useHistory();
-  // const ls = new SecureLS();
+   const history = useHistory();
+   const ls = new SecureLS();
   const cart = useSelector((state) => state.cart);
   const selectedGroupCodes = Object.keys(cart);
   const allMemberGroups = Object.keys(memberGroups);
@@ -372,17 +370,22 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow, handleCloseSeeDetail }) => {
       handleClose={() => {
         setShowBuyNow(false);
       }}
-      content={PopupContent(showBuyNow, companies, setShowBuyNow, plan, handleCloseSeeDetail)}
+      content={PopupContent(
+        showBuyNow,
+        companies,
+        setShowBuyNow,
+        plan,
+        handleCloseSeeDetail
+      )}
       title={"Hey User, Take a minute and review your cart before you proceed"}
-      handleClick={() => {}
-        // history.push(
-        //   `/productdetails/${firstMemberGroup}?enquiryId=${ls.get("enquiryId")}`
-        // )
+      handleClick={() =>
+        history.push(
+          `/productdetails/${firstMemberGroup}?enquiryId=${ls.get("enquiryId")}`
+        )
       }
       showButton={!!firstMemberGroup}
-      buttonValue={"Continue"}  
+      buttonValue={"Continue"}
       customClass={"buynow-modal"}
-      
     />
   );
 };
@@ -390,7 +393,6 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow, handleCloseSeeDetail }) => {
 export default BuyNowModal;
 
 const ProductData = styled.div`
-
   display: flex;
   flex-direction: column;
   color: black;

@@ -1336,6 +1336,10 @@ export function ReviewCartButton() {
     enquiryId,
     handleReviewPopupClose,
   } = useReviewCartButton({ groupCode });
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  
   return (
     <>
       {hasNextGroupProduct ? (
@@ -1360,7 +1364,7 @@ export function ReviewCartButton() {
             width: 100%;
             color: white;
 
-            background-color: #0c88ff;
+            background-color: ${PrimaryColor};
             border-radius: 2px;
             :hover {
               color: white !important;
@@ -1400,6 +1404,11 @@ function ProceedButton({
   members = "",
   onProceedClick = () => {},
 }) {
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   return (
     <div
       onClick={onProceedClick}
@@ -1412,7 +1421,7 @@ function ProceedButton({
         width: 100%;
         color: white;
         display: flex;
-        background-color: #0c88ff;
+        background-color: ${PrimaryColor};
         border: 1px dashed var(--abc-red);
 
         margin-top: 20px;

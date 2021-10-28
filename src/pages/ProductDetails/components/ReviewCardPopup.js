@@ -550,6 +550,11 @@ function ProductDetailsCard({ cartItem }) {
   const companies = useSelector(
     (state) => state.frontendBoot.frontendData.data.companies
   );
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   const {
     product: {
       name,
@@ -710,7 +715,7 @@ function ProductDetailsCard({ cartItem }) {
             {/* <img src={CorrectIcon} class="display_in_m" alt="" /> */}
             <span
               css={`
-                color: #0a87ff;
+                color: ${PrimaryColor};
               `}
             >
               <AiOutlineCheckCircle />
@@ -724,7 +729,9 @@ function ProductDetailsCard({ cartItem }) {
 }
 
 function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
-  
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const name = useSelector((state) => state.greetingPage.proposerDetails.name);
   const firstName = name.split(" ")[0];
   const cart = useSelector((state) => state.cart);
@@ -763,7 +770,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
   //   };
   // }
 
-  const handleCloseClick = () => {
+  const handleCloseClick = (PrimaryColor) => {
     onClose();
   };
 
@@ -789,7 +796,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           </span>
         </div>
       }
-      onClose={handleCloseClick}
+      onClose={()=>handleCloseClick(PrimaryColor)}
     >
       <div
         css={`
@@ -885,7 +892,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
             <div
               css={`
                 width: 216px;
-                background: #419bf9;
+                background: ${PrimaryColor};
                 color: #fff;
                 border-radius: 2px;
                 height: 49px;
