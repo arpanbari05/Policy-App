@@ -25,25 +25,25 @@ import GreetingFormDropdown from "../../../../components/RoundDD2";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
-export const AddOnBuyButton = ({ selected, onClick = () => {}, children,PrimaryColor }) => (
+export const AddOnBuyButton = ({ selected, onClick = () => {}, children,PrimaryColor,PrimaryShade }) => (
   <button
     css={`
       width: 100%;
       text-align: left;
-      background-color: #eff7ff;
+      background-color: ${PrimaryShade};
       /* height: 39px; */
       position: relative;
       /* border-radius: 12px; */
       border-radius: 6px;
       font-size: 20px;
-      color: ${PrimaryColor};
+      color: ${selected ? PrimaryColor : 'unset'};
       font-weight: 900;
       text-align: center;
       padding: 10px;
 
       :hover {
         .premium {
-          color: #0a87ff !important;
+          color: ${PrimaryColor} !important;
         }
       }
 
@@ -823,7 +823,7 @@ function AddOnCard({
         `}
       >
         <AddOnName />
-        <AddOnBuyButton onClick={handleBuy} selected={selected.length}>
+        <AddOnBuyButton onClick={handleBuy} selected={selected.length} PrimaryColor={PrimaryColor} PrimaryShade={PrimaryShade}>
           {displayPremium}
         </AddOnBuyButton>
       </div>
@@ -952,7 +952,7 @@ function AddOnCard({
           `}
           className="mt-4"
         >
-          <AddOnBuyButton onClick={handleBuy} selected={selected.length} PrimaryColor={PrimaryColor}>
+          <AddOnBuyButton onClick={handleBuy} selected={selected.length} PrimaryColor={PrimaryColor} PrimaryShade={PrimaryShade}>
             <div className="d-flex align-items-center w-100 justify-content-center">
               <span className="premium">{displayPremium}</span>{" "}
               <span
