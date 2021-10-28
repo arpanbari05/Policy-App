@@ -300,7 +300,8 @@ var flag = false;
 export const fetchQuotes =
   (companies, { sum_insured, tenure, plan_type, member, basePlanType }) =>
   async (dispatch, store) => {
-    console.log("hashahh3", cancelTokens);
+    //console.log("hashahh3", cancelTokens);
+    //console.log('fecthquotes executed');
     try {
       const filters = store().quotePage.filters;
       const baseplantypes =

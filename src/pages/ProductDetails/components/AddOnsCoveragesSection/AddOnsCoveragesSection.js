@@ -25,28 +25,27 @@ import GreetingFormDropdown from "../../../../components/RoundDD2";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
-export const AddOnBuyButton = ({ selected, onClick = () => {}, children }) => (
+export const AddOnBuyButton = ({ selected, onClick = () => {}, children,PrimaryColor }) => (
   <button
     css={`
       width: 100%;
       text-align: left;
-      background-color:#eff7ff;
+      background-color: #eff7ff;
       /* height: 39px; */
       position: relative;
       /* border-radius: 12px; */
       border-radius: 6px;
       font-size: 20px;
-      color: #0a87ff;
-      font-weight:900;
-      text-align:center;
+      color: ${PrimaryColor};
+      font-weight: 900;
+      text-align: center;
       padding: 10px;
-     
-      :hover{
-        .premium{
-        color: #0a87ff !important;
+
+      :hover {
+        .premium {
+          color: #0a87ff !important;
         }
       }
-     
 
       ${mobile} {
         display: flex;
@@ -222,7 +221,6 @@ function EditDetailsPopup({
           width: 100%;
           top: 0;
           left: 0;
-       
         `}
       >
         <div
@@ -239,8 +237,8 @@ function EditDetailsPopup({
             css={`
               display: flex;
               position: absolute;
-              top:0;
-              left:0;
+              top: 0;
+              left: 0;
               width: 100%;
               padding: 10px 25px;
 
@@ -253,7 +251,7 @@ function EditDetailsPopup({
               css={`
                 font-size: 20px;
                 font-weight: 900;
-                color:#344563;
+                color: #344563;
               `}
             >
               Edit Details
@@ -262,16 +260,15 @@ function EditDetailsPopup({
           </div>
           <div
             css={`
-              
               border-radius: 12px;
-              
+
               display: flex;
               justify-content: space-between;
               flex-wrap: wrap;
               margin-top: 50px;
               margin-bottom: 40px;
-            width:100%;
-            flex-direction:column;
+              width: 100%;
+              flex-direction: column;
               ${mobile} {
                 border: none;
                 flex-direction: column;
@@ -394,16 +391,16 @@ function EditDetailsPopup({
               color: #fff;
               padding: 10px 12px;
               width: 100%;
-              position:absolute;
-              bottom:0px;
+              position: absolute;
+              bottom: 0px;
               border-radius: 8px;
               font-size: 18px;
               font-weight: 400;
               margin: auto;
-              left:0;
+              left: 0;
               margin-top: 20px;
-              :hover{
-                color:white !important;
+              :hover {
+                color: white !important;
               }
             `}
             onClick={handleUpdate}
@@ -470,16 +467,15 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
         justify-content: space-between;
         padding: 0 10px 6px 0px;
         margin-left: 10px;
-        margin-top:10px;
+        margin-top: 10px;
         font-size: 14px;
         font-weight: 900;
         display: flex;
-        align-items:center;
+        align-items: center;
         /* width: 48%; */
 
-       color: #505f79;
+        color: #505f79;
         justify-content: space-between;
-       
 
         /* ${mobile} {
           flex: 1;
@@ -536,8 +532,8 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
         <button
           css={`
             display: inline-block;
-           font-size:14px;
-            margin:0 6px;
+            font-size: 14px;
+            margin: 0 6px;
             cursor: pointer;
 
             ${mobile} {
@@ -551,7 +547,7 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
           onClick={onEditClick}
           className="btn"
         >
-         <i class="fas fa-pen"></i>
+          <i class="fas fa-pen"></i>
         </button>
       </div>
     </div>
@@ -564,13 +560,15 @@ function AddOnCard({
   addOnData: { premium = [], product: addOn = {} },
   handleDataChange,
 }) {
-  const [showviewDetailMbile,setShowViewDetailMbile] = useState(false)
+  const [showviewDetailMbile, setShowViewDetailMbile] = useState(false);
   const sumInsuredList = Object.keys(premium);
 
   const [sumInsured, setSumInsured] = useState(
     selected[0] ? selected[0].sum_insured : sumInsuredList[0]
   );
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const membersList = Object.keys(premium[sumInsured]);
 
   const [member, setMember] = useState(
@@ -718,24 +716,23 @@ function AddOnCard({
           width: 60px;
           margin-right: 15px;
           height: 35px;
-          display:flex;
-align-items:center;
-         justify-content:space-between;
-         @media (max-width:768px){
-          width: 40px;
-          height: 40px;
-            }
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          @media (max-width: 768px) {
+            width: 40px;
+            height: 40px;
+          }
         `}
       >
         <img
           css={`
             width: 100%;
             height: 100%;
-            object-fit:contain;
+            object-fit: contain;
           `}
           src={companyLogoSrc}
           alt={"company"}
-         
         />
       </div>
       <div
@@ -756,9 +753,9 @@ align-items:center;
             white-space: nowrap;
             overflow: hidden;
 
-            @media (max-width:768px){
+            @media (max-width: 768px) {
               white-space: break-spaces;
-              font-size:13px !important;
+              font-size: 13px !important;
             }
 
             /* ${mobile} {
@@ -779,7 +776,6 @@ align-items:center;
               font-size: 11px;
               font-weight: 900;
             }
-
           `}
           title={addOn.name}
         >
@@ -791,17 +787,19 @@ align-items:center;
             font-size: 12px;
             font-weight: 900;
             color: #7b7b7b;
-            background: #eff7ff;
-            color: #0a87ff;
+            background: ${PrimaryShade};
+            color: ${PrimaryColor};
             border-radius: 50px;
             ${mobile} {
               font-size: 11px;
               color: #000;
             }
-
-          
           `}
-          onClick={() => window.screen.width <769?setShowViewDetailMbile(true):toggleDetailsShow}
+          onClick={() =>
+            window.screen.width < 769
+              ? setShowViewDetailMbile(true)
+              : toggleDetailsShow
+          }
         >
           View Details
         </button>
@@ -849,7 +847,22 @@ align-items:center;
     <>
       {showDetails ? (
         <>
-        <AddOnDetails
+          <AddOnDetails
+            addOn={{
+              ...addOn,
+              sum_insured: sumInsured,
+              total_premium:
+                addOn.insurance_type.alias === "top_up"
+                  ? premium[sumInsured]["all"]["total_premium"]
+                  : premium[sumInsured][member]["total_premium"],
+            }}
+            handleClose={toggleDetailsShow}
+          />
+        </>
+      ) : null}
+
+      {showviewDetailMbile ? (
+        <AddOnDetailsMobile
           addOn={{
             ...addOn,
             sum_insured: sumInsured,
@@ -858,27 +871,9 @@ align-items:center;
                 ? premium[sumInsured]["all"]["total_premium"]
                 : premium[sumInsured][member]["total_premium"],
           }}
-          handleClose={toggleDetailsShow}
-        />
-        
-        </>
-      ) : null}
-
-     {
-      showviewDetailMbile?(
-        <AddOnDetailsMobile 
-         addOn={{
-            ...addOn,
-            sum_insured: sumInsured,
-            total_premium:
-              addOn.insurance_type.alias === "top_up"
-                ? premium[sumInsured]["all"]["total_premium"]
-                : premium[sumInsured][member]["total_premium"],
-          }}
           handleClose={() => setShowViewDetailMbile(false)}
-      />
-      ):null
-     }
+        />
+      ) : null}
       <div
         css={`
           border: 1px solid var(--addon-card-border-gray);
@@ -894,9 +889,9 @@ align-items:center;
           &:hover {
             background-color: #fff;
           }
-          @media (max-width:768px){
+          @media (max-width: 768px) {
             width: 100%;
-          background:white;
+            background: white;
           }
 
           /* ${mobile} {
@@ -939,29 +934,28 @@ align-items:center;
             width: 100%;
 
             align-items: center;
-          
           `}
         >
           <AddOnName />
-          
-        </div>
-        <div css={`
-        width: 100%;
-        `}>
-        <AddOnDetailsTabs />
         </div>
         <div
           css={`
-          width: 100%;
+            width: 100%;
+          `}
+        >
+          <AddOnDetailsTabs />
+        </div>
+        <div
+          css={`
+            width: 100%;
             /* margin-right: 15px; */
-            
           `}
           className="mt-4"
         >
-          <AddOnBuyButton onClick={handleBuy} selected={selected.length}>
-          <div className="d-flex align-items-center w-100 justify-content-center">
-          <span className="premium">
-          {displayPremium}</span> <span
+          <AddOnBuyButton onClick={handleBuy} selected={selected.length} PrimaryColor={PrimaryColor}>
+            <div className="d-flex align-items-center w-100 justify-content-center">
+              <span className="premium">{displayPremium}</span>{" "}
+              <span
                 css={`
                   font-size: 9px;
                   margin-left: 10px;
@@ -970,21 +964,21 @@ align-items:center;
                   line-height: 30px;
                   text-align: center;
                   border-radius: 50%;
-                  background: ${selected.length ? "#0a87ff" : "white"};
-                  box-shadow: ${selected.length ? "0px 2px 5px -2px rgb(0 0 0 / 25%)" : ""};
+                  background: ${selected.length ? PrimaryColor : "white"};
+                  box-shadow: ${selected.length
+                    ? "0px 2px 5px -2px rgb(0 0 0 / 25%)"
+                    : ""};
                   font-family: "font-awesome";
-                  
+
                   color: #fff;
                   justify-content: center;
-    align-items: center;
-    display:flex;
+                  align-items: center;
+                  display: flex;
                 `}
               >
                 <i class="fas fa-check"></i>
               </span>
-          </div>
-
-            
+            </div>
           </AddOnBuyButton>
         </div>
         <AddOnCardMobile />
@@ -1023,7 +1017,7 @@ function AddOns({ addOns = {} }) {
     }
     updateProductRedux({
       ...product,
-      page: 'product details',
+      page: "product details",
       addons: [...newAddOns, ...addOns],
     });
   };
@@ -1031,7 +1025,7 @@ function AddOns({ addOns = {} }) {
   const removeAddOn = (addOnId) => {
     updateProductRedux({
       ...product,
-      page: 'product details 2',
+      page: "product details 2",
       addons: product.addons.filter((addon) => addon.product.id !== addOnId),
     });
   };
@@ -1062,7 +1056,11 @@ function AddOns({ addOns = {} }) {
           )
       );
     }
-    updateProductRedux({ ...product, addons: [...newAddOns, ...addOns] ,  page: 'product details 4',});
+    updateProductRedux({
+      ...product,
+      addons: [...newAddOns, ...addOns],
+      page: "product details 4",
+    });
   };
 
   const handleBuyNow = (selected, addons) => {
@@ -1081,25 +1079,24 @@ function AddOns({ addOns = {} }) {
           width: 100%;
           display: flex;
           flex-wrap: wrap;
-          justify-content:${Object.keys(addOns).length > 1?"flex-start":"flex-start"} !important;
+          justify-content: ${Object.keys(addOns).length > 1
+            ? "flex-start"
+            : "flex-start"} !important;
         `}
       >
         {Object.keys(addOns).map((addOnId) => (
           <div
             css={`
               width: 48%;
-             @media (max-width:500px){
-              width: 100%;
-
-             }
+              @media (max-width: 500px) {
+                width: 100%;
+              }
               &:not(:last-child) {
                 margin-bottom: 30px;
                 ${mobile} {
                   margin-bottom: 10px;
                 }
               }
-
-             
             `}
             key={addOnId}
           >
@@ -1125,20 +1122,20 @@ function AddOns({ addOns = {} }) {
 const AddOnsNav = styled(Tabs)`
   /* justify-content: space-around; */
   border: none;
-color:#5b5e64 !important;
-  
-@media (max-width:400px){
-  .nav-item {
-    font-size: 12px !important;
-    margin-right: 0px !important;
-   color: #383b3f;
+  color: #5b5e64 !important;
+
+  @media (max-width: 400px) {
+    .nav-item {
+      font-size: 12px !important;
+      margin-right: 0px !important;
+      color: #383b3f;
+    }
   }
-}
   & .nav-item {
     position: relative;
     width: max-content;
     background: none;
-    color:#383b3f !important;
+    color: #383b3f !important;
     padding: 0;
     font-size: 16px;
     font-weight: 900;
@@ -1159,7 +1156,7 @@ color:#5b5e64 !important;
       transition: all 0.3s ease-in-out;
     }
     .nav-link {
-      color:#383b3f !important;
+      color: #383b3f !important;
       border: none !important;
       border-radius: 50px !important;
       :hover {
@@ -1169,7 +1166,7 @@ color:#5b5e64 !important;
     }
     .nav-link.active {
       border-color: #0a87ff;
-      background: #0a87ff;
+      background: ${(props) => props.PrimaryColor};
       color: white !important;
       border-radius: 50px;
       &::after {
@@ -1177,12 +1174,7 @@ color:#5b5e64 !important;
         transform: scale(1);
       }
     }
-
-    
-
-   
   }
-  
 `;
 
 const addOnsFetch = {
@@ -1209,7 +1201,9 @@ function AddOnCoveragesSection() {
   );
 
   const companyAliasList = Object.keys(companies);
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const getCompanies = (insuranceType) =>
     companyAliasList.filter((companyAlias) =>
       companies[companyAlias].insurance_types.includes(insuranceType)
@@ -1232,7 +1226,6 @@ function AddOnCoveragesSection() {
         })
           .then((response) => {
             if (response.data.data.length > 0) {
-              
               const { data: addOns } = response.data;
               callback(normalizeAddOnsData(addOnType, addOns));
             }
@@ -1281,7 +1274,11 @@ function AddOnCoveragesSection() {
           }
         `}
       >
-        <AddOnsNav id="addon-coverages-tabs" transition={false}>
+        <AddOnsNav
+          id="addon-coverages-tabs"
+          transition={false}
+          PrimaryColor={PrimaryColor}
+        >
           {hasKeys(topUps) ? (
             <Tab eventKey="top-up" title="Super Top-up">
               <AddOnTabContentWrap>

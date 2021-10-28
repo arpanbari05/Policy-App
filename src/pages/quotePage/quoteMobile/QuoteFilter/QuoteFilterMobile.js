@@ -7,6 +7,7 @@ import InsurerMobile from "./InsurerMobile";
 import PremiumMobile from "./PremiumMobile";
 import PlanMobile from "./PlanMobile";
 import MultiyearMobile from "./MultiyearMobile";
+import "styled-components/macro";
 import {
   fetchQuotes,
   insurerFilter,
@@ -42,6 +43,11 @@ const QuoteFilterMobile = ({
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
 
+  const [initialRenderCheck, setInitialRenderCheck] = useState(true);
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { memberGroups, proposerDetails } = useSelector(
     (state) => state.greetingPage
   );
@@ -97,20 +103,32 @@ const QuoteFilterMobile = ({
       (thisCover) => thisCover.display_name === cover
     );
 
-    dispatch(replaceQuotes([]));
-    dispatch(replaceFilterQuotes([]));
     console.log("fetchquotes quotefiltermobile");
-    dispatch(
-      fetchQuotes(companies, {
-        plan_type: plantypes.find((filter) => filter.display_name === planType)
-          ?.code,
-        tenure: parseInt(multiYear),
-        sum_insured: ownCover
-          ? `${ownCover}-${ownCover}`
-          : thisSelectedCover[0].code,
-        member: selectedGroup,
-      })
-    );
+    console.log("I executed");
+    /*console.log(
+      "is something chnaged here",
+      multiYear,
+      planType,
+      cover,
+      ownCover
+    );*/
+    if (!initialRenderCheck) {
+      dispatch(replaceQuotes([]));
+      dispatch(replaceFilterQuotes([]));
+      dispatch(
+        fetchQuotes(companies, {
+          plan_type: plantypes.find(
+            (filter) => filter.display_name === planType
+          )?.code,
+          tenure: parseInt(multiYear),
+          sum_insured: ownCover
+            ? `${ownCover}-${ownCover}`
+            : thisSelectedCover[0].code,
+          member: selectedGroup,
+        })
+      );
+      setInitialRenderCheck(false);
+    }
   }, [multiYear, planType, cover, ownCover]);
   useEffect(() => {
     if (insurers) dispatch(insurerFilter(insurers));
@@ -184,7 +202,7 @@ const QuoteFilterMobile = ({
   }, [premium, cover, ownCover, planType, multiYear, basePlanType]);*/
   return (
     <>
-      <div className="mobile-filter-wrapper">
+      <div className="mobile-filter-wrapper" id="yoyo">
         <div className="shrt-menu shrt-menu-one light-bg text-dark">
           <div className="quotes_compare_container" style={{ height: "58px" }}>
             <div
@@ -210,6 +228,7 @@ const QuoteFilterMobile = ({
                 </a>
               </div>
               <button
+              css={`background: ${PrimaryColor}`}
                 className="btn-mobile-show-plan"
                 onClick={(e) => {
                   // alert("clicked");
@@ -221,7 +240,12 @@ const QuoteFilterMobile = ({
               </button>
             </div>
           </div>
-          <div className="d-flex justify-content-between align-items-center main-header shrt_without_h_w height_bg_red_r">
+          <div
+            css={`
+              background: ${PrimaryColor} !important;
+            `}
+            className="d-flex justify-content-between align-items-center main-header shrt_without_h_w height_bg_red_r"
+          >
             <Col md={6}>
               <div onClick={() => setFilterMobile(false)}>
                 <p
@@ -238,7 +262,10 @@ const QuoteFilterMobile = ({
             </Col>
           </div>
         </div>
-        <div className="tabordion">
+        <div
+          className="tabordion"
+          
+        >
           <section id="section4">
             <input
               type="radio"

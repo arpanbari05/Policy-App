@@ -23,13 +23,14 @@ const ThemeModal = ({ show, setShow }) => {
       primaryShade !== PrimaryShade ||
       secondaryShade !== SecondaryShade
     ) {
+      const obj = {
+        PrimaryColor: primaryColor,
+        SecondaryColor: secondaryColor,
+        PrimaryShade: primaryShade,
+        SecondaryShade: secondaryShade,
+      }
       dispatch(
-        updateTheme({
-          PrimaryColor: primaryColor,
-          SecondaryColor: secondaryColor,
-          PrimaryShade: primaryShade,
-          SecondaryShade: secondaryShade,
-        })
+        updateTheme({...obj})
       );
     }
   };

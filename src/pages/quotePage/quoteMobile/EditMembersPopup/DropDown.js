@@ -9,6 +9,7 @@ import {
   Wrapper,
 } from "../../../../components/Common/DropDownComponents/DropDownComponents";
 import "styled-components/macro";
+import { useSelector } from "react-redux";
 const GreetingFormDropdown = ({
   disabled,
   title,
@@ -22,6 +23,10 @@ const GreetingFormDropdown = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   const dropdownRef = useRef(null);
   useOutsiteClick(isOpen && dropdownRef, () => setIsOpen(false));
 
@@ -29,7 +34,7 @@ const GreetingFormDropdown = ({
     setIsOpen(!isOpen);
   };
 
-  const handleSelect = value => {
+  const handleSelect = (value) => {
     handleChange(code, value, type);
     setIsOpen(!isOpen);
   };
@@ -42,12 +47,14 @@ const GreetingFormDropdown = ({
             border: ${redBorder && "1px solid red !important"};
           `}
           onClick={toggleList}
-          className={`${isOpen && "active"} GreetingDD__Header ${disabled && "disabled"
-            }`}
+          className={`${isOpen && "active"} GreetingDD__Header ${
+            disabled && "disabled"
+          }`}
         >
           <HeaderTitle
-            className={`${isOpen && "active"} GreetingDD__Title ${disabled && "font-gray"
-              }`}
+            className={`${isOpen && "active"} GreetingDD__Title ${
+              disabled && "font-gray"
+            }`}
           >
             {selected?.toString().startsWith("0")
               ? selected?.split(" ")[0].split(".")[1] + " months"
@@ -70,11 +77,13 @@ const GreetingFormDropdown = ({
               }
             `}
           >
-            {list.map(data => {
+            {list.map((data) => {
               return (
                 <ListItem
-                  className={`${data.title === selected && "active"
-                    } GreetingDD__ListItem`}
+                PrimaryShade={PrimaryShade}
+                  className={`${
+                    data.title === selected && "active"
+                  } GreetingDD__ListItem`}
                   onClick={() => handleSelect(data.title)}
                   key={uuidv4()}
                 >

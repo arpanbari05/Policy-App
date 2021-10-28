@@ -57,6 +57,9 @@ const ProposalPage = ({ history }) => {
 
   console.log(active, activeIndex, "adsgh321");
 
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   useEffect(() => {
     if (listOfForms.length && active >= listOfForms.length) {
       dispatch(
@@ -118,7 +121,7 @@ const ProposalPage = ({ history }) => {
           {activeForm === "Proposer Details" && proposerDactive ? (
             <>
               {" "}
-              <MainTitle bg>{activeForm}</MainTitle>{" "}
+              <MainTitle PrimaryColor={PrimaryColor} bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}>{activeForm}</MainTitle>{" "}
               <ProposerDetails
                 key={activeForm}
                 schema={
@@ -143,16 +146,16 @@ const ProposalPage = ({ history }) => {
             setProposerDactive(true);
           }}
             >
-              <MainTitle>Proposer Details</MainTitle>
+              <MainTitle PrimaryColor={PrimaryColor}>Proposer Details</MainTitle>
               <div
                 css={`
                   width: 30px;
                   display: ${!proposalData[listOfForms[0]] && "none"};
                   height: 30px;
-                  background: #eff7ff;
+                  background: ${PrimaryShade};
                   border-radius: 100%;
                   display: flex;
-                  color: #369cff;
+                  color: ${PrimaryColor};
                   align-items: center;
                   justify-content: center;
                   font-size: 13px;
@@ -168,7 +171,7 @@ const ProposalPage = ({ history }) => {
           {activeForm === "Insured Details" ? (
             <>
               {" "}
-              <MainTitle bg>{activeForm}</MainTitle>{" "}
+              <MainTitle PrimaryColor={PrimaryColor} bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}>{activeForm}</MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
                 schema={currentSchema ? currentSchema[activeForm] : {}}
@@ -192,16 +195,16 @@ const ProposalPage = ({ history }) => {
                 setActive(1);
               }}
             >
-              <MainTitle>Insured Details</MainTitle>
+              <MainTitle PrimaryColor={PrimaryColor}>Insured Details</MainTitle>
               <div
                 css={`
                   width: 30px;
                   display: ${!proposalData[listOfForms[1]] && "none"};
                   height: 30px;
-                  background: #eff7ff;
+                  background: ${PrimaryShade};
                   border-radius: 100%;
                   display: flex;
-                  color: #369cff;
+                  color: ${PrimaryColor};
                   align-items: center;
                   justify-content: center;
                   font-size: 13px;
@@ -220,7 +223,7 @@ const ProposalPage = ({ history }) => {
           {activeForm === "Medical Details" ? (
             <>
               {" "}
-              <MainTitle bg>{activeForm}</MainTitle>{" "}
+              <MainTitle PrimaryColor={PrimaryColor} bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}>{activeForm}</MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
                 schema={currentSchema ? currentSchema[activeForm] : {}}
@@ -241,17 +244,17 @@ const ProposalPage = ({ history }) => {
             setActive(2);
           }}
             >
-              <MainTitle>Medical Details</MainTitle>
+              <MainTitle PrimaryColor={PrimaryColor} >Medical Details</MainTitle>
 
               <div
                 css={`
                   width: 30px;
                   display: ${!proposalData[listOfForms[2]] && "none"};
                   height: 30px;
-                  background: #eff7ff;
+                  background: ${PrimaryShade};
                   border-radius: 100%;
                   display: flex;
-                  color: #369cff;
+                  color: ${PrimaryColor};
                   align-items: center;
                   justify-content: center;
                   font-size: 13px;
@@ -270,7 +273,7 @@ const ProposalPage = ({ history }) => {
           {activeForm === "Other Details" ? (
             <>
               {" "}
-              <MainTitle bg>{activeForm}</MainTitle>{" "}
+              <MainTitle PrimaryColor={PrimaryColor} bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}>{activeForm}</MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
                 schema={currentSchema ? currentSchema[activeForm] : {}}
@@ -290,16 +293,16 @@ const ProposalPage = ({ history }) => {
             setActive(3);
           }}
             >
-              <MainTitle>Other Details</MainTitle>
+              <MainTitle PrimaryColor={PrimaryColor}>Other Details</MainTitle>
               <div
                 css={`
                   width: 30px;
                   display: ${!proposalData[listOfForms[3]] && "none"};
                   height: 30px;
-                  background: #eff7ff;
+                  background: ${PrimaryShade};
                   border-radius: 100%;
                   display: flex;
-                  color: #369cff;
+                  color: ${PrimaryColor};
                   align-items: center;
                   justify-content: center;
                   font-size: 13px;
@@ -530,8 +533,8 @@ const MainTitle = styled.h2`
   font-weight: 900;
 
   background: ${(props) =>
-    props.bg && " linear-gradient(90deg, #eff7ff 0%,rgb(255 255 255) 100%)"};
-  color: ${(props) => props.bg && "#0a87ff;"};
+    props.bg};
+  color: ${(props) => props.bg  && props.PrimaryColor};
   font-size: 21px;
   padding: 10px;
 `;
