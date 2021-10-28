@@ -35,6 +35,9 @@ const ProposalSummary = ({ history }) => {
   const { proposalData, policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
   );
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { proposerDetails } = useSelector(state => state.greetingPage);
   const [show, setShow] = useState(false);
   const [termShow, setTermShow] = useState(false);
@@ -152,6 +155,7 @@ const prod_id=Object.keys(cart)[0];
                     <PayItem>
                       <ItemName>{item?.product?.name}</ItemName>
                       <PayButton
+                      PrimaryColor={PrimaryColor}
                       style={{cursor: 'pointer'}}
                         onClick={() => {
                           singlePay(item.proposal_id);
@@ -364,6 +368,8 @@ const prod_id=Object.keys(cart)[0];
                         allFields.map((item, index) => {
                           return (
                             <SummaryTab
+                            PrimaryColor={PrimaryColor}
+                            PrimaryShade={PrimaryShade}
                               key={item}
                               title={item}
                               data={currentSchema[item]}
@@ -452,7 +458,7 @@ const PayButton = styled.div`
   color: #fff;
   display: inline-block;
   padding: 6px;
-  background-color: #0a87ff;
+  background-color: ${props=>props.PrimaryColor};
   text-align: center;
   border-radius: 0 6px 6px 0px;
   & span {

@@ -18,7 +18,7 @@ import {
 import CheckMark from "./components/CheckMark";
 import Card from "./components/Card";
 import styled from "styled-components";
-import "styled-components/macro"
+import "styled-components/macro";
 //import CardMobile from "./components/CardMobile";
 
 const ThankYouPage = () => {
@@ -27,18 +27,21 @@ const ThankYouPage = () => {
   const { pathname } = useLocation();
   const [payment, SetPayment] = useState(true);
   const [timer, SetTimer] = useState(6);
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const status = useSelector(state => state.proposalPage);
+  const status = useSelector((state) => state.proposalPage);
   const { policyStatus, policyLoading } = useSelector(
-    state => state.proposalPage,
+    (state) => state.proposalPage
   );
-  const cart = useSelector(state => state.cart);
+  const cart = useSelector((state) => state.cart);
 
   // const callFetch = ()=>{
   //   count!== 0 &&    setTimeout(()=>setCount(count-1), 30000)
   // }()
-  console.log(loading, policyStatus[0]?.pdf_path, 'hehehe2')
+  console.log(loading, policyStatus[0]?.pdf_path, "hehehe2");
   useEffect(() => {
     setLoading(true);
     dispatch(fetchPdf());
@@ -51,8 +54,10 @@ const ThankYouPage = () => {
   }, []);
 
   useEffect(() => {
-
-    if (policyStatus[0]?.pdf_path !== null && policyStatus[0]?.pdf_path !== undefined) {
+    if (
+      policyStatus[0]?.pdf_path !== null &&
+      policyStatus[0]?.pdf_path !== undefined
+    ) {
       setLoading(false);
     }
   }, [policyStatus]);
@@ -65,10 +70,16 @@ const ThankYouPage = () => {
     }
   }, [pathname]);
   const Disclaimer = () => {
-    if (policyStatus.every(item => item.status === "underwriting_approval")) {
+    if (policyStatus.every((item) => item.status === "underwriting_approval")) {
       return (
         <>
-          <div className="policy__disclaimer">
+          <div
+            className="policy__disclaimer"
+            css={`
+              color: ${PrimaryColor} !important;
+              
+            `}
+          >
             You can track your policy status on{" "}
             <a href="https://cpprod.adityabirlainsurancebrokers.com/sign-in?rurl=https://cpprod.adityabirlainsurancebrokers.com/">
               My Account Page.
@@ -77,11 +88,13 @@ const ThankYouPage = () => {
           </div>
         </>
       );
-    } else if (policyStatus.every(item => item.status === "policy_issued"))
+    } else if (policyStatus.every((item) => item.status === "policy_issued"))
       return (
         <>
           {" "}
-          <div className="policy__disclaimer">
+          <div className="policy__disclaimer"  css={`
+              color: ${PrimaryColor} !important;
+            `}>
             Your policy document has been successfully saved in{" "}
             <a href="https://cpprod.adityabirlainsurancebrokers.com/sign-in?rurl=https://cpprod.adityabirlainsurancebrokers.com/">
               My Account Page.
@@ -94,7 +107,9 @@ const ThankYouPage = () => {
     else
       return (
         <>
-          <div className="policy__disclaimer">
+          <div className="policy__disclaimer"  css={`
+              color: ${PrimaryColor} !important;
+            `}>
             You can visit the{" "}
             <a href="https://cpprod.adityabirlainsurancebrokers.com/sign-in?rurl=https://cpprod.adityabirlainsurancebrokers.com/">
               My Account Page.
@@ -118,16 +133,27 @@ const ThankYouPage = () => {
           <div className="thankmain__wrapper">
             <div className="row">
               <div className="col-lg-6">
-                <div className="thankmain__message">
+                <div
+                  className="thankmain__message"
+                  css={`
+                    color: ${PrimaryColor} !important;
+                    background: ${PrimaryShade};
+                  `}
+                >
                   <div className="thankmain__check">
                     <CheckMark />
                   </div>
-                  <span
-                  >Your Payment for ₹{" "}
-                  {cart.totalPremium} was successful</span>
+                  <span>
+                    Your Payment for ₹ {cart.totalPremium} was successful
+                  </span>
                 </div>
                 <div>
-                  <div className="yellow__line" />
+                  <div
+                    className="yellow__line"
+                    css={`
+                      background-color: ${SecondaryColor} !important;
+                    `}
+                  />
                 </div>
                 <div>
                   <Disclaimer />
@@ -136,6 +162,10 @@ const ThankYouPage = () => {
                   <a
                     href="https://cpprod.adityabirlainsurancebrokers.com/"
                     className="shopmore__button  btn-link"
+                    css={`
+                      color: ${PrimaryColor} !important;
+                      border-color: ${PrimaryColor} !important;
+                    `}
                   >
                     Shop More {">"}
                   </a>
@@ -171,24 +201,30 @@ const ThankYouPage = () => {
               <div style={{ padding: "20px 0px 30px" }}>
                 {<img src={Success} alt="" className="img_success"></img>}
               </div>
-              <div style={{ padding: "20px 0px", marginTop: "20px",fontWeight: "bold",
-            fontSize: "21px"
-            }}>
+              <div
+                style={{
+                  padding: "20px 0px",
+                  marginTop: "20px",
+                  fontWeight: "bold",
+                  fontSize: "21px",
+                }}
+              >
                 <span>Thankyou for choosing</span>
-                <br/>
+                <br />
                 <span>Fyntune!</span>
               </div>
               <div
                 style={{
-                  backgroundColor: "linear-gradient(90deg, #eff7ff 0%,rgb(255 255 255) 100%) ",
+                  backgroundColor:
+                    `linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%) `,
                   display: "flex",
                   alignItems: "center",
-                  color: "#0a87ff",
+                  color: PrimaryColor,
                   padding: "8px 10px",
                   fontSize: "15px",
                   whiteSpace: "nowrap",
                   fontWeight: "bold",
-                  backgroundColor: "#b4dfff",
+                  backgroundColor: PrimaryShade,
                   borderRadius: "55px",
                   // letterSpacing: "1px"
                 }}
@@ -204,13 +240,15 @@ const ThankYouPage = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  {<img
-
-                    src={Correct} alt=""
-                    css={`
-                    width:40px;
-                    `}
-                  ></img>}
+                  {
+                    <img
+                      src={Correct}
+                      alt=""
+                      css={`
+                        width: 40px;
+                      `}
+                    ></img>
+                  }
                 </div>
                 Your Payment for{" "}
                 <i className="fa fa-inr" style={{ margin: "0px 2px" }} />
@@ -220,6 +258,7 @@ const ThankYouPage = () => {
                 <div
                   className="yellow__line"
                   style={{
+                    backgroundColor: SecondaryColor,
                     marginLeft: "0px",
                     width: "50px",
                     height: "9px",
@@ -250,8 +289,8 @@ const ThankYouPage = () => {
                 <a
                   href="https://cpprod.adityabirlainsurancebrokers.com/sign-in?rurl=https://cpprod.adityabirlainsurancebrokers.com/"
                   style={{
-                    color: "#0a87ff",
-                    borderBottom: "1px dashed #0a87ff",
+                    color: PrimaryColor,
+                    borderBottom: `1px dashed ${PrimaryColor}`,
                     fontWeight: "bold",
                   }}
                 >
@@ -265,8 +304,8 @@ const ThankYouPage = () => {
                 <a
                   href="https://cpprod.adityabirlainsurancebrokers.com/"
                   style={{
-                    color: "#0a87ff",
-                    borderBottom: "1px dashed #0a87ff",
+                    color: PrimaryColor,
+                    borderBottom: `1px dashed ${PrimaryColor}`,
                     fontWeight: "bold",
                   }}
                 >
@@ -286,9 +325,7 @@ const ThankYouPage = () => {
           <div className="agn-counter-section-pay">
             <Container className="">
               <Row>
-                <div className="bottom-banner"
-               style={{margin:"unset"}}
-                >
+                <div className="bottom-banner" style={{ margin: "unset" }}>
                   {/* <div className="text"
                 
                   >
@@ -318,49 +355,51 @@ const ThankYouPage = () => {
                     
                   </div> */}
                   <div
-                  css={`
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  `}
+                    css={`
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      justify-content: center;
+                    `}
                   >
-                  <img src={Unsuccess}  className="img_unsuccess"
-                    alt="Unsuccess" 
-                  css={`
-                  border-radius:100px;
-                  `}
-                    ></img> 
-                     <h3 className="title text-center unsuccess-text"
-                  css={`
-                  margin:none;
-                  `}
-                     >
+                    <img
+                      src={Unsuccess}
+                      className="img_unsuccess"
+                      alt="Unsuccess"
+                      css={`
+                        border-radius: 100px;
+                      `}
+                    ></img>
+                    <h3
+                      className="title text-center unsuccess-text"
+                      css={`
+                        margin: none;
+                      `}
+                    >
                       Uh OH! Payment Faiiled.
-                      </h3>
-                      <p className="text-p"
-                      style={{textAlign: "center"}}
-                      >
-                          {/* It is a long established fact that a reader will be
+                    </h3>
+                    <p className="text-p" style={{ textAlign: "center" }}>
+                      {/* It is a long established fact that a reader will be
                           distracted by the readable content of a page when
                           looking at its layout. */}
-                                Don't worry. Please try again.
-                        </p>
-                        <div>
-                <div
-                  className="yellow__line"
-                  style={{
-                    marginLeft: "0px",
-                    width: "50px",
-                    height: "9px",
-                    marginTop: "20px",
-                  }}
-                />
-              </div>
+                      Don't worry. Please try again.
+                    </p>
+                    <div>
+                      <div
+                        className="yellow__line"
+                        style={{
+                          backgroundColor: SecondaryColor,
+                          marginLeft: "0px",
+                          width: "50px",
+                          height: "9px",
+                          marginTop: "20px",
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </Row>
-             
+
               {/* <Row>
 
           </Row> */}
@@ -371,13 +410,13 @@ const ThankYouPage = () => {
                       href="#"
                       className="btn_back_q_proposal"
                       css={`
-                      display: inline-block;
-                      background-color: #0a87ff;
-                      border: 1px solid #0a87ff;
-                      width:158px;
-                      &:hover{
-                        color:#000;
-                      }
+                        display: inline-block;
+                        background-color: #0a87ff;
+                        border: 1px solid #0a87ff;
+                        width: 158px;
+                        &:hover {
+                          color: #000;
+                        }
                       `}
                       onClick={() => {
                         history.push({
@@ -392,13 +431,14 @@ const ThankYouPage = () => {
                       href="#"
                       className="btn_start_proposal_back_t"
                       css={`
-                      color:#0a87ff;
-                      display: inline-block;
-                      border: 1px solid #0a87ff;
-                      width:158px !important;
-                      &:hover{
-                        color:#000;
-                      }`}
+                        color: #0a87ff;
+                        display: inline-block;
+                        border: 1px solid #0a87ff;
+                        width: 158px !important;
+                        &:hover {
+                          color: #000;
+                        }
+                      `}
                       onClick={() => {
                         history.push({
                           pathname: "/proposal",
@@ -451,6 +491,7 @@ const ThankYouPage = () => {
                 <div
                   className="yellow__line"
                   style={{
+                    backgroundColor: SecondaryColor,
                     marginLeft: "0px",
                     width: "50px",
                     height: "9px",
