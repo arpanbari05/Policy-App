@@ -302,7 +302,7 @@ const CheckDiscount = ({ groupCode }) => {
                             color: #253858;
                             margin-bottom: 8px;
                             @media (max-width: 768px) {
-                              color: #0a87ff;
+                              color: ${PrimaryColor};
                               background-color: #eff7ff;
                               border-radius: 20px;
                               padding: 2px 5px;
@@ -378,7 +378,9 @@ function AdditionalDiscount({ additionalDiscount }) {
   const { name, description, percent, alias } = additionalDiscount;
   const { groupCode } = useParams();
   const { product, updateProductRedux } = useCartProduct(groupCode);
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { total_premium } = product;
 
   const discountAmount = (parseInt(total_premium) * parseInt(percent)) / 100;
@@ -440,8 +442,8 @@ function AdditionalDiscount({ additionalDiscount }) {
         </p>
         <p
           css={`
-            color: #0a87ff;
-            background-color: #eff7ff;
+            color: ${PrimaryColor};
+            background-color: ${PrimaryShade};
             padding: 3px 10px;
             margin-top: 6px;
             border-radius: 10px;
@@ -456,7 +458,7 @@ function AdditionalDiscount({ additionalDiscount }) {
       </div>
       <button
         css={`
-          background-color: #0a87ff;
+          background-color: ${PrimaryColor};
           border-radius: 6px;
           padding: 12px 30px;
           color: #fff;

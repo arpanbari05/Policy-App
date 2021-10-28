@@ -3,6 +3,7 @@ import styled from "styled-components/macro";
 import { mobile, small, tablet } from "../../../utils/mediaQueries";
 import useWindowSize from "../../../customHooks/useWindowSize";
 import Checkbox from "../../../pages/ComparePage/components/Checkbox/Checbox";
+import {useSelector} from 'react-redux'
 
 function RiderCard({
   rider,
@@ -15,6 +16,11 @@ function RiderCard({
   handleRiderChange = () => {},
   ...props
 }) {
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   const riderName = rider.name;
   console.log(isRiderSelected, "dsgagasd",isMandatory);
   const riderPremium = parseInt(rider.total_premium).toLocaleString("en-In");
@@ -42,6 +48,7 @@ function RiderCard({
     <>
       {(!parent_rider || parent_selected) && (
         <RiderCardWrap
+        PrimaryColor={PrimaryColor}
           isMandatory={isMandatory}
           {...props}
           isRiderSelected={isRiderSelectedCorrected}
@@ -207,7 +214,7 @@ font-weight:bold;
                   align-items: center;
                   border-radius: 50%;
                   background: ${isMandatory || isRiderSelectedCorrected
-                    ? "#0a87ff"
+                    ? PrimaryColor
                     : "white"};
                   box-shadow: ${isMandatory || isRiderSelectedCorrected
                     ? "0px 2px 5px -2px rgb(0 0 0 / 25%)"
@@ -233,6 +240,9 @@ function RiderDescription({
   productPage,
   onShowMore = () => {},
 }) {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [showMore, setShowMore] = useState(false);
   const handleShowMore = (evt) => {
     evt.stopPropagation();
@@ -278,7 +288,7 @@ function RiderDescription({
         {description.length > 90 ? (
           <span
             css={`
-              color: #0d6efd;
+              color: ${PrimaryColor};
               display: ${showMore ? "block" : "inline"};
               margin-left: 3px;
               font-weight: bold;
@@ -317,9 +327,9 @@ position:relative;
 padding: 5px 3px;
   }
   &:hover {
-    border-color: #0d6efd;
+    border-color: ${props=>props.PrimaryColor};
     .riderName_productDetail_custmizePlan {
-      color: #0a87ff;
+      color: ${props=>props.PrimaryColor};
     }
     box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
 

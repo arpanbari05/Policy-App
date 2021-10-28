@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrentSection } from "../productDetails.slice";
 
 function ProductDetailsNavbar() {
-  const currentSection = useSelector(state => state.productPage.currentSection);
+  const currentSection = useSelector(
+    (state) => state.productPage.currentSection
+  );
 
   const [showReviewButton, setShowReviewbutton] = useState(false);
 
@@ -63,7 +65,7 @@ function ProductDetailsNavbar() {
         <nav
           css={`
             position: relative;
-   
+
             width: 47%;
 
             @media (max-width: 1200px) {
@@ -76,10 +78,9 @@ function ProductDetailsNavbar() {
               position: relative;
               display: flex;
               align-items: center;
-           
             `}
           >
-  <ClickToScroll
+            <ClickToScroll
               label="Check Discounts"
               scrollToElementId="check-discounts"
               className="btn"
@@ -90,7 +91,7 @@ function ProductDetailsNavbar() {
               scrollToElementId="additional-riders"
               className="btn"
             />
-          
+
             <ClickToScroll
               label="Add-on Coverages"
               scrollToElementId="add-on-coverages"
@@ -126,18 +127,16 @@ function ProductDetailsNavbar() {
             ></div>
           </div>
         </nav>
-       
+
         {showReviewButton ? (
           <div
             css={`
-             
               width: fit-content;
             `}
           >
             <ReviewCartButton />
           </div>
         ) : null}
-     
       </div>
     </div>
   );
@@ -146,6 +145,9 @@ function ProductDetailsNavbar() {
 export default ProductDetailsNavbar;
 
 function ClickToScroll({ label, scrollToElementId }) {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const dispatch = useDispatch();
   const handleClick = () => {
     window.location.hash = scrollToElementId;
@@ -153,7 +155,9 @@ function ClickToScroll({ label, scrollToElementId }) {
     scrollToElement.scrollIntoView();
     dispatch(setCurrentSection(scrollToElementId));
   };
-  const currentSection = useSelector(state => state.productPage.currentSection);
+  const currentSection = useSelector(
+    (state) => state.productPage.currentSection
+  );
   const isSelected = currentSection === scrollToElementId;
   return (
     <button
@@ -171,8 +175,8 @@ function ClickToScroll({ label, scrollToElementId }) {
 
         font-weight: 900;
         font-size: 15px;
-       
-        color: ${!isSelected ? "#000" : "#0a87ff"};
+
+        color: ${!isSelected ? "#000" : PrimaryColor};
         &::after {
           content: "";
           opacity: 0;
@@ -186,7 +190,7 @@ function ClickToScroll({ label, scrollToElementId }) {
           background-color: var(--abc-red);
         }
         &:hover {
-          color: ${!isSelected ? "grey" : "#0a87ff"};
+          color: ${!isSelected ? "grey" : PrimaryColor};
           /* &::after {
             opacity: 1;
           } */
