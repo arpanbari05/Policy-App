@@ -226,6 +226,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                     css={`
                       display: flex;
                       justify-content: flex-end;
+                   
                       & .container {
                         margin: 0;
                         width: max-content;
@@ -237,7 +238,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                     `}
                   >
                     <Checkbox2
-                      css
+               
                       showTitle={false}
                       title={"No" + item}
                       //value={noForAll[item]}

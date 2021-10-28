@@ -10,6 +10,11 @@ import repolicy from "./../../../assets/svg/repolicy.svg";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 
 const Card = ({ values, isLoading }) => {
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   const { frontendData } = useSelector((state) => state.frontendBoot);
   return values?.product ? (
     <CardWrapper>
@@ -30,7 +35,7 @@ const Card = ({ values, isLoading }) => {
       >
         {values?.pdf_path ? (
           values?.pdf_path && (
-            <DownloadPolicy target="_blank" href={values?.pdf_path} download>
+            <DownloadPolicy target="_blank" href={values?.pdf_path} download PrimaryColor={PrimaryColor}>
               Download Policy{" "}
               {isLoading || !values?.pdf_path ? (
                 <span class="thankyou lds-dual-ring"></span>
@@ -40,7 +45,7 @@ const Card = ({ values, isLoading }) => {
             </DownloadPolicy>
           )
         ) : (
-          <DownloadPolicy track target="_blank" href={"http://fynixnew.benefitz.in/customer/login"}>
+          <DownloadPolicy track target="_blank" href={"http://fynixnew.benefitz.in/customer/login"} PrimaryColor={PrimaryColor}>
             Track Status <img src={paper} alt="track"></img>
           </DownloadPolicy>
         )}
@@ -96,7 +101,7 @@ const Card = ({ values, isLoading }) => {
         </StatusWrapper>
       )}
       {values?.status !== "underwriting_approval" && !values?.pdf_path && (
-        <StatusWrapper>
+        <StatusWrapper  SecondaryShade={SecondaryShade}>
           <DocImage>
             <img
               css={`
@@ -152,7 +157,7 @@ const CardWrapper = styled.div`
 `;
 const StatusWrapper = styled.div`
   border-radius: 8px;
-  background-color: #eaf0f3;
+  background-color: ${props=>props.SecondaryShade};
   width: 100%;
   padding: 16px;
   display: flex;
@@ -232,7 +237,7 @@ const DownloadPolicy = styled.a`
   display: inline-block;
   height: 58px;
   border-radius: 16px;
-  background-color: #0a87ff;
+  background-color: ${props=>props.PrimaryColor};
   padding: ${(props) => (props.track ? "14px" : "12px")} 22px 14px;
   text-align: ${(props) => props.track && "center"};
   /* font-family: pf_handbook_proregular; */

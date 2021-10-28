@@ -5,28 +5,31 @@ import "styled-components/macro";
 import { renderField } from "../../../../components/FormBuilder/formUtils";
 import pencil from "../../../../assets/images/pencil_pro.png";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { setActiveIndex } from "../../ProposalSections/ProposalSections.slice";
 import Card from "../../../../components/Card";
-const convertToFt = value => {
+const convertToFt = (value) => {
   console.log(value);
   let feet = Math.floor(value / 12);
   let inches = value % 12;
   return `${feet} ft ${inches} in`;
 };
 const SummaryTab = ({ title, data, values, index }) => {
-  console.log('hehe', data)
-  console.log('hehe2', values)
+  console.log("hehe", data);
+  console.log("hehe2", values);
   const url = useUrlQuery();
   const enquiryId = url.get("enquiryId");
   const dispatch = useDispatch();
   const history = useHistory();
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const getValueFromCode = useCallback((value, data) => {
-    console.log(value,data,'asdg')
+    console.log(value, data, "asdg");
     if (data.additionalOptions.options) {
       let filteredOption = data.additionalOptions.options[value];
-      console.log(filteredOption,'asdg3333333333')
+      console.log(filteredOption, "asdg3333333333");
       return filteredOption;
     }
     if (data.additionalOptions.customOptions) {
@@ -34,10 +37,10 @@ const SummaryTab = ({ title, data, values, index }) => {
       return value + " " + suffix;
     }
   }, []);
-  console.log('gegege', values)
+  console.log("gegege", values);
   const normalRender = useCallback((data, i) => {
     if (data.type === "title") return <TitleWrapper>{data.name}</TitleWrapper>;
-    if (data.type === 'date') {
+    if (data.type === "date") {
       return (
         <Col
           md={4}
@@ -47,10 +50,10 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
-          <p className="font_sub_p_s">
-            {values?.[data.name]}
+          <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+            {data.additionalOptions.label}
           </p>
+          <p className="font_sub_p_s">{values?.[data.name]}</p>
         </Col>
       );
     }
@@ -71,9 +74,11 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
+          <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+            {data.additionalOptions.label}
+          </p>
           <p className="font_sub_p_s">
-          {(data.name === "town" || data.name === "area")
+            {data.name === "town" || data.name === "area"
               ? values[data.name + "__value"]
               : getValueFromCode(values[data.name], data)}
           </p>
@@ -89,7 +94,9 @@ const SummaryTab = ({ title, data, values, index }) => {
         style={{ display: "inline-block" }}
         key={i}
       >
-        <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
+        <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+          {data.additionalOptions.label}
+        </p>
         <p className="font_sub_p_s">{values[data.name]}</p>
       </Col>
     ) : (
@@ -102,8 +109,8 @@ const SummaryTab = ({ title, data, values, index }) => {
         >
           <p className="text_b_black_g">{data.additionalOptions.label}</p>
           {values[data.name] instanceof Object &&
-            values[data.name].members &&
-            Object.keys(values[data.name].members).length ? (
+          values[data.name].members &&
+          Object.keys(values[data.name].members).length ? (
             Object.keys(values[data.name].members).map((item, _i) => {
               if (values[data.name].members[item] === true) {
                 return (
@@ -138,7 +145,7 @@ const SummaryTab = ({ title, data, values, index }) => {
     ) {
       return <></>;
     }
-    if (data.type === 'date') {
+    if (data.type === "date") {
       return (
         <Col
           md={4}
@@ -148,10 +155,10 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" style={{fontWeight:"900"}} >{data.additionalOptions.label}</p>
-          <p className="font_sub_p_s">
-            {values?.[item]?.[data.name]}
+          <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+            {data.additionalOptions.label}
           </p>
+          <p className="font_sub_p_s">{values?.[item]?.[data.name]}</p>
         </Col>
       );
     }
@@ -165,8 +172,12 @@ const SummaryTab = ({ title, data, values, index }) => {
           key={i}
           style={{ display: "inline-block" }}
         >
-          <p className="font_15_p_s" style={{fontWeight:"900"}}>{"Height"}</p>
-          <p className="font_sub_p_s">{convertToFt(values?.[item]?.[data.name])}</p>
+          <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+            {"Height"}
+          </p>
+          <p className="font_sub_p_s">
+            {convertToFt(values?.[item]?.[data.name])}
+          </p>
         </Col>
       );
     }
@@ -178,7 +189,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           className="details_border_b_p_s"
         >
-          <MedicalQuestionWrapper>
+          <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
           {console.log("gegegedd", values?.[item]?.[data.name])}
@@ -187,26 +198,33 @@ const SummaryTab = ({ title, data, values, index }) => {
             // values?.[item]?.[data.name]?.members &&
             // values?.[item]?.[data.name]?.members.length
             values?.[item]?.[data.name] instanceof Object &&
-              values?.[item]?.[data.name]?.members && values?.[item]?.[data.name]?.members
-              ? (
-                Object.keys(values?.[item]?.[data.name]?.members).map((_item, _i) => {
+            values?.[item]?.[data.name]?.members &&
+            values?.[item]?.[data.name]?.members ? (
+              Object.keys(values?.[item]?.[data.name]?.members).map(
+                (_item, _i) => {
                   return (
                     <>
                       <CustomMedicalTitle>{_item}</CustomMedicalTitle>
                       <InnerWrapper>
-                        {schema[i + 1].map(additionalQuestion => (
+                        {schema[i + 1].map((additionalQuestion) => (
                           <AdditionalWrapper2 className="text-dark">
-                            <AdditionalQuestion className="font_15_p_s" style={{fontWeight:"900"}}>
+                            <AdditionalQuestion
+                              className="font_15_p_s"
+                              style={{ fontWeight: "900" }}
+                            >
                               {additionalQuestion.additionalOptions.label ||
-                                additionalQuestion.additionalOptions.placeholder}
+                                additionalQuestion.additionalOptions
+                                  .placeholder}
                             </AdditionalQuestion>
                             <AdditionalAnswer className="font_sub_p_s">
-                              <p style={{
-                                overflowWrap: "break-word"
-                              }}>
+                              <p
+                                style={{
+                                  overflowWrap: "break-word",
+                                }}
+                              >
                                 {
                                   values?.[item]?.[data.name]?.[_item]?.[
-                                  additionalQuestion?.name
+                                    additionalQuestion?.name
                                   ]
                                 }
                               </p>
@@ -216,12 +234,14 @@ const SummaryTab = ({ title, data, values, index }) => {
                       </InnerWrapper>
                     </>
                   );
-                })
-              ) : (
-                <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
-                  <MedicalAnswer>No</MedicalAnswer>
-                </div>
-              )}
+                }
+              )
+            ) : (
+              <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
+                <MedicalAnswer>No</MedicalAnswer>
+              </div>
+            )
+          }
         </Col>
       );
     }
@@ -235,26 +255,32 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
+          <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+            {data.additionalOptions.label}
+          </p>
           <p className="font_sub_p_s">
             {getValueFromCode(values?.[item]?.[data.name], data)}
           </p>
         </Col>
       );
     return data.type === "text" || data.type === "checkbox" ? (
-      
-      <>{values?.[item]?.[data.name] &&
-      <Col
-        md={4}
-        sm={4}
-        xs={6}
-        className="mb-12 text-dark"
-        key={i}
-        style={{ display: "inline-block" }}
-      >
-        <p className="font_15_p_s" style={{fontWeight:"900"}}>{data.additionalOptions.label}</p>
-        <p className="font_sub_p_s">{values?.[item]?.[data.name]}</p>
-      </Col>}</>
+      <>
+        {values?.[item]?.[data.name] && (
+          <Col
+            md={4}
+            sm={4}
+            xs={6}
+            className="mb-12 text-dark"
+            key={i}
+            style={{ display: "inline-block" }}
+          >
+            <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+              {data.additionalOptions.label}
+            </p>
+            <p className="font_sub_p_s">{values?.[item]?.[data.name]}</p>
+          </Col>
+        )}
+      </>
     ) : (
       data.type === "custom_toggle" && (
         <Col
@@ -263,25 +289,27 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           className="details_border_b_p_s"
         >
-          <MedicalQuestionWrapper>
+          <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
           {values?.[item]?.[data.name] instanceof Object &&
-            values?.[item]?.[data.name]?.members &&
-            Object.keys(values?.[item]?.[data.name]?.members).length ? (
-            Object.keys(values?.[item]?.[data.name]?.members).map((_item, _i) => {
-              if (values?.[item]?.[data.name]?.members[_item] === true) {
-                return (
-                  <div
-                    key={_i}
-                    class="col-md-2 mb-12"
-                    style={{ display: "inline-block" }}
-                  >
-                    <MedicalAnswer>{_item}</MedicalAnswer>
-                  </div>
-                );
-              } else return <></>;
-            })
+          values?.[item]?.[data.name]?.members &&
+          Object.keys(values?.[item]?.[data.name]?.members).length ? (
+            Object.keys(values?.[item]?.[data.name]?.members).map(
+              (_item, _i) => {
+                if (values?.[item]?.[data.name]?.members[_item] === true) {
+                  return (
+                    <div
+                      key={_i}
+                      class="col-md-2 mb-12"
+                      style={{ display: "inline-block" }}
+                    >
+                      <MedicalAnswer>{_item}</MedicalAnswer>
+                    </div>
+                  );
+                } else return <></>;
+              }
+            )
           ) : !data.additionalOptions.showMembers &&
             values?.[item]?.[data.name] &&
             values?.[item]?.[data.name][`is${data.name}`] === "Y" ? (
@@ -302,6 +330,7 @@ const SummaryTab = ({ title, data, values, index }) => {
     <Card styledCss={`margin-bottom: 20px;`}>
       <div className="card_proposal_summary  box-shadow_plan_box_p_s_s_proposal_form_l">
         <EditWrapper
+          PrimaryColor={PrimaryColor}
           onClick={() => {
             dispatch(setActiveIndex(index));
             history.push("/proposal?enquiryId=" + enquiryId);
@@ -310,44 +339,61 @@ const SummaryTab = ({ title, data, values, index }) => {
           {" "}
           {/* <span>Edit</span> */}
           {/* <img src={pencil} alt="edit"></img> */}
-          <PencilWrapper className="d-flex justify-content-center align-items-center" style={{color:"#0a87ff"}}>
-          {/* <PencilIcon
+          <PencilWrapper
+            className="d-flex justify-content-center align-items-center"
+            style={{ color: PrimaryColor }}
+          >
+            {/* <PencilIcon
             style={{
               color: "#0a87ff",
 
             }}
             width="15px"
           /> */}
-           <i class="fas fa-pen"></i>
-        </PencilWrapper>
+            <i class="fas fa-pen"></i>
+          </PencilWrapper>
         </EditWrapper>
         <Row>
           <Col md={11} className="bor_right_m_p_s_title_main">
-            <MainTitle bg>{title}</MainTitle>
+            <MainTitle
+              PrimaryColor={PrimaryColor}
+              PrimaryShade={` linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
+              bg
+            >
+              {title}
+            </MainTitle>
           </Col>
         </Row>
         <br className="hide-on-mobile" />
-        <Row css={`
-      margin-left: 10px;
-      `} >
+        <Row
+          css={`
+            margin-left: 10px;
+          `}
+        >
           {data instanceof Array
             ? data.map(normalRender)
             : Object.keys(data).map((item, index) => (
-              <>
-                <Border>
-                  <InnerTextBorder>
-                    <span style={{ textTransform: "capitalize", }}>
-                      {item.includes("_")
-                        ? item.split("_").slice(1).join(", ")
-                        : item}
-                    </span>
-                  </InnerTextBorder>
-                  {data[item].map((_data, index) => {
-                    return objectRender(_data, index, item, title, data[item]);
-                  })}
-                </Border>
-              </>
-            ))}
+                <>
+                  <Border>
+                    <InnerTextBorder>
+                      <span style={{ textTransform: "capitalize" }}>
+                        {item.includes("_")
+                          ? item.split("_").slice(1).join(", ")
+                          : item}
+                      </span>
+                    </InnerTextBorder>
+                    {data[item].map((_data, index) => {
+                      return objectRender(
+                        _data,
+                        index,
+                        item,
+                        title,
+                        data[item]
+                      );
+                    })}
+                  </Border>
+                </>
+              ))}
         </Row>
       </div>
     </Card>
@@ -371,7 +417,7 @@ const Border = styled.div`
 `;
 const EditWrapper = styled.div`
   position: absolute;
-  display:flex;
+  display: flex;
   align-items: center;
   right: 20px;
   top: 40px;
@@ -379,7 +425,7 @@ const EditWrapper = styled.div`
   border-radius: 31px;
   background-color: #f6f7f9;
   padding: 4px 0px;
-  color:#0a87ff;
+  color: ${(props) => props.PrimaryColor};
   cursor: pointer;
   /* padding-left: 10px; */
   z-index: 50;
@@ -425,7 +471,6 @@ const InnerTextBorder = styled.div`
   font-size: 18px;
 
   @media (max-width: 767px) {
-
     margin-bottom: 0;
     margin-top: 12px;
     font-size: 14px;
@@ -436,7 +481,7 @@ const MedicalQuestionWrapper = styled.p`
   text-align: inherit;
   line-height: 27px !important;
   color: #000000;
-  
+
   font-weight: 900 !important;
   position: relative;
   padding-left: 12px;
@@ -459,15 +504,15 @@ const MedicalQuestionWrapper = styled.p`
     position: absolute;
     left: -4px;
     top: -2px;
-    background-color: #2cd44a;
+    background-color: ${(props) => props.SecondaryColor};
     border-radius: 50px;
   }
 `;
 const MedicalAnswer = styled.p`
   margin: 0px 0 -15px;
   text-transform: capitalize;
-  padding-left:15px;
-  
+  padding-left: 15px;
+
   font-size: 18px;
   @media (max-width: 767px) {
     font-size: 12px;
@@ -480,7 +525,7 @@ const TitleWrapper = styled.p`
 
   color: #69758d !important;
   font-weight: 600 !important;
-  
+
   font-size: 18px !important;
   width: 100%;
   &:not(:first-child) {
@@ -510,11 +555,11 @@ const AdditionalWrapper = styled.div`
   margin-bottom: 12px;
 `;
 const AdditionalWrapper2 = styled.div`
-min-width: 25%;
-max-width: 257px;
-margin-bottom: 12px;
-text-align: left;
-margin-right: 13px;
+  min-width: 25%;
+  max-width: 257px;
+  margin-bottom: 12px;
+  text-align: left;
+  margin-right: 13px;
 `;
 const AdditionalQuestion = styled.div``;
 const AdditionalAnswer = styled.div`
@@ -527,10 +572,8 @@ const MainTitle = styled.h2`
   margin-top: ${(props) => (props.bg ? "15px" : "10")};
   font-weight: 900;
 
-  background: ${(props) =>
-    props.bg && " linear-gradient(90deg, #eff7ff 0%,rgb(255 255 255) 100%)"};
-  color: ${(props) => props.bg && "#0a87ff;"};
+  background: ${(props) => props.bg && props.PrimaryShade};
+  color: ${(props) => props.bg && props.PrimaryColor};
   font-size: 21px;
   padding: 10px;
-  
 `;
