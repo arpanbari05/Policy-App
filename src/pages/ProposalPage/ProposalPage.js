@@ -38,6 +38,7 @@ const ProposalPage = ({ history }) => {
   let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
 
   const [active, setActive] = useState(0);
+  const [proposerDactive, setProposerDactive] = useState(true)
   const { currentSchema } = useSelector((state) => state.schema);
   const queryStrings = useUrlQuery();
   const enquiryId = queryStrings.get("enquiryId");
@@ -112,13 +113,12 @@ const ProposalPage = ({ history }) => {
       >
     
         <Card
-         
           styledCss={`
           margin-bottom: 20px; 
           cursor:pointer;
         `}
         >
-          {activeForm === "Proposer Details" ? (
+          {activeForm === "Proposer Details" && proposerDactive ? (
             <>
               {" "}
               <MainTitle PrimaryColor={PrimaryColor} bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}>{activeForm}</MainTitle>{" "}
@@ -131,7 +131,7 @@ const ProposalPage = ({ history }) => {
                 setActive={setActive}
                 name={activeForm}
                 defaultValue={defaultData}
-              
+                setProposerDactive={setProposerDactive}
               />
             </>
           ) : (
@@ -143,6 +143,7 @@ const ProposalPage = ({ history }) => {
               `}
                onClick={() => {
             setActive(0);
+            setProposerDactive(true);
           }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Proposer Details</MainTitle>
@@ -176,11 +177,7 @@ const ProposalPage = ({ history }) => {
                 schema={currentSchema ? currentSchema[activeForm] : {}}
                 setActive={setActive}
                 name={activeForm}
-                setBack={() => {
-                  setActive(active - 1);
-                }}
                 defaultValue={defaultData}
-              
               />
             </>
           ) : (

@@ -187,7 +187,7 @@ const AdditionalBenefits = ({
                   }}
                 >
                   {
-                    riders.length?riders.map(rider => {
+                    riders && riders.length?riders.map(rider => {
                       return(
                         <RiderWrapper
                       show={rider.total_premium}

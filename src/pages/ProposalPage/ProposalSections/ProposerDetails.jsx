@@ -19,6 +19,7 @@ const ProposerDetails = ({
   active,
   defaultValue = {},
   activeForm,
+  setProposerDactive
 }) => {
   const { values, setValues, setValid, submit, setSubmit, setCustomValid } =
     useProposalSections(setActive, name, defaultValue);
@@ -70,13 +71,11 @@ const ProposerDetails = ({
         </Form>
       </div>
       <div class="proposal_continue_back_margin container">
-        {console.log(active, "dgsaadsg")}
+       
         <BackBtn
           hide={name === "Proposer Details"}
           onClick={() => {
-            // console.log(active,"hellohello")
-            // dispatch(setActiveIndex(active?active-1:active))
-            // setActive(active + 1);
+            setProposerDactive(false);
             setActive((prev) => {
               if (prev === 0) return 0;
               else return prev - 1;
