@@ -38,6 +38,7 @@ const ProposalPage = ({ history }) => {
   let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
 
   const [active, setActive] = useState(0);
+  const [proposerDactive, setProposerDactive] = useState(false)
   const { currentSchema } = useSelector((state) => state.schema);
   const queryStrings = useUrlQuery();
   const enquiryId = queryStrings.get("enquiryId");
@@ -109,13 +110,12 @@ const ProposalPage = ({ history }) => {
       >
     
         <Card
-         
           styledCss={`
           margin-bottom: 20px; 
           cursor:pointer;
         `}
         >
-          {activeForm === "Proposer Details" ? (
+          {activeForm === "Proposer Details" && proposerDactive ? (
             <>
               {" "}
               <MainTitle bg>{activeForm}</MainTitle>{" "}
@@ -128,7 +128,7 @@ const ProposalPage = ({ history }) => {
                 setActive={setActive}
                 name={activeForm}
                 defaultValue={defaultData}
-              
+                setProposerDactive={setProposerDactive}
               />
             </>
           ) : (
@@ -140,6 +140,7 @@ const ProposalPage = ({ history }) => {
               `}
                onClick={() => {
             setActive(0);
+            setProposerDactive(true);
           }}
             >
               <MainTitle>Proposer Details</MainTitle>

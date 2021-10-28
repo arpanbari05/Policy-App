@@ -8,10 +8,9 @@
 .quotes_compare_plan_name {
   padding: 10px;
   height: 70px;
-  width: 100%;
+  width: 45% !important;
   box-shadow: 0 2px 9px 0 hsla(0, 0%, 87.1%, 0.3);
-  margin-left: 16px;
-  margin-right: 16px;
+  
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -25,13 +24,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid #dfe1e6;
-  background-color: #fff;
+  /* border: 1px solid #dfe1e6; */
+  /* background-color: #fff; */
   border-radius: 50%;
 }
 .quotes_img_compare,
 .quotes_img_compare1 {
-  width: 39px;
+  width: 100%;
 }
 .quotes_compare_image {
   overflow: hidden;
@@ -47,11 +46,18 @@
 
 .compare_plan_name2 {
   height: 40px;
-  display: inline-block;
-  display: -webkit-box;
+display:flex;
   overflow: hidden;
+  align-items: center;
+
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+
+@media (max-width:400px){
+  .compare_plan_name2{
+    font-size: 10px !important;
+  }
 }
 
 .cover_compare {
@@ -127,10 +133,10 @@
 .quotes_compare_plan_name {
   padding: 10px;
   height: 70px;
-  width: 100%;
+  width: 40%;
   box-shadow: 0 2px 9px 0 hsla(0, 0%, 87.1%, 0.3);
-  margin-left: 16px;
-  margin-right: 16px;
+  /* margin-left: 16px;
+  margin-right: 16px; */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -140,7 +146,7 @@
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 11px !important;
   }
 }
 
@@ -166,5 +172,15 @@
     width: unset;
     display: unset;
     border-radius: unset;
+  }
+}
+
+@media (max-width:400px){
+  .compare_plan_name2{
+    font-size: 11px !important;
+  }
+  .cover_compare span {
+    color: #7a869a;
+    font-size: 9px !important;
   }
 }

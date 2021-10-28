@@ -340,7 +340,7 @@ function SeeDetailsFooter({
         <BuyNowModal
           showBuyNow={showBuyNow}
           setShowBuyNow={setShowBuyNow}
-          handleClose={handleClose}
+          handleCloseSeeDetail={handleClose}
         />
       )}
     </div>
