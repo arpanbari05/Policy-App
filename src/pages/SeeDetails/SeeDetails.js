@@ -321,7 +321,12 @@ const SeeDetails = ({
   }, [activeFieldset]);
   console.log(planDetails, "sadg321");
   return (
-    <div>
+    <div
+      style={{
+        position: "relative",
+        minHeight: "100vh",
+      }}
+    >
       <Modal
         className="see-details"
         backdropClassName="ModalBackdrop"
@@ -535,7 +540,10 @@ const SeeDetails = ({
             activeFieldset={activeFieldset}
             setActiveFieldset={setActiveFieldset}
           />
-          <div className="tab-container z-container">
+          <div
+            className="tab-container z-container"
+            style={{ paddingBottom: "100px" }}
+          >
             <PlanDetailsMobile
               ActiveMainTab={activeFieldset === 1 ? true : false}
               planDetails={planDetails}
@@ -568,7 +576,8 @@ const SeeDetails = ({
           </div>
           <Modal.Footer
             style={{
-              position: "sticky",
+              position: "fixed",
+              width: "100%",
               bottom: "0px",
               padding: "10px !important",
               boxShadow: "0px -1px 5px #c2cbde",

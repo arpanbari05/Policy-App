@@ -237,8 +237,9 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                       }
                     `}
                   >
+                  <div style={{marginRight:"15px"}}>
                     <Checkbox2
-               
+                      
                       showTitle={false}
                       title={"No" + item}
                       //value={noForAll[item]}
@@ -252,6 +253,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                         }
                       }}
                     ></Checkbox2>{" "}
+                    </div>
                     <span>No For All Questions </span>{" "}
                   </div>
                   {!canProceed?.canProceed &&
