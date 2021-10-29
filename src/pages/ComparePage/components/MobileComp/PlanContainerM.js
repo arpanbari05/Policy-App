@@ -58,7 +58,12 @@ const PlanContainerM = ({
       {product?.name ? (
         <Row
           className="price_IC_box text-center position-relative "
-          style={{ boxShadow: "none", width: "42%", minHeight: "180px", maxHeight:"200px" }}
+          style={{
+            boxShadow: "none",
+            width: "42%",
+            minHeight: "180px",
+            maxHeight: "200px",
+          }}
           css={`
             margin: 0px !important;
             @media (max-width: 767px) {
@@ -107,32 +112,32 @@ const PlanContainerM = ({
           <CompareBtn
             windowWidth={windowWidth}
             onClick={() => {
-                const selectedPlan = {
-                  // company_alias: mergedQuotes[0]?.company_alias,
-                  // logo: mergedQuotes[0]?.logo,
-                  product: product,
-                  total_premium:
-                    discount[`${product.id}${sum_insured}`]?.total_premium +
-                      additionalPremium || total_premium + additionalPremium,
-                  // premium: mergedQuotes[0]?.premium[activeCover],
-                  sum_insured:
-                    discount[`${product.id}${sum_insured}`]?.sum_insured ||
-                    sum_insured,
-                  tax_amount:
-                    discount[`${product.id}${sum_insured}`]?.tax_amount ||
-                    tax_amount,
-                  tenure:
-                    discount[`${product.id}${sum_insured}`]?.tenure || tenure,
-                };
-                addProduct({
-                  ...selectedPlan,
-                  product_id: selectedPlan.product?.id,
-                  premium: selectedPlan.total_premium + additionalPremium,
-                  group_id: parseInt(selectedGroup),
-                  service_tax: selectedPlan.tax_amount,
-                  riders: riders[`${product.id}${sum_insured}`],
-                }).then(() => setShowBuyNowPopup(true));
-              }}
+              const selectedPlan = {
+                // company_alias: mergedQuotes[0]?.company_alias,
+                // logo: mergedQuotes[0]?.logo,
+                product: product,
+                total_premium:
+                  discount[`${product.id}${sum_insured}`]?.total_premium +
+                    additionalPremium || total_premium + additionalPremium,
+                // premium: mergedQuotes[0]?.premium[activeCover],
+                sum_insured:
+                  discount[`${product.id}${sum_insured}`]?.sum_insured ||
+                  sum_insured,
+                tax_amount:
+                  discount[`${product.id}${sum_insured}`]?.tax_amount ||
+                  tax_amount,
+                tenure:
+                  discount[`${product.id}${sum_insured}`]?.tenure || tenure,
+              };
+              addProduct({
+                ...selectedPlan,
+                product_id: selectedPlan.product?.id,
+                premium: selectedPlan.total_premium + additionalPremium,
+                group_id: parseInt(selectedGroup),
+                service_tax: selectedPlan.tax_amount,
+                riders: riders[`${product.id}${sum_insured}`],
+              }).then(() => setShowBuyNowPopup(true));
+            }}
             value={`${
               discount[`${product.id}${sum_insured}`]?.total_premium +
                 additionalPremium +
@@ -147,7 +152,7 @@ const PlanContainerM = ({
         </Row>
       ) : (
         <EmptyContainer
-        PrimaryColor={PrimaryColor}
+          PrimaryColor={PrimaryColor}
           className="IC_product_compare_card blank"
           style={{
             width: "42% !important",
@@ -155,6 +160,7 @@ const PlanContainerM = ({
             borderRadius: "none",
           }}
           css={`
+            border: 1px dashed ${PrimaryColor} !important;
             @media (max-width: 420px) {
               width: 44%;
             }
@@ -184,7 +190,7 @@ export default PlanContainerM;
 
 const EmptyContainer = styled.div`
   border: 2px dashed #e2a6a9;
-  color: ${props=>props.PrimaryColor} !important;
+  color: ${(props) => props.PrimaryColor} !important;
   background: #f3f4f9;
   border-radius: 12px;
   height: 157px;

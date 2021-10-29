@@ -2,13 +2,18 @@ import React from "react";
 import { Modal, Container } from "react-bootstrap";
 import styled from "styled-components";
 import StyledButtonM from "../Button/StyledButtonM";
-
+import {useSelector} from 'react-redux'
 const ToolTipMobileModal = ({
   title,
   show,
   content,
   handleClose
 }) => {
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   return (
     <MobileModal
       centered
@@ -22,7 +27,7 @@ const ToolTipMobileModal = ({
       className={`showOnMobile hideOnDesktop`}
       onHide={handleClose}
     >
-      <ModalTitle>{title}</ModalTitle>
+      <ModalTitle PrimaryColor={PrimaryColor}>{title}</ModalTitle>
       <ModalContent>{content}</ModalContent>
     </MobileModal>
   );
@@ -58,7 +63,7 @@ const ModalTitle = styled.h5`
   font-size: 13px;
   font-family: "Inter-Regular";
   font-weight: bold;
-  color:  #0d6efd;
+  color:  ${props=>props.tPrimaryColor};
   font-size: 15px;
   font-weight: 900;
   text-align:center;
