@@ -30,13 +30,13 @@ const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
 );
 
-const keyBenefits = (plans, title, windowWidth) => {
+const keyBenefits = (plans, title, windowWidth, PrimaryShade) => {
   return (
     <>
       {" "}
       <tr
         css={`
-          border-bottom: 1px solid #ebf5ff !important;
+          border-bottom: 1px solid ${PrimaryShade} !important;
           &:hover {
             box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
           }
@@ -62,7 +62,7 @@ const keyBenefits = (plans, title, windowWidth) => {
                 style={{ whiteSpace: "break-spaces" }}
                 className={`${item === 2 && "showOnDesktopF"}`}
                 css={`
-                  border-bottom: 1px solid #ebf5ff !important;
+                  border-bottom: 1px solid ${PrimaryShade} !important;
                   color: #647188;
                 `}
               >
@@ -81,7 +81,9 @@ const dataset = (
   hideCells,
   setHideCells,
   title,
-  windowWidth
+  windowWidth,
+  PrimaryShade,
+  PrimaryColor
 ) => {
   // console.log("21", plans);
   const dataArray = [];
@@ -141,7 +143,7 @@ const dataset = (
               <tr
                 style={{ display: data?.is_compariable !== 1 && "none" }}
                 css={`
-                  border-bottom: 1px solid #ebf5ff !important;
+                  border-bottom: 1px solid ${PrimaryShade} !important;
                   &:hover {
                     box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
                   }
@@ -167,7 +169,7 @@ const dataset = (
                           style={{ whiteSpace: "break-spaces" }}
                           className={`${item === 2 && "showOnDesktopF"}`}
                           css={`
-                            border-bottom: 1px solid #ebf5ff !important;
+                            border-bottom: 1px solid ${PrimaryShade} !important;
                             color: #647188;
                           `}
                         >
@@ -202,6 +204,7 @@ const dataset = (
                             <label
                               htmlFor={"exclusions" + item}
                               className="showmore__button"
+                              css={`color:${PrimaryColor} !important;`}
                             >
                               Show More
                             </label>
@@ -288,7 +291,7 @@ const dataset = (
               <tr
                 style={{ display: data?.is_compariable !== 1 && "none" }}
                 css={`
-                  border-bottom: 1px solid #ebf5ff !important;
+                  border-bottom: 1px solid ${PrimaryShade} !important;
                   &:hover {
                     box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
                   }
@@ -306,7 +309,7 @@ const dataset = (
                 <td
                   style={{ whiteSpace: "break-spaces" }}
                   css={`
-                    border-bottom: 1px solid #ebf5ff !important;
+                    border-bottom: 1px solid ${PrimaryShade} !important;
                     color: #647188;
                   `}
                 >
@@ -334,7 +337,7 @@ const dataset = (
                 <td
                   style={{ whiteSpace: "break-spaces" }}
                   css={`
-                    border-bottom: 1px solid #ebf5ff !important;
+                    border-bottom: 1px solid ${PrimaryShade} !important;
                     color: #647188;
                   `}
                 >
@@ -363,7 +366,7 @@ const dataset = (
                   className="showOnDesktopF"
                   style={{ whiteSpace: "break-spaces" }}
                   css={`
-                    border-bottom: 1px solid #ebf5ff !important;
+                    border-bottom: 1px solid ${PrimaryShade} !important;
                     color: #647188;
                   `}
                 >
@@ -398,7 +401,7 @@ const dataset = (
   }
   return dataArray;
 };
-const AdditionalBenefits = ({ plans, title, index, windowWidth }) => {
+const AdditionalBenefits = ({ plans, title, index, windowWidth,PrimaryShade }) => {
   const dispatch = useDispatch();
   const riders = useSelector(({ comparePage }) => comparePage.riders);
 
@@ -408,10 +411,10 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth }) => {
       <tr
         className="nohover"
         css={`
-          border-bottom: 1px solid #ebf5ff !important;
+          border-bottom: 1px solid ${PrimaryShade} !important;
         `}
         css={`
-          border-bottom: 1px solid #ebf5ff !important;
+          border-bottom: 1px solid ${PrimaryShade} !important;
         `}
       >
         <th scope="row">
@@ -447,7 +450,7 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth }) => {
                       </OverlayTrigger>
                       <RiderPremium>
                         <i className="fa fa-inr"></i>{" "}
-                        <div style={{ fontWeight: "900", fontSize:"14px" }}>
+                        <div style={{ fontWeight: "900", fontSize: "14px" }}>
                           ₹ {innerItem.total_premium}{" "}
                         </div>{" "}
                         <div>
@@ -501,6 +504,9 @@ const TBody = ({
   setHideCells,
   hideCells,
 }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const dispatch = useDispatch();
   const { discount, riders } = useSelector((state) => state.comparePage);
   const { quotesForCompare, selectedGroup, productDiscounts } = useSelector(
@@ -546,8 +552,6 @@ const TBody = ({
   }, [productDiscounts]);
   console.log("dddd", mergedCover);
 
- 
-
   return (
     <>
       <tbody
@@ -556,14 +560,14 @@ const TBody = ({
         <tr
           className="table__title-compare"
           css={`
-            border-bottom: 1px solid #ebf5ff !important;
+            border-bottom: 1px solid ${PrimaryShade} !important;
           `}
         >
           <th
             colSpan={windowWidth > 1023 ? "4" : "3"}
             className="title_compare_t"
             css={`
-              background-color: #ebf5ff !important;
+              background-color: ${PrimaryShade} !important;
               font-size: 20px;
               padding: 12px 16px !important;
               position: relative;
@@ -580,7 +584,7 @@ const TBody = ({
                   position: absolute;
                   left: 1px;
                   top: 0px;
-                  background-color: #2cd44a;
+                  background-color: ${SecondaryColor};
                 }
               `}
             >
@@ -592,7 +596,7 @@ const TBody = ({
           <>
             <tr
               css={`
-                border-bottom: 1px solid #ebf5ff !important;
+                border-bottom: 1px solid ${PrimaryShade} !important;
                 &:hover {
                   box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
                 }
@@ -612,9 +616,8 @@ const TBody = ({
                 {" "}
                 {plans[0]?.data?.sum_insured ? (
                   <select
-                    style={{ color: "#647188", background:"white" }}
+                    style={{ color: "#647188", background: "white" }}
                     onChange={(e) => {
-                 
                       dispatch(
                         removeQuotesForCompare(
                           `${plans[0]?.data?.product.id}${plans[0]?.data?.sum_insured}`
@@ -628,7 +631,10 @@ const TBody = ({
                       );
                     }}
                   >
-                    <option id={plans[0]?.data?.sum_insured}> ₹ {numToLakh(plans[0]?.data?.sum_insured)}</option>
+                    <option id={plans[0]?.data?.sum_insured}>
+                      {" "}
+                      ₹ {numToLakh(plans[0]?.data?.sum_insured)}
+                    </option>
                     {mergedCover.length > 0 &&
                       mergedCover[0]?.map((data) => {
                         if (
@@ -637,7 +643,9 @@ const TBody = ({
                             `${plans[0]?.data?.product.id}${data}`
                           )
                         ) {
-                          return <option id={data} > ₹ {numToLakh(data)}</option>;
+                          return (
+                            <option id={data}> ₹ {numToLakh(data)}</option>
+                          );
                         }
                       })}
                   </select>
@@ -652,9 +660,8 @@ const TBody = ({
                 {" "}
                 {plans[1]?.data?.sum_insured ? (
                   <select
-                    style={{ color: "#647188", background:"white" }}
+                    style={{ color: "#647188", background: "white" }}
                     onChange={(e) => {
-                      
                       dispatch(
                         removeQuotesForCompare(
                           `${plans[1]?.data?.product.id}${plans[1]?.data?.sum_insured}`
@@ -678,7 +685,9 @@ const TBody = ({
                             `${plans[1]?.data?.product.id}${data}`
                           )
                         ) {
-                          return <option id={data}> ₹ {numToLakh(data)}</option>;
+                          return (
+                            <option id={data}> ₹ {numToLakh(data)}</option>
+                          );
                         }
                       })}
                   </select>
@@ -692,9 +701,8 @@ const TBody = ({
               {plans[2]?.data?.sum_insured ? (
                 <td className={`${plans[2] && "showOnDesktopF"}`}>
                   <select
-                    style={{ color: "#647188", background:"white" }}
+                    style={{ color: "#647188", background: "white" }}
                     onChange={(e) => {
-                   
                       dispatch(
                         removeQuotesForCompare(
                           `${plans[2]?.data?.product.id}${plans[2]?.data?.sum_insured}`
@@ -708,11 +716,7 @@ const TBody = ({
                       );
                     }}
                   >
-                    <option>
-                      {" "}
-                      ₹{" "}
-                      {numToLakh(plans[2]?.data?.sum_insured)}
-                    </option>
+                    <option> ₹ {numToLakh(plans[2]?.data?.sum_insured)}</option>
                     {mergedCover.length > 0 &&
                       mergedCover[2]?.map((data) => {
                         if (
@@ -721,13 +725,7 @@ const TBody = ({
                             `${plans[2]?.data?.product.id}${data}`
                           )
                         ) {
-                          return (
-                            <option id={data}>
-                              {" "}
-                              ₹
-                              {numToLakh(data)}
-                            </option>
-                          );
+                          return <option id={data}> ₹{numToLakh(data)}</option>;
                         }
                       })}
                   </select>
@@ -741,7 +739,7 @@ const TBody = ({
 
             <tr
               css={`
-                border-bottom: 1px solid #ebf5ff !important;
+                border-bottom: 1px solid ${PrimaryShade} !important;
                 &:hover {
                   box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.16) !important;
                 }
@@ -764,7 +762,7 @@ const TBody = ({
                     className={`${item === 2 && "showOnDesktopF"}`}
                   >
                     <select
-                      style={{ color: "#647188",  background:"white" }}
+                      style={{ color: "#647188", background: "white" }}
                       value={
                         discount[
                           `${plans[index].data.product.id}${plans[index].data.sum_insured}`
@@ -808,13 +806,14 @@ const TBody = ({
             </tr>
           </>
         ) : title === "Key Benefits" ? (
-          keyBenefits(plans, title, windowWidth)
+          keyBenefits(plans, title, windowWidth, PrimaryShade)
         ) : title === "Additional Benefits" ? (
           <AdditionalBenefits
             plans={plans}
             title={title}
             index={index}
             windowWidth={windowWidth}
+            PrimaryShade={PrimaryShade}
           />
         ) : (
           dataset(
@@ -824,7 +823,9 @@ const TBody = ({
             hideCells,
             setHideCells,
             title,
-            windowWidth
+            windowWidth,
+            PrimaryShade,
+            PrimaryColor
           )
         )}
         <tr>
