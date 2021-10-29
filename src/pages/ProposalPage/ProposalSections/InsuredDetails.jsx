@@ -226,6 +226,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                     css={`
                       display: flex;
                       justify-content: flex-end;
+                   
                       & .container {
                         margin: 0;
                         width: max-content;

@@ -50,9 +50,11 @@ const FormBuilder = ({
     setNoForAll
   );
 
+  
   const [trigger, setTrigger] = useState(false);
   const { proposalData } = useSelector((state) => state.proposalPage);
-  console.log(schema, values, "sdags");
+  console.log(proposalData,'sgad')
+
   useEffect(() => {
     if (trigger) {
       triggerValidation(trigger);
@@ -288,6 +290,7 @@ const FormBuilder = ({
                                       asyncOptions={
                                         asyncOptions[innerItem.name]
                                       }
+                                      allValues={proposalData}
                                       value={
                                         values[innerItem.parent]
                                           ? values[innerItem.parent][member]
@@ -410,6 +413,7 @@ const FormBuilder = ({
                         }}
                         age={item?.validate?.age}
                         readOnly={item.readOnly}
+                        allValues={proposalData}
                         customMembers={
                           item.render &&
                           item.render.when.includes(".") &&

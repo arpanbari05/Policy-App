@@ -11,13 +11,30 @@ const DropDown = ({
   reference,
   options = { value: "key" },
   value,
+  allValues,
   error,
   asyncOptions,
   dropPlaceholder,
   readOnly,
   checkValidation,
+  excludeOptions
 }) => {
-  console.log(checkValidation, value);
+  // const excludeOptions = {
+  //   when: "Proposer.marital_status",
+  //   is: "single",
+  //   exclude: ["WIFE", "HUSBAND"],
+  // };
+
+  const excludeOptionsPage = excludeOptions?.when?.split(".")[0];
+  const excludeOptionsVariable = excludeOptions?.when?.split(".")[1];
+
+  // console.log(
+  //   "sdga",
+  //   allValues[`${excludeOptionsPage} Details`]?.[excludeOptionsVariable] ===
+  //     excludeOptions.is,
+  //   excludeOptionsPage,
+  //   excludeOptionsVariable
+  // );
   const [selectOption, setSelectOption] = useState({});
   const [dataValue, setDataValue] = useState();
   useEffect(() => {
@@ -38,14 +55,28 @@ const DropDown = ({
         height={height}
         borderR={borderR}
       >
-        {((Object.keys(selectOption).length !== 1 && checkValidation?.required && !asyncOptions ) ||asyncOptions || !checkValidation?.required )&& (
+        {((Object.keys(selectOption).length !== 1 &&
+          checkValidation?.required &&
+          !asyncOptions) ||
+          asyncOptions ||
+          !checkValidation?.required) && (
           <option value={""}>{dropPlaceholder || "- Select -"}</option>
         )}
-        {Object.keys(selectOption).map((item) => (
-          <option key={item + selectOption[item]} value={item}>
-            {selectOption[item]}
-          </option>
-        ))}
+        {Object.keys(selectOption).map((item) => {
+          if (
+            (excludeOptions &&
+              allValues[`${excludeOptionsPage} Details`]?.[
+                excludeOptionsVariable
+              ] === excludeOptions.is && !excludeOptions.exclude.includes(item)) ||
+            !excludeOptions
+          ) {
+            return (
+              <option key={item + selectOption[item]} value={item}>
+                {selectOption[item]}
+              </option>
+            );
+          }
+        })}
       </Select>
       <Label height={height}>{label}</Label>
       {error && <p className="formbuilder__error">{error}</p>}
@@ -89,7 +120,7 @@ const Select = styled.select`
 
   border: ${(props) => props.error && "solid 1px #c7222a"};
   // border-radius: 8px;
- // background-color: ${(props) => props.error && "#fff6f7"};
+  // background-color: ${(props) => props.error && "#fff6f7"};
 
   height: ${(props) => (!props.height ? "55px" : "35px")};
   border-right: ${(props) => props.borderR && "1px solid #ced4da"};
@@ -131,14 +162,14 @@ const Label = styled.label`
   transition: all 0.3s ease-in-out;
   font-weight: 900;
   padding: 0 5px;
-  @media (max-width: 1200px){
-    font-size:15px !important;
+  @media (max-width: 1200px) {
+    font-size: 15px !important;
   }
-  @media (max-width: 1100px){
-    font-size:14px !important;
+  @media (max-width: 1100px) {
+    font-size: 14px !important;
   }
-  @media (max-width: 1050px){
-    font-size:13px !important;
+  @media (max-width: 1050px) {
+    font-size: 13px !important;
   }
   @media (max-width: 767px) {
     left: 10px;

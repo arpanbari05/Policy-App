@@ -125,7 +125,7 @@
   font-size: 20px;
   margin-bottom: 30px;
   & a {
-    color: #0a87ff !important;
+    //color: #0a87ff !important;
     font-weight: bold !important;
     // font-family: "pf_handbook_probold";
     border-bottom: #0a87ff dashed 1px;
@@ -134,14 +134,14 @@
     &:link,
     &:visited {
       text-decoration: none;
-      color: #0a87ff !important;
+      // color: #0a87ff !important;
       // font-family: "pf_handbook_probold";
       border-bottom: #0a87ff dashed 1px;
     }
   }
 }
 .shopmore__button {
-  color: #0a87ff !important;
+
   // font-family: "pf_handbook_probold";
   border-bottom: #0a87ff dashed 1px;
   font-size: 20px;
@@ -153,7 +153,7 @@
   &:link,
   &:visited {
     text-decoration: none;
-    color: #0a87ff !important;
+ //   color: #0a87ff !important;
     font-weight: bold !important;
     // font-family: "pf_handbook_probold";
     border-bottom: #0a87ff dashed 1px;
