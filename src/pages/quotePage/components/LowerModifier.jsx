@@ -10,6 +10,7 @@ import PlanTypeFilter from "./filters/PlanTypeFilter";
 
 const LowerModifier = () => {
   const planType = useSelector(({ quotePage }) => quotePage.filters.planType);
+  const {  tempModifications } = useSelector((state) => state.frontendBoot);
   const { loadingQuotes } = useSelector((state) => state.quotePage);
   return (
     <div
@@ -23,7 +24,7 @@ const LowerModifier = () => {
       <FiltersWrapper className="d-flex">
         <PremiumFilter />
         <CoverRangeFilter />
-        {planType !== "Individual" ? <PolicyTypeFilter /> : <></>}
+        {planType !== "Individual" && !tempModifications?.hideMultiIndivedualPlans ? <PolicyTypeFilter /> : <></>}
         <MultiyearOptionFilter />
         <PlanTypeFilter />
         <InsurerFilter />

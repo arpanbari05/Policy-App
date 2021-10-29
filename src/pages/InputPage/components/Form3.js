@@ -23,7 +23,7 @@ import BackButton from "../../../components/BackButton";
 import RadioButton from "../../../components/RadioButton";
 const Form3 = ({ handleChange, currentForm }) => {
   const dispatch = useDispatch();
-  const { frontendData } = useSelector((state) => state.frontendBoot);
+  const { frontendData, tempModifications } = useSelector((state) => state.frontendBoot);
   const [selected, setSelected] = useState("F");
   //const [selectedText, setSelectedText] = useState("F");
 
@@ -56,7 +56,7 @@ const Form3 = ({ handleChange, currentForm }) => {
           padding: 17px;
         `}
       >
-        {console.log("The plantypes", plantypes)}
+        {console.log("The plantypes", data)}
         <Title>Which plan would you like to opt for?</Title>
         <CustomProgressBar now={currentForm} total={5} />
         <div
@@ -64,7 +64,20 @@ const Form3 = ({ handleChange, currentForm }) => {
             margin-bottom: 13px;
           `}
         >
-          {plantypes &&
+          {plantypes &&  tempModifications?.hideMultiIndivedualPlans ?
+            plantypes.filter(item => item.code !== "M").map(({ code, display_name }, i) => {
+              return (
+                code !== "I" && (
+                  <RadioButton
+                    onClick={(e) => setSelected(code)}
+                    id={display_name}
+                    value={code}
+                    checked={selected === code || undefined}
+                    label={display_name}
+                  />
+                )
+              );
+            }):
             plantypes.map(({ code, display_name }, i) => {
               return (
                 code !== "I" && (
@@ -77,15 +90,26 @@ const Form3 = ({ handleChange, currentForm }) => {
                   />
                 )
               );
-            })}
+            })            
+            }
         </div>
         <div
           css={`
             margin-bottom: 59px;
           `}
         >
-          {plantypes &&
-            plantypes.map(({ code, display_name, description }, i) => {
+          {plantypes &&  tempModifications?.hideMultiIndivedualPlans ?
+            plantypes.filter(item => item.code !== "M").map(({ code, display_name, description }, i) => {
+              return (
+                selected === code && (
+                  <>
+                    <SubQuestions>What is {display_name}?</SubQuestions>
+                    <SubAnswer>{description}</SubAnswer>
+                  </>
+                )
+              );
+            })
+            :plantypes.map(({ code, display_name, description }, i) => {
               return (
                 selected === code && (
                   <>

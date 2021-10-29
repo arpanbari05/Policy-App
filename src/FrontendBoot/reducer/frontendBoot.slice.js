@@ -18,6 +18,9 @@ const frontEndBoot = createSlice({
       PrimaryShade: "#ecf6ff",
       SecondaryShade: "#eef1f4",
     },
+    tempModifications:{
+      hideMultiIndivedualPlans:false
+    },
     loading: false,
     error: false,
   },

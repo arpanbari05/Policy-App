@@ -27,10 +27,9 @@ const dislayPlanContainer = (selectedQuotes) => {
 };
 
 const ComparePopup = ({ groupCode }) => {
-
   const { theme } = useSelector((state) => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const ls = new SecureLS();
   const history = useHistory();
   const { quotesOnCompare } = useSelector((state) => state.quotePage);
@@ -73,6 +72,19 @@ const ComparePopup = ({ groupCode }) => {
   return (
     <div
       css={`
+        .quotes_compare_plan_name {
+          margin: 0px 10px;
+        }
+        .quotes_compare_image,
+          .quotes_compare_image1 {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            & img {
+              width: 100%;
+            }
+          }
         @media (max-width: 500px) {
           .quotes_compare_plan_name {
             margin: 0px 5px !important;
@@ -88,9 +100,11 @@ const ComparePopup = ({ groupCode }) => {
           }
           & .quotes_compare_image,
           .quotes_compare_image1 {
-            width: 59px;
-            height: 100%
-             & img {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            & img {
               width: 100%;
             }
           }

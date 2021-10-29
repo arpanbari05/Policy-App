@@ -187,7 +187,7 @@ const Label = styled.label`
   box-sizing: border-box;
   touch-action: manipulation;
   display: inline-block;
-  font-size: 16px;
+  font-size: 12px !important;
   color: #000;
   line-height: 14px;
   position: absolute;
@@ -200,13 +200,13 @@ const Label = styled.label`
   padding: 0 5px;
   
   @media (max-width: 1200px){
-    font-size:15px !important;
+    font-size:13px !important;
   }
   @media (max-width: 1100px){
-    font-size:14px !important;
+    font-size:12px !important;
   }
   @media (max-width: 1050px){
-    font-size:13px !important;
+    font-size:12px !important;
   }
   @media (max-width: 767px) {
     left: 10px;

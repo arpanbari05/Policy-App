@@ -14,7 +14,9 @@ const PlanTabMobile = ({ data, item }) => {
       <div>
         <div style={{ display: "flex", alignItems: "center" }}>
           <div>
-            <h6 onClick={() => setToggle(!toggle)}>{item.title}</h6>
+            <h5 onClick={() => setToggle(!toggle)} css={`
+            font-size:14px !important;
+            `}>{item.title}</h5>
             <p
               onClick={() => setToggle(!toggle)}
               style={{
