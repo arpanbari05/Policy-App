@@ -30,18 +30,18 @@ import { getAboutCompany } from "../SeeDetails/serviceApi";
 import { getTermConditions } from "../ProposalPage/serviceApi";
 
 const ProposalSummary = ({ history }) => {
-  let groupCode  = useSelector(({quotePage}) => quotePage.selectedGroup);
-  const { currentSchema } = useSelector(state => state.schema);
+  let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
+  const { currentSchema } = useSelector((state) => state.schema);
   const { proposalData, policyStatus, policyLoading } = useSelector(
-    state => state.proposalPage,
+    (state) => state.proposalPage
   );
   const { theme } = useSelector((state) => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-  const { proposerDetails } = useSelector(state => state.greetingPage);
+  const { proposerDetails } = useSelector((state) => state.greetingPage);
   const [show, setShow] = useState(false);
   const [termShow, setTermShow] = useState(false);
-  const { frontendData } = useSelector(state => state.frontendBoot);
+  const { frontendData } = useSelector((state) => state.frontendBoot);
 
   const [allFields, setAllFields] = useState([]);
   const [term, setTerm] = useState({});
@@ -49,20 +49,16 @@ const ProposalSummary = ({ history }) => {
   const enquiryId = url.get("enquiryId");
   const dispatch = useDispatch();
 
+  const getTermConditionData = async (company_id, callback = () => {}) => {
+    try {
+      const { data } = await getTermConditions(company_id);
 
-
-
-const getTermConditionData = async (company_id, callback = () => {}) => {
-  try {
-    const { data } = await getTermConditions(company_id);
-
-    callback(data.company_terms_and_conditions);
-  } catch (error) {
-    alert(error);
-    console.error(error);
-  }
-};
-
+      callback(data.company_terms_and_conditions);
+    } catch (error) {
+      alert(error);
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     if (!Object.keys(currentSchema).length) {
@@ -77,12 +73,12 @@ const getTermConditionData = async (company_id, callback = () => {}) => {
 
   const ls = new SecureLS();
   const [checked, setChecked] = useState(false);
-  const onClick = mobile => {
+  const onClick = (mobile) => {
     if (
       frontendData?.data?.settings?.journey_type === "single" &&
       (checked || mobile)
     ) {
-      setShow(prev => !prev);
+      setShow((prev) => !prev);
     } else if (checked || mobile) {
       const form = document.createElement("form");
       form.method = "POST";
@@ -97,7 +93,7 @@ const getTermConditionData = async (company_id, callback = () => {}) => {
       document.body.removeChild(form);
     }
   };
-  const singlePay = id => {
+  const singlePay = (id) => {
     if (checked) {
       const form = document.createElement("form");
       form.method = "POST";
@@ -112,14 +108,14 @@ const getTermConditionData = async (company_id, callback = () => {}) => {
       document.body.removeChild(form);
     }
   };
-  const cart = useSelector(state => state.cart);
-const prod_id=Object.keys(cart)[0];
-  console.log("hkjm",term);
+  const cart = useSelector((state) => state.cart);
+  const prod_id = Object.keys(cart)[0];
+  console.log("hkjm", term);
   useEffect(() => {
-    if(cart[prod_id].product.company.id){
-    getTermConditionData(cart[prod_id].product.company.id, setTerm);
+    if (cart[prod_id].product.company.id) {
+      getTermConditionData(cart[prod_id].product.company.id, setTerm);
     }
- },[])
+  }, []);
   // if (!Object.keys(proposalData).length) {
   //   return <Redirect to="/proposal" />;
   // } else
@@ -143,20 +139,36 @@ const prod_id=Object.keys(cart)[0];
               onChange={() => setChecked(!checked)}
             />{" "}
             <span className="Iaccept">I Accept the&nbsp;</span>
-            <span class="TermsAndConditions" style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}>  Terms &amp; Conditions </span>
-{termShow &&  <TermModal show={termShow}  handleClose={()=>{setTermShow(false)}}/>}
-
+            <span
+              className="TermsAndConditions"
+              css={`
+                color: ${PrimaryColor};
+              `}
+              style={{ cursor: "pointer" }}
+              onClick={() => setTermShow(true)}
+            >
+              {" "}
+              Terms &amp; Conditions{" "}
+            </span>
+            {termShow && (
+              <TermModal
+                show={termShow}
+                handleClose={() => {
+                  setTermShow(false);
+                }}
+              />
+            )}
           </div>
           {show && (
             <MultipleWrapper>
               <PayList>
                 {policyStatus &&
-                  policyStatus.map(item => (
+                  policyStatus.map((item) => (
                     <PayItem>
                       <ItemName>{item?.product?.name}</ItemName>
                       <PayButton
-                      PrimaryColor={PrimaryColor}
-                      style={{cursor: 'pointer'}}
+                        PrimaryColor={PrimaryColor}
+                        style={{ cursor: "pointer" }}
                         onClick={() => {
                           singlePay(item.proposal_id);
                         }}
@@ -171,29 +183,41 @@ const prod_id=Object.keys(cart)[0];
           )}
           <div class="quotes_compare_buttons_div">
             <div
-              class="row btn_p_summary_pay_now"
+              className="row btn_p_summary_pay_now"
               onClick={() => checked && onClick()}
-            // style={{ margin: "0 25px" }}
+              // style={{ margin: "0 25px" }}
+              css={`
+                background: ${PrimaryColor} !important;
+              `}
             >
-              <div class="col-md-6"
-  
-              >
-                <button disabled={!checked && true} class="btn btn_p_s_pay_now" style={{fontSize: "16px",width:"max-content",paddingTop: "8px"}}>
-                  Pay Now {" "}
+              <div class="col-md-6">
+                <button
+                  css={`
+                    background: ${PrimaryColor} !important;
+                  `}
+                  disabled={!checked && true}
+                  className="btn btn_p_s_pay_now"
+                  style={{
+                    fontSize: "16px",
+                    width: "max-content",
+                    paddingTop: "8px",
+                  }}
+                >
+                  Pay Now{" "}
                 </button>
               </div>
               <div class="col-md-6">
                 <div
                   disabled={!checked && true}
                   css={`
-                      color: #fff;
-                      display:flex;
-                      flex-direction: column;
-                      align-items: center;
-                      `}
+                    color: #fff;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                  `}
                 >
                   <span>Total Premium</span>
-                  <p class="p_dark_f_a" style={{marginBottom:"unset"}}>
+                  <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
                     <span class="font_weight_normal text-white">
                       ₹ {cart?.totalPremium}
                     </span>
@@ -204,36 +228,44 @@ const prod_id=Object.keys(cart)[0];
           </div>
         </div>
       </div>
-      <MobileHeader>
+      <MobileHeader
+        css={`
+          background: ${PrimaryColor};
+        `}
+      >
         <MobileHeaderText
-
           onClick={() => {
             history.goBack();
           }}
         >
-          <i class="fa fa-arrow-circle-left" style={{marginRight:"10px",cursor:"pointer"}}></i> Review
+          <i
+            class="fa fa-arrow-circle-left"
+            style={{ marginRight: "10px", cursor: "pointer" }}
+          ></i>{" "}
+          Review
         </MobileHeaderText>
       </MobileHeader>
 
       <div className="container-fluid mt-20 ">
-        <div className="element-section "
+        <div
+          className="element-section "
           css={`
-         margin: 30px;
-         padding-bottom: 150px;
+            margin: 30px;
+            padding-bottom: 150px;
 
-         @media (max-width: 769px) {
-           margin:0px !important;
-           margin-top: 10px !important;
-         }
-       `}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between" }}
-          css={`
-            
-            @media(max-width:769px){
-              display:none !important;
+            @media (max-width: 769px) {
+              margin: 0px !important;
+              margin-top: 10px !important;
             }
           `}
+        >
+          <div
+            style={{ display: "flex", justifyContent: "space-between" }}
+            css={`
+              @media (max-width: 769px) {
+                display: none !important;
+              }
+            `}
           >
             <div className="col-lg-2">
               {/* <p
@@ -251,39 +283,37 @@ const prod_id=Object.keys(cart)[0];
                   history.goBack();
                 }}
                 css={`
-                width: max-content;
-                margin-left: -9px;
+                  width: max-content;
+                  margin-left: -9px;
 
-                color: var(--abc-red);
-                font-size: 17px;
-                display: flex;
-                align-items: center;
-              `}
+                  color: var(--abc-red);
+                  font-size: 17px;
+                  display: flex;
+                  align-items: center;
+                `}
               >
                 <div
                   className="d-flex justify-content-center align-items-center"
                   css={`
-                  background: #f1f4f8;
-                  width: 35px;
-                  margin-right: 20px;
-                  border-radius: 100%;
-                  height: 35px;
-                  color: #707b8b;
-                `}
+                    background: #f1f4f8;
+                    width: 35px;
+                    margin-right: 20px;
+                    border-radius: 100%;
+                    height: 35px;
+                    color: #707b8b;
+                  `}
                 >
                   <i className="fas fa-chevron-left"></i>
                 </div>
                 <span
                   css={`
-                  color: #3b4c69;
-                  font-weight: 600;
-                `}
+                    color: #3b4c69;
+                    font-weight: 600;
+                  `}
                 >
                   Go Back
                 </span>
               </button>
-
-
             </div>
 
             <div class="col-lg-10 element-tile-two">
@@ -301,8 +331,8 @@ const prod_id=Object.keys(cart)[0];
                     position: absolute;
                     left: 28%;
                   }
-                  @media(max-width: 1023px){
-                    display:none;
+                  @media (max-width: 1023px) {
+                    display: none;
                   }
                 `}
               >
@@ -314,20 +344,21 @@ const prod_id=Object.keys(cart)[0];
           </div>
 
           <br className="hide-on-mobile" />
-          <Row 
-          css={`
-          @media (max-width: 1023px){
-            flex-direction: column;
-          }
-          `}
+          <Row
+            css={`
+              @media (max-width: 1023px) {
+                flex-direction: column;
+              }
+            `}
           >
-            <Col md={3}
-             css={`
-             padding:0px;
-             @media (max-width: 1023px){
-              width: 100%;
-             }
-             `}
+            <Col
+              md={3}
+              css={`
+                padding: 0px;
+                @media (max-width: 1023px) {
+                  width: 100%;
+                }
+              `}
             >
               <SummaryWrapper>
                 <ProductSummary cart={cart} />
@@ -336,40 +367,41 @@ const prod_id=Object.keys(cart)[0];
               }  */}
               </SummaryWrapper>
             </Col>
-            <Col md={9}
-             css={`
-             @media (max-width: 1023px){
-              width: 100%;
-             }
-             `}
+            <Col
+              md={9}
+              css={`
+                @media (max-width: 1023px) {
+                  width: 100%;
+                }
+              `}
             >
               <div className="row margin_top_tab_proposal">
                 <div class="col-lg-12 col-md-12 no-padding-mobile">
                   <div className="signUp-page signUp-minimal pb-70">
                     <p
                       css={`
-                    display: none;
-                    @media (max-width: 1023px) {
-                      display: flex;
-                      justify-content: center;
-                      margin-top: 20px;
-                      font-size: 14px;
-                      line-height: 1.2;
-                      text-align: center;
-                      padding: 0px 20px;
-                    }
-                  `}
+                        display: none;
+                        @media (max-width: 1023px) {
+                          display: flex;
+                          justify-content: center;
+                          margin-top: 20px;
+                          font-size: 14px;
+                          line-height: 1.2;
+                          text-align: center;
+                          padding: 0px 20px;
+                        }
+                      `}
                     >
-                      Hi {proposerDetails?.name.split(" ")[0]}, please review your
-                      proposal details before you proceed
+                      Hi {proposerDetails?.name.split(" ")[0]}, please review
+                      your proposal details before you proceed
                     </p>
                     <div className="-wrapper pad_proposal_s">
                       {allFields ? (
                         allFields.map((item, index) => {
                           return (
                             <SummaryTab
-                            PrimaryColor={PrimaryColor}
-                            PrimaryShade={PrimaryShade}
+                              PrimaryColor={PrimaryColor}
+                              PrimaryShade={PrimaryShade}
                               key={item}
                               title={item}
                               data={currentSchema[item]}
@@ -423,7 +455,6 @@ export default ProposalSummary;
 
 const SummaryWrapper = styled.div`
   width: 100%;
-
 `;
 const MultipleWrapper = styled.div`
   width: 300px;
@@ -445,7 +476,6 @@ const PayItem = styled.li`
   display: flex;
 `;
 const ItemName = styled.div`
-
   font-size: 20px;
   background-color: #f6f7f9;
   padding: 12px;
@@ -458,7 +488,7 @@ const PayButton = styled.div`
   color: #fff;
   display: inline-block;
   padding: 6px;
-  background-color: ${props=>props.PrimaryColor};
+  background-color: ${(props) => props.PrimaryColor};
   text-align: center;
   border-radius: 0 6px 6px 0px;
   & span {

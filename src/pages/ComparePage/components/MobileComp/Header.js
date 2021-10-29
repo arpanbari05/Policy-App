@@ -21,6 +21,9 @@ const MobileHeader = ({
   groupCode,
   path,
 }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const dispatch = useDispatch();
   const history = useHistory();
   const urlQueries = useUrlQuery();
@@ -34,6 +37,7 @@ const MobileHeader = ({
   const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
   const download = () => {
     const input = document.getElementById("printCompareM");
+
     html2canvas(input).then(canvas => {
       const componentWidth = input.offsetWidth;
       const componentHeight = input.offsetHeight;
@@ -55,7 +59,7 @@ const MobileHeader = ({
     });
   };
   return (
-    <StyledHeader>
+    <StyledHeader PrimaryColor={PrimaryColor}>
       <a style={{color: 'white'}}
         className="first-container"
         onClick={() => {
@@ -207,7 +211,7 @@ const Styledul = styled.ul`
 const StyledHeader = styled.div`
   display: none;
   height: 57px;
-  background:#0d6efd;
+  background:${props=>props.PrimaryColor};
   align-items: center;
   justify-content: space-between;
   & a {

@@ -315,7 +315,7 @@ const ProposalPage = ({ history }) => {
   };
   return (
     <>
-      <MobileHeader>
+      <MobileHeader css={`background: ${PrimaryColor}`}>
         <MobileHeaderText>Proposal Form </MobileHeaderText>
       </MobileHeader>
       <div

@@ -50,7 +50,9 @@ const PlanContainerM = ({
   mandatory_riders?.forEach((element) => {
     additionalPremium += element.total_premium;
   });
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   return (
     <>
       {product?.name ? (
@@ -145,6 +147,7 @@ const PlanContainerM = ({
         </Row>
       ) : (
         <EmptyContainer
+        PrimaryColor={PrimaryColor}
           className="IC_product_compare_card blank"
           style={{
             width: "42% !important",
@@ -181,7 +184,7 @@ export default PlanContainerM;
 
 const EmptyContainer = styled.div`
   border: 2px dashed #e2a6a9;
-  color: #0d6efd;
+  color: ${props=>props.PrimaryColor} !important;
   background: #f3f4f9;
   border-radius: 12px;
   height: 157px;
