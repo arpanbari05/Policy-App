@@ -3734,7 +3734,7 @@
         margin-right: auto;
     }
     .tbody_bg_border_th_bor_bootom {
-        border-bottom: 2px dotted #3e593c !important;
+        border-bottom: 1px dotted #3e593c !important;
         padding: 0px !important;
         margin: 0px !important;
         font-weight:bold !important;

@@ -192,8 +192,8 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
                         background-color: #eff7ff;
                         display: flex;
                         border-radius: 100%;
-                        width: 50px;
-                        height: 50px;
+                        width: 40px;
+                        height: 40px;
                         color: #0a837f;
                         margin-right: 20px;
                       `}
@@ -207,7 +207,7 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
                           <img
                             src={download}
                             css={`
-                              width: 31px;
+                              width: 100%;
                               height: 31px;
                             `}
                             alt=""
@@ -232,7 +232,7 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
                     </h4>
                     <p
                       className="feature-offer-box__p break-on-overflow "
-                      style={{ marginTop: "10px" }}
+                      style={{ marginTop: "10px", fontSize: "12px" }}
                     >
                       Download Claim Form here.{" "}
                     </p>
@@ -242,7 +242,7 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
                   <div>
                     <img
                       css={`
-                        height: 50px;
+                        height: 40px;
                         margin-right: 15px;
                       `}
                       src={telephone}
@@ -263,7 +263,7 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
                     </h4>
                     <p
                       className="feature-offer-box__p break-on-overflow "
-                      style={{ marginTop: "10px" }}
+                      style={{ marginTop: "10px", fontSize: "12px" }}
                     >
                       {claimProccess.toll_free_number}
                     </p>
@@ -298,7 +298,7 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
                 <div>
                   <img
                     css={`
-                      height: 50px;
+                      height: 40px;
                       margin-right: 15px;
                     `}
                     src={mail}
@@ -319,7 +319,7 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
                   </h4>
                   <p
                     className="feature-offer-box__p break-on-overflow "
-                    style={{ marginTop: "10px" }}
+                    style={{ marginTop: "10px", fontSize: "12px" }}
                   >
                     {claimProccess.email}
                   </p>
