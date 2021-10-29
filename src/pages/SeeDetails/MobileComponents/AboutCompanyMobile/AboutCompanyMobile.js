@@ -141,9 +141,9 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                         &nbsp;
                       </span>{" "}
                       {2020} &nbsp; &nbsp; &nbsp;
-                      <span className="span_border_right_plan">|</span> &nbsp;
-                      &nbsp; &nbsp;{" "}
-                      <span
+                      {/* <span className="span_border_right_plan">|</span> &nbsp;
+                      &nbsp; &nbsp;{" "} */}
+                      {/* <span
                         className="span_square_pink"
                         css={`
                           background: #ffe7e7;
@@ -154,7 +154,7 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                       >
                         &nbsp;
                       </span>{" "}
-                      Current Market Premium 2021
+                      Current Market Premium 2021 */}
                     </p>
                     <p
                       style={{
@@ -190,11 +190,20 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                   <Detail>
                     <p
                       css={`
+                        font-size: 12px;
+                        @media (max-width: 450px) {
+                          font-size: 10px;
+                        }
+
                         & span {
                           font-size: 13px;
+                          @media (max-width: 450px) {
+                            margin-right: 2px !important;
+                            padding: 2px 7px !important;
+                          }
                         }
                       `}
-                      style={{ fontSize: "13px" }}
+                      style={{ fontSize: "12px" }}
                     >
                       <span
                         className="span_square_red"
@@ -208,7 +217,7 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                         &nbsp;
                       </span>{" "}
                       {2020} &nbsp; &nbsp; &nbsp;
-                      <span className="span_border_right_plan">|</span> &nbsp;
+                      {/* <span className="span_border_right_plan">|</span> &nbsp;
                       &nbsp; &nbsp;{" "}
                       <span
                         className="span_square_pink"
@@ -221,7 +230,7 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                       >
                         &nbsp;
                       </span>{" "}
-                      Current Market Premium 2021
+                      Current Market Premium 2021 */}
                     </p>
                     <p
                       style={{
@@ -273,12 +282,21 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
 
                   <Detail>
                     <p
-                      css={`
+                     css={`
+                        font-size: 12px;
+                        @media (max-width: 450px) {
+                          font-size: 10px;
+                        }
+
                         & span {
                           font-size: 13px;
+                          @media (max-width: 450px) {
+                            margin-right: 2px !important;
+                            padding: 2px 7px !important;
+                          }
                         }
                       `}
-                      style={{ fontSize: "13px" }}
+                    
                     >
                       <span
                         className="span_square_red"
@@ -292,7 +310,7 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                         &nbsp;
                       </span>{" "}
                       {2020} &nbsp; &nbsp; &nbsp;
-                      <span className="span_border_right_plan">|</span> &nbsp;
+                      {/* <span className="span_border_right_plan">|</span> &nbsp;
                       &nbsp; &nbsp;{" "}
                       <span
                         className="span_square_pink"
@@ -305,7 +323,7 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                       >
                         &nbsp;
                       </span>{" "}
-                      Current Market Premium 2021
+                      Current Market Premium 2021 */}
                     </p>
                     <p
                       style={{

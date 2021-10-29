@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
+import "styled-components/macro";
 import styled from "styled-components/macro";
 import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
 
 function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
-  
-
   const [searchText, setSearchText] = useState("");
 
   const [searchByNameKeys, setSearchByNameKeys] = useState([]);
   const [searchByPincodeKeys, setSearchByPincodeKeys] = useState([]);
   const [foundHospital, setFoundHospital] = useState(hospitals.hospitals);
 
-  const { loading } = useSelector(state => state.seeDetails);
+  const { loading } = useSelector((state) => state.seeDetails);
   useEffect(() => {
     setFoundHospital(hospitals.hospitals);
   }, [hospitals]);
 
   useEffect(() => {
     if (searchText.length > 0) {
-      const tempArray = hospitals.hospitals.filter(data =>
-        data.name.toLowerCase().includes(searchText.toLowerCase()),
+      const tempArray = hospitals.hospitals.filter((data) =>
+        data.name.toLowerCase().includes(searchText.toLowerCase())
       );
-     
+
       setFoundHospital(tempArray);
     } else if (searchText.length < 1) {
       setFoundHospital(hospitals.hospitals);
@@ -52,7 +50,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                 style={{ marginLeft: "auto", marginRight: "auto" }}
               >
                 {hospitals.displayHospitals &&
-                  hospitals.displayHospitals.map(item =>
+                  hospitals.displayHospitals.map((item) =>
                     item.map((el, index) => (
                       <tr>
                         <td
@@ -78,7 +76,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                           </small>
                         </td>
                       </tr>
-                    )),
+                    ))
                   )}
               </table>
             </DisplayHospitals>
@@ -87,13 +85,13 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
               <div
                 style={{
                   padding: "10px 10px",
-               //   borderRight: "1px solid lightgray",
+                  //   borderRight: "1px solid lightgray",
                   width: "100%",
                 }}
               >
                 <form
                   action="#"
-                  onSubmit={e => {
+                  onSubmit={(e) => {
                     e.preventDefault();
                   }}
                   className="sidebar-search"
@@ -109,7 +107,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                     type="text"
                     style={{ fontSize: "14px" }}
                     value={searchText}
-                    onChange={e => {
+                    onChange={(e) => {
                       setSearchText(e.target.value);
                     }}
                     placeholder="Search Hospitals"
@@ -157,38 +155,60 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                       paddingTop: "unset",
                       whiteSpace: "nowrap",
                       paddingRight: "10px",
-                     
+
                       fontSize: "15px",
                     }}
                   >
-                    Hospital Name and Address
+                    <span
+                      css={`
+                        display: none;
+
+                        @media (max-width: 450px) {
+                          display: block;
+                        }
+                      `}
+                    >
+                      Hospital Name, Address and Phone No.
+                    </span>
+                    <span
+                      css={`
+                        @media (max-width: 450px) {
+                          display: none;
+                        }
+                      `}
+                    >
+                      Hospital Name and Address
+                    </span>
                   </th>
                   <th
                     style={{
                       paddingTop: "unset",
                       whiteSpace: "nowrap",
-         
-                     
+
                       fontSize: "15px",
                     }}
+                    css={`
+                      @media (max-width: 450px) {
+                        display: none;
+                      }
+                    `}
                   >
                     Phone No.
                   </th>
                 </tr>
 
-                {foundHospital?.map(item => (
+                {foundHospital?.map((item) => (
                   <tr style={{ borderBottom: "1px solid lightgray" }}>
                     <td style={{ padding: "10px" }}>
                       <div>
-                        <p
+                        <span
                           style={{
                             fontSize: "14px",
                             fontWeight: "400",
-                            lineHeight: "1.3",
                           }}
                         >
                           {item.name}
-                        </p>
+                        </span>
                         <p
                           style={{
                             fontSize: "12px",
@@ -198,6 +218,17 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                           }}
                         >
                           {item.address}
+                          <span
+                            css={`
+                              display: none;
+                              margin-top: 3px;
+                              @media (max-width: 450px) {
+                                display: block;
+                              }
+                            `}
+                          >
+                            {item.phone}
+                          </span>
                         </p>
                       </div>
                     </td>
@@ -206,8 +237,12 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                       style={{
                         fontSize: "14px",
                         fontWeight: "400",
-                      
                       }}
+                      css={`
+                        @media (max-width: 450px) {
+                          display: none;
+                        }
+                      `}
                     >
                       {item.phone}
                     </td>
@@ -216,18 +251,18 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
               </tbody>
             </table>
             {foundHospital?.length < 1 && (
-                  <div
-                    css={`
-                      display: flex;
-                      width: 100%;
-                      height: 88px;
-                      justify-content: center;
-                      align-items: center;
-                    `}
-                  >
-                    <p>No hospitals found!</p>
-                  </div>
-                )}
+              <div
+                css={`
+                  display: flex;
+                  width: 100%;
+                  height: 88px;
+                  justify-content: center;
+                  align-items: center;
+                `}
+              >
+                <p>No hospitals found!</p>
+              </div>
+            )}
           </>
         )}
       </Outer>
@@ -261,7 +296,7 @@ const FeatureSection = styled.div`
   display: flex;
   &::before {
     content: "";
-    color:#2cd44a;
+    color: #2cd44a;
     height: 39px;
     width: 9px;
     padding-right: 10px;
