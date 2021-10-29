@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import "styled-components/macro";
-import "./cbx.css"
+import "./cbx.css";
+import { useSelector } from "react-redux";
 
 const ProposalCheckBox = ({ title, value, onChange, extraPadding }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   return (
     <>
       <input
@@ -14,18 +19,23 @@ const ProposalCheckBox = ({ title, value, onChange, extraPadding }) => {
       />
       <label
         className="cbx"
-
-        style={{ padding: extraPadding ? "10px 8px 12px" : "2px 8px 12px", width: "unset", }}
- 
+        style={{
+          padding: extraPadding ? "10px 8px 12px" : "2px 8px 12px",
+          width: "unset",
+        }}
         htmlFor={title}
       >
-        <span 
-        css={`
-        margin-bottom: -3px;
-        @media (max-width:1200px){
-          margin-bottom: 0px;
-        }
-        `}
+        <span
+          css={`
+            margin-bottom: -3px;
+            border-color: ${PrimaryColor} !important;
+            & svg{
+              stroke:  ${PrimaryColor} !important;
+            }
+            @media (max-width: 1200px) {
+              margin-bottom: 0px;
+            }
+          `}
         >
           <svg width="12px" height="10px">
             <use xlinkHref="#check"></use>

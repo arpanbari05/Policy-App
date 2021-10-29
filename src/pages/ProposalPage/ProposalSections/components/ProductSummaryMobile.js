@@ -26,7 +26,9 @@ function ProductSummaryMobile({ cart, payNow }) {
 
   const [show, setShow] = useState(false);
   const [showP, setShowP] = useState(false);
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [termShow, setTermShow] = useState(false);
 
   const { frontendData } = useSelector(state => state.frontendBoot);
@@ -261,7 +263,10 @@ const enquiryId = url.get("enquiryId");
                 onChange={() => setChecked(!checked)}
               />{" "}
               <span className="Iaccept">I Accept the&nbsp;</span>
-              <span class="TermsAndConditions"       
+              <span class="TermsAndConditions"    
+                   css={`
+                   color: ${PrimaryColor};
+                 `}
                    style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}
             >
               Terms &amp; Conditions
@@ -319,6 +324,9 @@ const enquiryId = url.get("enquiryId");
 
           {location.pathname === "/proposal_summary" ? (
             <View
+            css={`
+            background: ${PrimaryColor};
+          `}
             onClick={() => checked && onClick()}
               // style={{ color: checked ? "white" : "lightgray" }}
             >
