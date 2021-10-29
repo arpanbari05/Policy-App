@@ -10,7 +10,7 @@ import ProgressBarMobile from "./ProgressBarMobile";
 function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
   const [activebtn, setActivebtn] = useState(1);
 
-  const { loading } = useSelector(state => state.seeDetails);
+  const { loading } = useSelector((state) => state.seeDetails);
 
   return (
     <div
@@ -32,15 +32,15 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                   fontSize: "12px",
                   lineHeight: "1.3",
                   color: "black",
-fontFamily:"unset"
+                  fontFamily: "unset",
                 }}
                 css={`
                   & p {
                     line-height: 1.3;
-                    font-family:unset !important;
+                    font-family: unset !important;
                   }
                   & span {
-                    font-family:unset !important;
+                    font-family: unset !important;
                   }
                 `}
                 dangerouslySetInnerHTML={{
@@ -58,7 +58,7 @@ fontFamily:"unset"
                   css={`
                     font-size: 13px;
                     width: 100px;
-                    border:none;
+                    border: none;
                     font-weight: bold;
                   `}
                   onClick={() => setActivebtn(1)}
@@ -73,7 +73,7 @@ fontFamily:"unset"
                   css={`
                     font-size: 13px;
                     width: 100px;
-                    border:none;
+                    border: none;
                     font-weight: bold;
                   `}
                   onClick={() => setActivebtn(2)}
@@ -88,7 +88,7 @@ fontFamily:"unset"
                   css={`
                     font-size: 13px;
                     width: 100px;
-                    border:none;
+                    border: none;
                     font-weight: bold;
                   `}
                   onClick={() => setActivebtn(3)}
@@ -115,11 +115,19 @@ fontFamily:"unset"
                   <Detail>
                     <p
                       css={`
+                        font-size: 12px;
+                        @media (max-width: 450px) {
+                          font-size: 10px;
+                        }
+
                         & span {
                           font-size: 13px;
+                          @media (max-width: 450px) {
+                            margin-right: 2px !important;
+                            padding: 2px 7px !important;
+                          }
                         }
                       `}
-                      style={{ fontSize: "13px" }}
                     >
                       <span
                         className="span_square_red"
@@ -138,10 +146,10 @@ fontFamily:"unset"
                       <span
                         className="span_square_pink"
                         css={`
-                        background: #ffe7e7;
-                        border-radius: 6px;
-                        padding: 4px 8px;
-                      `}
+                          background: #ffe7e7;
+                          border-radius: 6px;
+                          padding: 4px 8px;
+                        `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
@@ -191,10 +199,10 @@ fontFamily:"unset"
                       <span
                         className="span_square_red"
                         css={`
-                        background: #0a87ff;
-                        border-radius: 6px;
-                        padding: 4px 8px;
-                      `}
+                          background: #0a87ff;
+                          border-radius: 6px;
+                          padding: 4px 8px;
+                        `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
@@ -205,10 +213,10 @@ fontFamily:"unset"
                       <span
                         className="span_square_pink"
                         css={`
-                        background: #ffe7e7;
-                        border-radius: 6px;
-                        padding: 4px 8px;
-                      `}
+                          background: #ffe7e7;
+                          border-radius: 6px;
+                          padding: 4px 8px;
+                        `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
@@ -252,13 +260,13 @@ fontFamily:"unset"
                               //   color={data.color}
                               // />
                               <ProgessBar
-                              year={data.year}
-                              value={`${parseFloat(data.percent)}`}
-                              color={data.color}
-                            />
+                                year={data.year}
+                                value={`${parseFloat(data.percent)}`}
+                                color={data.color}
+                              />
                             )
                           );
-                        },
+                        }
                       )}
                     </div>
                   </Graph>
@@ -275,10 +283,10 @@ fontFamily:"unset"
                       <span
                         className="span_square_red"
                         css={`
-                        background: #0a87ff;
-                        border-radius: 6px;
-                        padding: 4px 8px;
-                      `}
+                          background: #0a87ff;
+                          border-radius: 6px;
+                          padding: 4px 8px;
+                        `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
@@ -289,10 +297,10 @@ fontFamily:"unset"
                       <span
                         className="span_square_pink"
                         css={`
-                        background: #ffe7e7;
-                        border-radius: 6px;
-                        padding: 4px 8px;
-                      `}
+                          background: #ffe7e7;
+                          border-radius: 6px;
+                          padding: 4px 8px;
+                        `}
                         style={{ marginRight: "10px", fontSize: "10px" }}
                       >
                         &nbsp;
@@ -335,7 +343,7 @@ const CompanyDetails = styled.div`
 
 const TabFor = styled.div`
   /* border: 1px solid #aaa; */
-  font-weight:bold;
+  font-weight: bold;
   width: 300px;
   height: 40px;
   margin-left: auto;

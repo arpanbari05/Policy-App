@@ -177,7 +177,8 @@ display:flex;
 
 @media (max-width:400px){
   .compare_plan_name2{
-    font-size: 11px !important;
+    font-size: 9px !important;
+    line-height: 11px !important;
   }
   .cover_compare span {
     color: #7a869a;

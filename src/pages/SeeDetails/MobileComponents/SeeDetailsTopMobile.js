@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import "styled-components/macro"
+import "styled-components/macro";
 import { useCartProduct } from "./../../Cart";
 
 import { useParams } from "react-router";
@@ -51,14 +51,12 @@ function SeeDetailsTop({
           <img
             src={logo}
             css={`
-        
-    background: #fff;
-    padding: 0px 18px;
-    box-shadow: 0px 10px 25px 0px rgb(123 147 171 / 15%);
-    border-radius: 12px;
-    width: 86px;
-    margin: 13px 0;
-
+              background: #fff;
+              padding: 0px 18px;
+              box-shadow: 0px 10px 25px 0px rgb(123 147 171 / 15%);
+              border-radius: 12px;
+              width: 86px;
+              margin: 13px 0;
             `}
             style={{ boxShadow: "none" }}
             className="plan_details_ic"
@@ -66,14 +64,9 @@ function SeeDetailsTop({
           />
         </div>
         <div
-          style={{ fontSize: "18px", marginTop: "0px",marginBottom: "-5px" }}
+          style={{ fontSize: "18px", marginTop: "0px", marginBottom: "-5px" }}
         >
-          <span
-            className="care_popup_title"
-          
-          >
-            {companyName}
-          </span>
+          <span className="care_popup_title">{companyName}</span>
         </div>
       </Company>
 
@@ -82,10 +75,7 @@ function SeeDetailsTop({
           <span>Cover </span>
           <br />
           <span>
-            <b>
-            ₹{" "}
-              {numberToDigitWord(sumInsured?.toString(), "seeDetails")}
-            </b>
+            <b>₹ {numberToDigitWord(sumInsured?.toString(), "seeDetails")}</b>
           </span>
         </Inner>
         <Inner>
@@ -93,7 +83,7 @@ function SeeDetailsTop({
           <br />
           <span>
             <b>
-            ₹{" "}
+              ₹{" "}
               {parseInt(selectedProduct.total_premium).toLocaleString("en-IN")}/
               year
             </b>
@@ -111,25 +101,24 @@ function SeeDetailsTop({
   );
 }
 const Outer = styled.div`
-margin-top:0px;
-box-shadow: 0px 0px 10px #d8d8d8;
-height: 120px;
-background-color:#fff;
-position: sticky;
-z-index: 9999;
-top:57px;
-@media (max-width:1023px){
-    top:0px;
-}
-@media (min-width:767px) and (max-width:1023px){
-  box-shadow: none;
-}
-`
+  margin-top: 0px;
+  box-shadow: 0px 0px 10px #d8d8d8;
+  height: 120px;
+  background-color: #fff;
+  position: sticky;
+  z-index: 9999;
+  top: 57px;
+  @media (max-width: 1023px) {
+    top: 0px;
+  }
+  @media (min-width: 767px) and (max-width: 1023px) {
+    box-shadow: none;
+  }
+`;
 const Company = styled.div`
   display: flex;
   align-items: center;
   height: 50px;
-
 
   /* justify-content:space-evenly; */
   /* border-bottom: 0.75px solid lightgray; */
@@ -138,13 +127,17 @@ const Details = styled.div`
   display: flex;
   font-size: 12px;
   margin-left: 10px;
-  margin-top:10px;
+  margin-top: 10px;
+  @media (max-width:400px){
+   font-size:10px !important; 
+  }
 `;
 const Inner = styled.div`
   margin-left: 10px;
   width: 90px;
   height: 40px;
   border-right: 1px solid lightgray;
+  
 `;
 const LastInner = styled.div`
   margin-left: 10px;

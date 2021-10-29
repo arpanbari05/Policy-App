@@ -53,21 +53,21 @@ function PlanDetailsMobile({
             <h2
               className="title_h4 title_h4_download"
               css={`
-                font-size: 18px !important;
+                font-size: 16px !important;
               `}
             >
               Downloads
             </h2>
             <div
               className="sub-heading title_h4_download"
-              style={{ fontSize: "14px", lineHeight: "1.1" }}
+              style={{ fontSize: "12px", lineHeight: "1.1" }}
             >
               To find out more about the company and it's products, kindly refer
               the documents given below
             </div>
 
             <DownloadCard>
-              <div style={{ marginTop: "0px", fontSize: "16px" }}>
+              <div style={{ marginTop: "0px", fontSize: "14px" }}>
                 Product Brochure
               </div>
               <DownloadImgWrapper className="icon-box float_left">
@@ -104,7 +104,7 @@ function PlanDetailsMobile({
               </DownloadImgWrapper>
             </DownloadCard>
             <DownloadCard>
-              <div style={{ marginTop: "0px", fontSize: "16px" }}>
+              <div style={{ marginTop: "0px", fontSize: "14px" }}>
               Terms & Conditions
               </div>
               <DownloadImgWrapper className="icon-box float_left">
@@ -176,7 +176,7 @@ const PlanFeature = styled.div`
   }
 `;
 const DownloadCard = styled.div`
-  padding: 10px;
+  padding: 6px 0px;
   background-color: #fff;
   display: flex;
   justify-content: space-between;
