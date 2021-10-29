@@ -341,6 +341,9 @@ const TBodyM = ({
   const [trigger, setTrigger] = useState(false);
   const { memberGroups } = useSelector((state) => state.greetingPage);
   const members = memberGroups[selectedGroup].join(",");
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   useEffect(() => {
     if (tenureChangedFor !== -1 && trigger) {
       dispatch(
@@ -521,7 +524,7 @@ const TBodyM = ({
     );
   }
   if (title === "Permanent Exclusions") {
-    return <PermanentExclusion plans={plans} index={index} title={title} />;
+    return <PermanentExclusion plans={plans} index={index} title={title} PrimaryColor={PrimaryColor}/>;
   } else {
     return (
       <>
@@ -548,7 +551,7 @@ const TBodyM = ({
   }
 };
 
-const ExclusionDescModifier = ({ desc, index }) => {
+const ExclusionDescModifier = ({ desc, index ,PrimaryColor}) => {
   const [showMore, setShowMore] = useState(false);
   const showMoreDesc = desc;
   const showLessDesc = desc.slice(0, 100);
@@ -571,7 +574,7 @@ const ExclusionDescModifier = ({ desc, index }) => {
       </span>
 
       <span
-        style={{ color: "#0d6efd" }}
+        style={{ color: PrimaryColor }}
         id={`${"exclusionBtn" + index}`}
         onClick={() => setShowMore(!showMore)}
       >
@@ -589,6 +592,7 @@ const PermanentExclusion = ({
   hideCells,
   setHideCells,
   title,
+  PrimaryColor
 }) => {
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
@@ -652,6 +656,7 @@ const PermanentExclusion = ({
                     ]?.features[0]?.feature_value
                   }
                   index={index}
+                  PrimaryColor={PrimaryColor}
                 />
               );
             }
