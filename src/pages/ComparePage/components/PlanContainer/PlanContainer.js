@@ -47,7 +47,9 @@ const PlanContainer = ({
   mandatory_riders?.forEach((element) => {
     additionalPremium += element.total_premium;
   });
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { groupCode: selectedGroup } = useParams();
   const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
   
@@ -68,7 +70,7 @@ const PlanContainer = ({
             box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
             position: relative;
             :hover {
-              border: 2px solid #0a87ff;
+              border: 2px solid ${PrimaryColor};
             }
             @media (max-width: 1200px) {
               width: unset;
@@ -161,7 +163,7 @@ const PlanContainer = ({
               <div
                 css={`
                   // border: 1px dashed #e2a6a9;
-                  background-color: #ebf5ff;
+                  background-color: ${PrimaryShade};
                   box-shadow: none;
                   cursor: pointer;
                   display: block;
@@ -169,7 +171,7 @@ const PlanContainer = ({
                   transition: 0.45s;
                   height: 100%;
                   width: 248px;
-                  color: #0a87ff;
+                  color: ${PrimaryColor};
                   border-radius: 5px;
                   @media (max-width: 1200px) {
                     width: 100%;
@@ -186,7 +188,7 @@ const PlanContainer = ({
                 >
                   <div
                     css={`
-                      border: 1px dashed #0a87ff;
+                      border: 1px dashed ${PrimaryColor};
                       width: 83px;
                       background: #eaeff2;
                       height: 65px;

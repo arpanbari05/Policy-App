@@ -482,7 +482,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
               {/* plans will be clubbed here */}
               {mergedQuotes?.slice(1).map((item, index) => (
                 <>
-                  {console.log("ssssssss3", item)}
+                  
                   {item && (
                     <>
                       <SubContent

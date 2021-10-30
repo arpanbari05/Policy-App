@@ -54,6 +54,7 @@ import DropDown from "./components/DropDown";
 import { useDispatch, useSelector } from "react-redux";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 
+
 const sendContent = (
   type,
   name,
@@ -63,6 +64,8 @@ const sendContent = (
   emailStatus,
   sendRef
 ) => {
+
+ 
   return (
     <div className="text-center p-lg mb-50 sm-50 xs-50">
       <img
@@ -698,6 +701,11 @@ const ComparePage = () => {
     discount,
     removePlan2point0,
   } = useComparePage();
+
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [windowHeight, windowWidth] = useWindowSize();
   const [showShareQuoteModal, setShowShareQuoteModal] = useState(false);
   const [email, setEmail] = useState();
@@ -849,11 +857,15 @@ const ComparePage = () => {
                 `}
               >
                 <GoBackButton groupCode={groupCode} />
-                <UpperModifier>
-                  <div className="right_midifiers d-flex justify-content-between align-items-center ">
+                <UpperModifier PrimaryColor={PrimaryColor}>
+                  <div    className="right_midifiers d-flex justify-content-between align-items-center ">
                     <button
                       className="btn share_Quote_btn "
                       onClick={() => setShowShareQuoteModal(true)}
+                      css={`
+                        border: solid 2 px ${PrimaryColor} !important;
+                        color:${PrimaryColor};
+                      `}
                     >
                       <i class="fas fa-share "></i>{" "}
                       <span
@@ -870,7 +882,7 @@ const ComparePage = () => {
               <div>
                 <div className="table-wrapper">
                   <table className="table table-hover">
-                  {console.log(mergedQuotes,"mergedQuotes")}
+                    {console.log(mergedQuotes, "mergedQuotes")}
                     <THead
                       plans={mergedQuotes}
                       setshowDiffCbx={setshowDiffCbx}
@@ -1020,11 +1032,11 @@ const UpperModifier = styled.div`
       margin-left: 7px;
       border-radius: 31px;
       font-weight: 500;
-      border: solid 2px #0a87ff !important;
+      border: solid 2px ${props=>props.PrimaryColor} !important;
     }
     .share_Quote_btn {
-      border: solid 2px #0a87ff !important;
-      color: #0a87ff;
+      // border: solid 2px #0a87ff !important;
+      // color: #0a87ff;
 
       :focus {
         border: solid 2px #0a87ff !important;

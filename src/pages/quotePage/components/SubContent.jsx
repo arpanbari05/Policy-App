@@ -132,7 +132,7 @@ const SubContent = ({
     additionalPremium += element.total_premium;
   });
 
-  console.log('testquote123',name,features)
+
 
   const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
   const handleSeeDetailsClick = (clickedFrom) => {
@@ -166,7 +166,7 @@ const SubContent = ({
       // premium: premium[activeCover],
       sum_insured: sum_insured[activeCover],
       tax_amount: tax_amount[activeCover],
-      tenure: tenure,
+      tenure: tenure[activeCover],
     };
 
     addProduct({
@@ -342,7 +342,7 @@ const SubContent = ({
                     className=""
                     placement={"right"}
                     overlay={renderTooltip(
-                      mergedQuotes[0]?.features[activeCover][0]?.description
+                      mergedQuotes?.[0]?.features[activeCover]?.[0]?.description
                     )}
                   >
                     <TextWrapper>
