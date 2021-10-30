@@ -166,7 +166,7 @@ const SubContent = ({
       // premium: premium[activeCover],
       sum_insured: sum_insured[activeCover],
       tax_amount: tax_amount[activeCover],
-      tenure: tenure,
+      tenure: tenure[activeCover],
     };
 
     addProduct({
