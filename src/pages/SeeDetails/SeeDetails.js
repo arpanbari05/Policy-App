@@ -598,7 +598,9 @@ const SeeDetails = ({
               selectedPlan={selectedPlan}
               handleProceedClick={() => {
                 dispatch(addSelectedRiders(addedRiders));
+              
               }}
+            handleCloseSeeDetail={handleClose}
             />
           </Modal.Footer>
         </ModalBodyMobile>
