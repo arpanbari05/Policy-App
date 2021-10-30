@@ -155,7 +155,9 @@ const dataSet = (dataArray) => {
 
 const ClaimProcess = ({ ActiveMainTab, claimProccess,claimform }) => {
   const { loading } = useSelector((state) => state.seeDetails);
-console.log(claimform.claim_url,"ayush")
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   return (
     <>
       <div
@@ -203,7 +205,7 @@ console.log(claimform.claim_url,"ayush")
                       <div className="feature-box_basic support-feature js-tilt padding_imp_row">
                         <div
                           css={`
-                            background-color: #eaeef2;
+                            background-color:${SecondaryShade};
                             color: #253858;
                             padding: 22px;
                             /* padding-right: 82px; */
