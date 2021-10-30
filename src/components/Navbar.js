@@ -42,8 +42,11 @@ const Navbar = () => {
         </div>
 
         {location.pathname !== "/" && trace_id && (
-          <div
-          onClick={()=>{setShow(true)}}
+          <span
+            onClick={() => {
+              console.log(process.env.REACT_APP_PHASE, "sgd32dsf");
+              process.env.REACT_APP_PHASE === "DEV" && setShow(true);
+            }}
             css={`
               position: absolute;
               right: 14px;
@@ -52,11 +55,14 @@ const Navbar = () => {
             `}
           >
             Trace Id: <span>{trace_id}</span>
-          </div>
+          </span>
         )}
         {location.pathname === "/" && (
-          <div
-            onClick={()=>{setShow(true)}}
+          <span
+            onClick={() => {
+              console.log(process.env.REACT_APP_PHASE, "sgd32dsf");
+              process.env.REACT_APP_PHASE === "DEV" && setShow(true);
+            }}
             css={`
               position: absolute;
               right: 14px;
@@ -66,10 +72,10 @@ const Navbar = () => {
             `}
           >
             Theme
-          </div>
+          </span>
         )}
       </Card>
-      <ThemeModal show={show} setShow={setShow}/>
+      <ThemeModal show={show} setShow={setShow} />
     </div>
   );
 };
