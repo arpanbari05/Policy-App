@@ -1,7 +1,7 @@
 import React from "react";
 import useWindowSize from "../../../../customHooks/useWindowSize";
 import styled from "styled-components";
-
+import {useSelector} from 'react-redux'
 const SeeDetailsTabContainer = ({
   title,
   id,
@@ -9,12 +9,16 @@ const SeeDetailsTabContainer = ({
   activeFieldset,
   image,
 }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+
   const handleClick = (id) => {
     onClick(id);
   };
   const [windowHeight, windowWidth] = useWindowSize();
   return (
-    <SeeDetailsTabContainerStyle>
+    <SeeDetailsTabContainerStyle PrimaryColor={PrimaryColor}>
       <li className={`z-tab z-first ${activeFieldset === id && "z-active"} `}>
         <a
           className="z-link see-details__z-link"
@@ -38,7 +42,7 @@ const SeeDetailsTabContainerStyle = styled.div`
     }
   }
   & li.z-active a {
-    color: #0d6efd !important;
+    color: ${props=>props.PrimaryColor} !important;
     font-size: 17px;
     font-weight: 900;
     position: relative;
@@ -54,7 +58,7 @@ const SeeDetailsTabContainerStyle = styled.div`
       margin: auto;
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
-      background: #0d6efd;
+      background: ${props=>props.PrimaryColor} ;
     }
   }
   margin: auto auto;
