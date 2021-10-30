@@ -55,7 +55,6 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
   const [activeCover, setActiveCover] = useState(0);
   const { multiYear } = useSelector((state) => state.quotePage.filters);
 
-
   let additionalPremium = 0;
 
   mergedQuotes[0]?.mandatory_riders[activeCover]?.forEach((element) => {

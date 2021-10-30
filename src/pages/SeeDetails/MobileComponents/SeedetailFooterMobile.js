@@ -4,8 +4,8 @@ import "styled-components/macro";
 import { useCartProduct } from "./../../Cart";
 
 import { useParams } from "react-router";
-import BuyNowModal from "../../quotePage/components/BuyNowModal";
-// import BuyNowModal from "../../quotePage/components/BuyNowModal/BuyNowModal";
+// import BuyNowModal from "../../quotePage/components/BuyNowModal";
+import BuyNowModal from "../../quotePage/components/BuyNowModal/BuyNowModal";
 //import BuyNowModal from "../../QuotesPage/components/BuyNowModal/BuyNowModal";
 
 function SeedetailFooterMobile({
@@ -18,6 +18,7 @@ function SeedetailFooterMobile({
   selectedPlan,
   quote,
   sum_insured,
+  handleCloseSeeDetail,
   handleProceedClick = () => {},
 }) {
   const [showBuyNow, setShowBuyNow] = useState(false);
@@ -126,7 +127,7 @@ function SeedetailFooterMobile({
       </Outer>
 
       {showBuyNow && (
-        <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} />
+        <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} handleCloseSeeDetail={handleCloseSeeDetail} />
       )}
     </div>
   );
