@@ -54,8 +54,6 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
   const [isLoading, setIsLoading] = useState(false);
   const [activeCover, setActiveCover] = useState(0);
   const { multiYear } = useSelector((state) => state.quotePage.filters);
-  console.log("active cover: " + activeCover);
-  console.log("dfeature", mergedQuotes);
 
   let additionalPremium = 0;
 
@@ -484,7 +482,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
               {/* plans will be clubbed here */}
               {mergedQuotes?.slice(1).map((item, index) => (
                 <>
-                  {console.log("ssssssss3", item)}
+                  
                   {item && (
                     <>
                       <SubContent
