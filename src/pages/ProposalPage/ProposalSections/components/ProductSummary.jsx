@@ -338,6 +338,7 @@ const ProductSummary = ({ cart, setActive }) => {
                         // padding: 0 10px;
                       `}
                     >
+                      {console.log("asgehd23", item.health_riders)}
                       {item.health_riders.map((riders) => (
                         <div
                           css={`
@@ -354,7 +355,7 @@ const ProductSummary = ({ cart, setActive }) => {
                               padding-left: 10px;
                             `}
                           >
-                            ₹ {riders.premium}
+                            ₹ {riders.total_premium}
                           </span>
                         </div>
                       ))}
