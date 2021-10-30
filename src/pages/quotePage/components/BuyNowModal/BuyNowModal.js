@@ -45,18 +45,19 @@ function ProductCard({ product }) {
       <div
         css={`
           display: none;
+
           @media (max-width: 767px) {
             display: block;
-            padding: 10px;
+          
             margin: 11px 0;
             border: 1px solid #ddd;
-            border-radius: 12px;
+            box-shadow: 0 3px 15px 0 rgb(0 75 131 / 30%);
           }
         `}
       >
         <span
           css={`
-            padding: 10px 0px;
+            padding:20px;
             width: 100%;
             display: flex;
             flex-direction: row;
@@ -89,6 +90,7 @@ function ProductCard({ product }) {
             width: 100%;
             padding: 5px 0;
             justify-content: space-between;
+            background: rgb(240 243 247);
           `}
         >
           <ProductData noBorder>

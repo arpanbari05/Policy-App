@@ -16,7 +16,7 @@ import { useCartProduct } from "../../../Cart";
 import "styled-components/macro";
 // import BuyNowModal from "../../../quotePage/components/BuyNowModal/BuyNowModal";
 import StyledButton from "../../../../components/StyledButton";
-import BuyNowModal from "../../../quotePage/components/BuyNowModal";
+import BuyNowModal from "../../../quotePage/components/BuyNowModal/BuyNowModal";
 import { removeQuoteFromCart } from "../../../Cart/cart.slice";
 import { object } from "yup/lib/locale";
 
