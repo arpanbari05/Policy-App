@@ -1,10 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import "styled-components/macro";
+import { useSelector } from "react-redux";
 
 const PlansTab = ({ isActive, title, description, onClick }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   return (
     <Anchor
+    PrimaryColor={PrimaryColor}
       onClick={onClick}
       className={`nav-link  p-3  ${isActive && "active"}`}
    
@@ -24,7 +29,7 @@ border-bottom: 1px solid #eee !important;
     color: #253858;
     font-weight: 900;
     &.active {
-      color: #0d6efd;
+      color: ${props=>props.PrimaryColor};
     }
   }
   & p {

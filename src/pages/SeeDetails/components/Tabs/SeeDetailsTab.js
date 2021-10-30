@@ -8,8 +8,15 @@ import styled from "styled-components";
 import aboutCompany from "../../../../assets/images/about_company.png";
 import windowSize from "../../../../customHooks/useWindowSize";
 import "styled-components/macro";
+import { useSelector } from "react-redux";
+
 const SeeDetailsTab = ({ activeFieldset, setActiveFieldset }) => {
   const [windowHeight, windowWidth] = windowSize();
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   return (
     <SeeDetailsTabT
       id="theme-tab-twlv"
@@ -20,6 +27,7 @@ const SeeDetailsTab = ({ activeFieldset, setActiveFieldset }) => {
       <SeeDetailsTabWrapper
         className="tab_modal_product_d  tabs-menu clearfix z-tabs-nav z-tabs-desktop z-hide-menu see-details__tab-modal"
         style={{ display: "flex", justifyContent: "space-between" }}
+        SecondaryShade={SecondaryShade}
       >
         <SeeDetailsTabContainer
           title={"Plan Details"}
@@ -70,7 +78,7 @@ const SeeDetailsTabT = styled.div`
 `;
 
 const SeeDetailsTabWrapper = styled.ul`
-  background: #eff1f5 !important;
+  background: ${props=>props.SecondaryShade} !important;
   box-shadow: 0 3px 6px 0 #004b8321 !important;
   height: 70px;
   padding-left: 0px;
