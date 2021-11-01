@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import "styled-components/macro";
 import { useCartProduct } from "./../../Cart";
-
+import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 // import BuyNowModal from "../../quotePage/components/BuyNowModal";
 import BuyNowModal from "../../quotePage/components/BuyNowModal/BuyNowModal";
@@ -21,6 +21,9 @@ function SeedetailFooterMobile({
   handleCloseSeeDetail,
   handleProceedClick = () => {},
 }) {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [showBuyNow, setShowBuyNow] = useState(false);
   const { groupCode } = useParams();
 
@@ -48,7 +51,7 @@ function SeedetailFooterMobile({
     addProduct,
     product: selectedProduct,
   } = useCartProduct(groupCode, product);
- console.log(totalPremium,'asdg3')
+  console.log(totalPremium, "asdg3");
   const handleProceed = () => {
     handleProceedClick();
     setShowBuyNow(true);
@@ -61,41 +64,39 @@ function SeedetailFooterMobile({
     });
   };
   return (
-    <div style={{
-      width: "100%",
-      backgroundColor:"#fff"
-      
-    }}>
+    <div
+      style={{
+        width: "100%",
+        backgroundColor: "#fff",
+      }}
+    >
       <Outer>
-        <div >
+        <div>
           <p
-           // style={{ marginTop: "10px" }}
+            // style={{ marginTop: "10px" }}
             className="color_black bg_premium_txt_btn_f_p_d"
             css={`
-          
               font-size: 14px;
-    line-height: 1.2;
-    margin-bottom: 5px;
-    font-weight: bold;
+              line-height: 1.2;
+              margin-bottom: 5px;
+              font-weight: bold;
             `}
           >
             Total Premium
           </p>
           <p
-            
             css={`
-           
               font-size: 17px;
-    line-height: 1.2;
-    color:#0a87ff;
-    font-weight: bold;
+              line-height: 1.2;
+              color: ${PrimaryColor};
+              font-weight: bold;
             `}
           >
             {" "}
-            ₹{" "}{totalPremium}
+            ₹ {totalPremium}
           </p>
         </div>
-        <div >
+        <div>
           <button
             css={`
               /* margin-top: 20px; */
@@ -108,10 +109,9 @@ function SeedetailFooterMobile({
               box-shadow: 0px 13px 27px 0px rgb(48 67 163 / 25%);
               font-size: 18px;
               white-space: nowrap;
-              background: #0a87ff;
-              border-radius:4px;
-              border:none;
-              
+              background: ${PrimaryColor};
+              border-radius: 4px;
+              border: none;
             `}
             onClick={handleProceed}
           >
@@ -134,12 +134,12 @@ function SeedetailFooterMobile({
 }
 
 const TotalPremium = styled.div`
-    display:flex;
-    justify-content:space-evenly;
-    align-items:center;
-    border:2px dotted #c72229;
-    border-radius:10px;
-    padding:7px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 2px dotted #c72229;
+  border-radius: 10px;
+  padding: 7px;
 `;
 
 const Outer = styled.div`
@@ -153,12 +153,11 @@ const Outer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  @media (max-width:767px){
+  @media (max-width: 767px) {
     height: 45px;
-    p{
+    p {
       font-size: 15px;
     }
-    
   }
 `;
 

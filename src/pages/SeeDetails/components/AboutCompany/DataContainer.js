@@ -1,6 +1,12 @@
 import React from "react";
 import "styled-components/macro"
+import { useSelector } from "react-redux";
 const DataContainer = ({ title, description }) => {
+
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   return (
     <>
       <div className="market_border_left">

@@ -12,7 +12,9 @@ import BarMarketMobile from "../MobileComponents/AboutCompanyMobile/BarMarketMob
 import BarGroupMobile from "../MobileComponents/AboutCompanyMobile/BarGroupMobile";
 const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
   const { loading } = useSelector((state) => state.seeDetails);
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const addPremium = (premiums) => {
     let sum = 0;
     premiums?.map((data) => {
@@ -52,7 +54,7 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                       <div className="feature-img-box">
                         <h2 className="title_h4_p plan_a_t">
                           About{" "}
-                          <span style={{ color: "#0d6efd" }}>
+                          <span style={{ color: PrimaryColor }}>
                             {company_name}
                           </span>{" "}
                           Insurance {/* Health Insurance */}

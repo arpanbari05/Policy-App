@@ -233,7 +233,9 @@ const SeeDetails = ({
   };
 
   /*========================================================= */
+  const { theme } = useSelector((state) => state.frontendBoot);
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [riders, setRiders] = useState([]);
   const [planDetails, setPlanDetails] = useState({});
   const [hospitals, setHospitals] = useState({});
@@ -516,7 +518,7 @@ const SeeDetails = ({
           style={{ backgroundColor: "#f3f4f9", minHeight: "100vh" }}
         >
           {/* <Header /> */}
-          <StyledHeader>
+          <StyledHeader PrimaryColor={PrimaryColor}>
             <a>
               <i
                 class="fas fa-arrow-circle-left"
@@ -654,7 +656,7 @@ const StyledHeader = styled.div`
     color: #fff;
   }
 
-  background: #0d6efd;
+  background: ${props=>props.PrimaryColor};
   align-items: center;
   justify-content: space-between;
 `;

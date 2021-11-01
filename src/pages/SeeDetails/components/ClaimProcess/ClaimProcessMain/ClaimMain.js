@@ -2,8 +2,10 @@ import React, { useState } from "react";
 
 import cashlessImg from "../../../../../assets/images/cashless_m.png";
 import styled from "styled-components/macro";
+import { useSelector } from "react-redux";
+const claimBtn = (title, id, handleClick, activeBtn,PrimaryColor,SecondaryShade) => {
 
-const claimBtn = (title, id, handleClick, activeBtn) => {
+
   return (
     <a
       onClick={() => handleClick(id)}
@@ -12,7 +14,7 @@ const claimBtn = (title, id, handleClick, activeBtn) => {
       // }`}
       css={`
         padding: 10px 20px;
-        background-color: ${activeBtn === id ? " #0a87ff" : "#eaeef2"};
+        background-color: ${activeBtn === id ? PrimaryColor : SecondaryShade}};
         color: ${activeBtn === id ? "white" : "#000;"};
         margin-right: 12px;
         border-radius: 37px;
@@ -33,7 +35,7 @@ const claimBtn = (title, id, handleClick, activeBtn) => {
           height: 0;
           border-left: 9px solid transparent;
           border-right: 9px solid transparent;
-          border-top: 15px solid #0a87ff;
+          border-top: 15px solid ${PrimaryColor};
         }
       `}
     >
@@ -49,6 +51,7 @@ const claimContent = (
   activeBtn,
   activeDelayedBtn
 ) => {
+ 
   return (
     <div
       className={`tab-pane fade  py-5 ${activeBtn === id && "show"} ${
@@ -87,6 +90,9 @@ const description =
   "Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.";
 
 const ClaimMain = ({ claimProccess }) => {
+  const { theme } = useSelector((state) => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [activeBtn, setActiveBtn] = useState(1);
   const [activeDelayedBtn, setActiveDelayedBtn] = useState(1);
 
@@ -126,9 +132,9 @@ const ClaimMain = ({ claimProccess }) => {
               display: "flex",
             }}
           >
-            {claimBtn("Cashless Claim", 1, handleClick, activeBtn)}
-            {claimBtn("Documents Required", 2, handleClick, activeBtn)}
-            {claimBtn("Reimbursement Claim", 3, handleClick, activeBtn)}
+            {claimBtn("Cashless Claim", 1, handleClick, activeBtn,PrimaryColor,SecondaryShade)}
+            {claimBtn("Documents Required", 2, handleClick, activeBtn,PrimaryColor,SecondaryShade)}
+            {claimBtn("Reimbursement Claim", 3, handleClick, activeBtn,PrimaryColor,SecondaryShade)}
           </li>
         </ul>
         {/* ============================================================ */}
@@ -137,7 +143,9 @@ const ClaimMain = ({ claimProccess }) => {
           css={`
             margin-left: 10px;
             font-family: "Inter-Regular" !important;
-            & p {margin: 0px;}
+            & p {
+              margin: 0px;
+            }
           `}
         >
           {claimContent(
