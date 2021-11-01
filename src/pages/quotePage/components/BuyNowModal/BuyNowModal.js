@@ -146,7 +146,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
   );
   const dispatch = useDispatch();
   const { product, deleteProduct } = useCartProduct(groupCode);
-
+  const { loadingQuotes } = useSelector((state) => state.quotePage);
   const history = useHistory();
 
   const urlSearchParams = useUrlQuery();
@@ -228,6 +228,9 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               display: flex;
               justify-content: flex-end;
               margin-bottom: 11px;
+              pointer-events: ${loadingQuotes && "none"};
+              filter: ${loadingQuotes && "grayscale(100%)"};
+              opacity:  ${loadingQuotes && "0.7"};
             `}
           >
             <button
