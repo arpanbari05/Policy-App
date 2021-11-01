@@ -279,6 +279,27 @@ function useQuotesPage() {
   // }, [memberGroups]);
 
   useEffect(() => {
+    console.log("hehehehhe", memberGroups?.[groupCode]);
+    if (memberGroups?.[groupCode]?.length === 1) {
+      dispatch(
+        setFilters({
+          planType: "Individual",
+        })
+      );
+    } else {
+      dispatch(
+        setFilters({
+          planType: filters.planType
+            ? filters.planType === "Multi Individual"
+              ? "Multi Individual"
+              : "Family Floater"
+            : "Family Floater",
+        })
+      );
+    }
+  }, [groupCode, memberGroups]);
+
+  useEffect(() => {
     if (
       filters.cover &&
       filters.multiYear &&
@@ -311,34 +332,14 @@ function useQuotesPage() {
   }, [
     filters.insurers,
     filters.ownCover,
-    filters.planType,
+    //filters.planType,
     filters.multiYear,
     filters.basePlanType,
     // filters.moreFilters,
     filters.cover,
+    groupCode,
+    memberGroups,
   ]);
-
-  useEffect(() => {
-    console.log("hehehehhe", memberGroups?.[groupCode]);
-    if (memberGroups?.[groupCode]?.length === 1) {
-      dispatch(
-        setFilters({
-          planType: "Individual",
-        })
-      );
-    } else {
-      dispatch(
-        setFilters({
-          planType: filters.planType
-            ? filters.planType === "Multi Individual"
-              ? "Multi Individual"
-              : "Family Floater"
-            : "Family Floater",
-        })
-      );
-    }
-    console.log(selectedGroup, memberGroups, "fetchQuotes215");
-  }, [groupCode, memberGroups]);
 
   useEffect(() => {
     if (filters.premium) {
