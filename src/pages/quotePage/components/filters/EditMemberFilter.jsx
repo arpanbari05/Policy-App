@@ -461,7 +461,7 @@ const FilterModal = ({ show, handleClose, history }) => {
             <ErrorMessage style={{ fontSize: "15px" }}>{msg}</ErrorMessage>
           ))}
         <ApplyBtn
-        PrimaryColor={PrimaryColor}
+          PrimaryColor={PrimaryColor}
           onClick={(e) => handleUpdate(e)}
           className="apply_btn mx-auto h-100 w-100"
         >
@@ -474,7 +474,7 @@ const FilterModal = ({ show, handleClose, history }) => {
 
 const EditMemberFilter = () => {
   const { theme } = useSelector((state) => state.frontendBoot);
-
+  const { loadingQuotes } = useSelector((state) => state.quotePage);
   const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const history = useHistory();
   // const { error } = useSelector((state) => state.greetingPage);
@@ -599,10 +599,18 @@ const EditMemberFilter = () => {
   return (
     <>
       <span
+       css={`
+       pointer-events: ${loadingQuotes && "none"};
+     `}
         className="plans_for plans_for_editable d-flex align-items-center"
         onClick={() => setShowModal(true)}
       >
-        <div className="yellow_start_line" css={`background-color: ${SecondaryColor}`}></div>
+        <div
+          className="yellow_start_line"
+          css={`
+            background-color: ${SecondaryColor};
+          `}
+        ></div>
         <span
           css={`
             font-size: 17px;
@@ -611,8 +619,13 @@ const EditMemberFilter = () => {
           Members
         </span>
         <PencilWrapper
+         
           className="d-flex justify-content-center align-items-center"
-          style={{ color: PrimaryColor /* background: "rgb(239,247,255)"*/ }}
+          style={{
+            color: loadingQuotes
+              ? "gray"
+              : PrimaryColor /* background: "rgb(239,247,255)"*/,
+          }}
         >
           {/* <PencilIcon
             style={{

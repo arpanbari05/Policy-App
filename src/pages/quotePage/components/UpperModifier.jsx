@@ -40,7 +40,7 @@ const UpperModifier = ({ sendQuote }) => {
     (state) => state.greetingPage
   );
   const { theme } = useSelector((state) => state.frontendBoot);
-
+  const { loadingQuotes } = useSelector((state) => state.quotePage);
   const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   console.log("Member Group", memberGroups);
 
@@ -70,6 +70,11 @@ const UpperModifier = ({ sendQuote }) => {
                 return (
                   <>
                     <span
+                     css={`
+                     pointer-events: ${loadingQuotes && "none"};
+                   //  filter: ${loadingQuotes && "grayscale(100%)"};
+                    //  opacity:  ${loadingQuotes && "0.7"};
+                   `}
                       className={
                         selectedGroup === group
                           ? `plans_for plans_for_members active position-relative`
@@ -84,6 +89,7 @@ const UpperModifier = ({ sendQuote }) => {
                       }}
                       css={`
                         text-transform: capitalize;
+                        color: ${loadingQuotes && 'gray'};
                         font-weight: 900 !important;
                       `}
                     >
