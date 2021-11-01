@@ -598,9 +598,8 @@ const SeeDetails = ({
               selectedPlan={selectedPlan}
               handleProceedClick={() => {
                 dispatch(addSelectedRiders(addedRiders));
-              
               }}
-            handleCloseSeeDetail={handleClose}
+              handleCloseSeeDetail={handleClose}
             />
           </Modal.Footer>
         </ModalBodyMobile>
@@ -656,7 +655,7 @@ const StyledHeader = styled.div`
     color: #fff;
   }
 
-  background: ${props=>props.PrimaryColor};
+  background: ${(props) => props.PrimaryColor};
   align-items: center;
   justify-content: space-between;
 `;
