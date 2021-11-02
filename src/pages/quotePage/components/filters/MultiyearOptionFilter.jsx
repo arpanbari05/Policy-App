@@ -87,6 +87,7 @@ const FilterModal = ({ show, handleClose }) => {
           }
           handleClose={handleClose}
           leftAlignmnetMargin="-22"
+          tooltipDesc="Select desired policy period."
         >
           <div>
             <OptionWrapper>

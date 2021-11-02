@@ -1,6 +1,8 @@
 import styled from "styled-components/macro";
 // import tooltipImg from "../../../../assets/svg/tooltip-icon.js"; // macro makes the dom class name readable.
 import tooltipImg from "../../../assets/svg/tooltip-icon.js";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+
 const BackdropDiv = styled.div`
   height: 100vh;
   width: 100%;
@@ -65,11 +67,15 @@ const ModalFooter = styled.div`
   border-top: 1px solid #dee2e6;
 `;
 
-// const ToolTipContent = styled.p`
-// font-size:12px;
-// margin-bottom:0px;
-// padding-right: 10px;
-// `;
+const ToolTipContent = styled.p`
+  font-size: 12px;
+  margin-bottom: 0px;
+  padding-right: 10px;
+`;
+
+const renderTooltipDesc = ({ props, desc }) => (
+  <Tooltip {...props}>{desc}</Tooltip>
+);
 
 const CustomModal1 = ({
   children,
@@ -78,6 +84,7 @@ const CustomModal1 = ({
   handleClose,
   leftAlignmnetMargin,
   customizedTopMargin,
+  tooltipDesc
 }) => {
   return (
     <>
@@ -87,10 +94,15 @@ const CustomModal1 = ({
         customizedTopMargin={customizedTopMargin}
       >
         <ModalHeader>
-        <div>
-          <ModalTitle>{header}{" "}{tooltipImg()}</ModalTitle>
-          {/* <ToolTipContent>readable content of a page when looking at its layout. The point of us normal distribution of letters, as opposed</ToolTipContent> */}
-       </div>
+          <div>
+            <ModalTitle>
+              <span>{header}</span>
+            </ModalTitle>
+
+            <ToolTipContent>
+              {tooltipDesc}
+            </ToolTipContent>
+          </div>
           <i
             onClick={handleClose}
             style={{ cursor: "pointer" }}

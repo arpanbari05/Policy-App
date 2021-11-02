@@ -454,7 +454,7 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth,PrimaryShade }) =
                           ₹ {innerItem.total_premium}{" "}
                         </div>{" "}
                         <div>
-                          {/* {console.log(,"+++++++++")} */}
+                     
                           <Checkbox2
                             showTitle={false}
                             title={innerItem.name + plans[item].data.product.id}
