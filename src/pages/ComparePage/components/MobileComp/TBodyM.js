@@ -25,7 +25,7 @@ import {
   setQuotesForCompare,
 } from "../../../quotePage/quote.slice.js";
 import Checkbox from "../Checkbox/Checbox.js";
-import Checkbox2 from "../Checkbox/Checbox";
+import Checkbox2 from "../Checkbox/checkBoxRider";
 // tooltip show information on hover
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
@@ -45,7 +45,7 @@ const SumAssured = ({
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipTitle, setTooltipTitle] = useState("");
- 
+
   return (
     <>
       <TooltipMobileModal
@@ -86,8 +86,8 @@ const SumAssured = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "500",
-                        background:"white !important",
-                        color:"rgb(100, 113, 136)"
+                        background: "white !important",
+                        color: "rgb(100, 113, 136)",
                       }}
                       onChange={(e) => {
                         dispatch(
@@ -103,7 +103,9 @@ const SumAssured = ({
                         );
                       }}
                     >
-                      <option id={plans[item]?.data?.sum_insured}>₹ {numToLakh(plans[item]?.data?.sum_insured)}</option>
+                      <option id={plans[item]?.data?.sum_insured}>
+                        ₹ {numToLakh(plans[item]?.data?.sum_insured)}
+                      </option>
                       {mergedCover.length > 0 &&
                         mergedCover[item]?.map((data) => {
                           if (
@@ -112,7 +114,9 @@ const SumAssured = ({
                               `${plans[item]?.data?.product.id}${data}`
                             )
                           ) {
-                            return <option id={data}>₹ {numToLakh(data)}</option>;
+                            return (
+                              <option id={data}>₹ {numToLakh(data)}</option>
+                            );
                           }
                         })}
                     </select>
@@ -137,11 +141,11 @@ const AdditionalBenefits = ({
   dispatch,
   windowWidth,
 }) => {
-  const plans = useSelector(({comparePage}) => comparePage.quotes);
+  const plans = useSelector(({ comparePage }) => comparePage.quotes);
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipTitle, setTooltipTitle] = useState("");
- 
+
   return (
     <>
       <TooltipMobileModal
@@ -171,79 +175,79 @@ const AdditionalBenefits = ({
         </div>
 
         <div class="col-xs-12 d-flex padding_inner_row_c_t">
-        {
-          plans.length && plans.map((plan,planIndex) => {
-            let riders = plan.features.filter(feature => feature.name === "Additional Benefits")[0].riders;
-            console.log(riders,"ridersronak")
-            return(
-              <div
-                  className={`col-xs-6 ${planIndex === 0 && "border_right_dark"}`}
+          {plans.length &&
+            plans.map((plan, planIndex) => {
+              let riders = plan.features.filter(
+                (feature) => feature.name === "Additional Benefits"
+              )[0].riders;
+              console.log(riders, "ridersronak");
+              return (
+                <div
+                  className={`col-xs-6 ${
+                    planIndex === 0 && "border_right_dark"
+                  }`}
                   style={{
                     display: "flex",
                     justifyContent: "flex-start",
                     flexDirection: "column",
                     padding: "0px 10px 0px 5px",
-                    color:"rgb(100, 113, 136)"
+                    color: "rgb(100, 113, 136)",
                   }}
                 >
-                  {
-                    riders && riders.length?riders.map(rider => {
-                      return(
+                  {riders && riders.length ? (
+                    riders.map((rider) => {
+                      return (
                         <RiderWrapper
-                      show={rider.total_premium}
-                      className="rider-wrapper"
-                    >
-                      <RiderName
-                        onClick={() => {
-                          setShowTooltipMobile(true);
-                          setTooltipContent(rider.description);
-                          setTooltipTitle(rider.name);
-                        }}
-                        style={{ width: windowWidth < 420 ? "40%" : "" }}
-                      >
-                        {rider.name} {tooltipImg()}
-                      </RiderName>
-
-                      <RiderPremium>
-                      ₹ {" "}
-                        <div>{rider.total_premium} </div>{" "}
-                        <div>
-                          <Checkbox2
-                            showTitle={false}
-                            title={rider.name + plan.data.product.id}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                
-                                dispatch(
-                                  insertRider(
-                                    plan.data.product.id,
-                                    plan.data.sum_insured,
-                                    rider
-                                  )
-                                );
-                              } else {
-                                dispatch(
-                                  removeRider(
-                                    plan.data.product.id,
-                                    plan.data.sum_insured,
-                                    rider
-                                  )
-                                );
-                              }
+                          show={rider.total_premium}
+                          className="rider-wrapper"
+                        >
+                          <RiderName
+                            onClick={() => {
+                              setShowTooltipMobile(true);
+                              setTooltipContent(rider.description);
+                              setTooltipTitle(rider.name);
                             }}
-                          />
-                        </div>
-                      </RiderPremium>
-                    </RiderWrapper>
-                      )
-                    }):(
-                      <></>
-                    )
-                  }
+                          >
+                            {rider.name} {tooltipImg()}
+                          </RiderName>
+
+                          <RiderPremium>
+                            <div>₹{rider.total_premium}</div>{" "}
+                            <div>
+                              <Checkbox2
+                                showTitle={false}
+                                title={rider.name + plan.data.product.id}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    dispatch(
+                                      insertRider(
+                                        plan.data.product.id,
+                                        plan.data.sum_insured,
+                                        rider
+                                      )
+                                    );
+                                  } else {
+                                    dispatch(
+                                      removeRider(
+                                        plan.data.product.id,
+                                        plan.data.sum_insured,
+                                        rider
+                                      )
+                                    );
+                                  }
+                                }}
+                              />
+                            </div>
+                          </RiderPremium>
+                        </RiderWrapper>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
                 </div>
-            );
-          })
-        }
+              );
+            })}
           {/* {[0, 1]?.map((item) => {
             if (!plans[item]) return "";
             else
@@ -425,8 +429,8 @@ const TBodyM = ({
                     style={{
                       fontSize: "16px",
                       fontWeight: "500",
-                      background:"white",
-                      color:"rgb(100, 113, 136)"
+                      background: "white",
+                      color: "rgb(100, 113, 136)",
                     }}
                     value={
                       discount[
@@ -485,7 +489,6 @@ const TBodyM = ({
             </span>
           </div>
           <div class="col-xs-12 padding_inner_row_c_t">
-  
             {[0, 1].map((item) => {
               if (!plans[item]) return "";
               else
@@ -498,7 +501,7 @@ const TBodyM = ({
                       justifyContent: "flex-start",
                       whiteSpace: "pre-wrap",
                       padding: "0px 10px",
-                      color:"rgb(100, 113, 136)"
+                      color: "rgb(100, 113, 136)",
                     }}
                   >
                     {plans[item].data.features[1].value}
@@ -510,9 +513,8 @@ const TBodyM = ({
       </>
     );
   }
-  
+
   if (title === "Additional Benefits") {
-    
     return (
       <AdditionalBenefits
         plans={plans}
@@ -524,7 +526,14 @@ const TBodyM = ({
     );
   }
   if (title === "Permanent Exclusions") {
-    return <PermanentExclusion plans={plans} index={index} title={title} PrimaryColor={PrimaryColor}/>;
+    return (
+      <PermanentExclusion
+        plans={plans}
+        index={index}
+        title={title}
+        PrimaryColor={PrimaryColor}
+      />
+    );
   } else {
     return (
       <>
@@ -551,7 +560,7 @@ const TBodyM = ({
   }
 };
 
-const ExclusionDescModifier = ({ desc, index ,PrimaryColor}) => {
+const ExclusionDescModifier = ({ desc, index, PrimaryColor }) => {
   const [showMore, setShowMore] = useState(false);
   const showMoreDesc = desc;
   const showLessDesc = desc.slice(0, 100);
@@ -565,21 +574,21 @@ const ExclusionDescModifier = ({ desc, index ,PrimaryColor}) => {
         whiteSpace: "pre-wrap",
         padding: "0px 10px",
         flexDirection: "column",
-        color:"rgb(100, 113, 136)"
+        color: "rgb(100, 113, 136)",
       }}
     >
-    <p>
-      <span id={"exclusionValue" + index}>
-        {showMore ? showMoreDesc : showLessDesc + "..."}
-      </span>
+      <p>
+        <span id={"exclusionValue" + index}>
+          {showMore ? showMoreDesc : showLessDesc + "..."}
+        </span>
 
-      <span
-        style={{ color: PrimaryColor }}
-        id={`${"exclusionBtn" + index}`}
-        onClick={() => setShowMore(!showMore)}
-      >
-        {showMore ? "Show Less" : "Show More"}
-      </span>
+        <span
+          style={{ color: PrimaryColor }}
+          id={`${"exclusionBtn" + index}`}
+          onClick={() => setShowMore(!showMore)}
+        >
+          {showMore ? "Show Less" : "Show More"}
+        </span>
       </p>
     </div>
   );
@@ -592,7 +601,7 @@ const PermanentExclusion = ({
   hideCells,
   setHideCells,
   title,
-  PrimaryColor
+  PrimaryColor,
 }) => {
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
@@ -749,7 +758,7 @@ const Other = ({
                               justifyContent: "flex-start",
                               whiteSpace: "pre-wrap",
                               padding: "0px 10px",
-                              color:"rgb(100, 113, 136) !important"
+                              color: "rgb(100, 113, 136) !important",
                             }}
                           >
                             {

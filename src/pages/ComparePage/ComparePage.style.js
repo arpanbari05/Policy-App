@@ -238,31 +238,37 @@ color:rgb(100, 113, 136) !important;
   margin-bottom: 32px;
   min-height: fit-content;
   display: flex;
+
+  align-items:center;
   @media (max-width: 768px) {
     margin-bottom: 4px !important;
+    padding: 5px;
+    justify-content:space-between;
   }
 `;
 export const RiderName = styled.div`
-  display: inline-block;
+
 font-size:15px;
-  max-width: 64%;
-  float: left;
+  width: 70%;
+
 
   @media (max-width:767px){
 font-size:12px;
+width: 60%;
+  }
+  @media (max-width:500px){
+    width: 50%;
   }
 `;
 export const RiderPremium = styled.div`
- 
-  position: absolute;
-  display: flex;
-    align-items: center;
-  right: 10px;
-  top: -1px;
-  bottom: 0;
-  height: 27px;
-  margin: auto 0;
-  & > div {
-    display: inline-block;
+  width: 30%;
+justify-content: space-between;
+display:flex;
+@media (max-width:767px){
+font-size:12px;
+max-width: 70px;
+  }
+  @media (max-width:500px){
+width:75px;
   }
 `;
