@@ -179,7 +179,7 @@ function BuyNowModalProduct({
   const { setShowSeeDetails, showSeeDetails, setSeeDetailsQuote } =
     useQuotesPage();
   const { theme } = useSelector((state) => state.frontendBoot);
-
+  const { loadingQuotes } = useSelector((state) => state.quotePage);
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   console.log(showSeeDetails, "ulipeu");
 
@@ -263,7 +263,13 @@ function BuyNowModalProduct({
             </div>
           </div>
         ) : (
-          <div>
+          <div
+            css={`
+              pointer-events: ${loadingQuotes && "none"};
+              filter: ${loadingQuotes && "grayscale(100%)"};
+              opacity: ${loadingQuotes && "0.7"};
+            `}
+          >
             <button
               type="submit"
               className="btn"
@@ -355,8 +361,8 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow, handleCloseSeeDetail }) => {
     ({ frontendBoot }) => frontendBoot.frontendData.data
   );
   const { memberGroups } = useSelector((state) => state.greetingPage);
-   const history = useHistory();
-   const ls = new SecureLS();
+  const history = useHistory();
+  const ls = new SecureLS();
   const cart = useSelector((state) => state.cart);
   const selectedGroupCodes = Object.keys(cart);
   const allMemberGroups = Object.keys(memberGroups);
