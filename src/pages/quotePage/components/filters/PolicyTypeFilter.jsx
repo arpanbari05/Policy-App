@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import {
   setFilters,
@@ -11,6 +13,10 @@ import {
 } from "../../quote.slice";
 import "styled-components/macro";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
+
+const renderTooltipDesc = ({ props, desc }) => (
+  <Tooltip {...props}>{desc}</Tooltip>
+);
 
 const FilterModal = ({ show, handleClose }) => {
   const { filters, selectedGroup } = useSelector((state) => state.quotePage);
@@ -23,7 +29,7 @@ const FilterModal = ({ show, handleClose }) => {
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const companies = useSelector(
     (state) => state.frontendBoot.frontendData.data.companies
   );
@@ -75,7 +81,7 @@ const FilterModal = ({ show, handleClose }) => {
           header="Chose Your Policy Type"
           footerJSX={
             <ApplyBtn
-            PrimaryColor={PrimaryColor}
+              PrimaryColor={PrimaryColor}
               css={`
                 height: 65px !important;
               `}
@@ -87,6 +93,7 @@ const FilterModal = ({ show, handleClose }) => {
           }
           handleClose={handleClose}
           leftAlignmnetMargin="-20"
+          tooltipDesc="Select a policy type to view plans offering chosen policy type."
         >
           <div>
             <OptionWrapper PrimaryColor={PrimaryColor}>
@@ -101,7 +108,19 @@ const FilterModal = ({ show, handleClose }) => {
                         key={i}
                       >
                         <label htmlFor={option.code}>
-                          {option.display_name}
+                          <OverlayTrigger
+                            placement={"right"}
+                            overlay={renderTooltipDesc({
+                              desc:
+                                option.code === "F"
+                                  ? "Family floater plan covers your entire family under one single plan. The total sum insured is shared amongst each family members"
+                                  : "Multi-individual plan covers each family member under separate sum insured. You get discount if you cover 2 or more family members under multi-individual plan.",
+                            })}
+                          >
+                            <span>
+                              {option.display_name} {tooltipImg()}
+                            </span>
+                          </OverlayTrigger>
                         </label>
                         <input
                           type="radio"

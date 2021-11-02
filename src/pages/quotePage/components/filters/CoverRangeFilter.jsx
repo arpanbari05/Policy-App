@@ -122,6 +122,7 @@ const FilterModal = ({ show, handleClose }) => {
           }
           handleClose={handleClose}
           leftAlignmnetMargin="-22"
+          tooltipDesc="Select a range of cover amount to view plans offering required cover amount"
         >
           <div>
             <OptionWrapper>

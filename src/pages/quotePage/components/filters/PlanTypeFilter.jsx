@@ -1,13 +1,18 @@
 import { useRef, useState } from "react";
 import styled from "styled-components";
+import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
 import "styled-components/macro";
 import { fetchQuotes, setFilters } from "../../quote.slice";
-
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useParams } from "react-router";
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 import { useDispatch, useSelector } from "react-redux";
 import { ApplyBtn, Filter, OptionWrapper } from "./Filter.style";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
+
+const renderTooltipDesc = ({ props, desc }) => (
+  <Tooltip {...props}>{desc}</Tooltip>
+);
 
 const PlanTypeFilter = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -87,7 +92,7 @@ const FilterModal = ({ handleClose }) => {
   } = useSelector((state) => state.frontendBoot.frontendData.data);
   const { theme } = useSelector((state) => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const sum_insured = covers.find((cov) => cov.display_name === cover);
 
   const pt = plantypes.find((p) => p.display_name === planType);
@@ -95,6 +100,25 @@ const FilterModal = ({ handleClose }) => {
   const sendPlanType = pt ? pt.code : "F";
 
   const sendCover = sum_insured ? sum_insured.code : "";
+
+  const tooltipDescSelector = (name) => {
+    switch (name) {
+      case "arogya_sanjeevani":
+        return "Plans offering Arogya sanjeevani benefits";
+
+      case "global_plans":
+        return "Plans offering Global coverage";
+
+      case "base_health":
+        return "Plans covering all your medical needs";
+
+      case "1_crore_plan":
+        return "Plans offering cover amount 1 Crore";
+
+      default:
+        break;
+    }
+  };
 
   const handleClick = (evt) => {
     console.log("fetchquotes plantypefilter");
@@ -128,7 +152,7 @@ const FilterModal = ({ handleClose }) => {
           header="Choose Your Plan Type"
           footerJSX={
             <ApplyBtn
-            PrimaryColor={PrimaryColor}
+              PrimaryColor={PrimaryColor}
               css={`
                 height: 65px !important;
               `}
@@ -139,6 +163,7 @@ const FilterModal = ({ handleClose }) => {
             </ApplyBtn>
           }
           handleClose={handleClose}
+          tooltipDesc="Select a plan type to view plans offering chosen type of plan."
           leftAlignmnetMargin="-22"
         >
           <div>
@@ -157,7 +182,17 @@ const FilterModal = ({ handleClose }) => {
                     key={i}
                   >
                     <label htmlFor={thisPlanType.code}>
-                      {thisPlanType.display_name}
+                      {console.log("thisPlanType.code", thisPlanType.code)}
+                      <OverlayTrigger
+                        placement={"right"}
+                        overlay={renderTooltipDesc({
+                          desc: tooltipDescSelector(thisPlanType.code),
+                        })}
+                      >
+                        <span>
+                          {thisPlanType.display_name} {tooltipImg()}
+                        </span>
+                      </OverlayTrigger>
                     </label>
                     <input
                       type="radio"
