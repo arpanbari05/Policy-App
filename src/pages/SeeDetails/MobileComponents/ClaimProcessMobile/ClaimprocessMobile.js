@@ -182,23 +182,23 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
                   flexDirection: "column",
                 }}
               >
-                <div style={{ display: "flex", marginBottom: "20px" }}>
-                  <div>
-                    <div
-                      className="col-md-2"
-                      css={`
-                        justify-content: center;
-                        align-items: center;
-                        background-color: #eff7ff;
-                        display: flex;
-                        border-radius: 100%;
-                        width: 40px;
-                        height: 40px;
-                        color: #0a837f;
-                        margin-right: 20px;
-                      `}
-                    >
-                      {claimform.claim_url ? (
+                {claimform.claim_url ? (
+                  <div style={{ display: "flex", marginBottom: "20px" }}>
+                    <div>
+                      <div
+                        className="col-md-2"
+                        css={`
+                          justify-content: center;
+                          align-items: center;
+                          background-color: #eff7ff;
+                          display: flex;
+                          border-radius: 100%;
+                          width: 40px;
+                          height: 40px;
+                          color: #0a837f;
+                          margin-right: 20px;
+                        `}
+                      >
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
@@ -213,62 +213,69 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
                             alt=""
                           />
                         </a>
-                      ) : (
-                        <span>Loading...</span>
-                      )}
+                      </div>
+                    </div>
+                    <div style={{ marginTop: "10px" }}>
+                      <h4
+                        style={{
+                          lineHeight: "0px",
+                          padding: " 0px ",
+                          whiteSpace: "nowrap",
+                          fontSize: "14px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Claim Form
+                      </h4>
+                      <p
+                        className="feature-offer-box__p break-on-overflow "
+                        style={{ marginTop: "10px", fontSize: "12px" }}
+                      >
+                        Download Claim Form here.{" "}
+                      </p>
                     </div>
                   </div>
-                  <div style={{ marginTop: "10px" }}>
-                    <h4
-                      style={{
-                        lineHeight: "0px",
-                        padding: " 0px ",
-                        whiteSpace: "nowrap",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Claim Form
-                    </h4>
-                    <p
-                      className="feature-offer-box__p break-on-overflow "
-                      style={{ marginTop: "10px", fontSize: "12px" }}
-                    >
-                      Download Claim Form here.{" "}
-                    </p>
-                  </div>
-                </div>
-                <div style={{ display: "flex" }}>
-                  <div>
-                    <img
-                      css={`
-                        height: 40px;
-                        margin-right: 15px;
-                      `}
-                      src={telephone}
-                      alt=""
-                    />
-                  </div>
-                  <div style={{ marginTop: "10px" }}>
-                    <h4
-                      style={{
-                        lineHeight: "0px",
-                        padding: " 0px ",
-                        whiteSpace: "nowrap",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Toll Free No.
-                    </h4>
-                    <p
-                      className="feature-offer-box__p break-on-overflow "
-                      style={{ marginTop: "10px", fontSize: "12px" }}
-                    >
-                      {claimProccess.toll_free_number}
-                    </p>
-                  </div>
-                </div>
+                ) : (
+                  <></>
+                )}
+                {claimProccess.toll_free_number ? (
+                  <>
+                    <div style={{ display: "flex" }}>
+                      <div>
+                        <img
+                          css={`
+                            height: 40px;
+                            margin-right: 15px;
+                          `}
+                          src={telephone}
+                          alt=""
+                        />
+                      </div>
+                      <div style={{ marginTop: "10px" }}>
+                        <h4
+                          style={{
+                            lineHeight: "0px",
+                            padding: " 0px ",
+                            whiteSpace: "nowrap",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Toll Free No.
+                        </h4>
+                        <p
+                          className="feature-offer-box__p break-on-overflow "
+                          style={{ marginTop: "10px", fontSize: "12px" }}
+                        >
+                          {claimProccess.toll_free_number}
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+
                 {/* <div style={{ display: "flex", alignItems: "center", marginLeft: "15px" }}>
                             <div className='icon-box' style={{ top: "4px", padding: "15px", backgroundColor: "#fff5f5", height: "100%", width: "100%", maxWidth: "50px", maxHeight: "50px", borderRadius: "50%", }}>
                                 <img src={mobile} alt="" />
@@ -293,38 +300,41 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
 
                         </div> */}
               </div>
-
-              <div style={{ display: "flex"}}>
-                <div>
-                  <img
-                    css={`
-                      height: 40px;
-                      margin-right: 15px;
-                    `}
-                    src={mail}
-                    alt=""
-                  />
+              {claimProccess.email ? (
+                <div style={{ display: "flex" }}>
+                  <div>
+                    <img
+                      css={`
+                        height: 40px;
+                        margin-right: 15px;
+                      `}
+                      src={mail}
+                      alt=""
+                    />
+                  </div>
+                  <div style={{ marginTop: "10px" }}>
+                    <h4
+                      style={{
+                        lineHeight: "0px",
+                        padding: " 0px ",
+                        whiteSpace: "nowrap",
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Drop Us an Email
+                    </h4>
+                    <p
+                      className="feature-offer-box__p break-on-overflow "
+                      style={{ marginTop: "10px", fontSize: "12px" }}
+                    >
+                      {claimProccess.email}
+                    </p>
+                  </div>
                 </div>
-                <div style={{ marginTop: "10px" }}>
-                  <h4
-                    style={{
-                      lineHeight: "0px",
-                      padding: " 0px ",
-                      whiteSpace: "nowrap",
-                      fontSize: "14px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Drop Us an Email
-                  </h4>
-                  <p
-                    className="feature-offer-box__p break-on-overflow "
-                    style={{ marginTop: "10px", fontSize: "12px" }}
-                  >
-                    {claimProccess.email}
-                  </p>
-                </div>
-              </div>
+              ) : (
+                <></>
+              )}
             </Info>
           </>
         )}

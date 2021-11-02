@@ -77,55 +77,59 @@ const PlanDetails = ({
                         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
                       `}
                     >
-                      <Container>
-                        <Row>
-                          <Col lg={12}>
-                            <div
-                              className="feature-img-box"
-                              style={{ marginBottom: "15px" }}
-                            >
-                              <h2
-                                css={`
-                                  font-size: 20px;
-                                  color: #253858;
-                                  font-weight: 900;
-                                `}
-                              >
-                                Downloads
-                              </h2>
+                      {brochureUrl && policyWordingUrl ? (
+                        <Container>
+                          <Row>
+                            <Col lg={12}>
                               <div
-                                css={`
-                                  color: #505f79;
-                                `}
+                                className="feature-img-box"
+                                style={{ marginBottom: "15px" }}
                               >
-                                To find out more about the company and it's
-                                products, kindly refer the documents given below
+                                <h2
+                                  css={`
+                                    font-size: 20px;
+                                    color: #253858;
+                                    font-weight: 900;
+                                  `}
+                                >
+                                  Downloads
+                                </h2>
+                                <div
+                                  css={`
+                                    color: #505f79;
+                                  `}
+                                >
+                                  To find out more about the company and it's
+                                  products, kindly refer the documents given
+                                  below
+                                </div>
                               </div>
-                            </div>
-                          </Col>
-                          <Col lg={12}>
-                            {brochureUrl && (
-                              <DownloadCard
-                                url={brochureUrl}
-                                title={"Product Brochure"}
-                              />
-                            )}
-                          </Col>
+                            </Col>
+                            <Col lg={12}>
+                              {brochureUrl && (
+                                <DownloadCard
+                                  url={brochureUrl}
+                                  title={"Product Brochure"}
+                                />
+                              )}
+                            </Col>
 
-                          <Col lg={12}>
-                            {policyWordingUrl && (
-                              <DownloadCard
-                                url={policyWordingUrl}
-                                title={"Terms & Conditions"}
-                              />
-                            )}
-                          </Col>
-                        </Row>
-                      </Container>
+                            <Col lg={12}>
+                              {policyWordingUrl && (
+                                <DownloadCard
+                                  url={policyWordingUrl}
+                                  title={"Terms & Conditions"}
+                                />
+                              )}
+                            </Col>
+                          </Row>
+                        </Container>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </Col>
                   <Col md={6} className="tab-content">
-                  
                     {planDetails.featureList &&
                       planDetails.featureList.map((data, i) => {
                         return (

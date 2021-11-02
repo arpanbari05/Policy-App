@@ -39,39 +39,39 @@ function PlanDetailsMobile({
                 //   isActive={activeTab === data.id ? true : false}
               );
             })}
-
-          <DownloadCardWrapper
-            className="feature-img-box"
-            style={{
-              marginBottom: "30px",
-              backgroundColor: "#fff",
-              padding: "10px",
-              borderRadius: "10px",
-              margin: "15px",
-            }}
-          >
-            <h2
-              className="title_h4 title_h4_download"
-              css={`
-                font-size: 16px !important;
-              `}
+          {policyWordingUrl && brochureUrl ? (
+            <DownloadCardWrapper
+              className="feature-img-box"
+              style={{
+                marginBottom: "30px",
+                backgroundColor: "#fff",
+                padding: "10px",
+                borderRadius: "10px",
+                margin: "15px",
+              }}
             >
-              Downloads
-            </h2>
-            <div
-              className="sub-heading title_h4_download"
-              style={{ fontSize: "12px", lineHeight: "1.1" }}
-            >
-              To find out more about the company and it's products, kindly refer
-              the documents given below
-            </div>
-
-            <DownloadCard>
-              <div style={{ marginTop: "0px", fontSize: "14px" }}>
-                Product Brochure
+              <h2
+                className="title_h4 title_h4_download"
+                css={`
+                  font-size: 16px !important;
+                `}
+              >
+                Downloads
+              </h2>
+              <div
+                className="sub-heading title_h4_download"
+                style={{ fontSize: "12px", lineHeight: "1.1" }}
+              >
+                To find out more about the company and it's products, kindly
+                refer the documents given below
               </div>
-              <DownloadImgWrapper className="icon-box float_left">
-                {/* <a
+
+              <DownloadCard>
+                <div style={{ marginTop: "0px", fontSize: "14px" }}>
+                  Product Brochure
+                </div>
+                <DownloadImgWrapper className="icon-box float_left">
+                  {/* <a
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         href={brochureUrl}>
@@ -83,32 +83,36 @@ function PlanDetailsMobile({
 
                                     </a>   */}
 
-                <a target="_blank" rel="noopener noreferrer" href={brochureUrl}>
-                  <div
-                    css={`
-                      background-color: white;
-                      padding: 7px 12px;
-                      border-radius: 82px;
-                    `}
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={brochureUrl}
                   >
-                    <img
-                      src={download}
+                    <div
                       css={`
-                        width: 31px;
-                        height: 31px;
+                        background-color: white;
+                        padding: 7px 12px;
+                        border-radius: 82px;
                       `}
-                      alt=""
-                    />
-                  </div>
-                </a>
-              </DownloadImgWrapper>
-            </DownloadCard>
-            <DownloadCard>
-              <div style={{ marginTop: "0px", fontSize: "14px" }}>
-              Terms & Conditions
-              </div>
-              <DownloadImgWrapper className="icon-box float_left">
-                {/* <a
+                    >
+                      <img
+                        src={download}
+                        css={`
+                          width: 31px;
+                          height: 31px;
+                        `}
+                        alt=""
+                      />
+                    </div>
+                  </a>
+                </DownloadImgWrapper>
+              </DownloadCard>
+              <DownloadCard>
+                <div style={{ marginTop: "0px", fontSize: "14px" }}>
+                  Terms & Conditions
+                </div>
+                <DownloadImgWrapper className="icon-box float_left">
+                  {/* <a
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         href={policyWordingUrl}><img src={download} alt="download"
@@ -116,31 +120,34 @@ function PlanDetailsMobile({
                                         />
 
                                     </a>   */}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={policyWordingUrl}
-                >
-                  <div
-                    css={`
-                      background-color: white;
-                      padding: 7px 12px;
-                      border-radius: 82px;
-                    `}
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={policyWordingUrl}
                   >
-                    <img
-                      src={download}
+                    <div
                       css={`
-                        width: 31px;
-                        height: 31px;
+                        background-color: white;
+                        padding: 7px 12px;
+                        border-radius: 82px;
                       `}
-                      alt=""
-                    />
-                  </div>
-                </a>
-              </DownloadImgWrapper>
-            </DownloadCard>
-          </DownloadCardWrapper>
+                    >
+                      <img
+                        src={download}
+                        css={`
+                          width: 31px;
+                          height: 31px;
+                        `}
+                        alt=""
+                      />
+                    </div>
+                  </a>
+                </DownloadImgWrapper>
+              </DownloadCard>
+            </DownloadCardWrapper>
+          ) : (
+            <></>
+          )}
         </>
       )}
     </div>
