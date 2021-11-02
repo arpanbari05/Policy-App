@@ -29,7 +29,7 @@ export const numOnly = (event) => {
     key === 13 ||
     key === 37 ||
     key === 39 ||
-    key === 46
+    key === 46 
   ) {
   } else {
     event.preventDefault();
