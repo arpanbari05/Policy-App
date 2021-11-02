@@ -1,5 +1,6 @@
-import styled from "styled-components/macro"; // macro makes the dom class name readable.
-
+import styled from "styled-components/macro";
+// import tooltipImg from "../../../../assets/svg/tooltip-icon.js"; // macro makes the dom class name readable.
+import tooltipImg from "../../../assets/svg/tooltip-icon.js";
 const BackdropDiv = styled.div`
   height: 100vh;
   width: 100%;
@@ -63,6 +64,13 @@ const ModalFooter = styled.div`
   height: 65px;
   border-top: 1px solid #dee2e6;
 `;
+
+// const ToolTipContent = styled.p`
+// font-size:12px;
+// margin-bottom:0px;
+// padding-right: 10px;
+// `;
+
 const CustomModal1 = ({
   children,
   header,
@@ -79,7 +87,10 @@ const CustomModal1 = ({
         customizedTopMargin={customizedTopMargin}
       >
         <ModalHeader>
-          <ModalTitle>{header}</ModalTitle>
+        <div>
+          <ModalTitle>{header}{" "}{tooltipImg()}</ModalTitle>
+          {/* <ToolTipContent>readable content of a page when looking at its layout. The point of us normal distribution of letters, as opposed</ToolTipContent> */}
+       </div>
           <i
             onClick={handleClose}
             style={{ cursor: "pointer" }}
