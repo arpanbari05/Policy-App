@@ -273,7 +273,10 @@ const Form5 = ({ handleChange, currentForm }) => {
                         checkAllChar(e.target.value, forbiddedSymbols) &&
                         setEmail(e.target.value);
 
-                      if (name === "mobile") {
+                      if (name === "mobile" 
+                      && e.target.value.length<=10 
+                       ) {
+
                         !/^\d*(\d)\1{9}\d*$/.test(e.target.value) &&
                           setMobile(e.target.value);
                       }

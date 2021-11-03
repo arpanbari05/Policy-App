@@ -21,7 +21,7 @@ const proposal = createSlice({
     showNSTP: false,
     activeIndex: 0,
     policyStatus: [],
-    noForAllChecked: true,
+    noForAllChecked: false,
     policyLoading: true,
     planDetails: {
       title: "Your Plan Details",

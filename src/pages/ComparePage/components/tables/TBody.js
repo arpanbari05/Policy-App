@@ -24,7 +24,7 @@ import {
   removeQuotesForCompare,
   setQuotesForCompare,
 } from "../../../quotePage/quote.slice";
-import Checkbox2 from "../Checkbox/Checbox";
+import Checkbox2 from "../Checkbox/checkBoxRider";
 
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
@@ -454,7 +454,7 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth,PrimaryShade }) =
                           ₹ {innerItem.total_premium}{" "}
                         </div>{" "}
                         <div>
-                          {/* {console.log(,"+++++++++")} */}
+                     
                           <Checkbox2
                             showTitle={false}
                             title={innerItem.name + plans[item].data.product.id}
@@ -550,12 +550,18 @@ const TBody = ({
       );
     }
   }, [productDiscounts]);
-  console.log("dddd", mergedCover);
 
   return (
     <>
       <tbody
         className={`tbody_bg ${title === "Additional Benefits" && "hideTBody"}`}
+        css={`
+        tr{
+          :hover{
+            background: white !important;
+          }
+        }
+        `}
       >
         <tr
           className="table__title-compare"

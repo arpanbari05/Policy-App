@@ -59,6 +59,7 @@ const FilterModal = ({ show, handleClose }) => {
           }
           handleClose={handleClose}
           customizedTopMargin="65"
+          tooltipDesc="Select a range of premium to view plans to view plans at desired premium rates"
         >
           <div>
             <OptionWrapper PrimaryColor={PrimaryColor}>
