@@ -14,14 +14,26 @@ const TextInput = ({
   onKeyDown,
   reference,
   notAllowed,
+  allValues,
   value,
   onKeyPress,
   maxLength,
   textTransform,
   onInput,
   readOnly,
+  innerMember,
 }) => {
   const dispatch = useDispatch();
+  // checkAge = limitagefromdob
+//const  checkValidation = { checkAge: "limitagefromdob" };
+  const age =
+    checkValidation.checkAge &&
+    parseInt(new Date().getFullYear()) -
+      parseInt(
+        allValues["Insured Details"][innerMember][
+          checkValidation.checkAge.split("from")[1]
+        ].split("-")[2]
+      );
 
   const fullName = value || "";
   const forbiddedSymbols = [
@@ -62,7 +74,7 @@ const TextInput = ({
     return check;
   };
   const { mediUnderwritting } = useSelector(
-    state => state.proposalPage.proposalData,
+    (state) => state.proposalPage.proposalData
   );
   const checkAllChar = (value, checkValue) => {
     let check = true;
@@ -74,7 +86,7 @@ const TextInput = ({
     return check;
   };
 
-  const checkDoubleChar = e => {
+  const checkDoubleChar = (e) => {
     if (e.keyCode === 190 && fullName[fullName.length - 1] === " ") {
       e.preventDefault();
     }
@@ -93,8 +105,10 @@ const TextInput = ({
         type={type || "text"}
         placeholder={placeholder || ""}
         required={required || undefined}
-        onChange={e => {
-          if (checkValidation?.["matches"] === "name") {
+        onChange={(e) => {
+          if (checkValidation.checkAge) {
+            (parseInt(e.target.value) <= age || e.target.value === "") && onChange(e);
+          } else if (checkValidation?.["matches"] === "name") {
             checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&
               checkAllChar(e.target.value, forbiddedSymbols) &&
@@ -150,7 +164,7 @@ const Input = styled.input`
   -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
   margin: 0;
-  text-transform: ${props => props.textTransform};
+  text-transform: ${(props) => props.textTransform};
   font-family: inherit;
   line-height: inherit;
   overflow: visible;
@@ -159,16 +173,18 @@ const Input = styled.input`
   transition: all 0.3s ease-in-out;
   touch-action: manipulation;
   width: 100%;
-  border: ${props => (props.error ? "solid 1px #c7222a" : "solid 1px #ced4da")};
+  border: ${(props) =>
+    props.error ? "solid 1px #c7222a" : "solid 1px #ced4da"};
   // border-radius: 8px;
-  // background: ${props => (props.error ? "#fff6f7" : "transparent")};
+  // background: ${(props) => (props.error ? "#fff6f7" : "transparent")};
   height: 55px;
   font-size: 14px;
   color: #939393;
   position: relative;
   padding: 0 25px;
   &:focus {
-    border-color: ${props => (props.error ? "#c7222a" : "solid 1px  #393939")};
+    border-color: ${(props) =>
+      props.error ? "#c7222a" : "solid 1px  #393939"};
     color: black;
   }
   @media (max-width: 767px) {
@@ -198,15 +214,15 @@ const Label = styled.label`
   transition: all 0.3s ease-in-out;
   font-weight: 900;
   padding: 0 5px;
-  
-  @media (max-width: 1200px){
-    font-size:13px !important;
+
+  @media (max-width: 1200px) {
+    font-size: 13px !important;
   }
-  @media (max-width: 1100px){
-    font-size:12px !important;
+  @media (max-width: 1100px) {
+    font-size: 12px !important;
   }
-  @media (max-width: 1050px){
-    font-size:12px !important;
+  @media (max-width: 1050px) {
+    font-size: 12px !important;
   }
   @media (max-width: 767px) {
     left: 10px;

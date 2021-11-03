@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getFrontendData } from "../serviceApi/frontendBoot";
 //import { setFilters } from "../../modules/QuotesPage/quotePage.slice";
-
+import {theme} from '.././../assets/global'
 import SecureLS from "secure-ls";
 import axios from "axios";
 import { setFilters } from "../../pages/quotePage/quote.slice";
@@ -12,12 +12,7 @@ const frontEndBoot = createSlice({
   name: "frontendBoot",
   initialState: {
     frontendData: {},
-    theme: {
-      PrimaryColor: "#0a87ff",
-      SecondaryColor: "#2cd44a",
-      PrimaryShade: "#ecf6ff",
-      SecondaryShade: "#eef1f4",
-    },
+    theme,
     tempModifications:{
       hideMultiIndivedualPlans:false
     },
