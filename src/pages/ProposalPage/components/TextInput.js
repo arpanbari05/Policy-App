@@ -109,7 +109,7 @@ const TextInput = ({
         placeholder={placeholder || ""}
         required={required || undefined}
         onChange={(e) => {
-          if (checkValidation.checkAge) {
+          if (checkAge) {
             (parseInt(e.target.value) <= age || e.target.value === "") &&
               onChange(e);
           } else if (checkValidation?.["matches"] === "name") {
