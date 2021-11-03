@@ -22,18 +22,21 @@ const TextInput = ({
   onInput,
   readOnly,
   innerMember,
+  checkAge,
 }) => {
   const dispatch = useDispatch();
   // checkAge = limitagefromdob
-//const  checkValidation = { checkAge: "limitagefromdob" };
+  //const  checkValidation = { checkAge: "limitagefromdob" };
   const age =
-    checkValidation.checkAge &&
+    checkAge &&
     parseInt(new Date().getFullYear()) -
       parseInt(
-        allValues["Insured Details"][innerMember][
-          checkValidation.checkAge.split("from")[1]
+        allValues?.["Insured Details"]?.[innerMember][
+          checkAge.split("from")[1]
         ].split("-")[2]
       );
+
+  console.log(allValues, age, innerMember, "test");
 
   const fullName = value || "";
   const forbiddedSymbols = [
@@ -107,7 +110,8 @@ const TextInput = ({
         required={required || undefined}
         onChange={(e) => {
           if (checkValidation.checkAge) {
-            (parseInt(e.target.value) <= age || e.target.value === "") && onChange(e);
+            (parseInt(e.target.value) <= age || e.target.value === "") &&
+              onChange(e);
           } else if (checkValidation?.["matches"] === "name") {
             checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&
