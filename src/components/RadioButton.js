@@ -9,6 +9,8 @@ const RadioButton = ({
   id,
   label,
   onClick,
+  onMouseEnter,
+  onMouseOut,
   itemsCentered,
 }) => {
   const { theme } = useSelector((state) => state.frontendBoot);
@@ -16,7 +18,7 @@ const RadioButton = ({
   const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
 
   return (
-    <>
+    <div>
       <RadioInput
       PrimaryColor={PrimaryColor}
       PrimaryShade={PrimaryShade}
@@ -24,12 +26,14 @@ const RadioButton = ({
         name={label}
         id={id}
         onClick={onClick}
+        
         value={value}
         checked={checked || false}
         onChange={() => {}}
       />
-      <RadioLabel itemsCentered={itemsCentered} htmlFor={id}>
-        <span> {label}</span>
+      <RadioLabel itemsCentered={itemsCentered} htmlFor={id} onMouseEnter={onMouseEnter}
+    onMouseOut={onMouseOut}>
+        <span onMouseEnter={onMouseEnter}> {label}</span>
         {checked && (
           <FaCheck
             css={`
@@ -41,7 +45,7 @@ const RadioButton = ({
           />
         )}
       </RadioLabel>
-    </>
+    </div>
   );
 };
 

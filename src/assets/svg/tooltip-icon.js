@@ -4,8 +4,8 @@ const tooltipIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="13"
-      height="13"
+      width="11"
+      height="11"
       fill="currentColor"
       className="bi bi-info-circle"
       viewBox="0 0 16 16"
