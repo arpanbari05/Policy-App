@@ -24,6 +24,7 @@ const DropDown = ({
   //   is: "single",
   //   exclude: ["WIFE", "HUSBAND"],
   // };
+  console.log(asyncOptions,label,'sdagsadg')
 
   const excludeOptionsPage = excludeOptions?.when?.split(".")[0];
   const excludeOptionsVariable = excludeOptions?.when?.split(".")[1];

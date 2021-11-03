@@ -13,16 +13,21 @@ const TextInput = ({
   clear,
   autoComplete,
   styledCss,
+  allValues,
   onChange,
   onPaste,
   onCopy,
   onKeyDown,
   onBlur,
   maxLength,
+  member
 }) => {
+ 
   const { theme } = useSelector((state) => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+
+
 
   return (
     <div

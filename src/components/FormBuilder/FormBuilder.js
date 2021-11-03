@@ -132,6 +132,8 @@ const FormBuilder = ({
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
+  console.log(asyncOptions,'ehe')
+
   return (
     <>
       {schema instanceof Array &&
@@ -140,6 +142,8 @@ const FormBuilder = ({
             return (
               <>
                 {item[0]?.additionalOptions?.members?.map((member) => {
+
+                  console.log(member,proposalData,'gsda')
                   if (
                     values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
@@ -179,6 +183,8 @@ const FormBuilder = ({
                                     {}
                                     <Comp
                                       name={innerItem.name}
+                                      checkValidation={innerItem.validate}
+                                      innerMember={member}
                                       onChange={(e) => {
                                         if (
                                           innerItem.parent &&
