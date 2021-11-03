@@ -19,7 +19,7 @@ const FormBuilder = createSlice({
 export const { setAsyncOptions, setAsyncValues } = FormBuilder.actions;
 export const callApi = (endPoint, param, bus) => {
   return async (dispatch) => {
-    
+ 
     const { data } = await axios.get(
       process.env.REACT_APP_API_BASE_URL + endPoint,
       { params: param }
@@ -33,7 +33,7 @@ export const callApi = (endPoint, param, bus) => {
         let [value, key] = Object.values(innerItem);
         options = {
           ...options,
-          ...{ area: { ...options["area"], ...{ [key]: value } } },
+          ...{ [`area_${Object.keys(param)[0].split("_")[1]}`]: { ...options["area"], ...{ [key]: value } } },
         };
       });
     } else
