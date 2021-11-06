@@ -40,7 +40,8 @@ const UpperModifier = ({ sendQuote }) => {
     (state) => state.greetingPage
   );
   const { theme } = useSelector((state) => state.frontendBoot);
-  const { loadingQuotes } = useSelector((state) => state.quotePage);
+  const loadingQuotes = false;
+  // const { loadingQuotes } = useSelector((state) => state.quotePage);
   const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   console.log("Member Group", memberGroups);
 

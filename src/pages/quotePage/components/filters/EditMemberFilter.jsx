@@ -474,7 +474,8 @@ const FilterModal = ({ show, handleClose, history }) => {
 
 const EditMemberFilter = () => {
   const { theme } = useSelector((state) => state.frontendBoot);
-  const { loadingQuotes } = useSelector((state) => state.quotePage);
+  //const { loadingQuotes } = useSelector((state) => state.quotePage);
+  const loadingQuotes = false;
   const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const history = useHistory();
   // const { error } = useSelector((state) => state.greetingPage);
