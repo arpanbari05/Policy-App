@@ -23,10 +23,12 @@ import BackButton from "../../../components/BackButton";
 import RadioButton from "../../../components/RadioButton";
 const Form3 = ({ handleChange, currentForm }) => {
   const dispatch = useDispatch();
-  const { frontendData, tempModifications } = useSelector((state) => state.frontendBoot);
+  const { frontendData, tempModifications } = useSelector(
+    (state) => state.frontendBoot
+  );
   const [selected, setSelected] = useState("F");
   //const [selectedText, setSelectedText] = useState("F");
-
+  const [tempSelected, setTempSelected] = useState("");
   const { data } = frontendData || [""];
   const { plantypes, description } = data || [""];
 
@@ -64,41 +66,74 @@ const Form3 = ({ handleChange, currentForm }) => {
             margin-bottom: 13px;
           `}
         >
-          {plantypes &&  tempModifications?.hideMultiIndivedualPlans ?
-            plantypes.filter(item => item.code !== "M").map(({ code, display_name }, i) => {
-              return (
-                code !== "I" && (
-                  <RadioButton
-                    onClick={(e) => setSelected(code)}
-                    id={display_name}
-                    value={code}
-                    checked={selected === code || undefined}
-                    label={display_name}
-                  />
-                )
-              );
-            }):
-            plantypes.map(({ code, display_name }, i) => {
-              return (
-                code !== "I" && (
-                  <RadioButton
-                    onClick={(e) => setSelected(code)}
-                    id={display_name}
-                    value={code}
-                    checked={selected === code || undefined}
-                    label={display_name}
-                  />
-                )
-              );
-            })            
-            }
+          {plantypes && tempModifications?.hideMultiIndivedualPlans
+            ? plantypes
+                .filter((item) => item.code !== "M")
+                .map(({ code, display_name }, i) => {
+                  return (
+                    code !== "I" && (
+                      <div>
+                        <RadioButton
+                          onMouseEnter={() => setTempSelected(code)}
+                          onClick={(e) => setSelected(code)}
+                          id={display_name}
+                          value={code}
+                          checked={selected === code || undefined}
+                          label={display_name}
+                        />
+                      </div>
+                    )
+                  );
+                })
+            : plantypes.map(({ code, display_name }, i) => {
+                return (
+                  code !== "I" && (
+                    <div>
+                      <RadioButton
+                        onMouseEnter={(e) => setTempSelected(code)}
+                        onClick={(e) => setSelected(code)}
+                        id={display_name}
+                        value={code}
+                        checked={selected === code || undefined}
+                        label={display_name}
+                      />
+                    </div>
+                  )
+                );
+              })}
         </div>
         <div
           css={`
             margin-bottom: 59px;
+            & .desc {
+              opacity: 0;
+            }
+            & .active {
+              z-index: 1;
+              top: 0;
+              left: 0;
+              opacity: 1 !important;
+              -webkit-transform: scale(1, 1);
+              -webkit-transform: rotate(0deg);
+            }
           `}
         >
-          {plantypes &&  tempModifications?.hideMultiIndivedualPlans ?
+          {plantypes.map(({ code, display_name, description }, i) => {
+            return tempSelected
+              ? tempSelected === code && (
+                  <div className="active desc">
+                    <SubQuestions>What is {display_name}?</SubQuestions>
+                    <SubAnswer>{description}</SubAnswer>
+                  </div>
+                )
+              : selected === code && (
+                  <div className="active desc">
+                    <SubQuestions>What is {display_name}?</SubQuestions>
+                    <SubAnswer>{description}</SubAnswer>
+                  </div>
+                );
+          })}
+          {/* {plantypes &&  tempModifications?.hideMultiIndivedualPlans ?
             plantypes.filter(item => item.code !== "M").map(({ code, display_name, description }, i) => {
               return (
                 selected === code && (
@@ -118,7 +153,7 @@ const Form3 = ({ handleChange, currentForm }) => {
                   </>
                 )
               );
-            })}
+            })} */}
         </div>
         {formButtons(() => {
           handleChange(currentForm - 1);

@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { setFilters } from "../../quote.slice";
 import styled from "styled-components";
@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "styled-components/macro";
 import useQuoteFilter from "./useQuoteFilter";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
+import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
 
 const FilterModal = ({ show, handleClose }) => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const FilterModal = ({ show, handleClose }) => {
   const moreFilterData = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data.morefilters
   );
- 
+
   const [popularFilter, setPopularFilter] = useState(
     filters.moreFilters.popularFilter || []
   );
@@ -26,7 +27,31 @@ const FilterModal = ({ show, handleClose }) => {
 
   const [others, setOthers] = useState(filters.moreFilters.others || []);
 
+const tooltipDescSelector = (name) => {
+  switch (name) {
+     
+
+case "Popular Filters":
+        return "Benefits that one should prefer to opt for while securing a health plan.";
+
+      case "Pre existing Ailments":
+        return "Select preferred waiting period for Pre-Existing diseases after which the diseases will be covered.";
+
+      case "Others":
+        return "Benefits that one could opt for as per requirement while securing a health plan";
+
+      case "No Claim Bonus":
+        return "Select preferred percentage of increase in No Claim Bonus which will increase Sum Insured upto thatcertain amount after claim free years";
+
+
+    default:
+        break;
+    
+  }
+}
+
   const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
+
   const handleReset = () => {
     setPopularFilter([]);
     setPreExisting("");
@@ -36,7 +61,10 @@ const FilterModal = ({ show, handleClose }) => {
   useEffect(() => {
     if (
       Object.keys(filters.moreFilters).length < 1 &&
-      (popularFilter.length > 0 || preExisting !== "" || renewalBonus !== "" || others.length > 0)
+      (popularFilter.length > 0 ||
+        preExisting !== "" ||
+        renewalBonus !== "" ||
+        others.length > 0)
     ) {
       console.log(filters.moreFilters, "3h32h32dffeg");
       handleReset();
@@ -52,7 +80,7 @@ const FilterModal = ({ show, handleClose }) => {
   });
   const { theme } = useSelector((state) => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const quotes = useSelector((state) => state.quotePage.quotes);
 
   const filteredQuotes = quotes
@@ -120,7 +148,15 @@ const FilterModal = ({ show, handleClose }) => {
                 return (
                   <>
                     <div className="morefilter_head" key={i}>
-                      <span>{filter.group_name}</span>
+                      {console.log("filter.group_name", filter.group_name)}
+                      <OverlayTrigger
+                        placement="right"
+                        overlay={renderTooltip(tooltipDescSelector(filter.group_name))}
+                      >
+                        <span>
+                          {filter.group_name} {tooltipImg()}
+                        </span>
+                      </OverlayTrigger>
                     </div>
                     <div className="morefilter_options">
                       <div
@@ -202,7 +238,7 @@ const FilterModal = ({ show, handleClose }) => {
                                         margin: auto 0;
                                       `}
                                     >
-                                      {option.display_name}
+                                      {option.display_name} {tooltipImg()}
                                     </p>
                                   </OverlayTrigger>
                                 </span>
@@ -258,7 +294,7 @@ const FilterModal = ({ show, handleClose }) => {
                                         margin: auto 0;
                                       `}
                                     >
-                                      {option.display_name}
+                                      {option.display_name} {tooltipImg()}
                                     </p>
                                   </OverlayTrigger>
                                 </span>
@@ -292,7 +328,7 @@ const FilterModal = ({ show, handleClose }) => {
         </ClearBtn>
         {filteredPlans.length ? (
           <ApplyBtn
-          PrimaryColor={PrimaryColor}
+            PrimaryColor={PrimaryColor}
             className=" apply_btn mx-auto h-100 w-50"
             onClick={() => handleSubmit()}
           >
