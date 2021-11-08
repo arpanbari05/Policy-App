@@ -332,7 +332,7 @@ function useQuotesPage() {
   }, [
     filters.insurers,
     filters.ownCover,
-    //filters.planType,
+    filters.planType,
     filters.multiYear,
     filters.basePlanType,
     // filters.moreFilters,
