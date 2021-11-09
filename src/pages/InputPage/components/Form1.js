@@ -163,8 +163,8 @@ const Form1 = ({
             value={pinCode}
             label={`Pincode/City`}
             onChange={(e) => {
-              console.log("Change occured in input", e.target.value);
-              setPinCode(e.target.value);
+              if(e.target.value.length < 7  ) setPinCode(e.target.value);
+              
             }}
           />
           {customErrors && <ErrorMessage>{customErrors}</ErrorMessage>}
@@ -181,8 +181,7 @@ const Form1 = ({
               pinCode.length > 2 &&
               proposerDetails?.[memberGroup]?.pincode !== regionDetails?.pincode
           )*/}
-          {console.log("prosperDeatials ", proposerDetails)}
-          {console.log("memeber group", memberGroup)}
+      
           {!regionDetailsLoading &&
             regionDetails?.city &&
             pinCode.length > 2 &&
