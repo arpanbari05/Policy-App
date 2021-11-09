@@ -113,7 +113,7 @@ const FilterModal = ({ show, handleClose }) => {
                             overlay={renderTooltipDesc({
                               desc:
                                 option.code === "F"
-                                  ? "Family floater plan covers your entire family under one single plan. The total sum insured is shared amongst each family members"
+                                  ? "Family floater plan covers your entire family under one single plan. The total sum insured is shared amongst insured family members"
                                   : "Multi-individual plan covers each family member under separate sum insured. You get discount if you cover 2 or more family members under multi-individual plan.",
                             })}
                           >

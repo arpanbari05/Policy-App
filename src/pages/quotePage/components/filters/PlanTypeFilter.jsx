@@ -104,13 +104,13 @@ const FilterModal = ({ handleClose }) => {
   const tooltipDescSelector = (name) => {
     switch (name) {
       case "arogya_sanjeevani":
-        return "Plans offering Arogya sanjeevani benefits";
+        return "Plan offering Arogya Sanjeevani Benefits; this policy is a standard health insurance policy introduced by the IRDA & offered by Health Insurance Companies in India";
 
       case "global_plans":
-        return "Plans offering Global coverage";
+        return "Plans offering Global coverage; this policy ensure you are civered for health expenses internationally";
 
       case "base_health":
-        return "Plans covering all your medical needs";
+        return "Plans covering all your medical needs; this policy offer varied health benefits meeting your needs";
 
       case "1_crore_plan":
         return "Plans offering cover amount 1 Crore";

@@ -38,10 +38,10 @@ case "Popular Filters":
         return "Select preferred waiting period for Pre-Existing diseases after which the diseases will be covered.";
 
       case "Others":
-        return "Benefits that one could opt for as per requirement while securing a health plan";
+        return "Benefits that one could opt for as per requirement while securing a health plan.";
 
       case "No Claim Bonus":
-        return "Select preferred percentage of increase in No Claim Bonus which will increase Sum Insured upto thatcertain amount after claim free years";
+        return "Select preferred percentage of increase in No Claim Bonus which will increase Sum Insured upto thatcertain amount after claim free years.";
 
 
     default:
