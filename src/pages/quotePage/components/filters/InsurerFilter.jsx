@@ -64,7 +64,7 @@ const FilterModal = ({ show, handleClose, filters }) => {
           }
           handleClose={handleClose}
           leftAlignmnetMargin="-22"
-          tooltipDesc="Select a choice of Insurance Company to view specific plans provided by that company."
+          tooltipDesc="Select a choice of Insurance Company to view specific plans provided by that company"
         >
           <div>
             <OptionWrapper PrimaryColor={PrimaryColor}>
