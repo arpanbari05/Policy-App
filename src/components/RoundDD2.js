@@ -18,6 +18,8 @@ const RoundDD2 = ({
   product_detail,
   ...props
 }) => {
+  selected = `${selected}`;
+
   const [isOpen, setIsOpen] = useState(false);
   const [ageList, setAgeList] = useState(list);
 
@@ -28,7 +30,8 @@ const RoundDD2 = ({
     setIsOpen(!isOpen);
   };
   const handleSelect = (value) => {
-    console.log(value, "selectedAge");
+    value = `${value}`;
+
     let modifiedValue =
       value.includes("months") || value.includes("month")
         ? `0.${parseInt(value)}`
