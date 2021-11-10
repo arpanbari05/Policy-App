@@ -618,35 +618,40 @@ const TBody = ({
                   <span className="tbody_bg_border_th">Sum Insured</span>
                 </th>
               </OverlayTrigger>
-              <td>
+              
+              
+              {
+                [0,1,2].map((i) => {
+                  return(
+                    <td>
                 {" "}
-                {plans[0]?.data?.sum_insured ? (
+                {plans[i]?.data?.sum_insured ? (
                   <select
                     style={{ color: "#647188", background: "white" }}
                     onChange={(e) => {
                       dispatch(
                         removeQuotesForCompare(
-                          `${plans[0]?.data?.product.id}${plans[0]?.data?.sum_insured}`
+                          `${plans[i]?.data?.product.id}${plans[i]?.data?.sum_insured}`
                         )
                       );
                       dispatch(
                         setQuotesForCompare([
-                          `${plans[0]?.data?.product.id}${e.target.selectedOptions[0].id}`,
+                          `${plans[i]?.data?.product.id}${e.target.selectedOptions[0].id}`,
                           3,
                         ])
                       );
                     }}
                   >
-                    <option id={plans[0]?.data?.sum_insured}>
+                    <option id={plans[i]?.data?.sum_insured}>
                       {" "}
-                      ₹ {numToLakh(plans[0]?.data?.sum_insured)}
+                      ₹ {numToLakh(plans[i]?.data?.sum_insured)}
                     </option>
                     {mergedCover.length > 0 &&
-                      mergedCover[0]?.map((data) => {
+                      mergedCover[i]?.map((data) => {
                         if (
-                          plans[0]?.data.sum_insured !== data &&
+                          plans[i]?.data.sum_insured !== data &&
                           !quotesForCompare.includes(
-                            `${plans[0]?.data?.product.id}${data}`
+                            `${plans[i]?.data?.product.id}${data}`
                           )
                         ) {
                           return (
@@ -661,86 +666,11 @@ const TBody = ({
                     style={{ margin: "auto", display: "none" }}
                   />
                 )}
-              </td>
-              <td>
-                {" "}
-                {plans[1]?.data?.sum_insured ? (
-                  <select
-                    style={{ color: "#647188", background: "white" }}
-                    onChange={(e) => {
-                      dispatch(
-                        removeQuotesForCompare(
-                          `${plans[1]?.data?.product.id}${plans[1]?.data?.sum_insured}`
-                        )
-                      );
-                      dispatch(
-                        setQuotesForCompare([
-                          `${plans[1]?.data?.product.id}${e.target.selectedOptions[0].id}`,
-                          3,
-                        ])
-                      );
-                      // console.log("33",`${plans[1]?.data?.product.id}${e.target.value}`);
-                    }}
-                  >
-                    <option> ₹ {numToLakh(plans[1]?.data?.sum_insured)}</option>
-                    {mergedCover.length > 0 &&
-                      mergedCover[1]?.map((data) => {
-                        if (
-                          plans[1]?.data.sum_insured !== data &&
-                          !quotesForCompare.includes(
-                            `${plans[1]?.data?.product.id}${data}`
-                          )
-                        ) {
-                          return (
-                            <option id={data}> ₹ {numToLakh(data)}</option>
-                          );
-                        }
-                      })}
-                  </select>
-                ) : (
-                  <img
-                    src={wrong}
-                    style={{ margin: "auto", display: "none" }}
-                  />
-                )}
-              </td>{" "}
-              {plans[2]?.data?.sum_insured ? (
-                <td className={`${plans[2] && "showOnDesktopF"}`}>
-                  <select
-                    style={{ color: "#647188", background: "white" }}
-                    onChange={(e) => {
-                      dispatch(
-                        removeQuotesForCompare(
-                          `${plans[2]?.data?.product.id}${plans[2]?.data?.sum_insured}`
-                        )
-                      );
-                      dispatch(
-                        setQuotesForCompare([
-                          `${plans[2]?.data?.product.id}${e.target.selectedOptions[0].id}`,
-                          3,
-                        ])
-                      );
-                    }}
-                  >
-                    <option> ₹ {numToLakh(plans[2]?.data?.sum_insured)}</option>
-                    {mergedCover.length > 0 &&
-                      mergedCover[2]?.map((data) => {
-                        if (
-                          plans[2]?.data.sum_insured !== data &&
-                          !quotesForCompare.includes(
-                            `${plans[2]?.data?.product.id}${data}`
-                          )
-                        ) {
-                          return <option id={data}> ₹{numToLakh(data)}</option>;
-                        }
-                      })}
-                  </select>
-                </td>
-              ) : windowWidth > 1023 ? (
-                <td></td>
-              ) : (
-                ""
-              )}
+              </td>)
+                })
+              }
+              
+              
             </tr>
 
             <tr
