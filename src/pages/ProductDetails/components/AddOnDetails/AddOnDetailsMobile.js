@@ -198,8 +198,7 @@ function DetailsTitle({ children, isOpen, eventKey }) {
 }
 
 AddOnDetailsMobile.Body = function Body({ addOn}) {
-  const { status, addOnDetails, handleRetry} =
-    useAddOnDetails({ addOn });
+  const { status, addOnDetails, handleRetry} = useAddOnDetails({ addOn });
 
     // console.log(downloads,"addOndefects")
   return (

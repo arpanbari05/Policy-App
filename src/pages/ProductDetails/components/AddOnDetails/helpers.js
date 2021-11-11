@@ -42,7 +42,7 @@ const useAddOnDetails = ({ addOn = {} }) => {
 
   const handleRetry = () => fetchAddOnDetails();
 
-  
+  console.log("addOnDetailsaddOnDetails", addOnDetails )
 
   return {
     status,

@@ -30,9 +30,9 @@ const renderTooltipDesc = ({ props, desc }) => (
 );
 
 function AddOnDetails({ addOn, handleClose }) {
-  return (
+return (
     <Modal>
-      {/* <AddOnDetailsMobile addOn={addOn} handleClose={handleClose} /> */}
+      <AddOnDetailsMobile addOn={addOn} handleClose={handleClose} />
       <div
         css={`
           position: fixed;
@@ -76,7 +76,8 @@ function AddOnDetails({ addOn, handleClose }) {
 AddOnDetails.Body = function Body({ addOn = {} }) {
 
   const { status, addOnDetails, handleRetry, downloads, setDownloads } = useAddOnDetails({ addOn });
-
+  
+  
   return (
     <div
       css={`
@@ -93,6 +94,7 @@ AddOnDetails.Body = function Body({ addOn = {} }) {
           defaultActiveKey={addOnDetails[0].name}
         >
           <Row>
+        
             <AddOnDetails.Nav
               navItems={addOnDetails.map((addOnDetail) => addOnDetail.name)}
             />

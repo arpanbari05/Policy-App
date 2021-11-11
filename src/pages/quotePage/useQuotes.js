@@ -64,12 +64,16 @@ function useQuotesPage() {
   const { data } = useSelector(({ frontendBoot }) => frontendBoot.frontendData);
 
   const findCode = (fitlerName, fitlerValue) => {
+    if(fitlerName === "covers" && Number(fitlerValue)>9999999){
+      return `10000000-${fitlerValue}`
+    }
     let code = `${fitlerValue}-${fitlerValue}`;
     data[fitlerName].forEach((data) => {
       if (data.display_name === fitlerValue) {
         code = data.code;
       }
     });
+ 
     return code;
   };
 
@@ -307,14 +311,11 @@ function useQuotesPage() {
       memberGroups?.[groupCode]
     ) {
       dispatch(clearFilterQuotes());
-      console.log(
-        "fetchQuotes useQUotes",
-        filters?.multiYear?.charAt(0),
-        findCode("covers", filters?.cover)
-      );
-      console.log("I executed");
+     
+     
       dispatch(
         fetchQuotes(companies?.companies, {
+         
           sum_insured: findCode("covers", filters.cover),
           tenure: filters.multiYear.charAt(0),
           member: groupCode,

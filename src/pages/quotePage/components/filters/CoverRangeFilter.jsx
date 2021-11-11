@@ -19,7 +19,7 @@ const FilterModal = ({ show, handleClose }) => {
   );
   const { theme } = useSelector((state) => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [ownCover, setOwnCover] = useState(filters.ownCover);
 
   const [inputCoverError, setinputCoverError] = useState(false);
@@ -39,7 +39,6 @@ const FilterModal = ({ show, handleClose }) => {
         }
       : {}
   );
-  console.log(selectedCover, "hehwe3");
 
   useEffect(() => {
     if (filters.cover !== selectedCover.displayName) {
@@ -55,8 +54,8 @@ const FilterModal = ({ show, handleClose }) => {
     if (inputCover) {
       if (inputCover < 200000) {
         setinputCoverError("Minimum should be 2 lac");
-      } else if (inputCover > 10000000) {
-        setinputCoverError("Maximum should be 1 Crore");
+      } else if (inputCover > 20000000) {
+        setinputCoverError("Maximum should be 2 Crore");
       } else if (inputCover % 100000 != 0) {
         setinputCoverError("Enter in multiples of 1 lac");
       } else {
@@ -100,7 +99,7 @@ const FilterModal = ({ show, handleClose }) => {
     //   })
     // );
 
-    handleClose();
+    if (!inputCoverError) handleClose();
   };
 
   return (
@@ -110,7 +109,7 @@ const FilterModal = ({ show, handleClose }) => {
           header="Choose Your Cover Range"
           footerJSX={
             <ApplyBtn
-            PrimaryColor={PrimaryColor}
+              PrimaryColor={PrimaryColor}
               css={`
                 height: 65px !important;
               `}
@@ -170,8 +169,10 @@ const FilterModal = ({ show, handleClose }) => {
                 className="w-100"
                 value={inputCover}
                 onChange={(e) => {
-                  setInputCover(e.target.value);
-                  setselectedCover("");
+                  if (e.target.value >= 0) {
+                    setInputCover(e.target.value);
+                    setselectedCover("");
+                  }
                 }}
               />
               {inputCoverError ? (
@@ -298,6 +299,17 @@ const FilterModal = ({ show, handleClose }) => {
   );
 };
 
+const displayNameSelector = (str) => {
+ 
+  if(str.includes("Lac")){
+    return str;
+  }else{
+    let inputCover = Number(str);
+    return inputCover<9999999?`upto ${inputCover/100000} ${inputCover/100000 === 1?"lac":"lacs"}`:`upto ${inputCover/10000000} ${inputCover/10000000 === 1?"cr.":"crs."}`
+  }
+
+}
+
 const CoverRangeFilter = () => {
   const [showModal, setShowModal] = useState(false);
   const filters = useSelector(({ quotePage }) => quotePage.filters);
@@ -312,7 +324,7 @@ const CoverRangeFilter = () => {
           }}
           className="filter_sub_head"
         >
-          {filters.cover ? filters.cover : "Select cover"}{" "}
+          {filters.cover ? displayNameSelector(filters.cover) : "Select cover"}{" "}
           <i class="fas fa-chevron-down"></i>
         </span>
 
@@ -346,3 +358,7 @@ const CustomInputWrapper = styled.div`
     }
   }
 `;
+
+
+
+// <9999999?`upto ${inputCover/100000} ${inputCover/100000 === 1?"lac":"lacs"}`:`upto ${inputCover/10000000} ${inputCover/10000000 === 1?"cr.":"crs."}`

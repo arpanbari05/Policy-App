@@ -796,9 +796,7 @@ function AddOnCard({
             }
           `}
           onClick={() =>
-            window.screen.width < 769
-              ? setShowViewDetailMbile(true)
-              : toggleDetailsShow
+            toggleDetailsShow()
           }
         >
           View Details
@@ -857,11 +855,12 @@ function AddOnCard({
                   : premium[sumInsured][member]["total_premium"],
             }}
             handleClose={toggleDetailsShow}
+            show={showDetails}
           />
         </>
       ) : null}
 
-      {showviewDetailMbile ? (
+      {/* {showviewDetailMbile ? (
         <AddOnDetailsMobile
           addOn={{
             ...addOn,
@@ -873,7 +872,7 @@ function AddOnCard({
           }}
           handleClose={() => setShowViewDetailMbile(false)}
         />
-      ) : null}
+      ) : null} */}
       <div
         css={`
           border: 1px solid var(--addon-card-border-gray);
