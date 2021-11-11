@@ -646,13 +646,10 @@ const TBody = ({
                       {" "}
                       ₹ {numToLakh(plans[i]?.data?.sum_insured)}
                     </option>
-                    {mergedCover.length > 0 &&
-                      mergedCover[i]?.map((data) => {
+                    {
+                      mergedCover[`${plans[i]?.data?.product.id}${plans[i]?.data.sum_insured}`]?.map((data) => {
                         if (
-                          plans[i]?.data.sum_insured !== data &&
-                          !quotesForCompare.includes(
-                            `${plans[i]?.data?.product.id}${data}`
-                          )
+                          plans[i]?.data.sum_insured !== data 
                         ) {
                           return (
                             <option id={data}> ₹ {numToLakh(data)}</option>

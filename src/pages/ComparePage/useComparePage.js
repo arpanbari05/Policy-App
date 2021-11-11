@@ -4,6 +4,7 @@ import {
   fetchQuotes,
   setFilters,
   updateQuotesForCompare,
+  
 } from "../quotePage/quote.slice";
 
 import {
@@ -15,6 +16,7 @@ import {
   setShouldNotFetch,
   setShoutGetCompare,
   updateQuotes,
+  setMergedCover
 } from "../ComparePage/compare.slice";
 import { getFeatures, resetFeature } from "./compare.slice";
 import { setQuotesForCompare } from "../quotePage/quote.slice";
@@ -208,7 +210,8 @@ const useComparePage = () => {
 
   useEffect(() => {
     if (selectedQuotes.length > 0) {
-      const tempMergedCover = [];
+      const tempMergedCover = {};
+      
       selectedQuotes?.map((data, i) => {
         quotes?.map((quotedata) => {
           const tempArray = [];
@@ -218,7 +221,7 @@ const useComparePage = () => {
             }
           });
           if (tempArray.length > 0) {
-            tempMergedCover.push(tempArray);
+            tempMergedCover[`${data.product.id}${data.sum_insured}`] = tempArray;
           }
         });
 
@@ -233,6 +236,7 @@ const useComparePage = () => {
       });
 
       setMergedCover(tempMergedCover);
+      console.log("tempMergedCover", tempMergedCover)
     }
   }, [selectedQuotes, discount]);
 
@@ -249,7 +253,7 @@ const useComparePage = () => {
     // const shouldFetch = selectedQuotes.some(data =>
     //   quotesForCompare.includes(`${data.product.id}${data.sum_insured}`),
     // );
-
+    console.log("mergedQuotesmergedQuotes",mergedQuotes)
     if (!shouldNotFetch) {
       quotes.map((quote) => {
         quote.map((data) => {
