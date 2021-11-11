@@ -100,7 +100,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
       if (key2.length < 1) {
         isNotChecked = true;
       }
-
+     
       if (checkCanProceed.length < 1) {
         setCanProceed({ canProceed: true, canProceedArray: [{}] });
       } else {
@@ -238,12 +238,13 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                     `}
                   >
                   <div style={{marginRight:"15px"}}>
+                 
                     <Checkbox2
                       
                       showTitle={false}
                       title={"No" + item}
                       //value={noForAll[item]}
-                      checked={noForAllChecked}
+                      checked={noForAll[item]}
                       onChange={(e) => {
                         setNoForAll({ ...noForAll, [item]: e.target.checked });
                         if (noForAllChecked) {
@@ -256,8 +257,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                     </div>
                     <span>No For All Questions </span>{" "}
                   </div>
-                  {!canProceed?.canProceed &&
-                    canProceed?.canProceedArray?.includes(item) && !noForAllChecked &&  (
+                  {!noForAll[item] && (
                       <p
                         css={`
                           display: flex;
@@ -311,6 +311,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
             });
           }}
         />
+      
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
