@@ -257,8 +257,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                     </div>
                     <span>No For All Questions </span>{" "}
                   </div>
-                  {!canProceed?.canProceed &&
-                    canProceed?.canProceedArray?.includes(item) && !noForAllChecked &&  (
+                  {!noForAll[item] && (
                       <p
                         css={`
                           display: flex;
