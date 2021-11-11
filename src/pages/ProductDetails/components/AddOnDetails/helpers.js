@@ -7,30 +7,25 @@ import { getProductBrochureAPI } from "../../../SeeDetails/serviceApi";
 import { getAddOnDetails } from "../../serviceApi";
 import DownloadIcon from "../../../../assets/images/download.png";
 
-const useAddOnDetails = ({ addOn = {} }) => {
+export function useAddOnDetails({ addOn = {} }) {
   const [addOnDetails, setAddonDetails] = useState(null);
 
   const [downloads, setDownloads] = useState(null);
 
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("idle");
 
   const fetchAddOnDetails = useCallback(() => {
     setStatus("loading");
-    
     getAddOnDetails({ productId: addOn.id })
-      .then((res) => {
-        console.log(res.data,"productId78")
+      .then(res => {
         if (res.data) {
-          
           setAddonDetails(res.data);
-          return setStatus("success");
-          
-        }else{
-          setStatus("error");
+          setStatus("success");
+          return;
         }
-        
+        setStatus("error");
       })
-      .catch((e) => {
+      .catch(e => {
         setStatus("error");
         console.error(e);
       });
@@ -42,8 +37,6 @@ const useAddOnDetails = ({ addOn = {} }) => {
 
   const handleRetry = () => fetchAddOnDetails();
 
-  console.log("addOnDetailsaddOnDetails", addOnDetails )
-
   return {
     status,
     addOnDetails,
@@ -52,7 +45,9 @@ const useAddOnDetails = ({ addOn = {} }) => {
     downloads,
     setDownloads,
   };
-};
+}
+
+// console.log("addOnDetailsaddOnDetails2222", addOnDetails);
 
 export function useFetchDownloads({ addOn, setDownloads }) {
   const [status, setStatus] = useState("idle");
