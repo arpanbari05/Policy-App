@@ -1,6 +1,24 @@
 import moment from "moment";
 import { date } from "yup";
 
+
+
+export const acceptedEmailExtensions = [
+  ".com",
+  ".org",
+  ".in",
+  ".outlook",
+  ".co.in",
+  ".rediff",
+  ".net",
+  ".co",
+  ".co.jp",
+  ".info",
+  ".local",
+  ".bike",
+  ".jll.com",
+];
+
 const forbiddedSymbols = [
   "!",
   "%",
@@ -210,10 +228,18 @@ export const validationIndex = {
             };
           } else break;
         case "email":
+          let passCase = true;
+          for (let index = 0; index < acceptedEmailExtensions.length; index++) {
+            const element = acceptedEmailExtensions[index];
+            if(value.includes(element)) {
+              passCase = false;
+              break;
+            }
+          }
           if (
             !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
               value
-            )
+            ) || passCase
           ) {
             return {
               status: false,
