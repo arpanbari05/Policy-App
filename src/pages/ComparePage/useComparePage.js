@@ -233,7 +233,7 @@ const useComparePage = () => {
             discount[`${data.product.id}${data.sum_insured}`]
           )
         );
-      });
+      }); 
 
       setMergedCover(tempMergedCover);
       console.log("tempMergedCover", tempMergedCover)

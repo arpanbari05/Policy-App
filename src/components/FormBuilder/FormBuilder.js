@@ -136,6 +136,7 @@ const FormBuilder = ({
 
   return (
     <>
+    {console.log("schemaschemaschema",schema)}
       {schema instanceof Array &&
         schema.map((item, index) => {
           if (item instanceof Array) {
@@ -522,7 +523,7 @@ const Title = styled.p`
   color: #3b3838;
   font-weight: 900 !important;
   margin-top: -3px;
-  background-image: , #ffe7e7 5%, #fff 15%);
+  /* background-image: , #ffe7e7 5?%, #fff 15%); */
   padding: 10px 18px;
   border-radius: 6px;
 
