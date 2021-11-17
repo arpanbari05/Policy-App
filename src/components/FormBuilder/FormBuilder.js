@@ -54,7 +54,7 @@ const FormBuilder = ({
   const [trigger, setTrigger] = useState(false);
   const { proposalData } = useSelector((state) => state.proposalPage);
   console.log(proposalData,'sgad')
-
+  
   useEffect(() => {
     if (trigger) {
       triggerValidation(trigger);
@@ -129,6 +129,21 @@ const FormBuilder = ({
     setFillBus(temp);
   }, [schema]);
   useEffect(() => {
+   
+    let pincodeSchema =  schema.filter(item => item?.name?.includes("pincode"))[0]
+   
+    if(pincodeSchema?.value){
+      dispatch(
+        callApi(pincodeSchema.fill.using, {
+          [pincodeSchema.name]: pincodeSchema.value,
+          
+        }),
+        
+      );
+    }
+   
+  },[])
+  useEffect(() => {
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
@@ -181,7 +196,7 @@ const FormBuilder = ({
                                     }
                                     medical
                                   >
-                                    {}
+                                    
                                     <Comp
                                       name={innerItem.name}
                                       checkValidation={innerItem.validate}
@@ -364,6 +379,7 @@ const FormBuilder = ({
             } else
               return (
                 <>
+               
                   {renderField(item, values) && (
                     <Wrapper
                       key={index}
@@ -375,9 +391,11 @@ const FormBuilder = ({
                           : item.width
                       }
                     >
+                    
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}
+                        selectedValues={values}
                         onChange={(e, value) => {
                           console.log(e, value, "hegege");
                           if (item.parent && item.members) {
@@ -464,6 +482,7 @@ const FormBuilder = ({
                         setCustomValid={setCustomValid}
                         {...item.additionalOptions}
                       />
+                       
                     </Wrapper>
                   )}
                   {item.type === "custom_toggle" &&
