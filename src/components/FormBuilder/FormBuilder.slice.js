@@ -18,6 +18,7 @@ const FormBuilder = createSlice({
 });
 export const { setAsyncOptions, setAsyncValues } = FormBuilder.actions;
 export const callApi = (endPoint, param, bus) => {
+  console.log("selecteoptionssn",endPoint, param)
   return async (dispatch) => {
  
     const { data } = await axios.get(

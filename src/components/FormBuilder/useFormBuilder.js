@@ -57,6 +57,7 @@ const useFormBuilder = (
   }, [defaultValues]);
 
   const triggerValidation = name => {
+    
     let errorsTemp = {};
     let tempIsValid = true;
     if (typeof name === "object") {

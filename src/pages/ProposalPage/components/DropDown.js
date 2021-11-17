@@ -11,6 +11,7 @@ const DropDown = ({
   reference,
   options = { value: "key" },
   value,
+  selectedValues,
   allValues,
   error,
   asyncOptions,
@@ -46,6 +47,7 @@ const DropDown = ({
 
   return (
     <SelectContainer height={height}>
+    
       <Select
         onChange={(e) => {
           onChange(e, selectOption[e.target.value]);
@@ -63,21 +65,23 @@ const DropDown = ({
           !checkValidation?.required) && (
           <option value={""}>{dropPlaceholder || "- Select -"}</option>
         )}
-        {Object.keys(selectOption).map((item) => {
-          if (
-            (excludeOptions &&
-              allValues[`${excludeOptionsPage} Details`]?.[
-                excludeOptionsVariable
-              ] === excludeOptions.is && !excludeOptions.exclude.includes(item)) ||
-            !excludeOptions
-          ) {
-            return (
+        {selectedValues?.title &&
+        selectedValues.title === "mrs" &&
+        label === "Marital Status"
+          ? Object.keys(selectOption)
+              .filter(item => item !== "single")
+              .map(item => (
+                <>
+                  <option key={item + selectOption[item]} value={item}>
+                    {selectOption[item]}
+                  </option>
+                </>
+              ))
+          : Object.keys(selectOption).map(item => (
               <option key={item + selectOption[item]} value={item}>
                 {selectOption[item]}
               </option>
-            );
-          }
-        })}
+            ))}
       </Select>
       <Label height={height}>{label}</Label>
       {error && <p className="formbuilder__error">{error}</p>}

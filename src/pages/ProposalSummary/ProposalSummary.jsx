@@ -396,6 +396,7 @@ const ProposalSummary = ({ history }) => {
                       your proposal details before you proceed
                     </p>
                     <div className="-wrapper pad_proposal_s">
+                    {}
                       {allFields ? (
                         allFields.map((item, index) => {
                           return (

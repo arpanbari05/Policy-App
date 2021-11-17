@@ -16,20 +16,22 @@ const convertToFt = (value) => {
   return `${feet} ft ${inches} in`;
 };
 const SummaryTab = ({ title, data, values, index }) => {
-  console.log("hehe", data);
-  console.log("hehe2", values);
+  
   const url = useUrlQuery();
   const enquiryId = url.get("enquiryId");
   const dispatch = useDispatch();
   const history = useHistory();
   const { theme } = useSelector((state) => state.frontendBoot);
-
+  const {asyncOptions} = useSelector(({formBuilder}) => formBuilder);
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const getValueFromCode = useCallback((value, data) => {
-    console.log(value, data, "asdg");
+    
+    if(asyncOptions[data.name]){
+        return asyncOptions[data.name][value]
+    }
     if (data.additionalOptions.options) {
       let filteredOption = data.additionalOptions.options[value];
-      console.log(filteredOption, "asdg3333333333");
+      
       return filteredOption;
     }
     if (data.additionalOptions.customOptions) {
@@ -37,7 +39,7 @@ const SummaryTab = ({ title, data, values, index }) => {
       return value + " " + suffix;
     }
   }, []);
-  console.log("gegege", values);
+ 
   const normalRender = useCallback((data, i) => {
     if (data.type === "title") return <TitleWrapper>{data.name}</TitleWrapper>;
     if (data.type === "date") {
@@ -63,7 +65,7 @@ const SummaryTab = ({ title, data, values, index }) => {
       data.type !== "custom_medical"
     )
       return <></>;
-
+      
     if (data.type === "select")
       return (
         <Col
@@ -74,6 +76,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
+        {console.log("bvidwbvidbvb",values)}
           <p className="font_15_p_s" style={{ fontWeight: "900" }}>
             {data.additionalOptions.label}
           </p>

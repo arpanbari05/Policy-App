@@ -120,6 +120,11 @@ function EditMembersContent({ closePopup = () => {} }) {
         (selectedmember) => selectedmember.type === member.type
       );
     setLoading(true);
+    console.log("hvbhdvbhufb", {
+      members: allMembersWithAge
+        .filter((member) => !selectedMembersIncludes(member))
+        .concat(selectedMembers),
+    })
     updateUser({
       members: allMembersWithAge
         .filter((member) => !selectedMembersIncludes(member))
@@ -188,8 +193,8 @@ function EditMembersContent({ closePopup = () => {} }) {
           const selectedMember = selectedMembers.find((member) =>
             member.type.includes(memberData.code)
           );
-
-          const selectedMemberAge = selectedMember.age.includes(".")
+          console.log("selectedMemberselectedMember:",selectedMember)
+          const selectedMemberAge = String(selectedMember.age).includes(".")
             ? selectedMember.age.split(".")[1] +
               `${selectedMember.age.split(".")[1] === 1 ? " month" : " months"}`
             : selectedMember.age;

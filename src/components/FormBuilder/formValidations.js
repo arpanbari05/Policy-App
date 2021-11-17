@@ -318,11 +318,12 @@ export const validationIndex = {
               };
             } else break;
           } else
-            return {
-              status: false,
-              message:
-                "No Regex specified for the combination remove matches or change the param",
-            };
+            return 
+            // {
+            //   status: false,
+            //   message:
+            //     "No Regex specified for the combination remove matches or change the param",
+            // };
       }
     }
   },

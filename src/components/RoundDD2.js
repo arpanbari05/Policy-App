@@ -92,7 +92,7 @@ const RoundDD2 = ({
               return (
                 <ListItem
                   className={`GreetingDD__ListItem`}
-                  onClick={() => handleSelect(data.title)}
+                  onClick={() => handleSelect(parseInt(data.title))}
                   key={uuidv4()}
                 >
                   {data.title}
