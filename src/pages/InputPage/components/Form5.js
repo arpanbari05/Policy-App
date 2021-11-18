@@ -85,7 +85,10 @@ const Form5 = ({ handleChange, currentForm }) => {
 
   let tokenId;
   if (location.search && location.search.includes("token"))
-    tokenId = location.search.slice(location.search.indexOf("=") + 1, location.search.length);
+    tokenId = location.search.slice(
+      location.search.indexOf("=") + 1,
+      location.search.length
+    );
   console.log("jidbibdc", tokenId);
   const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const [fullName, setFullName] = useState("");
@@ -118,32 +121,32 @@ const Form5 = ({ handleChange, currentForm }) => {
   });
   const onSubmit = (data) => {
     console.log("dgasgasd", 222);
-    tokenId?
-    dispatch(
-      saveForm2UserDetails(
-        {
-          fullName: fullName.trim(),
-          mobile: mobile,
-          email: email,
-          gender: gender,
-seller_token:tokenId
-        },
-        // pushToQuotes
-        handleChange
-      )
-    ):dispatch(
-      saveForm2UserDetails(
-        {
-          fullName: fullName.trim(),
-          mobile: mobile,
-          email: email,
-          gender: gender,
-
-        },
-        // pushToQuotes
-        handleChange
-      )
-    )
+    tokenId
+      ? dispatch(
+          saveForm2UserDetails(
+            {
+              fullName: fullName.trim(),
+              mobile: mobile,
+              email: email,
+              gender: gender,
+              seller_token: tokenId,
+            },
+            // pushToQuotes
+            handleChange
+          )
+        )
+      : dispatch(
+          saveForm2UserDetails(
+            {
+              fullName: fullName.trim(),
+              mobile: mobile,
+              email: email,
+              gender: gender,
+            },
+            // pushToQuotes
+            handleChange
+          )
+        );
     console.log(gender, fullName, email, mobile, "h21");
   };
 
