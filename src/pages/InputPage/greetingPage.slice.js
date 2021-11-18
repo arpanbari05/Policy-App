@@ -158,8 +158,8 @@ export const saveForm1UserDetails = (
           access_token,
         } = data;
 
-        ls.set("token", access_token);
-        ls.set("enquiryId", enquiry_id);
+        // ls.set("token", access_token);
+        // ls.set("enquiryId", enquiry_id);
         dispatch(
           createUserData({
             pincode: pinCode,
