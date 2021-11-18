@@ -18,10 +18,20 @@ import Form2 from "./components/Form2";
 import Form3 from "./components/Form3";
 import Form4 from "./components/Form4";
 import Form5 from "./components/Form5";
+
 import Slider from "../../components/Slider";
 import { setFilters } from "../quotePage/quote.slice";
 
 export const InputPage = () => {
+  // const ls = new SecureLS();
+  // const history = useHistory();
+  // useEffect(() => {
+  //   history.push({
+  //     pathname: `/`,
+  //     search: `enquiryId=${ls.get("token")}`,
+  //   });
+  // },[])
+  
   const [currentForm, setCurrentForm] = useState(1);
   const [showmore, setShowmore] = useState(false);
   const greetingPage = useSelector((state) => state.greetingPage);

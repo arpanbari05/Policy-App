@@ -152,14 +152,14 @@ export const saveForm1UserDetails = (
             pincode: pinCode,
           },
         });
-        console.log("wwww", data);
+        
         const {
           data: { enquiry_id },
           access_token,
         } = data;
 
-        // ls.set("token", access_token);
-        // ls.set("enquiryId", enquiry_id);
+        ls.set("token", access_token);
+        ls.set("enquiryId", enquiry_id);
         dispatch(
           createUserData({
             pincode: pinCode,
@@ -186,34 +186,27 @@ export const saveForm1UserDetails = (
 };
 
 export const saveForm2UserDetails = (userDetails, handleChange) => {
-  const { fullName, mobile, gender, email } = userDetails;
+
   return async (dispatch) => {
     try {
-      const modUserDetails = {
-        name: fullName,
-        email: email,
-        // first_name: fullName.split(" ")[0],
-        // last_name: fullName.split(" ")[1],
-        mobile: mobile,
-        gender: gender,
-      };
-
+     
       const { data } = await createUser({
         section: "health",
-        ...modUserDetails,
+        ...userDetails,
       });
-
+      
       const {
         data: { enquiry_id },
         access_token,
       } = data;
-
+      console.log("wwww",  access_token);
       ls.set("token", access_token);
       ls.set("enquiryId", enquiry_id);
-
+      console.log("wwww", access_token);
       dispatch(
         createUserData({
-          ...modUserDetails,
+          ...userDetails,
+         
         })
       );
       // dispatch(setMemberGroups(newMemberGroups));

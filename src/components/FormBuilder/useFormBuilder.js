@@ -26,6 +26,7 @@ const useFormBuilder = (
     fetchValues({ ...values, ...multipleValues });
   };
   const insertValue = (parent, member, name, value) => {
+    console.log("qdjbjics",parent, member, name, value)
     setValues({
       ...values,
       [parent]: {

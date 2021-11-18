@@ -38,6 +38,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     Object.keys(schema).length,
     setShow
   );
+  
   const { theme } = useSelector((state) => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
@@ -272,6 +273,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                 </div>
               )}
               <Form>
+              {console.log("jhcvugc",values)}
                 <FormBuilder
                   schema={schema[item]}
                   components={components}
