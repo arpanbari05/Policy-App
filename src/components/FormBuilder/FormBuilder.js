@@ -134,7 +134,7 @@ const FormBuilder = ({
    
     if(pincodeSchema?.value){
       dispatch(
-        callApi(pincodeSchema.fill.using, {
+        callApi(pincodeSchema.fill?.using, {
           [pincodeSchema.name]: pincodeSchema.value,
           
         }),
@@ -202,6 +202,7 @@ const FormBuilder = ({
                                       checkValidation={innerItem.validate}
                                       innerMember={member}
                                       onChange={(e) => {
+                                        console.log("qdjbjics",innerItem,innerItem.parent ,innerItem.type)
                                         if (
                                           innerItem.parent &&
                                           innerItem.type === "checkBox2"
@@ -397,7 +398,7 @@ const FormBuilder = ({
                         checkValidation={item.validate}
                         selectedValues={values}
                         onChange={(e, value) => {
-                          console.log(e, value, "hegege");
+                          
                           if (item.parent && item.members) {
                             insertValue(
                               item.parent,

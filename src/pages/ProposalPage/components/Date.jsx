@@ -29,7 +29,7 @@ const DateComp = ({
   // useEffect(() => {
   //   setInnerValue(value);
   // }, [value]);
-
+console.log("jhcvugc",age)
   return (
     <InputContainer error={error}>
       <DatePicker

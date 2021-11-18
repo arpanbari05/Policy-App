@@ -27,7 +27,7 @@ import {
   forbiddedSymbols2,
   numOnly,
 } from "../../../utils/formUtils";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import SecureLS from "secure-ls";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
@@ -80,8 +80,13 @@ const Form5 = ({ handleChange, currentForm }) => {
   const dispatch = useDispatch();
   const ls = new SecureLS();
   const history = useHistory();
+  const location = useLocation();
   const { theme } = useSelector((state) => state.frontendBoot);
 
+  let tokenId;
+  if (location.search && location.search.includes("token"))
+    tokenId = location.search.slice(location.search.indexOf("=") + 1, location.search.length);
+  console.log("jidbibdc", tokenId);
   const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -113,6 +118,7 @@ const Form5 = ({ handleChange, currentForm }) => {
   });
   const onSubmit = (data) => {
     console.log("dgasgasd", 222);
+    tokenId?
     dispatch(
       saveForm2UserDetails(
         {
@@ -120,11 +126,24 @@ const Form5 = ({ handleChange, currentForm }) => {
           mobile: mobile,
           email: email,
           gender: gender,
+seller_token:tokenId
         },
         // pushToQuotes
         handleChange
       )
-    );
+    ):dispatch(
+      saveForm2UserDetails(
+        {
+          fullName: fullName.trim(),
+          mobile: mobile,
+          email: email,
+          gender: gender,
+
+        },
+        // pushToQuotes
+        handleChange
+      )
+    )
     console.log(gender, fullName, email, mobile, "h21");
   };
 
@@ -273,10 +292,7 @@ const Form5 = ({ handleChange, currentForm }) => {
                         checkAllChar(e.target.value, forbiddedSymbols) &&
                         setEmail(e.target.value);
 
-                      if (name === "mobile" 
-                      && e.target.value.length<=10 
-                       ) {
-
+                      if (name === "mobile" && e.target.value.length <= 10) {
                         !/^\d*(\d)\1{9}\d*$/.test(e.target.value) &&
                           setMobile(e.target.value);
                       }
