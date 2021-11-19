@@ -186,27 +186,42 @@ export const saveForm1UserDetails = (
 };
 
 export const saveForm2UserDetails = (userDetails, handleChange) => {
-
+  const { fullName, mobile, gender, email, seller_token } = userDetails;
   return async (dispatch) => {
     try {
-     
+      const modUserDetails = seller_token?{
+        name: fullName,
+        email: email,
+        // first_name: fullName.split(" ")[0],
+        // last_name: fullName.split(" ")[1],
+        mobile: mobile,
+        gender: gender,
+        seller_token:seller_token
+      }:{
+        name: fullName,
+        email: email,
+        // first_name: fullName.split(" ")[0],
+        // last_name: fullName.split(" ")[1],
+        mobile: mobile,
+        gender: gender,
+      };
+
       const { data } = await createUser({
         section: "health",
-        ...userDetails,
+        ...modUserDetails,
       });
-      
+
       const {
         data: { enquiry_id },
         access_token,
       } = data;
-      console.log("wwww",  access_token);
+
       ls.set("token", access_token);
       ls.set("enquiryId", enquiry_id);
-      console.log("wwww", access_token);
+
       dispatch(
         createUserData({
-          ...userDetails,
-         
+          ...modUserDetails,
         })
       );
       // dispatch(setMemberGroups(newMemberGroups));
