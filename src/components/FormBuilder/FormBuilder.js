@@ -132,7 +132,7 @@ const FormBuilder = ({
    
     let pincodeSchema =  schema.filter(item => item?.name?.includes("pincode"))[0]
    
-    if(pincodeSchema?.value){
+    if(pincodeSchema && pincodeSchema?.value && pincodeSchema.fill){
       dispatch(
         callApi(pincodeSchema.fill?.using, {
           [pincodeSchema.name]: pincodeSchema.value,
