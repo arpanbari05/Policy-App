@@ -120,7 +120,8 @@ const Form5 = ({ handleChange, currentForm }) => {
     mode: "onBlur",
   });
   const onSubmit = (data) => {
-    console.log("dgasgasd", 222);
+    
+  
     tokenId
       ? dispatch(
           saveForm2UserDetails(
