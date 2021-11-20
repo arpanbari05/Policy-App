@@ -22,6 +22,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - run: echo "REACT_APP_API_BASE_URL=https://healthapi.fynity.in/api/v1/" > .env
-#       - run: npm i
-#       - run: npm run build
+  #    - run: echo "REACT_APP_API_BASE_URL=https://healthapi.fynity.in/api/v1/" > .env
+      - run: npm i
+      - run: npm run build
