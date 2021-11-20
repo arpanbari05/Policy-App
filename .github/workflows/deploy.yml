@@ -29,3 +29,8 @@ jobs:
         run: |
           npm i
           npm run build
+          
+      - name: Move folder
+        run: |
+          rm -rf /var/www/dev-healthdemo/*
+          mv -v /var/www/fts-frontend-action/_work/fts-frontend/fts-frontend/* /var/www/dev-healthdemo/
