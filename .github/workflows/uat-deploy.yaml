@@ -32,4 +32,5 @@ jobs:
           CI: False
         run: |
           npm i
+          npm install env-cmd
           npm run build:uat
