@@ -27,5 +27,5 @@ jobs:
         env: 
           CI: False
         run: |
-          - npm i
-          - npm run build
+          npm i
+          npm run build
