@@ -1,6 +1,13 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+const noClaimBonusRange = {
+  50: [0, 50],
+  100: [51, 100],
+  150: [101, 150],
+  200: [151, 200],
+};
+
 const getMinOfArray = (numArray) => Math.max.apply(null, numArray);
 
 const includesDigits = (str = "") => str.match(/(\d+)/);
@@ -27,9 +34,20 @@ const checkFeature = (quote) => (featureObject) => {
 
   if (!feature) return false;
 
-  const { operator, value_to_compare } = featureObject;
+  const { operator, value_to_compare, code } = featureObject;
 
   const value = feature.value.toUpperCase();
+
+  if (code === "no_claim_bonus" && operator === "equals") {
+    const upto = getNumberFromString(value);
+    const valueToCompare = getNumberFromString(value_to_compare);
+    console.log({ upto, valueToCompare });
+
+    const [min, max] = noClaimBonusRange[valueToCompare];
+
+    return upto >= min && upto <= max;
+  }
+
   const valueToCompare =
     typeof value_to_compare === "string"
       ? value_to_compare.toUpperCase()
@@ -115,7 +133,6 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   const selectedPremiumCode = premium?.code;
 
   function filterQuote(quote) {
-
     let isCompanyMatch = false;
     let isPremiumMatch = false;
     console.log("I_M_a_Quote", quote);
@@ -138,7 +155,7 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     }
 
     if (selectedPremiumCode) {
-      console.log('dsafdsf325dfgdhihihihi')
+      console.log("dsafdsf325dfgdhihihihi");
       if (selectedPremiumCode.includes("<")) {
         const tempPremium = selectedPremiumCode.split("<")[1];
         if (premium <= parseInt(tempPremium)) {
