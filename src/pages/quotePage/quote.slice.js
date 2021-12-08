@@ -16,6 +16,7 @@ import {
   refreshUserData,
   setMemberGroups,
 } from "../InputPage/greetingPage.slice";
+import { setTraceId } from "../InputPage/greetingPage.slice"
 import axios from "axios";
 const ls = new SecureLS();
 
@@ -45,7 +46,6 @@ const quotePageSlice = createSlice({
       basePlanType: "Base Health",
       moreFilters: {},
     },
-
     productDiscounts: [],
     selectedDiscount: {},
     selectedQuotes: {},
@@ -617,8 +617,11 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
       //   dispatch(saveQuotesData({ alias: item, type: "normal" }))
       // );
       if (response.data) {
+        
         dispatch(setAppLoading(true));
         ls.set("enquiryId", response?.data?.data?.enquiry_id);
+        console.log("kvbwbdv",response.data.data.trace_id)
+        dispatch(setTraceId(response.data.data.trace_id))
         const newData = {
           enquiryId: response?.data?.data?.enquiry_id,
           name: response.data?.data?.name,

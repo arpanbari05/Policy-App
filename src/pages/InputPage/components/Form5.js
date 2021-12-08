@@ -83,13 +83,17 @@ const Form5 = ({ handleChange, currentForm }) => {
   const location = useLocation();
   const { theme } = useSelector((state) => state.frontendBoot);
 
-  let tokenId;
-  if (location.search && location.search.includes("token"))
-    tokenId = location.search.slice(
-      location.search.indexOf("=") + 1,
-      location.search.length
-    );
-  console.log("jidbibdc", tokenId);
+  // structure params getting from URL for backend (as per brokers)
+  let paramsFromURL = {};
+  if (location.search && location.search.includes("=")) {
+    let modifiedURL = location.search.replace("?", "");
+    modifiedURL.split("&").forEach((str) => {
+      let givenKey = str.split("=")[0];
+      let givenValue = str.split("=")[1];
+      paramsFromURL[givenKey] = givenValue;
+    });
+  }
+
   const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -120,9 +124,8 @@ const Form5 = ({ handleChange, currentForm }) => {
     mode: "onBlur",
   });
   const onSubmit = (data) => {
-    
-  
-    tokenId
+    console.log("dgasgasd", 222);
+    Object.keys(paramsFromURL).length
       ? dispatch(
           saveForm2UserDetails(
             {
@@ -130,9 +133,9 @@ const Form5 = ({ handleChange, currentForm }) => {
               mobile: mobile,
               email: email,
               gender: gender,
-              seller_token: tokenId,
+              params: paramsFromURL,
             },
-            // pushToQuotes
+
             handleChange
           )
         )
@@ -144,7 +147,7 @@ const Form5 = ({ handleChange, currentForm }) => {
               email: email,
               gender: gender,
             },
-            // pushToQuotes
+
             handleChange
           )
         );
