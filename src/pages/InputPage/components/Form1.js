@@ -34,6 +34,39 @@ const Form1 = ({
     memberGroups,
   } = useSelector((state) => state.greetingPage);
 
+  const forbiddedSymbols = [
+    "!",
+    "%",
+    "$",
+    "&",
+    "+",
+    "=",
+    "^",
+    "*",
+    "`",
+    "~",
+    "_",
+    "(",
+    "#",
+    "\\",
+    "-",
+    ",",
+    "/",
+    ".",
+    ")",
+    "{",
+    "}",
+    ";",
+    "?",
+    '"',
+    "'",
+    "@",
+    ">",
+    "[",
+    "]",
+    "<",
+    "|",
+  ];
  
  
   //console.log("The member group", memberGroup);
@@ -163,7 +196,15 @@ const Form1 = ({
             value={pinCode}
             label={`Pincode/City`}
             onChange={(e) => {
-              if(e.target.value.length < 7  ) setPinCode(e.target.value);
+              console.log("Change occured in input", e.target.value);
+              let falseChar = false;
+              e.target.value.split("").map(char => {
+                if(forbiddedSymbols.indexOf(char) >= 0) falseChar = true
+              })
+              // forbiddedSymbols
+              if(!falseChar){
+                setPinCode(e.target.value);
+              }
               
             }}
           />
@@ -181,7 +222,8 @@ const Form1 = ({
               pinCode.length > 2 &&
               proposerDetails?.[memberGroup]?.pincode !== regionDetails?.pincode
           )*/}
-      
+          {console.log("prosperDeatials ", proposerDetails)}
+          {console.log("memeber group", memberGroup)}
           {!regionDetailsLoading &&
             regionDetails?.city &&
             pinCode.length > 2 &&

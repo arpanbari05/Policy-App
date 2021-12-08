@@ -247,6 +247,8 @@ const ModalTitle = styled.h5`
 `;
 
 const Paragraph = styled.div`
+height: 60vh;
+    overflow: auto;
 & li{
   font-size:15px;
   color:black;

@@ -12,6 +12,9 @@ function ProductDetailsNavbar() {
   const currentSection = useSelector(
     (state) => state.productPage.currentSection
   );
+  const { riders_visibilty, addons_visibilty } = useSelector(
+    (state) => state.frontendBoot.frontendData.data.settings
+  );
 
   const [showReviewButton, setShowReviewbutton] = useState(false);
 
@@ -85,18 +88,24 @@ function ProductDetailsNavbar() {
               scrollToElementId="check-discounts"
               className="btn"
             />
-
-            <ClickToScroll
-              label="Additional Riders"
-              scrollToElementId="additional-riders"
-              className="btn"
-            />
-
-            <ClickToScroll
-              label="Add-on Coverages"
-              scrollToElementId="add-on-coverages"
-              className="btn"
-            />
+            {riders_visibilty !== "0" ? (
+              <ClickToScroll
+                label="Additional Riders"
+                scrollToElementId="additional-riders"
+                className="btn"
+              />
+            ) : (
+              <></>
+            )}
+            {addons_visibilty !== "0" ? (
+              <ClickToScroll
+                label="Add-on Coverages"
+                scrollToElementId="add-on-coverages"
+                className="btn"
+              />
+            ) : (
+              <></>
+            )}
           </div>
           <div
             css={`

@@ -152,7 +152,7 @@ export const saveForm1UserDetails = (
             pincode: pinCode,
           },
         });
-        
+        console.log("wwww", data);
         const {
           data: { enquiry_id },
           access_token,
@@ -186,17 +186,18 @@ export const saveForm1UserDetails = (
 };
 
 export const saveForm2UserDetails = (userDetails, handleChange) => {
-  const { fullName, mobile, gender, email, seller_token } = userDetails;
+  
+  const { fullName, mobile, gender, email, params } = userDetails;
   return async (dispatch) => {
     try {
-      const modUserDetails = seller_token?{
+      const modUserDetails = params?{
         name: fullName,
         email: email,
         // first_name: fullName.split(" ")[0],
         // last_name: fullName.split(" ")[1],
         mobile: mobile,
         gender: gender,
-        seller_token:seller_token
+        params,
       }:{
         name: fullName,
         email: email,
@@ -272,7 +273,7 @@ export const saveForm2UserDetails = (userDetails, handleChange) => {
 //   };
 // };
 
-export const saveForm3UserDetails = (data, handleChange) => {
+export const saveForm3UserDetails = (data, handleChange, multiindividual_visibilty) => {
   return async (dispatch) => {
     let sonCount = 1;
     let DCount = 1;
@@ -299,7 +300,13 @@ export const saveForm3UserDetails = (data, handleChange) => {
         // handleChange("form4");
         if (response.data.data.input.members.length === 1) {
           dispatch(saveForm4UserDetails({ planType: "I" }));
-        } else handleChange(3);
+        } else if(response.data.data.input.members.length > 1 && multiindividual_visibilty === "0") {
+          dispatch(saveForm4UserDetails({ planType: "F" }));
+          handleChange(4.1);
+        }else {
+          dispatch(saveForm4UserDetails({ planType: "F" }));
+          handleChange(3);
+        }
       }
       if (!response.success) {
         //emtpy commit

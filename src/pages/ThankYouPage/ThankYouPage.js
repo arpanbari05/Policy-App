@@ -28,7 +28,7 @@ const ThankYouPage = () => {
   const [payment, SetPayment] = useState(true);
   const [timer, SetTimer] = useState(6);
   const { theme } = useSelector((state) => state.frontendBoot);
-
+  const tenantDetail =  useSelector((state) => state.frontendBoot.frontendData.tenant);
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -126,7 +126,7 @@ const ThankYouPage = () => {
         <div className="hideOnMobile">
           <div className="thankheading__wrapper">
             <div className="thankheading__message">
-              Thank you for choosing Fyntune!
+              Thank you for choosing {tenantDetail && tenantDetail.name?tenantDetail.name:"Fyntune"}!
             </div>
             <div className="thankheading__right">Your Purchase</div>
           </div>
