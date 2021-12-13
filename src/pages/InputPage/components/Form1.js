@@ -6,6 +6,7 @@ import { Title, SubTitle, ErrorMessage, formButtons } from "./FormComponents";
 import { useSelector, useDispatch } from "react-redux";
 import RadioCapsule from "../../../components/RadioCapsule";
 import {
+  createRegionData,
   getRegion,
   saveForm1UserDetails,
   setIsDisabled,
@@ -13,6 +14,7 @@ import {
 import "styled-components/macro";
 import { useHistory } from "react-router";
 import SecureLS from "secure-ls";
+import { useGetCitiesMutation } from "../../../api/api";
 
 const Form1 = ({
   handleChange,
@@ -23,7 +25,7 @@ const Form1 = ({
   memberGroup,
 }) => {
   const dispatch = useDispatch();
-  const { frontendData ,theme} = useSelector((state) => state.frontendBoot);
+  const { frontendData, theme } = useSelector((state) => state.frontendBoot);
   const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const {
     regionDetailsLoading,
@@ -67,8 +69,6 @@ const Form1 = ({
     "<",
     "|",
   ];
- 
- 
   //console.log("The member group", memberGroup);
   const { data } = frontendData || [""];
   const { popularcities } = data || [""];
@@ -87,11 +87,15 @@ const Form1 = ({
   const [pinCode, setPinCode] = useState("");
   const [customErrors, setCustomErrors] = useState(false);
 
+  const [getCities, { isLoading: isGetCitiesLoading, data: cities }] =
+    useGetCitiesMutation();
+
   useEffect(() => {
     console.log("I m executed with pincode", pinCode);
     if (pinCode?.length > 2) {
       console.log("disptached getRegion");
-      dispatch(getRegion(pinCode));
+      // dispatch(getRegion(pinCode));
+      getCities({ searchQuery: pinCode });
     }
   }, [pinCode]);
   useEffect(() => {
@@ -178,9 +182,9 @@ const Form1 = ({
             position: relative;
             & .dropdown {
               position: absolute;
-              background:  ${SecondaryColor};
+              background: ${SecondaryColor};
               width: 100%;
-              border: 1px solid  ${SecondaryColor};
+              border: 1px solid ${SecondaryColor};
               color: #fff;
               top: 57px;
               height: 51px;
@@ -198,14 +202,13 @@ const Form1 = ({
             onChange={(e) => {
               console.log("Change occured in input", e.target.value);
               let falseChar = false;
-              e.target.value.split("").map(char => {
-                if(forbiddedSymbols.indexOf(char) >= 0) falseChar = true
-              })
+              e.target.value.split("").map((char) => {
+                if (forbiddedSymbols.indexOf(char) >= 0) falseChar = true;
+              });
               // forbiddedSymbols
-              if(!falseChar){
+              if (!falseChar) {
                 setPinCode(e.target.value);
               }
-              
             }}
           />
           {customErrors && <ErrorMessage>{customErrors}</ErrorMessage>}
@@ -224,7 +227,7 @@ const Form1 = ({
           )*/}
           {console.log("prosperDeatials ", proposerDetails)}
           {console.log("memeber group", memberGroup)}
-          {!regionDetailsLoading &&
+          {/* {!regionDetailsLoading &&
             regionDetails?.city &&
             pinCode.length > 2 &&
             proposerDetails?.[memberGroup]?.pincode !==
@@ -250,6 +253,44 @@ const Form1 = ({
                 className="dropdown"
               >
                 {regionDetails?.city}
+              </div>
+            )} */}
+          {!isGetCitiesLoading &&
+            cities &&
+            pinCode.length > 2 &&
+            !cities.some(
+              (city) => city.pincode === proposerDetails?.[memberGroup]?.pincode
+            ) && (
+              <div className="dropdown" style={{ height: "auto" }}>
+                {cities.map((city) => (
+                  <div
+                    css={`
+                      &:not(:last-child) {
+                        padding-bottom: 10px;
+                      }
+                    `}
+                    onClick={() => {
+                      console.log("click detected");
+                      setPinCode(city.city);
+                      setCustomErrors(false);
+                      dispatch(
+                        saveForm1UserDetails(
+                          {
+                            pinCode: city.pincode,
+                            is_pincode_search: city.is_pincode_search,
+                          },
+                          // pushToQuotes
+                          handleChange,
+                          memberGroup,
+                          form
+                        )
+                      );
+                      dispatch(createRegionData(city));
+                    }}
+                  >
+                    {city?.city}
+                  </div>
+                ))}
               </div>
             )}
         </div>

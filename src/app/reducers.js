@@ -11,6 +11,7 @@ import {
   quotePageSlice,
 } from "../pages";
 import FormBuilderSlice from "./../components/FormBuilder/FormBuilder.slice";
+import { api } from "../api/api";
 
 export default combineReducers({
   frontendBoot: frontendBootSlice,
@@ -23,4 +24,5 @@ export default combineReducers({
   productPage: ProductDetailsSlice,
   schema: schemaSlice,
   formBuilder: FormBuilderSlice,
+  [api.reducerPath]: api.reducer,
 });
