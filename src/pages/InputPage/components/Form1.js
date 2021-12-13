@@ -69,7 +69,6 @@ const Form1 = ({
     "<",
     "|",
   ];
-
   //console.log("The member group", memberGroup);
   const { data } = frontendData || [""];
   const { popularcities } = data || [""];
