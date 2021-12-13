@@ -4,7 +4,10 @@ import "styled-components/macro";
 import care_health from "../../../assets/logos/Care.png";
 import { useSelector, useDispatch } from "react-redux";
 import Pencil from "../../../assets/images/pencil_pink.png";
-import { setexpandMobile } from "../productDetails.slice";
+import {
+  selectAdditionalDiscounts,
+  setexpandMobile,
+} from "../productDetails.slice";
 import { useState } from "react";
 import ReviewCartPopup from "./ReviewCardPopup";
 // import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
@@ -182,7 +185,6 @@ function AddOnDetailsRow({ addOn }) {
 }
 
 export function BackgroundBorderTitle({ title, ...props }) {
-
   const { theme } = useSelector((state) => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
@@ -289,6 +291,9 @@ function useReviewCartButton({ groupCode }) {
 }
 
 function Discounts({ discounts = [], premium }) {
+  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
+  const findAdditionalDiscount = (discountAlias) =>
+    additionalDiscounts.find((discount) => discount.alias === discountAlias);
   return discounts.length > 0 ? (
     <>
       <div
@@ -318,31 +323,34 @@ function Discounts({ discounts = [], premium }) {
             width: 100%;
           `}
         >
-          {discounts.map(({ name, percent }) => (
-            <>
-              <div
-                css={`
-                  display: flex;
-                  justify-content: space-between;
-                  width: 100%;
-                  margin-bottom: 4px;
-                `}
-              >
-                <span>{name}</span>
-                <span
+          {discounts.map((discountAlias) => {
+            const discount = findAdditionalDiscount(discountAlias);
+            return (
+              <>
+                <div
                   css={`
-                    font-weight: 900;
-                    font-size: 11px;
-                    min-width: 100px;
-                    text-align: right;
-                    color: black;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    margin-bottom: 4px;
                   `}
                 >
-                  - ₹ {(premium / 100) * percent}
-                </span>
-              </div>
-            </>
-          ))}
+                  <span>{discount?.name}</span>
+                  <span
+                    css={`
+                      font-weight: 900;
+                      font-size: 11px;
+                      min-width: 100px;
+                      text-align: right;
+                      color: black;
+                    `}
+                  >
+                    - ₹ {(premium / 100) * discount?.percent}
+                  </span>
+                </div>
+              </>
+            );
+          })}
         </div>
       </div>
     </>
@@ -660,6 +668,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
   };
 
   const DiscountsMobile = ({ discounts, premium }) => {
+    const additionalDiscounts = useSelector(selectAdditionalDiscounts);
+    const findAdditionalDiscount = (discountAlias) =>
+      additionalDiscounts.find((discount) => discount.alias === discountAlias);
     console.log(discounts, "discount");
     return (
       <>
@@ -680,35 +691,38 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             Discount
           </h3>
 
-          {discounts.map(({ name, percent }) => (
-            <div className="d-flex justify-content-between">
-              <span
-                css={`
-                  font-size: 14px;
-                  color: #5c5959;
-                  margin-left: 43px;
-                  @media (max-width: 767px) {
-                    margin-left: unset;
-                  }
-                  @media (max-width: 537px) {
-                    font-size: 12px !important;
-                  }
-                `}
-              >
-                {name}
-              </span>
-              <span
-                css={`
-                  @media (max-width: 537px) {
-                    font-size: 12px;
-                    font-weight: 900;
-                  }
-                `}
-              >
-                - ₹ {(premium / 100) * percent}
-              </span>
-            </div>
-          ))}
+          {discounts.map((discountAlias) => {
+            const discount = findAdditionalDiscount(discountAlias);
+            return (
+              <div className="d-flex justify-content-between">
+                <span
+                  css={`
+                    font-size: 14px;
+                    color: #5c5959;
+                    margin-left: 43px;
+                    @media (max-width: 767px) {
+                      margin-left: unset;
+                    }
+                    @media (max-width: 537px) {
+                      font-size: 12px !important;
+                    }
+                  `}
+                >
+                  {discount?.name}
+                </span>
+                <span
+                  css={`
+                    @media (max-width: 537px) {
+                      font-size: 12px;
+                      font-weight: 900;
+                    }
+                  `}
+                >
+                  - ₹ {(premium / 100) * discount?.percent}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </>
     );
@@ -718,6 +732,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
   const dispatch = useDispatch();
   const setExpand = () => dispatch(setexpandMobile(!expand));
   const { theme } = useSelector((state) => state.frontendBoot);
+  const { riders_visibilty, addons_visibilty } = useSelector(
+    (state) => state.frontendBoot.frontendData.data.settings
+  );
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   // const [expand, setExpand] = useState(false);
@@ -1095,113 +1112,121 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             </div>
           </div>
 
-          <div
-            css={`
-              display: flex;
-              width: 100%;
-              align-items: flex-start;
-              justify-content: space-between;
-              border-bottom: 1px solid #ddd;
-              padding-bottom: 5px;
-              /* padding-left: 12px; */
-              flex-direction: column;
-              margin-bottom: 5px;
-            `}
-          >
+          {riders_visibilty !== "0" ? (
             <div
               css={`
-                width: 100%;
-
                 display: flex;
-                align-items: center;
+                width: 100%;
+                align-items: flex-start;
                 justify-content: space-between;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 5px;
+                /* padding-left: 12px; */
+                flex-direction: column;
+                margin-bottom: 5px;
               `}
             >
-              <BackgroundBorderTitle title="Riders" />
-            </div>
+              <div
+                css={`
+                  width: 100%;
 
-            {/* IT SHOULD BE COLLAPSIBLE */}
-            {health_riders.length > 0 ? (
-              <div
-                css={`
-                  width: 100%;
-                  margin-top: 5px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
                 `}
               >
-                {health_riders.length &&
-                  health_riders.map(({ name, total_premium }) => (
-                    <CartDetailRow
-                      key={name + total_premium}
-                      title={name}
-                      value={amount(total_premium)}
-                    />
-                  ))}
+                <BackgroundBorderTitle title="Riders" />
               </div>
-            ) : (
-              <div
-                css={`
-                  width: 100%;
-                  margin-top: 5px;
-                `}
-              >
-                {!health_riders.length && (
-                  <CartDetailRow title="No Riders Selected" />
-                )}
-              </div>
-            )}
-          </div>
+
+              {/* IT SHOULD BE COLLAPSIBLE */}
+              {health_riders.length > 0 ? (
+                <div
+                  css={`
+                    width: 100%;
+                    margin-top: 5px;
+                  `}
+                >
+                  {health_riders.length &&
+                    health_riders.map(({ name, total_premium }) => (
+                      <CartDetailRow
+                        key={name + total_premium}
+                        title={name}
+                        value={amount(total_premium)}
+                      />
+                    ))}
+                </div>
+              ) : (
+                <div
+                  css={`
+                    width: 100%;
+                    margin-top: 5px;
+                  `}
+                >
+                  {!health_riders.length && (
+                    <CartDetailRow title="No Riders Selected" />
+                  )}
+                </div>
+              )}
+            </div>
+          ) : (
+            <></>
+          )}
 
           <Discounts discounts={discounts} premium={premium} />
 
-          <div
-            css={`
-              display: flex;
-              width: 100%;
-              align-items: flex-start;
-              justify-content: space-between;
-              border-bottom: 1px solid #ddd;
-              padding-bottom: 5px;
-              /* padding-left: 12px; */
-              flex-direction: column;
-            `}
-          >
+          {addons_visibilty !== "0" ? (
             <div
               css={`
-                width: 100%;
-
                 display: flex;
-                align-items: center;
+                width: 100%;
+                align-items: flex-start;
                 justify-content: space-between;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 5px;
+                padding-left: 12px;
+                flex-direction: column;
               `}
             >
-              <BackgroundBorderTitle title="Add-On Coverages" />
+              <div
+                css={`
+                  width: 100%;
+
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                `}
+              >
+                <BackgroundBorderTitle title="Add-On Coverages" />
+              </div>
+              {addons.length > 0 ? (
+                <div
+                  css={`
+                    width: 100%;
+                  `}
+                >
+                  {addons.length &&
+                    addons.map((addOn, idx) => (
+                      <AddOnDetailsRow
+                        key={addOn.product.name + addOn.premium + idx}
+                        addOn={addOn}
+                      />
+                    ))}
+                </div>
+              ) : (
+                <div
+                  css={`
+                    width: 100%;
+                  `}
+                >
+                  {!addons.length && (
+                    <CartDetailRow title="No Add-Ons Selected" />
+                  )}
+                </div>
+              )}
             </div>
-            {addons.length > 0 ? (
-              <div
-                css={`
-                  width: 100%;
-                `}
-              >
-                {addons.length &&
-                  addons.map((addOn, idx) => (
-                    <AddOnDetailsRow
-                      key={addOn.product.name + addOn.premium + idx}
-                      addOn={addOn}
-                    />
-                  ))}
-              </div>
-            ) : (
-              <div
-                css={`
-                  width: 100%;
-                `}
-              >
-                {!addons.length && (
-                  <CartDetailRow title="No Add-Ons Selected" />
-                )}
-              </div>
-            )}
-          </div>
+          ) : (
+            <></>
+          )}
 
           <div
             css={`
@@ -1339,7 +1364,7 @@ export function ReviewCartButton() {
   const { theme } = useSelector((state) => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-  
+
   return (
     <>
       {hasNextGroupProduct ? (
@@ -1404,7 +1429,6 @@ function ProceedButton({
   members = "",
   onProceedClick = () => {},
 }) {
-
   const { theme } = useSelector((state) => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;

@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { selectAdditionalDiscounts } from "../../ProductDetails/productDetails.slice";
 import { addQuoteToCart, removeQuoteFromCart } from "../cart.slice";
 import { createCartApi, deleteCartApi, updateCartApi } from "../serviceApi";
 
@@ -49,14 +50,14 @@ function cartSendData(cartData) {
     total_premium,
     riders,
     addons,
-    discounts: discounts
-      ? discounts.map((discount) => discount.alias)
-      : undefined,
+    discounts: discounts || [],
+    // discounts: discounts
+    //   ? discounts.map((discount) => discount.alias)
+    //   : undefined,
   };
 }
 
 function useCartProduct(groupCode, selectedProduct) {
- 
   const groupCodeState = useSelector(
     ({ quotePage }) => quotePage.selectedGroup
   );
@@ -78,8 +79,13 @@ function useCartProduct(groupCode, selectedProduct) {
 
   let totalPremium = null;
 
+  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
+
+  const findAdditionalDiscount = (discountAlias) =>
+    additionalDiscounts.find((discount) => discount.alias === discountAlias);
+
   if (product) {
-    const { total_premium, health_riders, addons } = product;
+    const { total_premium, health_riders, addons, discounts } = product;
 
     totalRidersPremium = health_riders.reduce(
       (sum, rider) => sum + parseInt(rider?.total_premium),
@@ -93,6 +99,16 @@ function useCartProduct(groupCode, selectedProduct) {
 
     totalPremium =
       parseInt(total_premium) + totalRidersPremium + totalAddOnsPremium;
+
+    discounts.forEach((discountAlias) => {
+      const discount = findAdditionalDiscount(discountAlias);
+
+      if (discount) {
+        // if (discount.applied_on_total_premium) {
+        totalPremium -= totalPremium * (discount.percent / 100);
+        // }
+      }
+    });
   }
 
   const [isCartProductLoading, setIsCartProductLoading] = useState(false);
@@ -101,7 +117,7 @@ function useCartProduct(groupCode, selectedProduct) {
 
   const updateProductRedux = useCallback(
     (productData) => {
-    console.log(productData,'gsagsd32t32')
+      console.log(productData, "gsagsd32t32");
       dispatch(addQuoteToCart({ groupCode, product: productData }));
     },
     [dispatch, groupCode]
@@ -118,7 +134,7 @@ function useCartProduct(groupCode, selectedProduct) {
           cartId: product.id,
           ...cartSendData(productData),
         });
-       
+
         setIsCartProductLoading(false);
         if (!data) {
           return false;

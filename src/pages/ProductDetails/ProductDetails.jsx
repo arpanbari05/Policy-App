@@ -19,7 +19,6 @@ import {
 } from "../ProposalPage/ProposalPage.style";
 import "styled-components/macro";
 import { setFilters, setShouldFetchQuotes } from "../quotePage/quote.slice";
-//import { setFilters, setShouldFetchQuotes } from "../QuotesPage/quotePage.slice";
 
 function GoBackButton({ groupCode, ...props }) {
   const groupCodes = Object.keys(

@@ -12,6 +12,10 @@ import { useParams } from "react-router";
 import { amount } from "./ReviewCart";
 import { AddOnBuyButton } from "./AddOnsCoveragesSection/AddOnsCoveragesSection";
 import { getProductDiscount } from "../../quotePage/quote.slice";
+import {
+  selectAdditionalDiscounts,
+  setAdditionalDiscounts,
+} from "../productDetails.slice";
 
 const CheckDiscount = ({ groupCode }) => {
   const dispatch = useDispatch();
@@ -22,7 +26,7 @@ const CheckDiscount = ({ groupCode }) => {
   } = useSelector((state) => state.greetingPage);
   const members = memberGroups[groupCode].join(",");
   const [discounts, setDiscounts] = useState([]);
-  const [additionalDiscounts, setAdditionalDiscounts] = useState([]);
+  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
 
   const [isLoading, setIsloading] = useState(true);
   const [discountError, setDiscountError] = useState(false);
@@ -64,7 +68,9 @@ const CheckDiscount = ({ groupCode }) => {
         product_id: product.id,
         sum_insured,
         tenure,
-      }).then((res) => setAdditionalDiscounts(res?.data?.data));
+      }).then((res) => {
+        dispatch(setAdditionalDiscounts(res?.data?.data));
+      });
     }
   }, [groupCode, members, product.id, sum_insured, tenure]);
 
@@ -85,7 +91,7 @@ const CheckDiscount = ({ groupCode }) => {
   const handleTenureClick = (item) => {
     updateProductRedux({
       ...cartProduct,
-      page: 'checkDiscount',
+      page: "checkDiscount",
       tenure: item.tenure,
       total_premium: item.total_premium,
       service_tax: item.tax_amount,
@@ -270,7 +276,7 @@ const CheckDiscount = ({ groupCode }) => {
                           </span>
                         )}
 
-                        {item?.tenure !== 1 ? (
+                        {item?.yearly_discount !== "0" ? (
                           <div
                             css={`
                               width: 100px;
@@ -289,7 +295,7 @@ const CheckDiscount = ({ groupCode }) => {
                               right: -2px;
                             `}
                           >
-                            {item?.tenure !== 3 ? "7.5% off" : "10% off"}
+                            {`${item?.yearly_discount}% off`}
                           </div>
                         ) : (
                           <></>
@@ -393,7 +399,7 @@ function AdditionalDiscount({ additionalDiscount }) {
     updateProductRedux({
       ...product,
       discounts: product.discounts.filter(
-        (discount) => discount.alias !== alias
+        (discountAlias) => discountAlias !== alias
       ),
     });
   };
@@ -401,16 +407,15 @@ function AdditionalDiscount({ additionalDiscount }) {
   const handleApply = () => {
     if (
       product.discounts &&
-      product.discounts.some((discount) => discount.alias === alias)
+      product.discounts.includes(alias)
+      // product.discounts.some((discount) => discount.alias === alias)
     ) {
       removeDiscount();
       return;
     }
     updateProductRedux({
       ...product,
-      discounts: product.discounts
-        ? [...product.discounts, additionalDiscount]
-        : [additionalDiscount],
+      discounts: product.discounts ? [...product.discounts, alias] : [alias],
     });
   };
 
@@ -473,10 +478,10 @@ function AdditionalDiscount({ additionalDiscount }) {
           }
         `}
         onClick={handleApply}
-        selected={
-          product.discounts &&
-          product.discounts.some((discount) => discount.alias === alias)
-        }
+        // selected={
+        //   product.discounts &&
+        //   product.discounts.some((discount) => discount.alias === alias)
+        // }
         className="btn"
       >
         <span
@@ -486,8 +491,7 @@ function AdditionalDiscount({ additionalDiscount }) {
         >
           Apply
         </span>
-        {product.discounts &&
-        product.discounts.some((discount) => discount.alias === alias) ? (
+        {product.discounts && product.discounts.includes(alias) ? (
           <i class="fas fa-check"></i>
         ) : (
           <i class="fas fa-plus"></i>

@@ -11,6 +11,7 @@ import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
 import { calculateTotalPremium } from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { selectAdditionalDiscounts } from "../productDetails.slice";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -178,7 +179,7 @@ function AddOnDetailsCard({
           css={`
             margin-left: 10px;
             font-weight: 900;
-            width:65%;
+            width: 65%;
           `}
         >
           {name}
@@ -588,7 +589,7 @@ function ProductDetailsCard({ cartItem }) {
             align-items: center;
           `}
         >
-         <div className="logo_style_common" style={{ marginBottom: "0px" }}>
+          <div className="logo_style_common" style={{ marginBottom: "0px" }}>
             <img
               css={`
                 width: 100%;
@@ -707,9 +708,9 @@ function ProductDetailsCard({ cartItem }) {
           <div
             css={`
               margin: 2px;
-              width:fit-content;
-              font-size:14px;
-              width:48%;
+              width: fit-content;
+              font-size: 14px;
+              width: 48%;
             `}
           >
             {/* <img src={CorrectIcon} class="display_in_m" alt="" /> */}
@@ -739,14 +740,29 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
   const groupCodes = Object.keys(cart).filter((item) =>
     Object.keys(memberGroups).includes(item)
   );
- 
+
   const allAddOns = groupCodes.reduce(
     (allAddOns, groupCode) => [...allAddOns, ...cart[groupCode].addons],
     []
   );
 
-  const totalPremium = groupCodes.reduce((totalPremium, groupCode) => {
-    return totalPremium + calculateTotalPremium(cart[groupCode]);
+  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
+
+  const findAdditionalDiscount = (discountAlias) =>
+    additionalDiscounts.find((discount) => discount.alias === discountAlias);
+
+  let totalPremium = groupCodes.reduce((totalPremium, groupCode) => {
+    const { discounts } = cart[groupCode];
+    let newTotalPremium = totalPremium + calculateTotalPremium(cart[groupCode]);
+    if (discounts) {
+      discounts.forEach((discountAlias) => {
+        const discount = findAdditionalDiscount(discountAlias);
+        if (discount) {
+          newTotalPremium -= newTotalPremium * (discount.percent / 100);
+        }
+      });
+    }
+    return newTotalPremium;
   }, 0);
 
   const reducedAddOns = allAddOns.reduce((reducedAddOns, addOn) => {
@@ -796,7 +812,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           </span>
         </div>
       }
-      onClose={()=>handleCloseClick(PrimaryColor)}
+      onClose={() => handleCloseClick(PrimaryColor)}
     >
       <div
         css={`

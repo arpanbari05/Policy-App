@@ -4,7 +4,8 @@ const productPageSlice = createSlice({
   initialState: {
     steps: 1,
     currentSection: "additional-riders",
-    expandMobile:false
+    expandMobile: false,
+    additionalDiscounts: [],
   },
   name: "product",
   reducers: {
@@ -14,12 +15,22 @@ const productPageSlice = createSlice({
     setCurrentSection: (state, action) => {
       state.currentSection = action.payload;
     },
-    setexpandMobile:(state, action) => {
+    setexpandMobile: (state, action) => {
       state.expandMobile = action.payload;
+    },
+    setAdditionalDiscounts: (state, action) => {
+      state.additionalDiscounts = action.payload;
     },
   },
 });
 
-export const { setSteps, setCurrentSection, setexpandMobile } = productPageSlice.actions;
+export const {
+  setSteps,
+  setCurrentSection,
+  setexpandMobile,
+  setAdditionalDiscounts,
+} = productPageSlice.actions;
 
 export default productPageSlice.reducer;
+export const selectAdditionalDiscounts = (state) =>
+  state.productPage.additionalDiscounts;
