@@ -19,7 +19,19 @@ export const api = createApi({
         url: `location-details?search=${searchQuery}`,
       }),
     }),
+    getCart: builder.query({
+      query: () => ({ url: `cart-items` }),
+    }),
+    getAdditionalDiscounts: builder.query({
+      query: ({ productId, groupCode, sum_insured, tenure }) => ({
+        url: `products/${productId}/additional-discounts?group=${groupCode}&sum_insured=${sum_insured}&tenure=${tenure}`,
+      }),
+    }),
   }),
 });
 
-export const { useGetCitiesMutation } = api;
+export const {
+  useGetCitiesMutation,
+  useGetCartQuery,
+  useGetAdditionalDiscountsQuery,
+} = api;

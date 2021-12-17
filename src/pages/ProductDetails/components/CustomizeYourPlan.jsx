@@ -31,28 +31,37 @@ const CustomizeYourPlan = ({
     proposerDetails: { members: membersWithAge },
   } = useSelector((state) => state.greetingPage);
 
-  const fetchRiders = useCallback(() => {
-    if (product) {
-      setRidersError(false);
-      getRiders(
-        { productId: product?.id, sum_insured, tenure, group: groupCode },
-        (riders, err) => {
-          setIsRidersLoading(false);
-          if (err) {
-            setRidersError(err);
-            return;
+  const fetchRiders = useCallback(
+    ({ selected_riders }) => {
+      if (product) {
+        setRidersError(false);
+        getRiders(
+          {
+            productId: product?.id,
+            sum_insured,
+            tenure,
+            group: groupCode,
+            selected_riders,
+          },
+          (riders, err) => {
+            setIsRidersLoading(false);
+            if (err) {
+              setRidersError(err);
+              return;
+            }
+            //make premium != 0
+            setRiders(
+              riders.data
+                .filter((rider) => rider.total_premium !== 0 || rider.options)
+                .map((rider) => ({ ...rider, rider_id: rider.id }))
+            );
+            setRidersError(false);
           }
-          //make premium != 0
-          setRiders(
-            riders.data
-              .filter((rider) => rider.total_premium !== 0 || rider.options)
-              .map((rider) => ({ ...rider, rider_id: rider.id }))
-          );
-          setRidersError(false);
-        }
-      );
-    }
-  }, [groupCode, product, sum_insured, tenure]);
+        );
+      }
+    },
+    [groupCode, product, sum_insured, tenure]
+  );
 
   const fetchAbhiRiders = useCallback(
     (string) => {
@@ -89,11 +98,21 @@ const CustomizeYourPlan = ({
     [groupCode, product, sum_insured, tenure]
   );
 
+  let selectedPlusMendatoryRiders = [
+    ...health_riders,
+    ...riders.filter((i) => i.is_mandatory),
+  ];
+
   useEffect(() => {
-    fetchRiders();
+    fetchRiders({
+      selected_riders: selectedPlusMendatoryRiders.map((rider) => rider.alias),
+    });
   }, [groupCode, tenure]);
 
-  const handleRidersRetry = () => fetchRiders();
+  const handleRidersRetry = () =>
+    fetchRiders({
+      selected_riders: selectedPlusMendatoryRiders.map((rider) => rider.alias),
+    });
 
   const handleRiderChange = ({
     rider,
@@ -155,6 +174,24 @@ const CustomizeYourPlan = ({
       ...cartItem,
       health_riders: newRiders,
     });
+
+    if (rider.affects_other_riders) {
+      if (isRiderSelected)
+        fetchRiders({
+          selected_riders: [
+            rider.alias,
+            ...selectedPlusMendatoryRiders.map((rider) => rider.alias),
+          ],
+        });
+      else
+        fetchRiders({
+          selected_riders: [
+            selectedPlusMendatoryRiders
+              .filter((selectedRider) => selectedRider.alias !== rider.alias)
+              .map((rider) => rider.alias),
+          ],
+        });
+    }
   };
 
   useEffect(() => {
@@ -167,7 +204,7 @@ const CustomizeYourPlan = ({
     if (riders.length > 0) {
       updateProductRedux({
         ...cartItem,
-        page: 'customizehehe',
+        page: "customizehehe",
         health_riders: cartItem.health_riders.map((health_rider) =>
           riders.find((rider) => rider?.rider_id === health_rider?.rider_id)
         ),
@@ -186,7 +223,7 @@ const CustomizeYourPlan = ({
   // total_premium: 510
   // 1: {id: 105, name: "Nursi
 
-  return (
+  return riders.length ? (
     <FeatureSection
       heading="Customize Your Plan"
       subHeading="You can add ‘Riders’ to you basic health insurance plan for additional benefits."
@@ -216,19 +253,23 @@ const CustomizeYourPlan = ({
               handleRiderChange={handleRiderChange}
               isMandatory={rider.is_mandatory}
               isRiderSelected={
-              rider.is_mandatory ||
-              health_riders.some(
-              (health_rider) => health_rider?.rider_id === rider?.rider_id
-              )
+                rider.is_mandatory ||
+                health_riders.some(
+                  (health_rider) => health_rider?.rider_id === rider?.rider_id
+                )
               }
               health_riders={health_riders}
               selectedRiders={selectedRiders}
               isAbhiRidersLoading={isAbhiRidersLoading}
+              selectedPlusMendatoryRiders={selectedPlusMendatoryRiders}
+              allRiders={riders}
             />
           ))
         )}
       </RidersContainer>
     </FeatureSection>
+  ) : (
+    <></>
   );
 };
 

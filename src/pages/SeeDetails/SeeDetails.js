@@ -39,7 +39,7 @@ import { addSelectedRiders } from "../quotePage/quote.slice";
 import { AiOutlineClose } from "react-icons/ai";
 
 export const getRiders = async (
-  { productId, sum_insured, tenure, group },
+  { productId, sum_insured, tenure, group, selected_riders },
 
   callback = () => {}
 ) => {
@@ -50,6 +50,7 @@ export const getRiders = async (
       sum_insured,
       tenure,
       group,
+      selected_riders,
     });
     if (response.message) {
       callback(null, response.message);
@@ -244,7 +245,7 @@ const SeeDetails = ({
   const [brochureUrl, setBrochureUrl] = useState("");
   const [policyWordingUrl, setPolicyWordingUrl] = useState("");
   const [hey, sethey] = useState("");
-  console.log(show, "sgdagsd");
+
   useEffect(() => {
     const getdetails = async () => {
       if (show === 4) {
