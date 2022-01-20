@@ -53,7 +53,7 @@ const keyBenefits = (plans, title, windowWidth, PrimaryShade) => {
           </OverlayTrigger>
         </th>
 
-        {[0, 1, 2].map((item) => {
+        {[0, 1, 2].map(item => {
           if (!plans[item] && item === 1) return <td></td>;
           else if (!plans[item]) return windowWidth > 1023 ? <td></td> : "";
           else
@@ -83,7 +83,7 @@ const dataset = (
   title,
   windowWidth,
   PrimaryShade,
-  PrimaryColor
+  PrimaryColor,
 ) => {
   // console.log("21", plans);
   const dataArray = [];
@@ -159,7 +159,7 @@ const dataset = (
                 </th>
 
                 <>
-                  {[0, 1, 2].map((item) => {
+                  {[0, 1, 2].map(item => {
                     if (!plans[item] && item === 1) return <td></td>;
                     else if (!plans[item])
                       return windowWidth > 1023 ? <td></td> : "";
@@ -204,7 +204,9 @@ const dataset = (
                             <label
                               htmlFor={"exclusions" + item}
                               className="showmore__button"
-                              css={`color:${PrimaryColor} !important;`}
+                              css={`
+                                color: ${PrimaryColor} !important;
+                              `}
                             >
                               Show More
                             </label>
@@ -393,7 +395,7 @@ const dataset = (
               </tr>
             );
           }
-        })
+        }),
     );
   }
   if (count < 0) {
@@ -401,7 +403,13 @@ const dataset = (
   }
   return dataArray;
 };
-const AdditionalBenefits = ({ plans, title, index, windowWidth,PrimaryShade }) => {
+const AdditionalBenefits = ({
+  plans,
+  title,
+  index,
+  windowWidth,
+  PrimaryShade,
+}) => {
   const dispatch = useDispatch();
   const riders = useSelector(({ comparePage }) => comparePage.riders);
 
@@ -428,7 +436,7 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth,PrimaryShade }) =
           </OverlayTrigger>
         </th>
 
-        {[0, 1, 2]?.map((item) => {
+        {[0, 1, 2]?.map(item => {
           if (!plans[item] && item === 1) return <td></td>;
           else if (!plans[item]) return windowWidth > 1023 ? <td></td> : "";
           else
@@ -437,7 +445,7 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth,PrimaryShade }) =
                 style={{ whiteSpace: "break-spaces", color: "#647188" }}
                 className={`${item === 2 ? "showOnDesktopF" : ""}`}
               >
-                {plans[item]?.features[index]?.riders?.map((innerItem) => {
+                {plans[item]?.features[index]?.riders?.map(innerItem => {
                   return innerItem.total_premium ? (
                     <RiderWrapper show={innerItem.total_premium}>
                       <OverlayTrigger
@@ -454,29 +462,28 @@ const AdditionalBenefits = ({ plans, title, index, windowWidth,PrimaryShade }) =
                           ₹ {innerItem.total_premium}{" "}
                         </div>{" "}
                         <div>
-                     
                           <Checkbox2
                             showTitle={false}
                             title={innerItem.name + plans[item].data.product.id}
                             checked={riders[
                               `${plans[item].data.product.id}${plans[item].data.sum_insured}`
-                            ]?.some((item) => item.name === innerItem.name)}
-                            onChange={(e) => {
+                            ]?.some(item => item.name === innerItem.name)}
+                            onChange={e => {
                               if (e.target.checked) {
                                 dispatch(
                                   insertRider(
                                     plans[item].data.product.id,
                                     plans[item].data.sum_insured,
-                                    innerItem
-                                  )
+                                    innerItem,
+                                  ),
                                 );
                               } else {
                                 dispatch(
                                   removeRider(
                                     plans[item].data.product.id,
                                     plans[item].data.sum_insured,
-                                    innerItem
-                                  )
+                                    innerItem,
+                                  ),
                                 );
                               }
                             }}
@@ -504,19 +511,19 @@ const TBody = ({
   setHideCells,
   hideCells,
 }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const dispatch = useDispatch();
-  const { discount, riders } = useSelector((state) => state.comparePage);
+  const { discount, riders } = useSelector(state => state.comparePage);
   const { quotesForCompare, selectedGroup, productDiscounts } = useSelector(
-    (state) => state.quotePage
+    state => state.quotePage,
   );
   const [windowHeight, windowWidth] = useWindowSize();
   const [tenureData, setTenureData] = useState([
-    plans.map((item) => item.data.tenure),
+    plans.map(item => item.data.tenure),
   ]);
-  const { memberGroups } = useSelector((state) => state.greetingPage);
+  const { memberGroups } = useSelector(state => state.greetingPage);
   const [trigger, setTrigger] = useState(false);
   const members = memberGroups[selectedGroup].join(",");
 
@@ -533,8 +540,8 @@ const TBody = ({
         }),
         clearRiders(
           plans[tenureChangedFor].data.product.id,
-          plans[tenureChangedFor].data.sum_insured
-        )
+          plans[tenureChangedFor].data.sum_insured,
+        ),
       );
     }
     setTrigger(false);
@@ -545,8 +552,8 @@ const TBody = ({
         updatePremiumQuote(
           tenureChangedFor,
           tenureData[tenureChangedFor],
-          `${plans[tenureChangedFor].data.product.id}${plans[tenureChangedFor].data.sum_insured}`
-        )
+          `${plans[tenureChangedFor].data.product.id}${plans[tenureChangedFor].data.sum_insured}`,
+        ),
       );
     }
   }, [productDiscounts]);
@@ -556,11 +563,11 @@ const TBody = ({
       <tbody
         className={`tbody_bg ${title === "Additional Benefits" && "hideTBody"}`}
         css={`
-        tr{
-          :hover{
-            background: white !important;
+          tr {
+            :hover {
+              background: white !important;
+            }
           }
-        }
         `}
       >
         <tr
@@ -618,56 +625,51 @@ const TBody = ({
                   <span className="tbody_bg_border_th">Sum Insured</span>
                 </th>
               </OverlayTrigger>
-              
-              
-              {
-                [0,1,2].map((i) => {
-                  return(
-                    <td>
-                {" "}
-                {plans[i]?.data?.sum_insured ? (
-                  <select
-                    style={{ color: "#647188", background: "white" }}
-                    onChange={(e) => {
-                      dispatch(
-                        removeQuotesForCompare(
-                          `${plans[i]?.data?.product.id}${plans[i]?.data?.sum_insured}`
-                        )
-                      );
-                      dispatch(
-                        setQuotesForCompare([
-                          `${plans[i]?.data?.product.id}${e.target.selectedOptions[0].id}`,
-                          3,
-                        ])
-                      );
-                    }}
-                  >
-                    <option id={plans[i]?.data?.sum_insured}>
-                      {" "}
-                      ₹ {numToLakh(plans[i]?.data?.sum_insured)}
-                    </option>
-                    {
-                      mergedCover[`${plans[i]?.data?.product.id}${plans[i]?.data.sum_insured}`]?.map((data) => {
-                        if (
-                          plans[i]?.data.sum_insured !== data 
-                        ) {
-                          return (
-                            <option id={data}> ₹ {numToLakh(data)}</option>
+
+              {[0, 1, 2].map(i => {
+                return (
+                  <td>
+                    {" "}
+                    {plans[i]?.data?.sum_insured ? (
+                      <select
+                        style={{ color: "#647188", background: "white" }}
+                        onChange={e => {
+                          dispatch(
+                            removeQuotesForCompare(
+                              `${plans[i]?.data?.product.id}${plans[i]?.data?.sum_insured}`,
+                            ),
                           );
-                        }
-                      })}
-                  </select>
-                ) : (
-                  <img
-                    src={wrong}
-                    style={{ margin: "auto", display: "none" }}
-                  />
-                )}
-              </td>)
-                })
-              }
-              
-              
+                          dispatch(
+                            setQuotesForCompare([
+                              `${plans[i]?.data?.product.id}${e.target.selectedOptions[0].id}`,
+                              3,
+                            ]),
+                          );
+                        }}
+                      >
+                        <option id={plans[i]?.data?.sum_insured}>
+                          {" "}
+                          ₹ {numToLakh(plans[i]?.data?.sum_insured)}
+                        </option>
+                        {mergedCover[
+                          `${plans[i]?.data?.product.id}${plans[i]?.data.sum_insured}`
+                        ]?.map(data => {
+                          if (plans[i]?.data.sum_insured !== data) {
+                            return (
+                              <option id={data}> ₹ {numToLakh(data)}</option>
+                            );
+                          }
+                        })}
+                      </select>
+                    ) : (
+                      <img
+                        src={wrong}
+                        style={{ margin: "auto", display: "none" }}
+                      />
+                    )}
+                  </td>
+                );
+              })}
             </tr>
 
             <tr
@@ -701,8 +703,8 @@ const TBody = ({
                           `${plans[index].data.product.id}${plans[index].data.sum_insured}`
                         ]?.tenure
                       }
-                      onChange={(e) => {
-                        setTenureData((prev) => {
+                      onChange={e => {
+                        setTenureData(prev => {
                           prev[index] = e.target.value;
 
                           return prev;
@@ -734,7 +736,7 @@ const TBody = ({
                   <td></td>
                 ) : (
                   ""
-                )
+                ),
               )}
             </tr>
           </>
@@ -758,7 +760,7 @@ const TBody = ({
             title,
             windowWidth,
             PrimaryShade,
-            PrimaryColor
+            PrimaryColor,
           )
         )}
         <tr>

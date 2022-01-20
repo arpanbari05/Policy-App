@@ -12,7 +12,7 @@ export function Quantity({
 }) {
   const [quantity, setQuantity] = useState(value);
 
-  const handleQuantityChange = (evt) => {
+  const handleQuantityChange = evt => {
     setQuantity(evt.target.value);
     onChange(evt.target.value);
   };
@@ -41,7 +41,7 @@ export function Quantity({
   useEffect(() => {
     setQuantity(value);
     onChange(value);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (

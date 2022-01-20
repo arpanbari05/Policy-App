@@ -41,7 +41,7 @@ import { AiOutlineClose } from "react-icons/ai";
 export const getRiders = async (
   { productId, sum_insured, tenure, group, selected_riders },
 
-  callback = () => {}
+  callback = () => {},
 ) => {
   console.log(productId, "agsdasgd2");
   try {
@@ -65,7 +65,7 @@ export const getRiders = async (
 
 export const getAbhiRiders = async (
   { productId, sum_insured, tenure, group, string },
-  callback = () => {}
+  callback = () => {},
 ) => {
   try {
     const response = await getAbhiRidersApi({
@@ -92,7 +92,7 @@ const getHospitalsData = async ({ company_alias }, callback = () => {}) => {
   let searchByName = {};
   let searchByPincode = {};
   const displayHospitals = hospitals.slice(0, 6);
-  hospitals.forEach((item) => {
+  hospitals.forEach(item => {
     searchByName = {
       ...searchByName,
       ...{
@@ -173,17 +173,17 @@ const SeeDetails = ({
     logo,
     csr: claim_settlement_ratio,
   } = useSelector(
-    (state) =>
-      state.frontendBoot.frontendData.data.companies[quote.company_alias]
+    state =>
+      state.frontendBoot.frontendData.data.companies[quote.company_alias],
   );
 
-  const { selectedPlan } = useSelector((state) => state.quotePage);
+  const { selectedPlan } = useSelector(state => state.quotePage);
 
-  const { selectedRiders } = useSelector((state) => state.quotePage);
+  const { selectedRiders } = useSelector(state => state.quotePage);
 
   const getPlanDetails = async (
     { productId, sum_insured },
-    callback = () => {}
+    callback = () => {},
   ) => {
     const { data } = await getFeatures(productId);
     let featureList = [];
@@ -194,7 +194,7 @@ const SeeDetails = ({
         title: item.name,
         description: item.description,
       });
-      item?.sum_insureds[sum_insured]?.features?.forEach((innerItem) => {
+      item?.sum_insureds[sum_insured]?.features?.forEach(innerItem => {
         innerData[item.name] = [
           ...(innerData[item.name] ? innerData[item.name] : []),
           {
@@ -234,7 +234,7 @@ const SeeDetails = ({
   };
 
   /*========================================================= */
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [riders, setRiders] = useState([]);
@@ -252,7 +252,7 @@ const SeeDetails = ({
         dispatch(requestDetails());
         await getPlanDetails(
           { productId: quote.product.id, sum_insured: sum_insured },
-          setPlanDetails
+          setPlanDetails,
         );
         setActiveFieldset(3);
       }
@@ -266,9 +266,9 @@ const SeeDetails = ({
         dispatch(requestDetails());
         await getPlanDetails(
           { productId: quote.product.id, sum_insured: sum_insured },
-          setPlanDetails
+          setPlanDetails,
         );
-        await getProductBrochure({ productId: quote.product.id }, (data) => {
+        await getProductBrochure({ productId: quote.product.id }, data => {
           if (data) {
             if (data[0]) {
               sethey(data[0]);
@@ -290,13 +290,13 @@ const SeeDetails = ({
             tenure,
             group: groupCode,
           },
-          (riders) => {
+          riders => {
             console.log(riders, "sadg32");
             const fltriders = riders.data
-              .filter((rider) => rider.total_premium !== 0 || rider.options)
-              .map((rider) => ({ ...rider, rider_id: rider.id }));
+              .filter(rider => rider.total_premium !== 0 || rider.options)
+              .map(rider => ({ ...rider, rider_id: rider.id }));
             setRiders(fltriders);
-          }
+          },
         );
         dispatch(requestDetailsSuccess());
       }
@@ -304,7 +304,7 @@ const SeeDetails = ({
         dispatch(requestDetails());
         await getHospitalsData(
           { company_alias: quote.company_alias },
-          setHospitals
+          setHospitals,
         );
         dispatch(requestDetailsSuccess());
       }
@@ -656,7 +656,7 @@ const StyledHeader = styled.div`
     color: #fff;
   }
 
-  background: ${(props) => props.PrimaryColor};
+  background: ${props => props.PrimaryColor};
   align-items: center;
   justify-content: space-between;
 `;

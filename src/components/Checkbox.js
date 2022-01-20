@@ -2,6 +2,7 @@ import React from "react";
 import "styled-components/macro";
 import "./Checkbox.css";
 import { useSelector } from "react-redux";
+import { useTheme } from "../customHooks";
 const Checkbox = ({
   code,
   title,
@@ -11,8 +12,7 @@ const Checkbox = ({
   disabled,
   form3,
 }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
-  const { PrimaryColor } = theme;
+  const { colors } = useTheme();
 
   const handleChecked = () => {
     handleChange(code, checked, type);
@@ -23,8 +23,8 @@ const Checkbox = ({
       className="container"
       css={`
         .round input[type="checkbox"]:checked + label {
-          background-color: ${PrimaryColor};
-          border-color: ${PrimaryColor};
+          background-color: ${colors.primary_color};
+          border-color: ${colors.primary_color};
         }
       `}
     >

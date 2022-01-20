@@ -69,10 +69,10 @@ BackButton.defaultProps = {
 
 export default BackButton;
 
-const Button = styled.button.attrs((props) => ({
+const Button = styled.button.attrs(props => ({
   type: props.type,
 }))`
-  ${(props) => `
+  ${props => `
 height: ${props.height};
 width: ${props.width};
 background: ${props.bg};

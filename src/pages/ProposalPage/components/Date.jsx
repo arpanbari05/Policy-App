@@ -29,7 +29,7 @@ const DateComp = ({
   // useEffect(() => {
   //   setInnerValue(value);
   // }, [value]);
-console.log("jhcvugc",age)
+  console.log("jhcvugc", age);
   return (
     <InputContainer error={error}>
       <DatePicker
@@ -38,7 +38,7 @@ console.log("jhcvugc",age)
         scrollableYearDropdown={true}
         dateFormat={"dd-MM-yyyy"}
         selected={
-          (value && value !== "Invalid date" && value !== "value")
+          value && value !== "Invalid date" && value !== "value"
             ? moment(value, "DD-MM-YYYY")?.toDate()
             : ""
         }
@@ -108,7 +108,7 @@ const InputContainer = styled.div`
     border: ${props =>
       props.error ? "solid 1px #c7222a" : "solid 1px #ced4da"};
     // border-radius: 8px;
-   // background: ${props => (props.error ? "#fff6f7" : "transparent")};
+    // background: ${props => (props.error ? "#fff6f7" : "transparent")};
     height: 55px;
     font-family: inherit;
     line-height: inherit;
@@ -164,15 +164,15 @@ const Label = styled.label`
   transition: all 0.3s ease-in-out;
   font-weight: 900;
   padding: 0 5px;
-  
-  @media (max-width: 1200px){
-    font-size:12px !important;
+
+  @media (max-width: 1200px) {
+    font-size: 12px !important;
   }
-  @media (max-width: 1100px){
-    font-size:11px !important;
+  @media (max-width: 1100px) {
+    font-size: 11px !important;
   }
-  @media (max-width: 1050px){
-    font-size:13px !important;
+  @media (max-width: 1050px) {
+    font-size: 13px !important;
   }
   @media (max-width: 767px) {
     left: 10px;

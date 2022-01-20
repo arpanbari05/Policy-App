@@ -1,6 +1,6 @@
 import { useHistory, useParams } from "react-router-dom";
 import { useCartProduct } from "../../Cart";
-import "styled-components/macro";
+import styled from "styled-components/macro";
 import care_health from "../../../assets/logos/Care.png";
 import { useSelector, useDispatch } from "react-redux";
 import Pencil from "../../../assets/images/pencil_pink.png";
@@ -15,9 +15,391 @@ import EditMembersContent from "./EditMembersContent";
 import { mobile, small } from "../../../utils/mediaQueries";
 import CardModal from "../../../components/Common/Modal/CardModal";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
+import { amount } from "../../../utils/helper";
+import {
+  useAdditionalDiscount,
+  useCart,
+  useMembers,
+  useRider,
+  useTheme,
+  useToggle,
+  useUpdateGroupMembers,
+  useUrlEnquiry,
+} from "../../../customHooks";
+import { Button, CircleLoader, MembersList } from "../../../components";
+import { FaPen } from "react-icons/fa";
+import useUrlQuery from "../../../customHooks/useUrlQuery";
+import { ErrorMessage } from "../../InputPage/components/FormComponents";
+import CartSummaryModal from "../../../components/CartSummaryModal";
 
-export function amount(number = 0) {
-  return `₹ ${parseInt(number).toLocaleString("en-In")}`;
+const plantypes = {
+  M: "Multi Individual",
+  I: "Individual",
+  F: "Family Floater",
+};
+
+const CartDetailsWrap = styled.div`
+  position: sticky;
+  top: 110px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px 0 hsl(0deg 0% 64% / 50%);
+  padding: 10px;
+  padding-top: 18px;
+  border-radius: 2px;
+  color: #000;
+  overflow: hidden;
+`;
+
+function CartSection({ title = "", children, ...props }) {
+  const { colors } = useTheme();
+  return (
+    <div
+      className="pt-2 mb-2"
+      css={`
+        border-top: 1px solid #ddd;
+      `}
+      {...props}
+    >
+      <h2
+        className="mb-2"
+        css={`
+          color: ${colors.primary_color};
+          font-size: 0.83rem;
+        `}
+      >
+        {title}
+      </h2>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+function DiscountsList({ groupCode, ...props }) {
+  const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
+
+  const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
+
+  if (!selectedAdditionalDiscounts.length) return null;
+
+  return (
+    <CartSection title="Discounts" {...props}>
+      {selectedAdditionalDiscounts.map(additionalDiscount => (
+        <DiscountDetails
+          additionalDiscount={additionalDiscount}
+          groupCode={groupCode}
+          key={additionalDiscount.alias}
+        />
+      ))}
+    </CartSection>
+  );
+}
+
+function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
+  const { name } = additionalDiscount;
+  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
+  const discountAmount = amount(getDiscountAmount(additionalDiscount));
+
+  return <CartDetailRow title={name} value={discountAmount} {...props} />;
+}
+
+function RidersList({ groupCode, ...props }) {
+  const { getSelectedRiders } = useRider(groupCode);
+
+  const riders = getSelectedRiders();
+
+  const isRidersSelected = riders.length;
+
+  return (
+    <CartSection title="Riders" {...props}>
+      {!isRidersSelected ? (
+        <CartDetailRow title={"No Riders Selected"} />
+      ) : (
+        riders.map(rider => <RiderDetails rider={rider} key={rider.id} />)
+      )}
+    </CartSection>
+  );
+}
+
+function RiderDetails({ rider, ...props }) {
+  const { name, total_premium } = rider;
+  return (
+    <CartDetailRow title={name} value={amount(total_premium)} {...props} />
+  );
+}
+
+function Members({ groupCode, ...props }) {
+  const { getGroupMembers } = useMembers();
+  const currentGroupMembers = getGroupMembers(groupCode);
+
+  return (
+    <div
+      className="d-flex align-items-center justify-content-between w-100"
+      {...props}
+    >
+      <MembersList
+        members={currentGroupMembers}
+        css={`
+          color: #616161;
+          font-size: 0.763rem;
+        `}
+      />
+      <EditMembersButton groupCode={groupCode} />
+    </div>
+  );
+}
+
+function EditMembersButton({ groupCode, ...props }) {
+  const { colors } = useTheme();
+
+  const [showEditMembersModal, setShowEditMembersModal] = useState(false);
+
+  const handleClick = () => {
+    setShowEditMembersModal(true);
+  };
+
+  const closeEditMembersModal = () => setShowEditMembersModal(false);
+
+  const {
+    updateGroupMembers,
+    query: { isLoading, error, isError },
+  } = useUpdateGroupMembers(groupCode);
+
+  const handleSubmit = data => {
+    updateGroupMembers(data.members).then(res => {
+      if (res.error) return;
+      closeEditMembersModal();
+    });
+  };
+
+  let serverErrors;
+
+  if (isError) serverErrors = Object.values(error.data.errors);
+
+  return (
+    <div {...props}>
+      <Button
+        className="rounded-circle"
+        css={`
+          font-size: 0.837rem;
+          width: 2rem;
+          height: 2rem;
+          background: ${colors.primary_shade};
+          color: ${colors.primary_color};
+          padding: 0;
+        `}
+        onClick={handleClick}
+      >
+        <FaPen />
+      </Button>
+      {showEditMembersModal && (
+        <EditMembersModal
+          onClose={closeEditMembersModal}
+          onSubmit={handleSubmit}
+          groupCode={groupCode}
+          submitState={{ isLoading }}
+        >
+          {serverErrors
+            ? serverErrors.map(error => (
+                <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
+              ))
+            : null}
+        </EditMembersModal>
+      )}
+    </div>
+  );
+}
+
+const StyledErrorMessage = styled(ErrorMessage)`
+  font-size: 1rem;
+  text-align: center;
+`;
+
+function EditMembers({ groupCode, ...props }) {}
+
+function BasePlanDetails({ groupCode, ...props }) {
+  const { getCartEntry } = useCart();
+  const cartEntry = getCartEntry(parseInt(groupCode));
+  const {
+    icLogoSrc,
+    plantype,
+    sum_insured,
+    tenure,
+    total_premium,
+    product: {
+      name,
+      company: { alias },
+    },
+  } = cartEntry;
+
+  const displayPolicyTerm = `${
+    tenure + " " + (tenure >= 2 ? "Years" : "Year")
+  } `;
+
+  return (
+    <div className="d-flex justify-content-between flex-column mb-2" {...props}>
+      <div
+        className="d-flex align-items-center mt-2"
+        css={`
+          gap: 1em;
+        `}
+      >
+        <div
+          className="d-flex align-items-center"
+          css={`
+            width: 3.39em;
+            background-color: #fff;
+          `}
+        >
+          <img src={icLogoSrc} alt={alias} className="w-100" />
+        </div>
+        <div>{name}</div>
+      </div>
+      <div className="mt-2">
+        <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
+        <CartDetailRow title="Cover" value={amount(sum_insured)} />
+        <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
+        <CartDetailRow title="Premium" value={amount(total_premium)} />
+      </div>
+    </div>
+  );
+}
+
+function TotalPremium({ groupCode, ...props }) {
+  const { getCartEntry } = useCart();
+
+  const { netPremium, tenure } = getCartEntry(groupCode);
+
+  const displayNetPremium = `${amount(netPremium)} / ${
+    tenure === 1 ? "Year" : `${tenure} Years`
+  }`;
+
+  return (
+    <div
+      className="d-flex align-items-center justify-content-between p-3"
+      css={`
+        font-size: 0.83rem;
+        background-color: #f7f7f7;
+        font-weight: 900;
+      `}
+      {...props}
+    >
+      <div
+        css={`
+          color: #6d798f;
+        `}
+      >
+        Total Premium <br />
+        <small>*Inc. GST</small>
+      </div>
+      <div
+        css={`
+          color: var(--abc-red);
+          font-size: 17px;
+        `}
+      >
+        {displayNetPremium}
+      </div>
+    </div>
+  );
+}
+
+export function CartDetails({ groupCode, ...props }) {
+  const { colors } = useTheme();
+
+  return (
+    <CartDetailsWrap {...props}>
+      <div className="d-flex flex-column justify-content-between position-relative">
+        <div
+          className="rounded-circle position-absolute"
+          css={`
+            width: 6.3em;
+            height: 6.3em;
+            background: ${colors.primary_shade};
+            top: -59px;
+            left: -56px;
+            z-index: -1;
+          `}
+        />
+        <h1
+          className="m-0"
+          css={`
+            font-size: 1.261rem;
+            font-weight: 900;
+            color: #2d3f5e;
+          `}
+        >
+          Your Cart
+        </h1>
+        <Members groupCode={groupCode} />
+      </div>
+
+      <div>
+        <BasePlanDetails groupCode={groupCode} />
+        <RidersList groupCode={groupCode} />
+        <DiscountsList groupCode={groupCode} />
+        <TotalPremium groupCode={groupCode} />
+        <ReviewCartButtonNew groupCode={groupCode} />
+      </div>
+    </CartDetailsWrap>
+  );
+}
+
+function ReviewCartButtonNew({ groupCode, ...props }) {
+  const history = useHistory();
+  const url = useUrlQuery();
+  const { updateCart } = useCart();
+  const [updateCartMutation, query] = updateCart(groupCode);
+
+  const { cartEntries } = useCart();
+
+  const cartSummaryModal = useToggle();
+
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  const handleClick = () => {
+    updateCartMutation().then(() => {
+      const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
+      const nextGroup = groupCode + 1;
+
+      const isNextGroupProductAvailable = groupCodes.includes(nextGroup);
+
+      if (isNextGroupProductAvailable) {
+        const enquiryId = url.get("enquiryId");
+        history.push({
+          pathname: `/productdetails/${nextGroup}`,
+          search: `enquiryId=${enquiryId}`,
+        });
+        return;
+      }
+
+      cartSummaryModal.on();
+    });
+  };
+
+  const handleContinueClick = () => {
+    history.push(getUrlWithEnquirySearch("/proposal"));
+  };
+
+  return (
+    <div>
+      <Button
+        onClick={handleClick}
+        className="w-100"
+        disabled={query.isLoading}
+        {...props}
+      >
+        Review Your Cart
+        {query.isLoading && <CircleLoader animation="border" />}
+      </Button>
+      {cartSummaryModal.isOn && (
+        <CartSummaryModal
+          onContine={handleContinueClick}
+          onClose={cartSummaryModal.off}
+        />
+      )}
+    </div>
+  );
 }
 
 function CartDetailRow({ title, value }) {
@@ -82,19 +464,17 @@ function CartDetailRow({ title, value }) {
 function AddOnDetailsRow({ addOn }) {
   const { product, total_premium, members } = addOn;
   const companies = useSelector(
-    (state) => state.frontendBoot.frontendData.data.companies
+    state => state.frontendBoot.frontendData.data.companies,
   );
   const { logo } = companies[product.company.alias];
   const totalPremium = amount(total_premium);
   const { groupCode } = useParams();
   const { product: cartProduct, updateProductRedux } =
     useCartProduct(groupCode);
-  const removeAddOn = (addOnId) => {
+  const removeAddOn = addOnId => {
     updateProductRedux({
       ...cartProduct,
-      addons: cartProduct.addons.filter(
-        (addon) => addon.product.id !== addOnId
-      ),
+      addons: cartProduct.addons.filter(addon => addon.product.id !== addOnId),
     });
   };
   const handleRemoveAddOnClick = () => {
@@ -136,7 +516,7 @@ function AddOnDetailsRow({ addOn }) {
         `}
       >
         {`${product.name} ${
-          members.filter((member) => member !== "all").length
+          members.filter(member => member !== "all").length
             ? `(${members})`
             : ""
         }`}
@@ -185,7 +565,7 @@ function AddOnDetailsRow({ addOn }) {
 }
 
 export function BackgroundBorderTitle({ title, ...props }) {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
@@ -215,9 +595,9 @@ export function BackgroundBorderTitle({ title, ...props }) {
 function useReviewCartButton({ groupCode }) {
   const [reviewCartPopup, setReviewCartPopup] = useState(false);
 
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector(state => state.cart);
 
-  const memberGroups = useSelector((state) => state.greetingPage.memberGroups);
+  const memberGroups = useSelector(state => state.greetingPage.memberGroups);
 
   const memberGroupsList = Object.keys(memberGroups);
 
@@ -262,13 +642,13 @@ function useReviewCartButton({ groupCode }) {
   const history = useHistory();
 
   const handleProceedClick = () => {
-    addProduct(product).then((status) => {
+    addProduct(product).then(status => {
       if (status) history.push(getNextLink());
     });
   };
 
   const handleReviewCartClick = () => {
-    addProduct(product).then((status) => {
+    addProduct(product).then(status => {
       if (status) setReviewCartPopup(true);
     });
   };
@@ -292,8 +672,8 @@ function useReviewCartButton({ groupCode }) {
 
 function Discounts({ discounts = [], premium }) {
   const additionalDiscounts = useSelector(selectAdditionalDiscounts);
-  const findAdditionalDiscount = (discountAlias) =>
-    additionalDiscounts.find((discount) => discount.alias === discountAlias);
+  const findAdditionalDiscount = discountAlias =>
+    additionalDiscounts.find(discount => discount.alias === discountAlias);
   return discounts.length > 0 ? (
     <>
       <div
@@ -323,7 +703,7 @@ function Discounts({ discounts = [], premium }) {
             width: 100%;
           `}
         >
-          {discounts.map((discountAlias) => {
+          {discounts.map(discountAlias => {
             const discount = findAdditionalDiscount(discountAlias);
             return (
               <>
@@ -360,12 +740,12 @@ function Discounts({ discounts = [], premium }) {
 const ReviewCart = ({ groupCode, unEditable }) => {
   const [reviewCartPopup, setReviewCartPopup] = useState(false);
 
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector(state => state.cart);
   const displayPlanType_code = useSelector(
-    (state) => state.quotePage.filters.planType
+    state => state.quotePage.filters.planType,
   );
   const existingPlanType = useSelector(
-    (state) => state.quotePage.filters.planType
+    state => state.quotePage.filters.planType,
   );
 
   const displayPlanType =
@@ -377,7 +757,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
       ? "Family Floater"
       : existingPlanType;
 
-  const memberGroups = useSelector((state) => state.greetingPage.memberGroups);
+  const memberGroups = useSelector(state => state.greetingPage.memberGroups);
 
   const memberGroupsList = Object.keys(memberGroups);
 
@@ -386,7 +766,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
   const hasNextGroupProduct = cart[nextGroup];
 
   const { companies } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data
+    ({ frontendBoot }) => frontendBoot.frontendData.data,
   );
 
   const {
@@ -438,13 +818,13 @@ const ReviewCart = ({ groupCode, unEditable }) => {
   const history = useHistory();
 
   const handleProceedClick = () => {
-    addProduct(product).then((status) => {
+    addProduct(product).then(status => {
       if (status) history.push(getNextLink());
     });
   };
 
   const handleReviewCartClick = () => {
-    addProduct(product).then((status) => {
+    addProduct(product).then(status => {
       if (status) setReviewCartPopup(true);
     });
   };
@@ -528,7 +908,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
 
   const AddOnDetailMobile = ({ addOn }) => {
     const companies = useSelector(
-      (state) => state.frontendBoot.frontendData.data.companies
+      state => state.frontendBoot.frontendData.data.companies,
     );
     const logoSrc = companies[addOn.product.company.alias].logo;
     return (
@@ -599,7 +979,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           Addon Covers
         </h3>
 
-        {addons.map((addon) => (
+        {addons.map(addon => (
           <AddOnDetailMobile addOn={addon} />
         ))}
       </div>
@@ -660,7 +1040,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
           Riders
         </h3>
 
-        {health_riders.map((rider) => (
+        {health_riders.map(rider => (
           <RiderMobile rider={rider} />
         ))}
       </div>
@@ -669,8 +1049,8 @@ const ReviewCart = ({ groupCode, unEditable }) => {
 
   const DiscountsMobile = ({ discounts, premium }) => {
     const additionalDiscounts = useSelector(selectAdditionalDiscounts);
-    const findAdditionalDiscount = (discountAlias) =>
-      additionalDiscounts.find((discount) => discount.alias === discountAlias);
+    const findAdditionalDiscount = discountAlias =>
+      additionalDiscounts.find(discount => discount.alias === discountAlias);
     console.log(discounts, "discount");
     return (
       <>
@@ -691,7 +1071,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             Discount
           </h3>
 
-          {discounts.map((discountAlias) => {
+          {discounts.map(discountAlias => {
             const discount = findAdditionalDiscount(discountAlias);
             return (
               <div className="d-flex justify-content-between">
@@ -731,9 +1111,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
   const dispatch = useDispatch();
   const setExpand = () => dispatch(setexpandMobile(!expand));
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
   const { riders_visibilty, addons_visibilty } = useSelector(
-    (state) => state.frontendBoot.frontendData.data.settings
+    state => state.frontendBoot.frontendData.data.settings,
   );
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
@@ -1000,7 +1380,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               >
                 Plan for:{" "}
                 {memberGroups[nextGroup]
-                  ?.map((item) => item.replace("_", " "))
+                  ?.map(item => item.replace("_", " "))
                   .join(", ")}
               </div>
             </div>
@@ -1274,7 +1654,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             {hasNextGroupProduct ? (
               <ProceedButton
                 members={memberGroups[nextGroup]
-                  ?.map((item) => item.replace("_", " "))
+                  ?.map(item => item.replace("_", " "))
                   .join(", ")}
                 loading={isCartProductLoading}
                 onProceedClick={handleProceedClick}
@@ -1326,20 +1706,24 @@ const ReviewCart = ({ groupCode, unEditable }) => {
         </>
       ) : null}
       {showEditMembers && (
-        <CardModal
-          show={showEditMembers}
-          handleClose={() => setShowEditMembers(false)}
-          showButton={false}
-          title={`Edit Members`}
-          css={`
-            ${mobile} {
-              width: 90%;
-            }
-          `}
-          noFooter
-          content={
-            <EditMembersContent closePopup={() => setShowEditMembers(false)} />
-          }
+        // <CardModal
+        //   show={showEditMembers}
+        //   handleClose={() => setShowEditMembers(false)}
+        //   showButton={false}
+        //   title={`Edit Members`}
+        //   css={`
+        //     ${mobile} {
+        //       width: 90%;
+        //     }
+        //   `}
+        //   noFooter
+        //   content={
+        //     <EditMembersContent closePopup={() => setShowEditMembers(false)} />
+        //   }
+        // />
+        <EditMembersModal
+          onClose={() => setShowEditMembers(false)}
+          group={group}
         />
       )}
     </>
@@ -1361,7 +1745,7 @@ export function ReviewCartButton() {
     enquiryId,
     handleReviewPopupClose,
   } = useReviewCartButton({ groupCode });
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
@@ -1376,7 +1760,7 @@ export function ReviewCartButton() {
         >
           <ProceedButton
             members={memberGroups[nextGroup]
-              ?.map((item) => item.replace("_", " "))
+              ?.map(item => item.replace("_", " "))
               .join(", ")}
             loading={isCartProductLoading}
             onProceedClick={handleProceedClick}
@@ -1429,7 +1813,7 @@ function ProceedButton({
   members = "",
   onProceedClick = () => {},
 }) {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 

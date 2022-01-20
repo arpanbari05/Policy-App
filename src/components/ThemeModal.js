@@ -1,38 +1,29 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components/macro";
+import { useTheme } from "../customHooks";
 import { updateTheme } from "../FrontendBoot/reducer/frontendBoot.slice";
 import StyledButton from "./StyledButton";
 
 const ThemeModal = ({ show, setShow }) => {
   const dispatch = useDispatch();
 
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { colors } = useTheme();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
-  const [primaryColor, setPrimaryColor] = useState(PrimaryColor);
-  const [secondaryColor, setSecondaryColor] = useState(SecondaryColor);
-  const [primaryShade, setPrimaryShade] = useState(PrimaryShade);
-  const [secondaryShade, setSecondaryShade] = useState(SecondaryShade);
+  const [primaryColor, setPrimaryColor] = useState(colors.primary_color);
+  const [secondaryColor, setSecondaryColor] = useState(colors.secondary_color);
+  const [primaryShade, setPrimaryShade] = useState(colors.primary_shade);
+  const [secondaryShade, setSecondaryShade] = useState(colors.secondary_shade);
 
   const handleSubmit = () => {
-    if (
-      primaryColor !== PrimaryColor ||
-      secondaryColor !== SecondaryColor ||
-      primaryShade !== PrimaryShade ||
-      secondaryShade !== SecondaryShade
-    ) {
-      const obj = {
-        PrimaryColor: primaryColor,
-        SecondaryColor: secondaryColor,
-        PrimaryShade: primaryShade,
-        SecondaryShade: secondaryShade,
-      }
-      dispatch(
-        updateTheme({...obj})
-      );
-    }
+    const obj = {
+      PrimaryColor: primaryColor,
+      SecondaryColor: secondaryColor,
+      PrimaryShade: primaryShade,
+      SecondaryShade: secondaryShade,
+    };
+    dispatch(updateTheme({ ...obj }));
   };
 
   return (
@@ -51,7 +42,7 @@ const ThemeModal = ({ show, setShow }) => {
           <input
             type="text"
             value={primaryColor}
-            onChange={(e) => setPrimaryColor(e.target.value)}
+            onChange={e => setPrimaryColor(e.target.value)}
           />
           <input
             css={`
@@ -60,7 +51,7 @@ const ThemeModal = ({ show, setShow }) => {
             `}
             type="color"
             value={primaryColor}
-            onChange={(e) => setPrimaryColor(e.target.value)}
+            onChange={e => setPrimaryColor(e.target.value)}
           />
         </InputWrapper>
         <InputWrapper>
@@ -68,7 +59,7 @@ const ThemeModal = ({ show, setShow }) => {
           <input
             type="text"
             value={secondaryColor}
-            onChange={(e) => setSecondaryColor(e.target.value)}
+            onChange={e => setSecondaryColor(e.target.value)}
           />
           <input
             css={`
@@ -77,7 +68,7 @@ const ThemeModal = ({ show, setShow }) => {
             `}
             type="color"
             value={secondaryColor}
-            onChange={(e) => setSecondaryColor(e.target.value)}
+            onChange={e => setSecondaryColor(e.target.value)}
           />
         </InputWrapper>
         <InputWrapper>
@@ -85,7 +76,7 @@ const ThemeModal = ({ show, setShow }) => {
           <input
             type="text"
             value={primaryShade}
-            onChange={(e) => setPrimaryShade(e.target.value)}
+            onChange={e => setPrimaryShade(e.target.value)}
           />
           <input
             css={`
@@ -94,7 +85,7 @@ const ThemeModal = ({ show, setShow }) => {
             `}
             type="color"
             value={primaryShade}
-            onChange={(e) => setPrimaryShade(e.target.value)}
+            onChange={e => setPrimaryShade(e.target.value)}
           />
         </InputWrapper>
         <InputWrapper>
@@ -102,7 +93,7 @@ const ThemeModal = ({ show, setShow }) => {
           <input
             type="text"
             value={secondaryShade}
-            onChange={(e) => setSecondaryShade(e.target.value)}
+            onChange={e => setSecondaryShade(e.target.value)}
           />
           <input
             css={`
@@ -111,7 +102,7 @@ const ThemeModal = ({ show, setShow }) => {
             `}
             type="color"
             value={secondaryShade}
-            onChange={(e) => setSecondaryShade(e.target.value)}
+            onChange={e => setSecondaryShade(e.target.value)}
           />
         </InputWrapper>
         <InputWrapper>

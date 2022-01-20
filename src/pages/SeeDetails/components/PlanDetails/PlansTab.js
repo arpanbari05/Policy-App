@@ -1,18 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import "styled-components/macro";
-import { useSelector } from "react-redux";
+import { useTheme } from "../../../../customHooks";
 
 const PlansTab = ({ isActive, title, description, onClick }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { colors } = useTheme();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   return (
     <Anchor
-    PrimaryColor={PrimaryColor}
+      PrimaryColor={colors.primary_color}
       onClick={onClick}
       className={`nav-link  p-3  ${isActive && "active"}`}
-   
     >
       <span className={`${isActive && "active"}`}>{title}</span>
       <p className={`${isActive && "active"}`}>{description}</p>
@@ -23,13 +21,13 @@ const PlansTab = ({ isActive, title, description, onClick }) => {
 export default PlansTab;
 
 const Anchor = styled.a`
-border-bottom: 1px solid #eee !important;
+  border-bottom: 1px solid #eee !important;
   & span {
     font-size: 20px;
     color: #253858;
     font-weight: 900;
     &.active {
-      color: ${props=>props.PrimaryColor};
+      color: ${props => props.PrimaryColor};
     }
   }
   & p {
@@ -42,8 +40,8 @@ border-bottom: 1px solid #eee !important;
     background-color: unset !important;
     position: relative;
     border: 1px solid #eee !important;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
-    
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+
     // &:after {
     //   content: "";
     //   height: 100%;

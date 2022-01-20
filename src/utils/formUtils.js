@@ -19,7 +19,7 @@ export const forbiddedSymbols = [
   "/",
 ];
 
-export const numOnly = (event) => {
+export const numOnly = event => {
   let key = event.keyCode || event.which;
   if (
     (key >= 48 && key < 58) ||
@@ -29,7 +29,7 @@ export const numOnly = (event) => {
     key === 13 ||
     key === 37 ||
     key === 39 ||
-    key === 46 
+    key === 46
   ) {
   } else {
     event.preventDefault();
@@ -61,7 +61,7 @@ export const checkAllChar = (value, checkValue) => {
   let dotCount = 0;
   let doubleInvertedCount = 0;
 
-  valueArr.map((i) => {
+  valueArr.map(i => {
     return i === "@"
       ? (atTheRateNo += 1)
       : i === "."

@@ -29,7 +29,7 @@ const RoundDD2 = ({
   const toggleList = () => {
     setIsOpen(!isOpen);
   };
-  const handleSelect = (value) => {
+  const handleSelect = value => {
     value = `${value}`;
 
     let modifiedValue =
@@ -88,7 +88,7 @@ const RoundDD2 = ({
             `}
             className="GreetingDD__List"
           >
-            {ageList.map((data) => {
+            {ageList.map(data => {
               return (
                 <ListItem
                   className={`GreetingDD__ListItem`}
@@ -129,9 +129,9 @@ export const Header = styled.a`
   position: relative;
   color: #6b7789;
   border: ${({ noBorder }) => (noBorder ? `none` : `1px solid #b0bed0`)};
-  padding: ${(props) => (props.sortByDD ? "auto" : "12px 15px !important")};
+  padding: ${props => (props.sortByDD ? "auto" : "12px 15px !important")};
   display: inline-block;
-  width: ${(props) => (props.sortByDD ? "auto" : "175px")};
+  width: ${props => (props.sortByDD ? "auto" : "175px")};
   // overflow: hidden;
   position: relative;
   z-index: 1;

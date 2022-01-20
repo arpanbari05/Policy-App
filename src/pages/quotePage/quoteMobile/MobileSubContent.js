@@ -7,7 +7,11 @@ import SecureLS from "secure-ls";
 import { useDispatch, useSelector } from "react-redux";
 import { cashless } from "../../../assets/index";
 import { quoteCardDataset } from "./MobileQuoteCard";
-import { removeQuotesForCompare, setQuotesForCompare, setQuotesOnCompare } from "../quote.slice";
+import {
+  removeQuotesForCompare,
+  setQuotesForCompare,
+  setQuotesOnCompare,
+} from "../quote.slice";
 const MobileSubContent = ({
   quoteCardData,
   quotesForCompare,
@@ -30,9 +34,9 @@ const MobileSubContent = ({
   } = quoteCardData;
   const dispatch = useDispatch();
   const history = useHistory();
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const ls = new SecureLS();
   const [isLoading, setIsLoading] = useState(false);
   const [activeCover, setActiveCover] = useState(0);
@@ -67,7 +71,7 @@ const MobileSubContent = ({
   const [checked, setChecked] = useState(
     quotesForCompare.includes(`${id}${sum_insured}`) ? true : false,
   );
- 
+
   const plansData = [
     ...features?.[activeCover].filter(i => i.is_featured_on_card),
     {
@@ -78,8 +82,6 @@ const MobileSubContent = ({
       icon: cashless,
     },
   ];
-
- 
 
   useEffect(() => {
     if (quotesForCompare.includes(`${id}${sum_insured[activeCover]}`)) {
@@ -94,20 +96,18 @@ const MobileSubContent = ({
       css={`
         position: relative;
         width: 100%;
-        
       `}
     >
       {" "}
       <input
         type="checkbox"
-        style={{display:"contents"}}
+        style={{ display: "contents" }}
         id={`Mcompare_${id}${sum_insured[activeCover]}`}
         onChange={() => {
           dispatch(setQuotesOnCompare());
           if (!checked) {
-            const numberOfPlans = window.matchMedia(
-              "(max-width: 1023px)",
-            ).matches
+            const numberOfPlans = window.matchMedia("(max-width: 1023px)")
+              .matches
               ? 2
               : 3;
             dispatch(
@@ -118,16 +118,13 @@ const MobileSubContent = ({
             );
           } else {
             dispatch(
-              removeQuotesForCompare(
-                `${id}${sum_insured[activeCover]}`,
-              ),
+              removeQuotesForCompare(`${id}${sum_insured[activeCover]}`),
             );
           }
         }}
-      
       />
       <label
-          htmlFor={`Mcompare_${id}${sum_insured[activeCover]}`}
+        htmlFor={`Mcompare_${id}${sum_insured[activeCover]}`}
         css={`
           position: absolute;
           display: flex;
@@ -244,7 +241,7 @@ const MobileSubContent = ({
           >
             <img
               css={`
-              object-fit: contain;
+                object-fit: contain;
                 height: 30px;
                 width: 60px;
                 margin-right: 10px;
@@ -259,17 +256,20 @@ const MobileSubContent = ({
             >
               <span
                 css={`
-                font-weight: 900;
-                line-height: 16px;
-                max-height: 34px;
-                font-size: 13px;
-                overflow: hidden;
-                
+                  font-weight: 900;
+                  line-height: 16px;
+                  max-height: 34px;
+                  font-size: 13px;
+                  overflow: hidden;
                 `}
               >
                 {name}
               </span>
-              <span css={`font-size: 11px;`}>
+              <span
+                css={`
+                  font-size: 11px;
+                `}
+              >
                 Cover:{" "}
                 {sum_insured?.length > 1 ? (
                   <select
@@ -325,8 +325,8 @@ const MobileSubContent = ({
           >
             <div
               css={`
-              font-size: 8px;
-              line-height: 2;
+                font-size: 8px;
+                line-height: 2;
                 width: 100%;
                 & .feature-cell:first-child {
                   padding-left: 0 !important;
@@ -337,7 +337,9 @@ const MobileSubContent = ({
                 }
               `}
             >
-              {plansData.map((data, index) => quoteCardDataset(data, index,PrimaryColor))}
+              {plansData.map((data, index) =>
+                quoteCardDataset(data, index, PrimaryColor),
+              )}
               {/* <span
                 className={"feature-cell"}
                 css={`
@@ -495,19 +497,19 @@ export default MobileSubContent;
 const Button = styled.button.attrs(props => ({
   type: props.type,
 }))`
-box-sizing: border-box;
-user-select: none;
-background: ${props=>props.PrimaryColor};
-border: none;
-color: white;
-width: 100%;
-cursor: pointer;
-padding: 4px 9px;
-display: block;
-border-radius: 2px;
-font-size: 15px;
-font-weight: 400;
-line-height: 33px;
-height: 42px;
-z-index: 9999
+  box-sizing: border-box;
+  user-select: none;
+  background: ${props => props.PrimaryColor};
+  border: none;
+  color: white;
+  width: 100%;
+  cursor: pointer;
+  padding: 4px 9px;
+  display: block;
+  border-radius: 2px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 33px;
+  height: 42px;
+  z-index: 9999;
 `;

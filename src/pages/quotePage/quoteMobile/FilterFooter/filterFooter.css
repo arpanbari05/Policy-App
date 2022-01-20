@@ -1,45 +1,45 @@
 .mobileViewStaticChat {
-    margin: auto;
-    background: #fff;
-    position: fixed;
-    bottom: 0;
-    z-index: 89;
-    left: 0;
-    width: 100%;
-    border-radius: 7px;
-    right: 0;
-    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 30%);
-    padding-top: 11px;
-    height: 60px;
+  margin: auto;
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  z-index: 89;
+  left: 0;
+  width: 100%;
+  border-radius: 7px;
+  right: 0;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 30%);
+  padding-top: 11px;
+  height: 60px;
 }
 .nw-chat-card {
-    display: flex;
-    margin: 0 43px;
+  display: flex;
+  margin: 0 43px;
 }
 .btn_recommend_plan_btn {
-    background: #e7f2f7;
-    color: #0a87ff;
-    border-radius: 50px;
-    width: 154px;
-    margin: 2px 57px 0 31px;
-    font-size: 12px;
-    /* height: 38px; */
-    padding: 8px 12px;
+  background: #e7f2f7;
+  color: #0a87ff;
+  border-radius: 50px;
+  width: 154px;
+  margin: 2px 57px 0 31px;
+  font-size: 12px;
+  /* height: 38px; */
+  padding: 8px 12px;
 }
 .chat-div-containers {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 38%;
-    margin: 0 31px 0 8px;
-    height: 60px;
-    cursor: pointer;
-    padding-top: 0px;
-    position: relative;
-    line-height: 12px;
-    font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 38%;
+  margin: 0 31px 0 8px;
+  height: 60px;
+  cursor: pointer;
+  padding-top: 0px;
+  position: relative;
+  line-height: 12px;
+  font-size: 10px;
 }
 .nw-img-with-content {
-    height: 25px;
+  height: 25px;
 }

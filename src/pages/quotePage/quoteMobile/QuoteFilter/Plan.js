@@ -39,18 +39,18 @@ const Plan = ({
 
   useOutsideClick(planRef, () => setExpandSelected(""));
 
-  const { filters, selectedGroup } = useSelector((state) => state.quotePage);
-  const { memberGroups } = useSelector((state) => state.greetingPage);
+  const { filters, selectedGroup } = useSelector(state => state.quotePage);
+  const { memberGroups } = useSelector(state => state.greetingPage);
 
   const membersCount = memberGroups[groupCode]?.length;
 
   const dispatch = useDispatch();
 
   const companies = useSelector(
-    (state) => state.frontendBoot.frontendData.data.companies
+    state => state.frontendBoot.frontendData.data.companies,
   );
 
-  const handlePlanUpdate = (e) => {
+  const handlePlanUpdate = e => {
     setExpandSelected("");
     e.stopPropagation();
     e.preventDefault();
@@ -68,11 +68,11 @@ const Plan = ({
           tenure: parseInt(filters.multiYear) || tenure,
           sum_insured:
             covers.filter(
-              (item) =>
-                item.display_name.toLowerCase() === filters.cover.toLowerCase()
+              item =>
+                item.display_name.toLowerCase() === filters.cover.toLowerCase(),
             )?.[0]?.code || sum_insured,
           member: selectedGroup,
-        })
+        }),
       );
 
       // Object.keys(companies).forEach((companyAlias) =>
@@ -100,7 +100,7 @@ const Plan = ({
     }
   };
 
-  const handlePlanReset = (e) => {
+  const handlePlanReset = e => {
     setExpandSelected("");
     e.stopPropagation();
     e.preventDefault();
@@ -111,27 +111,27 @@ const Plan = ({
       dispatch(replaceQuotes([]));
       dispatch(replaceFilterQuotes([]));
 
-      Object.keys(companies).forEach((companyAlias) =>
+      Object.keys(companies).forEach(companyAlias =>
         getQutoes({
           planTypeCode: plan_type,
           alias: companyAlias,
           member: selectedGroup,
           sum_insured,
           tenure,
-        }).then((response) => {
-          const newData = response?.data?.data.map((data) => {
+        }).then(response => {
+          const newData = response?.data?.data.map(data => {
             return { ...data, logo: companies[data.company_alias].logo };
           });
 
           if (response?.data) {
             dispatch(saveQuotes(newData));
           }
-        })
+        }),
       );
     }
   };
 
-  const displayPlanTypes = planType.filter((planType) => {
+  const displayPlanTypes = planType.filter(planType => {
     if (membersCount > 1) return planType.display_name !== "Individual";
     return planType.display_name === "Individual";
   });
@@ -154,7 +154,7 @@ const Plan = ({
             <div
               className="x-touch"
               // onclick="document.querySelector('.email_plan').classList.remove('expand_plan');event.stopPropagation();"
-              onClick={(event) => {
+              onClick={event => {
                 setExpandSelected("");
                 event.stopPropagation();
               }}
@@ -188,7 +188,7 @@ const Plan = ({
                 <Col md={12}>
                   <hr className="hr_width_pop" />
                 </Col>
-                {displayPlanTypes?.map((item) => (
+                {displayPlanTypes?.map(item => (
                   <Col md={12}>
                     {/* <div
                       onClick={() => {

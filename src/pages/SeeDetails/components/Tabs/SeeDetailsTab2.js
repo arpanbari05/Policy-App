@@ -21,35 +21,35 @@ const SeeDetailsTab2 = ({ activeFieldset, setActiveFieldset }) => {
         <SeeDetailsTabContainer2
           title={"Plan Details"}
           id={1}
-          onClick={(id) => setActiveFieldset(id)}
+          onClick={id => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={planDetails}
         />
         <SeeDetailsTabContainer2
           title={"Add-on Coverages"}
           id={2}
-          onClick={(id) => setActiveFieldset(id)}
+          onClick={id => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={addOn}
         />
         <SeeDetailsTabContainer2
           title={"Cashless Hospitals"}
           id={3}
-          onClick={(id) => setActiveFieldset(id)}
+          onClick={id => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={cashless}
         />
         <SeeDetailsTabContainer2
           title={"Claim Process"}
           id={4}
-          onClick={(id) => setActiveFieldset(id)}
+          onClick={id => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={claim}
         />
         <SeeDetailsTabContainer2
           title={"About Company"}
           id={5}
-          onClick={(id) => setActiveFieldset(id)}
+          onClick={id => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={aboutCompany}
         />

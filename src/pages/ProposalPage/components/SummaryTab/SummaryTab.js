@@ -9,29 +9,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { setActiveIndex } from "../../ProposalSections/ProposalSections.slice";
 import Card from "../../../../components/Card";
-const convertToFt = (value) => {
+const convertToFt = value => {
   console.log(value);
   let feet = Math.floor(value / 12);
   let inches = value % 12;
   return `${feet} ft ${inches} in`;
 };
 const SummaryTab = ({ title, data, values, index }) => {
-  
   const url = useUrlQuery();
   const enquiryId = url.get("enquiryId");
   const dispatch = useDispatch();
   const history = useHistory();
-  const { theme } = useSelector((state) => state.frontendBoot);
-  const {asyncOptions} = useSelector(({formBuilder}) => formBuilder);
+  const { theme } = useSelector(state => state.frontendBoot);
+  const { asyncOptions } = useSelector(({ formBuilder }) => formBuilder);
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const getValueFromCode = useCallback((value, data) => {
-    
-    if(asyncOptions[data.name]){
-        return asyncOptions[data.name][value]
+    if (asyncOptions[data.name]) {
+      return asyncOptions[data.name][value];
     }
     if (data.additionalOptions.options) {
       let filteredOption = data.additionalOptions.options[value];
-      
+
       return filteredOption;
     }
     if (data.additionalOptions.customOptions) {
@@ -39,7 +37,7 @@ const SummaryTab = ({ title, data, values, index }) => {
       return value + " " + suffix;
     }
   }, []);
- 
+
   const normalRender = useCallback((data, i) => {
     if (data.type === "title") return <TitleWrapper>{data.name}</TitleWrapper>;
     if (data.type === "date") {
@@ -65,7 +63,7 @@ const SummaryTab = ({ title, data, values, index }) => {
       data.type !== "custom_medical"
     )
       return <></>;
-      
+
     if (data.type === "select")
       return (
         <Col
@@ -76,7 +74,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-        {console.log("bvidwbvidbvb",values)}
+          {console.log("bvidwbvidbvb", values)}
           <p className="font_15_p_s" style={{ fontWeight: "900" }}>
             {data.additionalOptions.label}
           </p>
@@ -209,7 +207,7 @@ const SummaryTab = ({ title, data, values, index }) => {
                     <>
                       <CustomMedicalTitle>{_item}</CustomMedicalTitle>
                       <InnerWrapper>
-                        {schema[i + 1].map((additionalQuestion) => (
+                        {schema[i + 1].map(additionalQuestion => (
                           <AdditionalWrapper2 className="text-dark">
                             <AdditionalQuestion
                               className="font_15_p_s"
@@ -237,7 +235,7 @@ const SummaryTab = ({ title, data, values, index }) => {
                       </InnerWrapper>
                     </>
                   );
-                }
+                },
               )
             ) : (
               <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
@@ -311,7 +309,7 @@ const SummaryTab = ({ title, data, values, index }) => {
                     </div>
                   );
                 } else return <></>;
-              }
+              },
             )
           ) : !data.additionalOptions.showMembers &&
             values?.[item]?.[data.name] &&
@@ -391,7 +389,7 @@ const SummaryTab = ({ title, data, values, index }) => {
                         index,
                         item,
                         title,
-                        data[item]
+                        data[item],
                       );
                     })}
                   </Border>
@@ -428,7 +426,7 @@ const EditWrapper = styled.div`
   border-radius: 31px;
   background-color: #f6f7f9;
   padding: 4px 0px;
-  color: ${(props) => props.PrimaryColor};
+  color: ${props => props.PrimaryColor};
   cursor: pointer;
   /* padding-left: 10px; */
   z-index: 50;
@@ -507,7 +505,7 @@ const MedicalQuestionWrapper = styled.p`
     position: absolute;
     left: -4px;
     top: -2px;
-    background-color: ${(props) => props.SecondaryColor};
+    background-color: ${props => props.SecondaryColor};
     border-radius: 50px;
   }
 `;
@@ -571,12 +569,12 @@ const AdditionalAnswer = styled.div`
 
 const MainTitle = styled.h2`
   margin-left: 3px;
-  margin-bottom: ${(props) => (props.bg ? "15px" : "10")};
-  margin-top: ${(props) => (props.bg ? "15px" : "10")};
+  margin-bottom: ${props => (props.bg ? "15px" : "10")};
+  margin-top: ${props => (props.bg ? "15px" : "10")};
   font-weight: 900;
 
-  background: ${(props) => props.bg && props.PrimaryShade};
-  color: ${(props) => props.bg && props.PrimaryColor};
+  background: ${props => props.bg && props.PrimaryShade};
+  color: ${props => props.bg && props.PrimaryColor};
   font-size: 21px;
   padding: 10px;
 `;

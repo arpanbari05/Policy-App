@@ -443,7 +443,6 @@ export const birlaTwoBase = {
         label: "Address Line 1",
         placeholder: "Address Line 1",
         maxLength: "30",
-       
       },
     },
     {

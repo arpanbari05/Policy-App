@@ -11,7 +11,7 @@ const Form3CheckBox = ({
   checked,
   childCount,
 }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 

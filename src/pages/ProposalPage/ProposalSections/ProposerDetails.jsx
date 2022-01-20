@@ -11,6 +11,7 @@ import "styled-components/macro";
 import BMI from "./components/BMI";
 import { callApi } from "../../../components/FormBuilder/FormBuilder.slice";
 import { setActiveIndex } from "./ProposalSections.slice";
+import { useGetEnquiriesQuery } from "../../../api/api";
 
 const ProposerDetails = ({
   schema = {},
@@ -19,25 +20,36 @@ const ProposerDetails = ({
   active,
   defaultValue = {},
   activeForm,
-  setProposerDactive
+  setProposerDactive,
 }) => {
   const { values, setValues, setValid, submit, setSubmit, setCustomValid } =
     useProposalSections(setActive, name, defaultValue);
-  const { proposerDetails } = useSelector((state) => state.greetingPage);
+
+  const {
+    data: {
+      data: {
+        input: { gender },
+        name: proposerName,
+        mobile,
+        email,
+      },
+    },
+  } = useGetEnquiriesQuery();
+
   // const {activeIndex} = useSelector(({propselPage}) => propselPage)
   const dispatch = useDispatch();
   useEffect(() => {
     if (name === "Proposer Details") {
       let prefilledValues = {
-        name: proposerDetails.name,
-        gender: proposerDetails.gender,
-        mobile: proposerDetails.mobile,
-        email: proposerDetails.email,
+        name: proposerName,
+        gender,
+        mobile,
+        email,
         // pincode: proposerDetails.pincode.includes("-")
         //   ? proposerDetails.pincode.split("-")[1]
         //   : proposerDetails.pincode,
       };
-      schema.forEach((item) => {
+      schema.forEach(item => {
         if (item.value)
           prefilledValues = { ...prefilledValues, [item.name]: item.value };
         if (item.fill && item.name === "pincode") {
@@ -46,7 +58,7 @@ const ProposerDetails = ({
               [item.name]: item.value,
               [item.fill.alsoUse]: values[item.fill.alsoUse],
             }),
-            item.fill
+            item.fill,
           );
         }
       });
@@ -71,12 +83,11 @@ const ProposerDetails = ({
         </Form>
       </div>
       <div class="proposal_continue_back_margin container">
-       
         <BackBtn
           hide={name === "Proposer Details"}
           onClick={() => {
             setProposerDactive(false);
-            setActive((prev) => {
+            setActive(prev => {
               if (prev === 0) return 0;
               else return prev - 1;
             });

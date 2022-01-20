@@ -15,14 +15,13 @@ const plansDataset = (plans, removePlan, setShow, setShowBuyNowPopup) => {
     containerArray.push(
       <th className={`${i === 2 && "showOnDesktopF"}`} scope="row" key={i}>
         <PlanContainer
-        
           setShow={setShow}
           removePlan={removePlan}
           plans={plans[i]?.data || undefined}
           index={i}
           setShowBuyNowPopup={setShowBuyNowPopup}
         />
-      </th>
+      </th>,
     );
   }
 
@@ -40,7 +39,7 @@ const THead = ({
   console.log("wwww2", plans);
   const [scroll, setScroll] = useState(false);
   const dispatch = useDispatch();
-  const { downloading } = useSelector((state) => state.comparePage);
+  const { downloading } = useSelector(state => state.comparePage);
 
   // const checkScrollTop = () => {
   //   console.log(window.pageYOffset);
@@ -59,7 +58,7 @@ const THead = ({
 
   const download2 = () => {
     const input = document.getElementById("printCompare");
-    html2canvas(input, { useCORS: true }).then((canvas) => {
+    html2canvas(input, { useCORS: true }).then(canvas => {
       const componentWidth = input.offsetWidth;
       const componentHeight = input.offsetHeight;
 
@@ -100,26 +99,26 @@ const THead = ({
               & p {
                 font-size: 20px;
                 color: #253858;
-               
               }
             `}
           >
-          <div style={{
-            width: "70%",
-            margin: "auto"
-          }}>
-            <p>Product Comparision</p>
-           
+            <div
+              style={{
+                width: "70%",
+                margin: "auto",
+              }}
+            >
+              <p>Product Comparision</p>
+
               <CheckBox
                 checked={showDiffCbx}
                 title={`Show Difference`}
                 id={`show differenced`}
-                onChange={(e) => {
+                onChange={e => {
                   setshowDiffCbx(!showDiffCbx);
                 }}
               />
-           
-            
+
               <Downloadbtn
                 downloading={downloading}
                 onClick={() => {

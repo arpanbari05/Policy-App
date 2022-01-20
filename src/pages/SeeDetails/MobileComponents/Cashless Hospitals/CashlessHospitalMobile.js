@@ -11,15 +11,15 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
   const [searchByPincodeKeys, setSearchByPincodeKeys] = useState([]);
   const [foundHospital, setFoundHospital] = useState(hospitals.hospitals);
 
-  const { loading } = useSelector((state) => state.seeDetails);
+  const { loading } = useSelector(state => state.seeDetails);
   useEffect(() => {
     setFoundHospital(hospitals.hospitals);
   }, [hospitals]);
 
   useEffect(() => {
     if (searchText.length > 0) {
-      const tempArray = hospitals.hospitals.filter((data) =>
-        data.name.toLowerCase().includes(searchText.toLowerCase())
+      const tempArray = hospitals.hospitals.filter(data =>
+        data.name.toLowerCase().includes(searchText.toLowerCase()),
       );
 
       setFoundHospital(tempArray);
@@ -50,7 +50,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                 style={{ marginLeft: "auto", marginRight: "auto" }}
               >
                 {hospitals.displayHospitals &&
-                  hospitals.displayHospitals.map((item) =>
+                  hospitals.displayHospitals.map(item =>
                     item.map((el, index) => (
                       <tr>
                         <td
@@ -76,7 +76,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                           </small>
                         </td>
                       </tr>
-                    ))
+                    )),
                   )}
               </table>
             </DisplayHospitals>
@@ -91,7 +91,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
               >
                 <form
                   action="#"
-                  onSubmit={(e) => {
+                  onSubmit={e => {
                     e.preventDefault();
                   }}
                   className="sidebar-search"
@@ -107,7 +107,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                     type="text"
                     style={{ fontSize: "14px" }}
                     value={searchText}
-                    onChange={(e) => {
+                    onChange={e => {
                       setSearchText(e.target.value);
                     }}
                     placeholder="Search Hospitals"
@@ -197,7 +197,7 @@ function CashlessHospitalMobile({ ActiveMainTab, hospitals }) {
                   </th>
                 </tr>
 
-                {foundHospital?.map((item) => (
+                {foundHospital?.map(item => (
                   <tr style={{ borderBottom: "1px solid lightgray" }}>
                     <td style={{ padding: "10px" }}>
                       <div>

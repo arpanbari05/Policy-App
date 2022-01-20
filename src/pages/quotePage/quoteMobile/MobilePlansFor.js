@@ -7,12 +7,12 @@ import useUrlQuery from "../../../customHooks/useUrlQuery";
 const MobilePlansFor = () => {
   const dispatch = useDispatch();
   const { memberGroups, proposerDetails } = useSelector(
-    (state) => state.greetingPage
+    state => state.greetingPage,
   );
   const { groupCode: selectedGroup } = useParams();
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const history = useHistory();
 
   const urlQueryStrings = useUrlQuery();
@@ -31,7 +31,7 @@ const MobilePlansFor = () => {
     >
       {Object.keys(memberGroups)
         .sort()
-        .map((group) => (
+        .map(group => (
           <span
             onClick={() => {
               history.push({

@@ -18,7 +18,7 @@ import "styled-components/macro";
 const MainNavbar = () => {
   const cartArr = useSelector(({ quotePage }) => quotePage.cartItems);
   const { pathname } = useLocation();
- console.log(pathname)
+  console.log(pathname);
   const navbarNavigation = (
     <ul className="navbar__nav">
       <li>
@@ -94,15 +94,18 @@ const MainNavbar = () => {
           </span>
         </div>
       )} */}
-      {pathname !== "/" ? <SidebarCartToggle isQuotes={pathname?.slice(0, 7) === "/quotes" ? true : false} /> : null}
+      {pathname !== "/" ? (
+        <SidebarCartToggle
+          isQuotes={pathname?.slice(0, 7) === "/quotes" ? true : false}
+        />
+      ) : null}
     </div>
   );
 };
 
 export default MainNavbar;
 
-function SidebarCartToggle({isQuotes}) {
- 
+function SidebarCartToggle({ isQuotes }) {
   const [showCart, setShowCart] = useState(false);
   const toggleShowCart = () => {
     setShowCart(!showCart);

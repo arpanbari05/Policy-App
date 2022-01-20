@@ -2,6 +2,7 @@ import React from "react";
 import "./Loader.scss";
 import "styled-components/macro";
 import { useSelector } from "react-redux";
+import { useTheme } from "../../../customHooks";
 const SpinLoader = ({
   style = {},
   proposalpage,
@@ -9,10 +10,9 @@ const SpinLoader = ({
   customWidth,
   zIndexGiven,
 }) => {
+  const { colors } = useTheme();
 
-  const { theme } = useSelector((state) => state.frontendBoot);
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+  const PrimaryColor = colors.primary_color;
 
   return (
     <div
@@ -30,7 +30,7 @@ const SpinLoader = ({
         className={!proposalpage ? "spinner" : "proposal"}
         css={`
           height: ${customHeight} !important ;
-          &  > div {
+          & > div {
             background-color: ${PrimaryColor};
           }
         `}

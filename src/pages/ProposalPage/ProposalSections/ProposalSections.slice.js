@@ -36,13 +36,13 @@ const proposal = createSlice({
       state.isLoading = false;
     },
 
-    noForAllCheckedFalse: (state) => {
+    noForAllCheckedFalse: state => {
       state.noForAllChecked = false;
     },
-    noForAllCheckedTrue: (state) => {
+    noForAllCheckedTrue: state => {
       state.noForAllChecked = true;
     },
-    clearProposalData: (state) => {
+    clearProposalData: state => {
       state.proposalData = {};
     },
     setIsLoading: (state, { payload }) => {
@@ -92,7 +92,7 @@ export const {
 } = proposal.actions;
 const ls = new SecureLS();
 export const saveProposalData = (proposalData, next, failure) => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       dispatch(setIsLoading(true));
       const response = await saveProposal(proposalData);
@@ -109,8 +109,8 @@ export const saveProposalData = (proposalData, next, failure) => {
     }
   };
 };
-export const fetchPdf = (options) => {
-  return async (dispatch) => {
+export const fetchPdf = options => {
+  return async dispatch => {
     try {
       console.log("triggered");
       const { data } = await policyPdf();
@@ -130,12 +130,12 @@ export const fetchPdf = (options) => {
   };
 };
 export const getProposalData = () => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const { data } = await getProposal();
       const responseData = {};
 
-      Object.keys(data.data).forEach((item) => {
+      Object.keys(data.data).forEach(item => {
         if (!(data.data[item] instanceof Array)) {
           responseData[item] = data.data[item];
         }
@@ -146,17 +146,17 @@ export const getProposalData = () => {
         setActiveIndex(
           Object.keys(responseData).length >= 4
             ? 3
-            : Object.keys(responseData).length
-        )
+            : Object.keys(responseData).length,
+        ),
       );
     } catch (err) {
       console.error(err);
     }
   };
 };
-export const submitProposalData = (next) => {
+export const submitProposalData = next => {
   console.log("Executed submitProposal data");
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const res = await submitProposal({ enquiryId: ls.get("enquiryId") });
 
@@ -180,8 +180,8 @@ export const submitProposalData = (next) => {
 //   };
 // };
 
-export const getPaymentStatus = (data) => {
-  return async (dispatch) => {
+export const getPaymentStatus = data => {
+  return async dispatch => {
     try {
       const response = await PaymentStatus(data);
 

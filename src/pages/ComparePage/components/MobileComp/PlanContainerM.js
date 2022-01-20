@@ -12,7 +12,7 @@ import { images } from "../../../../assets/logos/logo.js";
 import "../PlanContainer/PlanContainer";
 // import { backgroundPosition } from "html2canvas/dist/types/css/property-descriptors/background-position";
 
-const getYearsUsingTenure = (tenure) => {
+const getYearsUsingTenure = tenure => {
   if (tenure == 1) {
     return "year";
   } else if (tenure == 2) {
@@ -40,17 +40,17 @@ const PlanContainerM = ({
     tenure,
   } = plans || {};
   const { discount, ridersPremium, riders } = useSelector(
-    (state) => state.comparePage
+    state => state.comparePage,
   );
   const [windowHeight, windowWidth] = useWindowSize();
   const { groupCode: selectedGroup } = useParams();
   const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
   let additionalPremium = 0;
 
-  mandatory_riders?.forEach((element) => {
+  mandatory_riders?.forEach(element => {
     additionalPremium += element.total_premium;
   });
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   return (
@@ -146,7 +146,7 @@ const PlanContainerM = ({
                 additionalPremium +
                 (ridersPremium[`${product.id}${sum_insured}`] || 0)
             } /${getYearsUsingTenure(
-              discount[`${product.id}${sum_insured}`]?.tenure || tenure
+              discount[`${product.id}${sum_insured}`]?.tenure || tenure,
             )}`}
           />
         </Row>
@@ -190,7 +190,7 @@ export default PlanContainerM;
 
 const EmptyContainer = styled.div`
   border: 2px dashed #e2a6a9;
-  color: ${(props) => props.PrimaryColor} !important;
+  color: ${props => props.PrimaryColor} !important;
   background: #f3f4f9;
   border-radius: 12px;
   height: 157px;

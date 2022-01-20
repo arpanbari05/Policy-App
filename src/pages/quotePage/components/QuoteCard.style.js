@@ -15,13 +15,13 @@ export const EachWrapper = styled.div`
   margin: 5px 0px 0px;
   padding: 0px;
   height: 110px;
-  position:relative;
+  position: relative;
   &:after {
     content: "";
     position: absolute;
     top: 23px;
     left: 13px;
-    z-index: 0; 
+    z-index: 0;
     width: calc(100% - 12px);
     height: calc(100% - 12px);
     border-right: 1px solid #c5c2c254;
@@ -52,7 +52,7 @@ export const RadioButton = styled.button`
   font-size: 16px;
   font-weight: 900 !important;
   border: none;
-  background-color: ${props=>props.PrimaryColor};
+  background-color: ${props => props.PrimaryColor};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -118,9 +118,9 @@ export const SeeText = styled.span`
   cursor: pointer;
   line-height: normal;
   letter-spacing: normal;
-  color: ${props=>props.PrimaryColor};
+  color: ${props => props.PrimaryColor};
   margin-bottom: 5px;
-  border-bottom: 2px dotted ${props=>props.PrimaryColor};
+  border-bottom: 2px dotted ${props => props.PrimaryColor};
 `;
 export const CenterBottomStyle = styled.div`
   display: flex;
@@ -155,9 +155,9 @@ export const RadioInput = styled.input`
   &:checked + label:before {
     content: "\u2713";
     font-family: "font-awesome";
-    background:${props=>props.PrimaryColor};
+    background: ${props => props.PrimaryColor};
     color: #fff;
-    border-color: ${props=>props.PrimaryColor};
+    border-color: ${props => props.PrimaryColor};
   }
 `;
 export const RadioLabel = styled.label`
@@ -178,7 +178,7 @@ export const RadioLabel = styled.label`
     height: 17px;
     line-height: 17px;
     border-radius: 50px;
-    border: 1px solid ${props=>props.PrimaryColor};
+    border: 1px solid ${props => props.PrimaryColor};
     font-size: 11px;
     text-align: center;
     position: absolute;

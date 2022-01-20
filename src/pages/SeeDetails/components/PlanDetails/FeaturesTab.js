@@ -18,7 +18,7 @@ const dataSet = (dataArray, type) => {
           <span key={i}>
             {data.header === "Permanent Exclusions" && (
               <div className="featureExclusion">
-                {data.value.split("\n").map((item) => {
+                {data.value.split("\n").map(item => {
                   return (
                     <li
                       style={{
@@ -48,9 +48,9 @@ const dataSet = (dataArray, type) => {
               data.header !== "Permanent Exclusions" && (
                 <div>
                   <FeatureDefinition data={data} />
-               </div>
+                </div>
               )}
-          </span>
+          </span>,
         );
     });
   } else {

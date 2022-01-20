@@ -19,6 +19,7 @@ import "styled-components/macro";
 import { element } from "prop-types";
 import CheckBox from "../components/Checkbox/Checkbox";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
+import { useTheme } from "../../../customHooks";
 
 const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   const [show, setShow] = useState(1);
@@ -36,12 +37,12 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     name,
     defaultValue,
     Object.keys(schema).length,
-    setShow
+    setShow,
   );
-  
-  const { theme } = useSelector((state) => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { colors } = useTheme();
+
+  const PrimaryColor = colors.primary_color;
 
   const [noForAll, setNoForAll] = useState({});
   const [initColor, setInitColor] = useState(PrimaryColor);
@@ -49,10 +50,10 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     canProceed: false,
     canProceedArray: [],
   });
-  const { proposalData } = useSelector((state) => state.proposalPage);
+  const { proposalData } = useSelector(state => state.proposalPage);
   const [mutateValues, setMutateValues] = useState();
   const dispatch = useDispatch();
-  const { noForAllChecked } = useSelector((state) => state.proposalPage);
+  const { noForAllChecked } = useSelector(state => state.proposalPage);
 
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
@@ -65,7 +66,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
 
     if (key.length !== key2.length) {
       let noForAll2 = {};
-      Object.keys(values || {}).forEach((element) => {
+      Object.keys(values || {}).forEach(element => {
         noForAll2[element] = noForAll[element] || false;
       });
 
@@ -74,7 +75,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
       let isNotChecked = {};
       let hasYes = {};
       let checkCanProceed = [];
-      key2.forEach((item) => {
+      key2.forEach(item => {
         if (noForAll[item] !== true) {
           isNotChecked[item] = false;
         } else {
@@ -83,7 +84,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
         const temp =
           values?.[item] &&
           Object.keys(values?.[item] || {})?.some(
-            (data) => values?.[item]?.[data]?.[`is${data}`] === "Y"
+            data => values?.[item]?.[data]?.[`is${data}`] === "Y",
           );
         if (temp === true) {
           hasYes[item] = true;
@@ -92,7 +93,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
         }
       });
 
-      key.forEach((item) => {
+      key.forEach(item => {
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed.push(item);
         }
@@ -101,7 +102,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
       if (key2.length < 1) {
         isNotChecked = true;
       }
-     
+
       if (checkCanProceed.length < 1) {
         setCanProceed({ canProceed: true, canProceedArray: [{}] });
       } else {
@@ -116,12 +117,12 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   useEffect(() => {
     if (
       name === "Insured Details" &&
-      Object.keys(schema).some((item) => item === "self") &&
+      Object.keys(schema).some(item => item === "self") &&
       proposalData["Proposer Details"]
     ) {
       console.log("hehe3he");
       let prefilledValues = {};
-      schema["self"].forEach((item) => {
+      schema["self"].forEach(item => {
         if (proposalData["Proposer Details"][item.name])
           prefilledValues = {
             ...prefilledValues,
@@ -141,8 +142,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
       !Object.keys(values ? values : {}).length
     ) {
       let initial = {};
-      Object.keys(schema).forEach((item) =>
-        schema[item].forEach((innerItem) => {
+      Object.keys(schema).forEach(item =>
+        schema[item].forEach(innerItem => {
           if (innerItem.name)
             initial = {
               ...initial,
@@ -151,7 +152,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                 [innerItem.name]: "",
               },
             };
-        })
+        }),
       );
       setValues(initial);
     }
@@ -165,8 +166,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     if (name === "Medical Details") {
       const key = Object.keys(values || {});
       let tempObj = JSON.parse(JSON.stringify(values || {}));
-      key.forEach((keyValue) => {
-        schema?.[keyValue]?.forEach((element) => {
+      key.forEach(keyValue => {
+        schema?.[keyValue]?.forEach(element => {
           //'nominee_relation=self/Proposer Details.name'
           if (
             element?.populate &&
@@ -203,13 +204,13 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
               Object.keys(values && values[item] ? values[item] : {}).length
             }
             values={Object.values(
-              values && values[item] ? values[item] : {}
+              values && values[item] ? values[item] : {},
             ).join(", ")}
             key={index}
             title={`${item}`}
             show={show === "all" ? true : show === index + 1 ? true : false}
             onClick={() =>
-              setShow((prev) => (prev === index + 1 ? 0 : index + 1))
+              setShow(prev => (prev === index + 1 ? 0 : index + 1))
             }
           >
             <div>
@@ -227,7 +228,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                     css={`
                       display: flex;
                       justify-content: flex-end;
-                   
+
                       & .container {
                         margin: 0;
                         width: max-content;
@@ -238,49 +239,50 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                       }
                     `}
                   >
-                  <div style={{marginRight:"15px"}}>
-                 
-                    <Checkbox2
-                      
-                      showTitle={false}
-                      title={"No" + item}
-                      //value={noForAll[item]}
-                      checked={noForAll[item]}
-                      onChange={(e) => {
-                        setNoForAll({ ...noForAll, [item]: e.target.checked });
-                        if (noForAllChecked) {
-                          dispatch(noForAllCheckedFalse());
-                        } else {
-                          dispatch(noForAllCheckedTrue());
-                        }
-                      }}
-                    ></Checkbox2>{" "}
+                    <div style={{ marginRight: "15px" }}>
+                      <Checkbox2
+                        showTitle={false}
+                        title={"No" + item}
+                        //value={noForAll[item]}
+                        checked={noForAll[item]}
+                        onChange={e => {
+                          setNoForAll({
+                            ...noForAll,
+                            [item]: e.target.checked,
+                          });
+                          if (noForAllChecked) {
+                            dispatch(noForAllCheckedFalse());
+                          } else {
+                            dispatch(noForAllCheckedTrue());
+                          }
+                        }}
+                      ></Checkbox2>{" "}
                     </div>
                     <span>No For All Questions </span>{" "}
                   </div>
                   {!noForAll[item] && (
-                      <p
-                        css={`
-                          display: flex;
-                          font-size: 12px;
-                          justify-content: flex-end;
-                          color: ${initColor};
-                        `}
-                      >
-                        Please select the checkbox if no for all questions item
-                      </p>
-                    )}
+                    <p
+                      css={`
+                        display: flex;
+                        font-size: 12px;
+                        justify-content: flex-end;
+                        color: ${initColor};
+                      `}
+                    >
+                      Please select the checkbox if no for all questions item
+                    </p>
+                  )}
                 </div>
               )}
               <Form>
-              {console.log("jhcvugc",values)}
+                {console.log("jhcvugc", values)}
                 <FormBuilder
                   schema={schema[item]}
                   components={components}
-                  fetchValues={(res) => {
+                  fetchValues={res => {
                     setValues({ ...values, [item]: res });
                   }}
-                  fetchValid={(res) => {
+                  fetchValid={res => {
                     let valid = isValid;
                     valid[index] = res;
                     setValid(valid);
@@ -294,7 +296,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                   setSubmit={setSubmit}
                   submitTrigger={submit}
                   noForAll={noForAll[item]}
-                  setNoForAll={(value) => {
+                  setNoForAll={value => {
                     setNoForAll({ ...noForAll, [item]: value });
                   }}
                 />
@@ -306,14 +308,13 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
-           
-            setActive((prev) => {
+            setActive(prev => {
               if (prev === 0) return 0;
               else return prev - 1;
             });
           }}
         />
-      
+
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");

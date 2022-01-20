@@ -10,12 +10,11 @@ import repolicy from "./../../../assets/svg/repolicy.svg";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 
 const Card = ({ values, isLoading }) => {
-
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
-  const { frontendData } = useSelector((state) => state.frontendBoot);
+  const { frontendData } = useSelector(state => state.frontendBoot);
   return values?.product ? (
     <CardWrapper>
       <LogoWrapper>
@@ -31,11 +30,15 @@ const Card = ({ values, isLoading }) => {
         ></img>
       </LogoWrapper>
       <CompanyName reducePadding>{values?.product?.name}</CompanyName>
-      <div style={{ float: "right" }}
-      >
+      <div style={{ float: "right" }}>
         {values?.pdf_path ? (
           values?.pdf_path && (
-            <DownloadPolicy target="_blank" href={values?.pdf_path} download PrimaryColor={PrimaryColor}>
+            <DownloadPolicy
+              target="_blank"
+              href={values?.pdf_path}
+              download
+              PrimaryColor={PrimaryColor}
+            >
               Download Policy{" "}
               {isLoading || !values?.pdf_path ? (
                 <span class="thankyou lds-dual-ring"></span>
@@ -45,7 +48,12 @@ const Card = ({ values, isLoading }) => {
             </DownloadPolicy>
           )
         ) : (
-          <DownloadPolicy track target="_blank" href={"http://fynixnew.benefitz.in/customer/login"} PrimaryColor={PrimaryColor}>
+          <DownloadPolicy
+            track
+            target="_blank"
+            href={"http://fynixnew.benefitz.in/customer/login"}
+            PrimaryColor={PrimaryColor}
+          >
             Track Status <img src={paper} alt="track"></img>
           </DownloadPolicy>
         )}
@@ -101,7 +109,7 @@ const Card = ({ values, isLoading }) => {
         </StatusWrapper>
       )}
       {values?.status !== "underwriting_approval" && !values?.pdf_path && (
-        <StatusWrapper  SecondaryShade={SecondaryShade}>
+        <StatusWrapper SecondaryShade={SecondaryShade}>
           <DocImage>
             <img
               css={`
@@ -157,7 +165,7 @@ const CardWrapper = styled.div`
 `;
 const StatusWrapper = styled.div`
   border-radius: 8px;
-  background-color: ${props=>props.SecondaryShade};
+  background-color: ${props => props.SecondaryShade};
   width: 100%;
   padding: 16px;
   display: flex;
@@ -189,10 +197,9 @@ const DocMessage = styled.div`
 
   width: calc(100% - 46px);
   display: inline-block;
-@media (max-width: 768px){
-  font-size: 12px;
-}
-
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 const LogoWrapper = styled.div`
   display: inline-block;
@@ -226,7 +233,7 @@ const CompanyName = styled.div`
   /* font-family: pf_handbook_proregular; */
   font-weight: 900;
   font-size: 18px;
-  padding: ${(props) => (props.reducePadding ? "10px" : "14px")} 0 19px 10px;
+  padding: ${props => (props.reducePadding ? "10px" : "14px")} 0 19px 10px;
   line-height: 22px;
   max-width: 220px;
   @media (max-width: 1023px) {
@@ -237,9 +244,9 @@ const DownloadPolicy = styled.a`
   display: inline-block;
   height: 58px;
   border-radius: 16px;
-  background-color: ${props=>props.PrimaryColor};
-  padding: ${(props) => (props.track ? "14px" : "12px")} 22px 14px;
-  text-align: ${(props) => props.track && "center"};
+  background-color: ${props => props.PrimaryColor};
+  padding: ${props => (props.track ? "14px" : "12px")} 22px 14px;
+  text-align: ${props => props.track && "center"};
   /* font-family: pf_handbook_proregular; */
   font-weight: 600;
   font-size: 20px;
@@ -252,8 +259,8 @@ const DownloadPolicy = styled.a`
     transform: translateY(4px);
   }
 
-  @media(max-width: 768px){
-    font-size:15px;
+  @media (max-width: 768px) {
+    font-size: 15px;
   }
 `;
 const PolicyWrapper = styled.div`
@@ -269,7 +276,7 @@ const Title = styled.div`
   /* font-family: pf_handbook_proregular; */
   font-size: 15px;
   font-weight: bold;
-  
+
   margin-bottom: 2px;
   @media (max-width: 1023px) {
     font-size: 13px;
@@ -282,7 +289,7 @@ const Value = styled.div`
   text-transform: capitalize;
   user-select: all;
   word-break: break-all;
-  //text-align: ${(props) => props.center && "center"};
+  //text-align: ${props => props.center && "center"};
   // white-space: pre;
   @media (max-width: 1023px) {
     font-size: 11px;

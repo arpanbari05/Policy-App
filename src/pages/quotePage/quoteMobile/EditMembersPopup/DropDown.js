@@ -23,7 +23,7 @@ const GreetingFormDropdown = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
@@ -34,7 +34,7 @@ const GreetingFormDropdown = ({
     setIsOpen(!isOpen);
   };
 
-  const handleSelect = (value) => {
+  const handleSelect = value => {
     handleChange(code, value, type);
     setIsOpen(!isOpen);
   };
@@ -77,10 +77,10 @@ const GreetingFormDropdown = ({
               }
             `}
           >
-            {list.map((data) => {
+            {list.map(data => {
               return (
                 <ListItem
-                PrimaryShade={PrimaryShade}
+                  PrimaryShade={PrimaryShade}
                   className={`${
                     data.title === selected && "active"
                   } GreetingDD__ListItem`}

@@ -27,16 +27,18 @@ const ThankYouPage = () => {
   const { pathname } = useLocation();
   const [payment, SetPayment] = useState(true);
   const [timer, SetTimer] = useState(6);
-  const { theme } = useSelector((state) => state.frontendBoot);
-  const tenantDetail =  useSelector((state) => state.frontendBoot.frontendData.tenant);
+  const { theme } = useSelector(state => state.frontendBoot);
+  const tenantDetail = useSelector(
+    state => state.frontendBoot.frontendData.tenant,
+  );
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const status = useSelector((state) => state.proposalPage);
+  const status = useSelector(state => state.proposalPage);
   const { policyStatus, policyLoading } = useSelector(
-    (state) => state.proposalPage
+    state => state.proposalPage,
   );
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector(state => state.cart);
 
   // const callFetch = ()=>{
   //   count!== 0 &&    setTimeout(()=>setCount(count-1), 30000)
@@ -70,14 +72,13 @@ const ThankYouPage = () => {
     }
   }, [pathname]);
   const Disclaimer = () => {
-    if (policyStatus.every((item) => item.status === "underwriting_approval")) {
+    if (policyStatus.every(item => item.status === "underwriting_approval")) {
       return (
         <>
           <div
             className="policy__disclaimer"
             css={`
               color: ${PrimaryColor} !important;
-              
             `}
           >
             You can track your policy status on{" "}
@@ -88,13 +89,16 @@ const ThankYouPage = () => {
           </div>
         </>
       );
-    } else if (policyStatus.every((item) => item.status === "policy_issued"))
+    } else if (policyStatus.every(item => item.status === "policy_issued"))
       return (
         <>
           {" "}
-          <div className="policy__disclaimer"  css={`
+          <div
+            className="policy__disclaimer"
+            css={`
               color: ${PrimaryColor} !important;
-            `}>
+            `}
+          >
             Your policy document has been successfully saved in{" "}
             <a href="https://cpprod.adityabirlainsurancebrokers.com/sign-in?rurl=https://cpprod.adityabirlainsurancebrokers.com/">
               My Account Page.
@@ -107,9 +111,12 @@ const ThankYouPage = () => {
     else
       return (
         <>
-          <div className="policy__disclaimer"  css={`
+          <div
+            className="policy__disclaimer"
+            css={`
               color: ${PrimaryColor} !important;
-            `}>
+            `}
+          >
             You can visit the{" "}
             <a href="https://cpprod.adityabirlainsurancebrokers.com/sign-in?rurl=https://cpprod.adityabirlainsurancebrokers.com/">
               My Account Page.
@@ -126,7 +133,11 @@ const ThankYouPage = () => {
         <div className="hideOnMobile">
           <div className="thankheading__wrapper">
             <div className="thankheading__message">
-              Thank you for choosing {tenantDetail && tenantDetail.name?tenantDetail.name:"Fyntune"}!
+              Thank you for choosing{" "}
+              {tenantDetail && tenantDetail.name
+                ? tenantDetail.name
+                : "Fyntune"}
+              !
             </div>
             <div className="thankheading__right">Your Purchase</div>
           </div>
@@ -215,8 +226,7 @@ const ThankYouPage = () => {
               </div>
               <div
                 style={{
-                  backgroundColor:
-                    `linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%) `,
+                  backgroundColor: `linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%) `,
                   display: "flex",
                   alignItems: "center",
                   color: PrimaryColor,

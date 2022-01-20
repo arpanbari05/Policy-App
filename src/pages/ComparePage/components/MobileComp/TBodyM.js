@@ -41,7 +41,7 @@ const SumAssured = ({
   setHideCells,
 }) => {
   const dispatch = useDispatch();
-  const { quotesForCompare } = useSelector((state) => state.quotePage);
+  const { quotesForCompare } = useSelector(state => state.quotePage);
   const [showTooltipMobile, setShowTooltipMobile] = useState(false);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipTitle, setTooltipTitle] = useState("");
@@ -65,7 +65,7 @@ const SumAssured = ({
             onClick={() => {
               setShowTooltipMobile(true);
               setTooltipContent(
-                "Cover Amount of the selected plan is the maximum pay out the Insurance company will offer"
+                "Cover Amount of the selected plan is the maximum pay out the Insurance company will offer",
               );
               setTooltipTitle("Sum insured");
             }}
@@ -74,7 +74,7 @@ const SumAssured = ({
           </span>
         </div>
         <div class="col-xs-12 padding_inner_row_c_t">
-          {[0, 1]?.map((item) => {
+          {[0, 1]?.map(item => {
             if (plans[item])
               return (
                 <>
@@ -89,17 +89,17 @@ const SumAssured = ({
                         background: "white !important",
                         color: "rgb(100, 113, 136)",
                       }}
-                      onChange={(e) => {
+                      onChange={e => {
                         dispatch(
                           removeQuotesForCompare(
-                            `${plans[item]?.data?.product?.id}${plans[item]?.data?.sum_insured}`
-                          )
+                            `${plans[item]?.data?.product?.id}${plans[item]?.data?.sum_insured}`,
+                          ),
                         );
                         dispatch(
                           setQuotesForCompare([
                             `${plans[item]?.data?.product.id}${e.target.selectedOptions[0].id}`,
                             2,
-                          ])
+                          ]),
                         );
                       }}
                     >
@@ -107,11 +107,11 @@ const SumAssured = ({
                         ₹ {numToLakh(plans[item]?.data?.sum_insured)}
                       </option>
                       {mergedCover.length > 0 &&
-                        mergedCover[item]?.map((data) => {
+                        mergedCover[item]?.map(data => {
                           if (
                             plans[item]?.data.sum_insured !== data &&
                             !quotesForCompare.includes(
-                              `${plans[item]?.data?.product.id}${data}`
+                              `${plans[item]?.data?.product.id}${data}`,
                             )
                           ) {
                             return (
@@ -165,7 +165,7 @@ const AdditionalBenefits = ({
             onClick={() => {
               setShowTooltipMobile(true);
               setTooltipContent(
-                "You can add ‘Riders’ to your basic health insurance plan for additional benefits."
+                "You can add ‘Riders’ to your basic health insurance plan for additional benefits.",
               );
               setTooltipTitle("Optional Covers");
             }}
@@ -178,7 +178,7 @@ const AdditionalBenefits = ({
           {plans.length &&
             plans.map((plan, planIndex) => {
               let riders = plan.features.filter(
-                (feature) => feature.name === "Additional Benefits"
+                feature => feature.name === "Additional Benefits",
               )[0].riders;
               console.log(riders, "ridersronak");
               return (
@@ -195,7 +195,7 @@ const AdditionalBenefits = ({
                   }}
                 >
                   {riders && riders.length ? (
-                    riders.map((rider) => {
+                    riders.map(rider => {
                       return (
                         <RiderWrapper
                           show={rider.total_premium}
@@ -217,22 +217,22 @@ const AdditionalBenefits = ({
                               <Checkbox2
                                 showTitle={false}
                                 title={rider.name + plan.data.product.id}
-                                onChange={(e) => {
+                                onChange={e => {
                                   if (e.target.checked) {
                                     dispatch(
                                       insertRider(
                                         plan.data.product.id,
                                         plan.data.sum_insured,
-                                        rider
-                                      )
+                                        rider,
+                                      ),
                                     );
                                   } else {
                                     dispatch(
                                       removeRider(
                                         plan.data.product.id,
                                         plan.data.sum_insured,
-                                        rider
-                                      )
+                                        rider,
+                                      ),
                                     );
                                   }
                                 }}
@@ -335,17 +335,17 @@ const TBodyM = ({
   const [tooltipTitle, setTooltipTitle] = useState("");
   const [windowHeight, windowWidth] = useWindowSize();
   const [tenureData, setTenureData] = useState([
-    plans.map((item) => item.data.tenure),
+    plans.map(item => item.data.tenure),
   ]);
   const { quotesForCompare, selectedGroup, productDiscounts } = useSelector(
-    (state) => state.quotePage
+    state => state.quotePage,
   );
-  const { discount, riders } = useSelector((state) => state.comparePage);
+  const { discount, riders } = useSelector(state => state.comparePage);
   const [tenureChangedFor, setTenureChangedFor] = useState(-1);
   const [trigger, setTrigger] = useState(false);
-  const { memberGroups } = useSelector((state) => state.greetingPage);
+  const { memberGroups } = useSelector(state => state.greetingPage);
   const members = memberGroups[selectedGroup].join(",");
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   useEffect(() => {
@@ -360,8 +360,8 @@ const TBodyM = ({
         }),
         clearRiders(
           plans[tenureChangedFor].data.product.id,
-          plans[tenureChangedFor].data.sum_insured
-        )
+          plans[tenureChangedFor].data.sum_insured,
+        ),
       );
     }
     setTrigger(false);
@@ -373,8 +373,8 @@ const TBodyM = ({
         updatePremiumQuote(
           tenureChangedFor,
           tenureData[tenureChangedFor],
-          `${plans[tenureChangedFor].data.product.id}${plans[tenureChangedFor].data.sum_insured}`
-        )
+          `${plans[tenureChangedFor].data.product.id}${plans[tenureChangedFor].data.sum_insured}`,
+        ),
       );
     }
   }, [productDiscounts]);
@@ -409,7 +409,7 @@ const TBodyM = ({
               onClick={() => {
                 setShowTooltipMobile(true);
                 setTooltipContent(
-                  " Policy term for which you can buy this policy"
+                  " Policy term for which you can buy this policy",
                 );
                 setTooltipTitle("Tenure");
               }}
@@ -437,8 +437,8 @@ const TBodyM = ({
                         `${plans[index].data.product.id}${plans[index].data.sum_insured}`
                       ]?.tenure
                     }
-                    onChange={(e) => {
-                      setTenureData((prev) => {
+                    onChange={e => {
+                      setTenureData(prev => {
                         prev[index] = e.target.value;
                         return prev;
                       });
@@ -454,7 +454,7 @@ const TBodyM = ({
                 </div>
               ) : (
                 ""
-              )
+              ),
             )}
           </div>
         </div>
@@ -489,7 +489,7 @@ const TBodyM = ({
             </span>
           </div>
           <div class="col-xs-12 padding_inner_row_c_t">
-            {[0, 1].map((item) => {
+            {[0, 1].map(item => {
               if (!plans[item]) return "";
               else
                 return (
@@ -634,7 +634,7 @@ const PermanentExclusion = ({
           </span>
         </div>
         <div class="col-xs-12 padding_inner_row_c_t font-bold">
-          {[0, 1].map((index) => {
+          {[0, 1].map(index => {
             if (!plans[index]) return "";
             else {
               {
@@ -744,7 +744,7 @@ const Other = ({
                     </span>
                   </div>
                   <div class="col-xs-12 padding_inner_row_c_t font-bold">
-                    {[0, 1].map((item) => {
+                    {[0, 1].map(item => {
                       if (!plans[item]) return "";
                       else
                         return (

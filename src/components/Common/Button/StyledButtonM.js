@@ -9,7 +9,7 @@ const StyledButtonM = ({
   children,
   customClass,
 }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
@@ -31,7 +31,7 @@ const StyledButtonM = ({
 
 export default StyledButtonM;
 
-const Button = styled.button.attrs((props) => ({
+const Button = styled.button.attrs(props => ({
   type: props.type,
 }))`
   box-sizing: border-box;
@@ -44,7 +44,7 @@ const Button = styled.button.attrs((props) => ({
   outline: none;
   box-shadow: none;
   width: 95% !important;
-  background: ${(props) => props.PrimaryColor};
+  background: ${props => props.PrimaryColor};
   color: white;
   border: 0 none;
   cursor: pointer;

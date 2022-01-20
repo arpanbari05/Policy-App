@@ -167,7 +167,7 @@ const QuoteFilter = ({
   const dispatch = useDispatch();
 
   // useEffect(() => {
-   
+
   //   if (showPlanTypeFilter && planTypeFilter === "Individual") {
   //     dispatch(setFilters({ planType: "Family Floater" }));
   //   }

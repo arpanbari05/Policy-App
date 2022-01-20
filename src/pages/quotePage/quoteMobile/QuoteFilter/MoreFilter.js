@@ -13,7 +13,7 @@ export function CustomRadio({
   isSelected,
   onClick = () => {},
 }) {
-  const renderTooltip = (props) => <Tooltip {...props}>{description}</Tooltip>;
+  const renderTooltip = props => <Tooltip {...props}>{description}</Tooltip>;
   return (
     <>
       {description === "" ? (
@@ -115,7 +115,7 @@ export function CustomRadio({
               css={`
                 height: 20px;
                 width: 20px;
-              border: 1px solid;
+                border: 1px solid;
                 border-radius: 50%;
                 border-color: ${isSelected ? "var(--abc-red)" : "#d2d8e2"};
                 display: flex !important;
@@ -140,18 +140,18 @@ export function CustomRadio({
 }
 
 const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
-  const filters = useSelector((state) => state.quotePage.filters);
+  const filters = useSelector(state => state.quotePage.filters);
 
-  const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
+  const renderTooltip = description => <Tooltip>{description}</Tooltip>;
 
   const [popularFilter, setPopularFilter] = useState(
-    filters.moreFilters.popularFilter || []
+    filters.moreFilters.popularFilter || [],
   );
   const [preExisting, setPreExisting] = useState(
-    filters.moreFilters.preExisting || ""
+    filters.moreFilters.preExisting || "",
   );
   const [renewalBonus, setRenewalBonus] = useState(
-    filters.moreFilters.renewalBonus || ""
+    filters.moreFilters.renewalBonus || "",
   );
 
   const [others, setOthers] = useState(filters.moreFilters.others || []);
@@ -162,8 +162,6 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
     setRenewalBonus("");
     setOthers([]);
   };
-
-
 
   const dispatch = useDispatch();
 
@@ -176,11 +174,9 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
     },
   });
 
-  const quotes = useSelector((state) => state.quotePage.quotes);
+  const quotes = useSelector(state => state.quotePage.quotes);
 
-  const filteredQuotes = quotes
-    .map((icQuotes) => filterQuotes(icQuotes))
-    .flat();
+  const filteredQuotes = quotes.map(icQuotes => filterQuotes(icQuotes)).flat();
 
   const handleSubmit = () => {
     dispatch(
@@ -191,7 +187,7 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
           renewalBonus,
           others,
         },
-      })
+      }),
     );
     setExpandSelected("");
   };
@@ -265,7 +261,7 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                       </h5>
 
                       <Row className="row_mb_mt">
-                        {item.options.map((option) => (
+                        {item.options.map(option => (
                           <Col
                             md={6}
                             css={`
@@ -274,7 +270,7 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                             `}
                           >
                             {["popular_filters", "others"].includes(
-                              item.code
+                              item.code,
                             ) ? (
                               <div
                                 className="inputGroup"
@@ -287,23 +283,23 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                                   name={"radio" + idx}
                                   type={
                                     ["popular_filters", "others"].includes(
-                                      item.code
+                                      item.code,
                                     )
                                       ? "checkbox"
                                       : "radio"
                                   }
                                   readOnly
-                                  onClick={(evt) => {
+                                  onClick={evt => {
                                     if (item.code === "popular_filters") {
                                       if (
                                         popularFilter.includes(
-                                          option.display_name
+                                          option.display_name,
                                         )
                                       ) {
                                         setPopularFilter(
                                           popularFilter.filter(
-                                            (pf) => pf !== option.display_name
-                                          )
+                                            pf => pf !== option.display_name,
+                                          ),
                                         );
                                         return;
                                       }
@@ -329,8 +325,8 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                                       ) {
                                         setOthers(
                                           others.filter(
-                                            (pf) => pf !== option.display_name
-                                          )
+                                            pf => pf !== option.display_name,
+                                          ),
                                         );
                                         return;
                                       }
@@ -343,7 +339,7 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                                   checked={(() => {
                                     if (item.code === "popular_filters")
                                       return popularFilter.includes(
-                                        option.display_name
+                                        option.display_name,
                                       );
                                     if (item.code === "pre_existing_ailments")
                                       return (
@@ -355,7 +351,7 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                                       );
                                     if (item.code === "others")
                                       return others.includes(
-                                        option.display_name
+                                        option.display_name,
                                       );
                                   })()}
                                 />
@@ -382,17 +378,17 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                               <CustomRadio
                                 label={option.display_name}
                                 description={option.description}
-                                onClick={(evt) => {
+                                onClick={evt => {
                                   if (item.code === "popular_filters") {
                                     if (
                                       popularFilter.includes(
-                                        option.display_name
+                                        option.display_name,
                                       )
                                     ) {
                                       setPopularFilter(
                                         popularFilter.filter(
-                                          (pf) => pf !== option.display_name
-                                        )
+                                          pf => pf !== option.display_name,
+                                        ),
                                       );
                                       return;
                                     }
@@ -415,8 +411,8 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                                     if (others.includes(option.display_name)) {
                                       setOthers(
                                         others.filter(
-                                          (pf) => pf !== option.display_name
-                                        )
+                                          pf => pf !== option.display_name,
+                                        ),
                                       );
                                       return;
                                     }
@@ -426,7 +422,7 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                                 isSelected={(() => {
                                   if (item.code === "popular_filters")
                                     return popularFilter.includes(
-                                      option.display_name
+                                      option.display_name,
                                     );
                                   if (item.code === "pre_existing_ailments")
                                     return preExisting === option.display_name;

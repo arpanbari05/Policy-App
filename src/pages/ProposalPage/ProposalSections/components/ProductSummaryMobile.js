@@ -13,8 +13,6 @@ import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import SecureLS from "secure-ls";
 import TermModal from "../../../ProposalSummary/TermsModal";
 
-
-
 const removeTotalPremium = cart => {
   let { totalPremium, ...y } = cart;
   return y;
@@ -26,7 +24,7 @@ function ProductSummaryMobile({ cart, payNow }) {
 
   const [show, setShow] = useState(false);
   const [showP, setShowP] = useState(false);
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [termShow, setTermShow] = useState(false);
@@ -37,7 +35,7 @@ function ProductSummaryMobile({ cart, payNow }) {
   const { proposalData, policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
   );
-const enquiryId = url.get("enquiryId");
+  const enquiryId = url.get("enquiryId");
   const onClick = mobile => {
     if (
       frontendData?.data?.settings?.journey_type === "single" &&
@@ -73,7 +71,7 @@ const enquiryId = url.get("enquiryId");
       document.body.removeChild(form);
     }
   };
-  
+
   const content = (
     <>
       <div className="row">
@@ -248,9 +246,9 @@ const enquiryId = url.get("enquiryId");
               padding-top: 10px;
               padding-left: 20px;
               position: absolute;
-              top:20px;
-              @media(max-width:768px){
-                position:unset;
+              top: 20px;
+              @media (max-width: 768px) {
+                position: unset;
               }
             `}
           >
@@ -263,15 +261,24 @@ const enquiryId = url.get("enquiryId");
                 onChange={() => setChecked(!checked)}
               />{" "}
               <span className="Iaccept">I Accept the&nbsp;</span>
-              <span class="TermsAndConditions"    
-                   css={`
-                   color: ${PrimaryColor};
-                 `}
-                   style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}
-            >
-              Terms &amp; Conditions
-            </span>
-            {termShow && <TermModal show={termShow} handleClose={()=>{setTermShow(false)}}/>}
+              <span
+                class="TermsAndConditions"
+                css={`
+                  color: ${PrimaryColor};
+                `}
+                style={{ cursor: "pointer" }}
+                onClick={() => setTermShow(true)}
+              >
+                Terms &amp; Conditions
+              </span>
+              {termShow && (
+                <TermModal
+                  show={termShow}
+                  handleClose={() => {
+                    setTermShow(false);
+                  }}
+                />
+              )}
             </div>
           </div>
         )}
@@ -324,10 +331,10 @@ const enquiryId = url.get("enquiryId");
 
           {location.pathname === "/proposal_summary" ? (
             <View
-            css={`
-            background: ${PrimaryColor};
-          `}
-            onClick={() => checked && onClick()}
+              css={`
+                background: ${PrimaryColor};
+              `}
+              onClick={() => checked && onClick()}
               // style={{ color: checked ? "white" : "lightgray" }}
             >
               Pay Now
@@ -335,7 +342,7 @@ const enquiryId = url.get("enquiryId");
           ) : (
             <View onClick={() => setShow(true)}>View detail</View>
           )}
-              {showP && (
+          {showP && (
             <MultipleWrapper>
               <PayList>
                 {policyStatus &&
@@ -414,7 +421,6 @@ const PayItem = styled.li`
   display: flex;
 `;
 const ItemName = styled.div`
-
   font-size: 15px;
   background-color: #f6f7f9;
   padding: 12px;

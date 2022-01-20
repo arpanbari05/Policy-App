@@ -10,7 +10,7 @@ export const MobileHeader = styled.div`
   display: none;
   @media (max-width: 769px) {
     display: flex;
-    align-items:center;
+    align-items: center;
     padding: 10px;
     height: 54px;
     background-color: #0a87ff;
@@ -20,6 +20,6 @@ export const MobileHeaderText = styled.p`
   color: #fff;
   font-size: 17px;
   margin: 0;
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
 `;

@@ -3,7 +3,7 @@ import styled from "styled-components/macro";
 import { mobile, small, tablet } from "../../../utils/mediaQueries";
 import useWindowSize from "../../../customHooks/useWindowSize";
 import Checkbox from "../../../pages/ComparePage/components/Checkbox/Checbox";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 
 function RiderCard({
   rider,
@@ -16,13 +16,12 @@ function RiderCard({
   handleRiderChange = () => {},
   ...props
 }) {
-
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
   const riderName = rider.name;
-  console.log(isRiderSelected, "dsgagasd",isMandatory);
+  console.log(isRiderSelected, "dsgagasd", isMandatory);
   const riderPremium = parseInt(rider.total_premium).toLocaleString("en-In");
   const riderDescription = rider.description;
   console.log(health_riders, "gege3");
@@ -30,15 +29,15 @@ function RiderCard({
   const options = rider?.options?.[Object.keys(rider?.options)[0]] || [];
   // const parent_selected = true
   const parent_selected = health_riders.some(
-    (data) => data !== null && data?.alias === parent_rider
+    data => data !== null && data?.alias === parent_rider,
   );
   const [windowHeight, windowWidth] = useWindowSize();
   const [isRiderSelectedCorrected, setIsRiderSelectedCorrected] =
     useState(isRiderSelected);
   const handleRiderClick = () => {
-    if(!isMandatory){
+    if (!isMandatory) {
       handleRiderChange({ rider, isRiderSelected: !isRiderSelectedCorrected });
-    setIsRiderSelectedCorrected((currentState) => !currentState);
+      setIsRiderSelectedCorrected(currentState => !currentState);
     }
   };
 
@@ -48,7 +47,7 @@ function RiderCard({
     <>
       {(!parent_rider || parent_selected) && (
         <RiderCardWrap
-        PrimaryColor={PrimaryColor}
+          PrimaryColor={PrimaryColor}
           isMandatory={isMandatory}
           {...props}
           isRiderSelected={isRiderSelectedCorrected}
@@ -121,14 +120,14 @@ font-weight:bold;
             <RiderDescription
               description={riderDescription}
               productPage={productPage}
-              onShowMore={(val) => {
+              onShowMore={val => {
                 setShowMore(val);
               }}
             />
             {options.length > 0 && (
               <select
                 disabled={isAbhiRidersLoading && true}
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
                 css={`
                   padding: 9px 7px;
                   font-size: 15px;
@@ -142,7 +141,7 @@ font-weight:bold;
                     selectedRiders[Object.keys(rider?.options)[0]]) ||
                   options[0]
                 }
-                onChange={(e) => {
+                onChange={e => {
                   handleRiderChange({
                     rider,
                     isRiderSelected: true,
@@ -153,8 +152,8 @@ font-weight:bold;
                   });
                 }}
               >
-                {options.map((data) => (
-                  <option onClick={(e) => e.stopPropagation()}>{data}</option>
+                {options.map(data => (
+                  <option onClick={e => e.stopPropagation()}>{data}</option>
                 ))}
               </select>
             )}
@@ -240,11 +239,11 @@ function RiderDescription({
   productPage,
   onShowMore = () => {},
 }) {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [showMore, setShowMore] = useState(false);
-  const handleShowMore = (evt) => {
+  const handleShowMore = evt => {
     evt.stopPropagation();
     setShowMore(!showMore);
     onShowMore(!showMore);
@@ -319,17 +318,17 @@ const RiderCardWrap = styled.div`
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
   cursor: pointer;
   min-height: 130px !important;
-  @media (max-width:1100px){
-    width:100% !important;
+  @media (max-width: 1100px) {
+    width: 100% !important;
   }
-  @media (max-width:500px){
-position:relative;
-padding: 5px 3px;
+  @media (max-width: 500px) {
+    position: relative;
+    padding: 5px 3px;
   }
   &:hover {
-    border-color: ${props=>props.PrimaryColor};
+    border-color: ${props => props.PrimaryColor};
     .riderName_productDetail_custmizePlan {
-      color: ${props=>props.PrimaryColor};
+      color: ${props => props.PrimaryColor};
     }
     box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
 
@@ -351,8 +350,8 @@ padding: 5px 3px;
     } */
   }
   @media (max-width: 900px) {
-      width:inherit;
-    }
+    width: inherit;
+  }
 `;
 
 export default RiderCard;

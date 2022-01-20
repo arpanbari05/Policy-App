@@ -13,11 +13,10 @@
   bottom: -36px;
   left: -40%;
   transform: translateX(-50%);
-
 }
 
-@media(max-width:350px){
-  .tab__active:after{
+@media (max-width: 350px) {
+  .tab__active:after {
     display: none;
   }
 }

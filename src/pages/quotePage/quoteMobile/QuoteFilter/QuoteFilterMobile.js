@@ -19,7 +19,7 @@ import {
 import PopularFilterMobile from "./PopularFilterMobile";
 import PreExistingMobile from "./PreExistingMobile";
 import NoClaimMobile from "./NoClaimMobile";
-const assignIndextoCode = (moreFilter) => {
+const assignIndextoCode = moreFilter => {
   let x = {};
   moreFilter.forEach((item, index) => {
     x = { ...x, [item.code]: index };
@@ -40,19 +40,19 @@ const QuoteFilterMobile = ({
     defaultfilters: { cover: sum_insured, tenure, plan_type },
   } = useSelector(({ frontendBoot }) => frontendBoot.frontendData.data);
   const data = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data
+    ({ frontendBoot }) => frontendBoot.frontendData.data,
   );
 
   const [initialRenderCheck, setInitialRenderCheck] = useState(true);
 
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { memberGroups, proposerDetails } = useSelector(
-    (state) => state.greetingPage
+    state => state.greetingPage,
   );
   const sortedCompanies = companies.sort(
-    (a, b) => data?.companies[b].csr - data?.companies[a].csr
+    (a, b) => data?.companies[b].csr - data?.companies[a].csr,
   );
   const dispatch = useDispatch();
   const codeIndexMapMoreFilter = assignIndextoCode(moreFilter);
@@ -65,7 +65,7 @@ const QuoteFilterMobile = ({
     multiYear,
     moreFilters,
     basePlanType,
-  } = useSelector((state) => state.quotePage.filters);
+  } = useSelector(state => state.quotePage.filters);
   /*console.log(
     "The Filters and their types",
     typeof insurers,
@@ -76,9 +76,9 @@ const QuoteFilterMobile = ({
     typeof multiYear,
     typeof moreFilters
   );*/
-  const { selectedGroup } = useSelector((state) => state.quotePage);
+  const { selectedGroup } = useSelector(state => state.quotePage);
 
-  const handleMobileFilterUpdate = (e) => {
+  const handleMobileFilterUpdate = e => {
     e.preventDefault();
     dispatch(
       setFilters({
@@ -94,13 +94,13 @@ const QuoteFilterMobile = ({
           renewalBonus,
           others,
         },
-      })
+      }),
     );
   };
   useEffect(() => {
     console.log("I Executed cover");
     const thisSelectedCover = covers.filter(
-      (thisCover) => thisCover.display_name === cover
+      thisCover => thisCover.display_name === cover,
     );
 
     console.log("fetchquotes quotefiltermobile");
@@ -117,15 +117,14 @@ const QuoteFilterMobile = ({
       dispatch(replaceFilterQuotes([]));
       dispatch(
         fetchQuotes(companies, {
-          plan_type: plantypes.find(
-            (filter) => filter.display_name === planType
-          )?.code,
+          plan_type: plantypes.find(filter => filter.display_name === planType)
+            ?.code,
           tenure: parseInt(multiYear),
           sum_insured: ownCover
             ? `${ownCover}-${ownCover}`
             : thisSelectedCover[0].code,
           member: selectedGroup,
-        })
+        }),
       );
       setInitialRenderCheck(false);
     }
@@ -138,7 +137,7 @@ const QuoteFilterMobile = ({
     if (premium) dispatch(premiumFilterCards(premium));
   }, [premium]);
   const { member } = useSelector(
-    ({ greetingPage }) => greetingPage.proposerDetails
+    ({ greetingPage }) => greetingPage.proposerDetails,
   );
   const [customCover, setCustomCover] = useState(ownCover);
   const [selectedInsurer, setSelectedInsurer] = useState(insurers);
@@ -147,11 +146,11 @@ const QuoteFilterMobile = ({
   const [selectedFloater, setSelectedFloater] = useState(planTypeFilter);
   const [selectedYear, setSelectedYear] = useState(multiYear);
   const [popularFilter, setPopularFilter] = useState(
-    moreFilters.popularFilter || []
+    moreFilters.popularFilter || [],
   );
   const [preExisting, setPreExisting] = useState(moreFilters.preExisting || "");
   const [renewalBonus, setRenewalBonus] = useState(
-    moreFilters.renewalBonus || ""
+    moreFilters.renewalBonus || "",
   );
 
   const [others, setOthers] = useState(moreFilters.others || []);
@@ -228,9 +227,11 @@ const QuoteFilterMobile = ({
                 </a>
               </div>
               <button
-              css={`background: ${PrimaryColor}`}
+                css={`
+                  background: ${PrimaryColor};
+                `}
                 className="btn-mobile-show-plan"
-                onClick={(e) => {
+                onClick={e => {
                   // alert("clicked");
                   setFilterMobile(false);
                   handleMobileFilterUpdate(e);
@@ -262,10 +263,7 @@ const QuoteFilterMobile = ({
             </Col>
           </div>
         </div>
-        <div
-          className="tabordion"
-          
-        >
+        <div className="tabordion">
           <section id="section4">
             <input
               type="radio"
@@ -379,7 +377,7 @@ const QuoteFilterMobile = ({
                         </label>
                       </div>
                     </Col>
-                  )
+                  ),
                 )}
               </Row>
             </article>

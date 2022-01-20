@@ -70,7 +70,7 @@ const TalkToUsModalMobile = ({ showTalkModal, setShowTalkModal }) => {
               position: absolute;
               top: 50px;
               right: 23px;
-              background:#0d6efd;
+              background: #0d6efd;
               color: white;
               width: 25%;
               cursor: pointer;
@@ -91,7 +91,6 @@ const TalkToUsModalMobile = ({ showTalkModal, setShowTalkModal }) => {
               position: absolute;
               top: 54px;
               left: 26px;
-              
             `}
           >
             +91

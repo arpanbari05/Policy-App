@@ -13,7 +13,7 @@ const iconIndex = {
   "Medical Details": medical,
   "Other Details": others,
 };
-const FormGrid = ({ listOfForms = [], active = 0, setActive = () => { } }) => {
+const FormGrid = ({ listOfForms = [], active = 0, setActive = () => {} }) => {
   const { proposalData } = useSelector(state => state.proposalPage);
   return (
     <UnorderedList>
@@ -65,8 +65,9 @@ const UnorderedList = styled.ul`
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
-  @media (min-width:768px) and ( max-width:1200px){
-    width: 100% !important;}
+  @media (min-width: 768px) and (max-width: 1200px) {
+    width: 100% !important;
+  }
   @media (max-width: 767px) {
     padding: 0 16px !important;
     width: 100% !important;
@@ -79,7 +80,7 @@ const IconWrapper = styled.span`
   & img {
     position: absolute;
     top: 50%;
-    margin-top:10px;
+    margin-top: 10px;
     transform: translateY(-50%);
     width: 30px;
     height: 30px;
@@ -149,7 +150,7 @@ const ListButton = styled.button`
     content: "";
     height: 5px;
     right: 0px;
-    
+
     bottom: -17px;
     opacity: ${props => (props.active ? "1" : "0")};
     transform: ${props => (props.active ? "scale(1)" : "scale(0,1)")};
@@ -171,8 +172,8 @@ const ListButton = styled.button`
 
   @media (max-width: 767px) {
     font-size: 13px;
- 
-    line-height:16px;
+
+    line-height: 16px;
     height: 48px;
   }
 `;

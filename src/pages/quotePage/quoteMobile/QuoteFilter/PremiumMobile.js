@@ -3,7 +3,7 @@ import { Row, Col } from "react-bootstrap";
 import "styled-components/macro";
 import { useSelector } from "react-redux";
 const PremiumMobile = ({ premiumFilter, selected, setSelected }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   return (
@@ -12,10 +12,7 @@ const PremiumMobile = ({ premiumFilter, selected, setSelected }) => {
         <Row className="mt--38">
           {premiumFilter?.map((item, index) => (
             <Col md={6} key={index} className="padding-none">
-              <div
-                className="inputGroup"
-               
-              >
+              <div className="inputGroup">
                 <input
                   id={item.code}
                   name="radio-premium-mobile"
@@ -32,7 +29,6 @@ const PremiumMobile = ({ premiumFilter, selected, setSelected }) => {
                     &:after {
                       right: 7px;
                     }
-                 
                   `}
                 >
                   {`${item.display_name}`}

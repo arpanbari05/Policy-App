@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import "styled-components/macro";
 import { Collapse } from "react-bootstrap";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 import pencil from "../../../../assets/images/pencil_pro.png";
 import ProposalCheckBox from "../../../../components/Common/ProposalSummary/summaryCheckBox";
+import { useTheme } from "../../../../customHooks";
 const Panel = ({
   title,
   show,
@@ -14,10 +15,12 @@ const Panel = ({
   isFilled,
   values,
 }) => {
+  const { colors } = useTheme();
 
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const PrimaryColor = colors.primary_color,
+    SecondaryColor = colors.secondary_color,
+    PrimaryShade = colors.primary_shade;
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   let EditedName = "";
 
   if (formName === "Insured Details" && title.includes("_")) {
@@ -162,13 +165,13 @@ const PencilWrapper = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: ${(props) => props.isMedical && "116px"};
-  background: ${(props) => (props.isMedical ? "#0a87ff !important" : "")};
-  height: ${(props) => (props.isMedical ? "46px" : "")};
-  color: ${(props) => (props.isMedical ? "white" : "")};
-  border-radius: ${(props) => (props.isMedical ? "50px" : "")};
+  width: ${props => props.isMedical && "116px"};
+  background: ${props => (props.isMedical ? "#0a87ff !important" : "")};
+  height: ${props => (props.isMedical ? "46px" : "")};
+  color: ${props => (props.isMedical ? "white" : "")};
+  border-radius: ${props => (props.isMedical ? "50px" : "")};
   @media (max-width: 767px) {
-    width: ${(props) => (props.isMedical ? "80px" : "46px")};
+    width: ${props => (props.isMedical ? "80px" : "46px")};
   }
   & span {
     position: absolute;
@@ -181,12 +184,12 @@ const PencilWrapper = styled.div`
     }
   }
   & img {
-    position: ${(props) => props.isMedical && "absolute"};
-    right: ${(props) => props.isMedical && "0px"};
-    top: ${(props) => props.isMedical && "50%"};
-    ${(props) => props.isMedical && "transform: translateY(-50%)"};
+    position: ${props => props.isMedical && "absolute"};
+    right: ${props => props.isMedical && "0px"};
+    top: ${props => props.isMedical && "50%"};
+    ${props => props.isMedical && "transform: translateY(-50%)"};
     @media (max-width: 767px) {
-      height: ${(props) => props.isMedical && "46px"};
+      height: ${props => props.isMedical && "46px"};
     }
   }
 `;
@@ -232,8 +235,8 @@ const StyledPanel = styled.a`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: ${(props) => props.isShowMedical && !props.add && "8px"};
-  padding: ${(props) =>
+  margin-top: ${props => props.isShowMedical && !props.add && "8px"};
+  padding: ${props =>
     props.isShowMedical
       ? props.add
         ? "20px 10px"
@@ -242,18 +245,16 @@ const StyledPanel = styled.a`
   margin-left: 15px;
   margin-right: 15px;
   font-size: 22px;
-  background-image: ${(props) =>
-    props.isShowMedical &&
-    !props.add &&
-    props.PrimaryShade};
+  background-image: ${props =>
+    props.isShowMedical && !props.add && props.PrimaryShade};
 
-  color: ${props=>props.PrimaryColor} !important;
+  color: ${props => props.PrimaryColor} !important;
   position: relative;
-  border: ${(props) => (!props.isShowMedical ? "1px solid #eeeff5" : "none")};
+  border: ${props => (!props.isShowMedical ? "1px solid #eeeff5" : "none")};
   width: 98%;
   position: relative;
 
-  box-shadow: ${(props) =>
+  box-shadow: ${props =>
     !props.isShowMedical || props.add
       ? "0 3px 10px rgb(211 220 232 / 60%) !important;"
       : ""};
@@ -265,14 +266,14 @@ const StyledPanel = styled.a`
     font-size: 22px;
   }
   &:after {
-    ${(props) => props.isShowMedical && "content:''"}
+    ${props => props.isShowMedical && "content:''"}
     content: "";
     height: 38px;
     width: 6px;
     position: absolute;
     left: -2px;
     top: 16px;
-    background-color: ${props=>props.SecondaryColor};
+    background-color: ${props => props.SecondaryColor};
     border-radius: 50px;
     @media (max-width: 767px) {
       top: 15px;

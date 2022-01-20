@@ -5,22 +5,24 @@ import "./Checkbox.css";
 import { useSelector } from "react-redux";
 
 const CheckboxRider = ({ title, onChange, checked, showTitle = true }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
   return (
-   
-    <div class="container d-flex align-items-center" css={`
-    position: relative;
-    left: -7px;
-    @media (max-width:400px){
-      padding:0px 5px;
-    }
-    @media (max-width:600px){
-        left: -12px;
-    }
-    `}>
+    <div
+      class="container d-flex align-items-center"
+      css={`
+        position: relative;
+        left: -7px;
+        @media (max-width: 400px) {
+          padding: 0px 5px;
+        }
+        @media (max-width: 600px) {
+          left: -12px;
+        }
+      `}
+    >
       <div
         className="round"
         css={`

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import styled from "styled-components/macro";
 import useOutsiteClick from "../customHooks/useOutsideClick";
+import { useTheme } from "../customHooks";
 
 const RoundDD = ({
   disabled,
@@ -21,15 +22,13 @@ const RoundDD = ({
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [ageList, setAgeList] = useState(list);
-  const { theme } = useSelector((state) => state.frontendBoot);
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+  const { colors } = useTheme();
   const dropdownRef = useRef(null);
   useOutsiteClick(isOpen && dropdownRef, () => setIsOpen(false));
 
   useEffect(() => {
-    const array = list.filter((data) =>
-      data?.title?.toLowerCase().includes(searchText?.toLowerCase())
+    const array = list.filter(data =>
+      data?.title?.toLowerCase().includes(searchText?.toLowerCase()),
     );
     setAgeList(array);
   }, [searchText, list]);
@@ -37,8 +36,8 @@ const RoundDD = ({
   const toggleList = () => {
     setIsOpen(!isOpen);
   };
-  const handleSelect = (value) => {
-    handleChange(code, value, type);
+  const handleSelect = (value, data) => {
+    handleChange(code, value, type, data);
 
     setIsOpen(!isOpen);
   };
@@ -51,7 +50,7 @@ const RoundDD = ({
             style={{ position: "absolute" }}
             value={searchText}
             placeholder={"type here..."}
-            onChange={(e) => {
+            onChange={e => {
               const value = e.target.value.replace(/\D/g, "");
               console.log(list[list.length - 1]);
               if (value <= list[list.length - 1].id) {
@@ -100,12 +99,12 @@ const RoundDD = ({
             `}
             className="GreetingDD__List"
           >
-            {ageList.map((data) => {
+            {ageList.map(data => {
               return (
                 <ListItem
-                  PrimaryColor={PrimaryColor}
+                  PrimaryColor={colors.primary_color}
                   className={`GreetingDD__ListItem`}
-                  onClick={() => handleSelect(data.title)}
+                  onClick={() => handleSelect(data.title, data)}
                   key={uuidv4()}
                 >
                   {data.title}
@@ -169,9 +168,9 @@ export const Header = styled.a`
   position: relative;
   color: #6b7789;
   border: 1px solid #b0bed0;
-  padding: ${(props) => (props.sortByDD ? "auto" : "12px 15px !important")};
+  padding: ${props => (props.sortByDD ? "auto" : "12px 15px !important")};
   display: inline-block;
-  width: ${(props) => (props.sortByDD ? "auto" : "175px")};
+  width: ${props => (props.sortByDD ? "auto" : "175px")};
   // overflow: hidden;
   position: relative;
   z-index: 1;
@@ -262,7 +261,7 @@ export const ListItem = styled.div`
 
   &:hover,
   &.active {
-    background-color: ${(props) => props.PrimaryColor};
+    background-color: ${props => props.PrimaryColor};
     color: #fff;
   }
 `;

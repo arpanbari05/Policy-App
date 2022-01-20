@@ -28,7 +28,7 @@ const ProductSummaryTab = ({ cart }) => {
                       className="text_title_filter p_modal_title_bg_filters_product product_summary__title"
                       style={{ textTransform: "capitalize" }}
                     >
-                     !!! {item.group.members.join(" + ")}
+                      !!! {item.group.members.join(" + ")}
                     </h5>
                   </div>
                   <div className="col-md-3 text-right"></div>
@@ -199,16 +199,14 @@ export default ProductSummaryTab;
 
 const Wrapper = styled.div`
   width: 40%;
-  min-width:300px;
+  min-width: 300px;
   display: none;
   float: right;
- 
+
   border: 1px solid #dfdfdf;
   border-radius: 8px;
-  @media (min-width:768px) and ( max-width:1200px){
-    
-  display:inline-block;
- 
+  @media (min-width: 768px) and (max-width: 1200px) {
+    display: inline-block;
   }
   /*position: absolute;
    right: 68px;
@@ -220,7 +218,7 @@ const Button = styled.button`
   font-size: 18px !important;
   font-weight: 600;
   color: #000;
-  
+
   margin-top: 2px !important;
   display: inline-block;
 
@@ -242,7 +240,7 @@ const Price = styled.span`
   font-size: 21px;
   font-weight: 600;
   color: #c72229;
-  
+
   margin-top: -3px;
 `;
 const ViewPlanDetails = styled.span`

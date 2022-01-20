@@ -45,6 +45,7 @@ const greeting = createSlice({
     enquiryId: "",
     error: [],
     trace_id: false,
+    isSuperTopUpJourney: true,
   },
   reducers: {
     setTraceId: (state, action) => {
@@ -55,7 +56,7 @@ const greeting = createSlice({
     },
 
     setMemberGroups: (state, action) => {
-      console.log("member group set to", action.payload);
+      // console.log("member group set to", action.payload);
       state.memberGroups = action.payload;
     },
     createUserData: (state, action) => {
@@ -69,16 +70,16 @@ const greeting = createSlice({
       state.isLoading = false;
       state.status = !state.status;
     },
-    initCreateUser: (state) => {
+    initCreateUser: state => {
       state.isLoading = true;
     },
-    createUserFailed: (state) => {
+    createUserFailed: state => {
       state.isLoading = false;
     },
     setIsDisabled: (state, action) => {
       state.isDisabled = action.payload;
     },
-    createUserSuccess: (state) => {
+    createUserSuccess: state => {
       state.status = false;
     },
     requestRegionData: (state, action) => {
@@ -134,10 +135,10 @@ export const saveForm1UserDetails = (
   data2,
   handleChange,
   memberGroup,
-  form
+  form,
 ) => {
   const { pinCode, is_pincode_search, city } = data2;
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       if (pinCode) {
         (form === 4.2 || form === 5) &&
@@ -165,7 +166,7 @@ export const saveForm1UserDetails = (
             pincode: pinCode,
             is_pincode_search: is_pincode_search,
             [memberGroup]: { pincode: pinCode, city },
-          })
+          }),
         );
 
         // const newMemberGroups = data.data.groups.reduce(
@@ -186,26 +187,27 @@ export const saveForm1UserDetails = (
 };
 
 export const saveForm2UserDetails = (userDetails, handleChange) => {
-  
   const { fullName, mobile, gender, email, params } = userDetails;
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      const modUserDetails = params?{
-        name: fullName,
-        email: email,
-        // first_name: fullName.split(" ")[0],
-        // last_name: fullName.split(" ")[1],
-        mobile: mobile,
-        gender: gender,
-        params,
-      }:{
-        name: fullName,
-        email: email,
-        // first_name: fullName.split(" ")[0],
-        // last_name: fullName.split(" ")[1],
-        mobile: mobile,
-        gender: gender,
-      };
+      const modUserDetails = params
+        ? {
+            name: fullName,
+            email: email,
+            // first_name: fullName.split(" ")[0],
+            // last_name: fullName.split(" ")[1],
+            mobile: mobile,
+            gender: gender,
+            params,
+          }
+        : {
+            name: fullName,
+            email: email,
+            // first_name: fullName.split(" ")[0],
+            // last_name: fullName.split(" ")[1],
+            mobile: mobile,
+            gender: gender,
+          };
 
       const { data } = await createUser({
         section: "health",
@@ -223,7 +225,7 @@ export const saveForm2UserDetails = (userDetails, handleChange) => {
       dispatch(
         createUserData({
           ...modUserDetails,
-        })
+        }),
       );
       // dispatch(setMemberGroups(newMemberGroups));
       // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
@@ -232,7 +234,7 @@ export const saveForm2UserDetails = (userDetails, handleChange) => {
           ...groups,
           [member.id]: member.members,
         }),
-        {}
+        {},
       );
       // pushToQuotes(Object.keys(newMemberGroups)[0]);
       handleChange(2);
@@ -273,37 +275,142 @@ export const saveForm2UserDetails = (userDetails, handleChange) => {
 //   };
 // };
 
-export const saveForm3UserDetails = (data, handleChange, multiindividual_visibilty) => {
-  return async (dispatch) => {
+export const validChildAgeCodePicker = age => {
+  let strAge = age.toString();
+
+  switch (strAge) {
+    case "0.3":
+      return "0.25";
+
+    case "0.25":
+      return "0.3";
+
+    case "0.4":
+      return "0.33";
+
+    case "0.33":
+      return "0.4";
+
+    case "0.5":
+      return "0.42";
+
+    case "0.42":
+      return "0.5";
+
+    case "0.6":
+      return "0.50";
+
+    case "0.50":
+      return "0.6";
+
+    case "0.7":
+      return "0.58";
+
+    case "0.58":
+      return "0.7";
+
+    case "0.8":
+      return "0.66";
+
+    case "0.66":
+      return "0.8";
+
+    case "0.9":
+      return "0.75";
+
+    case "0.75":
+      return "0.9";
+
+    case "0.10":
+      return "0.83";
+
+    case "0.83":
+      return "0.10";
+
+    case "0.11":
+      return "0.91";
+
+    case "0.91":
+      return "0.11";
+
+    default:
+      return age;
+  }
+};
+
+export const memberAgeStrBuilder = str => {
+  let lowerStr = `${str}`.toLowerCase();
+  if (
+    lowerStr.includes("year") ||
+    lowerStr.includes("years") ||
+    lowerStr.includes("months")
+  ) {
+    return str;
+  } else if (lowerStr.includes(".")) return `${lowerStr.split(".")[1]} Months`;
+  else return lowerStr === "1" ? `${lowerStr} Year` : `${lowerStr} Years`;
+};
+
+export const saveForm3UserDetails = (
+  data,
+  handleChange,
+  multiindividual_visibilty,
+) => {
+  return async dispatch => {
     let sonCount = 1;
     let DCount = 1;
     try {
       const response = await updateUser({
-        members: data?.map((member) => {
+        members: data?.map(member => {
           member.type = member.type.toLowerCase();
           if (member.type.includes("daughter"))
             return {
               ...member,
+              age:
+                member.age >= 1
+                  ? member.age
+                  : validChildAgeCodePicker(member.age),
               type: member.type.slice(0, 8).concat(DCount++),
             };
-          if (member.type.includes("son"))
+          if (member.type.includes("son")) {
+            console.log("ijgbifbv", member);
             return {
               ...member,
+              age:
+                member.age >= 1
+                  ? member.age
+                  : validChildAgeCodePicker(member.age),
               type: member.type.slice(0, 3).concat(sonCount++),
             };
+          }
+
           return member;
         }),
       });
 
       if (response?.data) {
-        dispatch(createUserData({ members: response.data.data.input.members }));
+        console.log("ovdnvojd", response.data.data.input.members);
+
+        dispatch(
+          createUserData({
+            members: response.data.data.input.members.map(member => {
+              let getmemberAge = validChildAgeCodePicker(member.age);
+              return {
+                ...member,
+                age: memberAgeStrBuilder(getmemberAge),
+              };
+            }),
+          }),
+        );
         // handleChange("form4");
         if (response.data.data.input.members.length === 1) {
           dispatch(saveForm4UserDetails({ planType: "I" }));
-        } else if(response.data.data.input.members.length > 1 && multiindividual_visibilty === "0") {
+        } else if (
+          response.data.data.input.members.length > 1 &&
+          multiindividual_visibilty === "0"
+        ) {
           dispatch(saveForm4UserDetails({ planType: "F" }));
           handleChange(4.1);
-        }else {
+        } else {
           dispatch(saveForm4UserDetails({ planType: "F" }));
           handleChange(3);
         }
@@ -313,9 +420,9 @@ export const saveForm3UserDetails = (data, handleChange, multiindividual_visibil
         dispatch(
           ageError(
             Object.keys(response.errors || {}).map(
-              (item) => response.errors[item][0]
-            )
-          )
+              item => response.errors[item][0],
+            ),
+          ),
         );
       }
       const {
@@ -341,7 +448,7 @@ export const saveForm3UserDetails = (data, handleChange, multiindividual_visibil
           ...groups,
           [member.id]: member.members,
         }),
-        {}
+        {},
       );
       dispatch(createUserData({ member: response?.data.data.members }));
       // const memberGroupsList = Object.keys(newMemberGroups);
@@ -353,7 +460,7 @@ export const saveForm3UserDetails = (data, handleChange, multiindividual_visibil
         dispatch(
           setFilters({
             planType: "Individual",
-          })
+          }),
         );
       }
       const members = Object.keys(newMemberGroups || {});
@@ -363,7 +470,7 @@ export const saveForm3UserDetails = (data, handleChange, multiindividual_visibil
         "selected group",
         members,
         newMemberGroups,
-        Object.keys(newMemberGroups)[0]
+        Object.keys(newMemberGroups)[0],
       );
       dispatch(setMemberGroups(newMemberGroups));
 
@@ -374,10 +481,10 @@ export const saveForm3UserDetails = (data, handleChange, multiindividual_visibil
   };
 };
 
-export const saveForm4UserDetails = (data) => {
+export const saveForm4UserDetails = data => {
   const { planType } = data;
 
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const response = await updateUser({
         plan_type: planType,
@@ -387,7 +494,7 @@ export const saveForm4UserDetails = (data) => {
           ...groups,
           [member.id]: member.members,
         }),
-        {}
+        {},
       );
       dispatch(createUserData({ plan_type: planType }));
       dispatch(setMemberGroups(newMemberGroups));
@@ -401,7 +508,7 @@ export const saveForm4UserDetails = (data) => {
               : planType === "F"
               ? "Family Floater"
               : "Individual",
-        })
+        }),
       );
     } catch (err) {
       //alert(err);
@@ -409,11 +516,15 @@ export const saveForm4UserDetails = (data) => {
   };
 };
 
-export const saveForm5UserDetails = (data, pushToQuotes, planType) => {
+export const saveForm5UserDetails = (
+  data,
+  pushToQuotes,
+  isSuperTopUpJourney,
+) => {
   return async (dispatch, getState) => {
     try {
       const response = await updateUser({
-        medical_history: [...data],
+        existing_diseases: [...data],
       });
 
       const newMemberGroups = response.data.data.groups.reduce(
@@ -421,14 +532,16 @@ export const saveForm5UserDetails = (data, pushToQuotes, planType) => {
           ...groups,
           [member.id]: member.members,
         }),
-        {}
+        {},
       );
 
       dispatch(setMemberGroups(newMemberGroups));
       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
       pushToQuotes(Object.keys(newMemberGroups)[0]);
-      dispatch(setShouldFetchQuotes(true));
-      dispatch(createUserData({ medical_history: [...data] }));
+      {
+        !isSuperTopUpJourney && dispatch(setShouldFetchQuotes(true));
+      }
+      dispatch(createUserData({ existing_diseases: [...data] }));
       /*dispatch(
         setFilters({
           planType:
@@ -445,8 +558,33 @@ export const saveForm5UserDetails = (data, pushToQuotes, planType) => {
   };
 };
 
-export const getRegion = (data) => {
-  return async (dispatch) => {
+export const SaveForm7UserDeatils = (dataFromForm, pushToQuotes) => {
+  return async dispatch => {
+    try {
+      const response = await updateUser({
+        deductible: dataFromForm.code,
+      });
+      const newMemberGroups = response.data.data.groups.reduce(
+        (groups, member) => ({
+          ...groups,
+          [member.id]: member.members,
+        }),
+        {},
+      );
+      console.log("The newMemberGroups", newMemberGroups);
+      dispatch(setMemberGroups(newMemberGroups));
+      dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
+      pushToQuotes(Object.keys(newMemberGroups)[0]);
+      dispatch(setShouldFetchQuotes(true));
+      dispatch(createUserData({ deductible: dataFromForm }));
+    } catch (error) {
+      console.log("Form 7 functionality error", error);
+    }
+  };
+};
+
+export const getRegion = data => {
+  return async dispatch => {
     try {
       dispatch(requestRegionData());
       const response = await checkpinCode(data);
@@ -463,8 +601,8 @@ export const getRegion = (data) => {
   };
 };
 
-export const getProposerDetails = (data) => {
-  return async (dispatch) => {
+export const getProposerDetails = data => {
+  return async dispatch => {
     try {
       const response = await getProposerData(data);
       const cityResponse = await getCityForPincode({
@@ -483,7 +621,13 @@ export const getProposerDetails = (data) => {
           enquiryId: response?.data?.data?.enquiry_id,
           name: response.data?.data?.name,
           mobile: response?.data?.data?.mobile,
-          member: response?.data?.data?.input.members,
+          members: response?.data?.data?.input?.members.map(member => {
+            let getmemberAge = validChildAgeCodePicker(member.age);
+            return {
+              ...member,
+              age: memberAgeStrBuilder(getmemberAge),
+            };
+          }),
           email: response?.data?.data?.email,
         };
 
@@ -493,7 +637,7 @@ export const getProposerDetails = (data) => {
             ...newData,
             city,
             plan_type: response?.data?.data?.groups?.[0]?.plan_type,
-          })
+          }),
         );
         // dispatch(
         //   setFilters({
@@ -507,7 +651,7 @@ export const getProposerDetails = (data) => {
             ...groups,
             [member.id]: member.members,
           }),
-          {}
+          {},
         );
 
         dispatch(setMemberGroups(newMemberGroups));
@@ -521,14 +665,20 @@ export const getProposerDetails = (data) => {
   };
 };
 
-export const updateProposerDetails = (response) => (dispatch) => {
+export const updateProposerDetails = response => dispatch => {
   if (response.data) {
     ls.set("enquiryId", response?.data?.data?.enquiry_id);
     const newData = {
       enquiryId: response?.data?.data?.enquiry_id,
       name: response.data?.data?.name,
       mobile: response?.data?.data?.mobile,
-      member: response?.data?.data?.input.members,
+      members: response?.data?.data?.input?.members.map(member => {
+        let getmemberAge = validChildAgeCodePicker(member.age);
+        return {
+          ...member,
+          age: memberAgeStrBuilder(getmemberAge),
+        };
+      }),
       email: response?.data?.data?.email,
     };
     dispatch(refreshUserData({ ...response?.data?.data?.input, ...newData }));
@@ -537,7 +687,7 @@ export const updateProposerDetails = (response) => (dispatch) => {
         ...groups,
         [member.id]: member.members,
       }),
-      {}
+      {},
     );
 
     dispatch(setMemberGroups(newMemberGroups));
@@ -547,10 +697,10 @@ export const updateProposerDetails = (response) => (dispatch) => {
 
 export default greeting.reducer;
 
-export const selectMembersWithAge = (groupCode) => (state) => {
+export const selectMembersWithAge = groupCode => state => {
   const members = state.greetingPage.memberGroups[groupCode];
   const membersWithAge = state.greetingPage.proposerDetails.members.filter(
-    (member) => members.includes(member.type)
+    member => members.includes(member.type),
   );
 
   return membersWithAge;

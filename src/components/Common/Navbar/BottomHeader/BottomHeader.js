@@ -1,7 +1,7 @@
 import React from "react";
 import "./BottomHeader.scss";
 import "styled-components/macro";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { ChangeUi } from "../../../../modules/QuotesPage/quotePage.slice";
 
@@ -39,7 +39,7 @@ const BottomHeader = () => {
             }
           `}
         >
-          Trace ID- <span onClick={()=>dispatch(ChangeUi())}>{trace_id}</span>
+          Trace ID- <span onClick={() => dispatch(ChangeUi())}>{trace_id}</span>
         </p>
       )}
       {/* <ul className="BottomHeader__infoList">

@@ -4,10 +4,9 @@ import AilmentPopup from "./AilmentPopup";
 import careImage from "./../../../assets/images/Care_Health.png";
 // import edit from "./../../../assets/images/edit_pencil.png";
 import { useSelector } from "react-redux";
-import 'styled-components/macro'
+import "styled-components/macro";
 const AddOnCoverages = () => {
-
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 

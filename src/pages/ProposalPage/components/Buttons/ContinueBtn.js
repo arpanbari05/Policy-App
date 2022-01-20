@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import "./continue.scss";
 import StyledButton from "../../../../components/StyledButton";
 const ContinueBtn = ({ onClick }) => {
-  const { isLoading } = useSelector((state) => state.proposalPage);
+  const { isLoading } = useSelector(state => state.proposalPage);
   return (
     <StyledButton
       onClick={onClick}

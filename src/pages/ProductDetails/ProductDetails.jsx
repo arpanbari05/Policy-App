@@ -1,13 +1,11 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import CustomizeYourPlan from "./components/CustomizeYourPlan";
+import { RidersSection } from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
-import ReviewCart from "./components/ReviewCart";
+import { CartDetails } from "./components/ReviewCart";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect, useHistory, useLocation, useParams } from "react-router-dom";
-import AddOnsCoveragesSection from "./components/AddOnsCoveragesSection/AddOnsCoveragesSection";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import ProductCard from "./components/AddOnProductCard";
-import { useCartProduct } from "../Cart";
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -18,11 +16,13 @@ import {
   MobileHeaderText,
 } from "../ProposalPage/ProposalPage.style";
 import "styled-components/macro";
-import { setFilters, setShouldFetchQuotes } from "../quotePage/quote.slice";
+import { LoadCart, Page } from "../../components";
+import { useFrontendBoot } from "../../customHooks";
+import PageNotFound from "../PageNotFound";
 
 function GoBackButton({ groupCode, ...props }) {
   const groupCodes = Object.keys(
-    useSelector(({ greetingPage }) => greetingPage.memberGroups)
+    useSelector(({ greetingPage }) => greetingPage.memberGroups),
   );
   const urlQuery = useUrlQuery();
   const enquiryId = urlQuery.get("enquiryId");
@@ -35,7 +35,7 @@ function GoBackButton({ groupCode, ...props }) {
       onClick={() => {
         groupCodes[1] && groupCodes[1] === groupCode
           ? history.replace(
-              `/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`
+              `/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`,
             )
           : history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
       }}
@@ -84,18 +84,7 @@ const ProductDetails = () => {
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
   const location = useLocation();
 
-  const dispatch = useDispatch();
-
   const history = useHistory();
-
-  const companies = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data
-  );
-  const { fetchFilters, shouldFetchQuotes } = useSelector(
-    ({ quotePage }) => quotePage
-  );
-
-  const { product } = useCartProduct(groupCode);
 
   const urlQueries = useUrlQuery();
 
@@ -114,20 +103,6 @@ const ProductDetails = () => {
   }, []);
 
   useEffect(() => {
-    if (shouldFetchQuotes) {
-      let tempfilter;
-      fetchFilters.forEach((data) => {
-        if (`${data.id}` === groupCode) {
-          tempfilter = data.extras;
-        }
-      });
-      tempfilter !== null && dispatch(setFilters(tempfilter));
-    }
-
-    dispatch(setShouldFetchQuotes(false));
-  }, [fetchFilters]);
-
-  useEffect(() => {
     if (location.hash) {
       const scrollToRef = document.querySelector(location.hash);
       if (scrollToRef) {
@@ -143,149 +118,119 @@ const ProductDetails = () => {
     window.location.hash = "";
   }, [groupCode]);
 
-  if (!enquiryId) return <p>Page Not Found!</p>;
-
-  if (!product)
-    return <Redirect to={`/quotes/${groupCode}?enquiryId=${enquiryId}`} />;
+  if (!enquiryId) return <PageNotFound />;
 
   return (
-    <>
-      <MobileHeader>
-        <MobileHeaderText
-          onClick={() => {
-            history.goBack();
-          }}
-        >
-          <i class="fas fa-arrow-circle-left"></i>{" "}
-          <span className="mx-2"> Go Back</span>
-        </MobileHeaderText>
-      </MobileHeader>
-      <main
-        className="container noselect"
-        css={
-          expand
-            ? `
+    <LoadCart>
+      <Page>
+        <MobileHeader>
+          <MobileHeaderText
+            onClick={() => {
+              history.goBack();
+            }}
+          >
+            <i class="fas fa-arrow-circle-left"></i>{" "}
+            <span className="mx-2"> Go Back</span>
+          </MobileHeaderText>
+        </MobileHeader>
+        <main
+          className="container noselect"
+          css={
+            expand
+              ? `
         position:fixed;
         opacity:0.5;
         `
-            : `
+              : `
 
           ${mobile} {
             background-color: #fff;
           }
         `
-        }
-      >
-        {showNav && <ProductDetailsNavbar />}
-        <div
-          className="d-flex align-items-center justify-content-between my-3"
-          css={`
-            @media (max-width: 1200px) {
-              flex-direction: column;
-              align-items: flex-start !important;
-            }
-          `}
+          }
         >
-          <GoBackButton groupCode={groupCode} />
+          {showNav && <ProductDetailsNavbar />}
           <div
+            className="d-flex align-items-center justify-content-between my-3"
             css={`
-              width: 70%;
               @media (max-width: 1200px) {
-                width: 100%;
-              }
-            `}
-            className="flex-fill"
-          >
-            <ProductCard />
-          </div>
-        </div>
-        <Row
-          css={`
-            justify-content: center;
-            @media (max-width: 1200px) {
-              flex-direction: column;
-            }
-          `}
-        >
-          <div
-            css={`
-              width: 26%;
-              @media (max-width: 1350px) {
-                width: 30%;
-              }
-              @media (max-width: 1200px) {
-                width: 100%;
-              }
-              ${mobile} {
-                display: none;
+                flex-direction: column;
+                align-items: flex-start !important;
               }
             `}
           >
-            <ReviewCart companies={companies} groupCode={groupCode} />
-          </div>
-          <div
-            css={`
-              width: 74%;
-              @media (max-width: 1350px) {
-                width: 70%;
-              }
-              @media (max-width: 1200px) {
-                width: 100%;
-              }
-            `}
-            // className="wow fadeInLeft animated"
-            // data-wow-delay="0.9s"
-            // style={{
-            //   visibility: "visible",
-            //   animationDelay: "0.9s",
-            //   animationName: "fadeInLeft",
-            //   marginLeft: "50px",
-            // }}
-          >
-            <Col
-              xl={12}
-              lg={12}
-              md={12}
-              sm={12}
-              xs={12}
-              // className="margin_border_outline_product_addon"
-              // style={{
-              //   paddingTop: 0,
-              // }}
-              // id="customize-your-plan-section"
+            <GoBackButton groupCode={groupCode} />
+            <div
               css={`
+                width: 70%;
                 @media (max-width: 1200px) {
-                  margin-top: 15px;
+                  width: 100%;
+                }
+              `}
+              className="flex-fill"
+            >
+              <ProductCard />
+            </div>
+          </div>
+          <Row
+            css={`
+              justify-content: center;
+              @media (max-width: 1200px) {
+                flex-direction: column;
+              }
+            `}
+          >
+            <div
+              css={`
+                width: 26%;
+                @media (max-width: 1350px) {
+                  width: 30%;
+                }
+                @media (max-width: 1200px) {
+                  width: 100%;
                 }
                 ${mobile} {
-                  padding: 0;
-                  margin-bottom: 127px;
+                  display: none;
                 }
               `}
             >
-              <CheckDiscount groupCode={groupCode} />
-              <hr />
-              <CustomizeYourPlan groupCode={groupCode} />
-              <hr />
-
-              <AddOnsCoveragesSection groupCode={groupCode} />
-            </Col>
-          </div>
-        </Row>
-        <hr />
-      </main>
-      <div
-        css={`
-          display: none;
-          ${mobile} {
-            display: block;
-            width: 100%;
-          }
-        `}
-      >
-        <ReviewCart companies={companies} groupCode={groupCode} />
-      </div>
-    </>
+              <CartDetails groupCode={parseInt(groupCode)} />
+            </div>
+            <div
+              css={`
+                width: 74%;
+                @media (max-width: 1350px) {
+                  width: 70%;
+                }
+                @media (max-width: 1200px) {
+                  width: 100%;
+                }
+              `}
+            >
+              <Col
+                xl={12}
+                lg={12}
+                md={12}
+                sm={12}
+                xs={12}
+                css={`
+                  @media (max-width: 1200px) {
+                    margin-top: 15px;
+                  }
+                  ${mobile} {
+                    padding: 0;
+                    margin-bottom: 127px;
+                  }
+                `}
+              >
+                <CheckDiscount groupCode={parseInt(groupCode)} />
+                <RidersSection />
+              </Col>
+            </div>
+          </Row>
+        </main>
+      </Page>
+    </LoadCart>
   );
 };
 

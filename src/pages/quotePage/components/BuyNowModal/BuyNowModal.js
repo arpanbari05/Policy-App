@@ -14,7 +14,7 @@ import { setSelectedGroup } from "../../quote.slice";
 function calculateTotalPremium(riders) {
   let total = 0;
   if (riders instanceof Array && riders.length) {
-    riders.forEach((item) => {
+    riders.forEach(item => {
       total += item.total_premium;
     });
   }
@@ -22,7 +22,7 @@ function calculateTotalPremium(riders) {
 }
 function ProductCard({ product }) {
   const companies = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.companies
+    ({ frontendBoot }) => frontendBoot.frontendData.data.companies,
   );
 
   if (!product) return null;
@@ -48,7 +48,7 @@ function ProductCard({ product }) {
 
           @media (max-width: 767px) {
             display: block;
-          
+
             margin: 11px 0;
             border: 1px solid #ddd;
             box-shadow: 0 3px 15px 0 rgb(0 75 131 / 30%);
@@ -57,11 +57,11 @@ function ProductCard({ product }) {
       >
         <span
           css={`
-            padding:20px;
+            padding: 20px;
             width: 100%;
             display: flex;
             flex-direction: row;
-            border-bottom:1px solid #ddd;
+            border-bottom: 1px solid #ddd;
             align-items: flex-start;
             & img {
               width: 48px;
@@ -142,11 +142,11 @@ function ProductCard({ product }) {
 
 function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
   const members = useSelector(
-    (state) => state.greetingPage.memberGroups[groupCode]
+    state => state.greetingPage.memberGroups[groupCode],
   );
   const dispatch = useDispatch();
   const { product, deleteProduct } = useCartProduct(groupCode);
-  const { loadingQuotes } = useSelector((state) => state.quotePage);
+  const { loadingQuotes } = useSelector(state => state.quotePage);
   const history = useHistory();
 
   const urlSearchParams = useUrlQuery();
@@ -162,11 +162,9 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
           className="text_title_filter p_modal_title_bg_filters_product d-flex align-items-center"
           style={{ textTransform: "capitalize" }}
           css={`
-       
             @media (max-width: 400px) {
-                font-size: 10px !important;
-              }
-          
+              font-size: 10px !important;
+            }
           `}
         >
           <div
@@ -176,7 +174,6 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               border-radius: 3px;
               margin-right: 14px;
               background: #2cd44a;
-              
             `}
           ></div>
           {members.join(" + ")?.replaceAll("_", "-")}
@@ -230,7 +227,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               margin-bottom: 11px;
               pointer-events: ${loadingQuotes && "none"};
               filter: ${loadingQuotes && "grayscale(100%)"};
-              opacity:  ${loadingQuotes && "0.7"};
+              opacity: ${loadingQuotes && "0.7"};
             `}
           >
             <button
@@ -244,8 +241,8 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 width: 120px;
                 background: rgb(235, 245, 255);
                 color: #0d6efd;
-                @media (max-width:400px){
-                  font-size:10px;
+                @media (max-width: 400px) {
+                  font-size: 10px;
                   width: 100px;
                 }
               `}
@@ -277,7 +274,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
 }
 
 const PopupContent = (a, b, setShowBuyNow) => {
-  const { memberGroups } = useSelector((state) => state.greetingPage);
+  const { memberGroups } = useSelector(state => state.greetingPage);
 
   return (
     <div
@@ -287,7 +284,7 @@ const PopupContent = (a, b, setShowBuyNow) => {
         }
       `}
     >
-      {Object.keys(memberGroups).map((groupCode) => (
+      {Object.keys(memberGroups).map(groupCode => (
         <BuyNowModalProduct
           groupCode={groupCode}
           setShowBuyNow={setShowBuyNow}
@@ -301,17 +298,17 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow }) => {
   const plan = useSelector(({ quotePage }) => quotePage.selectedPlan);
 
   const { companies } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data
+    ({ frontendBoot }) => frontendBoot.frontendData.data,
   );
-  const { memberGroups } = useSelector((state) => state.greetingPage);
+  const { memberGroups } = useSelector(state => state.greetingPage);
   const history = useHistory();
   const ls = new SecureLS();
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector(state => state.cart);
   const selectedGroupCodes = Object.keys(cart);
   const allMemberGroups = Object.keys(memberGroups);
   const firstMemberGroup = selectedGroupCodes.find(
-    (groupCode) =>
-      cart[groupCode] !== null && allMemberGroups.includes(groupCode)
+    groupCode =>
+      cart[groupCode] !== null && allMemberGroups.includes(groupCode),
   );
   return (
     <CardModal
@@ -323,7 +320,9 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow }) => {
       title={"Hey User, Take a minute and review your cart before you proceed"}
       handleClick={() =>
         history.push(
-          `/productdetails/${firstMemberGroup}?enquiryId=${ls.get("enquiryId")}`
+          `/productdetails/${firstMemberGroup}?enquiryId=${ls.get(
+            "enquiryId",
+          )}`,
         )
       }
       showButton={!!firstMemberGroup}
@@ -351,20 +350,17 @@ const ProductData = styled.div`
     font-weight: 900;
   }
   @media (max-width: 767px) {
-    border-left: ${(props) => props.noBorder && "unset"};
+    border-left: ${props => props.noBorder && "unset"};
     padding-left: 0px;
     left: unset;
     font-size: 12px;
-    width:31%;
+    width: 31%;
     text-align: center;
     & .label-add_product {
-      
       font-size: 12px;
-    
     }
   }
-  @media (max-width:400px){
-    
+  @media (max-width: 400px) {
   }
 `;
 const ProductName = styled.span`

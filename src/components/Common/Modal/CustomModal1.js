@@ -23,9 +23,9 @@ const ModalContent = styled.div`
   pointer-events: auto;
   background-color: #fff;
   background-clip: padding-box;
-  margin-top: ${(props) =>
+  margin-top: ${props =>
     props.customizedTopMargin ? `${props.customizedTopMargin}px` : "60px"};
-  margin-left: ${(props) =>
+  margin-left: ${props =>
     props.leftAlignmnetMargin ? `${props.leftAlignmnetMargin}px` : "-7px"};
 `;
 const ModalHeader = styled.div`
@@ -84,7 +84,7 @@ const CustomModal1 = ({
   handleClose,
   leftAlignmnetMargin,
   customizedTopMargin,
-  tooltipDesc
+  tooltipDesc,
 }) => {
   return (
     <>
@@ -99,9 +99,7 @@ const CustomModal1 = ({
               <span>{header}</span>
             </ModalTitle>
 
-            <ToolTipContent>
-              {tooltipDesc}
-            </ToolTipContent>
+            <ToolTipContent>{tooltipDesc}</ToolTipContent>
           </div>
           <i
             onClick={handleClose}
@@ -109,7 +107,7 @@ const CustomModal1 = ({
             class="fas fa-times"
           ></i>
         </ModalHeader>
-        <ModalBody>{children}</ModalBody>
+        <ModalBody className="modal-body">{children}</ModalBody>
         <ModalFooter>{footerJSX}</ModalFooter>
       </ModalContent>
     </>

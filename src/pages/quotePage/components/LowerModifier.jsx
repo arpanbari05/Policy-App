@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import PremiumFilter from "./filters/PremiumFilter";
 import CoverRangeFilter from "./filters/CoverRangeFilter";
@@ -7,24 +7,23 @@ import MultiyearOptionFilter from "./filters/MultiyearOptionFilter";
 import InsurerFilter from "./filters/InsurerFilter";
 import MoreFilters from "./filters/MoreFilters";
 import PlanTypeFilter from "./filters/PlanTypeFilter";
+import { useFrontendBoot } from "../../../customHooks";
+import DeductibleFilter from "./filters/DeductibleFilter";
 
 const LowerModifier = () => {
   const planType = useSelector(({ quotePage }) => quotePage.filters.planType);
-  const {  tempModifications } = useSelector((state) => state.frontendBoot);
-  const { loadingQuotes } = useSelector((state) => state.quotePage);
+  const { journeyType } = useFrontendBoot();
+
   return (
-    <div
-      className="container"
-      css={`
-        pointer-events: ${loadingQuotes && "none"};
-        filter: ${loadingQuotes && "grayscale(100%)"};
-        opacity:  ${loadingQuotes && "0.7"};
-      `}
-    >
+    <div className="container">
       <FiltersWrapper className="d-flex">
         <PremiumFilter />
-        <CoverRangeFilter />
-        {planType !== "Individual" && !tempModifications?.hideMultiIndivedualPlans ? <PolicyTypeFilter /> : <></>}
+        {journeyType === "health" ? <CoverRangeFilter /> : <DeductibleFilter />}
+        {planType !== "Individual" && journeyType !== "top_up" ? (
+          <PolicyTypeFilter />
+        ) : (
+          <></>
+        )}
         <MultiyearOptionFilter />
         <PlanTypeFilter />
         <InsurerFilter />

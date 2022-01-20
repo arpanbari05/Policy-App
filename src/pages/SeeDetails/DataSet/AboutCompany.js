@@ -10,14 +10,14 @@ import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import BarMarketMobile from "../MobileComponents/AboutCompanyMobile/BarMarketMobile";
 import BarGroupMobile from "../MobileComponents/AboutCompanyMobile/BarGroupMobile";
+import { useTheme } from "../../../customHooks";
 const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
-  const { loading } = useSelector((state) => state.seeDetails);
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { loading } = useSelector(state => state.seeDetails);
+  const { colors } = useTheme();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-  const addPremium = (premiums) => {
+  const addPremium = premiums => {
     let sum = 0;
-    premiums?.map((data) => {
+    premiums?.map(data => {
       if (data.premium !== null) {
         sum += parseFloat(data.premium);
       }
@@ -54,7 +54,7 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                       <div className="feature-img-box">
                         <h2 className="title_h4_p plan_a_t">
                           About{" "}
-                          <span style={{ color: PrimaryColor }}>
+                          <span style={{ color: colors.primary_color }}>
                             {company_name}
                           </span>{" "}
                           Insurance {/* Health Insurance */}
@@ -64,7 +64,7 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                           css={`
                             & span {
                               font-family: "Inter-Regular" !important;
-                              color:#253858;
+                              color: #253858;
                             }
                           `}
                           dangerouslySetInnerHTML={{
@@ -220,7 +220,7 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                                       />
                                     )
                                   );
-                                }
+                                },
                               )}
                               {/* <ProgessBar year={"2020-2021"} value={"52%"} />
                       <ProgessBar

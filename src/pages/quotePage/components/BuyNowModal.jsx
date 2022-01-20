@@ -14,7 +14,7 @@ import { setSelectedGroup } from "../quote.slice";
 function calculateTotalPremium(riders) {
   let total = 0;
   if (riders instanceof Array && riders.length) {
-    riders.forEach((item) => {
+    riders.forEach(item => {
       total += item.total_premium;
     });
   }
@@ -22,7 +22,7 @@ function calculateTotalPremium(riders) {
 }
 function ProductCard({ product }) {
   const companies = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.companies
+    ({ frontendBoot }) => frontendBoot.frontendData.data.companies,
   );
 
   if (!product) return null;
@@ -178,13 +178,13 @@ function BuyNowModalProduct({
 }) {
   const { setShowSeeDetails, showSeeDetails, setSeeDetailsQuote } =
     useQuotesPage();
-  const { theme } = useSelector((state) => state.frontendBoot);
-  const { loadingQuotes } = useSelector((state) => state.quotePage);
+  const { theme } = useSelector(state => state.frontendBoot);
+  const { loadingQuotes } = useSelector(state => state.quotePage);
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   console.log(showSeeDetails, "ulipeu");
 
   const members = useSelector(
-    (state) => state.greetingPage.memberGroups[groupCode]
+    state => state.greetingPage.memberGroups[groupCode],
   );
 
   const { product, deleteProduct } = useCartProduct(groupCode);
@@ -334,7 +334,7 @@ function BuyNowModalProduct({
 }
 
 const PopupContent = (a, b, setShowBuyNow, c, handleCloseSeeDetail) => {
-  const { memberGroups } = useSelector((state) => state.greetingPage);
+  const { memberGroups } = useSelector(state => state.greetingPage);
   const { quotes } = useSelector(({ comparePage }) => comparePage);
 
   return (
@@ -343,7 +343,7 @@ const PopupContent = (a, b, setShowBuyNow, c, handleCloseSeeDetail) => {
         width: auto !important;
       `}
     >
-      {Object.keys(memberGroups).map((groupCode) => (
+      {Object.keys(memberGroups).map(groupCode => (
         <BuyNowModalProduct
           groupCode={groupCode}
           setShowBuyNow={setShowBuyNow}
@@ -358,17 +358,17 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow, handleCloseSeeDetail }) => {
   const plan = useSelector(({ quotePage }) => quotePage.selectedPlan);
 
   const { companies } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data
+    ({ frontendBoot }) => frontendBoot.frontendData.data,
   );
-  const { memberGroups } = useSelector((state) => state.greetingPage);
+  const { memberGroups } = useSelector(state => state.greetingPage);
   const history = useHistory();
   const ls = new SecureLS();
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector(state => state.cart);
   const selectedGroupCodes = Object.keys(cart);
   const allMemberGroups = Object.keys(memberGroups);
   const firstMemberGroup = selectedGroupCodes.find(
-    (groupCode) =>
-      cart[groupCode] !== null && allMemberGroups.includes(groupCode)
+    groupCode =>
+      cart[groupCode] !== null && allMemberGroups.includes(groupCode),
   );
   return (
     <CardModal
@@ -381,12 +381,14 @@ const BuyNowModal = ({ showBuyNow, setShowBuyNow, handleCloseSeeDetail }) => {
         companies,
         setShowBuyNow,
         plan,
-        handleCloseSeeDetail
+        handleCloseSeeDetail,
       )}
       title={"Hey User, Take a minute and review your cart before you proceed"}
       handleClick={() =>
         history.push(
-          `/productdetails/${firstMemberGroup}?enquiryId=${ls.get("enquiryId")}`
+          `/productdetails/${firstMemberGroup}?enquiryId=${ls.get(
+            "enquiryId",
+          )}`,
         )
       }
       showButton={!!firstMemberGroup}
@@ -415,8 +417,8 @@ const ProductData = styled.div`
     font-weight: 900;
   }
   @media (max-width: 767px) {
-    border-left: ${(props) => props.noBorder && "unset"};
-    padding-left: ${(props) => props.noBorder && "unset"};
+    border-left: ${props => props.noBorder && "unset"};
+    padding-left: ${props => props.noBorder && "unset"};
     left: unset;
     font-size: 10px !important;
     & .label-add_product {
@@ -430,7 +432,7 @@ const ProductData = styled.div`
 `;
 const ProductName = styled.p`
   color: #000;
-  font-size: ${(props) => (props.flag ? "15px" : "16px")};
+  font-size: ${props => (props.flag ? "15px" : "16px")};
   width: 150px;
   font-weight: bolder;
   margin: unset;

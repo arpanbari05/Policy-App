@@ -1,37 +1,36 @@
 import { useState, useEffect } from "react";
 import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { setFilters } from "../../quote.slice";
+import { selectQuotesForSort, setFilters } from "../../quote.slice";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import "styled-components/macro";
 import useQuoteFilter from "./useQuoteFilter";
 import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
 import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
+import { useFrontendBoot, useTheme } from "../../../../customHooks";
 
 const FilterModal = ({ show, handleClose }) => {
   const dispatch = useDispatch();
-  const filters = useSelector((state) => state.quotePage.filters);
-  const moreFilterData = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.morefilters
-  );
+  const filters = useSelector(state => state.quotePage.filters);
+  const {
+    data: { morefilters: moreFilterData },
+  } = useFrontendBoot();
 
   const [popularFilter, setPopularFilter] = useState(
-    filters.moreFilters.popularFilter || []
+    filters.moreFilters.popularFilter || [],
   );
   const [preExisting, setPreExisting] = useState(
-    filters.moreFilters.preExisting || ""
+    filters.moreFilters.preExisting || "",
   );
   const [renewalBonus, setRenewalBonus] = useState(
-    filters.moreFilters.renewalBonus || ""
+    filters.moreFilters.renewalBonus || "",
   );
 
   const [others, setOthers] = useState(filters.moreFilters.others || []);
 
-const tooltipDescSelector = (name) => {
-  switch (name) {
-     
-
-case "Popular Filters":
+  const tooltipDescSelector = name => {
+    switch (name) {
+      case "Popular Filters":
         return "Benefits that one should prefer to opt for while securing a health plan.";
 
       case "Pre existing Ailments":
@@ -43,14 +42,12 @@ case "Popular Filters":
       case "No Claim Bonus":
         return "Select preferred percentage of increase in No Claim Bonus which will increase Sum Insured upto thatcertain amount after claim free years.";
 
-
-    default:
+      default:
         break;
-    
-  }
-}
+    }
+  };
 
-  const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
+  const renderTooltip = description => <Tooltip>{description}</Tooltip>;
 
   const handleReset = () => {
     setPopularFilter([]);
@@ -78,21 +75,24 @@ case "Popular Filters":
       popularFilter,
     },
   });
-  const { theme } = useSelector((state) => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-  const quotes = useSelector((state) => state.quotePage.quotes);
+  const { colors } = useTheme();
 
-  const filteredQuotes = quotes
-    .map((icQuotes) => filterQuotes(icQuotes))
-    .flat();
+  let quotes = useSelector(selectQuotesForSort);
+  quotes = Object.values(quotes).map(quoteData => quoteData.data);
+
+  const filteredQuotes = quotes.map(icQuotes => filterQuotes(icQuotes)).flat();
+
   let filteredPlans = [];
-  filteredQuotes.forEach((data) => {
-    if (!filteredPlans?.includes(data.product.name)) {
-      filteredPlans.push(data.product.name);
-    }
+  filteredQuotes.forEach(data => {
+    if (data)
+      if (!filteredPlans?.includes(data.product.name)) {
+        filteredPlans.push(data.product.name);
+      }
   });
+
   console.log(filteredQuotes, filteredPlans, "h12dsga");
+
   const handleSubmit = () => {
     dispatch(
       setFilters({
@@ -102,7 +102,7 @@ case "Popular Filters":
           renewalBonus,
           others,
         },
-      })
+      }),
     );
     handleClose();
   };
@@ -142,7 +142,7 @@ case "Popular Filters":
       </Modal.Header>
       <Modal.Body>
         <MoreFilterWrapper>
-          <OptionWrapper PrimaryColor={PrimaryColor}>
+          <OptionWrapper PrimaryColor={colors.primary_color}>
             {moreFilterData ? (
               moreFilterData.map((filter, i) => {
                 return (
@@ -151,7 +151,9 @@ case "Popular Filters":
                       {console.log("filter.group_name", filter.group_name)}
                       <OverlayTrigger
                         placement="right"
-                        overlay={renderTooltip(tooltipDescSelector(filter.group_name))}
+                        overlay={renderTooltip(
+                          tooltipDescSelector(filter.group_name),
+                        )}
                       >
                         <span>
                           {filter.group_name} {tooltipImg()}
@@ -167,7 +169,7 @@ case "Popular Filters":
                       >
                         {filter.options.map((option, optionIndex) => {
                           return ["popular_filters", "others"].includes(
-                            filter.code
+                            filter.code,
                           ) ? (
                             <div
                               className="morefilter_option w-50 mb-3"
@@ -182,17 +184,17 @@ case "Popular Filters":
                                 id={`${option.display_name}_${filter.group_name}`}
                                 className="d-none"
                                 name={filter.group_name}
-                                onChange={(evt) => {
+                                onChange={evt => {
                                   if (filter.code === "popular_filters") {
                                     if (
                                       popularFilter.includes(
-                                        option.display_name
+                                        option.display_name,
                                       )
                                     ) {
                                       setPopularFilter(
                                         popularFilter.filter(
-                                          (pf) => pf !== option.display_name
-                                        )
+                                          pf => pf !== option.display_name,
+                                        ),
                                       );
                                       return;
                                     }
@@ -206,8 +208,8 @@ case "Popular Filters":
                                     if (others.includes(option.display_name)) {
                                       setOthers(
                                         others.filter(
-                                          (pf) => pf !== option.display_name
-                                        )
+                                          pf => pf !== option.display_name,
+                                        ),
                                       );
                                       return;
                                     }
@@ -217,7 +219,7 @@ case "Popular Filters":
                                 checked={(() => {
                                   if (filter.code === "popular_filters")
                                     return popularFilter.includes(
-                                      option.display_name
+                                      option.display_name,
                                     );
                                   if (filter.code === "others")
                                     return others.includes(option.display_name);
@@ -259,7 +261,7 @@ case "Popular Filters":
                                 id={`${option.display_name}_${filter.group_name}`}
                                 className="d-none"
                                 name={filter.group_name}
-                                onChange={(evt) => {
+                                onChange={evt => {
                                   if (filter.code === "pre_existing_ailments") {
                                     if (preExisting === option.display_name) {
                                       setPreExisting("");
@@ -328,7 +330,7 @@ case "Popular Filters":
         </ClearBtn>
         {filteredPlans.length ? (
           <ApplyBtn
-            PrimaryColor={PrimaryColor}
+            PrimaryColor={colors.primary_color}
             className=" apply_btn mx-auto h-100 w-50"
             onClick={() => handleSubmit()}
           >
@@ -347,7 +349,7 @@ const MoreFilters = () => {
   const { moreFilters } = useSelector(({ quotePage }) => quotePage.filters);
   const noOfSelectedFilters = Object.keys(moreFilters).reduce(
     (acc, item) => (moreFilters[item].length ? acc + 1 : acc + 0),
-    0
+    0,
   );
   return (
     <>

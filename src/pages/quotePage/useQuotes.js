@@ -23,22 +23,22 @@ import { updateGroups } from "./serviceApi";
 
 function useQuotesPage() {
   const companies = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data
+    ({ frontendBoot }) => frontendBoot.frontendData.data,
   );
 
-  const filtersForTest = useSelector((state) => state.quotePage.filters);
-  console.log(
-    "Filters PlanType applied to the quotes page",
-    filtersForTest.planType
-  );
+  // const filtersForTest = useSelector((state) => state.quotePage.filters);
+  // console.log(
+  //   "Filters PlanType applied to the quotes page",
+  //   filtersForTest.planType
+  // );
 
-  const imageSendQuote = (email) => {
+  const imageSendQuote = email => {
     const input = document.getElementById("printQuotePage");
 
     html2canvas(input, {
       scrollX: 0,
       scrollY: -window.scrollY,
-    }).then((canvas) => {
+    }).then(canvas => {
       const imgData = canvas.toDataURL("image/png");
       dispatch(
         sendEmailAction({
@@ -46,7 +46,7 @@ function useQuotesPage() {
           image: imgData,
           group_id: groupCode,
           share_quote: "quote",
-        })
+        }),
       );
     });
   };
@@ -56,29 +56,29 @@ function useQuotesPage() {
     quotes,
     filterQuotes: QuotesToAdd,
     shouldFetchQuotes,
-  } = useSelector((state) => state.quotePage);
+  } = useSelector(state => state.quotePage);
 
   const { cover, tenure, plan_type } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters
+    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters,
   );
   const { data } = useSelector(({ frontendBoot }) => frontendBoot.frontendData);
 
   const findCode = (fitlerName, fitlerValue) => {
-    if(fitlerName === "covers" && Number(fitlerValue)>9999999){
-      return `10000000-${fitlerValue}`
+    if (fitlerName === "covers" && Number(fitlerValue) > 9999999) {
+      return `10000000-${fitlerValue}`;
     }
     let code = `${fitlerValue}-${fitlerValue}`;
-    data[fitlerName].forEach((data) => {
+    data[fitlerName].forEach(data => {
       if (data.display_name === fitlerValue) {
         code = data.code;
       }
     });
- 
+
     return code;
   };
 
   const { member, plan_type: proposerPlanType } = useSelector(
-    ({ greetingPage }) => greetingPage.proposerDetails
+    ({ greetingPage }) => greetingPage.proposerDetails,
   );
 
   const [filterMobile, setFilterMobile] = useState(false);
@@ -93,7 +93,7 @@ function useQuotesPage() {
 
   const { filterQuotes: filterGivenQuotes } = useQuoteFilter();
 
-  const filterQuotes = quotes.map((icQuotes) => filterGivenQuotes(icQuotes));
+  const filterQuotes = quotes.map(icQuotes => filterGivenQuotes(icQuotes));
 
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
@@ -102,7 +102,7 @@ function useQuotesPage() {
   const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
 
   const { memberGroups, proposerDetails } = useSelector(
-    ({ greetingPage }) => greetingPage
+    ({ greetingPage }) => greetingPage,
   );
   const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
 
@@ -123,7 +123,7 @@ function useQuotesPage() {
   useEffect(() => {
     if (shouldFetchQuotes) {
       let tempfilter;
-      fetchFilters.forEach((data) => {
+      fetchFilters.forEach(data => {
         if (`${data.id}` === groupCode) {
           tempfilter = data.extras;
         }
@@ -142,7 +142,7 @@ function useQuotesPage() {
                   ? "Multi Individual"
                   : "Family Floater"
                 : "Family Floater",
-          })
+          }),
         );
       console.log(
         "company",
@@ -154,7 +154,7 @@ function useQuotesPage() {
         "pro",
         proposerDetails,
         "ses",
-        selectedGroup
+        selectedGroup,
       );
       //   dispatch(
       //     fetchQuotes(companies?.companies, {
@@ -182,7 +182,7 @@ function useQuotesPage() {
   //     ({ recommendedPage }) => recommendedPage.recommendedQuotes[groupCode],
   // );
 
-  const updateFilter = async (filters) => {
+  const updateFilter = async filters => {
     try {
       await updateGroups({
         groupCode,
@@ -204,7 +204,7 @@ function useQuotesPage() {
   };
 
   useEffect(() => {
-    updateFilter(filters);
+    // updateFilter(filters);
   }, [filters]);
 
   /////////////////////////////////////////////////////////////////=====>compare
@@ -288,7 +288,7 @@ function useQuotesPage() {
       dispatch(
         setFilters({
           planType: "Individual",
-        })
+        }),
       );
     } else {
       dispatch(
@@ -298,7 +298,7 @@ function useQuotesPage() {
               ? "Multi Individual"
               : "Family Floater"
             : "Family Floater",
-        })
+        }),
       );
     }
   }, [groupCode, memberGroups]);
@@ -311,24 +311,23 @@ function useQuotesPage() {
       memberGroups?.[groupCode]
     ) {
       dispatch(clearFilterQuotes());
-     
-     
-      dispatch(
-        fetchQuotes(companies?.companies, {
-         
-          sum_insured: findCode("covers", filters.cover),
-          tenure: filters.multiYear.charAt(0),
-          member: groupCode,
-          plan_type:
-            memberGroups?.[groupCode]?.length === 1
-              ? "I"
-              : filters.planType
-              ? filters.planType === "Multi Individual"
-                ? "M"
-                : "F"
-              : "F",
-        })
-      );
+
+      // dispatch(
+      //   fetchQuotes(companies?.companies, {
+
+      //     sum_insured: findCode("covers", filters.cover),
+      //     tenure: filters.multiYear.charAt(0),
+      //     member: groupCode,
+      //     plan_type:
+      //       memberGroups?.[groupCode]?.length === 1
+      //         ? "I"
+      //         : filters.planType
+      //         ? filters.planType === "Multi Individual"
+      //           ? "M"
+      //           : "F"
+      //         : "F",
+      //   })
+      // );
     }
   }, [
     filters.insurers,
@@ -410,7 +409,7 @@ function useQuotesPage() {
 
   const quotesLength = quotes.reduce(
     (length, quotes) => length + quotes?.length,
-    0
+    0,
   );
 
   const [sortBy, setSortBy] = useState("Relevance");

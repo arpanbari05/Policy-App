@@ -13,45 +13,41 @@ const GoBack = ({ productDetails, path, groupCode }) => {
   const urlQueries = useUrlQuery();
   const enquiryID = urlQueries.get("enquiryId");
   return (
-   
-      <div
-        css={`
-          height: 66px;
-        `}
-      >
-        <BackButton
-          styledCss={`font-size:17px; display:flex; align-items:center;`}
-          value={`Go Back`}
-          icon={
-            <span
-              css={`
-                color: #4f5c6f;
-                font-size: 17px;
-                position: relative;
-                display:flex; 
-                align-items:center;
-                justify-content:center;
-                top: 4px;
-                width: 40px;
-                height:40px;
-                border-radius:100%;
-                background: #f1f4f8;
-              `}
-            >
-              <i class="fas fa-chevron-left"></i>
-            </span>
-          }
-          onClick={() => {
-            history.replace({
-              pathname: `${path}/${groupCode}`,
-              search: `enquiryId=${enquiryID}`,
-            })
-
-          }
-          }
-        ></BackButton>
-      </div>
-   
+    <div
+      css={`
+        height: 66px;
+      `}
+    >
+      <BackButton
+        styledCss={`font-size:17px; display:flex; align-items:center;`}
+        value={`Go Back`}
+        icon={
+          <span
+            css={`
+              color: #4f5c6f;
+              font-size: 17px;
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              top: 4px;
+              width: 40px;
+              height: 40px;
+              border-radius: 100%;
+              background: #f1f4f8;
+            `}
+          >
+            <i class="fas fa-chevron-left"></i>
+          </span>
+        }
+        onClick={() => {
+          history.replace({
+            pathname: `${path}/${groupCode}`,
+            search: `enquiryId=${enquiryID}`,
+          });
+        }}
+      ></BackButton>
+    </div>
   );
 };
 

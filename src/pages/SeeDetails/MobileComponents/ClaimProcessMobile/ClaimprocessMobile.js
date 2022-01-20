@@ -14,7 +14,7 @@ import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
 
 function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
   const [activebtn, setActivebtn] = useState(1);
-  const { loading } = useSelector((state) => state.seeDetails);
+  const { loading } = useSelector(state => state.seeDetails);
 
   return (
     <div

@@ -25,14 +25,14 @@ const getQutoes = (
     plan_type,
     base_plan_type = "base_health",
   },
-  headers
+  headers,
 ) => {
   return HttpClient(
     `companies/${alias}/quotes?sum_insured_range=${sum_insured}&tenure=${tenure}&plan_type=${plan_type}&group=${member}&base_plan_type=${base_plan_type}`,
     {
       method: "GET",
       ...headers,
-    }
+    },
   );
 };
 // const getDiscount = ({ alias, productId, member }) =>
@@ -43,7 +43,7 @@ const getQutoes = (
 //   );
 const getDiscount = ({ productId, sum_insured, group }) =>
   HttpClient(
-    `products/${productId}/discounts?sum_insured=${sum_insured}&group=${group}`
+    `products/${productId}/discounts?sum_insured=${sum_insured}&group=${group}`,
   );
 
 const deleteCart = ({ id }) =>
@@ -56,7 +56,7 @@ const getCart = () =>
     method: "GET",
   });
 
-const createCart = (data) =>
+const createCart = data =>
   HttpClient(`cart-items`, {
     method: "POST",
     data,
@@ -77,8 +77,8 @@ export const getRidersApi = ({
 }) =>
   HttpClient(
     `products/${productId}/riders?sum_insured=${sum_insured}&tenure=${tenure}&group=${group}&selected_riders=${selected_riders.join(
-      ","
-    )}`
+      ",",
+    )}`,
   );
 export const getAbhiRidersApi = ({
   productId,
@@ -88,10 +88,10 @@ export const getAbhiRidersApi = ({
   string,
 }) =>
   HttpClient(
-    `products/${productId}/riders?sum_insured=${sum_insured}&tenure=${tenure}&group=${group}&${string}`
+    `products/${productId}/riders?sum_insured=${sum_insured}&tenure=${tenure}&group=${group}&${string}`,
   );
 
-export const getFeaturesApi = (productId) =>
+export const getFeaturesApi = productId =>
   HttpClient(`products/${productId}/features`);
 
 export const updateGroups = ({ groupCode, data }) =>
@@ -110,7 +110,7 @@ export const getTopUpAddOnsApi = ({
   groupCode,
 }) =>
   HttpClient(
-    `companies/${company_alias}/topup-quotes?deductible=${sum_insured}&tenure=${tenure}&group=${groupCode}`
+    `companies/${company_alias}/topup-quotes?deductible=${sum_insured}&tenure=${tenure}&group=${groupCode}`,
   );
 
 // export const updatePlanTypeFilter = ({ planTypeCode, companyAlias, member }) =>

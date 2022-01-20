@@ -24,7 +24,7 @@ import RadioButton from "../../../components/RadioButton";
 const Form3 = ({ handleChange, currentForm }) => {
   const dispatch = useDispatch();
   const { frontendData, tempModifications } = useSelector(
-    (state) => state.frontendBoot
+    state => state.frontendBoot,
   );
   const [selected, setSelected] = useState("F");
   //const [selectedText, setSelectedText] = useState("F");
@@ -68,14 +68,14 @@ const Form3 = ({ handleChange, currentForm }) => {
         >
           {plantypes && tempModifications?.hideMultiIndivedualPlans
             ? plantypes
-                .filter((item) => item.code !== "M")
+                .filter(item => item.code !== "M")
                 .map(({ code, display_name }, i) => {
                   return (
                     code !== "I" && (
                       <div>
                         <RadioButton
                           onMouseEnter={() => setTempSelected(code)}
-                          onClick={(e) => setSelected(code)}
+                          onClick={e => setSelected(code)}
                           id={display_name}
                           value={code}
                           checked={selected === code || undefined}
@@ -90,8 +90,8 @@ const Form3 = ({ handleChange, currentForm }) => {
                   code !== "I" && (
                     <div>
                       <RadioButton
-                        onMouseEnter={(e) => setTempSelected(code)}
-                        onClick={(e) => setSelected(code)}
+                        onMouseEnter={e => setTempSelected(code)}
+                        onClick={e => setSelected(code)}
                         id={display_name}
                         value={code}
                         checked={selected === code || undefined}

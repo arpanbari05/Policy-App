@@ -19,7 +19,7 @@ const PlanDetails = ({
   const [activeTab, setActiveTab] = useState(1);
   const [activeDelayedTab, setActiveDelayedTab] = useState(1);
 
-  const { loading } = useSelector((state) => state.seeDetails);
+  const { loading } = useSelector(state => state.seeDetails);
   const handleActive = (id, selected) => {
     setActiveTab(id);
     setTimeout(() => setActiveDelayedTab(id), 500);

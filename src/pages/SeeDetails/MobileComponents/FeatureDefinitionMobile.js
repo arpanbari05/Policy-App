@@ -33,7 +33,7 @@ function FeatureDefinitionMobile({
         >
           <img style={{width:'100%'}} src={icon} alt="" />
         </div> */}
-        <div style={{ display: "flex", flexDirection: "column" }} >
+        <div style={{ display: "flex", flexDirection: "column" }}>
           <h6>{header}</h6>
           <div>
             <p
@@ -42,22 +42,20 @@ function FeatureDefinitionMobile({
                 lineHeight: "1.3",
                 fontWeight: "300",
                 width: "85%",
-                color:"grey"
+                color: "grey",
               }}
             >
               {short_description}
               {toggle ? (
-                <div
-                style={{  marginTop: "10px",}}
-                >
+                <div style={{ marginTop: "10px" }}>
                   <span
                     style={{
                       fontSize: "11px",
-                    
+
                       lineHeight: "1.3",
                       fontWeight: "300",
                       width: "85%",
-                      color:"grey"
+                      color: "grey",
                     }}
                   >
                     {description}
@@ -68,47 +66,42 @@ function FeatureDefinitionMobile({
               )}
             </p>
           </div>
- 
-        
-              {toggle ? (
-                <img
-                  style={{
-                    width: "12px",
-                    right: "20px",
-                    top: "42px",
-                    cursor: "pointer",
-                    position: "absolute",
-                    transform: "rotate(180deg)",
-                  }}
-                  src={downarrow}
-                  alt=""
-                  onClick={() => setToggle(!toggle)}
-                />
-              ) : (
-                <img
-                  style={{
-                    width: "12px",
-                    right: "20px",
-                    top: "42px",
-                    cursor: "pointer",
-                    position: "absolute",
-                  }}
-                  src={downarrow}
-                  alt=""
-                  onClick={() => setToggle(!toggle)}
-                />
-              )}
 
-              
-           
-        
+          {toggle ? (
+            <img
+              style={{
+                width: "12px",
+                right: "20px",
+                top: "42px",
+                cursor: "pointer",
+                position: "absolute",
+                transform: "rotate(180deg)",
+              }}
+              src={downarrow}
+              alt=""
+              onClick={() => setToggle(!toggle)}
+            />
+          ) : (
+            <img
+              style={{
+                width: "12px",
+                right: "20px",
+                top: "42px",
+                cursor: "pointer",
+                position: "absolute",
+              }}
+              src={downarrow}
+              alt=""
+              onClick={() => setToggle(!toggle)}
+            />
+          )}
         </div>
-        </FeatureT>
+      </FeatureT>
     );
-
-    else if(windowWidth < 767)  return (
-    <Feature onClick={() => setToggle(!toggle)}>
-      {/* <div
+  else if (windowWidth < 767)
+    return (
+      <Feature onClick={() => setToggle(!toggle)}>
+        {/* <div
         className="icon-box"
         style={{
           top: "4px",
@@ -126,72 +119,69 @@ function FeatureDefinitionMobile({
       >
         <img style={{width:'100%'}} src={icon} alt="" />
       </div> */}
-      <div
-        style={{ display: "flex", flexDirection: "column" }}
-        
-      >
-        <h6>{header}</h6>
-        <div>
-          <p
-            style={{
-              fontSize: "11px",
-              lineHeight: "1.2",
-              fontWeight: "300",
-              width: "85%",
-              color:"grey"
-            }}
-          >
-            {short_description}
-          </p>
-        </div>
-        <div>
-          {toggle ? (
-            <img
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <h6>{header}</h6>
+          <div>
+            <p
               style={{
-                width: "12px",
-                    right: "20px",
-                    top: "36px",
-                    position: "absolute",
-                transform: "rotate(180deg)",
+                fontSize: "11px",
+                lineHeight: "1.2",
+                fontWeight: "300",
+                width: "85%",
+                color: "grey",
               }}
-              src={downarrow}
-              alt=""
-              onClick={() => setToggle(!toggle)}
-            />
-          ) : (
-            <img
-              style={{
-                width: "12px",
-                    right: "20px",
-                    top: "36px",
-                    position: "absolute",
-                position: "absolute",
-              }}
-              src={downarrow}
-              alt=""
-              onClick={() => setToggle(!toggle)}
-            />
-          )}
-
-          {toggle ? (
-            <div>
-              <p
+            >
+              {short_description}
+            </p>
+          </div>
+          <div>
+            {toggle ? (
+              <img
                 style={{
-                  fontSize: "11px",
-                  lineHeight: "1.2",
-                  fontWeight: "300",
-                  width: "85%",
-                  color:"grey"
+                  width: "12px",
+                  right: "20px",
+                  top: "36px",
+                  position: "absolute",
+                  transform: "rotate(180deg)",
                 }}
-              >
-                {description}
-              </p>
-            </div>
-          ) : null}
+                src={downarrow}
+                alt=""
+                onClick={() => setToggle(!toggle)}
+              />
+            ) : (
+              <img
+                style={{
+                  width: "12px",
+                  right: "20px",
+                  top: "36px",
+                  position: "absolute",
+                  position: "absolute",
+                }}
+                src={downarrow}
+                alt=""
+                onClick={() => setToggle(!toggle)}
+              />
+            )}
+
+            {toggle ? (
+              <div>
+                <p
+                  style={{
+                    fontSize: "11px",
+                    lineHeight: "1.2",
+                    fontWeight: "300",
+                    width: "85%",
+                    color: "grey",
+                  }}
+                >
+                  {description}
+                </p>
+              </div>
+            ) : null}
+          </div>
         </div>
-      </div>
       </Feature>
-  );
+    );
 }
 
 const Feature = styled.div`
@@ -200,8 +190,8 @@ const Feature = styled.div`
   margin-top: 12px;
   border-top: 1px solid lightgray;
   padding-top: 10px;
-  width:100%;
-  position:relative;
+  width: 100%;
+  position: relative;
 `;
 
 const FeatureT = styled.div`
@@ -210,8 +200,8 @@ const FeatureT = styled.div`
   margin-top: 12px;
   border-top: 1px solid lightgray;
   padding-top: 10px;
-  width:48%;
-  position:relative;
+  width: 48%;
+  position: relative;
 `;
 
 export default FeatureDefinitionMobile;

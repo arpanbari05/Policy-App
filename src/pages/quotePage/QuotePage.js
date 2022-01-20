@@ -16,7 +16,7 @@ import { fetchQuotes, setFilters } from "./quote.slice";
 import SeeDetails from "../SeeDetails/SeeDetails";
 import CardSkeletonLoader from "../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import ComparePopup from "./components/ComparePopup/ComparePopup";
-import { useParams } from "react-router";
+import { Redirect, useParams } from "react-router-dom";
 import MobileHeader from "./quoteMobile/MobileHeader";
 import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
 import MobilePlansFor from "./quoteMobile/MobilePlansFor";
@@ -24,8 +24,29 @@ import MobileQuoteCard from "./quoteMobile/MobileQuoteCard";
 import QuoteFilterMobile from "./quoteMobile/QuoteFilter/QuoteFilterMobile";
 import { MobileQuoteFilterFooter } from "./quoteMobile/FilterFooter/FilterFooter";
 import { removeQuoteFromCart } from "../Cart/cart.slice";
+import Quotes from "./components/Quotes";
+import useUpdateFilters from "./components/filters/useUpdateFilters";
+import useFilters from "./components/filters/useFilters";
+import { useGetEnquiriesQuery } from "../../api/api";
+import { Page } from "../../components";
+import { Col, Container, Row } from "react-bootstrap";
 
 function QuotePage() {
+  return (
+    <Page>
+      <Container>
+        <Row>
+          <Col xl="9" >
+            <Quotes />
+          </Col>
+          <Col>Hi</Col>
+        </Row>
+      </Container>
+    </Page>
+  );
+}
+
+function QuotePage1() {
   const {
     quotes,
     filterMobile,
@@ -49,16 +70,16 @@ function QuotePage() {
   } = useQuotesPage();
 
   const { memberGroups, proposerDetails } = useSelector(
-    (state) => state.greetingPage
+    state => state.greetingPage,
   );
 
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
   const { groupCode } = useParams();
   const selectedGroup = groupCode;
-  const { loadingQuotes, filters } = useSelector((state) => state.quotePage);
+  const { loadingQuotes, filters } = useSelector(state => state.quotePage);
   console.log("Filters plantype on quote page", filters);
   const defaultfilters = {
     insurers: [],
@@ -84,26 +105,26 @@ function QuotePage() {
     quote: "",
     activeSum: "",
   });
-  
-  const { planType } = useSelector((state) => state.quotePage.filters);
+
+  const { planType } = useSelector(state => state.quotePage.filters);
   // const { selectedGroup } = useSelector(state => state.quotePage);
   const {
     plantypes,
     baseplantypes: basePlanTypes,
     covers,
-  } = useSelector((state) => state.frontendBoot.frontendData.data);
+  } = useSelector(state => state.frontendBoot.frontendData.data);
 
   const { cover, tenure, plan_type } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters
+    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters,
   );
 
   const selectedPlanType =
     planType ||
-    plantypes?.find((planType) => planType.code === proposerDetails.plan_type)
+    plantypes?.find(planType => planType.code === proposerDetails.plan_type)
       ?.display_name ||
     "";
   const firstQuoteFound =
-    filterQuotes.some((quotes) => quotes?.length > 0) || !loadingQuotes;
+    filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
 
   console.log(
     "d32fasg",
@@ -112,22 +133,28 @@ function QuotePage() {
     filters.basePlanType.toLowerCase() === "base health",
     filters.insurers.length < 1,
     filters.multiYear === defaultfilters.multiYear,
-    Object.keys(filters.moreFilters).length === 0 ? true : false
+    Object.keys(filters.moreFilters).length === 0 ? true : false,
   );
 
-  const isFiltersDefault =
-    (filters.premium === null || filters.premium === "") &&
-    filters.cover === defaultfilters.cover &&
-    filters.basePlanType.toLowerCase() === "base health" &&
-    filters.insurers.length < 1 &&
-    filters.multiYear === defaultfilters.multiYear &&
-    Object.keys(filters.moreFilters).length === 0
-      ? true
-      : false;
+  // const isFiltersDefault =
+  //   (filters.premium === null || filters.premium === "") &&
+  //   filters.cover === defaultfilters.cover &&
+  //   filters.basePlanType.toLowerCase() === "base health" &&
+  //   filters.insurers.length < 1 &&
+  //   filters.multiYear === defaultfilters.multiYear &&
+  //   Object.keys(filters.moreFilters).length === 0
+  //     ? true
+  //     : false;
+
+  const { isFiltersDefault } = useFilters();
+
+  const { resetFilters } = useUpdateFilters();
 
   const handleClearFilters = () => {
     dispatch(setFilters(defaultfilters));
     console.log("fetchquotes QuotesPage");
+
+    resetFilters();
 
     // dispatch(
     //   fetchQuotes(companies?.companies, {
@@ -148,96 +175,97 @@ function QuotePage() {
 
   return (
     <>
-      <div
-        css={`
-          background-color: rgba(255, 255, 255);
-          @media (max-width: 1023px) {
-            display: none;
-          }
-        `}
-        id="printQuotePage"
-        className="noselect"
-      >
-        <UpperModifier sendQuote={imageSendQuote} />
-        <LowerModifier />
+      <Page>
+        <div
+          css={`
+            background-color: rgba(255, 255, 255);
+            @media (max-width: 1023px) {
+              display: none;
+            }
+          `}
+          id="printQuotePage"
+          className="noselect"
+        >
+          <UpperModifier sendQuote={imageSendQuote} />
+          <LowerModifier />
 
-        <div className="container">
-          <div className="col-md-12 d-flex">
-            <div
-              className="col-md-9"
-              style={{ padding: "0px 5px", marginBottom: "120px" }}
-              css={`
-                @media (max-width: 1200px) {
-                  width: 100%;
-                }
-              `}
-            >
+          <div className="container">
+            <div className="col-md-12 d-flex">
               <div
+                className="col-md-9"
+                style={{ padding: "0px 5px", marginBottom: "120px" }}
                 css={`
-                  box-sizing: none !important;
-                  padding: 1vh;
+                  @media (max-width: 1200px) {
+                    width: 100%;
+                  }
                 `}
-                className=" d-flex justify-content-between align-items-center"
               >
-                <TextLabel>
-                  {" "}
-                  {loadingQuotes ? (
-                    <div
-                      css={`
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        justify-content: flex-start;
-                      `}
-                    >
-                      <span>Loading {selectedPlanType} Plans &nbsp;</span>
-                      <SpinLoader
-                        customWidth="fit-content"
-                        customHeight="fit-content"
-                        proposalpage={"used for styling purpose"}
-                        zIndexGiven="0"
-                      />
-                    </div>
-                  ) : (
-                    `Showing ${selectedPlanType}
+                <div
+                  css={`
+                    box-sizing: none !important;
+                    padding: 1vh;
+                  `}
+                  className=" d-flex justify-content-between align-items-center"
+                >
+                  <TextLabel>
+                    {" "}
+                    {loadingQuotes ? (
+                      <div
+                        css={`
+                          display: flex;
+                          flex-direction: row;
+                          align-items: center;
+                          justify-content: flex-start;
+                        `}
+                      >
+                        <span>Loading {selectedPlanType} Plans &nbsp;</span>
+                        <SpinLoader
+                          customWidth="fit-content"
+                          customHeight="fit-content"
+                          proposalpage={"used for styling purpose"}
+                          zIndexGiven="0"
+                        />
+                      </div>
+                    ) : (
+                      `Showing ${selectedPlanType}
                   Plans`
-                  )}
-                </TextLabel>
-                {/* <SortByButton>
+                    )}
+                  </TextLabel>
+                  {/* <SortByButton>
                 Sort By: relevance <i class="fas fa-chevron-down mx-2"></i>
               </SortByButton> */}
-                {!isFiltersDefault && !loadingQuotes && (
-                  <button
-                    onClick={handleClearFilters}
-                    className="btn"
-                    style={{
-                      backgroundColor: "#e2f0ff",
-                      color: "#0a87ff",
-                      fontWeight: "bold",
-                      width: "max-content",
-                      padding: "8px 12px",
-                      borderRadius: "24px",
-                      display: "flex",
-                      border: "1px solid #0a87ff",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Clear all filters
-                    <i class="fas fa-sync mx-2"></i>
-                  </button>
-                )}
-                {true && (
-                  <SortByDD
-                    list={sortByData}
-                    title="Sort By"
-                    onSortByChange={setSortBy}
-                  />
-                )}
-              </div>
-              {console.log(filterQuotes.flat(), "13hagsd")}
-              {quotes?.length ? (
+                  {!isFiltersDefault && !loadingQuotes && (
+                    <button
+                      onClick={handleClearFilters}
+                      className="btn"
+                      style={{
+                        backgroundColor: "#e2f0ff",
+                        color: "#0a87ff",
+                        fontWeight: "bold",
+                        width: "max-content",
+                        padding: "8px 12px",
+                        borderRadius: "24px",
+                        display: "flex",
+                        border: "1px solid #0a87ff",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        fontSize: "12px",
+                      }}
+                    >
+                      Clear all filters
+                      <i class="fas fa-sync mx-2"></i>
+                    </button>
+                  )}
+                  {true && (
+                    <SortByDD
+                      list={sortByData}
+                      title="Sort By"
+                      onSortByChange={setSortBy}
+                    />
+                  )}
+                </div>
+                <Quotes />
+                {/* {quotes?.length ? (
                 firstQuoteFound &&
                 filterQuotes.map((item, index) =>
                   item.length ? (
@@ -258,73 +286,80 @@ function QuotePage() {
                 )
               ) : (
                 <CardSkeletonLoader noOfCards={3} />
-              )}
-              {loadingQuotes && <CardSkeletonLoader noOfCards={1} />}
-            </div>
-            <div
-              className="col-md-3"
-              style={{ padding: "0px 5px" }}
-              css={`
-                @media (max-width: 1200px) {
-                  display: none;
-                }
-              `}
-            >
-              <div className="d-flex justify-content-between align-items-center ">
-                <TextLabel className="my-2" style={{ fontSize: "17px" }}>
-                  All Premium Plans are GST Inclusive
-                </TextLabel>
+              )} */}
+                {/* {loadingQuotes && <CardSkeletonLoader noOfCards={1} />} */}
               </div>
-              <AssistantCard PrimaryColor={PrimaryColor} SecondaryShade={SecondaryShade}>
-                <span className="head">Health Insurance Assistance</span>
-                <p className="my-2">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-                  eu nisl a lorem auctor ultrices auctor vel elit. Aliquam quis
-                  consequat tellus. Aliquam pellentesque ligula massa, aliquet
-                  fermentum nisl varius ac.
-                </p>
-                <div
-                  css={`
-                    display: flex;
-                    justify-content: space-between;
-                  `}
-                >
-                  <button
-                    className="talk_to_us my-2"
-                    style={{ padding: "8px 15px", height: "max-content" }}
-                  >
-                    Talk to us
-                  </button>
-
-                  <AssistantImage src={call} />
+              <div
+                className="col-md-3"
+                style={{ padding: "0px 5px" }}
+                css={`
+                  @media (max-width: 1200px) {
+                    display: none;
+                  }
+                `}
+              >
+                <div className="d-flex justify-content-between align-items-center ">
+                  <TextLabel className="my-2" style={{ fontSize: "17px" }}>
+                    All Premium Plans are GST Inclusive
+                  </TextLabel>
                 </div>
-              </AssistantCard>
+                <AssistantCard
+                  PrimaryColor={PrimaryColor}
+                  SecondaryShade={SecondaryShade}
+                >
+                  <span className="head">Health Insurance Assistance</span>
+                  <p className="my-2">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Nunc eu nisl a lorem auctor ultrices auctor vel elit.
+                    Aliquam quis consequat tellus. Aliquam pellentesque ligula
+                    massa, aliquet fermentum nisl varius ac.
+                  </p>
+                  <div
+                    css={`
+                      display: flex;
+                      justify-content: space-between;
+                    `}
+                  >
+                    <button
+                      className="talk_to_us my-2"
+                      style={{ padding: "8px 15px", height: "max-content" }}
+                    >
+                      Talk to us
+                    </button>
+
+                    <AssistantImage src={call} />
+                  </div>
+                </AssistantCard>
+              </div>
             </div>
           </div>
+          {showBuyNow && (
+            <BuyNowModal
+              showBuyNow={showBuyNow}
+              setShowBuyNow={setShowBuyNow}
+            />
+          )}
+          <ComparePopup showPopup={showPopup} groupCode={groupCode} />
+          {showSeeDetails && (
+            <SeeDetails
+              show={showSeeDetails}
+              handleClose={() => {
+                setShowSeeDetails(!showSeeDetails);
+                setSeeDetailsQuote({
+                  quote: "",
+                  activeSum: "",
+                });
+              }}
+              quote={seeDetailsQuote.quote}
+              sum_insured={
+                seeDetailsQuote.quote.sum_insured[seeDetailsQuote.activeSum]
+              }
+              tenure={seeDetailsQuote.quote.tenure[seeDetailsQuote.activeSum]}
+              product={seeDetailsQuote.quote.product[seeDetailsQuote.activeSum]}
+            />
+          )}
         </div>
-        {showBuyNow && (
-          <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} />
-        )}
-        <ComparePopup showPopup={showPopup} groupCode={groupCode} />
-        {showSeeDetails && (
-          <SeeDetails
-            show={showSeeDetails}
-            handleClose={() => {
-              setShowSeeDetails(!showSeeDetails);
-              setSeeDetailsQuote({
-                quote: "",
-                activeSum: "",
-              });
-            }}
-            quote={seeDetailsQuote.quote}
-            sum_insured={
-              seeDetailsQuote.quote.sum_insured[seeDetailsQuote.activeSum]
-            }
-            tenure={seeDetailsQuote.quote.tenure[seeDetailsQuote.activeSum]}
-            product={seeDetailsQuote.quote.product[seeDetailsQuote.activeSum]}
-          />
-        )}
-      </div>
+      </Page>
 
       <div
         css={`
@@ -362,7 +397,7 @@ function QuotePage() {
                 />
               ) : (
                 <></>
-              )
+              ),
             )
           ) : (
             <CardSkeletonLoader noOfCards={3} />
@@ -389,12 +424,12 @@ function QuotePage() {
                       id={index}
                       item={item}
                       handleClick={() => setShowBuyNow(true)}
-                      handleSeeDetails={(quote) => {
+                      handleSeeDetails={quote => {
                         setSeeDetailsQuote(quote);
                         setShowSeeDetails(true);
                       }}
                     />
-                  )
+                  ),
               )
             ) : (
               <></>
@@ -427,10 +462,26 @@ function QuotePage() {
   );
 }
 
-export default QuotePage;
+function RenderQuotePage() {
+  const {
+    data: {
+      data: { groups },
+    },
+  } = useGetEnquiriesQuery();
+
+  const { groupCode } = useParams();
+
+  const isGroupExist = groups.some(group => group.id === parseInt(groupCode));
+
+  if (!isGroupExist) return <p>Group not found!</p>;
+
+  return <QuotePage />;
+}
+
+export default RenderQuotePage;
 
 const AssistantCard = styled.div`
-  background: ${props=>props.SecondaryShade};
+  background: ${props => props.SecondaryShade};
   position: relative;
   top: 26px;
   @media (max-width: 1399px) {
@@ -446,8 +497,8 @@ const AssistantCard = styled.div`
   }
   .talk_to_us {
     font-weight: 600;
-    color: ${props=>props.PrimaryColor};
-    border: 2px solid  ${props=>props.PrimaryColor};
+    color: ${props => props.PrimaryColor};
+    border: 2px solid ${props => props.PrimaryColor};
     background: white;
     font-size: 18px;
     padding: 10px 20px;

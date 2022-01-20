@@ -4,29 +4,37 @@ import { useCartProduct } from "../../Cart";
 import { mobile, small } from "../../../utils/mediaQueries";
 import "styled-components/macro";
 import styled from "styled-components/macro";
-import { amount } from "./ReviewCart";
+import { useCart } from "../../../customHooks";
+import { amount } from "../../../utils/helper";
 
-function ProductCard({ groupCode }) {
-  const { groupCode: groupCodeParam } = useParams();
-  const { companies } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data
-  );
-  const { product, totalPremium } = useCartProduct(groupCode || groupCodeParam);
+function ProductCard() {
+  const { groupCode } = useParams();
 
-  if (!product) return <p>Empty Cart</p>;
+  const { getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(parseInt(groupCode));
+
+  if (!cartEntry) return <p>Empty Cart</p>;
 
   const {
     product: {
       name: productName,
       company: { alias: companyAlias, csr: companyCSR },
     },
-  } = product;
+    sum_insured,
+    icLogoSrc,
+    total_premium,
+    netPremium,
+    tenure,
+  } = cartEntry;
 
+  const sumInsured = amount(sum_insured);
 
+  const totalPremiumAmount = amount(netPremium);
 
-  const logoSrc = companies[companyAlias].logo;
-
-  const totalPremiumAmount = parseInt(totalPremium).toLocaleString("en-In");
+  const displayPremium = `${amount(total_premium)} / ${
+    tenure > 1 ? `${tenure} Years` : "Year"
+  }`;
 
   return (
     <div
@@ -66,7 +74,7 @@ function ProductCard({ groupCode }) {
         <div
           css={`
             width: 50px;
-            height:50px;
+            height: 50px;
             background-color: #fff;
             display: flex;
             align-items: center;
@@ -79,7 +87,7 @@ function ProductCard({ groupCode }) {
             }
           `}
         >
-          <img src={logoSrc} alt={companyAlias} className="w-100" />
+          <img src={icLogoSrc} alt={companyAlias} className="w-100" />
         </div>
         {/* *************name*********** */}
         <div
@@ -88,10 +96,10 @@ function ProductCard({ groupCode }) {
 
             /* width: fit-content; */
             width: 170px;
-            max-width:100%;
-            @media (max-width:1201px){
+            max-width: 100%;
+            @media (max-width: 1201px) {
               width: 100%;
-              }
+            }
 
             ${mobile} {
               margin-left: 10px;
@@ -103,7 +111,7 @@ function ProductCard({ groupCode }) {
               font-size: 15px;
               font-weight: 600;
               color: #394a68;
-              
+
               ${mobile} {
                 font-size: 14px;
                 font-weight: 600;
@@ -115,17 +123,19 @@ function ProductCard({ groupCode }) {
           >
             {productName}
           </div>
-          <div css={`
-          display:none;
-          @media (max-width:1200px){
-            display: block;
-          }
-          @media (max-width:536px){
-            font-size: 10px;
-
-          }
-          `}>
-          {amount(product.sum_insured)}
+          <div
+            css={`
+              display: none;
+              @media (max-width: 1200px) {
+                display: block;
+              }
+              @media (max-width: 536px) {
+                font-size: 10px;
+              }
+            `}
+          >
+            {" "}
+            {sumInsured}
           </div>
         </div>
       </div>
@@ -173,7 +183,7 @@ function ProductCard({ groupCode }) {
             `}
           >
             {" "}
-            {amount(product.sum_insured)}
+            {sumInsured}
           </span>
         </div>
 
@@ -218,7 +228,7 @@ function ProductCard({ groupCode }) {
             `}
           >
             {" "}
-            ₹ {product.premium}/ {(product.tenure >= 2 ? `${product.tenure} Years` : "Year")}
+            {displayPremium}
           </span>
         </div>
 
@@ -278,8 +288,8 @@ function ProductCard({ groupCode }) {
           font-size: 20px;
           display: flex;
           flex-direction: column;
-          @media (max-width:537px){
-            width:125px !important;
+          @media (max-width: 537px) {
+            width: 125px !important;
           }
           ${small} {
             height: 37px;
@@ -294,10 +304,9 @@ function ProductCard({ groupCode }) {
             color: #5a6981;
             font-size: 13px;
             /* width: 90px; */
-          @media (max-width:992px){
-            font-size: 11px;
-          }
-            
+            @media (max-width: 992px) {
+              font-size: 11px;
+            }
 
             ${small} {
               font-size: 8px;
@@ -314,18 +323,17 @@ function ProductCard({ groupCode }) {
             font-size: 18px;
             font-weight: 900;
 
-            @media (max-width:992px){
-            font-size: 12px;
-          }
+            @media (max-width: 992px) {
+              font-size: 12px;
+            }
 
             ${small} {
               font-size: 12px;
-              color:#0a87ff;
-              
+              color: #0a87ff;
             }
           `}
         >
-          ₹ {totalPremiumAmount}
+          {totalPremiumAmount}
         </span>
       </div>
     </div>
@@ -335,17 +343,17 @@ function ProductCard({ groupCode }) {
 export default ProductCard;
 
 const DetailDispalyPanel = styled.div`
-background:#fafbfc;
-padding: 17px;
-    border-radius: 10px;
-   
-@media (max-width:1200px){
- display:none !important; 
-}
+  background: #fafbfc;
+  padding: 17px;
+  border-radius: 10px;
+
+  @media (max-width: 1200px) {
+    display: none !important;
+  }
   .detail_child:not(:last-child):after {
     content: " | ";
-    font-size:15px;
+    font-size: 15px;
     margin: 0px 15px;
-    color:#dedfe0;
+    color: #dedfe0;
   }
 `;

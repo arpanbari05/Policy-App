@@ -10,7 +10,7 @@ import "../PlanContainer/PlanContainer";
 import { AiOutlinePlus } from "react-icons/ai";
 import { images } from "../../../../assets/logos/logo.js";
 
-const getYearsUsingTenure = (tenure) => {
+const getYearsUsingTenure = tenure => {
   if (tenure == 1) {
     return "year";
   } else if (tenure == 2) {
@@ -40,19 +40,19 @@ const PlanContainer = ({
   } = plans || {};
 
   const { discount, ridersPremium, riders } = useSelector(
-    (state) => state.comparePage
+    state => state.comparePage,
   );
   let additionalPremium = 0;
 
-  mandatory_riders?.forEach((element) => {
+  mandatory_riders?.forEach(element => {
     additionalPremium += element.total_premium;
   });
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { groupCode: selectedGroup } = useParams();
   const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
-  
+
   return (
     <>
       {product?.name ? (
@@ -90,7 +90,6 @@ const PlanContainer = ({
             }}
           >
             <span className="logo_style_common">
-        
               <img src={images[company_alias]} alt="" className="w-100" />
             </span>
             {/* Dynamic ic name */}
@@ -139,7 +138,7 @@ const PlanContainer = ({
                   additionalPremium +
                   (ridersPremium[`${product.id}${sum_insured}`] || 0)
               } /${getYearsUsingTenure(
-                discount[`${product.id}${sum_insured}`]?.tenure || tenure
+                discount[`${product.id}${sum_insured}`]?.tenure || tenure,
               )}`}
             />
           </Col>

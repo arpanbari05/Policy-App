@@ -1,12 +1,13 @@
 import React from "react";
 import { ProgressBar } from "react-bootstrap";
+import { useTheme } from "../customHooks";
 import "styled-components/macro";
-import { useSelector } from "react-redux";
 
 const CustomProgressBar = ({ now, total }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { colors } = useTheme();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+  const progress = (now * 100) / total;
+
   return (
     <span
       css={`
@@ -24,14 +25,11 @@ const CustomProgressBar = ({ now, total }) => {
           height: 9px;
           width: 132px;
           & .progress-bar {
-            background: ${SecondaryColor};
+            background: ${colors.secondary_color};
           }
         `}
-        now={`${(now * 100) / total}`}
+        now={progress}
       />
-      {/* <span>
-        {now}/{total}
-      </span> */}
     </span>
   );
 };

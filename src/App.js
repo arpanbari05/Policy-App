@@ -1,159 +1,38 @@
-import { useEffect, useState } from "react";
-import { useLocation, Switch, Route } from "react-router-dom";
-import { InputPage } from "./pages/InputPage/InputPage";
-import ComparePage from "./pages/ComparePage/ComparePage";
-import "bootstrap/dist/css/bootstrap.min.css";
-import CustomModal1 from "./components/Common/Modal/CustomModal1";
-import "./app.css";
-import FilterSkeletonLoader from "./components/Common/filter-skeleton-loader/FilterSkeletonLoader";
-import CardSkeletonLoader from "./components/Common/card-skeleton-loader/CardSkeletonLoader";
-import Navbar from "./components/Navbar";
-import { fetchFrontendData } from "./FrontendBoot/reducer/frontendBoot.slice";
-import { useDispatch, useSelector } from "react-redux";
+import { Switch, Route, Redirect } from "react-router-dom";
+import InputPage from "./pages/InputPage/InputPage";
 import QuotePage from "./pages/quotePage/QuotePage";
-import { setShouldFetchQuotes } from "./pages/quotePage/quote.slice";
-import { setShoutGetCompare } from "./pages/ComparePage/compare.slice";
-
-import { getProposerDetails } from "./pages/InputPage/greetingPage.slice";
-import { getCart } from "./pages/Cart/cart.slice";
-
 import ThankYouPage from "./pages/ThankYouPage/ThankYouPage";
-
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import ProposalPage from "./pages/ProposalPage/ProposalPage";
 import ProposalSummary from "./pages/ProposalSummary/ProposalSummary";
+import ComparePage from "./pages/ComparePage/ComparePage";
+import QuotesPage from "./pages/quotePage/QuotesPage";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
-  const dispatch = useDispatch();
-  const { pathname } = useLocation();
-  const { proposerDetails } = useSelector((state) => state.greetingPage);
-  const { frontendData, theme } = useSelector((state) => state.frontendBoot);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    dispatch(fetchFrontendData()).then(() => {
-      if (pathname === "/") setIsLoading(false);
-      if (pathname.slice(0, 8) === "/compare") {
-        dispatch(setShoutGetCompare(true));
-      }
-      if (pathname !== "/") {
-        dispatch(setShouldFetchQuotes(true));
-      }
-      // dispatch(setShouldFetchQuotes(true));
-      if (pathname !== "/" && Object.keys(proposerDetails || {}).length < 1) {
-        Promise.allSettled([
-          dispatch(getCart()),
-          dispatch(getProposerDetails()),
-        ]).then(() => setIsLoading(false));
-      }
-    });
-  }, []);
-
-  if (isLoading && theme)
-    return (
-      <>
-        <Navbar />
-        <div
-          style={{
-            width: "80%",
-            margin: "20px auto",
-          }}
-        >
-          <FilterSkeletonLoader />
-
-          <div className="d-flex justify-content-between">
-            <div
-              style={{
-                width: "60%",
-                margin: "20px",
-              }}
-            >
-              <CardSkeletonLoader noOfCards={3} />
-            </div>
-            <div
-              style={{
-                width: "32%",
-                margin: "20px",
-              }}
-            >
-              <CardSkeletonLoader noOfCards={1} />
-            </div>
-          </div>
-          <div
-            style={{
-              width: "60%",
-              margin: "20px",
-            }}
-          >
-            <CardSkeletonLoader noOfCards={3} />
-          </div>
-        </div>
-      </>
-    );
-
-  return Object.keys(frontendData || {}).length > 0 ? (
-    <>
-      {theme && (
-        <>
-          <Navbar />
-          <Switch>
-            <Route exact path="/" component={InputPage} />
-            <Route exact path="/quotes/:groupCode" component={QuotePage} />
-            <Route exact path="/compare/:groupCode" component={ComparePage} />
-            <Route exact path="/proposal" component={ProposalPage} />
-
-            <Route exact path="/proposal_summary" component={ProposalSummary} />
-            <Route exact path="/thankyou/" component={ThankYouPage} />
-
-            <Route
-              exact
-              path="/productdetails/:groupCode"
-              component={ProductDetails}
-            />
-          </Switch>
-        </>
-      )}{" "}
-    </>
-  ) : (
-    <>
-      <Navbar />
-      <div
-        style={{
-          width: "80%",
-          margin: "20px auto",
-        }}
-      >
-        <FilterSkeletonLoader />
-
-        <div className="d-flex justify-content-between">
-          <div
-            style={{
-              width: "60%",
-              margin: "20px",
-            }}
-          >
-            <CardSkeletonLoader noOfCards={3} />
-          </div>
-          <div
-            style={{
-              width: "32%",
-              margin: "20px",
-            }}
-          >
-            <CardSkeletonLoader noOfCards={1} />
-          </div>
-        </div>
-        <div
-          style={{
-            width: "60%",
-            margin: "20px",
-          }}
-        >
-          <CardSkeletonLoader noOfCards={3} />
-        </div>
-      </div>
-      <CustomModal1 />
-    </>
+  return (
+    <Switch>
+      <Route path="/" exact>
+        <Redirect to="/input/basic-details" />
+      </Route>
+      <Route exact path="/input/:currentForm" component={InputPage} />
+      <Route exact path="/quotes/:groupCode" component={QuotesPage} />
+      <Route exact path="/compare/:groupCode" component={ComparePage} />
+      <Route exact path="/proposal" component={ProposalPage} />
+      <Route exact path="/proposal_summary" component={ProposalSummary} />
+      <Route exact path="/thankyou/" component={ThankYouPage} />
+      <Route
+        exact
+        path="/productdetails/:groupCode"
+        component={ProductDetails}
+      />
+      <Route path="*" component={PageNotFound} />
+      {process.env.NODE_ENV === "development" && (
+        <Route path={"/test"} exact>
+          Hi
+        </Route>
+      )}
+    </Switch>
   );
 }
 

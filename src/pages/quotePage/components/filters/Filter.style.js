@@ -47,7 +47,6 @@ export const OptionWrapper = styled.ul`
     padding: 14px 5px;
     font-weight: 600;
     input[type="radio"] {
-      
       width: 20px;
       height: 20px;
     }
@@ -78,7 +77,7 @@ export const OptionWrapper = styled.ul`
   input[type="checkbox"]:checked + label {
     .custom_checkbox {
       overflow: hidden;
-      background-color: ${props=>props.PrimaryColor};
+      background-color: ${props => props.PrimaryColor};
       border: 1px solid white;
       &::before {
         content: "\u2713";
@@ -86,14 +85,14 @@ export const OptionWrapper = styled.ul`
         display: flex;
         justify-content: center;
         margin: -3.5px auto;
-        background-color: ${props=>props.PrimaryColor};
+        background-color: ${props => props.PrimaryColor};
       }
     }
   }
   input[type="radio"]:checked + label {
     .custom_radio {
       /* background-color: #0a87ff; */
-      border: 1px solid ${props=>props.PrimaryColor};
+      border: 1px solid ${props => props.PrimaryColor};
       display: flex;
       justify-content: center;
       align-items: center;
@@ -101,7 +100,7 @@ export const OptionWrapper = styled.ul`
       &::before {
         content: "";
         border-radius: 100%;
-        background-color: ${props=>props.PrimaryColor};
+        background-color: ${props => props.PrimaryColor};
         width: 13px;
 
         height: 13px;
@@ -111,7 +110,7 @@ export const OptionWrapper = styled.ul`
 `;
 
 export const ApplyBtn = styled.button`
-  background-color: ${props=>props.PrimaryColor};
+  background-color: ${props => props.PrimaryColor};
   color: white;
   padding: 10px 0px;
   font-size: 17px;

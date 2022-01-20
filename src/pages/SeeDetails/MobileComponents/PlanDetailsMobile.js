@@ -14,7 +14,7 @@ function PlanDetailsMobile({
   brochureUrl,
   policyWordingUrl,
 }) {
-  const { loading } = useSelector((state) => state.seeDetails);
+  const { loading } = useSelector(state => state.seeDetails);
   return (
     <div
       className={`z-content ${ActiveMainTab && "z-active"}`}

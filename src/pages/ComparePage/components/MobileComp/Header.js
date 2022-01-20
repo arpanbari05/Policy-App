@@ -21,7 +21,7 @@ const MobileHeader = ({
   groupCode,
   path,
 }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const dispatch = useDispatch();
@@ -60,10 +60,11 @@ const MobileHeader = ({
   };
   return (
     <StyledHeader PrimaryColor={PrimaryColor}>
-      <a style={{color: 'white'}}
+      <a
+        style={{ color: "white" }}
         className="first-container"
         onClick={() => {
-          history.replace(`/quotes/${groupCode}?enquiryId=${enquiryID}`)
+          history.replace(`/quotes/${groupCode}?enquiryId=${enquiryID}`);
         }}
       >
         <i class="fas fa-arrow-circle-left"></i>
@@ -71,40 +72,36 @@ const MobileHeader = ({
       </a>
       <span className="second-container">
         <a href="#">
-        {
-          downloading?(
+          {downloading ? (
             <span
-                css={`
-                  position: absolute; 
-                  top: 50%;
-                  /* right: 20px; */
-                  color:black;
-                  transform: translateY(-50%) !important;
-                  display:none;
-                  background: #ffffff9e;
-                  @media (max-width:400px){
-                    display: block !important;
-                  }
-                  
-                `}
-              >
-                <i className="fa fa-circle-notch rotate" />
-              </span>
-          ):(
-            <span 
-            onClick={() => {
-              dispatch(requestDownload());
-              download();
-            }}
-        style={{
-          fontSize:"30px"
-        }}>
-          <i class="bi bi-printer"></i>
-          </span>
-          )
-        }
-        
-        
+              css={`
+                position: absolute;
+                top: 50%;
+                /* right: 20px; */
+                color: black;
+                transform: translateY(-50%) !important;
+                display: none;
+                background: #ffffff9e;
+                @media (max-width: 400px) {
+                  display: block !important;
+                }
+              `}
+            >
+              <i className="fa fa-circle-notch rotate" />
+            </span>
+          ) : (
+            <span
+              onClick={() => {
+                dispatch(requestDownload());
+                download();
+              }}
+              style={{
+                fontSize: "30px",
+              }}
+            >
+              <i class="bi bi-printer"></i>
+            </span>
+          )}
         </a>
 
         <a href="#">
@@ -115,9 +112,7 @@ const MobileHeader = ({
               alignItems: "center",
             }}
           >
-            <span
-            onClick={() => setShowShareQuoteModal(true)}
-            >
+            <span onClick={() => setShowShareQuoteModal(true)}>
               {shareSvgIcon()}
             </span>
 
@@ -165,7 +160,7 @@ const MobileHeader = ({
         showButton={false}
         handleClose={() => setSend(false)}
       />
-       <ShareQuoteModal
+      <ShareQuoteModal
         show={showShareQuoteModal}
         handleClose={() => setShowShareQuoteModal(false)}
         imageSend={imageSend}
@@ -193,11 +188,11 @@ const Styledul = styled.ul`
   opacity: 1;
   z-index: 2000;
   top: 60px;
-  right:8px;
+  right: 8px;
   & li {
-    background-color:#0d6efd;
+    background-color: #0d6efd;
     border-radius: 100%;
-    
+
     box-shadow: 0px 1px 2px grey;
     margin-bottom: 2px;
     display: flex;
@@ -211,7 +206,7 @@ const Styledul = styled.ul`
 const StyledHeader = styled.div`
   display: none;
   height: 57px;
-  background:${props=>props.PrimaryColor};
+  background: ${props => props.PrimaryColor};
   align-items: center;
   justify-content: space-between;
   & a {

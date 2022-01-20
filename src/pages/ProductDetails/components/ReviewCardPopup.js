@@ -2,14 +2,14 @@ import { Modal, Col, Row } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styled from "styled-components/macro";
-import { amount, BackgroundBorderTitle } from "./ReviewCart";
+import { BackgroundBorderTitle } from "./ReviewCart";
 import CorrectIcon from "../../../assets/images/correct_icon.png";
 import EditIcon from "../../../assets/images/edit.png";
 import DeleteIcon from "../../../assets/images/remove.png";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
-import { calculateTotalPremium } from "../../../utils/helper";
+import { amount, calculateTotalPremium } from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
 
@@ -113,7 +113,7 @@ function AddOnDetailsCard({
   },
 }) {
   const companies = useSelector(
-    (state) => state.frontendBoot.frontendData.data.companies
+    state => state.frontendBoot.frontendData.data.companies,
   );
   const logoSrc = companies[alias].logo;
 
@@ -214,7 +214,7 @@ function AddOnDetailsCard({
 
 function ProductDetailsCardMobile({ cartItem }) {
   const companies = useSelector(
-    (state) => state.frontendBoot.frontendData.data.companies
+    state => state.frontendBoot.frontendData.data.companies,
   );
   const {
     product: {
@@ -368,7 +368,7 @@ function ProductDetailsCardMobile({ cartItem }) {
             flex-direction: column;
           `}
         >
-          {health_riders.map((health_rider) => (
+          {health_riders.map(health_rider => (
             <div
               css={`
                 /* flex: 1; */
@@ -431,7 +431,7 @@ function ProductDetailsCardMobile({ cartItem }) {
               Add-Ons Coverages
             </div>
           </div>
-          {addons.map((addon) => (
+          {addons.map(addon => (
             <div
               css={`
                 display: none;
@@ -549,10 +549,10 @@ function ProductDetailsCardMobile({ cartItem }) {
 
 function ProductDetailsCard({ cartItem }) {
   const companies = useSelector(
-    (state) => state.frontendBoot.frontendData.data.companies
+    state => state.frontendBoot.frontendData.data.companies,
   );
 
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
@@ -704,7 +704,7 @@ function ProductDetailsCard({ cartItem }) {
       </div>
       {health_riders.length > 0 ? <hr /> : null}
       <div class="row w-100 flex-row">
-        {health_riders.map((health_rider) => (
+        {health_riders.map(health_rider => (
           <div
             css={`
               margin: 2px;
@@ -730,32 +730,32 @@ function ProductDetailsCard({ cartItem }) {
 }
 
 function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-  const name = useSelector((state) => state.greetingPage.proposerDetails.name);
+  const name = useSelector(state => state.greetingPage.proposerDetails.name);
   const firstName = name.split(" ")[0];
-  const cart = useSelector((state) => state.cart);
-  const { memberGroups } = useSelector((state) => state.greetingPage);
-  const groupCodes = Object.keys(cart).filter((item) =>
-    Object.keys(memberGroups).includes(item)
+  const cart = useSelector(state => state.cart);
+  const { memberGroups } = useSelector(state => state.greetingPage);
+  const groupCodes = Object.keys(cart).filter(item =>
+    Object.keys(memberGroups).includes(item),
   );
 
   const allAddOns = groupCodes.reduce(
     (allAddOns, groupCode) => [...allAddOns, ...cart[groupCode].addons],
-    []
+    [],
   );
 
   const additionalDiscounts = useSelector(selectAdditionalDiscounts);
 
-  const findAdditionalDiscount = (discountAlias) =>
-    additionalDiscounts.find((discount) => discount.alias === discountAlias);
+  const findAdditionalDiscount = discountAlias =>
+    additionalDiscounts.find(discount => discount.alias === discountAlias);
 
   let totalPremium = groupCodes.reduce((totalPremium, groupCode) => {
     const { discounts } = cart[groupCode];
     let newTotalPremium = totalPremium + calculateTotalPremium(cart[groupCode]);
     if (discounts) {
-      discounts.forEach((discountAlias) => {
+      discounts.forEach(discountAlias => {
         const discount = findAdditionalDiscount(discountAlias);
         if (discount) {
           newTotalPremium -= newTotalPremium * (discount.percent / 100);
@@ -786,7 +786,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
   //   };
   // }
 
-  const handleCloseClick = (PrimaryColor) => {
+  const handleCloseClick = PrimaryColor => {
     onClose();
   };
 
@@ -823,7 +823,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           }
         `}
       >
-        {groupCodes.map((groupCode) => (
+        {groupCodes.map(groupCode => (
           <ProductCard
             key={groupCode}
             groupCode={groupCode}
@@ -971,8 +971,8 @@ function ProductCard({ groupCode, onClose }) {
       ...reducedAddOns,
       [key]: {
         ...reducedAddOns[key],
-        members: members.some((member) =>
-          reducedAddOns[key]["members"].includes(member)
+        members: members.some(member =>
+          reducedAddOns[key]["members"].includes(member),
         )
           ? reducedAddOns[key]["members"]
           : [...reducedAddOns[key]["members"], ...members],
@@ -1038,7 +1038,7 @@ function ProductCard({ groupCode, onClose }) {
               padding: 0 15px;
             `}
           >
-            {Object.keys(reducedAddOns).map((addOnKey) => (
+            {Object.keys(reducedAddOns).map(addOnKey => (
               <AddOnDetailsCard
                 key={addOnKey}
                 addOn={reducedAddOns[addOnKey]}

@@ -77,7 +77,7 @@ export const getAbhiRidersApi = ({
   sum_insured,
   tenure,
   group,
-  string
+  string,
 }) =>
   HttpClient(
     `products/${productId}/riders?sum_insured=${sum_insured}&tenure=${tenure}&group=${group}&${string}`,

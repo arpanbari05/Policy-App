@@ -10,12 +10,12 @@ const InsurerMobile = ({
 }) => {
   const sortedCompaniesMobile = sortedCompanies
     .filter(
-      (comp) =>
+      comp =>
         data?.companies[comp].insurance_types.includes("top_up") ||
         data?.companies[comp].insurance_types.includes("health") ||
         data?.companies[comp].insurance_types.includes("cancer") ||
         data?.companies[comp].insurance_types.includes("critical_illness") ||
-        data?.companies[comp].insurance_types.includes("personal_accident")
+        data?.companies[comp].insurance_types.includes("personal_accident"),
     )
     .sort((a, b) => data?.companies[b].csr - data?.companies[a].csr);
   return (
@@ -23,7 +23,7 @@ const InsurerMobile = ({
       {" "}
       <article>
         <Row>
-          {sortedCompaniesMobile?.map((item) => (
+          {sortedCompaniesMobile?.map(item => (
             <Col md={12} className="padding-none">
               <div className="inputGroup">
                 <input
@@ -45,7 +45,7 @@ const InsurerMobile = ({
                   onClick={() => {
                     if (selected.includes(data?.companies[item]))
                       setSelected(
-                        selected.filter((ins) => ins !== data?.companies[item])
+                        selected.filter(ins => ins !== data?.companies[item]),
                       );
                     else setSelected([...selected, data?.companies[item]]);
                   }}

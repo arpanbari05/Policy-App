@@ -25,7 +25,13 @@ import GreetingFormDropdown from "../../../../components/RoundDD2";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
-export const AddOnBuyButton = ({ selected, onClick = () => {}, children,PrimaryColor,PrimaryShade }) => (
+export const AddOnBuyButton = ({
+  selected,
+  onClick = () => {},
+  children,
+  PrimaryColor,
+  PrimaryShade,
+}) => (
   <button
     css={`
       width: 100%;
@@ -36,7 +42,7 @@ export const AddOnBuyButton = ({ selected, onClick = () => {}, children,PrimaryC
       /* border-radius: 12px; */
       border-radius: 6px;
       font-size: 20px;
-      color: ${selected ? PrimaryColor : 'unset'};
+      color: ${selected ? PrimaryColor : "unset"};
       font-weight: 900;
       text-align: center;
       padding: 10px;
@@ -200,7 +206,7 @@ function EditDetailsPopup({
   const [selectedCover, setSelectedCover] = useState(cover || covers[0]);
   const [selectedMember, setSelectedMember] = useState(member || members[0]);
   const [selectedDeductable, setSelectedDeductable] = useState(
-    deductable || deductables[0]
+    deductable || deductables[0],
   );
 
   const handleUpdate = () => {
@@ -365,14 +371,14 @@ function EditDetailsPopup({
               <DetailDropDown
                 options={covers}
                 selected={selectedCover}
-                onChange={(e) => setSelectedCover(e)}
+                onChange={e => setSelectedCover(e)}
               />
             </Detail>
             <Detail label="Members">
               <DetailDropDown
                 options={members}
                 selected={selectedMember}
-                onChange={(e) => setSelectedMember(e)}
+                onChange={e => setSelectedMember(e)}
               />
             </Detail>
             {addOnType === "top_up" ? (
@@ -380,7 +386,7 @@ function EditDetailsPopup({
                 <DetailDropDown
                   options={deductables}
                   selected={selectedDeductable}
-                  onChange={(e) => setSelectedDeductable(e)}
+                  onChange={e => setSelectedDeductable(e)}
                 />
               </Detail>
             ) : null}
@@ -564,9 +570,9 @@ function AddOnCard({
   const sumInsuredList = Object.keys(premium);
 
   const [sumInsured, setSumInsured] = useState(
-    selected[0] ? selected[0].sum_insured : sumInsuredList[0]
+    selected[0] ? selected[0].sum_insured : sumInsuredList[0],
   );
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const membersList = Object.keys(premium[sumInsured]);
@@ -578,18 +584,18 @@ function AddOnCard({
       ? selected.length > 1
         ? "All"
         : selected[0].members[0]
-      : membersList[0]
+      : membersList[0],
   );
 
   const companies = useSelector(
-    (state) => state.frontendBoot.frontendData.data.companies
+    state => state.frontendBoot.frontendData.data.companies,
   );
 
   const companyLogoSrc = companies[addOn.company.alias].logo;
 
   const { groupCode } = useParams();
 
-  const cart = useSelector((state) => state.cart[groupCode]);
+  const cart = useSelector(state => state.cart[groupCode]);
 
   const { sum_insured: deductable, group } = cart ?? {};
 
@@ -603,7 +609,7 @@ function AddOnCard({
               totalPremium +
               parseInt(premium?.[sumInsured]?.[member]?.total_premium)
             );
-          }, 0)
+          }, 0),
         )
       : amount(premium?.[sumInsured]?.[member]?.total_premium)
     : 0;
@@ -621,7 +627,7 @@ function AddOnCard({
     setShowDetails(!showDetails);
   };
 
-  const memberGroups = useSelector((state) => state.greetingPage.memberGroups);
+  const memberGroups = useSelector(state => state.greetingPage.memberGroups);
 
   const getSendData = () => {
     const sendData =
@@ -640,7 +646,7 @@ function AddOnCard({
             },
           ]
         : member === "all" || member === "All"
-        ? membersList.map((member) => {
+        ? membersList.map(member => {
             const {
               premium: basePremium,
               total_premium,
@@ -795,9 +801,7 @@ function AddOnCard({
               color: #000;
             }
           `}
-          onClick={() =>
-            toggleDetailsShow()
-          }
+          onClick={() => toggleDetailsShow()}
         >
           View Details
         </button>
@@ -821,7 +825,12 @@ function AddOnCard({
         `}
       >
         <AddOnName />
-        <AddOnBuyButton onClick={handleBuy} selected={selected.length} PrimaryColor={PrimaryColor} PrimaryShade={PrimaryShade}>
+        <AddOnBuyButton
+          onClick={handleBuy}
+          selected={selected.length}
+          PrimaryColor={PrimaryColor}
+          PrimaryShade={PrimaryShade}
+        >
           {displayPremium}
         </AddOnBuyButton>
       </div>
@@ -951,7 +960,12 @@ function AddOnCard({
           `}
           className="mt-4"
         >
-          <AddOnBuyButton onClick={handleBuy} selected={selected.length} PrimaryColor={PrimaryColor} PrimaryShade={PrimaryShade}>
+          <AddOnBuyButton
+            onClick={handleBuy}
+            selected={selected.length}
+            PrimaryColor={PrimaryColor}
+            PrimaryShade={PrimaryShade}
+          >
             <div className="d-flex align-items-center w-100 justify-content-center">
               <span className="premium">{displayPremium}</span>{" "}
               <span
@@ -990,28 +1004,28 @@ function AddOns({ addOns = {} }) {
   const { groupCode } = useParams();
   const { product, updateProductRedux } = useCartProduct(groupCode);
 
-  const addAddOn = (addOns) => {
+  const addAddOn = addOns => {
     let newAddOns = [...product.addons];
-    const addOnTypeExist = product.addons.some((addon) =>
-      addOns.some((addOn) => {
+    const addOnTypeExist = product.addons.some(addon =>
+      addOns.some(addOn => {
         const sameAddOnType =
           addOn.product.insurance_type.alias ===
           addon.product.insurance_type.alias;
-        const sameMember = addOn.members.some((addOnMember) =>
-          addon.members.includes(addOnMember)
+        const sameMember = addOn.members.some(addOnMember =>
+          addon.members.includes(addOnMember),
         );
         return sameAddOnType && sameMember;
-      })
+      }),
     );
     if (addOnTypeExist) {
       newAddOns = newAddOns.filter(
-        (newAddOn) =>
+        newAddOn =>
           !addOns.some(
-            (addOn) =>
+            addOn =>
               addOn.product.insurance_type.alias ===
                 newAddOn.product.insurance_type.alias &&
-              addOn.members.some((member) => newAddOn.members.includes(member))
-          )
+              addOn.members.some(member => newAddOn.members.includes(member)),
+          ),
       );
     }
     updateProductRedux({
@@ -1021,38 +1035,38 @@ function AddOns({ addOns = {} }) {
     });
   };
 
-  const removeAddOn = (addOnId) => {
+  const removeAddOn = addOnId => {
     updateProductRedux({
       ...product,
       page: "product details 2",
-      addons: product.addons.filter((addon) => addon.product.id !== addOnId),
+      addons: product.addons.filter(addon => addon.product.id !== addOnId),
     });
   };
 
-  const updateAddOn = (addOns) => {
-    let newAddOns = product.addons.filter((addon) =>
-      addOns.some((addOn) => addOn.product.id !== addon.product.id)
+  const updateAddOn = addOns => {
+    let newAddOns = product.addons.filter(addon =>
+      addOns.some(addOn => addOn.product.id !== addon.product.id),
     );
-    const addOnTypeExist = product.addons.some((addon) =>
-      addOns.some((addOn) => {
+    const addOnTypeExist = product.addons.some(addon =>
+      addOns.some(addOn => {
         const sameAddOnType =
           addOn.product.insurance_type.alias ===
           addon.product.insurance_type.alias;
-        const sameMember = addOn.members.some((addOnMember) =>
-          addon.members.includes(addOnMember)
+        const sameMember = addOn.members.some(addOnMember =>
+          addon.members.includes(addOnMember),
         );
         return sameAddOnType && sameMember;
-      })
+      }),
     );
     if (addOnTypeExist) {
       newAddOns = newAddOns.filter(
-        (newAddOn) =>
+        newAddOn =>
           !addOns.some(
-            (addOn) =>
+            addOn =>
               addOn.product.insurance_type.alias ===
                 newAddOn.product.insurance_type.alias &&
-              addOn.members.some((member) => newAddOn.members.includes(member))
-          )
+              addOn.members.some(member => newAddOn.members.includes(member)),
+          ),
       );
     }
     updateProductRedux({
@@ -1083,7 +1097,7 @@ function AddOns({ addOns = {} }) {
             : "flex-start"} !important;
         `}
       >
-        {Object.keys(addOns).map((addOnId) => (
+        {Object.keys(addOns).map(addOnId => (
           <div
             css={`
               width: 48%;
@@ -1101,11 +1115,11 @@ function AddOns({ addOns = {} }) {
           >
             <AddOnCard
               selected={product.addons
-                .filter((addon) => addon.product.id === parseInt(addOnId))
-                .map((addon) =>
+                .filter(addon => addon.product.id === parseInt(addOnId))
+                .map(addon =>
                   addon.members.length > 1
                     ? { ...addon, members: ["all"] }
-                    : addon
+                    : addon,
                 )}
               addOnData={addOns[addOnId]}
               handleBuyNow={handleBuyNow}
@@ -1165,7 +1179,7 @@ const AddOnsNav = styled(Tabs)`
     }
     .nav-link.active {
       border-color: #0a87ff;
-      background: ${(props) => props.PrimaryColor};
+      background: ${props => props.PrimaryColor};
       color: white !important;
       border-radius: 50px;
       &::after {
@@ -1192,65 +1206,63 @@ function AddOnCoveragesSection() {
     "cancer",
   ]);
   const { groupCode } = useParams();
-  const cart = useSelector((state) => state.cart[groupCode]);
+  const cart = useSelector(state => state.cart[groupCode]);
   const { sum_insured } = cart;
 
   const companies = useSelector(
-    (state) => state.frontendBoot.frontendData.data.companies
+    state => state.frontendBoot.frontendData.data.companies,
   );
 
   const companyAliasList = Object.keys(companies);
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-  const getCompanies = (insuranceType) =>
-    companyAliasList.filter((companyAlias) =>
-      companies[companyAlias].insurance_types.includes(insuranceType)
+  const getCompanies = insuranceType =>
+    companyAliasList.filter(companyAlias =>
+      companies[companyAlias].insurance_types.includes(insuranceType),
     );
 
-  const removeLoader = (loaderToRemove) =>
-    setLoaders((loaders) =>
-      loaders.filter((loader) => loader !== loaderToRemove)
-    );
+  const removeLoader = loaderToRemove =>
+    setLoaders(loaders => loaders.filter(loader => loader !== loaderToRemove));
 
   const getAddOns = (addOnType, callback) => {
     const companies = getCompanies(addOnType);
     const fetchAddOns = addOnsFetch[addOnType];
     return Promise.allSettled(
-      companies.map((company_alias) =>
+      companies.map(company_alias =>
         fetchAddOns({
           company_alias,
           sum_insured,
           groupCode,
         })
-          .then((response) => {
+          .then(response => {
             if (response.data.data.length > 0) {
               const { data: addOns } = response.data;
               callback(normalizeAddOnsData(addOnType, addOns));
             }
           })
-          .catch((err) => console.log({ err }))
-      )
+          .catch(err => console.log({ err })),
+      ),
     ).finally(() => removeLoader(addOnType));
   };
 
   const updateAddOns = (addOnData, callback) =>
-    callback((prevAddOns) => ({ ...prevAddOns, ...addOnData }));
+    callback(prevAddOns => ({ ...prevAddOns, ...addOnData }));
 
   const {
     proposerDetails: { members: membersWithAge },
-  } = useSelector((state) => state.greetingPage);
+  } = useSelector(state => state.greetingPage);
 
   useEffect(() => {
     setTopUps({});
     setCriticalIllnessList({});
     setCancerAddOns({});
-    getAddOns("top_up", (topUpsData) => updateAddOns(topUpsData, setTopUps));
-    getAddOns("critical_illness", (criticalIllnessData) =>
-      updateAddOns(criticalIllnessData, setCriticalIllnessList)
+    getAddOns("top_up", topUpsData => updateAddOns(topUpsData, setTopUps));
+    getAddOns("critical_illness", criticalIllnessData =>
+      updateAddOns(criticalIllnessData, setCriticalIllnessList),
     );
-    getAddOns("cancer", (cancerData) =>
-      updateAddOns(cancerData, setCancerAddOns)
+    getAddOns("cancer", cancerData =>
+      updateAddOns(cancerData, setCancerAddOns),
     );
   }, [membersWithAge, groupCode]);
 

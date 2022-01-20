@@ -1,8 +1,6 @@
 import moment from "moment";
 import { date } from "yup";
 
-
-
 export const acceptedEmailExtensions = [
   ".com",
   ".org",
@@ -219,7 +217,7 @@ export const validationIndex = {
         case "date":
           if (
             !/^(0?[1-9]|[12][0-9]|3[01])[\-](0?[1-9]|1[012])[\-]\d{4}$/.test(
-              value
+              value,
             )
           ) {
             return {
@@ -231,15 +229,16 @@ export const validationIndex = {
           let passCase = true;
           for (let index = 0; index < acceptedEmailExtensions.length; index++) {
             const element = acceptedEmailExtensions[index];
-            if(value.includes(element)) {
+            if (value.includes(element)) {
               passCase = false;
               break;
             }
           }
           if (
             !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-              value
-            ) || passCase
+              value,
+            ) ||
+            passCase
           ) {
             return {
               status: false,
@@ -249,7 +248,7 @@ export const validationIndex = {
         case "pan":
           if (
             !/^([a-zA-Z]{3}[P]{1}[a-zA-Z]{1})([0-9]{4})([a-zA-Z]{1})$/.test(
-              value
+              value,
             )
           ) {
             return {
@@ -267,7 +266,7 @@ export const validationIndex = {
         case "gst":
           if (
             !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
-              value
+              value,
             )
           ) {
             return {
@@ -317,13 +316,12 @@ export const validationIndex = {
                 message: "Please enter a valid value.",
               };
             } else break;
-          } else
-            return 
-            // {
-            //   status: false,
-            //   message:
-            //     "No Regex specified for the combination remove matches or change the param",
-            // };
+          } else return;
+        // {
+        //   status: false,
+        //   message:
+        //     "No Regex specified for the combination remove matches or change the param",
+        // };
       }
     }
   },

@@ -96,10 +96,10 @@ export const generateRange = (param, values) => {
 export const mergeSchema = (schemasToMerge = []) => {
   if (schemasToMerge.length === 1) return schemaIndex[schemasToMerge[0]];
   let mergedSchemas = [];
-  let collectedSchemas = schemasToMerge.map((item) => schemaIndex[item]);
+  let collectedSchemas = schemasToMerge.map(item => schemaIndex[item]);
   let flatSchemas = collectedSchemas.flat();
   mergedSchemas = flatSchemas.filter(
-    (item, index, self) => index === self.findIndex((_) => _.name === item.name)
+    (item, index, self) => index === self.findIndex(_ => _.name === item.name),
   );
   return mergedSchemas;
 };
@@ -107,7 +107,7 @@ export const fetchMembers = (when, values) => {
   const variable = when.split(".")[0];
   const members = values[variable].members;
 
-  return Object.keys(members).filter((item) => members[item]);
+  return Object.keys(members).filter(item => members[item]);
 };
 export const performValidations = (validate, values, name) => {
   const validationArray = Object.keys(validate);
@@ -117,7 +117,7 @@ export const performValidations = (validate, values, name) => {
     let result = validationIndex[validationArray[i]](
       validate[validationArray[i]],
       values,
-      name
+      name,
     );
 
     if (result && !result.status) {
@@ -130,7 +130,7 @@ export const fillingUtility = (fill, updateValue, checkValue, checkName) => {
   switch (type) {
     case "relation":
       if (checkValue && checkValue.includes("M_"))
-        updateValue((prev) => {
+        updateValue(prev => {
           return { ...prev, [fieldName]: "M", [checkName]: checkValue };
         });
       break;

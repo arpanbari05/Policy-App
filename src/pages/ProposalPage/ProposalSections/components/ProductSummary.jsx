@@ -13,27 +13,27 @@ import Card from "../../../../components/Card";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { BackgroundBorderTitle } from "../../../ProductDetails/components/ReviewCart";
 import { useGetAdditionalDiscountsQuery } from "../../../../api/api";
+import { useFrontendBoot, useTheme } from "../../../../customHooks";
 
-const removeTotalPremium = (cart) => {
+const removeTotalPremium = cart => {
   let { totalPremium, ...y } = cart;
   return y;
 };
 
-const numToString = (value) => value.toLocaleString("en-IN");
+const numToString = value => value.toLocaleString("en-IN");
 const ProductSummary = ({ cart, setActive }) => {
   const [show, setShow] = useState(false);
   const [collapse, setCollapse] = useState(false);
-  const { proposerDetails } = useSelector((state) => state.greetingPage);
-  const { planDetails } = useSelector((state) => state.proposalPage);
+  const { proposerDetails } = useSelector(state => state.greetingPage);
+  const { planDetails } = useSelector(state => state.proposalPage);
   const dispatch = useDispatch();
   useEffect(() => {
     setShow(planDetails.show);
   }, [planDetails]);
-  console.log(collapse, "sadgsadg3");
 
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { colors } = useTheme();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const PrimaryShade = colors.primary_shade;
 
   const content = (
     <>
@@ -171,14 +171,14 @@ const ProductSummary = ({ cart, setActive }) => {
                         class="btn btn_continue_medi_revise_pop next"
                         value="Continue"
                         onClick={() => {
-                          setActive((prev) => prev + 1);
+                          setActive(prev => prev + 1);
                           dispatch(
                             setPlanDetails({
                               title: "Your Plan Details",
                               show: false,
                               prevCart: {},
                               isRenewed: false,
-                            })
+                            }),
                           );
                         }}
                       >
@@ -325,8 +325,9 @@ const ViewPlanDetails = styled.span`
 `;
 
 function CartSummary({ item, index }) {
-  const { frontendData } = useSelector((state) => state.frontendBoot);
-  const { planDetails } = useSelector((state) => state.proposalPage);
+  const { data: frontendData } = useFrontendBoot();
+
+  const { planDetails } = useSelector(state => state.proposalPage);
   const prevCart = Object.values(removeTotalPremium(planDetails.prevCart));
 
   const [showRiders, setShowRiders] = useState(false);
@@ -344,9 +345,9 @@ function CartSummary({ item, index }) {
 
   const additionalDiscounts = data.data;
 
-  const findAdditionalDiscount = (discountAlias) =>
+  const findAdditionalDiscount = discountAlias =>
     additionalDiscounts.find(
-      (additionalDiscount) => additionalDiscount.alias === discountAlias
+      additionalDiscount => additionalDiscount.alias === discountAlias,
     );
 
   return (
@@ -396,7 +397,7 @@ function CartSummary({ item, index }) {
         >
           <span>
             <img
-              src={frontendData.data.companies[item.product.company.alias].logo}
+              src={frontendData.companies[item.product.company.alias].logo}
             />{" "}
           </span>
 
@@ -579,7 +580,7 @@ function CartSummary({ item, index }) {
             `}
           >
             {console.log("asgehd23", item.health_riders)}
-            {item.health_riders.map((riders) => (
+            {item.health_riders.map(riders => (
               <div
                 css={`
                   display: flex;
@@ -658,7 +659,7 @@ function CartSummary({ item, index }) {
               // padding: 0 10px;
             `}
           >
-            {item.discounts.map((discountAlias) => (
+            {item.discounts.map(discountAlias => (
               <div
                 css={`
                   display: flex;
@@ -773,7 +774,7 @@ function CartSummary({ item, index }) {
                 <span>
                   <img
                     src={
-                      frontendData.data.companies[addOns.product.company.alias]
+                      frontendData.companies[addOns.product.company.alias]
                         .logo
                     }
                     className="img_top_m_custom_medical"
@@ -837,7 +838,7 @@ function CartSummary({ item, index }) {
                   {numToString(
                     prevCart[index]
                       ? prevCart[index].addons[addOnIndex].total_premium
-                      : addOns.premium
+                      : addOns.premium,
                   )}{" "}
                   / year
                 </span>

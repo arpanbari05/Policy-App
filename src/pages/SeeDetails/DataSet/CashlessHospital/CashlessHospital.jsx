@@ -4,8 +4,8 @@ import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
 import "styled-components/macro";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
-const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
-  const { loading } = useSelector((state) => state.seeDetails);
+const CashlessHospital = ({ ActiveMainTab, hospitals, company }) => {
+  const { loading } = useSelector(state => state.seeDetails);
   const [searchText, setSearchText] = useState("");
   const [searchByNameKeys, setSearchByNameKeys] = useState([]);
   const [searchByPincodeKeys, setSearchByPincodeKeys] = useState([]);
@@ -24,8 +24,8 @@ const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
 
   useEffect(() => {
     if (searchText.length > 0) {
-      const tempArray = hospitals.hospitals.filter((data) =>
-        data.name.toLowerCase().includes(searchText.toLowerCase())
+      const tempArray = hospitals.hospitals.filter(data =>
+        data.name.toLowerCase().includes(searchText.toLowerCase()),
       );
 
       setFoundHospital(tempArray);
@@ -63,7 +63,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
     //   }
     // }
   }, [searchText]);
-  console.log("hero",company)
+  console.log("hero", company);
   return (
     <div
       className={`z-content ${ActiveMainTab && "z-active"}`}
@@ -99,7 +99,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
         </p> */}
               <div className="row hospital_new_css_r">
                 {hospitals.displayHospitals &&
-                  hospitals.displayHospitals.map((item) => {
+                  hospitals.displayHospitals.map(item => {
                     return (
                       <div
                         className="col-md-4"
@@ -109,18 +109,21 @@ const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
                             padding: 0;
                           }
                           & li {
-                           
                             list-style-type: none;
                             min-height: 135px;
                             box-shadow: 0 3px 13px 0 rgb(0 0 0 / 16%);
-                       
+
                             padding: 15px;
                             min-height: 156px;
                           }
                         `}
                       >
                         <ul>
-                          <li css={`margin-bottom: 20px;`}>
+                          <li
+                            css={`
+                              margin-bottom: 20px;
+                            `}
+                          >
                             <h4
                               className="sidebar-title color_red"
                               style={{ paddingBottom: "3px", fontSize: "18px" }}
@@ -193,7 +196,9 @@ const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
               </div>
               <div
                 className="row hospital_margin"
-                css={`justify-content: center;`}
+                css={`
+                  justify-content: center;
+                `}
               >
                 <div
                   className="col-lg-12 col-md-6 col-sm-8 border_search_all"
@@ -211,7 +216,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
                     <div className="col-md-12">
                       <div className="single-block mb-10">
                         <form
-                          onSubmit={(e) => {
+                          onSubmit={e => {
                             e.preventDefault();
                           }}
                           css={`
@@ -234,7 +239,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
                             `}
                             type="text"
                             value={searchText}
-                            onChange={(e) => {
+                            onChange={e => {
                               setSearchText(e.target.value);
                             }}
                             placeholder="Search Hospitals"
@@ -245,14 +250,18 @@ const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
                   </div>
                 </div>
 
-                <table className="table margin_p_r_table table_pro_search" css={`    margin: 0 10px;`}>
+                <table
+                  className="table margin_p_r_table table_pro_search"
+                  css={`
+                    margin: 0 10px;
+                  `}
+                >
                   <tbody
                     css={`
                       & td {
                         border-bottom: 1px solid #d5ddea6e !important;
                         padding: 15px;
                       }
-                    
                     `}
                   >
                     <tr
@@ -267,10 +276,12 @@ const CashlessHospital = ({ ActiveMainTab, hospitals,company }) => {
                     >
                       <th style={{ paddingTop: "unset" }}>Hospital Name</th>
                       <th>Address</th>
-                      {((company!=="max_bupa")  && (company!=="aditya_birla" )) &&  <th>Phone Number</th>}
+                      {company !== "max_bupa" && company !== "aditya_birla" && (
+                        <th>Phone Number</th>
+                      )}
                     </tr>
                     {foundHospital?.length > 0 &&
-                      foundHospital?.map((item) => (
+                      foundHospital?.map(item => (
                         <tr>
                           <td>{item.name}</td>
                           <td>{item.address}</td>

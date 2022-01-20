@@ -18,31 +18,35 @@ const FormBuilder = createSlice({
 });
 export const { setAsyncOptions, setAsyncValues } = FormBuilder.actions;
 export const callApi = (endPoint, param, bus) => {
-  console.log("selecteoptionssn",endPoint, param)
-  return async (dispatch) => {
- 
+  console.log("selecteoptionssn", endPoint, param);
+  return async dispatch => {
     const { data } = await axios.get(
       process.env.REACT_APP_API_BASE_URL + endPoint,
-      { params: param }
+      { params: param },
     );
     let options = {};
     let values = {};
     let temp = data.data;
     if (endPoint.includes("area")) {
       let newTemp = temp[0];
-      newTemp.forEach((innerItem) => {
+      newTemp.forEach(innerItem => {
         let [value, key] = Object.values(innerItem);
         options = {
           ...options,
-          ...{ [`area_${Object.keys(param)[0].split("_")[1]}`]: { ...options["area"], ...{ [key]: value } } },
+          ...{
+            [`area_${Object.keys(param)[0].split("_")[1]}`]: {
+              ...options["area"],
+              ...{ [key]: value },
+            },
+          },
         };
       });
     } else
-      Object.keys(temp).forEach((item) => {
+      Object.keys(temp).forEach(item => {
         if (typeof temp[item] === "string") {
           values = { ...values, [item]: temp[item] };
         } else if (temp[item] instanceof Array) {
-          temp[item].forEach((innerItem) => {
+          temp[item].forEach(innerItem => {
             let [value, key] = Object.values(innerItem);
             options = {
               ...options,

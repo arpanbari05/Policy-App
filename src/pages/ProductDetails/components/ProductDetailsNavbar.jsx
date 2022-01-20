@@ -7,14 +7,15 @@ import "styled-components/macro";
 import { mobile } from "../../../utils/mediaQueries";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentSection } from "../productDetails.slice";
+import { useFrontendBoot, useTheme } from "../../../customHooks";
 
 function ProductDetailsNavbar() {
-  const currentSection = useSelector(
-    (state) => state.productPage.currentSection
-  );
-  const { riders_visibilty, addons_visibilty } = useSelector(
-    (state) => state.frontendBoot.frontendData.data.settings
-  );
+  const currentSection = useSelector(state => state.productPage.currentSection);
+  const {
+    data: {
+      settings: { riders_visibilty, addons_visibilty },
+    },
+  } = useFrontendBoot();
 
   const [showReviewButton, setShowReviewbutton] = useState(false);
 
@@ -25,8 +26,10 @@ function ProductDetailsNavbar() {
   const reviewButton = document.querySelector("#review-cart-button");
 
   const handleScroll = () => {
-    if (!isInViewport(reviewButton)) setShowReviewbutton(true);
-    else setShowReviewbutton(false);
+    if (reviewButton) {
+      if (!isInViewport(reviewButton)) setShowReviewbutton(true);
+      else setShowReviewbutton(false);
+    }
   };
 
   useEffect(() => {
@@ -154,9 +157,8 @@ function ProductDetailsNavbar() {
 export default ProductDetailsNavbar;
 
 function ClickToScroll({ label, scrollToElementId }) {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { colors } = useTheme();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const dispatch = useDispatch();
   const handleClick = () => {
     window.location.hash = scrollToElementId;
@@ -164,9 +166,7 @@ function ClickToScroll({ label, scrollToElementId }) {
     scrollToElement.scrollIntoView();
     dispatch(setCurrentSection(scrollToElementId));
   };
-  const currentSection = useSelector(
-    (state) => state.productPage.currentSection
-  );
+  const currentSection = useSelector(state => state.productPage.currentSection);
   const isSelected = currentSection === scrollToElementId;
   return (
     <button
@@ -185,7 +185,7 @@ function ClickToScroll({ label, scrollToElementId }) {
         font-weight: 900;
         font-size: 15px;
 
-        color: ${!isSelected ? "#000" : PrimaryColor};
+        color: ${!isSelected ? "#000" : colors.primary_color};
         &::after {
           content: "";
           opacity: 0;
@@ -199,7 +199,7 @@ function ClickToScroll({ label, scrollToElementId }) {
           background-color: var(--abc-red);
         }
         &:hover {
-          color: ${!isSelected ? "grey" : PrimaryColor};
+          color: ${!isSelected ? "grey" : colors.primary_color};
           /* &::after {
             opacity: 1;
           } */

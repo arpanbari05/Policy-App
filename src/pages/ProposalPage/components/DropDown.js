@@ -18,14 +18,14 @@ const DropDown = ({
   dropPlaceholder,
   readOnly,
   checkValidation,
-  excludeOptions
+  excludeOptions,
 }) => {
   // const excludeOptions = {
   //   when: "Proposer.marital_status",
   //   is: "single",
   //   exclude: ["WIFE", "HUSBAND"],
   // };
-  console.log(asyncOptions,label,'sdagsadg')
+  console.log(asyncOptions, label, "sdagsadg");
 
   const excludeOptionsPage = excludeOptions?.when?.split(".")[0];
   const excludeOptionsVariable = excludeOptions?.when?.split(".")[1];
@@ -47,9 +47,8 @@ const DropDown = ({
 
   return (
     <SelectContainer height={height}>
-    
       <Select
-        onChange={(e) => {
+        onChange={e => {
           onChange(e, selectOption[e.target.value]);
         }}
         value={value}
@@ -91,11 +90,11 @@ const DropDown = ({
 
 export default DropDown;
 const SelectContainer = styled.div`
-  margin-top: ${(props) =>
+  margin-top: ${props =>
     !props.height ? "0.3rem !important" : "9px !important"};
   position: relative;
 
-  margin-bottom: ${(props) =>
+  margin-bottom: ${props =>
     !props.height ? "12px !important" : "9px !important"};
 
   @media (max-width: 767px) {
@@ -121,28 +120,28 @@ const Select = styled.select`
   touch-action: manipulation;
   width: 100%;
 
-  border: ${(props) => !props.height && "1px solid #ced4da"};
+  border: ${props => !props.height && "1px solid #ced4da"};
 
-  border: ${(props) => props.error && "solid 1px #c7222a"};
+  border: ${props => props.error && "solid 1px #c7222a"};
   // border-radius: 8px;
-  // background-color: ${(props) => props.error && "#fff6f7"};
+  // background-color: ${props => props.error && "#fff6f7"};
 
-  height: ${(props) => (!props.height ? "55px" : "35px")};
-  border-right: ${(props) => props.borderR && "1px solid #ced4da"};
+  height: ${props => (!props.height ? "55px" : "35px")};
+  border-right: ${props => props.borderR && "1px solid #ced4da"};
 
   font-size: 14px;
   color: #939393;
   position: relative;
   padding: 0 25px;
   &:focus {
-    border: ${(props) => props.error && "solid 1px #c7222a"};
+    border: ${props => props.error && "solid 1px #c7222a"};
     color: black;
     background: url(${up}) no-repeat 98%;
   }
 
   @media (max-width: 767px) {
     font-size: 14px;
-    height: ${(props) => (!props.height ? "42px" : "24px")};
+    height: ${props => (!props.height ? "42px" : "24px")};
     padding: 0 16px;
     border-radius: 6px;
   }
@@ -161,7 +160,7 @@ const Label = styled.label`
   line-height: 14px;
   position: absolute;
   left: 20px;
-  top: ${(props) => (!props.height ? "-8px" : "-18px")};
+  top: ${props => (!props.height ? "-8px" : "-18px")};
   margin: 0;
   background: #fff;
   transition: all 0.3s ease-in-out;

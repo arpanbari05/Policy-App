@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getFrontendData } from "../serviceApi/frontendBoot";
 //import { setFilters } from "../../modules/QuotesPage/quotePage.slice";
-import {theme} from '.././../assets/global'
+import { theme } from ".././../assets/global";
 import SecureLS from "secure-ls";
 import axios from "axios";
 import { setFilters } from "../../pages/quotePage/quote.slice";
@@ -12,9 +12,9 @@ const frontEndBoot = createSlice({
   name: "frontendBoot",
   initialState: {
     frontendData: {},
-    theme,
-    tempModifications:{
-      hideMultiIndivedualPlans:false
+    // theme,
+    tempModifications: {
+      hideMultiIndivedualPlans: false,
     },
     loading: false,
     error: false,
@@ -53,7 +53,7 @@ export const {
 export default frontEndBoot.reducer;
 
 export const fetchFrontendData = (onFetch = () => {}) => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       dispatch(requestFrontendData());
       const data = await getFrontendData();
@@ -69,5 +69,8 @@ export const fetchFrontendData = (onFetch = () => {}) => {
   };
 };
 
-export const selectCompany = (company_alias) => (state) =>
+export const selectCompany = company_alias => state =>
   state.frontendBoot.frontendData.data.companies[company_alias];
+export const selectCompanies = state =>
+  state.frontendBoot.frontendData.data.companies;
+export const selectTheme = state => state.frontendBoot.theme;

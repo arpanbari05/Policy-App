@@ -25,7 +25,7 @@ const Form1 = ({
   memberGroup,
 }) => {
   const dispatch = useDispatch();
-  const { frontendData, theme } = useSelector((state) => state.frontendBoot);
+  const { frontendData, theme } = useSelector(state => state.frontendBoot);
   const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const {
     regionDetailsLoading,
@@ -34,7 +34,7 @@ const Form1 = ({
     isDisabled,
     regionDetailsError,
     memberGroups,
-  } = useSelector((state) => state.greetingPage);
+  } = useSelector(state => state.greetingPage);
 
   const forbiddedSymbols = [
     "!",
@@ -125,9 +125,9 @@ const Form1 = ({
           },
           handleChange,
           memberGroup,
-          form
+          form,
           // pushToQuotes
-        )
+        ),
       );
     } else if (
       proposerDetails?.[memberGroup]?.city?.toLowerCase() ===
@@ -199,10 +199,10 @@ const Form1 = ({
             clear={() => setPinCode("")}
             value={pinCode}
             label={`Pincode/City`}
-            onChange={(e) => {
+            onChange={e => {
               console.log("Change occured in input", e.target.value);
               let falseChar = false;
-              e.target.value.split("").map((char) => {
+              e.target.value.split("").map(char => {
                 if (forbiddedSymbols.indexOf(char) >= 0) falseChar = true;
               });
               // forbiddedSymbols
@@ -259,10 +259,10 @@ const Form1 = ({
             cities &&
             pinCode.length > 2 &&
             !cities.some(
-              (city) => city.pincode === proposerDetails?.[memberGroup]?.pincode
+              city => city.pincode === proposerDetails?.[memberGroup]?.pincode,
             ) && (
               <div className="dropdown" style={{ height: "auto" }}>
-                {cities.map((city) => (
+                {cities.map(city => (
                   <div
                     css={`
                       &:not(:last-child) {
@@ -282,8 +282,8 @@ const Form1 = ({
                           // pushToQuotes
                           handleChange,
                           memberGroup,
-                          form
-                        )
+                          form,
+                        ),
                       );
                       dispatch(createRegionData(city));
                     }}
@@ -309,7 +309,7 @@ const Form1 = ({
               value={name}
               id={name + memberGroup}
               checked={name === pinCode}
-              onClick={(e) => {
+              onClick={e => {
                 setPinCode(`${e.target.value}`);
                 dispatch(setIsDisabled(true));
                 setCustomErrors(false);
@@ -323,8 +323,8 @@ const Form1 = ({
                     // pushToQuotes
                     handleChange,
                     memberGroup,
-                    form
-                  )
+                    form,
+                  ),
                 );
               }}
             />

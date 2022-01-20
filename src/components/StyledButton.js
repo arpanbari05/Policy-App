@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import { IoArrowForwardSharp } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useTheme } from "../customHooks";
 
 const StyledButton = ({
   type,
@@ -16,10 +16,8 @@ const StyledButton = ({
   color,
   styledCss,
 }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
-  console.log("The prosper details", theme);
-  const { PrimaryColor } = theme;
-  
+  const { colors } = useTheme();
+
   return (
     <Button
       type={type}
@@ -30,7 +28,7 @@ const StyledButton = ({
       className={`styled__button ${customClass}`}
       width={width}
       height={height}
-      bg={bg || PrimaryColor}
+      bg={bg || colors.primary_color}
       color={color}
       css={styledCss}
     >
@@ -47,10 +45,10 @@ StyledButton.defaultProps = {
 
 export default StyledButton;
 
-const Button = styled.button.attrs((props) => ({
+const Button = styled.button.attrs(props => ({
   type: props.type,
 }))`
-  ${(props) => `
+  ${props => `
 height: ${props.height};
 width: ${props.width};
 background: ${props.bg};

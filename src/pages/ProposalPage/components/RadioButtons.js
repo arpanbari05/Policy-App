@@ -81,7 +81,7 @@ const RadioButtons = ({
                     <span>{data}</span>
                   </div>
                 </label>
-              ))}           
+              ))}
             </div>
           </div>
         </div>
@@ -148,7 +148,7 @@ const Group = styled.div`
     &:checked + label {
       padding-left: 1em;
       color: #000000;
-      border: 2px solid #0a87ff;;
+      border: 2px solid #0a87ff;
       border-radius: 50px;
       padding: 7px 19px;
       font-size: 16px;

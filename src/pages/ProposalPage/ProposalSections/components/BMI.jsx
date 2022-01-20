@@ -65,8 +65,7 @@ export const ViewQuotesWrapper = styled.div`
     border-bottom: 1px dashed #0a87ff;
     outline: none;
     box-shadow: none;
-    background:none;
-    
+    background: none;
   }
 `;
 export const PopupWrapper = styled.div`
@@ -90,10 +89,9 @@ export const Popup = styled.div`
   border-radius: 8px;
 
   @media (max-width: 767px) {
-width: 100%;
+    width: 100%;
     max-width: 320px;
-    padding:15px;
-   
+    padding: 15px;
   }
 `;
 export const CloseButton = styled.button`
@@ -115,7 +113,6 @@ export const CloseButton = styled.button`
 export const Container = styled.div`
   padding: 40px 50px;
 
-  
   & p {
     font-weight: 100;
   }
@@ -124,10 +121,9 @@ export const Container = styled.div`
     font-weight: 600;
   }
 
-  @media(max-width: 767px){
-    padding:12px 16px;
-    width:95%;
-  
+  @media (max-width: 767px) {
+    padding: 12px 16px;
+    width: 95%;
   }
 `;
 export const ButtonWrapper = styled.div`

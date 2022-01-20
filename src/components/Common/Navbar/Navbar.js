@@ -4,9 +4,7 @@ import MainNavbar from "./MainNavbar/MainNavbar";
 import SecondaryNavbar from "./SecondaryNavbar/SecondaryNavbar";
 import TopHeader from "./TopHeader/TopHeader";
 
-
 const Navbar = ({ displayNavbar, className }) => {
-
   return (
     <div
       style={{

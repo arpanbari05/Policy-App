@@ -31,17 +31,17 @@ import { getTermConditions } from "../ProposalPage/serviceApi";
 
 const ProposalSummary = ({ history }) => {
   let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
-  const { currentSchema } = useSelector((state) => state.schema);
+  const { currentSchema } = useSelector(state => state.schema);
   const { proposalData, policyStatus, policyLoading } = useSelector(
-    (state) => state.proposalPage
+    state => state.proposalPage,
   );
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-  const { proposerDetails } = useSelector((state) => state.greetingPage);
+  const { proposerDetails } = useSelector(state => state.greetingPage);
   const [show, setShow] = useState(false);
   const [termShow, setTermShow] = useState(false);
-  const { frontendData } = useSelector((state) => state.frontendBoot);
+  const { frontendData } = useSelector(state => state.frontendBoot);
 
   const [allFields, setAllFields] = useState([]);
   const [term, setTerm] = useState({});
@@ -73,12 +73,12 @@ const ProposalSummary = ({ history }) => {
 
   const ls = new SecureLS();
   const [checked, setChecked] = useState(false);
-  const onClick = (mobile) => {
+  const onClick = mobile => {
     if (
       frontendData?.data?.settings?.journey_type === "single" &&
       (checked || mobile)
     ) {
-      setShow((prev) => !prev);
+      setShow(prev => !prev);
     } else if (checked || mobile) {
       const form = document.createElement("form");
       form.method = "POST";
@@ -93,7 +93,7 @@ const ProposalSummary = ({ history }) => {
       document.body.removeChild(form);
     }
   };
-  const singlePay = (id) => {
+  const singlePay = id => {
     if (checked) {
       const form = document.createElement("form");
       form.method = "POST";
@@ -108,7 +108,7 @@ const ProposalSummary = ({ history }) => {
       document.body.removeChild(form);
     }
   };
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector(state => state.cart);
   const prod_id = Object.keys(cart)[0];
   console.log("hkjm", term);
   useEffect(() => {
@@ -163,7 +163,7 @@ const ProposalSummary = ({ history }) => {
             <MultipleWrapper>
               <PayList>
                 {policyStatus &&
-                  policyStatus.map((item) => (
+                  policyStatus.map(item => (
                     <PayItem>
                       <ItemName>{item?.product?.name}</ItemName>
                       <PayButton
@@ -396,7 +396,7 @@ const ProposalSummary = ({ history }) => {
                       your proposal details before you proceed
                     </p>
                     <div className="-wrapper pad_proposal_s">
-                    {}
+                      {}
                       {allFields ? (
                         allFields.map((item, index) => {
                           return (
@@ -489,7 +489,7 @@ const PayButton = styled.div`
   color: #fff;
   display: inline-block;
   padding: 6px;
-  background-color: ${(props) => props.PrimaryColor};
+  background-color: ${props => props.PrimaryColor};
   text-align: center;
   border-radius: 0 6px 6px 0px;
   & span {

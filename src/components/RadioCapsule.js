@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components/macro";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 
 const RadioCapsule = ({
   label,
@@ -9,35 +9,28 @@ const RadioCapsule = ({
   onChange,
   onClick,
   styledCss,
-  id
+  id,
 }) => {
+  const { theme } = useSelector(state => state.frontendBoot);
 
-  const { theme } = useSelector((state) => state.frontendBoot);
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
   return (
     <>
-    
       <RadioInput
-      PrimaryColor={PrimaryColor}
-      SecondaryShade={SecondaryShade}
+        PrimaryColor={PrimaryColor}
+        SecondaryShade={SecondaryShade}
         className="checkbox-tools"
         type={"radio"}
         id={id}
         value={value}
-      checked={checked || false }
+        checked={checked || false}
         onClick={onClick}
         onChange={() => {}}
       />
-      <RadioLabel
-        className="for-checkbox-tools"
-        htmlFor={id}
-        css={styledCss}
-      >
+      <RadioLabel className="for-checkbox-tools" htmlFor={id} css={styledCss}>
         {label}
       </RadioLabel>
-     
     </>
   );
 };
@@ -46,7 +39,7 @@ export default RadioCapsule;
 
 const RadioInput = styled.input`
   &:not(:checked) + label {
-    background-color: ${props=>props.SecondaryShade};
+    background-color: ${props => props.SecondaryShade};
     /* box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%); */
     color: #000;
     text-align: center;
@@ -61,9 +54,9 @@ const RadioInput = styled.input`
   &:checked + label,
   &:not(:checked) + label:hover {
     background-color: #fff;
-    color: ${props=>props.PrimaryColor};
+    color: ${props => props.PrimaryColor};
     text-align: center !important;
-    border: 1px solid ${props=>props.PrimaryColor};
+    border: 1px solid ${props => props.PrimaryColor};
     border-radius: 50px;
     line-height: 12px;
   }
@@ -89,9 +82,9 @@ const RadioLabel = styled.label`
   margin-bottom: 10px;
   height: 40px;
   font-size: 14px;
-  @media (max-width:480px){
-    width:44%;
-    min-width:fit-content;
+  @media (max-width: 480px) {
+    width: 44%;
+    min-width: fit-content;
     padding: 13px 20px;
     justify-content: space-between;
     font-size: 12px !important;

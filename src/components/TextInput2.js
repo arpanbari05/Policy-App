@@ -21,7 +21,7 @@ const TextInput2 = React.forwardRef(
       onBlur,
       maxLength,
     },
-    ref
+    ref,
   ) => (
     <div
       css={`
@@ -77,7 +77,7 @@ const TextInput2 = React.forwardRef(
         />
       </FloatingLabel>
     </div>
-  )
+  ),
 );
 
 export default TextInput2;
@@ -94,7 +94,7 @@ export const TextInput = styled.input`
   z-index: 1;
   height: 60px;
   margin-bottom: 4px;
-  border: ${(props) =>
+  border: ${props =>
     props.error === "danger" ? "solid 2px #d43d3d " : "solid 1px #e3e4e8"};
 
   font-size: 18px;
@@ -102,8 +102,8 @@ export const TextInput = styled.input`
   color: #333;
   border-radius: 4px;
   box-shadow: none;
-  word-spacing: ${(props) => props.dob && "-3px"};
-  text-transform: ${(props) => props.capitalise && "capitalize"};
+  word-spacing: ${props => props.dob && "-3px"};
+  text-transform: ${props => props.capitalise && "capitalize"};
   &:focus,
   &:valid {
     padding: 20px 8px 5px 20px;
@@ -131,7 +131,7 @@ export const TextInput = styled.input`
   &:active,
   &:focus {
     border-radius: 4px;
-    border-color: ${(props) =>
+    border-color: ${props =>
       props.error === "danger" ? "#d43d3d" : "#107591"};
     border-width: 2px;
     box-shadow: none;
@@ -205,7 +205,7 @@ export const Container = styled.div`
     width: 1170px;
   }
   @media only screen and (max-width: 767px) {
-    padding: ${(props) => props.firstPage && "0"};
-    margin-top: ${(props) => props.firstPage && "20px"};
+    padding: ${props => props.firstPage && "0"};
+    margin-top: ${props => props.firstPage && "20px"};
   }
 `;

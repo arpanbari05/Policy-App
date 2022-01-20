@@ -1,50 +1,43 @@
-import { useRef, useState } from "react";
-import styled from "styled-components";
-import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
-import "styled-components/macro";
-import { fetchQuotes, setFilters } from "../../quote.slice";
+import { useState } from "react";
+import TooltipImg from "../../../../assets/svg/tooltip-icon.js";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { useParams } from "react-router";
-import useOutsiteClick from "../../../../customHooks/useOutsideClick";
-import { useDispatch, useSelector } from "react-redux";
 import { ApplyBtn, Filter, OptionWrapper } from "./Filter.style";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
+import useFilters from "./useFilters.js";
+import useUpdateFilters from "./useUpdateFilters.js";
+import { useGetFrontendBootQuery } from "../../../../api/api.js";
+import { useTheme } from "../../../../customHooks/index.js";
+import "styled-components/macro";
+
+const DESCRIPTIONS = {
+  arogya_sanjeevani:
+    "Plan offering Arogya Sanjeevani Benefits; this policy is a standard health insurance policy introduced by the IRDA & offered by Health Insurance Companies in India",
+  global_plans:
+    "Plans offering Global coverage; this policy ensure you are civered for health expenses internationally",
+  base_health:
+    "Plans covering all your medical needs; this policy offer varied health benefits meeting your needs",
+  "1_crore_plan": "Plans offering cover amount 1 Crore",
+};
 
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
 );
 
 const PlanTypeFilter = () => {
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  const {
-    basePlanType,
-    multiYear: tenure,
-    cover,
-    planType,
-  } = useSelector((state) => state.quotePage.filters);
-
-  const { groupCode } = useParams();
-
-  const dispatch = useDispatch();
-
-  const {
-    baseplantypes: basePlanTypes,
-    companies,
-    covers,
-    plantypes,
-  } = useSelector((state) => state.frontendBoot.frontendData.data);
-
-  const sum_insured = covers.find((cov) => cov.code === cover);
-
   const [showModal, setShowModal] = useState(false);
+
+  const { getSelectedFilter } = useFilters();
+
+  const selectedPlanTypeFilter = getSelectedFilter("baseplantype");
+
+  const displayBasePlanTypeFilter = selectedPlanTypeFilter.display_name;
 
   return (
     <>
       <Filter className="filter d-flex flex-column flex-fill">
         <span className="filter_head">Plan Type</span>
         <span onClick={() => setShowModal(true)} className="filter_sub_head">
-          {basePlanType}
+          {displayBasePlanTypeFilter}
           <i class="fas fa-chevron-down"></i>
         </span>
         {showModal && <FilterModal handleClose={() => setShowModal(false)} />}
@@ -55,234 +48,112 @@ const PlanTypeFilter = () => {
 
 export default PlanTypeFilter;
 
-const FilterModal = ({ handleClose }) => {
-  const {
-    basePlanType,
-    multiYear: tenure,
-    cover,
-    planType,
-  } = useSelector((state) => state.quotePage.filters);
-  const [selectedPlanType, setselectedPlanType] = useState({
-    code: cover,
-    display_name: basePlanType,
-  });
-
-  // console.log(selectedPlanType, basePlanType, "agsd");
-  //console.log(
-  //  "The initial baseplantype, selectedPlantype",
-  //  basePlanType,
-  //  selectedPlanType
-  //);
-
-  const handleChange = (displayName) => {
-    if (displayName) {
-      setselectedPlanType(displayName);
-    }
-  };
-
-  const { groupCode } = useParams();
-
-  const dispatch = useDispatch();
+function FilterModal({ handleClose, ...props }) {
+  const { colors } = useTheme();
 
   const {
-    baseplantypes: basePlanTypes,
-    companies,
-    covers,
-    plantypes,
-  } = useSelector((state) => state.frontendBoot.frontendData.data);
-  const { theme } = useSelector((state) => state.frontendBoot);
+    data: { baseplantypes },
+  } = useGetFrontendBootQuery();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-  const sum_insured = covers.find((cov) => cov.display_name === cover);
+  const { getSelectedFilter } = useFilters();
 
-  const pt = plantypes.find((p) => p.display_name === planType);
+  const [selectedPlanType, setSelectedPlanType] = useState(() =>
+    getSelectedFilter("baseplantype"),
+  );
 
-  const sendPlanType = pt ? pt.code : "F";
-
-  const sendCover = sum_insured ? sum_insured.code : "";
-
-  const tooltipDescSelector = (name) => {
-    switch (name) {
-      case "arogya_sanjeevani":
-        return "Plan offering Arogya Sanjeevani Benefits; this policy is a standard health insurance policy introduced by the IRDA & offered by Health Insurance Companies in India";
-
-      case "global_plans":
-        return "Plans offering Global coverage; this policy ensure you are civered for health expenses internationally";
-
-      case "base_health":
-        return "Plans covering all your medical needs; this policy offer varied health benefits meeting your needs";
-
-      case "1_crore_plan":
-        return "Plans offering cover amount 1 Crore";
-
-      default:
-        break;
-    }
+  const handleChange = baseplantype => {
+    setSelectedPlanType(baseplantype);
   };
 
-  const handleClick = (evt) => {
-    console.log("fetchquotes plantypefilter");
-    if (evt.display_name === "1 crore plan") {
-      dispatch(
-        setFilters({
-          cover: "More than 25 Lacs",
-          basePlanType: evt.display_name,
-        })
-      );
-    } else {
-      dispatch(setFilters({ basePlanType: evt.display_name }));
+  const isSelected = baseplantype =>
+    selectedPlanType.code === baseplantype.code;
+
+  const { updateFilters } = useUpdateFilters();
+
+  const handleApplyClick = () => {
+    const updatedBasePlanTypeFilter = { baseplantype: selectedPlanType };
+
+    if (selectedPlanType.code === "1_crore_plan") {
+      updatedBasePlanTypeFilter.cover = {
+        code: "2500001-100000000",
+        display_name: "More than 25 Lacs",
+      };
     }
-    // dispatch(
-    //   fetchQuotes(companies, {
-    //     sum_insured: sendCover,
-    //     tenure: parseInt(tenure),
-    //     member: groupCode,
-    //     plan_type: sendPlanType,
-    //     basePlanType: evt.code,
-    //   })
-    // );
-    // setShowDropdown(false);
-    handleClose();
+
+    updateFilters(updatedBasePlanTypeFilter);
+
+    handleClose && handleClose();
   };
 
   return (
-    <>
-      {
-        <CustomModal1
-          header="Choose Your Plan Type"
-          footerJSX={
-            <ApplyBtn
-              PrimaryColor={PrimaryColor}
-              css={`
-                height: 65px !important;
-              `}
-              className="apply_btn mx-auto h-100 w-100"
-              onClick={() => handleClick(selectedPlanType)}
-            >
-              Apply
-            </ApplyBtn>
-          }
-          handleClose={handleClose}
-          tooltipDesc="Select a plan type to view plans offering chosen type of plan."
-          leftAlignmnetMargin="-22"
-        >
-          <div>
-            <OptionWrapper PrimaryColor={PrimaryColor}>
-              {basePlanTypes.map((thisPlanType, i) => {
-                const toBeCheckedPlan =
-                  thisPlanType.display_name === "Base health"
-                    ? "Base Health"
-                    : thisPlanType.display_name;
-                return (
-                  <li
-                    css={`
-                      margin: 5px 0;
-                    `}
-                    className="option d-flex align-items-center justify-content-between"
-                    key={i}
-                  >
-                    <label htmlFor={thisPlanType.code}>
-                      {console.log("thisPlanType.code", thisPlanType.code)}
-                      <OverlayTrigger
-                        placement={"right"}
-                        overlay={renderTooltipDesc({
-                          desc: tooltipDescSelector(thisPlanType.code),
-                        })}
-                      >
-                        <span>
-                          {thisPlanType.display_name} {tooltipImg()}
-                        </span>
-                      </OverlayTrigger>
-                    </label>
-                    <input
-                      type="radio"
-                      name="select_plan_type"
-                      id={thisPlanType.code}
-                      value={thisPlanType.display_name}
-                      checked={
-                        selectedPlanType.display_name === toBeCheckedPlan ||
-                        false
-                      }
-                      onChange={(e) => handleChange(thisPlanType)}
-                    />
-                  </li>
-                );
-              })}
-            </OptionWrapper>
-          </div>
-        </CustomModal1>
-      }
-      {/*<Modal
-      show={show}
-      onHide={handleClose}
-      animation={false}
-      css={`
-        .modal-dialog {
-          margin: 0px !important;
-          max-width: 440px;
-        }
-        .modal-content {
-          top: 238px;
-          left: 55vw !important;
-        }
-        .modal-footer {
-          padding: 0px !important;
-          border-top: none !important;
-        }
-        .modal-footer > * {
-          margin: 0px !important;
-        }
-      `}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title
-          style={{
-            fontSize: "20px",
-            fontWeight: "600",
-            color: "black",
-          }}
-        >
-          Chose Your Plan Type
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div>
-          <OptionWrapper>
-            {basePlanTypes.map((thisPlanType, i) => {
-              return (
-                <li
-                  className="option d-flex align-items-center justify-content-between"
-                  key={i}
-                >
-                  <label htmlFor={thisPlanType.code}>
-                    {thisPlanType.display_name}
-                  </label>
-                  <input
-                    type="radio"
-                    name="select_plan_type"
-                    id={thisPlanType.code}
-                    value={thisPlanType.display_name}
-                    checked={
-                      selectedPlanType.display_name ===
-                        thisPlanType.display_name || false
-                    }
-                    onChange={(e) => handleChange(thisPlanType)}
-                  />
-                </li>
-              );
-            })}
-          </OptionWrapper>
-        </div>
-      </Modal.Body>
-      <Modal.Footer className="text-center">
+    <CustomModal1
+      header="Choose Your Plan Type"
+      footerJSX={
         <ApplyBtn
+          css={`
+            background-color: ${colors.primary_color};
+          `}
           className="apply_btn mx-auto h-100 w-100"
-          onClick={() => handleClick(selectedPlanType)}
+          onClick={handleApplyClick}
         >
           Apply
         </ApplyBtn>
-      </Modal.Footer>
-          </Modal>*/}
-    </>
+      }
+      handleClose={handleClose}
+      tooltipDesc="Select a plan type to view plans offering chosen type of plan."
+      leftAlignmnetMargin="-22"
+      {...props}
+    >
+      <div>
+        <OptionWrapper PrimaryColor={colors.primary_color}>
+          {baseplantypes.map(baseplantype => {
+            return (
+              <PlanType
+                baseplantype={baseplantype}
+                checked={isSelected(baseplantype)}
+                onChange={handleChange}
+                key={baseplantype.code}
+              />
+            );
+          })}
+        </OptionWrapper>
+      </div>
+    </CustomModal1>
   );
-};
+}
+
+function PlanType({ baseplantype, checked = false, onChange, ...props }) {
+  const handleChange = evt => {
+    if (evt.target.checked) onChange && onChange(baseplantype, checked);
+  };
+  return (
+    <li
+      css={`
+        margin: 5px 0;
+      `}
+      className="option d-flex align-items-center justify-content-between"
+      {...props}
+    >
+      <label htmlFor={baseplantype.code}>
+        <OverlayTrigger
+          placement="right"
+          overlay={renderTooltipDesc({
+            desc: DESCRIPTIONS[baseplantype.code],
+          })}
+        >
+          <span>
+            {baseplantype.display_name} <TooltipImg />
+          </span>
+        </OverlayTrigger>
+      </label>
+      <input
+        type="radio"
+        name="select_plan_type"
+        id={baseplantype.code}
+        value={baseplantype.display_name}
+        checked={checked}
+        onChange={handleChange}
+      />
+    </li>
+  );
+}

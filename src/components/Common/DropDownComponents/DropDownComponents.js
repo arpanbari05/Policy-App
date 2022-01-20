@@ -24,9 +24,9 @@ export const Header = styled.a`
   background-color: #fff;
   position: relative;
   border: 0.2px solid #dfe1f2;
-  padding: ${(props) => (props.sortByDD ? "auto" : "12px 15px !important")};
+  padding: ${props => (props.sortByDD ? "auto" : "12px 15px !important")};
   display: inline-block;
-  width: ${(props) => (props.sortByDD ? "auto" : "175px")};
+  width: ${props => (props.sortByDD ? "auto" : "175px")};
   overflow: hidden;
   position: relative;
   z-index: 1;
@@ -119,7 +119,7 @@ export const ListItem = styled.div`
 
   &:hover,
   &.active {
-    background-color: ${(props) =>
+    background-color: ${props =>
       props.PrimaryShade ? props.PrimaryShade : "#e2f0ff"};
     color: #495c68;
   }

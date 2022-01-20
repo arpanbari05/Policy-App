@@ -8,12 +8,12 @@ import waiting from "./images/waiting.png";
 import renewal from "./images/renewal.png";
 
 export {
-	downArrow,
-	hidePlans,
-	seePlan,
-	copay,
-	roomrent,
-	cashless,
-	waiting,
-	renewal,
+  downArrow,
+  hidePlans,
+  seePlan,
+  copay,
+  roomrent,
+  cashless,
+  waiting,
+  renewal,
 };

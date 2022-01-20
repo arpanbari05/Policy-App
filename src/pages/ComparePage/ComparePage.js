@@ -54,7 +54,6 @@ import DropDown from "./components/DropDown";
 import { useDispatch, useSelector } from "react-redux";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 
-
 const sendContent = (
   type,
   name,
@@ -62,10 +61,8 @@ const sendContent = (
   email,
   setEmail,
   emailStatus,
-  sendRef
+  sendRef,
 ) => {
-
- 
   return (
     <div className="text-center p-lg mb-50 sm-50 xs-50">
       <img
@@ -82,7 +79,7 @@ const sendContent = (
         <input
           type={type === "email" ? "email" : "tel"}
           class="form__field"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           placeholder={
             type === "email"
               ? "Enter Your Email Address"
@@ -124,7 +121,7 @@ const sendContent = (
   );
 };
 
-const getYearsUsingTenure = (tenure) => {
+const getYearsUsingTenure = tenure => {
   if (tenure == 1) {
     return "year";
   } else if (tenure == 2) {
@@ -145,7 +142,7 @@ const popupContent = (
   errors,
   setErrors,
   discount,
-  removePlan2point0
+  removePlan2point0,
 ) => {
   let companies = [];
   let companyWisePlans = {};
@@ -153,12 +150,12 @@ const popupContent = (
   let companyWiseLogos = [];
   let ProductWiseId = {};
   let covers = {};
-  fitlerQuotes.forEach((item) => {
+  fitlerQuotes.forEach(item => {
     if (item[0]) {
       companies.push(item[0].product.company.name);
       companyWiseLogos.push(item[0].logo);
 
-      item.forEach((innerItem) => {
+      item.forEach(innerItem => {
         if (!(innerItem.product.name in covers)) {
           covers[innerItem.product.name] = [innerItem.sum_insured];
         } else {
@@ -166,15 +163,15 @@ const popupContent = (
         }
       });
 
-      item.forEach((innerItem) => {
+      item.forEach(innerItem => {
         if (
           ((companyWisePlans[innerItem.product.company.name] &&
             !companyWisePlans[innerItem.product.company.name].includes(
-              innerItem.product.name
+              innerItem.product.name,
             )) ||
             !companyWisePlans[innerItem.product.company.name]) &&
           !mergedQuotes.some(
-            (item) => item.data.product.name === innerItem.product.name
+            item => item.data.product.name === innerItem.product.name,
           )
         ) {
           companyWisePlans = {
@@ -194,7 +191,7 @@ const popupContent = (
         if (
           (companyWiseSumAssured[innerItem.product.company.name] &&
             !companyWiseSumAssured[innerItem.product.company.name].includes(
-              innerItem.sum_insured
+              innerItem.sum_insured,
             )) ||
           !companyWiseSumAssured[innerItem.product.company.name]
         )
@@ -222,7 +219,7 @@ const popupContent = (
                   <RemoveCross
                     onClick={() =>
                       removePlan(
-                        `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
+                        `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`,
                       )
                     }
                   >
@@ -255,7 +252,7 @@ const popupContent = (
                         <Value>
                           ₹{" "}
                           {numToLakh(
-                            mergedQuotes[index].data.sum_insured
+                            mergedQuotes[index].data.sum_insured,
                           ).toLocaleString("en-IN")}
                         </Value>
                       </DetailWrapper>
@@ -275,7 +272,7 @@ const popupContent = (
                             getYearsUsingTenure(
                               discount[
                                 `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
-                              ]?.tenure
+                              ]?.tenure,
                             )}
                         </Value>
                       </DetailWrapper>
@@ -322,12 +319,12 @@ const popupContent = (
                             name={companyWisePlans[item]}
                             sum={companyWiseSumAssured[item]}
                             covers={covers}
-                            onChange={(value) => {
-                              setValue((prev) => {
+                            onChange={value => {
+                              setValue(prev => {
                                 return { ...prev, [item]: value };
                               });
                               if (mergedQuotes.length >= 3) {
-                                setErrors((prev) => {
+                                setErrors(prev => {
                                   return {
                                     ...prev,
                                     [item]: "You can add only upto 3 plans",
@@ -337,7 +334,7 @@ const popupContent = (
                                 setSelectedAddPlan(
                                   `${ProductWiseId[value.plan]}${
                                     value?.sumInsured
-                                  }`
+                                  }`,
                                 );
                                 setValue({});
                               }
@@ -376,7 +373,7 @@ const popupContentM = (
   setErrors,
   discount,
   windowWidth,
-  removePlan2point0
+  removePlan2point0,
 ) => {
   let companies = [];
   let companyWisePlans = {};
@@ -385,8 +382,8 @@ const popupContentM = (
   let ProductWiseId = {};
   let covers = {};
 
-  fitlerQuotes.forEach((item) => {
-    item.forEach((innerItem) => {
+  fitlerQuotes.forEach(item => {
+    item.forEach(innerItem => {
       if (!(innerItem.product.name in covers)) {
         covers[innerItem.product.name] = [innerItem.sum_insured];
       } else {
@@ -397,15 +394,15 @@ const popupContentM = (
     if (item[0]) {
       companies.push(item[0].product.company.name);
       companyWiseLogos.push(item[0].logo);
-      item.forEach((innerItem) => {
+      item.forEach(innerItem => {
         if (
           ((companyWisePlans[innerItem.product.company.name] &&
             !companyWisePlans[innerItem.product.company.name].includes(
-              innerItem.product.name
+              innerItem.product.name,
             )) ||
             !companyWisePlans[innerItem.product.company.name]) &&
           !mergedQuotes.some(
-            (item) => item.data.product.name === innerItem.product.name
+            item => item.data.product.name === innerItem.product.name,
           )
         ) {
           companyWisePlans = {
@@ -425,7 +422,7 @@ const popupContentM = (
         if (
           (companyWiseSumAssured[innerItem.product.company.name] &&
             !companyWiseSumAssured[innerItem.product.company.name].includes(
-              innerItem.sum_insured
+              innerItem.sum_insured,
             )) ||
           !companyWiseSumAssured[innerItem.product.company.name]
         )
@@ -462,7 +459,7 @@ const popupContentM = (
                   <RemoveCross
                     onClick={() =>
                       removePlan(
-                        `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
+                        `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`,
                       )
                     }
                   >
@@ -505,7 +502,7 @@ const popupContentM = (
                       <Value style={{ fontSize: "10px" }}>
                         ₹{" "}
                         {numToLakh(
-                          mergedQuotes[index].data.sum_insured
+                          mergedQuotes[index].data.sum_insured,
                         ).toLocaleString("en-IN")}
                       </Value>
                     </div>
@@ -531,7 +528,7 @@ const popupContentM = (
                           getYearsUsingTenure(
                             discount[
                               `${mergedQuotes[index].data.product.id}${mergedQuotes[index].data.sum_insured}`
-                            ]?.tenure
+                            ]?.tenure,
                           )}
                       </Value>
                     </div>
@@ -579,12 +576,12 @@ const popupContentM = (
                           name={companyWisePlans[item]}
                           sum={companyWiseSumAssured[item]}
                           covers={covers}
-                          onChange={(value) => {
-                            setValue((prev) => {
+                          onChange={value => {
+                            setValue(prev => {
                               return { ...prev, [item]: value };
                             });
                             if (mergedQuotes.length >= 2) {
-                              setErrors((prev) => {
+                              setErrors(prev => {
                                 return {
                                   ...prev,
                                   [item]: "You can add only upto 2 plans",
@@ -594,7 +591,7 @@ const popupContentM = (
                               setSelectedAddPlan(
                                 `${ProductWiseId[value.plan]}${
                                   value?.sumInsured
-                                }`
+                                }`,
                               );
                               setValue({});
                             }
@@ -618,7 +615,7 @@ const popupContentM = (
 
 function GoBackButton({ groupCode, ...props }) {
   const groupCodes = Object.keys(
-    useSelector(({ greetingPage }) => greetingPage.memberGroups)
+    useSelector(({ greetingPage }) => greetingPage.memberGroups),
   );
   const urlQuery = useUrlQuery();
   const enquiryId = urlQuery.get("enquiryId");
@@ -631,7 +628,7 @@ function GoBackButton({ groupCode, ...props }) {
       onClick={() => {
         groupCodes[1] && groupCodes[1] === groupCode
           ? history.replace(
-              `/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`
+              `/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`,
             )
           : history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
       }}
@@ -702,8 +699,7 @@ const ComparePage = () => {
     removePlan2point0,
   } = useComparePage();
 
-
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [windowHeight, windowWidth] = useWindowSize();
@@ -716,7 +712,7 @@ const ComparePage = () => {
   const sendRef = useRef();
   const dispatch = useDispatch();
 
-  const { proposerDetails } = useSelector((state) => state.greetingPage);
+  const { proposerDetails } = useSelector(state => state.greetingPage);
 
   const [width, setWidth] = useState(window.innerWidth);
   return (
@@ -824,7 +820,7 @@ const ComparePage = () => {
                               hideCells={hideCells}
                             />
                           </>
-                        )
+                        ),
                     )}
 
                   <TBodyM
@@ -858,13 +854,13 @@ const ComparePage = () => {
               >
                 <GoBackButton groupCode={groupCode} />
                 <UpperModifier PrimaryColor={PrimaryColor}>
-                  <div    className="right_midifiers d-flex justify-content-between align-items-center ">
+                  <div className="right_midifiers d-flex justify-content-between align-items-center ">
                     <button
                       className="btn share_Quote_btn "
                       onClick={() => setShowShareQuoteModal(true)}
                       css={`
                         border: solid 2 px ${PrimaryColor} !important;
-                        color:${PrimaryColor};
+                        color: ${PrimaryColor};
                       `}
                     >
                       <i class="fas fa-share "></i>{" "}
@@ -915,7 +911,7 @@ const ComparePage = () => {
                               />
                               <TBlank />
                             </>
-                          )
+                          ),
                       )}
                   </table>
                 </div>
@@ -942,7 +938,7 @@ const ComparePage = () => {
           errors,
           setErrors,
           discount,
-          windowWidth
+          windowWidth,
         )}
         errorsFromCompare={
           Object.keys(errors).length ? "You can add only upto 2 plans" : ""
@@ -975,7 +971,7 @@ const ComparePage = () => {
           setValue,
           errors,
           setErrors,
-          discount
+          discount,
         )}
         errorsFromCompare={
           Object.keys(errors).length ? "You can add only upto 3 plans" : ""
@@ -998,7 +994,7 @@ const ComparePage = () => {
           email,
           setEmail,
           emailStatus,
-          sendRef
+          sendRef,
         )}
         showButton={false}
         handleClose={() => setSend(false)}
@@ -1032,7 +1028,7 @@ const UpperModifier = styled.div`
       margin-left: 7px;
       border-radius: 31px;
       font-weight: 500;
-      border: solid 2px ${props=>props.PrimaryColor} !important;
+      border: solid 2px ${props => props.PrimaryColor} !important;
     }
     .share_Quote_btn {
       // border: solid 2px #0a87ff !important;

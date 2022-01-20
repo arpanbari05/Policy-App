@@ -82,7 +82,8 @@ const comparePageSlice = createSlice({
 });
 
 export const {
-  requestFeatures,setLoading,
+  requestFeatures,
+  setLoading,
   requestFeatureSuccess,
   requestFeatureFail,
   resetFeature,

@@ -33,9 +33,9 @@ import useQuoteCard from "./useQuoteCard";
 import useCartProduct from "../../Cart/hooks/useCartProduct";
 
 function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const {
     dispatch,
     show,
@@ -53,14 +53,14 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
   const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
   const [isLoading, setIsLoading] = useState(false);
   const [activeCover, setActiveCover] = useState(0);
-  const { multiYear } = useSelector((state) => state.quotePage.filters);
+  const { multiYear } = useSelector(state => state.quotePage.filters);
 
   let additionalPremium = 0;
 
-  mergedQuotes[0]?.mandatory_riders[activeCover]?.forEach((element) => {
+  mergedQuotes[0]?.mandatory_riders[activeCover]?.forEach(element => {
     additionalPremium += element.total_premium;
   });
- 
+
   const handleBuyNowClick = () => {
     setIsLoading(true);
     const selectedPlan = {
@@ -80,7 +80,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
       premium: selectedPlan.total_premium,
       group_id: parseInt(selectedGroup),
       service_tax: selectedPlan.tax_amount,
-      riders: mergedQuotes[0]?.mandatory_riders[activeCover].map((rider) => ({
+      riders: mergedQuotes[0]?.mandatory_riders[activeCover].map(rider => ({
         ...rider,
         rider_id: rider.id,
       })),
@@ -88,13 +88,13 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
     setIsLoading(false);
   };
 
-  const handleSeeDetailsClick = (clickedFrom) => {
+  const handleSeeDetailsClick = clickedFrom => {
     handleSeeDetails(
       {
         quote: mergedQuotes[0],
         activeSum: activeCover,
       },
-      clickedFrom
+      clickedFrom,
     );
     const selectedPlan = {
       company_alias: mergedQuotes[0]?.company_alias,
@@ -111,12 +111,12 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
       saveSelectedPlan({
         ...selectedPlan,
         product_id: selectedPlan.product?.id,
-      })
+      }),
     );
   };
 
   // const tenure = parseInt(multiYear) === 1 ? "" : parseInt(multiYear);
-  const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
+  const renderTooltip = description => <Tooltip>{description}</Tooltip>;
   return (
     <Outer>
       <div
@@ -135,7 +135,12 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             </LogoWrapper>
           </EachWrapper>
           <CenterBottomStyle>
-            <SeeText PrimaryColor={PrimaryColor} onClick={handleSeeDetailsClick}>See Details</SeeText>
+            <SeeText
+              PrimaryColor={PrimaryColor}
+              onClick={handleSeeDetailsClick}
+            >
+              See Details
+            </SeeText>
           </CenterBottomStyle>
         </div>
         <div
@@ -220,7 +225,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                   className=""
                   placement={"right"}
                   overlay={renderTooltip(
-                    mergedQuotes[0]?.features[activeCover][0]?.description
+                    mergedQuotes[0]?.features[activeCover][0]?.description,
                   )}
                 >
                   <TextWrapper>
@@ -311,8 +316,8 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                 position: relative;
                 bottom: -5px;
                 margin-top: 14px;
-                background-color:${PrimaryShade} !important;
-                `}
+                background-color: ${PrimaryShade} !important;
+              `}
             >
               <SeeText
                 css={`
@@ -350,12 +355,15 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
             `}
           >
             <LogoWrapper>
-              <RadioButton PrimaryColor={PrimaryColor} onClick={() => handleBuyNowClick()}>
+              <RadioButton
+                PrimaryColor={PrimaryColor}
+                onClick={() => handleBuyNowClick()}
+              >
                 <strong>
                   ₹{" "}
                   {parseInt(
                     mergedQuotes[0]?.total_premium[activeCover] +
-                      additionalPremium
+                      additionalPremium,
                   ).toLocaleString("en-In")}
                   &nbsp;
                   <span>
@@ -397,7 +405,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                 {mergedQuotes[0]?.sum_insured && (
                   <CustomDropDown
                     option={mergedQuotes[0]?.sum_insured}
-                    handleChange={(e) => {
+                    handleChange={e => {
                       setActiveCover(e);
                     }}
                   />
@@ -424,7 +432,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                         `}
                             >Compare</SeeText> */}
               <RadioInput
-              PrimaryColor={PrimaryColor}
+                PrimaryColor={PrimaryColor}
                 type="checkbox"
                 id={`compare_${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`}
                 className="compare-checkbox"
@@ -434,7 +442,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
 
                   if (!checked) {
                     const numberOfPlans = window.matchMedia(
-                      "(max-width: 1023px)"
+                      "(max-width: 1023px)",
                     ).matches
                       ? 2
                       : 3;
@@ -442,13 +450,13 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
                       setQuotesForCompare([
                         `${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`,
                         numberOfPlans,
-                      ])
+                      ]),
                     );
                   } else {
                     dispatch(
                       removeQuotesForCompare(
-                        `${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`
-                      )
+                        `${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`,
+                      ),
                     );
                   }
                 }}
@@ -482,7 +490,6 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
               {/* plans will be clubbed here */}
               {mergedQuotes?.slice(1).map((item, index) => (
                 <>
-                  
                   {item && (
                     <>
                       <SubContent

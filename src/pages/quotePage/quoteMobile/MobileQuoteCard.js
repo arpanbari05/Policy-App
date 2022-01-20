@@ -14,10 +14,15 @@ import {
 } from "../quote.slice";
 import { useCartProduct } from "../../Cart";
 import { useParams } from "react-router";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 import useQuoteCard from "../components/useQuoteCard";
 
-const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) => {
+const MobileQuoteCard = ({
+  handleClick,
+  item,
+  handleSeeDetails,
+  isRecommended,
+}) => {
   const [open, setOpen] = useState(false);
   const {
     dispatch,
@@ -31,9 +36,9 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
   } = useQuoteCard({ item });
   const { groupCode: selectedGroup } = useParams();
   const { addProduct, isCartProductLoading } = useCartProduct(selectedGroup);
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const handleBuyNowClick = () => {
     const selectedPlan = {
       // company_alias: mergedQuotes[0]?.company_alias,
@@ -60,7 +65,6 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
       css={`
         position: relative;
         width: 100%;
-        
       `}
     >
       {/* <div
@@ -87,7 +91,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
       </div> */}
       <input
         type="checkbox"
-        style={{display:"contents"}}
+        style={{ display: "contents" }}
         onChange={() => {
           dispatch(setQuotesOnCompare());
 
@@ -115,7 +119,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
       <label
         htmlFor={`${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`}
         css={`
-        cursor:pointer;
+          cursor: pointer;
           position: absolute;
           display: flex;
           background-color: #eef1f5;
@@ -143,12 +147,11 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
 
             margin-right: 7px;
             &::after {
-              
               display: ${checked ? "block" : "none"};
               content: "\u2713";
               height: 9px;
               width: 9px;
-              background-color:${PrimaryColor};
+              background-color: ${PrimaryColor};
               color: #fff;
               border-radius: 50%;
             }
@@ -227,7 +230,11 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
             align-items: center;
           `}
         >
-          {!open ? `${mergedQuotes?.slice(1).length} more ${mergedQuotes?.slice(1).length >=2?"Plans":"Plan"}` : `hide ${mergedQuotes?.slice(1).length >=2?"Plans":"Plan"}`}
+          {!open
+            ? `${mergedQuotes?.slice(1).length} more ${
+                mergedQuotes?.slice(1).length >= 2 ? "Plans" : "Plan"
+              }`
+            : `hide ${mergedQuotes?.slice(1).length >= 2 ? "Plans" : "Plan"}`}
           <img
             css={`
               height: 16px;
@@ -290,8 +297,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
                   line-height: 16px;
                   max-height: 34px;
                   font-size: 13px;
-                  overflow:hidden;
-
+                  overflow: hidden;
                 `}
               >
                 {mergedQuotes[0]?.product.name}
@@ -339,7 +345,7 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
             `}
           >
             <Button onClick={handleBuyNowClick} PrimaryColor={PrimaryColor}>
-            ₹{" "}
+              ₹{" "}
               {parseInt(
                 mergedQuotes[0]?.total_premium[activeCover],
               ).toLocaleString("en-In")}
@@ -360,8 +366,8 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
           >
             <div
               css={`
-              font-size: 8px;
-              line-height: 2;
+                font-size: 8px;
+                line-height: 2;
                 width: 100%;
                 & .feature-cell:first-child {
                   padding-left: 0 !important;
@@ -391,12 +397,12 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
                           mergedQuotes[0]?.cashlessHospitalsCount[activeCover],
                       },
                       index,
-                      PrimaryColor
+                      PrimaryColor,
                     );
                   }
 
                   if (data.is_featured_on_card)
-                    return quoteCardDataset(data, index,PrimaryColor);
+                    return quoteCardDataset(data, index, PrimaryColor);
                   return null;
                 })}
               {/* <span
@@ -548,17 +554,17 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
         </div>
         <div
           css={`
-          display:${isRecommended ? 'block': 'none'};
-          background: #F5BC00;
-          padding: 4px 11px;
-          font-size: 13px;
-          font-weight: 900;
+            display: ${isRecommended ? "block" : "none"};
+            background: #f5bc00;
+            padding: 4px 11px;
+            font-size: 13px;
+            font-weight: 900;
             & span {
               border-radius: 13px;
               padding: 2px 10px;
               background: white;
               margin-left: 2px;
-              position: relative;          
+              position: relative;
             }
           `}
         >
@@ -568,7 +574,6 @@ const MobileQuoteCard = ({ handleClick, item, handleSeeDetails,isRecommended }) 
           <span id="example-collapse-text">
             {mergedQuotes?.slice(1).map((item, index) => (
               <MobileSubContent
-              
                 addProduct={addProduct}
                 key={index}
                 id={index}
@@ -592,14 +597,14 @@ const Button = styled.button.attrs(props => ({
 }))`
   box-sizing: border-box;
   user-select: none;
-  background: ${props=>props.PrimaryColor};
+  background: ${props => props.PrimaryColor};
   color: white;
   width: 100%;
   cursor: pointer;
   padding: 4px 9px;
   display: block;
   border-radius: 2px;
-  border:none;
+  border: none;
   font-size: 15px;
   font-weight: 400;
   line-height: 33px;
@@ -607,7 +612,11 @@ const Button = styled.button.attrs(props => ({
   z-index: 9999;
 `;
 
-export function quoteCardDataset({ name, value, description }, index,PrimaryColor) {
+export function quoteCardDataset(
+  { name, value, description },
+  index,
+  PrimaryColor,
+) {
   const renderTooltip = props => <Tooltip {...props}>{description}</Tooltip>;
 
   return (
@@ -615,11 +624,11 @@ export function quoteCardDataset({ name, value, description }, index,PrimaryColo
       className={"feature-cell"}
       css={`
         padding-right: 10px;
-    margin-right: 10px;
+        margin-right: 10px;
         border-right: 1px solid #9cacc9;
         & svg {
           position: relative;
-          
+
           left: 3px;
         }
       `}

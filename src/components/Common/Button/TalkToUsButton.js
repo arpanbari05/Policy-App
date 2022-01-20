@@ -1,7 +1,6 @@
 import React from "react";
 import call from "./../../../assets/images/call.png";
 
-
 const TalkToUsButton = ({ setShowTalkModal, showTalkModal }) => {
   return (
     <div

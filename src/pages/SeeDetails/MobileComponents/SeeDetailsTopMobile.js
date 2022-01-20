@@ -128,8 +128,8 @@ const Details = styled.div`
   font-size: 12px;
   margin-left: 10px;
   margin-top: 10px;
-  @media (max-width:400px){
-   font-size:10px !important; 
+  @media (max-width: 400px) {
+    font-size: 10px !important;
   }
 `;
 const Inner = styled.div`
@@ -137,7 +137,6 @@ const Inner = styled.div`
   width: 90px;
   height: 40px;
   border-right: 1px solid lightgray;
-  
 `;
 const LastInner = styled.div`
   margin-left: 10px;

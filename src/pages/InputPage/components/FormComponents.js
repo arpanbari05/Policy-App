@@ -3,11 +3,12 @@ import BackButton from "../../../components/BackButton";
 import StyledButton from "../../../components/StyledButton";
 import * as yup from "yup";
 import "yup-phone";
+import styles from "../../../styles";
 
-export const Title = styled.h3`
+export const Title = styled.h1`
   font-size: 24px;
   font-weight: 900;
-  color: #4a5971;
+  color: ${styles.colors.font.one};
 `;
 export const SubTitle = styled.h3`
   font-size: 16px;
@@ -116,15 +117,15 @@ export const firstFormSchema = yup.object({
     .string()
     .required("Email is required.")
     .matches(email, "Please enter a valid Email id.")
-    .test("email", "Please enter valid email id", (givenValue) => {
+    .test("email", "Please enter valid email id", givenValue => {
       const value = givenValue.toLowerCase();
-      if (acceptedEmailExtensions.find((ext) => value.endsWith(ext))) {
+      if (acceptedEmailExtensions.find(ext => value.endsWith(ext))) {
         if (!value.endsWith(".co.in") && !value.endsWith(".co.jp"))
           if (
             value
               .substr(
                 value.indexOf("@") + 1,
-                value.lastIndexOf(".") - (value.indexOf("@") + 1)
+                value.lastIndexOf(".") - (value.indexOf("@") + 1),
               )
               .includes(".")
           ) {

@@ -1,4 +1,6 @@
-export const formatCurrency = (number,decimals,recursiveCall) => {
+import { range } from "lodash";
+
+export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
   const noOfLakhs = number / 100000;
   let displayStr;
@@ -6,29 +8,31 @@ export const formatCurrency = (number,decimals,recursiveCall) => {
 
   // Rounds off digits to decimalPoints decimal places
   function roundOf(integer) {
-      return +integer.toLocaleString(undefined, {
-          minimumFractionDigits: decimalPoints,
-          maximumFractionDigits: decimalPoints,
-      });
+    return +integer.toLocaleString(undefined, {
+      minimumFractionDigits: decimalPoints,
+      maximumFractionDigits: decimalPoints,
+    });
   }
 
   if (noOfLakhs >= 1 && noOfLakhs <= 99) {
-      const lakhs = roundOf(noOfLakhs);
-      isPlural = lakhs > 1 && !recursiveCall;
-      displayStr = `${lakhs} Lakh${isPlural ? 's' : ''}`;
+    const lakhs = roundOf(noOfLakhs);
+    isPlural = lakhs > 1 && !recursiveCall;
+    displayStr = `${lakhs} Lakh${isPlural ? "s" : ""}`;
   } else if (noOfLakhs >= 100) {
-      const crores = roundOf(noOfLakhs / 100);
-      const crorePrefix = crores >= 100000 ? formatCurrency(crores, decimals, true) : crores;
-      isPlural = crores > 1 && !recursiveCall;
-      displayStr = `${crorePrefix} Crore${isPlural ? 's' : ''}`;
+    const crores = roundOf(noOfLakhs / 100);
+    const crorePrefix =
+      crores >= 100000 ? formatCurrency(crores, decimals, true) : crores;
+    isPlural = crores > 1 && !recursiveCall;
+    displayStr = `${crorePrefix} Crore${isPlural ? "s" : ""}`;
   } else {
-      displayStr = roundOf(+number);
+    // displayStr = roundOf(+number);
+    displayStr = amount(+number);
   }
 
   return displayStr;
 };
 
-export const numOnly = (event) => {
+export const numOnly = event => {
   let key = event.keyCode || event.which;
   if (
     (key >= 48 && key <= 58) ||
@@ -45,7 +49,7 @@ export const numOnly = (event) => {
   }
 };
 
-export const noSpclChars = (event) => {
+export const noSpclChars = event => {
   let key = event.keyCode;
 
   if (
@@ -89,7 +93,7 @@ export const numberToDigitWord = (
   number,
   type,
   multiple = 50000,
-  roundTo = false
+  roundTo = false,
 ) => {
   let rounded = Math.round(number / multiple) * multiple;
   const value = String(rounded);
@@ -111,7 +115,7 @@ export const numberToDigitWord = (
   }
 };
 
-export const dateUtil = (e) => {
+export const dateUtil = e => {
   if (e.which !== 8) {
     var numChars = e.target.value.length;
     if (numChars === 2 || numChars === 5) {
@@ -122,11 +126,11 @@ export const dateUtil = (e) => {
   }
 };
 
-export function range(start, end) {
-  return Array(end - start + 1)
-    .fill()
-    .map((_, idx) => start + idx);
-}
+// export function range(start, end) {
+//   return Array(end - start + 1)
+//     .fill()
+//     .map((_, idx) => start + idx);
+// }
 
 export function amount(number = 0) {
   return `₹ ${parseInt(number).toLocaleString("en-In")}`;
@@ -148,10 +152,111 @@ export function calculateTotalPremium({
   health_riders = [],
   addons = [],
 } = {}) {
-  const totalPremium = (items) =>
+  const totalPremium = items =>
     items.reduce((totalPremium, item) => totalPremium + item.total_premium, 0);
   const ridersPremium = totalPremium(health_riders);
   const addOnsPremium = totalPremium(addons);
 
   return ridersPremium + addOnsPremium + basePlanPremium;
+}
+
+export function getAgeList({ min_age, max_age }) {
+  const minAge = parseFloat(min_age);
+  const maxAge = parseFloat(max_age);
+  if (minAge < 1) {
+    const startMonth = getMonthsForYear(minAge);
+    if (maxAge < 1) {
+      const endMonth = getMonthsForYear(maxAge);
+      return range(startMonth, endMonth + 1).map(month => ({
+        code: monthsPercentage(month),
+        display_name: month + " Months",
+      }));
+    }
+    return range(startMonth, 12)
+      .map(month => ({
+        code: monthsPercentage(month),
+        display_name: month + " Months",
+      }))
+      .concat(
+        range(1, maxAge + 1).map(year => ({
+          code: year,
+          display_name: year + " Years",
+        })),
+      );
+  }
+
+  return range(minAge, maxAge + 1).map(year => ({
+    code: year,
+    display_name: year + " Years",
+  }));
+}
+
+export function getMonthsForYear(years) {
+  return Math.floor(years * 12);
+}
+
+function monthsPercentage(months) {
+  return months / 12;
+}
+
+export function getRiderCartData(rider) {
+  return {
+    alias: rider.alias,
+    description: rider.description,
+    name: rider.name,
+    options_selected: rider.options_selected,
+    premium: rider.premium,
+    rider_id: rider.id,
+    tax_amount: rider.tax_amount,
+    total_premium: rider.total_premium,
+    id: rider.id,
+  };
+}
+
+export function getQuoteSendData(quote) {
+  return {
+    total_premium: quote.total_premium,
+    sum_insured: quote.sum_insured,
+    tax_amount: quote.tax_amount,
+    tenure: quote.tenure,
+    product_id: quote.product.id,
+    premium: quote.premium,
+    service_tax: quote.tax_amount,
+  };
+}
+
+export function getPlanFeatures(features, sum_insured) {
+  let featureList = [];
+  let innerData = {};
+  features?.forEach((item, index) => {
+    featureList.push({
+      id: index + 1,
+      title: item.name,
+      description: item.description,
+    });
+    item?.sum_insureds[sum_insured]?.features?.forEach(innerItem => {
+      innerData[item.name] = [
+        ...(innerData[item.name] ? innerData[item.name] : []),
+        {
+          header: innerItem.title,
+          short_description: innerItem.short_description,
+          description: innerItem.description,
+          value: innerItem.feature_value,
+          icon: innerItem.other_icon,
+          is_visible: innerItem.is_visible,
+        },
+      ];
+    });
+  });
+
+  return { featureList, innerData };
+}
+
+export function getReactSelectOption({ display_name, code }) {
+  return { label: display_name, value: code };
+}
+export function getDisplayPremium({ total_premium, tenure }) {
+  return `${amount(total_premium)} / ${
+    parseInt(tenure) > 1 ? `${tenure} years` : "year"
+  }`;
 }

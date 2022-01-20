@@ -21,7 +21,7 @@ function SeedetailFooterMobile({
   handleCloseSeeDetail,
   handleProceedClick = () => {},
 }) {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [showBuyNow, setShowBuyNow] = useState(false);
@@ -127,7 +127,11 @@ function SeedetailFooterMobile({
       </Outer>
 
       {showBuyNow && (
-        <BuyNowModal showBuyNow={showBuyNow} setShowBuyNow={setShowBuyNow} handleCloseSeeDetail={handleCloseSeeDetail} />
+        <BuyNowModal
+          showBuyNow={showBuyNow}
+          setShowBuyNow={setShowBuyNow}
+          handleCloseSeeDetail={handleCloseSeeDetail}
+        />
       )}
     </div>
   );

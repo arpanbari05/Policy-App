@@ -16,8 +16,9 @@ import {
   refreshUserData,
   setMemberGroups,
 } from "../InputPage/greetingPage.slice";
-import { setTraceId } from "../InputPage/greetingPage.slice"
+import { setTraceId } from "../InputPage/greetingPage.slice";
 import axios from "axios";
+import { api } from "../../api/api";
 const ls = new SecureLS();
 
 //===============================================
@@ -52,6 +53,7 @@ const quotePageSlice = createSlice({
     selectedGroup: "group_code_1",
     selectedRiders: [],
     selectedAddOns: {},
+    quotesForSort: {},
   },
   name: "quote",
   reducers: {
@@ -78,7 +80,7 @@ const quotePageSlice = createSlice({
     },
     removeSelectedAddOns: (state, action) => {
       const newAddOns = state.selectedAddOns[state.selectedGroup].filter(
-        (addOn) => addOn.product.id !== action.payload.product.id
+        addOn => addOn.product.id !== action.payload.product.id,
       );
       state.selectedAddOns = {
         ...state.selectedAddOns,
@@ -102,7 +104,7 @@ const quotePageSlice = createSlice({
     },
     removeSelectedRider: (state, action) => {
       const newRiders = state.selectedRiders[state.selectedGroup].filter(
-        (rider) => rider.name !== action.payload.name
+        rider => rider.name !== action.payload.name,
       );
       state.selectedRiders = {
         ...state.selectedRiders,
@@ -152,29 +154,25 @@ const quotePageSlice = createSlice({
     updateFetchedFilters: (state, action) => {
       state.fetchFilters = action.payload;
     },
-    setQuotesOnCompare: (state) => {
+    setQuotesOnCompare: state => {
       state.quotesOnCompare = !state.quotesOnCompare;
     },
     updateQuotesForCompare: (state, action) => {
       state.quotesForCompare = action.payload;
     },
     setQuotesForCompare: (state, action) => {
-     if( state.quotesForCompare.indexOf(action.payload[0]) === -1 &&
-        state.quotesForCompare.length < action.payload[1]){
-          state.quotesForCompare = [
-            ...state.quotesForCompare,
-            action.payload[0]
-          ]
-        }
-        
-        
+      if (
+        state.quotesForCompare.indexOf(action.payload[0]) === -1 &&
+        state.quotesForCompare.length < action.payload[1]
+      ) {
+        state.quotesForCompare = [...state.quotesForCompare, action.payload[0]];
+      }
 
-
-        // .push(action.payload[0]);
+      // .push(action.payload[0]);
     },
     removeQuotesForCompare: (state, action) => {
       state.quotesForCompare = state.quotesForCompare.filter(
-        (data) => data !== action.payload
+        data => data !== action.payload,
       );
     },
     removeAllQuotesForCompare: (state, action) => {
@@ -216,7 +214,7 @@ const quotePageSlice = createSlice({
     },
     deleteCartItemArr: (state, action) => {
       state.cartItems = state.cartItems.filter(
-        (item) => item.product_id !== action.payload.id
+        item => item.product_id !== action.payload.id,
       );
     },
     saveProductDiscountResponse: (state, action) => {
@@ -224,20 +222,20 @@ const quotePageSlice = createSlice({
     },
     saveFilteredPremium: (state, action) => {
       console.log("hehe3325321t3dsg");
-      state.quotes = state.quotes.map((item) =>
-        item.filter((quote) =>
+      state.quotes = state.quotes.map(item =>
+        item.filter(quote =>
           action.payload.code.includes("-")
             ? Number(quote.premium) >
                 Number(action.payload.code.split("-")[0]) &&
               Number(quote.premium) < Number(action.payload.code.split("-")[1])
-            : Number(quote.premium) < Number(action.payload.code.slice(1))
-        )
+            : Number(quote.premium) < Number(action.payload.code.slice(1)),
+        ),
       );
     },
 
     insurerFilterQuotes: (state, action) => {
-      state.filterQuotes = state.quotes.map((item) => {
-        return item.filter((quote) => {
+      state.filterQuotes = state.quotes.map(item => {
+        return item.filter(quote => {
           if (action.payload.includes(quote.company_alias)) return quote;
         });
       });
@@ -245,18 +243,25 @@ const quotePageSlice = createSlice({
 
     premiumFilterQuotes: (state, action) => {
       console.log("hehe3325premiumFilterQuotes");
-      state.filterQuotes = state.quotes.map((item) => {
+      state.filterQuotes = state.quotes.map(item => {
         //console.log("Andddd here we go");
         if (action.payload?.code.includes("<")) {
-          return item.filter((quote) => quote.premium < 5000);
+          return item.filter(quote => quote.premium < 5000);
         } else {
           return item.filter(
-            (quote) =>
+            quote =>
               quote.premium > action.payload?.code?.split("-")[0] &&
-              quote.premium < action.payload?.code?.split("-")[1]
+              quote.premium < action.payload?.code?.split("-")[1],
           );
         }
       });
+    },
+    setQuotesForSort: (state, action) => {
+      state.quotesForSort = action.payload;
+    },
+    setQuotesForSortForIC: (state, action) => {
+      const { company_alias, quotes } = action.payload;
+      state.quotesForSort[company_alias] = quotes;
     },
   },
 });
@@ -301,7 +306,11 @@ export const {
   setAppLoading,
   clearFilterQuotes,
   deleteQuotes,
+  setQuotesForSort,
+  setQuotesForSortForIC,
 } = quotePageSlice.actions;
+
+export const selectQuotesForSort = state => state.quotePage.quotesForSort;
 
 const cancelTokens = {};
 var flag = false;
@@ -316,12 +325,12 @@ export const fetchQuotes =
       const baseplantypes =
         store().frontendBoot.frontendData.data.baseplantypes;
       const selectedBasePlanType = baseplantypes.find(
-        (bpt) => bpt.display_name === filters.basePlanType
+        bpt => bpt.display_name === filters.basePlanType,
       );
       console.log("base", basePlanType, plan_type);
 
       dispatch(setLoadingQuotes(true));
-      Object.keys(cancelTokens).forEach((cancelToken) => {
+      Object.keys(cancelTokens).forEach(cancelToken => {
         cancelTokens[cancelToken].cancel("Cancelled due to new request made");
       });
       // let count = 0;
@@ -348,11 +357,11 @@ export const fetchQuotes =
             },
             {
               cancelToken,
-            }
+            },
           );
           const cashlessHospitalsCount =
             response.data?.cashless_hospitals_count;
-          const quoteData = response?.data?.data.map((data) => {
+          const quoteData = response?.data?.data.map(data => {
             return {
               logo: companies[data.company_alias].logo,
               cashlessHospitalsCount,
@@ -362,7 +371,7 @@ export const fetchQuotes =
           // count++;
 
           if (quoteData) {
-            quoteData.map((item) => {
+            quoteData.map(item => {
               if (item.product.insurance_type.name === "Health Insurance") {
                 flag = true;
               }
@@ -383,7 +392,7 @@ export const fetchQuotes =
 
       dispatch(replaceQuotes([]));
 
-      Object.keys(companies).forEach((alias) => {
+      Object.keys(companies).forEach(alias => {
         const cancelTokenSource = axios.CancelToken.source();
         cancelTokens[alias] = cancelTokenSource;
         fetchQuote({
@@ -398,7 +407,7 @@ export const fetchQuotes =
     } catch (error) {}
   };
 
-export const saveQuotesData = (data) => {
+export const saveQuotesData = data => {
   const { alias, sum_insured, tenure, member, plan_type } = data;
 
   return async (dispatch, getState) => {
@@ -412,7 +421,7 @@ export const saveQuotesData = (data) => {
         member,
         plan_type,
       });
-      const newData = response?.data?.data.map((data) => {
+      const newData = response?.data?.data.map(data => {
         return { ...data, logo: companies[data.company_alias].logo };
       });
 
@@ -426,19 +435,19 @@ export const saveQuotesData = (data) => {
   };
 };
 
-export const insurerFilter = (data) => {
+export const insurerFilter = data => {
   let aliasSet = [];
   data.map(({ alias }) => aliasSet.push(alias));
 
   console.log(aliasSet, "alias");
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(insurerFilterQuotes(aliasSet));
   };
 };
 
-export const premiumFilterCards = (data) => {
+export const premiumFilterCards = data => {
   const { code } = data;
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(premiumFilterQuotes({ code }));
   };
 };
@@ -454,7 +463,7 @@ export const createCartItem = (data, onCreate = () => {}) => {
     pa_addons: [],
     members: data?.members,
   };
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const response = await createCart(newData);
       if (response?.data) {
@@ -478,7 +487,7 @@ export const createCartItem = (data, onCreate = () => {}) => {
 };
 
 export const deleteCartItem = (data, onDelete = () => {}) => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       await deleteCart(data).then(() => {
         onDelete();
@@ -491,8 +500,8 @@ export const deleteCartItem = (data, onDelete = () => {}) => {
   };
 };
 
-export const getCartItem = (data) => {
-  return async (dispatch) => {
+export const getCartItem = data => {
+  return async dispatch => {
     try {
       const response = await getCart(data);
       if (response?.data) {
@@ -506,7 +515,7 @@ export const getCartItem = (data) => {
 };
 
 export const updateCartItem = (data, onUpdate = () => {}) => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const resopnse = await updateCart(data);
       await dispatch(getCartItem());
@@ -545,7 +554,7 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
         pincode,
         plan_type: planType ? planType.slice(0, 1) : "F",
         section: "health",
-        members: members?.map((member) => {
+        members: members?.map(member => {
           if (member.type.includes("daughter"))
             return {
               ...member,
@@ -617,11 +626,15 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
       //   dispatch(saveQuotesData({ alias: item, type: "normal" }))
       // );
       if (response.data) {
-        
+        // dispatch(
+        //   api.util.updateQueryData("getEnquiries", undefined, (draft) => {
+        //     Object.assign(draft, response.data);
+        //   })
+        // );
         dispatch(setAppLoading(true));
         ls.set("enquiryId", response?.data?.data?.enquiry_id);
-        console.log("kvbwbdv",response.data.data.trace_id)
-        dispatch(setTraceId(response.data.data.trace_id))
+        console.log("kvbwbdv", response.data.data.trace_id);
+        dispatch(setTraceId(response.data.data.trace_id));
         const newData = {
           enquiryId: response?.data?.data?.enquiry_id,
           name: response.data?.data?.name,
@@ -634,7 +647,7 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
             ...groups,
             [member.id]: member.members,
           }),
-          {}
+          {},
         );
         dispatch(setMemberGroups(newMemberGroups));
 
@@ -643,7 +656,13 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
           search: `enquiryId=${newData.enquiryId}`,
         });
         dispatch(
-          refreshUserData({ ...response?.data?.data?.input, ...newData })
+          api.util.updateQueryData("getEnquiries", undefined, draft => {
+            Object.assign(draft, response.data);
+          }),
+        );
+
+        dispatch(
+          refreshUserData({ ...response?.data?.data?.input, ...newData }),
         );
 
         dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
@@ -659,7 +678,7 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
 };
 export const getProductDiscount =
   ({ alias, product_id, member, sum_insured, group }, onFetch = () => {}) =>
-  async (dispatch) => {
+  async dispatch => {
     console.log(alias, product_id, member, sum_insured, group);
     try {
       const response = await getDiscount({
@@ -684,3 +703,6 @@ export const getProductDiscount =
   };
 
 export default quotePageSlice.reducer;
+
+export const selectFilteredInsurers = state => state.quotePage.filters.insurers;
+export const selectFilters = state => state.quotePage.filters;

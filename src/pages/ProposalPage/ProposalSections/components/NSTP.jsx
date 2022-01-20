@@ -6,7 +6,9 @@ import { useHistory } from "react-router";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 
 const NSTP = () => {
-  const { showNSTP,mediUnderwritting } = useSelector(state => state.proposalPage);
+  const { showNSTP, mediUnderwritting } = useSelector(
+    state => state.proposalPage,
+  );
 
   const { proposerDetails } = useSelector(state => state.greetingPage);
 
@@ -76,10 +78,9 @@ const Popup = styled.div`
   border-radius: 8px;
 
   @media (max-width: 767px) {
-width: 100%;
+    width: 100%;
     max-width: 320px;
-    padding:15px;
-   
+    padding: 15px;
   }
 `;
 const CloseButton = styled.button`
@@ -110,15 +111,15 @@ const Container = styled.div`
     font-weight: 600;
   }
 
-  @media (max-width:767px){
-   padding:14px 16px;
-   width:95%;
-   & p{
-    font-weight: 400;
+  @media (max-width: 767px) {
+    padding: 14px 16px;
+    width: 95%;
+    & p {
+      font-weight: 400;
 
-    font-size: 18px;
-    line-height: 1.4;
-   }
+      font-size: 18px;
+      line-height: 1.4;
+    }
   }
 `;
 const ButtonWrapper = styled.div`

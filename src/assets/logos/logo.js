@@ -7,13 +7,13 @@ import aditya from "./aditya.png";
 import hdfc from "./hdfc.png";
 import icici_lombard from "./icici_lombard.png";
 import digit from "./digit.png";
-import universal_sompo from './universal_n.png'
+import universal_sompo from "./universal_n.png";
 import sbi_g from "./sbi_general.png";
 import kotak_g from "./KGI logo.png";
 import raheja_log from "./Raheja logo.png";
-import future_generl from "./FG logo.png"
+import future_generl from "./FG logo.png";
 import edilwiese from "./edelewaisee_logo.jpeg";
-import reliance_group from "./Reliance logo.png"
+import reliance_group from "./Reliance logo.png";
 import chola_ms_logo from "./Chola logo.png";
 import royalSunderLogo from "./royal-sundaram-logo.png";
 
@@ -28,13 +28,13 @@ const images = {
   hdfc_ergo: hdfc,
   icici_lombard: icici_lombard,
   universal_sompo: universal_sompo,
-  sbi_general:sbi_g,
-  kotak_mahindra:kotak_g,
-   raheja_qbe_general:raheja_log, 
-  future_generali:future_generl,
-  reliance_general:reliance_group,
-  edelweiss_general:edilwiese,
-  cholmandalam_ms:chola_ms_logo,
+  sbi_general: sbi_g,
+  kotak_mahindra: kotak_g,
+  raheja_qbe_general: raheja_log,
+  future_generali: future_generl,
+  reliance_general: reliance_group,
+  edelweiss_general: edilwiese,
+  cholmandalam_ms: chola_ms_logo,
   royal_sundaram: royalSunderLogo,
 };
 

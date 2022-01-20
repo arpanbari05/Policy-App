@@ -52,29 +52,29 @@ const FeatureSectionHeader = styled("header")`
 
 const FeatureSectionHeading = styled("p")`
   font-size: 23px;
-   margin-bottom: 8px; 
-   color: #253858;
+  margin-bottom: 8px;
+  color: #253858;
   font-weight: 900;
   display: flex;
   /* margin-left:20px !important; */
-    align-items: center;
+  align-items: center;
   position: relative;
   /* @media (max-width: 767px) {
     display: none;
   } */
   @media (max-width: 768px) {
-  &::before {
-    content: "";
-    height: 45px;
-    width: 5px;
-    top: -7px;
-    left: -20px;
-    position: absolute;
-   
-    background-color:#2cd44a;
-    border-radius: 0 15px 15px 0;
+    &::before {
+      content: "";
+      height: 45px;
+      width: 5px;
+      top: -7px;
+      left: -20px;
+      position: absolute;
+
+      background-color: #2cd44a;
+      border-radius: 0 15px 15px 0;
+    }
   }
-}
   margin-left: 2px;
 
   ${mobile} {
@@ -89,7 +89,7 @@ const FeatureSectionSubHeading = styled("p")`
   /* color: #929296; */
   color: #76797e;
   font-size: 14px;
-  margin-left:2px !important;
+  margin-left: 2px !important;
   color: #253858;
   ${mobile} {
     line-height: normal;

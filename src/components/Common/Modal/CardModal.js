@@ -23,15 +23,11 @@ const CardModal = ({
   return (
     <Modal
       centered
-      //fullscreen
       show={show}
       size="lg"
       onHide={handleClose}
       animation={false}
-      //dialogClassName="modal-box"
       style={{
-        zIndex: "2000",
-        borderRadius: "12px",
         border: "none",
         marginBottom: revised ? "70px" : "0px",
         background: "rgba(0,0,0,0.5)",
@@ -44,14 +40,13 @@ const CardModal = ({
           }
         }
         @media (max-width: 767px) {
-          .modal{
-           
+          .modal {
           }
           .modal-dialog {
             max-width: 100% !important;
             margin: unset;
             overflow-x: hidden;
-    overflow-y: auto;
+            overflow-y: auto;
           }
           .modal-dialog > div {
             height: fit-content;

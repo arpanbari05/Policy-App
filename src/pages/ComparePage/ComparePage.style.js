@@ -23,17 +23,16 @@ export const SelectedProduct = styled.div`
     border: solid 2px #0a87ff;
   }
   background-color: #ffffff;
-  @media (max-width:400px){
+  @media (max-width: 400px) {
     padding: 19px 3px 32px 3px !important;
   }
-          
 `;
 export const LogoWrapper = styled.div`
   width: 50px;
   height: 50px;
-  padding:2px;
+  padding: 2px;
   float: left;
-  margin-right:5px;
+  margin-right: 5px;
 `;
 export const AddPlan = styled.div`
   padding: 30px 220px 53px 27px;
@@ -41,9 +40,6 @@ export const AddPlan = styled.div`
   background-color: #f4f4f4;
   height: 150px;
   position: relative;
-
-       
-          
 `;
 export const Line = styled.div`
   border-bottom: dashed 1px #74778a;
@@ -62,9 +58,9 @@ export const QuoteNameM = styled.div`
 `;
 export const QuoteName = styled.div`
   margin-left: 60px;
-height:45px;
-display:flex;
-align-items: center;
+  height: 45px;
+  display: flex;
+  align-items: center;
   font-size: 15px;
 `;
 export const DropDownWrapper = styled.div`
@@ -75,7 +71,6 @@ export const DropDownWrapper = styled.div`
   }
   bottom: 15px;
   left: 12px;
- 
 `;
 export const ErrorAddPlan = styled.div`
   color: #bd2b2b;
@@ -108,10 +103,10 @@ export const EmailSent = styled.div`
   width: 100%;
   text-align: center;
   border-radius: 7px;
-  background-color: ${(props) => (props.status ? " #f0fff2" : "#fff")};
+  background-color: ${props => (props.status ? " #f0fff2" : "#fff")};
   padding: 8px 16px 8px;
 
-  color: ${(props) => (props.status ? "#1f874c" : "#bd2b2b")};
+  color: ${props => (props.status ? "#1f874c" : "#bd2b2b")};
 `;
 export const RemoveCross = styled.div`
   cursor: pointer !important;
@@ -165,7 +160,6 @@ export const PlusWrapper = styled.div`
 `;
 export const NameWrapper = styled.div`
   margin-left: 60px;
- 
 `;
 export const PlanDetails = styled.div`
   width: calc(100% - 60px);
@@ -187,15 +181,15 @@ export const DetailWrapper = styled.div`
 export const Title = styled.div`
   color: #505f79;
   font-size: 14px;
-  @media (max-width:400px){
+  @media (max-width: 400px) {
     font-size: 10px;
   }
 `;
 export const Value = styled.div`
   font-weight: 900;
   font-size: 16px;
-  font-family:"Inter-SemiBold";
-  @media (max-width:400px){
+  font-family: "Inter-SemiBold";
+  @media (max-width: 400px) {
     font-size: 10px;
   }
 `;
@@ -204,11 +198,11 @@ export const CompanyName = styled.div`
   font-stretch: normal;
   font-style: normal;
   line-height: 1;
- justify-content:center;
-    height: 30px;
-    display: flex;
-    text-align: center;
-    align-items: center;
+  justify-content: center;
+  height: 30px;
+  display: flex;
+  text-align: center;
+  align-items: center;
   letter-spacing: normal;
   text-align: center;
   color: #253858;
@@ -222,15 +216,15 @@ export const PlanName = styled.div`
   line-height: 1.19;
 `;
 export const RiderWrapper = styled.div`
-cursor: pointer;
-color:rgb(100, 113, 136) !important;
+  cursor: pointer;
+  color: rgb(100, 113, 136) !important;
   &:before,
   &:after {
     content: "";
     clear: both;
     display: table;
   }
-  display: ${(props) => !props.show && "none"};
+  display: ${props => !props.show && "none"};
   position: relative;
   padding: 10px;
   border-radius: 10px;
@@ -239,36 +233,34 @@ color:rgb(100, 113, 136) !important;
   min-height: fit-content;
   display: flex;
 
-  align-items:center;
+  align-items: center;
   @media (max-width: 768px) {
     margin-bottom: 4px !important;
     padding: 5px;
-    justify-content:space-between;
+    justify-content: space-between;
   }
 `;
 export const RiderName = styled.div`
-
-font-size:15px;
+  font-size: 15px;
   width: 70%;
 
-
-  @media (max-width:767px){
-font-size:12px;
-width: 60%;
+  @media (max-width: 767px) {
+    font-size: 12px;
+    width: 60%;
   }
-  @media (max-width:500px){
+  @media (max-width: 500px) {
     width: 50%;
   }
 `;
 export const RiderPremium = styled.div`
   width: 30%;
-justify-content: space-between;
-display:flex;
-@media (max-width:767px){
-font-size:12px;
-max-width: 70px;
+  justify-content: space-between;
+  display: flex;
+  @media (max-width: 767px) {
+    font-size: 12px;
+    max-width: 70px;
   }
-  @media (max-width:500px){
-width:75px;
+  @media (max-width: 500px) {
+    width: 75px;
   }
 `;

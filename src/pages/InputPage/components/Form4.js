@@ -50,9 +50,10 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
   const [selected, setSelected] = useState(false);
   const [diseaseArray, setDiseaseArray] = useState([]);
   const [customErrors, setCustomErrors] = useState(false);
-  const planTypeSelected = useSelector(
-    (state) => state.quotePage.filters.planType
-  );
+  const [planTypeSelected, { isSuperTopUpJourney }] = useSelector(state => [
+    state.quotePage.filters.planType,
+    state.greetingPage,
+  ]);
   // const [isIndividualPlan, setIsIndividualPlan] = useState(false);
 
   // const greetingPage = useSelector((state) => state.greetingPage);
@@ -68,7 +69,7 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
   //   }
   // }, [plan_type]);
 
-  const { frontendData } = useSelector((state) => state.frontendBoot);
+  const { frontendData } = useSelector(state => state.frontendBoot);
   const { data } = frontendData || [""];
   const { existingdiseases } = data || [""];
   const { defaultfilters, covers, plantypes } = frontendData.data;
@@ -76,16 +77,16 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
   useEffect(() => {
     dispatch(
       setFilters({
-        cover: covers.find((c) => c.code === cover).display_name,
-        planType: plantypes.find((p) => p.code === plan_type).display_name,
+        cover: covers.find(c => c.code === cover).display_name,
+        planType: plantypes.find(p => p.code === plan_type).display_name,
         multiYear: `${tenure} Year`,
-      })
+      }),
     );
   }, []);
   console.log(diseaseArray);
   const ls = new SecureLS();
   const history = useHistory();
-  const pushToQuotes = (groupCode) => {
+  const pushToQuotes = groupCode => {
     history.push({
       pathname: `/quotes/${groupCode}`,
       search: `enquiryId=${ls.get("enquiryId")}`,
@@ -93,15 +94,22 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
   };
 
   const handleSubmit = () => {
-    console.log("aabbcc");
     if (selected) {
       const medical_history = [...diseaseArray];
-      dispatch(saveForm5UserDetails(medical_history, pushToQuotes));
+
+      dispatch(
+        saveForm5UserDetails(
+          medical_history,
+          !isSuperTopUpJourney && pushToQuotes,
+          isSuperTopUpJourney,
+        ),
+      );
+      isSuperTopUpJourney && handleChange(6);
     } else {
       setCustomErrors("Please Select One");
     }
   };
-  const handleDiseases = (disease) => {
+  const handleDiseases = disease => {
     const tempArray = [...diseaseArray];
 
     if (!tempArray.includes(disease)) {
@@ -138,7 +146,7 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
             medicalHistoryRadioArr.map(({ code, display_name }, i) => {
               return (
                 <RadioButton
-                  onClick={(e) => {
+                  onClick={e => {
                     if (display_name === "No") {
                       setSelected(e.target.value);
                       const medical_history = [...diseaseArray];
@@ -150,12 +158,13 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
                       dispatch(
                         saveForm5UserDetails(
                           medical_history,
-                          pushToQuotes,
-                          planTypeSelected
-                        )
+                          !isSuperTopUpJourney && pushToQuotes,
+                          planTypeSelected,
+                        ),
                       );
                       //console.log("I m executed here in form 4");
                       //dispatch(setPlanType(planTypeSelected));
+                      isSuperTopUpJourney && handleChange(6);
                     } else {
                       setSelected(e.target.value);
                     }
@@ -194,7 +203,7 @@ const Form3 = ({ handleChange, currentForm, lastForm }) => {
             handleChange(`4.${lastForm}`);
           },
           handleSubmit,
-          true
+          !isSuperTopUpJourney,
         )}
       </div>
     </div>

@@ -47,14 +47,13 @@ const FormBuilder = ({
     fetchValues,
     options.defaultValues,
     noForAll,
-    setNoForAll
+    setNoForAll,
   );
 
-  
   const [trigger, setTrigger] = useState(false);
-  const { proposalData } = useSelector((state) => state.proposalPage);
-  console.log(proposalData,'sgad')
-  
+  const { proposalData } = useSelector(state => state.proposalPage);
+  console.log(proposalData, "sgad");
+
   useEffect(() => {
     if (trigger) {
       triggerValidation(trigger);
@@ -90,14 +89,12 @@ const FormBuilder = ({
   // }, [values]);
 
   const [fillBus, setFillBus] = useState([]);
-  const { asyncOptions, asyncValues } = useSelector(
-    (state) => state.formBuilder
-  );
+  const { asyncOptions, asyncValues } = useSelector(state => state.formBuilder);
 
   const dispatch = useDispatch();
   useEffect(() => {
     const tempValues = { ...values };
-    schema.forEach((item) => {
+    schema.forEach(item => {
       if (
         item.type === "select" &&
         !values[item.name] &&
@@ -123,43 +120,40 @@ const FormBuilder = ({
   useEffect(() => {
     let temp = {};
     if (schema instanceof Array)
-      schema.forEach((item) => {
+      schema.forEach(item => {
         if (item.fill) temp = Object.assign(temp, { [item.name]: item.fill });
       });
     setFillBus(temp);
   }, [schema]);
   useEffect(() => {
-   
-    let pincodeSchema =  schema.filter(item => item?.name?.includes("pincode"))[0]
-   
-    if(pincodeSchema && pincodeSchema?.value && pincodeSchema.fill){
+    let pincodeSchema = schema.filter(item =>
+      item?.name?.includes("pincode"),
+    )[0];
+
+    if (pincodeSchema && pincodeSchema?.value && pincodeSchema.fill) {
       dispatch(
         callApi(pincodeSchema.fill?.using, {
           [pincodeSchema.name]: pincodeSchema.value,
-          
         }),
-        
       );
     }
-   
-  },[])
+  }, []);
   useEffect(() => {
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
-  console.log(asyncOptions,'ehe')
+  console.log(asyncOptions, "ehe");
 
   return (
     <>
-    {console.log("schemaschemaschema",schema)}
+      {console.log("schemaschemaschema", schema)}
       {schema instanceof Array &&
         schema.map((item, index) => {
           if (item instanceof Array) {
             return (
               <>
-                {item[0]?.additionalOptions?.members?.map((member) => {
-
-                  console.log(member,proposalData,'gsda')
+                {item[0]?.additionalOptions?.members?.map(member => {
+                  console.log(member, proposalData, "gsda");
                   if (
                     values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
@@ -176,7 +170,7 @@ const FormBuilder = ({
                               ]?.name?.split(" ")[0]
                             }
                           </Title>
-                          {item.map((innerItem) => {
+                          {item.map(innerItem => {
                             const Comp = components[innerItem.type];
 
                             if (!Comp) {
@@ -196,13 +190,17 @@ const FormBuilder = ({
                                     }
                                     medical
                                   >
-                                    
                                     <Comp
                                       name={innerItem.name}
                                       checkValidation={innerItem.validate}
                                       innerMember={member}
-                                      onChange={(e) => {
-                                        console.log("qdjbjics",innerItem,innerItem.parent ,innerItem.type)
+                                      onChange={e => {
+                                        console.log(
+                                          "qdjbjics",
+                                          innerItem,
+                                          innerItem.parent,
+                                          innerItem.type,
+                                        );
                                         if (
                                           innerItem.parent &&
                                           innerItem.type === "checkBox2"
@@ -211,14 +209,14 @@ const FormBuilder = ({
                                             innerItem.parent,
                                             member,
                                             innerItem.name,
-                                            e.target.checked ? "Y" : "N"
+                                            e.target.checked ? "Y" : "N",
                                           );
                                         } else if (innerItem.parent) {
                                           insertValue(
                                             innerItem.parent,
                                             member,
                                             innerItem.name,
-                                            e.target.value
+                                            e.target.value,
                                           );
                                         } else {
                                           if (
@@ -226,7 +224,7 @@ const FormBuilder = ({
                                           ) {
                                             updateValue(
                                               innerItem.name,
-                                              e.target.value
+                                              e.target.value,
                                             );
                                           } else updateValue(innerItem.name, e);
                                         }
@@ -247,9 +245,9 @@ const FormBuilder = ({
                                                     fillBus[innerItem.name]
                                                       .alsoUse
                                                   ],
-                                              }
+                                              },
                                             ),
-                                            fillBus[innerItem.name]
+                                            fillBus[innerItem.name],
                                           );
                                         }
                                         if (options.validateOn === "change") {
@@ -263,40 +261,40 @@ const FormBuilder = ({
                                           checkAllow(
                                             innerItem.allow,
                                             e,
-                                            "change"
+                                            "change",
                                           );
                                         }
                                       }}
                                       readOnly={innerItem.readOnly}
-                                      onInput={(e) => {
+                                      onInput={e => {
                                         if (innerItem.allow) {
                                           checkAllow(
                                             innerItem.allow,
                                             e,
-                                            "input"
+                                            "input",
                                           );
                                         }
                                       }}
-                                      onBlur={(e) => {
+                                      onBlur={e => {
                                         if (options.validateOn === "blur") {
                                           setTrigger(innerItem.name);
                                         }
                                       }}
-                                      onKeyDown={(e) => {
+                                      onKeyDown={e => {
                                         if (innerItem.allow) {
                                           checkAllow(
                                             innerItem.allow,
                                             e,
-                                            "down"
+                                            "down",
                                           );
                                         }
                                       }}
-                                      onKeyPress={(e) => {
+                                      onKeyPress={e => {
                                         if (innerItem.allow) {
                                           checkAllow(
                                             innerItem.allow,
                                             e,
-                                            "press"
+                                            "press",
                                           );
                                         }
                                       }}
@@ -307,7 +305,7 @@ const FormBuilder = ({
                                         generateRange(
                                           innerItem.additionalOptions
                                             .customOptions,
-                                          values
+                                          values,
                                         )
                                       }
                                       asyncOptions={
@@ -355,7 +353,7 @@ const FormBuilder = ({
               values[item.name] &&
               values[item.name][`is${item.name}`] === "Y"
             ) {
-              setValues((prev) => {
+              setValues(prev => {
                 return { ...prev, [item.name]: "" };
               });
             } else if (
@@ -366,11 +364,11 @@ const FormBuilder = ({
               !fetchMembers(item.render.when, values).length &&
               !(
                 "showMembers" in
-                schema.find((_i) => _i.name === item.render.when.split(".")[0])
+                schema.find(_i => _i.name === item.render.when.split(".")[0])
                   .additionalOptions
               )
             ) {
-              setValues((prev) => {
+              setValues(prev => {
                 return { ...prev, [item.name]: "" };
               });
             }
@@ -380,7 +378,6 @@ const FormBuilder = ({
             } else
               return (
                 <>
-               
                   {renderField(item, values) && (
                     <Wrapper
                       key={index}
@@ -392,19 +389,17 @@ const FormBuilder = ({
                           : item.width
                       }
                     >
-                    
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}
                         selectedValues={values}
                         onChange={(e, value) => {
-                          
                           if (item.parent && item.members) {
                             insertValue(
                               item.parent,
                               item.members,
                               item.name,
-                              e.target.value
+                              e.target.value,
                             );
                           } else {
                             if (item.name === "town" || item.name === "area") {
@@ -427,7 +422,7 @@ const FormBuilder = ({
                                 [fillBus[item.name].alsoUse]:
                                   values[fillBus[item.name].alsoUse],
                               }),
-                              fillBus[item.name]
+                              fillBus[item.name],
                             );
                           }
                           if (options.validateOn === "change") {
@@ -446,27 +441,27 @@ const FormBuilder = ({
                           !(
                             "showMembers" in
                             schema.find(
-                              (_i) => _i.name === item.render.when.split(".")[0]
+                              _i => _i.name === item.render.when.split(".")[0],
                             ).additionalOptions
                           ) &&
                           fetchMembers(item.render.when, values)
                         }
-                        onInput={(e) => {
+                        onInput={e => {
                           if (item.allow) {
                             checkAllow(item.allow, e, "input");
                           }
                         }}
-                        onBlur={(e) => {
+                        onBlur={e => {
                           if (options.validateOn === "blur") {
                             setTrigger(item.name);
                           }
                         }}
-                        onKeyDown={(e) => {
+                        onKeyDown={e => {
                           if (item.allow) {
                             checkAllow(item.allow, e, "down");
                           }
                         }}
-                        onKeyPress={(e) => {
+                        onKeyPress={e => {
                           if (item.allow) {
                             checkAllow(item.allow, e, "press");
                           }
@@ -483,7 +478,6 @@ const FormBuilder = ({
                         setCustomValid={setCustomValid}
                         {...item.additionalOptions}
                       />
-                       
                     </Wrapper>
                   )}
                   {item.type === "custom_toggle" &&
@@ -507,9 +501,9 @@ const HR = styled.hr`
   }
 `;
 const Wrapper = styled.div`
-  width: ${(props) => (props.width ? props.width : "33%")};
+  width: ${props => (props.width ? props.width : "33%")};
   display: inline-block;
-  padding-left: ${(props) => (props.medical ? "0px" : "15px")};
+  padding-left: ${props => (props.medical ? "0px" : "15px")};
   padding-right: 15px;
   @media (max-width: 1023px) {
     width: 100%;
@@ -566,7 +560,7 @@ const Title = styled.p`
       border-radius: 50px;
     }
     height: 20px;
-    
+
     font-size: 16px !important;
     padding: 4px 0 0;
     background-image: unset;

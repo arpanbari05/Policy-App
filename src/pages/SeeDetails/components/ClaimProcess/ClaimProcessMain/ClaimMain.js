@@ -3,9 +3,15 @@ import React, { useState } from "react";
 import cashlessImg from "../../../../../assets/images/cashless_m.png";
 import styled from "styled-components/macro";
 import { useSelector } from "react-redux";
-const claimBtn = (title, id, handleClick, activeBtn,PrimaryColor,SecondaryShade) => {
-
-
+import { useTheme } from "../../../../../customHooks";
+const claimBtn = (
+  title,
+  id,
+  handleClick,
+  activeBtn,
+  PrimaryColor,
+  SecondaryShade,
+) => {
   return (
     <a
       onClick={() => handleClick(id)}
@@ -49,9 +55,8 @@ const claimContent = (
   id,
   image,
   activeBtn,
-  activeDelayedBtn
+  activeDelayedBtn,
 ) => {
- 
   return (
     <div
       className={`tab-pane fade  py-5 ${activeBtn === id && "show"} ${
@@ -90,15 +95,14 @@ const description =
   "Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.";
 
 const ClaimMain = ({ claimProccess }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { colors } = useTheme();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [activeBtn, setActiveBtn] = useState(1);
   const [activeDelayedBtn, setActiveDelayedBtn] = useState(1);
 
   console.log("claim", claimProccess);
 
-  const handleClick = (id) => {
+  const handleClick = id => {
     setActiveBtn(id);
     setTimeout(() => setActiveDelayedBtn(id), 500);
   };
@@ -132,9 +136,30 @@ const ClaimMain = ({ claimProccess }) => {
               display: "flex",
             }}
           >
-            {claimBtn("Cashless Claim", 1, handleClick, activeBtn,PrimaryColor,SecondaryShade)}
-            {claimBtn("Documents Required", 2, handleClick, activeBtn,PrimaryColor,SecondaryShade)}
-            {claimBtn("Reimbursement Claim", 3, handleClick, activeBtn,PrimaryColor,SecondaryShade)}
+            {claimBtn(
+              "Cashless Claim",
+              1,
+              handleClick,
+              activeBtn,
+              colors.primary_color,
+              colors.secondary_shade,
+            )}
+            {claimBtn(
+              "Documents Required",
+              2,
+              handleClick,
+              activeBtn,
+              colors.primary_color,
+              colors.secondary_shade,
+            )}
+            {claimBtn(
+              "Reimbursement Claim",
+              3,
+              handleClick,
+              activeBtn,
+              colors.primary_color,
+              colors.secondary_shade,
+            )}
           </li>
         </ul>
         {/* ============================================================ */}
@@ -154,7 +179,7 @@ const ClaimMain = ({ claimProccess }) => {
             1,
             cashlessImg,
             activeBtn,
-            activeDelayedBtn
+            activeDelayedBtn,
           )}
           {claimContent(
             "Document Required",
@@ -162,7 +187,7 @@ const ClaimMain = ({ claimProccess }) => {
             2,
             cashlessImg,
             activeBtn,
-            activeDelayedBtn
+            activeDelayedBtn,
           )}
           {claimContent(
             "Reimbursement Claim",
@@ -170,7 +195,7 @@ const ClaimMain = ({ claimProccess }) => {
             3,
             cashlessImg,
             activeBtn,
-            activeDelayedBtn
+            activeDelayedBtn,
           )}
         </div>
         {/* ============================================================ */}

@@ -9,7 +9,7 @@ const TermModal = ({
   title,
   show,
   customClass,
- 
+
   content,
   buttonValue,
   handleClick,
@@ -20,25 +20,25 @@ const TermModal = ({
   revised = false,
 }) => {
   const [term, setTerm] = useState("");
-const getTermConditionData = async (company_id, callback = () => {}) => {
-  try {
-    const { data } = await getTermConditions(company_id);
+  const getTermConditionData = async (company_id, callback = () => {}) => {
+    try {
+      const { data } = await getTermConditions(company_id);
 
-    callback(data.company_terms_and_conditions);
-  } catch (error) {
-    alert(error);
-    console.error(error);
-  }
-};
+      callback(data.company_terms_and_conditions);
+    } catch (error) {
+      alert(error);
+      console.error(error);
+    }
+  };
 
   const cart = useSelector(state => state.cart);
-  const prod_id=Object.keys(cart)[0];
-    console.log("hkjm",term);
-    useEffect(() => {
-      if(cart[prod_id].product.company.id){
+  const prod_id = Object.keys(cart)[0];
+  console.log("hkjm", term);
+  useEffect(() => {
+    if (cart[prod_id].product.company.id) {
       getTermConditionData(cart[prod_id].product.company.id, setTerm);
-      }
-   },[])
+    }
+  }, []);
 
   // console.log("mkmk",term)
   return (
@@ -58,24 +58,22 @@ const getTermConditionData = async (company_id, callback = () => {}) => {
         background: "rgba(0,0,0,0.5)",
       }}
       css={`
-      .modal-content{
-          position:fixed;
-          top:50px;
-          left:35px;
-          width:95%;
-        
-        
-          @media(max-width: 767px){
-              left:10px;
-              top:unset !important;
-              height:95% !important;
+        .modal-content {
+          position: fixed;
+          top: 50px;
+          left: 35px;
+          width: 95%;
+
+          @media (max-width: 767px) {
+            left: 10px;
+            top: unset !important;
+            height: 95% !important;
           }
-          
-      }
-      .modal-lg{
-          max-width:85% !important;
-          height:auto !important;
-      }
+        }
+        .modal-lg {
+          max-width: 85% !important;
+          height: auto !important;
+        }
         @media (min-width: 767px) and (max-width: 990px) {
           .modal-dialog {
             max-width: 700px !important;
@@ -95,19 +93,22 @@ const getTermConditionData = async (company_id, callback = () => {}) => {
       className={`${customClass} noselect`}
     >
       <Modal.Header
-       
         style={{
           borderBottomColor: !title && "000",
           padding: !title && "28px",
-          paddingLeft:"unset",
+          paddingLeft: "unset",
           borderTopLeftRadius: "14px",
           borderToprightRadius: "14px",
           borderBottomRightRadius: "0px",
           borderBottomLeftRadius: "0px",
         }}
       >
-       <ModalTitle className="modal-headerz">Terms and Conditions</ModalTitle>
-       <i  onClick={handleClose} style={{cursor: "pointer"}} class="fas fa-times"></i>
+        <ModalTitle className="modal-headerz">Terms and Conditions</ModalTitle>
+        <i
+          onClick={handleClose}
+          style={{ cursor: "pointer" }}
+          class="fas fa-times"
+        ></i>
       </Modal.Header>
       {/* <CloseButton
         type="button"
@@ -118,21 +119,21 @@ const getTermConditionData = async (company_id, callback = () => {}) => {
         <i className="fa fa-close"></i>
       </CloseButton> */}
       <Modal.Body
-      css={`
-       overflow:scroll;
-      `}
-      >
-          {term ?   <Paragraph 
-     
         css={`
-          color: #253858;
+          overflow: scroll;
         `}
-      
-        dangerouslySetInnerHTML={{ __html: term }}
-      ></Paragraph>
-    : <span>Loading...</span>
-    }
-          {/* <span
+      >
+        {term ? (
+          <Paragraph
+            css={`
+              color: #253858;
+            `}
+            dangerouslySetInnerHTML={{ __html: term }}
+          ></Paragraph>
+        ) : (
+          <span>Loading...</span>
+        )}
+        {/* <span
           css={`
               position: absolute;
              
@@ -183,13 +184,13 @@ const getTermConditionData = async (company_id, callback = () => {}) => {
           padding-bottom: 20px !important;
           `}
           > */}
-{/*             
+        {/*             
             <span
             css={`
             font-size:15px;
             `}
             ><strong>DISCLAIMER</strong> <br/> I agree that this proposal and the declarations shall be the basis of the contract between me / us and Aditya Birla Health Insurance Company Ltd. I further consent and authorize Aditya Birla Health Insurance Co. Ltd. and / or any of its authorized representatives to seek medical information from any hospital / consultant that I or any person proposed to be insured has attended or may attend in future concerning any disease or illness or injury. The information provided will be the basis of any insurance policy that We may issue. Proposer must disclose all facts relevant to all persons proposed to be insured that may affect our decision to issue a policy or its terms. Non-compliance may result in the avoidance of the policy. I / we, have proposed for this insurance policy with Aditya Birla Health insurance company ltd. I / We have read &amp; understood the full terms, conditions &amp; exclusions of the policy.</span>  </div> */}
-             </Modal.Body> 
+      </Modal.Body>
       <Modal.Footer
         style={{
           display: noFooter && "none",
@@ -200,9 +201,7 @@ const getTermConditionData = async (company_id, callback = () => {}) => {
           borderBottomRightRadius: "14px",
           borderBottomLeftRadius: "14px",
         }}
-      >
-  
-      </Modal.Footer>
+      ></Modal.Footer>
     </Modal>
   );
 };
@@ -247,14 +246,14 @@ const ModalTitle = styled.h5`
 `;
 
 const Paragraph = styled.div`
-height: 60vh;
-    overflow: auto;
-& li{
-  font-size:15px;
-  color:black;
-  margin-bottom:20px;
-  & ::marker{
-    display: none !important;
+  height: 60vh;
+  overflow: auto;
+  & li {
+    font-size: 15px;
+    color: black;
+    margin-bottom: 20px;
+    & ::marker {
+      display: none !important;
+    }
   }
-}
 `;

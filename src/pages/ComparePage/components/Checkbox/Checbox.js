@@ -3,22 +3,24 @@ import "styled-components/macro";
 import "./Checkbox.css";
 
 import { useSelector } from "react-redux";
+import { useTheme } from "../../../../customHooks";
 
 const Checkbox2 = ({ title, onChange, checked, showTitle = true }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { colors } = useTheme();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const PrimaryColor = colors.primary_color;
 
-  console.log(title, onChange, checked, "heelp");
   return (
-   
-    <div class="container d-flex align-items-center" css={`
-    position: relative;
-    left: -18px;
-    @media (max-width:400px){
-      padding:0px 5px;
-    }
-    `}>
+    <div
+      class="container d-flex align-items-center"
+      css={`
+        position: relative;
+        left: -18px;
+        @media (max-width: 400px) {
+          padding: 0px 5px;
+        }
+      `}
+    >
       <div
         className="round"
         css={`

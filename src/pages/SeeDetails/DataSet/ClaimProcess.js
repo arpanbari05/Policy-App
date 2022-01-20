@@ -11,7 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import "styled-components/macro";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
-const populateData = (data) => {
+import { useTheme } from "../../../customHooks";
+const populateData = data => {
   return [
     {
       header: "Toll Free number",
@@ -31,7 +32,7 @@ const populateData = (data) => {
   ];
 };
 
-const dataSet = (dataArray) => {
+const dataSet = dataArray => {
   const array = [];
   const length = dataArray?.length;
 
@@ -84,8 +85,8 @@ const dataSet = (dataArray) => {
             </div>
           </div>
         </div>
-      </span>
-    )
+      </span>,
+    ),
   );
   <div
     css={`
@@ -146,10 +147,10 @@ const dataSet = (dataArray) => {
 };
 
 const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
-  const { loading } = useSelector((state) => state.seeDetails);
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { loading } = useSelector(state => state.seeDetails);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { colors } = useTheme();
+
   return (
     <>
       <div
@@ -197,7 +198,7 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                       <div className="feature-box_basic support-feature js-tilt padding_imp_row">
                         <div
                           css={`
-                            background-color: ${SecondaryShade};
+                            background-color: ${colors.secondary_shade};
                             color: #253858;
                             padding: 22px;
                             /* padding-right: 82px; */
@@ -217,7 +218,7 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                           </p>{" "} */}
                         </div>
                         <hr className="hr_p_b_cliam" />
-                        {claimform.claim_url ? (
+                        {claimform?.claim_url ? (
                           <div
                             css={`
                               border: solid 1px #c9c9c9;
@@ -272,7 +273,7 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                                 <a
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  href={claimform.claim_url}
+                                  href={claimform?.claim_url}
                                 >
                                   <img
                                     src={download}
@@ -290,7 +291,9 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                           <></>
                         )}
 
-                        {claimProccess?dataSet(populateData(claimProccess)):null}
+                        {claimProccess
+                          ? dataSet(populateData(claimProccess))
+                          : null}
                       </div>
                     </Col>
                     {/* ============================================================ */}

@@ -7,6 +7,7 @@ import {
   setShowPlanNotAvail,
 } from "../ProposalSections/ProposalSections.slice";
 import { noForAllCheckedFalse } from "../ProposalSections/ProposalSections.slice";
+import { useTheme } from "../../../customHooks";
 const Toggle = ({
   label,
   customOptions,
@@ -19,14 +20,16 @@ const Toggle = ({
   showMembers,
   customMembers,
 }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { colors } = useTheme();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const PrimaryColor = colors.primary_color,
+    SecondaryColor = colors.secondary_color,
+    PrimaryShade = colors.primary_shade;
 
   const [boolean, setBoolean] = useState("N");
   const [membersStatus, setMembersStatus] = useState({});
   const { mediUnderwritting } = useSelector(
-    (state) => state.proposalPage.proposalData
+    state => state.proposalPage.proposalData,
   );
   const membersToMap = customMembers instanceof Array ? customMembers : members;
   // const membersToMap = members;
@@ -105,7 +108,7 @@ const Toggle = ({
                 <input
                   type="radio"
                   name={`is${name}`}
-                  onChange={(e) => {
+                  onChange={e => {
                     if (notAllowed) {
                       dispatch(setShowPlanNotAvail(true));
                     } else {
@@ -132,7 +135,7 @@ const Toggle = ({
                   type="radio"
                   name={`is${name}`}
                   value="N"
-                  onChange={(e) => {
+                  onChange={e => {
                     setBoolean(e.target.value);
                     setMembersStatus({});
                   }}
@@ -163,7 +166,7 @@ const Toggle = ({
                       type="checkbox"
                       name={item}
                       id={"rb1" + name + index + item}
-                      onChange={(e) =>
+                      onChange={e =>
                         setMembersStatus({
                           ...membersStatus,
                           [e.target.name]: e.target.checked,
@@ -224,7 +227,7 @@ const Question = styled.p`
     position: absolute;
     left: -2px;
     top: 2px;
-    background-color: ${(props) => props.SecondaryColor};
+    background-color: ${props => props.SecondaryColor};
     border-radius: 50px;
     @media (max-width: 767px) {
       height: calc(100% - 6px);

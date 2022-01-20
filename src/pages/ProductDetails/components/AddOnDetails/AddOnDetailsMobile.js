@@ -5,17 +5,11 @@ import { selectCompany } from "../../../../FrontendBoot/reducer/frontendBoot.sli
 import { amount } from "../../../../utils/helper";
 import { Accordion } from "react-bootstrap";
 import "styled-components/macro";
-import {
-  ErrorMessage,
-  ListItem,
-
-  useFetchDownloads,
-} from "./helpers";
+import { ErrorMessage, ListItem, useFetchDownloads } from "./helpers";
 import useAddOnDetails from "./helpers";
 import AddOnDetails, { addOnDetailsComponents } from "./AddOnDetails";
 
 function AddOnDetailsMobile({ addOn, handleClose, ...props }) {
-  
   return (
     <div
       css={`
@@ -160,7 +154,6 @@ function HeaderDetails({ label, value, ...props }) {
 }
 
 function DetailsTitle({ children, isOpen, eventKey }) {
- 
   return (
     <Accordion.Toggle eventKey={eventKey} as="button" style={{ width: "100%" }}>
       <div
@@ -197,23 +190,21 @@ function DetailsTitle({ children, isOpen, eventKey }) {
   );
 }
 
-AddOnDetailsMobile.Body = function Body({ addOn}) {
-  const { status, addOnDetails, handleRetry} = useAddOnDetails({ addOn });
+AddOnDetailsMobile.Body = function Body({ addOn }) {
+  const { status, addOnDetails, handleRetry } = useAddOnDetails({ addOn });
 
-    // console.log(downloads,"addOndefects")
+  // console.log(downloads,"addOndefects")
   return (
     <div
       css={`
         padding: 2em 1.5em;
       `}
-      
     >
-      {
-        status === "loading" || !addOnDetails ? (
+      {status === "loading" || !addOnDetails ? (
         <p>Loading...</p>
-      ) :status === "error" ? (
+      ) : status === "error" ? (
         <ErrorMessage handleRetry={handleRetry} />
-      ) :status === "success"? (
+      ) : status === "success" ? (
         <Accordion>
           {addOnDetails.map(addOnDetail =>
             addOnDetailsComponents[addOnDetail.name] ? (
@@ -243,16 +234,16 @@ AddOnDetailsMobile.Body = function Body({ addOn}) {
             </Accordion.Collapse>
           </div>
         </Accordion>
-      ):""}
+      ) : (
+        ""
+      )}
     </div>
   );
 };
 
-
-
 function DetailBody({ addOnDetail, children }) {
   const { name } = addOnDetail;
-  console.log('name',name)
+  console.log("name", name);
   return (
     <div>
       <DetailsTitle eventKey={name}>{name}</DetailsTitle>

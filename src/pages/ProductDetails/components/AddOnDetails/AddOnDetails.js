@@ -30,7 +30,7 @@ const renderTooltipDesc = ({ props, desc }) => (
 );
 
 function AddOnDetails({ addOn, handleClose }) {
-return (
+  return (
     <Modal>
       <AddOnDetailsMobile addOn={addOn} handleClose={handleClose} />
       <div
@@ -63,7 +63,6 @@ return (
               margin: 100px auto;
             `}
           >
-          
             <AddOnDetails.Header addOn={addOn} handleClose={handleClose} />
             <AddOnDetails.Body addOn={addOn} />
           </div>
@@ -74,10 +73,9 @@ return (
 }
 
 AddOnDetails.Body = function Body({ addOn = {} }) {
+  const { status, addOnDetails, handleRetry, downloads, setDownloads } =
+    useAddOnDetails({ addOn });
 
-  const { status, addOnDetails, handleRetry, downloads, setDownloads } = useAddOnDetails({ addOn });
-  
-  
   return (
     <div
       css={`
@@ -94,9 +92,8 @@ AddOnDetails.Body = function Body({ addOn = {} }) {
           defaultActiveKey={addOnDetails[0].name}
         >
           <Row>
-        
             <AddOnDetails.Nav
-              navItems={addOnDetails.map((addOnDetail) => addOnDetail.name)}
+              navItems={addOnDetails.map(addOnDetail => addOnDetail.name)}
             />
             <AddOnDetails.NavBody
               addOn={addOn}
@@ -117,28 +114,27 @@ AddOnDetails.PlanHighlights = function PlanHighlights({
   sumInsured,
 }) {
   const { features } = addOnDetail.sum_insureds[sumInsured] || {};
- 
+
   return (
     <div>
       {features ? (
-        <ul style={{listStyle:"none"}} >
-          {features.map((feature) =>
+        <ul style={{ listStyle: "none" }}>
+          {features.map(feature =>
             feature.feature_value
-              ? feature.feature_value.split("\n").map((item) =>
+              ? feature.feature_value.split("\n").map(item =>
                   item ? (
                     <li
                       css={`
                         margin: 1.6em 0;
                         margin-top: 1em;
-                        
                       `}
                     >
                       {" "}
                       <ListItem> {item.replace("•", "")} </ListItem>
                     </li>
-                  ) : null
+                  ) : null,
                 )
-              : null
+              : null,
           )}
         </ul>
       ) : null}
@@ -185,7 +181,7 @@ function CriticalIllnessList({ feature }) {
               overflow: auto;
             `}
           >
-            {criticalIllnessList.slice(1).map((criticalIllness) => (
+            {criticalIllnessList.slice(1).map(criticalIllness => (
               <li
                 css={`
                   min-width: 50%;
@@ -220,7 +216,7 @@ AddOnDetails.WhatItCovers = function WhatItCovers({
         flex-wrap: wrap;
       `}
     >
-      {features.map((feature) =>
+      {features.map(feature =>
         feature.feature_value ? (
           feature.code === "covered_critical_illnesses" ? (
             <CriticalIllnessList feature={feature} />
@@ -237,7 +233,7 @@ AddOnDetails.WhatItCovers = function WhatItCovers({
               />
             </div>
           )
-        ) : null
+        ) : null,
       )}
     </div>
   );
@@ -268,7 +264,7 @@ function FeatureDetail({ title, description = "", shortDesc = "" }) {
           <ListItem>{title} :</ListItem>
           {description.includes("\n") ? (
             <ul>
-              {description.split("\n").map((item) => (
+              {description.split("\n").map(item => (
                 <li
                   css={`
                     margin-bottom: 1em;
@@ -349,7 +345,7 @@ AddOnDetails.NavBody = function NavBody({
   return (
     <Col lg={9}>
       <Tab.Content>
-        {addOnDetails.map((addOnDetail) => (
+        {addOnDetails.map(addOnDetail => (
           <Tab.Pane eventKey={addOnDetail.name}>
             {addOnDetailsComponents[addOnDetail.name]
               ? addOnDetailsComponents[addOnDetail.name]({
@@ -375,9 +371,9 @@ AddOnDetails.Nav = function Nav({ navItems = [] }) {
   const [currentItem, setCurrentItem] = useState(navItems[0]);
   const navItemPosition = [...navItems, "downloads"].indexOf(currentItem);
 
-  const handleNavClick = (itemName) => setCurrentItem(itemName);
+  const handleNavClick = itemName => setCurrentItem(itemName);
 
-  const NavItemWithClick = (props) => (
+  const NavItemWithClick = props => (
     <NavItem {...props} onClick={handleNavClick} />
   );
 
@@ -416,7 +412,7 @@ AddOnDetails.Nav = function Nav({ navItems = [] }) {
           height: 100%;
         `}
       >
-        {navItems.map((navItem) => (
+        {navItems.map(navItem => (
           <NavItemWithClick key={navItem} eventKey={navItem}>
             {navItem}
           </NavItemWithClick>
@@ -442,13 +438,13 @@ function NavItem({ eventKey, children, onClick = () => {} }) {
         css={`
           font-weight: normal;
           color: #000;
-          &:hover{
+          &:hover {
             color: #0e89ff;
           }
           &.active {
             border-left: 4px solid #0a87ff;
-    color: #0e89ff;
-    background-image: linear-gradient(89deg, #e2f0ff 44%, #fff 89%);
+            color: #0e89ff;
+            background-image: linear-gradient(89deg, #e2f0ff 44%, #fff 89%);
             font-weight: 900;
           }
         `}
@@ -491,7 +487,7 @@ AddOnDetails.Header = function Header({ addOn = {}, handleClose = () => {} }) {
           position: absolute;
           top: 1.2rem;
           right: 1rem;
-          color:#485467;
+          color: #485467;
         `}
         onClick={handleCloseClick}
       />
@@ -504,31 +500,34 @@ AddOnDetails.Header = function Header({ addOn = {}, handleClose = () => {} }) {
         <div
           css={`
             width: 65px;
-    display: flex;
-    height: 65px;
-    background: white;
-    margin-right: 1rem;
-    align-items: center;
-    justify-content: center;
-    border-radius:3px;
+            display: flex;
+            height: 65px;
+            background: white;
+            margin-right: 1rem;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
           `}
         >
           <img
             css={`
-width: 100%;
+              width: 100%;
             `}
             src={logoSrc}
             alt={alias}
           />
         </div>
         <div>
-          <span css={`
-
-            font-size:18px;
-            font-weight:900;
-            color:#364865;
-          `}>{companyName}</span>
-          <br/>
+          <span
+            css={`
+              font-size: 18px;
+              font-weight: 900;
+              color: #364865;
+            `}
+          >
+            {companyName}
+          </span>
+          <br />
           <span>{addOnName}</span>
         </div>
       </div>
@@ -565,12 +564,12 @@ function Detail({ title, value }) {
         css={`
           margin-right: 1rem;
           font-weight: normal;
-          font-size:15px;
+          font-size: 15px;
         `}
       >
         {title}:
       </span>
-      <span style={{fontWeight:"900"}}>{value}</span>
+      <span style={{ fontWeight: "900" }}>{value}</span>
     </div>
   );
 }

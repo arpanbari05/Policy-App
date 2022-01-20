@@ -29,7 +29,7 @@ const Insurer = ({
         data?.companies[comp].insurance_types.includes("health") ||
         data?.companies[comp].insurance_types.includes("cancer") ||
         data?.companies[comp].insurance_types.includes("critical_illness") ||
-        data?.companies[comp].insurance_types.includes("personal_accident")
+        data?.companies[comp].insurance_types.includes("personal_accident"),
     )
     .sort((a, b) => data?.companies[b].csr - data?.companies[a].csr);
 
@@ -248,7 +248,7 @@ const StyledInsurerHead = styled.p`
     position: absolute;
     left: 0px;
     top: 14px;
-    background-color:#2cd44a;
+    background-color: #2cd44a;
     border-radius: 10px;
   }
 `;

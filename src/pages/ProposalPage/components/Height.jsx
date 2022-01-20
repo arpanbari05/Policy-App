@@ -85,7 +85,7 @@ const Wrapper = styled.div`
   @media (max-width: 1023px) {
     margin-bottom: 8px;
   }
- // background: ${props => (props.error ? "#fff6f7" : "transparent")};
+  // background: ${props => (props.error ? "#fff6f7" : "transparent")};
   border: ${props => (props.error ? "solid 1px #c7222a" : "solid 1px #ced4da")};
 
   & > div {

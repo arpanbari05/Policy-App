@@ -65,7 +65,7 @@ const AddOnCoverages = ({
     health_riders: [],
     addons: [],
   };
-  const { loading } = useSelector((state) => state.seeDetails);
+  const { loading } = useSelector(state => state.seeDetails);
   const [isRidersLoading, setIsRidersLoading] = useState(true);
   const [isAbhiRidersLoading, setIsAbhiRidersLoading] = useState(false);
   const [ridersError, setRidersError] = useState(false);
@@ -73,28 +73,26 @@ const AddOnCoverages = ({
   const { groupCode } = useParams();
   const { updateProductRedux, product: cartItem } = useCartProduct(
     groupCode,
-    product
+    product,
   );
 
-  const handleAddRider = (riderToAdd) =>
-    setAddedRiders((prevRiders) => [...prevRiders, riderToAdd]);
+  const handleAddRider = riderToAdd =>
+    setAddedRiders(prevRiders => [...prevRiders, riderToAdd]);
 
-  const handleRemoveRider = (riderToRemove) =>
-    setAddedRiders((prevRiders) =>
-      prevRiders.filter((rider) => rider.name !== riderToRemove.name)
+  const handleRemoveRider = riderToRemove =>
+    setAddedRiders(prevRiders =>
+      prevRiders.filter(rider => rider.name !== riderToRemove.name),
     );
-    
-    const { health_riders } = cartItem;
+
+  const { health_riders } = cartItem;
   const handleRiderChange = ({
     rider,
     isRiderSelected,
     hasOptions = false,
   }) => {
-    
-    
     //console.warning("Your rider is below");
     const { health_riders } = cartItem;
-    
+
     // const newRiders =
     //   !hasOptions && isRiderSelected
     //     ? [...health_riders, rider]
@@ -106,14 +104,14 @@ const AddOnCoverages = ({
     //         health_rider => health_rider.rider_id !== rider.rider_id,
     //       );
 
-    let newRiders=[];
+    let newRiders = [];
     if (!hasOptions && isRiderSelected) {
       newRiders = [...health_riders, rider];
       console.log("newnewnew", newRiders);
     } else if (hasOptions && isRiderSelected) {
       console.log("gege3312", rider, hasOptions);
       const temp = health_riders.filter(
-        (health_rider) => health_rider.rider_id !== rider.rider_id
+        health_rider => health_rider.rider_id !== rider.rider_id,
       );
       newRiders = [
         ...temp,
@@ -129,13 +127,13 @@ const AddOnCoverages = ({
       setSelectedRiders(tempObj);
     } else {
       const temp = health_riders.filter(
-        (health_rider) => health_rider.rider_id !== rider.rider_id
+        health_rider => health_rider.rider_id !== rider.rider_id,
       );
 
       let temp2 = [];
-      temp.forEach((data) => {
+      temp.forEach(data => {
         if (data.parent_rider) {
-          temp.some((data2) => data2.alias === data.parent_rider) &&
+          temp.some(data2 => data2.alias === data.parent_rider) &&
             temp2.push(data);
         } else {
           temp2.push(data);
@@ -143,10 +141,10 @@ const AddOnCoverages = ({
       });
       newRiders = [...temp2];
     }
-    console.log('sagd3223g23g23g23gupdateProductRedux',cartItem,newRiders)
+    console.log("sagd3223g23g23g23gupdateProductRedux", cartItem, newRiders);
     updateProductRedux({
       ...cartItem,
-      page: 'seedetails handleupdate',
+      page: "seedetails handleupdate",
       health_riders: newRiders,
     });
   };
@@ -155,14 +153,11 @@ const AddOnCoverages = ({
     const string = keys.reduce((a, b) => a + `&${b}=${selectedRiders[b]}`, "");
     fetchAbhiRiders(string);
   }, [selectedRiders]);
- 
-
-
 
   // const { selectedGroup } = useSelector(({ quotePage }) => quotePage);
 
   const fetchAbhiRiders = useCallback(
-    (string) => {
+    string => {
       if (product) {
         // setIsRidersLoading(true);
         setIsAbhiRidersLoading(true);
@@ -184,16 +179,16 @@ const AddOnCoverages = ({
             //make premium != 0
             setRiders(
               riders.data
-                .filter((rider) => rider.total_premium !== 0 || rider.options)
-                .map((rider) => ({ ...rider, rider_id: rider.id }))
+                .filter(rider => rider.total_premium !== 0 || rider.options)
+                .map(rider => ({ ...rider, rider_id: rider.id })),
             );
             setRidersError(false);
             setIsAbhiRidersLoading(false);
-          }
+          },
         );
       }
     },
-    [groupCode, product, sum_insured, tenure]
+    [groupCode, product, sum_insured, tenure],
   );
   return (
     <div
@@ -246,7 +241,7 @@ const AddOnCoverages = ({
                       {loading ? (
                         <CardSkeletonLoader />
                       ) : riders && riders.length ? (
-                        riders?.map((rider) => (
+                        riders?.map(rider => (
                           <RiderCard
                             productPage={true}
                             key={rider.name + rider.total_premium}
@@ -256,8 +251,8 @@ const AddOnCoverages = ({
                             isRiderSelected={
                               rider.is_mandatory ||
                               health_riders.some(
-                                (health_rider) =>
-                                  health_rider?.rider_id === rider?.rider_id
+                                health_rider =>
+                                  health_rider?.rider_id === rider?.rider_id,
                               )
                             }
                             health_riders={health_riders}
@@ -270,7 +265,7 @@ const AddOnCoverages = ({
                       )}
                     </div>
                   </section>
-        
+
                   {/* <AddOnsCoveragesSection
                   groupCode={groupCode}
                   product={product}

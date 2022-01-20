@@ -21,12 +21,11 @@ const useFormBuilder = (
     }
   };
   const updateValues = (multipleValues = {}) => {
-
     setValues({ ...values, ...multipleValues });
     fetchValues({ ...values, ...multipleValues });
   };
   const insertValue = (parent, member, name, value) => {
-    console.log("qdjbjics",parent, member, name, value)
+    console.log("qdjbjics", parent, member, name, value);
     setValues({
       ...values,
       [parent]: {
@@ -58,7 +57,6 @@ const useFormBuilder = (
   }, [defaultValues]);
 
   const triggerValidation = name => {
-    
     let errorsTemp = {};
     let tempIsValid = true;
     if (typeof name === "object") {

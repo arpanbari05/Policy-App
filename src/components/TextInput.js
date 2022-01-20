@@ -4,7 +4,8 @@ import React from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "styled-components/macro";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
+import { useTheme } from "../customHooks";
 const TextInput = ({
   label,
   type,
@@ -20,14 +21,12 @@ const TextInput = ({
   onKeyDown,
   onBlur,
   maxLength,
-  member
+  member,
+  onKeyPress,
+  name,
+  id
 }) => {
- 
-  const { theme } = useSelector((state) => state.frontendBoot);
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
-
-
+  const { colors } = useTheme();
 
   return (
     <div
@@ -38,7 +37,7 @@ const TextInput = ({
           position: absolute;
           top: 11px;
           font-size: 28px;
-          color: ${PrimaryColor};
+          color: ${colors.primary_color};
           right: 14px;
           cursor: pointer;
           & img {
@@ -57,6 +56,7 @@ const TextInput = ({
       `}
     >
       <FloatingLabel controlId="floatingInput" label={label}>
+        <label className="visually-hidden" htmlFor={id}>{label}</label>
         <Form.Control
           autoComplete={autoComplete}
           type={type}
@@ -68,6 +68,9 @@ const TextInput = ({
           onKeyDown={onKeyDown}
           onBlur={onBlur}
           maxLength={maxLength}
+          onKeyPress={onKeyPress}
+          name={name}
+          id={id}
         />
       </FloatingLabel>
       {value?.length > 1 && clear && (

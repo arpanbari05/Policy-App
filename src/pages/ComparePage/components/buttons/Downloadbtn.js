@@ -1,6 +1,6 @@
 import React from "react";
 import print from "../../../../assets/images/download_print.png";
-import styled from 'styled-components'
+import styled from "styled-components";
 const Downloadbtn = ({ onClick, downloading }) => {
   return (
     <Button
@@ -33,9 +33,9 @@ const Downloadbtn = ({ onClick, downloading }) => {
 export default Downloadbtn;
 
 const Button = styled.button`
-border: solid 1px #e9e9e9;
-width: 136px;
-margin-top: 1rem;
-font-weight: 900;
-padding: 6px 5px !important;
-`
+  border: solid 1px #e9e9e9;
+  width: 136px;
+  margin-top: 1rem;
+  font-weight: 900;
+  padding: 6px 5px !important;
+`;

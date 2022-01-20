@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const seeDetailsSlice = createSlice({
   initialState: {
     loading: false,
-   
   },
   name: "compare",
   reducers: {

@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { numberToDigitWord } from "../../../../utils/helper";
 //import BuyNowModal from "./../../../quotesPage/components/BuyNowModal/BuyNowModal";
 import SecureLS from "secure-ls";
@@ -74,26 +74,25 @@ function SeeDetailsFooter({
 
   let additionalPremium = 0;
 
-  quote.mandatory_riders?.[sumInsuredIndex]?.forEach((element) => {
+  quote.mandatory_riders?.[sumInsuredIndex]?.forEach(element => {
     console.log(additionalPremium, "sadg31");
     additionalPremium += parseInt(element.total_premium);
     console.log(additionalPremium, element.total_premium, "sadg32");
   });
   const { updateProductRedux, product: cartItem } = useCartProduct(
     groupCode,
-    product
+    product,
   );
 
   useEffect(() => {
     const newRiders = quote.mandatory_riders?.[sumInsuredIndex]?.filter(
-      (element) => element !== null && element
+      element => element !== null && element,
     );
-    console.log(newRiders,'sagd3223g23g23g23g')
-
+    console.log(newRiders, "sagd3223g23g23g23g");
 
     updateProductRedux({
       ...cartItem,
-      page: 'seedetails',
+      page: "seedetails",
       health_riders: [...newRiders],
     });
   }, []);
@@ -107,7 +106,7 @@ function SeeDetailsFooter({
   let riderPremium =
     selectedProduct.health_riders.reduce(
       (acc, obj) => obj?.total_premium !== NaN && acc + obj?.total_premium,
-      0
+      0,
     ) || 0;
 
   console.log(selectedProduct, riderPremium, quote, "sadg32521");
@@ -251,7 +250,7 @@ function SeeDetailsFooter({
             ₹{" "}
             {numberToDigitWord(
               sumInsured?.toString() || sum_insured?.toString(),
-              "seeDetails"
+              "seeDetails",
             )}
           </span>
         </div>

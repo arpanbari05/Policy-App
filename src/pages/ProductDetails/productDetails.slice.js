@@ -32,5 +32,5 @@ export const {
 } = productPageSlice.actions;
 
 export default productPageSlice.reducer;
-export const selectAdditionalDiscounts = (state) =>
+export const selectAdditionalDiscounts = state =>
   state.productPage.additionalDiscounts;

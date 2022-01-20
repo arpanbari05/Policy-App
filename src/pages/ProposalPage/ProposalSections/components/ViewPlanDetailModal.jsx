@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Modal, Container } from "react-bootstrap";
 import styled from "styled-components";
-import "styled-components/macro"
+import "styled-components/macro";
 
 function ViewPlanDetailModal({ title, show, content, handleClose, revised }) {
   return (
@@ -16,13 +16,12 @@ function ViewPlanDetailModal({ title, show, content, handleClose, revised }) {
           border: "none",
         }}
         css={`
-        .modal-dialog{
-            min-width:50%;
-    
-        }
-        .modal-body{
-            border-radius:20px;
-        }
+          .modal-dialog {
+            min-width: 50%;
+          }
+          .modal-body {
+            border-radius: 20px;
+          }
         `}
       >
         <Modal.Header
@@ -65,7 +64,7 @@ const ModalTitle = styled.h5`
     position: absolute;
     left: 0px;
     top: 13px;
-    background-color:#2cd44a;;
+    background-color: #2cd44a;
     border-radius: 50px;
   }
 `;

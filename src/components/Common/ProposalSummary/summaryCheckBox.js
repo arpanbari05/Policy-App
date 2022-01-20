@@ -4,7 +4,7 @@ import "./cbx.css";
 import { useSelector } from "react-redux";
 
 const ProposalCheckBox = ({ title, value, onChange, extraPadding }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
@@ -29,8 +29,8 @@ const ProposalCheckBox = ({ title, value, onChange, extraPadding }) => {
           css={`
             margin-bottom: -3px;
             border-color: ${PrimaryColor} !important;
-            & svg{
-              stroke:  ${PrimaryColor} !important;
+            & svg {
+              stroke: ${PrimaryColor} !important;
             }
             @media (max-width: 1200px) {
               margin-bottom: 0px;

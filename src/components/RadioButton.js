@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components/macro";
 import { useSelector } from "react-redux";
 import { FaCheck } from "react-icons/fa";
+import { useTheme } from "../customHooks";
 const RadioButton = ({
   onChange,
   checked,
@@ -13,33 +14,34 @@ const RadioButton = ({
   onMouseOut,
   itemsCentered,
 }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
+  const { colors } = useTheme();
 
   return (
     <div>
       <RadioInput
-      PrimaryColor={PrimaryColor}
-      PrimaryShade={PrimaryShade}
+        PrimaryColor={colors.primary_color}
+        PrimaryShade={colors.primary_shade}
         type="radio"
         name={label}
         id={id}
         onClick={onClick}
-        
         value={value}
         checked={checked || false}
         onChange={() => {}}
       />
-      <RadioLabel itemsCentered={itemsCentered} htmlFor={id} onMouseEnter={onMouseEnter}
-    onMouseOut={onMouseOut}>
+      <RadioLabel
+        itemsCentered={itemsCentered}
+        htmlFor={id}
+        onMouseEnter={onMouseEnter}
+        onMouseOut={onMouseOut}
+      >
         <span onMouseEnter={onMouseEnter}> {label}</span>
         {checked && (
           <FaCheck
             css={`
               position: absolute;
               right: 20px;
-              color: ${PrimaryColor};
+              color: ${colors.primary_color};
               font-size: 20px;
             `}
           />
@@ -65,8 +67,8 @@ export const RadioInput = styled.input`
     margin-bottom: 10px;
     color: #000;
     opacity: 1;
-    border: solid 1px ${props=>props.PrimaryColor};
-    background-color: ${props=>props.PrimaryShade};
+    border: solid 1px ${props => props.PrimaryColor};
+    background-color: ${props => props.PrimaryShade};
     font-size: 15px;
     font-weight: 900;
   }
@@ -91,11 +93,11 @@ export const RadioLabel = styled.label`
   & span {
     position: relative;
     font-size: 18px;
-    left: ${(props) => !props.itemsCentered && "13px"};
+    left: ${props => !props.itemsCentered && "13px"};
   }
   display: inline-flex;
   align-items: center;
-  ${(props) => props.itemsCentered && "justify-content: center"};
+  ${props => props.itemsCentered && "justify-content: center"};
 
   @media (max-width: 767px) {
     margin-bottom: 25px !important;

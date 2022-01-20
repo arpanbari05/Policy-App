@@ -36,14 +36,14 @@ export const dataSet = (
   code,
   ageError,
   childCount,
-  addChild
+  addChild,
 ) => {
   const age = [{ id: -1, title: "Select Age" }, ...list];
   let removeChild = false;
   let count = 1;
 
   if (title === "Son" || title === "Daughter") {
-    insurerCBXArray.forEach((element) => {
+    insurerCBXArray.forEach(element => {
       if (
         title === "Son" &&
         element.slice(0, 3) === "son" &&
@@ -132,7 +132,7 @@ export const dataSet = (
                         handleInput(
                           removeChild,
                           insurerCBXArray.includes(removeChild) && true,
-                          "checkbox"
+                          "checkbox",
                         );
                     }}
                   >
@@ -207,7 +207,7 @@ export const dataSet = (
                 handleChange={handleInput}
                 selected={
                   insurerDDArray[
-                    insurerDDArray.map((o) => o.insurer).indexOf(code)
+                    insurerDDArray.map(o => o.insurer).indexOf(code)
                   ]?.value || "Select Age"
                 }
                 // disabled={!insurerCBXArray.includes(code) && true}

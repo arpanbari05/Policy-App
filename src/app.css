@@ -103,8 +103,10 @@ a {
   outline-width: 0px !important;
 }
 
-a {
+a,
+a:hover {
   text-decoration: none;
+  color: inherit;
 }
 
 body,

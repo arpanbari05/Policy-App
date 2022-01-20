@@ -17,12 +17,9 @@ const Footer = ({ displayFooter }) => {
   }, []);
 
   return (
-   
-      <StyledFooter style={{ display: displayFooter ? "block" : "none" }}>
-       
-        <BottomFooter />
-      </StyledFooter>
-
+    <StyledFooter style={{ display: displayFooter ? "block" : "none" }}>
+      <BottomFooter />
+    </StyledFooter>
   );
 };
 

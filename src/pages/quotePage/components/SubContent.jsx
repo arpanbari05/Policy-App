@@ -108,40 +108,38 @@ const SubContent = ({
     features,
     tenure,
   } = quoteCardData;
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const dispatch = useDispatch();
   const history = useHistory();
   const ls = new SecureLS();
   const [isLoading, setIsLoading] = useState(false);
   const [activeCover, setActiveCover] = useState(0);
   const [check, setCheck] = useState(false);
-  const { multiYear } = useSelector((state) => state.quotePage.filters);
+  const { multiYear } = useSelector(state => state.quotePage.filters);
 
   // const tenure = parseInt(multiYear) === 1 ? 1 : parseInt(multiYear);
-  const { selectedGroup, cartItems } = useSelector((state) => state.quotePage);
+  const { selectedGroup, cartItems } = useSelector(state => state.quotePage);
 
-  const { memberGroups } = useSelector((state) => state.greetingPage);
+  const { memberGroups } = useSelector(state => state.greetingPage);
 
   const members = memberGroups[selectedGroup];
 
   let additionalPremium = 0;
 
-  mandatory_riders[activeCover]?.forEach((element) => {
+  mandatory_riders[activeCover]?.forEach(element => {
     additionalPremium += element.total_premium;
   });
 
-
-
-  const renderTooltip = (description) => <Tooltip>{description}</Tooltip>;
-  const handleSeeDetailsClick = (clickedFrom) => {
+  const renderTooltip = description => <Tooltip>{description}</Tooltip>;
+  const handleSeeDetailsClick = clickedFrom => {
     handleSeeDetails(
       {
         quote: quoteCardData,
         activeSum: activeCover,
       },
-      clickedFrom
+      clickedFrom,
     );
     const selectedPlan = {
       company_alias: company_alias,
@@ -179,7 +177,7 @@ const SubContent = ({
     setIsLoading(false);
   };
   const [checked, setChecked] = useState(
-    quotesForCompare.includes(`${id}${sum_insured}`) ? true : false
+    quotesForCompare.includes(`${id}${sum_insured}`) ? true : false,
   );
 
   // const plansData = [
@@ -256,7 +254,12 @@ const SubContent = ({
                   top: -2px;
                 `}
               >
-                <SeeText PrimaryColor={PrimaryColor} onClick={handleSeeDetailsClick}>See Details</SeeText>
+                <SeeText
+                  PrimaryColor={PrimaryColor}
+                  onClick={handleSeeDetailsClick}
+                >
+                  See Details
+                </SeeText>
               </CenterBottomStyle>
             </div>
             <div
@@ -342,7 +345,8 @@ const SubContent = ({
                     className=""
                     placement={"right"}
                     overlay={renderTooltip(
-                      mergedQuotes?.[0]?.features[activeCover]?.[0]?.description
+                      mergedQuotes?.[0]?.features[activeCover]?.[0]
+                        ?.description,
                     )}
                   >
                     <TextWrapper>
@@ -489,11 +493,14 @@ const SubContent = ({
                 `}
               >
                 <LogoWrapper>
-                  <RadioButton PrimaryColor={PrimaryColor} onClick={() => handleBuyNowClick()}>
+                  <RadioButton
+                    PrimaryColor={PrimaryColor}
+                    onClick={() => handleBuyNowClick()}
+                  >
                     <strong>
                       ₹{" "}
                       {parseInt(
-                        total_premium[activeCover] + additionalPremium
+                        total_premium[activeCover] + additionalPremium,
                       ).toLocaleString("en-In")}{" "}
                       <span>
                         /{" "}
@@ -532,7 +539,7 @@ const SubContent = ({
                     {sum_insured && (
                       <CustomDropDown
                         option={sum_insured}
-                        handleChange={(e) => {
+                        handleChange={e => {
                           setActiveCover(e);
                         }}
                       />
@@ -563,7 +570,7 @@ const SubContent = ({
                         `}
                             >Compare</SeeText> */}
                   <RadioInput
-                  PrimaryColor={PrimaryColor}
+                    PrimaryColor={PrimaryColor}
                     type="checkbox"
                     id={`compare_${id}${sum_insured[activeCover]}`}
                     className="compare-checkbox"
@@ -573,7 +580,7 @@ const SubContent = ({
 
                       if (!checked) {
                         const numberOfPlans = window.matchMedia(
-                          "(max-width: 1023px)"
+                          "(max-width: 1023px)",
                         ).matches
                           ? 2
                           : 3;
@@ -581,13 +588,13 @@ const SubContent = ({
                           setQuotesForCompare([
                             `${id}${sum_insured[activeCover]}`,
                             numberOfPlans,
-                          ])
+                          ]),
                         );
                       } else {
                         dispatch(
                           removeQuotesForCompare(
-                            `${id}${sum_insured[activeCover]}`
-                          )
+                            `${id}${sum_insured[activeCover]}`,
+                          ),
                         );
                       }
                     }}

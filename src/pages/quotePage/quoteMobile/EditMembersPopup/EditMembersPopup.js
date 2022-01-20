@@ -40,7 +40,6 @@ function EditMembersContent(params) {
     const tempArray = [];
   }, [membersArray]);
 
-
   // Will contain list of insurer names that are checked
   const [insurerCBXArray, setInsurerCBXArray] = useState(
     proposerDetails.members.map(
@@ -302,7 +301,9 @@ function EditMembersContent(params) {
         const i = membersArray.findIndex(x => x.code === data.insurer);
         dataArray.push({
           type: `${membersArray[i]?.code}`,
-          age: data.value.endsWith("months") ? `0.${data.value.split(" ")[0]}` : `${data.value.split(" ")[0]}`,
+          age: data.value.endsWith("months")
+            ? `0.${data.value.split(" ")[0]}`
+            : `${data.value.split(" ")[0]}`,
         });
       });
 
@@ -517,7 +518,7 @@ function EditMembersContent(params) {
 }
 
 function EditMembersPopup({
-  handleClose = () => { },
+  handleClose = () => {},
   editMembersContent,
   css = ``,
 }) {

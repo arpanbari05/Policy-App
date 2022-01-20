@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import "./PlanContainer.css"
+import "./PlanContainer.css";
 import { useSelector, useDispatch } from "react-redux";
 import { removeQuotesForCompare } from "../../../quote.slice";
 
 const PlanContainer = ({ id, customClassName }) => {
-  const { quotes } = useSelector((state) => state.quotePage);
+  const { quotes } = useSelector(state => state.quotePage);
 
   var quoteData;
-  quotes?.map((quote) => {
-    quote?.map((data) => {
+  quotes?.map(quote => {
+    quote?.map(data => {
       if (id === `${data.product.id}${data.sum_insured}`) {
         quoteData = data;
       }

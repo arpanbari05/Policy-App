@@ -4,7 +4,14 @@ import { selectAdditionalDiscounts } from "../../ProductDetails/productDetails.s
 import { addQuoteToCart, removeQuoteFromCart } from "../cart.slice";
 import { createCartApi, deleteCartApi, updateCartApi } from "../serviceApi";
 
-function cartSendData(cartData) {
+export function getRiderSendData(rider) {
+  return {
+    ...rider,
+    id: rider.rider_id,
+  };
+}
+
+export function cartSendData(cartData) {
   if (!cartData) return;
   const {
     product,
@@ -18,7 +25,7 @@ function cartSendData(cartData) {
     discounts,
   } = cartData;
   const riders = health_riders
-    ? health_riders.map((health_rider) => ({
+    ? health_riders.map(health_rider => ({
         ...health_rider,
         id: health_rider.rider_id,
       }))
@@ -30,7 +37,7 @@ function cartSendData(cartData) {
   //);
   //console.log("ridersTotalPremiumAmount", ridersTotalPremiumAmount);
   const addons = addOns
-    ? addOns.map((addOn) => ({
+    ? addOns.map(addOn => ({
         product_id: addOn.product.id,
         tenure: addOn.tenure,
         sum_insured: addOn.sum_insured,
@@ -59,18 +66,18 @@ function cartSendData(cartData) {
 
 function useCartProduct(groupCode, selectedProduct) {
   const groupCodeState = useSelector(
-    ({ quotePage }) => quotePage.selectedGroup
+    ({ quotePage }) => quotePage.selectedGroup,
   );
   // var groupCode = groupCode?groupCode:useSelector(({quotePage}) => quotePage.selectedGroup) ;
   if (!groupCode && !groupCodeState)
     throw new Error("argument 'groupCode' is missing for useCartProduct");
 
   const product = useSelector(
-    ({ cart }) => cart[groupCode || groupCodeState] || selectedProduct
+    ({ cart }) => cart[groupCode || groupCodeState] || selectedProduct,
   );
 
   const cartProduct = useSelector(
-    ({ cart }) => cart[groupCode || groupCodeState]
+    ({ cart }) => cart[groupCode || groupCodeState],
   );
 
   let totalRidersPremium = null;
@@ -81,26 +88,26 @@ function useCartProduct(groupCode, selectedProduct) {
 
   const additionalDiscounts = useSelector(selectAdditionalDiscounts);
 
-  const findAdditionalDiscount = (discountAlias) =>
-    additionalDiscounts.find((discount) => discount.alias === discountAlias);
+  const findAdditionalDiscount = discountAlias =>
+    additionalDiscounts.find(discount => discount.alias === discountAlias);
 
   if (product) {
     const { total_premium, health_riders, addons, discounts } = product;
 
     totalRidersPremium = health_riders.reduce(
       (sum, rider) => sum + parseInt(rider?.total_premium),
-      0
+      0,
     );
 
     totalAddOnsPremium = addons.reduce(
       (sum, addon) => sum + parseInt(addon.total_premium || addon.premium),
-      0
+      0,
     );
 
     totalPremium =
       parseInt(total_premium) + totalRidersPremium + totalAddOnsPremium;
 
-    discounts.forEach((discountAlias) => {
+    discounts.forEach(discountAlias => {
       const discount = findAdditionalDiscount(discountAlias);
 
       if (discount) {
@@ -116,15 +123,15 @@ function useCartProduct(groupCode, selectedProduct) {
   const dispatch = useDispatch();
 
   const updateProductRedux = useCallback(
-    (productData) => {
+    productData => {
       console.log(productData, "gsagsd32t32");
       dispatch(addQuoteToCart({ groupCode, product: productData }));
     },
-    [dispatch, groupCode]
+    [dispatch, groupCode],
   );
 
   const updateProduct = useCallback(
-    async (productData) => {
+    async productData => {
       if (!cartProduct) {
         throw new Error("cart is not created");
       }
@@ -152,11 +159,11 @@ function useCartProduct(groupCode, selectedProduct) {
         return false;
       }
     },
-    [dispatch, groupCode, product]
+    [dispatch, groupCode, product],
   );
 
   const addProduct = useCallback(
-    async (productData) => {
+    async productData => {
       // if (cartProduct?.id) {
       //   return updateProduct(productData);
       // }
@@ -176,7 +183,7 @@ function useCartProduct(groupCode, selectedProduct) {
         setIsCartProductLoading(false);
       }
     },
-    [dispatch, groupCode, product, updateProduct]
+    [dispatch, groupCode, product, updateProduct],
   );
 
   const deleteProduct = useCallback(async () => {
@@ -192,7 +199,7 @@ function useCartProduct(groupCode, selectedProduct) {
   }, [dispatch, groupCode, product]);
 
   const updateRiders = useCallback(
-    (riders) =>
+    riders =>
       updateProduct({
         ...product,
         health_riders: undefined,
@@ -203,7 +210,7 @@ function useCartProduct(groupCode, selectedProduct) {
         product_id: product.product.id,
         riders,
       }),
-    [product, updateProduct]
+    [product, updateProduct],
   );
 
   return {

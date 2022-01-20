@@ -11,7 +11,7 @@ import {
 import { useHistory } from "react-router-dom";
 import SecureLS from "secure-ls";
 import { resetFeature } from "../../../ComparePage/compare.slice";
-const dislayPlanContainer = (selectedQuotes) => {
+const dislayPlanContainer = selectedQuotes => {
   const containerArray = [];
 
   for (let i = 0; i < 3; i++) {
@@ -20,21 +20,21 @@ const dislayPlanContainer = (selectedQuotes) => {
         customClassName={`${i === 2 && "showOnDesktopFlex"}`}
         key={i}
         id={selectedQuotes[i] ? selectedQuotes[i] : undefined}
-      />
+      />,
     );
   }
   return containerArray;
 };
 
 const ComparePopup = ({ groupCode }) => {
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const ls = new SecureLS();
   const history = useHistory();
-  const { quotesOnCompare } = useSelector((state) => state.quotePage);
-  const { quotesForCompare } = useSelector((state) => state.quotePage);
-  const { quotes } = useSelector((state) => state.quotePage);
+  const { quotesOnCompare } = useSelector(state => state.quotePage);
+  const { quotesForCompare } = useSelector(state => state.quotePage);
+  const { quotes } = useSelector(state => state.quotePage);
 
   const dispatch = useDispatch();
   const filteredQuotes = [];
@@ -44,8 +44,8 @@ const ComparePopup = ({ groupCode }) => {
   const [show, setShow] = useState(quotesOnCompare);
 
   useEffect(() => {
-    quotes.map((quote) => {
-      quote?.map((data) => {
+    quotes.map(quote => {
+      quote?.map(data => {
         if (
           quotesForCompare.includes(`${data.product.id}${data.sum_insured}`) &&
           filteredQuotes.length < 3
@@ -76,15 +76,15 @@ const ComparePopup = ({ groupCode }) => {
           margin: 0px 10px;
         }
         .quotes_compare_image,
-          .quotes_compare_image1 {
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            & img {
-              width: 100%;
-            }
+        .quotes_compare_image1 {
+          width: 45px;
+          height: 45px;
+          display: flex;
+          align-items: center;
+          & img {
+            width: 100%;
           }
+        }
         @media (max-width: 500px) {
           .quotes_compare_plan_name {
             margin: 0px 5px !important;

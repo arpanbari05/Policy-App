@@ -90,11 +90,12 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
           </Row>
         </div>
         {summary && (
-          <div className="terms-summary-card"
-          css={`
-          display: flex !important;
-          align-items: center !important;
-          `}
+          <div
+            className="terms-summary-card"
+            css={`
+              display: flex !important;
+              align-items: center !important;
+            `}
           >
             {/* <label class="cbx" for="self1">
 						 <svg width="12px" height="10px">
@@ -109,13 +110,22 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
               onChange={onChange}
             />
             <div>
-            <span className="iaccept-text-proposal">I Accept the </span>
-            <span class="p_dark_f_a_check terms-propposal-card"
-            style={{cursor: 'pointer'}} onClick={() => setTermShow(true)}
-            >
-              Terms &amp; Conditions
-            </span>
-            {termShow && <TermModal show={termShow} handleClose={()=>{setTermShow(false)}}/>}
+              <span className="iaccept-text-proposal">I Accept the </span>
+              <span
+                class="p_dark_f_a_check terms-propposal-card"
+                style={{ cursor: "pointer" }}
+                onClick={() => setTermShow(true)}
+              >
+                Terms &amp; Conditions
+              </span>
+              {termShow && (
+                <TermModal
+                  show={termShow}
+                  handleClose={() => {
+                    setTermShow(false);
+                  }}
+                />
+              )}
             </div>
           </div>
         )}

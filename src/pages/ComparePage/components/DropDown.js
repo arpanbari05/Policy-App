@@ -13,7 +13,6 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
   const [plan, setPlan] = useState(false);
   const [sumInsured, setSumInsured] = useState(false);
   const [show, setShow] = useState(false);
-  
 
   {
     console.log(show, "show");
@@ -30,12 +29,11 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
     setShow(false);
   }, [plan, sumInsured]);
   useOutsiteClick(ref, () => setShow(false));
-  
 
   return (
     <>
       <div
-      ref={ref}
+        ref={ref}
         style={{
           position: "relative",
           height: "fit-content",
@@ -47,12 +45,16 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
         {/* */}
         <div
           className="compare-custom-select first"
-          onClick={() => show?setShow(false):setShow("plans")}
+          onClick={() => (show ? setShow(false) : setShow("plans"))}
         >
           <div className="custom-placeholder d-flex align-items-center">
             <span>{value?.plan || "Select Plan"}</span>
             <div className="arrow-conrtainer">
-              <DownArrow src={down} alt={down} plans={show==="plans"?true:false}></DownArrow>
+              <DownArrow
+                src={down}
+                alt={down}
+                plans={show === "plans" ? true : false}
+              ></DownArrow>
             </div>
           </div>
         </div>
@@ -64,12 +66,16 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
         >
           <div className="custom-placeholder d-flex align-items-center">
             <span>{value?.sumInsured || "Select Sum Insured"}</span>
-           
-            <DownArrow src={down} alt={down} plans={show==="sum"?true:false}></DownArrow>
+
+            <DownArrow
+              src={down}
+              alt={down}
+              plans={show === "sum" ? true : false}
+            ></DownArrow>
           </div>{" "}
         </div>
         {show && (
-          <div className="options" >
+          <div className="options">
             {show === "plans" ? (
               name ? (
                 name.map((item, i) => (
@@ -78,9 +84,7 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
                     className={`options__item position-relative ${
                       item == value?.plan ? "checked" : ""
                     }`}
-                    
-                    onClick={(e) => {
-               
+                    onClick={e => {
                       setPlan(e.target.innerText);
                     }}
                   >
@@ -114,14 +118,14 @@ const DropDown = ({ name, sum, value, onChange, covers }) => {
               )
             ) : show === "sum" ? (
               name ? (
-                covers[plan].map((item) => (
+                covers[plan].map(item => (
                   <div
                     className={`options__item position-relative ${
                       item == value?.sumInsured ? "checked" : ""
                     }`}
                     id={item}
-                    onClick={(e) => {
-                      console.log(e.target.id,"hilroror")
+                    onClick={e => {
+                      console.log(e.target.id, "hilroror");
                       setSumInsured(e.target.id);
                     }}
                   >

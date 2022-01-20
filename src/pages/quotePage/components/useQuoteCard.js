@@ -7,7 +7,7 @@ function useQuoteCard({ item }) {
   const [show, setShow] = useState(false);
 
   const quotesForCompare = useSelector(
-    ({ quotePage }) => quotePage.quotesForCompare
+    ({ quotePage }) => quotePage.quotesForCompare,
   );
 
   // const companies = useSelector(
@@ -19,10 +19,10 @@ function useQuoteCard({ item }) {
 
   const [checked, setChecked] = useState(
     quotesForCompare.includes(
-      `${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`
+      `${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`,
     )
       ? true
-      : false
+      : false,
   );
 
   useEffect(() => {
@@ -60,7 +60,7 @@ function useQuoteCard({ item }) {
               tempQuote.tenure.push(item[j].tenure);
               tempQuote.tax_amount.push(item[j].tax_amount);
               tempQuote.cashlessHospitalsCount.push(
-                item[j].cashlessHospitalsCount
+                item[j].cashlessHospitalsCount,
               );
               tempQuote.features.push(item[j].features);
             }
@@ -76,7 +76,7 @@ function useQuoteCard({ item }) {
   useEffect(() => {
     if (
       quotesForCompare.includes(
-        `${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`
+        `${mergedQuotes[0]?.product.id}${mergedQuotes[0]?.sum_insured[activeCover]}`,
       )
     ) {
       setChecked(true);

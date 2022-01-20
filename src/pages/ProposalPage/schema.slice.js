@@ -28,7 +28,7 @@ export const { setCurrentSchema } = schema.actions;
 export const getProposalFields = () => {
   const ls = new SecureLS();
 
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const { data } = await proposalFields({
         enquiryId: ls.get("enquiryId"),

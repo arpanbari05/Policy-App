@@ -100,7 +100,7 @@ function FeatureDefinition({ data }) {
               <p
                 className="feature-offer-box__p"
                 css={`
-                font-size: 13px;
+                  font-size: 13px;
                   width: 100%;
                   color: #253858;
                   opacity: 0.96;

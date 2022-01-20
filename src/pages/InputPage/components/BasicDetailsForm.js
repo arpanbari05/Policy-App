@@ -1,25 +1,6 @@
-import { useState, useEffect } from "react";
-import StyledButton from "../../../components/StyledButton";
-import TextInput from "../../../components/TextInput";
+import { useState } from "react";
 import CustomProgressBar from "../../../components/ProgressBar";
-import {
-  Title,
-  SubTitle,
-  ErrorMessage,
-  formButtons,
-  firstFormSchema,
-} from "./FormComponents";
-import { useSelector, useDispatch } from "react-redux";
-import RadioCapsule from "../../../components/RadioCapsule";
-import {
-  getRegion,
-  saveForm1UserDetails,
-  saveForm2UserDetails,
-  saveForm5UserDetails,
-  setIsDisabled,
-} from "../greetingPage.slice";
-import "styled-components/macro";
-import BackButton from "../../../components/BackButton";
+import { Title, ErrorMessage, firstFormSchema } from "./FormComponents";
 import {
   checkAllChar,
   checkPreviousChar,
@@ -27,13 +8,17 @@ import {
   forbiddedSymbols2,
   numOnly,
 } from "../../../utils/formUtils";
-import { useHistory, useLocation } from "react-router-dom";
-import SecureLS from "secure-ls";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import ReactSwitch from "react-switch";
 import { boy, girl } from "../../../assets/images";
 import TextInput2 from "../../../components/TextInput2";
+import { useCreateEnquiry, useTheme } from "../../../customHooks";
+import useUrlQuery from "../../../customHooks/useUrlQuery";
+import { Button } from "../../../components";
+import { IoArrowForwardSharp } from "react-icons/io5";
+import "styled-components/macro";
+import { useHistory } from "react-router-dom";
 
 export const fieldSet1Data = [
   {
@@ -76,30 +61,15 @@ export const fieldSet1RadioInputData = [
   },
 ];
 
-const Form5 = ({ handleChange, currentForm }) => {
-  const dispatch = useDispatch();
-  const ls = new SecureLS();
-  const history = useHistory();
-  const location = useLocation();
-  const { theme } = useSelector((state) => state.frontendBoot);
+const BasicDetailsForm = ({ ...props }) => {
+  const { colors } = useTheme();
 
-  // structure params getting from URL for backend (as per brokers)
-  let paramsFromURL = {};
-  if (location.search && location.search.includes("=")) {
-    let modifiedURL = location.search.replace("?", "");
-    modifiedURL.split("&").forEach((str) => {
-      let givenKey = str.split("=")[0];
-      let givenValue = str.split("=")[1];
-      paramsFromURL[givenKey] = givenValue;
-    });
-  }
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade } = theme;
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [gender, setGender] = useState("M");
-  const checkDoubleChar = (e) => {
+
+  const checkDoubleChar = e => {
     if (e.keyCode === 190 && fullName[fullName.length - 1] === " ") {
       e.preventDefault();
     }
@@ -107,61 +77,46 @@ const Form5 = ({ handleChange, currentForm }) => {
       e.preventDefault();
     }
   };
+
   const demoLogin = () => {
     setFullName("test test");
     setEmail("test@gmail.com");
     setMobile("9111111111");
-  };
-  const pushToQuotes = (groupCode) => {
-    history.push({
-      pathname: `/quotes/${groupCode}`,
-      search: `enquiryId=${ls.get("enquiryId")}`,
-    });
   };
 
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(firstFormSchema),
     mode: "onBlur",
   });
-  const onSubmit = (data) => {
-    console.log("dgasgasd", 222);
-    Object.keys(paramsFromURL).length
-      ? dispatch(
-          saveForm2UserDetails(
-            {
-              fullName: fullName.trim(),
-              mobile: mobile,
-              email: email,
-              gender: gender,
-              params: paramsFromURL,
-            },
 
-            handleChange
-          )
-        )
-      : dispatch(
-          saveForm2UserDetails(
-            {
-              fullName: fullName.trim(),
-              mobile: mobile,
-              email: email,
-              gender: gender,
-            },
+  const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
 
-            handleChange
-          )
-        );
-    console.log(gender, fullName, email, mobile, "h21");
+  const urlSearchParams = useUrlQuery();
+  const history = useHistory();
+
+  const handleFormSubmit = async () => {
+    const params = Object.fromEntries(urlSearchParams.entries());
+    const data = {
+      name: fullName,
+      email,
+      gender,
+      mobile,
+      params,
+    };
+    const response = await createEnquiry(data);
+
+    if (response.data) {
+      const enquiryId = response.data.data.enquiry_id;
+      history.push({
+        pathname: "/input/members",
+        search: `enquiryId=${enquiryId}`,
+      });
+    }
   };
 
-  console.log("h21", errors);
   return (
-    <div
-      css={`
-        display: ${currentForm !== 1 && "none"};
-      `}
-    >
-      <form noValidate onSubmit={handleSubmit(onSubmit)}>
+    <div {...props}>
+      <form noValidate onSubmit={handleSubmit(handleFormSubmit)}>
         <div
           css={`
             padding: 17px;
@@ -171,7 +126,7 @@ const Form5 = ({ handleChange, currentForm }) => {
           `}
         >
           <Title onClick={demoLogin}>Tell Us about yourself?</Title>
-          <CustomProgressBar now={currentForm} total={5} />
+          <CustomProgressBar now={1} total={5} />
           <div
             css={`
               display: flex;
@@ -205,15 +160,15 @@ const Form5 = ({ handleChange, currentForm }) => {
               <span
                 css={`
                   margin-left: 10px;
-                  color: ${gender === "M" && PrimaryColor};
+                  color: ${gender === "M" && colors.primary_color};
                 `}
               >
                 Male
               </span>
               <ReactSwitch
-                onColor={PrimaryColor}
-                offColor={PrimaryColor}
-                onHandleColor={PrimaryShade}
+                onColor={colors.primary_color}
+                offColor={colors.primary_color}
+                onHandleColor={colors.primary_shade}
                 handleDiameter={25}
                 uncheckedIcon={false}
                 checkedIcon={false}
@@ -229,7 +184,7 @@ const Form5 = ({ handleChange, currentForm }) => {
               <span
                 css={`
                   margin-right: 10px;
-                  color: ${gender === "F" && PrimaryColor};
+                  color: ${gender === "F" && colors.primary_color};
                 `}
               >
                 Female
@@ -250,11 +205,9 @@ const Form5 = ({ handleChange, currentForm }) => {
                     width: ${name !== "email" ? "221px" : "100%"};
                     @media (max-width: 1100px) {
                       width: 100% !important;
-                      /* margin: 0 11px; */
                     }
                   `}
                 >
-                  {console.log("The type of input feild renders", type)}{" "}
                   <TextInput2
                     styledCss={`  
                   margin-bottom: 19px;
@@ -282,12 +235,12 @@ const Form5 = ({ handleChange, currentForm }) => {
                         ? numOnly
                         : name === "fullName" && checkDoubleChar
                     }
-                    onBlur={(e) => {
+                    onBlur={e => {
                       name === "fullName" && setFullName(e.target.value.trim());
                       name === "email" && setEmail(e.target.value);
                       //name === "mobile" && setMobile(e.target.value);
                     }}
-                    onChange={(e) => {
+                    onChange={e => {
                       if (name === "fullName") {
                         checkPreviousChar(e.target.value, " ", fullName) &&
                           checkPreviousChar(e.target.value, ".", fullName) &&
@@ -304,16 +257,12 @@ const Form5 = ({ handleChange, currentForm }) => {
                           setMobile(e.target.value);
                       }
                     }}
-                    // onBlur={(e) => {
-                    //   checkValidation(name, e.target.value);
-                    //   console.log(e.target.value, "gads");
-                    // }}
                     maxLength={maxLength}
-                    onPaste={(e) => {
+                    onPaste={e => {
                       e.preventDefault();
                       return false;
                     }}
-                    onCopy={(e) => {
+                    onCopy={e => {
                       e.preventDefault();
                       return false;
                     }}
@@ -329,27 +278,22 @@ const Form5 = ({ handleChange, currentForm }) => {
                     </ErrorMessage>
                   )}
                 </span>
-              )
+              ),
             )}
           </div>
-          {/* {formButtons(
-            () => {
-              handleChange(currentForm - 1);
-            },
-            handleSubmit,
-            true
-          )} */}
         </div>
 
-        <StyledButton
-          styledCss={`margin:0; width: 100%;`}
-          value={`Get Started`}
-          onClick={handleSubmit}
-          className="hide_on_mobile"
-        />
+        <Button
+          type="submit"
+          className="w-100"
+          disabled={createEnquiryQuery.isLoading}
+          loader={createEnquiryQuery.isLoading}
+        >
+          Get Started {!createEnquiryQuery.isLoading && <IoArrowForwardSharp />}
+        </Button>
       </form>
     </div>
   );
 };
 
-export default Form5;
+export default BasicDetailsForm;

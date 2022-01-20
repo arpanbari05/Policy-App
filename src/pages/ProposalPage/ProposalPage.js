@@ -30,20 +30,19 @@ import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
 import Card from "../../components/Card";
 import { Col, Container, Row } from "react-bootstrap";
 import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
+import { useTheme } from "../../customHooks";
 
 /* ===============================test================================= */
 
 /* ===============================test================================= */
 const ProposalPage = ({ history }) => {
-  let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
-
   const [active, setActive] = useState(0);
-  const [proposerDactive, setProposerDactive] = useState(true)
-  const { currentSchema } = useSelector((state) => state.schema);
+  const [proposerDactive, setProposerDactive] = useState(true);
+  const { currentSchema } = useSelector(state => state.schema);
   const queryStrings = useUrlQuery();
   const enquiryId = queryStrings.get("enquiryId");
   //const currentSchema = starSchema;
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector(state => state.cart);
   const [listOfForms, setListOfForms] = useState([]);
 
   useEffect(() => {
@@ -52,20 +51,22 @@ const ProposalPage = ({ history }) => {
   }, [currentSchema]);
   const dispatch = useDispatch();
   const { activeIndex, proposalData } = useSelector(
-    (state) => state.proposalPage
+    state => state.proposalPage,
   );
 
-  console.log(active, activeIndex, "adsgh321");
+  const {
+    colors: { primary_color, primary_shade },
+  } = useTheme();
 
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const PrimaryColor = primary_color;
+  const PrimaryShade = primary_shade;
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
   useEffect(() => {
     if (listOfForms.length && active >= listOfForms.length) {
       dispatch(
         submitProposalData(() => {
           history.push("/proposal_summary?enquiryId=" + enquiryId);
-        })
+        }),
       );
     }
   }, [active]);
@@ -78,7 +79,6 @@ const ProposalPage = ({ history }) => {
   useEffect(() => {
     setActive(activeIndex);
   }, [activeIndex]);
-
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
@@ -111,7 +111,6 @@ const ProposalPage = ({ history }) => {
           }
         `}
       >
-    
         <Card
           styledCss={`
           margin-bottom: 20px; 
@@ -121,7 +120,12 @@ const ProposalPage = ({ history }) => {
           {activeForm === "Proposer Details" && proposerDactive ? (
             <>
               {" "}
-              <MainTitle PrimaryColor={PrimaryColor} bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}>{activeForm}</MainTitle>{" "}
+              <MainTitle
+                PrimaryColor={PrimaryColor}
+                bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
+              >
+                {activeForm}
+              </MainTitle>{" "}
               <ProposerDetails
                 key={activeForm}
                 schema={
@@ -141,12 +145,14 @@ const ProposalPage = ({ history }) => {
                 justify-content: space-between;
                 align-items: center;
               `}
-               onClick={() => {
-            setActive(0);
-            setProposerDactive(true);
-          }}
+              onClick={() => {
+                setActive(0);
+                setProposerDactive(true);
+              }}
             >
-              <MainTitle PrimaryColor={PrimaryColor}>Proposer Details</MainTitle>
+              <MainTitle PrimaryColor={PrimaryColor}>
+                Proposer Details
+              </MainTitle>
               <div
                 css={`
                   width: 30px;
@@ -171,7 +177,12 @@ const ProposalPage = ({ history }) => {
           {activeForm === "Insured Details" ? (
             <>
               {" "}
-              <MainTitle PrimaryColor={PrimaryColor} bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}>{activeForm}</MainTitle>{" "}
+              <MainTitle
+                PrimaryColor={PrimaryColor}
+                bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
+              >
+                {activeForm}
+              </MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
                 schema={currentSchema ? currentSchema[activeForm] : {}}
@@ -212,14 +223,16 @@ const ProposalPage = ({ history }) => {
             </span>
           )}
         </Card>
-        <Card
-          styledCss={`margin-bottom: 20px;`}
-          
-        >
+        <Card styledCss={`margin-bottom: 20px;`}>
           {activeForm === "Medical Details" ? (
             <>
               {" "}
-              <MainTitle PrimaryColor={PrimaryColor} bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}>{activeForm}</MainTitle>{" "}
+              <MainTitle
+                PrimaryColor={PrimaryColor}
+                bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
+              >
+                {activeForm}
+              </MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
                 schema={currentSchema ? currentSchema[activeForm] : {}}
@@ -237,10 +250,10 @@ const ProposalPage = ({ history }) => {
                 align-items: center;
               `}
               onClick={() => {
-            setActive(2);
-          }}
+                setActive(2);
+              }}
             >
-              <MainTitle PrimaryColor={PrimaryColor} >Medical Details</MainTitle>
+              <MainTitle PrimaryColor={PrimaryColor}>Medical Details</MainTitle>
 
               <div
                 css={`
@@ -262,14 +275,16 @@ const ProposalPage = ({ history }) => {
             </span>
           )}
         </Card>
-        <Card
-          styledCss={`margin-bottom: 20px;`}
-         
-        >
+        <Card styledCss={`margin-bottom: 20px;`}>
           {activeForm === "Other Details" ? (
             <>
               {" "}
-              <MainTitle PrimaryColor={PrimaryColor} bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}>{activeForm}</MainTitle>{" "}
+              <MainTitle
+                PrimaryColor={PrimaryColor}
+                bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
+              >
+                {activeForm}
+              </MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
                 schema={currentSchema ? currentSchema[activeForm] : {}}
@@ -285,9 +300,9 @@ const ProposalPage = ({ history }) => {
                 justify-content: space-between;
                 align-items: center;
               `}
-               onClick={() => {
-            setActive(3);
-          }}
+              onClick={() => {
+                setActive(3);
+              }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Other Details</MainTitle>
               <div
@@ -315,7 +330,11 @@ const ProposalPage = ({ history }) => {
   };
   return (
     <>
-      <MobileHeader css={`background: ${PrimaryColor}`}>
+      <MobileHeader
+        css={`
+          background: ${PrimaryColor};
+        `}
+      >
         <MobileHeaderText>Proposal Form </MobileHeaderText>
       </MobileHeader>
       <div
@@ -442,13 +461,7 @@ const ProposalPage = ({ history }) => {
                     }
                   `}
                 >
-                  {console.log(groupCode, "groupCode")}
                   <ProductSummary cart={cart} setActive={setActive} />
-                  {/* {groupCode ? (
-                  <ReviewCart groupCode={groupCode} unEditable={true} />
-                  ) : (
-                    ""
-                  )} */}
                 </div>
                 <div
                   // lg={8}
@@ -524,13 +537,12 @@ export default ProposalPage;
 
 const MainTitle = styled.h2`
   margin-left: 3px;
-  margin-bottom: ${(props) => (props.bg ? "15px" : "10")};
-  margin-top: ${(props) => (props.bg ? "15px" : "10")};
+  margin-bottom: ${props => (props.bg ? "15px" : "10")};
+  margin-top: ${props => (props.bg ? "15px" : "10")};
   font-weight: 900;
 
-  background: ${(props) =>
-    props.bg};
-  color: ${(props) => props.bg  && props.PrimaryColor};
+  background: ${props => props.bg};
+  color: ${props => props.bg && props.PrimaryColor};
   font-size: 21px;
   padding: 10px;
 `;

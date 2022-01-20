@@ -25,7 +25,6 @@ const GreetingFormModal = ({
   const handleClose = () => setShow(false);
 
   const modalDataset = () => {
- 
     return (
       <>
         {membersArray &&

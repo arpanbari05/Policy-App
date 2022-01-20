@@ -13,7 +13,7 @@ const Card = ({
   children,
   boxShadow,
   styledCss,
-  onClick
+  onClick,
 }) => {
   return (
     <Container
@@ -48,7 +48,7 @@ Card.defaultProps = {
 };
 
 const Container = styled.div`
-  ${(props) => `
+  ${props => `
 height: ${props.height};
 width: ${props.width};
 padding: ${props.padding};

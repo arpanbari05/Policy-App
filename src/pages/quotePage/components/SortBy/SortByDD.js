@@ -8,15 +8,15 @@ import {
   Label,
 } from "../../../../components/Common/DropDownComponents/DropDownComponents";
 import useSortByDD from "./useSort";
-import {useSelector} from 'react-redux'
 import "styled-components/macro";
+import { useTheme } from "../../../../customHooks";
 
-const SortByDD = ({ htmlFor, title, list, onSortByChange = () => {} }) => {
+const SortByDD = ({ title, list, onSortByChange = () => {} }) => {
   const { dropdownRef, toggleList, isOpen, selected, handleSelect } =
     useSortByDD({ onSortByChange });
-    const { theme } = useSelector((state) => state.frontendBoot);
 
-    const { PrimaryColor, SecondaryColor, PrimaryShade,SecondaryShade } = theme;
+  const { colors } = useTheme();
+
   return (
     <div
       css={`
@@ -63,27 +63,19 @@ const SortByDD = ({ htmlFor, title, list, onSortByChange = () => {} }) => {
         {isOpen && (
           <List
             style={{
-              // visibility: "visible",
-              // width: "173.562px",
-              // top: "44px",
-              // left: "326px",
               position: "absolute",
               left: 0,
               top: "100%",
               width: "100%",
               margin: 0,
             }}
-          
             className="SortByDD__List"
           >
-            {list.map((data) => {
+            {list.map(data => {
               return (
                 <ListItem
-                PrimaryShade={PrimaryShade}
+                  PrimaryShade={colors.primary_shade}
                   className={` SortByDD__ListItem`}
-                  // className={`${
-                  //   data.title === selected && "active"
-                  // } SortByDD__ListItem`}
                   onClick={() => handleSelect(data.title)}
                   key={uuidv4()}
                   style={{

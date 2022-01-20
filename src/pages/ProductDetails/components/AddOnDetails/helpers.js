@@ -55,7 +55,7 @@ export function useFetchDownloads({ addOn, setDownloads }) {
   const fetchDownloads = useCallback(() => {
     setStatus("loading");
     getProductBrochureAPI({ productId: addOn.id })
-      .then((res) => {
+      .then(res => {
         if (res.data) {
           setDownloads(res.data);
           setStatus("success");
@@ -63,7 +63,7 @@ export function useFetchDownloads({ addOn, setDownloads }) {
         }
         setStatus("error");
       })
-      .catch((e) => {
+      .catch(e => {
         setStatus("error");
         console.error(e);
       });
@@ -105,7 +105,7 @@ export const ListItem = styled.div`
   :before {
     position: absolute;
     content: "•";
-    color: #2cd44a;;
+    color: #2cd44a;
     left: 0;
   }
   /* &::before {

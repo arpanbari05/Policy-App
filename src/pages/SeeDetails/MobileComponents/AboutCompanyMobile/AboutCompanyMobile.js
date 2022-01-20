@@ -10,7 +10,7 @@ import ProgressBarMobile from "./ProgressBarMobile";
 function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
   const [activebtn, setActivebtn] = useState(1);
 
-  const { loading } = useSelector((state) => state.seeDetails);
+  const { loading } = useSelector(state => state.seeDetails);
 
   return (
     <div
@@ -275,14 +275,14 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                               />
                             )
                           );
-                        }
+                        },
                       )}
                     </div>
                   </Graph>
 
                   <Detail>
                     <p
-                     css={`
+                      css={`
                         font-size: 12px;
                         @media (max-width: 450px) {
                           font-size: 10px;
@@ -296,7 +296,6 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
                           }
                         }
                       `}
-                    
                     >
                       <span
                         className="span_square_red"

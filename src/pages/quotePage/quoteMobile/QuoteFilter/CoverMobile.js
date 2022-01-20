@@ -10,7 +10,7 @@ const CoverMobile = ({
   setOwnCover,
   resetPremium,
 }) => {
-  const { filters, selectedGroup } = useSelector((state) => state.quotePage);
+  const { filters, selectedGroup } = useSelector(state => state.quotePage);
 
   const [inputCover, setInputCover] = useState(ownCover);
   const [inputCoverError, setinputCoverError] = useState(false);
@@ -34,7 +34,7 @@ const CoverMobile = ({
     <>
       <article>
         <Row className=" mt--38">
-          {coverFilter?.map((item) => (
+          {coverFilter?.map(item => (
             <Col md={6} className="padding-none">
               <div className="inputGroup">
                 <input
@@ -91,7 +91,7 @@ const CoverMobile = ({
               type="text"
               placeholder="e.g. Enter your own cover"
               className="custom__cover--mobile"
-              onChange={(e) => {
+              onChange={e => {
                 setInputCover(e.target.value);
                 setSelected("");
               }}

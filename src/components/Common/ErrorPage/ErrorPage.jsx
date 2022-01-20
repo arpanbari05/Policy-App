@@ -25,11 +25,11 @@ class ErrorBoundary extends Component {
 
   copyToClipboard = e => {
     var textField = document.createElement("textarea");
-    textField.innerText = this?.state?.error
+    textField.innerText = this?.state?.error;
     document.body.appendChild(textField);
     textField.select();
     document.execCommand("copy");
-    textField.remove()
+    textField.remove();
   };
 
   ReportError = e => {
@@ -43,10 +43,8 @@ class ErrorBoundary extends Component {
     } catch {}
   };
 
- 
-
   render() {
-    console.log('show error line',this?.state?.error)
+    console.log("show error line", this?.state?.error);
     console.log("s", this?.state?.errorInfo?.componentStack);
     if (
       this.state.errorInfo ||
@@ -109,7 +107,7 @@ const Success = styled.span`
   border-bottom: 1px dashed blue;
 `;
 const Button2 = styled.button`
-  background:#0d6efd;
+  background: #0d6efd;
   color: #fff;
   margin: 10px auto;
   padding: 6px 12px;
@@ -117,7 +115,7 @@ const Button2 = styled.button`
 const Button = styled.button`
   display: inline-block;
   & span {
-    color:#0d6efd;
+    color: #0d6efd;
 
     border-bottom: 1px dashed#0d6efd;
   }

@@ -9,7 +9,7 @@ const SeeDetailsTabContainer2 = ({
   activeFieldset,
   image,
 }) => {
-  const handleClick = (id) => {
+  const handleClick = id => {
     onClick(id);
   };
   const [windowHeight, windowWidth] = useWindowSize();
@@ -44,7 +44,7 @@ const SeeDetailsTabContainerStyle = styled.div`
     text-align: center;
   }
   & span {
-	color: #000 !important;
+    color: #000 !important;
   }
   & li {
     width: 260px;

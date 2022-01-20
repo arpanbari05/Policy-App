@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 const SeeDetailsTab = ({ activeFieldset, setActiveFieldset }) => {
   const [windowHeight, windowWidth] = windowSize();
 
-  const { theme } = useSelector((state) => state.frontendBoot);
+  const { theme } = useSelector(state => state.frontendBoot);
 
   const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
@@ -32,35 +32,35 @@ const SeeDetailsTab = ({ activeFieldset, setActiveFieldset }) => {
         <SeeDetailsTabContainer
           title={"Plan Details"}
           id={1}
-          onClick={(id) => setActiveFieldset(id)}
+          onClick={id => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={planDetails}
         />
         <SeeDetailsTabContainer
           title={"Add-on Coverages"}
           id={2}
-          onClick={(id) => setActiveFieldset(id)}
+          onClick={id => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={addOn}
         />
         <SeeDetailsTabContainer
           title={"Cashless Hospitals"}
           id={3}
-          onClick={(id) => setActiveFieldset(id)}
+          onClick={id => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={cashless}
         />
         <SeeDetailsTabContainer
           title={"Claim Process"}
           id={4}
-          onClick={(id) => setActiveFieldset(id)}
+          onClick={id => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={claim}
         />
         <SeeDetailsTabContainer
           title={"About Company"}
           id={5}
-          onClick={(id) => setActiveFieldset(id)}
+          onClick={id => setActiveFieldset(id)}
           activeFieldset={activeFieldset}
           image={aboutCompany}
         />
@@ -78,7 +78,7 @@ const SeeDetailsTabT = styled.div`
 `;
 
 const SeeDetailsTabWrapper = styled.ul`
-  background: ${props=>props.SecondaryShade} !important;
+  background: ${props => props.SecondaryShade} !important;
   box-shadow: 0 3px 6px 0 #004b8321 !important;
   height: 70px;
   padding-left: 0px;

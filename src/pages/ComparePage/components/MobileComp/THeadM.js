@@ -78,11 +78,10 @@ const THeadM = ({
 
   // console.log("====", width);
   return (
-    
     <thead
       style={{
         display: "flex",
-        marginTop:'20px',
+        marginTop: "20px",
         alignItems: "center",
         alignItems: "stretch",
         justifyContent: "space-evenly",
