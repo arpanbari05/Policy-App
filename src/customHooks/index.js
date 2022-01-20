@@ -225,6 +225,7 @@ export function useMembers() {
           code: age,
           display_name:
             age < 1 ? getMonthsForYear(age) + " Months" : age + " Years",
+          short_display_name: age < 1 ? getMonthsForYear(age) + " M" : age + " Y",
         },
       };
     }
