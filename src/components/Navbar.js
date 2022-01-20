@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { fyntune } from "../assets/images";
-import { useSelector } from "react-redux";
 import Card from "./Card";
 import "styled-components/macro";
 import { useLocation, useParams, useRouteMatch } from "react-router-dom";
 import ThemeModal from "./ThemeModal";
-import { selectTheme } from "../FrontendBoot/reducer/frontendBoot.slice";
 import { useGetEnquiriesQuery } from "../api/api";
-import { useGroups, useTheme } from "../customHooks";
+import { useMembers, useTheme } from "../customHooks";
 
 const Navbar = () => {
   const location = useLocation();
@@ -105,13 +103,15 @@ export default Navbar;
 export function Members() {
   const { groupCode } = useParams();
 
-  const { getGroup, isLoading, isUninitialized } = useGroups();
+  const { getGroupMembers, isLoading, isUninitialized } = useMembers();
 
   if (!groupCode) return null;
 
   if (isLoading || isUninitialized) return <p>Loading...</p>;
 
-  const { members, pincode } = getGroup(groupCode);
+  const members = getGroupMembers(groupCode);
+
+  if (!members) return null;
 
   return (
     <div
@@ -121,19 +121,19 @@ export function Members() {
       `}
     >
       {members.map(member => (
-        <Member member={member} key={member.type} />
+        <Member member={member} key={member.code} />
       ))}
-      <Info label="Pincode" value={pincode} />
+      {/* <Info label="Pincode" value={pincode} /> */}
     </div>
   );
 }
 
 function Member({ member, ...props }) {
-  const memberType = member.type.replaceAll("_", " ");
+  const memberType = member.display_name.replaceAll("_", " ");
   return (
     <Info
       label={memberType}
-      value={member.age.age + ` ${member.age.unit}`}
+      value={member.age.display_name}
       {...props}
     />
   );

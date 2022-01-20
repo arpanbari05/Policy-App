@@ -190,6 +190,12 @@ function QuoteCard({ quotes = [], ...props }) {
     setSelectedDeductible(parseInt(value));
   };
 
+  const handleCompareChange = evt => {
+    if (evt.target.checked) {
+      alert("yes");
+    }
+  };
+
   return (
     <div {...props}>
       <div className="d-flex pt-3 pb-2">
@@ -296,7 +302,17 @@ function QuoteCard({ quotes = [], ...props }) {
                 font-size: 0.83rem;
               `}
             >
-              Compare
+              <label htmlFor={quote.product.id + quote.total_premium}>
+                Compare
+              </label>
+              <input
+                className="visually-hidden"
+                type={"checkbox"}
+                id={quote.product.id + quote.total_premium}
+                name="compare-quote"
+                checked={false}
+                onChange={handleCompareChange}
+              />
             </div>
           </div>
         </div>

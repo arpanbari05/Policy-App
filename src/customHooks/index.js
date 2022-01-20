@@ -283,7 +283,9 @@ export function useMembers() {
   };
 
   const getGroupMembers = groupCode => {
-    const group = groups.find(group => group.id === groupCode);
+    const group = getGroup(groupCode);
+
+    if (!group) return;
 
     const { members: groupMembers } = group;
 
@@ -478,35 +480,6 @@ export function useUpdateMembers() {
   }
 
   return { updateMembers, ...queryState };
-}
-
-export function useGroups() {
-  const { data, ...query } = useGetEnquiriesQuery();
-
-  function getGroup(groupCode) {
-    const members = data.data.input.members;
-
-    const group = data.data.groups.find(
-      group => group.id === parseInt(groupCode),
-    );
-
-    const groupMembers = group.members;
-
-    const groupMembersWithAge = members
-      .filter(member => groupMembers.includes(member.type))
-      .map(member =>
-        member.age < 1
-          ? {
-              ...member,
-              age: { age: getMonthsForYear(member.age), unit: "M" },
-            }
-          : { ...member, age: { age: member.age, unit: "Y" } },
-      );
-
-    return { ...group, members: groupMembersWithAge };
-  }
-
-  return { getGroup, ...query };
 }
 
 export function useCart() {
