@@ -311,6 +311,16 @@ export const api = createApi({
         return { data: [] };
       },
     }),
+    updateCompareQuotes: builder.mutation({
+      query: body => ({
+        url: "/comparisons",
+        body,
+        method: "PUT",
+      }),
+    }),
+    getCompareQuotes: builder.query({
+      query: () => `/comparisons`,
+    }),
   }),
 });
 
@@ -337,6 +347,8 @@ export const {
   useGetProductFeaturesQuery,
   useGetLocationDetailsQuery,
   useGetCustomQuotesQuery,
+  useUpdateCompareQuotesMutation,
+  useGetCompareQuotesQuery
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Col, Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
-import useQuoteFilter from "./filters/useQuoteFilter";
 import {
   CenterBottomToggle,
   SeeText,
@@ -11,6 +10,7 @@ import {
 import "styled-components/macro";
 import {
   useCompanies,
+  useCompareQuotes,
   useQuote,
   useTheme,
   useToggle,
@@ -23,6 +23,9 @@ import { getDisplayPremium, numberToDigitWord } from "../../../utils/helper";
 import { uniq } from "lodash";
 import { useHistory } from "react-router-dom";
 import { useGetCartQuery } from "../../../api/api";
+import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { GiCircle } from "react-icons/gi";
+import { useParams } from "react-router-dom";
 
 function mergeQuotes(quotes) {
   const mergedQuotes = {};
@@ -57,11 +60,18 @@ function QuoteCards({ quotesData, ...props }) {
 
   const [show, setShow] = useState(false);
 
-  // const { filterQuotes } = useQuoteFilter();
+  const { groupCode } = useParams();
 
-  // const filteredQuotes = filterQuotes(quotesData.data);
+  const { getCompareQuotes } = useCompareQuotes();
 
-  // if (!filteredQuotes.length) return null;
+  const isCompareQuote = quote => {
+    const compareQuotes = getCompareQuotes(groupCode);
+    if (!compareQuotes) return false;
+
+    return compareQuotes.some(
+      compareQuote => compareQuote.product.id === quote.product.id,
+    );
+  };
 
   const mergedQuotes = Object.values(mergeQuotes(quotesData.data));
 
@@ -70,6 +80,16 @@ function QuoteCards({ quotesData, ...props }) {
   const firstQuote = mergedQuotes[0];
 
   const collapsedQuotes = mergedQuotes.slice(1);
+
+  const handleCompareChange = ({ checked, quote }) => {};
+
+  const getQuoteCardProps = quote => ({
+    quotes: quote,
+    compare: {
+      checked: isCompareQuote(quote),
+      onChange: handleCompareChange,
+    },
+  });
 
   return (
     <div
@@ -83,7 +103,7 @@ function QuoteCards({ quotesData, ...props }) {
       `}
       {...props}
     >
-      <QuoteCard quotes={firstQuote} />
+      <QuoteCard {...getQuoteCardProps(firstQuote)} />
       <Collapse in={show}>
         <div id="collapseOne">
           <div
@@ -96,7 +116,7 @@ function QuoteCards({ quotesData, ...props }) {
             <Col md={12}>
               {collapsedQuotes.map(quote => (
                 <QuoteCard
-                  quotes={quote}
+                  {...getQuoteCardProps(quote)}
                   key={Object.values(quote)[0].product.id}
                 />
               ))}
@@ -139,7 +159,11 @@ function getDeductibles(quotes = []) {
   return uniq(quotes.map(quote => quote.deductible));
 }
 
-function QuoteCard({ quotes = [], ...props }) {
+function QuoteCard({
+  quotes = [],
+  compare: { checked = false, onChange } = {},
+  ...props
+}) {
   const { colors } = useTheme();
 
   const isDeductibleJourney = quotes[0]?.deductible;
@@ -194,9 +218,8 @@ function QuoteCard({ quotes = [], ...props }) {
   };
 
   const handleCompareChange = evt => {
-    if (evt.target.checked) {
-      alert("yes");
-    }
+    const { checked } = evt.target;
+    onChange && onChange({ checked, quote });
   };
 
   return (
@@ -305,15 +328,31 @@ function QuoteCard({ quotes = [], ...props }) {
                 font-size: 0.83rem;
               `}
             >
-              <label htmlFor={quote.product.id + quote.total_premium}>
-                Compare
+              <label
+                className="d-flex align-items-center"
+                htmlFor={quote.product.id + quote.total_premium}
+                css={`
+                  color: ${colors.font.three};
+                  font-weight: 900;
+                `}
+              >
+                <span
+                  css={`
+                    font-size: 1.27rem;
+                    margin-right: 0.3em;
+                    color: ${colors.primary_color};
+                  `}
+                >
+                  {false ? <IoCheckmarkCircleSharp /> : <GiCircle />}
+                </span>
+                <span className="mt-1">Compare</span>
               </label>
               <input
                 className="visually-hidden"
                 type={"checkbox"}
                 id={quote.product.id + quote.total_premium}
                 name="compare-quote"
-                checked={false}
+                checked={checked}
                 onChange={handleCompareChange}
               />
             </div>

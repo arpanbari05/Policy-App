@@ -8,11 +8,13 @@ import {
   useDeleteCartMutation,
   useGetAdditionalDiscountsQuery,
   useGetCartQuery,
+  useGetCompareQuotesQuery,
   useGetCustomQuotesQuery,
   useGetDiscountsQuery,
   useGetEnquiriesQuery,
   useGetFrontendBootQuery,
   useUpdateCartMutation,
+  useUpdateCompareQuotesMutation,
   useUpdateEnquiryMutation,
   useUpdateGroupMembersMutation,
   useUpdateGroupsMutation,
@@ -803,4 +805,30 @@ function useInsurersToFetch() {
     : Object.keys(allInsurers);
 
   return insurersToFetch;
+}
+
+export function useUpdateCompareQuotes() {
+  const [updateCompareQuotesMutation, query] = useUpdateCompareQuotesMutation();
+
+  function updateCompareQuotes({ groupCode, quote }) {
+    updateCompareQuotesMutation({ compare_quotes: "" });
+  }
+
+  return { updateCompareQuotes, query };
+}
+
+export function useCompareQuotes() {
+  const { data, ...query } = useGetCompareQuotesQuery();
+
+  function getCompareQuotes(groupCode) {
+    if (!data?.data) return;
+
+    const compareQuotes = data.data.find(
+      compareQuotes => compareQuotes.group === parseInt(groupCode),
+    );
+
+    return compareQuotes;
+  }
+
+  return { getCompareQuotes, query: { data, ...query } };
 }
