@@ -6,7 +6,7 @@ import LowerModifier from "./components/LowerModifier";
 import Quotes from "./components/Quotes";
 import UpperModifier from "./components/UpperModifier";
 import "styled-components/macro";
-import { useMembers, useTheme } from "../../customHooks";
+import { useGetQuotes, useMembers, useTheme } from "../../customHooks";
 import { useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 
@@ -23,7 +23,10 @@ function QuotesPage() {
 
   return (
     <Page>
-      <UpperModifier />
+      <div className="position-relative">
+        <QuoteLoader />
+        <UpperModifier />
+      </div>
       <LowerModifier />
       <Container>
         <Row>
@@ -53,6 +56,27 @@ function QuotesPage() {
         </Row>
       </Container>
     </Page>
+  );
+}
+
+function QuoteLoader() {
+  const { isLoading, loadingPercentage } = useGetQuotes();
+
+  const { colors } = useTheme();
+
+  if (!isLoading) return null;
+
+  return (
+    <div
+      className="position-absolute"
+      css={`
+        top: 0;
+        height: 0.2em;
+        background-color: ${colors.primary_color};
+        width: ${loadingPercentage}%;
+        transition: 0.3s ease-in;
+      `}
+    />
   );
 }
 

@@ -5,7 +5,7 @@ import "styled-components/macro";
 import { useLocation, useParams, useRouteMatch } from "react-router-dom";
 import ThemeModal from "./ThemeModal";
 import { useGetEnquiriesQuery } from "../api/api";
-import { useMembers, useTheme } from "../customHooks";
+import { useGetQuotes, useMembers, useTheme } from "../customHooks";
 
 const Navbar = () => {
   const location = useLocation();

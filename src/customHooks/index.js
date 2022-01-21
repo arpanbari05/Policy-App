@@ -8,6 +8,7 @@ import {
   useDeleteCartMutation,
   useGetAdditionalDiscountsQuery,
   useGetCartQuery,
+  useGetCustomQuotesQuery,
   useGetDiscountsQuery,
   useGetEnquiriesQuery,
   useGetFrontendBootQuery,
@@ -17,6 +18,8 @@ import {
   useUpdateGroupsMutation,
 } from "../api/api";
 import { getRiderSendData } from "../pages/Cart/hooks/useCartProduct";
+import useFilters from "../pages/quotePage/components/filters/useFilters";
+import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter";
 import styles from "../styles";
 import {
   getMonthsForYear,
@@ -194,7 +197,7 @@ export function useMembers() {
     groups = data.data.groups;
   }
 
-  const selectedMembers = (input.members || []).map(member => ({
+  const selectedMembers = (input?.members || []).map(member => ({
     ...member,
     code: member.type,
   }));
@@ -225,7 +228,8 @@ export function useMembers() {
           code: age,
           display_name:
             age < 1 ? getMonthsForYear(age) + " Months" : age + " Years",
-          short_display_name: age < 1 ? getMonthsForYear(age) + " M" : age + " Y",
+          short_display_name:
+            age < 1 ? getMonthsForYear(age) + " M" : age + " Y",
         },
       };
     }
@@ -723,4 +727,80 @@ export function useUrlEnquiry() {
   }
 
   return { enquiryId, getUrlWithEnquirySearch };
+}
+
+export function useGetQuotes() {
+  const insurersToFetch = useInsurersToFetch();
+  const { journeyType } = useFrontendBoot();
+
+  const { getSelectedFilter } = useFilters();
+
+  const { groupCode } = useParams();
+
+  const { filterQuotes } = useQuoteFilter();
+
+  let { data, ...getCustomQuotesQuery } = useGetCustomQuotesQuery({
+    insurers: insurersToFetch,
+    deductible: getSelectedFilter("deductible").code,
+    sum_insured_range: getSelectedFilter("cover").code,
+    group: groupCode,
+    base_plan_type: getSelectedFilter("baseplantype").code,
+    tenure: getSelectedFilter("tenure").code,
+    plan_type: getSelectedFilter("plantype").code,
+    journeyType,
+  });
+
+  if (data) {
+    data = data.map(insurerQuotes => ({
+      ...insurerQuotes,
+      data: { data: filterQuotes(insurerQuotes.data.data) },
+    }));
+  }
+
+  const isLoading = data?.length < insurersToFetch.length;
+
+  const loadingPercentage =
+    !data || data.length === 0
+      ? 6
+      : (data.length / (insurersToFetch.length - 1)) * 100;
+
+  const isNoQuotes =
+    data &&
+    !isLoading &&
+    data.every(insurerQuotes => insurerQuotes.data.data.length === 0);
+
+  return {
+    ...getCustomQuotesQuery,
+    data,
+    isLoading,
+    loadingPercentage,
+    isNoQuotes,
+  };
+}
+
+function useInsurersToFetch() {
+  const {
+    data: {
+      data: { groups },
+    },
+  } = useGetEnquiriesQuery();
+
+  const { groupCode } = useParams();
+
+  let filteredInsurers = [];
+
+  let currentGroup = groups.find(group => group.id === parseInt(groupCode));
+
+  if (currentGroup) {
+    const { extras } = currentGroup;
+    if (extras && extras.insurers) filteredInsurers = extras.insurers;
+  }
+
+  const { companies: allInsurers } = useCompanies();
+
+  const insurersToFetch = filteredInsurers.length
+    ? filteredInsurers.map(insurer => insurer.alias)
+    : Object.keys(allInsurers);
+
+  return insurersToFetch;
 }

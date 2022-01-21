@@ -57,13 +57,13 @@ function QuoteCards({ quotesData, ...props }) {
 
   const [show, setShow] = useState(false);
 
-  const { filterQuotes } = useQuoteFilter();
+  // const { filterQuotes } = useQuoteFilter();
 
-  const filteredQuotes = filterQuotes(quotesData.data);
+  // const filteredQuotes = filterQuotes(quotesData.data);
 
-  if (!filteredQuotes.length) return null;
+  // if (!filteredQuotes.length) return null;
 
-  const mergedQuotes = Object.values(mergeQuotes(filteredQuotes));
+  const mergedQuotes = Object.values(mergeQuotes(quotesData.data));
 
   if (!mergedQuotes.length) return null;
 
@@ -169,8 +169,11 @@ function QuoteCard({ quotes = [], ...props }) {
   const { getCompany } = useCompanies();
 
   useEffect(() => {
-    if (!quote) setSelectedSumInsured(parseInt(sumInsureds[0]));
-  }, [quote, quotes, sumInsureds]);
+    if (!quote) {
+      setSelectedSumInsured(parseInt(sumInsureds[0]));
+      setSelectedDeductible(deductibles[0]);
+    }
+  }, [quote, quotes, sumInsureds, deductibles]);
 
   const productDetailsModal = useToggle(false);
 

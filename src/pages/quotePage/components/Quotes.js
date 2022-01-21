@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
+  useGetCustomQuotesQuery,
   useGetEnquiriesQuery,
   useGetFrontendBootQuery,
   useGetQuotesQuery,
@@ -9,7 +10,12 @@ import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/
 import QuoteCards from "./QuoteCards";
 import { useEffect } from "react";
 import { setQuotesForSortForIC } from "../quote.slice";
-import { useCompanies, useFrontendBoot } from "../../../customHooks";
+import {
+  useCompanies,
+  useFrontendBoot,
+  useGetQuotes,
+} from "../../../customHooks";
+import useFilters from "./filters/useFilters";
 
 function Quotes() {
   const { isLoading, isUninitialized } = useGetEnquiriesQuery();
@@ -90,36 +96,25 @@ function FetchQuote({ insurer, ...props }) {
 }
 
 function FetchQuotes() {
-  const insurersToFetch = useInsurersToFetch();
+  const { data, isLoading, isNoQuotes } = useGetQuotes();
 
-  return insurersToFetch.map(insurer => (
-    <FetchQuote insurer={insurer} key={insurer} />
-  ));
-}
+  if (isNoQuotes) return <p>No Quotes Found!</p>;
 
-function useInsurersToFetch() {
-  const {
-    data: {
-      data: { groups },
-    },
-  } = useGetEnquiriesQuery();
-
-  const { groupCode } = useParams();
-
-  let filteredInsurers = [];
-
-  let currentGroup = groups.find(group => group.id === parseInt(groupCode));
-
-  if (currentGroup) {
-    const { extras } = currentGroup;
-    if (extras && extras.insurers) filteredInsurers = extras.insurers;
-  }
-
-  const { companies: allInsurers } = useCompanies();
-
-  const insurersToFetch = filteredInsurers.length
-    ? filteredInsurers.map(insurer => insurer.alias)
-    : Object.keys(allInsurers);
-
-  return insurersToFetch;
+  return (
+    <div className="pb-3">
+      {data?.map(insurersQuotes => (
+        <QuoteCards
+          key={insurersQuotes.company_alias}
+          quotesData={insurersQuotes.data}
+        />
+      ))}
+      {isLoading ? <CardSkeletonLoader /> : null}
+      {/* {getCustomQuotesQuery?.data?.map((i, idx) => (
+        <h1 key={idx}>{i}</h1>
+      ))} */}
+      {/* {insurersToFetch.map(insurer => (
+        <FetchQuote insurer={insurer} key={insurer} />
+      ))} */}
+    </div>
+  );
 }
