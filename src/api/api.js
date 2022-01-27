@@ -3,17 +3,19 @@ import { formatCurrency } from "../utils/helper";
 
 const { REACT_APP_API_BASE_URL: baseUrl } = process.env;
 
+const baseQuery = fetchBaseQuery({
+  baseUrl,
+  prepareHeaders: headers => {
+    const urlQueryStrings = new URLSearchParams(window.location.search);
+    const EnquiryId = urlQueryStrings.get("enquiryId");
+    headers.set("Enquiry-Id", EnquiryId);
+    return headers;
+  },
+});
+
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-    prepareHeaders: headers => {
-      const urlQueryStrings = new URLSearchParams(window.location.search);
-      const EnquiryId = urlQueryStrings.get("enquiryId");
-      headers.set("Enquiry-Id", EnquiryId);
-      return headers;
-    },
-  }),
+  baseQuery,
   tagTypes: ["Filter", "Quote", "Enquiry", "Rider", "Cart"],
   endpoints: builder => ({
     getCities: builder.mutation({
@@ -264,6 +266,71 @@ export const api = createApi({
     getLocationDetails: builder.query({
       query: ({ search }) => `location-details?search=${search}`,
     }),
+    getCustomQuotes: builder.query({
+      queryFn: async (
+        args,
+        { dispatch },
+        _extraOptions,
+        fetchWithBaseQuery,
+      ) => {
+        const {
+          insurers = [],
+          sum_insured_range,
+          tenure,
+          plan_type,
+          group,
+          base_plan_type = "base_health",
+          journeyType = "health",
+          deductible = 0,
+        } = args;
+        function getQuotes(insurer) {
+          const endpoint = journeyType === "top_up" ? "topup-quotes" : "quotes";
+
+          let url = `companies/${insurer}/${endpoint}?sum_insured_range=${sum_insured_range}&tenure=${tenure}&plan_type=${plan_type}&group=${group}&base_plan_type=${base_plan_type}`;
+
+          if (journeyType === "top_up") {
+            url = url.concat(`&deductible=${deductible}`);
+          }
+
+          return fetchWithBaseQuery(url).then(res => {
+            if (res.data) {
+              dispatch(
+                api.util.updateQueryData("getCustomQuotes", args, draft => {
+                  Object.assign(draft, [
+                    ...draft,
+                    { company_alias: insurer, data: res.data },
+                  ]);
+                }),
+              );
+            }
+          });
+        }
+
+        Promise.all(insurers.map(insurer => getQuotes(insurer)));
+
+        return { data: [] };
+      },
+    }),
+    updateCompareQuotes: builder.mutation({
+      query: body => ({
+        url: "/comparisons",
+        body,
+        method: "PUT",
+      }),
+      onQueryStarted: (args, { dispatch }) => {
+        dispatch(
+          api.util.updateQueryData("getCompareQuotes", undefined, draft => {
+            Object.assign(draft, { data: args });
+          }),
+        );
+      },
+    }),
+    getCompareQuotes: builder.query({
+      query: () => `/comparisons`,
+    }),
+    getCompareFeatures: builder.query({
+      query: productId => `products/${productId}/features`,
+    }),
   }),
 });
 
@@ -289,6 +356,10 @@ export const {
   useGetAboutCompanyQuery,
   useGetProductFeaturesQuery,
   useGetLocationDetailsQuery,
+  useGetCustomQuotesQuery,
+  useUpdateCompareQuotesMutation,
+  useGetCompareQuotesQuery,
+  useGetCompareFeaturesQuery
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {

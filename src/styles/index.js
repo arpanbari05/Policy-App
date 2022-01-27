@@ -10,6 +10,9 @@ const styles = {
   boxShadows: {
     one: "0 0px 1px 0 rgb(0 0 0 / 20%), 0 8px 126px 0 rgb(0 0 0 / 10%)",
     two: "rgb(0 75 131 / 28%) 0px 12px 12px -11px",
+    three: "0 -5px 6px 0 rgb(0 0 0 / 16%)",
+    four: "rgb(134 156 213 / 25%) 0px 10px 20px",
+    five: "rgb(0 0 0 / 16%) 0px 3px 13px 0px;",
   },
 };
 

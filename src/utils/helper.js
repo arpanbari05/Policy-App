@@ -260,3 +260,21 @@ export function getDisplayPremium({ total_premium, tenure }) {
     parseInt(tenure) > 1 ? `${tenure} years` : "year"
   }`;
 }
+
+export function mergeQuotes(quotes) {
+  const mergedQuotes = {};
+
+  for (let quote of quotes) {
+    const {
+      product: { id },
+    } = quote;
+
+    if (mergedQuotes[id]) {
+      mergedQuotes[id] = [...mergedQuotes[id], quote];
+      continue;
+    }
+    mergedQuotes[id] = [quote];
+  }
+
+  return mergedQuotes;
+}

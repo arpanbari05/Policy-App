@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Col, Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
-import useQuoteFilter from "./filters/useQuoteFilter";
 import {
   CenterBottomToggle,
   SeeText,
@@ -19,28 +18,16 @@ import {
 import CartSummaryModal from "../../../components/CartSummaryModal";
 import ProductDetailsModal from "../../../components/ProductDetails/ProductDetailsModal";
 import { Button } from "../../../components";
-import { getDisplayPremium, numberToDigitWord } from "../../../utils/helper";
+import {
+  getDisplayPremium,
+  mergeQuotes,
+  numberToDigitWord,
+} from "../../../utils/helper";
 import { uniq } from "lodash";
 import { useHistory } from "react-router-dom";
 import { useGetCartQuery } from "../../../api/api";
-
-function mergeQuotes(quotes) {
-  const mergedQuotes = {};
-
-  for (let quote of quotes) {
-    const {
-      product: { id },
-    } = quote;
-
-    if (mergedQuotes[id]) {
-      mergedQuotes[id] = [...mergedQuotes[id], quote];
-      continue;
-    }
-    mergedQuotes[id] = [quote];
-  }
-
-  return mergedQuotes;
-}
+import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { GiCircle } from "react-icons/gi";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",
@@ -52,24 +39,35 @@ const featuresDisplayedOnQuoteCard = [
 
 const renderTooltip = description => <Tooltip>{description}</Tooltip>;
 
-function QuoteCards({ quotesData, ...props }) {
+function QuoteCards({ quotesData, compare, ...props }) {
   const { colors } = useTheme();
 
   const [show, setShow] = useState(false);
 
-  const { filterQuotes } = useQuoteFilter();
-
-  const filteredQuotes = filterQuotes(quotesData.data);
-
-  if (!filteredQuotes.length) return null;
-
-  const mergedQuotes = Object.values(mergeQuotes(filteredQuotes));
+  const mergedQuotes = Object.values(mergeQuotes(quotesData.data));
 
   if (!mergedQuotes.length) return null;
 
   const firstQuote = mergedQuotes[0];
 
   const collapsedQuotes = mergedQuotes.slice(1);
+
+  const handleCompareChange = ({ checked, quote }) => {
+    if (checked) {
+      compare.addQuote(quote);
+      return;
+    }
+
+    compare.removeQuote(quote);
+  };
+
+  const getQuoteCardProps = quotes => ({
+    quotes,
+    compare: {
+      checkFn: compare.isCompareQuote,
+      onChange: handleCompareChange,
+    },
+  });
 
   return (
     <div
@@ -83,7 +81,7 @@ function QuoteCards({ quotesData, ...props }) {
       `}
       {...props}
     >
-      <QuoteCard quotes={firstQuote} />
+      <QuoteCard {...getQuoteCardProps(firstQuote)} />
       <Collapse in={show}>
         <div id="collapseOne">
           <div
@@ -96,7 +94,7 @@ function QuoteCards({ quotesData, ...props }) {
             <Col md={12}>
               {collapsedQuotes.map(quote => (
                 <QuoteCard
-                  quotes={quote}
+                  {...getQuoteCardProps(quote)}
                   key={Object.values(quote)[0].product.id}
                 />
               ))}
@@ -139,7 +137,11 @@ function getDeductibles(quotes = []) {
   return uniq(quotes.map(quote => quote.deductible));
 }
 
-function QuoteCard({ quotes = [], ...props }) {
+function QuoteCard({
+  quotes = [],
+  compare: { checkFn, onChange } = {},
+  ...props
+}) {
   const { colors } = useTheme();
 
   const isDeductibleJourney = quotes[0]?.deductible;
@@ -169,12 +171,17 @@ function QuoteCard({ quotes = [], ...props }) {
   const { getCompany } = useCompanies();
 
   useEffect(() => {
-    if (!quote) setSelectedSumInsured(parseInt(sumInsureds[0]));
-  }, [quote, quotes, sumInsureds]);
+    if (!quote) {
+      setSelectedSumInsured(parseInt(sumInsureds[0]));
+      setSelectedDeductible(deductibles[0]);
+    }
+  }, [quote, quotes, sumInsureds, deductibles]);
 
   const productDetailsModal = useToggle(false);
 
   if (!quote) return null;
+
+  const isCompareQuote = checkFn(quote);
 
   const { logo: logoSrc } = getCompany(quote.company_alias);
 
@@ -188,6 +195,11 @@ function QuoteCard({ quotes = [], ...props }) {
     const { value } = evt.target;
 
     setSelectedDeductible(parseInt(value));
+  };
+
+  const handleCompareChange = evt => {
+    const { checked } = evt.target;
+    onChange && onChange({ checked, quote });
   };
 
   return (
@@ -296,7 +308,34 @@ function QuoteCard({ quotes = [], ...props }) {
                 font-size: 0.83rem;
               `}
             >
-              Compare
+              <label
+                className="d-flex align-items-center"
+                htmlFor={quote.product.id + quote.total_premium}
+                css={`
+                  color: ${colors.font.three};
+                  font-weight: 900;
+                  cursor: pointer;
+                `}
+              >
+                <span
+                  css={`
+                    font-size: 1.27rem;
+                    margin-right: 0.3em;
+                    color: ${colors.primary_color};
+                  `}
+                >
+                  {isCompareQuote ? <IoCheckmarkCircleSharp /> : <GiCircle />}
+                </span>
+                <span className="mt-1">Compare</span>
+              </label>
+              <input
+                className="visually-hidden"
+                type={"checkbox"}
+                id={quote.product.id + quote.total_premium}
+                name="compare-quote"
+                checked={isCompareQuote}
+                onChange={handleCompareChange}
+              />
             </div>
           </div>
         </div>

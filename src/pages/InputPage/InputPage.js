@@ -18,12 +18,19 @@ import PlanTypeForm from "./components/PlanTypeForm";
 import LocationForm from "./components/LocationForm";
 import DeductibleForm from "./components/DeductibleForm";
 
+const journeyTitle = {
+  top_up: "TOP UP INSURANCE",
+  health: "HEALTH INSURANCE",
+};
+
 const InputPage = () => {
   const [showmore, setShowmore] = useState(false);
 
   const { colors } = useTheme();
 
   const { currentForm } = useParams();
+
+  const { journeyType } = useFrontendBoot();
 
   return (
     <Page>
@@ -86,7 +93,7 @@ const InputPage = () => {
         </div>
         <Wrapper currentForm={currentForm}>
           <InnerWrapper className="hide_on_mobile">
-            {planCard(colors.primary_color, colors.primary_shade)}
+            {planCard(colors.primary_color, colors.primary_shade, journeyType)}
           </InnerWrapper>
           <InnerWrapper>
             <Card
@@ -244,7 +251,7 @@ const InnerWrapper = styled.div`
   } */
 `;
 
-function planCard(PrimaryColor, PrimaryShade) {
+function planCard(PrimaryColor, PrimaryShade, journeyType = "health") {
   return (
     <Card
       BgColor={`#edf0f49e`}
@@ -279,7 +286,7 @@ function planCard(PrimaryColor, PrimaryShade) {
       height={`400px`}
     >
       <PlanCard PrimaryColor={PrimaryColor} PrimaryShade={PrimaryShade}>
-        <h3>HEALTH INSURANCE</h3>
+        <h3>{journeyTitle[journeyType]}</h3>
         <h1>Buy Health Insurance plan in few simple steps</h1>
         <PlanList />
       </PlanCard>
