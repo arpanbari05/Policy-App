@@ -1,6 +1,5 @@
 import { Switch, Route, Redirect } from "react-router-dom";
 import InputPage from "./pages/InputPage/InputPage";
-import QuotePage from "./pages/quotePage/QuotePage";
 import ThankYouPage from "./pages/ThankYouPage/ThankYouPage";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import ProposalPage from "./pages/ProposalPage/ProposalPage";

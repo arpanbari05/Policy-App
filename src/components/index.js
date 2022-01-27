@@ -1,4 +1,5 @@
 import { Spinner } from "react-bootstrap";
+import { FaTimes } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
 import styled from "styled-components/macro";
@@ -194,5 +195,75 @@ export function ErrorFallback({ error, resetErrorBoundary }) {
         <button onClick={resetErrorBoundary}>Reload</button>
       </div>
     </Page>
+  );
+}
+
+export function GoBackButton({ children, ...props }) {
+  return (
+    <button
+      className="btn"
+      type="button"
+      css={`
+        width: max-content;
+        padding: 0 !important;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        color: var(--abc-red);
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+      `}
+      {...props}
+    >
+      <div
+        className="d-flex justify-content-center align-items-center"
+        css={`
+          background: #f1f4f8;
+          width: 45px;
+          margin-right: 20px;
+          border-radius: 100%;
+          height: 45px;
+          color: #707b8b;
+        `}
+      >
+        <i className="fas fa-chevron-left"></i>
+      </div>
+      <span
+        css={`
+          color: #3b4c69;
+          font-weight: 600;
+        `}
+      >
+        {children}
+      </span>
+    </button>
+  );
+}
+
+export function CircleCloseButton({
+  placeOnCorner = false,
+  css = ``,
+  className = ``,
+  ...props
+}) {
+  return (
+    <button
+      className={`d-flex align-items-center justify-content-center shadow rounded-circle ${className} ${
+        placeOnCorner ? "position-absolute" : ""
+      }`}
+      css={`
+        height: 1.67em;
+        width: 1.67em;
+        background-color: #fff;
+        z-index: 120;
+        ${placeOnCorner
+          ? `top: 0; right: 0; transform: translate(30%, -30%);`
+          : ""}
+        ${css};
+      `}
+      {...props}
+    >
+      <FaTimes />
+    </button>
   );
 }

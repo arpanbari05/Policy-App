@@ -8,6 +8,7 @@ import {
   useDeleteCartMutation,
   useGetAdditionalDiscountsQuery,
   useGetCartQuery,
+  useGetCompareFeaturesQuery,
   useGetCompareQuotesQuery,
   useGetCustomQuotesQuery,
   useGetDiscountsQuery,
@@ -30,6 +31,7 @@ import {
 } from "../utils/helper";
 import { calculateTotalPremium } from "../utils/helper";
 import useUrlQuery from "./useUrlQuery";
+import { every } from "lodash";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -70,7 +72,16 @@ export function useCompanies() {
   function getCompany(company_alias) {
     return companies[company_alias];
   }
-  return { getCompany, companies };
+
+  function getCompanyLogo(company_alias) {
+    const company = getCompany(company_alias);
+
+    if (!company) return;
+
+    return company.logo;
+  }
+
+  return { getCompany, getCompanyLogo, companies };
 }
 
 export function useQuote() {
@@ -731,7 +742,7 @@ export function useUrlEnquiry() {
   return { enquiryId, getUrlWithEnquirySearch };
 }
 
-export function useGetQuotes() {
+export function useGetQuotes(queryConfig = {}) {
   const insurersToFetch = useInsurersToFetch();
   const { journeyType } = useFrontendBoot();
 
@@ -741,16 +752,19 @@ export function useGetQuotes() {
 
   const { filterQuotes } = useQuoteFilter();
 
-  let { data, ...getCustomQuotesQuery } = useGetCustomQuotesQuery({
-    insurers: insurersToFetch,
-    deductible: getSelectedFilter("deductible").code,
-    sum_insured_range: getSelectedFilter("cover").code,
-    group: groupCode,
-    base_plan_type: getSelectedFilter("baseplantype").code,
-    tenure: getSelectedFilter("tenure").code,
-    plan_type: getSelectedFilter("plantype").code,
-    journeyType,
-  });
+  let { data, ...getCustomQuotesQuery } = useGetCustomQuotesQuery(
+    {
+      insurers: insurersToFetch,
+      deductible: getSelectedFilter("deductible").code,
+      sum_insured_range: getSelectedFilter("cover").code,
+      group: groupCode,
+      base_plan_type: getSelectedFilter("baseplantype").code,
+      tenure: getSelectedFilter("tenure").code,
+      plan_type: getSelectedFilter("plantype").code,
+      journeyType,
+    },
+    queryConfig,
+  );
 
   if (data) {
     data = data.map(insurerQuotes => ({
@@ -807,28 +821,154 @@ function useInsurersToFetch() {
   return insurersToFetch;
 }
 
-export function useUpdateCompareQuotes() {
-  const [updateCompareQuotesMutation, query] = useUpdateCompareQuotesMutation();
+export function useQuotesCompare(initialCompareQuotes = []) {
+  const dispatch = useDispatch();
 
-  function updateCompareQuotes({ groupCode, quote }) {
-    updateCompareQuotesMutation({ compare_quotes: "" });
+  const [updateCompareQuotesMutation, updateQuery] =
+    useUpdateCompareQuotesMutation();
+
+  const { data, ...query } = useGetCompareQuotesQuery();
+
+  const [compareQuotes, setCompareQuotes] = useState(initialCompareQuotes);
+
+  function addQuote(quote) {
+    if (compareQuotes.length === 3) return;
+    setCompareQuotes(compareQuotes => [...compareQuotes, quote]);
   }
 
-  return { updateCompareQuotes, query };
-}
+  function removeQuote(quote) {
+    setCompareQuotes(compareQuotes =>
+      compareQuotes.filter(
+        compareQuote =>
+          !every([
+            parseInt(compareQuote.product.id) === parseInt(quote.product.id),
+            parseInt(compareQuote.sum_insured) === parseInt(quote.sum_insured),
+            compareQuote.deductible === quote.deductible,
+          ]),
+      ),
+    );
+  }
 
-export function useCompareQuotes() {
-  const { data, ...query } = useGetCompareQuotesQuery();
+  function removeCompareQuote({ quote: quoteToRemove, groupCode }) {
+    dispatch(
+      api.util.updateQueryData("getCompareQuotes", undefined, draft => {
+        Object.assign(draft, {
+          data: {
+            products: draft.data.products.map(compare =>
+              parseInt(compare.group) === parseInt(groupCode)
+                ? {
+                    ...compare,
+                    quotes: compare.quotes.filter(
+                      quote =>
+                        !every([
+                          parseInt(quoteToRemove.product.id) ===
+                            parseInt(quote.product.id),
+                          parseInt(quoteToRemove.sum_insured) ===
+                            parseInt(quote.sum_insured),
+                          quoteToRemove.deductible === quote.deductible,
+                        ]),
+                    ),
+                  }
+                : compare,
+            ),
+          },
+        });
+      }),
+    );
+  }
+
+  function isCompareQuote(quote) {
+    return compareQuotes.some(compareQuote =>
+      every([
+        compareQuote.product.id === quote.product.id,
+        compareQuote.sum_insured === quote.sum_insured,
+      ]),
+    );
+  }
+
+  function reset() {
+    setCompareQuotes([]);
+  }
+
+  const isQuotesOnCompare = compareQuotes.length > 0;
 
   function getCompareQuotes(groupCode) {
     if (!data?.data) return;
 
-    const compareQuotes = data.data.find(
-      compareQuotes => compareQuotes.group === parseInt(groupCode),
-    );
+    const { products } = data.data;
 
-    return compareQuotes;
+    if (!products) return;
+
+    return products.find(product => product.group === parseInt(groupCode));
   }
 
-  return { getCompareQuotes, query: { data, ...query } };
+  function updateCompareQuote({ updatedQuote, previousQuote, groupCode }) {
+    dispatch(
+      api.util.updateQueryData("getCompareQuotes", undefined, draft => {
+        Object.assign(draft, {
+          data: {
+            products: draft.data.products.map(compare =>
+              compare.group === parseInt(groupCode)
+                ? {
+                    ...compare,
+                    quotes: compare.quotes.map(quote =>
+                      every([
+                        quote.product.id === previousQuote.product.id,
+                        quote.deductible === previousQuote.deductible,
+                        quote.sum_insured === previousQuote.sum_insured,
+                      ])
+                        ? updatedQuote
+                        : quote,
+                    ),
+                  }
+                : compare,
+            ),
+          },
+        });
+      }),
+    );
+  }
+
+  function getUpdateCompareQuotesMutation(groupCode) {
+    function updateCompareQuotes(quotes = []) {
+      if (!data?.data?.products)
+        return updateCompareQuotesMutation({
+          products: [{ group: parseInt(groupCode), quotes }],
+        });
+
+      const { products } = data.data;
+
+      return updateCompareQuotesMutation({
+        products: products.map(product =>
+          parseInt(product.group) === parseInt(groupCode)
+            ? { ...product, quotes }
+            : product,
+        ),
+      });
+    }
+
+    return [updateCompareQuotes, updateQuery];
+  }
+
+  return {
+    addQuote,
+    removeQuote,
+    isCompareQuote,
+    reset,
+    getUpdateCompareQuotesMutation,
+    getCompareQuotes,
+    updateCompareQuote,
+    removeCompareQuote,
+    isQuotesOnCompare,
+    quotes: compareQuotes,
+    query,
+  };
+}
+
+export function useCompareFeatures({ productIds }) {
+  const { data, ...query } = useGetCompareFeaturesQuery({ productIds });
+
+  const isLoading = !data || !data.length;
+
+  return { ...query, data, isLoading };
 }

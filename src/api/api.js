@@ -317,9 +317,19 @@ export const api = createApi({
         body,
         method: "PUT",
       }),
+      onQueryStarted: (args, { dispatch }) => {
+        dispatch(
+          api.util.updateQueryData("getCompareQuotes", undefined, draft => {
+            Object.assign(draft, { data: args });
+          }),
+        );
+      },
     }),
     getCompareQuotes: builder.query({
       query: () => `/comparisons`,
+    }),
+    getCompareFeatures: builder.query({
+      query: productId => `products/${productId}/features`,
     }),
   }),
 });
@@ -348,7 +358,8 @@ export const {
   useGetLocationDetailsQuery,
   useGetCustomQuotesQuery,
   useUpdateCompareQuotesMutation,
-  useGetCompareQuotesQuery
+  useGetCompareQuotesQuery,
+  useGetCompareFeaturesQuery
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {
