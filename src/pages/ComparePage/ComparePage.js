@@ -9,6 +9,7 @@ import {
 } from "../../components";
 import {
   useCompanies,
+  useFrontendBoot,
   useGetQuotes,
   useQuotesCompare,
   useTheme,
@@ -31,6 +32,7 @@ import {
 } from "./data";
 import { every } from "lodash";
 import { useEffect, useState } from "react";
+import { quoteCompareFeature } from "../../test/data/quoteFeatures";
 
 function ComparePage() {
   const { groupCode } = useParams();
@@ -753,8 +755,10 @@ function FeatureValue({
   featureTitle,
   ...props
 }) {
-  const { isLoading, isUninitialized, isError, data } =
+  let { isLoading, isUninitialized, isError, data } =
     useGetCompareFeaturesQuery(compareQuote?.product?.id);
+
+  const { journeyType } = useFrontendBoot();
 
   if (isLoading || isUninitialized)
     return (
@@ -767,12 +771,16 @@ function FeatureValue({
 
   if (!data) return null;
 
+  data = journeyType === "health" ? data : quoteCompareFeature;
+
   const compareFeature = data.find(feature => feature.name === sectionTitle);
 
   if (!compareFeature) return null;
 
   const features =
-    compareFeature.sum_insureds[compareQuote.sum_insured].features;
+    compareFeature.sum_insureds[
+      journeyType === "health" ? compareQuote.sum_insured : 300000
+    ].features;
 
   if (!features) return null;
 

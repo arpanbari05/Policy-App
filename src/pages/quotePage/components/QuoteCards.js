@@ -28,6 +28,7 @@ import { useHistory } from "react-router-dom";
 import { useGetCartQuery } from "../../../api/api";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { GiCircle } from "react-icons/gi";
+import { quoteFeatures } from "../../../test/data/quoteFeatures";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",
@@ -202,6 +203,8 @@ function QuoteCard({
     onChange && onChange({ checked, quote });
   };
 
+  const features = isDeductibleJourney ? quoteFeatures : quote.features;
+
   return (
     <div {...props}>
       <div className="d-flex pt-3 pb-2">
@@ -252,7 +255,7 @@ function QuoteCard({
             border-color: ${colors.border.one};
           `}
         >
-          {quote.features.map(feature =>
+          {features.map(feature =>
             featuresDisplayedOnQuoteCard.includes(feature.code) ? (
               <QuoteFeature key={feature.code} feature={feature} />
             ) : null,
