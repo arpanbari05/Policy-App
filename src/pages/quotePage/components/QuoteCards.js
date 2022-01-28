@@ -17,7 +17,7 @@ import {
 } from "../../../customHooks";
 import CartSummaryModal from "../../../components/CartSummaryModal";
 import ProductDetailsModal from "../../../components/ProductDetails/ProductDetailsModal";
-import { Button } from "../../../components";
+import { Button, PremiumButton } from "../../../components";
 import {
   getDisplayPremium,
   mergeQuotes,
@@ -345,61 +345,6 @@ function QuoteCard({
       </div>
       {productDetailsModal.isOn && (
         <ProductDetailsModal quote={quote} onClose={productDetailsModal.off} />
-      )}
-    </div>
-  );
-}
-
-function PremiumButton({ quote, ...props }) {
-  const history = useHistory();
-
-  const cartSummaryModal = useToggle(false);
-
-  const {
-    buyQuote,
-    queryState: { isLoading },
-  } = useQuote();
-
-  const handleBuyClick = () => {
-    buyQuote(quote)
-      .then(cartSummaryModal.on)
-      .catch(() => alert("Something went wrong while buying the quote!"));
-  };
-
-  const { data } = useGetCartQuery();
-
-  const { enquiryId } = useUrlEnquiry();
-
-  function gotoProductPage() {
-    const groupCodes = data.data.map(cartEntry => cartEntry.group.id);
-
-    const firstGroupWithQuote = Math.min(...groupCodes);
-
-    history.push({
-      pathname: `/productdetails/${firstGroupWithQuote}`,
-      search: `enquiryId=${enquiryId}`,
-    });
-  }
-
-  const handleContinueClick = () => {
-    gotoProductPage();
-  };
-
-  return (
-    <div className="w-100">
-      <Button
-        className="w-100 rounded"
-        onClick={handleBuyClick}
-        loader={isLoading}
-        {...props}
-      >
-        {getDisplayPremium(quote)}
-      </Button>
-      {cartSummaryModal.isOn && (
-        <CartSummaryModal
-          onContine={handleContinueClick}
-          onClose={cartSummaryModal.off}
-        />
       )}
     </div>
   );

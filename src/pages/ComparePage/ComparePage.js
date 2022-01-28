@@ -6,6 +6,7 @@ import {
   FullScreenLoader,
   GoBackButton,
   Page,
+  PremiumButton,
 } from "../../components";
 import {
   useCompanies,
@@ -480,7 +481,7 @@ function ProductCard({ quote, onRemove, ...props }) {
       >
         {quote.product.name}
       </div>
-      <Button className="w-100">{getDisplayPremium(quote)}</Button>
+      <PremiumButton quote={quote} />
     </div>
   );
 }

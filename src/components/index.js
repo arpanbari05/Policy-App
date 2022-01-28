@@ -2,9 +2,12 @@ import { Spinner } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
-import { useTheme } from "../customHooks";
+import { useQuote, useTheme, useToggle, useUrlEnquiry } from "../customHooks";
+import { getDisplayPremium } from "../utils/helper";
+import CartSummaryModal from "./CartSummaryModal";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import FilterSkeletonLoader from "./Common/filter-skeleton-loader/FilterSkeletonLoader";
 import Navbar from "./Navbar";
@@ -265,5 +268,60 @@ export function CircleCloseButton({
     >
       <FaTimes />
     </button>
+  );
+}
+
+export function PremiumButton({ quote, ...props }) {
+  const history = useHistory();
+
+  const cartSummaryModal = useToggle(false);
+
+  const {
+    buyQuote,
+    queryState: { isLoading },
+  } = useQuote();
+
+  const handleBuyClick = () => {
+    buyQuote(quote)
+      .then(cartSummaryModal.on)
+      .catch(() => alert("Something went wrong while buying the quote!"));
+  };
+
+  const { data } = useGetCartQuery();
+
+  const { enquiryId } = useUrlEnquiry();
+
+  function gotoProductPage() {
+    const groupCodes = data.data.map(cartEntry => cartEntry.group.id);
+
+    const firstGroupWithQuote = Math.min(...groupCodes);
+
+    history.push({
+      pathname: `/productdetails/${firstGroupWithQuote}`,
+      search: `enquiryId=${enquiryId}`,
+    });
+  }
+
+  const handleContinueClick = () => {
+    gotoProductPage();
+  };
+
+  return (
+    <div className="w-100">
+      <Button
+        className="w-100 rounded"
+        onClick={handleBuyClick}
+        loader={isLoading}
+        {...props}
+      >
+        {getDisplayPremium(quote)}
+      </Button>
+      {cartSummaryModal.isOn && (
+        <CartSummaryModal
+          onContine={handleContinueClick}
+          onClose={cartSummaryModal.off}
+        />
+      )}
+    </div>
   );
 }
