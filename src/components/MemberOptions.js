@@ -183,6 +183,7 @@ function MemberOption({ member, onChange, children, ...props }) {
         role="button"
         css={`
           line-height: 1;
+          font-weight: 900;
         `}
       >
         <input

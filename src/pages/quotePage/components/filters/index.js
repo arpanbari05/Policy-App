@@ -36,7 +36,7 @@ export function Filter({ label, children, ...props }) {
       {...props}
     >
       {React.Children.map(children, child => {
-        if (child.type.name === "FilterHead")
+        if (child.type === (<FilterHead />).type)
           return React.cloneElement(child, { onClick: modalToggle.on });
         return modalToggle.isOn
           ? React.cloneElement(child, {
