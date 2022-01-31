@@ -127,6 +127,11 @@ button {
   padding: 0;
 }
 
+select {
+  background: none;
+  border: none;
+}
+
 /* Generic Styles end  */
 
 .yellow_start_line {
