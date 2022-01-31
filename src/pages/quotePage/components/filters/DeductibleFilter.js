@@ -75,7 +75,7 @@ function DeductibleFilterModal({ onClose, ...props }) {
       </p>
       <div className="mt-3">
         <Dropdown
-          label="Deductible"
+          label="Select Deductible Sum Insured"
           value={
             selectedDeductible
               ? getReactSelectOption(selectedDeductible)

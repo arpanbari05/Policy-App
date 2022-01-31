@@ -103,7 +103,7 @@ const EditMemberFilter = () => {
   );
 };
 
-function EditMembers({ onClose, ...props }) {
+export function EditMembers({ onClose, ...props }) {
   const { getAllMembers } = useMembers();
 
   const { isError, validate, getSelectedMembers, ...memberForm } =
@@ -135,7 +135,9 @@ function EditMembers({ onClose, ...props }) {
   return (
     <EditMembersModal submitState={{ isLoading }} onClose={onClose} {...props}>
       <form onSubmit={handleSubmit}>
-        <MemberOptions {...memberForm} />
+        <div className="p-3">
+          <MemberOptions {...memberForm} />
+        </div>
         {error &&
           serverErrors.map(serverError => (
             <StyledErrorMessage key={serverError}>

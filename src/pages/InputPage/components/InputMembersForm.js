@@ -1,8 +1,10 @@
 import CustomProgressBar from "../../../components/ProgressBar";
-import { Title } from "./FormComponents";
+import { ErrorMessage, Title } from "./FormComponents";
 import {
   useFrontendBoot,
   useMembers,
+  useTheme,
+  useToggle,
   useUpdateEnquiry,
   useUrlEnquiry,
 } from "../../../customHooks";
@@ -11,9 +13,12 @@ import {
   MemberOptions,
   useMembersForm,
 } from "../../../components/MemberOptions";
-import "styled-components/macro";
+import styled from "styled-components/macro";
 import { useHistory } from "react-router-dom";
 import { InputFormCta } from ".";
+import { FaPlusCircle } from "react-icons/fa";
+import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
+import { Button } from "../../../components";
 
 function InputMembersForm(props) {
   const { journeyType } = useFrontendBoot();
@@ -85,7 +90,16 @@ function InputMembersForm(props) {
         <Title className="w-100">Who all would you like to insure?</Title>
         <CustomProgressBar now={2} total={4} />
       </div>
-      <MemberOptions {...membersForm} />
+      <div className="px-3">
+        <MemberOptions {...membersForm} />
+        <AddOtherMembers
+          membersForm={membersForm}
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+          error={updateEnquiryQuery.error}
+          serverErrors={updateEnquiryQuery.error}
+        />
+      </div>
       <InputFormCta
         backLink={`/input/basic-details`}
         onContinueClick={handleSubmit}
@@ -94,6 +108,88 @@ function InputMembersForm(props) {
     </div>
   );
 }
+
+function AddOtherMembers({
+  membersForm,
+  onSubmit,
+  isLoading,
+  error,
+  serverErrors,
+  ...props
+}) {
+  const { colors } = useTheme();
+
+  const editMembersToggle = useToggle(false);
+
+  return (
+    <div className="w-100 my-3">
+      <button
+        className="w-100 py-2"
+        css={`
+          background-color: ${colors.primary_shade};
+          font-weight: 900;
+        `}
+        onClick={editMembersToggle.on}
+        {...props}
+      >
+        <FaPlusCircle
+          css={`
+            color: ${colors.primary_color};
+            font-size: 1.2rem;
+          `}
+        />{" "}
+        Other Members
+      </button>
+      {editMembersToggle.isOn ? (
+        <EditMembers
+          onClose={editMembersToggle.off}
+          membersForm={membersForm}
+          onSubmit={onSubmit}
+          isLoading={isLoading}
+          error={error}
+          serverErrors={serverErrors}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+function EditMembers({
+  onClose,
+  isLoading,
+  onSubmit,
+  // membersForm,
+  error,
+  serverErrors,
+  ...props
+}) {
+  const { getAllMembers } = useMembers();
+  const { isError, validate, getSelectedMembers, ...membersForm } =
+    useMembersForm(getAllMembers);
+  return (
+    <EditMembersModal submitState={{ isLoading }} onClose={onClose} {...props}>
+      <form onSubmit={onSubmit}>
+        <div className="p-3">
+          <MemberOptions {...membersForm} />
+        </div>
+        {error &&
+          serverErrors.map(serverError => (
+            <StyledErrorMessage key={serverError}>
+              {serverError}
+            </StyledErrorMessage>
+          ))}
+        <Button type="submit" loader={isLoading} className="w-100 rounded-0">
+          Apply
+        </Button>
+      </form>
+    </EditMembersModal>
+  );
+}
+
+const StyledErrorMessage = styled(ErrorMessage)`
+  font-size: 1rem;
+  text-align: center;
+`;
 
 export default InputMembersForm;
 

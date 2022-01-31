@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
-import { FaRegEdit } from "react-icons/fa";
+import { FaChevronLeft, FaRegEdit } from "react-icons/fa";
 import { starSchema } from "./ProposalDetailsSchema";
 import { InsuredDetails, ProposerDetails } from "./ProposalSections";
 import BMI from "./ProposalSections/components/BMI";
@@ -31,6 +31,7 @@ import Card from "../../components/Card";
 import { Col, Container, Row } from "react-bootstrap";
 import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
 import { useTheme } from "../../customHooks";
+import { Page } from "../../components";
 
 /* ===============================test================================= */
 
@@ -329,7 +330,7 @@ const ProposalPage = ({ history }) => {
     );
   };
   return (
-    <>
+    <Page>
       <MobileHeader
         css={`
           background: ${PrimaryColor};
@@ -413,7 +414,7 @@ const ProposalPage = ({ history }) => {
                       color: #707b8b;
                     `}
                   >
-                    <i className="fas fa-chevron-left"></i>
+                    <FaChevronLeft />
                   </div>
                   <span
                     css={`
@@ -529,7 +530,7 @@ const ProposalPage = ({ history }) => {
       <PlanUnavailable />
       <BMI />
       <NSTP />
-    </>
+    </Page>
   );
 };
 

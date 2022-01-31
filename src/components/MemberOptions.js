@@ -108,7 +108,7 @@ export function MemberOptions({
 }) {
   return (
     <div
-      className="p-3 d-flex flex-wrap justify-content-between"
+      className="d-flex flex-wrap justify-content-between"
       css={`
         gap: 0.66em;
       `}

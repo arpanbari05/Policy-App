@@ -20,6 +20,7 @@ import { amount } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
   useCart,
+  useFrontendBoot,
   useMembers,
   useRider,
   useTheme,
@@ -219,11 +220,13 @@ function EditMembers({ groupCode, ...props }) {}
 
 function BasePlanDetails({ groupCode, ...props }) {
   const { getCartEntry } = useCart();
+  const { journeyType } = useFrontendBoot();
   const cartEntry = getCartEntry(parseInt(groupCode));
   const {
     icLogoSrc,
     plantype,
     sum_insured,
+    deductible,
     tenure,
     total_premium,
     product: {
@@ -257,6 +260,9 @@ function BasePlanDetails({ groupCode, ...props }) {
       </div>
       <div className="mt-2">
         <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
+        {journeyType === "top_up" ? (
+          <CartDetailRow title="Deductible" value={amount(deductible)} />
+        ) : null}
         <CartDetailRow title="Cover" value={amount(sum_insured)} />
         <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
         <CartDetailRow title="Premium" value={amount(total_premium)} />
