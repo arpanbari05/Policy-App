@@ -1,14 +1,15 @@
 import { useState } from "react";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import { useFrontendBoot, useTheme } from "../../../../customHooks";
-import { ApplyBtn, Filter } from "./Filter.style";
+import { ApplyBtn } from "./Filter.style";
 import useFilters from "./useFilters";
 import "styled-components/macro";
 import useUpdateFilters from "./useUpdateFilters";
 import Dropdown from "../../../../components/Dropdown";
 import { getReactSelectOption } from "../../../../utils/helper";
+import { Filter, FilterHead } from ".";
 
-function DeductibleFilterModal({ handleClose, ...props }) {
+function DeductibleFilterModal({ onClose, ...props }) {
   const { colors } = useTheme();
 
   const {
@@ -31,7 +32,7 @@ function DeductibleFilterModal({ handleClose, ...props }) {
         deductible: selectedDeductible,
       });
 
-    handleClose && handleClose();
+    onClose && onClose();
   };
 
   const handleDeductibleChange = ({ label, value }) => {
@@ -53,9 +54,14 @@ function DeductibleFilterModal({ handleClose, ...props }) {
           Apply
         </ApplyBtn>
       }
-      handleClose={handleClose}
+      handleClose={() => onClose && onClose()}
       customizedTopMargin="65"
       tooltipDesc="Select Deductible preiod."
+      css={`
+        & .modal-body {
+          overflow: visible;
+        }
+      `}
       {...props}
     >
       <p
@@ -84,8 +90,6 @@ function DeductibleFilterModal({ handleClose, ...props }) {
 }
 
 function DeductibleFilter({ ...props }) {
-  const [showModal, setShowModal] = useState(false);
-
   const { getSelectedFilter } = useFilters();
 
   const selectedPremiumFilter = getSelectedFilter("deductible");
@@ -95,23 +99,9 @@ function DeductibleFilter({ ...props }) {
     : selectedPremiumFilter.display_name;
 
   return (
-    <Filter
-      className="filter d-flex flex-column flex-fill"
-      css={`
-        & .modal-body {
-          overflow: visible;
-        }
-      `}
-      {...props}
-    >
-      <span className="filter_head">Deductible</span>
-      <span onClick={() => setShowModal(true)} className="filter_sub_head">
-        {displayPremiumFilter}
-        <i class="fas fa-chevron-down"></i>
-      </span>
-      {showModal && (
-        <DeductibleFilterModal handleClose={() => setShowModal(false)} />
-      )}
+    <Filter>
+      <FilterHead label={"Deductible"}>{displayPremiumFilter}</FilterHead>
+      <DeductibleFilterModal />
     </Filter>
   );
 }

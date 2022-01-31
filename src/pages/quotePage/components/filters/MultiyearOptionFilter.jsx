@@ -1,24 +1,11 @@
 import { useState } from "react";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
-// import { useSelector, useDispatch } from "react-redux";
-// import {
-//   setFilters,
-//   fetchQuotes,
-//   replaceQuotes,
-//   replaceFilterQuotes,
-// } from "../../quote.slice";
-// import styled from "styled-components";
 import "styled-components/macro";
-import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
-// import {
-//   useGetEnquiriesQuery,
-//   useGetFrontendBootQuery,
-//   usePutGroupsMutation,
-// } from "../../../../api/api";
-// import { useParams } from "react-router-dom";
+import { OptionWrapper, ApplyBtn } from "./Filter.style";
 import useUpdateFilters from "./useUpdateFilters";
 import useFilters from "./useFilters";
 import { useTheme } from "../../../../customHooks";
+import { Filter, FilterHead } from ".";
 
 const tenures = [
   { code: "1", display_name: "1 Year" },
@@ -26,7 +13,7 @@ const tenures = [
   { code: "3", display_name: "3 Years", discount: 20 },
 ];
 
-function FilterModal({ handleClose, ...props }) {
+function FilterModal({ onClose, ...props }) {
   const { colors } = useTheme();
 
   const { getSelectedFilter } = useFilters();
@@ -43,7 +30,7 @@ function FilterModal({ handleClose, ...props }) {
 
   const handleApplyClick = () => {
     updateFilters({ tenure: selectedTenure });
-    handleClose && handleClose();
+    onClose && onClose();
   };
 
   return (
@@ -60,7 +47,7 @@ function FilterModal({ handleClose, ...props }) {
           Apply
         </ApplyBtn>
       }
-      handleClose={handleClose}
+      handleClose={() => onClose && onClose()}
       leftAlignmnetMargin="-22"
       tooltipDesc="Select desired policy period."
       {...props}
@@ -118,9 +105,6 @@ function MultiYearOption({ tenure, onChange, checked, ...props }) {
 }
 
 const MultiyearOptionFilter = () => {
-  const [showModal, setShowModal] = useState(false);
-  // const filters = useSelector(({ quotePage }) => quotePage.filters);
-
   const { getSelectedFilter } = useFilters();
 
   const tenureFilter = getSelectedFilter("tenure");
@@ -128,22 +112,10 @@ const MultiyearOptionFilter = () => {
   const displayTenureFilter = tenureFilter.display_name;
 
   return (
-    <>
-      <Filter className="filter d-flex flex-column flex-fill">
-        <span className="filter_head">Multiyear Options</span>
-        <span onClick={() => setShowModal(true)} className="filter_sub_head">
-          {/* {filters.multiYear ? filters.multiYear : "Select Tenure"}{" "} */}
-          {displayTenureFilter} <i class="fas fa-chevron-down"></i>
-        </span>
-        {showModal && (
-          <FilterModal
-            // show={showModal}
-            handleClose={() => setShowModal(false)}
-            // filters={filters}
-          />
-        )}
-      </Filter>
-    </>
+    <Filter>
+      <FilterHead label={"Multiyear Options"}>{displayTenureFilter}</FilterHead>
+      <FilterModal />
+    </Filter>
   );
 };
 

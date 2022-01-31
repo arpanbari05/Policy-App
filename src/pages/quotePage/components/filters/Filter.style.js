@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Filter = styled.div`
+export const FilterWrapper = styled.div`
   padding: 5px 20px;
   cursor: pointer;
   &:hover {

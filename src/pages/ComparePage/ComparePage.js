@@ -23,7 +23,7 @@ import { GiCircle } from "react-icons/gi";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { BsPlusLg } from "react-icons/bs";
 import { BiPrinter } from "react-icons/bi";
-import { getDisplayPremium, mergeQuotes } from "../../utils/helper";
+import { mergeQuotes } from "../../utils/helper";
 import { useGetCompareFeaturesQuery } from "../../api/api";
 import {
   BASIC_FEATURES,
@@ -31,7 +31,7 @@ import {
   WAITING_PERIOD,
   WHATS_NOT_COVERED,
 } from "./data";
-import { every } from "lodash";
+import { every, uniq } from "lodash";
 import { useEffect, useState } from "react";
 import { quoteCompareFeature } from "../../test/data/quoteFeatures";
 
@@ -40,10 +40,10 @@ function ComparePage() {
 
   const {
     getCompareQuotes,
-    query: { isLoading },
+    query: { isLoading, isUninitialized },
   } = useQuotesCompare();
 
-  if (isLoading) return <FullScreenLoader />;
+  if (isLoading || isUninitialized) return <FullScreenLoader />;
 
   const { quotes: compareQuotes } = getCompareQuotes(groupCode);
 
@@ -210,6 +210,7 @@ function AddComparePlanPopup({ onClose, compareQuotes = [], ...props }) {
         className="d-flex align-items-center justify-content-between p-3"
         css={`
           border-bottom: 1px solid ${colors.border.one};
+          height: 4.73em;
         `}
       >
         <h1
@@ -307,6 +308,7 @@ function Quotes({ addQuote, ...props }) {
 }
 
 function QuoteCard({ icQuotes, ...props }) {
+  const { colors } = useTheme();
   const { getCompany } = useCompanies();
 
   const mergedQuotes = mergeQuotes(icQuotes.data.data);
@@ -320,7 +322,14 @@ function QuoteCard({ icQuotes, ...props }) {
 
   const quotes = mergedQuotes[product.id];
 
-  const sumInsureds = quotes.map(quote => quote.sum_insured);
+  const deductibles = uniq(quotes.map(quote => quote.deductible));
+
+  const [deductible, setDeductible] = useState(deductibles[0]);
+
+  const sumInsureds = quotes
+    .filter(quote => quote.deductible === deductible)
+    .map(quote => quote.sum_insured)
+    .sort((a, b) => (a > b ? 1 : -1));
 
   const [sumInsured, setSumInsured] = useState(sumInsureds[0]);
 
@@ -337,12 +346,32 @@ function QuoteCard({ icQuotes, ...props }) {
     }
   }, [sumInsureds, quote]);
 
+  const compareToggle = useToggle(false);
+
   if (!quote) return null;
 
   const { logo } = getCompany(quote.company_alias);
 
   return (
-    <div className="shadow p-3" {...props}>
+    <div className="shadow p-3 position-relative" {...props}>
+      <buttton
+        onClick={compareToggle.toggle}
+        className="position-absolute shadow rounded-circle"
+        css={`
+          top: 0;
+          right: 0;
+          transform: translate(30%, -30%);
+          line-height: 1;
+          cursor: pointer;
+          color: ${colors.primary_color};
+          & svg {
+            height: 1.6em;
+            width: 1.6em;
+          }
+        `}
+      >
+        {compareToggle.isOn ? <IoCheckmarkCircleSharp /> : <GiCircle />}
+      </buttton>
       <div className="d-flex align-items-center">
         <img height={"37"} src={logo} alt={icQuotes.company_alias} />
         <div
@@ -356,49 +385,72 @@ function QuoteCard({ icQuotes, ...props }) {
         </div>
       </div>
       <div
-        className="d-flex mt-1"
+        className="d-flex mt-2"
         css={`
           gap: 1em;
         `}
       >
-        <div>
-          <div>Product:</div>
-          <div>
-            <select
-              css={`
-                width: 10em;
-              `}
-              value={product.id}
-              onChange={evt =>
-                setProduct(
-                  products.find(product => product.id === evt.target.value),
-                )
-              }
-            >
-              {products.map(product => (
-                <option key={product.name} value={product.id}>
-                  {product.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div>
-          <div>Sum Insured:</div>
-          <div>
-            <select
-              value={sumInsured}
-              onChange={evt => setSumInsured(evt.target.value)}
-            >
-              {sumInsureds.map(sumInsured => (
-                <option key={sumInsured} value={sumInsured}>
-                  {sumInsured}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+        <QuoteCardOption title="Product:">
+          <select
+            css={`
+              width: 10em;
+            `}
+            value={product.id}
+            onChange={evt =>
+              setProduct(
+                products.find(product => product.id === evt.target.value),
+              )
+            }
+          >
+            {products.map(product => (
+              <option key={product.name} value={product.id}>
+                {product.name}
+              </option>
+            ))}
+          </select>
+        </QuoteCardOption>
+        <QuoteCardOption title="Deductible:">
+          <select
+            value={deductible}
+            onChange={evt => setDeductible(parseInt(evt.target.value))}
+          >
+            {deductibles.map(deductible => (
+              <option key={deductible} value={deductible}>
+                {deductible}
+              </option>
+            ))}
+          </select>
+        </QuoteCardOption>
+        <QuoteCardOption title="Sum Insured:">
+          <select
+            value={sumInsured}
+            onChange={evt => setSumInsured(evt.target.value)}
+          >
+            {sumInsureds.map(sumInsured => (
+              <option key={sumInsured} value={sumInsured}>
+                {sumInsured}
+              </option>
+            ))}
+          </select>
+        </QuoteCardOption>
       </div>
+    </div>
+  );
+}
+
+function QuoteCardOption({ title = "", children, ...props }) {
+  const { colors } = useTheme();
+  return (
+    <div>
+      <div
+        css={`
+          font-size: 0.79rem;
+          color: ${colors.font.three};
+        `}
+      >
+        {title}
+      </div>
+      <div>{children}</div>
     </div>
   );
 }
@@ -564,8 +616,20 @@ function BackButton(props) {
 }
 
 function PlanDetailsSection({ compareQuotes = [], ...props }) {
+  const { journeyType } = useFrontendBoot();
+
   return (
     <CompareSection title="Plan Details" {...props}>
+      {journeyType === "top_up" ? (
+        <FeatureRow title={"Deductible"}>
+          {compareQuotes.map((quote, idx) => (
+            <DeductibleFeatureValue
+              key={quote.deductible + quote.product.id + idx}
+              compareQuote={quote}
+            />
+          ))}
+        </FeatureRow>
+      ) : null}
       <FeatureRow title={"Sum Insured"}>
         {compareQuotes.map((quote, idx) => (
           <SumInsuredFeatureValue
@@ -619,8 +683,11 @@ function SumInsuredFeatureValue({ compareQuote, ...props }) {
   const { groupCode } = useParams();
 
   const getQuoteBySumInsured = sumInsured =>
-    icQuotes.data.data.find(
-      quote => parseInt(quote.sum_insured) === parseInt(sumInsured),
+    icQuotes.data.data.find(quote =>
+      every([
+        parseInt(quote.sum_insured) === parseInt(sumInsured),
+        quote.deductible === compareQuote.deductible,
+      ]),
     );
 
   const handleChange = evt => {
@@ -642,6 +709,84 @@ function SumInsuredFeatureValue({ compareQuote, ...props }) {
           {sumInsureds.map(sumInsured => (
             <option key={sumInsured} value={sumInsured}>
               {sumInsured}
+            </option>
+          ))}
+        </select>
+      )}
+      {isLoading && <CircleLoader animation="border" />}
+    </div>
+  );
+}
+
+function DeductibleFeatureValue({ compareQuote, ...props }) {
+  const getCompareFeaturesQuery = useGetCompareFeaturesQuery(
+    compareQuote?.product.id,
+  );
+  const { data } = useGetQuotes({ skip: getCompareFeaturesQuery.isLoading });
+
+  const { updateCompareQuote } = useQuotesCompare();
+
+  const icQuotes =
+    data &&
+    data.find(
+      icQuotes => icQuotes.company_alias === compareQuote.company_alias,
+    );
+
+  const isLoading = !data || !icQuotes;
+
+  const isCurrentCompareQuote = quote =>
+    every([quote.product.id === compareQuote.product.id]);
+
+  const deductibles = icQuotes
+    ? uniq(
+        icQuotes.data.data.reduce((deductibles, quote) => {
+          if (isCurrentCompareQuote(quote)) {
+            return [...deductibles, quote.deductible];
+          }
+          return deductibles;
+        }, []),
+      )
+    : [];
+
+  const { groupCode } = useParams();
+
+  const getQuoteByDeductible = (
+    deductible,
+    { includeSumInsured = true } = {},
+  ) =>
+    icQuotes.data.data.find(quote =>
+      every([
+        parseInt(quote.deductible) === parseInt(deductible),
+        parseInt(quote.product.id) === parseInt(compareQuote.product.id),
+        includeSumInsured
+          ? parseInt(quote.sum_insured) === parseInt(compareQuote.sum_insured)
+          : true,
+      ]),
+    );
+
+  const handleChange = evt => {
+    let updatedQuote = getQuoteByDeductible(evt.target.value);
+    if (!updatedQuote)
+      updatedQuote = getQuoteByDeductible(evt.target.value, {
+        includeSumInsured: false,
+      });
+    if (!updatedQuote) return;
+    updateCompareQuote({
+      updatedQuote,
+      previousQuote: compareQuote,
+      groupCode,
+    });
+  };
+
+  return (
+    <div className="d-flex align-items-center" {...props}>
+      {isLoading ? (
+        <div>{compareQuote.deductible}</div>
+      ) : (
+        <select value={compareQuote.deductible} onChange={handleChange}>
+          {deductibles.map(deductible => (
+            <option key={deductible} value={deductible}>
+              {deductible}
             </option>
           ))}
         </select>

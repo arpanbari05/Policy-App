@@ -1,17 +1,13 @@
 import { useState } from "react";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
-import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
+import { OptionWrapper, ApplyBtn } from "./Filter.style";
 import useUpdateFilters from "./useUpdateFilters";
 import useFilters from "./useFilters";
-import {
-  useCompanies,
-  useFrontendBoot,
-  useTheme,
-} from "../../../../customHooks";
+import { useCompanies, useTheme } from "../../../../customHooks";
 import "styled-components/macro";
+import { Filter, FilterHead } from ".";
 
-function FilterModal({ handleClose, ...props }) {
-  const { journeyType } = useFrontendBoot();
+function FilterModal({ onClose, ...props }) {
   const { colors } = useTheme();
 
   let { companies } = useCompanies();
@@ -55,7 +51,7 @@ function FilterModal({ handleClose, ...props }) {
 
   const handleApplyClick = () => {
     updateFilters({ insurers: selectedInsurers });
-    handleClose && handleClose();
+    onClose && onClose();
   };
 
   return (
@@ -72,7 +68,7 @@ function FilterModal({ handleClose, ...props }) {
           Apply
         </ApplyBtn>
       }
-      handleClose={handleClose}
+      handleClose={() => onClose && onClose()}
       leftAlignmnetMargin="-22"
       tooltipDesc="Select a choice of Insurance Company to view specific plans provided by that company"
       {...props}
@@ -137,26 +133,19 @@ function Insurer({ company, checked = false, onChange, css, ...props }) {
 }
 
 const InsurerFilter = () => {
-  const [showModal, setShowModal] = useState(false);
-
   const { getSelectedFilter } = useFilters();
   const selectedinsurers = getSelectedFilter("insurers");
 
+  const display =
+    selectedinsurers && selectedinsurers.length
+      ? `${selectedinsurers.length} Insurers selected`
+      : "Select Insurers";
+
   return (
-    <>
-      <Filter className="filter d-flex flex-column flex-fill">
-        <span className="filter_head">Insurers</span>
-        <span onClick={() => setShowModal(true)} className="filter_sub_head">
-          {selectedinsurers && selectedinsurers.length
-            ? `${selectedinsurers.length} Insurers selected`
-            : "Select Insurers"}
-
-          <i class="fas fa-chevron-down"></i>
-        </span>
-
-        {showModal && <FilterModal handleClose={() => setShowModal(false)} />}
-      </Filter>
-    </>
+    <Filter>
+      <FilterHead label={"Insurers"}>{display}</FilterHead>
+      <FilterModal />
+    </Filter>
   );
 };
 

@@ -1,24 +1,13 @@
-import {
-  useState,
-  // useEffect
-} from "react";
-// import { Modal } from "react-bootstrap";
-// import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
 import styled from "styled-components";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
-// import {
-//   setFilters,
-//   fetchQuotes,
-//   replaceQuotes,
-//   replaceFilterQuotes,
-// } from "../../quote.slice";
 import "styled-components/macro";
-import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
+import { OptionWrapper, ApplyBtn } from "./Filter.style";
 import useFilters from "./useFilters";
 import { useGetFrontendBootQuery } from "../../../../api/api";
-// import useUpdateFilters from "./useUpdateFilters";
 import { useTheme } from "../../../../customHooks";
 import useUpdateFilters from "./useUpdateFilters";
+import { Filter, FilterHead } from ".";
 
 function validateCustomCover(customCover) {
   if (customCover < 200000) {
@@ -31,7 +20,7 @@ function validateCustomCover(customCover) {
   return "";
 }
 
-function CoverFilterModal({ handleClose, ...props }) {
+function CoverFilterModal({ onClose, ...props }) {
   const {
     data: { covers },
   } = useGetFrontendBootQuery();
@@ -104,7 +93,7 @@ function CoverFilterModal({ handleClose, ...props }) {
     updateFilters({
       cover: updatedCoverFilter,
     });
-    handleClose && handleClose();
+    onClose && onClose();
   };
 
   return (
@@ -121,7 +110,7 @@ function CoverFilterModal({ handleClose, ...props }) {
           Apply
         </ApplyBtn>
       }
-      handleClose={handleClose}
+      handleClose={() => onClose && onClose()}
       leftAlignmnetMargin="-22"
       tooltipDesc="Select a range of cover amount to view plans offering required cover amount"
       {...props}
@@ -517,29 +506,10 @@ const CoverRangeFilter = () => {
   const displayCover = selectedCover.display_name;
 
   return (
-    <>
-      <Filter className="filter d-flex flex-column flex-fill">
-        <span className="filter_head">Cover</span>
-        <span
-          onClick={() => {
-            setShowModal(true);
-          }}
-          className="filter_sub_head"
-        >
-          {/* {filters.cover ? displayNameSelector(filters.cover) : "Select cover"}{" "} */}
-          {displayCover} <i class="fas fa-chevron-down"></i>
-        </span>
-
-        {showModal && (
-          <CoverFilterModal
-            // show={showModal}
-            handleClose={() => {
-              setShowModal(false);
-            }}
-          />
-        )}
-      </Filter>
-    </>
+    <Filter>
+      <FilterHead label={"Cover"}>{displayCover}</FilterHead>
+      <CoverFilterModal />
+    </Filter>
   );
 };
 

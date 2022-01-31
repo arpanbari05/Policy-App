@@ -4,7 +4,6 @@ import { ErrorMessage } from "../../../InputPage/components/FormComponents";
 import {
   useMembers,
   useTheme,
-  useUpdateEnquiry,
   useUpdateMembers,
 } from "../../../../customHooks";
 import styled from "styled-components/macro";
@@ -13,6 +12,8 @@ import {
   useMembersForm,
 } from "../../../../components/MemberOptions";
 import { Button } from "../../../../components";
+import { RiPencilFill } from "react-icons/ri";
+import { FaTimes } from "react-icons/fa";
 
 export function EditMembersModal({ onClose, children, ...props }) {
   const handleHide = () => {
@@ -45,11 +46,9 @@ export function EditMembersModal({ onClose, children, ...props }) {
         >
           Edit Members
         </Modal.Title>
-        <i
-          onClick={handleHide}
-          style={{ cursor: "pointer" }}
-          class="fas fa-times"
-        />
+        <button onClick={handleHide}>
+          <FaTimes />
+        </button>
       </Modal.Header>
       <Modal.Body className="p-0">{children}</Modal.Body>
     </Modal>
@@ -91,7 +90,11 @@ const EditMemberFilter = () => {
             color: ${colors.primary_color};
           `}
         >
-          <i class="fas fa-pen"></i>
+          <RiPencilFill
+            css={`
+              font-size: 1.2rem;
+            `}
+          />
         </EditMembersButton>
       </span>
 

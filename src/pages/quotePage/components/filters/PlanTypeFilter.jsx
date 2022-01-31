@@ -1,13 +1,14 @@
 import { useState } from "react";
 import TooltipImg from "../../../../assets/svg/tooltip-icon.js";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { ApplyBtn, Filter, OptionWrapper } from "./Filter.style";
+import { ApplyBtn, OptionWrapper } from "./Filter.style";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import useFilters from "./useFilters.js";
 import useUpdateFilters from "./useUpdateFilters.js";
 import { useGetFrontendBootQuery } from "../../../../api/api.js";
 import { useTheme } from "../../../../customHooks/index.js";
 import "styled-components/macro";
+import { Filter, FilterHead } from "./index.js";
 
 const DESCRIPTIONS = {
   arogya_sanjeevani:
@@ -24,8 +25,6 @@ const renderTooltipDesc = ({ props, desc }) => (
 );
 
 const PlanTypeFilter = () => {
-  const [showModal, setShowModal] = useState(false);
-
   const { getSelectedFilter } = useFilters();
 
   const selectedPlanTypeFilter = getSelectedFilter("baseplantype");
@@ -33,22 +32,16 @@ const PlanTypeFilter = () => {
   const displayBasePlanTypeFilter = selectedPlanTypeFilter.display_name;
 
   return (
-    <>
-      <Filter className="filter d-flex flex-column flex-fill">
-        <span className="filter_head">Plan Type</span>
-        <span onClick={() => setShowModal(true)} className="filter_sub_head">
-          {displayBasePlanTypeFilter}
-          <i class="fas fa-chevron-down"></i>
-        </span>
-        {showModal && <FilterModal handleClose={() => setShowModal(false)} />}
-      </Filter>
-    </>
+    <Filter>
+      <FilterHead label={"Plan Type"}>{displayBasePlanTypeFilter}</FilterHead>
+      <FilterModal />
+    </Filter>
   );
 };
 
 export default PlanTypeFilter;
 
-function FilterModal({ handleClose, ...props }) {
+function FilterModal({ onClose, ...props }) {
   const { colors } = useTheme();
 
   const {
@@ -82,7 +75,7 @@ function FilterModal({ handleClose, ...props }) {
 
     updateFilters(updatedBasePlanTypeFilter);
 
-    handleClose && handleClose();
+    onClose && onClose();
   };
 
   return (
@@ -99,7 +92,7 @@ function FilterModal({ handleClose, ...props }) {
           Apply
         </ApplyBtn>
       }
-      handleClose={handleClose}
+      handleClose={() => onClose && onClose()}
       tooltipDesc="Select a plan type to view plans offering chosen type of plan."
       leftAlignmnetMargin="-22"
       {...props}

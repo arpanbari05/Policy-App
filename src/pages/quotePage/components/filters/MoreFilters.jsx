@@ -5,11 +5,12 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import "styled-components/macro";
 import useQuoteFilter from "./useQuoteFilter";
-import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
+import { OptionWrapper, ApplyBtn } from "./Filter.style";
 import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
 import { useFrontendBoot, useTheme } from "../../../../customHooks";
+import { Filter, FilterHead } from ".";
 
-const FilterModal = ({ show, handleClose }) => {
+const FilterModal = ({ show, onClose }) => {
   const dispatch = useDispatch();
   const filters = useSelector(state => state.quotePage.filters);
   const {
@@ -91,8 +92,6 @@ const FilterModal = ({ show, handleClose }) => {
       }
   });
 
-  console.log(filteredQuotes, filteredPlans, "h12dsga");
-
   const handleSubmit = () => {
     dispatch(
       setFilters({
@@ -104,13 +103,13 @@ const FilterModal = ({ show, handleClose }) => {
         },
       }),
     );
-    handleClose();
+    onClose && onClose();
   };
 
   return (
     <Modal
       show={show}
-      onHide={handleClose}
+      onHide={() => onClose && onClose()}
       animation={false}
       css={`
         .modal-dialog {
@@ -135,7 +134,7 @@ const FilterModal = ({ show, handleClose }) => {
           More Filters
         </Modal.Title>
         <i
-          onClick={handleClose}
+          onClick={() => onClose && onClose()}
           style={{ cursor: "pointer" }}
           class="fas fa-times"
         ></i>
@@ -345,39 +344,33 @@ const FilterModal = ({ show, handleClose }) => {
 };
 
 const MoreFilters = () => {
-  const [showModal, setShowModal] = useState(false);
   const { moreFilters } = useSelector(({ quotePage }) => quotePage.filters);
   const noOfSelectedFilters = Object.keys(moreFilters).reduce(
     (acc, item) => (moreFilters[item].length ? acc + 1 : acc + 0),
     0,
   );
-  return (
-    <>
-      <Filter
-        className="filter d-flex flex-column flex-fill"
-        onClick={() => setShowModal(true)}
-      >
-        <span className="filter_head">More Filters</span>
-        <span className="filter_sub_head">
-          {noOfSelectedFilters > 0 ? (
-            <>
-              {`${
-                noOfSelectedFilters === 1
-                  ? noOfSelectedFilters + " Filter"
-                  : noOfSelectedFilters + " Filters"
-              } Selected`}{" "}
-              <i class="fas fa-chevron-down"></i>
-            </>
-          ) : (
-            <>
-              Select Filters <i class="fas fa-chevron-down"></i>
-            </>
-          )}
-        </span>
-      </Filter>
 
-      <FilterModal show={showModal} handleClose={() => setShowModal(false)} />
-    </>
+  const display =
+    noOfSelectedFilters > 0 ? (
+      <>
+        {`${
+          noOfSelectedFilters === 1
+            ? noOfSelectedFilters + " Filter"
+            : noOfSelectedFilters + " Filters"
+        } Selected`}{" "}
+        <i class="fas fa-chevron-down"></i>
+      </>
+    ) : (
+      <>
+        Select Filters <i class="fas fa-chevron-down"></i>
+      </>
+    );
+
+  return (
+    <Filter>
+      <FilterHead label={"More Filters"}>{display}</FilterHead>
+      <FilterModal show />
+    </Filter>
   );
 };
 

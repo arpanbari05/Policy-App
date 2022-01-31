@@ -83,7 +83,6 @@ function FeatureDefinition({ data }) {
               <h5
                 className="title inline__header"
                 style={{
-                  lineHeight: "0px",
                   padding: "20px 0 5px",
                 }}
                 css={`

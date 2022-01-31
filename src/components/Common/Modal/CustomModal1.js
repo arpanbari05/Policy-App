@@ -1,7 +1,4 @@
 import styled from "styled-components/macro";
-// import tooltipImg from "../../../../assets/svg/tooltip-icon.js"; // macro makes the dom class name readable.
-import tooltipImg from "../../../assets/svg/tooltip-icon.js";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const BackdropDiv = styled.div`
   height: 100vh;
@@ -15,18 +12,15 @@ const BackdropDiv = styled.div`
 `;
 const ModalContent = styled.div`
   min-height: 20vh;
-
   z-index: 1055;
   width: 440px;
   position: absolute;
+  top: calc(100% + 7px);
+  left: 0;
   background-color: white;
   pointer-events: auto;
   background-color: #fff;
   background-clip: padding-box;
-  margin-top: ${props =>
-    props.customizedTopMargin ? `${props.customizedTopMargin}px` : "60px"};
-  margin-left: ${props =>
-    props.leftAlignmnetMargin ? `${props.leftAlignmnetMargin}px` : "-7px"};
 `;
 const ModalHeader = styled.div`
   display: flex;
@@ -73,10 +67,6 @@ const ToolTipContent = styled.p`
   padding-right: 10px;
 `;
 
-const renderTooltipDesc = ({ props, desc }) => (
-  <Tooltip {...props}>{desc}</Tooltip>
-);
-
 const CustomModal1 = ({
   children,
   header,
@@ -85,9 +75,10 @@ const CustomModal1 = ({
   leftAlignmnetMargin,
   customizedTopMargin,
   tooltipDesc,
+  ...props
 }) => {
   return (
-    <>
+    <div {...props}>
       <BackdropDiv onClick={handleClose} />
       <ModalContent
         leftAlignmnetMargin={leftAlignmnetMargin}
@@ -110,7 +101,7 @@ const CustomModal1 = ({
         <ModalBody className="modal-body">{children}</ModalBody>
         <ModalFooter>{footerJSX}</ModalFooter>
       </ModalContent>
-    </>
+    </div>
   );
 };
 export default CustomModal1;

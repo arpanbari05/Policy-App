@@ -4,16 +4,17 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import "styled-components/macro";
-import { Filter, OptionWrapper, ApplyBtn } from "./Filter.style";
+import { OptionWrapper, ApplyBtn } from "./Filter.style";
 import useUpdateFilters from "./useUpdateFilters.js";
 import useFilters from "./useFilters.js";
 import { useTheme } from "../../../../customHooks/index.js";
+import { Filter, FilterHead } from "./index.js";
 
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
 );
 
-const FilterModal = ({ show, handleClose }) => {
+const FilterModal = ({ show, onClose }) => {
   const { colors } = useTheme();
 
   const { filters } = useSelector(state => state.quotePage);
@@ -48,7 +49,7 @@ const FilterModal = ({ show, handleClose }) => {
   const handleApply = () => {
     updateFilters({ plantype: selectedPlanType });
 
-    handleClose();
+    onClose && onClose();
   };
 
   return (
@@ -68,7 +69,7 @@ const FilterModal = ({ show, handleClose }) => {
               Apply
             </ApplyBtn>
           }
-          handleClose={handleClose}
+          handleClose={() => onClose && onClose()}
           leftAlignmnetMargin="-20"
           tooltipDesc="Select a policy type to view plans offering chosen policy type."
         >
@@ -126,8 +127,6 @@ const FilterModal = ({ show, handleClose }) => {
 };
 
 const PolicyTypeFilter = () => {
-  const [showModal, setShowModal] = useState(false);
-
   const { getSelectedFilter } = useFilters();
 
   const selectedPolicyTypeFilter = getSelectedFilter("plantype");
@@ -135,18 +134,9 @@ const PolicyTypeFilter = () => {
   const displayPolicyTypeFitler = selectedPolicyTypeFilter.display_name;
 
   return (
-    <Filter className="filter d-flex flex-column flex-fill">
-      <span className="filter_head">Policy Type</span>
-      <span onClick={() => setShowModal(true)} className="filter_sub_head">
-        {displayPolicyTypeFitler}
-        <i class="fas fa-chevron-down"></i>
-      </span>
-      <FilterModal
-        show={showModal}
-        handleClose={() => {
-          setShowModal(false);
-        }}
-      />
+    <Filter>
+      <FilterHead label={"Policy Type"}>{displayPolicyTypeFitler}</FilterHead>
+      <FilterModal show />
     </Filter>
   );
 };
