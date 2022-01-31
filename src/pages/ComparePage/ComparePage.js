@@ -184,12 +184,21 @@ function AddComparePlanPopup({ onClose, compareQuotes = [], ...props }) {
 
   const compareList = useQuotesCompare(compareQuotes);
 
-  const { quotes } = compareList;
+  const { quotes, getUpdateCompareQuotesMutation } = compareList;
 
   let error;
 
   if (quotes.length < 2)
     error = `Add ${2 - quotes.length} more plan to compare`;
+
+  const { groupCode } = useParams();
+
+  const [updateCompareQuotesMutation] = getUpdateCompareQuotesMutation(
+    parseInt(groupCode),
+  );
+  const handleCompareClick = () => {
+    updateCompareQuotesMutation(quotes).then(handleClose);
+  };
 
   return (
     <Modal
@@ -232,7 +241,7 @@ function AddComparePlanPopup({ onClose, compareQuotes = [], ...props }) {
             {error}
           </div>
         ) : (
-          <Button>Compare</Button>
+          <Button onClick={handleCompareClick}>Compare</Button>
         )}
       </div>
       <div className="p-3">
@@ -272,15 +281,32 @@ function AddComparePlanPopup({ onClose, compareQuotes = [], ...props }) {
           `}
         />
       </div>
-      <Quotes />
+      <Quotes compareList={compareList} />
     </Modal>
   );
 }
 
-function Quotes({ addQuote, ...props }) {
+function Quotes({ compareList, ...props }) {
   const { data, isLoading } = useGetQuotes();
 
   if (!data) return null;
+
+  const handleCompareChange = ({ checked, quote }) => {
+    if (checked) {
+      compareList.addQuote(quote);
+      return;
+    }
+
+    compareList.removeQuote(quote);
+  };
+
+  const getQuoteCardProps = quotes => ({
+    icQuotes: quotes,
+    compare: {
+      checkFn: compareList.isCompareQuote,
+      onChange: handleCompareChange,
+    },
+  });
 
   return (
     <div
@@ -296,7 +322,10 @@ function Quotes({ addQuote, ...props }) {
       {data
         .filter(icQuotes => !!icQuotes.data.data.length)
         .map(icQuotes => (
-          <QuoteCard key={icQuotes.company_alias} icQuotes={icQuotes} />
+          <QuoteCard
+            key={icQuotes.company_alias}
+            {...getQuoteCardProps(icQuotes)}
+          />
         ))}
       {isLoading && (
         <div>
@@ -307,7 +336,11 @@ function Quotes({ addQuote, ...props }) {
   );
 }
 
-function QuoteCard({ icQuotes, ...props }) {
+function QuoteCard({
+  icQuotes,
+  compare: { checkFn, onChange } = {},
+  ...props
+}) {
   const { colors } = useTheme();
   const { getCompany } = useCompanies();
 
@@ -346,16 +379,21 @@ function QuoteCard({ icQuotes, ...props }) {
     }
   }, [sumInsureds, quote]);
 
-  const compareToggle = useToggle(false);
-
   if (!quote) return null;
+
+  const isCompareQuoute = checkFn(quote);
+
+  const handleCompareChange = evt => {
+    const { checked } = evt.target;
+    onChange && onChange({ checked, quote });
+  };
 
   const { logo } = getCompany(quote.company_alias);
 
   return (
     <div className="shadow p-3 position-relative" {...props}>
-      <buttton
-        onClick={compareToggle.toggle}
+      <label
+        htmlFor="compare-quote"
         className="position-absolute shadow rounded-circle"
         css={`
           top: 0;
@@ -370,8 +408,16 @@ function QuoteCard({ icQuotes, ...props }) {
           }
         `}
       >
-        {compareToggle.isOn ? <IoCheckmarkCircleSharp /> : <GiCircle />}
-      </buttton>
+        {isCompareQuoute ? <IoCheckmarkCircleSharp /> : <GiCircle />}
+        <input
+          className="visually-hidden"
+          type={"checkbox"}
+          name="compare-quote"
+          id="compare-quote"
+          checked={isCompareQuoute}
+          onChange={handleCompareChange}
+        />
+      </label>
       <div className="d-flex align-items-center">
         <img height={"37"} src={logo} alt={icQuotes.company_alias} />
         <div
