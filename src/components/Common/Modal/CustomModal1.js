@@ -1,3 +1,4 @@
+import { FaTimes } from "react-icons/fa";
 import styled from "styled-components/macro";
 
 const BackdropDiv = styled.div`
@@ -92,11 +93,9 @@ const CustomModal1 = ({
 
             <ToolTipContent>{tooltipDesc}</ToolTipContent>
           </div>
-          <i
-            onClick={handleClose}
-            style={{ cursor: "pointer" }}
-            class="fas fa-times"
-          ></i>
+          <button onClick={handleClose}>
+            <FaTimes />
+          </button>
         </ModalHeader>
         <ModalBody className="modal-body">{children}</ModalBody>
         <ModalFooter>{footerJSX}</ModalFooter>

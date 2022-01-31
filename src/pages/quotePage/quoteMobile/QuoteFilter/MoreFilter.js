@@ -6,6 +6,7 @@ import Modal from "../../../../components/Common/Modal";
 import useQuoteFilter from "./useQuoteFilter";
 import "styled-components/macro";
 import { setFilters } from "../../quote.slice";
+import { FaTimes } from "react-icons/fa";
 
 export function CustomRadio({
   label,
@@ -234,7 +235,7 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
                 setExpandSelected("");
               }}
             >
-              <i className="fa fa-close"></i>
+              <FaTimes />
             </button>
           </div>
           <div className="modal-body p-lg modal_scroll_filter">

@@ -1,5 +1,5 @@
 import { Spinner } from "react-bootstrap";
-import { FaTimes } from "react-icons/fa";
+import { FaChevronLeft, FaTimes } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
@@ -229,7 +229,7 @@ export function GoBackButton({ children, ...props }) {
           color: #707b8b;
         `}
       >
-        <i className="fas fa-chevron-left"></i>
+        <FaChevronLeft />
       </div>
       <span
         css={`

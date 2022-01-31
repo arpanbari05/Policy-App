@@ -9,6 +9,7 @@ import { OptionWrapper, ApplyBtn } from "./Filter.style";
 import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
 import { useFrontendBoot, useTheme } from "../../../../customHooks";
 import { Filter, FilterHead } from ".";
+import { FaChevronDown, FaTimes } from "react-icons/fa";
 
 const FilterModal = ({ show, onClose }) => {
   const dispatch = useDispatch();
@@ -133,11 +134,9 @@ const FilterModal = ({ show, onClose }) => {
         >
           More Filters
         </Modal.Title>
-        <i
-          onClick={() => onClose && onClose()}
-          style={{ cursor: "pointer" }}
-          class="fas fa-times"
-        ></i>
+        <button onClick={() => onClose && onClose()}>
+          <FaTimes />
+        </button>
       </Modal.Header>
       <Modal.Body>
         <MoreFilterWrapper>
@@ -358,11 +357,11 @@ const MoreFilters = () => {
             ? noOfSelectedFilters + " Filter"
             : noOfSelectedFilters + " Filters"
         } Selected`}{" "}
-        <i class="fas fa-chevron-down"></i>
+        <FaChevronDown />
       </>
     ) : (
       <>
-        Select Filters <i class="fas fa-chevron-down"></i>
+        Select Filters
       </>
     );
 

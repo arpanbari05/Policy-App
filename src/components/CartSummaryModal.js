@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Col, Spinner } from "react-bootstrap";
+import { FaPlusCircle, FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
@@ -230,7 +231,7 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
             {" "}
             Add Plan
           </span>{" "}
-          <i class="fas fa-plus-circle"></i>
+          <FaPlusCircle />
         </button>
       </Col>
     );
@@ -263,7 +264,7 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
       className="btn"
       onClick={handleDeleteClick}
     >
-      <i class="far fa-trash-alt"></i>
+      <FaTrash />
     </button>
   );
 }

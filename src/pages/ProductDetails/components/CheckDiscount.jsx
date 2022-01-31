@@ -9,6 +9,7 @@ import {
   useTenureDiscount,
   useTheme,
 } from "../../../customHooks";
+import { FaCheck } from "react-icons/fa";
 
 const CheckDiscountSection = ({ groupCode, ...props }) => {
   return (
@@ -142,7 +143,7 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
               color: #fff;
             `}
           >
-            <i class="fas fa-check"></i>
+            <FaCheck />
           </span>
         ) : (
           <span
@@ -165,7 +166,7 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
               border: 2px solid #e4e7ec;
             `}
           >
-            <i class="fas fa-check"></i>
+            <FaCheck />
           </span>
         )}
 

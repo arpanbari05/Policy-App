@@ -19,6 +19,7 @@ import "styled-components/macro";
 import { LoadCart, Page } from "../../components";
 import { useFrontendBoot } from "../../customHooks";
 import PageNotFound from "../PageNotFound";
+import { FaChevronLeft } from "react-icons/fa";
 
 function GoBackButton({ groupCode, ...props }) {
   const groupCodes = Object.keys(
@@ -65,7 +66,7 @@ function GoBackButton({ groupCode, ...props }) {
           color: #707b8b;
         `}
       >
-        <i className="fas fa-chevron-left"></i>
+        <FaChevronLeft />
       </div>
       <span
         css={`
