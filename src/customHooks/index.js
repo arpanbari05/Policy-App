@@ -271,7 +271,7 @@ export function useMembers() {
           allMembers.push({
             ...member,
             code: `${member.code}${1}`,
-            display_name: `${member.display_name} ${1}`,
+            display_name: `${member.display_name}`,
             base: { code: member.code, display_name: member.display_name },
           });
           return;
@@ -286,10 +286,12 @@ export function useMembers() {
               multipleMember.age < 1
                 ? getMonthsForYear(multipleMember.age) + " Months"
                 : multipleMember.age + " Years",
+            short_display_name:
+              multipleMember.age < 1
+                ? getMonthsForYear(multipleMember.age) + " M"
+                : multipleMember.age + " Y",
           },
-          display_name: `${member.display_name} ${
-            multipleMember.code[multipleMember.code.length - 1]
-          }`,
+          display_name: `${member.display_name}`,
           isSelected: true,
           multiple: idx === 0,
           base: { code: member.code, display_name: member.display_name },

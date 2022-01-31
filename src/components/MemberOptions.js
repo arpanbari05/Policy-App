@@ -56,7 +56,7 @@ export function useMembersForm(initialMembersList = []) {
       ...member,
       multiple: false,
       code: `${member.base.code}${totalMembers + 1}`,
-      display_name: `${member.base.display_name} ${totalMembers + 1}`,
+      display_name: `${member.base.display_name}`,
       isSelected: false,
       age: false,
     };

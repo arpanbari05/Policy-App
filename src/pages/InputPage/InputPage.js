@@ -13,7 +13,7 @@ import { useFrontendBoot, useTheme } from "../../customHooks";
 import BasicDetailsForm from "./components/BasicDetailsForm";
 import InputMembersForm from "./components/InputMembersForm";
 import "styled-components/macro";
-import { useParams } from "react-router-dom";
+import { useParams, useRouteMatch } from "react-router-dom";
 import PlanTypeForm from "./components/PlanTypeForm";
 import LocationForm from "./components/LocationForm";
 import DeductibleForm from "./components/DeductibleForm";
@@ -24,6 +24,7 @@ const journeyTitle = {
 };
 
 const InputPage = () => {
+  const isBasicDetailsRoute = useRouteMatch("/input/basic-details");
   const [showmore, setShowmore] = useState(false);
 
   const { colors } = useTheme();
@@ -164,7 +165,7 @@ const InputPage = () => {
                 {/* <Form7 currentForm={currentForm} handleChange={handleChange} /> */}
               </div>
             </Card>
-            {currentForm === 1 && (
+            {isBasicDetailsRoute && (
               <TermsAndConditions
                 showmore={showmore}
                 setShowmore={setShowmore}
@@ -184,6 +185,7 @@ const Container = styled.div`
   background-attachment: fixed;
   background-position: center;
   max-height: fit-content;
+  min-height: calc(100vh - 80px);
   width: 100%;
   /* min-height: 100vh; */
   background-size: contain;
