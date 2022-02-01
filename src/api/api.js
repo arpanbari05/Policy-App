@@ -183,6 +183,7 @@ export const api = createApi({
       query: ({
         productId,
         sum_insured,
+        deductible,
         tenure,
         group,
         selected_riders = [],
@@ -199,6 +200,8 @@ export const api = createApi({
 
         if (selected_riders.length)
           url = url.concat(`&selected_riders=${selected_riders.join(",")}`);
+
+        if (deductible) url = url.concat(`&deductible=${deductible}`);
 
         if (additionalUrlQueries) url = url.concat(`&${additionalUrlQueries}`);
 
@@ -359,7 +362,7 @@ export const {
   useGetCustomQuotesQuery,
   useUpdateCompareQuotesMutation,
   useGetCompareQuotesQuery,
-  useGetCompareFeaturesQuery
+  useGetCompareFeaturesQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {

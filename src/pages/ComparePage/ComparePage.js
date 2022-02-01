@@ -1,4 +1,4 @@
-import { Container, Modal } from "react-bootstrap";
+import { Container, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import {
   Button,
   CircleCloseButton,
@@ -36,6 +36,12 @@ import { useEffect, useState } from "react";
 import { quoteCompareFeature } from "../../test/data/quoteFeatures";
 import { downloadComparePage } from "./utils";
 
+const DESCRIPTIONS = {
+  deductible: "",
+  sum_insured:
+    "Cover Amount of the selected plan is the maximum pay out the Insurance company will offer",
+};
+
 function ComparePage() {
   const { groupCode } = useParams();
 
@@ -43,6 +49,8 @@ function ComparePage() {
     getCompareQuotes,
     query: { isLoading, isUninitialized },
   } = useQuotesCompare();
+
+  const showDifferenceToggle = useToggle(false);
 
   if (isLoading || isUninitialized) return <FullScreenLoader />;
 
@@ -54,11 +62,15 @@ function ComparePage() {
         <div>
           <BackButton />
         </div>
-        <CompareHeader compareQuotes={compareQuotes} />
+        <CompareHeader
+          compareQuotes={compareQuotes}
+          isShowDifference={showDifferenceToggle.isOn}
+          onShowDifferenceChange={showDifferenceToggle.toggle}
+        />
         <div className="mt-3">
           <PlanDetailsSection compareQuotes={compareQuotes} />
           <KeyBenefitsSection compareQuotes={compareQuotes} />
-          <BasicFeaturesSection compareQuotes={compareQuotes} />
+          <BasicFeaturesSection compareQuotes={compareQuotes} showDifference={showDifferenceToggle.isOn} />
           <SpecialFeaturesSection compareQuotes={compareQuotes} />
           <WaitingPeriodSection compareQuotes={compareQuotes} />
           <WhatsNotCoveredSection compareQuotes={compareQuotes} />
@@ -70,13 +82,22 @@ function ComparePage() {
 
 export default ComparePage;
 
-function CompareHeader({ compareQuotes = [], ...props }) {
+function CompareHeader({
+  compareQuotes = [],
+  onShowDifferenceChange,
+  isShowDifference,
+  ...props
+}) {
   const { boxShadows } = useTheme();
   const { groupCode } = useParams();
 
   const { removeCompareQuote } = useQuotesCompare();
 
   const handleRemove = quote => removeCompareQuote({ quote, groupCode });
+
+  const handleShowDifferenceChange = checked => {
+    onShowDifferenceChange && onShowDifferenceChange(checked);
+  };
 
   return (
     <div
@@ -105,7 +126,10 @@ function CompareHeader({ compareQuotes = [], ...props }) {
         >
           Product Comparision
         </h1>
-        <ShowDifference />
+        <ShowDifference
+          onChange={handleShowDifferenceChange}
+          checked={isShowDifference}
+        />
         <DownloadButton />
       </div>
       <div
@@ -590,10 +614,12 @@ function ProductCard({ quote, onRemove, ...props }) {
   );
 }
 
-function ShowDifference({ ...props }) {
+function ShowDifference({ onChange, checked, ...props }) {
   const { colors } = useTheme();
 
-  const showDifference = false;
+  const handleChange = evt => {
+    onChange && onChange(evt.target.checked);
+  };
 
   return (
     <div className="mt-1" {...props}>
@@ -601,22 +627,24 @@ function ShowDifference({ ...props }) {
         id="show-difference"
         type={"checkbox"}
         className="visually-hidden"
+        checked={checked}
+        onChange={handleChange}
       />
-      <span
-        css={`
-          color: ${showDifference ? colors.primary_color : colors.font.two};
-          font-size: 1.27rem;
-          margin-right: 0.3em;
-        `}
-      >
-        {showDifference ? <IoCheckmarkCircleSharp /> : <GiCircle />}
-      </span>
       <label
         htmlFor="show-difference"
         css={`
           font-size: 0.83rem;
         `}
       >
+        <span
+          css={`
+            color: ${checked ? colors.primary_color : colors.font.two};
+            font-size: 1.27rem;
+            margin-right: 0.3em;
+          `}
+        >
+          {checked ? <IoCheckmarkCircleSharp /> : <GiCircle />}
+        </span>
         Show difference
       </label>
     </div>
@@ -679,7 +707,7 @@ function PlanDetailsSection({ compareQuotes = [], ...props }) {
   return (
     <CompareSection title="Plan Details" {...props}>
       {journeyType === "top_up" ? (
-        <FeatureRow title={"Deductible"}>
+        <FeatureRow title={"Deductible"} description="">
           {compareQuotes.map((quote, idx) => (
             <DeductibleFeatureValue
               key={quote.deductible + quote.product.id + idx}
@@ -688,7 +716,10 @@ function PlanDetailsSection({ compareQuotes = [], ...props }) {
           ))}
         </FeatureRow>
       ) : null}
-      <FeatureRow title={"Sum Insured"}>
+      <FeatureRow
+        title={"Sum Insured"}
+        description={DESCRIPTIONS["sum_insured"]}
+      >
         {compareQuotes.map((quote, idx) => (
           <SumInsuredFeatureValue
             key={quote.sum_insured + quote.product.id + idx}
@@ -699,7 +730,7 @@ function PlanDetailsSection({ compareQuotes = [], ...props }) {
       <FeatureRow title={"Tenure"}>
         {compareQuotes.map((quote, idx) => (
           <div key={quote.tenure + quote.sum_insured + quote.product.id + idx}>
-            {quote.tenure}
+            {quote.tenure + `${quote.tenure > 1 ? " Years" : " Year"}`}
           </div>
         ))}
       </FeatureRow>
@@ -877,21 +908,64 @@ function KeyBenefitsSection({ compareQuotes = [], ...props }) {
   );
 }
 
-function BasicFeaturesSection({ compareQuotes = [], ...props }) {
+function BasicFeaturesSection({
+  compareQuotes = [],
+  showDifference = false,
+  ...props
+}) {
+  const [features, setFeatures] = useState(null);
+
+  const handleFeatureLoad = ({ featureTitle, feature }) => {
+    if (!feature?.feature_value) return;
+    setFeatures(features => {
+      if (!features) {
+        return { [featureTitle]: [feature?.feature_value] };
+      }
+
+      if (!features[featureTitle])
+        return {
+          ...features,
+          [featureTitle]: [feature?.feature_value],
+        };
+
+      return {
+        ...features,
+        [featureTitle]: [...features[featureTitle], feature?.feature_value],
+      };
+    });
+  };
+
   return (
     <CompareSection title="Basic Features" {...props}>
-      {BASIC_FEATURES.map(feature => (
-        <FeatureRow title={feature.title} key={feature.title}>
-          {compareQuotes.map((quote, idx) => (
-            <FeatureValue
-              compareQuote={quote}
-              sectionTitle={"Basic Features"}
-              featureTitle={feature.title}
-              key={quote.product.id + quote.sum_insured + idx}
-            />
-          ))}
-        </FeatureRow>
-      ))}
+      {BASIC_FEATURES.map(feature => {
+        if (
+          showDifference &&
+          features &&
+          features[feature.title] &&
+          features[feature.title].every(
+            val => val === features[feature.title][0],
+          )
+        )
+          return null;
+        return (
+          <FeatureRow
+            title={feature.title}
+            key={feature.title}
+            description={feature.description}
+          >
+            {compareQuotes.map((quote, idx) => (
+              <FeatureValue
+                compareQuote={quote}
+                sectionTitle={"Basic Features"}
+                featureTitle={feature.title}
+                key={quote.product.id + quote.sum_insured + idx}
+                onLoad={handleFeatureLoad}
+                tooltipPlacement={idx === 2 ? "left" : "right"}
+              />
+            ))}
+          </FeatureRow>
+        );
+      })}
     </CompareSection>
   );
 }
@@ -900,13 +974,18 @@ function SpecialFeaturesSection({ compareQuotes = [], ...props }) {
   return (
     <CompareSection title="Special Features" {...props}>
       {SPECIAL_FEATURES.map(feature => (
-        <FeatureRow title={feature.title} key={feature.title}>
+        <FeatureRow
+          title={feature.title}
+          key={feature.title}
+          description={feature.description}
+        >
           {compareQuotes.map((quote, idx) => (
             <FeatureValue
               compareQuote={quote}
               sectionTitle={"Special Features"}
               featureTitle={feature.title}
               key={quote.product.id + quote.sum_insured + idx}
+              tooltipPlacement={idx === 2 ? "left" : "right"}
             />
           ))}
         </FeatureRow>
@@ -919,13 +998,18 @@ function WaitingPeriodSection({ compareQuotes = [], ...props }) {
   return (
     <CompareSection title="Waiting Period" {...props}>
       {WAITING_PERIOD.map(feature => (
-        <FeatureRow title={feature.title} key={feature.title}>
+        <FeatureRow
+          title={feature.title}
+          key={feature.title}
+          description={feature.description}
+        >
           {compareQuotes.map((quote, idx) => (
             <FeatureValue
               compareQuote={quote}
               sectionTitle={"Waiting Period"}
               featureTitle={feature.title}
               key={quote.product.id + quote.sum_insured + idx}
+              tooltipPlacement={idx === 2 ? "left" : "right"}
             />
           ))}
         </FeatureRow>
@@ -938,13 +1022,18 @@ function WhatsNotCoveredSection({ compareQuotes = [], ...props }) {
   return (
     <CompareSection title="What's not covered?" {...props}>
       {WHATS_NOT_COVERED.map(feature => (
-        <FeatureRow title={feature.title} key={feature.title}>
+        <FeatureRow
+          title={feature.title}
+          key={feature.title}
+          description={feature.description}
+        >
           {compareQuotes.map((quote, idx) => (
             <FeatureValue
               compareQuote={quote}
               sectionTitle={"What's not covered?"}
               featureTitle={feature.title}
               key={quote.product.id + quote.sum_insured + idx}
+              tooltipPlacement={idx === 2 ? "left" : "right"}
             />
           ))}
         </FeatureRow>
@@ -953,16 +1042,60 @@ function WhatsNotCoveredSection({ compareQuotes = [], ...props }) {
   );
 }
 
+const renderTooltipDesc = ({ props, description }) => (
+  <Tooltip {...props}>{description}</Tooltip>
+);
+
+function useCompareFeature({ compareQuote }) {
+  let query = useGetCompareFeaturesQuery(compareQuote?.product?.id);
+
+  let { data } = query;
+
+  const { journeyType } = useFrontendBoot();
+
+  function getFeature({ sectionTitle, featureTitle }) {
+    if (!data) return null;
+
+    data = journeyType === "health" ? data : quoteCompareFeature;
+
+    const compareFeature = data.find(feature => feature.name === sectionTitle);
+
+    if (!compareFeature) return null;
+
+    const features =
+      compareFeature.sum_insureds[
+        journeyType === "health" ? compareQuote.sum_insured : 300000
+      ].features;
+
+    if (!features) return null;
+
+    const feature = features.find(feature => feature.title === featureTitle);
+
+    return feature;
+  }
+
+  return { getFeature, query };
+}
+
 function FeatureValue({
   compareQuote = {},
   sectionTitle,
   featureTitle,
+  tooltipPlacement = "right",
+  onLoad,
   ...props
 }) {
-  let { isLoading, isUninitialized, isError, data } =
-    useGetCompareFeaturesQuery(compareQuote?.product?.id);
+  const {
+    query: { isLoading, isUninitialized, isError },
+    getFeature,
+  } = useCompareFeature({ compareQuote });
 
-  const { journeyType } = useFrontendBoot();
+  const feature = getFeature({ sectionTitle, featureTitle });
+
+  useEffect(() => {
+    onLoad && onLoad({ sectionTitle, featureTitle, feature });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feature]);
 
   if (isLoading || isUninitialized)
     return (
@@ -973,29 +1106,29 @@ function FeatureValue({
 
   if (isError) return <div>Error!</div>;
 
-  if (!data) return null;
-
-  data = journeyType === "health" ? data : quoteCompareFeature;
-
-  const compareFeature = data.find(feature => feature.name === sectionTitle);
-
-  if (!compareFeature) return null;
-
-  const features =
-    compareFeature.sum_insureds[
-      journeyType === "health" ? compareQuote.sum_insured : 300000
-    ].features;
-
-  if (!features) return null;
-
-  const feature = features.find(feature => feature.title === featureTitle);
-
   if (!feature) return null;
 
-  return <div {...props}>{feature.feature_value}</div>;
+  return (
+    <div {...props}>
+      <OverlayTrigger
+        placement={tooltipPlacement}
+        overlay={renderTooltipDesc({
+          description: feature.short_description,
+        })}
+      >
+        <div>{feature.feature_value}</div>
+      </OverlayTrigger>
+    </div>
+  );
 }
 
-function FeatureRow({ title, description = "", children, ...props }) {
+function FeatureRow({
+  title,
+  description = "",
+  tooltipPlacement = "right",
+  children,
+  ...props
+}) {
   const { colors } = useTheme();
   return (
     <div
@@ -1011,13 +1144,20 @@ function FeatureRow({ title, description = "", children, ...props }) {
           min-width: 20%;
         `}
       >
-        <span
-          css={`
-            border-bottom: 2px dotted;
-          `}
+        <OverlayTrigger
+          placement={tooltipPlacement}
+          overlay={renderTooltipDesc({
+            description,
+          })}
         >
-          {title}
-        </span>
+          <span
+            css={`
+              border-bottom: 2px dotted;
+            `}
+          >
+            {title}
+          </span>
+        </OverlayTrigger>
       </div>
       <div
         className="d-flex flex-grow-1"

@@ -413,8 +413,12 @@ export function Riders({
     productId: id,
     group: groupCode,
     additionalUrlQueries: getRiderOptionsQueryString(riders),
-    journeyType
+    journeyType,
   };
+
+  if (quote.deductible) {
+    getRidersQueryParams.deductible = quote.deductible;
+  }
 
   if (affectsOtherRiders.length)
     getRidersQueryParams.selected_riders = affectsOtherRiders;
@@ -550,7 +554,7 @@ function RiderCardNew({ rider, onChange, isFetching, ...props }) {
               option={{
                 options: rider.options[riderOptionKey],
                 key: riderOptionKey,
-                selected: rider.options_selected[riderOptionKey],
+                selected: rider.options_selected?.[riderOptionKey],
               }}
               onChange={handleRiderOptionChange}
               key={riderOptionKey}
