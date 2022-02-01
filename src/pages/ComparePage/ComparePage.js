@@ -34,6 +34,7 @@ import {
 import { every, uniq } from "lodash";
 import { useEffect, useState } from "react";
 import { quoteCompareFeature } from "../../test/data/quoteFeatures";
+import { downloadComparePage } from "./utils";
 
 function ComparePage() {
   const { groupCode } = useParams();
@@ -49,7 +50,7 @@ function ComparePage() {
 
   return (
     <Page>
-      <Container className="pt-3">
+      <Container className="pt-3" id="printCompare">
         <div>
           <BackButton />
         </div>
@@ -624,14 +625,20 @@ function ShowDifference({ ...props }) {
 
 function DownloadButton({ ...props }) {
   const { colors } = useTheme();
+  const handleClick = () => {
+    downloadComparePage();
+  };
+
   return (
     <button
-      className="rounded d-flex align-items-center py-1 px-3 mt-3"
+      className="rounded d-flex align-items-center py-1 px-3 mt-3 compare-pdf-hide"
       css={`
         background: #fff;
         border: 1px solid ${colors.border.one};
         gap: 0.39em;
       `}
+      onClick={handleClick}
+      {...props}
     >
       <div
         className="rounded-circle p-1 d-flex align-items-center justify-content-center"
