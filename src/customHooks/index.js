@@ -884,6 +884,9 @@ export function useQuotesCompare(initialCompareQuotes = []) {
       every([
         compareQuote.product.id === quote.product.id,
         compareQuote.sum_insured === quote.sum_insured,
+        quote.deductible
+          ? parseInt(compareQuote.deductible) === parseInt(quote.deductible)
+          : true,
       ]),
     );
   }

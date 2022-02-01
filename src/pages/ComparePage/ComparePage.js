@@ -390,10 +390,12 @@ function QuoteCard({
 
   const { logo } = getCompany(quote.company_alias);
 
+  const id = quote.product.id + quote.sum_insured + quote.deductible;
+
   return (
     <div className="shadow p-3 position-relative" {...props}>
       <label
-        htmlFor="compare-quote"
+        htmlFor={id}
         className="position-absolute shadow rounded-circle"
         css={`
           top: 0;
@@ -412,8 +414,8 @@ function QuoteCard({
         <input
           className="visually-hidden"
           type={"checkbox"}
-          name="compare-quote"
-          id="compare-quote"
+          name={id}
+          id={id}
           checked={isCompareQuoute}
           onChange={handleCompareChange}
         />
@@ -539,14 +541,17 @@ function CompareQuoteCard({ quote, onRemove, ...props }) {
           }
         `}
       >
-        <div>
-          <div>Sum Insured:</div>
-          <div>{quote.sum_insured}</div>
-        </div>
-        <div>
-          <div>Premium:</div>
-          <div>{quote.total_premium}</div>
-        </div>
+        {quote.deductible ? (
+          <QuoteCardOption title="Deductible:">
+            {quote.deductible}
+          </QuoteCardOption>
+        ) : null}
+        <QuoteCardOption title="Sum Insured:">
+          {quote.sum_insured}
+        </QuoteCardOption>
+        <QuoteCardOption title="Premium:">
+          {quote.total_premium}
+        </QuoteCardOption>
       </div>
     </div>
   );
