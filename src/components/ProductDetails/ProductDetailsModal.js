@@ -1,5 +1,5 @@
 import { Modal, Tab, Tabs } from "react-bootstrap";
-import { FaTimes } from "react-icons/fa";
+import { FaSearch, FaTimes } from "react-icons/fa";
 import styled from "styled-components/macro";
 import { Button } from "..";
 import {
@@ -267,6 +267,8 @@ function CashlessHospitals({ quote, ...props }) {
   const { isLoading, isUninitialized, isError, data } =
     useGetNetworkHospitalsQuery(company.alias);
 
+  const [search, setSearch] = useState("");
+
   if (isLoading || isUninitialized)
     return (
       <DetailsSectionWrap>
@@ -280,8 +282,14 @@ function CashlessHospitals({ quote, ...props }) {
 
   const nearNetworkHospitals = networkHospitals.slice(0, 6);
 
+  const filteredHospitals = networkHospitals.filter(hospital =>
+    hospital.name.toLowerCase().startsWith(search.toLowerCase()),
+  );
+
+  const handleSearchChange = evt => setSearch(evt.target.value);
+
   return (
-    <DetailsSectionWrap>
+    <DetailsSectionWrap {...props}>
       <h1
         className="my-4"
         css={`
@@ -304,6 +312,24 @@ function CashlessHospitals({ quote, ...props }) {
             key={networkHospital.name + networkHospital.pincode}
           />
         ))}
+      </div>
+      <div className="mt-3 position-relative">
+        <FaSearch
+          className="position-absolute"
+          css={`
+            right: 0;
+            top: 50%;
+            transform: translate(-50%, -50%);
+          `}
+        />
+        <input
+          className="w-100 px-2"
+          placeholder="Search Hospitals"
+          css={`
+            height: 3em;
+          `}
+          onChange={handleSearchChange}
+        />
       </div>
       <table className="table margin_p_r_table table_pro_search mt-4">
         <tbody
@@ -330,7 +356,7 @@ function CashlessHospitals({ quote, ...props }) {
               <th>Phone Number</th>
             )}
           </tr>
-          {networkHospitals.map(networkHospital => (
+          {filteredHospitals.map(networkHospital => (
             <NetworkHospitalRow
               networkHospital={networkHospital}
               key={networkHospital.name + networkHospital.pincode}
