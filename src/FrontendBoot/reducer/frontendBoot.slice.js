@@ -57,8 +57,8 @@ export const fetchFrontendData = (onFetch = () => {}) => {
     try {
       dispatch(requestFrontendData());
       const data = await getFrontendData();
-      const { cover, plan_type, tenure } = data.data.defaultfilters;
-      const { covers, plantypes } = data.data;
+      // const { cover, plan_type, tenure } = data.data.defaultfilters;
+      // const { covers, plantypes } = data.data;
 
       dispatch(saveFrontendData(data));
 

@@ -9,6 +9,7 @@ import "styled-components/macro";
 import { useGetQuotes, useMembers, useTheme } from "../../customHooks";
 import { useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
+import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
 
 function QuotesPage() {
   const { colors } = useTheme();
@@ -23,6 +24,7 @@ function QuotesPage() {
 
   return (
     <Page>
+      <ScrollToTopBtn />
       <div className="position-relative">
         <QuoteLoader />
         <UpperModifier />

@@ -87,6 +87,8 @@ export function useCompanies() {
 export function useQuote() {
   const [createCart, queryState] = useCreateCartMutation();
 
+  const { journeyType } = useFrontendBoot();
+
   const { groupCode } = useParams();
 
   function buyQuote(quote, riders = []) {
@@ -100,7 +102,8 @@ export function useQuote() {
       group_id: groupCode,
       service_tax: quote.tax_amount,
       deductible: quote.deductible,
-      riders: riders.map(getRiderCartData),
+      [journeyType === "health" ? "riders" : "top_up_riders"]:
+        riders.map(getRiderCartData),
     };
     return createCart(quoteData);
   }
@@ -556,13 +559,16 @@ export function useCart() {
 
   const [updateCartMutation, updateCartMutationQuery] = useUpdateCartMutation();
 
+  const { journeyType } = useFrontendBoot();
+
   function updateCart(groupCode) {
     const { id, health_riders, ...cartEntry } = getCartEntry(groupCode);
     return [
       () =>
         updateCartMutation({
           cartId: id,
-          riders: health_riders.map(getRiderSendData),
+          [journeyType === "health" ? "riders" : "top_up_riders"]:
+            health_riders.map(getRiderSendData),
           ...cartEntry,
         }),
       updateCartMutationQuery,

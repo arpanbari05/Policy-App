@@ -1,7 +1,7 @@
 import { Modal, Tab, Tabs } from "react-bootstrap";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import styled from "styled-components/macro";
-import { Button } from "..";
+import { Button, useGotoProductDetailsPage } from "..";
 import {
   useGetAboutCompanyQuery,
   useGetClaimProcessQuery,
@@ -466,6 +466,8 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
     buyQuote(quote, selectedRiders).then(cartSummaryModal.on);
   };
 
+  const { gotoProductPage } = useGotoProductDetailsPage();
+
   return (
     <FixedTop>
       <ProductHeaderWrap
@@ -577,7 +579,10 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
         </CloseButton>
 
         {cartSummaryModal.isOn && (
-          <CartSummaryModal onClose={cartSummaryModal.off} />
+          <CartSummaryModal
+            onClose={cartSummaryModal.off}
+            onContine={gotoProductPage}
+          />
         )}
       </ProductHeaderWrap>
     </FixedTop>

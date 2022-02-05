@@ -271,6 +271,25 @@ export function CircleCloseButton({
   );
 }
 
+export function useGotoProductDetailsPage() {
+  const history = useHistory();
+  const { data } = useGetCartQuery();
+  const { enquiryId } = useUrlEnquiry();
+
+  function gotoProductPage() {
+    const groupCodes = data.data.map(cartEntry => cartEntry.group.id);
+
+    const firstGroupWithQuote = Math.min(...groupCodes);
+
+    history.push({
+      pathname: `/productdetails/${firstGroupWithQuote}`,
+      search: `enquiryId=${enquiryId}`,
+    });
+  }
+
+  return { gotoProductPage };
+}
+
 export function PremiumButton({ quote, ...props }) {
   const history = useHistory();
 
