@@ -261,6 +261,7 @@ function RenderAboutCompany({ quote, ...props }) {
 }
 
 function CashlessHospitals({ quote, ...props }) {
+  const { colors } = useTheme();
   const {
     product: { company },
   } = quote;
@@ -313,23 +314,40 @@ function CashlessHospitals({ quote, ...props }) {
           />
         ))}
       </div>
-      <div className="mt-3 position-relative">
+      <div className="mt-5 position-relative">
         <FaSearch
           className="position-absolute"
           css={`
-            right: 0;
+            right: 1em;
             top: 50%;
             transform: translate(-50%, -50%);
+            font-size: 1.2rem;
           `}
         />
-        <input
-          className="w-100 px-2"
-          placeholder="Search Hospitals"
-          css={`
-            height: 3em;
-          `}
-          onChange={handleSearchChange}
-        />
+        <div className="d-flex">
+          <div
+            className="d-flex align-items-center justify-content-center px-5"
+            css={`
+              background-color: ${colors.primary_shade};
+              border: 1px solid;
+              border-color: ${colors.primary_color};
+              border-radius: 0.6em 0 0 0.6em;
+              font-weight: 900;
+            `}
+          >
+            Mumbai
+          </div>
+          <input
+            className="w-100 px-3"
+            placeholder="Search Hospitals"
+            css={`
+              height: 3.7em;
+              border: 1px solid ${colors.font.two};
+              border-radius: 0 0.6em 0.6em 0;
+            `}
+            onChange={handleSearchChange}
+          />
+        </div>
       </div>
       <table className="table margin_p_r_table table_pro_search mt-4">
         <tbody

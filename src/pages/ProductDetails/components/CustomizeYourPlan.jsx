@@ -548,18 +548,25 @@ function RiderCardNew({ rider, onChange, isFetching, ...props }) {
       <div>
         <RiderName className="w-100">{rider.name}</RiderName>
         <RiderDescription rider={rider} />
-        {rider.options &&
-          Object.keys(rider.options).map(riderOptionKey => (
-            <RiderOption
-              option={{
-                options: rider.options[riderOptionKey],
-                key: riderOptionKey,
-                selected: rider.options_selected?.[riderOptionKey],
-              }}
-              onChange={handleRiderOptionChange}
-              key={riderOptionKey}
-            />
-          ))}
+        <div
+          className="d-flex flex-wrap mt-2"
+          css={`
+            gap: 0.6em;
+          `}
+        >
+          {rider.options &&
+            Object.keys(rider.options).map(riderOptionKey => (
+              <RiderOption
+                option={{
+                  options: rider.options[riderOptionKey],
+                  key: riderOptionKey,
+                  selected: rider.options_selected?.[riderOptionKey],
+                }}
+                onChange={handleRiderOptionChange}
+                key={riderOptionKey}
+              />
+            ))}
+        </div>
       </div>
       <RiderPremium
         className="py-2 rounded"
@@ -624,7 +631,7 @@ const RiderPremium = styled.label`
 `;
 
 function RiderOption({
-  option: { key, options, selected },
+  option: { key, options = [], selected },
   onChange,
   ...props
 }) {
@@ -633,10 +640,26 @@ function RiderOption({
     onChange && onChange({ key, options, selected: evt.target.value });
   };
 
+  let optionsList = [];
+
+  if (typeof options[0] === "string") {
+    optionsList = options.map(optionString => ({
+      code: optionString,
+      display_name: optionString,
+    }));
+  }
+
+  if (typeof options[0] === "object") {
+    optionsList = options.map(opitonObject => ({
+      code: Object.keys(opitonObject)[0],
+      display_name: Object.values(opitonObject)[0],
+    }));
+  }
+
   return (
     <div {...props}>
       <select
-        className="p-2 mt-2"
+        className="p-2"
         css={`
           background-color: ${colors.primary_shade};
         `}
@@ -644,9 +667,9 @@ function RiderOption({
         value={selected}
         onChange={handleChange}
       >
-        {options.map(option => (
-          <option key={option} value={option}>
-            {option}
+        {optionsList.map(option => (
+          <option key={option.code} value={option.code}>
+            {option.display_name}
           </option>
         ))}
       </select>

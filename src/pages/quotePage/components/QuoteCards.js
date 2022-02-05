@@ -29,6 +29,7 @@ import { useGetCartQuery } from "../../../api/api";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { GiCircle } from "react-icons/gi";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
+import Select from "react-select";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",
@@ -174,7 +175,7 @@ function QuoteCard({
   useEffect(() => {
     if (!quote) {
       setSelectedSumInsured(parseInt(sumInsureds[0]));
-      setSelectedDeductible(deductibles[0]);
+      // setSelectedDeductible(parseInt(deductibles[0]));
     }
   }, [quote, quotes, sumInsureds, deductibles]);
 
@@ -187,13 +188,13 @@ function QuoteCard({
   const { logo: logoSrc } = getCompany(quote.company_alias);
 
   const handleSumInsuredChange = evt => {
-    const { value } = evt.target;
+    const { value } = evt;
 
     setSelectedSumInsured(parseInt(value));
   };
 
   const handleDeductibleChange = evt => {
-    const { value } = evt.target;
+    const { value } = evt;
 
     setSelectedDeductible(parseInt(value));
   };
@@ -267,7 +268,7 @@ function QuoteCard({
           `}
         >
           <div
-            className="px-4 d-flex flex-column align-items-center"
+            className="px-3 d-flex flex-column align-items-center"
             css={`
               gap: 0.6em;
             `}
@@ -281,7 +282,18 @@ function QuoteCard({
             >
               {isDeductibleJourney ? (
                 <QuoteCardOption label={"Deductible:"}>
-                  <select
+                  <QuoteCardSelect
+                    options={deductibles.map(deductible => ({
+                      value: deductible,
+                      label: numberToDigitWord(deductible),
+                    }))}
+                    value={{
+                      value: selectedDeductible,
+                      label: numberToDigitWord(selectedDeductible),
+                    }}
+                    onChange={handleDeductibleChange}
+                  />
+                  {/* <select
                     value={selectedDeductible}
                     onChange={handleDeductibleChange}
                   >
@@ -290,11 +302,22 @@ function QuoteCard({
                         {numberToDigitWord(deductible)}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
                 </QuoteCardOption>
               ) : null}
               <QuoteCardOption label={"Cover:"}>
-                <select
+                <QuoteCardSelect
+                  options={sumInsureds.map(sumInsured => ({
+                    value: sumInsured,
+                    label: numberToDigitWord(sumInsured),
+                  }))}
+                  value={{
+                    value: selectedSumInsured,
+                    label: numberToDigitWord(selectedSumInsured),
+                  }}
+                  onChange={handleSumInsuredChange}
+                />
+                {/* <select
                   value={selectedSumInsured}
                   onChange={handleSumInsuredChange}
                 >
@@ -303,7 +326,7 @@ function QuoteCard({
                       {numberToDigitWord(sumInsured)}
                     </option>
                   ))}
-                </select>
+                </select> */}
               </QuoteCardOption>
             </div>
             <div
@@ -347,6 +370,30 @@ function QuoteCard({
         <ProductDetailsModal quote={quote} onClose={productDetailsModal.off} />
       )}
     </div>
+  );
+}
+
+function QuoteCardSelect({ ...props }) {
+  return (
+    <Select
+      isSearchable={false}
+      styles={{
+        valueContainer: provided => ({ ...provided, padding: 0 }),
+        indicatorSeparator: () => ({ display: "none" }),
+        dropdownIndicator: provided => ({
+          ...provided,
+          padding: 0,
+          color: "black",
+          fontSize: "0.79rem",
+        }),
+        control: provided => ({
+          ...provided,
+          border: "none",
+          minHeight: "initial",
+        }),
+      }}
+      {...props}
+    />
   );
 }
 
