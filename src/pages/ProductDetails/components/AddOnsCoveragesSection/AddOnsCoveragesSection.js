@@ -22,6 +22,7 @@ import AddOnDetails from "../AddOnDetails/AddOnDetails";
 import AddOnDetailsMobile from "../AddOnDetails/AddOnDetailsMobile";
 import { getTopUpAddOnsApi } from "../../../quotePage/serviceApi";
 import GreetingFormDropdown from "../../../../components/RoundDD2";
+import { FaPen } from "react-icons/fa";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -553,7 +554,7 @@ function AddOnCardContent({ label, value, onEditClick = () => {} }) {
           onClick={onEditClick}
           className="btn"
         >
-          <i class="fas fa-pen"></i>
+          <FaPen />
         </button>
       </div>
     </div>

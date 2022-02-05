@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
-import { FaChevronLeft, FaRegEdit } from "react-icons/fa";
+import { FaChevronLeft, FaPen, FaRegEdit } from "react-icons/fa";
 import { starSchema } from "./ProposalDetailsSchema";
 import { InsuredDetails, ProposerDetails } from "./ProposalSections";
 import BMI from "./ProposalSections/components/BMI";
@@ -167,9 +167,9 @@ const ProposalPage = ({ history }) => {
                   justify-content: center;
                   font-size: 13px;
                 `}
-                className="btn"
+                className="btn p-0"
               >
-                <i class="fas fa-pen"></i>
+                <FaPen />
               </div>
             </span>
           )}
@@ -217,9 +217,9 @@ const ProposalPage = ({ history }) => {
                   justify-content: center;
                   font-size: 13px;
                 `}
-                className="btn"
+                className="btn p-0"
               >
-                <i class="fas fa-pen"></i>
+                <FaPen />
               </div>
             </span>
           )}
@@ -269,9 +269,9 @@ const ProposalPage = ({ history }) => {
                   justify-content: center;
                   font-size: 13px;
                 `}
-                className="btn"
+                className="btn p-0"
               >
-                <i class="fas fa-pen"></i>
+                <FaPen />
               </div>
             </span>
           )}
@@ -319,9 +319,9 @@ const ProposalPage = ({ history }) => {
                   justify-content: center;
                   font-size: 13px;
                 `}
-                className="btn"
+                className="btn p-0"
               >
-                <i class="fas fa-pen"></i>
+                <FaPen />
               </div>
             </span>
           )}

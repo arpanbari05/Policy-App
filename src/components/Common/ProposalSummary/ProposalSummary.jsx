@@ -7,6 +7,7 @@ import care from "./../../../assets/images/Care_Health.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItem } from "../../../pages/quotePage/quote.slice";
 import TermModal from "../../../pages/ProposalSummary/TermsModal";
+import { FaAngleRight } from "react-icons/fa";
 
 const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
   const [show, setShow] = useState(false);
@@ -160,7 +161,7 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
                   data-toggle-class-target="#animate"
                 >
                   Email to Proposal Form &nbsp;&nbsp;
-                  <i className="fa fa-angle-right"></i>
+                  <FaAngleRight />
                 </button>
               </li>
             </>

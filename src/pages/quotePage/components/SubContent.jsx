@@ -30,6 +30,7 @@ import {
 import useQuoteCard from "./useQuoteCard";
 import useCartProduct from "../../Cart/hooks/useCartProduct";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { FaChevronUp } from "react-icons/fa";
 
 // function SubContent({ item, handleSeeDetails }) {
 //     console.log("ssssssss1", item);
@@ -471,7 +472,7 @@ const SubContent = ({
                       }}
                     >
                       <span>Hide Plans </span>
-                      <i class="fas fa-chevron-up"></i>
+                      <FaChevronUp />
                     </SeeText>
                   </CenterBottomToggle>
                 </>

@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { setActiveIndex } from "../../ProposalSections/ProposalSections.slice";
 import Card from "../../../../components/Card";
+import { useTheme } from "../../../../customHooks";
+import { FaPen } from "react-icons/fa";
 const convertToFt = value => {
   console.log(value);
   let feet = Math.floor(value / 12);
@@ -22,7 +24,11 @@ const SummaryTab = ({ title, data, values, index }) => {
   const history = useHistory();
   const { theme } = useSelector(state => state.frontendBoot);
   const { asyncOptions } = useSelector(({ formBuilder }) => formBuilder);
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { colors } = useTheme();
+  const PrimaryColor = colors.primary_color;
+  const SecondaryColor = colors.secondary_color;
+  const PrimaryShade = colors.primary_shade;
+  // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const getValueFromCode = useCallback((value, data) => {
     if (asyncOptions[data.name]) {
       return asyncOptions[data.name][value];
@@ -351,7 +357,7 @@ const SummaryTab = ({ title, data, values, index }) => {
             }}
             width="15px"
           /> */}
-            <i class="fas fa-pen"></i>
+            <FaPen />
           </PencilWrapper>
         </EditWrapper>
         <Row>

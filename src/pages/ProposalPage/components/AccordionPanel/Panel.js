@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import pencil from "../../../../assets/images/pencil_pro.png";
 import ProposalCheckBox from "../../../../components/Common/ProposalSummary/summaryCheckBox";
 import { useTheme } from "../../../../customHooks";
+import { FaChevronUp, FaPen } from "react-icons/fa";
 const Panel = ({
   title,
   show,
@@ -57,7 +58,7 @@ const Panel = ({
           (show ? (
             <>
               <ChevronWrapper>
-                <i class="fas fa-chevron-up"></i>
+                <FaChevronUp />
               </ChevronWrapper>
             </>
           ) : !isFilled ? (
@@ -77,9 +78,9 @@ const Panel = ({
                     justify-content: center;
                     font-size: 13px;
                   `}
-                  className="btn"
+                  className="btn p-0"
                 >
-                  <i class="fas fa-pen"></i>
+                  <FaPen />
                 </div>
               </PencilWrapper>
             </>
@@ -100,9 +101,9 @@ const Panel = ({
                     justify-content: center;
                     font-size: 13px;
                   `}
-                  className="btn"
+                  className="btn p-0"
                 >
-                  <i class="fas fa-pen"></i>
+                  <FaPen />
                 </div>
               </PencilWrapper>
             </>
@@ -111,7 +112,7 @@ const Panel = ({
           (show ? (
             <>
               <ChevronWrapper>
-                <i class="fas fa-chevron-up"></i>
+                <FaChevronUp />
               </ChevronWrapper>
             </>
           ) : !isFilled ? (
@@ -138,9 +139,9 @@ const Panel = ({
                   justify-content: center;
                   font-size: 13px;
                 `}
-                className="btn"
+                className="btn p-0"
               >
-                <i class="fas fa-pen"></i>
+                <FaPen />
               </div>
             </>
           ))}
@@ -221,7 +222,7 @@ const ChevronWrapper = styled.div`
   transform: translateY(-50%);
   color: rgb(70, 70, 70);
   font-size: 16px;
-  & i {
+  & svg {
     position: absolute;
     left: 50%;
     top: 50%;

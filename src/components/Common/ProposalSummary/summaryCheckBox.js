@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import "styled-components/macro";
 import "./cbx.css";
 import { useSelector } from "react-redux";
+import { useTheme } from "../../../customHooks";
 
 const ProposalCheckBox = ({ title, value, onChange, extraPadding }) => {
   const { theme } = useSelector(state => state.frontendBoot);
+  
+  const {colors} = useTheme()
+  
+  const PrimaryColor = colors.primary_color
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
   return (
     <>

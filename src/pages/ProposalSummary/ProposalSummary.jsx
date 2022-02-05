@@ -28,6 +28,9 @@ import TermModal from "./TermsModal";
 import ReviewCart from "../ProductDetails/components/ReviewCart";
 import { getAboutCompany } from "../SeeDetails/serviceApi";
 import { getTermConditions } from "../ProposalPage/serviceApi";
+import { useTheme } from "../../customHooks";
+import { Page } from "../../components";
+import { FaChevronLeft } from "react-icons/fa";
 
 const ProposalSummary = ({ history }) => {
   let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
@@ -37,7 +40,12 @@ const ProposalSummary = ({ history }) => {
   );
   const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { colors } = useTheme();
+
+  const PrimaryColor = colors.primary_color;
+  const PrimaryShade = colors.primary_shade;
+
+  // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { proposerDetails } = useSelector(state => state.greetingPage);
   const [show, setShow] = useState(false);
   const [termShow, setTermShow] = useState(false);
@@ -112,7 +120,7 @@ const ProposalSummary = ({ history }) => {
   const prod_id = Object.keys(cart)[0];
   console.log("hkjm", term);
   useEffect(() => {
-    if (cart[prod_id].product.company.id) {
+    if (cart[prod_id]?.product?.company?.id) {
       getTermConditionData(cart[prod_id].product.company.id, setTerm);
     }
   }, []);
@@ -120,7 +128,7 @@ const ProposalSummary = ({ history }) => {
   //   return <Redirect to="/proposal" />;
   // } else
   return (
-    <>
+    <Page>
       <div
         className="container-fluid terms__wrapper"
         css={`
@@ -303,7 +311,7 @@ const ProposalSummary = ({ history }) => {
                     color: #707b8b;
                   `}
                 >
-                  <i className="fas fa-chevron-left"></i>
+                  <FaChevronLeft />
                 </div>
                 <span
                   css={`
@@ -337,8 +345,9 @@ const ProposalSummary = ({ history }) => {
                 `}
               >
                 {" "}
-                Hi {proposerDetails?.name.split(" ")[0]}, please review your
-                proposal details before you proceed
+                Hi{" "}
+                {proposerDetails?.name && proposerDetails?.name?.split(" ")[0]},
+                please review your proposal details before you proceed
               </p>
             </div>
           </div>
@@ -392,7 +401,7 @@ const ProposalSummary = ({ history }) => {
                         }
                       `}
                     >
-                      Hi {proposerDetails?.name.split(" ")[0]}, please review
+                      Hi {proposerDetails?.name?.split(" ")[0]}, please review
                       your proposal details before you proceed
                     </p>
                     <div className="-wrapper pad_proposal_s">
@@ -448,7 +457,7 @@ const ProposalSummary = ({ history }) => {
           </div>
         </div>
       </div>
-    </>
+    </Page>
   );
 };
 

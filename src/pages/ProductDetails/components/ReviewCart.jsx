@@ -1299,7 +1299,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               className="btn"
               onClick={() => setShowEditMembers(true)}
             >
-              <i class="fas fa-pen"></i>
+              <FaPen />
             </div>
           </div>
         </div>
