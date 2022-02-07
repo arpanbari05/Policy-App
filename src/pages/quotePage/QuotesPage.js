@@ -10,6 +10,7 @@ import { useGetQuotes, useMembers, useTheme } from "../../customHooks";
 import { useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
+import { FaSync } from "react-icons/fa";
 
 function QuotesPage() {
   const { colors } = useTheme();
@@ -123,7 +124,7 @@ function ClearFilters(props) {
       {...props}
     >
       Clear all filters
-      <i class="fas fa-sync mx-2"></i>
+      <FaSync className="mx-2" />
     </button>
   );
 }
