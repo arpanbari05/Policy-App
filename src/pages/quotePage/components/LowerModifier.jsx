@@ -10,20 +10,19 @@ import PlanTypeFilter from "./filters/PlanTypeFilter";
 import { useFrontendBoot } from "../../../customHooks";
 import DeductibleFilter from "./filters/DeductibleFilter";
 
-const LowerModifier = () => {
+const LowerModifier = ({ sortBy = <></> }) => {
   const planType = useSelector(({ quotePage }) => quotePage.filters.planType);
   const { journeyType } = useFrontendBoot();
 
   return (
     <div className="container">
-      <FiltersWrapper className="d-flex">
+      <FiltersWrapper className="d-flex p-1">
+        {sortBy}
         <PremiumFilter />
         {journeyType === "health" ? <CoverRangeFilter /> : <DeductibleFilter />}
         {planType !== "Individual" && journeyType !== "top_up" ? (
           <PolicyTypeFilter />
-        ) : (
-          <></>
-        )}
+        ) : null}
         <MultiyearOptionFilter />
         <PlanTypeFilter />
         <InsurerFilter />
@@ -40,4 +39,5 @@ const FiltersWrapper = styled.div`
   padding: 5px;
   margin: 10px 0;
   border-radius: 3px;
+  background-color: #fff;
 `;

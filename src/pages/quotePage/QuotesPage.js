@@ -11,6 +11,8 @@ import { useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
 import { FaSync } from "react-icons/fa";
+import { useState } from "react";
+import SortBy from "./components/filters/SortBy";
 
 function QuotesPage() {
   const { colors } = useTheme();
@@ -21,6 +23,11 @@ function QuotesPage() {
 
   const isGroupExist = checkGroupExist(groupCode);
 
+  const [selectedSortBy, setSelectedSoryBy] = useState({
+    code: "relevance",
+    display_name: "Relevance",
+  });
+
   if (!isGroupExist) return <PageNotFound />;
 
   return (
@@ -30,14 +37,28 @@ function QuotesPage() {
         <QuoteLoader />
         <UpperModifier />
       </div>
-      <LowerModifier />
+      <div
+        className="position-sticky"
+        css={`
+          top: 0;
+          z-index: 99;
+        `}
+      >
+        <LowerModifier
+          sortBy={
+            <SortBy
+              selectedSortBy={selectedSortBy}
+              onChange={setSelectedSoryBy}
+            />
+          }
+        />
+      </div>
       <Container>
         <Row>
           <Col lg={"9"}>
             <div className="d-flex align-items-center justify-content-between">
               <ShowingPlanType />
               <ClearFilters />
-              <SortBy />
             </div>
           </Col>
           <Col>
@@ -53,7 +74,7 @@ function QuotesPage() {
         </Row>
         <Row>
           <Col lg={"9"}>
-            <Quotes />
+            <Quotes sortBy={selectedSortBy.code} />
           </Col>
           <Col></Col>
         </Row>
@@ -129,34 +150,34 @@ function ClearFilters(props) {
   );
 }
 
-function SortBy() {
-  const { colors, boxShadows } = useTheme();
+// function SortBy() {
+//   const { colors, boxShadows } = useTheme();
 
-  return (
-    <div
-      className="rounded-3 p-3 position-relative"
-      css={`
-        border: 0.6px solid ${colors.border.one};
-        box-shadow: ${boxShadows.two};
-        font-size: 0.83rem;
-        font-weight: 900;
-        width: 16em;
-      `}
-    >
-      <span
-        className="position-absolute px-1"
-        css={`
-          font-size: 0.79em;
-          color: ${colors.font.three};
-          background-color: #fff;
-          top: 0;
-          left: 1em;
-          transform: translateY(-50%);
-        `}
-      >
-        Sort By
-      </span>
-      Relevance
-    </div>
-  );
-}
+//   return (
+//     <div
+//       className="rounded-3 p-3 position-relative"
+//       css={`
+//         border: 0.6px solid ${colors.border.one};
+//         box-shadow: ${boxShadows.two};
+//         font-size: 0.83rem;
+//         font-weight: 900;
+//         width: 16em;
+//       `}
+//     >
+//       <span
+//         className="position-absolute px-1"
+//         css={`
+//           font-size: 0.79em;
+//           color: ${colors.font.three};
+//           background-color: #fff;
+//           top: 0;
+//           left: 1em;
+//           transform: translateY(-50%);
+//         `}
+//       >
+//         Sort By
+//       </span>
+//       Relevance
+//     </div>
+//   );
+// }

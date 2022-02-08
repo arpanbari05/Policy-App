@@ -17,7 +17,7 @@ function UpperModifier() {
       <Container>
         <div
           css={`
-            height: 5.37em;
+            height: 3.67em;
           `}
           className="d-flex align-items-center"
         >
@@ -87,9 +87,9 @@ function GroupLink({ group, ...props }) {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          font-size: 0.93rem;
+          font-size: 0.79rem;
           line-height: 1;
-          padding: 1.2em 1em;
+          padding: 1em;
         `}
       >
         <MemberText>{membersText}</MemberText>
@@ -98,7 +98,7 @@ function GroupLink({ group, ...props }) {
         <div
           className="position-absolute"
           css={`
-            height: 0.3em;
+            height: 0.2em;
             width: 90%;
             left: 50%;
             top: 100%;

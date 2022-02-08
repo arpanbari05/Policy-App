@@ -78,7 +78,6 @@ const EditMemberFilter = () => {
         ></div>
         <span
           css={`
-            font-size: 17px;
             font-weight: 900;
           `}
         >

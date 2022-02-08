@@ -154,7 +154,7 @@ export function useFrontendBoot() {
 
   const tenantName = data.tenant.name;
 
-  const journeyType = "top_up";
+  const journeyType = "health";
 
   return { journeyType, tenantName, data };
 }

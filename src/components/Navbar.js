@@ -34,7 +34,7 @@ const Navbar = () => {
         }
       `}
     >
-      <Card width={"100%"} height={"80px"}>
+      <Card width={"100%"} height={"60px"}>
         <div className="container d-flex justify-content-between align-items-center h-100">
           <div
             css={`
@@ -46,10 +46,10 @@ const Navbar = () => {
           >
             <a href="/">
               <img
+                height="30"
                 src={fyntune}
                 alt={`companylogo`}
                 css={`
-                  height: 34px;
                   cursor: pointer;
                 `}
               />
