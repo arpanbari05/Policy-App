@@ -14,6 +14,7 @@ import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { BackgroundBorderTitle } from "../../../ProductDetails/components/ReviewCart";
 import { useGetAdditionalDiscountsQuery } from "../../../../api/api";
 import { useFrontendBoot, useTheme } from "../../../../customHooks";
+import { amount } from "../../../../utils/helper";
 
 const removeTotalPremium = cart => {
   let { totalPremium, ...y } = cart;
@@ -325,7 +326,7 @@ const ViewPlanDetails = styled.span`
 `;
 
 function CartSummary({ item, index }) {
-  const { data: frontendData } = useFrontendBoot();
+  const { data: frontendData, journeyType } = useFrontendBoot();
 
   const { planDetails } = useSelector(state => state.proposalPage);
   const prevCart = Object.values(removeTotalPremium(planDetails.prevCart));
@@ -434,6 +435,28 @@ function CartSummary({ item, index }) {
             flex-direction: column;
           `}
         >
+          {journeyType === "top_up" ? (
+            <div
+              css={`
+                display: flex;
+                flex-direction: row;
+                align-items: end;
+                justify-content: space-between;
+
+                /* border-right: 1px solid #dce2ec; */
+              `}
+            >
+              <p className="p_cover_medical_pop">Deductible: </p>
+              <span
+                className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+                css={`
+                  padding-left: 10px;
+                `}
+              >
+                {amount(item.deductible)}
+              </span>
+            </div>
+          ) : null}
           <div
             css={`
               display: flex;
@@ -774,8 +797,7 @@ function CartSummary({ item, index }) {
                 <span>
                   <img
                     src={
-                      frontendData.companies[addOns.product.company.alias]
-                        .logo
+                      frontendData.companies[addOns.product.company.alias].logo
                     }
                     className="img_top_m_custom_medical"
                     alt="logo"
