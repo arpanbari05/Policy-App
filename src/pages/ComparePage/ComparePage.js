@@ -59,18 +59,37 @@ function ComparePage() {
   return (
     <Page>
       <Container className="pt-3" id="printCompare">
-        <div>
-          <BackButton />
-        </div>
-        <CompareHeader
-          compareQuotes={compareQuotes}
-          isShowDifference={showDifferenceToggle.isOn}
-          onShowDifferenceChange={showDifferenceToggle.toggle}
-        />
+        <BackButton />
+        <CompareHeaderWrap>
+          <div
+            className="d-flex flex-column align-items-center justify-content-center"
+            css={`
+              width: 20%;
+            `}
+          >
+            <h1
+              css={`
+                font-size: 1.2rem;
+                font-weight: 900;
+              `}
+            >
+              Product Comparision
+            </h1>
+            <ShowDifference
+              onChange={showDifferenceToggle.toggle}
+              checked={showDifferenceToggle.isOn}
+            />
+            <DownloadButton />
+          </div>
+          <CompareProductCards compareQuotes={compareQuotes} />
+        </CompareHeaderWrap>
         <div className="mt-3">
           <PlanDetailsSection compareQuotes={compareQuotes} />
           <KeyBenefitsSection compareQuotes={compareQuotes} />
-          <BasicFeaturesSection compareQuotes={compareQuotes} showDifference={showDifferenceToggle.isOn} />
+          <BasicFeaturesSection
+            compareQuotes={compareQuotes}
+            showDifference={showDifferenceToggle.isOn}
+          />
           <SpecialFeaturesSection compareQuotes={compareQuotes} />
           <WaitingPeriodSection compareQuotes={compareQuotes} />
           <WhatsNotCoveredSection compareQuotes={compareQuotes} />
@@ -82,22 +101,8 @@ function ComparePage() {
 
 export default ComparePage;
 
-function CompareHeader({
-  compareQuotes = [],
-  onShowDifferenceChange,
-  isShowDifference,
-  ...props
-}) {
+function CompareHeaderWrap({ children, ...props }) {
   const { boxShadows } = useTheme();
-  const { groupCode } = useParams();
-
-  const { removeCompareQuote } = useQuotesCompare();
-
-  const handleRemove = quote => removeCompareQuote({ quote, groupCode });
-
-  const handleShowDifferenceChange = checked => {
-    onShowDifferenceChange && onShowDifferenceChange(checked);
-  };
 
   return (
     <div
@@ -112,47 +117,39 @@ function CompareHeader({
       `}
       {...props}
     >
-      <div
-        className="d-flex flex-column align-items-center justify-content-center"
-        css={`
-          width: 20%;
-        `}
-      >
-        <h1
-          css={`
-            font-size: 1.2rem;
-            font-weight: 900;
-          `}
-        >
-          Product Comparision
-        </h1>
-        <ShowDifference
-          onChange={handleShowDifferenceChange}
-          checked={isShowDifference}
-        />
-        <DownloadButton />
-      </div>
-      <div
-        className="d-flex"
-        css={`
+      {children}
+    </div>
+  );
+}
+
+function CompareProductCards({ compareQuotes = [], ...props }) {
+  const { groupCode } = useParams();
+
+  const { removeCompareQuote } = useQuotesCompare();
+
+  const handleRemove = quote => removeCompareQuote({ quote, groupCode });
+  return (
+    <div
+      className="d-flex"
+      css={`
+        flex: 1;
+        gap: 6em;
+        & > div {
           flex: 1;
-          gap: 6em;
-          & > div {
-            flex: 1;
-          }
-        `}
-      >
-        {compareQuotes.map((quote, idx) => (
-          <ProductCard
-            quote={quote}
-            key={quote.company_alias + quote.sum_insured + idx}
-            onRemove={handleRemove}
-          />
-        ))}
-        {Array.from({ length: 3 - compareQuotes.length }).map((_, idx) => (
-          <AddPlanCard key={idx} compareQuotes={compareQuotes} />
-        ))}
-      </div>
+        }
+      `}
+      {...props}
+    >
+      {compareQuotes.map((quote, idx) => (
+        <ProductCard
+          quote={quote}
+          key={quote.company_alias + quote.sum_insured + idx}
+          onRemove={handleRemove}
+        />
+      ))}
+      {Array.from({ length: 3 - compareQuotes.length }).map((_, idx) => (
+        <AddPlanCard key={idx} compareQuotes={compareQuotes} />
+      ))}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Bar } from "react-chartjs-2";
-function BarMarketMobile({ data }) {
+function BarMarketMobile({ data, colors }) {
   let year = [];
   let premium = [];
   let color = [];
@@ -19,7 +19,7 @@ function BarMarketMobile({ data }) {
             {
               label: "Market Size",
               data: premium,
-              backgroundColor: color,
+              backgroundColor: colors,
             },
           ],
         }}

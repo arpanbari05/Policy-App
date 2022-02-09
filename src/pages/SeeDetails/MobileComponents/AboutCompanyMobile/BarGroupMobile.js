@@ -1,6 +1,6 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
-function BarGroupMobile({ data }) {
+function BarGroupMobile({ data, colors = [] }) {
   return (
     <div>
       <Bar
@@ -10,7 +10,7 @@ function BarGroupMobile({ data }) {
             {
               label: "Claim Settelment Ratio",
               data: [data[0]?.percent, data[1]?.percent, data[2]?.percent],
-              backgroundColor: [data[0]?.color, data[1]?.color, data[2]?.color],
+              backgroundColor: colors,
             },
           ],
         }}
