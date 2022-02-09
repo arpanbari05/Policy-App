@@ -86,6 +86,8 @@ export function useMembersForm(initialMembersList = []) {
   const getSelectedMembers = () =>
     members.filter(member => !!member.isSelected);
 
+  const updateMembersList = (membersList = []) => setMembers(membersList);
+
   return {
     getMultipleMembersCount,
     handleCounterDecrement,
@@ -93,6 +95,7 @@ export function useMembersForm(initialMembersList = []) {
     handleMemberChange,
     validate,
     getSelectedMembers,
+    updateMembersList,
     isError,
     membersList: members,
   };
@@ -178,7 +181,6 @@ function MemberOption({ member, onChange, children, ...props }) {
       {...props}
     >
       <label
-        htmlFor={member.code}
         className="d-flex align-items-center flex-grow-1 align-self-stretch"
         role="button"
         css={`
@@ -191,7 +193,6 @@ function MemberOption({ member, onChange, children, ...props }) {
           className="visually-hidden"
           checked={member.isSelected}
           onChange={handleChange}
-          id={member.code}
           name={member.code}
         />
         <div
