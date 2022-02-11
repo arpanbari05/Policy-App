@@ -110,6 +110,7 @@ function AddOnDetailsCard({
     members,
     total_premium,
     sum_insured,
+    
   },
 }) {
   const companies = useSelector(
