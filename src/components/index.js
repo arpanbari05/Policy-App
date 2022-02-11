@@ -18,9 +18,10 @@ export function LoadEnquiries({ children }) {
   return children;
 }
 
-export function Page({ children, ...props }) {
+export function Page({ children, loader, ...props }) {
   return (
     <div {...props}>
+      {loader ? loader : null}
       <Navbar />
       <div>{children}</div>
     </div>

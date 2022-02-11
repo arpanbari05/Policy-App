@@ -19,47 +19,7 @@ import "styled-components/macro";
 import { useHistory } from "react-router-dom";
 import { useGetEnquiriesQuery } from "../../../api/api";
 import { capitalize } from "../../../utils/helper";
-
-export const fieldSet1Data = [
-  {
-    type: "text",
-    name: "fullName",
-    label: "Full Name",
-    placeHolder: "Enter Full Name.",
-    maxLength: "60",
-  },
-  {
-    type: "number",
-    name: "mobile",
-    label: "Mobile No.",
-    placeHolder: "Enter mobile no.",
-    maxLength: "10",
-  },
-  {
-    type: "email",
-    name: "email",
-    label: "Email Id",
-    placeHolder: "Enter email id.",
-    maxLength: "50",
-  },
-];
-
-export const fieldSet1RadioInputData = [
-  {
-    type: "radio",
-    name: "gender",
-    label: "Male",
-    value: "M",
-    id: "male",
-  },
-  {
-    type: "radio",
-    name: "gender",
-    label: "Female",
-    value: "F",
-    id: "female",
-  },
-];
+import * as mq from "../../../utils/mediaQueries";
 
 const BasicDetailsForm = ({ ...props }) => {
   const { colors } = useTheme();
@@ -203,6 +163,10 @@ const BasicDetailsForm = ({ ...props }) => {
                 & > div {
                   flex: 1;
                 }
+                ${mq.mobile} {
+                  flex-direction: column;
+                  gap: 0;
+                }
               `}
             >
               <div>
@@ -210,6 +174,7 @@ const BasicDetailsForm = ({ ...props }) => {
                   ref={register}
                   label="Full Name"
                   name="name"
+                  autoFocus
                   {...fullNameInput}
                   maxLength={60}
                 />
@@ -225,7 +190,7 @@ const BasicDetailsForm = ({ ...props }) => {
                 <ErrorMessage>{errors.mobile?.message}</ErrorMessage>
               </div>
             </div>
-            <div className="mt-3 w-100">
+            <div className="w-100">
               <TextInput2
                 ref={register}
                 type="email"

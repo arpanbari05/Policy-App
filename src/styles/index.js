@@ -1,10 +1,18 @@
+import { createGlobalStyle } from "styled-components";
+
 const styles = {
   colors: {
     primary_color: "#0a87ff",
     primary_shade: "#ecf6ff",
     secondary_color: "#2cd44a",
     secondary_shade: "#eef1f4",
-    font: { one: "#4a5971", two: "#9696b5", three: "gray", four: "#6b7789" },
+    font: {
+      one: "#565758",
+      two: "#9696b5",
+      three: "gray",
+      four: "#6b7789",
+      five: "#4a5971",
+    },
     border: { one: "#dfe1f2" },
   },
   boxShadows: {
@@ -17,3 +25,15 @@ const styles = {
 };
 
 export default styles;
+
+export const GlobalStyles = createGlobalStyle({
+  "::-webkit-scrollbar-track": {
+    background: "#fff",
+  },
+  "::-webkit-scrollbar-thumb": {
+    backgroundColor: "#ccc",
+  },
+  "::-webkit-scrollbar": {
+    width: "7px",
+  },
+});

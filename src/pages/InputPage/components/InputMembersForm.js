@@ -108,6 +108,9 @@ function InputMembersForm(props) {
           css={`
             background-color: ${colors.primary_shade};
             font-weight: 900;
+            &:hover {
+              background-color: ${colors.secondary_shade};
+            }
           `}
           onClick={editMembersToggle.on}
           {...props}

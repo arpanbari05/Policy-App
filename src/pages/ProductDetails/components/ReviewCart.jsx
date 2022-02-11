@@ -239,7 +239,6 @@ function EditMembersButton({ groupCode, ...props }) {
           onClose={closeEditMembersModal}
           onSubmit={handleSubmit}
           groupCode={groupCode}
-          submitState={{ isLoading }}
         >
           {serverErrors
             ? serverErrors.map(error => (

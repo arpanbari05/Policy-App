@@ -155,7 +155,7 @@ export function useFrontendBoot() {
 
   const tenantName = data.tenant.name;
 
-  const journeyType = "health";
+  const journeyType = "top_up";
 
   return { journeyType, tenantName, data };
 }
@@ -435,21 +435,25 @@ export function useUpdateEnquiry() {
 
   const [updateGroups, updateGroupsQueryState] = useUpdateGroupsMutation();
 
-  function updateEnquiry(data) {
+  async function updateEnquiry(data) {
     if (data.pincode) {
       const { groupCode, ...sendData } = data;
-      return Promise.all([
-        updateEnquiryMutation(sendData),
-        updateGroups({ groupCode, pincode: data.pincode }),
-      ]);
+
+      const updateGroupsResponse = await updateGroups({
+        groupCode,
+        pincode: data.pincode,
+      });
+      const updateEnquiryResponse = await updateEnquiryMutation(sendData);
+
+      return [updateGroupsResponse, updateEnquiryResponse];
     }
     return updateEnquiryMutation(data);
   }
 
   return {
+    ...queryState,
     updateEnquiry,
     isLoading: queryState.isLoading || updateGroupsQueryState.isLoading,
-    ...queryState,
   };
 }
 

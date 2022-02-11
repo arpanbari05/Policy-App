@@ -20,7 +20,8 @@ const TextInput2 = React.forwardRef(
       onKeyDown,
       onBlur,
       maxLength,
-      style
+      style,
+      autoFocus,
     },
     ref,
   ) => (
@@ -77,6 +78,7 @@ const TextInput2 = React.forwardRef(
           maxLength={maxLength}
           ref={ref}
           style={style}
+          autoFocus={autoFocus}
         />
       </FloatingLabel>
     </div>

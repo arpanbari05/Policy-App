@@ -6,7 +6,7 @@ import { Link, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import ThemeModal from "./ThemeModal";
 import { useGetEnquiriesQuery } from "../api/api";
 import { useMembers, useTheme } from "../customHooks";
-import { FaCopy } from "react-icons/fa";
+import { FaRegCopy } from "react-icons/fa";
 
 const Navbar = () => {
   const location = useLocation();
@@ -203,7 +203,7 @@ export function TraceId() {
         `}
         onClick={copyTraceId}
       >
-        <FaCopy />
+        <FaRegCopy />
       </button>
       <ThemeModal show={show} setShow={setShow} />
     </div>

@@ -50,8 +50,10 @@ function Quotes({ sortBy = "relevence", ...props }) {
 
   return (
     <div
+      className="d-flex flex-column"
       css={`
         padding-bottom: ${isQuotesOnCompare ? "10em" : "1em"};
+        gap: 1em;
       `}
       {...props}
     >

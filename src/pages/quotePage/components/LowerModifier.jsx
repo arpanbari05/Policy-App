@@ -15,7 +15,13 @@ const LowerModifier = ({ sortBy = <></> }) => {
   const { journeyType } = useFrontendBoot();
 
   return (
-    <div className="container">
+    <div
+      className="container position-sticky mt-3"
+      css={`
+        top: 0;
+        z-index: 99;
+      `}
+    >
       <FiltersWrapper className="d-flex p-1">
         {sortBy}
         <PremiumFilter />
@@ -37,7 +43,6 @@ export default LowerModifier;
 const FiltersWrapper = styled.div`
   border: solid 1px #cacaca;
   padding: 5px;
-  margin: 10px 0;
   border-radius: 3px;
   background-color: #fff;
 `;

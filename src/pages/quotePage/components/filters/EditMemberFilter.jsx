@@ -132,7 +132,7 @@ export function EditMembers({ onClose, ...props }) {
   };
 
   return (
-    <EditMembersModal submitState={{ isLoading }} onClose={onClose} {...props}>
+    <EditMembersModal onClose={onClose} {...props}>
       <form onSubmit={handleSubmit}>
         <div className="p-3">
           <MemberOptions {...memberForm} />

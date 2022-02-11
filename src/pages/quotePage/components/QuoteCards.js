@@ -12,6 +12,7 @@ import { GiCircle } from "react-icons/gi";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { BsCircleFill } from "react-icons/bs";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",
@@ -56,7 +57,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
 
   return (
     <div
-      className="position-relative mt-3"
+      className="position-relative"
       css={`
         box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
         background-color: #fff;
@@ -252,12 +253,13 @@ function QuoteCard({
             `}
           >
             <label
-              className="d-flex align-items-center"
+              className="d-flex align-items-center px-3 py-1 rounded"
               htmlFor={quote.product.id + quote.total_premium}
               css={`
-                color: ${colors.font.three};
+                color: ${colors.font.one};
                 font-weight: 900;
                 cursor: pointer;
+                background-color: ${colors.secondary_shade};
               `}
             >
               <span
@@ -267,9 +269,17 @@ function QuoteCard({
                   color: ${colors.primary_color};
                 `}
               >
-                {isCompareQuote ? <IoCheckmarkCircleSharp /> : <GiCircle />}
+                {isCompareQuote ? (
+                  <IoCheckmarkCircleSharp />
+                ) : (
+                  <BsCircleFill
+                    css={`
+                      color: white;
+                    `}
+                  />
+                )}
               </span>
-              <span className="mt-1">Add to compare</span>
+              <span className="mt-1">Compare</span>
             </label>
             <input
               className="visually-hidden"

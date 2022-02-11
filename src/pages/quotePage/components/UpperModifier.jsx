@@ -13,6 +13,7 @@ function UpperModifier() {
       css={`
         background-color: ${colors.secondary_shade};
       `}
+      className="position-relative"
     >
       <Container>
         <div
