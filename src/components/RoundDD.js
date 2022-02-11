@@ -52,7 +52,6 @@ const RoundDD = ({
             placeholder={"type here..."}
             onChange={e => {
               const value = e.target.value.replace(/\D/g, "");
-              console.log(list[list.length - 1]);
               if (value <= list[list.length - 1].id) {
                 setSearchText(value);
               }
@@ -63,6 +62,7 @@ const RoundDD = ({
           onClick={toggleList}
           css={`
             border: ${redBorder && "1px solid red !important"};
+            box-shadow: ${redBorder ? "red 0px 0px 0.5px 0.9px" : null};
           `}
           className={`${isOpen && "active"} GreetingDD__Header ${
             disabled && "disabled"
@@ -208,7 +208,7 @@ export const HeaderTitle = styled.div`
     content: "";
     display: block;
     position: absolute;
-    top: 37%;
+    top: 30%;
     right: 7px;
     /* margin-top: -3px; */
     width: 0;
@@ -222,7 +222,7 @@ export const HeaderTitle = styled.div`
     -webkit-transform: rotate(45deg);
   }
   &.active:after {
-    top: 43%;
+    top: 37%;
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
   }

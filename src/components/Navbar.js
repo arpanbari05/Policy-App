@@ -2,10 +2,10 @@ import { useState } from "react";
 import { fyntune } from "../assets/images";
 import Card from "./Card";
 import "styled-components/macro";
-import { useLocation, useParams, useRouteMatch } from "react-router-dom";
+import { Link, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import ThemeModal from "./ThemeModal";
 import { useGetEnquiriesQuery } from "../api/api";
-import { useGetQuotes, useMembers, useTheme } from "../customHooks";
+import { useMembers, useTheme } from "../customHooks";
 import { FaCopy } from "react-icons/fa";
 
 const Navbar = () => {
@@ -44,7 +44,7 @@ const Navbar = () => {
               /* padding: 0px 100px; */
             `}
           >
-            <a href="/">
+            <Link to="/">
               <img
                 height="30"
                 src={fyntune}
@@ -53,7 +53,7 @@ const Navbar = () => {
                   cursor: pointer;
                 `}
               />
-            </a>
+            </Link>
             {!location.pathname.startsWith("/input") && trace_id && (
               <div
                 css={`

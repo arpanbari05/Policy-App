@@ -4,19 +4,15 @@ import mobile_input_first from "../../assets/images/mobile_input_first.png";
 import styled from "styled-components/macro";
 import { bg } from "../../assets/images";
 import { IoIosCheckmarkCircle } from "react-icons/io";
-import Form1 from "./components/Form1";
-import Form3 from "./components/Form3";
-import Form4 from "./components/Form4";
-import Form7 from "./components/Form7";
 import { Page } from "../../components";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import BasicDetailsForm from "./components/BasicDetailsForm";
 import InputMembersForm from "./components/InputMembersForm";
-import "styled-components/macro";
 import { useParams, useRouteMatch } from "react-router-dom";
 import PlanTypeForm from "./components/PlanTypeForm";
 import LocationForm from "./components/LocationForm";
 import DeductibleForm from "./components/DeductibleForm";
+import "styled-components/macro";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -142,27 +138,6 @@ const InputPage = () => {
                 )}
 
                 {currentForm === "deductible" && <DeductibleForm />}
-
-                {/* <Form3 currentForm={currentForm} handleChange={handleChange} /> */}
-
-                {/* {members &&
-                  members.map((data, i) => (
-                    <Form1
-                      currentForm={currentForm}
-                      handleChange={handleChange}
-                      member={memberGroups[data]}
-                      index={i + 1}
-                      memberGroup={data}
-                      lastForm={members.length === i + 1}
-                    />
-                  ))} */}
-
-                {/* <Form4
-                  currentForm={currentForm}
-                  handleChange={handleChange}
-                  lastForm={members?.length || 1}
-                /> */}
-                {/* <Form7 currentForm={currentForm} handleChange={handleChange} /> */}
               </div>
             </Card>
             {isBasicDetailsRoute && (
@@ -296,16 +271,16 @@ function planCard(PrimaryColor, PrimaryShade, journeyType = "health") {
   );
 }
 
-function TermsAndConditions({ showmore, setShowmore }) {
+function TermsAndConditions(props) {
   const { tenantName } = useFrontendBoot();
 
-  const { colors } = useTheme();
   return (
     <div
       css={`
         display: flex;
         margin-bottom: 10px;
       `}
+      {...props}
     >
       <label
         style={{ fontSize: "13px", color: "black", fontWeight: "400" }}
@@ -317,28 +292,13 @@ function TermsAndConditions({ showmore, setShowmore }) {
         <i class="termchk"></i>By clicking on Get Started, I hereby authorise{" "}
         {tenantName}. and all of its affiliates, subsidiaries, group companies
         and related parties to access the details such as my name, address,
-        telephone number,{" "}
-        <span style={{ display: showmore ? "inline" : "none" }}>
-          e-mail address, birth date and / or anniversary date shared by me, and
-          contact me to provide information on the various products and services
-          offered. I understand that this consent will override my NDNC
-          registration, if any. I also understand that at any point of time, I
-          wish to stop receiving such communications from {tenantName}, I can
-          withdraw such consent anytime on (to provide a contact number or email
-          id or both){" "}
-        </span>
-        <button
-          css={`
-            background: none;
-            border: none;
-            color: ${colors.primary_color};
-          `}
-          onClick={() => {
-            setShowmore(!showmore);
-          }}
-        >
-          {showmore ? "...show less" : "...show more"}
-        </button>
+        telephone number, e-mail address, birth date and / or anniversary date
+        shared by me, and contact me to provide information on the various
+        products and services offered. I understand that this consent will
+        override my NDNC registration, if any. I also understand that at any
+        point of time, I wish to stop receiving such communications from{" "}
+        {tenantName}, I can withdraw such consent anytime on (to provide a
+        contact number or email id or both){" "}
       </label>
     </div>
   );

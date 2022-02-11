@@ -304,11 +304,15 @@ function QuoteCard({
                   <QuoteCardSelect
                     options={deductibles.map(deductible => ({
                       value: deductible,
-                      label: numberToDigitWord(deductible),
+                      label: numberToDigitWord(deductible)
+                        .replace("₹", "")
+                        .replace("Lakh", "L"),
                     }))}
                     value={{
                       value: selectedDeductible,
-                      label: numberToDigitWord(selectedDeductible),
+                      label: numberToDigitWord(selectedDeductible)
+                        .replace("₹", "")
+                        .replace("Lakh", "L"),
                     }}
                     onChange={handleDeductibleChange}
                   />
@@ -318,11 +322,15 @@ function QuoteCard({
                 <QuoteCardSelect
                   options={sumInsureds.map(sumInsured => ({
                     value: sumInsured,
-                    label: numberToDigitWord(sumInsured),
+                    label: numberToDigitWord(sumInsured)
+                      .replace("₹", "")
+                      .replace("Lakh", "L"),
                   }))}
                   value={{
                     value: selectedSumInsured,
-                    label: numberToDigitWord(selectedSumInsured),
+                    label: numberToDigitWord(selectedSumInsured)
+                      .replace("₹", "")
+                      .replace("Lakh", "L"),
                   }}
                   onChange={handleSumInsuredChange}
                 />

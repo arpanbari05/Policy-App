@@ -24,6 +24,8 @@ function validateMembers(members = []) {
 export function useMembersForm(initialMembersList = []) {
   const [members, setMembers] = useState(initialMembersList);
 
+  const [error, setError] = useState(null);
+
   const isError = members.some(member => !!member.error);
 
   const validate = () => {
@@ -31,6 +33,14 @@ export function useMembersForm(initialMembersList = []) {
 
     if (!isValid) {
       setMembers(validatedMembers);
+      setError("Select age for Insured Member")
+      return;
+    }
+
+    const selectedMembers = getSelectedMembers();
+
+    if (!selectedMembers.length) {
+      setError("Select at least one Insured Member");
       return;
     }
 
@@ -38,6 +48,7 @@ export function useMembersForm(initialMembersList = []) {
   };
 
   const handleMemberChange = changedMember => {
+    setError(null);
     setMembers(members => {
       const updatedMembers = members.map(member =>
         member.code === changedMember.code ? changedMember : member,
@@ -97,6 +108,7 @@ export function useMembersForm(initialMembersList = []) {
     getSelectedMembers,
     updateMembersList,
     isError,
+    error,
     membersList: members,
   };
 }

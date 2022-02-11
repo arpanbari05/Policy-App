@@ -25,6 +25,7 @@ import useFilters from "../pages/quotePage/components/filters/useFilters";
 import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter";
 import styles from "../styles";
 import {
+  capitalize,
   getMonthsForYear,
   getQuoteSendData,
   getRiderCartData,
@@ -154,7 +155,7 @@ export function useFrontendBoot() {
 
   const tenantName = data.tenant.name;
 
-  const journeyType = "top_up";
+  const journeyType = "health";
 
   return { journeyType, tenantName, data };
 }
@@ -575,7 +576,22 @@ export function useCart() {
     ];
   }
 
-  return { cartEntries, getCartEntry, updateCartEntry, updateCart };
+  function getNextGroupProduct(currentGroupCode) {
+    const nextGroup = currentGroupCode + 1;
+    const nextGroupProduct = cartEntries.find(
+      cartEntry => parseInt(cartEntry.group.id) === nextGroup,
+    );
+
+    return nextGroupProduct;
+  }
+
+  return {
+    cartEntries,
+    getCartEntry,
+    updateCartEntry,
+    updateCart,
+    getNextGroupProduct,
+  };
 }
 
 export function useRider(groupCode) {
@@ -982,4 +998,60 @@ export function useCompareFeatures({ productIds }) {
   const isLoading = !data || !data.length;
 
   return { ...query, data, isLoading };
+}
+
+const validateName = (name = "") => /^[A-Za-z]+[A-Za-z ]*$/.test(name);
+
+export function useNameInput(initialValue = "") {
+  const [value, setValue] = useState(initialValue);
+
+  const onChange = evt => {
+    const { value: givenValue } = evt.target;
+
+    if (!givenValue) {
+      setValue(givenValue);
+      return;
+    }
+
+    const isValidName = validateName(givenValue);
+
+    if (!isValidName) return;
+
+    setValue(givenValue);
+  };
+
+  const onBlur = evt => {
+    const { value: givenValue } = evt.target;
+
+    setValue(capitalize(givenValue.trim()));
+  };
+
+  const style = { textTransform: "capitalize" };
+
+  return { value, onChange, onBlur, style };
+}
+
+const validateNumber = (str = "") => /\d/g.test(str);
+
+export function useNumberInput(initialValue = "", { maxLength = 60 } = {}) {
+  const [value, setValue] = useState(initialValue);
+
+  const onChange = evt => {
+    const { value: givenValue } = evt.target;
+
+    if (givenValue.length > maxLength) return;
+
+    if (!givenValue) {
+      setValue(givenValue);
+      return;
+    }
+
+    const isNumber = validateNumber(givenValue);
+
+    if (isNumber) {
+      setValue(givenValue);
+    }
+  };
+
+  return { value, onChange, type: "tel", maxLength };
 }

@@ -29,10 +29,10 @@ function TenureDiscounts({ groupCode, ...props }) {
   const {
     applyTenureDiscount,
     isTenureDiscountSelected,
-    query: { data, isLoading, isUninitialized },
+    query: { data, isLoading, isUninitialized, isFetching },
   } = useTenureDiscount(groupCode);
 
-  if (isLoading || isUninitialized) return <CardSkeletonLoader />;
+  if (isLoading || isUninitialized || isFetching) return <CardSkeletonLoader />;
 
   const discounts = data.data;
 

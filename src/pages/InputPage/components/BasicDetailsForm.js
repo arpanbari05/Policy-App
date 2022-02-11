@@ -1,24 +1,24 @@
 import { useState } from "react";
 import CustomProgressBar from "../../../components/ProgressBar";
 import { Title, ErrorMessage, firstFormSchema } from "./FormComponents";
-import {
-  checkAllChar,
-  checkPreviousChar,
-  forbiddedSymbols,
-  forbiddedSymbols2,
-  numOnly,
-} from "../../../utils/formUtils";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import ReactSwitch from "react-switch";
 import { boy, girl } from "../../../assets/images";
 import TextInput2 from "../../../components/TextInput2";
-import { useCreateEnquiry, useTheme } from "../../../customHooks";
+import {
+  useCreateEnquiry,
+  useNameInput,
+  useNumberInput,
+  useTheme,
+} from "../../../customHooks";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
 import { IoArrowForwardSharp } from "react-icons/io5";
 import "styled-components/macro";
 import { useHistory } from "react-router-dom";
+import { useGetEnquiriesQuery } from "../../../api/api";
+import { capitalize } from "../../../utils/helper";
 
 export const fieldSet1Data = [
   {
@@ -64,27 +64,23 @@ export const fieldSet1RadioInputData = [
 const BasicDetailsForm = ({ ...props }) => {
   const { colors } = useTheme();
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [gender, setGender] = useState("M");
+  let inputData = {};
 
-  const checkDoubleChar = e => {
-    if (e.keyCode === 190 && fullName[fullName.length - 1] === " ") {
-      e.preventDefault();
-    }
-    if (e.keyCode === 32 && fullName.length < 1) {
-      e.preventDefault();
-    }
-  };
+  const { data } = useGetEnquiriesQuery();
 
-  const demoLogin = () => {
-    setFullName("test test");
-    setEmail("test@gmail.com");
-    setMobile("9111111111");
-  };
+  if (data?.data) inputData = { ...data.data, gender: data.data.input.gender };
+
+  const fullNameInput = useNameInput(inputData.name || "");
+  const mobileInput = useNumberInput(inputData.mobile || "", { maxLength: 10 });
+  const [gender, setGender] = useState(inputData.gender || "M");
 
   const { register, handleSubmit, errors } = useForm({
+    defaultValues: {
+      mobile: mobileInput.value,
+      name: fullNameInput.value,
+      email: inputData.email || "",
+      gender,
+    },
     resolver: yupResolver(firstFormSchema),
     mode: "onBlur",
   });
@@ -94,13 +90,13 @@ const BasicDetailsForm = ({ ...props }) => {
   const urlSearchParams = useUrlQuery();
   const history = useHistory();
 
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async formData => {
     const params = Object.fromEntries(urlSearchParams.entries());
     const data = {
-      name: fullName,
-      email,
+      name: capitalize(fullNameInput.value),
+      email: formData.email,
       gender,
-      mobile,
+      mobile: mobileInput.value,
       params,
     };
     const response = await createEnquiry(data);
@@ -125,13 +121,16 @@ const BasicDetailsForm = ({ ...props }) => {
             }
           `}
         >
-          <Title onClick={demoLogin}>Tell Us about yourself?</Title>
+          <Title>Tell Us about yourself?</Title>
           <CustomProgressBar now={1} total={5} />
           <div
             css={`
               display: flex;
               flex-wrap: wrap;
               justify-content: space-between;
+              & img {
+                user-select: none;
+              }
             `}
           >
             <label
@@ -197,89 +196,44 @@ const BasicDetailsForm = ({ ...props }) => {
                 `}
               />
             </label>
-
-            {fieldSet1Data.map(
-              ({ type, name, label, placeHolder, maxLength }) => (
-                <span
-                  css={`
-                    width: ${name !== "email" ? "221px" : "100%"};
-                    @media (max-width: 1100px) {
-                      width: 100% !important;
-                    }
-                  `}
-                >
-                  <TextInput2
-                    styledCss={`  
-                  margin-bottom: 19px;
-                  & input {
-                    text-transform:${name === "fullName" && "capitalize"};
-                  }
-                  @media (max-width: 480px) {
-             width:100% !important;
-              }
-                  `}
-                    label={name === "fullName" ? "Full Name" : label}
-                    name={name}
-                    type={type}
-                    value={
-                      name === "fullName"
-                        ? fullName
-                        : name === "email"
-                        ? email
-                        : name === "mobile"
-                        ? mobile
-                        : undefined
-                    }
-                    onKeyDown={
-                      name === "mobile"
-                        ? numOnly
-                        : name === "fullName" && checkDoubleChar
-                    }
-                    onBlur={e => {
-                      name === "fullName" && setFullName(e.target.value.trim());
-                      name === "email" && setEmail(e.target.value);
-                      //name === "mobile" && setMobile(e.target.value);
-                    }}
-                    onChange={e => {
-                      if (name === "fullName") {
-                        checkPreviousChar(e.target.value, " ", fullName) &&
-                          checkPreviousChar(e.target.value, ".", fullName) &&
-                          checkAllChar(e.target.value, forbiddedSymbols2) &&
-                          /^[a-zA-Z\s]*$/.test(e.target.value) &&
-                          setFullName(e.target.value);
-                      }
-                      name === "email" &&
-                        checkAllChar(e.target.value, forbiddedSymbols) &&
-                        setEmail(e.target.value);
-
-                      if (name === "mobile" && e.target.value.length <= 10) {
-                        !/^\d*(\d)\1{9}\d*$/.test(e.target.value) &&
-                          setMobile(e.target.value);
-                      }
-                    }}
-                    maxLength={maxLength}
-                    onPaste={e => {
-                      e.preventDefault();
-                      return false;
-                    }}
-                    onCopy={e => {
-                      e.preventDefault();
-                      return false;
-                    }}
-                    ref={register}
-                  />
-                  {errors[name]?.message && (
-                    <ErrorMessage
-                      css={`
-                        margin-top: -16px;
-                      `}
-                    >
-                      {errors[name].message}
-                    </ErrorMessage>
-                  )}
-                </span>
-              ),
-            )}
+            <div
+              className="d-flex aling-items-center justify-content-between w-100"
+              css={`
+                gap: 1em;
+                & > div {
+                  flex: 1;
+                }
+              `}
+            >
+              <div>
+                <TextInput2
+                  ref={register}
+                  label="Full Name"
+                  name="name"
+                  {...fullNameInput}
+                  maxLength={60}
+                />
+                <ErrorMessage>{errors.name?.message}</ErrorMessage>
+              </div>
+              <div>
+                <TextInput2
+                  ref={register}
+                  label="Mobile No."
+                  name="mobile"
+                  {...mobileInput}
+                />
+                <ErrorMessage>{errors.mobile?.message}</ErrorMessage>
+              </div>
+            </div>
+            <div className="mt-3 w-100">
+              <TextInput2
+                ref={register}
+                type="email"
+                name="email"
+                label="Email Id"
+              />
+              <ErrorMessage>{errors.email?.message}</ErrorMessage>
+            </div>
           </div>
         </div>
 

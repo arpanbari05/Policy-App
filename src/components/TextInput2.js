@@ -20,12 +20,14 @@ const TextInput2 = React.forwardRef(
       onKeyDown,
       onBlur,
       maxLength,
+      style
     },
     ref,
   ) => (
     <div
       css={`
         ${styledCss}
+        width: 100%;
         position: relative;
         & span {
           position: absolute;
@@ -74,6 +76,7 @@ const TextInput2 = React.forwardRef(
           onBlur={onBlur}
           maxLength={maxLength}
           ref={ref}
+          style={style}
         />
       </FloatingLabel>
     </div>

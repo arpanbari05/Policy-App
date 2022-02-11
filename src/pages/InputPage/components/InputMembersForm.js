@@ -33,6 +33,7 @@ function InputMembersForm(props) {
 
   const {
     isError,
+    error,
     validate,
     getSelectedMembers,
     updateMembersList,
@@ -99,6 +100,9 @@ function InputMembersForm(props) {
       </div>
       <div className="px-3">
         <MemberOptions {...membersForm} membersList={primaryMembers} />
+        {isError || error ? (
+          <StyledErrorMessage className="m-0 mt-3">{error}</StyledErrorMessage>
+        ) : null}
         <button
           className="w-100 py-2 my-3"
           css={`
@@ -123,7 +127,6 @@ function InputMembersForm(props) {
             initialMembersList={membersList}
           />
         ) : null}
-        ˝
       </div>
       <InputFormCta
         backLink={`/input/basic-details`}
@@ -135,8 +138,14 @@ function InputMembersForm(props) {
 }
 
 function EditMembers({ onClose, onSubmit, initialMembersList = [], ...props }) {
-  const { isError, validate, getSelectedMembers, membersList, ...membersForm } =
-    useMembersForm(initialMembersList);
+  const {
+    isError,
+    error,
+    validate,
+    getSelectedMembers,
+    membersList,
+    ...membersForm
+  } = useMembersForm(initialMembersList);
 
   const handleSubmit = evt => {
     evt.preventDefault();
@@ -152,7 +161,9 @@ function EditMembers({ onClose, onSubmit, initialMembersList = [], ...props }) {
         <div className="p-3">
           <MemberOptions {...membersForm} membersList={membersList} />
         </div>
-        {isError && <StyledErrorMessage>{"serverError"}</StyledErrorMessage>}
+        {isError || error ? (
+          <StyledErrorMessage>{error}</StyledErrorMessage>
+        ) : null}
         <Button type="submit" className="w-100 rounded-0">
           Apply
         </Button>

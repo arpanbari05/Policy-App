@@ -1,4 +1,4 @@
-import { range } from "lodash";
+import _, { range } from "lodash";
 
 export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
@@ -291,4 +291,8 @@ export function mergeQuotes(quotes, { sortBy = "relevance" } = {}) {
   }
 
   return sortedMergeQuotes;
+}
+
+export function capitalize(sentence = "") {
+  return sentence.split(" ").map(_.capitalize).join(" ");
 }
