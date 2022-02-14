@@ -26,7 +26,12 @@ const styles = {
 
 export default styles;
 
+export const rootFontSize = "calc(16 * 100vw / 1440)";
+
 export const GlobalStyles = createGlobalStyle({
+  html: {
+    fontSize: rootFontSize,
+  },
   "::-webkit-scrollbar-track": {
     background: "#fff",
   },
