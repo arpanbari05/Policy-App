@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SecureLS from "secure-ls";
 import styled from "styled-components/macro";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
@@ -36,7 +36,8 @@ import { Page } from "../../components";
 /* ===============================test================================= */
 
 /* ===============================test================================= */
-const ProposalPage = ({ history }) => {
+const ProposalPage = () => {
+  const history = useHistory();
   const [active, setActive] = useState(0);
   const [proposerDactive, setProposerDactive] = useState(true);
   const { currentSchema } = useSelector(state => state.schema);

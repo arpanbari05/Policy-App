@@ -19,6 +19,7 @@ import CheckMark from "./components/CheckMark";
 import Card from "./components/Card";
 import styled from "styled-components";
 import "styled-components/macro";
+import { useFrontendBoot, useTheme } from "../../customHooks";
 //import CardMobile from "./components/CardMobile";
 
 const ThankYouPage = () => {
@@ -27,11 +28,23 @@ const ThankYouPage = () => {
   const { pathname } = useLocation();
   const [payment, SetPayment] = useState(true);
   const [timer, SetTimer] = useState(6);
-  const { theme } = useSelector(state => state.frontendBoot);
-  const tenantDetail = useSelector(
-    state => state.frontendBoot.frontendData.tenant,
-  );
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  // const { theme } = useSelector(state => state.frontendBoot);
+  // const tenantDetail = useSelector(
+  //   state => state.frontendBoot.frontendData.tenant,
+  // );
+  // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const {
+    colors: {
+      primary_color: PrimaryColor,
+      secondary_color: SecondaryColor,
+      primary_shade: PrimaryShade,
+    },
+  } = useTheme();
+
+  const {
+    data: { tenant: tenantDetail },
+  } = useFrontendBoot();
+
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const status = useSelector(state => state.proposalPage);
