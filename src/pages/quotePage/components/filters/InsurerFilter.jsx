@@ -108,10 +108,19 @@ function Insurer({ company, checked = false, onChange, css, ...props }) {
         onChange={handleChange}
         checked={checked}
       />
-      <label htmlFor={company.alias} className="w-100">
+      <label
+        htmlFor={company.alias}
+        className="w-100"
+        css={`
+          :not(last-child) {
+            border-bottom: 1px solid ${colors.border.one};
+          }
+        `}
+      >
         <li
           css={`
-            margin: 5px 0;
+            margin: 5px 0;          
+            cursor: pointer;
           `}
           className="option insurer_option d-flex align-items-center justify-content-between"
         >
@@ -122,9 +131,9 @@ function Insurer({ company, checked = false, onChange, css, ...props }) {
             <span className="mx-3">{company.short_name}</span>
           </div>
 
-          <div className="d-flex align-items-center ">
+          <div className="d-flex align-items-center">
             <span className="plan_csr">{company.csr}% CSR</span>
-            <div className="custom_checkbox"></div>
+            <div className="custom_checkbox rounded-0"></div>
           </div>
         </li>
       </label>

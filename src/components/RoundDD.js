@@ -208,7 +208,7 @@ export const HeaderTitle = styled.div`
     content: "";
     display: block;
     position: absolute;
-    top: 30%;
+    top: 20%;
     right: 7px;
     /* margin-top: -3px; */
     width: 0;

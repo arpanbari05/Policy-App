@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { Page, ScreenTopLoader } from "../../components";
 import useFilters from "./components/filters/useFilters";
 import useUpdateFilters from "./components/filters/useUpdateFilters";
@@ -43,25 +43,40 @@ function QuotesPage() {
           />
         }
       />
-      <Container className="mt-3">
-        <div className="d-flex align-items-center justify-content-between">
-          <div className="d-flex align-items-center justify-content-between">
-            <ShowingPlanType />
-            <ClearFilters />
-          </div>
+      <Container className="mt-2">
+        <div
+          className="d-flex align-items-center justify-content-between"
+          css={`
+            gap: 0.6rem;
+          `}
+        >
           <div
+            className="d-flex align-items-center"
             css={`
+              flex: 3;
+            `}
+          >
+            <ShowingPlanType />
+            <div className="m-auto">
+              <ClearFilters />
+            </div>
+          </div>
+          <p
+            className="m-0"
+            css={`
+              font-size: 0.89rem;
               color: ${colors.font.four};
               text-align: right;
+              flex: 1;
             `}
           >
             All Premium Plans are GST Inclusive
-          </div>
+          </p>
         </div>
         <div
-          className="mt-3 d-flex"
+          className="mt-2 d-flex"
           css={`
-            gap: 1em;
+            gap: 0.6rem;
           `}
         >
           <div
@@ -98,7 +113,7 @@ function ShowingPlanType() {
     <h1
       className="m-0"
       css={`
-        font-size: 1.19rem;
+        font-size: 1rem;
         color: ${colors.font.four};
         width: max-content;
         font-weight: 900;
@@ -121,12 +136,12 @@ function ClearFilters(props) {
       css={`
         background-color: #e2f0ff;
         color: #0a87ff;
-        font-weight: bold;
+        font-weight: 900;
         width: max-content;
-        padding: 8px 12px;
+        padding: 0.6em 1em;
         border-radius: 24px;
         border: 1px solid #0a87ff;
-        font-size: 0.79rem;
+        font-size: 0.73rem;
       `}
       {...props}
     >
