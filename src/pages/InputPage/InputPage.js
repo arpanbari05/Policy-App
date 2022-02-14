@@ -13,6 +13,7 @@ import PlanTypeForm from "./components/PlanTypeForm";
 import LocationForm from "./components/LocationForm";
 import DeductibleForm from "./components/DeductibleForm";
 import "styled-components/macro";
+import { Spinner } from "react-bootstrap";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -26,8 +27,6 @@ const InputPage = () => {
   const { colors } = useTheme();
 
   const { currentForm } = useParams();
-
-  const { journeyType } = useFrontendBoot();
 
   return (
     <Page>
@@ -90,7 +89,7 @@ const InputPage = () => {
         </div>
         <Wrapper currentForm={currentForm}>
           <InnerWrapper className="hide_on_mobile">
-            {planCard(colors.primary_color, colors.primary_shade, journeyType)}
+            <HeaderCard />
           </InnerWrapper>
           <InnerWrapper>
             <Card
@@ -228,7 +227,10 @@ const InnerWrapper = styled.div`
   } */
 `;
 
-function planCard(PrimaryColor, PrimaryShade, journeyType = "health") {
+function HeaderCard() {
+  const { colors } = useTheme();
+  const { journeyType, isLoading, isUninitialized } = useFrontendBoot();
+
   return (
     <Card
       BgColor={`#edf0f49e`}
@@ -262,8 +264,17 @@ function planCard(PrimaryColor, PrimaryShade, journeyType = "health") {
       width={`500px`}
       height={`400px`}
     >
-      <PlanCard PrimaryColor={PrimaryColor} PrimaryShade={PrimaryShade}>
-        <h3>{journeyTitle[journeyType]}</h3>
+      <PlanCard
+        PrimaryColor={colors.primary_color}
+        PrimaryShade={colors.primary_shade}
+      >
+        <div className="mb-3">
+          {isLoading || isUninitialized ? (
+            <Spinner animation="border" />
+          ) : (
+            <h3>{journeyTitle[journeyType]}</h3>
+          )}
+        </div>
         <h1>Buy Health Insurance plan in few simple steps</h1>
         <PlanList />
       </PlanCard>

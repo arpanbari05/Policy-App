@@ -157,7 +157,7 @@ export function useFrontendBoot() {
 
   const journeyType = "top_up";
 
-  return { journeyType, tenantName, data };
+  return { journeyType, tenantName, data, isLoading, isUninitialized };
 }
 
 export function useFilter() {
