@@ -29,6 +29,7 @@ export function FilterHead({ label, children, onClick, ...props }) {
           font-size: 0.89rem;
           gap: 1em;
           min-width: max-content;
+          font-weight: 900;
         `}
       >
         {children}
