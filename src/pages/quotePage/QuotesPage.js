@@ -1,5 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
-import { Page } from "../../components";
+import { Page, ScreenTopLoader } from "../../components";
 import useFilters from "./components/filters/useFilters";
 import useUpdateFilters from "./components/filters/useUpdateFilters";
 import LowerModifier from "./components/LowerModifier";
@@ -32,7 +32,7 @@ function QuotesPage() {
   if (!isGroupExist) return <PageNotFound />;
 
   return (
-    <Page loader={<QuoteLoader />}>
+    <Page loader={<QuotesLoader />}>
       <ScrollToTopBtn />
       <UpperModifier />
       <LowerModifier
@@ -84,26 +84,10 @@ function QuotesPage() {
   );
 }
 
-function QuoteLoader() {
+function QuotesLoader() {
   const { isLoading, loadingPercentage } = useGetQuotes();
 
-  const { colors } = useTheme();
-
-  if (!isLoading) return null;
-
-  return (
-    <div
-      className="position-absolute"
-      css={`
-        top: 0;
-        height: 0.127em;
-        background-color: ${colors.primary_color};
-        width: ${loadingPercentage}%;
-        transition: 0.3s ease-in;
-        z-index: 99;
-      `}
-    />
-  );
+  return <ScreenTopLoader show={isLoading} progress={loadingPercentage} />;
 }
 
 export default QuotesPage;

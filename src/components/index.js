@@ -12,6 +12,26 @@ import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader
 import FilterSkeletonLoader from "./Common/filter-skeleton-loader/FilterSkeletonLoader";
 import Navbar from "./Navbar";
 
+export function ScreenTopLoader({ progress, show }) {
+  const { colors } = useTheme();
+
+  if (!show) return null;
+
+  return (
+    <div
+      className="position-fixed"
+      css={`
+        top: 0;
+        height: 0.2em;
+        background-color: ${colors.primary_color};
+        width: ${progress}%;
+        transition: 0.3s ease-in;
+        z-index: 99;
+      `}
+    />
+  );
+}
+
 export function LoadEnquiries({ children }) {
   const { isLoading, isFetching, isUninitialized } = useGetEnquiriesQuery();
   if (isLoading || isFetching || isUninitialized) return <FullScreenLoader />;

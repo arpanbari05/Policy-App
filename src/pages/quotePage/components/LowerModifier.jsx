@@ -16,7 +16,7 @@ const LowerModifier = ({ sortBy = <></> }) => {
 
   return (
     <div
-      className="container position-sticky mt-3"
+      className="container mt-3"
       css={`
         top: 0;
         z-index: 99;
