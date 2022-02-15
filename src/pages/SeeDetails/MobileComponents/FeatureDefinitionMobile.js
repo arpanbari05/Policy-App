@@ -34,7 +34,13 @@ function FeatureDefinitionMobile({
           <img style={{width:'100%'}} src={icon} alt="" />
         </div> */}
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <h6>{header}</h6>
+          <h6
+            css={`
+              font-size: 14px;
+            `}
+          >
+            {header}
+          </h6>
           <div>
             <p
               style={{
