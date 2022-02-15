@@ -268,7 +268,7 @@ const ProposalSummary = () => {
             margin: 30px;
             padding-bottom: 150px;
 
-            @media (max-width: 769px) {
+            @media (max-width: 768px) {
               margin: 0px !important;
               margin-top: 10px !important;
             }
@@ -277,7 +277,7 @@ const ProposalSummary = () => {
           <div
             style={{ display: "flex", justifyContent: "space-between" }}
             css={`
-              @media (max-width: 769px) {
+              @media (max-width: 768px) {
                 display: none !important;
               }
             `}
