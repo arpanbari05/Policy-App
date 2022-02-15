@@ -34,6 +34,9 @@ export const GlobalStyles = createGlobalStyle({
     "@media (max-width: 1200px)": {
       fontSize: "calc(16 * 100vw / 1200)",
     },
+    "@media (max-width: 768px)": {
+      fontSize: "min(calc(16 * 100vw / 360), 16px)",
+    },
   },
   "::-webkit-scrollbar-track": {
     background: "#fff",
