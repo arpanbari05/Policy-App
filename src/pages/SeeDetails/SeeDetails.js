@@ -142,7 +142,9 @@ const SeeDetails = ({
   tenure,
   product,
 }) => {
-  console.log("ahaheh3h2h32", quote);
+  //console.log("ahaheh3h2h32", quote, show, sum_insured, tenure, product);
+
+
 
   const [addedRiders, setAddedRiders] = useState([]);
   const dispatch = useDispatch();

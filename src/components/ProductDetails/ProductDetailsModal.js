@@ -2,6 +2,7 @@ import { Modal, Tab, Tabs } from "react-bootstrap";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import styled from "styled-components/macro";
 import { Button, useGotoProductDetailsPage } from "..";
+import { mobile } from "../../utils/mediaQueries";
 import {
   useGetAboutCompanyQuery,
   useGetClaimProcessQuery,
@@ -25,6 +26,14 @@ import { Riders } from "../../pages/ProductDetails/components/CustomizeYourPlan"
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import CartSummaryModal from "../CartSummaryModal";
+import {
+  MobileProductHeader,
+  MobileProductDetailsTabs,
+  MobileProductDetailsFooter,
+  MobileRenderPlanDetails,
+  MobileSeeDetailsTop,
+  MobileRidersSection,
+} from "./Mobile/MobileModalComponents";
 
 function useRidersSlot() {
   const [selectedRiders, setSelectedRiders] = useState([]);
@@ -39,6 +48,7 @@ function useRidersSlot() {
 function ProductDetailsModal({ quote, onClose, ...props }) {
   const handleClose = () => onClose && onClose();
 
+  console.log("The quote", quote);
   const { selectedRiders, ...ridersSlot } = useRidersSlot();
 
   return (
@@ -53,14 +63,30 @@ function ProductDetailsModal({ quote, onClose, ...props }) {
         <div
           css={`
             padding-top: 7.27em;
-            min-height: 100vh;
+            height: 100vh !important;
+            min-height: 100vh !important;
+            ${mobile} {
+              height: 100vh !important;
+              min-height: 100vh !important;
+              padding-top: unset !important;
+              padding-bottom: 120px;
+              background-color: rgb(243, 244, 249);
+            }
           `}
         >
+          <MobileSeeDetailsTop onClose={handleClose} />
+
           <ProductHeader
             quote={quote}
             selectedRiders={selectedRiders}
             onClose={handleClose}
           />
+          <MobileProductHeader
+            quote={quote}
+            selectedRiders={selectedRiders}
+            onClose={handleClose}
+          />
+
           <ProductDetailsTabs>
             <Tab eventKey="plan-details" title="Plan Details">
               <RenderPlanDetails quote={quote} />
@@ -80,8 +106,49 @@ function ProductDetailsModal({ quote, onClose, ...props }) {
               <RenderAboutCompany quote={quote} />
             </Tab>
           </ProductDetailsTabs>
+
+          <MobileProductDetailsTabs>
+            <Tab eventKey="mobile-plan-details" title="Plan Details">
+              <MobileRenderPlanDetails quote={quote} />
+            </Tab>
+            <Tab eventKey="mobile-add-on-coverages" title="Add-on Coverages">
+              <MobileRidersSection quote={quote} {...ridersSlot} />
+            </Tab>
+            <Tab
+              eventKey="mobile-cashless-hospitals"
+              title="Cashless Hospitals"
+            >
+              <CashlessHospitals quote={quote} />
+            </Tab>
+            <Tab eventKey="mobile-claim-process" title="Claim Process">
+              <RenderClaimProcess quote={quote} />
+            </Tab>
+            <Tab eventKey="mobile-about-company" title="About Company">
+              <RenderAboutCompany quote={quote} />
+            </Tab>
+          </MobileProductDetailsTabs>
         </div>
       </Modal.Body>
+      <Modal.Footer
+        css={`
+          display: none;
+          ${mobile} {
+            display: block;
+            min-height: 83px;
+            width: 100%;
+            background: #fff;
+            position: fixed;
+            bottom: 0px;
+            padding: 0.75rem;
+          }
+        `}
+      >
+        <MobileProductDetailsFooter
+          quote={quote}
+          selectedRiders={selectedRiders}
+          onClose={handleClose}
+        />
+      </Modal.Footer>
     </Modal>
   );
 }
@@ -102,6 +169,9 @@ function ProductDetailsTabs({ children, ...props }) {
           &.active {
             color: ${colors.primary_color};
           }
+        }
+        ${mobile} {
+          display: none !important;
         }
       `}
       unmountOnExit
@@ -139,6 +209,9 @@ const StyledTabs = styled(Tabs)`
         }
       }
     }
+  }
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -618,6 +691,9 @@ const FixedTop = styled.div`
   width: 100%;
   background-color: #fff;
   z-index: 99;
+  @media (max-width: 768px) {
+    display: none;
+  } ;
 `;
 
 const ProductName = styled.div`

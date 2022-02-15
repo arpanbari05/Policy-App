@@ -65,11 +65,11 @@ const FeatureSectionHeading = styled("p")`
   @media (max-width: 768px) {
     &::before {
       content: "";
-      height: 45px;
+      height: 35px;
       width: 5px;
       top: -7px;
-      left: -20px;
-      position: absolute;
+      margin-right: 10px;
+      position: relative;
 
       background-color: #2cd44a;
       border-radius: 0 15px 15px 0;
