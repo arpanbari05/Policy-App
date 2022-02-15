@@ -15,7 +15,7 @@ function UpperModifier() {
       `}
       className="position-relative"
     >
-      <Container>
+      <Container fluid="lg">
         <div
           css={`
             height: 3.67em;

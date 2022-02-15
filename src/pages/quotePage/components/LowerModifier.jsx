@@ -9,14 +9,16 @@ import MoreFilters from "./filters/MoreFilters";
 import PlanTypeFilter from "./filters/PlanTypeFilter";
 import { useFrontendBoot } from "../../../customHooks";
 import DeductibleFilter from "./filters/DeductibleFilter";
+import { Container } from "react-bootstrap";
 
 const LowerModifier = ({ sortBy = <></> }) => {
   const planType = useSelector(({ quotePage }) => quotePage.filters.planType);
   const { journeyType } = useFrontendBoot();
 
   return (
-    <div
-      className="container mt-2"
+    <Container
+      fluid="lg"
+      className="mt-2"
       css={`
         top: 0;
         z-index: 99;
@@ -34,7 +36,7 @@ const LowerModifier = ({ sortBy = <></> }) => {
         <InsurerFilter />
         <MoreFilters />
       </FiltersWrapper>
-    </div>
+    </Container>
   );
 };
 

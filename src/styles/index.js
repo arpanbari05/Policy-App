@@ -31,6 +31,9 @@ export const rootFontSize = "calc(16 * 100vw / 1440)";
 export const GlobalStyles = createGlobalStyle({
   html: {
     fontSize: rootFontSize,
+    "@media (max-width: 1200px)": {
+      fontSize: "calc(16 * 100vw / 1200)",
+    },
   },
   "::-webkit-scrollbar-track": {
     background: "#fff",

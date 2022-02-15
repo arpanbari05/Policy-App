@@ -104,7 +104,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
             css={`
               border-bottom: none !important;
               cursor: pointer;
-              font-size: 12px;
+              font-size: 0.79rem;
             `}
             onClick={() => {
               setShow(!show);
@@ -360,6 +360,7 @@ function QuoteCardSelect({ ...props }) {
   return (
     <Select
       isSearchable={false}
+      components={{ DropdownIndicator: FaChevronDown }}
       styles={{
         valueContainer: provided => ({ ...provided, padding: 0 }),
         indicatorSeparator: () => ({ display: "none" }),

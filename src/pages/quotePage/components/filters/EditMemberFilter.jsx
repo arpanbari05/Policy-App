@@ -66,27 +66,34 @@ const EditMemberFilter = () => {
   const [showModal, setShowModal] = useState(false);
   return (
     <>
-      <span
-        className="plans_for plans_for_editable d-flex align-items-center"
+      <div
+        className="d-flex align-items-center"
         onClick={() => setShowModal(true)}
+        role="button"
       >
         <div
-          className="yellow_start_line"
+          className="rounded"
           css={`
             background-color: ${colors.secondary_color};
+            width: 0.37em;
+            height: 2.1em;
           `}
-        ></div>
+        />
         <span
+          className="mx-2"
           css={`
             font-weight: 900;
           `}
         >
           Members
         </span>
-        <EditMembersButton
-          className="d-flex justify-content-center align-items-center"
+        <div
+          className="d-flex justify-content-center align-items-center rounded-circle"
           css={`
             color: ${colors.primary_color};
+            background-color: white;
+            width: 2.1em;
+            height: 2.1em;
           `}
         >
           <RiPencilFill
@@ -94,9 +101,8 @@ const EditMemberFilter = () => {
               font-size: 1.2rem;
             `}
           />
-        </EditMembersButton>
-      </span>
-
+        </div>
+      </div>
       {showModal && <EditMembers onClose={() => setShowModal(false)} />}
     </>
   );

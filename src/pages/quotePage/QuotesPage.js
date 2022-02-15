@@ -43,7 +43,7 @@ function QuotesPage() {
           />
         }
       />
-      <Container className="mt-2">
+      <Container className="mt-2" fluid="lg">
         <div
           className="d-flex align-items-center justify-content-between"
           css={`
@@ -62,7 +62,7 @@ function QuotesPage() {
             </div>
           </div>
           <p
-            className="m-0"
+            className="m-0 d-none d-xl-block"
             css={`
               font-size: 0.89rem;
               color: ${colors.font.four};
@@ -87,6 +87,7 @@ function QuotesPage() {
             <Quotes sortBy={selectedSortBy.code} />
           </div>
           <div
+            className="d-none d-xl-block"
             css={`
               flex: 1;
             `}

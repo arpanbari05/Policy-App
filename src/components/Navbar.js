@@ -46,11 +46,11 @@ const Navbar = () => {
           >
             <Link to="/">
               <img
-                height="30"
                 src={fyntune}
                 alt={`companylogo`}
                 css={`
                   cursor: pointer;
+                  height: 1.92em;
                 `}
               />
             </Link>
