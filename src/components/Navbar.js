@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { fyntune } from "../assets/images";
 import Card from "./Card";
 import "styled-components/macro";
@@ -7,6 +7,9 @@ import ThemeModal from "./ThemeModal";
 import { useGetEnquiriesQuery } from "../api/api";
 import { useMembers, useTheme } from "../customHooks";
 import { FaRegCopy } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { setPolicyTypes, setPolicyType } from "../pages/quotePage/quote.slice";
+import ShareButton from "./Common/Button/ShareButton";
 
 const Navbar = () => {
   const location = useLocation();
@@ -66,14 +69,23 @@ const Navbar = () => {
           </div>
 
           {location.pathname !== "/" && trace_id && (
-            <div
-              css={`
-                background-color: ${colors.secondary_shade};
-                padding: 0.79em 1em;
-                font-size: 0.79rem;
-              `}
-            >
-              <TraceId />
+            <div css={`
+              display: flex;
+            `}>
+              {
+                (location.pathname === "/proposal" || location.pathname === "/proposal_summary")  && (
+                  <ShareButton />
+                )
+              }
+              <div
+                css={`
+                  background-color: ${colors.secondary_shade};
+                  padding: 0.79em 1em;
+                  font-size: 0.79rem;
+                `}
+              >
+                <TraceId />
+              </div>
             </div>
           )}
           {location.pathname === "/" && (

@@ -474,7 +474,8 @@ const FormBuilder = ({
                           generateRange(item.additionalOptions.customOptions)
                         }
                         asyncOptions={asyncOptions[item.name]}
-                        value={item.type === "text" && item.name === "name" ? values[item.name] || initialValue || item.value : values[item.name] || item.value}
+                        defaultValue={item.type === "text" && item.name === "name" ? values[item.name] || initialValue || item.value : values[item.name] || item.value}
+                        value={values[item.name] || item.value}
                         error={errors[item.name] || additionalErrors[item.name]}
                         submitTrigger={submitTrigger}
                         setCustomValid={setCustomValid}

@@ -54,7 +54,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   const [mutateValues, setMutateValues] = useState();
   const dispatch = useDispatch();
   const { noForAllChecked } = useSelector(state => state.proposalPage);
-
+  const proposalDetails = useSelector(state => state.proposalPage.proposalData);
+  const fullName = proposalDetails["Proposer Details"]?.name;
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
     const key2 = Object.keys(noForAll || {});
@@ -194,9 +195,41 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   useEffect(() => {
     checkCanProceed();
   }, []);
+
+  function formatter(number) {
+    if (!isNaN(number)) number = parseInt(number);
+    const updatedNumber = number.toLocaleString("en-US", {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    });
+    return updatedNumber;
+  }
+
+  console.log(proposalDetails);
+
   return (
     <div>
       {Object.keys(schema).map((item, index) => {
+        let result = [];
+        console.log(values);
+        // if(values && name ==="Insured Details"){
+        //   Object.keys(values[item]).forEach((key) => {
+        //   if (key === "dob" && values[item][key]) {
+        //     console.log(values[item][key]);
+        //     let updatedKey = values[item][key].split("-");
+        //     const date = updatedKey[0];
+        //     const month = updatedKey[1];
+        //     const year = updatedKey[2];
+        //     updatedKey = `${formatter(date)}-${formatter(month)}-${year}`;
+        //     result.push(updatedKey);
+        //   }else if (key === "name" && values[item][key]) {
+        //     result.unshift(`${values[item]["title"]}. ${values[item][key]}`);
+        //   } else if (key !== "title") {
+        //     result.push(`${values[item][key]}`);
+        //   }
+        // })
+        // }
+        // console.log(result);
         return (
           <Panel
             formName={name}
@@ -277,6 +310,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
               <Form>
                 {console.log("jhcvugc", values)}
                 <FormBuilder
+                  keyStr={item}
+                  lastName={fullName?.split(" ").slice(-1)}
                   schema={schema[item]}
                   components={components}
                   fetchValues={res => {
