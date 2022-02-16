@@ -31,6 +31,8 @@ const FormBuilder = ({
   noForAll,
   setNoForAll,
   setNoForAllEmpty,
+  keyStr,
+  lastName
 }) => {
   const {
     updateValue,
@@ -52,7 +54,7 @@ const FormBuilder = ({
 
   const [trigger, setTrigger] = useState(false);
   const { proposalData } = useSelector(state => state.proposalPage);
-  console.log(proposalData, "sgad");
+  const relationships = ["spouse", "son", "son1", "son2", "son3", "son4", "daughter", "daughter1", "daughter2", "daughter3", "daughter4", "father", "mother", "grand_father", "grand_mother"]
 
   useEffect(() => {
     if (trigger) {
@@ -345,7 +347,7 @@ const FormBuilder = ({
             );
           } else {
             const Comp = components[item.type];
-
+            const initialValue = relationships.includes(`${keyStr}`) ? lastName : null;
             if (
               !renderField(item, values) &&
               item.render &&
@@ -472,7 +474,7 @@ const FormBuilder = ({
                           generateRange(item.additionalOptions.customOptions)
                         }
                         asyncOptions={asyncOptions[item.name]}
-                        value={values[item.name] || item.value}
+                        value={item.type === "text" && item.name === "name" ? values[item.name] || initialValue || item.value : values[item.name] || item.value}
                         error={errors[item.name] || additionalErrors[item.name]}
                         submitTrigger={submitTrigger}
                         setCustomValid={setCustomValid}
