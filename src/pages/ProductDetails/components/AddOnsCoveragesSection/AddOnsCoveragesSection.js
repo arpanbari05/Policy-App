@@ -126,7 +126,6 @@ function Detail({ label, children }) {
         border-radius: 5px;
         border: 1px solid #b0bed0;
         padding: 0px 10px;
-
         & .GreetingDD__Wrapper {
           left: 0;
           top: 0;

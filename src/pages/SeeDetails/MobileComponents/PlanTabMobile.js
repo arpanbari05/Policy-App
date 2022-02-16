@@ -43,7 +43,7 @@ const PlanTabMobile = ({ data, item }) => {
                 padding: "4px",
                 borderRadius: "50%",
                 backgroundColor: "lightgray",
-                marginRight: "23px",
+                marginRight: "30px",
                 transform: "rotate(180deg)",
               }}
               src={downarrow}
@@ -54,7 +54,7 @@ const PlanTabMobile = ({ data, item }) => {
             <img
               style={{
                 right: "0",
-                marginRight: "25px",
+                marginRight: "30px",
                 padding: "4px",
                 borderRadius: "50%",
                 backgroundColor: "lightgray",
@@ -125,7 +125,15 @@ const PlanTabMobile = ({ data, item }) => {
       <div>
         <div style={{ display: "flex", alignItems: "center" }}>
           <div>
-            <h6 onClick={() => setToggle(!toggle)}>{item.title}</h6>
+            <h6
+              css={`
+                font-weight: bold;
+                font-size: 16px;
+              `}
+              onClick={() => setToggle(!toggle)}
+            >
+              {item.title}
+            </h6>
             <p
               onClick={() => setToggle(!toggle)}
               style={{
@@ -147,7 +155,7 @@ const PlanTabMobile = ({ data, item }) => {
                 padding: "4px",
                 borderRadius: "50%",
                 backgroundColor: "lightgray",
-                marginRight: "23px",
+                marginRight: "30px",
                 transform: "rotate(180deg)",
               }}
               src={downarrow}
@@ -158,7 +166,7 @@ const PlanTabMobile = ({ data, item }) => {
             <img
               style={{
                 right: "0",
-                marginRight: "20px",
+                marginRight: "30px",
                 padding: "4px",
                 borderRadius: "50%",
                 backgroundColor: "lightgray",
