@@ -48,7 +48,7 @@ function DeductibleFilterModal({ onClose, ...props }) {
           css={`
             background-color: ${colors.primary_color};
           `}
-          className="apply_btn mx-auto h-100 w-100"
+          className="apply_btn mx-auto h-100 w-100 mt-3"
           onClick={handleApplyClick}
         >
           Apply

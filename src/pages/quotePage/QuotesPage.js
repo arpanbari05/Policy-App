@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { Page } from "../../components";
 import useFilters from "./components/filters/useFilters";
 import useUpdateFilters from "./components/filters/useUpdateFilters";
@@ -6,11 +6,15 @@ import LowerModifier from "./components/LowerModifier";
 import Quotes from "./components/Quotes";
 import UpperModifier from "./components/UpperModifier";
 import "styled-components/macro";
-import { useGetQuotes, useMembers, useTheme } from "../../customHooks";
+import { useMembers, useTheme } from "../../customHooks";
 import { useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
 import { FaSync } from "react-icons/fa";
+import { useState } from "react";
+import SortBy from "./components/filters/SortBy";
+import assistant from "../../assets/images/call-center-service.png";
+import { QuotesLoader } from "./components";
 
 function QuotesPage() {
   const { colors } = useTheme();
@@ -21,67 +25,83 @@ function QuotesPage() {
 
   const isGroupExist = checkGroupExist(groupCode);
 
+  const [selectedSortBy, setSelectedSoryBy] = useState({
+    code: "relevance",
+    display_name: "Relevance",
+  });
+
   if (!isGroupExist) return <PageNotFound />;
 
   return (
-    <Page>
+    <Page loader={<QuotesLoader />}>
       <ScrollToTopBtn />
-      <div className="position-relative">
-        <QuoteLoader />
-        <UpperModifier />
-      </div>
-      <LowerModifier />
-      <Container>
-        <Row>
-          <Col lg={"9"}>
-            <div className="d-flex align-items-center justify-content-between">
-              <ShowingPlanType />
+      <UpperModifier />
+      <LowerModifier
+        sortBy={
+          <SortBy
+            selectedSortBy={selectedSortBy}
+            onChange={setSelectedSoryBy}
+          />
+        }
+      />
+      <Container className="mt-2" fluid="lg">
+        <div
+          className="d-flex align-items-center justify-content-between"
+          css={`
+            gap: 0.6rem;
+          `}
+        >
+          <div
+            className="d-flex align-items-center"
+            css={`
+              flex: 3;
+            `}
+          >
+            <ShowingPlanType />
+            <div className="m-auto">
               <ClearFilters />
-              <SortBy />
             </div>
-          </Col>
-          <Col>
-            <div
-              css={`
-                color: ${colors.font.four};
-                text-align: right;
-              `}
-            >
-              All Premium Plans are GST Inclusive
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={"9"}>
-            <Quotes />
-          </Col>
-          <Col></Col>
-        </Row>
+          </div>
+          <p
+            className="m-0 d-none d-xl-block"
+            css={`
+              font-size: 0.89rem;
+              color: ${colors.font.four};
+              text-align: right;
+              flex: 1;
+            `}
+          >
+            All Premium Plans are GST Inclusive
+          </p>
+        </div>
+        <div
+          className="mt-2 d-flex"
+          css={`
+            gap: 0.6rem;
+          `}
+        >
+          <div
+            css={`
+              flex: 3;
+            `}
+          >
+            <Quotes sortBy={selectedSortBy.code} />
+          </div>
+          <div
+            className="d-none d-xl-block"
+            css={`
+              flex: 1;
+            `}
+          >
+            <AssistanceCard />
+          </div>
+        </div>
       </Container>
     </Page>
   );
 }
 
-function QuoteLoader() {
-  const { isLoading, loadingPercentage } = useGetQuotes();
 
-  const { colors } = useTheme();
-
-  if (!isLoading) return null;
-
-  return (
-    <div
-      className="position-absolute"
-      css={`
-        top: 0;
-        height: 0.2em;
-        background-color: ${colors.primary_color};
-        width: ${loadingPercentage}%;
-        transition: 0.3s ease-in;
-      `}
-    />
-  );
-}
 
 export default QuotesPage;
 
@@ -91,7 +111,7 @@ function ShowingPlanType() {
     <h1
       className="m-0"
       css={`
-        font-size: 1.19rem;
+        font-size: 1rem;
         color: ${colors.font.four};
         width: max-content;
         font-weight: 900;
@@ -114,12 +134,12 @@ function ClearFilters(props) {
       css={`
         background-color: #e2f0ff;
         color: #0a87ff;
-        font-weight: bold;
+        font-weight: 900;
         width: max-content;
-        padding: 8px 12px;
+        padding: 0.6em 1em;
         border-radius: 24px;
         border: 1px solid #0a87ff;
-        font-size: 0.79rem;
+        font-size: 0.73rem;
       `}
       {...props}
     >
@@ -129,34 +149,57 @@ function ClearFilters(props) {
   );
 }
 
-function SortBy() {
-  const { colors, boxShadows } = useTheme();
-
+function AssistanceCard(props) {
+  const { colors } = useTheme();
   return (
     <div
-      className="rounded-3 p-3 position-relative"
+      {...props}
+      className="p-3 pb-5 position-relative"
       css={`
-        border: 0.6px solid ${colors.border.one};
-        box-shadow: ${boxShadows.two};
-        font-size: 0.83rem;
-        font-weight: 900;
-        width: 16em;
+        background-color: ${colors.secondary_shade};
       `}
     >
-      <span
-        className="position-absolute px-1"
+      <h1
         css={`
-          font-size: 0.79em;
-          color: ${colors.font.three};
-          background-color: #fff;
-          top: 0;
-          left: 1em;
-          transform: translateY(-50%);
+          font-size: 1rem;
+          font-weight: 900;
         `}
       >
-        Sort By
-      </span>
-      Relevance
+        Health Insurance Assistance
+      </h1>
+      <p
+        className="mt-3"
+        css={`
+          font-size: 0.89rem;
+          color: ${colors.font.one};
+        `}
+      >
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu nisl a
+        lorem auctor ultrices auctor vel elit. Aliquam quis consequat tellus.
+        Aliquam pellentesque ligula massa, aliquet fermentum nisl varius ac.
+      </p>
+      <button
+        className="px-3 py-2 rounded"
+        css={`
+          color: ${colors.primary_color};
+          border: 2px solid;
+          background-color: #fff;
+          font-weight: 900;
+        `}
+      >
+        Talk to us
+      </button>
+      <img
+        className="position-absolute m-3"
+        css={`
+          height: 5em;
+          width: 5em;
+          right: 0;
+          bottom: 0;
+        `}
+        src={assistant}
+        alt="assistant"
+      />
     </div>
   );
 }

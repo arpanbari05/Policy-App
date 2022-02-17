@@ -12,7 +12,11 @@ import CheckBox from "../../components/Checkbox/Checkbox";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import SecureLS from "secure-ls";
 import TermModal from "../../../ProposalSummary/TermsModal";
-import { useTheme } from "../../../../customHooks";
+import {
+  useCompanies,
+  useFrontendBoot,
+  useTheme,
+} from "../../../../customHooks";
 
 const removeTotalPremium = cart => {
   let { totalPremium, ...y } = cart;
@@ -25,16 +29,20 @@ function ProductSummaryMobile({ cart, payNow }) {
 
   const [show, setShow] = useState(false);
   const [showP, setShowP] = useState(false);
-  const { theme } = useSelector(state => state.frontendBoot);
+  // const { theme } = useSelector(state => state.frontendBoot);
 
-  const {colors} = useTheme()
+  const { colors } = useTheme();
 
-  const PrimaryColor = colors.primary_color
+  const PrimaryColor = colors.primary_color;
 
   // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const [termShow, setTermShow] = useState(false);
 
-  const { frontendData } = useSelector(state => state.frontendBoot);
+  const frontendBoot = useFrontendBoot();
+
+  const frontendData = { data: frontendBoot.data };
+
+  // const { frontendData } = useSelector(state => state.frontendBoot);
   const ls = new SecureLS();
   const url = useUrlQuery();
   const { proposalData, policyStatus, policyLoading } = useSelector(

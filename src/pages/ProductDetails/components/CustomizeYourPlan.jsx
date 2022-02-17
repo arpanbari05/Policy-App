@@ -21,7 +21,7 @@ import { CircleLoader } from "../../../components";
 import { useParams } from "react-router-dom";
 import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
-
+import { mobile } from "../../../utils/mediaQueries";
 import { amount } from "../../../utils/helper";
 
 const CustomizeYourPlan = ({
@@ -498,7 +498,16 @@ export function Riders({
   }
 
   return (
-    <FeatureSection id="additional-riders" {...header} {...props}>
+    <FeatureSection
+      css={`
+        ${mobile} {
+          display: none;
+        }
+      `}
+      id="additional-riders"
+      {...header}
+      {...props}
+    >
       <div
         className="d-flex flex-wrap"
         css={`

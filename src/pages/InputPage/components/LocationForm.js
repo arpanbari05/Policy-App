@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import CustomProgressBar from "../../../components/ProgressBar";
 import TextInput from "../../../components/TextInput";
@@ -9,7 +9,7 @@ import {
   useUpdateEnquiry,
   useUrlEnquiry,
 } from "../../../customHooks";
-import { Title } from "./FormComponents";
+import { ErrorMessage, Title } from "./FormComponents";
 import { every } from "lodash";
 import { useGetLocationDetailsQuery } from "../../../api/api";
 import "styled-components/macro";
@@ -26,6 +26,8 @@ function LocationForm() {
     useMembers();
 
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
+
+  const [error, setError] = useState(null);
 
   const getInitialSelectedCity = () => {
     const location = getGroupLocation(groupCode);
@@ -81,7 +83,10 @@ function LocationForm() {
     selectedCity && selectedCity.name === city.name;
 
   const handleSubmit = () => {
-    if (!selectedCity) return;
+    if (!selectedCity) {
+      setError("Please enter a valid Pincode or City");
+      return;
+    }
     submit(selectedCity);
   };
 
@@ -106,6 +111,10 @@ function LocationForm() {
     setSelectedCity(null);
   };
 
+  useEffect(() => {
+    setError(null);
+  }, [locationSearchQuery, selectedCity]);
+
   return (
     <div className="p-3">
       <Title>Tell Us Where You Live?</Title>
@@ -113,12 +122,13 @@ function LocationForm() {
       <div>
         <TextInput
           clear={clearCity}
-          label={"Pincode/City"}
+          label={"Enter Pincode or City"}
           name="location"
           id="location"
-          value={selectedCity?.city || locationSearchQuery}
+          value={selectedCity?.city || locationSearchQuery || ""}
           onChange={handleSearchQueryChange}
         />
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         {!selectedCity && (
           <div>
             <LocationOptions
@@ -198,8 +208,9 @@ function PopularCity({
         css={`
           & + label:hover,
           &:checked + label {
+            box-shadow: ${colors.primary_color} 0px 0px 1px 1px;
             background-color: #fff;
-            border-color: ${colors.primary_color};
+            border-color: transparent;
             color: ${colors.primary_color};
           }
         `}
@@ -273,7 +284,7 @@ function LocationOptions({ searchQuery = "", selected, onChange, ...props }) {
   const checkSelected = location => selected && selected.city === location.city;
 
   return (
-    <div>
+    <div {...props}>
       <ul className="p-0">
         {data.map(location => (
           <Location

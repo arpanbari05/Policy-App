@@ -7,7 +7,7 @@ const DataContainer = ({ title, description }) => {
       <div className="market_border_left">
         <h2 className="title_h4">{title}</h2>
       </div>
-      <p
+      {/* <p
         className="p_chart_title_l"
         css={`
           margin-bottom: 10px !important;
@@ -36,7 +36,7 @@ const DataContainer = ({ title, description }) => {
           &nbsp;
         </span>{" "}
         Current Market Premium 2021
-      </p>
+      </p> */}
       <p
         className="p_chart_title_market_sub"
         style={{

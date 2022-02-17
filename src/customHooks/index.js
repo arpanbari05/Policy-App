@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import {
@@ -13,7 +13,6 @@ import {
   useGetCustomQuotesQuery,
   useGetDiscountsQuery,
   useGetEnquiriesQuery,
-  useGetFrontendBootQuery,
   useUpdateCartMutation,
   useUpdateCompareQuotesMutation,
   useUpdateEnquiryMutation,
@@ -25,13 +24,16 @@ import useFilters from "../pages/quotePage/components/filters/useFilters";
 import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter";
 import styles from "../styles";
 import {
+  capitalize,
   getMonthsForYear,
   getQuoteSendData,
   getRiderCartData,
+  mergeQuotes,
 } from "../utils/helper";
 import { calculateTotalPremium } from "../utils/helper";
 import useUrlQuery from "./useUrlQuery";
-import { every } from "lodash";
+import { every, uniq } from "lodash";
+import config from "../config";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -61,7 +63,7 @@ function filterCompanies(companies = {}, insurance_types = []) {
 export function useCompanies() {
   let {
     data: { companies },
-  } = useGetFrontendBootQuery();
+  } = useFrontendBoot();
 
   const { journeyType } = useFrontendBoot();
 
@@ -146,16 +148,19 @@ export function useTheme() {
 }
 
 export function useFrontendBoot() {
-  const { data, isLoading, isUninitialized, ...query } =
-    useGetFrontendBootQuery();
+  // const { data, isLoading, isUninitialized, ...query } =
+  //   useGetFrontendBootQuery();
 
-  if (isUninitialized || isLoading)
-    return { ...query, isLoading, isUninitialized, data };
+  // if (isUninitialized || isLoading)
+  //   return { ...query, isLoading, isUninitialized, data };
+
+  const data = config;
 
   const tenantName = data.tenant.name;
 
-  const journeyType = "top_up";
+  const journeyType = "health";
 
+  // return { journeyType, tenantName, data, isLoading, isUninitialized };
   return { journeyType, tenantName, data };
 }
 
@@ -164,7 +169,7 @@ export function useFilter() {
     data: {
       defaultfilters: { cover, tenure, plan_type },
     },
-  } = useGetFrontendBootQuery();
+  } = useFrontendBoot();
   const {
     data: {
       data: { groups },
@@ -201,7 +206,7 @@ export function useFilter() {
 export function useMembers() {
   let {
     data: { members },
-  } = useGetFrontendBootQuery();
+  } = useFrontendBoot();
 
   const { data } = useGetEnquiriesQuery();
 
@@ -434,21 +439,25 @@ export function useUpdateEnquiry() {
 
   const [updateGroups, updateGroupsQueryState] = useUpdateGroupsMutation();
 
-  function updateEnquiry(data) {
+  async function updateEnquiry(data) {
     if (data.pincode) {
       const { groupCode, ...sendData } = data;
-      return Promise.all([
-        updateEnquiryMutation(sendData),
-        updateGroups({ groupCode, pincode: data.pincode }),
-      ]);
+
+      const updateGroupsResponse = await updateGroups({
+        groupCode,
+        pincode: data.pincode,
+      });
+      const updateEnquiryResponse = await updateEnquiryMutation(sendData);
+
+      return [updateGroupsResponse, updateEnquiryResponse];
     }
     return updateEnquiryMutation(data);
   }
 
   return {
+    ...queryState,
     updateEnquiry,
     isLoading: queryState.isLoading || updateGroupsQueryState.isLoading,
-    ...queryState,
   };
 }
 
@@ -575,7 +584,22 @@ export function useCart() {
     ];
   }
 
-  return { cartEntries, getCartEntry, updateCartEntry, updateCart };
+  function getNextGroupProduct(currentGroupCode) {
+    const nextGroup = currentGroupCode + 1;
+    const nextGroupProduct = cartEntries.find(
+      cartEntry => parseInt(cartEntry.group.id) === nextGroup,
+    );
+
+    return nextGroupProduct;
+  }
+
+  return {
+    cartEntries,
+    getCartEntry,
+    updateCartEntry,
+    updateCart,
+    getNextGroupProduct,
+  };
 }
 
 export function useRider(groupCode) {
@@ -982,4 +1006,152 @@ export function useCompareFeatures({ productIds }) {
   const isLoading = !data || !data.length;
 
   return { ...query, data, isLoading };
+}
+
+const validateName = (name = "") => /^[A-Za-z]+[A-Za-z ]*$/.test(name);
+
+export function useNameInput(initialValue = "") {
+  const [value, setValue] = useState(initialValue);
+
+  const onChange = evt => {
+    const { value: givenValue } = evt.target;
+
+    if (!givenValue) {
+      setValue(givenValue);
+      return;
+    }
+
+    const isValidName = validateName(givenValue);
+
+    if (!isValidName) return;
+
+    setValue(givenValue);
+  };
+
+  const onBlur = evt => {
+    const { value: givenValue } = evt.target;
+
+    setValue(capitalize(givenValue.trim()));
+  };
+
+  const style = { textTransform: "capitalize" };
+
+  return { value, onChange, onBlur, style };
+}
+
+const validateNumber = (str = "") => /\d/g.test(str);
+
+export function useNumberInput(initialValue = "", { maxLength = 60 } = {}) {
+  const [value, setValue] = useState(initialValue);
+
+  const onChange = evt => {
+    const { value: givenValue } = evt.target;
+
+    if (givenValue.length > maxLength) return;
+
+    if (!givenValue) {
+      setValue(givenValue);
+      return;
+    }
+
+    const isNumber = validateNumber(givenValue);
+
+    if (isNumber) {
+      setValue(givenValue);
+    }
+  };
+
+  return { value, onChange, type: "tel", maxLength };
+}
+
+export function useQuotes({ sortBy = "relevence", quotesData = [] }) {
+  let mergedQuotes = quotesData;
+
+  if (quotesData) {
+    mergedQuotes = quotesData.filter(
+      icQuotes => !!icQuotes?.data?.data[0]?.total_premium,
+    );
+    mergedQuotes = quotesData.map(icQuotes => ({
+      ...icQuotes,
+      data: { data: mergeQuotes(icQuotes.data.data, { sortBy }) },
+    }));
+    if (sortBy === "premium-low-to-high") {
+      mergedQuotes = mergedQuotes.filter(
+        icQuotes => !!icQuotes?.data?.data[0]?.length,
+      );
+      mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) =>
+        icQuotesA.data.data[0][0].total_premium >
+        icQuotesB.data.data[0][0].total_premium
+          ? 1
+          : -1,
+      );
+    }
+  }
+
+  return { mergedQuotes };
+}
+
+function getDeductibles(quotes = []) {
+  return uniq(quotes.map(quote => quote.deductible));
+}
+
+export function useQuoteCard({ quotes = [] }) {
+  const isDeductibleJourney = quotes[0]?.deductible;
+
+  const deductibles = getDeductibles(quotes);
+
+  const [selectedDeductible, setSelectedDeductible] = useState(deductibles[0]);
+
+  const sumInsureds = isDeductibleJourney
+    ? quotes
+        .filter(
+          quote => parseInt(quote.deductible) === parseInt(selectedDeductible),
+        )
+        .map(quote => parseInt(quote.sum_insured))
+        .sort((a, b) => a - b)
+    : quotes.map(quote => parseInt(quote.sum_insured));
+
+  const [selectedSumInsured, setSelectedSumInsured] = useState(sumInsureds[0]);
+
+  const quote = quotes.find(quote =>
+    isDeductibleJourney
+      ? parseInt(quote.deductible) === parseInt(selectedDeductible) &&
+        parseInt(quote.sum_insured) === parseInt(selectedSumInsured)
+      : parseInt(quote.sum_insured) === parseInt(selectedSumInsured),
+  );
+
+  const { getCompany } = useCompanies();
+
+  useEffect(() => {
+    if (!quote) {
+      setSelectedSumInsured(parseInt(sumInsureds[0]));
+    }
+  }, [quote, quotes, sumInsureds, deductibles]);
+
+  if (!quote) return { quote };
+
+  const { logo: logoSrc } = getCompany(quote.company_alias);
+
+  const handleSumInsuredChange = evt => {
+    const { value } = evt;
+
+    setSelectedSumInsured(parseInt(value));
+  };
+
+  const handleDeductibleChange = evt => {
+    const { value } = evt;
+
+    setSelectedDeductible(parseInt(value));
+  };
+
+  return {
+    quote,
+    logoSrc,
+    handleSumInsuredChange,
+    handleDeductibleChange,
+    selectedDeductible,
+    selectedSumInsured,
+    deductibles,
+    sumInsureds,
+  };
 }

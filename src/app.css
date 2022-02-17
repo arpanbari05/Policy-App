@@ -75,7 +75,7 @@
 /* Generic Styles start here */
 
 body {
-  font-size: 16px;
+  /* font-size: 16px; */
   font-weight: 400;
   font-family: "Inter-Regular";
   color: #000;
@@ -109,6 +109,13 @@ a:hover {
   color: inherit;
 }
 
+.noPadding {
+  padding: 0px !important;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
 body,
 html {
   height: 100%;

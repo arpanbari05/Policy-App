@@ -4,6 +4,7 @@ import EditMemberFilter from "./filters/EditMemberFilter";
 import { Link, useParams } from "react-router-dom";
 import { MemberText } from "../../../components";
 import "styled-components/macro";
+import * as mq from "../../../utils/mediaQueries";
 
 function UpperModifier() {
   const { colors } = useTheme();
@@ -13,11 +14,12 @@ function UpperModifier() {
       css={`
         background-color: ${colors.secondary_shade};
       `}
+      className="position-relative"
     >
-      <Container>
+      <Container fluid="lg">
         <div
           css={`
-            height: 5.37em;
+            height: 3.67em;
           `}
           className="d-flex align-items-center"
         >
@@ -31,11 +33,11 @@ function UpperModifier() {
 
 export default UpperModifier;
 
-function GroupLinks({ ...props }) {
+export function GroupLinks({ ...props }) {
   const { groups } = useMembers();
   return (
     <div
-      className="d-flex align-items-center mx-3 h-100"
+      className="d-flex align-items-center mx-3 h-100 justify-content-center"
       css={`
         gap: 1em;
       `}
@@ -48,7 +50,7 @@ function GroupLinks({ ...props }) {
   );
 }
 
-function GroupLink({ group, ...props }) {
+export function GroupLink({ group, ...props }) {
   const { colors } = useTheme();
 
   const { id } = group;
@@ -87,9 +89,14 @@ function GroupLink({ group, ...props }) {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          font-size: 0.93rem;
+          font-size: 0.79rem;
           line-height: 1;
-          padding: 1.2em 1em;
+          padding: 1em;
+          ${mq.mobile} {
+            background: none;
+            border-radius: 0;
+            min-width: max-content;
+          }
         `}
       >
         <MemberText>{membersText}</MemberText>
@@ -98,7 +105,7 @@ function GroupLink({ group, ...props }) {
         <div
           className="position-absolute"
           css={`
-            height: 0.3em;
+            height: 0.2em;
             width: 90%;
             left: 50%;
             top: 100%;

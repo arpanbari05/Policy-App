@@ -40,6 +40,47 @@ const plantypes = {
   F: "Family Floater",
 };
 
+export function CartDetails({ groupCode, ...props }) {
+  const { colors } = useTheme();
+
+  return (
+    <CartDetailsWrap {...props}>
+      <div className="d-flex flex-column justify-content-between position-relative">
+        <div
+          className="rounded-circle position-absolute"
+          css={`
+            width: 6.3em;
+            height: 6.3em;
+            background: ${colors.primary_shade};
+            top: -59px;
+            left: -56px;
+            z-index: -1;
+          `}
+        />
+        <h1
+          className="m-0"
+          css={`
+            font-size: 1.261rem;
+            font-weight: 900;
+            color: #2d3f5e;
+          `}
+        >
+          Your Cart
+        </h1>
+        <Members groupCode={groupCode} />
+      </div>
+
+      <div>
+        <BasePlanDetails groupCode={groupCode} />
+        <RidersList groupCode={groupCode} />
+        <DiscountsList groupCode={groupCode} />
+        <TotalPremium groupCode={groupCode} />
+        <ReviewCartButtonNew groupCode={groupCode} />
+      </div>
+    </CartDetailsWrap>
+  );
+}
+
 const CartDetailsWrap = styled.div`
   position: sticky;
   top: 110px;
@@ -198,7 +239,6 @@ function EditMembersButton({ groupCode, ...props }) {
           onClose={closeEditMembersModal}
           onSubmit={handleSubmit}
           groupCode={groupCode}
-          submitState={{ isLoading }}
         >
           {serverErrors
             ? serverErrors.map(error => (
@@ -310,70 +350,28 @@ function TotalPremium({ groupCode, ...props }) {
   );
 }
 
-export function CartDetails({ groupCode, ...props }) {
-  const { colors } = useTheme();
-
-  return (
-    <CartDetailsWrap {...props}>
-      <div className="d-flex flex-column justify-content-between position-relative">
-        <div
-          className="rounded-circle position-absolute"
-          css={`
-            width: 6.3em;
-            height: 6.3em;
-            background: ${colors.primary_shade};
-            top: -59px;
-            left: -56px;
-            z-index: -1;
-          `}
-        />
-        <h1
-          className="m-0"
-          css={`
-            font-size: 1.261rem;
-            font-weight: 900;
-            color: #2d3f5e;
-          `}
-        >
-          Your Cart
-        </h1>
-        <Members groupCode={groupCode} />
-      </div>
-
-      <div>
-        <BasePlanDetails groupCode={groupCode} />
-        <RidersList groupCode={groupCode} />
-        <DiscountsList groupCode={groupCode} />
-        <TotalPremium groupCode={groupCode} />
-        <ReviewCartButtonNew groupCode={groupCode} />
-      </div>
-    </CartDetailsWrap>
-  );
-}
-
 function ReviewCartButtonNew({ groupCode, ...props }) {
   const history = useHistory();
   const url = useUrlQuery();
   const { updateCart } = useCart();
   const [updateCartMutation, query] = updateCart(groupCode);
 
-  const { cartEntries } = useCart();
+  const { getNextGroupProduct } = useCart();
 
   const cartSummaryModal = useToggle();
 
+  const { getMembersText } = useMembers();
+
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
   const handleClick = () => {
     updateCartMutation().then(() => {
-      const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
-      const nextGroup = groupCode + 1;
-
-      const isNextGroupProductAvailable = groupCodes.includes(nextGroup);
-
-      if (isNextGroupProductAvailable) {
+      if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
-          pathname: `/productdetails/${nextGroup}`,
+          pathname: `/productdetails/${nextGroupProduct.group.id}`,
           search: `enquiryId=${enquiryId}`,
         });
         return;
@@ -395,8 +393,25 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         disabled={query.isLoading}
         {...props}
       >
-        Review Your Cart
-        {query.isLoading && <CircleLoader animation="border" />}
+        {nextGroupProduct ? (
+          <div className="d-flex justify-content-between align-items-center">
+            <div
+              css={`
+                font-size: 0.79rem;
+                text-align: left;
+              `}
+            >
+              <div>Next Step:</div>
+              <div>Plan for {getMembersText(nextGroupProduct.group)}</div>
+            </div>
+            <div>
+              Proceed{" "}
+              {query.isLoading ? <CircleLoader animation="border" /> : null}
+            </div>
+          </div>
+        ) : (
+          "Review Your Cart"
+        )}
       </Button>
       {cartSummaryModal.isOn && (
         <CartSummaryModal

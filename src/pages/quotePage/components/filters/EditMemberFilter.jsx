@@ -14,6 +14,7 @@ import {
 import { Button } from "../../../../components";
 import { RiPencilFill } from "react-icons/ri";
 import { FaTimes } from "react-icons/fa";
+import * as mq from "../../../../utils/mediaQueries";
 
 export function EditMembersModal({ onClose, children, ...props }) {
   const handleHide = () => {
@@ -28,13 +29,30 @@ export function EditMembersModal({ onClose, children, ...props }) {
       css={`
         .modal-dialog {
           max-width: 846px;
+          ${mq.mobile} {
+            width: 100vw;
+            margin: 0;
+          }
+        }
+        .modal-content {
+          ${mq.mobile} {
+            width: 100vw;
+            border-radius: 0;
+          }
         }
       `}
       {...props}
     >
       <Modal.Header
+      className="w-100"
         css={`
           background-color: #f5f7f9;
+          ${mq.mobile} {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 99;
+          }
         `}
       >
         <Modal.Title
@@ -50,7 +68,16 @@ export function EditMembersModal({ onClose, children, ...props }) {
           <FaTimes />
         </button>
       </Modal.Header>
-      <Modal.Body className="p-0">{children}</Modal.Body>
+      <Modal.Body
+        className="p-0"
+        css={`
+          ${mq.mobile} {
+            margin-top: 3.91em;
+          }
+        `}
+      >
+        {children}
+      </Modal.Body>
     </Modal>
   );
 }
@@ -66,28 +93,34 @@ const EditMemberFilter = () => {
   const [showModal, setShowModal] = useState(false);
   return (
     <>
-      <span
-        className="plans_for plans_for_editable d-flex align-items-center"
+      <div
+        className="d-flex align-items-center"
         onClick={() => setShowModal(true)}
+        role="button"
       >
         <div
-          className="yellow_start_line"
+          className="rounded"
           css={`
             background-color: ${colors.secondary_color};
+            width: 0.37em;
+            height: 2.1em;
           `}
-        ></div>
+        />
         <span
+          className="mx-2"
           css={`
-            font-size: 17px;
             font-weight: 900;
           `}
         >
           Members
         </span>
-        <EditMembersButton
-          className="d-flex justify-content-center align-items-center"
+        <div
+          className="d-flex justify-content-center align-items-center rounded-circle"
           css={`
             color: ${colors.primary_color};
+            background-color: white;
+            width: 2.1em;
+            height: 2.1em;
           `}
         >
           <RiPencilFill
@@ -95,9 +128,8 @@ const EditMemberFilter = () => {
               font-size: 1.2rem;
             `}
           />
-        </EditMembersButton>
-      </span>
-
+        </div>
+      </div>
       {showModal && <EditMembers onClose={() => setShowModal(false)} />}
     </>
   );
@@ -133,8 +165,15 @@ export function EditMembers({ onClose, ...props }) {
   };
 
   return (
-    <EditMembersModal submitState={{ isLoading }} onClose={onClose} {...props}>
-      <form onSubmit={handleSubmit}>
+    <EditMembersModal onClose={onClose} {...props}>
+      <form
+        onSubmit={handleSubmit}
+        css={`
+          ${mq.mobile} {
+            padding-bottom: 3em;
+          }
+        `}
+      >
         <div className="p-3">
           <MemberOptions {...memberForm} />
         </div>
@@ -144,7 +183,19 @@ export function EditMembers({ onClose, ...props }) {
               {serverError}
             </StyledErrorMessage>
           ))}
-        <Button type="submit" loader={isLoading} className="w-100 rounded-0">
+        <Button
+          type="submit"
+          loader={isLoading}
+          className="w-100 rounded-0"
+          css={`
+            ${mq.mobile} {
+              position: fixed;
+              bottom: 0;
+              left: 0;
+              z-index: 99;
+            }
+          `}
+        >
           Apply
         </Button>
       </form>

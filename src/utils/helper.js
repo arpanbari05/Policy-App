@@ -1,4 +1,4 @@
-import { range } from "lodash";
+import _, { range } from "lodash";
 
 export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
@@ -261,7 +261,7 @@ export function getDisplayPremium({ total_premium, tenure }) {
   }`;
 }
 
-export function mergeQuotes(quotes) {
+export function mergeQuotes(quotes, { sortBy = "relevance" } = {}) {
   const mergedQuotes = {};
 
   for (let quote of quotes) {
@@ -276,5 +276,23 @@ export function mergeQuotes(quotes) {
     mergedQuotes[id] = [quote];
   }
 
-  return mergedQuotes;
+  let sortedMergeQuotes = Object.values(mergedQuotes).sort();
+
+  if (sortBy === "premium-low-to-high") {
+    sortedMergeQuotes = sortedMergeQuotes.map(quotes =>
+      quotes.sort((quoteA, quoteB) =>
+        quoteA?.total_premium > quoteB?.total_premium ? 1 : -1,
+      ),
+    );
+
+    sortedMergeQuotes = sortedMergeQuotes.sort((quotesA, quotesB) =>
+      quotesA[0]?.total_premium > quotesB[0]?.total_premium ? 1 : -1,
+    );
+  }
+
+  return sortedMergeQuotes;
+}
+
+export function capitalize(sentence = "") {
+  return sentence.split(" ").map(_.capitalize).join(" ");
 }

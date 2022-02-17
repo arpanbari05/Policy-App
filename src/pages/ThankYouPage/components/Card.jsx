@@ -8,13 +8,22 @@ import mail from "./../../../assets/svg/mailpolicy.svg";
 import paper from "./../../../assets/svg/paperplicy.svg";
 import repolicy from "./../../../assets/svg/repolicy.svg";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
+import { useFrontendBoot, useTheme } from "../../../customHooks";
 
 const Card = ({ values, isLoading }) => {
-  const { theme } = useSelector(state => state.frontendBoot);
+  // const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
-  const { frontendData } = useSelector(state => state.frontendBoot);
+  const {
+    colors: { primary_color: PrimaryColor, secondary_shade: SecondaryShade },
+  } = useTheme();
+
+  const frontendBoot = useFrontendBoot();
+
+  const frontendData = { data: frontendBoot.data };
+
+  // const { frontendData } = useSelector(state => state.frontendBoot);
   return values?.product ? (
     <CardWrapper>
       <LogoWrapper>

@@ -42,7 +42,9 @@ export const OptionWrapper = styled.ul`
   list-style: none;
   padding-left: 0rem;
   .option {
-    border-bottom: 1px solid #d5dce5;
+    :not(&:last-child) {
+      border-bottom: 1px solid #d5dce5;
+    }
     text-transform: capitalize;
     padding: 14px 5px;
     font-weight: 600;

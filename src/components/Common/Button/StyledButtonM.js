@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useTheme } from "../../../customHooks";
+
 const StyledButtonM = ({
   type,
   value,
@@ -9,13 +10,11 @@ const StyledButtonM = ({
   children,
   customClass,
 }) => {
-  const { theme } = useSelector(state => state.frontendBoot);
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { colors } = useTheme();
 
   return (
     <Button
-      PrimaryColor={PrimaryColor}
+      PrimaryColor={colors.primary_color}
       type={type}
       data-page="1"
       name="next"
