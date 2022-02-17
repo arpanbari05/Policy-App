@@ -5,7 +5,7 @@ import {
 } from "../../../../api/api";
 
 function useUpdateFilters() {
-  const [updateGroup, ...query] = useUpdateGroupsMutation();
+  const [updateGroup, query] = useUpdateGroupsMutation();
 
   const { groupCode } = useParams();
 
@@ -31,7 +31,7 @@ function useUpdateFilters() {
     updateGroup({ groupCode, extras: null });
   }
 
-  return { updateFilters, resetFilters, ...query };
+  return { updateFilters, resetFilters, query };
 }
 
 export default useUpdateFilters;

@@ -4,8 +4,7 @@ import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import "styled-components/macro";
 import { OptionWrapper, ApplyBtn } from "./Filter.style";
 import useFilters from "./useFilters";
-import { useGetFrontendBootQuery } from "../../../../api/api";
-import { useTheme } from "../../../../customHooks";
+import { useFrontendBoot, useTheme } from "../../../../customHooks";
 import useUpdateFilters from "./useUpdateFilters";
 import { Filter, FilterHead } from ".";
 
@@ -23,7 +22,7 @@ function validateCustomCover(customCover) {
 function CoverFilterModal({ onClose, ...props }) {
   const {
     data: { covers },
-  } = useGetFrontendBootQuery();
+  } = useFrontendBoot();
 
   const { colors } = useTheme();
 
