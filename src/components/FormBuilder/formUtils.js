@@ -55,7 +55,7 @@ export const renderField = (item, value, member) => {
         if (temp?.[2] && value[temp[0]]?.[temp[1]]?.[temp[2]] === is) {
           console.log("asda312", is, value[temp[0]]?.[temp[1]]?.[temp[2]]);
           return true;
-        } else if (value[temp[0]] && value[temp[0]][temp[1]] === is) {
+        } else if (value && value[temp[0]] && value[temp[0]][temp[1]] === is) {
           return true;
         } else {
           return false;

@@ -408,7 +408,7 @@ const ProposalSummary = () => {
                         }
                       `}
                     >
-                      Hi {proposerDetails?.name?.split(" ")[0]}, please review
+                      Hi <span style={{textTransorm:"capitalize"}}>{proposerDetails?.name?.split(" ")[0]}</span>, please review
                       your proposal details before you proceed
                     </p>
                     <div className="-wrapper pad_proposal_s">
