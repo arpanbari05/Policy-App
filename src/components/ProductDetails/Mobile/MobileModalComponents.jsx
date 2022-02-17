@@ -22,7 +22,7 @@ import {
   getDisplayPremium,
   getPlanFeatures,
 } from "../../../utils/helper";
-import { mobile } from "../../../utils/mediaQueries";
+import { mobile, small } from "../../../utils/mediaQueries";
 import CardSkeletonLoader from "../../Common/card-skeleton-loader/CardSkeletonLoader";
 import { some } from "lodash";
 import AboutCompany from "../../../pages/SeeDetails/DataSet/AboutCompany";
@@ -34,6 +34,9 @@ import CartSummaryModal from "../../CartSummaryModal";
 import MobilePlanDetails from "../../../pages/ProductDetails/components/Mobile/MobilePlanDetails";
 import MobileAddOnCoverages from "../../../pages/ProductDetails/components/Mobile/MobileAddOnCoverages";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
+import MobileClaimProcess from "../../../pages/ProductDetails/components/Mobile/MobileClaimProcesses/MobileClaimProcesses";
+import MobileAboutCompany from "../../../pages/ProductDetails/components/Mobile/MobileAboutCompany/MobileAboutCompany";
+import MobileCashlessHospitals from "../../../pages/ProductDetails/components/Mobile/MobileCashlessHospitals/MobileCashlessHospitals";
 
 export function MobileProductHeader({
   quote,
@@ -56,7 +59,7 @@ export function MobileProductHeader({
   const { logo, csr } = getCompany(company.alias);
 
   return (
-    <AbsoluteTop>
+    <StickyTop>
       <ProductHeaderWrap className=" position-relative" {...props}>
         <UpperDiv>
           <CompLogo src={logo} alt={company?.alias} />
@@ -89,7 +92,7 @@ export function MobileProductHeader({
           </ClaimSettlementDiv>
         </LowerDiv>
       </ProductHeaderWrap>
-    </AbsoluteTop>
+    </StickyTop>
   );
 }
 
@@ -127,6 +130,9 @@ const LowerDiv = styled.div`
   height: 40px;
   font-size: 12px;
   display: flex;
+  ${small} {
+    font-size: 10px;
+  }
 `;
 
 const CoverDiv = styled.div`
@@ -149,7 +155,7 @@ const ClaimSettlementDiv = styled.div`
   height: 40px;
 `;
 
-const AbsoluteTop = styled.div`
+const StickyTop = styled.div`
   display: none;
   ${mobile} {
     display: block;
@@ -180,6 +186,7 @@ export function MobileProductDetailsTabs({ children, ...props }) {
           }
         }
       `}
+      primary_color={colors.primary_color}
       unmountOnExit
       {...props}
     >
@@ -195,7 +202,7 @@ const StyledTabs = styled(Tabs)`
     display: flex;
     box-shadow: rgb(0 75 131 / 13%) 0px 3px 6px 0px;
     height: 40px;
-    padding: 0px 20px;
+    padding: 0px 10px;
     & .nav-item {
       height: 100%;
       & .nav-link {
@@ -216,9 +223,30 @@ const StyledTabs = styled(Tabs)`
             left: 0px;
             transform: translateY(-100%);
             border-radius: 1.27em 1.27em 0 0;
-            background: rgb(10, 135, 255);
+            background: ${({ primary_color }) => primary_color};
           }
         }
+      }
+    }
+  }
+  @media (max-width: 673px) {
+    & .nav-item {
+      & .nav-link {
+        font-size: 12px !important;
+        padding: 8px 2px;
+        &.active {
+          &::after {
+            height: 2px;
+          }
+        }
+      }
+    }
+  }
+  ${small} {
+    height: 50px;
+    & .nav-item {
+      & .nav-link {
+        width: min-content;
       }
     }
   }
@@ -321,16 +349,16 @@ export function MobileRenderPlanDetails({ quote, ...props }) {
     ])
   )
     return (
-      <DetailsSectionWrap>
+      <MobileDetailsSectionWrap>
         <CardSkeletonLoader />
-      </DetailsSectionWrap>
+      </MobileDetailsSectionWrap>
     );
 
   if (productBrochureQuery.isError)
     return (
-      <DetailsSectionWrap>
+      <MobileDetailsSectionWrap>
         {productBrochureQuery.error.data.message}
-      </DetailsSectionWrap>
+      </MobileDetailsSectionWrap>
     );
 
   const planDetails = getPlanFeatures(data, sum_insured);
@@ -349,9 +377,14 @@ export function MobileRenderPlanDetails({ quote, ...props }) {
   );
 }
 
-const DetailsSectionWrap = styled.section`
-  padding: 0 6%;
-  margin: auto;
+export const MobileDetailsSectionWrap = styled.section`
+  display: none;
+  ${mobile} {
+    display: block;
+    padding: 0 6%;
+    margin: auto;
+    padding-top: 40px;
+  }
 `;
 
 export const MobileSeeDetailsTop = ({ onClose }) => {
@@ -378,7 +411,7 @@ export const MobileSeeDetailsTop = ({ onClose }) => {
   );
 };
 
-const MobileSeeDetailsTopOuter = styled.div`
+export const MobileSeeDetailsTopOuter = styled.div`
   display: none;
   ${mobile} {
     display: flex;
@@ -400,5 +433,140 @@ export function MobileRidersSection({ quote, ...props }) {
 
   groupCode = parseInt(groupCode);
 
-  return <MobileAddOnCoverages groupCode={groupCode} quote={quote} {...props} />;
+  return (
+    <MobileAddOnCoverages groupCode={groupCode} quote={quote} {...props} />
+  );
+}
+
+export function MobileRenderClaimProcess({ quote, ...props }) {
+  const {
+    product: { company, id },
+  } = quote;
+
+  const claimProcessQuery = useGetClaimProcessQuery(company.id);
+
+  const productBrochureQuery = useGetProductBrochureQuery(id);
+
+  const isLoading = some([
+    claimProcessQuery.isLoading,
+    claimProcessQuery.isUninitialized,
+    productBrochureQuery.isLoading,
+    productBrochureQuery.isUninitialized,
+  ]);
+
+  const isError = some([
+    claimProcessQuery.isError,
+    productBrochureQuery.isError,
+  ]);
+
+  if (isLoading)
+    return (
+      <MobileDetailsSectionWrap>
+        <CardSkeletonLoader />
+      </MobileDetailsSectionWrap>
+    );
+
+  return (
+    <MobileClaimProcess
+      ActiveMainTab
+      claimProccess={claimProcessQuery.data}
+      claimform={(productBrochureQuery.data || [])[0]}
+    />
+  );
+}
+
+export function MobileRenderAboutCompany({ quote, ...props }) {
+  const {
+    product: { company },
+  } = quote;
+
+  const { getCompany } = useCompanies();
+
+  const { short_name } = getCompany(company.alias);
+
+  const { isLoading, isUninitialized, data } = useGetAboutCompanyQuery(
+    company.id,
+  );
+
+  if (some([isLoading, isUninitialized]))
+    return (
+      <MobileDetailsSectionWrap>
+        <CardSkeletonLoader />
+      </MobileDetailsSectionWrap>
+    );
+
+  return (
+    <MobileAboutCompany
+      ActiveMainTab
+      aboutCompany={data}
+      company_name={short_name}
+    />
+  );
+}
+
+export function MobileRenderCashlessHospitals({ quote, ...props }) {
+  const {
+    product: { company },
+  } = quote;
+  const { isLoading, isUninitialized, isError, data } =
+    useGetNetworkHospitalsQuery(company.alias);
+
+  if (isLoading || isUninitialized)
+    return (
+      <MobileDetailsSectionWrap>
+        <CardSkeletonLoader />
+      </MobileDetailsSectionWrap>
+    );
+
+  if (isError)
+    return (
+      <MobileDetailsSectionWrap>
+        <p>Cannot get hosiptals.</p>
+      </MobileDetailsSectionWrap>
+    );
+
+  let hospitals = data?.data || [];
+  let searchByName = {};
+  let searchByPincode = {};
+  const displayHospitals = hospitals.slice(0, 6);
+  hospitals.forEach(item => {
+    searchByName = {
+      ...searchByName,
+      ...{
+        [item.name]: [
+          ...(searchByName[item.name] ? searchByName[item.name] : []),
+          item,
+        ],
+      },
+    };
+    searchByPincode = {
+      ...searchByPincode,
+      ...{
+        [item.pincode]: [
+          ...(searchByPincode[item.pincode]
+            ? searchByPincode[item.pincode]
+            : []),
+          item,
+        ],
+      },
+    };
+  });
+  const rows = displayHospitals.reduce(function (rows, key, index) {
+    return (
+      (index % 2 === 0 ? rows.push([key]) : rows[rows.length - 1].push(key)) &&
+      rows
+    );
+  }, []);
+
+  return (
+    <MobileCashlessHospitals
+      ActiveMainTab
+      hospitals={{
+        displayHospitals: rows,
+        searchByName,
+        searchByPincode,
+        hospitals,
+      }}
+    />
+  );
 }
