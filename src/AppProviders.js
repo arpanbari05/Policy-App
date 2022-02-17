@@ -32,13 +32,13 @@ function AppLoaders({ children, ...props }) {
 
   const isTestRoute = useRouteMatch({ path: "/test" });
 
-  const { isLoading, isUninitialized } = useGetFrontendBootQuery(undefined, {
-    skip: !!isTestRoute,
-  });
+  // const { isLoading, isUninitialized } = useGetFrontendBootQuery(undefined, {
+  //   skip: !!isTestRoute,
+  // });
 
   if (some([isTestRoute, isRootRoute, isBasicDetailsRoute])) return children;
 
-  if (isLoading || isUninitialized) return <FullScreenLoader />;
+  // if (isLoading || isUninitialized) return <FullScreenLoader />;
 
   return <LoadEnquiries {...props}>{children}</LoadEnquiries>;
 }

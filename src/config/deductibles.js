@@ -1,0 +1,17 @@
+export const deductibles = [
+  { code: 10000, display_name: 10000 },
+  { code: 25000, display_name: 25000 },
+  { code: 50000, display_name: 50000 },
+  { code: 200000, display_name: 200000 },
+  { code: 300000, display_name: 300000 },
+  { code: 400000, display_name: 400000 },
+  { code: 500000, display_name: 500000 },
+  { code: 600000, display_name: 600000 },
+  { code: 700000, display_name: 700000 },
+  { code: 800000, display_name: 800000 },
+  { code: 900000, display_name: 900000 },
+  { code: 1000000, display_name: 1000000 },
+  { code: 1500000, display_name: 1500000 },
+  { code: 2000000, display_name: 2000000 },
+  { code: 2500000, display_name: 2500000 },
+];

@@ -423,7 +423,7 @@ export function BackButtonMobile({ path, ...props }) {
         color: ${colors.primary_color};
         font-size: 1.29em;
       `}
-      path={path}
+      to={path}
     >
       <FaArrowCircleLeft />
     </Link>

@@ -13,7 +13,6 @@ import {
   useGetCustomQuotesQuery,
   useGetDiscountsQuery,
   useGetEnquiriesQuery,
-  useGetFrontendBootQuery,
   useUpdateCartMutation,
   useUpdateCompareQuotesMutation,
   useUpdateEnquiryMutation,
@@ -34,7 +33,7 @@ import {
 import { calculateTotalPremium } from "../utils/helper";
 import useUrlQuery from "./useUrlQuery";
 import { every, uniq } from "lodash";
-import { quoteFeatures } from "../test/data/quoteFeatures";
+import config from "../config";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -64,7 +63,7 @@ function filterCompanies(companies = {}, insurance_types = []) {
 export function useCompanies() {
   let {
     data: { companies },
-  } = useGetFrontendBootQuery();
+  } = useFrontendBoot();
 
   const { journeyType } = useFrontendBoot();
 
@@ -149,17 +148,20 @@ export function useTheme() {
 }
 
 export function useFrontendBoot() {
-  const { data, isLoading, isUninitialized, ...query } =
-    useGetFrontendBootQuery();
+  // const { data, isLoading, isUninitialized, ...query } =
+  //   useGetFrontendBootQuery();
 
-  if (isUninitialized || isLoading)
-    return { ...query, isLoading, isUninitialized, data };
+  // if (isUninitialized || isLoading)
+  //   return { ...query, isLoading, isUninitialized, data };
+
+  const data = config;
 
   const tenantName = data.tenant.name;
 
   const journeyType = "top_up";
 
-  return { journeyType, tenantName, data, isLoading, isUninitialized };
+  // return { journeyType, tenantName, data, isLoading, isUninitialized };
+  return { journeyType, tenantName, data };
 }
 
 export function useFilter() {
@@ -167,7 +169,7 @@ export function useFilter() {
     data: {
       defaultfilters: { cover, tenure, plan_type },
     },
-  } = useGetFrontendBootQuery();
+  } = useFrontendBoot();
   const {
     data: {
       data: { groups },
@@ -204,7 +206,7 @@ export function useFilter() {
 export function useMembers() {
   let {
     data: { members },
-  } = useGetFrontendBootQuery();
+  } = useFrontendBoot();
 
   const { data } = useGetEnquiriesQuery();
 
@@ -1150,6 +1152,6 @@ export function useQuoteCard({ quotes = [] }) {
     selectedDeductible,
     selectedSumInsured,
     deductibles,
-    sumInsureds
+    sumInsureds,
   };
 }

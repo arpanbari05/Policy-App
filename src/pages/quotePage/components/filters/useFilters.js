@@ -1,8 +1,6 @@
 import { useParams } from "react-router-dom";
-import {
-  useGetEnquiriesQuery,
-  useGetFrontendBootQuery,
-} from "../../../../api/api";
+import { useGetEnquiriesQuery } from "../../../../api/api";
+import { useFrontendBoot } from "../../../../customHooks";
 import { formatCurrency } from "../../../../utils/helper";
 
 const displayNameSelector = str => {
@@ -42,7 +40,7 @@ function useFilters() {
   const { groupCode } = useParams();
   let {
     data: { defaultfilters, morefilters, ...filters },
-  } = useGetFrontendBootQuery();
+  } = useFrontendBoot();
   const {
     data: {
       data: {
@@ -80,6 +78,11 @@ function useFilters() {
           }
         }
         if (code === "deductible") return extras[code];
+        const moreFilter = morefilters.find(filter => filter.code === code);
+
+        if (moreFilter) {
+          return extras ? extras[code] : undefined;
+        }
         const selectedFilterCode = extras[code].code;
         return filters[CODE_FILTERS[code]].find(
           filter => filter.code === selectedFilterCode,

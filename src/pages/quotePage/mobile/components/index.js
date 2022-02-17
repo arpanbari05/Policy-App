@@ -1,4 +1,4 @@
-import { useTheme, useToggle } from "../../../../customHooks";
+import { useFrontendBoot, useTheme, useToggle } from "../../../../customHooks";
 import {
   RiChatSmile3Line,
   RiFilter2Line,
@@ -12,7 +12,6 @@ import { Button, CloseButton } from "../../../../components";
 import { EditMembers } from "../../components/filters/EditMemberFilter";
 import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { useGetFrontendBootQuery } from "../../../../api/api";
 import useFilters from "../../components/filters/useFilters";
 import useUpdateFilters from "../../components/filters/useUpdateFilters";
 import "styled-components/macro";
@@ -54,8 +53,9 @@ function FilterModal({ onClose }) {
   const { boxShadows } = useTheme();
 
   const {
-    data: { premiums, covers, plantypes, morefilters },
-  } = useGetFrontendBootQuery();
+    data: { premiums, covers, plantypes, morefilters, deductibles },
+    journeyType,
+  } = useFrontendBoot();
 
   const {
     updateFilters,
@@ -111,9 +111,13 @@ function FilterModal({ onClose }) {
             `}
           >
             <FilterNavItem eventKey={"premium"}>Premium</FilterNavItem>
-            <FilterNavItem eventKey={"cover"}>Cover</FilterNavItem>
+            {journeyType === "health" ? (
+              <FilterNavItem eventKey={"cover"}>Cover</FilterNavItem>
+            ) : (
+              <FilterNavItem eventKey={"deductible"}>Deductible</FilterNavItem>
+            )}
             <FilterNavItem eventKey={"tenure"}>Multiyear Options</FilterNavItem>
-            <FilterNavItem eventKey={"plantype"}>Plan type</FilterNavItem>
+            <FilterNavItem eventKey={"plantype"}>Policy type</FilterNavItem>
             <FilterNavItem eventKey={"insurers"}>Insurers</FilterNavItem>
             {morefilters.map(filter => (
               <FilterNavItem eventKey={filter.code} key={filter.code}>
@@ -129,7 +133,11 @@ function FilterModal({ onClose }) {
             `}
           >
             <RenderFilterOptions code="premium" options={premiums} />
-            <RenderFilterOptions code="cover" options={covers} />
+            {journeyType === "health" ? (
+              <RenderFilterOptions code="cover" options={covers} />
+            ) : (
+              <RenderFilterOptions code="deductible" options={deductibles} />
+            )}
             <RenderFilterOptions code="tenure" options={tenures} />
             <RenderFilterOptions code="plantype" options={plantypes} />
             {morefilters.map(filter => (

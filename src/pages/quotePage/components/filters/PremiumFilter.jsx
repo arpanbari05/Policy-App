@@ -3,15 +3,14 @@ import "styled-components/macro";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import { OptionWrapper, ApplyBtn } from "./Filter.style";
 import useFilters from "./useFilters";
-import { useGetFrontendBootQuery } from "../../../../api/api";
 import useUpdateFilters from "./useUpdateFilters";
-import { useTheme } from "../../../../customHooks";
+import { useFrontendBoot, useTheme } from "../../../../customHooks";
 import { Filter, FilterHead } from ".";
 
 function PremiumFilterModal({ onClose, ...props }) {
   const {
     data: { premiums },
-  } = useGetFrontendBootQuery();
+  } = useFrontendBoot();
 
   const { colors } = useTheme();
 
