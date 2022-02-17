@@ -6,6 +6,7 @@ import PageNotFound from "./pages/PageNotFound";
 import { lazy } from "react";
 import { Suspense } from "react";
 import { FullScreenLoader } from "./components";
+import ProductDetailsModal from "./components/ProductDetails/ProductDetailsModal";
 
 const ComparePage = lazy(() =>
   import(
@@ -58,6 +59,39 @@ function App() {
         </LazyLoad>
       </Route>
 
+      {/* <Route path={"/test"} exact>
+        <ProductDetailsModal
+          quote={{
+            company_alias: "max_bupa",
+            deductible: 1000000,
+            features: [],
+            mandatory_riders: [],
+            premium: 627,
+            product: {
+              id: 52,
+              name: "Health Recharge",
+              company: {
+                alias: "max_bupa",
+                csr: [87.08],
+                id: 5,
+                name: "Niva Bupa Health Insurance",
+              },
+              insurance_type: {
+                alias: "top_up",
+                id: 2,
+                name: "Top Up Insurance",
+              },
+            },
+            sum_insured: 4000000,
+            tax_amount: 113,
+            tenure: 1,
+            total_premium: 740,
+          }}
+          onClose={() => {
+            alert("I m in test mode buddy.");
+          }}
+        />
+      </Route> */}
       <Route path="*" component={PageNotFound} />
       {process.env.NODE_ENV === "development" && (
         <Route path={"/test"} exact>
