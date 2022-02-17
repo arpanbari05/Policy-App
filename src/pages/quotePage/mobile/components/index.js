@@ -1,4 +1,10 @@
-import { useFrontendBoot, useTheme, useToggle } from "../../../../customHooks";
+import {
+  useCompanies,
+  useFrontendBoot,
+  useGetQuotes,
+  useTheme,
+  useToggle,
+} from "../../../../customHooks";
 import {
   RiChatSmile3Line,
   RiFilter2Line,
@@ -117,7 +123,9 @@ function FilterModal({ onClose }) {
               <FilterNavItem eventKey={"deductible"}>Deductible</FilterNavItem>
             )}
             <FilterNavItem eventKey={"tenure"}>Multiyear Options</FilterNavItem>
-            <FilterNavItem eventKey={"plantype"}>Policy type</FilterNavItem>
+            {journeyType === "health" ? (
+              <FilterNavItem eventKey={"plantype"}>Policy type</FilterNavItem>
+            ) : null}
             <FilterNavItem eventKey={"insurers"}>Insurers</FilterNavItem>
             {morefilters.map(filter => (
               <FilterNavItem eventKey={filter.code} key={filter.code}>
@@ -140,6 +148,9 @@ function FilterModal({ onClose }) {
             )}
             <RenderFilterOptions code="tenure" options={tenures} />
             <RenderFilterOptions code="plantype" options={plantypes} />
+            <Tab.Pane eventKey="insurers">
+              <InsurersFilter />
+            </Tab.Pane>
             {morefilters.map(filter => (
               <RenderFilterOptions
                 key={filter.code}
@@ -173,6 +184,85 @@ function FilterModal({ onClose }) {
         </Button>
       </div>
     </MobileModal>
+  );
+}
+
+function InsurersFilter({ onChange, currentOption }) {
+  const { isLoading, data } = useGetQuotes();
+
+  const companies = data
+    ? data
+        .filter(icQuotes => !!icQuotes.data.data.length)
+        .map(icQuotes => icQuotes.company_alias)
+    : [];
+
+    const handleChange = (company, evt) => {
+      if(evt.target.checked) {
+        onChange && onChange()
+      }
+    }
+
+  return (
+    <OptionsWrap>
+      {companies.map(company_alias => (
+        <InsurerOption companyAlias={company_alias} />
+      ))}
+      {isLoading && <p>Loading...</p>}
+    </OptionsWrap>
+  );
+}
+
+function InsurerOption({ companyAlias, onChange, checked, ...props }) {
+  const { getCompany } = useCompanies();
+
+  const company = getCompany(companyAlias);
+
+  const { colors } = useTheme();
+
+  const handleChange = evt => {
+    onChange && onChange(company, evt);
+  };
+
+  return (
+    <div
+      className="rounded"
+      css={`
+        border: 1px solid ${colors.primary_color};
+      `}
+      {...props}
+    >
+      <label
+        className="d-flex align-items-center justify-content-between px-2 py-1"
+        css={`
+          font-size: 0.79rem;
+        `}
+      >
+        <img
+          src={company.logo}
+          alt={companyAlias}
+          css={`
+            width: 6em;
+            height: 3em;
+            object-fit: contain;
+          `}
+        />
+        <span
+          css={`
+            font-size: 1.6rem;
+            color: ${colors.primary_color};
+            line-height: 1;
+          `}
+        >
+          {checked ? <IoRadioButtonOn /> : <IoRadioButtonOff />}
+        </span>
+        <input
+          className="visually-hidden"
+          type={"checkbox"}
+          checked={checked}
+          onChange={handleChange}
+        />
+      </label>
+    </div>
   );
 }
 
