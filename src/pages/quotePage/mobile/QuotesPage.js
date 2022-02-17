@@ -5,6 +5,8 @@ import { BottomNavigation } from "./components";
 import { Quotes } from "./components/Quotes";
 import { QuotesLoader } from "../components";
 import "styled-components/macro";
+import { SortByDialog } from "./components/SortBy";
+import { useState } from "react";
 
 function QuotesPage() {
   const { boxShadows } = useTheme();
@@ -19,15 +21,42 @@ function QuotesPage() {
       >
         <GroupLinks />
       </div>
+      <Main />
+    </Page>
+  );
+}
+
+function useSortBy(defaultSortBy = "relevance") {
+  const [sortBy, setSortBy] = useState(defaultSortBy);
+
+  const onChange = code => {
+    setSortBy(code);
+  };
+
+  return { current: sortBy, onChange };
+}
+
+function Main() {
+  const sortBy = useSortBy();
+
+  return (
+    <main>
       <div
         css={`
           padding-bottom: 6em;
         `}
       >
-        <Quotes />
+        <Quotes sortBy={sortBy.current} />
       </div>
-      <BottomNavigation />
-    </Page>
+      <BottomNavigation
+        sortBy={
+          <SortByDialog
+            currentSortBy={sortBy.current}
+            onChange={sortBy.onChange}
+          />
+        }
+      />
+    </main>
   );
 }
 
