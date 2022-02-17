@@ -101,8 +101,6 @@ function QuotesPage() {
   );
 }
 
-
-
 export default QuotesPage;
 
 function ShowingPlanType() {

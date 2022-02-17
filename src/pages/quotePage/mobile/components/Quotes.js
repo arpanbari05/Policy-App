@@ -62,6 +62,7 @@ function QuoteCards({ quotesData, ...props }) {
 }
 
 function QuoteCard({ quotes, onCompareChange, ...props }) {
+  const { colors } = useTheme();
   const {
     quote,
     logoSrc,
@@ -134,6 +135,21 @@ function QuoteCard({ quotes, onCompareChange, ...props }) {
           />
         </div>
       </div>
+      <div className="d-flex align-items-center justify-content-end">
+        <button
+          /* onClick={handleSeeDetailsClick} */
+          css={`
+            border: none;
+            outline: none;
+            color: ${colors.primary_color};
+            padding: 0px 10px;
+            text-decoration: underline;
+          `}
+        >
+          {` See details >`}
+        </button>
+      </div>
+
       <QuoteFeatures features={quote.features} />
     </div>
   );
