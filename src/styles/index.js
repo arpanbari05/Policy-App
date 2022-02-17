@@ -12,6 +12,7 @@ const styles = {
       three: "gray",
       four: "#6b7789",
       five: "#4a5971",
+      six: "#40494f",
     },
     border: { one: "#dfe1f2" },
   },
@@ -20,7 +21,9 @@ const styles = {
     two: "rgb(0 75 131 / 28%) 0px 12px 12px -11px",
     three: "0 -5px 6px 0 rgb(0 0 0 / 16%)",
     four: "rgb(134 156 213 / 25%) 0px 10px 20px",
-    five: "rgb(0 0 0 / 16%) 0px 3px 13px 0px;",
+    five: "rgb(0 0 0 / 16%) 0px 3px 13px 0px",
+    six: "0 5px 28px rgb(0 0 0 / 30%)",
+    seven: "rgb(0 0 0 / 8%) 0px 5px 10px"
   },
 };
 
@@ -35,16 +38,18 @@ export const GlobalStyles = createGlobalStyle({
       fontSize: "calc(16 * 100vw / 1200)",
     },
     "@media (max-width: 768px)": {
-      fontSize: "min(calc(16 * 100vw / 360), 16px)",
+      fontSize: "min(calc(16 * 100vw / 393), 16px)",
     },
   },
-  "::-webkit-scrollbar-track": {
-    background: "#fff",
-  },
-  "::-webkit-scrollbar-thumb": {
-    backgroundColor: "#ccc",
-  },
-  "::-webkit-scrollbar": {
-    width: "7px",
+  "@media (min-width: 768px)": {
+    "::-webkit-scrollbar-track": {
+      background: "#fff",
+    },
+    "::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ccc",
+    },
+    "::-webkit-scrollbar": {
+      width: "7px",
+    },
   },
 });

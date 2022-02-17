@@ -1063,7 +1063,7 @@ function GradientTitle({ title = "" }) {
         fontWeight: "900",
       }}
       css={`
-        @media (max-width: 769px) {
+        @media (max-width: 768px) {
           margin-top: 20px;
           margin-bottom: 10px !important;
         }

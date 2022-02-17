@@ -1,7 +1,7 @@
 import { Switch, Route, Redirect, Link } from "react-router-dom";
 import InputPage from "./pages/InputPage/InputPage";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
-import QuotesPage from "./pages/quotePage/QuotesPage";
+import QuotesPage from "./pages/quotePage/";
 import PageNotFound from "./pages/PageNotFound";
 import { lazy } from "react";
 import { Suspense } from "react";

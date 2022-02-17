@@ -29,7 +29,7 @@ const Navbar = () => {
   return (
     <div
       css={`
-        @media (max-width: 769px) {
+        @media (max-width: 768px) {
           display: none;
         }
       `}
@@ -98,6 +98,67 @@ const Navbar = () => {
     </div>
   );
 };
+
+export function NavbarMobile({ backButton: BackButton = <></> }) {
+  const location = useLocation();
+
+  const isRootRoute = useRouteMatch({
+    path: ["/", "/input/basic-details"],
+    exact: true,
+  });
+
+  const { data } = useGetEnquiriesQuery(undefined, {
+    skip: !!isRootRoute,
+  });
+
+  const [show, setShow] = useState(false);
+
+  const { colors } = useTheme();
+
+  const trace_id = data?.data?.trace_id;
+
+  return (
+    <div
+      css={`
+        font-size: 0.762rem;
+      `}
+    >
+      <div className="py-3 px-2 d-flex align-items-center justify-content-between">
+        <div
+          className="d-flex align-items-center"
+          css={`
+            gap: 0.6em;
+          `}
+        >
+          {BackButton}
+          <Link to={"/input/basic-details"}>
+            <img
+              src={fyntune}
+              alt="fyntune"
+              css={`
+                width: 7.93em;
+              `}
+            />
+          </Link>
+        </div>
+
+        {location.pathname !== "/" && trace_id && <TraceId />}
+      </div>
+      {!location.pathname.startsWith("/input") && trace_id && (
+        <div
+          className="d-flex align-items-center justify-content-between py-2"
+          css={`
+            border-top: 1px solid #aaa;
+            border-bottom: 1px solid #aaa;
+          `}
+        >
+          <Members />
+          <Info label="Pincode" value="999999" />
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default Navbar;
 
@@ -192,9 +253,10 @@ export function TraceId() {
     });
   }
 
+  if (copiedIndication) return <div>Copied to clipboard!</div>;
+
   return (
     <div>
-      {copiedIndication && <div>Copied to clipboard!</div>}
       Trace Id: <span>{trace_id}</span>{" "}
       <button
         css={`

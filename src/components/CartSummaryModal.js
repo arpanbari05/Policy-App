@@ -256,9 +256,9 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
         border-radius: 100%;
         border: none;
         @media (max-width: 400px) {
-          font-size: 15px;
-          width: 30px;
-          height: 30px;
+          font-size: 1.37rem;
+          width: 1.6em;
+          height: 1.6em;
         }
       `}
       className="btn"

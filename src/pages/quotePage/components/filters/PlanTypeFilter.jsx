@@ -5,8 +5,7 @@ import { ApplyBtn, OptionWrapper } from "./Filter.style";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import useFilters from "./useFilters.js";
 import useUpdateFilters from "./useUpdateFilters.js";
-import { useGetFrontendBootQuery } from "../../../../api/api.js";
-import { useTheme } from "../../../../customHooks/index.js";
+import { useFrontendBoot, useTheme } from "../../../../customHooks/index.js";
 import "styled-components/macro";
 import { Filter, FilterHead } from "./index.js";
 
@@ -46,7 +45,7 @@ function FilterModal({ onClose, ...props }) {
 
   const {
     data: { baseplantypes },
-  } = useGetFrontendBootQuery();
+  } = useFrontendBoot();
 
   const { getSelectedFilter } = useFilters();
 
