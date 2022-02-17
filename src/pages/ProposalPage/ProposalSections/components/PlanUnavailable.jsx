@@ -12,6 +12,7 @@ import {
   Container,
   ViewQuotesWrapper,
 } from "./BMI";
+import { FaTimes } from "react-icons/fa";
 
 const PlanUnavailable = () => {
   const { showPlanNotAvail } = useSelector(state => state.proposalPage);
@@ -26,13 +27,9 @@ const PlanUnavailable = () => {
     return (
       <PopupWrapper>
         <Popup>
-          <CloseButton
-            onClick={() => {
+            <FaTimes style={{margin: "20px 20px 0 0", cursor: "pointer"}} onClick={() => {
               dispatch(setShowPlanNotAvail(false));
-            }}
-          >
-            <i className="fa fa-close"></i>
-          </CloseButton>
+            }} />
           <Container>
             <span>Plan Unavailable</span>
             <p>

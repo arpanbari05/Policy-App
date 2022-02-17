@@ -37,6 +37,8 @@ const quotePageSlice = createSlice({
     filterQuotes: [],
     fetchFilters: [],
     shouldFetchQuotes: false,
+    policyTypes: {},
+    policyType: "",
     filters: {
       insurers: [],
       premium: null,
@@ -263,6 +265,12 @@ const quotePageSlice = createSlice({
       const { company_alias, quotes } = action.payload;
       state.quotesForSort[company_alias] = quotes;
     },
+    setPolicyTypes: (state, action) => {
+      state.policyTypes = action.payload;
+    },
+    setPolicyType: (state, action) => {
+      state.policyTypes = action.payload;
+    },
   },
 });
 
@@ -287,6 +295,8 @@ export const {
   replaceFilterQuotes,
   updateQuotesForCompare,
   setFilters,
+  setPolicyTypes,
+  setPolicyType,
 
   saveProductDiscountResponse,
   setSelectedGroup,
