@@ -1,12 +1,12 @@
 import { Container } from "react-bootstrap";
-import { Page, ScreenTopLoader } from "../../components";
+import { Page } from "../../components";
 import useFilters from "./components/filters/useFilters";
 import useUpdateFilters from "./components/filters/useUpdateFilters";
 import LowerModifier from "./components/LowerModifier";
 import Quotes from "./components/Quotes";
 import UpperModifier from "./components/UpperModifier";
 import "styled-components/macro";
-import { useGetQuotes, useMembers, useTheme } from "../../customHooks";
+import { useMembers, useTheme } from "../../customHooks";
 import { useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
@@ -14,6 +14,7 @@ import { FaSync } from "react-icons/fa";
 import { useState } from "react";
 import SortBy from "./components/filters/SortBy";
 import assistant from "../../assets/images/call-center-service.png";
+import { QuotesLoader } from "./components";
 
 function QuotesPage() {
   const { colors } = useTheme();
@@ -100,11 +101,7 @@ function QuotesPage() {
   );
 }
 
-function QuotesLoader() {
-  const { isLoading, loadingPercentage } = useGetQuotes();
 
-  return <ScreenTopLoader show={isLoading} progress={loadingPercentage} />;
-}
 
 export default QuotesPage;
 

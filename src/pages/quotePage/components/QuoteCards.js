@@ -5,10 +5,9 @@ import "styled-components/macro";
 import { useCompanies, useTheme, useToggle } from "../../../customHooks";
 import ProductDetailsModal from "../../../components/ProductDetails/ProductDetailsModal";
 import { PremiumButton } from "../../../components";
-import { mergeQuotes, numberToDigitWord } from "../../../utils/helper";
+import { numberToDigitWord } from "../../../utils/helper";
 import { uniq } from "lodash";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
-import { GiCircle } from "react-icons/gi";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
@@ -29,7 +28,6 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
 
   const [show, setShow] = useState(false);
 
-  // const mergedQuotes = mergeQuotes(quotesData.data, { sortBy });
   const mergedQuotes = quotesData.data;
 
   if (!mergedQuotes.length) return null;

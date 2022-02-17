@@ -4,6 +4,7 @@ import EditMemberFilter from "./filters/EditMemberFilter";
 import { Link, useParams } from "react-router-dom";
 import { MemberText } from "../../../components";
 import "styled-components/macro";
+import * as mq from "../../../utils/mediaQueries";
 
 function UpperModifier() {
   const { colors } = useTheme();
@@ -32,11 +33,11 @@ function UpperModifier() {
 
 export default UpperModifier;
 
-function GroupLinks({ ...props }) {
+export function GroupLinks({ ...props }) {
   const { groups } = useMembers();
   return (
     <div
-      className="d-flex align-items-center mx-3 h-100"
+      className="d-flex align-items-center mx-3 h-100 justify-content-center"
       css={`
         gap: 1em;
       `}
@@ -49,7 +50,7 @@ function GroupLinks({ ...props }) {
   );
 }
 
-function GroupLink({ group, ...props }) {
+export function GroupLink({ group, ...props }) {
   const { colors } = useTheme();
 
   const { id } = group;
@@ -91,6 +92,11 @@ function GroupLink({ group, ...props }) {
           font-size: 0.79rem;
           line-height: 1;
           padding: 1em;
+          ${mq.mobile} {
+            background: none;
+            border-radius: 0;
+            min-width: max-content;
+          }
         `}
       >
         <MemberText>{membersText}</MemberText>

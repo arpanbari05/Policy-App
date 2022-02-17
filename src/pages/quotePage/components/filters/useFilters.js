@@ -41,7 +41,7 @@ const defaultFilters = {
 function useFilters() {
   const { groupCode } = useParams();
   let {
-    data: { defaultfilters, ...filters },
+    data: { defaultfilters, morefilters, ...filters },
   } = useGetFrontendBootQuery();
   const {
     data: {
@@ -91,6 +91,11 @@ function useFilters() {
       return tenures.find(tenure => tenure.code === defaultfilters["tenure"]);
     if (code === "deductible")
       return { code: deductible, display_name: formatCurrency(deductible) };
+    const moreFilter = morefilters.find(filter => filter.code === code);
+
+    if (moreFilter) {
+      return extras ? extras[code] : undefined;
+    }
     return filters[CODE_FILTERS[code]].find(
       filter => filter.code === defaultfilters[code],
     );
