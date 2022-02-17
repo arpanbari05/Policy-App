@@ -33,8 +33,19 @@ export function ScreenTopLoader({ progress, show }) {
 }
 
 export function LoadEnquiries({ children }) {
-  const { isLoading, isFetching, isUninitialized } = useGetEnquiriesQuery();
+  const { isLoading, isFetching, isUninitialized, isError, refetch } =
+    useGetEnquiriesQuery();
+
+  if (isError)
+    return (
+      <Page>
+        <p>Something went wrong while fetching enquiry details!</p>
+        <button onClick={refetch}>Retry</button>ƒ
+      </Page>
+    );
+
   if (isLoading || isFetching || isUninitialized) return <FullScreenLoader />;
+
   return children;
 }
 

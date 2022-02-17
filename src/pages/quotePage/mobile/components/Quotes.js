@@ -7,8 +7,8 @@ import {
   useToggle,
 } from "../../../../customHooks";
 import "styled-components/macro";
-import { Button, PremiumButton } from "../../../../components";
-import { amount, numberToDigitWord } from "../../../../utils/helper";
+import { PremiumButton } from "../../../../components";
+import { numberToDigitWord } from "../../../../utils/helper";
 
 export function Quotes({ sortBy }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
