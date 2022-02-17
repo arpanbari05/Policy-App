@@ -37,12 +37,10 @@ function MobilePlanDetails({
             planDetails.featureList.map((data, i) => {
               return (
                 <>
-                  <PlanFeature>
-                    <PlanTabMobile
-                      item={data}
-                      data={planDetails.innerData[data.title]}
-                    />
-                  </PlanFeature>
+                  <PlanTabMobile
+                    item={data}
+                    data={planDetails.innerData[data.title]}
+                  />
                 </>
                 //   onClick={() => handleActive(data.id, data.title)}
                 //   isActive={activeTab === data.id ? true : false}
@@ -131,6 +129,7 @@ function MobilePlanDetails({
                       css={`
                         padding: 7px 12px;
                         border-radius: 82px;
+                        margin-right: 10px;
                       `}
                     >
                       <BiDownload color={colors.primary_color} size="31px" />
@@ -165,21 +164,9 @@ const DownloadImgWrapper = styled.div`
   }
 `;
 
-const PlanFeature = styled.div`
-  background-color: #fff;
-  border-radius: 10px;
-  margin: 15px;
-  padding: 25px 10px;
-  @media (max-width: 1023px) {
-    padding: 12px 10px;
-  }
-  @media (max-width: 767px) {
-    margin: 8px 5px;
-    padding: 15px 8px;
-  }
-`;
+
 const DownloadCard = styled.div`
-  padding: 3px 6px;
+  padding: 3px 10px;
   background-color: rgb(238, 241, 244);
   display: flex;
   border-radius: 5px;

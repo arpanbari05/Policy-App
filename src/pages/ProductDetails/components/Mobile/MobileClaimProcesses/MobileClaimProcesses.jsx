@@ -440,7 +440,6 @@ const TabButton = styled.button`
   }
   white-space: nowrap;
   padding: 10px;
-
   /* &:after{
     content: "";
   border-left: 10px solid transparent;

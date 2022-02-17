@@ -321,7 +321,13 @@ function RiderCardNew({ rider, onChange, isFetching, ...props }) {
               `}
               className="d-flex align-items-center justify-content-center"
             >
-              <div>{amount(rider.total_premium)}</div>
+              <div
+                css={`
+                  font-size: 15px;
+                `}
+              >
+                {amount(rider.total_premium)}
+              </div>
 
               {isSelected ? (
                 <BsCheckCircleFill
@@ -421,8 +427,8 @@ const MobileRiderCardWrap = styled.div`
 `;
 
 const RiderName = styled.h1`
-  font-size: 1rem;
-  color: #253858;
+  font-size: 13px;
+  color: rgb(37, 56, 88) !important;
   font-weight: 900;
 `;
 
@@ -464,7 +470,7 @@ function RiderDescription({ rider, ...props }) {
 
 const RiderDescriptionWrap = styled.p`
   color: #253858;
-  font-size: 0.81rem;
+  font-size: 10px;
   overflow: hidden;
 `;
 
