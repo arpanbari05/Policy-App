@@ -9,6 +9,7 @@ import {
 import "styled-components/macro";
 import { PremiumButton } from "../../../../components";
 import { numberToDigitWord } from "../../../../utils/helper";
+import ProductDetailsModal from "../../../../components/ProductDetails/ProductDetailsModal";
 
 export function Quotes({ sortBy }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
@@ -62,6 +63,7 @@ function QuoteCards({ quotesData, ...props }) {
 }
 
 function QuoteCard({ quotes, onCompareChange, ...props }) {
+  const { colors } = useTheme();
   const {
     quote,
     logoSrc,
@@ -71,6 +73,8 @@ function QuoteCard({ quotes, onCompareChange, ...props }) {
   } = useQuoteCard({
     quotes,
   });
+
+  const productDetailsModal = useToggle(false);
 
   if (!quote) return null;
 
@@ -134,7 +138,26 @@ function QuoteCard({ quotes, onCompareChange, ...props }) {
           />
         </div>
       </div>
+      <div className="d-flex align-items-center justify-content-end">
+        <button
+          onClick={productDetailsModal.on}
+          css={`
+            border: none;
+            outline: none;
+            color: ${colors.primary_color};
+            padding: 0px 10px;
+            text-decoration: underline;
+            font-size: 15px;
+          `}
+        >
+          {` See details >`}
+        </button>
+      </div>
+
       <QuoteFeatures features={quote.features} />
+      {productDetailsModal.isOn && (
+        <ProductDetailsModal quote={quote} onClose={productDetailsModal.off} />
+      )}
     </div>
   );
 }

@@ -22,7 +22,7 @@ function CartSummaryModal({ onClose, onContine }) {
       content={
         <CartSummaryContent onContine={onContine} closeModal={onClose} />
       }
-      noFooter
+      noFooter={true}
     />
   );
 }
@@ -39,6 +39,11 @@ function CartSummaryContent({ closeModal, onContine, ...props }) {
       {groups.map(group => (
         <GroupCard group={group} closeModal={closeModal} />
       ))}
+      <hr
+        css={`
+          height: 0.5px;
+        `}
+      />
       <Footer onContine={onContine} closeModal={closeModal} />
     </div>
   );
@@ -100,6 +105,12 @@ function Footer({ closeModal, onContine, ...props }) {
             height: 60px;
             width: 200px;
             font-size: 20px;
+            @media (max-width: 480px) {
+              width: 100%;
+              font-size: 13px;
+              height: 60px !important;
+              font-weight: unset !important;
+            }
           `}
           onClick={handleContinueClick}
         >
@@ -129,6 +140,7 @@ function GroupCard({ group, closeModal, ...props }) {
           className="text_title_filter p_modal_title_bg_filters_product d-flex align-items-center"
           style={{ textTransform: "capitalize" }}
           css={`
+            font-weight: bold;
             @media (max-width: 400px) {
               font-size: 10px !important;
             }
