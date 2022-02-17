@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import {
   api,
@@ -21,6 +21,7 @@ import {
 } from "../api/api";
 import { getRiderSendData } from "../pages/Cart/hooks/useCartProduct";
 import useFilters from "../pages/quotePage/components/filters/useFilters";
+import { setPolicyTypes, setPolicyType } from "../pages/quotePage/quote.slice";
 import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter";
 import styles from "../styles";
 import {
@@ -204,11 +205,33 @@ export function useFilter() {
 }
 
 export function useMembers() {
+
+  const dispatch = useDispatch();
   let {
     data: { members },
   } = useFrontendBoot();
 
   const { data } = useGetEnquiriesQuery();
+
+  const { selectedGroup } = useSelector((state) => state.quotePage);
+  console.log(selectedGroup);
+
+  useEffect(() => {
+    const groupPolicyTypes = {};
+    if (data) {
+      const group = data.data.groups.find((el) => {
+        // only "==" for avoiding type casting, do not modify to "==="
+        return el.id == selectedGroup;
+      });
+      if (group) {
+        dispatch(setPolicyType(group.plan_type));
+      }
+      data.data.groups.forEach(group => {
+        groupPolicyTypes[group.id] = group.plan_type && group.plan_type.startsWith("F") ? "Family Floater" : group.plan_type.startsWith("M") ? "Multi Individual" : "Individual";
+      })
+      dispatch(setPolicyTypes({ ...groupPolicyTypes }));
+    }
+  }, [data, selectedGroup]);
 
   let groups;
   let input;

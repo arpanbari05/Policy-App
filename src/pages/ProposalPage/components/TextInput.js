@@ -23,6 +23,7 @@ const TextInput = ({
   readOnly,
   innerMember,
   checkAge,
+  defaultValue
 }) => {
   const dispatch = useDispatch();
   // checkAge = limitagefromdob
@@ -36,6 +37,7 @@ const TextInput = ({
         ].split("-")[2],
       );
 
+  const [isFocused, setIsFocused] = useState(false);
   console.log(allValues, age, innerMember, "test");
 
   const fullName = value || "";
@@ -98,6 +100,8 @@ const TextInput = ({
     }
   };
 
+  const onFocus = () => setIsFocused(true);
+
   // const [innerValue, setInnerValue] = useState(value);
   // useEffect(() => {
   //   setInnerValue(value);
@@ -134,7 +138,11 @@ const TextInput = ({
             onChange(e);
           }
         }}
-        onBlur={onBlur}
+        onFocus={onFocus}
+        onBlur={() => {
+          onBlur();
+          setIsFocused(false);
+        }}
         onInput={onInput}
         onKeyDown={onKeyDown}
         value={value}
@@ -142,10 +150,15 @@ const TextInput = ({
         maxLength={maxLength}
         textTransform={textTransform}
         readOnly={readOnly}
-        error={error}
+        error={!isFocused ? error : null}
+        defaultValue={defaultValue}
       />
       <Label>{label}</Label>
-      <p className="formbuilder__error">{error}</p>
+      {
+        !isFocused && (
+          <p className="formbuilder__error">{error}</p>
+        )
+      }
     </InputContainer>
   );
 };

@@ -110,6 +110,7 @@ const ProposalPage = () => {
           }
           & .formbuilder__error {
             color: #c7222a;
+            font-size: 12px;
           }
         `}
       >
@@ -354,7 +355,7 @@ const ProposalPage = () => {
           css={`
             // margin: 30px auto;
             // max-width: 1300px;
-            margin: 30px;
+            margin: 10px 30px 30px 30px;
             @media (max-width: 1024px) {
               margin: 0;
               padding: 0;
