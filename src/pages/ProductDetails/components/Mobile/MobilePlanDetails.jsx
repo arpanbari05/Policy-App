@@ -7,6 +7,7 @@ import { BiDownload } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
 import { useTheme } from "../../../../customHooks/index";
+import { mobile } from "../../../../utils/mediaQueries";
 
 function MobilePlanDetails({
   ActiveMainTab,
@@ -20,6 +21,13 @@ function MobilePlanDetails({
     <div
       className={`z-content ${ActiveMainTab && "z-active"}`}
       style={{ display: ActiveMainTab ? "block" : "none" }}
+      css={`
+        display: none !important;
+        ${mobile} {
+          display: block !important;
+          padding-bottom: 100px !important;
+        }
+      `}
     >
       {loading ? (
         <SpinLoader />
@@ -141,7 +149,9 @@ function MobilePlanDetails({
 }
 
 const DownloadCardWrapper = styled.div`
+  display: none;
   @media (max-width: 767px) {
+    display: block;
     margin: 5px !important;
   }
 `;

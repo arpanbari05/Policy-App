@@ -161,6 +161,11 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
           left: ActiveMainTab ? "0px" : "1296px",
           top: "0px",
         }}
+        css={`
+          ${mobile} {
+            display: none;
+          }
+        `}
       >
         {loading ? (
           <SpinLoader />

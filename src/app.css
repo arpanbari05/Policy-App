@@ -109,6 +109,13 @@ a:hover {
   color: inherit;
 }
 
+.noPadding {
+  padding: 0px !important;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
 body,
 html {
   height: 100%;

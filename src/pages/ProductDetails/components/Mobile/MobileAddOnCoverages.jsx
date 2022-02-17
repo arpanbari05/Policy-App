@@ -22,6 +22,11 @@ import { FaCheckCircle } from "react-icons/fa";
 import { RiderWrapper } from "../../../ComparePage/ComparePage.style";
 import { CircleLoader } from "../../../../components";
 import { useParams } from "react-router-dom";
+import {
+  MobileDetailsSectionWrap,
+  MobileSeeDetailsTopOuter,
+} from "../../../../components/ProductDetails/Mobile/MobileModalComponents";
+import { DetailsSectionWrap } from "../../../../components/ProductDetails/ProductDetailsModal";
 
 function MobileAddOnCoverages({
   quote,
@@ -147,15 +152,38 @@ function MobileAddOnCoverages({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riders]);
 
-  if (isLoading || isUninitialized) return <CardSkeletonLoader />;
+  if (isLoading || isUninitialized)
+    return (
+      <>
+        <DetailsSectionWrap>
+          <CardSkeletonLoader />
+        </DetailsSectionWrap>
+
+        <MobileDetailsSectionWrap>
+          <CardSkeletonLoader />
+        </MobileDetailsSectionWrap>
+      </>
+    );
 
   if (isError)
     return (
-      <div>
-        <p>Something went wrong while getting riders!</p>
-        <p>{error.data?.message}</p>
-        <button onClick={refetch}>Retry</button>
-      </div>
+      <>
+        <DetailsSectionWrap>
+          <div>
+            <p>Something went wrong while getting riders!</p>
+            <p>{error.data?.message}</p>
+            <button onClick={refetch}>Retry</button>
+          </div>
+        </DetailsSectionWrap>
+
+        <MobileDetailsSectionWrap>
+          <div>
+            <p>Something went wrong while getting riders!</p>
+            <p>{error.data?.message}</p>
+            <button onClick={refetch}>Retry</button>
+          </div>
+        </MobileDetailsSectionWrap>
+      </>
     );
 
   const handleChange = changedRider => {
@@ -182,8 +210,13 @@ function MobileAddOnCoverages({
   return (
     <div
       css={`
-        background: white;
-        padding: 20px 10px;
+        display: none !important;
+        ${mobile} {
+          background: white;
+          padding: 20px 10px;
+          display: block !important;
+          padding-bottom: 92px;
+        }
       `}
     >
       <FeatureSection
