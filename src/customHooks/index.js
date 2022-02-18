@@ -154,11 +154,17 @@ export function useFrontendBoot() {
   // if (isUninitialized || isLoading)
   //   return { ...query, isLoading, isUninitialized, data };
 
+  const { data: enquiryData } = useGetEnquiriesQuery();
+
   const data = config;
 
   const tenantName = data.tenant.name;
 
-  const journeyType = "health";
+  let journeyType = "health";
+
+  if (enquiryData?.data) {
+    journeyType = enquiryData?.data?.section;
+  }
 
   // return { journeyType, tenantName, data, isLoading, isUninitialized };
   return { journeyType, tenantName, data };
