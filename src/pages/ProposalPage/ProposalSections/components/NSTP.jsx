@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setShowNSTP } from "../ProposalSections.slice";
 import { useHistory } from "react-router";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
+import { FaTimes } from "react-icons/fa";
 
 const NSTP = () => {
   const { showNSTP, mediUnderwritting } = useSelector(
@@ -18,13 +19,9 @@ const NSTP = () => {
     return (
       <PopupWrapper>
         <Popup>
-          <CloseButton
-            onClick={() => {
+          <FaTimes style={{margin: "20px 20px 0 0", cursor: "pointer"}} onClick={() => {
               dispatch(setShowNSTP(false));
-            }}
-          >
-            <i className="fa fa-close"></i>
-          </CloseButton>
+            }} />
           <Container>
             <p>
               Hello {proposerDetails?.name?.split(" ")[0]}! Your policy will be
@@ -76,6 +73,7 @@ const Popup = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.2);
   max-width: 500px;
   border-radius: 8px;
+  text-align: right;
 
   @media (max-width: 767px) {
     width: 100%;
@@ -101,6 +99,7 @@ const CloseButton = styled.button`
 `;
 const Container = styled.div`
   padding: 60px 50px 30px;
+  text-align: left;
   & p {
     font-weight: 400;
 

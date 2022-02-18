@@ -24,7 +24,7 @@ import AboutCompany from "../../pages/SeeDetails/DataSet/AboutCompany";
 import PlanDetails from "../../pages/SeeDetails/DataSet/PlanDetails";
 import { Riders } from "../../pages/ProductDetails/components/CustomizeYourPlan";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartSummaryModal from "../CartSummaryModal";
 import {
   MobileProductHeader,
@@ -33,6 +33,9 @@ import {
   MobileRenderPlanDetails,
   MobileSeeDetailsTop,
   MobileRidersSection,
+  MobileRenderClaimProcess,
+  MobileRenderAboutCompany,
+  MobileRenderCashlessHospitals,
 } from "./Mobile/MobileModalComponents";
 
 function useRidersSlot() {
@@ -54,22 +57,23 @@ function ProductDetailsModal({ quote, onClose, ...props }) {
   return (
     <Modal
       show
+      className="noPadding"
       onHide={handleClose}
-      dialogClassName="m-0 mw-100"
+      dialogClassName="m-0 mw-100 "
       contentClassName="border-0 rounded-0"
       {...props}
     >
-      <Modal.Body className="p-0">
+      <Modal.Body
+        css={`
+          padding: unset;
+        `}
+      >
         <div
           css={`
             padding-top: 7.27em;
-            height: 100vh !important;
             min-height: 100vh !important;
             ${mobile} {
-              height: 100vh !important;
-              min-height: 100vh !important;
               padding-top: unset !important;
-              padding-bottom: 120px;
               background-color: rgb(243, 244, 249);
             }
           `}
@@ -118,13 +122,13 @@ function ProductDetailsModal({ quote, onClose, ...props }) {
               eventKey="mobile-cashless-hospitals"
               title="Cashless Hospitals"
             >
-              <CashlessHospitals quote={quote} />
+              <MobileRenderCashlessHospitals quote={quote} />
             </Tab>
             <Tab eventKey="mobile-claim-process" title="Claim Process">
-              <RenderClaimProcess quote={quote} />
+              <MobileRenderClaimProcess quote={quote} />
             </Tab>
             <Tab eventKey="mobile-about-company" title="About Company">
-              <RenderAboutCompany quote={quote} />
+              <MobileRenderAboutCompany quote={quote} />
             </Tab>
           </MobileProductDetailsTabs>
         </div>
@@ -136,10 +140,11 @@ function ProductDetailsModal({ quote, onClose, ...props }) {
             display: block;
             min-height: 83px;
             width: 100%;
-            background: #fff;
             position: fixed;
             bottom: 0px;
-            padding: 0.75rem;
+            background: #fff;
+            box-sizing: border-box;
+            padding: 12px;
           }
         `}
       >
@@ -502,9 +507,12 @@ function NetworkHospitalRow({ networkHospital, ...props }) {
   );
 }
 
-const DetailsSectionWrap = styled.section`
+export const DetailsSectionWrap = styled.section`
   padding: 0 6%;
   margin: auto;
+  ${mobile} {
+    display: none !important;
+  }
 `;
 
 function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {

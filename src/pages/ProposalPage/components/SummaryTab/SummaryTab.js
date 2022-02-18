@@ -369,6 +369,9 @@ const SummaryTab = ({ title, data, values, index }) => {
             >
               {title}
             </MainTitle>
+            {
+              title === "Other Details" && <TitleWrapper css={`margin-left: 20px !important`}>Nominee Details</TitleWrapper>
+            }
           </Col>
         </Row>
         <br className="hide-on-mobile" />
@@ -390,12 +393,29 @@ const SummaryTab = ({ title, data, values, index }) => {
                       </span>
                     </InnerTextBorder>
                     {data[item].map((_data, index) => {
-                      return objectRender(
+                      return title === "Other Details"?
+                      objectRender(
+                        {
+                          ..._data,
+                          additionalOptions:{
+                            ..._data.additionalOptions,
+                            label:_data.additionalOptions.label.includes("Nominee's")?
+                            _data.additionalOptions.label.replace("Nominee's","")
+                            :
+                            _data.additionalOptions.label.replace("Nominee","")
+                          }
+                        },
+                        index,
+                        item,
+                        title,
+                        data[item]
+                      )
+                      :objectRender(
                         _data,
                         index,
                         item,
                         title,
-                        data[item],
+                        data[item]
                       );
                     })}
                   </Border>

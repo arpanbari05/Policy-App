@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Container } from "react-bootstrap";
+import { IoClose } from "react-icons/io5";
 import styled from "styled-components";
 import "styled-components/macro";
 import StyledButton from "../../StyledButton";
@@ -111,7 +112,7 @@ const CardModal = ({
         )}
         <i
           onClick={handleClose}
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", fontWeight: "bold" }}
           class="fas fa-times"
         ></i>
       </Modal.Header>
@@ -123,13 +124,7 @@ const CardModal = ({
       >
         <i className="fa fa-close"></i>
       </CloseButton> */}
-      <Modal.Body
-        style={{
-          padding: "0.3rem !important",
-        }}
-      >
-        {content}
-      </Modal.Body>
+      <Modal.Body>{content}</Modal.Body>
       <Modal.Footer
         style={{
           display: noFooter && "none",

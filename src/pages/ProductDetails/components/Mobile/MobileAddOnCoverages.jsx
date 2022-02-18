@@ -22,6 +22,11 @@ import { FaCheckCircle } from "react-icons/fa";
 import { RiderWrapper } from "../../../ComparePage/ComparePage.style";
 import { CircleLoader } from "../../../../components";
 import { useParams } from "react-router-dom";
+import {
+  MobileDetailsSectionWrap,
+  MobileSeeDetailsTopOuter,
+} from "../../../../components/ProductDetails/Mobile/MobileModalComponents";
+import { DetailsSectionWrap } from "../../../../components/ProductDetails/ProductDetailsModal";
 
 function MobileAddOnCoverages({
   quote,
@@ -147,15 +152,38 @@ function MobileAddOnCoverages({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riders]);
 
-  if (isLoading || isUninitialized) return <CardSkeletonLoader />;
+  if (isLoading || isUninitialized)
+    return (
+      <>
+        <DetailsSectionWrap>
+          <CardSkeletonLoader />
+        </DetailsSectionWrap>
+
+        <MobileDetailsSectionWrap>
+          <CardSkeletonLoader />
+        </MobileDetailsSectionWrap>
+      </>
+    );
 
   if (isError)
     return (
-      <div>
-        <p>Something went wrong while getting riders!</p>
-        <p>{error.data?.message}</p>
-        <button onClick={refetch}>Retry</button>
-      </div>
+      <>
+        <DetailsSectionWrap>
+          <div>
+            <p>Something went wrong while getting riders!</p>
+            <p>{error.data?.message}</p>
+            <button onClick={refetch}>Retry</button>
+          </div>
+        </DetailsSectionWrap>
+
+        <MobileDetailsSectionWrap>
+          <div>
+            <p>Something went wrong while getting riders!</p>
+            <p>{error.data?.message}</p>
+            <button onClick={refetch}>Retry</button>
+          </div>
+        </MobileDetailsSectionWrap>
+      </>
     );
 
   const handleChange = changedRider => {
@@ -182,8 +210,13 @@ function MobileAddOnCoverages({
   return (
     <div
       css={`
-        background: white;
-        padding: 20px 10px;
+        display: none !important;
+        ${mobile} {
+          background: white;
+          padding: 20px 10px;
+          display: block !important;
+          padding-bottom: 92px;
+        }
       `}
     >
       <FeatureSection
@@ -288,7 +321,13 @@ function RiderCardNew({ rider, onChange, isFetching, ...props }) {
               `}
               className="d-flex align-items-center justify-content-center"
             >
-              <div>{amount(rider.total_premium)}</div>
+              <div
+                css={`
+                  font-size: 15px;
+                `}
+              >
+                {amount(rider.total_premium)}
+              </div>
 
               {isSelected ? (
                 <BsCheckCircleFill
@@ -388,8 +427,8 @@ const MobileRiderCardWrap = styled.div`
 `;
 
 const RiderName = styled.h1`
-  font-size: 1rem;
-  color: #253858;
+  font-size: 13px;
+  color: rgb(37, 56, 88) !important;
   font-weight: 900;
 `;
 
@@ -431,7 +470,7 @@ function RiderDescription({ rider, ...props }) {
 
 const RiderDescriptionWrap = styled.p`
   color: #253858;
-  font-size: 0.81rem;
+  font-size: 10px;
   overflow: hidden;
 `;
 

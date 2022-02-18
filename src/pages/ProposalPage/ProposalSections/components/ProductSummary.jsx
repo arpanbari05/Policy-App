@@ -334,7 +334,7 @@ function CartSummary({ item, index }) {
   const [showRiders, setShowRiders] = useState(false);
   const [showDiscounts, setShowDiscounts] = useState(false);
   const [showAddOns, setShowAddOns] = useState(false);
-
+  const { policyTypes } = useSelector(state => state.quotePage);
   const { isLoading, isUninitialized, data } = useGetAdditionalDiscountsQuery({
     productId: item.product.id,
     groupCode: item.group.id,
@@ -350,6 +350,8 @@ function CartSummary({ item, index }) {
     additionalDiscounts.find(
       additionalDiscount => additionalDiscount.alias === discountAlias,
     );
+  
+  console.log(policyTypes);
 
   return (
     <>
@@ -435,6 +437,27 @@ function CartSummary({ item, index }) {
             flex-direction: column;
           `}
         >
+          <div
+            css={`
+              display: flex;
+              flex-direction: row;
+              align-items: end;
+              justify-content: space-between;
+
+              /* border-right: 1px solid #dce2ec; */
+            `}
+          >
+            <p className="p_cover_medical_pop">Plan type: </p>
+            <span
+              className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+              css={`
+                padding-left: 10px;
+              `}
+            >
+              {policyTypes[item.group.id]}
+            </span>
+          </div>
+
           {journeyType === "top_up" ? (
             <div
               css={`
