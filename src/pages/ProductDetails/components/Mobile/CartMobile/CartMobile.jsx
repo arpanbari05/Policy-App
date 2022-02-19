@@ -20,8 +20,9 @@ import { FaPen } from "react-icons/fa";
 import { EditMembersModal } from "../../../../quotePage/components/filters/EditMemberFilter";
 import { ErrorMessage } from "../../../../InputPage/components/FormComponents";
 import { useHistory } from "react-router-dom";
-import CartSummaryModal from "../../../../../components/CartSummaryModal";
 import useUrlQuery from "../../../../../customHooks/useUrlQuery";
+import CartSummaryModal from "../../../../../components/CartSummaryModal";
+import { NewReviewCartPopup } from "../../../../../components/NewReviewCartPopup";
 
 const plantypes = {
   M: "Multi Individual",
@@ -35,7 +36,7 @@ const CartMobile = ({ groupCode, ...props }) => {
   const { getCartEntry } = useCart();
   const cartEntry = getCartEntry(parseInt(groupCode));
   const { total_premium } = cartEntry;
-  const cartSummaryModal = useToggle();
+  const reviewCartModalNew = useToggle();
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
   const url = useUrlQuery();
@@ -59,7 +60,7 @@ const CartMobile = ({ groupCode, ...props }) => {
         return;
       }
 
-      cartSummaryModal.on();
+      reviewCartModalNew.on();
     });
   };
 
@@ -93,6 +94,9 @@ const CartMobile = ({ groupCode, ...props }) => {
           <span
             css={`
               font-size: 14px;
+              ${small} {
+                font-size: 10px;
+              }
             `}
           >
             Next step :{" "}
@@ -100,6 +104,10 @@ const CartMobile = ({ groupCode, ...props }) => {
           <span
             css={`
               font-size: 12px;
+              ${small} {
+                font-size: 12px;
+                font-weight: 900;
+              }
             `}
           >
             Plan for :{" "}
@@ -107,6 +115,10 @@ const CartMobile = ({ groupCode, ...props }) => {
           <span
             css={`
               font-size: 14px;
+              ${small} {
+                font-size: 11px;
+                font-weight: 900;
+              }
             `}
           >
             Total Premium{" "}
@@ -116,6 +128,9 @@ const CartMobile = ({ groupCode, ...props }) => {
               font-size: 14px;
               font-weight: bold;
               color: ${colors.primary_color};
+              ${small} {
+                font-size: 21px;
+              }
             `}
           >
             {amount(total_premium)}
@@ -124,6 +139,9 @@ const CartMobile = ({ groupCode, ...props }) => {
         <Button
           onClick={handleClick}
           disabled={query.isLoading}
+          css={`
+            color: ${query.isLoading ? "black" : "white"};
+          `}
           {...props}
           className="rounded"
         >
@@ -134,11 +152,12 @@ const CartMobile = ({ groupCode, ...props }) => {
             </>
           )}
           {!nextGroupProduct && "Review Your Cart"}
+          {query.isLoading && <CircleLoader animation="border" />}
         </Button>
-        {cartSummaryModal.isOn && (
-          <CartSummaryModal
+        {!nextGroupProduct && reviewCartModalNew.isOn && (
+          <NewReviewCartPopup
             onContine={handleContinueClick}
-            onClose={cartSummaryModal.off}
+            onClose={reviewCartModalNew.off}
           />
         )}
       </div>
