@@ -14,7 +14,7 @@ const styles = {
       five: "#4a5971",
       six: "#40494f",
     },
-    border: { one: "#dfe1f2" },
+    border: { one: "#dfe1f2", two: "#c2cbde" },
   },
   boxShadows: {
     one: "0 0px 1px 0 rgb(0 0 0 / 20%), 0 8px 126px 0 rgb(0 0 0 / 10%)",
@@ -23,7 +23,7 @@ const styles = {
     four: "rgb(134 156 213 / 25%) 0px 10px 20px",
     five: "rgb(0 0 0 / 16%) 0px 3px 13px 0px",
     six: "0 5px 28px rgb(0 0 0 / 30%)",
-    seven: "rgb(0 0 0 / 8%) 0px 5px 10px"
+    seven: "rgb(0 0 0 / 8%) 0px 5px 10px",
   },
 };
 

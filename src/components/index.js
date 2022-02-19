@@ -11,6 +11,7 @@ import { amount, getDisplayPremium } from "../utils/helper";
 import CartSummaryModal from "./CartSummaryModal";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import FilterSkeletonLoader from "./Common/filter-skeleton-loader/FilterSkeletonLoader";
+import * as mq from "../utils/mediaQueries";
 
 export function ScreenTopLoader({ progress, show }) {
   const { colors } = useTheme();
@@ -134,6 +135,13 @@ export function Button({
         padding: 0 1em;
         cursor: pointer;
         font-weight: 900;
+
+        &:disabled {
+          background-color: ${colors.secondary_shade};
+          color: #666;
+          cursor: default;
+        }
+
         ${css};
       `}
       disabled={loader}
@@ -324,6 +332,9 @@ export function CircleCloseButton({
         ${placeOnCorner
           ? `top: 0; right: 0; transform: translate(30%, -30%);`
           : ""}
+        ${mq.mobile} {
+          font-size: 0.79rem;
+        }
         ${css};
       `}
       {...props}
@@ -409,7 +420,7 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
 
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-export default function Import({ mobile, desktop, children }) {
+export function Import({ mobile, desktop, children }) {
   const [Component, setComponent] = useState(null);
 
   useEffect(() => {
@@ -425,7 +436,7 @@ export default function Import({ mobile, desktop, children }) {
   return children(Component ? Component.default : () => null);
 }
 
-export function BackButtonMobile({ path, ...props }) {
+export function BackButtonMobile({ path, css = "", ...props }) {
   const { colors } = useTheme();
   return (
     <Link
@@ -433,6 +444,7 @@ export function BackButtonMobile({ path, ...props }) {
       css={`
         color: ${colors.primary_color};
         font-size: 1.29em;
+        ${css};
       `}
       to={path}
     >

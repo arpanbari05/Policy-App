@@ -2,7 +2,6 @@ import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/
 import QuoteCards from "./QuoteCards";
 
 import {
-  useCompanies,
   useGetQuotes,
   useQuotesCompare,
   useTheme,
@@ -10,16 +9,15 @@ import {
 } from "../../../customHooks";
 import "styled-components/macro";
 import { Container } from "react-bootstrap";
-import { Button, CircleCloseButton } from "../../../components";
+import { Button } from "../../../components";
 import { useHistory, useParams } from "react-router-dom";
 import { mergeQuotes } from "../../../utils/helper";
+import { CompareQuoteTrayItem, CompareTrayAdd } from ".";
 
 function Quotes({ sortBy = "relevence", ...props }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
 
   let mergedQuotes = data;
-
-  // let filteredAndSortedIcQuotes = data;
 
   if (data) {
     mergedQuotes = data.filter(
@@ -126,19 +124,7 @@ function CompareQuotesTray({ compare, onClose }) {
             />
           ))}
           {Array.from({ length: 3 - compare.quotes.length }).map((_, idx) => (
-            <div
-              className="p-3 rounded"
-              css={`
-                background-color: #fff;
-                width: 20em;
-                gap: 1em;
-                border: 1px dashed ${colors.border.one};
-                text-align: center;
-              `}
-              key={idx}
-            >
-              Add a plan
-            </div>
+            <CompareTrayAdd key={idx} />
           ))}
         </div>
 
@@ -160,47 +146,6 @@ function CompareQuotesTray({ compare, onClose }) {
           </Button>
         </div>
       </Container>
-    </div>
-  );
-}
-
-function CompareQuoteTrayItem({ quote, onRemove }) {
-  const { colors } = useTheme();
-
-  const { getCompany } = useCompanies();
-  const { logo } = getCompany(quote.company_alias);
-
-  const handleCloseClick = () => onRemove && onRemove(quote);
-
-  return (
-    <div
-      className="d-flex align-items-center p-3 rounded position-relative"
-      css={`
-        background-color: ${colors.secondary_shade};
-        width: 20em;
-        gap: 1em;
-      `}
-    >
-      <CircleCloseButton placeOnCorner onClick={handleCloseClick} />
-      <img src={logo} alt={quote.company_alias} height={36} />
-      <div>
-        <div
-          css={`
-            font-size: 0.89rem;
-            font-weight: 900;
-          `}
-        >
-          {quote.product.name}
-        </div>
-        <div
-          css={`
-            font-size: 0.79rem;
-            color: ${colors.font.three};
-          `}
-        >
-          Cover: {quote.sum_insured}
-        </div>
-      </div>
     </div>
   );
 }
