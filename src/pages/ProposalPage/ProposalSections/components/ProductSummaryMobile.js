@@ -260,12 +260,16 @@ function ProductSummaryMobile({ cart, payNow }) {
               padding-left: 20px;
               position: absolute;
               top: 20px;
-              @media (max-width: 768px) {
+              /* @media (max-width: 768px) {
                 position: unset;
-              }
+              } */
             `}
           >
-            <div>
+            <div css={`
+            @media screen and (max-width:440px){
+              font-size:14px !important;  
+            }
+            `}>
               <ProposalCheckBox
                 title={"check2"}
                 type={"checkbox"}
@@ -273,7 +277,11 @@ function ProductSummaryMobile({ cart, payNow }) {
                 extraPadding
                 onChange={() => setChecked(!checked)}
               />{" "}
-              <span className="Iaccept">I Accept the&nbsp;</span>
+              <span className="Iaccept" css={`
+            @media screen and (max-width:440px){
+              font-size:14px !important;  
+            }
+            `}>I Accept the&nbsp;</span>
               <span
                 class="TermsAndConditions"
                 css={`
