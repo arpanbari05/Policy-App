@@ -3,7 +3,7 @@ import { Import } from "../../components";
 import { useMembers } from "../../customHooks";
 import PageNotFound from "../PageNotFound";
 
-function QuotesPage() {
+function ComparePage() {
   const { groupCode } = useParams();
 
   const { checkGroupExist } = useMembers();
@@ -16,11 +16,11 @@ function QuotesPage() {
     <Import
       mobile={() =>
         import(
-          /* webpackChunkName: "quotes-page-mobile" */ "./mobile/QuotesPage"
+          /* webpackChunkName: "compare-page-mobile" */ "./mobile/ComparePage"
         )
       }
       desktop={() =>
-        import(/* webpackChunkName: "quotes-page-desktop" */ "./QuotesPage")
+        import(/* webpackChunkName: "compare-page-desktop" */ "./ComparePage")
       }
     >
       {Page => <Page />}
@@ -28,4 +28,4 @@ function QuotesPage() {
   );
 }
 
-export default QuotesPage;
+export default ComparePage;

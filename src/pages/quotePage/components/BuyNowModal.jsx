@@ -11,6 +11,7 @@ import useQuotesPage from "../useQuotes";
 import useCartProduct from "../../Cart/hooks/useCartProduct";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { setSelectedGroup } from "../quote.slice";
+import { figureToWords } from "../../../utils/helper";
 function calculateTotalPremium(riders) {
   let total = 0;
   if (riders instanceof Array && riders.length) {

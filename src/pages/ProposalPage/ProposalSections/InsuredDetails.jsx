@@ -310,6 +310,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
               <Form>
                 {console.log("jhcvugc", values)}
                 <FormBuilder
+                  isInsuredDetails
                   keyStr={item}
                   lastName={fullName?.split(" ").slice(-1)}
                   schema={schema[item]}

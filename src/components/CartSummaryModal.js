@@ -11,6 +11,7 @@ import useUrlQuery from "../customHooks/useUrlQuery";
 import { removeQuoteFromCart } from "../pages/Cart/cart.slice";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import CardModal from "./Common/Modal/CardModal";
+import { figureToWords } from "../utils/helper"
 
 function CartSummaryModal({ onClose, onContine }) {
   return (
@@ -369,7 +370,7 @@ function ProductSummaryCard({ cartEntry, ...props }) {
         >
           <ProductData noBorder>
             <span class="label-add_product">Sum Insured</span>
-            <span>₹ {parseInt(sum_insured).toLocaleString("en-IN")}</span>
+            <span>₹ {figureToWords(sum_insured)}</span>
           </ProductData>
           <ProductData>
             <span class="label-add_product">Premium</span>
@@ -394,12 +395,12 @@ function ProductSummaryCard({ cartEntry, ...props }) {
         {deductible ? (
           <ProductData>
             <span class="label-add_product">Deductible</span>
-            <span>₹ {parseInt(deductible).toLocaleString("en-IN")}</span>
+            <span>₹ {figureToWords(deductible)}</span>
           </ProductData>
         ) : null}
         <ProductData>
           <span class="label-add_product">Sum Insured</span>
-          <span>₹ {parseInt(sum_insured).toLocaleString("en-IN")}</span>
+          <span>₹ {figureToWords(sum_insured)}</span>
         </ProductData>
         <ProductData>
           <span class="label-add_product">Premium</span>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import {
@@ -29,12 +29,15 @@ import {
   getMonthsForYear,
   getQuoteSendData,
   getRiderCartData,
+  matchQuotes,
   mergeQuotes,
 } from "../utils/helper";
 import { calculateTotalPremium } from "../utils/helper";
 import useUrlQuery from "./useUrlQuery";
 import { every, uniq } from "lodash";
 import config from "../config";
+import { useCallback } from "react";
+import { quoteCompareFeature } from "../test/data/quoteFeatures";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -211,7 +214,6 @@ export function useFilter() {
 }
 
 export function useMembers() {
-
   const dispatch = useDispatch();
   let {
     data: { members },
@@ -219,13 +221,13 @@ export function useMembers() {
 
   const { data } = useGetEnquiriesQuery();
 
-  const { selectedGroup } = useSelector((state) => state.quotePage);
+  const { selectedGroup } = useSelector(state => state.quotePage);
   console.log(selectedGroup);
 
   useEffect(() => {
     const groupPolicyTypes = {};
     if (data) {
-      const group = data.data.groups.find((el) => {
+      const group = data.data.groups.find(el => {
         // only "==" for avoiding type casting, do not modify to "==="
         return el.id == selectedGroup;
       });
@@ -233,8 +235,13 @@ export function useMembers() {
         dispatch(setPolicyType(group.plan_type));
       }
       data.data.groups.forEach(group => {
-        groupPolicyTypes[group.id] = group.plan_type && group.plan_type.startsWith("F") ? "Family Floater" : group.plan_type.startsWith("M") ? "Multi Individual" : "Individual";
-      })
+        groupPolicyTypes[group.id] =
+          group.plan_type && group.plan_type.startsWith("F")
+            ? "Family Floater"
+            : group.plan_type.startsWith("M")
+            ? "Multi Individual"
+            : "Individual";
+      });
       dispatch(setPolicyTypes({ ...groupPolicyTypes }));
     }
   }, [data, selectedGroup]);
@@ -1183,4 +1190,112 @@ export function useQuoteCard({ quotes = [] }) {
     deductibles,
     sumInsureds,
   };
+}
+
+function getCompareSlotReducer({ maxLength = 3 } = {}) {
+  return function compareSlotReducer(currentSlot = [], action) {
+    switch (action.type) {
+      case "add":
+        if (currentSlot.length < maxLength)
+          return [...currentSlot, action.payload];
+        return currentSlot;
+
+      case "remove":
+        return currentSlot.filter(
+          quote => quote.product.id !== action.payload.product.id,
+        );
+
+      case "clear":
+        return [];
+
+      default:
+        throw new Error(`Unhandled action type ${action.type}`);
+    }
+  };
+}
+
+export function useCompareSlot({ initialState = [], maxLength = 3 } = {}) {
+  const [quotes, dispatch] = useReducer(
+    getCompareSlotReducer({ maxLength }),
+    initialState,
+  );
+
+  const add = quote => dispatch({ type: "add", payload: quote });
+  const remove = quote => dispatch({ type: "remove", payload: quote });
+  const check = quote =>
+    quotes.some(quoteInSlot => matchQuotes(quote, quoteInSlot));
+
+  const clear = () => dispatch({ type: "clear" });
+
+  return { quotes, add, remove, check, clear };
+}
+
+export function useGetQuote(company_alias) {
+  const { data } = useGetQuotes();
+
+  const icQuotes =
+    data && data.find(icQuotes => icQuotes.company_alias === company_alias);
+
+  const isLoading = !data || !icQuotes;
+
+  function getQuote(quote) {}
+
+  return { isLoading, data, icQuotes };
+}
+
+export function useFeatureLoadHandler() {
+  const [features, setFeatures] = useState(null);
+
+  const onLoad = ({ featureTitle, feature }) => {
+    if (!feature?.feature_value) return;
+    setFeatures(features => {
+      if (!features) {
+        return { [featureTitle]: [feature?.feature_value] };
+      }
+
+      if (!features[featureTitle])
+        return {
+          ...features,
+          [featureTitle]: [feature?.feature_value],
+        };
+
+      return {
+        ...features,
+        [featureTitle]: [...features[featureTitle], feature?.feature_value],
+      };
+    });
+  };
+
+  return { features, onLoad };
+}
+
+export function useCompareFeature(compareQuote) {
+  let query = useGetCompareFeaturesQuery(compareQuote?.product?.id);
+
+  let { data } = query;
+
+  const { journeyType } = useFrontendBoot();
+
+  function getFeature({ sectionTitle, featureTitle }) {
+    if (!data) return null;
+
+    data = journeyType === "health" ? data : quoteCompareFeature;
+
+    const compareFeature = data.find(feature => feature.name === sectionTitle);
+
+    if (!compareFeature) return null;
+
+    const features =
+      compareFeature.sum_insureds[
+        journeyType === "health" ? compareQuote.sum_insured : 300000
+      ].features;
+
+    if (!features) return null;
+
+    const feature = features.find(feature => feature.title === featureTitle);
+
+    return feature;
+  }
+
+  return { getFeature, query };
 }
