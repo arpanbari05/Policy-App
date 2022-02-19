@@ -9,7 +9,7 @@ import {
   setexpandMobile,
 } from "../productDetails.slice";
 import { useState } from "react";
-import ReviewCartPopup from "./ReviewCardPopup";
+import ReviewCartPopup, { PopUpWithCloseButton } from "./ReviewCardPopup";
 // import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
 import EditMembersContent from "./EditMembersContent";
 import { mobile, small } from "../../../utils/mediaQueries";
@@ -366,6 +366,10 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
+  const urlQueryStrings = new URLSearchParams(window.location.search);
+
+  const enquiryId = urlQueryStrings.get("enquiryId");
+
   const handleClick = () => {
     updateCartMutation().then(() => {
       if (nextGroupProduct) {
@@ -414,8 +418,12 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         )}
       </Button>
       {cartSummaryModal.isOn && (
-        <CartSummaryModal
-          onContine={handleContinueClick}
+        // <CartSummaryModal
+        //   onContine={handleContinueClick}
+        //   onClose={cartSummaryModal.off}
+        // />
+        <ReviewCartPopup
+          propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
           onClose={cartSummaryModal.off}
         />
       )}

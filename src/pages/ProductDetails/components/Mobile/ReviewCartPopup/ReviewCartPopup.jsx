@@ -2,22 +2,22 @@ import { Modal, Col, Row } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styled from "styled-components/macro";
-import { BackgroundBorderTitle } from "./ReviewCart";
-import CorrectIcon from "../../../assets/images/correct_icon.png";
-import EditIcon from "../../../assets/images/edit.png";
-import DeleteIcon from "../../../assets/images/remove.png";
-import useUrlQuery from "../../../customHooks/useUrlQuery";
-import { useCompanies, useTheme } from "../../../customHooks";
-import { useCartProduct } from "../../Cart";
-import { mobile } from "../../../utils/mediaQueries";
-import { amount, calculateTotalPremium } from "../../../utils/helper";
+import { BackgroundBorderTitle } from "../../ReviewCart";
+import CorrectIcon from "../../../../../assets/images/correct_icon.png";
+import EditIcon from "../../../../../assets/images/edit.png";
+import DeleteIcon from "../../../../../assets/images/remove.png";
+import useUrlQuery from "../../../../../customHooks/useUrlQuery";
+import { useCartProduct } from "../../../../Cart";
+import { mobile } from "../../../../../utils/mediaQueries";
+import { amount, calculateTotalPremium } from "../../../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import { selectAdditionalDiscounts } from "../productDetails.slice";
-import { useGetCartQuery, useGetEnquiriesQuery } from "../../../api/api";
+import { selectAdditionalDiscounts } from "../../../productDetails.slice";
+import { useTheme } from "../../../../../customHooks";
+import { useGetCartQuery, useGetEnquiriesQuery } from "../../../../../api/api";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
-export function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
+function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
   const handleClose = () => {
     onClose();
   };
@@ -91,6 +91,14 @@ export function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
       >
         {children}
       </Modal.Body>
+      <CloseButton
+        type="button"
+        className="btn btn-white recom_close_css "
+        style={{ marginTop: "-8px", zIndex: 2500 }}
+        onClick={handleClose}
+      >
+        <i className="fa fa-close"></i>
+      </CloseButton>
     </Modal>
   );
 }
@@ -104,7 +112,6 @@ function AddOnDetailsCard({
     members,
     total_premium,
     sum_insured,
-    
   },
 }) {
   const companies = useSelector(
@@ -208,8 +215,9 @@ function AddOnDetailsCard({
 }
 
 function ProductDetailsCardMobile({ cartItem }) {
-  const { companies } = useCompanies();
-
+  const companies = useSelector(
+    state => state.frontendBoot.frontendData.data.companies,
+  );
   const {
     product: {
       name,
@@ -542,9 +550,13 @@ function ProductDetailsCardMobile({ cartItem }) {
 }
 
 function ProductDetailsCard({ cartItem }) {
-  const { companies } = useCompanies();
+  const companies = useSelector(
+    state => state.frontendBoot.frontendData.data.companies,
+  );
 
-  const { colors: { primary_color: PrimaryColor }} = useTheme();
+  const { theme } = useSelector(state => state.frontendBoot);
+
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
 
   const {
     product: {
@@ -632,35 +644,6 @@ function ProductDetailsCard({ cartItem }) {
             </span>
           </div>
 
-          {/* <div
-            className="float_product_premium_pro"
-            css={`
-              border-left: 1px solid #ddd;
-              display: flex;
-              flex: 1;
-              align-items: center;
-              justify-content: center;
-            `}
-          >
-            <div class="si_add si_add2">
-              <span class="label-add_product_pro">
-                Premium
-                <br />
-                <span
-                  class="blk edit_css_product"
-                  css={`
-                    font-size: 15px;
-                    font-weight: 900;
-                    color: #505f79;
-                  `}
-                >
-                  {amount(total_premium)} /{" "}
-                  {tenure === 1 ? "year" : `${tenure} years`}
-                </span>
-              </span>
-            </div>
-          </div> */}
-
           <div
             className="float_product_premium_pro"
             css={`
@@ -703,7 +686,6 @@ function ProductDetailsCard({ cartItem }) {
               width: 48%;
             `}
           >
-            {/* <img src={CorrectIcon} class="display_in_m" alt="" /> */}
             <span
               css={`
                 color: ${PrimaryColor};
@@ -719,47 +701,34 @@ function ProductDetailsCard({ cartItem }) {
   );
 }
 
-function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
-  const { colors: { primary_color: PrimaryColor} } = useTheme();
-  const proposalDetails = useSelector(state => state.proposalPage.proposalData);
-  const firstName = proposalDetails["Proposer Details"]?.name;
+function ReviewCartPopupNew({
+  propsoalPageLink,
+  onClose = () => {},
+  groupCode = 10022793,
+}) {
+  const { colors } = useTheme();
+  const enquiryData = useGetEnquiriesQuery();
+  const firstName = enquiryData?.data?.data?.name.split(" ")[0];
+  /* const cart = useSelector(state => state.cart);
+  console.log("The Cart", cart);
   const { memberGroups } = useSelector(state => state.greetingPage);
-  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
-  const {
-    data: {
-      data: { groups },
-    },
-  } = useGetEnquiriesQuery();
-  const { data, isLoading, isUninitialized } = useGetCartQuery();
-  const cart = data.data;
-  
-  const groupCodes = Object.keys(cart).filter((item) =>
-    Object.keys(memberGroups).includes(item)
-  );
+  const groupCodes = Object.keys(cart).filter(item =>
+    Object.keys(memberGroups).includes(item),
+  ;
 
   const allAddOns = groupCodes.reduce(
     (allAddOns, groupCode) => [...allAddOns, ...cart[groupCode].addons],
     [],
   );
 
-  if (isLoading || isUninitialized) return <></>;
-  const getCartEntry = (groupId) => {
-    if (data.data) {
-      return data.data.find(cartEntry => cartEntry.group.id === groupId);
-    }
-  }
-  console.log(groups, cart)
-
+  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
 
   const findAdditionalDiscount = discountAlias =>
     additionalDiscounts.find(discount => discount.alias === discountAlias);
 
-  let totalPremium = groups.reduce((totalPremium, groupCode) => {
-    console.log(cart, groupCode);
-    const groupCart = cart.find(item => item.group.id === groupCode.id);
-    
-    const { discounts } = groupCart;
-    let newTotalPremium = totalPremium + calculateTotalPremium(groupCart);
+  let totalPremium = groupCodes.reduce((totalPremium, groupCode) => {
+    const { discounts } = cart[groupCode];
+    let newTotalPremium = totalPremium + calculateTotalPremium(cart[groupCode]);
     if (discounts) {
       discounts.forEach(discountAlias => {
         const discount = findAdditionalDiscount(discountAlias);
@@ -780,26 +749,17 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
       };
     }
     return { ...reducedAddOns, [id]: [...reducedAddOns[id], addOn] };
-  }, {});
+  }, {}); */
 
-  // function addOnsReducer(reducedAddOns, addOn) {
-  //   const addOnId = addOn.product.id;
-  //   if (!reducedAddOns[addOnId])
-  //     return { ...reducedAddOns, [addOnId]: [addOn] };
-  //   return {
-  //     ...reducedAddOns,
-  //     [addOnId]: [...reducedAddOns[addOnId], addOn],
-  //   };
-  // }
-
-  const handleCloseClick = PrimaryColor => {
+  const handleCloseClick = () => {
     onClose();
   };
 
-  // console.log(cartEntry);
+  const cartData = useGetCartQuery();
 
-  // const { product } = useCartProduct(groupCodes[0]);
-  // const { tenure } = product;
+  const { tenure } = cartData?.data?.data?.find(
+    singleProduct => singleProduct?.group.id === groupCode,
+  ).product;
 
   return (
     <PopUpWithCloseButton
@@ -818,7 +778,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           </span>
         </div>
       }
-      onClose={() => handleCloseClick(PrimaryColor)}
+      onClose={() => handleCloseClick()}
     >
       <div
         css={`
@@ -829,31 +789,8 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           }
         `}
       >
-        {groups.map(groupCode => (
-          <ProductCard
-            key={groupCode.id}
-            groupCode={groupCode.id}
-            onClose={onClose}
-            cartEntry={getCartEntry(groupCode.id)}
-          />
-        ))}{" "}
-        {/* {Object.keys(reducedAddOns).length > 0 && (
-          <>
-            <GradientTitle title="Add-on Coverages (Valid only 1 year)" />
-            <Row
-              css={`
-                padding: 0 15px;
-              `}
-            >
-              {Object.keys(reducedAddOns).map(addOnId => (
-                <AddOnDetailsCard
-                  key={addOnId}
-                  addOn={reducedAddOns[addOnId][0]}
-                />
-              ))}
-            </Row>
-          </>
-        )} */}
+        <ProductCard key={groupCode} groupCode={groupCode} onClose={onClose} />
+
         <div
           css={`
             display: flex;
@@ -901,7 +838,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
                 }
               `}
             >
-              {amount(totalPremium)}
+              {amount("9999999")}
             </div>
           </div>
           <Link
@@ -915,7 +852,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
             <div
               css={`
                 width: 216px;
-                background: ${PrimaryColor};
+                background: ${colors.primary_color};
                 color: #fff;
                 border-radius: 2px;
                 height: 49px;
@@ -932,29 +869,23 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
               `}
             >
               Proceed to Proposal
-              {/* <i className="flaticon-next" /> */}
             </div>
           </Link>
         </div>
       </div>
-      {/* <div
-        css={`
-          display: none;
-          ${mobile} {
-            display: block;
-          }
-        `}
-      ></div> */}
     </PopUpWithCloseButton>
   );
 }
 
-export default ReviewCartPopup;
+export default ReviewCartPopupNew;
 
-function ProductCard({ groupCode, onClose, cartEntry }) {
+function ProductCard({ groupCode, onClose }) {
   const history = useHistory();
-  // const { product, deleteProduct } = useCartProduct(groupCode);
-  const product = cartEntry;
+  const cartData = useGetCartQuery();
+  const product = cartData?.data?.data?.find(
+    singleProduct => singleProduct?.group.id === groupCode,
+  ).product;
+  console.log("the members" , product)
   const urlQuery = useUrlQuery();
 
   const handleCloseClick = () => {
@@ -963,7 +894,7 @@ function ProductCard({ groupCode, onClose, cartEntry }) {
 
   const enquiryId = urlQuery.get("enquiryId");
 
-  const reducedAddOns = product.addons.reduce((reducedAddOns, addon) => {
+  /* const reducedAddOns = product.addons.reduce((reducedAddOns, addon) => {
     const {
       product: {
         id,
@@ -987,7 +918,7 @@ function ProductCard({ groupCode, onClose, cartEntry }) {
       },
     };
   }, {});
-
+ */
   return (
     <>
       <div
@@ -998,28 +929,6 @@ function ProductCard({ groupCode, onClose, cartEntry }) {
         `}
       >
         <GradientTitle title={product.group.members.join(" + ")} />
-        {/* <div
-          css={`
-            display: flex;
-          `}
-        >
-          <Link
-            to={`/productdetails/${groupCode}?enquiryId=${enquiryId}`}
-            onClick={handleCloseClick}
-          >
-            <img src={EditIcon} alt="edit" />
-          </Link>
-          <button
-            onClick={() => {
-              handleCloseClick();
-              deleteProduct().then(() => {
-                history.push(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
-              });
-            }}
-          >
-            <img src={DeleteIcon} alt="remove-quote" />
-          </button>
-        </div> */}
       </div>
       <div
         css={`
@@ -1032,29 +941,6 @@ function ProductCard({ groupCode, onClose, cartEntry }) {
         <ProductDetailsCard cartItem={product} />
         <ProductDetailsCardMobile cartItem={product} />
       </div>
-      {product.addons.length > 0 && (
-        <div
-          css={`
-            ${mobile} {
-              display: none;
-            }
-          `}
-        >
-          <GradientTitle title="Add-on Coverages (Valid only 1 year)" />
-          <Row
-            css={`
-              padding: 0 15px;
-            `}
-          >
-            {Object.keys(reducedAddOns).map(addOnKey => (
-              <AddOnDetailsCard
-                key={addOnKey}
-                addOn={reducedAddOns[addOnKey]}
-              />
-            ))}
-          </Row>
-        </div>
-      )}
     </>
   );
 }
@@ -1118,310 +1004,3 @@ const ModalTitle = styled.h5`
   font-weight: 900;
   width: 80%;
 `;
-
-// /* eslint-disable jsx-a11y/alt-text */
-// import React, { useEffect } from "react";
-// import { Col, Row } from "react-bootstrap";
-// import { useDispatch } from "react-redux";
-// import { useSelector } from "react-redux";
-// import { createCartItem } from "./../../QuotesPage/quotePage.slice";
-// import editReview from "../../../assets/images/edit.png";
-// import correctIcon from "../../../assets/images/correct_icon.png";
-// import editPencil from "../../../assets/images/edit_pencil.png";
-// import { useHistory } from "react-router";
-// import SecureLS from "secure-ls";
-// import "./ReviewCardPopup.scss";
-
-// const ReviewCardPopup = ({
-//   reviewModalOpen,
-//   setReviewModalOpen,
-//   totalPremium,
-// }) => {
-//   const ls = new SecureLS();
-//   const history = useHistory();
-//   const dispatch = useDispatch();
-//   const plan = useSelector(({ quotePage }) => quotePage.selectedPlan);
-//   const { first_name } =
-//     useSelector(({ greetingPage }) => greetingPage?.proposerDetails) || {};
-//   const cartArr = useSelector(({ quotePage }) => quotePage.cartItems);
-//   const { selectedRiders, selectedGroup } = useSelector(
-//     ({ quotePage }) => quotePage,
-//   );
-//   const companies = useSelector(
-//     state => state.frontendBoot.frontendData.data.companies,
-//   );
-
-//   const { memberGroups } = useSelector(state => state.greetingPage);
-
-//   return (
-//     <div
-//       id="m-md-review"
-//       className="modal modal-open"
-//       data-backdrop="true"
-//       style={
-//         reviewModalOpen
-//           ? {
-//               display: "block",
-//               backgroundColor: "rgba(0,0,0,0.3)",
-//               overflowY: "auto",
-//               overflowX: "hidden",
-//             }
-//           : { display: "none" }
-//       }
-//       aria-hidden="true"
-//     >
-//       <div className="modal-dialog modal-md" style={{ maxWidth: 800 }}>
-//         <div className="modal-content">
-//           <div className="modal-header bg_more_header_filters">
-//             <div className="product_title_p_bor_modal_filters">
-//               <h5 className="modal-title modal_title_margin">
-//                 Hey {first_name || "Dev"}, Take a minute and review your cart
-//                 before
-//                 <br />
-//                 you proceed
-//               </h5>
-//             </div>
-//             <button
-//               type="button"
-//               className="btn btn-white border_radius_modal"
-//               data-dismiss="modal"
-//               onClick={() => {
-//                 setReviewModalOpen(false);
-//               }}
-//             >
-//               <i className="fa fa-close"></i>
-//             </button>
-//           </div>
-//           <div className="modal-body p-lg modal_body_padding_filters_product_page modal_scroll_filter_product">
-//             <Row>
-//               <Col md={12}>
-//                 <div className="section_review_popup">
-//                   {cartArr.map(item => (
-//                     <>
-//                       <Row>
-//                         <Col md={8}>
-//                           <h5 className="text_title_filter p_modal_title_bg_filters_product">
-//                             {JSON.parse(item.members).join(", ")}
-//                           </h5>
-//                         </Col>
-//                         <Col md={4} className="text-right">
-//                           <img
-//                             onClick={() => {
-//                               history.push(
-//                                 `/productdetails/${selectedGroup}?enquiry_id=${ls.get(
-//                                   "enquiryId",
-//                                 )}
-// 																}`,
-//                               );
-//                               setReviewModalOpen(false);
-//                             }}
-//                             src={editReview}
-//                             style={{ float: "right" }}
-//                           />
-//                         </Col>
-//                       </Row>
-
-//                       <div className="rider-box_product_pro">
-//                         <div className="row_display_pro_review">
-//                           <div className="logo_add float_left_addon_c">
-//                             <img
-//                               className="contain"
-//                               src={
-//                                 companies[item?.product?.company?.alias]?.logo
-//                               }
-//                             />
-//                           </div>
-
-//                           <div className="float_left_addon_c ">
-//                             <p className="paln_name_t_product_pro">
-//                               {item.product.name}
-//                             </p>
-//                           </div>
-//                           <div className="float_product_cover_pro">
-//                             <p className="label-add_product_pro">
-//                               Cover
-//                               <br />
-//                               <span
-//                                 className="blk edit_css_product addon_plan_d_inter_1_product_pro"
-//                                 data-toggle="modal"
-//                                 data-target="#mb-3-w_c"
-//                               >
-//                                 ₹{" "}
-//                                 {parseInt(item.sum_insured).toLocaleString(
-//                                   "en-IN",
-//                                 )}
-//                                 / per year
-//                               </span>
-//                             </p>
-//                           </div>
-
-//                           <div className="float_product_premium_pro">
-//                             <div className="si_add si_add2">
-//                               <p className="label-add_product_pro">
-//                                 Premium
-//                                 <br />
-//                                 <span
-//                                   className="blk edit_css_product"
-//                                   data-toggle="modal"
-//                                   data-target="#mb-3-w_c"
-//                                 >
-//                                   ₹{" "}
-//                                   {parseInt(item.premium).toLocaleString(
-//                                     "en-IN",
-//                                   )}
-//                                   / per year
-//                                 </span>
-//                               </p>
-//                             </div>
-//                           </div>
-
-//                           <div className="rider-box1"></div>
-//                         </div>
-//                         <hr />
-//                         <Row>
-//                           {selectedRiders[selectedGroup]?.map(item => (
-//                             <Col md={4}>
-//                               <img src={correctIcon} className="display_in_m" />{" "}
-//                               <span className="font_weight_normal">
-//                                 {/* Unlimited Recharge */}
-
-//                                 {item.name}
-//                               </span>
-//                               <p></p>
-//                             </Col>
-//                           ))}
-//                         </Row>
-//                       </div>
-//                     </>
-//                   ))}
-//                   <br />
-//                   <br />
-//                   {/* <Row>
-// 										<Col md={12}>
-// 											<p className="bottom_addon_cover">Add-ons Coverages</p>
-// 											<hr />
-// 										</Col>
-// 									</Row>
-// 									<br />
-// 									<div className="rider-box_product_pro">
-// 										<div className="row_display_pro_review">
-// 											<div className="logo_add float_left_addon_c">
-// 												<img
-// 													className="contain"
-// 													src={companies["care_health"].logo}
-// 												/>
-// 											</div>
-
-// 											<div className="float_left_addon_c ">
-// 												<p className="paln_name_t_product_pro">
-// 													Supera Super Topup (I)
-// 												</p>
-// 												<img src={editPencil} className="margin_add_edit_ic" />
-// 											</div>
-// 										</div>
-// 										<hr />
-// 										<Row>
-// 											<Col md={4}>
-// 												<div className="float_product_cover_pro">
-// 													<p className="label-add_product_pro_c">
-// 														Cover
-// 														<br />
-// 														<span
-// 															className="blk edit_css_product addon_plan_d_inter_1_product_pro_add"
-// 															data-toggle="modal"
-// 															data-target="#mb-3-w_c"
-// 														>
-// 															₹ 5.5L / per year
-// 															<i></i>
-// 														</span>
-// 													</p>
-// 												</div>
-// 											</Col>
-// 											<Col md={4}>
-// 												<div className="float_product_premium_pro">
-// 													<div className="si_add si_add2">
-// 														<p className="label-add_product_pro_c">
-// 															Premium
-// 															<br />
-// 															<span
-// 																className="blk edit_css_product addon_plan_d_inter_1_product_pro_add"
-// 																data-toggle="modal"
-// 																data-target="#mb-3-w_c"
-// 															>
-// 																₹ 15,225 / per year <i></i>
-// 															</span>
-// 														</p>
-// 													</div>
-// 												</div>
-// 											</Col>
-// 											<Col md={4}>
-// 												<div className="float_product_premium_pro">
-// 													<div className="si_add si_add2">
-// 														<p className="label-add_product_pro_c">
-// 															Insured
-// 															<br />
-// 															<span
-// 																className="blk edit_css_product"
-// 																data-toggle="modal"
-// 																data-target="#mb-3-w_c"
-// 															>
-// 																Self, Spouse..<i></i>
-// 															</span>
-// 														</p>
-// 													</div>
-// 												</div>
-// 											</Col>
-// 										</Row>
-// 									</div> */}
-
-//                   <br />
-//                   <Row>
-//                     <Col md={6} className="text-left">
-//                       <button
-//                         type="button"
-//                         name="Continue"
-//                         className="next"
-//                         value="Continue"
-//                         style={{ height: 62 }}
-//                       >
-//                         <span className="color_span_total">Total Premium</span>
-//                         <br />{" "}
-//                         <span className="color_span_total_red">
-//                           <i className="fa fa-inr"></i>{" "}
-//                           {parseInt(totalPremium).toLocaleString("en-In")}
-//                         </span>
-//                       </button>
-//                     </Col>
-//                     <Col md={6} className="text-right">
-//                       <a>
-//                         <button
-//                           type="button"
-//                           name="Continue"
-//                           className="next action-button proceed_to_action"
-//                           value="Continue"
-//                           style={{ height: 62 }}
-//                           onClick={() => {
-//                             history.push({
-//                               pathname: "/proposal",
-//                               search: `enquiryId=${ls.get("enquiryId")}`,
-//                             });
-//                           }}
-//                         >
-//                           Proceed to Proposal <i className="flaticon-next"></i>
-//                         </button>
-//                       </a>
-//                     </Col>
-//                   </Row>
-//                   <br />
-//                   <br />
-//                 </div>
-//               </Col>
-//             </Row>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ReviewCardPopup;

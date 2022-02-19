@@ -377,6 +377,8 @@ export default MoreFilters;
 
 const MoreFilterWrapper = styled.div`
   font-weight: 600;
+  max-height: 70vh;
+  overflow: scroll;
 
   .morefilter_head {
     color: #0a87ff;

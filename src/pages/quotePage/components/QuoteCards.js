@@ -12,6 +12,7 @@ import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { BsCircleFill } from "react-icons/bs";
+import { RiInformationLine } from "react-icons/ri";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",
@@ -326,7 +327,7 @@ function QuoteCard({
                   />
                 </QuoteCardOption>
               ) : null}
-              <QuoteCardOption label={"Cover:"}>
+              <QuoteCardOption info label={"Cover:"}>
                 <QuoteCardSelect
                   options={sumInsureds.map(sumInsured => ({
                     value: sumInsured,
@@ -379,7 +380,7 @@ function QuoteCardSelect({ ...props }) {
   );
 }
 
-function QuoteCardOption({ label, children, ...props }) {
+function QuoteCardOption({ label, children, info = false, ...props }) {
   const { colors } = useTheme();
 
   return (
@@ -397,9 +398,11 @@ function QuoteCardOption({ label, children, ...props }) {
         css={`
           font-size: 0.79rem;
           color: ${colors.font.two};
+          display: flex;
+          justify-content: space-between;
         `}
       >
-        {label}
+        <span>{label}</span>{info && <RiInformationLine style={{cursor: "pointer"}} color={colors.primary_color} />}
       </div>
       <div
         css={`

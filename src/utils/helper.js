@@ -296,3 +296,7 @@ export function mergeQuotes(quotes, { sortBy = "relevance" } = {}) {
 export function capitalize(sentence = "") {
   return sentence.split(" ").map(_.capitalize).join(" ");
 }
+
+export function figureToWords(amount) {
+  return `${parseInt(amount) / 100000} Lakhs`;
+}

@@ -789,3 +789,8 @@ select {
   /* Non-prefixed version, currently
                                     supported by Chrome and Opera */
 }
+
+/*  Tooltip styling */
+.tooltip-inner {
+  text-align: left !important;
+}
