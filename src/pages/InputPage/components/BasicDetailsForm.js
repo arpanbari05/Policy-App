@@ -28,7 +28,8 @@ const BasicDetailsForm = ({ ...props }) => {
 
   const { data } = useGetEnquiriesQuery();
 
-  if (data?.data) inputData = { ...data.data, gender: data.data.input.gender };
+  if (data?.data?.input)
+    inputData = { ...data.data, gender: data.data.input.gender };
 
   const fullNameInput = useNameInput(inputData.name || "");
   const mobileInput = useNumberInput(inputData.mobile || "", { maxLength: 10 });
@@ -51,22 +52,28 @@ const BasicDetailsForm = ({ ...props }) => {
   const history = useHistory();
 
   const handleFormSubmit = async formData => {
-    const params = Object.fromEntries(urlSearchParams.entries());
-    const data = {
-      name: capitalize(fullNameInput.value),
-      email: formData.email,
-      gender,
-      mobile: mobileInput.value,
-      params,
-    };
-    const response = await createEnquiry(data);
+    try {
+      const params = Object.fromEntries(urlSearchParams.entries());
+      const data = {
+        name: capitalize(fullNameInput.value),
+        email: formData.email,
+        gender,
+        mobile: mobileInput.value,
+        params,
+        section: formData.journeyType,
+      };
+      const response = await createEnquiry(data);
 
-    if (response.data) {
-      const enquiryId = response.data.data.enquiry_id;
-      history.push({
-        pathname: "/input/members",
-        search: `enquiryId=${enquiryId}`,
-      });
+      if (response.data) {
+        const enquiryId = response.data.data.enquiry_id;
+        if (!enquiryId) throw Error("Something went wrong");
+        history.push({
+          pathname: "/input/members",
+          search: `enquiryId=${enquiryId}`,
+        });
+      }
+    } catch (error) {
+      alert("Something went wrong");
     }
   };
 
@@ -199,6 +206,33 @@ const BasicDetailsForm = ({ ...props }) => {
               />
               <ErrorMessage>{errors.email?.message}</ErrorMessage>
             </div>
+          </div>
+          <div>
+            Journey Type:
+            <label className="mx-3">
+              <input
+                type={"radio"}
+                name="journeyType"
+                value={"top_up"}
+                defaultChecked={
+                  !inputData.section || inputData.section === "top_up"
+                }
+                className="mx-1"
+                ref={register}
+              />
+              Topup
+            </label>
+            <label>
+              <input
+                type={"radio"}
+                name="journeyType"
+                value={"health"}
+                className="mx-1"
+                ref={register}
+                defaultChecked={inputData.section === "health"}
+              />
+              Health
+            </label>
           </div>
         </div>
 

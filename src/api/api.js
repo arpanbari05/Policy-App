@@ -174,7 +174,7 @@ export const api = createApi({
         const { data } = await queryFulfilled;
         dispatch(
           api.util.updateQueryData("getEnquiries", undefined, draft => {
-            Object.assign(draft, data);
+            if (draft) Object.assign(draft, data);
           }),
         );
       },
