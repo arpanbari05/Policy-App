@@ -143,9 +143,9 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   const selectedPremiumCode = getSelectedFilter("premium")?.code;
 
   function filterQuote(quote) {
+    console.log(quote);
     let isCompanyMatch = false;
     let isPremiumMatch = false;
-    console.log("I_M_a_Quote", quote);
     const { company_alias, total_premium: premiumOriginal } = quote;
     let premium = premiumOriginal;
 
@@ -164,7 +164,6 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     }
 
     if (selectedPremiumCode) {
-      console.log("dsafdsf325dfgdhihihihi");
       if (selectedPremiumCode.includes("<")) {
         const tempPremium = selectedPremiumCode.split("<")[1];
         if (premium <= parseInt(tempPremium)) {
@@ -189,7 +188,6 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
         } else isPremiumMatch = false;
       }
     } else isPremiumMatch = true;
-    console.log(premium, isPremiumMatch, "agdasdg");
     const checkFeatureMatch = checkFeature(quote);
 
     const filterMatch = filter => (filter ? checkFeatureMatch(filter) : true);
@@ -206,6 +204,13 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
       ? minAge < quote.ppmc_age_limit
       : true;
 
+    console.log(isCompanyMatch &&
+      isPremiumMatch &&
+      isPopularFiltersMatch &&
+      isOtherFiltersMatch &&
+      isPreExistingMatch &&
+      isRenewalBonusMatch &&
+      isNoPreMedicalMatch);
     return (
       isCompanyMatch &&
       isPremiumMatch &&
@@ -218,6 +223,7 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   }
 
   function filterQuotes(quotes) {
+    console.log(quotes?.filter(filterQuote));
     return quotes?.filter(filterQuote);
   }
 

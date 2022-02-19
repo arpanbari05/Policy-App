@@ -6,10 +6,11 @@ import {
   FullScreenLoader,
   GoBackButton,
   Page,
-  PremiumButton,
 } from "../../components";
 import {
   useCompanies,
+  useCompareFeature,
+  useFeatureLoadHandler,
   useFrontendBoot,
   useGetQuotes,
   useQuotesCompare,
@@ -23,10 +24,11 @@ import { GiCircle } from "react-icons/gi";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { BsPlusLg } from "react-icons/bs";
 import { BiPrinter } from "react-icons/bi";
-import { mergeQuotes } from "../../utils/helper";
+import { getFeatureForQuotes, mergeQuotes } from "../../utils/helper";
 import { useGetCompareFeaturesQuery } from "../../api/api";
 import {
   BASIC_FEATURES,
+  DESCRIPTIONS,
   SPECIAL_FEATURES,
   WAITING_PERIOD,
   WHATS_NOT_COVERED,
@@ -35,12 +37,7 @@ import { every, uniq } from "lodash";
 import { useEffect, useState } from "react";
 import { quoteCompareFeature } from "../../test/data/quoteFeatures";
 import { downloadComparePage } from "./utils";
-
-const DESCRIPTIONS = {
-  deductible: "",
-  sum_insured:
-    "Cover Amount of the selected plan is the maximum pay out the Insurance company will offer",
-};
+import { ProductCard, ShowDifference } from "./components";
 
 function ComparePage() {
   const { groupCode } = useParams();
@@ -579,75 +576,6 @@ function CompareQuoteCard({ quote, onRemove, ...props }) {
   );
 }
 
-function ProductCard({ quote, onRemove, ...props }) {
-  const { boxShadows } = useTheme();
-  const { getCompanyLogo } = useCompanies();
-
-  const logo = getCompanyLogo(quote.company_alias);
-
-  const handleCloseClick = () => onRemove && onRemove(quote);
-
-  return (
-    <div
-      className="p-3 d-flex flex-column align-items-center justify-content-between position-relative"
-      css={`
-        box-shadow: ${boxShadows.five};
-        gap: 2em;
-      `}
-      {...props}
-    >
-      <CircleCloseButton placeOnCorner onClick={handleCloseClick} />
-      <img src={logo} alt={quote.company_alias} height={"46"} />
-      <div
-        css={`
-          text-align: center;
-          font-weight: 900;
-        `}
-      >
-        {quote.product.name}
-      </div>
-      <PremiumButton quote={quote} />
-    </div>
-  );
-}
-
-function ShowDifference({ onChange, checked, ...props }) {
-  const { colors } = useTheme();
-
-  const handleChange = evt => {
-    onChange && onChange(evt.target.checked);
-  };
-
-  return (
-    <div className="mt-1" {...props}>
-      <input
-        id="show-difference"
-        type={"checkbox"}
-        className="visually-hidden"
-        checked={checked}
-        onChange={handleChange}
-      />
-      <label
-        htmlFor="show-difference"
-        css={`
-          font-size: 0.83rem;
-        `}
-      >
-        <span
-          css={`
-            color: ${checked ? colors.primary_color : colors.font.two};
-            font-size: 1.27rem;
-            margin-right: 0.3em;
-          `}
-        >
-          {checked ? <IoCheckmarkCircleSharp /> : <GiCircle />}
-        </span>
-        Show difference
-      </label>
-    </div>
-  );
-}
-
 function DownloadButton({ ...props }) {
   const { colors } = useTheme();
   const handleClick = () => {
@@ -883,9 +811,7 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
 }
 
 function KeyBenefitsSection({ compareQuotes = [], ...props }) {
-  const uniqueFeatures = compareQuotes.map(quote =>
-    quote.features.find(feature => feature.code === "unique_feature"),
-  );
+  const uniqueFeatures = getFeatureForQuotes(compareQuotes, "unique_feature");
 
   return (
     <CompareSection title="Key Benefits" {...props}>
@@ -910,28 +836,7 @@ function BasicFeaturesSection({
   showDifference = false,
   ...props
 }) {
-  const [features, setFeatures] = useState(null);
-
-  const handleFeatureLoad = ({ featureTitle, feature }) => {
-    if (!feature?.feature_value) return;
-    setFeatures(features => {
-      if (!features) {
-        return { [featureTitle]: [feature?.feature_value] };
-      }
-
-      if (!features[featureTitle])
-        return {
-          ...features,
-          [featureTitle]: [feature?.feature_value],
-        };
-
-      return {
-        ...features,
-        [featureTitle]: [...features[featureTitle], feature?.feature_value],
-      };
-    });
-  };
-
+  const { features, onLoad } = useFeatureLoadHandler();
   return (
     <CompareSection title="Basic Features" {...props}>
       {BASIC_FEATURES.map(feature => {
@@ -956,7 +861,7 @@ function BasicFeaturesSection({
                 sectionTitle={"Basic Features"}
                 featureTitle={feature.title}
                 key={quote.product.id + quote.sum_insured + idx}
-                onLoad={handleFeatureLoad}
+                onLoad={onLoad}
                 tooltipPlacement={idx === 2 ? "left" : "right"}
               />
             ))}
@@ -1043,37 +948,6 @@ const renderTooltipDesc = ({ props, description }) => (
   <Tooltip {...props}>{description}</Tooltip>
 );
 
-function useCompareFeature({ compareQuote }) {
-  let query = useGetCompareFeaturesQuery(compareQuote?.product?.id);
-
-  let { data } = query;
-
-  const { journeyType } = useFrontendBoot();
-
-  function getFeature({ sectionTitle, featureTitle }) {
-    if (!data) return null;
-
-    data = journeyType === "health" ? data : quoteCompareFeature;
-
-    const compareFeature = data.find(feature => feature.name === sectionTitle);
-
-    if (!compareFeature) return null;
-
-    const features =
-      compareFeature.sum_insureds[
-        journeyType === "health" ? compareQuote.sum_insured : 300000
-      ].features;
-
-    if (!features) return null;
-
-    const feature = features.find(feature => feature.title === featureTitle);
-
-    return feature;
-  }
-
-  return { getFeature, query };
-}
-
 function FeatureValue({
   compareQuote = {},
   sectionTitle,
@@ -1085,7 +959,7 @@ function FeatureValue({
   const {
     query: { isLoading, isUninitialized, isError },
     getFeature,
-  } = useCompareFeature({ compareQuote });
+  } = useCompareFeature(compareQuote);
 
   const feature = getFeature({ sectionTitle, featureTitle });
 

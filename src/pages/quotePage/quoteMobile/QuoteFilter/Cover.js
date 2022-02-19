@@ -63,7 +63,6 @@ const Cover = ({
     if (ownCover || thisSelectedCover[0]) {
       dispatch(replaceQuotes([]));
       dispatch(replaceFilterQuotes([]));
-      console.log("fetchQuotes cover", thisSelectedCover, owncover);
       console.log("I executed");
       dispatch(
         fetchQuotes(companies, {

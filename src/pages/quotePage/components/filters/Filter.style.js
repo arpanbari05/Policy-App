@@ -66,7 +66,7 @@ export const OptionWrapper = styled.ul`
     width: 20px;
     height: 20px;
     border: 1px solid grey;
-    border-radius: 100%;
+    // border-radius: 100%;
     margin-left: 10px;
   }
   .custom_radio {
@@ -86,7 +86,7 @@ export const OptionWrapper = styled.ul`
         color: white;
         display: flex;
         justify-content: center;
-        margin: -3.5px auto;
+        margin: -1.5px auto;
         background-color: ${props => props.PrimaryColor};
       }
     }

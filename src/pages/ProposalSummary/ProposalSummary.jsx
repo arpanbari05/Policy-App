@@ -198,14 +198,14 @@ const ProposalSummary = () => {
           )}
           <div class="quotes_compare_buttons_div">
             <div
-              className="row btn_p_summary_pay_now"
+              className="row btn_p_summary_pay_now d-flex align-items-center"
               onClick={() => checked && onClick()}
               // style={{ margin: "0 25px" }}
               css={`
                 background: ${PrimaryColor} !important;
               `}
             >
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <button
                   css={`
                     background: ${PrimaryColor} !important;
@@ -221,7 +221,7 @@ const ProposalSummary = () => {
                   Pay Now{" "}
                 </button>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-8">
                 <div
                   disabled={!checked && true}
                   css={`

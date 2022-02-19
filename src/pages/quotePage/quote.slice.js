@@ -25,6 +25,7 @@ const ls = new SecureLS();
 
 const quotePageSlice = createSlice({
   initialState: {
+    isOnProductDetails: false,
     appLoading: false,
     loadingQuotes: false,
     toggleUi: false,
@@ -73,6 +74,9 @@ const quotePageSlice = createSlice({
         ...state.selectedAddOns,
         [state.selectedGroup]: action.payload,
       };
+    },
+    setIsOnProductDetails: (state, action) => {
+      state.isOnProductDetails = action.payload;
     },
     addSelectedAddOn: (state, action) => {
       const currentAddOns = state.selectedAddOns[state.selectedGroup];
@@ -297,6 +301,7 @@ export const {
   setFilters,
   setPolicyTypes,
   setPolicyType,
+  setIsOnProductDetails,
 
   saveProductDiscountResponse,
   setSelectedGroup,
@@ -328,8 +333,8 @@ var flag = false;
 export const fetchQuotes =
   (companies, { sum_insured, tenure, plan_type, member, basePlanType }) =>
   async (dispatch, store) => {
-    //console.log("hashahh3", cancelTokens);
-    //console.log('fecthquotes executed');
+    if (store().quotePage.isOnProductDetails) return;
+
     try {
       const filters = store().quotePage.filters;
       const baseplantypes =

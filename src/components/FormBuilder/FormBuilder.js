@@ -32,7 +32,8 @@ const FormBuilder = ({
   setNoForAll,
   setNoForAllEmpty,
   keyStr,
-  lastName
+  lastName,
+  isInsuredDetails
 }) => {
   const {
     updateValue,
@@ -435,7 +436,7 @@ const FormBuilder = ({
                           }
                         }}
                         age={item?.validate?.age}
-                        readOnly={item.readOnly}
+                        readOnly={item.readOnly || (isInsuredDetails && item.name === "mobile")}
                         allValues={proposalData}
                         customMembers={
                           item.render &&

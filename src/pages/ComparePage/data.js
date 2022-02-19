@@ -134,3 +134,11 @@ export const WHATS_NOT_COVERED = [
       "Insurer shall not be liable to make any payment for any claim directly or indirectly caused by, based on, arising out of or attributable to any of the mentioned conditions.",
   },
 ];
+
+export const DESCRIPTIONS = {
+  deductible: "",
+  sum_insured:
+    "Cover Amount of the selected plan is the maximum pay out the Insurance company will offer",
+  tenure: "Policy term for which you can buy this policy",
+  unique_features: "Benefits which are unique to this policy",
+};
