@@ -1,0 +1,21 @@
+.section_review_popup {
+  width: 100%;
+  min-height: inherit;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  flex-direction: column;
+  margin: 0 31px;
+  position: relative;
+  margin-top: 14px;
+}
+.modal_body_padding_filters_product_page {
+  padding: 0px 69px 0 4px !important;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  z-index: 1000 !important;
+}
+.comapny_logo_popop {
+  position: relative;
+  right: 10px;
+}
