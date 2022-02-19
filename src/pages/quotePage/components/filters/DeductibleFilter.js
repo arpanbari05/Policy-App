@@ -64,15 +64,6 @@ function DeductibleFilterModal({ onClose, ...props }) {
       `}
       {...props}
     >
-      <p
-        className="mt-3"
-        css={`
-          font-size: 0.79rem;
-        `}
-      >
-        Your minimum deductible should be equal to your existing cover. Super
-        top up will provide the coverage once the existing cover is exhausted
-      </p>
       <div className="mt-3">
         <Dropdown
           label="Select Deductible Sum Insured"
@@ -85,6 +76,15 @@ function DeductibleFilterModal({ onClose, ...props }) {
           options={deductibles.map(getReactSelectOption)}
         />
       </div>
+      <p
+        className="mt-3"
+        css={`
+          font-size: 0.79rem;
+        `}
+      >
+        Your minimum deductible should be equal to your existing cover. Super
+        top up will provide the coverage once the existing cover is exhausted
+      </p>
     </CustomModal1>
   );
 }

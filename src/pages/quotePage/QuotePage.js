@@ -99,6 +99,8 @@ function QuotePage1() {
     moreFilters: {},
   };
 
+  console.log(quotes);
+
   const dispatch = useDispatch();
 
   const [seeDetailsQuote, setSeeDetailsQuote] = useState({

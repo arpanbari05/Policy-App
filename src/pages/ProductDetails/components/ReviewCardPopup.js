@@ -7,15 +7,17 @@ import CorrectIcon from "../../../assets/images/correct_icon.png";
 import EditIcon from "../../../assets/images/edit.png";
 import DeleteIcon from "../../../assets/images/remove.png";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
+import { useCompanies, useTheme } from "../../../customHooks";
 import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
 import { amount, calculateTotalPremium } from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
+import { useGetCartQuery, useGetEnquiriesQuery } from "../../../api/api";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
-function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
+export function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
   const handleClose = () => {
     onClose();
   };
@@ -89,14 +91,6 @@ function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
       >
         {children}
       </Modal.Body>
-      <CloseButton
-        type="button"
-        className="btn btn-white recom_close_css "
-        style={{ marginTop: "-8px", zIndex: 2500 }}
-        onClick={handleClose}
-      >
-        <i className="fa fa-close"></i>
-      </CloseButton>
     </Modal>
   );
 }
@@ -214,9 +208,8 @@ function AddOnDetailsCard({
 }
 
 function ProductDetailsCardMobile({ cartItem }) {
-  const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
-  );
+  const { companies } = useCompanies();
+
   const {
     product: {
       name,
@@ -549,13 +542,9 @@ function ProductDetailsCardMobile({ cartItem }) {
 }
 
 function ProductDetailsCard({ cartItem }) {
-  const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
-  );
+  const { companies } = useCompanies();
 
-  const { theme } = useSelector(state => state.frontendBoot);
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { colors: { primary_color: PrimaryColor }} = useTheme();
 
   const {
     product: {
@@ -731,15 +720,21 @@ function ProductDetailsCard({ cartItem }) {
 }
 
 function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
-  const { theme } = useSelector(state => state.frontendBoot);
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-  const name = useSelector(state => state.greetingPage.proposerDetails.name);
-  const firstName = name.split(" ")[0];
-  const cart = useSelector(state => state.cart);
+  const { colors: { primary_color: PrimaryColor} } = useTheme();
+  const proposalDetails = useSelector(state => state.proposalPage.proposalData);
+  const firstName = proposalDetails["Proposer Details"]?.name;
   const { memberGroups } = useSelector(state => state.greetingPage);
-  const groupCodes = Object.keys(cart).filter(item =>
-    Object.keys(memberGroups).includes(item),
+  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
+  const {
+    data: {
+      data: { groups },
+    },
+  } = useGetEnquiriesQuery();
+  const { data, isLoading, isUninitialized } = useGetCartQuery();
+  const cart = data.data;
+  
+  const groupCodes = Object.keys(cart).filter((item) =>
+    Object.keys(memberGroups).includes(item)
   );
 
   const allAddOns = groupCodes.reduce(
@@ -747,14 +742,24 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
     [],
   );
 
-  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
+  if (isLoading || isUninitialized) return <></>;
+  const getCartEntry = (groupId) => {
+    if (data.data) {
+      return data.data.find(cartEntry => cartEntry.group.id === groupId);
+    }
+  }
+  console.log(groups, cart)
+
 
   const findAdditionalDiscount = discountAlias =>
     additionalDiscounts.find(discount => discount.alias === discountAlias);
 
-  let totalPremium = groupCodes.reduce((totalPremium, groupCode) => {
-    const { discounts } = cart[groupCode];
-    let newTotalPremium = totalPremium + calculateTotalPremium(cart[groupCode]);
+  let totalPremium = groups.reduce((totalPremium, groupCode) => {
+    console.log(cart, groupCode);
+    const groupCart = cart.find(item => item.group.id === groupCode.id);
+    
+    const { discounts } = groupCart;
+    let newTotalPremium = totalPremium + calculateTotalPremium(groupCart);
     if (discounts) {
       discounts.forEach(discountAlias => {
         const discount = findAdditionalDiscount(discountAlias);
@@ -791,10 +796,10 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
     onClose();
   };
 
-  console.log("The groupCodes", groupCodes);
+  // console.log(cartEntry);
 
-  const { product } = useCartProduct(groupCodes[0]);
-  const { tenure } = product;
+  // const { product } = useCartProduct(groupCodes[0]);
+  // const { tenure } = product;
 
   return (
     <PopUpWithCloseButton
@@ -824,11 +829,12 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           }
         `}
       >
-        {groupCodes.map(groupCode => (
+        {groups.map(groupCode => (
           <ProductCard
-            key={groupCode}
-            groupCode={groupCode}
+            key={groupCode.id}
+            groupCode={groupCode.id}
             onClose={onClose}
+            cartEntry={getCartEntry(groupCode.id)}
           />
         ))}{" "}
         {/* {Object.keys(reducedAddOns).length > 0 && (
@@ -945,9 +951,10 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
 
 export default ReviewCartPopup;
 
-function ProductCard({ groupCode, onClose }) {
+function ProductCard({ groupCode, onClose, cartEntry }) {
   const history = useHistory();
-  const { product, deleteProduct } = useCartProduct(groupCode);
+  // const { product, deleteProduct } = useCartProduct(groupCode);
+  const product = cartEntry;
   const urlQuery = useUrlQuery();
 
   const handleCloseClick = () => {

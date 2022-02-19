@@ -7,9 +7,11 @@ import "styled-components/macro";
 import useQuoteFilter from "./useQuoteFilter";
 import { OptionWrapper, ApplyBtn } from "./Filter.style";
 import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
-import { useFrontendBoot, useTheme } from "../../../../customHooks";
+import { useFrontendBoot, useTheme, useGetQuotes } from "../../../../customHooks";
 import { Filter, FilterHead } from ".";
 import { FaChevronDown, FaTimes } from "react-icons/fa";
+import { mergeQuotes } from "../../../../utils/helper";
+
 
 const FilterModal = ({ show, onClose }) => {
   const dispatch = useDispatch();
@@ -80,10 +82,25 @@ const FilterModal = ({ show, onClose }) => {
 
   const { colors } = useTheme();
 
-  let quotes = useSelector(selectQuotesForSort);
-  quotes = Object.values(quotes).map(quoteData => quoteData.data);
+  let { data } = useGetQuotes();
+  let quotes = data;
 
-  const filteredQuotes = quotes.map(icQuotes => filterQuotes(icQuotes)).flat();
+  if (data) {
+    quotes = data.filter(
+      icQuotes => !!icQuotes?.data?.data[0]?.total_premium,
+    );
+    quotes = data.map(icQuotes => ({
+      ...icQuotes,
+      data: { data: mergeQuotes(icQuotes.data.data, { }) },
+    }));
+  }
+
+  quotes = Object.values(quotes).map(quoteData => quoteData.data);
+  console.log(quotes);
+
+  const filteredQuotes = quotes.map(icQuotes => filterQuotes(icQuotes.data.data));
+
+  console.log(filteredQuotes)
 
   let filteredPlans = [];
   filteredQuotes.forEach(data => {
@@ -377,6 +394,8 @@ export default MoreFilters;
 
 const MoreFilterWrapper = styled.div`
   font-weight: 600;
+  max-height: 70vh;
+  overflow: scroll;
 
   .morefilter_head {
     color: #0a87ff;
