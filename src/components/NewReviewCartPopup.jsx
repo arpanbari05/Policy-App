@@ -202,7 +202,7 @@ function Footer({ closeModal, onContine, total_premium, ...props }) {
 
 function GroupCard({ group, closeModal, ...props }) {
   const { members } = group;
-
+  const { colors } = useTheme();
   return (
     <div
       css={`
@@ -221,17 +221,17 @@ function GroupCard({ group, closeModal, ...props }) {
           css={`
             font-weight: bold;
             @media (max-width: 400px) {
-              font-size: 10px !important;
+              font-size: 15px !important;
             }
           `}
         >
           <div
             css={`
-              height: 31px;
+              height: 25px;
               width: 6px;
               border-radius: 3px;
               margin-right: 14px;
-              background: #2cd44a;
+              background: ${colors.secondary_color};
             `}
           ></div>
           {members.join(" + ")?.replaceAll("_", "-")}
@@ -255,6 +255,7 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
   const url = useUrlQuery();
 
   const enquiryId = url.get("enquiryId");
+  const { colors } = useTheme();
 
   if (isLoading || isUninitialized)
     return (
@@ -304,8 +305,8 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
             justify-content: center;
             align-items: center;
             width: 120px;
-            background: rgb(235, 245, 255);
-            color: #0d6efd;
+            background: ${colors.primary_shade};
+            color: ${colors.primary_color};
             border: none;
             @media (max-width: 400px) {
               font-size: 10px;
@@ -338,8 +339,8 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
         justify-content: space-between;
         width: 1.67em;
         height: 1.67em;
-        color: #168cff;
-        background: #eff7ff;
+        color: ${colors.primary_color};
+        background: ${colors.primary_shade};
         display: flex;
         font-size: 22px;
         align-items: center;
