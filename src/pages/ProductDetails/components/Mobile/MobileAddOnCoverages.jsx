@@ -397,6 +397,9 @@ function RiderOption({
         className="p-2"
         css={`
           background-color: ${colors.primary_shade};
+          ${small} {
+            max-width: 150px;
+          }
         `}
         name={key}
         value={selected}
@@ -423,6 +426,9 @@ const MobileRiderCardWrap = styled.div`
   margin: 10px 0px;
   &:hover {
     box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
+  }
+  ${small} {
+    gap: unset;
   }
 `;
 
