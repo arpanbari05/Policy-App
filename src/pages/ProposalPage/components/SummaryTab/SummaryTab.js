@@ -67,11 +67,11 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+          <p className="font_15_p_s" >
             {data.additionalOptions.label}
           </p>
 
-          <p className="font_sub_p_s">{dateFormatter(values?.[data.name])}</p>
+          <p className="font_sub_p_s" style={{ fontWeight: "900" }}>{dateFormatter(values?.[data.name])}</p>
         </Col>
       );
     }
@@ -93,10 +93,10 @@ const SummaryTab = ({ title, data, values, index }) => {
           key={i}
         >
           {console.log("bvidwbvidbvb", values)}
-          <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+          <p className="font_15_p_s" >
             {data.additionalOptions.label}
           </p>
-          <p className="font_sub_p_s">
+          <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
             {data.name === "town" || data.name === "area"
               ? values[data.name + "__value"]
               : getValueFromCode(values[data.name], data)}
@@ -113,10 +113,10 @@ const SummaryTab = ({ title, data, values, index }) => {
         style={{ display: "inline-block" }}
         key={i}
       >
-        <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+        <p className="font_15_p_s" >
           {data.additionalOptions.label}
         </p>
-        <p className="font_sub_p_s">{values[data.name]}</p>
+        <p className="font_sub_p_s" style={{ fontWeight: "900" }}>{values[data.name]}</p>
       </Col>
     ) : (
       data.type === "custom_toggle" && (
@@ -138,7 +138,7 @@ const SummaryTab = ({ title, data, values, index }) => {
                     class="col-md-2 mb-12"
                     style={{ display: "inline-block" }}
                   >
-                    <p class="font_15_p_s medical_details_p_s">{item}</p>
+                    <p class="font_15_p_s medical_details_p_s">{item?item:"No"}</p>
                   </div>
                 );
               } else return <></>;
@@ -174,10 +174,10 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+          <p className="font_15_p_s" >
             {data.additionalOptions.label}
           </p>
-          <p className="font_sub_p_s">
+          <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
             {dateFormatter(values?.[item]?.[data.name])}
           </p>
         </Col>
@@ -193,10 +193,10 @@ const SummaryTab = ({ title, data, values, index }) => {
           key={i}
           style={{ display: "inline-block" }}
         >
-          <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+          <p className="font_15_p_s" >
             {"Height"}
           </p>
-          <p className="font_sub_p_s">
+          <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
             {convertToFt(values?.[item]?.[data.name])}
           </p>
         </Col>
@@ -225,19 +225,19 @@ const SummaryTab = ({ title, data, values, index }) => {
                 (_item, _i) => {
                   return (
                     <>
-                      <CustomMedicalTitle>{_item}</CustomMedicalTitle>
+                      <CustomMedicalTitle>{_item?_item:"No"}</CustomMedicalTitle>
                       <InnerWrapper>
                         {schema[i + 1].map(additionalQuestion => (
                           <AdditionalWrapper2 className="text-dark">
                             <AdditionalQuestion
                               className="font_15_p_s"
-                              style={{ fontWeight: "900" }}
+                              
                             >
                               {additionalQuestion.additionalOptions.label ||
                                 additionalQuestion.additionalOptions
                                   .placeholder}
                             </AdditionalQuestion>
-                            <AdditionalAnswer className="font_sub_p_s">
+                            <AdditionalAnswer className="font_sub_p_s" style={{ fontWeight: "900" }}>
                               <p
                                 style={{
                                   overflowWrap: "break-word",
@@ -276,10 +276,10 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+          <p className="font_15_p_s" >
             {data.additionalOptions.label}
           </p>
-          <p className="font_sub_p_s">
+          <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
             {getValueFromCode(values?.[item]?.[data.name], data)}
           </p>
         </Col>
@@ -295,10 +295,10 @@ const SummaryTab = ({ title, data, values, index }) => {
             key={i}
             style={{ display: "inline-block" }}
           >
-            <p className="font_15_p_s" style={{ fontWeight: "900" }}>
+            <p className="font_15_p_s">
               {data.additionalOptions.label}
             </p>
-            <p className="font_sub_p_s">{values?.[item]?.[data.name]}</p>
+            <p className="font_sub_p_s" style={{ fontWeight: "900" }}>{values?.[item]?.[data.name]}</p>
           </Col>
         )}
       </>
@@ -324,8 +324,9 @@ const SummaryTab = ({ title, data, values, index }) => {
                       key={_i}
                       class="col-md-2 mb-12"
                       style={{ display: "inline-block" }}
+                      css={`font-weight: 900 !important;`}
                     >
-                      <MedicalAnswer>{_item}</MedicalAnswer>
+                      <MedicalAnswer>{_item?_item:"No"}</MedicalAnswer>
                     </div>
                   );
                 } else return <></>;
@@ -392,6 +393,7 @@ const SummaryTab = ({ title, data, values, index }) => {
         <Row
           css={`
             margin-left: 10px;
+            margin-top:-28px;
           `}
         >
           {data instanceof Array
@@ -523,7 +525,7 @@ const MedicalQuestionWrapper = styled.p`
   line-height: 27px !important;
   color: #000000;
 
-  font-weight: 900 !important;
+  
   position: relative;
   padding-left: 12px;
   width: 78%;
@@ -573,7 +575,7 @@ const TitleWrapper = styled.p`
     border-top: 1px dashed #c1c9d5;
   }
   @media (max-width: 767px) {
-    margin-bottom: 0;
+    margin-bottom: 15px;
   }
 `;
 const CustomMedicalTitle = styled.div`
