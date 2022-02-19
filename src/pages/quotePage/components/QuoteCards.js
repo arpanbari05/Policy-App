@@ -1,35 +1,17 @@
 import { useEffect, useState } from "react";
 import { Col, Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
-import {
-  CenterBottomToggle,
-  SeeText,
-  SmallLabel,
-  TextWrapper,
-  ValueText,
-} from "./QuoteCard.style";
+import { SeeText } from "./QuoteCard.style";
 import "styled-components/macro";
-import {
-  useCompanies,
-  useQuote,
-  useTheme,
-  useToggle,
-  useUrlEnquiry,
-} from "../../../customHooks";
-import CartSummaryModal from "../../../components/CartSummaryModal";
+import { useCompanies, useTheme, useToggle } from "../../../customHooks";
 import ProductDetailsModal from "../../../components/ProductDetails/ProductDetailsModal";
-import { Button, PremiumButton } from "../../../components";
-import {
-  getDisplayPremium,
-  mergeQuotes,
-  numberToDigitWord,
-} from "../../../utils/helper";
+import { PremiumButton } from "../../../components";
+import { numberToDigitWord } from "../../../utils/helper";
 import { uniq } from "lodash";
-import { useHistory } from "react-router-dom";
-import { useGetCartQuery } from "../../../api/api";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
-import { GiCircle } from "react-icons/gi";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { BsCircleFill } from "react-icons/bs";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",
@@ -41,12 +23,12 @@ const featuresDisplayedOnQuoteCard = [
 
 const renderTooltip = description => <Tooltip>{description}</Tooltip>;
 
-function QuoteCards({ quotesData, compare, ...props }) {
+function QuoteCards({ quotesData, sortBy, compare, ...props }) {
   const { colors } = useTheme();
 
   const [show, setShow] = useState(false);
 
-  const mergedQuotes = Object.values(mergeQuotes(quotesData.data));
+  const mergedQuotes = quotesData.data;
 
   if (!mergedQuotes.length) return null;
 
@@ -73,7 +55,7 @@ function QuoteCards({ quotesData, compare, ...props }) {
 
   return (
     <div
-      className="position-relative mt-3"
+      className="position-relative"
       css={`
         box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
         background-color: #fff;
@@ -105,29 +87,31 @@ function QuoteCards({ quotesData, compare, ...props }) {
         </div>
       </Collapse>
       {!!collapsedQuotes.length && (
-        <CenterBottomToggle
+        <div
+          className="px-4 pt-1"
           css={`
             position: absolute;
             top: 100%;
             left: 50%;
             transform: translate(-50%, -100%);
-            background-color: ${colors.primary_shade} !important;
+            background-color: ${colors.primary_shade};
+            border-radius: 1.6em 1.6em 0 0;
           `}
         >
           <SeeText
             css={`
               border-bottom: none !important;
               cursor: pointer;
-              font-size: 12px;
+              font-size: 0.79rem;
             `}
             onClick={() => {
               setShow(!show);
             }}
           >
             {collapsedQuotes.length} More Plans{" "}
-            <i className={`fas fa-chevron-${show ? "up" : "down"}`} />
+            {show ? <FaChevronUp /> : <FaChevronDown />}
           </SeeText>
-        </CenterBottomToggle>
+        </div>
       )}
     </div>
   );
@@ -208,7 +192,7 @@ function QuoteCard({
 
   return (
     <div {...props}>
-      <div className="d-flex pt-3 pb-2">
+      <div className="d-flex py-3">
         <div
           className="d-flex flex-column align-items-center justify-content-between"
           css={`
@@ -248,7 +232,7 @@ function QuoteCard({
           </button>
         </div>
         <div
-          className="d-flex flex-wrap pb-3 px-3"
+          className="d-flex flex-wrap px-3"
           css={`
             flex: 2;
             border-left: 1px solid;
@@ -261,6 +245,49 @@ function QuoteCard({
               <QuoteFeature key={feature.code} feature={feature} />
             ) : null,
           )}
+          <div
+            css={`
+              font-size: 0.83rem;
+            `}
+          >
+            <label
+              className="d-flex align-items-center px-3 py-1 rounded"
+              htmlFor={quote.product.id + quote.total_premium}
+              css={`
+                color: ${colors.font.one};
+                font-weight: 900;
+                cursor: pointer;
+                background-color: ${colors.secondary_shade};
+              `}
+            >
+              <span
+                css={`
+                  font-size: 1.27rem;
+                  margin-right: 0.3em;
+                  color: ${colors.primary_color};
+                `}
+              >
+                {isCompareQuote ? (
+                  <IoCheckmarkCircleSharp />
+                ) : (
+                  <BsCircleFill
+                    css={`
+                      color: white;
+                    `}
+                  />
+                )}
+              </span>
+              <span className="mt-1">Compare</span>
+            </label>
+            <input
+              className="visually-hidden"
+              type={"checkbox"}
+              id={quote.product.id + quote.total_premium}
+              name="compare-quote"
+              checked={isCompareQuote}
+              onChange={handleCompareChange}
+            />
+          </div>
         </div>
         <div
           css={`
@@ -285,83 +312,37 @@ function QuoteCard({
                   <QuoteCardSelect
                     options={deductibles.map(deductible => ({
                       value: deductible,
-                      label: numberToDigitWord(deductible),
+                      label: numberToDigitWord(deductible)
+                        .replace("₹", "")
+                        .replace("Lakh", "L"),
                     }))}
                     value={{
                       value: selectedDeductible,
-                      label: numberToDigitWord(selectedDeductible),
+                      label: numberToDigitWord(selectedDeductible)
+                        .replace("₹", "")
+                        .replace("Lakh", "L"),
                     }}
                     onChange={handleDeductibleChange}
                   />
-                  {/* <select
-                    value={selectedDeductible}
-                    onChange={handleDeductibleChange}
-                  >
-                    {deductibles.map(deductible => (
-                      <option value={deductible} key={deductible}>
-                        {numberToDigitWord(deductible)}
-                      </option>
-                    ))}
-                  </select> */}
                 </QuoteCardOption>
               ) : null}
               <QuoteCardOption label={"Cover:"}>
                 <QuoteCardSelect
                   options={sumInsureds.map(sumInsured => ({
                     value: sumInsured,
-                    label: numberToDigitWord(sumInsured),
+                    label: numberToDigitWord(sumInsured)
+                      .replace("₹", "")
+                      .replace("Lakh", "L"),
                   }))}
                   value={{
                     value: selectedSumInsured,
-                    label: numberToDigitWord(selectedSumInsured),
+                    label: numberToDigitWord(selectedSumInsured)
+                      .replace("₹", "")
+                      .replace("Lakh", "L"),
                   }}
                   onChange={handleSumInsuredChange}
                 />
-                {/* <select
-                  value={selectedSumInsured}
-                  onChange={handleSumInsuredChange}
-                >
-                  {sumInsureds.map(sumInsured => (
-                    <option value={sumInsured} key={sumInsured}>
-                      {numberToDigitWord(sumInsured)}
-                    </option>
-                  ))}
-                </select> */}
               </QuoteCardOption>
-            </div>
-            <div
-              css={`
-                font-size: 0.83rem;
-              `}
-            >
-              <label
-                className="d-flex align-items-center"
-                htmlFor={quote.product.id + quote.total_premium}
-                css={`
-                  color: ${colors.font.three};
-                  font-weight: 900;
-                  cursor: pointer;
-                `}
-              >
-                <span
-                  css={`
-                    font-size: 1.27rem;
-                    margin-right: 0.3em;
-                    color: ${colors.primary_color};
-                  `}
-                >
-                  {isCompareQuote ? <IoCheckmarkCircleSharp /> : <GiCircle />}
-                </span>
-                <span className="mt-1">Compare</span>
-              </label>
-              <input
-                className="visually-hidden"
-                type={"checkbox"}
-                id={quote.product.id + quote.total_premium}
-                name="compare-quote"
-                checked={isCompareQuote}
-                onChange={handleCompareChange}
-              />
             </div>
           </div>
         </div>
@@ -377,6 +358,7 @@ function QuoteCardSelect({ ...props }) {
   return (
     <Select
       isSearchable={false}
+      components={{ DropdownIndicator: FaChevronDown }}
       styles={{
         valueContainer: provided => ({ ...provided, padding: 0 }),
         indicatorSeparator: () => ({ display: "none" }),
@@ -442,9 +424,11 @@ function QuoteFeature({ feature }) {
     ? feature.short_description
     : feature.description;
 
+  const { colors } = useTheme();
+
   return (
     <OverlayTrigger placement={"right"} overlay={renderTooltip(description)}>
-      <TextWrapper
+      <div
         css={`
           flex: 0 1 33.3%;
           width: auto;
@@ -452,22 +436,23 @@ function QuoteFeature({ feature }) {
           min-width: auto;
         `}
       >
-        <SmallLabel
+        <div
           css={`
-            font-size: 11px !important;
+            font-size: 0.73rem;
+            color: ${colors.font.three};
           `}
         >
           {feature.name}
-        </SmallLabel>
-        <ValueText
+        </div>
+        <div
           css={`
-            font-size: 12px !important;
             width: auto;
+            font-size: 0.79rem;
           `}
         >
           {feature.value}
-        </ValueText>
-      </TextWrapper>
+        </div>
+      </div>
     </OverlayTrigger>
   );
 }

@@ -45,6 +45,8 @@ const DropDown = ({
     } else setSelectOption(options);
   }, [asyncOptions]);
 
+  console.log(value)
+
   return (
     <SelectContainer height={height}>
       <Select
@@ -62,7 +64,7 @@ const DropDown = ({
           !asyncOptions) ||
           asyncOptions ||
           !checkValidation?.required) && (
-          <option value={""}>{dropPlaceholder || "- Select -"}</option>
+          <option value={"- Select -"}>{dropPlaceholder || "- Select -"}</option>
         )}
         {selectedValues?.title &&
         selectedValues.title === "mrs" &&

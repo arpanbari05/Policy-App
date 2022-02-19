@@ -12,9 +12,35 @@ import "styled-components/macro";
 import { Container } from "react-bootstrap";
 import { Button, CircleCloseButton } from "../../../components";
 import { useHistory, useParams } from "react-router-dom";
+import { mergeQuotes } from "../../../utils/helper";
 
-function Quotes() {
+function Quotes({ sortBy = "relevence", ...props }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
+
+  let mergedQuotes = data;
+
+  // let filteredAndSortedIcQuotes = data;
+
+  if (data) {
+    mergedQuotes = data.filter(
+      icQuotes => !!icQuotes?.data?.data[0]?.total_premium,
+    );
+    mergedQuotes = data.map(icQuotes => ({
+      ...icQuotes,
+      data: { data: mergeQuotes(icQuotes.data.data, { sortBy }) },
+    }));
+    if (sortBy === "premium-low-to-high") {
+      mergedQuotes = mergedQuotes.filter(
+        icQuotes => !!icQuotes?.data?.data[0]?.length,
+      );
+      mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) =>
+        icQuotesA.data.data[0][0].total_premium >
+        icQuotesB.data.data[0][0].total_premium
+          ? 1
+          : -1,
+      );
+    }
+  }
 
   const quotesCompare = useQuotesCompare();
 
@@ -24,11 +50,14 @@ function Quotes() {
 
   return (
     <div
+      className="d-flex flex-column"
       css={`
         padding-bottom: ${isQuotesOnCompare ? "10em" : "1em"};
+        gap: 0.6rem;
       `}
+      {...props}
     >
-      {data?.map(insurersQuotes => (
+      {mergedQuotes?.map(insurersQuotes => (
         <QuoteCards
           key={insurersQuotes.company_alias}
           quotesData={insurersQuotes.data}

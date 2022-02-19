@@ -109,7 +109,7 @@ const fullName = /^[a-zA-Z. ]{3,60}$/;
 const email =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 export const firstFormSchema = yup.object({
-  fullName: yup
+  name: yup
     .string()
     .required("Full Name is required.")
     .matches(fullName, "Please enter a valid Full Name."),
@@ -137,9 +137,8 @@ export const firstFormSchema = yup.object({
     }),
   mobile: yup
     .string()
-    .phone()
     .required("Mobile no. is required.")
-    .matches(mobile, "Please enter a valid Mobile no.")
+    .matches(mobile, "Please enter a valid Mobile No.")
     .label("Mobile No."),
   // declaration: yup
   //   .boolean()

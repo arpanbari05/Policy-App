@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setShowBMI } from "../ProposalSections.slice";
 import { useHistory } from "react-router";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
+import { FaTimes } from "react-icons/fa";
 
 const BMI = () => {
   const { showBMI } = useSelector(state => state.proposalPage);
@@ -18,13 +19,9 @@ const BMI = () => {
     return (
       <PopupWrapper>
         <Popup>
-          <CloseButton
-            onClick={() => {
+          <FaTimes style={{margin: "20px 20px 0 0", cursor: "pointer"}} onClick={() => {
               dispatch(setShowBMI(false));
-            }}
-          >
-            <i className="fa fa-close"></i>
-          </CloseButton>
+            }} />
           <Container>
             <p>
               Based on BMI of <span>{showBMI}</span> this plan isn't available.
@@ -87,6 +84,7 @@ export const Popup = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.2);
   max-width: 400px;
   border-radius: 8px;
+  text-align: right;
 
   @media (max-width: 767px) {
     width: 100%;
@@ -103,6 +101,7 @@ export const CloseButton = styled.button`
   border: 1px solid #dce2ea;
   border-radius: 50%;
   font-size: 14px;
+  text-align: left !important;
   & i {
     position: absolute;
     top: 50%;
@@ -111,7 +110,8 @@ export const CloseButton = styled.button`
   }
 `;
 export const Container = styled.div`
-  padding: 40px 50px;
+  padding: 10px 50px 40px 50px;
+  text-align: left !important;
 
   & p {
     font-weight: 100;

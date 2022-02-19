@@ -66,5 +66,11 @@ test(`Test MemberOptions`, async () => {
 
   const errorMessage = await membersForm.findByLabelText(/error message/i);
 
-  expect(errorMessage).toBeInTheDocument();
+  expect(errorMessage.innerHTML).toBe("Please enter Insurer's age");
+
+  const selfOption = await membersForm.findByRole(/Self/i);
+
+  userEvent.click(selfOption);
+
+  console.log(selfOption.getAttribute("data-checked"))
 });

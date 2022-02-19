@@ -408,7 +408,7 @@ function QuotePage1() {
           css={`
             padding-bottom: 71px;
 
-            @media (min-width: 769px) {
+            @media (min-width: 768px) {
               display: none !important;
             }
           `}

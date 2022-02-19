@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 import "./ProposalSummary.scss";
 import ProposalCheckBox from "../../components/Common/ProposalSummary/summaryCheckBox";
 import SummaryTab from "../ProposalPage/components/SummaryTab/SummaryTab";
@@ -28,12 +28,14 @@ import TermModal from "./TermsModal";
 import ReviewCart from "../ProductDetails/components/ReviewCart";
 import { getAboutCompany } from "../SeeDetails/serviceApi";
 import { getTermConditions } from "../ProposalPage/serviceApi";
-import { useTheme } from "../../customHooks";
+import { useFrontendBoot, useTheme, useUrlEnquiry } from "../../customHooks";
 import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
 
-const ProposalSummary = ({ history }) => {
-  let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
+const ProposalSummary = () => {
+  const history = useHistory();
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+  // let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
   const { currentSchema } = useSelector(state => state.schema);
   const { proposalData, policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
@@ -49,7 +51,12 @@ const ProposalSummary = ({ history }) => {
   const { proposerDetails } = useSelector(state => state.greetingPage);
   const [show, setShow] = useState(false);
   const [termShow, setTermShow] = useState(false);
-  const { frontendData } = useSelector(state => state.frontendBoot);
+
+
+  const frontendBoot = useFrontendBoot();
+
+  const frontendData = { data: frontendBoot.data };
+  // const { frontendData } = useSelector(state => state.frontendBoot);
 
   const [allFields, setAllFields] = useState([]);
   const [term, setTerm] = useState({});
@@ -243,7 +250,7 @@ const ProposalSummary = ({ history }) => {
       >
         <MobileHeaderText
           onClick={() => {
-            history.goBack();
+            history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
           }}
         >
           <i
@@ -261,7 +268,7 @@ const ProposalSummary = ({ history }) => {
             margin: 30px;
             padding-bottom: 150px;
 
-            @media (max-width: 769px) {
+            @media (max-width: 768px) {
               margin: 0px !important;
               margin-top: 10px !important;
             }
@@ -270,7 +277,7 @@ const ProposalSummary = ({ history }) => {
           <div
             style={{ display: "flex", justifyContent: "space-between" }}
             css={`
-              @media (max-width: 769px) {
+              @media (max-width: 768px) {
                 display: none !important;
               }
             `}
@@ -288,7 +295,7 @@ const ProposalSummary = ({ history }) => {
                 className="btn"
                 type="button"
                 onClick={() => {
-                  history.goBack();
+                  history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
                 }}
                 css={`
                   width: max-content;
@@ -401,7 +408,7 @@ const ProposalSummary = ({ history }) => {
                         }
                       `}
                     >
-                      Hi {proposerDetails?.name?.split(" ")[0]}, please review
+                      Hi <span style={{textTransorm:"capitalize"}}>{proposerDetails?.name?.split(" ")[0]}</span>, please review
                       your proposal details before you proceed
                     </p>
                     <div className="-wrapper pad_proposal_s">

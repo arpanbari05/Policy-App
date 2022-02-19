@@ -21,7 +21,7 @@ import { CircleLoader } from "../../../components";
 import { useParams } from "react-router-dom";
 import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
-
+import { mobile } from "../../../utils/mediaQueries";
 import { amount } from "../../../utils/helper";
 
 const CustomizeYourPlan = ({
@@ -498,11 +498,23 @@ export function Riders({
   }
 
   return (
-    <FeatureSection id="additional-riders" {...header} {...props}>
+    <FeatureSection
+      css={`
+        ${mobile} {
+          display: block !important;
+        }
+      `}
+      id="additional-riders"
+      {...header}
+      {...props}
+    >
       <div
         className="d-flex flex-wrap"
         css={`
           gap: 1.2em;
+          ${mobile} {
+            gap: unset;
+          }
         `}
       >
         {riders.map(rider => (
@@ -544,6 +556,7 @@ function RiderCardNew({ rider, onChange, isFetching, ...props }) {
     <RiderCardWrap
       className="d-flex align-items-center justify-content-between px-3 py-3"
       {...props}
+      isSelected={isSelected}
     >
       <div>
         <RiderName className="w-100">{rider.name}</RiderName>
@@ -686,12 +699,26 @@ const RiderCardWrap = styled.div`
   &:hover {
     box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
   }
+
+  ${mobile} {
+    flex: unset;
+    gap: 1em;
+    width: 100%;
+    margin: 10px 0px;
+    background: rgb(243, 244, 249) !important;
+    border-radius: 10px;
+    box-shadow: ${({ isSelected }) =>
+      isSelected ? "rgb(16 24 48 / 12%) 0px 8px 12px 0px" : "unset"};
+  }
 `;
 
 const RiderName = styled.h1`
   font-size: 1rem;
   color: #253858;
   font-weight: 900;
+  ${mobile} {
+    font-size: 13px;
+  }
 `;
 
 function RiderDescription({ rider, ...props }) {
@@ -719,6 +746,9 @@ function RiderDescription({ rider, ...props }) {
             &:hover {
               color: ${colors.primary_color};
             }
+            ${mobile} {
+              font-weight: bold;
+            }
           `}
           onClick={handleShowMore}
           type="button"
@@ -734,6 +764,9 @@ const RiderDescriptionWrap = styled.p`
   color: #253858;
   font-size: 0.81rem;
   overflow: hidden;
+  ${mobile} {
+    font-size: 10px;
+  }
 `;
 
 const ShowMoreButton = styled.button`

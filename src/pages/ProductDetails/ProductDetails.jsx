@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { RidersSection } from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
 import { CartDetails } from "./components/ReviewCart";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import ProductCard from "./components/AddOnProductCard";
 import useUrlQuery from "../../customHooks/useUrlQuery";
@@ -17,29 +17,35 @@ import {
 } from "../ProposalPage/ProposalPage.style";
 import "styled-components/macro";
 import { LoadCart, Page } from "../../components";
-import { useFrontendBoot } from "../../customHooks";
 import PageNotFound from "../PageNotFound";
 import { FaChevronLeft } from "react-icons/fa";
+import { useMembers, useUrlEnquiry } from "../../customHooks";
+import CartMobile from "./components/Mobile/CartMobile/CartMobile";
 
-function GoBackButton({ groupCode, ...props }) {
-  const groupCodes = Object.keys(
-    useSelector(({ greetingPage }) => greetingPage.memberGroups),
-  );
-  const urlQuery = useUrlQuery();
-  const enquiryId = urlQuery.get("enquiryId");
+function GoBackButton({ ...props }) {
+  const { groupCode } = useParams();
+
+  const { getPreviousGroup } = useMembers();
+
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
   const history = useHistory();
+
+  const getLink = () => {
+    if (!prevoiusGroup) return getUrlWithEnquirySearch(`/quotes/${groupCode}`);
+
+    return getUrlWithEnquirySearch(`/productdetails/${prevoiusGroup.id}`);
+  };
+
+  const handleClick = () => history.replace(getLink());
+
   return (
     <button
       className="btn"
       type="button"
-      onClick={() => {
-        groupCodes[1] && groupCodes[1] === groupCode
-          ? history.replace(
-              `/productdetails/${groupCodes[0]}?enquiryId=${enquiryId}`,
-            )
-          : history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
-      }}
+      onClick={handleClick}
       css={`
         width: max-content;
         padding: 0 !important;
@@ -93,12 +99,12 @@ const ProductDetails = () => {
 
   const [showNav, setShowNav] = useState(false);
 
-  function scrollListener() {
-    if (window.scrollY >= 80) setShowNav(true);
-    else setShowNav(false);
-  }
-
   useEffect(() => {
+    function scrollListener() {
+      if (window.scrollY >= 80) setShowNav(true);
+      else setShowNav(false);
+    }
+
     document.addEventListener("scroll", scrollListener);
     return () => document.removeEventListener("scroll", scrollListener);
   }, []);
@@ -123,7 +129,7 @@ const ProductDetails = () => {
 
   return (
     <LoadCart>
-      <Page>
+      <Page noNavbarForMobile={true}>
         <MobileHeader>
           <MobileHeaderText
             onClick={() => {
@@ -230,6 +236,7 @@ const ProductDetails = () => {
             </div>
           </Row>
         </main>
+        <CartMobile groupCode={parseInt(groupCode)} />
       </Page>
     </LoadCart>
   );

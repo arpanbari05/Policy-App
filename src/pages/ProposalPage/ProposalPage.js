@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SecureLS from "secure-ls";
 import styled from "styled-components/macro";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
@@ -36,7 +36,8 @@ import { Page } from "../../components";
 /* ===============================test================================= */
 
 /* ===============================test================================= */
-const ProposalPage = ({ history }) => {
+const ProposalPage = () => {
+  const history = useHistory();
   const [active, setActive] = useState(0);
   const [proposerDactive, setProposerDactive] = useState(true);
   const { currentSchema } = useSelector(state => state.schema);
@@ -109,6 +110,7 @@ const ProposalPage = ({ history }) => {
           }
           & .formbuilder__error {
             color: #c7222a;
+            font-size: 12px;
           }
         `}
       >
@@ -353,7 +355,7 @@ const ProposalPage = ({ history }) => {
           css={`
             // margin: 30px auto;
             // max-width: 1300px;
-            margin: 30px;
+            margin: 10px 30px 30px 30px;
             @media (max-width: 1024px) {
               margin: 0;
               padding: 0;

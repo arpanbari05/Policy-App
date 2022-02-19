@@ -9,6 +9,7 @@ import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import "styled-components/macro";
 import { FaDownload } from "react-icons/fa";
+import { mobile } from "../../../utils/mediaQueries";
 
 const PlanDetails = ({
   ActiveMainTab,
@@ -35,6 +36,11 @@ const PlanDetails = ({
           left: ActiveMainTab ? "0px" : "1296px",
           top: "0px",
         }}
+        css={`
+          ${mobile} {
+            display: none !important;
+          }
+        `}
       >
         {loading ? (
           <SpinLoader />
@@ -75,6 +81,9 @@ const PlanDetails = ({
                       css={`
                         padding: 18px 0px;
                         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+                        ${mobile} {
+                          display: none;
+                        }
                       `}
                     >
                       {brochureUrl && policyWordingUrl ? (

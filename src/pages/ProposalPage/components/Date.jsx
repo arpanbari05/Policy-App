@@ -30,8 +30,13 @@ const DateComp = ({
   //   setInnerValue(value);
   // }, [value]);
   console.log("jhcvugc", age);
+  const [isFocused, setIsFocused] = useState(false);
+  const onFocus = () => setIsFocused(true);
+
+  console.log(isFocused);
+
   return (
-    <InputContainer error={error}>
+    <InputContainer error={!isFocused ? error : null}>
       <DatePicker
         showYearDropdown
         yearDropdownItemNumber={100}
@@ -58,11 +63,18 @@ const DateComp = ({
             mask={[/\d/, /\d/, "-", /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
           />
         }
+        readOnly={readOnly}
+        onFocus={onFocus}
+        onBlur={() => setIsFocused(false)}
       />
 
       <Label>{label}</Label>
-      <Calendar error={error} src={calendar} alt="calendar" />
-      <p className="formbuilder__error">{error}</p>
+      <Calendar error={!isFocused ? error : null} src={calendar} alt="calendar" />
+      {
+        !isFocused && (
+          <p className="formbuilder__error">{error}</p>
+        )
+      }
     </InputContainer>
   );
 };
@@ -106,7 +118,7 @@ const InputContainer = styled.div`
   }
   & input {
     border: ${props =>
-      props.error ? "solid 1px #c7222a" : "solid 1px #ced4da"};
+    props.error ? "solid 1px #c7222a" : "solid 1px #ced4da"};
     // border-radius: 8px;
     // background: ${props => (props.error ? "#fff6f7" : "transparent")};
     height: 55px;
@@ -124,7 +136,7 @@ const InputContainer = styled.div`
     padding: 0 25px;
     &:focus {
       border-color: ${props =>
-        props.error ? "#c7222a" : "solid 1px  #393939"};
+    props.error ? "#c7222a" : "solid 1px  #393939"};
       color: black;
     }
     @media (max-width: 767px) {

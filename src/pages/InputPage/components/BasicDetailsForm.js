@@ -1,90 +1,47 @@
 import { useState } from "react";
 import CustomProgressBar from "../../../components/ProgressBar";
 import { Title, ErrorMessage, firstFormSchema } from "./FormComponents";
-import {
-  checkAllChar,
-  checkPreviousChar,
-  forbiddedSymbols,
-  forbiddedSymbols2,
-  numOnly,
-} from "../../../utils/formUtils";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import ReactSwitch from "react-switch";
 import { boy, girl } from "../../../assets/images";
 import TextInput2 from "../../../components/TextInput2";
-import { useCreateEnquiry, useTheme } from "../../../customHooks";
+import {
+  useCreateEnquiry,
+  useNameInput,
+  useNumberInput,
+  useTheme,
+} from "../../../customHooks";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
 import { IoArrowForwardSharp } from "react-icons/io5";
 import "styled-components/macro";
 import { useHistory } from "react-router-dom";
-
-export const fieldSet1Data = [
-  {
-    type: "text",
-    name: "fullName",
-    label: "Full Name",
-    placeHolder: "Enter Full Name.",
-    maxLength: "60",
-  },
-  {
-    type: "number",
-    name: "mobile",
-    label: "Mobile No.",
-    placeHolder: "Enter mobile no.",
-    maxLength: "10",
-  },
-  {
-    type: "email",
-    name: "email",
-    label: "Email Id",
-    placeHolder: "Enter email id.",
-    maxLength: "50",
-  },
-];
-
-export const fieldSet1RadioInputData = [
-  {
-    type: "radio",
-    name: "gender",
-    label: "Male",
-    value: "M",
-    id: "male",
-  },
-  {
-    type: "radio",
-    name: "gender",
-    label: "Female",
-    value: "F",
-    id: "female",
-  },
-];
+import { useGetEnquiriesQuery } from "../../../api/api";
+import { capitalize } from "../../../utils/helper";
+import * as mq from "../../../utils/mediaQueries";
 
 const BasicDetailsForm = ({ ...props }) => {
   const { colors } = useTheme();
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [gender, setGender] = useState("M");
+  let inputData = {};
 
-  const checkDoubleChar = e => {
-    if (e.keyCode === 190 && fullName[fullName.length - 1] === " ") {
-      e.preventDefault();
-    }
-    if (e.keyCode === 32 && fullName.length < 1) {
-      e.preventDefault();
-    }
-  };
+  const { data } = useGetEnquiriesQuery();
 
-  const demoLogin = () => {
-    setFullName("test test");
-    setEmail("test@gmail.com");
-    setMobile("9111111111");
-  };
+  if (data?.data?.input)
+    inputData = { ...data.data, gender: data.data.input.gender };
+
+  const fullNameInput = useNameInput(inputData.name || "");
+  const mobileInput = useNumberInput(inputData.mobile || "", { maxLength: 10 });
+  const [gender, setGender] = useState(inputData.gender || "M");
 
   const { register, handleSubmit, errors } = useForm({
+    defaultValues: {
+      mobile: mobileInput.value,
+      name: fullNameInput.value,
+      email: inputData.email || "",
+      gender,
+    },
     resolver: yupResolver(firstFormSchema),
     mode: "onBlur",
   });
@@ -94,23 +51,29 @@ const BasicDetailsForm = ({ ...props }) => {
   const urlSearchParams = useUrlQuery();
   const history = useHistory();
 
-  const handleFormSubmit = async () => {
-    const params = Object.fromEntries(urlSearchParams.entries());
-    const data = {
-      name: fullName,
-      email,
-      gender,
-      mobile,
-      params,
-    };
-    const response = await createEnquiry(data);
+  const handleFormSubmit = async formData => {
+    try {
+      const params = Object.fromEntries(urlSearchParams.entries());
+      const data = {
+        name: capitalize(fullNameInput.value),
+        email: formData.email,
+        gender,
+        mobile: mobileInput.value,
+        params,
+        section: formData.journeyType,
+      };
+      const response = await createEnquiry(data);
 
-    if (response.data) {
-      const enquiryId = response.data.data.enquiry_id;
-      history.push({
-        pathname: "/input/members",
-        search: `enquiryId=${enquiryId}`,
-      });
+      if (response.data) {
+        const enquiryId = response.data.data.enquiry_id;
+        if (!enquiryId) throw Error("Something went wrong");
+        history.push({
+          pathname: "/input/members",
+          search: `enquiryId=${enquiryId}`,
+        });
+      }
+    } catch (error) {
+      alert("Something went wrong");
     }
   };
 
@@ -125,13 +88,16 @@ const BasicDetailsForm = ({ ...props }) => {
             }
           `}
         >
-          <Title onClick={demoLogin}>Tell Us about yourself?</Title>
+          <Title>Tell Us about yourself?</Title>
           <CustomProgressBar now={1} total={5} />
           <div
             css={`
               display: flex;
               flex-wrap: wrap;
               justify-content: space-between;
+              & img {
+                user-select: none;
+              }
             `}
           >
             <label
@@ -197,89 +163,76 @@ const BasicDetailsForm = ({ ...props }) => {
                 `}
               />
             </label>
-
-            {fieldSet1Data.map(
-              ({ type, name, label, placeHolder, maxLength }) => (
-                <span
-                  css={`
-                    width: ${name !== "email" ? "221px" : "100%"};
-                    @media (max-width: 1100px) {
-                      width: 100% !important;
-                    }
-                  `}
-                >
-                  <TextInput2
-                    styledCss={`  
-                  margin-bottom: 19px;
-                  & input {
-                    text-transform:${name === "fullName" && "capitalize"};
-                  }
-                  @media (max-width: 480px) {
-             width:100% !important;
-              }
-                  `}
-                    label={name === "fullName" ? "Full Name" : label}
-                    name={name}
-                    type={type}
-                    value={
-                      name === "fullName"
-                        ? fullName
-                        : name === "email"
-                        ? email
-                        : name === "mobile"
-                        ? mobile
-                        : undefined
-                    }
-                    onKeyDown={
-                      name === "mobile"
-                        ? numOnly
-                        : name === "fullName" && checkDoubleChar
-                    }
-                    onBlur={e => {
-                      name === "fullName" && setFullName(e.target.value.trim());
-                      name === "email" && setEmail(e.target.value);
-                      //name === "mobile" && setMobile(e.target.value);
-                    }}
-                    onChange={e => {
-                      if (name === "fullName") {
-                        checkPreviousChar(e.target.value, " ", fullName) &&
-                          checkPreviousChar(e.target.value, ".", fullName) &&
-                          checkAllChar(e.target.value, forbiddedSymbols2) &&
-                          /^[a-zA-Z\s]*$/.test(e.target.value) &&
-                          setFullName(e.target.value);
-                      }
-                      name === "email" &&
-                        checkAllChar(e.target.value, forbiddedSymbols) &&
-                        setEmail(e.target.value);
-
-                      if (name === "mobile" && e.target.value.length <= 10) {
-                        !/^\d*(\d)\1{9}\d*$/.test(e.target.value) &&
-                          setMobile(e.target.value);
-                      }
-                    }}
-                    maxLength={maxLength}
-                    onPaste={e => {
-                      e.preventDefault();
-                      return false;
-                    }}
-                    onCopy={e => {
-                      e.preventDefault();
-                      return false;
-                    }}
-                    ref={register}
-                  />
-                  {errors[name]?.message && (
-                    <ErrorMessage
-                      css={`
-                        margin-top: -16px;
-                      `}
-                    >
-                      {errors[name].message}
-                    </ErrorMessage>
-                  )}
-                </span>
-              ),
-            )}
+            <div
+              className="d-flex aling-items-center justify-content-between w-100"
+              css={`
+                gap: 1em;
+                & > div {
+                  flex: 1;
+                }
+                ${mq.mobile} {
+                  flex-direction: column;
+                  gap: 0;
+                }
+              `}
+            >
+              <div>
+                <TextInput2
+                  ref={register}
+                  label="Full Name"
+                  name="name"
+                  autoFocus
+                  {...fullNameInput}
+                  maxLength={60}
+                />
+                <ErrorMessage>{errors.name?.message}</ErrorMessage>
+              </div>
+              <div>
+                <TextInput2
+                  ref={register}
+                  label="Mobile No."
+                  name="mobile"
+                  {...mobileInput}
+                />
+                <ErrorMessage>{errors.mobile?.message}</ErrorMessage>
+              </div>
+            </div>
+            <div className="w-100">
+              <TextInput2
+                ref={register}
+                type="email"
+                name="email"
+                label="Email Id"
+              />
+              <ErrorMessage>{errors.email?.message}</ErrorMessage>
+            </div>
+          </div>
+          <div>
+            Journey Type:
+            <label className="mx-3">
+              <input
+                type={"radio"}
+                name="journeyType"
+                value={"top_up"}
+                defaultChecked={
+                  !inputData.section || inputData.section === "top_up"
+                }
+                className="mx-1"
+                ref={register}
+              />
+              Topup
+            </label>
+            <label>
+              <input
+                type={"radio"}
+                name="journeyType"
+                value={"health"}
+                className="mx-1"
+                ref={register}
+                defaultChecked={inputData.section === "health"}
+              />
+              Health
+            </label>
           </div>
         </div>
 

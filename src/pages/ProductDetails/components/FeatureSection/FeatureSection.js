@@ -47,6 +47,7 @@ const FeatureSectionHeader = styled("header")`
     display: none;
   } */
   ${mobile} {
+    margin-bottom: 0px;
   }
 `;
 
@@ -65,11 +66,11 @@ const FeatureSectionHeading = styled("p")`
   @media (max-width: 768px) {
     &::before {
       content: "";
-      height: 45px;
+      height: 35px;
       width: 5px;
       top: -7px;
-      left: -20px;
-      position: absolute;
+      margin-right: 10px;
+      position: relative;
 
       background-color: #2cd44a;
       border-radius: 0 15px 15px 0;
@@ -79,7 +80,7 @@ const FeatureSectionHeading = styled("p")`
 
   ${mobile} {
     font-size: 17px;
-
+    margin-bottom: 5px;
     &::before {
       top: 0;
     }
@@ -98,6 +99,7 @@ const FeatureSectionSubHeading = styled("p")`
   ${mobile} {
     font-size: 10px;
     color: #7b7b7f;
+    margin-bottom: unset !important;
   }
 `;
 

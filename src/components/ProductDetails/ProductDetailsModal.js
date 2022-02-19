@@ -2,6 +2,7 @@ import { Modal, Tab, Tabs } from "react-bootstrap";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import styled from "styled-components/macro";
 import { Button, useGotoProductDetailsPage } from "..";
+import { mobile } from "../../utils/mediaQueries";
 import {
   useGetAboutCompanyQuery,
   useGetClaimProcessQuery,
@@ -23,8 +24,19 @@ import AboutCompany from "../../pages/SeeDetails/DataSet/AboutCompany";
 import PlanDetails from "../../pages/SeeDetails/DataSet/PlanDetails";
 import { Riders } from "../../pages/ProductDetails/components/CustomizeYourPlan";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartSummaryModal from "../CartSummaryModal";
+import {
+  MobileProductHeader,
+  MobileProductDetailsTabs,
+  MobileProductDetailsFooter,
+  MobileRenderPlanDetails,
+  MobileSeeDetailsTop,
+  MobileRidersSection,
+  MobileRenderClaimProcess,
+  MobileRenderAboutCompany,
+  MobileRenderCashlessHospitals,
+} from "./Mobile/MobileModalComponents";
 
 function useRidersSlot() {
   const [selectedRiders, setSelectedRiders] = useState([]);
@@ -39,28 +51,46 @@ function useRidersSlot() {
 function ProductDetailsModal({ quote, onClose, ...props }) {
   const handleClose = () => onClose && onClose();
 
+  console.log("The quote", quote);
   const { selectedRiders, ...ridersSlot } = useRidersSlot();
 
   return (
     <Modal
       show
+      className="noPadding"
       onHide={handleClose}
-      dialogClassName="m-0 mw-100"
+      dialogClassName="m-0 mw-100 "
       contentClassName="border-0 rounded-0"
       {...props}
     >
-      <Modal.Body className="p-0">
+      <Modal.Body
+        css={`
+          padding: unset;
+        `}
+      >
         <div
           css={`
             padding-top: 7.27em;
-            min-height: 100vh;
+            min-height: 100vh !important;
+            ${mobile} {
+              padding-top: unset !important;
+              background-color: rgb(243, 244, 249);
+            }
           `}
         >
+          <MobileSeeDetailsTop onClose={handleClose} />
+
           <ProductHeader
             quote={quote}
             selectedRiders={selectedRiders}
             onClose={handleClose}
           />
+          <MobileProductHeader
+            quote={quote}
+            selectedRiders={selectedRiders}
+            onClose={handleClose}
+          />
+
           <ProductDetailsTabs>
             <Tab eventKey="plan-details" title="Plan Details">
               <RenderPlanDetails quote={quote} />
@@ -80,8 +110,50 @@ function ProductDetailsModal({ quote, onClose, ...props }) {
               <RenderAboutCompany quote={quote} />
             </Tab>
           </ProductDetailsTabs>
+
+          <MobileProductDetailsTabs>
+            <Tab eventKey="mobile-plan-details" title="Plan Details">
+              <MobileRenderPlanDetails quote={quote} />
+            </Tab>
+            <Tab eventKey="mobile-add-on-coverages" title="Add-on Coverages">
+              <MobileRidersSection quote={quote} {...ridersSlot} />
+            </Tab>
+            <Tab
+              eventKey="mobile-cashless-hospitals"
+              title="Cashless Hospitals"
+            >
+              <MobileRenderCashlessHospitals quote={quote} />
+            </Tab>
+            <Tab eventKey="mobile-claim-process" title="Claim Process">
+              <MobileRenderClaimProcess quote={quote} />
+            </Tab>
+            <Tab eventKey="mobile-about-company" title="About Company">
+              <MobileRenderAboutCompany quote={quote} />
+            </Tab>
+          </MobileProductDetailsTabs>
         </div>
       </Modal.Body>
+      <Modal.Footer
+        css={`
+          display: none;
+          ${mobile} {
+            display: block;
+            min-height: 83px;
+            width: 100%;
+            position: fixed;
+            bottom: 0px;
+            background: #fff;
+            box-sizing: border-box;
+            padding: 12px;
+          }
+        `}
+      >
+        <MobileProductDetailsFooter
+          quote={quote}
+          selectedRiders={selectedRiders}
+          onClose={handleClose}
+        />
+      </Modal.Footer>
     </Modal>
   );
 }
@@ -102,6 +174,9 @@ function ProductDetailsTabs({ children, ...props }) {
           &.active {
             color: ${colors.primary_color};
           }
+        }
+        ${mobile} {
+          display: none !important;
         }
       `}
       unmountOnExit
@@ -139,6 +214,9 @@ const StyledTabs = styled(Tabs)`
         }
       }
     }
+  }
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -429,9 +507,12 @@ function NetworkHospitalRow({ networkHospital, ...props }) {
   );
 }
 
-const DetailsSectionWrap = styled.section`
+export const DetailsSectionWrap = styled.section`
   padding: 0 6%;
   margin: auto;
+  ${mobile} {
+    display: none !important;
+  }
 `;
 
 function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
@@ -618,6 +699,9 @@ const FixedTop = styled.div`
   width: 100%;
   background-color: #fff;
   z-index: 99;
+  @media (max-width: 768px) {
+    display: none;
+  } ;
 `;
 
 const ProductName = styled.div`

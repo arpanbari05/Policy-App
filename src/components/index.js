@@ -1,27 +1,74 @@
+import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { FaChevronLeft, FaTimes } from "react-icons/fa";
+import { FaArrowCircleLeft, FaChevronLeft, FaTimes } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
 import { useQuote, useTheme, useToggle, useUrlEnquiry } from "../customHooks";
-import { getDisplayPremium } from "../utils/helper";
+import { amount, getDisplayPremium } from "../utils/helper";
 import CartSummaryModal from "./CartSummaryModal";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import FilterSkeletonLoader from "./Common/filter-skeleton-loader/FilterSkeletonLoader";
-import Navbar from "./Navbar";
+
+export function ScreenTopLoader({ progress, show }) {
+  const { colors } = useTheme();
+
+  if (!show) return null;
+
+  return (
+    <div
+      className="position-fixed"
+      css={`
+        top: 0;
+        height: 0.2em;
+        background-color: ${colors.primary_color};
+        width: ${progress}%;
+        transition: 0.3s ease-in;
+        z-index: 99;
+      `}
+    />
+  );
+}
 
 export function LoadEnquiries({ children }) {
-  const { isLoading, isFetching, isUninitialized } = useGetEnquiriesQuery();
+  const { isLoading, isFetching, isUninitialized, isError, refetch } =
+    useGetEnquiriesQuery();
+
+  if (isError)
+    return (
+      <Page>
+        <p>Something went wrong while fetching enquiry details!</p>
+        <button onClick={refetch}>Retry</button>ƒ
+      </Page>
+    );
+
   if (isLoading || isFetching || isUninitialized) return <FullScreenLoader />;
+
   return children;
 }
 
-export function Page({ children, ...props }) {
+export function Page({
+  children,
+  loader,
+  noNavbarForMobile = false,
+  backButton: BackButton = <></>,
+  ...props
+}) {
   return (
     <div {...props}>
-      <Navbar />
+      {loader ? loader : null}
+      <Import
+        mobile={() =>
+          import("./Navbar").then(res => ({
+            default: noNavbarForMobile ? res.None : res.NavbarMobile,
+          }))
+        }
+        desktop={() => import("./Navbar")}
+      >
+        {NavBar => <NavBar backButton={BackButton} />}
+      </Import>
       <div>{children}</div>
     </div>
   );
@@ -243,6 +290,24 @@ export function GoBackButton({ children, ...props }) {
   );
 }
 
+export function CloseButton({ onClick, css = "", className = "", ...props }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`position-absolute ${className}`}
+      css={`
+        top: 1em;
+        right: 1em;
+        line-height: 1;
+        ${css};
+      `}
+      {...props}
+    >
+      <FaTimes />
+    </button>
+  );
+}
+
 export function CircleCloseButton({
   placeOnCorner = false,
   css = ``,
@@ -290,7 +355,7 @@ export function useGotoProductDetailsPage() {
   return { gotoProductPage };
 }
 
-export function PremiumButton({ quote, ...props }) {
+export function PremiumButton({ quote, displayTenure = true, ...props }) {
   const history = useHistory();
 
   const cartSummaryModal = useToggle(false);
@@ -333,7 +398,7 @@ export function PremiumButton({ quote, ...props }) {
         loader={isLoading}
         {...props}
       >
-        {getDisplayPremium(quote)}
+        {displayTenure ? getDisplayPremium(quote) : amount(quote.total_premium)}
       </Button>
       {cartSummaryModal.isOn && (
         <CartSummaryModal
@@ -342,5 +407,39 @@ export function PremiumButton({ quote, ...props }) {
         />
       )}
     </div>
+  );
+}
+
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+export default function Import({ mobile, desktop, children }) {
+  const [Component, setComponent] = useState(null);
+
+  useEffect(() => {
+    const importCallback = isMobile ? mobile : desktop;
+
+    if (importCallback) {
+      importCallback().then(componentDetails => {
+        setComponent(componentDetails);
+      });
+    }
+  }, [desktop, mobile]);
+
+  return children(Component ? Component.default : () => null);
+}
+
+export function BackButtonMobile({ path, ...props }) {
+  const { colors } = useTheme();
+  return (
+    <Link
+      {...props}
+      css={`
+        color: ${colors.primary_color};
+        font-size: 1.29em;
+      `}
+      to={path}
+    >
+      <FaArrowCircleLeft />
+    </Link>
   );
 }

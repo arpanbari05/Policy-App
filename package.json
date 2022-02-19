@@ -47,7 +47,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|html)\"",
-    "format:check": "prettier --check \"**/*.+(js|jsx|json|css|html)\""
+    "format:check": "prettier --check \"**/*.+(js|jsx|json|css|html)\"",
+    "serve": "serve -s --listen 3039 build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -66,7 +67,8 @@
   },
   "devDependencies": {
     "msw": "^0.36.3",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "serve": "^13.0.2"
   },
   "msw": {
     "workerDirectory": "public"

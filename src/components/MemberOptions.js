@@ -24,6 +24,8 @@ function validateMembers(members = []) {
 export function useMembersForm(initialMembersList = []) {
   const [members, setMembers] = useState(initialMembersList);
 
+  const [error, setError] = useState(null);
+
   const isError = members.some(member => !!member.error);
 
   const validate = () => {
@@ -31,6 +33,14 @@ export function useMembersForm(initialMembersList = []) {
 
     if (!isValid) {
       setMembers(validatedMembers);
+      setError("Select age for Insured Member")
+      return;
+    }
+
+    const selectedMembers = getSelectedMembers();
+
+    if (!selectedMembers.length) {
+      setError("Select at least one Insured Member");
       return;
     }
 
@@ -38,6 +48,7 @@ export function useMembersForm(initialMembersList = []) {
   };
 
   const handleMemberChange = changedMember => {
+    setError(null);
     setMembers(members => {
       const updatedMembers = members.map(member =>
         member.code === changedMember.code ? changedMember : member,
@@ -86,6 +97,8 @@ export function useMembersForm(initialMembersList = []) {
   const getSelectedMembers = () =>
     members.filter(member => !!member.isSelected);
 
+  const updateMembersList = (membersList = []) => setMembers(membersList);
+
   return {
     getMultipleMembersCount,
     handleCounterDecrement,
@@ -93,7 +106,9 @@ export function useMembersForm(initialMembersList = []) {
     handleMemberChange,
     validate,
     getSelectedMembers,
+    updateMembersList,
     isError,
+    error,
     membersList: members,
   };
 }
@@ -178,7 +193,6 @@ function MemberOption({ member, onChange, children, ...props }) {
       {...props}
     >
       <label
-        htmlFor={member.code}
         className="d-flex align-items-center flex-grow-1 align-self-stretch"
         role="button"
         css={`
@@ -191,7 +205,6 @@ function MemberOption({ member, onChange, children, ...props }) {
           className="visually-hidden"
           checked={member.isSelected}
           onChange={handleChange}
-          id={member.code}
           name={member.code}
         />
         <div

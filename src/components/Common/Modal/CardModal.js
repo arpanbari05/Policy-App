@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Container } from "react-bootstrap";
+import { IoClose } from "react-icons/io5";
 import styled from "styled-components";
 import "styled-components/macro";
 import StyledButton from "../../StyledButton";
@@ -14,7 +15,7 @@ const CardModal = ({
   handleClose,
   BtnArrow,
   noFooter,
-
+  usedAsReviewCartPopup = false,
   showButton = true,
   revised = false,
   CompareBtnOnTop = false,
@@ -70,6 +71,7 @@ const CardModal = ({
           borderBottomRightRadius: "0px",
           position: "relative",
           borderBottomLeftRadius: "0px",
+          background: usedAsReviewCartPopup && "rgb(245, 247, 249)",
         }}
         css={`
           @media (max-width: 400px) {
@@ -77,7 +79,14 @@ const CardModal = ({
           }
         `}
       >
-        {title && <ModalTitle className="modal-headerz">{title}</ModalTitle>}
+        {title && (
+          <ModalTitle
+            className="modal-headerz"
+            usedAsReviewCartPopup={usedAsReviewCartPopup}
+          >
+            {title}
+          </ModalTitle>
+        )}
 
         {errorsFromCompare ? (
           <span
@@ -111,7 +120,7 @@ const CardModal = ({
         )}
         <i
           onClick={handleClose}
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", fontWeight: "bold" }}
           class="fas fa-times"
         ></i>
       </Modal.Header>
@@ -123,13 +132,7 @@ const CardModal = ({
       >
         <i className="fa fa-close"></i>
       </CloseButton> */}
-      <Modal.Body
-        style={{
-          padding: "0.3rem !important",
-        }}
-      >
-        {content}
-      </Modal.Body>
+      <Modal.Body>{content}</Modal.Body>
       <Modal.Footer
         style={{
           display: noFooter && "none",
@@ -177,7 +180,9 @@ const ModalTitle = styled.h5`
   margin-bottom: 0;
   line-height: 1.5;
   color: #000;
-  font-size: 20px;
+  font-size: ${({ usedAsReviewCartPopup }) =>
+    usedAsReviewCartPopup ? "18px" : "20px"}
+  padding : ${({ usedAsReviewCartPopup }) => usedAsReviewCartPopup && "1rem"}
   color: #304261;
   font-weight: 900;
   width: 80%;

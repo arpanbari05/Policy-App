@@ -11,6 +11,8 @@ import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import BarMarketMobile from "../MobileComponents/AboutCompanyMobile/BarMarketMobile";
 import BarGroupMobile from "../MobileComponents/AboutCompanyMobile/BarGroupMobile";
 import { useTheme } from "../../../customHooks";
+import { mobile } from "../../../utils/mediaQueries";
+
 const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
   const { loading } = useSelector(state => state.seeDetails);
   const { colors } = useTheme();
@@ -35,6 +37,11 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
           left: ActiveMainTab ? "0px" : "1296px",
           top: "0px",
         }}
+        css={`
+          ${mobile} {
+            display: none !important;
+          }
+        `}
       >
         {loading ? (
           <SpinLoader />
@@ -110,6 +117,13 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                               <div>
                                 <BarMarketMobile
                                   data={aboutCompany.data.market_sizes}
+                                  colors={aboutCompany.data.group_color
+                                    .map(
+                                      group_color =>
+                                        Object.values(group_color)[0],
+                                    )
+                                    .slice(0, 3)
+                                    .reverse()}
                                 />
                               </div>
                             )}
@@ -141,6 +155,13 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                                   data={
                                     aboutCompany.data.claim_settlement_ratios
                                   }
+                                  colors={aboutCompany.data.group_color
+                                    .map(
+                                      group_color =>
+                                        Object.values(group_color)[0],
+                                    )
+                                    .slice(0, 3)
+                                    .reverse()}
                                 />
                               )}
                             </div>
@@ -216,7 +237,14 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                                       <ProgessBar
                                         year={data.year}
                                         value={`${parseFloat(data.percent)}`}
-                                        color={data.color}
+                                        color={
+                                          aboutCompany.data.group_color
+                                            .map(
+                                              group_color =>
+                                                Object.values(group_color)[0],
+                                            )
+                                            .reverse()[i + 1]
+                                        }
                                       />
                                     )
                                   );

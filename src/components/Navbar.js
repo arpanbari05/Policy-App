@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { fyntune } from "../assets/images";
 import Card from "./Card";
 import "styled-components/macro";
-import { useLocation, useParams, useRouteMatch } from "react-router-dom";
+import { Link, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import ThemeModal from "./ThemeModal";
 import { useGetEnquiriesQuery } from "../api/api";
-import { useGetQuotes, useMembers, useTheme } from "../customHooks";
-import { FaCopy } from "react-icons/fa";
+import { useMembers, useTheme } from "../customHooks";
+import { FaRegCopy } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { setPolicyTypes, setPolicyType } from "../pages/quotePage/quote.slice";
+import ShareButton from "./Common/Button/ShareButton";
 
 const Navbar = () => {
   const location = useLocation();
@@ -29,12 +32,12 @@ const Navbar = () => {
   return (
     <div
       css={`
-        @media (max-width: 769px) {
+        @media (max-width: 768px) {
           display: none;
         }
       `}
     >
-      <Card width={"100%"} height={"80px"}>
+      <Card width={"100%"} height={"60px"}>
         <div className="container d-flex justify-content-between align-items-center h-100">
           <div
             css={`
@@ -44,16 +47,16 @@ const Navbar = () => {
               /* padding: 0px 100px; */
             `}
           >
-            <a href="/">
+            <Link to="/">
               <img
                 src={fyntune}
                 alt={`companylogo`}
                 css={`
-                  height: 34px;
                   cursor: pointer;
+                  height: 1.92em;
                 `}
               />
-            </a>
+            </Link>
             {!location.pathname.startsWith("/input") && trace_id && (
               <div
                 css={`
@@ -68,12 +71,20 @@ const Navbar = () => {
           {location.pathname !== "/" && trace_id && (
             <div
               css={`
-                background-color: ${colors.secondary_shade};
-                padding: 0.79em 1em;
-                font-size: 0.79rem;
+                display: flex;
               `}
             >
-              <TraceId />
+              {(location.pathname === "/proposal" ||
+                location.pathname === "/proposal_summary") && <ShareButton />}
+              <div
+                css={`
+                  background-color: ${colors.secondary_shade};
+                  padding: 0.79em 1em;
+                  font-size: 0.79rem;
+                `}
+              >
+                <TraceId />
+              </div>
             </div>
           )}
           {location.pathname === "/" && (
@@ -99,7 +110,70 @@ const Navbar = () => {
   );
 };
 
+export function NavbarMobile({ backButton: BackButton = <></> }) {
+  const location = useLocation();
+
+  const isRootRoute = useRouteMatch({
+    path: ["/", "/input/basic-details"],
+    exact: true,
+  });
+
+  const { data } = useGetEnquiriesQuery(undefined, {
+    skip: !!isRootRoute,
+  });
+
+  const [show, setShow] = useState(false);
+
+  const { colors } = useTheme();
+
+  const trace_id = data?.data?.trace_id;
+
+  return (
+    <div
+      css={`
+        font-size: 0.762rem;
+      `}
+    >
+      <div className="py-3 px-2 d-flex align-items-center justify-content-between">
+        <div
+          className="d-flex align-items-center"
+          css={`
+            gap: 0.6em;
+          `}
+        >
+          {BackButton}
+          <Link to={"/input/basic-details"}>
+            <img
+              src={fyntune}
+              alt="fyntune"
+              css={`
+                width: 7.93em;
+              `}
+            />
+          </Link>
+        </div>
+
+        {location.pathname !== "/" && trace_id && <TraceId />}
+      </div>
+      {!location.pathname.startsWith("/input") && trace_id && (
+        <div
+          className="d-flex align-items-center justify-content-between py-2"
+          css={`
+            border-top: 1px solid #aaa;
+            border-bottom: 1px solid #aaa;
+          `}
+        >
+          <Members />
+          <Info label="Pincode" value="999999" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default Navbar;
+
+export const None = () => <></>;
 
 export function Members() {
   const { groupCode } = useParams();
@@ -192,9 +266,10 @@ export function TraceId() {
     });
   }
 
+  if (copiedIndication) return <div>Copied to clipboard!</div>;
+
   return (
     <div>
-      {copiedIndication && <div>Copied to clipboard!</div>}
       Trace Id: <span>{trace_id}</span>{" "}
       <button
         css={`
@@ -203,7 +278,7 @@ export function TraceId() {
         `}
         onClick={copyTraceId}
       >
-        <FaCopy />
+        <FaRegCopy />
       </button>
       <ThemeModal show={show} setShow={setShow} />
     </div>

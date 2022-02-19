@@ -1,5 +1,6 @@
 import { FaTimes } from "react-icons/fa";
 import styled from "styled-components/macro";
+import * as mq from "../../../utils/mediaQueries";
 
 const BackdropDiv = styled.div`
   height: 100vh;
@@ -14,7 +15,7 @@ const BackdropDiv = styled.div`
 const ModalContent = styled.div`
   min-height: 20vh;
   z-index: 1055;
-  width: 440px;
+  width: 24rem;
   position: absolute;
   top: calc(100% + 7px);
   left: 0;
@@ -22,6 +23,10 @@ const ModalContent = styled.div`
   pointer-events: auto;
   background-color: #fff;
   background-clip: padding-box;
+
+  ${mq.mobile} {
+    width: 90vw;
+  }
 `;
 const ModalHeader = styled.div`
   display: flex;
@@ -45,8 +50,7 @@ const ModalBody = styled.div`
   flex: 1 1 auto;
   padding: 0 1rem;
   overflow: auto;
-  max-height: 472px;
-  margin-bottom: 10px;
+  max-height: 20em;
 `;
 const ModalFooter = styled.div`
   padding: 0px !important;
