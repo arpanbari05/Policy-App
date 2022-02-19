@@ -15,7 +15,7 @@ const CardModal = ({
   handleClose,
   BtnArrow,
   noFooter,
-
+  usedAsReviewCartPopup = false,
   showButton = true,
   revised = false,
   CompareBtnOnTop = false,
@@ -71,6 +71,7 @@ const CardModal = ({
           borderBottomRightRadius: "0px",
           position: "relative",
           borderBottomLeftRadius: "0px",
+          background: usedAsReviewCartPopup && "rgb(245, 247, 249)",
         }}
         css={`
           @media (max-width: 400px) {
@@ -78,7 +79,14 @@ const CardModal = ({
           }
         `}
       >
-        {title && <ModalTitle className="modal-headerz">{title}</ModalTitle>}
+        {title && (
+          <ModalTitle
+            className="modal-headerz"
+            usedAsReviewCartPopup={usedAsReviewCartPopup}
+          >
+            {title}
+          </ModalTitle>
+        )}
 
         {errorsFromCompare ? (
           <span
@@ -172,7 +180,9 @@ const ModalTitle = styled.h5`
   margin-bottom: 0;
   line-height: 1.5;
   color: #000;
-  font-size: 20px;
+  font-size: ${({ usedAsReviewCartPopup }) =>
+    usedAsReviewCartPopup ? "18px" : "20px"}
+  padding : ${({ usedAsReviewCartPopup }) => usedAsReviewCartPopup && "1rem"}
   color: #304261;
   font-weight: 900;
   width: 80%;
