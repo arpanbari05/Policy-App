@@ -152,7 +152,9 @@ const CartMobile = ({ groupCode, ...props }) => {
             </>
           )}
           {!nextGroupProduct && "Review Your Cart"}
-          {query.isLoading && <CircleLoader animation="border" />}
+          {query.isLoading && !nextGroupProduct && (
+            <CircleLoader animation="border" />
+          )}
         </Button>
         {!nextGroupProduct && reviewCartModalNew.isOn && (
           <NewReviewCartPopup
