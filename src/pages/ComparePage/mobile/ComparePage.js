@@ -37,6 +37,7 @@ import {
 import { useEffect } from "react";
 import { useState } from "react";
 import _ from "lodash";
+import AddPlansModal from "../components/AddPlansModal";
 
 function ComparePage() {
   const { colors } = useTheme();
@@ -63,7 +64,7 @@ function ComparePage() {
 
   if (!compareQuotes) return <p>No quotes found!</p>;
 
-  const { quotes } = compareQuotes;
+  const quotes = compareQuotes.quotes.slice(0, 2);
 
   const handleDifferenceChange = checked => {
     if (checked) {
@@ -105,7 +106,9 @@ function ComparePage() {
           <ProductCard quote={quote} onRemove={handleRemove} key={idx} />
         ))}
         {_.range(2 - quotes.length).map(idx => (
-          <AddPlanCard />
+          <AddPlanCard key={idx}>
+            <AddPlansModal compareQuotes={quotes} />
+          </AddPlanCard>
         ))}
       </section>
 
