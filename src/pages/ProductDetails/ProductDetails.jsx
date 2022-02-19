@@ -20,6 +20,7 @@ import { LoadCart, Page } from "../../components";
 import PageNotFound from "../PageNotFound";
 import { FaChevronLeft } from "react-icons/fa";
 import { useMembers, useUrlEnquiry } from "../../customHooks";
+import { setIsOnProductDetails } from "../quotePage/quote.slice";
 
 function GoBackButton({ ...props }) {
   const { groupCode } = useParams();
@@ -38,7 +39,10 @@ function GoBackButton({ ...props }) {
     return getUrlWithEnquirySearch(`/productdetails/${prevoiusGroup.id}`);
   };
 
-  const handleClick = () => history.replace(getLink());
+  const handleClick = () => {
+    history.replace(getLink());
+    setIsOnProductDetails(true);
+  };
 
   return (
     <button
