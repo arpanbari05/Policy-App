@@ -300,3 +300,34 @@ export function capitalize(sentence = "") {
 export function figureToWords(amount) {
   return `${parseInt(amount) / 100000} Lakhs`;
 }
+export function matchQuotes(
+  quote1,
+  quote2,
+  { sum_insured = true, deductible = true } = {},
+) {
+  return _.every([
+    quote1.product.id === quote2.product.id,
+    sum_insured ? quote1.sum_insured === quote2.sum_insured : true,
+    deductible ? quote1.deductible === quote2.deductible : true,
+  ]);
+}
+
+export function matchGroupCodes(groupCode1, groupCode2) {
+  return parseInt(groupCode1) === parseInt(groupCode2);
+}
+
+export function tenureInWords(tenure) {
+  return `${tenure} ${tenure > 1 ? "Years" : "Year"}`;
+}
+
+export function getSumInsureds(quotes = []) {
+  return quotes.map(quote => quote.sum_insured);
+}
+
+export function getFeature(quote, featureCode) {
+  return quote.features.find(feature => feature.code === featureCode);
+}
+
+export function getFeatureForQuotes(quotes, featureCode) {
+  return quotes.map(quote => getFeature(quote, featureCode));
+}

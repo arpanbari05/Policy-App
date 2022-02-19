@@ -32,7 +32,7 @@ import { Button, CircleLoader, MembersList } from "../../../components";
 import { FaPen } from "react-icons/fa";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { ErrorMessage } from "../../InputPage/components/FormComponents";
-import CartSummaryModal from "../../../components/CartSummaryModal";
+import { NewReviewCartPopup } from "../../../components/NewReviewCartPopup";
 
 const plantypes = {
   M: "Multi Individual",
@@ -358,7 +358,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const { getNextGroupProduct } = useCart();
 
-  const cartSummaryModal = useToggle();
+  const reviewCartModalNew = useToggle();
 
   const { getMembersText } = useMembers();
 
@@ -381,7 +381,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         return;
       }
 
-      cartSummaryModal.on();
+      reviewCartModalNew.on();
     });
   };
 
@@ -417,16 +417,24 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
           "Review Your Cart"
         )}
       </Button>
-      {cartSummaryModal.isOn && (
+      {reviewCartModalNew.isOn && (
         // <CartSummaryModal
         //   onContine={handleContinueClick}
         //   onClose={cartSummaryModal.off}
         // />
         <ReviewCartPopup
           propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
-          onClose={cartSummaryModal.off}
-        />
-      )}
+          onClose={reviewCartModalNew.off}
+        />)}
+
+      {
+      //   !nextGroupProduct && reviewCartModalNew.isOn && (
+      //   <NewReviewCartPopup
+      //     onContine={handleContinueClick}
+      //     onClose={reviewCartModalNew.off}
+      //   />
+      // )
+    }
     </div>
   );
 }
