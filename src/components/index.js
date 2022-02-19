@@ -53,6 +53,7 @@ export function LoadEnquiries({ children }) {
 export function Page({
   children,
   loader,
+  noNavbarForMobile = false,
   backButton: BackButton = <></>,
   ...props
 }) {
@@ -61,7 +62,9 @@ export function Page({
       {loader ? loader : null}
       <Import
         mobile={() =>
-          import("./Navbar").then(res => ({ default: res.NavbarMobile }))
+          import("./Navbar").then(res => ({
+            default: noNavbarForMobile ? res.None : res.NavbarMobile,
+          }))
         }
         desktop={() => import("./Navbar")}
       >

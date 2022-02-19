@@ -47,6 +47,7 @@ const FeatureSectionHeader = styled("header")`
     display: none;
   } */
   ${mobile} {
+    margin-bottom: 0px;
   }
 `;
 
@@ -79,7 +80,7 @@ const FeatureSectionHeading = styled("p")`
 
   ${mobile} {
     font-size: 17px;
-
+    margin-bottom: 5px;
     &::before {
       top: 0;
     }
@@ -98,6 +99,7 @@ const FeatureSectionSubHeading = styled("p")`
   ${mobile} {
     font-size: 10px;
     color: #7b7b7f;
+    margin-bottom: unset !important;
   }
 `;
 

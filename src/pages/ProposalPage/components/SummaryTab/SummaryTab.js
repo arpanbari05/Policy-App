@@ -44,6 +44,17 @@ const SummaryTab = ({ title, data, values, index }) => {
     }
   }, []);
 
+  const dateFormatter = str => {
+
+    return str?str.split("-").reduce((acc, el, i) => {
+      if (i < str.split("-").length - 1) {
+        return acc + `${el.padStart(2, "0")}-`;
+      } else {
+        return acc + `${el.padStart(4, "0")}`;
+      }
+    }, ""):str;
+  };
+
   const normalRender = useCallback((data, i) => {
     if (data.type === "title") return <TitleWrapper>{data.name}</TitleWrapper>;
     if (data.type === "date") {
@@ -59,7 +70,8 @@ const SummaryTab = ({ title, data, values, index }) => {
           <p className="font_15_p_s" style={{ fontWeight: "900" }}>
             {data.additionalOptions.label}
           </p>
-          <p className="font_sub_p_s">{values?.[data.name]}</p>
+
+          <p className="font_sub_p_s">{dateFormatter(values?.[data.name])}</p>
         </Col>
       );
     }
@@ -165,7 +177,9 @@ const SummaryTab = ({ title, data, values, index }) => {
           <p className="font_15_p_s" style={{ fontWeight: "900" }}>
             {data.additionalOptions.label}
           </p>
-          <p className="font_sub_p_s">{values?.[item]?.[data.name]}</p>
+          <p className="font_sub_p_s">
+            {dateFormatter(values?.[item]?.[data.name])}
+          </p>
         </Col>
       );
     }

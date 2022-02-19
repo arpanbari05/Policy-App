@@ -20,6 +20,7 @@ import { LoadCart, Page } from "../../components";
 import PageNotFound from "../PageNotFound";
 import { FaChevronLeft } from "react-icons/fa";
 import { useMembers, useUrlEnquiry } from "../../customHooks";
+import CartMobile from "./components/Mobile/CartMobile/CartMobile";
 
 function GoBackButton({ ...props }) {
   const { groupCode } = useParams();
@@ -128,7 +129,7 @@ const ProductDetails = () => {
 
   return (
     <LoadCart>
-      <Page>
+      <Page noNavbarForMobile={true}>
         <MobileHeader>
           <MobileHeaderText
             onClick={() => {
@@ -235,6 +236,7 @@ const ProductDetails = () => {
             </div>
           </Row>
         </main>
+        <CartMobile groupCode={parseInt(groupCode)} />
       </Page>
     </LoadCart>
   );
