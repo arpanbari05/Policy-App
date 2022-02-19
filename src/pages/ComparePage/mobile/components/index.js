@@ -4,6 +4,9 @@ import { useTheme, useToggle, useUrlEnquiry } from "../../../../customHooks";
 import "styled-components/macro";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { Modal } from "react-bootstrap";
+import { BsPlusLg } from "react-icons/bs";
+import React from "react";
+import * as mq from "../../../../utils/mediaQueries";
 
 export function Header() {
   const { colors } = useTheme();
@@ -154,5 +157,59 @@ export function FeatureSection({
         </div>
       </Modal>
     </section>
+  );
+}
+
+export function AddPlanCard({ compareQuotes, children, ...props }) {
+  const { colors } = useTheme();
+
+  const comparePlansPopupToggle = useToggle();
+
+  return (
+    <div
+      css={`
+        ${mq.mobile} {
+          padding: 1em;
+          background-color: ${colors.primary_shade};
+        }
+      `}
+      {...props}
+    >
+      <button
+        className="d-flex flex-column align-items-center justify-content-center rounded h-100 w-100 border-0"
+        css={`
+          background-color: ${colors.primary_shade};
+          color: ${colors.primary_color};
+          font-weight: 900;
+          min-height: 12.7em;
+          ${mq.mobile} {
+            min-height: 7.97em;
+          }
+        `}
+        onClick={comparePlansPopupToggle.on}
+      >
+        <div
+          className="d-flex align-items-center justify-content-center rounded"
+          css={`
+            height: 36%;
+            width: 36%;
+
+            background-color: ${colors.secondary_shade};
+            border: 1px dashed;
+          `}
+        >
+          <BsPlusLg
+            css={`
+              font-size: 2rem;
+            `}
+          />
+        </div>
+        <div className="mt-3">Add Plan</div>
+      </button>
+      {comparePlansPopupToggle.isOn &&
+        React.Children.map(children, child =>
+          React.cloneElement(child, { onClose: comparePlansPopupToggle.off }),
+        )}
+    </div>
   );
 }

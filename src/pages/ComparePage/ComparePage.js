@@ -13,6 +13,7 @@ import {
   useFeatureLoadHandler,
   useFrontendBoot,
   useGetQuotes,
+  useQuoteCard,
   useQuotesCompare,
   useTheme,
   useToggle,
@@ -38,6 +39,8 @@ import { useEffect, useState } from "react";
 import { quoteCompareFeature } from "../../test/data/quoteFeatures";
 import { downloadComparePage } from "./utils";
 import { ProductCard, ShowDifference } from "./components";
+import { AddPlanCard } from "./mobile/components";
+import _ from "lodash";
 
 function ComparePage() {
   const { groupCode } = useParams();
@@ -145,53 +148,10 @@ function CompareProductCards({ compareQuotes = [], ...props }) {
         />
       ))}
       {Array.from({ length: 3 - compareQuotes.length }).map((_, idx) => (
-        <AddPlanCard key={idx} compareQuotes={compareQuotes} />
+        <AddPlanCard key={idx} compareQuotes={compareQuotes}>
+          <AddComparePlanPopup compareQuotes={compareQuotes} />
+        </AddPlanCard>
       ))}
-    </div>
-  );
-}
-
-function AddPlanCard({ compareQuotes, ...props }) {
-  const { colors } = useTheme();
-
-  const comparePlansPopupToggle = useToggle();
-
-  return (
-    <div {...props}>
-      <button
-        className="d-flex flex-column align-items-center justify-content-center rounded h-100 w-100 border-0"
-        css={`
-          background-color: ${colors.primary_shade};
-          color: ${colors.primary_color};
-          font-weight: 900;
-          min-height: 12.7em;
-        `}
-        onClick={comparePlansPopupToggle.on}
-      >
-        <div
-          className="d-flex align-items-center justify-content-center rounded"
-          css={`
-            height: 36%;
-            width: 36%;
-
-            background-color: ${colors.secondary_shade};
-            border: 1px dashed;
-          `}
-        >
-          <BsPlusLg
-            css={`
-              font-size: 2rem;
-            `}
-          />
-        </div>
-        <div className="mt-3">Add Plan</div>
-      </button>
-      {comparePlansPopupToggle.isOn && (
-        <AddComparePlanPopup
-          onClose={comparePlansPopupToggle.off}
-          compareQuotes={compareQuotes}
-        />
-      )}
     </div>
   );
 }
@@ -333,7 +293,8 @@ function Quotes({ compareList, ...props }) {
       css={`
         gap: 1em;
         & > div {
-          flex: 0 1 calc(33% - 0.5em);
+          flex: 1;
+          max-width: calc(50% - 0.5em);
         }
       `}
       {...props}
@@ -355,37 +316,41 @@ function Quotes({ compareList, ...props }) {
   );
 }
 
+function getDistinctProducts(quotes) {
+  const products = {};
+  for (let quote of quotes) {
+    products[quote.product.id] = quote.product;
+  }
+  return Object.values(products);
+}
+
+function filterQuotesById(quotes = [], id) {
+  return quotes.filter(quote => quote.product.id === id);
+}
+
 function QuoteCard({
   icQuotes,
   compare: { checkFn, onChange } = {},
   ...props
 }) {
   const { colors } = useTheme();
-  const { getCompany } = useCompanies();
+  const { getCompanyLogo } = useCompanies();
 
-  const mergedQuotes = mergeQuotes(icQuotes.data.data);
+  const quotes = icQuotes.data.data;
 
-  const products = Object.keys(mergedQuotes).map(productId => ({
-    name: mergedQuotes[productId][0].product.name,
-    id: productId,
-  }));
+  const products = getDistinctProducts(quotes);
 
   const [product, setProduct] = useState(products[0]);
 
-  const quotes = mergedQuotes[product.id];
+  const currentQuotes = filterQuotesById(quotes, product.id);
 
-  const deductibles = uniq(quotes.map(quote => quote.deductible));
+  const { deductibles, sumInsureds } = useQuoteCard({ quotes: currentQuotes });
 
   const [deductible, setDeductible] = useState(deductibles[0]);
 
-  const sumInsureds = quotes
-    .filter(quote => quote.deductible === deductible)
-    .map(quote => quote.sum_insured)
-    .sort((a, b) => (a > b ? 1 : -1));
-
   const [sumInsured, setSumInsured] = useState(sumInsureds[0]);
 
-  const quote = quotes.find(quote =>
+  const quote = currentQuotes.find(quote =>
     every([
       parseInt(quote.product.id) === parseInt(product.id),
       parseInt(quote.sum_insured) === parseInt(sumInsured),
@@ -407,7 +372,7 @@ function QuoteCard({
     onChange && onChange({ checked, quote });
   };
 
-  const { logo } = getCompany(quote.company_alias);
+  const logo = getCompanyLogo(quote.company_alias);
 
   const id = quote.product.id + quote.sum_insured + quote.deductible;
 

@@ -4,6 +4,7 @@ import {
   useCompareFeature,
   useFeatureLoadHandler,
   useGetQuote,
+  useQuotesCompare,
   useTheme,
   useToggle,
 } from "../../../customHooks";
@@ -18,7 +19,13 @@ import {
   numberToDigitWord,
   tenureInWords,
 } from "../../../utils/helper";
-import { FeatureRow, FeatureSection, FeatureValue, Header } from "./components";
+import {
+  AddPlanCard,
+  FeatureRow,
+  FeatureSection,
+  FeatureValue,
+  Header,
+} from "./components";
 import "styled-components/macro";
 import {
   BASIC_FEATURES,
@@ -29,6 +36,7 @@ import {
 } from "../data";
 import { useEffect } from "react";
 import { useState } from "react";
+import _ from "lodash";
 
 function ComparePage() {
   const { colors } = useTheme();
@@ -38,6 +46,10 @@ function ComparePage() {
   const { groupCode } = useParams();
 
   const differenceToggle = useToggle(false);
+
+  const { removeCompareQuote } = useQuotesCompare();
+
+  const handleRemove = quote => removeCompareQuote({ quote, groupCode });
 
   if (isLoading || isUninitialized) return <CardSkeletonLoader />;
 
@@ -84,10 +96,16 @@ function ComparePage() {
           top: 0;
           background-color: #fff;
           z-index: 999;
+          & > div {
+            flex: 1;
+          }
         `}
       >
         {quotes.map((quote, idx) => (
-          <ProductCard quote={quote} onRemove={alert} key={idx} />
+          <ProductCard quote={quote} onRemove={handleRemove} key={idx} />
+        ))}
+        {_.range(2 - quotes.length).map(idx => (
+          <AddPlanCard />
         ))}
       </section>
 
