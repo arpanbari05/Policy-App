@@ -69,14 +69,13 @@ const Navbar = () => {
           </div>
 
           {location.pathname !== "/" && trace_id && (
-            <div css={`
-              display: flex;
-            `}>
-              {
-                (location.pathname === "/proposal" || location.pathname === "/proposal_summary")  && (
-                  <ShareButton />
-                )
-              }
+            <div
+              css={`
+                display: flex;
+              `}
+            >
+              {(location.pathname === "/proposal" ||
+                location.pathname === "/proposal_summary") && <ShareButton />}
               <div
                 css={`
                   background-color: ${colors.secondary_shade};
@@ -173,6 +172,8 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
 }
 
 export default Navbar;
+
+export const None = () => <></>;
 
 export function Members() {
   const { groupCode } = useParams();

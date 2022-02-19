@@ -17,6 +17,9 @@ const CheckDiscountSection = ({ groupCode, ...props }) => {
       heading="Check Discounts"
       subHeading="Save Upto 20% on your premium"
       id="check-discounts"
+      css={`
+        padding-top: 20px;
+      `}
       {...props}
     >
       <TenureDiscounts groupCode={groupCode} />
@@ -111,10 +114,7 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
           position: relative;
           width: 200px;
           border: 2px solid;
-          border-color: ${discount.isSelected
-            ? colors.primary_color
-            : "#e5e5e5"};
-
+          border-color: ${checked ? colors.primary_color : "#e5e5e5"};
           @media (max-width: 768px) {
             width: 100% !important;
             margin: 10px 0px;
@@ -264,17 +264,20 @@ function AdditionalDiscounts({ groupCode, ...props }) {
   };
 
   return (
-    <WrapWithTitle title="Additional Discount" {...props}>
-      {additionalDiscounts.map(additionalDiscount => (
-        <AdditionalDiscount
-          onApplyClick={handleApplyClick}
-          additionalDiscount={additionalDiscount}
-          isSelected={isAdditionalDiscountSelected(additionalDiscount)}
-          groupCode={groupCode}
-          key={additionalDiscount.alias}
-        />
-      ))}
-    </WrapWithTitle>
+    <>
+      <WrapWithTitle title="Additional Discount" {...props}>
+        {additionalDiscounts.map(additionalDiscount => (
+          <AdditionalDiscount
+            onApplyClick={handleApplyClick}
+            additionalDiscount={additionalDiscount}
+            isSelected={isAdditionalDiscountSelected(additionalDiscount)}
+            groupCode={groupCode}
+            key={additionalDiscount.alias}
+          />
+        ))}
+      </WrapWithTitle>
+      <hr />
+    </>
   );
 }
 
