@@ -107,8 +107,8 @@ function CompareTray({ quotes = [], onRemove, onClose }) {
         {quotes.map((quote, idx) => (
           <CompareQuoteTrayItem quote={quote} onRemove={onRemove} key={idx} />
         ))}
-        {_.range(2 - quotes.length).map(() => (
-          <CompareTrayAdd />
+        {_.range(2 - quotes.length).map((_, idx) => (
+          <CompareTrayAdd key={idx} />
         ))}
       </div>
       <Button
