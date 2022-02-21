@@ -447,14 +447,6 @@ function ProductSummaryCard({ cartEntry, ...props }) {
             />
           </PlanDetails>
         </div>
-        <hr
-          css={`
-            margin: 5px;
-            ${mobile} {
-              display: none;
-            }
-          `}
-        />
         <div
           className="d-flex flex-wrap align-items-center justify-content-between"
           css={`
