@@ -10,6 +10,7 @@ import {
   useCreateEnquiry,
   useNameInput,
   useNumberInput,
+  useEmailInput,
   useTheme,
 } from "../../../customHooks";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
@@ -20,6 +21,7 @@ import { useHistory } from "react-router-dom";
 import { useGetEnquiriesQuery } from "../../../api/api";
 import { capitalize } from "../../../utils/helper";
 import * as mq from "../../../utils/mediaQueries";
+import validateInput from "../../../utils/inputPageUtils";
 
 const BasicDetailsForm = ({ ...props }) => {
   const { colors } = useTheme();
@@ -31,36 +33,56 @@ const BasicDetailsForm = ({ ...props }) => {
   if (data?.data?.input)
     inputData = { ...data.data, gender: data.data.input.gender };
 
-  const fullNameInput = useNameInput(inputData.name || "");
-  const mobileInput = useNumberInput(inputData.mobile || "", { maxLength: 10 });
+  const [emailError, setEmailErrors] = useState({});
+  const [mobileError, setMobileErrors] = useState({});
+  const [fullNameError, setFullNameErrors] = useState({});
+  const fullNameInput = useNameInput(inputData.name || "", setFullNameErrors);
+  const mobileInput = useNumberInput(inputData.mobile || "", setMobileErrors, {
+    maxLength: 10,
+  });
+  const emailInput = useEmailInput(inputData.email || "", setEmailErrors);
   const [gender, setGender] = useState(inputData.gender || "M");
 
-  const { register, handleSubmit, errors } = useForm({
-    defaultValues: {
-      mobile: mobileInput.value,
-      name: fullNameInput.value,
-      email: inputData.email || "",
-      gender,
-    },
-    resolver: yupResolver(firstFormSchema),
-    mode: "onBlur",
-  });
+  // const { register, handleSubmit, errors } = useForm({
+  //   defaultValues: {
+  //     mobile: mobileInput.value,
+  //     name: fullNameInput.value,
+  //     email: inputData.email || "",
+  //     gender,
+  //   },
+  //   resolver: yupResolver(firstFormSchema),
+  //   mode: "onBlur",
+  // });
 
   const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
 
   const urlSearchParams = useUrlQuery();
   const history = useHistory();
 
-  const handleFormSubmit = async formData => {
+  const handleFormSubmit = async event => {
+    event.preventDefault();
+    const validation = validateInput(
+      fullNameInput.value,
+      emailInput.value,
+      mobileInput.value,
+      setFullNameErrors,
+      setEmailErrors,
+      setMobileErrors,
+    );
+    if (!validation) {
+      return;
+    }
+
+    console.log("inputData", inputData);
     try {
       const params = Object.fromEntries(urlSearchParams.entries());
       const data = {
         name: capitalize(fullNameInput.value),
-        email: formData.email,
+        email: emailInput.value,
         gender,
         mobile: mobileInput.value,
         params,
-        section: formData.journeyType,
+        section: inputData.section,
       };
       const response = await createEnquiry(data);
 
@@ -79,7 +101,7 @@ const BasicDetailsForm = ({ ...props }) => {
 
   return (
     <div {...props}>
-      <form noValidate onSubmit={handleSubmit(handleFormSubmit)}>
+      <form noValidate onSubmit={handleFormSubmit}>
         <div
           css={`
             padding: 17px;
@@ -178,33 +200,27 @@ const BasicDetailsForm = ({ ...props }) => {
             >
               <div>
                 <TextInput2
-                  ref={register}
                   label="Full Name"
                   name="name"
                   autoFocus
                   {...fullNameInput}
                   maxLength={60}
                 />
-                <ErrorMessage>{errors.name?.message}</ErrorMessage>
+                <ErrorMessage>{fullNameError.message}</ErrorMessage>
               </div>
               <div>
-                <TextInput2
-                  ref={register}
-                  label="Mobile No."
-                  name="mobile"
-                  {...mobileInput}
-                />
-                <ErrorMessage>{errors.mobile?.message}</ErrorMessage>
+                <TextInput2 label="Mobile No." name="mobile" {...mobileInput} />
+                <ErrorMessage>{mobileError.message}</ErrorMessage>
               </div>
             </div>
             <div className="w-100">
               <TextInput2
-                ref={register}
                 type="email"
                 name="email"
                 label="Email Id"
+                {...emailInput}
               />
-              <ErrorMessage>{errors.email?.message}</ErrorMessage>
+              <ErrorMessage>{emailError.message}</ErrorMessage>
             </div>
           </div>
           <div>
@@ -218,7 +234,6 @@ const BasicDetailsForm = ({ ...props }) => {
                   !inputData.section || inputData.section === "top_up"
                 }
                 className="mx-1"
-                ref={register}
               />
               Topup
             </label>
@@ -228,7 +243,6 @@ const BasicDetailsForm = ({ ...props }) => {
                 name="journeyType"
                 value={"health"}
                 className="mx-1"
-                ref={register}
                 defaultChecked={inputData.section === "health"}
               />
               Health
