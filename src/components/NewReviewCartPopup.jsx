@@ -17,9 +17,13 @@ import { amount } from "../../src/utils/helper";
 import { mobile, small } from "../utils/mediaQueries";
 
 export function NewReviewCartPopup({ onClose, onContine }) {
+  const { data } = useGetEnquiriesQuery();
+
   return (
     <CardModal
-      title="Hey User, Take a minute and review your cart before you proceed"
+      title={`Hey ${
+        data?.data?.name?.split(" ")[0]
+      }, Take a minute and review your cart before you proceed`}
       show
       buttonValue="Continue"
       handleClose={onClose}
