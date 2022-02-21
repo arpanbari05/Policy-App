@@ -422,19 +422,11 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         //   onContine={handleContinueClick}
         //   onClose={cartSummaryModal.off}
         // />
-        <ReviewCartPopup
-          propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
+        <NewReviewCartPopup
+          onContine={handleContinueClick}
           onClose={reviewCartModalNew.off}
-        />)}
-
-      {
-      //   !nextGroupProduct && reviewCartModalNew.isOn && (
-      //   <NewReviewCartPopup
-      //     onContine={handleContinueClick}
-      //     onClose={reviewCartModalNew.off}
-      //   />
-      // )
-    }
+        />
+      )}
     </div>
   );
 }
