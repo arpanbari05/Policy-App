@@ -37,7 +37,7 @@ const Navbar = () => {
         }
       `}
     >
-      <Card width={"100%"} height={"60px"}>
+      <Card width={"100%"} height={"55px"}>
         <div className="container d-flex justify-content-between align-items-center h-100">
           <div
             css={`
