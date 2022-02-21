@@ -394,7 +394,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
       <Button
         onClick={handleClick}
         className="w-100"
-        disabled={query.isLoading}
+        loader={query.isLoading}
         {...props}
       >
         {nextGroupProduct ? (
@@ -425,16 +425,17 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         <ReviewCartPopup
           propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
           onClose={reviewCartModalNew.off}
-        />)}
+        />
+      )}
 
       {
-      //   !nextGroupProduct && reviewCartModalNew.isOn && (
-      //   <NewReviewCartPopup
-      //     onContine={handleContinueClick}
-      //     onClose={reviewCartModalNew.off}
-      //   />
-      // )
-    }
+        //   !nextGroupProduct && reviewCartModalNew.isOn && (
+        //   <NewReviewCartPopup
+        //     onContine={handleContinueClick}
+        //     onClose={reviewCartModalNew.off}
+        //   />
+        // )
+      }
     </div>
   );
 }
@@ -602,9 +603,7 @@ function AddOnDetailsRow({ addOn }) {
 }
 
 export function BackgroundBorderTitle({ title, ...props }) {
-  const { theme } = useSelector(state => state.frontendBoot);
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { colors } = useTheme();
 
   return (
     <div
@@ -614,7 +613,7 @@ export function BackgroundBorderTitle({ title, ...props }) {
         width: 100%;
         margin-top: 2px;
 
-        color: ${PrimaryColor};
+        color: ${colors.primary_color};
       `}
     >
       <div

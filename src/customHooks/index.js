@@ -13,6 +13,7 @@ import {
   useGetCustomQuotesQuery,
   useGetDiscountsQuery,
   useGetEnquiriesQuery,
+  useGetRidersQuery,
   useUpdateCartMutation,
   useUpdateCompareQuotesMutation,
   useUpdateEnquiryMutation,
@@ -982,15 +983,11 @@ export function useQuotesCompare(initialCompareQuotes = []) {
               compare.group === parseInt(groupCode)
                 ? {
                     ...compare,
-                    quotes: compare.quotes.map(quote =>
-                      every([
-                        quote.product.id === previousQuote.product.id,
-                        quote.deductible === previousQuote.deductible,
-                        quote.sum_insured === previousQuote.sum_insured,
-                      ])
+                    quotes: compare.quotes.map(quote => {
+                      return matchQuotes(quote, previousQuote)
                         ? updatedQuote
-                        : quote,
-                    ),
+                        : quote;
+                    }),
                   }
                 : compare,
             ),
@@ -1298,4 +1295,138 @@ export function useCompareFeature(compareQuote) {
   }
 
   return { getFeature, query };
+}
+
+export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
+  const { journeyType } = useFrontendBoot();
+  const getRidersQueryParams = {
+    sum_insured: quote.sum_insured,
+    tenure: quote.tenure,
+    productId: quote.product.id,
+    group: parseInt(groupCode),
+    journeyType,
+    ...queryOptions,
+  };
+
+  if (quote.deductible) {
+    getRidersQueryParams.deductible = quote.deductible;
+  }
+
+  return useGetRidersQuery(getRidersQueryParams);
+}
+
+function isAffectsOtherRiders(rider) {
+  return !!rider.affects_other_riders;
+}
+
+function isMandatoryRider(rider) {
+  return !!rider.is_mandatory;
+}
+
+function getRiderOptionsQueryString(riders = []) {
+  const riderOptionsQueryString = riders.reduce(
+    (urlQueries, rider) =>
+      rider.options_selected
+        ? urlQueries.concat(
+            Object.keys(rider.options_selected)
+              .map(
+                riderOptionKey =>
+                  `${riderOptionKey}=${rider.options_selected[riderOptionKey]}&`,
+              )
+              .join("&"),
+          )
+        : urlQueries,
+    "",
+  );
+  return riderOptionsQueryString;
+}
+
+export function useRiders({
+  quote,
+  groupCode,
+  onChange,
+  defaultSelectedRiders = [],
+}) {
+  const getInititalRiders = useCallback(() => {
+    return defaultSelectedRiders.map(rider => ({
+      ...rider,
+      id: rider.rider_id,
+      isSelected: true,
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupCode]);
+
+  const [riders, setRiders] = useState(getInititalRiders);
+
+  useEffect(() => setRiders(getInititalRiders), [getInititalRiders]);
+
+  const findLocalRider = riderToFind =>
+    riders.find(rider => rider.id === riderToFind.id);
+
+  const isRiderSelected = riderToCheck => {
+    if (riderToCheck.is_mandatory) return true;
+    const localRider = findLocalRider(riderToCheck);
+    return localRider && localRider.isSelected;
+  };
+
+  const affectsOtherRiders = riders
+    .filter(isRiderSelected)
+    .filter(isAffectsOtherRiders)
+    .map(rider => rider.alias);
+
+  const getRidersQueryParams = {
+    additionalUrlQueries: getRiderOptionsQueryString(riders),
+  };
+
+  if (affectsOtherRiders.length)
+    getRidersQueryParams.selected_riders = affectsOtherRiders;
+
+  const query = useGetRiders(quote, groupCode, {
+    queryOptions: getRidersQueryParams,
+  });
+
+  const { data } = query;
+
+  useEffect(() => {
+    if (data) {
+      const { data: ridersData } = data;
+      setRiders(riders => {
+        return ridersData.map(rider => {
+          const localRider = riders.find(
+            localRider => localRider.id === rider.id,
+          );
+          return {
+            ...rider,
+            isSelected:
+              rider.is_mandatory || (localRider && localRider.isSelected),
+            options_selected: localRider
+              ? localRider.options_selected
+              : rider.options_selected,
+          };
+        });
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  useEffect(() => {
+    onChange &&
+      onChange(
+        riders
+          .filter(rider => rider.isSelected)
+          .filter(rider => !isMandatoryRider(rider)),
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [riders]);
+
+  const handleChange = changedRider => {
+    setRiders(riders => {
+      const updatedRiders = riders.map(rider =>
+        rider.id === changedRider.id ? changedRider : rider,
+      );
+      return updatedRiders;
+    });
+  };
+
+  return { query, riders, handleChange, getInititalRiders };
 }
