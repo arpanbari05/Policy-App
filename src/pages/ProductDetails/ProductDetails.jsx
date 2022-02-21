@@ -4,7 +4,7 @@ import { RidersSection } from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
 import { CartDetails } from "./components/ReviewCart";
 import { useSelector } from "react-redux";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { Redirect, useHistory, useLocation, useParams } from "react-router-dom";
 import ProductCard from "./components/AddOnProductCard";
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { useEffect } from "react";
@@ -19,7 +19,7 @@ import "styled-components/macro";
 import { LoadCart, Page } from "../../components";
 import PageNotFound from "../PageNotFound";
 import { FaChevronLeft } from "react-icons/fa";
-import { useMembers, useUrlEnquiry } from "../../customHooks";
+import { useCart, useMembers, useUrlEnquiry } from "../../customHooks";
 import { setIsOnProductDetails } from "../quotePage/quote.slice";
 import CartMobile from "./components/Mobile/CartMobile/CartMobile";
 
@@ -103,6 +103,12 @@ const ProductDetails = () => {
 
   const [showNav, setShowNav] = useState(false);
 
+  const { getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(parseInt(groupCode));
+
+  const quotesRedirectUrl = useUrlEnquiry();
+
   useEffect(() => {
     function scrollListener() {
       if (window.scrollY >= 80) setShowNav(true);
@@ -131,118 +137,125 @@ const ProductDetails = () => {
 
   if (!enquiryId) return <PageNotFound />;
 
+  //? REDIRECT CODE IF PRODUCT IS NOT IN CART.
+  if (!cartEntry) {
+    return (
+      <Redirect
+        to={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
+      />
+    );
+  }
+
   return (
-    <LoadCart>
-      <Page noNavbarForMobile={true}>
-        <MobileHeader>
-          <MobileHeaderText
-            onClick={() => {
-              history.goBack();
-            }}
-          >
-            <i class="fas fa-arrow-circle-left"></i>{" "}
-            <span className="mx-2"> Go Back</span>
-          </MobileHeaderText>
-        </MobileHeader>
-        <main
-          className="container noselect"
-          css={
-            expand
-              ? `
+    <Page noNavbarForMobile={true}>
+      <MobileHeader>
+        <MobileHeaderText
+          onClick={() => {
+            history.goBack();
+          }}
+        >
+          <i class="fas fa-arrow-circle-left"></i>{" "}
+          <span className="mx-2"> Go Back</span>
+        </MobileHeaderText>
+      </MobileHeader>
+      <main
+        className="container noselect"
+        css={
+          expand
+            ? `
         position:fixed;
         opacity:0.5;
         `
-              : `
+            : `
 
           ${mobile} {
             background-color: #fff;
           }
         `
-          }
+        }
+      >
+        {showNav && <ProductDetailsNavbar />}
+        <div
+          className="d-flex align-items-center justify-content-between my-3"
+          css={`
+            @media (max-width: 1200px) {
+              flex-direction: column;
+              align-items: flex-start !important;
+            }
+          `}
         >
-          {showNav && <ProductDetailsNavbar />}
+          <GoBackButton groupCode={groupCode} />
           <div
-            className="d-flex align-items-center justify-content-between my-3"
             css={`
+              width: 70%;
               @media (max-width: 1200px) {
-                flex-direction: column;
-                align-items: flex-start !important;
+                width: 100%;
               }
             `}
+            className="flex-fill"
           >
-            <GoBackButton groupCode={groupCode} />
-            <div
-              css={`
-                width: 70%;
-                @media (max-width: 1200px) {
-                  width: 100%;
-                }
-              `}
-              className="flex-fill"
-            >
-              <ProductCard />
-            </div>
+            <ProductCard />
           </div>
-          <Row
+        </div>
+        <Row
+          css={`
+            justify-content: center;
+            @media (max-width: 1200px) {
+              flex-direction: column;
+            }
+          `}
+        >
+          <div
             css={`
-              justify-content: center;
+              width: 26%;
+              @media (max-width: 1350px) {
+                width: 30%;
+              }
               @media (max-width: 1200px) {
-                flex-direction: column;
+                width: 100%;
+              }
+              ${mobile} {
+                display: none;
               }
             `}
           >
-            <div
+            <CartDetails groupCode={parseInt(groupCode)} />
+          </div>
+          <div
+            css={`
+              width: 74%;
+              @media (max-width: 1350px) {
+                width: 70%;
+              }
+              @media (max-width: 1200px) {
+                width: 100%;
+              }
+            `}
+          >
+            <Col
+              xl={12}
+              lg={12}
+              md={12}
+              sm={12}
+              xs={12}
               css={`
-                width: 26%;
-                @media (max-width: 1350px) {
-                  width: 30%;
-                }
                 @media (max-width: 1200px) {
-                  width: 100%;
+                  margin-top: 15px;
                 }
                 ${mobile} {
-                  display: none;
+                  padding: 0;
+                  margin-bottom: 127px;
                 }
               `}
             >
-              <CartDetails groupCode={parseInt(groupCode)} />
-            </div>
-            <div
-              css={`
-                width: 74%;
-                @media (max-width: 1350px) {
-                  width: 70%;
-                }
-                @media (max-width: 1200px) {
-                  width: 100%;
-                }
-              `}
-            >
-              <Col
-                xl={12}
-                lg={12}
-                md={12}
-                sm={12}
-                xs={12}
-                css={`
-                  @media (max-width: 1200px) {
-                    margin-top: 15px;
-                  }
-                  ${mobile} {
-                    padding: 0;
-                    margin-bottom: 127px;
-                  }
-                `}
-              >
-                <CheckDiscount groupCode={parseInt(groupCode)} />
-                <RidersSection />
-              </Col>
-            </div>
-          </Row>
-        </main>
-        <CartMobile groupCode={parseInt(groupCode)} />
-      </Page>
-    </LoadCart>
+              <CheckDiscount groupCode={parseInt(groupCode)} />
+              <RidersSection />
+            </Col>
+          </div>
+        </Row>
+      </main>
+      <CartMobile groupCode={parseInt(groupCode)} />
+    </Page>
   );
 };
 

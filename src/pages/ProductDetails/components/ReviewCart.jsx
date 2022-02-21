@@ -1,4 +1,4 @@
-import { useHistory, useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { useCartProduct } from "../../Cart";
 import styled from "styled-components/macro";
 import care_health from "../../../assets/logos/Care.png";
@@ -260,8 +260,22 @@ function EditMembers({ groupCode, ...props }) {}
 
 function BasePlanDetails({ groupCode, ...props }) {
   const { getCartEntry } = useCart();
+  const history = useHistory();
   const { journeyType } = useFrontendBoot();
   const cartEntry = getCartEntry(parseInt(groupCode));
+  const quotesRedirectUrl = useUrlEnquiry();
+
+  /* //? REDIRECT CODE IF PRODUCT IS NOT IN CART.
+  if (!cartEntry) {
+    return (
+      <Redirect
+        to={`quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
+      />
+    );
+  } */
+
+  
+
   const {
     icLogoSrc,
     plantype,
