@@ -1,8 +1,6 @@
 import { useState } from "react";
 import CustomProgressBar from "../../../components/ProgressBar";
-import { Title, ErrorMessage, firstFormSchema } from "./FormComponents";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers";
+import { Title, ErrorMessage } from "./FormComponents";
 import ReactSwitch from "react-switch";
 import { boy, girl } from "../../../assets/images";
 import TextInput2 from "../../../components/TextInput2";
@@ -31,7 +29,10 @@ const BasicDetailsForm = ({ ...props }) => {
   const { data } = useGetEnquiriesQuery();
 
   if (data?.data?.input)
-    inputData = { ...data.data, gender: data.data.input.gender };
+    inputData = {
+      ...data.data,
+      gender: data.data.input.gender,
+    };
 
   const [emailError, setEmailErrors] = useState({});
   const [mobileError, setMobileErrors] = useState({});
@@ -42,20 +43,8 @@ const BasicDetailsForm = ({ ...props }) => {
   });
   const emailInput = useEmailInput(inputData.email || "", setEmailErrors);
   const [gender, setGender] = useState(inputData.gender || "M");
-
-  // const { register, handleSubmit, errors } = useForm({
-  //   defaultValues: {
-  //     mobile: mobileInput.value,
-  //     name: fullNameInput.value,
-  //     email: inputData.email || "",
-  //     gender,
-  //   },
-  //   resolver: yupResolver(firstFormSchema),
-  //   mode: "onBlur",
-  // });
-
+  const [journeyType, setJourneyType] = useState("top_up");
   const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
-
   const urlSearchParams = useUrlQuery();
   const history = useHistory();
 
@@ -73,7 +62,7 @@ const BasicDetailsForm = ({ ...props }) => {
       return;
     }
 
-    console.log("inputData", inputData);
+    console.log("inputData", event);
     try {
       const params = Object.fromEntries(urlSearchParams.entries());
       const data = {
@@ -82,7 +71,7 @@ const BasicDetailsForm = ({ ...props }) => {
         gender,
         mobile: mobileInput.value,
         params,
-        section: inputData.section,
+        section: journeyType,
       };
       const response = await createEnquiry(data);
 
@@ -230,10 +219,11 @@ const BasicDetailsForm = ({ ...props }) => {
                 type={"radio"}
                 name="journeyType"
                 value={"top_up"}
-                defaultChecked={
-                  !inputData.section || inputData.section === "top_up"
-                }
                 className="mx-1"
+                checked={journeyType === "top_up"}
+                onChange={() => {
+                  setJourneyType("top_up");
+                }}
               />
               Topup
             </label>
@@ -243,7 +233,9 @@ const BasicDetailsForm = ({ ...props }) => {
                 name="journeyType"
                 value={"health"}
                 className="mx-1"
-                defaultChecked={inputData.section === "health"}
+                onChange={() => {
+                  setJourneyType("health");
+                }}
               />
               Health
             </label>
