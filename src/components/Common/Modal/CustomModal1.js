@@ -15,10 +15,9 @@ const BackdropDiv = styled.div`
 const ModalContent = styled.div`
   min-height: 20vh;
   z-index: 1055;
-  width: 24rem;
-  position: absolute;
-  top: calc(100% + 7px);
-  left: 0;
+  width: 30%;
+  position: fixed;
+  left: 35%;
   background-color: white;
   pointer-events: auto;
   background-color: #fff;
@@ -83,7 +82,7 @@ const CustomModal1 = ({
   ...props
 }) => {
   return (
-    <div {...props}>
+    <>
       <BackdropDiv onClick={handleClose} />
       <ModalContent
         leftAlignmnetMargin={leftAlignmnetMargin}
@@ -104,7 +103,7 @@ const CustomModal1 = ({
         <ModalBody className="modal-body">{children}</ModalBody>
         <ModalFooter>{footerJSX}</ModalFooter>
       </ModalContent>
-    </div>
+    </>
   );
 };
 export default CustomModal1;
