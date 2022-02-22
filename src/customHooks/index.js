@@ -386,8 +386,8 @@ export function useMembers() {
     return groups[groups.length - 1];
   }
 
-  function getMembersText(group) {
-    const groupMembers = getGroupMembers(group.id);
+  function getMembersText({id}) {
+    const groupMembers = getGroupMembers(id);
     return groupMembers.map(member => member.display_name).join(", ");
   }
 
