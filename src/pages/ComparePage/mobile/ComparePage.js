@@ -25,6 +25,7 @@ import {
   FeatureSection,
   FeatureValue,
   Header,
+  OptionalCoversValue,
 } from "./components";
 import "styled-components/macro";
 import {
@@ -39,6 +40,12 @@ import { useState } from "react";
 import _ from "lodash";
 import AddPlansModal from "../components/AddPlansModal";
 
+function findQuoteBySumInsured(quotes, sum_insured) {
+  return quotes.find(
+    quote => parseInt(quote.sum_insured) === parseInt(sum_insured),
+  );
+}
+
 function ComparePage() {
   const { colors } = useTheme();
   const { data, isLoading, isUninitialized, isError } =
@@ -48,7 +55,7 @@ function ComparePage() {
 
   const differenceToggle = useToggle(false);
 
-  const { removeCompareQuote } = useQuotesCompare();
+  const { removeCompareQuote, updateCompareQuote } = useQuotesCompare();
 
   const handleRemove = quote => removeCompareQuote({ quote, groupCode });
 
@@ -72,6 +79,14 @@ function ComparePage() {
       return;
     }
     differenceToggle.off();
+  };
+
+  const handleRidersChange = ({ riders, quote }) => {
+    updateCompareQuote({
+      updatedQuote: { ...quote, riders },
+      previousQuote: quote,
+      groupCode,
+    });
   };
 
   return (
@@ -118,7 +133,7 @@ function ComparePage() {
         <FeatureRow>
           {quotes.map((quote, idx) => (
             <FeatureValue key={idx}>
-              <select value={quote.tenure}>
+              <select value={quote.tenure} onChange={alert}>
                 <option value={quote.tenure}>
                   {tenureInWords(quote.tenure)}
                 </option>
@@ -143,6 +158,8 @@ function ComparePage() {
         quotes={quotes}
         difference={differenceToggle.isOn}
       />
+
+      <OptionalCoversSection quotes={quotes} onChange={handleRidersChange} />
 
       <CompareFeatureSection
         sectionTitle="Waiting Period"
@@ -259,15 +276,19 @@ function SumInsuredSection({ quotes, onChange, ...props }) {
     >
       <FeatureRow>
         {quotes.map((quote, idx) => (
-          <SumInsuredFeatureValue quote={quote} key={idx} />
+          <SumInsuredFeatureValue quote={quote} key={idx} onChange={onChange} />
         ))}
       </FeatureRow>
     </FeatureSection>
   );
 }
 
-function SumInsuredFeatureValue({ quote }) {
+function SumInsuredFeatureValue({ quote, onChange }) {
   const { icQuotes, isLoading } = useGetQuote(quote.company_alias);
+
+  const { groupCode } = useParams();
+
+  const { updateCompareQuote } = useQuotesCompare();
 
   const isCurrentCompareQuote = quoteToCheck =>
     matchQuotes(quote, quoteToCheck, { sum_insured: false });
@@ -278,12 +299,18 @@ function SumInsuredFeatureValue({ quote }) {
 
   const sumInsureds = getSumInsureds(currentQuotes);
 
+  const handleChange = evt => {
+    const updatedQuote = findQuoteBySumInsured(currentQuotes, evt.target.value);
+    updateCompareQuote({ updatedQuote, previousQuote: quote, groupCode });
+    onChange && onChange(quote, evt.target.value);
+  };
+
   return (
     <FeatureValue>
       {isLoading ? (
         <div>{numberToDigitWord(quote.sum_insured)}</div>
       ) : (
-        <select value={quote.sum_insured} onChange={alert}>
+        <select value={quote.sum_insured} onChange={handleChange}>
           {sumInsureds.map(sumInsured => (
             <option key={sumInsured} value={sumInsured}>
               {numberToDigitWord(sumInsured)}
@@ -331,3 +358,18 @@ function UniqueFeatureValue({ quote }) {
 }
 
 export default ComparePage;
+
+function OptionalCoversSection({ quotes, onChange }) {
+  return (
+    <FeatureSection
+      title="Optional Covers"
+      description="You can add 'Riders' to your basic health insurance plan for additional benefits."
+    >
+      <FeatureRow>
+        {quotes.map((quote, idx) => (
+          <OptionalCoversValue quote={quote} key={idx} onChange={onChange} />
+        ))}
+      </FeatureRow>
+    </FeatureSection>
+  );
+}

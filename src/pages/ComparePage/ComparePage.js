@@ -31,7 +31,7 @@ import { every, uniq } from "lodash";
 import { useEffect } from "react";
 import { downloadComparePage } from "./utils";
 import { ProductCard, ShowDifference } from "./components";
-import { AddPlanCard } from "./mobile/components";
+import { AddPlanCard, OptionalCoversValue } from "./mobile/components";
 import AddPlansModal from "./components/AddPlansModal";
 
 function ComparePage() {
@@ -83,11 +83,42 @@ function ComparePage() {
             showDifference={showDifferenceToggle.isOn}
           />
           <SpecialFeaturesSection compareQuotes={compareQuotes} />
+          <OptionalCoversSection compareQuotes={compareQuotes} />
           <WaitingPeriodSection compareQuotes={compareQuotes} />
           <WhatsNotCoveredSection compareQuotes={compareQuotes} />
         </div>
       </Container>
     </Page>
+  );
+}
+
+function OptionalCoversSection({ compareQuotes }) {
+  const { updateCompareQuote } = useQuotesCompare();
+  const { groupCode } = useParams();
+
+  const handleRidersChange = ({ riders, quote }) => {
+    updateCompareQuote({
+      updatedQuote: { ...quote, riders },
+      previousQuote: quote,
+      groupCode,
+    });
+  };
+
+  return (
+    <CompareSection
+      title="Additional Benefits"
+      description="You can add 'Riders' to your basic health insurance plan for additional benefits."
+    >
+      <FeatureRow title="Optional Covers">
+        {compareQuotes.map((quote, idx) => (
+          <OptionalCoversValue
+            quote={quote}
+            onChange={handleRidersChange}
+            key={idx}
+          />
+        ))}
+      </FeatureRow>
+    </CompareSection>
   );
 }
 
