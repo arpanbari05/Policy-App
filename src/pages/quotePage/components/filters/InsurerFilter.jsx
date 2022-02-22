@@ -119,7 +119,7 @@ function Insurer({ company, checked = false, onChange, css, ...props }) {
       >
         <li
           css={`
-            margin: 5px 0;          
+            margin: 5px 0;
             cursor: pointer;
           `}
           className="option insurer_option d-flex align-items-center justify-content-between"
