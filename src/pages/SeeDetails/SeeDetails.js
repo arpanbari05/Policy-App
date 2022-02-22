@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Col, Modal } from "react-bootstrap";
 import styled from "styled-components";
 import "./Scss/SeeDetails.scss";
-import SeeDetailsTab2 from "./components/Tabs/SeeDetailsTab2";
 import SeeDetailsTab from "./components/Tabs/SeeDetailsTab";
 import PlanDetails from "./DataSet/PlanDetails";
 import ClaimProcess from "./DataSet/ClaimProcess";
@@ -12,8 +11,7 @@ import AboutCompany from "./DataSet/AboutCompany";
 import { useDispatch, useSelector } from "react-redux";
 import SeeDetailsFooter from "./components/SeeDetailsFooter/SeeDetailsFooter";
 
-// import { getAbhiRidersApi, getRidersApi } from "../../QuotesPage/ServiceApi/serviceApi";
-import { useRouteMatch, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   getAboutCompany,
   getClaimProcess,
@@ -22,7 +20,6 @@ import {
   getProductBrochureAPI,
 } from "./serviceApi";
 import "styled-components/macro";
-import Header from "./MobileComponents/Header";
 import SeeDetailsTopMobile from "./MobileComponents/SeeDetailsTopMobile";
 import SeedetailFooterMobile from "./MobileComponents/SeedetailFooterMobile";
 import "./Seedetails.css";
@@ -36,14 +33,12 @@ import ClaimprocessMobile from "./MobileComponents/ClaimProcessMobile/Claimproce
 import AboutCompanyMobile from "./MobileComponents/AboutCompanyMobile/AboutCompanyMobile";
 import { getAbhiRidersApi, getRidersApi } from "../quotePage/serviceApi";
 import { addSelectedRiders } from "../quotePage/quote.slice";
-import { AiOutlineClose } from "react-icons/ai";
 
 export const getRiders = async (
   { productId, sum_insured, tenure, group, selected_riders },
 
   callback = () => {},
 ) => {
-  console.log(productId, "agsdasgd2");
   try {
     const response = await getRidersApi({
       productId,
@@ -142,32 +137,12 @@ const SeeDetails = ({
   tenure,
   product,
 }) => {
-  //console.log("ahaheh3h2h32", quote, show, sum_insured, tenure, product);
-
-
-
   const [addedRiders, setAddedRiders] = useState([]);
   const dispatch = useDispatch();
   const { groupCode } = useParams();
   const [activeFieldset, setActiveFieldset] = useState(1);
 
   /*========================================================= */
-
-  // const sumInsuredIndex = quote.sum_insured.indexOf(sum_insured);
-
-  // const { isLoading, addAddOn, addRider, totalPremium } = useProduct({
-  //   premium: quote.premium[sumInsuredIndex],
-  //   sumInsured: sum_insured,
-  //   tax_amount: quote.tax_amount[sumInsuredIndex],
-  //   tenure: quote.tenure[sumInsuredIndex],
-  //   total_premium: quote.total_premium[sumInsuredIndex],
-  //   product: {
-  //     ...quote.product,
-  //     company: {
-  //       alias: quote.company_alias,
-  //     },
-  //   },
-  // });
 
   const {
     id: company_id,
@@ -180,8 +155,6 @@ const SeeDetails = ({
   );
 
   const { selectedPlan } = useSelector(state => state.quotePage);
-
-  const { selectedRiders } = useSelector(state => state.quotePage);
 
   const getPlanDetails = async (
     { productId, sum_insured },
@@ -238,7 +211,7 @@ const SeeDetails = ({
   /*========================================================= */
   const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { PrimaryColor } = theme;
   const [riders, setRiders] = useState([]);
   const [planDetails, setPlanDetails] = useState({});
   const [hospitals, setHospitals] = useState({});
@@ -367,11 +340,6 @@ const SeeDetails = ({
               setActiveFieldset={setActiveFieldset}
               logo={logo}
             />
-            {/* <SeeDetailsTab2
-              activeFieldset={activeFieldset}
-              setActiveFieldset={setActiveFieldset}
-              logo={logo}
-            /> */}
 
             <div className="tab-container z-container DangerStyles">
               <PlanDetails

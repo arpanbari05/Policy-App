@@ -5,10 +5,9 @@ import styled from "styled-components";
 import "styled-components/macro";
 import { useSelector } from "react-redux";
 import SpinLoader from "../../../../../components/Common/SpinLoader/SpinLoader";
-import { BiDownload } from "react-icons/bi";
+import { RiDownload2Line, RiMailLine, RiPhoneLine } from "react-icons/ri";
 import { useTheme } from "../../../../../customHooks";
-import { BsTelephone } from "react-icons/bs";
-import { HiOutlineMail } from "react-icons/hi";
+
 import { mobile } from "../../../../../utils/mediaQueries";
 // import "../ClaimProcessMobile/ClaimProcessMobile.css"
 
@@ -206,7 +205,7 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                           border-radius: 100%;
                           width: 40px;
                           height: 40px;
-                          margin-right: 20px;
+                          margin-right: 10px;
                         `}
                       >
                         <a
@@ -214,8 +213,8 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                           rel="noopener noreferrer"
                           href={claimform.claim_url}
                         >
-                          <BiDownload
-                            size="31px"
+                          <RiDownload2Line
+                            size="26px"
                             color={colors.primary_color}
                           />
                         </a>
@@ -258,15 +257,16 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                             border-radius: 100%;
                             width: 40px;
                             height: 40px;
-                            margin-right: 20px;
+                            margin-right: 10px;
                           `}
                         >
                           <a
                             href={`tel:${claimProccess?.toll_free_number}`}
                             target={"_blank"}
+                            rel="noreferrer"
                           >
-                            <BsTelephone
-                              size="31px"
+                            <RiPhoneLine
+                              size="26px"
                               color={colors.primary_color}
                             />
                           </a>
@@ -310,15 +310,16 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                             border-radius: 100%;
                             width: 40px;
                             height: 40px;
-                            margin-right: 20px;
+                            margin-right: 10px;
                           `}
                         >
                           <a
                             href={`mailto:${claimProccess?.email}`}
                             target={"_blank"}
+                            rel="noreferrer"
                           >
-                            <HiOutlineMail
-                              size="31px"
+                            <RiMailLine
+                              size="26px"
                               color={colors.primary_color}
                             />
                           </a>
@@ -348,30 +349,6 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                 ) : (
                   <></>
                 )}
-
-                {/* <div style={{ display: "flex", alignItems: "center", marginLeft: "15px" }}>
-                            <div className='icon-box' style={{ top: "4px", padding: "15px", backgroundColor: "#fff5f5", height: "100%", width: "100%", maxWidth: "50px", maxHeight: "50px", borderRadius: "50%", }}>
-                                <img src={mobile} alt="" />
-                            </div>
-                            <div style={{ marginTop: "10px", }}>
-                                <h4
-
-                                    style={{
-                                        lineHeight: "0px",
-                                        padding: " 0px ",
-                                        whiteSpace: "nowrap",
-                                        fontSize: "unset",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Number:
-                                </h4>
-                                <p className="feature-offer-box__p break-on-overflow " style={{ marginTop: "15px" }} >
-                                    {claimProccess.spoc_number}
-                                </p>
-                            </div>
-
-                        </div> */}
               </div>
             </Info>
           </>
