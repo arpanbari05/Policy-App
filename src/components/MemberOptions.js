@@ -33,7 +33,7 @@ export function useMembersForm(initialMembersList = []) {
 
     if (!isValid) {
       setMembers(validatedMembers);
-      setError("Select age for Insured Member")
+      setError("Select age for Insured Member");
       return;
     }
 
@@ -79,9 +79,7 @@ export function useMembersForm(initialMembersList = []) {
 
   const handleCounterDecrement = member => {
     const totalMembers = getMultipleMembersCount(member.base.code);
-
     const memberCodeToDelete = `${member.base.code}${totalMembers}`;
-
     setMembers(members =>
       members.filter(member => member.code !== memberCodeToDelete),
     );
@@ -137,9 +135,13 @@ export function MemberOptions({
         >
           {member.multiple && member.isSelected && (
             <Counter
-              onDecrement={() => handleCounterDecrement(member, index)}
+              onDecrement={() => {
+                handleCounterDecrement(member, index);
+              }}
               onIncrement={() => handleCounterIncrement(member, index)}
               count={getMultipleMembersCount(member.base.code)}
+              onChange={handleMemberChange}
+              member={member}
             />
           )}
         </MemberOption>

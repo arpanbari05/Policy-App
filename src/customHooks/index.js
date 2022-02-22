@@ -223,7 +223,6 @@ export function useMembers() {
   const { data } = useGetEnquiriesQuery();
 
   const { selectedGroup } = useSelector(state => state.quotePage);
-  console.log(selectedGroup);
 
   useEffect(() => {
     const groupPolicyTypes = {};
