@@ -1041,12 +1041,31 @@ export function useCompareFeatures({ productIds }) {
   return { ...query, data, isLoading };
 }
 
-const validateName = (name = "") => /^[A-Za-z]+[A-Za-z ]*$/.test(name);
-
-export function useNameInput(initialValue = "") {
+export function useEmailInput(initialValue = "", setEmailError) {
   const [value, setValue] = useState(initialValue);
 
   const onChange = evt => {
+    setEmailError({});
+    const { value: givenValue } = evt.target;
+
+    if (!givenValue) {
+      setValue(givenValue.toLowerCase());
+      return;
+    }
+
+    setValue(givenValue.toLowerCase());
+  };
+
+  return { value, onChange };
+}
+
+const validateName = (name = "") => /^[A-Za-z]+[A-Za-z ]*$/.test(name);
+
+export function useNameInput(initialValue = "", setFullNameError) {
+  const [value, setValue] = useState(initialValue);
+
+  const onChange = evt => {
+    setFullNameError({});
     const { value: givenValue } = evt.target;
 
     if (!givenValue) {
@@ -1074,10 +1093,15 @@ export function useNameInput(initialValue = "") {
 
 const validateNumber = (str = "") => /\d/g.test(str);
 
-export function useNumberInput(initialValue = "", { maxLength = 60 } = {}) {
+export function useNumberInput(
+  initialValue = "",
+  setNumberError,
+  { maxLength = 60 } = {},
+) {
   const [value, setValue] = useState(initialValue);
 
   const onChange = evt => {
+    setNumberError({});
     const { value: givenValue } = evt.target;
 
     if (givenValue.length > maxLength) return;
