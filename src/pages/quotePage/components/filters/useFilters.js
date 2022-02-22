@@ -38,9 +38,11 @@ const defaultFilters = {
 
 function useFilters() {
   const { groupCode } = useParams();
+  const { data } = useGetEnquiriesQuery();
   let {
     data: { defaultfilters, morefilters, ...filters },
   } = useFrontendBoot();
+
   const {
     data: {
       data: {
@@ -58,6 +60,7 @@ function useFilters() {
 
   function getSelectedFilter(code) {
     if (extras) {
+      console.log("i executed");
       if (code === "insurers") {
         if (extras["insurers"]) return extras["insurers"];
         return [];
@@ -99,6 +102,22 @@ function useFilters() {
     if (moreFilter) {
       return extras ? extras[code] : undefined;
     }
+
+    if (code === "baseplantype") {
+      return filters[CODE_FILTERS[code]].find(
+        filter => filter.code === defaultfilters[code],
+      );
+    }
+
+    if (code === "plantype") {
+      return filters[CODE_FILTERS[code]].find(
+        filter =>
+          filter.code ===
+          data?.data?.groups?.find(singleGroup => singleGroup.id === +groupCode)
+            ?.plan_type,
+      );
+    }
+
     return filters[CODE_FILTERS[code]].find(
       filter => filter.code === defaultfilters[code],
     );
