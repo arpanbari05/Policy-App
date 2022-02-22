@@ -9,6 +9,7 @@ import useUpdateFilters from "./useUpdateFilters.js";
 import useFilters from "./useFilters.js";
 import { useTheme } from "../../../../customHooks/index.js";
 import { Filter, FilterHead } from "./index.js";
+import { useGetFrontendBootQuery } from "../../../../api/api.js";
 
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
@@ -21,7 +22,11 @@ const FilterModal = ({ show, onClose }) => {
   const plantypeOptions = useSelector(
     ({ frontendBoot }) => frontendBoot.frontendData.data,
   );
+  const {
+    data: { plantypes },
+  } = useGetFrontendBootQuery();
 
+  //const plantypeOptions = plantypes?.slice(1)
   const existingPlanTypeCode =
     filters.planType === "Individual"
       ? "I"
