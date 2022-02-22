@@ -9,6 +9,9 @@ export const Title = styled.h1`
   font-size: 24px;
   font-weight: 900;
   color: ${styles.colors.font.one};
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
 `;
 export const SubTitle = styled.h3`
   font-size: 16px;
