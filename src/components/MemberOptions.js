@@ -7,6 +7,41 @@ import RoundDD from "./RoundDD";
 import { Counter } from ".";
 import "styled-components/macro";
 
+const modifyMembersToCount = (members) => {
+  let sonCount = 0;
+  let daughterCount = 0;
+  const updatedMembers = members.map(member => {
+    if (member.display_name === "Son") {
+      sonCount += 1;
+      return {
+        ...member,
+       display_name_count: `Son ${sonCount}` 
+      }
+    } else if (member.display_name === "Daughter") {
+      daughterCount += 1;
+      return {
+        ...member,
+       display_name_count: `Daughter ${daughterCount}` 
+      }
+    } else return { ...member, display_name_count: member.display_name }
+  })
+
+  return updatedMembers.map(member => {
+    if (member.display_name === "Son" && sonCount === 1) {
+      return {
+        ...member,
+        display_name_count: `Son`
+      }
+    } else if (member.display_name === "Daughter" && daughterCount === 1) {
+      return {
+        ...member,
+        display_name_count: `Daughter`
+      }
+    } else return { ...member }
+  });
+
+}
+
 function validateMembers(members = []) {
   let isValid = true;
   const validatedMembers = members.map(member => {
@@ -79,9 +114,7 @@ export function useMembersForm(initialMembersList = []) {
 
   const handleCounterDecrement = member => {
     const totalMembers = getMultipleMembersCount(member.base.code);
-
     const memberCodeToDelete = `${member.base.code}${totalMembers}`;
-
     setMembers(members =>
       members.filter(member => member.code !== memberCodeToDelete),
     );
@@ -97,7 +130,11 @@ export function useMembersForm(initialMembersList = []) {
   const getSelectedMembers = () =>
     members.filter(member => !!member.isSelected);
 
-  const updateMembersList = (membersList = []) => setMembers(membersList);
+  const updateMembersList = (membersList = []) => {
+    setMembers(membersList)
+  };
+
+  const membersWithCount = modifyMembersToCount(members);
 
   return {
     getMultipleMembersCount,
@@ -109,7 +146,7 @@ export function useMembersForm(initialMembersList = []) {
     updateMembersList,
     isError,
     error,
-    membersList: members,
+    membersList: membersWithCount,
   };
 }
 
@@ -139,9 +176,13 @@ export function MemberOptions({
         >
           {member.multiple && member.isSelected && (
             <Counter
-              onDecrement={() => handleCounterDecrement(member, index)}
+              onDecrement={() => {
+                handleCounterDecrement(member, index);
+              }}
               onIncrement={() => handleCounterIncrement(member, index)}
               count={getMultipleMembersCount(member.base.code)}
+              onChange={handleMemberChange}
+              member={member}
             />
           )}
         </MemberOption>
@@ -196,7 +237,7 @@ function MemberOption({
         padding: 2px 10px;
         border: solid 1px #b0bed0;
         flex: 1 1 21em;
-        gap: 1em;
+        gap: .7em;
       `}
       {...props}
     >
@@ -240,7 +281,7 @@ function MemberOption({
             )}
           </div>
         ) : null}
-        {member.display_name}
+        {member.display_name_count}
       </label>
       {children}
       <div>

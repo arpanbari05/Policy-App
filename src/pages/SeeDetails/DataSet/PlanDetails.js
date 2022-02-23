@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import PlansTab from "../components/PlanDetails/PlansTab";
-import roomRent from "../../../assets/images/room_r.png";
 import FeaturesTab from "../components/PlanDetails/FeaturesTab";
-import download from "../../../assets/images/downloadclaim.png";
 import { useSelector } from "react-redux";
-import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import "styled-components/macro";
-import { FaDownload } from "react-icons/fa";
 import { mobile } from "../../../utils/mediaQueries";
+import { RiDownload2Line } from "react-icons/ri";
+import { useTheme } from "../../../customHooks";
 
 const PlanDetails = ({
   ActiveMainTab,
@@ -169,6 +167,7 @@ const PlanDetails = ({
 export default PlanDetails;
 
 function DownloadCard({ url, title }) {
+  const { colors } = useTheme();
   return (
     <div
       css={`
@@ -195,19 +194,12 @@ function DownloadCard({ url, title }) {
         <a target="_blank" rel="noopener noreferrer" href={url}>
           <div
             css={`
-              background-color: white;
-              /* padding: 7px 12px; */
+              background-color: ${colors.secondary_shade};
+              padding: 7px;
               border-radius: 82px;
             `}
           >
-            <img
-              src={download}
-              css={`
-                width: 31px;
-                height: 31px;
-              `}
-              alt=""
-            />
+            <RiDownload2Line size={28} color={colors.primary_color} />
           </div>
         </a>
       ) : (

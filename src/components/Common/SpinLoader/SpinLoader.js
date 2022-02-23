@@ -1,7 +1,6 @@
 import React from "react";
 import "./Loader.scss";
 import "styled-components/macro";
-import { useSelector } from "react-redux";
 import { useTheme } from "../../../customHooks";
 const SpinLoader = ({
   style = {},

@@ -1,7 +1,7 @@
 import { FaChevronDown } from "react-icons/fa";
 import "styled-components/macro";
 import { useTheme, useToggle } from "../../../../customHooks";
-import React from "react";
+import React, { useRef } from "react";
 
 export function FilterHead({ label, children, onClick, ...props }) {
   const handleClick = () => onClick && onClick();
@@ -72,6 +72,7 @@ export function Filter({ label, children, ...props }) {
 }
 
 export function FilterOption({ option, checked, onChange, ...props }) {
+  const target = useRef(null);
   const handleChange = evt => {
     if (evt.target.checked) onChange && onChange(option);
   };
@@ -83,9 +84,13 @@ export function FilterOption({ option, checked, onChange, ...props }) {
       `}
       className="option d-flex align-items-center justify-content-between"
       {...props}
+      onClick={() => {
+        console.log(target.current.click())
+      }}
     >
       <label htmlFor={option.code}>{option.display_name}</label>
       <input
+        ref={target}
         type="radio"
         id={option.code}
         name="select_premium"

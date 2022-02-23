@@ -1,4 +1,4 @@
-import { Redirect, useHistory, useParams } from "react-router-dom";
+import { Link, Redirect, useHistory, useParams } from "react-router-dom";
 import { useCartProduct } from "../../Cart";
 import styled from "styled-components/macro";
 import care_health from "../../../assets/logos/Care.png";
@@ -8,15 +8,14 @@ import {
   selectAdditionalDiscounts,
   setexpandMobile,
 } from "../productDetails.slice";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ReviewCartPopup, { PopUpWithCloseButton } from "./ReviewCardPopup";
 // import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
 import EditMembersContent from "./EditMembersContent";
 import { mobile, small } from "../../../utils/mediaQueries";
 import CardModal from "../../../components/Common/Modal/CardModal";
-import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
-import { amount } from "../../../utils/helper";
+import { amount, figureToWords } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
   useCart,
@@ -34,7 +33,7 @@ import {
   CloseButton,
   MembersList,
 } from "../../../components";
-import { FaPen } from "react-icons/fa";
+import { FaChevronRight, FaPen } from "react-icons/fa";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { ErrorMessage } from "../../InputPage/components/FormComponents";
 import { NewReviewCartPopup } from "../../../components/NewReviewCartPopup";
@@ -43,7 +42,7 @@ import {
   useMembersForm,
 } from "../../../components/MemberOptions";
 import { Modal } from "react-bootstrap";
-import { useGetEnquiriesQuery } from "../../../api/api";
+import { api, useGetEnquiriesQuery } from "../../../api/api";
 
 const plantypes = {
   M: "Multi Individual",
@@ -212,7 +211,7 @@ function RiderDetails({ rider, ...props }) {
   );
 }
 
-function Members({ groupCode, ...props }) {
+function Members({ groupCode, editable = true, ...props }) {
   const { getGroupMembers } = useMembers();
   const currentGroupMembers = getGroupMembers(groupCode);
 
@@ -228,7 +227,7 @@ function Members({ groupCode, ...props }) {
           font-size: 0.763rem;
         `}
       />
-      <EditMembersButton groupCode={groupCode} />
+      {editable ? <EditMembersButton groupCode={groupCode} /> : null}
     </div>
   );
 }
@@ -278,11 +277,15 @@ function EditMembers({ onClose }) {
     },
   } = useGetEnquiriesQuery();
 
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
   const firstName = name.split(" ")[0];
 
   const { getCartEntry } = useCart();
 
-  const currentCartEntry = getCartEntry(groupCode);
+  const currentCartEntry = useMemo(() => getCartEntry(groupCode), []);
+
+  const dispatch = useDispatch();
 
   const { getGroupMembers } = useMembers();
 
@@ -299,6 +302,20 @@ function EditMembers({ onClose }) {
     const members = getSelectedMembers();
     updateGroupMembers(members).then(res => {
       if (res.error) return;
+      dispatch(
+        api.util.invalidateTags([
+          "Cart",
+          "Rider",
+          "AdditionalDiscount",
+          "TenureDiscount",
+        ]),
+      );
+      const updatedCartEntry = getCartEntryFromUpdateResult(
+        res.data,
+        groupCode,
+      );
+      if (updatedCartEntry.total_premium === currentCartEntry.total_premium)
+        onClose && onClose();
     });
   };
 
@@ -307,9 +324,21 @@ function EditMembers({ onClose }) {
   if (isError) serverErrors = Object.values(error.data.errors);
 
   if (data) {
-    const updatedCartEntry = getCartEntryFromUpdateResult(data, groupCode);
+    const { unavailable_message, ...updatedCartEntry } =
+      getCartEntryFromUpdateResult(data, groupCode);
+    const handleCloseClick = () => {
+      onClose && onClose();
+    };
     return (
-      <Modal show onHide={onClose} ƒ>
+      <Modal
+        show
+        onHide={onClose}
+        css={`
+          & .modal-dialog {
+            max-width: 600px;
+          }
+        `}
+      >
         <div className="p-3 position-relative">
           <div
             className="position-absolute"
@@ -329,9 +358,79 @@ function EditMembers({ onClose }) {
               font-size: 1.27rem;
             `}
           >
-            Hi <span className="text-capitalize">{firstName},</span>
-            {}
+            Hi <span className="text-capitalize">{firstName}, </span>
+            {unavailable_message
+              ? "Plan Unavailable due to change in date of birth"
+              : "Revised Premium due to change in date of birth"}
           </h1>
+        </div>
+
+        <div className="p-3 pt-0">
+          <Members groupCode={groupCode} editable={false} />
+          <BasePlanDetails
+            groupCode={groupCode}
+            isUnavailable={unavailable_message}
+            revisedPremium
+          />
+          {!unavailable_message ? (
+            <div>
+              <CartDetailRow
+                title="Premium"
+                value={
+                  <span
+                    css={`
+                      text-decoration: line-through;
+                    `}
+                  >
+                    {amount(currentCartEntry.total_premium)}
+                  </span>
+                }
+              />
+              <CartDetailRow
+                title={
+                  <span
+                    css={`
+                      color: ${colors.secondary_color};
+                    `}
+                  >
+                    Revised Premium
+                  </span>
+                }
+                value={amount(updatedCartEntry.total_premium)}
+              />
+            </div>
+          ) : null}
+          {unavailable_message ? (
+            <UnavailableMessage message={unavailable_message} />
+          ) : (
+            <div>
+              <RidersList groupCode={groupCode} />
+              <DiscountsList groupCode={groupCode} />
+            </div>
+          )}
+        </div>
+        <div
+          className="p-3 pt-0 d-flex justify-content-center"
+          css={`
+            gap: 1em;
+          `}
+        >
+          <Button className="w-50" onClick={handleCloseClick}>
+            Close
+          </Button>
+          <Link
+            to={getUrlWithEnquirySearch(`/quotes/${groupCode}`)}
+            className="w-50 d-flex align-items-center justify-content-center"
+            css={`
+              background-color: ${colors.primary_color};
+              &,
+              &:hover {
+                color: #fff;
+              }
+            `}
+          >
+            View Quotes <FaChevronRight />
+          </Link>
         </div>
       </Modal>
     );
@@ -359,7 +458,12 @@ const StyledErrorMessage = styled(ErrorMessage)`
   text-align: center;
 `;
 
-function BasePlanDetails({ groupCode, isUnavailable = false, ...props }) {
+function BasePlanDetails({
+  groupCode,
+  isUnavailable = false,
+  revisedPremium = false,
+  ...props
+}) {
   const { getCartEntry } = useCart();
   const { journeyType } = useFrontendBoot();
   const cartEntry = getCartEntry(parseInt(groupCode));
@@ -404,11 +508,26 @@ function BasePlanDetails({ groupCode, isUnavailable = false, ...props }) {
         <div className="mt-2">
           <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
           {journeyType === "top_up" ? (
-            <CartDetailRow title="Deductible" value={amount(deductible)} />
+            <CartDetailRow title="Deductible" value={`₹ ${figureToWords(deductible)}`} />
           ) : null}
-          <CartDetailRow title="Cover" value={amount(sum_insured)} />
+          <CartDetailRow title="Cover" value={`₹ ${figureToWords(sum_insured)}`} />
           <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
-          <CartDetailRow title="Premium" value={amount(total_premium)} />
+          {!revisedPremium ? (
+            <CartDetailRow
+              title="Premium"
+              value={
+                <span
+                  css={`
+                    text-decoration: ${revisedPremium
+                      ? "line-through"
+                      : "none"};
+                  `}
+                >
+                  {amount(total_premium)}
+                </span>
+              }
+            />
+          ) : null}
         </div>
       ) : null}
     </div>
@@ -525,10 +644,15 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         )}
       </Button>
       {reviewCartModalNew.isOn && (
-        <NewReviewCartPopup
-          onContine={handleContinueClick}
-          onClose={reviewCartModalNew.off}
-        />
+        <ReviewCartPopup
+            propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
+            onClose={reviewCartModalNew.off}
+          />
+
+        // <NewReviewCartPopup
+        //   onContine={handleContinueClick}
+        //   onClose={reviewCartModalNew.off}
+        // />
       )}
     </div>
   );
@@ -984,7 +1108,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
         `}
       >
         <CartDetailRow title="Plan Type" value={existingPlanType} />
-        <CartDetailRow title="Cover" value={coverAmount} />
+        <CartDetailRow title="Cover" value={figureToWords(coverAmount)} />
         <CartDetailRow
           title="Policy Term"
           value={`${tenure + " " + (tenure >= 2 ? "Years" : "Year")} `}

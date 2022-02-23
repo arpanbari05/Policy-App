@@ -223,7 +223,6 @@ export function useMembers() {
   const { data } = useGetEnquiriesQuery();
 
   const { selectedGroup } = useSelector(state => state.quotePage);
-  console.log(selectedGroup);
 
   useEffect(() => {
     const groupPolicyTypes = {};
@@ -379,7 +378,7 @@ export function useMembers() {
   }
 
   function getPreviousGroup(currentGroupCode) {
-    return groups.find(group => group.id === currentGroupCode - 1);
+    return groups?.find(group => group.id === currentGroupCode - 1);
   }
 
   function getLastGroup() {
@@ -453,20 +452,12 @@ export function useUpdateGroupMembers(groupCode) {
       quote: { product, sum_insured },
     }).then(res => {
       if (res.error) return res;
-      const { updatedQuote, updateEnquiriesResult} = res.data;
+      const { updatedQuote, updateEnquiriesResult } = res.data;
       // updateCartEntry(groupCode, getQuoteSendData(updatedQuote));
       dispatch(
         api.util.updateQueryData("getEnquiries", undefined, enquiriesDraft => {
           Object.assign(enquiriesDraft, updateEnquiriesResult);
         }),
-      );
-      dispatch(
-        api.util.invalidateTags([
-          "Rider",
-          "Cart",
-          "AdditionalDiscount",
-          "TenureDiscount",
-        ]),
       );
       return res;
     });
@@ -506,6 +497,7 @@ export function useUpdateEnquiry() {
 }
 
 export function useUpdateMembers() {
+  const { journeyType } = useFrontendBoot();
   const {
     data: { data: enquiryData },
   } = useGetEnquiriesQuery();
@@ -528,8 +520,9 @@ export function useUpdateMembers() {
             age: member.age.code,
           }))
         : enquiryData.input.members,
-      plan_type: "I",
-      pincode: 400012,
+      plan_type:
+        journeyType === "health" ? (members?.length > 1 ? "F" : "I") : "I",
+      pincode: enquiryData?.input?.pincode,
       ...data,
     };
 
@@ -673,7 +666,7 @@ export function useTenureDiscount(groupCode) {
   const { product, sum_insured, tenure, deductible } = getCartEntry(groupCode);
 
   const { data, ...queryState } = useGetDiscountsQuery({
-    sum_insured,
+    sum_insured: +sum_insured,
     product_id: product.id,
     group: groupCode,
     journeyType,
@@ -1066,7 +1059,22 @@ export function useEmailInput(initialValue = "", setEmailError) {
   return { value, onChange };
 }
 
-const validateName = (name = "") => /^[A-Za-z]+[A-Za-z ]*$/.test(name);
+const validateName = (name = "") => /^[a-zA-Z.\s]*$/.test(name);
+const checkPreviousChar = (value, checkValue, stateValue) => {
+  let check = true;
+
+  if (value[0] === checkValue) {
+    check = false;
+  }
+  if (
+    check &&
+    value[value.length - 1] === checkValue &&
+    stateValue[stateValue.length - 1] === checkValue
+  ) {
+    check = false;
+  }
+  return check;
+};
 
 export function useNameInput(initialValue = "", setFullNameError) {
   const [value, setValue] = useState(initialValue);
@@ -1083,8 +1091,7 @@ export function useNameInput(initialValue = "", setFullNameError) {
     const isValidName = validateName(givenValue);
 
     if (!isValidName) return;
-
-    setValue(givenValue);
+    checkPreviousChar(givenValue, ".", value) && setValue(givenValue);
   };
 
   const onBlur = evt => {

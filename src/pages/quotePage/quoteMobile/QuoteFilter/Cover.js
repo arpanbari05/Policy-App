@@ -200,6 +200,12 @@ const Cover = ({
                       padding-right: 9px !important;
                       padding-left: 9px !important;
                     `}
+                    onClick={() => {
+                      setCover(item?.display_name);
+                      setOwnCover("");
+                      dispatch(setFilters({ ownCover: "" }));
+                      setInputCover(false);
+                    }}
                   >
                     {/* <div
                       onClick={() => {
@@ -229,12 +235,6 @@ const Cover = ({
                     <CustomRadio
                       label={item?.display_name}
                       isSelected={cover === item?.display_name}
-                      onClick={() => {
-                        setCover(item?.display_name);
-                        setOwnCover("");
-                        dispatch(setFilters({ ownCover: "" }));
-                        setInputCover(false);
-                      }}
                     />
                   </Col>
                 ))}

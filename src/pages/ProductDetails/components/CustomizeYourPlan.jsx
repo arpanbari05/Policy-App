@@ -27,12 +27,14 @@ export function RidersSection() {
   };
 
   return (
-    <Riders
-      quote={quote}
-      groupCode={groupCode}
-      defaultSelectedRiders={quote.health_riders}
-      onChange={handleRidersChange}
-    />
+    <div className="pb-3">
+      <Riders
+        quote={quote}
+        groupCode={groupCode}
+        defaultSelectedRiders={quote.health_riders}
+        onChange={handleRidersChange}
+      />
+    </div>
   );
 }
 

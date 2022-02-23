@@ -106,6 +106,8 @@ const TextInput = ({
   // useEffect(() => {
   //   setInnerValue(value);
   // }, [value]);
+  console.log(error);
+  
   return (
     <InputContainer>
       <Input

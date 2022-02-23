@@ -2,7 +2,7 @@ import styled from "styled-components/macro";
 import "styled-components/macro";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { useState } from "react";
-import { amount } from "../../../../../utils/helper";
+import { amount, figureToWords } from "../../../../../utils/helper";
 import {
   useAdditionalDiscount,
   useCart,
@@ -320,9 +320,9 @@ const PlanCard = ({ groupCode, ...props }) => {
       {...props}
     >
       <TitleValueRenderer title="Plan Type" value={plantypes[plantype]} />
-      <TitleValueRenderer title="Cover" value={amount(sum_insured)} />
+      <TitleValueRenderer title="Cover" value={`₹ ${figureToWords(sum_insured)}`} />
       {journeyType === "top_up" ? (
-        <TitleValueRenderer title="Deductible" value={amount(deductible)} />
+        <TitleValueRenderer title="Deductible" value={`₹ ${figureToWords(deductible)}`} />
       ) : null}
       <TitleValueRenderer title="Policy term" value={displayPolicyTerm} />
       <TitleValueRenderer title="Premium" value={amount(netPremium)} />
