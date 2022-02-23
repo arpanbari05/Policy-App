@@ -5,12 +5,24 @@ import "styled-components/macro";
 import { Link, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import ThemeModal from "./ThemeModal";
 import { useGetEnquiriesQuery } from "../api/api";
-import { useMembers, useTheme } from "../customHooks";
+import { useMembers, useTheme, useUrlEnquiry } from "../customHooks";
 import { FaRegCopy } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { setPolicyTypes, setPolicyType } from "../pages/quotePage/quote.slice";
+import {
+  setPolicyTypes,
+  setPolicyType,
+  setIsOnProductDetails,
+} from "../pages/quotePage/quote.slice";
 import ShareButton from "./Common/Button/ShareButton";
+import { useHistory } from "react-router-dom";
+import { FaChevronLeft } from "react-icons/fa";
 
+const GO_BACK_LOCATIONS = [
+  "/proposal",
+  "/proposal_summary",
+  "/quotes",
+  "/productdetails",
+];
 const Navbar = () => {
   const location = useLocation();
 
@@ -28,6 +40,16 @@ const Navbar = () => {
   const { colors } = useTheme();
 
   const trace_id = data?.data?.trace_id;
+
+  const { groupCode } = useParams();
+
+  const { getPreviousGroup } = useMembers();
+
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
+
+  const history = useHistory();
 
   return (
     <div
@@ -47,6 +69,57 @@ const Navbar = () => {
               /* padding: 0px 100px; */
             `}
           >
+            {GO_BACK_LOCATIONS.filter(loc =>
+              location.pathname.startsWith(loc),
+            ) && (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                css={`
+                  // background: ${colors.primary_color};
+                  width: 35px;
+                  margin-right: 5px;
+                  border-radius: 100%;
+                  height: 35px;
+                  color: ${colors.primary_color};
+                  cursor: pointer;
+                  &:hover {
+                    background: ${colors.primary_color}10;
+                  }
+                `}
+                onClick={() => {
+                  switch (location.pathname) {
+                    case `/productdetails/${groupCode}`:
+                      const getLink = () => {
+                        if (!prevoiusGroup) return getUrlWithEnquirySearch(`/quotes/${groupCode}`);
+                    
+                        return getUrlWithEnquirySearch(`/productdetails/${prevoiusGroup.id}`);
+                      };
+                      history.replace(getLink());
+                      setIsOnProductDetails(true);
+                      break;
+
+                    case "/proposal":
+                      history.goBack();
+                      break;
+
+                    case "/proposal_summary":
+                      history.push({
+                        pathname: getUrlWithEnquirySearch("/proposal"),
+                      });
+                      break;
+
+                    case `/quotes/${groupCode}`:
+                      history.replace("/");
+                      break;
+
+                    default:
+                      return;
+                  }
+                }}
+              >
+                <FaChevronLeft />
+              </div>
+            )}
             <Link to="/">
               <img
                 src={fyntune}

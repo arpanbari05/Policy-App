@@ -86,8 +86,9 @@ export const OptionWrapper = styled.ul`
         color: white;
         display: flex;
         justify-content: center;
-        margin: -1.5px auto;
         background-color: ${props => props.PrimaryColor};
+        position: relative;
+        top: -25%;
       }
     }
   }

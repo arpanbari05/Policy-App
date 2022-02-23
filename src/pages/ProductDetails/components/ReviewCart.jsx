@@ -16,7 +16,7 @@ import { mobile, small } from "../../../utils/mediaQueries";
 import CardModal from "../../../components/Common/Modal/CardModal";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
-import { amount } from "../../../utils/helper";
+import { amount, figureToWords } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
   useCart,
@@ -315,9 +315,9 @@ function BasePlanDetails({ groupCode, ...props }) {
       <div className="mt-2">
         <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
         {journeyType === "top_up" ? (
-          <CartDetailRow title="Deductible" value={amount(deductible)} />
+          <CartDetailRow title="Deductible" value={`₹ ${figureToWords(deductible)}`} />
         ) : null}
-        <CartDetailRow title="Cover" value={amount(sum_insured)} />
+        <CartDetailRow title="Cover" value={`₹ ${figureToWords(sum_insured)}`} />
         <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
         <CartDetailRow title="Premium" value={amount(total_premium)} />
       </div>
@@ -436,10 +436,16 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         //   onContine={handleContinueClick}
         //   onClose={cartSummaryModal.off}
         // />
-        <NewReviewCartPopup
-          onContine={handleContinueClick}
-          onClose={reviewCartModalNew.off}
-        />
+
+        <ReviewCartPopup
+            propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
+            onClose={reviewCartModalNew.off}
+          />
+
+        // <NewReviewCartPopup
+        //   onContine={handleContinueClick}
+        //   onClose={reviewCartModalNew.off}
+        // />
       )}
     </div>
   );
@@ -895,7 +901,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
         `}
       >
         <CartDetailRow title="Plan Type" value={existingPlanType} />
-        <CartDetailRow title="Cover" value={coverAmount} />
+        <CartDetailRow title="Cover" value={figureToWords(coverAmount)} />
         <CartDetailRow
           title="Policy Term"
           value={`${tenure + " " + (tenure >= 2 ? "Years" : "Year")} `}

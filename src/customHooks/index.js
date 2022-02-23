@@ -379,7 +379,7 @@ export function useMembers() {
   }
 
   function getPreviousGroup(currentGroupCode) {
-    return groups.find(group => group.id === currentGroupCode - 1);
+    return groups?.find(group => group.id === currentGroupCode - 1);
   }
 
   function getLastGroup() {

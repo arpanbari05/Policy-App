@@ -177,7 +177,7 @@ const FilterModal = ({ show, onClose }) => {
                     </div>
                     <div className="morefilter_options">
                       <div
-                        className="d-flex justify-content-between py-3 mb-2 w-100 flex-wrap"
+                        className="d-flex justify-content-between pb-2 mb-2 w-100 flex-wrap"
                         style={{
                           borderBottom: "1px solid #a1b2c8",
                         }}

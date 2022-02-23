@@ -15,7 +15,7 @@ const Checkbox2 = ({ title, onChange, checked, showTitle = true }) => {
       class="container d-flex align-items-center"
       css={`
         position: relative;
-        left: -18px;
+        // left: -18px;
         @media (max-width: 400px) {
           padding: 0px 5px;
         }

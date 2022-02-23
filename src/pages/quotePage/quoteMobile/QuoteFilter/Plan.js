@@ -189,7 +189,10 @@ const Plan = ({
                   <hr className="hr_width_pop" />
                 </Col>
                 {displayPlanTypes?.map(item => (
-                  <Col md={12}>
+                  <Col md={12}
+                    onClick={() => {
+                      setFloater(item?.display_name);
+                    }}>
                     {/* <div
                       onClick={() => {
                         setFloater(item?.display_name);
@@ -214,9 +217,6 @@ const Plan = ({
                     </div> */}
                     <CustomRadio
                       label={item.display_name}
-                      onClick={() => {
-                        setFloater(item?.display_name);
-                      }}
                       isSelected={floater === item?.display_name}
                     />
                   </Col>

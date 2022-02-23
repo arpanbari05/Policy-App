@@ -52,6 +52,7 @@ const FormBuilder = ({
     noForAll,
     setNoForAll,
   );
+  console.log(values);
 
   const [trigger, setTrigger] = useState(false);
   const { proposalData } = useSelector(state => state.proposalPage);

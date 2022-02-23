@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import "styled-components/macro";
 import { OptionWrapper, ApplyBtn } from "./Filter.style";
@@ -64,6 +64,7 @@ function FilterModal({ onClose, ...props }) {
 }
 
 function MultiYearOption({ tenure, onChange, checked, ...props }) {
+  const target = useRef(null);
   const handleChange = evt => {
     if (evt.target.value) onChange && onChange(tenure);
   };
@@ -75,6 +76,9 @@ function MultiYearOption({ tenure, onChange, checked, ...props }) {
       `}
       className="option d-flex align-items-center justify-content-between"
       {...props}
+      onClick={() => {
+        console.log(target.current.click());
+      }}
     >
       <label htmlFor={"tenure-" + tenure.code}>
         {tenure.display_name}{" "}
@@ -94,6 +98,7 @@ function MultiYearOption({ tenure, onChange, checked, ...props }) {
         name="multiYear"
         checked={checked}
         onChange={handleChange}
+        ref={target}
       />
     </li>
   );

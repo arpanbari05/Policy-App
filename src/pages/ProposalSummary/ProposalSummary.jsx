@@ -274,7 +274,7 @@ const ProposalSummary = () => {
             }
           `}
         >
-          <div
+          {/* <div
             style={{ display: "flex", justifyContent: "space-between" }}
             css={`
               @media (max-width: 768px) {
@@ -283,14 +283,6 @@ const ProposalSummary = () => {
             `}
           >
             <div className="col-lg-2">
-              {/* <p
-                class="go_back_prposal_p summary_proposal_bquoteack"
-                style={{ zIndex: 100 }}
-                onClick={() => history.goBack()}
-              >
-                <i class="icon flaticon-back" style={{ width: "27px" }}></i> Go
-                Back
-              </p> */}
               <button
                 className="btn"
                 type="button"
@@ -334,12 +326,12 @@ const ProposalSummary = () => {
             <div class="col-lg-10 element-tile-two">
               <p
                 css={`
-                  /* @media (min-width: 768px) and (max-width: 900px) {
-                    font-size: 18px;
-                    text-align: center;
-                    position: absolute;
-                    left: 22.5%;
-                  } */
+                  // @media (min-width: 768px) and (max-width: 900px) {
+                  //   font-size: 18px;
+                  //   text-align: center;
+                  //   position: absolute;
+                  //   left: 22.5%;
+                  // } 
                   @media (min-width: 1024px) and (max-width: 1200px) {
                     font-size: 18px;
                     text-align: center;
@@ -357,7 +349,7 @@ const ProposalSummary = () => {
                 please review your proposal details before you proceed
               </p>
             </div>
-          </div>
+          </div> */}
 
           <br className="hide-on-mobile" />
           <Row
