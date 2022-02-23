@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import CardSkeletonLoader from "../../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import {
   useCompareSlot,
@@ -9,13 +10,15 @@ import {
   useToggle,
   useUrlEnquiry,
 } from "../../../../customHooks";
+import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 import "styled-components/macro";
 import { Button, PremiumButton } from "../../../../components";
 import { numberToDigitWord } from "../../../../utils/helper";
 import ProductDetailsModal from "../../../../components/ProductDetails/ProductDetailsModal";
 import { FaChevronDown, FaChevronRight, FaChevronUp } from "react-icons/fa";
-import { Collapse } from "react-bootstrap";
+import { Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { IoRadioButtonOff, IoRadioButtonOn } from "react-icons/io5";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import { CompareQuoteTrayItem, CompareTrayAdd } from "../../components";
 import _ from "lodash";
 import { useHistory, useParams } from "react-router-dom";
@@ -363,22 +366,22 @@ function QuoteFeatures({ features = [] }) {
         background-color: ${colors.primary_shade};
       `}
     >
-      {features.map(feature =>
+      {features.map((feature, index) =>
         featuresDisplayedOnQuoteCard.includes(feature.code) ? (
-          <QuoteFeature feature={feature} key={feature.name} />
+          <QuoteFeature feature={feature} key={feature.name} index={index} />
         ) : null,
       )}
     </div>
   );
 }
 
-function QuoteFeature({ feature }) {
+function QuoteFeature({ feature, index }) {
   const { colors } = useTheme();
   return (
     <div
       className="px-1 d-flex"
       css={`
-        font-size: 0.79rem;
+        font-size: 0.65rem;
         :not(:last-child) {
           border-right: 1px solid ${colors.border.one};
         }
@@ -393,6 +396,7 @@ function QuoteFeature({ feature }) {
       >
         {feature.value}
       </span>
+      {QuoteCardDataset(feature.description, index, colors.primary_color)}
     </div>
   );
 }
@@ -420,6 +424,51 @@ function ChevronRightCircle({ css = "", className = "", ...props }) {
       {...props}
     >
       <FaChevronRight />
+    </span>
+  );
+}
+
+export function QuoteCardDataset(
+  description,
+  index,
+  PrimaryColor
+) {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const target = useRef(null);
+  useOutsiteClick(target, () => setShowTooltip(false));
+  
+  const renderTooltip = props => <Tooltip {...props}>{description}</Tooltip>;
+  const toggleTooltip = () => {
+    setShowTooltip( prev => !prev );
+  }
+
+  return (
+    <span
+      className={"feature-cell"}
+      css={`
+        margin-right: 5px;
+      `}
+    >
+      <span
+        css={`
+          color: ${PrimaryColor};
+        `}
+      >
+        <OverlayTrigger
+          placement={"bottom"}
+          overlay={renderTooltip}
+          target={target.current}
+          show={showTooltip}
+        >
+          <span
+            ref={target}
+            onClick={toggleTooltip}
+            style={{ position: "relative", top: "-1px" }}
+          >
+            <AiOutlineInfoCircle size={12} />
+          </span>
+        </OverlayTrigger>
+      </span>
     </span>
   );
 }

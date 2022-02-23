@@ -125,11 +125,17 @@ export function FullScreenLoader() {
 export function Button({
   children,
   loader = false,
+  disabled = false,
   arrow = false,
   css,
+  onClick,
   ...props
 }) {
   const { colors } = useTheme();
+  const handleClick = evt => {
+    if (loader || disabled) return;
+    onClick && onClick(evt);
+  };
   return (
     <button
       css={`
@@ -151,7 +157,8 @@ export function Button({
 
         ${css};
       `}
-      disabled={loader}
+      disabled={loader || disabled}
+      onClick={handleClick}
       {...props}
     >
       {children}

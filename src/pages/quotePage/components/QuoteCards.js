@@ -66,7 +66,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
       `}
       {...props}
     >
-      <QuoteCard {...getQuoteCardProps(firstQuote)} />
+      <QuoteCard {...getQuoteCardProps(firstQuote)} sortBy={sortBy} />
       <Collapse in={show}>
         <div id="collapseOne">
           <div
@@ -81,6 +81,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
                 <QuoteCard
                   {...getQuoteCardProps(quote)}
                   key={Object.values(quote)[0].product.id}
+                  sortBy={sortBy}
                 />
               ))}
             </Col>
@@ -127,6 +128,7 @@ function getDeductibles(quotes = []) {
 function QuoteCard({
   quotes = [],
   compare: { checkFn, onChange } = {},
+  sortBy,
   ...props
 }) {
   const { colors } = useTheme();
@@ -144,9 +146,9 @@ function QuoteCard({
         )
         .map(quote => parseInt(quote.sum_insured))
         .sort((a, b) => a - b)
-    : quotes.map(quote => parseInt(quote.sum_insured));
+    : quotes.map(quote => parseInt(quote.sum_insured)).sort((a, b) => a - b);
 
-  const [selectedSumInsured, setSelectedSumInsured] = useState(sumInsureds[0]);
+  const [selectedSumInsured, setSelectedSumInsured] = useState();
 
   const quote = quotes.find(quote =>
     isDeductibleJourney
@@ -154,6 +156,10 @@ function QuoteCard({
         parseInt(quote.sum_insured) === parseInt(selectedSumInsured)
       : parseInt(quote.sum_insured) === parseInt(selectedSumInsured),
   );
+
+  useEffect(() => {
+    setSelectedSumInsured(sumInsureds[0]);
+  }, [sortBy]); // SETS MIN-SUM-INSURED OPTION AS DEFAULT SELECTED
 
   const { getCompany } = useCompanies();
 
@@ -193,10 +199,13 @@ function QuoteCard({
 
   return (
     <div {...props}>
-      <div className="d-flex align-items-center" css={`
-        padding-top: 11px;
-        padding-bottom: 8px;
-      `}>
+      <div
+        className="d-flex align-items-center"
+        css={`
+          padding-top: 11px;
+          padding-bottom: 8px;
+        `}
+      >
         <div
           className="d-flex flex-column align-items-center justify-content-between"
           css={`
@@ -329,24 +338,36 @@ function QuoteCard({
                     color: ${colors.primary_color};
                   `}
                 > */}
-                  {isCompareQuote ? (
-                    <IoCheckmarkCircleSharp color={colors.primary_color} style={{marginRight: 3}} size={20} />
-                  ) : (
-                    // <BsCircleFill
-                    //   css={`
-                    //     color: white;
-                    //   `}
-                    // />
-                    <div css={`
+                {isCompareQuote ? (
+                  <IoCheckmarkCircleSharp
+                    color={colors.primary_color}
+                    style={{ marginRight: 3 }}
+                    size={20}
+                  />
+                ) : (
+                  // <BsCircleFill
+                  //   css={`
+                  //     color: white;
+                  //   `}
+                  // />
+                  <div
+                    css={`
                       width: 17px;
                       height: 17px;
                       border: 1px solid #dcdcdc;
                       border-radius: 50%;
                       margin: 1px 5px 1px 1px;
-                    `} />
-                  )}
+                    `}
+                  />
+                )}
                 {/* </span> */}
-                <span css={`margin-top: 2px`}>Compare</span>
+                <span
+                  css={`
+                    margin-top: 2px;
+                  `}
+                >
+                  Compare
+                </span>
               </label>
               <input
                 className="visually-hidden"
@@ -414,7 +435,13 @@ function QuoteCardOption({ label, children, info = false, ...props }) {
           justify-content: space-between;
         `}
       >
-        <span>{label}</span>{info && <RiInformationLine style={{cursor: "pointer"}} color={colors.primary_color} />}
+        <span>{label}</span>
+        {info && (
+          <RiInformationLine
+            style={{ cursor: "pointer" }}
+            color={colors.primary_color}
+          />
+        )}
       </div>
       <div
         css={`

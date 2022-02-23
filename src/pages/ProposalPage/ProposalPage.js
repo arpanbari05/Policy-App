@@ -204,7 +204,7 @@ const ProposalPage = () => {
                 align-items: center;
               `}
               onClick={() => {
-                setActive(1);
+                proposalData["Proposer Details"] && setActive(1);
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Insured Details</MainTitle>
@@ -255,7 +255,7 @@ const ProposalPage = () => {
                 align-items: center;
               `}
               onClick={() => {
-                setActive(2);
+                proposalData["Insured Details"] && setActive(2);
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Medical Details</MainTitle>
@@ -306,7 +306,7 @@ const ProposalPage = () => {
                 align-items: center;
               `}
               onClick={() => {
-                setActive(3);
+                proposalData["Medical Details"] && setActive(3);
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Other Details</MainTitle>

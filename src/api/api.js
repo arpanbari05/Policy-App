@@ -16,7 +16,15 @@ const baseQuery = fetchBaseQuery({
 export const api = createApi({
   reducerPath: "api",
   baseQuery,
-  tagTypes: ["Filter", "Quote", "Enquiry", "Rider", "Cart"],
+  tagTypes: [
+    "Filter",
+    "Quote",
+    "Enquiry",
+    "Rider",
+    "Cart",
+    "AdditionalDiscount",
+    "TenureDiscount",
+  ],
   endpoints: builder => ({
     getCities: builder.mutation({
       query: ({ searchQuery }) => ({
@@ -85,6 +93,7 @@ export const api = createApi({
       query: ({ productId, groupCode, sum_insured, tenure }) => ({
         url: `products/${productId}/additional-discounts?group=${groupCode}&sum_insured=${sum_insured}&tenure=${tenure}`,
       }),
+      providesTags: ["AdditionalDiscount"],
     }),
     getEnquiries: builder.query({
       query: () => ({ url: `enquiries` }),
@@ -211,6 +220,9 @@ export const api = createApi({
       },
       providesTags: ["Rider"],
     }),
+    deleteGroup: builder.query({
+      query: (groupId) => ({ url: `groups/${groupId}`})
+    }),
     getDiscounts: builder.query({
       query: ({
         product_id,
@@ -227,6 +239,7 @@ export const api = createApi({
           url,
         };
       },
+      providesTags: ["TenureDiscount"],
     }),
     updateCart: builder.mutation({
       query: ({ cartId, ...body }) => ({
@@ -347,6 +360,7 @@ export const {
   useUpdateGroupsMutation,
   useCreateCartMutation,
   useDeleteCartMutation,
+  useDeleteGroupQuery,
   useCreateEnquiryMutation,
   useGetRidersQuery,
   useGetDiscountsQuery,
@@ -379,7 +393,7 @@ function updateGroupMembersQueryBuilder(builder) {
         },
         quote: { product, sum_insured },
       },
-      _queryApi,
+      { dispatch },
       _extraOptions,
       fetchWithBaseQuery,
     ) => {
@@ -393,33 +407,40 @@ function updateGroupMembersQueryBuilder(builder) {
 
         if (updateEnquiryError) return { error: updateEnquiryError };
 
-        const getQuoteResult = await fetchWithBaseQuery(
-          `companies/${product.company.alias}/quotes?sum_insured_range=${sum_insured_range}&tenure=${tenure}&plan_type=${plan_type}&group=${group}&base_plan_type=${base_plan_type}`,
-        );
+        // const getQuoteResult = await fetchWithBaseQuery(
+        //   `companies/${product.company.alias}/quotes?sum_insured_range=${sum_insured_range}&tenure=${tenure}&plan_type=${plan_type}&group=${group}&base_plan_type=${base_plan_type}`,
+        // );
 
-        if (getQuoteResult.data && updateEnquiriesResult) {
-          const updatedQuote = getQuoteResult.data.data.find(quote => {
-            const productIdmatch =
-              parseInt(quote.product.id) === parseInt(product.id);
-            const coverMatch =
-              parseInt(sum_insured) === parseInt(quote.sum_insured);
-            const isQuoteMatch = !!(productIdmatch && coverMatch);
-            return isQuoteMatch;
-          });
-          if (!updatedQuote)
-            return {
-              error: {
-                data: {
-                  errors: [
-                    "Your selected base plan is not eligible for given age",
-                  ],
-                },
-              },
-            };
-          return { data: { updatedQuote, updateEnquiriesResult } };
-        }
+        // if (getQuoteResult.data && updateEnquiriesResult) {
+        //   const updatedQuote = getQuoteResult.data.data.find(quote => {
+        //     const productIdmatch =
+        //       parseInt(quote.product.id) === parseInt(product.id);
+        //     const coverMatch =
+        //       parseInt(sum_insured) === parseInt(quote.sum_insured);
+        //     const isQuoteMatch = !!(productIdmatch && coverMatch);
+        //     return isQuoteMatch;
+        //   });
+        //   if (!updatedQuote)
+        //     return {
+        //       error: {
+        //         data: {
+        //           errors: [
+        //             "Your selected base plan is not eligible for given age",
+        //           ],
+        //         },
+        //       },
+        //     };
 
-        return getQuoteResult;
+        //   return { data: { updateEnquiriesResult } };
+        // }
+
+        const getCartResult = await fetchWithBaseQuery({ url: "/cart-items" });
+
+        return {
+          data: { updateEnquiriesResult, getCartResult: getCartResult.data },
+        };
+
+        // return getQuoteResult;
       } catch (error) {
         console.error(error);
         return error;
