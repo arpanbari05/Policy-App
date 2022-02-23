@@ -97,7 +97,7 @@ const MedicalHistoryForm = () => {
         padding: 17px;
       `}
     >
-      <Title>Do you have any medical history?</Title>
+      <Title>Any of the Insured Member have a Medical History?</Title>
       <CustomProgressBar now={5} total={5} />
       <div
         css={`
