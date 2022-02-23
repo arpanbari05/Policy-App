@@ -490,7 +490,7 @@ const SeeDetails = ({
         >
           {/* <Header /> */}
           <StyledHeader PrimaryColor={PrimaryColor}>
-            <a>
+            <span>
               <i
                 class="fas fa-arrow-circle-left"
                 onClick={handleClose}
@@ -498,7 +498,7 @@ const SeeDetails = ({
               ></i>
 
               <span> See Details</span>
-            </a>
+            </span>
           </StyledHeader>
 
           <SeeDetailsTopMobile
