@@ -1067,7 +1067,22 @@ export function useEmailInput(initialValue = "", setEmailError) {
   return { value, onChange };
 }
 
-const validateName = (name = "") => /^[A-Za-z]+[A-Za-z ]*$/.test(name);
+const validateName = (name = "") => /^[a-zA-Z.\s]*$/.test(name);
+const checkPreviousChar = (value, checkValue, stateValue) => {
+  let check = true;
+
+  if (value[0] === checkValue) {
+    check = false;
+  }
+  if (
+    check &&
+    value[value.length - 1] === checkValue &&
+    stateValue[stateValue.length - 1] === checkValue
+  ) {
+    check = false;
+  }
+  return check;
+};
 
 export function useNameInput(initialValue = "", setFullNameError) {
   const [value, setValue] = useState(initialValue);
@@ -1084,8 +1099,7 @@ export function useNameInput(initialValue = "", setFullNameError) {
     const isValidName = validateName(givenValue);
 
     if (!isValidName) return;
-
-    setValue(givenValue);
+    checkPreviousChar(givenValue, ".", value) && setValue(givenValue);
   };
 
   const onBlur = evt => {
