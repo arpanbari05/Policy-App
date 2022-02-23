@@ -22,21 +22,21 @@ function Quotes({ sortBy = "relevence", ...props }) {
   if (data) {
     mergedQuotes = data.filter(
       icQuotes => !!icQuotes?.data?.data[0]?.total_premium,
-    );
+    ); // filter non-zero premium quotes.
     mergedQuotes = data.map(icQuotes => ({
       ...icQuotes,
-      data: { data: mergeQuotes(icQuotes.data.data, { sortBy }) },
-    }));
+      data: { data: mergeQuotes(icQuotes?.data?.data, { sortBy }) },
+    })); // filter merged quotes.
     if (sortBy === "premium-low-to-high") {
       mergedQuotes = mergedQuotes.filter(
         icQuotes => !!icQuotes?.data?.data[0]?.length,
-      );
+      ); // filter zero array.
       mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) =>
         icQuotesA.data.data[0][0].total_premium >
         icQuotesB.data.data[0][0].total_premium
           ? 1
           : -1,
-      );
+      ); // main sorting logic
     }
   }
 
@@ -60,6 +60,7 @@ function Quotes({ sortBy = "relevence", ...props }) {
           key={insurersQuotes.company_alias}
           quotesData={insurersQuotes.data}
           compare={quotesCompare}
+          sortBy={sortBy}
         />
       ))}
       {isLoading ? <CardSkeletonLoader /> : null}
