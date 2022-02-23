@@ -55,8 +55,7 @@ const ProposalPage = () => {
   const { activeIndex, proposalData } = useSelector(
     state => state.proposalPage,
   );
-  console.log(
-    useSelector(({ greetingPage }) => greetingPage?.proposerDetails));
+  console.log(useSelector(({ greetingPage }) => greetingPage?.proposerDetails));
 
   const {
     colors: { primary_color, primary_shade },
@@ -86,7 +85,6 @@ const ProposalPage = () => {
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-    console.log(activeForm, active, "dgsaadsg");
 
     if (active >= listOfForms.length && listOfForms.length) {
       return (
@@ -466,7 +464,7 @@ const ProposalPage = () => {
                     }
                   `}
                 >
-                  <ProductSummary cart={cart} setActive={setActive} />
+                  <ProductSummary setActive={setActive} />
                 </div>
                 <div
                   // lg={8}
