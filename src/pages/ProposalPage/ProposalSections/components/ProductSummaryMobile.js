@@ -241,6 +241,17 @@ function ProductSummaryMobile({ cart, payNow }) {
   const [checked, setChecked] = useState(false);
   return (
     <>
+    {/* <div css={`
+          bottom: 0;
+          position: fixed;
+          background-color: red;
+          width:100%;
+          z-index: 9999;
+
+        
+        `}>
+sggs
+    </div> */}
       <div
         css={`
           bottom: 0;
@@ -249,7 +260,6 @@ function ProductSummaryMobile({ cart, payNow }) {
           left: 0;
           right: 0;
           z-index: 9999;
-
           border-top: 1px solid #f3f4f9;
         `}
       >
@@ -385,8 +395,8 @@ function ProductSummaryMobile({ cart, payNow }) {
           )}
         </Outer>
       </div>
-
-      <CardModalM
+{
+  show &&  <CardModalM
         show={show}
         title={`Your Plan Details`}
         showButton={false}
@@ -395,6 +405,8 @@ function ProductSummaryMobile({ cart, payNow }) {
           setShow(false);
         }}
       />
+}
+     
     </>
   );
 }
@@ -412,11 +424,13 @@ const Premium = styled.button`
 const View = styled.button`
   background-color: #0a87ff;
   color: #fff;
-  padding: 10px 20px;
+  padding: 7px 10px;
   border-radius: 10px;
+  font-size: 15px !important;
   border: none;
   @media (min-width: 768px) {
     font-size: 21px !important;
+    padding: 10px 20px !important;
   }
 `;
 

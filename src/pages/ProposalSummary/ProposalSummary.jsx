@@ -52,7 +52,6 @@ const ProposalSummary = () => {
   const [show, setShow] = useState(false);
   const [termShow, setTermShow] = useState(false);
 
-
   const frontendBoot = useFrontendBoot();
 
   const frontendData = { data: frontendBoot.data };
@@ -265,7 +264,7 @@ const ProposalSummary = () => {
         <div
           className="element-section "
           css={`
-            margin: 30px;
+            margin: 0px 30px;
             padding-bottom: 150px;
 
             @media (max-width: 768px) {
@@ -274,7 +273,7 @@ const ProposalSummary = () => {
             }
           `}
         >
-          <div
+          {/* <div
             style={{ display: "flex", justifyContent: "space-between" }}
             css={`
               @media (max-width: 768px) {
@@ -283,14 +282,14 @@ const ProposalSummary = () => {
             `}
           >
             <div className="col-lg-2">
-              {/* <p
+              <p
                 class="go_back_prposal_p summary_proposal_bquoteack"
                 style={{ zIndex: 100 }}
                 onClick={() => history.goBack()}
               >
                 <i class="icon flaticon-back" style={{ width: "27px" }}></i> Go
                 Back
-              </p> */}
+              </p>
               <button
                 className="btn"
                 type="button"
@@ -329,17 +328,12 @@ const ProposalSummary = () => {
                   Go Back
                 </span>
               </button>
-            </div>
+            </div> 
 
             <div class="col-lg-10 element-tile-two">
               <p
                 css={`
-                  /* @media (min-width: 768px) and (max-width: 900px) {
-                    font-size: 18px;
-                    text-align: center;
-                    position: absolute;
-                    left: 22.5%;
-                  } */
+                 
                   @media (min-width: 1024px) and (max-width: 1200px) {
                     font-size: 18px;
                     text-align: center;
@@ -357,7 +351,7 @@ const ProposalSummary = () => {
                 please review your proposal details before you proceed
               </p>
             </div>
-          </div>
+          </div>*/}
 
           <br className="hide-on-mobile" />
           <Row
@@ -365,6 +359,7 @@ const ProposalSummary = () => {
               @media (max-width: 1023px) {
                 flex-direction: column;
               }
+             
             `}
           >
             <Col
@@ -394,7 +389,7 @@ const ProposalSummary = () => {
               <div className="row margin_top_tab_proposal">
                 <div class="col-lg-12 col-md-12 no-padding-mobile">
                   <div className="signUp-page signUp-minimal pb-70">
-                    <p
+                    {/* <p
                       css={`
                         display: none;
                         @media (max-width: 1023px) {
@@ -410,8 +405,8 @@ const ProposalSummary = () => {
                     >
                       Hi <span style={{textTransorm:"capitalize"}}>{proposerDetails?.name?.split(" ")[0]}</span>, please review
                       your proposal details before you proceed
-                    </p>
-                    <div className="-wrapper pad_proposal_s">
+                    </p> */}
+                    <div className="-wrapper pad_proposal_s mt-2">
                       {}
                       {allFields ? (
                         allFields.map((item, index) => {
@@ -450,6 +445,8 @@ const ProposalSummary = () => {
               </div>
             </Col>
           </Row>
+
+         
           <div
             css={`
               @media (max-width: 1199px) {
@@ -458,10 +455,11 @@ const ProposalSummary = () => {
               @media (min-width: 1200px) {
                 display: none;
               }
+        
             `}
           >
             <ProductSummaryMobile cart={cart} payNow={onClick} />
-          </div>
+          </div>         
         </div>
       </div>
     </Page>
@@ -485,6 +483,7 @@ const MultipleWrapper = styled.div`
   overflow-x: hidden;
   box-shadow: 0 6px 12px #d4d8e4b5 !important;
 `;
+
 const PayList = styled.ul`
   padding: 10px;
 `;
@@ -512,3 +511,4 @@ const PayButton = styled.div`
     display: inline-block;
   }
 `;
+
