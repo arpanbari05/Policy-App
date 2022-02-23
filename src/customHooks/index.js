@@ -499,18 +499,17 @@ export function useUpdateEnquiry() {
 }
 
 export function useUpdateMembers() {
+  const { journeyType } = useFrontendBoot();
   const {
     data: { data: enquiryData },
   } = useGetEnquiriesQuery();
   const [createEnquiry, queryState] = useCreateEnquiry();
 
-  console.log("The4 enquirydata", enquiryData);
   const history = useHistory();
 
   const dispatch = useDispatch();
 
   function updateMembers({ members, ...data } = {}) {
-    console.log("The members and data", members, data);
     const updateData = {
       email: enquiryData.email,
       mobile: enquiryData.mobile,
@@ -523,7 +522,8 @@ export function useUpdateMembers() {
             age: member.age.code,
           }))
         : enquiryData.input.members,
-      plan_type: "I",
+      plan_type:
+        journeyType === "health" ? (members?.length > 1 ? "F" : "I") : "I",
       pincode: enquiryData?.input?.pincode,
       ...data,
     };
