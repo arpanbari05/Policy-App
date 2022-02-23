@@ -453,20 +453,12 @@ export function useUpdateGroupMembers(groupCode) {
       quote: { product, sum_insured },
     }).then(res => {
       if (res.error) return res;
-      const { updatedQuote, updateEnquiriesResult} = res.data;
+      const { updatedQuote, updateEnquiriesResult } = res.data;
       // updateCartEntry(groupCode, getQuoteSendData(updatedQuote));
       dispatch(
         api.util.updateQueryData("getEnquiries", undefined, enquiriesDraft => {
           Object.assign(enquiriesDraft, updateEnquiriesResult);
         }),
-      );
-      dispatch(
-        api.util.invalidateTags([
-          "Rider",
-          "Cart",
-          "AdditionalDiscount",
-          "TenureDiscount",
-        ]),
       );
       return res;
     });
