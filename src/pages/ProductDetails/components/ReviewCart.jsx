@@ -28,11 +28,22 @@ import {
   useUpdateGroupMembers,
   useUrlEnquiry,
 } from "../../../customHooks";
-import { Button, CircleLoader, MembersList } from "../../../components";
+import {
+  Button,
+  CircleLoader,
+  CloseButton,
+  MembersList,
+} from "../../../components";
 import { FaPen } from "react-icons/fa";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { ErrorMessage } from "../../InputPage/components/FormComponents";
 import { NewReviewCartPopup } from "../../../components/NewReviewCartPopup";
+import {
+  MemberOptions,
+  useMembersForm,
+} from "../../../components/MemberOptions";
+import { Modal } from "react-bootstrap";
+import { useGetEnquiriesQuery } from "../../../api/api";
 
 const plantypes = {
   M: "Multi Individual",
@@ -42,6 +53,12 @@ const plantypes = {
 
 export function CartDetails({ groupCode, ...props }) {
   const { colors } = useTheme();
+
+  const { getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const { unavailable_message } = cartEntry;
 
   return (
     <CartDetailsWrap {...props}>
@@ -71,13 +88,38 @@ export function CartDetails({ groupCode, ...props }) {
       </div>
 
       <div>
-        <BasePlanDetails groupCode={groupCode} />
-        <RidersList groupCode={groupCode} />
-        <DiscountsList groupCode={groupCode} />
-        <TotalPremium groupCode={groupCode} />
+        <BasePlanDetails
+          groupCode={groupCode}
+          isUnavailable={unavailable_message}
+        />
+        {unavailable_message ? (
+          <UnavailableMessage message={unavailable_message} />
+        ) : (
+          <div>
+            <RidersList groupCode={groupCode} />
+            <DiscountsList groupCode={groupCode} />
+            <TotalPremium groupCode={groupCode} />{" "}
+          </div>
+        )}
         <ReviewCartButtonNew groupCode={groupCode} />
       </div>
     </CartDetailsWrap>
+  );
+}
+
+function UnavailableMessage({ message = "" }) {
+  const { colors } = useTheme();
+  return (
+    <div
+      className="p-3 my-3"
+      css={`
+        background-color: ${colors.secondary_shade};
+        color: #666;
+        font-size: 0.79rem;
+      `}
+    >
+      {message}
+    </div>
   );
 }
 
@@ -191,32 +233,18 @@ function Members({ groupCode, ...props }) {
   );
 }
 
+function getCartEntryFromUpdateResult(updateResultData, groupCode) {
+  const cartEntry = updateResultData.getCartResult.data.find(
+    cartEntry => +cartEntry.group.id === +groupCode,
+  );
+
+  return cartEntry;
+}
+
 function EditMembersButton({ groupCode, ...props }) {
   const { colors } = useTheme();
 
-  const [showEditMembersModal, setShowEditMembersModal] = useState(false);
-
-  const handleClick = () => {
-    setShowEditMembersModal(true);
-  };
-
-  const closeEditMembersModal = () => setShowEditMembersModal(false);
-
-  const {
-    updateGroupMembers,
-    query: { isLoading, error, isError },
-  } = useUpdateGroupMembers(groupCode);
-
-  const handleSubmit = data => {
-    updateGroupMembers(data.members).then(res => {
-      if (res.error) return;
-      closeEditMembersModal();
-    });
-  };
-
-  let serverErrors;
-
-  if (isError) serverErrors = Object.values(error.data.errors);
+  const modalToggle = useToggle(false);
 
   return (
     <div {...props}>
@@ -230,24 +258,99 @@ function EditMembersButton({ groupCode, ...props }) {
           color: ${colors.primary_color};
           padding: 0;
         `}
-        onClick={handleClick}
+        onClick={modalToggle.on}
       >
         <FaPen />
       </Button>
-      {showEditMembersModal && (
-        <EditMembersModal
-          onClose={closeEditMembersModal}
-          onSubmit={handleSubmit}
-          groupCode={groupCode}
-        >
-          {serverErrors
-            ? serverErrors.map(error => (
-                <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
-              ))
-            : null}
-        </EditMembersModal>
-      )}
+      {modalToggle.isOn && <EditMembers onClose={modalToggle.off} />}
     </div>
+  );
+}
+
+function EditMembers({ onClose }) {
+  const { colors } = useTheme();
+
+  const { groupCode } = useParams();
+
+  const {
+    data: {
+      data: { name },
+    },
+  } = useGetEnquiriesQuery();
+
+  const firstName = name.split(" ")[0];
+
+  const { getCartEntry } = useCart();
+
+  const currentCartEntry = getCartEntry(groupCode);
+
+  const { getGroupMembers } = useMembers();
+
+  const groupMembers = getGroupMembers(groupCode);
+
+  const { getSelectedMembers, ...memberForm } = useMembersForm(groupMembers);
+
+  const {
+    updateGroupMembers,
+    query: { isLoading, error, isError, data },
+  } = useUpdateGroupMembers(groupCode);
+
+  const handleSubmit = () => {
+    const members = getSelectedMembers();
+    updateGroupMembers(members).then(res => {
+      if (res.error) return;
+    });
+  };
+
+  let serverErrors;
+
+  if (isError) serverErrors = Object.values(error.data.errors);
+
+  if (data) {
+    const updatedCartEntry = getCartEntryFromUpdateResult(data, groupCode);
+    return (
+      <Modal show onHide={onClose} ƒ>
+        <div className="p-3 position-relative">
+          <div
+            className="position-absolute"
+            css={`
+              height: 2em;
+              width: 0.37em;
+              background-color: ${colors.primary_color};
+              top: 50%;
+              left: 0;
+              transform: translateY(-50%);
+              border-radius: 1em;
+            `}
+          />
+          <h1
+            css={`
+              font-weight: 900;
+              font-size: 1.27rem;
+            `}
+          >
+            Hi <span className="text-capitalize">{firstName},</span>
+            {}
+          </h1>
+        </div>
+      </Modal>
+    );
+  }
+
+  return (
+    <EditMembersModal onClose={onClose}>
+      <div className="p-3">
+        <MemberOptions {...memberForm} selectable={false} />
+        {serverErrors
+          ? serverErrors.map(error => (
+              <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
+            ))
+          : null}
+      </div>
+      <Button className="w-100" onClick={handleSubmit} loader={isLoading}>
+        Update
+      </Button>
+    </EditMembersModal>
   );
 }
 
@@ -256,25 +359,10 @@ const StyledErrorMessage = styled(ErrorMessage)`
   text-align: center;
 `;
 
-function EditMembers({ groupCode, ...props }) {}
-
-function BasePlanDetails({ groupCode, ...props }) {
+function BasePlanDetails({ groupCode, isUnavailable = false, ...props }) {
   const { getCartEntry } = useCart();
-  const history = useHistory();
   const { journeyType } = useFrontendBoot();
   const cartEntry = getCartEntry(parseInt(groupCode));
-  const quotesRedirectUrl = useUrlEnquiry();
-
-  /* //? REDIRECT CODE IF PRODUCT IS NOT IN CART.
-  if (!cartEntry) {
-    return (
-      <Redirect
-        to={`quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
-      />
-    );
-  } */
-
-  
 
   const {
     icLogoSrc,
@@ -312,15 +400,17 @@ function BasePlanDetails({ groupCode, ...props }) {
         </div>
         <div>{name}</div>
       </div>
-      <div className="mt-2">
-        <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
-        {journeyType === "top_up" ? (
-          <CartDetailRow title="Deductible" value={amount(deductible)} />
-        ) : null}
-        <CartDetailRow title="Cover" value={amount(sum_insured)} />
-        <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
-        <CartDetailRow title="Premium" value={amount(total_premium)} />
-      </div>
+      {!isUnavailable ? (
+        <div className="mt-2">
+          <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
+          {journeyType === "top_up" ? (
+            <CartDetailRow title="Deductible" value={amount(deductible)} />
+          ) : null}
+          <CartDetailRow title="Cover" value={amount(sum_insured)} />
+          <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
+          <CartDetailRow title="Premium" value={amount(total_premium)} />
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -367,8 +457,10 @@ function TotalPremium({ groupCode, ...props }) {
 function ReviewCartButtonNew({ groupCode, ...props }) {
   const history = useHistory();
   const url = useUrlQuery();
-  const { updateCart } = useCart();
+  const { updateCart, getCartEntry } = useCart();
   const [updateCartMutation, query] = updateCart(groupCode);
+
+  const cartEntry = getCartEntry(groupCode);
 
   const { getNextGroupProduct } = useCart();
 
@@ -409,6 +501,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         onClick={handleClick}
         className="w-100"
         loader={query.isLoading}
+        disabled={cartEntry.unavailable_message || query.isLoading}
         {...props}
       >
         {nextGroupProduct ? (
@@ -432,10 +525,6 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         )}
       </Button>
       {reviewCartModalNew.isOn && (
-        // <CartSummaryModal
-        //   onContine={handleContinueClick}
-        //   onClose={cartSummaryModal.off}
-        // />
         <NewReviewCartPopup
           onContine={handleContinueClick}
           onClose={reviewCartModalNew.off}

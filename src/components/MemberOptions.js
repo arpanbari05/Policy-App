@@ -33,7 +33,7 @@ export function useMembersForm(initialMembersList = []) {
 
     if (!isValid) {
       setMembers(validatedMembers);
-      setError("Select age for Insured Member")
+      setError("Select age for Insured Member");
       return;
     }
 
@@ -119,6 +119,7 @@ export function MemberOptions({
   handleCounterIncrement,
   handleCounterDecrement,
   getMultipleMembersCount,
+  selectable = true,
   ...props
 }) {
   return (
@@ -134,6 +135,7 @@ export function MemberOptions({
           member={member}
           onChange={handleMemberChange}
           key={member.code}
+          selectable={selectable}
         >
           {member.multiple && member.isSelected && (
             <Counter
@@ -148,7 +150,13 @@ export function MemberOptions({
   );
 }
 
-function MemberOption({ member, onChange, children, ...props }) {
+function MemberOption({
+  member,
+  onChange,
+  children,
+  selectable = true,
+  ...props
+}) {
   const {
     colors: { primary_color },
   } = useTheme();
@@ -200,34 +208,38 @@ function MemberOption({ member, onChange, children, ...props }) {
           font-weight: 900;
         `}
       >
-        <input
-          type="checkbox"
-          className="visually-hidden"
-          checked={member.isSelected}
-          onChange={handleChange}
-          name={member.code}
-        />
-        <div
-          css={`
-            font-size: 1.67rem;
-            line-height: 0;
-            margin-right: 0.3em;
-          `}
-        >
-          {member.isSelected ? (
-            <IoCheckmarkCircleSharp
-              css={`
-                color: ${primary_color};
-              `}
-            />
-          ) : (
-            <GiCircle
-              css={`
-                color: #ccc;
-              `}
-            />
-          )}
-        </div>
+        {selectable ? (
+          <input
+            type="checkbox"
+            className="visually-hidden"
+            checked={member.isSelected}
+            onChange={handleChange}
+            name={member.code}
+          />
+        ) : null}
+        {selectable ? (
+          <div
+            css={`
+              font-size: 1.67rem;
+              line-height: 0;
+              margin-right: 0.3em;
+            `}
+          >
+            {member.isSelected ? (
+              <IoCheckmarkCircleSharp
+                css={`
+                  color: ${primary_color};
+                `}
+              />
+            ) : (
+              <GiCircle
+                css={`
+                  color: #ccc;
+                `}
+              />
+            )}
+          </div>
+        ) : null}
         {member.display_name}
       </label>
       {children}

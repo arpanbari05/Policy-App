@@ -386,7 +386,7 @@ export function useMembers() {
     return groups[groups.length - 1];
   }
 
-  function getMembersText({id}) {
+  function getMembersText({ id }) {
     const groupMembers = getGroupMembers(id);
     return groupMembers.map(member => member.display_name).join(", ");
   }
@@ -453,14 +453,21 @@ export function useUpdateGroupMembers(groupCode) {
       quote: { product, sum_insured },
     }).then(res => {
       if (res.error) return res;
-      const { updatedQuote, updateEnquiriesResult } = res.data;
-      updateCartEntry(groupCode, getQuoteSendData(updatedQuote));
+      const { updatedQuote, updateEnquiriesResult} = res.data;
+      // updateCartEntry(groupCode, getQuoteSendData(updatedQuote));
       dispatch(
         api.util.updateQueryData("getEnquiries", undefined, enquiriesDraft => {
           Object.assign(enquiriesDraft, updateEnquiriesResult);
         }),
       );
-      dispatch(api.util.invalidateTags(["Rider"]));
+      dispatch(
+        api.util.invalidateTags([
+          "Rider",
+          "Cart",
+          "AdditionalDiscount",
+          "TenureDiscount",
+        ]),
+      );
       return res;
     });
   };
@@ -1259,7 +1266,7 @@ export function useGetQuote(company_alias) {
 
   const isLoading = !data || !icQuotes;
 
-  function getQuote(quote) {}
+  // function getQuote(quote) {}
 
   return { isLoading, data, icQuotes };
 }
