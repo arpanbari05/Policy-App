@@ -497,6 +497,7 @@ export function useUpdateEnquiry() {
 }
 
 export function useUpdateMembers() {
+  const { journeyType } = useFrontendBoot();
   const {
     data: { data: enquiryData },
   } = useGetEnquiriesQuery();
@@ -505,8 +506,6 @@ export function useUpdateMembers() {
   const history = useHistory();
 
   const dispatch = useDispatch();
-
-  const planType = useSelector(state => state.quotePage.filters.planType);
 
   function updateMembers({ members, ...data } = {}) {
     const updateData = {
@@ -521,8 +520,9 @@ export function useUpdateMembers() {
             age: member.age.code,
           }))
         : enquiryData.input.members,
-      plan_type: planType ? planType.slice(0, 1) : "F",
-      pincode: 400012,
+      plan_type:
+        journeyType === "health" ? (members?.length > 1 ? "F" : "I") : "I",
+      pincode: enquiryData?.input?.pincode,
       ...data,
     };
 
