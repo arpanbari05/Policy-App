@@ -521,7 +521,7 @@ export function useUpdateMembers() {
             age: member.age.code,
           }))
         : enquiryData.input.members,
-      plan_type: planType ? planType.slice(0,1) : "F",
+      plan_type: planType ? planType.slice(0, 1) : "F",
       pincode: 400012,
       ...data,
     };
@@ -666,7 +666,7 @@ export function useTenureDiscount(groupCode) {
   const { product, sum_insured, tenure, deductible } = getCartEntry(groupCode);
 
   const { data, ...queryState } = useGetDiscountsQuery({
-    sum_insured,
+    sum_insured: +sum_insured,
     product_id: product.id,
     group: groupCode,
     journeyType,
