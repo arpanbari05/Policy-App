@@ -12,6 +12,7 @@ export const Title = styled.h1`
   @media (max-width: 480px) {
     font-size: 20px;
   }
+  text-transform: capitalize;
 `;
 export const SubTitle = styled.h3`
   font-size: 16px;

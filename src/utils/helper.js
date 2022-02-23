@@ -266,14 +266,14 @@ export function mergeQuotes(quotes, { sortBy = "relevance" } = {}) {
 
   for (let quote of quotes) {
     const {
-      product: { id },
+      product: { name },
     } = quote;
 
-    if (mergedQuotes[id]) {
-      mergedQuotes[id] = [...mergedQuotes[id], quote];
+    if (mergedQuotes[name]) {
+      mergedQuotes[name] = [...mergedQuotes[name], quote];
       continue;
     }
-    mergedQuotes[id] = [quote];
+    mergedQuotes[name] = [quote];
   }
 
   let sortedMergeQuotes = Object.values(mergedQuotes).sort();

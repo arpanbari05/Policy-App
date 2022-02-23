@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, Nav, Tab } from "react-bootstrap";
+import { Modal, Nav, OverlayTrigger, Tab, Tooltip } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoRadioButtonOff, IoRadioButtonOn } from "react-icons/io5";
 import { Button } from "../../../../components";
@@ -12,10 +12,41 @@ import {
 import useFilters from "../../components/filters/useFilters";
 import useUpdateFilters from "../../components/filters/useUpdateFilters";
 import { tenures } from "../../data";
+import * as mq from "../../../../utils/mediaQueries";
 import "styled-components/macro";
+import { IoMdInformationCircleOutline } from "react-icons/io";
+import { RiCheckboxBlankLine, RiCheckboxFill } from "react-icons/ri";
+
+export function useFiltersSlot({ initialFilters } = {}) {
+  const [filters, setFilters] = useState(initialFilters);
+
+  const updateFilter = (code, option) => {
+    const isChecked = filters[code]?.code === option.code;
+    let updateFilters = { ...filters, [code]: option };
+    if (isChecked) updateFilters = { ...filters, [code]: null };
+    setFilters(updateFilters);
+  };
+
+  const clearFilters = () => setFilters({});
+
+  return { filters, updateFilter, clearFilters };
+}
+
+export function getAllSelectedFilters(filters, filterSelector) {
+  const allFilters = {};
+
+  for (let filter of filters) {
+    allFilters[filter] = filterSelector(filter);
+  }
+
+  return allFilters;
+}
+
 
 export function FilterModal({ onClose }) {
   const { boxShadows } = useTheme();
+
+  const { getSelectedFilter } = useFilters();
 
   const {
     data: { premiums, covers, plantypes, morefilters, deductibles },
@@ -28,14 +59,21 @@ export function FilterModal({ onClose }) {
     query: updateFiltersMutation,
   } = useUpdateFilters();
 
-  const [filters, setFilters] = useState({});
+  const { filters, updateFilter, clearFilters } = useFiltersSlot({
+    initialFilters: getAllSelectedFilters(
+      [
+        "premium",
+        "cover",
+        "plantype",
+        "deductible",
+        ...morefilters.map(filter => filter.code),
+      ],
+      getSelectedFilter,
+    ),
+  });
 
-  const updateFilter = (code, option) => {
-    setFilters({ ...filters, [code]: option });
-  };
-
-  const clearFilters = () => {
-    setFilters({});
+  const handleClearFiltersClick = () => {
+    clearFilters();
     resetFilters();
   };
 
@@ -44,13 +82,14 @@ export function FilterModal({ onClose }) {
     onClose && onClose();
   };
 
-  const RenderFilterOptions = ({ code, options }) => (
+  const RenderFilterOptions = ({ code, options, type }) => (
     <Tab.Pane eventKey={code}>
       <FilterOptions
         code={code}
         options={options}
         currentOption={filters[code]}
         onChange={updateFilter}
+        type={type}
       />
     </Tab.Pane>
   );
@@ -115,6 +154,7 @@ export function FilterModal({ onClose }) {
                 key={filter.code}
                 code={filter.code}
                 options={filter.options}
+                type={filter.type}
               />
             ))}
           </Tab.Content>
@@ -131,7 +171,7 @@ export function FilterModal({ onClose }) {
       >
         <button
           disabled={updateFiltersMutation.isLoading}
-          onClick={clearFilters}
+          onClick={handleClearFiltersClick}
         >
           Clear filters
         </button>
@@ -146,38 +186,49 @@ export function FilterModal({ onClose }) {
   );
 }
 
-function FilterOptions({ code, options, currentOption, onChange }) {
-  const { getSelectedFilter } = useFilters();
-
-  const selectedOption = currentOption || getSelectedFilter(code);
+export function FilterOptions({
+  code,
+  options,
+  currentOption,
+  onChange,
+  type,
+  ...props
+}) {
+  const selectedOption = currentOption;
 
   const isSelected = option => option.code === selectedOption?.code;
 
-  const handleChange = option => {
-    onChange(code, option);
+  const handleChange = (option, checked) => {
+    onChange && onChange(code, option, checked);
   };
 
   return (
-    <OptionsWrap>
+    <OptionsWrap {...props}>
       {options.map(option => (
         <FilterOption
           key={option.code}
           option={option}
           onChange={handleChange}
           checked={isSelected(option)}
+          type={type}
         />
       ))}
     </OptionsWrap>
   );
 }
 
-function OptionsWrap({ children, ...props }) {
+function OptionsWrap({ children, className, css = "", ...props }) {
   return (
     <div
-      className="d-flex flex-column"
+      className={`w-100 d-flex ${className ? className : ""}`}
       css={`
-        gap: 1em;
+        flex-direction: column;
+        ${mq.mobile} {
+          gap: 1em;
+        }
+        ${css};
       `}
+      {...props}
     >
       {children}
     </div>
@@ -187,39 +238,64 @@ function OptionsWrap({ children, ...props }) {
 function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
   const { colors } = useTheme();
 
-  const handleChange = evt => {
-    if (evt.target.checked) onChange && onChange(option);
+  const handleChange = () => {
+    onChange && onChange(option, !checked);
   };
 
   return (
     <div
       className="rounded"
       css={`
-        border: 1px solid ${colors.primary_color};
+        width: calc(50% - 0.5em);
+        ${mq.mobile} {
+          width: 100%;
+          border: 1px solid ${colors.primary_color};
+        }
       `}
       {...props}
     >
       <label
+        role="button"
         className="d-flex align-items-center justify-content-between px-2 py-1"
         css={`
           font-size: 0.79rem;
         `}
       >
-        {option.display_name}
+        <OverlayTrigger
+          placement="right"
+          overlay={<Tooltip>{option.description}</Tooltip>}
+        >
+          <div className="d-flex align-items-center">
+            {option.display_name}
+            <IoMdInformationCircleOutline className="mx-1" />
+          </div>
+        </OverlayTrigger>
         <span
           css={`
             font-size: 1.6rem;
-            color: ${colors.primary_color};
             line-height: 1;
+            margin-bottom: 0.2em;
+            color: ${colors.primary_color};
           `}
+          onClick={handleChange}
         >
-          {checked ? <IoRadioButtonOn /> : <IoRadioButtonOff />}
+          {type === "radio" ? (
+            checked ? (
+              <IoRadioButtonOn />
+            ) : (
+              <IoRadioButtonOff />
+            )
+          ) : checked ? (
+            <RiCheckboxFill />
+          ) : (
+            <RiCheckboxBlankLine />
+          )}
         </span>
         <input
           className="visually-hidden"
           type={type}
           checked={checked}
-          onChange={handleChange}
+          readOnly
         />
       </label>
     </div>

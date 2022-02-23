@@ -313,6 +313,7 @@ const config = {
     {
       group_name: "Popular Filters",
       code: "popular_filters",
+      type: "checkbox",
       options: [
         {
           code: "room_rent_charges",
@@ -358,6 +359,7 @@ const config = {
     {
       group_name: "Pre existing Ailments",
       code: "pre_existing_ailments",
+      type: "radio",
       options: [
         {
           code: "pre_existing_disease_cover_1",
@@ -400,6 +402,7 @@ const config = {
     {
       group_name: "No Claim Bonus",
       code: "no_claim_bonus",
+      type: "radio",
       options: [
         {
           code: "no_claim_bonus_50",
@@ -442,6 +445,7 @@ const config = {
     {
       group_name: "Others",
       code: "others",
+      type: "checkbox",
       options: [
         {
           code: "disease_wise_cover",

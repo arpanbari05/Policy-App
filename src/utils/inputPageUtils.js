@@ -34,7 +34,7 @@ export default function validateInput(
   }
 
   //  ============ mobile validations ==================
-  if (!/[6-9]{1}[0-9]{9}/.test(mobile)) {
+  if (!/[6-9]{1}[0-9]{9}/.test(mobile) || /^\d*(\d)\1{9}\d*$/.test(mobile)) {
     setMobileErrors({ message: "Please enter a valid Mobile no." });
     isValidate = false;
   }
