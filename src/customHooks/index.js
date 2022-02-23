@@ -386,7 +386,7 @@ export function useMembers() {
     return groups[groups.length - 1];
   }
 
-  function getMembersText({id}) {
+  function getMembersText({ id }) {
     const groupMembers = getGroupMembers(id);
     return groupMembers.map(member => member.display_name).join(", ");
   }
@@ -504,11 +504,13 @@ export function useUpdateMembers() {
   } = useGetEnquiriesQuery();
   const [createEnquiry, queryState] = useCreateEnquiry();
 
+  console.log("The4 enquirydata", enquiryData);
   const history = useHistory();
 
   const dispatch = useDispatch();
 
   function updateMembers({ members, ...data } = {}) {
+    console.log("The members and data", members, data);
     const updateData = {
       email: enquiryData.email,
       mobile: enquiryData.mobile,
@@ -522,7 +524,7 @@ export function useUpdateMembers() {
           }))
         : enquiryData.input.members,
       plan_type: "I",
-      pincode: 400012,
+      pincode: enquiryData?.input?.pincode,
       ...data,
     };
 
