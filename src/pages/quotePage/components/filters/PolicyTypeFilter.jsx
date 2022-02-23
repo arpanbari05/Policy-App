@@ -7,7 +7,7 @@ import "styled-components/macro";
 import { OptionWrapper, ApplyBtn } from "./Filter.style";
 import useUpdateFilters from "./useUpdateFilters.js";
 import useFilters from "./useFilters.js";
-import { useTheme } from "../../../../customHooks/index.js";
+import { useFrontendBoot, useTheme } from "../../../../customHooks/index.js";
 import { Filter, FilterHead } from "./index.js";
 
 const renderTooltipDesc = ({ props, desc }) => (
@@ -18,9 +18,8 @@ const FilterModal = ({ show, onClose }) => {
   const { colors } = useTheme();
 
   const { filters } = useSelector(state => state.quotePage);
-  const plantypeOptions = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data,
-  );
+
+  const { data } = useFrontendBoot();
 
   const existingPlanTypeCode =
     filters.planType === "Individual"
@@ -75,8 +74,8 @@ const FilterModal = ({ show, onClose }) => {
         >
           <div>
             <OptionWrapper PrimaryColor={colors.primary_color}>
-              {plantypeOptions
-                ? plantypeOptions.plantypes.map((option, i) => {
+              {data?.plantypes
+                ? data?.plantypes.map((option, i) => {
                     return option.code !== "I" ? (
                       <li
                         css={`

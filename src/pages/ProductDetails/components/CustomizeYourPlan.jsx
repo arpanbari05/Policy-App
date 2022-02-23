@@ -279,7 +279,7 @@ const RiderCardWrap = styled.div`
   flex: 0 1 calc(50% - 0.6em);
   gap: 1em;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
-  min-height: 7.9em;
+  min-height: 120px;
 
   &:hover {
     box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
@@ -312,7 +312,7 @@ const RiderName = styled.h1`
 function RiderDescription({ rider, ...props }) {
   const { description } = rider;
 
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(true);
 
   const { colors } = useTheme();
 
@@ -326,7 +326,7 @@ function RiderDescription({ rider, ...props }) {
   return (
     <RiderDescriptionWrap className="m-0" {...props}>
       {showMore ? description : description.slice(0, 40)}
-      {description.length > 40 ? (
+      {/*description.length > 40 ? (
         <ShowMoreButton
           className="btn p-0 mx-1"
           css={`
@@ -343,14 +343,15 @@ function RiderDescription({ rider, ...props }) {
         >
           {showMore ? "Read less" : "...Read more"}
         </ShowMoreButton>
-      ) : null}
+          ) : null*/}
     </RiderDescriptionWrap>
   );
 }
 
 const RiderDescriptionWrap = styled.p`
-  color: #253858;
-  font-size: 0.81rem;
+  color: rgb(37, 56, 88);
+  font-weight: 400;
+  font-size: 12px;
   overflow: hidden;
   ${mobile} {
     font-size: 10px;
