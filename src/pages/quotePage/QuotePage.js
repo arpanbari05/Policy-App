@@ -36,7 +36,7 @@ function QuotePage() {
     <Page>
       <Container>
         <Row>
-          <Col xl="9" >
+          <Col xl="9">
             <Quotes />
           </Col>
           <Col>Hi</Col>
@@ -128,16 +128,6 @@ function QuotePage1() {
   const firstQuoteFound =
     filterQuotes.some(quotes => quotes?.length > 0) || !loadingQuotes;
 
-  console.log(
-    "d32fasg",
-    filters.premium === null || filters.premium === "",
-    filters.cover === defaultfilters.cover,
-    filters.basePlanType.toLowerCase() === "base health",
-    filters.insurers.length < 1,
-    filters.multiYear === defaultfilters.multiYear,
-    Object.keys(filters.moreFilters).length === 0 ? true : false,
-  );
-
   // const isFiltersDefault =
   //   (filters.premium === null || filters.premium === "") &&
   //   filters.cover === defaultfilters.cover &&
@@ -154,8 +144,6 @@ function QuotePage1() {
 
   const handleClearFilters = () => {
     dispatch(setFilters(defaultfilters));
-    console.log("fetchquotes QuotesPage");
-
     resetFilters();
 
     // dispatch(
