@@ -76,13 +76,8 @@ const MedicalHistoryForm = () => {
             setAppLoading(false);
             return;
           }
-          if (journeyType === "top_up") {
-            setAppLoading(false);
-            history.push(getUrlWithEnquirySearch(`/input/deductible`));
-          } else {
-            setAppLoading(false);
-            history.push(getUrlWithEnquirySearch(`/quotes/${groups[0].id}`));
-          }
+          setAppLoading(false);
+          history.push(getUrlWithEnquirySearch(`/quotes/${groups[0].id}`));
         });
       } else {
         setCustomErrors("Select a disease!");
@@ -116,7 +111,6 @@ const MedicalHistoryForm = () => {
                 onClick={e => {
                   if (display_name === "No") {
                     setSelected(e.target.value);
-                    const existing_diseases = [...diseaseArray];
                     setAppLoading(true);
                     setTimeout(() => {
                       history.push(
