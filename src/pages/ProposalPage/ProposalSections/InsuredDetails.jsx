@@ -272,7 +272,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                       }
                     `}
                   >
-                    <div style={{ marginRight: "15px" }}>
+                    <div style={{ marginRight: "5px" }}>
                       <Checkbox2
                         showTitle={false}
                         title={"No" + item}
@@ -308,7 +308,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                 </div>
               )}
               <Form>
-                {console.log("jhcvugc", values)}
+                {console.log("jhcvugc", schema)}
                 <FormBuilder
                   isInsuredDetails
                   keyStr={item}

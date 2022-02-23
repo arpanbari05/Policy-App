@@ -8,20 +8,16 @@ import InsurerFilter from "./filters/InsurerFilter";
 import MoreFilters from "./filters/MoreFilters";
 import PlanTypeFilter from "./filters/PlanTypeFilter";
 import { useFrontendBoot } from "../../../customHooks";
+import useFilters from "./filters/useFilters.js";
 import DeductibleFilter from "./filters/DeductibleFilter";
 import { Container } from "react-bootstrap";
-import { useGetEnquiriesQuery } from "../../../api/api";
 import { useParams } from "react-router-dom";
 
+
 const LowerModifier = ({ sortBy = <></> }) => {
-  const { data } = useGetEnquiriesQuery();
-
-  const { groupCode } = useParams();
-
-  const planType = data?.data?.groups?.find(
-    singleGroup => singleGroup.id === +groupCode,
-  )?.plan_type;
-
+  const { getSelectedFilter } = useFilters();
+  const selectedPolicyTypeFilter = getSelectedFilter("plantype");
+  const planType = useSelector(({ quotePage }) => quotePage.filters.planType);
   const { journeyType } = useFrontendBoot();
 
   return (
@@ -37,7 +33,7 @@ const LowerModifier = ({ sortBy = <></> }) => {
         {sortBy}
         <PremiumFilter />
         {journeyType === "health" ? <CoverRangeFilter /> : <DeductibleFilter />}
-        {planType !== "I" && journeyType !== "top_up" ? (
+        {selectedPolicyTypeFilter.display_name !== "Individual" && journeyType !== "top_up" ? (
           <PolicyTypeFilter />
         ) : null}
         <MultiyearOptionFilter />

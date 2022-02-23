@@ -15,6 +15,7 @@ const CustomProgressBar = ({ now, total }) => {
         align-items: center;
         font-size: 11px;
         margin-bottom: 20px;
+        margin-top: 10px;
         & span {
           margin-left: 10px;
         }

@@ -33,7 +33,7 @@ const DateComp = ({
   const [isFocused, setIsFocused] = useState(false);
   const onFocus = () => setIsFocused(true);
 
-  console.log(isFocused);
+  console.log(value);
 
   return (
     <InputContainer error={!isFocused ? error : null}>

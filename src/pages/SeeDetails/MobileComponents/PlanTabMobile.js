@@ -20,6 +20,7 @@ const PlanTabMobile = ({ data, item }) => {
                 onClick={() => setToggle(!toggle)}
                 css={`
                   font-size: 14px !important;
+                  font-weight: 900;
                 `}
               >
                 {item.title}
@@ -119,7 +120,6 @@ const PlanTabMobile = ({ data, item }) => {
           ) : (
             <></>
           )}
-          {/* <p>{data[0].header}</p> */}
         </div>
       </PlanFeature>
     );

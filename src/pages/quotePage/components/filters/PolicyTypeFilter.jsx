@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import tooltipImg from "../../../../assets/svg/tooltip-icon.js";
@@ -19,23 +19,29 @@ const FilterModal = ({ show, onClose }) => {
 
   const { filters } = useSelector(state => state.quotePage);
 
-  const { data } = useFrontendBoot();
+  const { getSelectedFilter } = useFilters();
+  const selectedPolicyTypeFilter = getSelectedFilter("plantype");
+  const { plantypes: plantypeOptions } = useFrontendBoot().data;
 
   const existingPlanTypeCode =
     filters.planType === "Individual"
       ? "I"
       : filters.planType === "Family Floater"
-      ? "F"
-      : "M";
+        ? "F"
+        : "M";
   const existingPlanTypeDisplayname = filters.planType;
   const [selectedPlanType, setselectedPlanType] = useState(
     filters.planType
       ? {
-          code: existingPlanTypeCode,
-          displayName: existingPlanTypeDisplayname,
-        }
-      : {},
+        code: existingPlanTypeCode,
+        displayName: existingPlanTypeDisplayname,
+      }
+      : { ...selectedPolicyTypeFilter },
   );
+
+  useEffect(() => {
+    setselectedPlanType({ ...selectedPolicyTypeFilter });
+  }, [selectedPolicyTypeFilter]);
 
   const handleChange = (code, displayName) => {
     if (displayName) {
@@ -50,6 +56,8 @@ const FilterModal = ({ show, onClose }) => {
 
     onClose && onClose();
   };
+
+  console.log({ selectedPlanType, selectedPolicyTypeFilter })
 
   return (
     <>
@@ -74,48 +82,45 @@ const FilterModal = ({ show, onClose }) => {
         >
           <div>
             <OptionWrapper PrimaryColor={colors.primary_color}>
-              {data?.plantypes
-                ? data?.plantypes.map((option, i) => {
-                    return option.code !== "I" ? (
-                      <li
-                        css={`
+              {plantypeOptions
+                ? plantypeOptions.map((option, i) => {
+                  return option.code !== "I" ? (
+                    <li
+                      css={`
                           margin: 5px 0;
                         `}
-                        className="option d-flex align-items-center justify-content-between"
-                        key={i}
-                      >
-                        <label htmlFor={option.code}>
-                          <OverlayTrigger
-                            placement={"right"}
-                            overlay={renderTooltipDesc({
-                              desc:
-                                option.code === "F"
-                                  ? "Family floater plan covers your entire family under one single plan. The total sum insured is shared amongst insured family members"
-                                  : "Multi-individual plan covers each family member under separate sum insured. You get discount if you cover 2 or more family members under multi-individual plan.",
-                            })}
-                          >
-                            <span>
-                              {option.display_name} {tooltipImg()}
-                            </span>
-                          </OverlayTrigger>
-                        </label>
-                        <input
-                          type="radio"
-                          id={option.code}
-                          name="policyType"
-                          checked={
-                            selectedPlanType.displayName ===
-                              option.display_name || false
-                          }
-                          onChange={() =>
-                            handleChange(option.code, option.display_name)
-                          }
-                        />
-                      </li>
-                    ) : (
-                      <></>
-                    );
-                  })
+                      className="option d-flex align-items-center justify-content-between"
+                      key={i}
+                      onClick={() =>
+                        handleChange(option.code, option.display_name)
+                      }
+                    >
+                      <label htmlFor={option.code}>
+                        <OverlayTrigger
+                          placement={"right"}
+                          overlay={renderTooltipDesc({
+                            desc: option.description
+                          })}
+                        >
+                          <span>
+                            {option.display_name} {tooltipImg()}
+                          </span>
+                        </OverlayTrigger>
+                      </label>
+                      <input
+                        type="radio"
+                        id={option.code}
+                        name="policyType"
+                        checked={
+                          selectedPlanType.code ===
+                          option.code
+                        }
+                      />
+                    </li>
+                  ) : (
+                    <></>
+                  );
+                })
                 : ""}
             </OptionWrapper>
           </div>

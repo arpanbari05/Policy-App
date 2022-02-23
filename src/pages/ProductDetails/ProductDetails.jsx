@@ -184,7 +184,7 @@ const ProductDetails = () => {
             }
           `}
         >
-          <GoBackButton groupCode={groupCode} />
+          {/* <GoBackButton groupCode={groupCode} /> */}
           <div
             css={`
               width: 70%;

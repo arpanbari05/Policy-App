@@ -62,7 +62,6 @@ const BasicDetailsForm = ({ ...props }) => {
       return;
     }
 
-    console.log("inputData", event);
     try {
       const params = Object.fromEntries(urlSearchParams.entries());
       const data = {

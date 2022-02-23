@@ -24,11 +24,14 @@ const ProposerDetails = ({
 }) => {
   const { values, setValues, setValid, submit, setSubmit, setCustomValid } =
     useProposalSections(setActive, name, defaultValue);
+  const proposelSelectedDOBRedux = useSelector(
+    ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob
+  );
 
   const {
     data: {
       data: {
-        input: { gender },
+        input: { gender, members },
         name: proposerName,
         mobile,
         email,
@@ -40,11 +43,22 @@ const ProposerDetails = ({
   const dispatch = useDispatch();
   useEffect(() => {
     if (name === "Proposer Details") {
+      let proposerAge = parseInt(
+        members?.filter((i) => i.type === "self")[0]?.age
+      );
+      let currentYear = new Date().getFullYear();
+      let currentMonth = new Date().getMonth();
+      let currentDate = new Date().getDate();
+      let estimatedProposerDOB = `${currentDate}-${currentMonth + 1}-${
+        currentYear - proposerAge
+      }`;
+
       let prefilledValues = {
         name: proposerName,
         gender,
         mobile,
         email,
+        dob: proposelSelectedDOBRedux || estimatedProposerDOB,
         // pincode: proposerDetails.pincode.includes("-")
         //   ? proposerDetails.pincode.split("-")[1]
         //   : proposerDetails.pincode,

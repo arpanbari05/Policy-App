@@ -55,6 +55,8 @@ const ProposalPage = () => {
   const { activeIndex, proposalData } = useSelector(
     state => state.proposalPage,
   );
+  console.log(
+    useSelector(({ greetingPage }) => greetingPage?.proposerDetails));
 
   const {
     colors: { primary_color, primary_shade },
@@ -202,7 +204,7 @@ const ProposalPage = () => {
                 align-items: center;
               `}
               onClick={() => {
-                setActive(1);
+                proposalData["Proposer Details"] && setActive(1);
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Insured Details</MainTitle>
@@ -253,7 +255,7 @@ const ProposalPage = () => {
                 align-items: center;
               `}
               onClick={() => {
-                setActive(2);
+                proposalData["Insured Details"] && setActive(2);
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Medical Details</MainTitle>
@@ -304,7 +306,7 @@ const ProposalPage = () => {
                 align-items: center;
               `}
               onClick={() => {
-                setActive(3);
+                proposalData["Medical Details"] && setActive(3);
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Other Details</MainTitle>
@@ -378,7 +380,7 @@ const ProposalPage = () => {
                 }
               `}
             >
-              <div
+              {/* <div
                 css={`
                   display: flex;
                   align-items: center;
@@ -438,7 +440,7 @@ const ProposalPage = () => {
                 >
                   You are Just 5 minutes away from investing for your future
                 </span>
-              </div>
+              </div> */}
               <div
                 css={`
                   @media (min-width: 1025px) {
@@ -476,6 +478,7 @@ const ProposalPage = () => {
                     }
                   `}
                 >
+                  {console.log(proposalData)}
                   {form(active, proposalData[listOfForms[active]])}
                 </div>
               </div>

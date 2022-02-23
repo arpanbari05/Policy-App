@@ -207,11 +207,21 @@ export function Counter({
   count = min,
   onIncrement,
   onDecrement,
+  onChange,
+  member,
   ...props
 }) {
   const handleDecrement = () => {
     const newCount = count - 1;
-    if (newCount >= min) onIncrement && onDecrement(newCount);
+    if (newCount >= min) {
+      onIncrement && onDecrement();
+    } else {
+      onChange({
+        ...member,
+        isSelected: false,
+        age: false,
+      });
+    }
   };
 
   const handleIncrement = () => {
@@ -225,7 +235,7 @@ export function Counter({
       css={`
         color: lightgrey;
         font-size: 1.2rem;
-        gap: 0.6em;
+        gap: .3125em;
         & button {
           padding: 0;
           background: none;

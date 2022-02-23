@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Modal, Col, Row } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -13,7 +14,8 @@ import { mobile } from "../../../utils/mediaQueries";
 import { amount, calculateTotalPremium } from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
-import { useGetCartQuery, useGetEnquiriesQuery } from "../../../api/api";
+import { useGetCartQuery, useGetEnquiriesQuery, useDeleteGroupQuery } from "../../../api/api";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -748,7 +750,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
       return data.data.find(cartEntry => cartEntry.group.id === groupId);
     }
   }
-  console.log(groups, cart)
+  console.log({groups, cart})
 
 
   const findAdditionalDiscount = discountAlias =>
@@ -758,7 +760,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
     console.log(cart, groupCode);
     const groupCart = cart.find(item => item.group.id === groupCode.id);
     
-    const { discounts } = groupCart;
+    const discounts = groupCart?.discounts;
     let newTotalPremium = totalPremium + calculateTotalPremium(groupCart);
     if (discounts) {
       discounts.forEach(discountAlias => {
@@ -833,6 +835,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           <ProductCard
             key={groupCode.id}
             groupCode={groupCode.id}
+            group={groupCode}
             onClose={onClose}
             cartEntry={getCartEntry(groupCode.id)}
           />
@@ -951,11 +954,11 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
 
 export default ReviewCartPopup;
 
-function ProductCard({ groupCode, onClose, cartEntry }) {
+function ProductCard({ groupCode, onClose, cartEntry, group }) {
   const history = useHistory();
   // const { product, deleteProduct } = useCartProduct(groupCode);
-  const product = cartEntry;
   const urlQuery = useUrlQuery();
+  const product = cartEntry;
 
   const handleCloseClick = () => {
     onClose();
@@ -963,7 +966,7 @@ function ProductCard({ groupCode, onClose, cartEntry }) {
 
   const enquiryId = urlQuery.get("enquiryId");
 
-  const reducedAddOns = product.addons.reduce((reducedAddOns, addon) => {
+  const reducedAddOns = product?.addons?.reduce((reducedAddOns, addon) => {
     const {
       product: {
         id,
@@ -997,7 +1000,7 @@ function ProductCard({ groupCode, onClose, cartEntry }) {
           align-items: center;
         `}
       >
-        <GradientTitle title={product.group.members.join(" + ")} />
+        <GradientTitle title={group?.members?.join(" + ")} />
         {/* <div
           css={`
             display: flex;
@@ -1021,18 +1024,24 @@ function ProductCard({ groupCode, onClose, cartEntry }) {
           </button>
         </div> */}
       </div>
-      <div
-        css={`
-          margin-bottom: 20px;
-          ${mobile} {
-            margin-top: 10px;
-          }
-        `}
-      >
-        <ProductDetailsCard cartItem={product} />
-        <ProductDetailsCardMobile cartItem={product} />
-      </div>
-      {product.addons.length > 0 && (
+      {
+        product ? (
+          <div
+            css={`
+              margin-bottom: 20px;
+              ${mobile} {
+                margin-top: 10px;
+              }
+            `}
+          >
+            <ProductDetailsCard cartItem={product} />
+            <ProductDetailsCardMobile cartItem={product} />
+          </div>
+        ) : (
+          <ProceedWithoutPlan group={group} />
+        )
+      }
+      {product?.addons.length > 0 && (
         <div
           css={`
             ${mobile} {
@@ -1057,6 +1066,36 @@ function ProductCard({ groupCode, onClose, cartEntry }) {
       )}
     </>
   );
+}
+
+function ProceedWithoutPlan({group}) {
+  const { colors: { primary_color: PrimaryColor} } = useTheme();
+  const [groupId, setGroupId] = useState(skipToken);
+  const { isLoading, data, error } = useDeleteGroupQuery(groupId);
+  const handleContinue = () => {
+    setGroupId(group.id);
+  }
+
+  return (
+    <div className="d-flex align-items-center justify-content-between mb-3 mx-1">
+      <p className="m-0">Are you sure you want to proceed without adding plan?</p>
+      <div className="d-flex" css={`gap: 1rem`}>
+        <button className="py-1 px-3" disabled={isLoading} css={`
+          border-radius: 2px;
+          background-color: ${PrimaryColor};
+          color: #fff;
+          &:disabled {
+            background-color: #ccc;
+          }
+        `} onClick={handleContinue}>Yes</button>
+        <button className="py-1 px-3" css={`
+          border-radius: 2px;
+          background-color: ${PrimaryColor};
+          color: #fff;
+        `}>No</button>
+      </div>
+    </div>
+  )
 }
 
 function GradientTitle({ title = "" }) {

@@ -34,13 +34,13 @@ function FeatureDefinitionMobile({
           <img style={{width:'100%'}} src={icon} alt="" />
         </div> */}
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <h6
+          <h5
             css={`
               font-size: 14px;
             `}
           >
             {header}
-          </h6>
+          </h5>
           <div>
             <p
               style={{
@@ -107,26 +107,14 @@ function FeatureDefinitionMobile({
   else if (windowWidth < 767)
     return (
       <Feature onClick={() => setToggle(!toggle)}>
-        {/* <div
-        className="icon-box"
-        style={{
-          top: "4px",
-          padding: "10px",
-          backgroundColor: "#fff5f5",
-          height: "100%",
-          width: "100%",
-          maxWidth: "50px",
-          maxHeight: "50px",
-          borderRadius: "50%",
-          marginRight: "10px",
-          marginLeft: "4px",
-        }}
-
-      >
-        <img style={{width:'100%'}} src={icon} alt="" />
-      </div> */}
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <h6>{header}</h6>
+          <h5
+            css={`
+              font-size: 14px;
+            `}
+          >
+            {header}
+          </h5>
           <div>
             <p
               style={{

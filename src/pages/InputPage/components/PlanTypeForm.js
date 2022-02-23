@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "../../../components";
 import CustomProgressBar from "../../../components/ProgressBar";
 import RadioButton from "../../../components/RadioButton";
 import {
@@ -25,6 +24,7 @@ function PlanTypeForm(props) {
   plantypes = plantypes.filter(plantype => plantype.code !== "I");
 
   const [selectedPlanType, setSelectedPlanType] = useState(plantypes[0]);
+  const [onHoverPlanType, setOnHoverPlanType] = useState(plantypes[0]);
 
   const history = useHistory();
 
@@ -51,7 +51,8 @@ function PlanTypeForm(props) {
           return (
             <div>
               <RadioButton
-                onMouseEnter={e => setSelectedPlanType(plantype)}
+                onMouseEnter={e => setOnHoverPlanType(plantype)}
+                onMouseOut={e => setOnHoverPlanType(selectedPlanType)}
                 onClick={e => setSelectedPlanType(plantype)}
                 id={plantype.display_name}
                 value={plantype.code}
@@ -69,7 +70,7 @@ function PlanTypeForm(props) {
             font-size: 1rem;
           `}
         >
-          What is {selectedPlanType.display_name}?
+          What is {onHoverPlanType.display_name}?
         </h2>
         <p
           css={`
@@ -78,7 +79,7 @@ function PlanTypeForm(props) {
             width: 80%;
           `}
         >
-          {selectedPlanType.description}
+          {onHoverPlanType.description}
         </p>
       </div>
 
