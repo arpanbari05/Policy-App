@@ -149,7 +149,7 @@ export function RiderCardNew({ rider, onChange, isFetching, ...props }) {
             ))}
         </div>
       </div>
-      <RiderPremium rider={rider} onChange={onChange} />
+      <RiderPremium rider={rider} onChange={onChange} isLoading={isFetching} />
     </RiderCardWrap>
   );
 }

@@ -22,8 +22,14 @@ function LocationForm() {
   } = useFrontendBoot();
   const { currentForm } = useParams();
   const groupCode = parseInt(currentForm.split("-")[1]);
-  const { groups, getGroupLocation, getNextGroup, getPreviousGroup } =
-    useMembers();
+  const {
+    groups,
+    getGroupLocation,
+    getNextGroup,
+    getPreviousGroup,
+    getMembersText,
+    getGroupMembers,
+  } = useMembers();
 
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
 
@@ -115,9 +121,18 @@ function LocationForm() {
     setError(null);
   }, [locationSearchQuery, selectedCity]);
 
+  const membersText = getMembersText({ id: parseInt(groupCode) });
+
+  const groupMembers = getGroupMembers(parseInt(groupCode));
+
+  const isSelf = groupMembers.some(member => member.code === "self");
+
   return (
     <div className="p-3">
-      <Title>Tell Us Where You Live?</Title>
+      <Title>
+        Tell Us Where {isSelf ? "You" : `Your ${membersText}`}{" "}
+        {isSelf ? "Live" : "Lives"}?
+      </Title>
       <CustomProgressBar now={4} total={5} />
       <div>
         <TextInput
@@ -135,6 +150,7 @@ function LocationForm() {
               selected={selectedCity}
               onChange={handleLocationChange}
               searchQuery={locationSearchQuery}
+              showError={!error}
             />
           </div>
         )}
@@ -259,7 +275,13 @@ function useLocationInput(initialValue = "") {
   return { value, reset, onChange };
 }
 
-function LocationOptions({ searchQuery = "", selected, onChange, ...props }) {
+function LocationOptions({
+  searchQuery = "",
+  selected,
+  onChange,
+  showError = true,
+  ...props
+}) {
   let skip = true;
 
   if (isNumber(searchQuery[0])) {
@@ -276,6 +298,9 @@ function LocationOptions({ searchQuery = "", selected, onChange, ...props }) {
   if (isUninitialized) return null;
 
   if (isFetching) return <p>Loading...</p>;
+
+  if (showError && data && !data.length)
+    return <ErrorMessage>Please enter a valid Pincode or City</ErrorMessage>;
 
   const handleChange = location => {
     onChange && onChange(location);
