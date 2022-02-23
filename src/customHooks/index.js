@@ -223,7 +223,6 @@ export function useMembers() {
   const { data } = useGetEnquiriesQuery();
 
   const { selectedGroup } = useSelector(state => state.quotePage);
-  console.log(selectedGroup);
 
   useEffect(() => {
     const groupPolicyTypes = {};
@@ -379,7 +378,7 @@ export function useMembers() {
   }
 
   function getPreviousGroup(currentGroupCode) {
-    return groups.find(group => group.id === currentGroupCode - 1);
+    return groups?.find(group => group.id === currentGroupCode - 1);
   }
 
   function getLastGroup() {
@@ -515,6 +514,8 @@ export function useUpdateMembers() {
 
   const dispatch = useDispatch();
 
+  const planType = useSelector(state => state.quotePage.filters.planType);
+
   function updateMembers({ members, ...data } = {}) {
     const updateData = {
       email: enquiryData.email,
@@ -528,7 +529,7 @@ export function useUpdateMembers() {
             age: member.age.code,
           }))
         : enquiryData.input.members,
-      plan_type: "I",
+      plan_type: planType ? planType.slice(0,1) : "F",
       pincode: 400012,
       ...data,
     };

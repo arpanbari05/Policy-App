@@ -15,6 +15,7 @@ import { useState } from "react";
 import SortBy from "./components/filters/SortBy";
 import assistant from "../../assets/images/call-center-service.png";
 import { QuotesLoader } from "./components";
+import TalkToUsModal from "../../components/Common/Modal/TalkToUsModal";
 
 function QuotesPage() {
   const { colors } = useTheme();
@@ -148,6 +149,7 @@ function ClearFilters(props) {
 }
 
 function AssistanceCard(props) {
+  const [showTalk, setShowTalk] = useState(false);
   const { colors } = useTheme();
   return (
     <div
@@ -184,6 +186,7 @@ function AssistanceCard(props) {
           background-color: #fff;
           font-weight: 900;
         `}
+        onClick={() => setShowTalk(true)}
       >
         Talk to us
       </button>
@@ -198,6 +201,7 @@ function AssistanceCard(props) {
         src={assistant}
         alt="assistant"
       />
+      <TalkToUsModal show={showTalk} handleClose={() => setShowTalk(false)} />
     </div>
   );
 }

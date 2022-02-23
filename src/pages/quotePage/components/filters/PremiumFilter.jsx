@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "styled-components/macro";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import { OptionWrapper, ApplyBtn } from "./Filter.style";
@@ -70,6 +70,8 @@ function PremiumFilterModal({ onClose, ...props }) {
 }
 
 function PremiumOption({ premium, checked, onChange, ...props }) {
+  const target = useRef(null);
+
   const handleChange = evt => {
     if (evt.target.checked) onChange && onChange(premium);
   };
@@ -81,6 +83,9 @@ function PremiumOption({ premium, checked, onChange, ...props }) {
       `}
       className="option d-flex align-items-center justify-content-between"
       {...props}
+      onClick={() => {
+        console.log(target.current.click());
+      }}
     >
       <label htmlFor={premium.code}>{premium.display_name}</label>
       <input
@@ -89,6 +94,7 @@ function PremiumOption({ premium, checked, onChange, ...props }) {
         name="select_premium"
         checked={checked}
         onChange={handleChange}
+        ref={target}
       />
     </li>
   );

@@ -28,7 +28,7 @@ export function EditMembersModal({ onClose, children, ...props }) {
       animation={false}
       css={`
         .modal-dialog {
-          max-width: 846px;
+          max-width: 870px;
           ${mq.mobile} {
             width: 100vw;
             margin: 0;
@@ -174,7 +174,7 @@ export function EditMembers({ onClose, ...props }) {
           }
         `}
       >
-        <div className="p-3">
+        <div className="p-3" css={`font-size: 16px`}>
           <MemberOptions {...memberForm} />
         </div>
         {error &&

@@ -225,7 +225,7 @@ export function Counter({
       css={`
         color: lightgrey;
         font-size: 1.2rem;
-        gap: 0.6em;
+        gap: .3125em;
         & button {
           padding: 0;
           background: none;
