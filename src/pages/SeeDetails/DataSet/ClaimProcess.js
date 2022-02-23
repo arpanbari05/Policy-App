@@ -1,91 +1,93 @@
 import React from "react";
 import "./claimHover.css";
 import { Col, Row } from "react-bootstrap";
-import telephone from "../../../assets/images/landline_old_phone.png";
-// import telephone from "../../../assets/images/landline_old_phone.png";
-import mail from "../../../assets/images/message_mail_blue_2.1.png";
-import download from "../../../assets/images/downloadclaim.png";
+import { RiDownload2Line, RiPhoneLine, RiMailLine } from "react-icons/ri";
 import mobile from "../../../assets/images/mobile.png";
 import ClaimMain from "../components/ClaimProcess/ClaimProcessMain/ClaimMain";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "styled-components/macro";
-import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import { useTheme } from "../../../customHooks";
-const populateData = data => {
+const populateData = (data, colors) => {
   return [
     {
       header: "Toll Free number",
       description: data?.toll_free_number || "no data",
-      image: telephone,
+      Image: <RiPhoneLine size={28} color={colors.primary_color} />,
     },
     {
       header: "Drop Us An Email",
       description: data?.email || "no data",
-      image: mail,
+      Image: <RiMailLine size={28} color={colors.primary_color} />,
     },
-    // {
-    //   header: "Manager Number:",
-    //   description: data?.spoc_number || "no data",
-    //   image: mobile,
-    // },
   ];
 };
 
 const dataSet = dataArray => {
   const array = [];
-  const length = dataArray?.length;
 
   dataArray?.map((data, i) =>
     array.push(
-      <span key={i} css={``}>
-        {" "}
+      <div
+        css={`
+          border: solid 1px #c9c9c9;
+          border-radius: 9px;
+          margin: 0 auto 10px auto;
+          padding: 15px;
+          width: 96%;
+        `}
+      >
         <div
           css={`
-            border: solid 1px #c9c9c9;
-            border-radius: 9px;
-            margin: 0 auto 10px auto;
-            padding: 15px;
-            width: 96%;
+            display: flex;
+            align-items: center;
           `}
         >
-          <div className="row">
-            <div className="col-md-10">
-              <h4
-                css={`
-                  color: #253858;
-                  font-weight: 900;
-                  font-size: 19px;
-                `}
-              >
-                {data.header}
-              </h4>
-              <p
-                css={`
-                  color: #253858;
-                  margin-bottom: 0px;
-                `}
-              >
-                {data.description}{" "}
-              </p>
-            </div>
-            <div
-              className="col-md-2"
+          <div
+            className="col-md-10"
+            css={`
+              margin-right: 14px;
+            `}
+          >
+            <h4
               css={`
-                justify-content: center;
-                align-items: center;
-                /* background-color: #eff7ff; */
-                display: flex;
-                border-radius: 100%;
-                /* width: 66px;
-              height:66px; */
+                color: #253858;
+                font-weight: 900;
+                font-size: 19px;
               `}
             >
-              <img src={data.image} className="w-100" />
-            </div>
+              {data.header}
+            </h4>
+            <p
+              css={`
+                color: #253858;
+                margin-bottom: 0px;
+              `}
+            >
+              {data.description}{" "}
+            </p>
+          </div>
+          <div
+            className="col-md-2"
+            css={`
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 100%;
+              width: 42px;
+              height: 42px;
+              @media (max-width: 1200px) {
+                width: 31px;
+                height: 31px;
+              }
+            `}
+          >
+            <a target="_blank" rel="noreferrer" href="#nothing">
+              {data.Image}
+            </a>
           </div>
         </div>
-      </span>,
+      </div>,
     ),
   );
   <div
@@ -182,7 +184,7 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
               css={`
                 max-width: 1347px;
               `}
-              style={{ padding: "47px 20px" }}
+              style={{ padding: "0px 20px" }}
             >
               <div className="our-service-app">
                 <div className="main-content hide-pr show-pr">
@@ -233,7 +235,12 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                               width: 96%;
                             `}
                           >
-                            <div className="row">
+                            <div
+                              css={`
+                                display: flex;
+                                align-items: center;
+                              `}
+                            >
                               <div
                                 className="col-md-10"
                                 css={`
@@ -261,14 +268,12 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                               <div
                                 className="col-md-2"
                                 css={`
+                                  display: flex;
                                   justify-content: center;
                                   align-items: center;
-                                  background-color: #eff7ff;
-                                  display: flex;
                                   border-radius: 100%;
                                   width: 42px;
                                   height: 42px;
-                                  color: #0a837f;
                                   @media (max-width: 1200px) {
                                     width: 31px;
                                     height: 31px;
@@ -277,16 +282,12 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                               >
                                 <a
                                   target="_blank"
-                                  rel="noopener noreferrer"
+                                  rel="noreferrer"
                                   href={claimform?.claim_url}
                                 >
-                                  <img
-                                    src={download}
-                                    css={`
-                                      width: 31px;
-                                      height: 31px;
-                                    `}
-                                    alt=""
+                                  <RiDownload2Line
+                                    color={colors.primary_color}
+                                    size={28}
                                   />
                                 </a>
                               </div>
@@ -297,7 +298,7 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                         )}
 
                         {claimProccess
-                          ? dataSet(populateData(claimProccess))
+                          ? dataSet(populateData(claimProccess, colors))
                           : null}
                       </div>
                     </Col>

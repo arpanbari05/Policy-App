@@ -247,8 +247,8 @@ export const validationIndex = {
           } else break;
         case "pan":
           if (
-            !/^([a-zA-Z]{3}[P]{1}[a-zA-Z]{1})([0-9]{4})([a-zA-Z]{1})$/.test(
-              value,
+            !/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(
+              value.toUpperCase(),
             )
           ) {
             return {

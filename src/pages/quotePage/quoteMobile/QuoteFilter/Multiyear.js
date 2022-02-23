@@ -186,7 +186,9 @@ const Multiyear = ({
                 </Col>
 
                 {yearPlan.map(d => (
-                  <Col md={12}>
+                  <Col md={12} onClick={() => {
+                    setYear(d.year);
+                  }}>
                     {/* <div
                       onClick={() => {
                         setYear(d.year);
@@ -240,9 +242,6 @@ const Multiyear = ({
                           )}
                         </span>
                       }
-                      onClick={() => {
-                        setYear(d.year);
-                      }}
                       isSelected={year === d.year}
                     />
                   </Col>

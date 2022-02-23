@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Modal, Nav, OverlayTrigger, Tab, Tooltip } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoRadioButtonOff, IoRadioButtonOn } from "react-icons/io5";
@@ -9,6 +9,7 @@ import {
   useGetQuotes,
   useTheme,
 } from "../../../../customHooks";
+import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 import useFilters from "../../components/filters/useFilters";
 import useUpdateFilters from "../../components/filters/useUpdateFilters";
 import { tenures } from "../../data";
@@ -261,15 +262,7 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
           font-size: 0.79rem;
         `}
       >
-        <OverlayTrigger
-          placement="right"
-          overlay={<Tooltip>{option.description}</Tooltip>}
-        >
-          <div className="d-flex align-items-center">
-            {option.display_name}
-            <IoMdInformationCircleOutline className="mx-1" />
-          </div>
-        </OverlayTrigger>
+        <FilterDataSet name={option.display_name} description={option.description} />
         <span
           css={`
             font-size: 1.6rem;
@@ -462,4 +455,26 @@ function MobileModal({ onClose, children }) {
       </div>
     </Modal>
   );
+}
+
+function FilterDataSet ({ name, description, ...props }) {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const target = useRef(null);
+  useOutsiteClick(target, () => setShowTooltip(false));
+  
+  const toggleTooltip = () => {
+    setShowTooltip( prev => !prev );
+  }
+  return (
+    <OverlayTrigger
+      show={showTooltip}
+      placement="bottom"
+      overlay={<Tooltip {...props}>{description}</Tooltip>}
+    >
+      <div className="d-flex align-items-center" onClick={toggleTooltip}>
+        {name}
+        <IoMdInformationCircleOutline className="mx-1" />
+      </div>
+    </OverlayTrigger>
+  )
 }

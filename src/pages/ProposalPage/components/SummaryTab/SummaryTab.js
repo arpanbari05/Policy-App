@@ -349,7 +349,14 @@ const SummaryTab = ({ title, data, values, index }) => {
   }, []);
 
   return (
-    <Card styledCss={`margin-bottom: 20px;`}>
+    <Card styledCss={`
+    margin-bottom: 20px;
+    
+    @media screen and (max-width:768px){
+      margin-bottom: 10px;
+      padding:5px 2px;
+  }
+    `}>
       <div className="card_proposal_summary  box-shadow_plan_box_p_s_s_proposal_form_l">
         <EditWrapper
           PrimaryColor={PrimaryColor}
@@ -385,7 +392,7 @@ const SummaryTab = ({ title, data, values, index }) => {
               {title}
             </MainTitle>
             {
-              title === "Other Details" && <TitleWrapper css={`margin-left: 20px !important`}>Nominee Details</TitleWrapper>
+              title === "Other Details" && <TitleWrapper css={`padding-left: 20px !important`}>Nominee Details</TitleWrapper>
             }
           </Col>
         </Row>
@@ -401,13 +408,13 @@ const SummaryTab = ({ title, data, values, index }) => {
             : Object.keys(data).map((item, index) => (
                 <>
                   <Border>
-                    <InnerTextBorder>
+                    <TitleWrapper>
                       <span style={{ textTransform: "capitalize" }}>
                         {item.includes("_")
                           ? item.split("_").slice(1).join(", ")
                           : item}
                       </span>
-                    </InnerTextBorder>
+                    </TitleWrapper>
                     {data[item].map((_data, index) => {
                       return title === "Other Details"?
                       objectRender(
@@ -520,7 +527,7 @@ const InnerTextBorder = styled.div`
   }
 `;
 const MedicalQuestionWrapper = styled.p`
-  font-size: 18px !important;
+  font-size: 15px !important;
   text-align: inherit;
   line-height: 27px !important;
   color: #000000;
@@ -555,8 +562,8 @@ const MedicalAnswer = styled.p`
   margin: 0px 0 -15px;
   text-transform: capitalize;
   padding-left: 15px;
-
-  font-size: 18px;
+  font-size: 15px;
+  font-weight:900;
   @media (max-width: 767px) {
     font-size: 12px;
   }
@@ -576,6 +583,7 @@ const TitleWrapper = styled.p`
   }
   @media (max-width: 767px) {
     margin-bottom: 15px;
+    font-size: 15px !important;
   }
 `;
 const CustomMedicalTitle = styled.div`
@@ -619,4 +627,7 @@ const MainTitle = styled.h2`
   color: ${props => props.bg && props.PrimaryColor};
   font-size: 21px;
   padding: 10px;
+  @media screen and (max-width:768px){
+    margin-top:0px;
+  }
 `;

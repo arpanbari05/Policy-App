@@ -48,11 +48,7 @@ const InputPage = () => {
             }
           `}
         >
-          <div
-            css={`
-              width: 80%;
-            `}
-          >
+          <div>
             <div
               css={`
                 width: fit-content;
@@ -70,21 +66,11 @@ const InputPage = () => {
               css={`
                 font-weight: 900;
                 font-size: 13px;
+                margin-bottom: 0;
               `}
             >
               Buy Health Insurance Plan In Few Simple Steps.
             </p>
-          </div>
-          <div
-            css={`
-              width: 80px;
-            `}
-          >
-            <img
-              src={mobile_input_first}
-              alt={"ICON_GROUP"}
-              className="w-100"
-            />
           </div>
         </div>
         <Wrapper currentForm={currentForm}>
@@ -192,6 +178,7 @@ const Wrapper = styled.div`
   }
   @media (max-width: 480px) {
     margin: 0 auto;
+    padding-top: 0;
     width: ${props => (props.currentForm === 2 ? "100%" : "90%")};
     & > div {
       width: 100% !important;

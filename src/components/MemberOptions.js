@@ -7,6 +7,41 @@ import RoundDD from "./RoundDD";
 import { Counter } from ".";
 import "styled-components/macro";
 
+const modifyMembersToCount = (members) => {
+  let sonCount = 0;
+  let daughterCount = 0;
+  const updatedMembers = members.map(member => {
+    if (member.display_name === "Son") {
+      sonCount += 1;
+      return {
+        ...member,
+       display_name_count: `Son ${sonCount}` 
+      }
+    } else if (member.display_name === "Daughter") {
+      daughterCount += 1;
+      return {
+        ...member,
+       display_name_count: `Daughter ${daughterCount}` 
+      }
+    } else return { ...member, display_name_count: member.display_name }
+  })
+
+  return updatedMembers.map(member => {
+    if (member.display_name === "Son" && sonCount === 1) {
+      return {
+        ...member,
+        display_name_count: `Son`
+      }
+    } else if (member.display_name === "Daughter" && daughterCount === 1) {
+      return {
+        ...member,
+        display_name_count: `Daughter`
+      }
+    } else return { ...member }
+  });
+
+}
+
 function validateMembers(members = []) {
   let isValid = true;
   const validatedMembers = members.map(member => {
@@ -33,7 +68,7 @@ export function useMembersForm(initialMembersList = []) {
 
     if (!isValid) {
       setMembers(validatedMembers);
-      setError("Select age for Insured Member")
+      setError("Select age for Insured Member");
       return;
     }
 
@@ -79,9 +114,7 @@ export function useMembersForm(initialMembersList = []) {
 
   const handleCounterDecrement = member => {
     const totalMembers = getMultipleMembersCount(member.base.code);
-
     const memberCodeToDelete = `${member.base.code}${totalMembers}`;
-
     setMembers(members =>
       members.filter(member => member.code !== memberCodeToDelete),
     );
@@ -97,7 +130,11 @@ export function useMembersForm(initialMembersList = []) {
   const getSelectedMembers = () =>
     members.filter(member => !!member.isSelected);
 
-  const updateMembersList = (membersList = []) => setMembers(membersList);
+  const updateMembersList = (membersList = []) => {
+    setMembers(membersList)
+  };
+
+  const membersWithCount = modifyMembersToCount(members);
 
   return {
     getMultipleMembersCount,
@@ -109,7 +146,7 @@ export function useMembersForm(initialMembersList = []) {
     updateMembersList,
     isError,
     error,
-    membersList: members,
+    membersList: membersWithCount,
   };
 }
 
@@ -119,6 +156,7 @@ export function MemberOptions({
   handleCounterIncrement,
   handleCounterDecrement,
   getMultipleMembersCount,
+  selectable = true,
   ...props
 }) {
   return (
@@ -134,12 +172,17 @@ export function MemberOptions({
           member={member}
           onChange={handleMemberChange}
           key={member.code}
+          selectable={selectable}
         >
           {member.multiple && member.isSelected && (
             <Counter
-              onDecrement={() => handleCounterDecrement(member, index)}
+              onDecrement={() => {
+                handleCounterDecrement(member, index);
+              }}
               onIncrement={() => handleCounterIncrement(member, index)}
               count={getMultipleMembersCount(member.base.code)}
+              onChange={handleMemberChange}
+              member={member}
             />
           )}
         </MemberOption>
@@ -148,7 +191,13 @@ export function MemberOptions({
   );
 }
 
-function MemberOption({ member, onChange, children, ...props }) {
+function MemberOption({
+  member,
+  onChange,
+  children,
+  selectable = true,
+  ...props
+}) {
   const {
     colors: { primary_color },
   } = useTheme();
@@ -188,7 +237,7 @@ function MemberOption({ member, onChange, children, ...props }) {
         padding: 2px 10px;
         border: solid 1px #b0bed0;
         flex: 1 1 21em;
-        gap: 1em;
+        gap: .7em;
       `}
       {...props}
     >
@@ -200,35 +249,39 @@ function MemberOption({ member, onChange, children, ...props }) {
           font-weight: 900;
         `}
       >
-        <input
-          type="checkbox"
-          className="visually-hidden"
-          checked={member.isSelected}
-          onChange={handleChange}
-          name={member.code}
-        />
-        <div
-          css={`
-            font-size: 1.67rem;
-            line-height: 0;
-            margin-right: 0.3em;
-          `}
-        >
-          {member.isSelected ? (
-            <IoCheckmarkCircleSharp
-              css={`
-                color: ${primary_color};
-              `}
-            />
-          ) : (
-            <GiCircle
-              css={`
-                color: #ccc;
-              `}
-            />
-          )}
-        </div>
-        {member.display_name}
+        {selectable ? (
+          <input
+            type="checkbox"
+            className="visually-hidden"
+            checked={member.isSelected}
+            onChange={handleChange}
+            name={member.code}
+          />
+        ) : null}
+        {selectable ? (
+          <div
+            css={`
+              font-size: 1.67rem;
+              line-height: 0;
+              margin-right: 0.3em;
+            `}
+          >
+            {member.isSelected ? (
+              <IoCheckmarkCircleSharp
+                css={`
+                  color: ${primary_color};
+                `}
+              />
+            ) : (
+              <GiCircle
+                css={`
+                  color: #ccc;
+                `}
+              />
+            )}
+          </div>
+        ) : null}
+        {member.display_name_count}
       </label>
       {children}
       <div>

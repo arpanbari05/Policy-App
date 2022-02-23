@@ -7,6 +7,7 @@ import { lazy } from "react";
 import { Suspense } from "react";
 import { FullScreenLoader, LoadCart } from "./components";
 import ComparePage from "./pages/ComparePage";
+// import ErrorPage from "./components/Common/ErrorPage/ErrorPage";
 
 const ProposalPage = lazy(() => import("./pages/ProposalPage/ProposalPage"));
 const ProposalSummary = lazy(() =>
@@ -45,6 +46,7 @@ function App() {
           <ThankYouPage />
         </LazyLoad>
       </Route>
+      {/* <Route path="*" component={ErrorPage} /> */}
 
       <Route path="*" component={PageNotFound} />
       {process.env.NODE_ENV === "development" && (

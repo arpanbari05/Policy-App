@@ -223,7 +223,6 @@ export function useMembers() {
   const { data } = useGetEnquiriesQuery();
 
   const { selectedGroup } = useSelector(state => state.quotePage);
-  console.log(selectedGroup);
 
   useEffect(() => {
     const groupPolicyTypes = {};
@@ -379,7 +378,7 @@ export function useMembers() {
   }
 
   function getPreviousGroup(currentGroupCode) {
-    return groups.find(group => group.id === currentGroupCode - 1);
+    return groups?.find(group => group.id === currentGroupCode - 1);
   }
 
   function getLastGroup() {
@@ -454,13 +453,12 @@ export function useUpdateGroupMembers(groupCode) {
     }).then(res => {
       if (res.error) return res;
       const { updatedQuote, updateEnquiriesResult } = res.data;
-      updateCartEntry(groupCode, getQuoteSendData(updatedQuote));
+      // updateCartEntry(groupCode, getQuoteSendData(updatedQuote));
       dispatch(
         api.util.updateQueryData("getEnquiries", undefined, enquiriesDraft => {
           Object.assign(enquiriesDraft, updateEnquiriesResult);
         }),
       );
-      dispatch(api.util.invalidateTags(["Rider"]));
       return res;
     });
   };
@@ -668,7 +666,7 @@ export function useTenureDiscount(groupCode) {
   const { product, sum_insured, tenure, deductible } = getCartEntry(groupCode);
 
   const { data, ...queryState } = useGetDiscountsQuery({
-    sum_insured,
+    sum_insured: +sum_insured,
     product_id: product.id,
     group: groupCode,
     journeyType,
@@ -1061,7 +1059,22 @@ export function useEmailInput(initialValue = "", setEmailError) {
   return { value, onChange };
 }
 
-const validateName = (name = "") => /^[A-Za-z]+[A-Za-z ]*$/.test(name);
+const validateName = (name = "") => /^[a-zA-Z.\s]*$/.test(name);
+const checkPreviousChar = (value, checkValue, stateValue) => {
+  let check = true;
+
+  if (value[0] === checkValue) {
+    check = false;
+  }
+  if (
+    check &&
+    value[value.length - 1] === checkValue &&
+    stateValue[stateValue.length - 1] === checkValue
+  ) {
+    check = false;
+  }
+  return check;
+};
 
 export function useNameInput(initialValue = "", setFullNameError) {
   const [value, setValue] = useState(initialValue);
@@ -1078,8 +1091,7 @@ export function useNameInput(initialValue = "", setFullNameError) {
     const isValidName = validateName(givenValue);
 
     if (!isValidName) return;
-
-    setValue(givenValue);
+    checkPreviousChar(givenValue, ".", value) && setValue(givenValue);
   };
 
   const onBlur = evt => {
@@ -1261,7 +1273,7 @@ export function useGetQuote(company_alias) {
 
   const isLoading = !data || !icQuotes;
 
-  function getQuote(quote) {}
+  // function getQuote(quote) {}
 
   return { isLoading, data, icQuotes };
 }

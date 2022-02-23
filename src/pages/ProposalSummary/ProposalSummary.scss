@@ -7,6 +7,13 @@
   z-index: 111;
   padding: 9px 0 11px;
 }
+.font_15_p_s {
+  // font-size: 12px !important;
+  margin-bottom: 5px !important;
+}
+.font_sub_p_s{
+  margin-bottom: 20px !important;
+}
 @media (max-width: 767px) {
   .terms__wrapper {
     display: none;
@@ -59,10 +66,11 @@
 @media (max-width: 767px) {
   .font_15_p_s {
     font-size: 12px !important;
+    margin-bottom: 0px !important;
   }
   .font_sub_p_s {
     font-size: 14px;
-
+    margin-bottom: 15px !important;
     word-break: break-all;
   }
   .proposal_summary_d_i {

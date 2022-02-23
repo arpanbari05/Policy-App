@@ -1,9 +1,8 @@
 import React from "react";
-import { Col } from "react-bootstrap";
 import styled from "styled-components";
 import "styled-components/macro";
 import PlanTabMobile from "../../../SeeDetails/MobileComponents/PlanTabMobile";
-import { BiDownload } from "react-icons/bi";
+import { RiDownload2Line } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
 import { useTheme } from "../../../../customHooks/index";
@@ -42,8 +41,6 @@ function MobilePlanDetails({
                     data={planDetails.innerData[data.title]}
                   />
                 </>
-                //   onClick={() => handleActive(data.id, data.title)}
-                //   isActive={activeTab === data.id ? true : false}
               );
             })}
           {policyWordingUrl && brochureUrl ? (
@@ -102,7 +99,10 @@ function MobilePlanDetails({
                         border-radius: 82px;
                       `}
                     >
-                      <BiDownload color={colors.primary_color} size="31px" />
+                      <RiDownload2Line
+                        color={colors.primary_color}
+                        size="26px"
+                      />
                     </div>
                   </a>
                 </DownloadImgWrapper>
@@ -112,14 +112,6 @@ function MobilePlanDetails({
                   Terms & Conditions
                 </div>
                 <DownloadImgWrapper className="icon-box float_left">
-                  {/* <a
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        href={policyWordingUrl}><img src={download} alt="download"
-                                            style={{ height: "100%", marginRight: "10px",width:"100%" }}
-                                        />
-
-                                    </a>   */}
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
@@ -132,7 +124,10 @@ function MobilePlanDetails({
                         margin-right: 10px;
                       `}
                     >
-                      <BiDownload color={colors.primary_color} size="31px" />
+                      <RiDownload2Line
+                        color={colors.primary_color}
+                        size="26px"
+                      />
                     </div>
                   </a>
                 </DownloadImgWrapper>
@@ -163,7 +158,6 @@ const DownloadImgWrapper = styled.div`
     width: 40px;
   }
 `;
-
 
 const DownloadCard = styled.div`
   padding: 3px 10px;
