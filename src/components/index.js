@@ -7,7 +7,11 @@ import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
 import { useQuote, useTheme, useToggle, useUrlEnquiry } from "../customHooks";
-import { amount, getDisplayPremium } from "../utils/helper";
+import {
+  amount,
+  calculateTotalPremium,
+  getDisplayPremium,
+} from "../utils/helper";
 import CartSummaryModal from "./CartSummaryModal";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import FilterSkeletonLoader from "./Common/filter-skeleton-loader/FilterSkeletonLoader";
@@ -133,7 +137,7 @@ export function Button({
         border: none;
         color: #fff;
         border-radius: 2px;
-        height: 3em;
+        height: 2.8em;
         min-width: max-content;
         padding: 0 1em;
         cursor: pointer;
@@ -377,7 +381,7 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
   } = useQuote();
 
   const handleBuyClick = () => {
-    buyQuote(quote)
+    buyQuote(quote, quote.riders || [])
       .then(cartSummaryModal.on)
       .catch(() => alert("Something went wrong while buying the quote!"));
   };
@@ -401,6 +405,11 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
     gotoProductPage();
   };
 
+  const netPremium = calculateTotalPremium({
+    total_premium: quote.total_premium,
+    health_riders: quote.riders || quote.health_riders,
+  });
+
   return (
     <div className="w-100">
       <Button
@@ -409,7 +418,12 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
         loader={isLoading}
         {...props}
       >
-        {displayTenure ? getDisplayPremium(quote) : amount(quote.total_premium)}
+        {displayTenure
+          ? getDisplayPremium({
+              total_premium: netPremium,
+              tenure: quote.tenure,
+            })
+          : amount(netPremium)}
       </Button>
       {cartSummaryModal.isOn && (
         <CartSummaryModal

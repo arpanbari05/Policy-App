@@ -66,7 +66,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
       `}
       {...props}
     >
-      <QuoteCard {...getQuoteCardProps(firstQuote)} />
+      <QuoteCard {...getQuoteCardProps(firstQuote)} sortBy={sortBy} />
       <Collapse in={show}>
         <div id="collapseOne">
           <div
@@ -81,6 +81,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
                 <QuoteCard
                   {...getQuoteCardProps(quote)}
                   key={Object.values(quote)[0].product.id}
+                  sortBy={sortBy}
                 />
               ))}
             </Col>
@@ -127,6 +128,7 @@ function getDeductibles(quotes = []) {
 function QuoteCard({
   quotes = [],
   compare: { checkFn, onChange } = {},
+  sortBy,
   ...props
 }) {
   const { colors } = useTheme();
@@ -144,9 +146,9 @@ function QuoteCard({
         )
         .map(quote => parseInt(quote.sum_insured))
         .sort((a, b) => a - b)
-    : quotes.map(quote => parseInt(quote.sum_insured));
+    : quotes.map(quote => parseInt(quote.sum_insured)).sort((a, b) => a - b);
 
-  const [selectedSumInsured, setSelectedSumInsured] = useState(sumInsureds[0]);
+  const [selectedSumInsured, setSelectedSumInsured] = useState();
 
   const quote = quotes.find(quote =>
     isDeductibleJourney
@@ -154,6 +156,10 @@ function QuoteCard({
         parseInt(quote.sum_insured) === parseInt(selectedSumInsured)
       : parseInt(quote.sum_insured) === parseInt(selectedSumInsured),
   );
+
+  useEffect(() => {
+    setSelectedSumInsured(sumInsureds[0]);
+  }, [sortBy]); // SETS MIN-SUM-INSURED OPTION AS DEFAULT SELECTED
 
   const { getCompany } = useCompanies();
 
@@ -193,11 +199,18 @@ function QuoteCard({
 
   return (
     <div {...props}>
-      <div className="d-flex py-3">
+      <div
+        className="d-flex align-items-center"
+        css={`
+          padding-top: 11px;
+          padding-bottom: 8px;
+        `}
+      >
         <div
           className="d-flex flex-column align-items-center justify-content-between"
           css={`
             flex: 1;
+            gap: 12px;
           `}
         >
           <img
@@ -239,6 +252,7 @@ function QuoteCard({
             border-left: 1px solid;
             border-right: 1px solid;
             border-color: ${colors.border.one};
+            row-gap: 15px;
           `}
         >
           {features.map(feature =>
@@ -246,49 +260,6 @@ function QuoteCard({
               <QuoteFeature key={feature.code} feature={feature} />
             ) : null,
           )}
-          <div
-            css={`
-              font-size: 0.83rem;
-            `}
-          >
-            <label
-              className="d-flex align-items-center px-3 py-1 rounded"
-              htmlFor={quote.product.id + quote.total_premium}
-              css={`
-                color: ${colors.font.one};
-                font-weight: 900;
-                cursor: pointer;
-                background-color: ${colors.secondary_shade};
-              `}
-            >
-              <span
-                css={`
-                  font-size: 1.27rem;
-                  margin-right: 0.3em;
-                  color: ${colors.primary_color};
-                `}
-              >
-                {isCompareQuote ? (
-                  <IoCheckmarkCircleSharp />
-                ) : (
-                  <BsCircleFill
-                    css={`
-                      color: white;
-                    `}
-                  />
-                )}
-              </span>
-              <span className="mt-1">Compare</span>
-            </label>
-            <input
-              className="visually-hidden"
-              type={"checkbox"}
-              id={quote.product.id + quote.total_premium}
-              name="compare-quote"
-              checked={isCompareQuote}
-              onChange={handleCompareChange}
-            />
-          </div>
         </div>
         <div
           css={`
@@ -344,6 +315,68 @@ function QuoteCard({
                   onChange={handleSumInsuredChange}
                 />
               </QuoteCardOption>
+            </div>
+            <div
+              css={`
+                font-size: 0.83rem;
+              `}
+            >
+              <label
+                className="d-flex align-items-center rounded"
+                htmlFor={quote.product.id + quote.total_premium}
+                css={`
+                  color: ${colors.font.one};
+                  font-weight: 900;
+                  cursor: pointer;
+                  // background-color: ${colors.secondary_shade};
+                `}
+              >
+                {/* <span
+                  css={`
+                    font-size: 1.27rem;
+                    margin-right: 0.3em;
+                    color: ${colors.primary_color};
+                  `}
+                > */}
+                {isCompareQuote ? (
+                  <IoCheckmarkCircleSharp
+                    color={colors.primary_color}
+                    style={{ marginRight: 3 }}
+                    size={20}
+                  />
+                ) : (
+                  // <BsCircleFill
+                  //   css={`
+                  //     color: white;
+                  //   `}
+                  // />
+                  <div
+                    css={`
+                      width: 17px;
+                      height: 17px;
+                      border: 1px solid #dcdcdc;
+                      border-radius: 50%;
+                      margin: 1px 5px 1px 1px;
+                    `}
+                  />
+                )}
+                {/* </span> */}
+                <span
+                  css={`
+                    margin-top: 2px;
+                  `}
+                >
+                  Compare
+                </span>
+              </label>
+              <input
+                className="visually-hidden"
+                type={"checkbox"}
+                id={quote.product.id + quote.total_premium}
+                name="compare-quote"
+                checked={isCompareQuote}
+                onChange={handleCompareChange}
+              />
             </div>
           </div>
         </div>
@@ -402,7 +435,13 @@ function QuoteCardOption({ label, children, info = false, ...props }) {
           justify-content: space-between;
         `}
       >
-        <span>{label}</span>{info && <RiInformationLine style={{cursor: "pointer"}} color={colors.primary_color} />}
+        <span>{label}</span>
+        {info && (
+          <RiInformationLine
+            style={{ cursor: "pointer" }}
+            color={colors.primary_color}
+          />
+        )}
       </div>
       <div
         css={`

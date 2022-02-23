@@ -11,10 +11,6 @@ import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/
 import { useFrontendBoot, useTheme } from "../../../customHooks";
 
 const Card = ({ values, isLoading }) => {
-  // const { theme } = useSelector(state => state.frontendBoot);
-
-  // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-
   const {
     colors: { primary_color: PrimaryColor, secondary_shade: SecondaryShade },
   } = useTheme();
@@ -100,7 +96,7 @@ const Card = ({ values, isLoading }) => {
           <Value>{values?.status && values?.status.split("_").join(" ")}</Value>
         </PolicyWrapper>
       </Wrap>
-      {values?.status === "underwriting_approval" && (
+      {values?.underwriting_status === "underwriting_approval" && (
         <StatusWrapper>
           <DocImage>
             <img
@@ -117,7 +113,24 @@ const Card = ({ values, isLoading }) => {
           </DocMessage>
         </StatusWrapper>
       )}
-      {values?.status !== "underwriting_approval" && !values?.pdf_path && (
+      {values?.underwriting_status === "underwriting_approved" && (
+        <StatusWrapper>
+          <DocImage>
+            <img
+              src={repolicy}
+              alt="repolicy"
+              css={`
+                width: 36px;
+              `}
+            ></img>
+          </DocImage>
+          <DocMessage>
+            Your proposal's medical underwriting is approved. You will receive a
+            call shortly from us on further process.
+          </DocMessage>
+        </StatusWrapper>
+      )}
+      {!values?.pdf_path && !values?.underwriting_status && (
         <StatusWrapper SecondaryShade={SecondaryShade}>
           <DocImage>
             <img
@@ -129,7 +142,8 @@ const Card = ({ values, isLoading }) => {
             ></img>
           </DocImage>
           <DocMessage>
-            You will receive your policy in your inbox within 4 working hours.
+            You will receive the Policy in your inbox once generated. In case
+            it's under medical underwriting it might take longer.{" "}
           </DocMessage>
         </StatusWrapper>
       )}

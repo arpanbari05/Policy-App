@@ -35,7 +35,7 @@ const CartMobile = ({ groupCode, ...props }) => {
   const history = useHistory();
   const { getCartEntry } = useCart();
   const cartEntry = getCartEntry(parseInt(groupCode));
-  const { total_premium } = cartEntry;
+  const { netPremium } = cartEntry;
   const reviewCartModalNew = useToggle();
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
@@ -133,7 +133,7 @@ const CartMobile = ({ groupCode, ...props }) => {
               }
             `}
           >
-            {amount(total_premium)}
+            {amount(netPremium)}
           </span>
         </section>
         <Button
@@ -152,7 +152,9 @@ const CartMobile = ({ groupCode, ...props }) => {
             </>
           )}
           {!nextGroupProduct && "Review Your Cart"}
-          {query.isLoading && <CircleLoader animation="border" />}
+          {query.isLoading && !nextGroupProduct && (
+            <CircleLoader animation="border" />
+          )}
         </Button>
         {!nextGroupProduct && reviewCartModalNew.isOn && (
           <NewReviewCartPopup
@@ -304,18 +306,9 @@ const PlanCard = ({ groupCode, ...props }) => {
   const { getCartEntry } = useCart();
   const { journeyType } = useFrontendBoot();
   const cartEntry = getCartEntry(parseInt(groupCode));
-  const {
-    icLogoSrc,
-    plantype,
-    sum_insured,
-    deductible,
-    tenure,
-    total_premium,
-    product: {
-      name,
-      company: { alias },
-    },
-  } = cartEntry;
+
+  console.log("The cartEntry here", cartEntry);
+  const { plantype, sum_insured, deductible, tenure, netPremium } = cartEntry;
 
   const displayPolicyTerm = `${
     tenure + " " + (tenure >= 2 ? "Years" : "Year")
@@ -332,7 +325,7 @@ const PlanCard = ({ groupCode, ...props }) => {
         <TitleValueRenderer title="Deductible" value={amount(deductible)} />
       ) : null}
       <TitleValueRenderer title="Policy term" value={displayPolicyTerm} />
-      <TitleValueRenderer title="Premium" value={amount(total_premium)} />
+      <TitleValueRenderer title="Premium" value={amount(netPremium)} />
     </PlanCardOuter>
   );
 };

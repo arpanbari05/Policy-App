@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { Button } from ".";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
-import { useCompanies, useQuote } from "../customHooks";
+import { useCart, useCompanies, useQuote } from "../customHooks";
 import useUrlQuery from "../customHooks/useUrlQuery";
 import { removeQuoteFromCart } from "../pages/Cart/cart.slice";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
@@ -17,9 +17,13 @@ import { amount } from "../../src/utils/helper";
 import { mobile, small } from "../utils/mediaQueries";
 
 export function NewReviewCartPopup({ onClose, onContine }) {
+  const { data } = useGetEnquiriesQuery();
+
   return (
     <CardModal
-      title="Hey User, Take a minute and review your cart before you proceed"
+      title={`Hey ${
+        data?.data?.name?.split(" ")[0]
+      }, Take a minute and review your cart before you proceed`}
       show
       buttonValue="Continue"
       handleClose={onClose}
@@ -33,6 +37,7 @@ export function NewReviewCartPopup({ onClose, onContine }) {
 }
 
 function CartSummaryContent({ closeModal, onContine, ...props }) {
+  const { getCartEntry } = useCart();
   const {
     data: {
       data: { groups },
@@ -40,12 +45,15 @@ function CartSummaryContent({ closeModal, onContine, ...props }) {
   } = useGetEnquiriesQuery();
   const { data } = useGetCartQuery();
 
-  let totalPremium =
-    data.data && data.data.map(singleEntry => singleEntry.total_premium).length
-      ? data?.data
-          .map(singleEntry => singleEntry.total_premium)
-          .reduce((acc = 0, singlePremium) => (acc = +singlePremium))
-      : 0;
+  const revisedNetPremiumArray = groups.map(
+    singleGroup => getCartEntry(parseInt(singleGroup.id))?.netPremium,
+  );
+
+  const displayRevisedNetPremium = revisedNetPremiumArray.length
+    ? revisedNetPremiumArray.reduce(
+        (acc = 0, singlePremium) => (acc += singlePremium),
+      )
+    : 0;
 
   return (
     <div
@@ -68,7 +76,7 @@ function CartSummaryContent({ closeModal, onContine, ...props }) {
       <Footer
         onContine={onContine}
         closeModal={closeModal}
-        total_premium={totalPremium}
+        total_premium={displayRevisedNetPremium}
       />
     </div>
   );
@@ -362,17 +370,8 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
 }
 
 function RenderProductSummaryCard({ group, ...props }) {
-  const { data, isLoading, isUninitialized } = useGetCartQuery();
-
-  if (isLoading || isUninitialized) return <CardSkeletonLoader />;
-
-  let cartEntry = null;
-
-  if (data.data) {
-    cartEntry = data.data.find(cartEntry => cartEntry.group.id === group.id);
-  }
-
-  if (!cartEntry) return null;
+  const { getCartEntry } = useCart();
+  const cartEntry = getCartEntry(parseInt(group.id));
 
   return <ProductSummaryCard cartEntry={cartEntry} {...props} />;
 }
@@ -381,7 +380,7 @@ function ProductSummaryCard({ cartEntry, ...props }) {
   const {
     deductible,
     sum_insured,
-    total_premium,
+    netPremium,
     tenure,
     health_riders,
     product: {
@@ -390,7 +389,6 @@ function ProductSummaryCard({ cartEntry, ...props }) {
     },
   } = cartEntry;
 
-  console.log("The cartEntry", cartEntry);
   const { getCompany } = useCompanies();
 
   const { logo: logoSrc } = getCompany(alias);
@@ -447,22 +445,12 @@ function ProductSummaryCard({ cartEntry, ...props }) {
             <SinglePlanDetail
               title={"Total Premium"}
               value={`₹
-              ${parseInt(total_premium + health_riders).toLocaleString(
-                "en-IN",
-              )} / ${
+              ${parseInt(netPremium).toLocaleString("en-IN")} / ${
                 tenure >= 2 ? `${tenure + " Years"}` : `${tenure + " Year"}`
               }`}
             />
           </PlanDetails>
         </div>
-        <hr
-          css={`
-            margin: 5px;
-            ${mobile} {
-              display: none;
-            }
-          `}
-        />
         <div
           className="d-flex flex-wrap align-items-center justify-content-between"
           css={`

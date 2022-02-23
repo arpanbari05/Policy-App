@@ -1,9 +1,18 @@
 import { useParams } from "react-router-dom";
 import { BackButtonMobile, CircleLoader } from "../../../../components";
-import { useTheme, useToggle, useUrlEnquiry } from "../../../../customHooks";
+import {
+  useRiders,
+  useTheme,
+  useToggle,
+  useUrlEnquiry,
+} from "../../../../customHooks";
 import "styled-components/macro";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { Modal } from "react-bootstrap";
+import { BsPlusLg } from "react-icons/bs";
+import React from "react";
+import * as mq from "../../../../utils/mediaQueries";
+import { RiderPremium } from "../../../ProductDetails/components/CustomizeYourPlan";
 
 export function Header() {
   const { colors } = useTheme();
@@ -87,8 +96,6 @@ export function FeatureSection({
 }) {
   const { colors } = useTheme();
 
-  const descriptionToggle = useToggle(false);
-
   return (
     <section
       css={`
@@ -104,15 +111,7 @@ export function FeatureSection({
         `}
       >
         {title}
-        <button onClick={descriptionToggle.on}>
-          <IoMdInformationCircleOutline
-            className="mx-2"
-            css={`
-              margin-bottom: 0.2em;
-              font-size: 1.2rem;
-            `}
-          />
-        </button>
+        <InfoPopupToggle title={title} description={description} />
       </h2>
       <div
         className="p-2"
@@ -122,6 +121,24 @@ export function FeatureSection({
       >
         {children}
       </div>
+    </section>
+  );
+}
+
+export function InfoPopupToggle({ title, description }) {
+  const descriptionToggle = useToggle(false);
+
+  return (
+    <div className="d-inline-block">
+      <button onClick={descriptionToggle.on}>
+        <IoMdInformationCircleOutline
+          className="mx-2"
+          css={`
+            margin-bottom: 0.2em;
+            font-size: 1.2em;
+          `}
+        />
+      </button>
       <Modal
         centered
         show={descriptionToggle.isOn && !!description}
@@ -153,6 +170,117 @@ export function FeatureSection({
           </div>
         </div>
       </Modal>
-    </section>
+    </div>
+  );
+}
+
+export function AddPlanCard({ compareQuotes, children, ...props }) {
+  const { colors } = useTheme();
+
+  const comparePlansPopupToggle = useToggle();
+
+  return (
+    <div
+      css={`
+        ${mq.mobile} {
+          padding: 1em;
+          background-color: ${colors.primary_shade};
+        }
+      `}
+      {...props}
+    >
+      <button
+        className="d-flex flex-column align-items-center justify-content-center rounded h-100 w-100 border-0"
+        css={`
+          background-color: ${colors.primary_shade};
+          color: ${colors.primary_color};
+          font-weight: 900;
+          min-height: 12.7em;
+          ${mq.mobile} {
+            min-height: 7.97em;
+          }
+        `}
+        onClick={comparePlansPopupToggle.on}
+      >
+        <div
+          className="d-flex align-items-center justify-content-center rounded"
+          css={`
+            height: 36%;
+            width: 36%;
+
+            background-color: ${colors.secondary_shade};
+            border: 1px dashed;
+          `}
+        >
+          <BsPlusLg
+            css={`
+              font-size: 2rem;
+            `}
+          />
+        </div>
+        <div className="mt-3">Add Plan</div>
+      </button>
+      {comparePlansPopupToggle.isOn &&
+        React.Children.map(children, child =>
+          React.cloneElement(child, { onClose: comparePlansPopupToggle.off }),
+        )}
+    </div>
+  );
+}
+
+export function OptionalCoversValue({ quote, onChange }) {
+  const { groupCode } = useParams();
+
+  const handleRidersChange = riders => {
+    onChange && onChange({ riders, quote });
+  };
+
+  const {
+    query: { isLoading, isFetching, isUninitialized },
+    riders,
+    handleChange,
+  } = useRiders({ quote, onChange: handleRidersChange, groupCode });
+
+  return (
+    <FeatureValue isLoading={isLoading || isFetching || isUninitialized}>
+      <div
+        className="d-flex flex-column"
+        css={`
+          gap: 1em;
+        `}
+      >
+        {riders.map(rider => (
+          <Rider rider={rider} key={rider.name} onChange={handleChange} />
+        ))}
+      </div>
+    </FeatureValue>
+  );
+}
+
+function Rider({ rider, onChange, ...props }) {
+  const {
+    colors: { primary_shade },
+  } = useTheme();
+  return (
+    <div
+      className="p-2 rounded d-flex flex-column"
+      css={`
+        background-color: ${primary_shade};
+      `}
+      {...props}
+      ƒ
+    >
+      <div
+        className="mb-2"
+        css={`
+          font-size: 0.73rem;
+        `}
+      >
+        {rider.name}
+        <InfoPopupToggle title={rider.name} description={rider.description} />
+      </div>
+
+      <RiderPremium rider={rider} onChange={onChange} />
+    </div>
   );
 }

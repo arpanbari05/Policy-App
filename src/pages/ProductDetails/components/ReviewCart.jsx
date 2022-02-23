@@ -1,4 +1,4 @@
-import { useHistory, useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { useCartProduct } from "../../Cart";
 import styled from "styled-components/macro";
 import care_health from "../../../assets/logos/Care.png";
@@ -260,8 +260,22 @@ function EditMembers({ groupCode, ...props }) {}
 
 function BasePlanDetails({ groupCode, ...props }) {
   const { getCartEntry } = useCart();
+  const history = useHistory();
   const { journeyType } = useFrontendBoot();
   const cartEntry = getCartEntry(parseInt(groupCode));
+  const quotesRedirectUrl = useUrlEnquiry();
+
+  /* //? REDIRECT CODE IF PRODUCT IS NOT IN CART.
+  if (!cartEntry) {
+    return (
+      <Redirect
+        to={`quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
+      />
+    );
+  } */
+
+  
+
   const {
     icLogoSrc,
     plantype,
@@ -394,7 +408,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
       <Button
         onClick={handleClick}
         className="w-100"
-        disabled={query.isLoading}
+        loader={query.isLoading}
         {...props}
       >
         {nextGroupProduct ? (
@@ -422,19 +436,11 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         //   onContine={handleContinueClick}
         //   onClose={cartSummaryModal.off}
         // />
-        <ReviewCartPopup
-          propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
+        <NewReviewCartPopup
+          onContine={handleContinueClick}
           onClose={reviewCartModalNew.off}
-        />)}
-
-      {
-      //   !nextGroupProduct && reviewCartModalNew.isOn && (
-      //   <NewReviewCartPopup
-      //     onContine={handleContinueClick}
-      //     onClose={reviewCartModalNew.off}
-      //   />
-      // )
-    }
+        />
+      )}
     </div>
   );
 }
@@ -602,9 +608,7 @@ function AddOnDetailsRow({ addOn }) {
 }
 
 export function BackgroundBorderTitle({ title, ...props }) {
-  const { theme } = useSelector(state => state.frontendBoot);
-
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { colors } = useTheme();
 
   return (
     <div
@@ -614,7 +618,7 @@ export function BackgroundBorderTitle({ title, ...props }) {
         width: 100%;
         margin-top: 2px;
 
-        color: ${PrimaryColor};
+        color: ${colors.primary_color};
       `}
     >
       <div

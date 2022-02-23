@@ -85,7 +85,11 @@ const ThankYouPage = () => {
     }
   }, [pathname]);
   const Disclaimer = () => {
-    if (policyStatus.every(item => item.status === "underwriting_approval")) {
+    if (
+      policyStatus.every(
+        item => item.underwriting_status === "underwriting_approval",
+      )
+    ) {
       return (
         <>
           <div

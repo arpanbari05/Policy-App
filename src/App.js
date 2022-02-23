@@ -5,7 +5,7 @@ import QuotesPage from "./pages/quotePage/";
 import PageNotFound from "./pages/PageNotFound";
 import { lazy } from "react";
 import { Suspense } from "react";
-import { FullScreenLoader } from "./components";
+import { FullScreenLoader, LoadCart } from "./components";
 import ComparePage from "./pages/ComparePage";
 // import ErrorPage from "./components/Common/ErrorPage/ErrorPage";
 
@@ -23,11 +23,11 @@ function App() {
       </Route>
       <Route exact path="/input/:currentForm" component={InputPage} />
       <Route exact path="/quotes/:groupCode" component={QuotesPage} />
-      <Route
-        exact
-        path="/productdetails/:groupCode"
-        component={ProductDetails}
-      />
+      <Route exact path="/productdetails/:groupCode">
+        <LoadCart>
+          <ProductDetails />
+        </LoadCart>
+      </Route>
       <Route exact path="/compare/:groupCode">
         <ComparePage />
       </Route>

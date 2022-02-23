@@ -266,14 +266,14 @@ export function mergeQuotes(quotes, { sortBy = "relevance" } = {}) {
 
   for (let quote of quotes) {
     const {
-      product: { id },
+      product: { name },
     } = quote;
 
-    if (mergedQuotes[id]) {
-      mergedQuotes[id] = [...mergedQuotes[id], quote];
+    if (mergedQuotes[name]) {
+      mergedQuotes[name] = [...mergedQuotes[name], quote];
       continue;
     }
-    mergedQuotes[id] = [quote];
+    mergedQuotes[name] = [quote];
   }
 
   let sortedMergeQuotes = Object.values(mergedQuotes).sort();
@@ -307,7 +307,9 @@ export function matchQuotes(
 ) {
   return _.every([
     quote1.product.id === quote2.product.id,
-    sum_insured ? quote1.sum_insured === quote2.sum_insured : true,
+    sum_insured
+      ? parseInt(quote1.sum_insured) === parseInt(quote2.sum_insured)
+      : true,
     deductible ? quote1.deductible === quote2.deductible : true,
   ]);
 }
