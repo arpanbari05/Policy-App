@@ -2011,6 +2011,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
         <EditMembersModal
           onClose={() => setShowEditMembers(false)}
           group={group}
+          
         />
       )}
     </>

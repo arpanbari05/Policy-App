@@ -73,7 +73,7 @@ function LocationForm() {
         if (!nextGroup) {
           if (journeyType === "top_up")
             nextPath = getUrlWithEnquirySearch(`/input/deductible`);
-          else nextPath = getUrlWithEnquirySearch(`/quotes/${firstGroup.id}`);
+          else nextPath = getUrlWithEnquirySearch(`/input/medicalHistory`);
         }
         history.push(nextPath);
       },

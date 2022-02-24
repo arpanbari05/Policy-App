@@ -44,7 +44,7 @@ function DeductibleForm({ ...props }) {
   function submit(deductible) {
     if (!deductible) return;
     updateEnquiry({ deductible: deductible.code }).then(() => {
-      history.push(getUrlWithEnquirySearch(`/quotes/${groups[0].id}`));
+      history.push(getUrlWithEnquirySearch(`/input/medicalHistory`));
     });
   }
 

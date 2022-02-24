@@ -3,9 +3,9 @@ import "styled-components";
 
 const CustomCheckBox = ({ name, placeholder, value, onChange }) => {
   return (
-    <>
+    <div style={{display:"flex", alignItems:"center"}}>
       {" "}
-      <span style={{ fontWeight: "900", margin: "0 10px" }}>
+      <span style={{ fontWeight: "900", margin: "0 10px", display:"flex", alignItems:"center" }}>
         {" "}
         {placeholder}
       </span>
@@ -28,7 +28,7 @@ const CustomCheckBox = ({ name, placeholder, value, onChange }) => {
           <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
         </symbol>
       </svg>
-    </>
+    </div>
   );
 };
 
