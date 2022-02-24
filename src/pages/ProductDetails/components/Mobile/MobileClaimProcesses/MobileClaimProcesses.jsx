@@ -5,7 +5,12 @@ import styled from "styled-components";
 import "styled-components/macro";
 import { useSelector } from "react-redux";
 import SpinLoader from "../../../../../components/Common/SpinLoader/SpinLoader";
-import { RiDownload2Line, RiMailLine, RiPhoneLine } from "react-icons/ri";
+import {
+  RiDownload2Line,
+  RiLink,
+  RiMailLine,
+  RiPhoneLine,
+} from "react-icons/ri";
 import { useTheme } from "../../../../../customHooks";
 
 import { mobile } from "../../../../../utils/mediaQueries";
@@ -213,10 +218,16 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                           rel="noopener noreferrer"
                           href={claimform.claim_url}
                         >
-                          <RiDownload2Line
-                            size="26px"
-                            color={colors.primary_color}
-                          />
+                          {claimform?.claim_url
+                            .toLowerCase()
+                            .includes(".pdf") ? (
+                            <RiDownload2Line
+                              size={26}
+                              color={colors.primary_color}
+                            />
+                          ) : (
+                            <RiLink size={26} color={colors.primary_color} />
+                          )}
                         </a>
                       </div>
                     </div>

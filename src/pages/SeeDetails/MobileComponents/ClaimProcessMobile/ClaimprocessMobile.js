@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-
 import "./ClaimProcessMobile.css";
 import styled from "styled-components";
 import "styled-components/macro";
-import cashlessImg from "./../../../../assets/images/cashless_m.png";
 import download from "../../../../assets/images/downloadclaim.png";
 import telephone from "../../../../assets/images/landline_old_phone.png";
 import mail from "../../../../assets/images/message_mail_blue_2.1.png";
-import mobile from "../../../../assets/images/mobile.png";
 import { useSelector } from "react-redux";
 import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
 // import "../ClaimProcessMobile/ClaimProcessMobile.css"
@@ -168,13 +165,6 @@ function ClaimprocessMobile({ ActiveMainTab, claimProccess, claimform }) {
                   Please reach out on details below for further queries.
                 </h4>
               </div>
-              {/* <p className="p_important_sub" 
-                            css={`
-                            margin-top:0px !important;
-                            `}
-                            >
-                                Don't Hesitate to contact us for any information.
-                            </p>{" "} */}
               <div
                 style={{
                   padding: "18px 0px",

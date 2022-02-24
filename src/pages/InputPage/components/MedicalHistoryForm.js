@@ -112,12 +112,18 @@ const MedicalHistoryForm = () => {
                   if (display_name === "No") {
                     setSelected(e.target.value);
                     setAppLoading(true);
-                    setTimeout(() => {
-                      history.push(
-                        getUrlWithEnquirySearch(`/quotes/${groups[0].id}`),
-                      );
-                      setAppLoading(false);
-                    }, 3000);
+                    updateEnquiry({ existing_diseases: [] }).then(res => {
+                      if (res.error) {
+                        setAppLoading(false);
+                        return;
+                      }
+                      setTimeout(() => {
+                        history.push(
+                          getUrlWithEnquirySearch(`/quotes/${groups[0].id}`),
+                        );
+                        setAppLoading(false);
+                      }, 3000);
+                    });
                   } else {
                     setSelected(e.target.value);
                   }

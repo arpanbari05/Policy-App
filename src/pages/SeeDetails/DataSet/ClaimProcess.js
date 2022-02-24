@@ -1,7 +1,12 @@
 import React from "react";
 import "./claimHover.css";
 import { Col, Row } from "react-bootstrap";
-import { RiDownload2Line, RiPhoneLine, RiMailLine } from "react-icons/ri";
+import {
+  RiDownload2Line,
+  RiPhoneLine,
+  RiMailLine,
+  RiLink,
+} from "react-icons/ri";
 import mobile from "../../../assets/images/mobile.png";
 import ClaimMain from "../components/ClaimProcess/ClaimProcessMain/ClaimMain";
 import { useSelector } from "react-redux";
@@ -161,7 +166,7 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
           position: "relative",
           display: ActiveMainTab ? "block" : "none",
           left: ActiveMainTab ? "0px" : "1296px",
-          top: "0px",
+          top: "10px",
         }}
         css={`
           ${mobile} {
@@ -285,10 +290,19 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                                   rel="noreferrer"
                                   href={claimform?.claim_url}
                                 >
-                                  <RiDownload2Line
-                                    color={colors.primary_color}
-                                    size={28}
-                                  />
+                                  {claimform?.claim_url
+                                    .toLowerCase()
+                                    .includes(".pdf") ? (
+                                    <RiDownload2Line
+                                      color={colors.primary_color}
+                                      size={28}
+                                    />
+                                  ) : (
+                                    <RiLink
+                                      color={colors.primary_color}
+                                      size={28}
+                                    />
+                                  )}
                                 </a>
                               </div>
                             </div>

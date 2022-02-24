@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Card from "../../components/Card";
-import mobile_input_first from "../../assets/images/mobile_input_first.png";
 import styled from "styled-components/macro";
 import { bg } from "../../assets/images";
 import { IoIosCheckmarkCircle } from "react-icons/io";
