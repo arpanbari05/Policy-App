@@ -30,17 +30,18 @@ const findSelectedFilterObject = (filters, selectedFilter) => {
   }
 }; // RETURNS SELECTED OPTIONS ARRAY [{}..] or OBJECT FOR EACH FILTER
 
-const findFeature = quote => featureCode =>
-  quote.features.find(feature => feature.code === featureCode);
+const findFeature = quote => featureCode => {
+  return quote.features.find(feature => feature.code === featureCode);
+};
 
 const checkFeature = quote => featureObject => {
   const feature = findFeature(quote)(featureObject.code);
-  console.log("The quote and featureObject", quote, featureObject);
+
   if (!feature) return false;
 
   const { operator, value_to_compare, code } = featureObject;
 
-  const value = feature.value.toUpperCase();
+  const value = feature?.value?.toUpperCase();
 
   if (code === "no_claim_bonus" && operator === "equals") {
     const upto = getNumberFromString(value);
@@ -109,6 +110,10 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
       )
     : [];
 
+  const othersFiltersNameArray = others
+    ? others.map(singleSelectedOption => singleSelectedOption.display_name)
+    : [];
+
   const popularFiltersSelectedNameArrayAlt = popularFiltersSelectedNameArray
     ? popularFiltersSelectedNameArray.filter(
         option => option !== "No Pre-policy Check up",
@@ -126,25 +131,23 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
         option => option.code !== "no pre policy check up",
       ),
     },
-    popularFiltersSelectedNameArrayAlt,
-  );
-
-  const selectedPreExistingFilterObject = findSelectedFilterObject(
-    preExistingFilters,
-    preExisting,
-  );
-
-  const selectedNoClaimFilterObject = findSelectedFilterObject(
-    noClaimFilters,
-    noClaim,
+    popularFiltersSelectedNameArrayAlt, // NAMES ARRAY
   );
 
   const selectedOtherFiltersArray = findSelectedFilterObject(
     otherFilters,
-    others,
+    othersFiltersNameArray, // NAMES ARRAY
   );
 
-  // const selectedPremiumCode = premium?.code;
+  const selectedPreExistingFilterObject = findSelectedFilterObject(
+    preExistingFilters,
+    preExisting ? preExisting[0].display_name : "", // NAME
+  );
+
+  const selectedNoClaimFilterObject = findSelectedFilterObject(
+    noClaimFilters,
+    noClaim ? noClaim[0].display_name : "", // NAME ARRAY
+  );
 
   const selectedPremiumCode = getSelectedFilter("premium")?.code;
 
@@ -189,8 +192,7 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     } else isPremiumMatch = true;
     const checkFeatureMatch = checkFeature(quote);
 
-    const filterMatch = filter =>
-      filter ? checkFeatureMatch(...filter) : true; //Accepts {} Returns BOOL
+    const filterMatch = filter => (filter ? checkFeatureMatch(filter) : true); //Accepts {} Returns BOOL
 
     const filtersMatch = filters => {
       console.log("The filters", filters);
@@ -201,8 +203,8 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
 
     const isPopularFiltersMatch = filtersMatch(selectedPopularFiltersArray);
     const isOtherFiltersMatch = filtersMatch(selectedOtherFiltersArray);
-    const isNoClaimsMatch = filterMatch(selectedNoClaimFilterArray);
-    const isPreExistingMatch = filterMatch(selectedPreExistingFilterArray);
+    const isNoClaimsMatch = filterMatch(selectedNoClaimFilterObject);
+    const isPreExistingMatch = filterMatch(selectedPreExistingFilterObject);
 
     const isNoPreMedicalMatch = isNoPreMedicalSelected
       ? minAge < quote.ppmc_age_limit
