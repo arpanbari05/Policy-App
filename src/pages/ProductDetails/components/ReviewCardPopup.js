@@ -14,7 +14,11 @@ import { mobile } from "../../../utils/mediaQueries";
 import { amount, calculateTotalPremium } from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
-import { useGetCartQuery, useGetEnquiriesQuery, useDeleteGroupQuery } from "../../../api/api";
+import {
+  useGetCartQuery,
+  useGetEnquiriesQuery,
+  useDeleteGroupQuery,
+} from "../../../api/api";
 import { skipToken } from "@reduxjs/toolkit/query";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
@@ -106,7 +110,6 @@ function AddOnDetailsCard({
     members,
     total_premium,
     sum_insured,
-    
   },
 }) {
   const companies = useSelector(
@@ -546,7 +549,9 @@ function ProductDetailsCardMobile({ cartItem }) {
 function ProductDetailsCard({ cartItem }) {
   const { companies } = useCompanies();
 
-  const { colors: { primary_color: PrimaryColor }} = useTheme();
+  const {
+    colors: { primary_color: PrimaryColor },
+  } = useTheme();
 
   const {
     product: {
@@ -722,9 +727,11 @@ function ProductDetailsCard({ cartItem }) {
 }
 
 function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
-  const { colors: { primary_color: PrimaryColor} } = useTheme();
-  const proposalDetails = useSelector(state => state.proposalPage.proposalData);
-  const firstName = proposalDetails["Proposer Details"]?.name;
+  const {
+    colors: { primary_color: PrimaryColor },
+  } = useTheme();
+  const { data: enquiryData } = useGetEnquiriesQuery();
+  const firstName = enquiryData?.data?.name?.split(" ")[0];
   const { memberGroups } = useSelector(state => state.greetingPage);
   const additionalDiscounts = useSelector(selectAdditionalDiscounts);
   const {
@@ -734,9 +741,9 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
   } = useGetEnquiriesQuery();
   const { data, isLoading, isUninitialized } = useGetCartQuery();
   const cart = data.data;
-  
-  const groupCodes = Object.keys(cart).filter((item) =>
-    Object.keys(memberGroups).includes(item)
+
+  const groupCodes = Object.keys(cart).filter(item =>
+    Object.keys(memberGroups).includes(item),
   );
 
   const allAddOns = groupCodes.reduce(
@@ -745,13 +752,12 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
   );
 
   if (isLoading || isUninitialized) return <></>;
-  const getCartEntry = (groupId) => {
+  const getCartEntry = groupId => {
     if (data.data) {
       return data.data.find(cartEntry => cartEntry.group.id === groupId);
     }
-  }
-  console.log({groups, cart})
-
+  };
+  console.log({ groups, cart });
 
   const findAdditionalDiscount = discountAlias =>
     additionalDiscounts.find(discount => discount.alias === discountAlias);
@@ -759,7 +765,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
   let totalPremium = groups.reduce((totalPremium, groupCode) => {
     console.log(cart, groupCode);
     const groupCart = cart.find(item => item.group.id === groupCode.id);
-    
+
     const discounts = groupCart?.discounts;
     let newTotalPremium = totalPremium + calculateTotalPremium(groupCart);
     if (discounts) {
@@ -1024,23 +1030,21 @@ function ProductCard({ groupCode, onClose, cartEntry, group }) {
           </button>
         </div> */}
       </div>
-      {
-        product ? (
-          <div
-            css={`
-              margin-bottom: 20px;
-              ${mobile} {
-                margin-top: 10px;
-              }
-            `}
-          >
-            <ProductDetailsCard cartItem={product} />
-            <ProductDetailsCardMobile cartItem={product} />
-          </div>
-        ) : (
-          <ProceedWithoutPlan group={group} />
-        )
-      }
+      {product ? (
+        <div
+          css={`
+            margin-bottom: 20px;
+            ${mobile} {
+              margin-top: 10px;
+            }
+          `}
+        >
+          <ProductDetailsCard cartItem={product} />
+          <ProductDetailsCardMobile cartItem={product} />
+        </div>
+      ) : (
+        <ProceedWithoutPlan group={group} />
+      )}
       {product?.addons.length > 0 && (
         <div
           css={`
@@ -1068,34 +1072,55 @@ function ProductCard({ groupCode, onClose, cartEntry, group }) {
   );
 }
 
-function ProceedWithoutPlan({group}) {
-  const { colors: { primary_color: PrimaryColor} } = useTheme();
+function ProceedWithoutPlan({ group }) {
+  const {
+    colors: { primary_color: PrimaryColor },
+  } = useTheme();
   const [groupId, setGroupId] = useState(skipToken);
   const { isLoading, data, error } = useDeleteGroupQuery(groupId);
   const handleContinue = () => {
     setGroupId(group.id);
-  }
+  };
 
   return (
     <div className="d-flex align-items-center justify-content-between mb-3 mx-1">
-      <p className="m-0">Are you sure you want to proceed without adding plan?</p>
-      <div className="d-flex" css={`gap: 1rem`}>
-        <button className="py-1 px-3" disabled={isLoading} css={`
-          border-radius: 2px;
-          background-color: ${PrimaryColor};
-          color: #fff;
-          &:disabled {
-            background-color: #ccc;
-          }
-        `} onClick={handleContinue}>Yes</button>
-        <button className="py-1 px-3" css={`
-          border-radius: 2px;
-          background-color: ${PrimaryColor};
-          color: #fff;
-        `}>No</button>
+      <p className="m-0">
+        Are you sure you want to proceed without adding plan?
+      </p>
+      <div
+        className="d-flex"
+        css={`
+          gap: 1rem;
+        `}
+      >
+        <button
+          className="py-1 px-3"
+          disabled={isLoading}
+          css={`
+            border-radius: 2px;
+            background-color: ${PrimaryColor};
+            color: #fff;
+            &:disabled {
+              background-color: #ccc;
+            }
+          `}
+          onClick={handleContinue}
+        >
+          Yes
+        </button>
+        <button
+          className="py-1 px-3"
+          css={`
+            border-radius: 2px;
+            background-color: ${PrimaryColor};
+            color: #fff;
+          `}
+        >
+          No
+        </button>
       </div>
     </div>
-  )
+  );
 }
 
 function GradientTitle({ title = "" }) {

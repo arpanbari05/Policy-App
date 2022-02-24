@@ -106,12 +106,14 @@ function FilterModal({ onClose }) {
         `}
       >
         {morefilters.map((filter, idx) => (
-          <FilterGroup
-            filter={filter}
-            key={filter.code + idx}
-            currentOption={filters[filter.code]}
-            onChange={updateFilter}
-          />
+          <>
+            <FilterGroup
+              filter={filter}
+              key={filter.code + idx}
+              currentOption={filters[filter.code]}
+              onChange={updateFilter}
+            />
+          </>
         ))}
       </div>
       <div className="p-3 d-flex align-items-center justify-content-between">
@@ -124,6 +126,7 @@ function FilterModal({ onClose }) {
 
 function FilterGroup({ filter, currentOption, onChange }) {
   const { colors } = useTheme();
+  console.log("The filter", filter, currentOption);
   return (
     <section
       css={`

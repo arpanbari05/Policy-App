@@ -17,23 +17,21 @@ const includesDigits = (str = "") => str.match(/(\d+)/);
 const getNumberFromString = (str = "") =>
   includesDigits(str) ? parseInt(includesDigits(str)[0]) : null;
 
-const findSelectedFilterObject = (filters, selectedFilter) => {
+const findSelectedFilterArray = (filters, selectedFilter) => {
   if (typeof selectedFilter === "object")
     return selectedFilter.map(selected =>
-      filters.options.find(filter => selected.includes(filter.display_name)),
+      filters?.options?.filter(
+        filter => selected.display_name === filter.display_name,
+      ),
     );
-  if (typeof selectedFilter === "string")
-    return filters.options.find(
-      filter => filter.display_name === selectedFilter,
-    );
-};
+}; // RETURNS SELECTED OPTIONS ARRAY [{}..] FOR EACH FILTER
 
 const findFeature = quote => featureCode =>
   quote.features.find(feature => feature.code === featureCode);
 
 const checkFeature = quote => featureObject => {
   const feature = findFeature(quote)(featureObject.code);
-
+  console.log("The quote and featureObject", quote, featureObject);
   if (!feature) return false;
 
   const { operator, value_to_compare, code } = featureObject;
@@ -92,20 +90,18 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   const minAge = getMinOfArray(currentGroupMembersAge);
 
   const {
-    popularFilter: popularFiltersSelected,
+    popular_filters: popularFiltersSelected,
+    pre_existing_ailments: preExisting,
+    no_claim_bonus: noClaim,
     others,
-    preExisting,
-    renewalBonus,
-  } = givenMoreFilters || moreFilters;
+  } = givenMoreFilters || moreFilters; // SELECTED FILTER OPTIONS
 
-  const [
-    popularFilters,
-    preExistingFilters,
-    renewalBonusFilters,
-    otherFilters,
-  ] = morefilters;
+  const [popularFilters, preExistingFilters, noClaimFilters, otherFilters] =
+    morefilters; // ALL AVAILABLE FILTER OPTIONS
 
-  const popularFilter = popularFiltersSelected
+  console.log("The populerfiltewrs ", popularFilters);
+
+  /*const popularFilter = popularFiltersSelected
     ? popularFiltersSelected.filter(
         option => option !== "No Pre-policy Check up",
       )
@@ -113,29 +109,32 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
 
   const isNoPreMedicalSelected = popularFiltersSelected
     ? popularFiltersSelected.includes("No Pre-policy Check up")
-    : false;
+    : false;*/
 
-  const selectedPopularFilters = findSelectedFilterObject(
+  const selectedPopularFiltersArray = findSelectedFilterArray(
     {
       ...popularFilters,
       options: popularFilters.options.filter(
         option => option.code !== "no pre policy check up",
       ),
     },
-    popularFilter,
+    popularFiltersSelected,
   );
 
-  const selectedPreExistingFilter = findSelectedFilterObject(
+  const selectedPreExistingFilterArray = findSelectedFilterArray(
     preExistingFilters,
     preExisting,
   );
 
-  const selectedRenewalBonusFilter = findSelectedFilterObject(
-    renewalBonusFilters,
-    renewalBonus,
+  const selectedNoClaimFilterArray = findSelectedFilterArray(
+    noClaimFilters,
+    noClaim,
   );
 
-  const selectedOtherFilters = findSelectedFilterObject(otherFilters, others);
+  const selectedOtherFiltersArray = findSelectedFilterArray(
+    otherFilters,
+    others,
+  );
 
   // const selectedPremiumCode = premium?.code;
 
@@ -182,27 +181,36 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     } else isPremiumMatch = true;
     const checkFeatureMatch = checkFeature(quote);
 
-    const filterMatch = filter => (filter ? checkFeatureMatch(filter) : true);
+    const filterMatch = filter =>
+      filter ? checkFeatureMatch(...filter) : true; //Accepts {} Returns BOOL
 
-    const filtersMatch = filters =>
-      filters ? filters.every(filter => checkFeatureMatch(filter)) : true;
+    const filtersMatch = filters => {
+      console.log(
+        "The filters match filter",
+        filters,
+        filters && filters.every(filter => checkFeatureMatch(filter)),
+      );
+      return filters
+        ? filters.every(filter => checkFeatureMatch(filter))
+        : true; //Accepts [{}..] Returns BOOL
+    };
 
-    const isPopularFiltersMatch = filtersMatch(selectedPopularFilters);
-    const isOtherFiltersMatch = filtersMatch(selectedOtherFilters);
-    const isRenewalBonusMatch = filterMatch(selectedRenewalBonusFilter);
-    const isPreExistingMatch = filterMatch(selectedPreExistingFilter);
+    const isPopularFiltersMatch = filtersMatch(selectedPopularFiltersArray);
+    const isOtherFiltersMatch = filtersMatch(selectedOtherFiltersArray);
+    const isNoClaimsMatch = filterMatch(selectedNoClaimFilterArray);
+    const isPreExistingMatch = filterMatch(selectedPreExistingFilterArray);
 
-    const isNoPreMedicalMatch = isNoPreMedicalSelected
+    /*const isNoPreMedicalMatch = isNoPreMedicalSelected
       ? minAge < quote.ppmc_age_limit
-      : true;
+      : true;*/
     return (
       isCompanyMatch &&
       isPremiumMatch &&
       isPopularFiltersMatch &&
       isOtherFiltersMatch &&
       isPreExistingMatch &&
-      isRenewalBonusMatch &&
-      isNoPreMedicalMatch
+      isNoClaimsMatch /*&&
+       isNoPreMedicalMatch */
     );
   }
 

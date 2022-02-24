@@ -11,12 +11,14 @@ import useUrlQuery from "../customHooks/useUrlQuery";
 import { removeQuoteFromCart } from "../pages/Cart/cart.slice";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import CardModal from "./Common/Modal/CardModal";
-import { figureToWords } from "../utils/helper"
+import { figureToWords } from "../utils/helper";
 
 function CartSummaryModal({ onClose, onContine }) {
+  const { data: enquiryData } = useGetEnquiriesQuery();
+  const firstName = enquiryData?.data?.name?.split(" ")[0];
   return (
     <CardModal
-      title="Hey User, Take a minute and review your cart before you proceed"
+      title={`Hey ${firstName}, Take a minute and review your cart before you proceed`}
       show
       buttonValue="Continue"
       handleClose={onClose}
