@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import { useSelector } from "react-redux";
+import { useTheme } from "../customHooks";
 
 const RadioCapsule = ({
   label,
@@ -11,15 +12,15 @@ const RadioCapsule = ({
   styledCss,
   id,
 }) => {
-  const { theme } = useSelector(state => state.frontendBoot);
+  const { colors } = useTheme();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { primary_color, secondary_shade } = colors;
 
   return (
     <>
       <RadioInput
-        PrimaryColor={PrimaryColor}
-        SecondaryShade={SecondaryShade}
+        PrimaryColor={primary_color}
+        SecondaryShade={secondary_shade}
         className="checkbox-tools"
         type={"radio"}
         id={id}
