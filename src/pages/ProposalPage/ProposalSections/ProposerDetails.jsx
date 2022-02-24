@@ -27,7 +27,7 @@ const ProposerDetails = ({
   const proposelSelectedDOBRedux = useSelector(
     ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob
   );
-
+  
   const {
     data: {
       data: {
@@ -76,6 +76,7 @@ const ProposerDetails = ({
           );
         }
       });
+      
       setValues({ ...values, ...prefilledValues });
     }
   }, []);

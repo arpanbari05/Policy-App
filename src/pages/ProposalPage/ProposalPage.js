@@ -13,13 +13,14 @@ import BMI from "./ProposalSections/components/BMI";
 import NSTP from "./ProposalSections/components/NSTP";
 import ProductSummary from "./ProposalSections/components/ProductSummary";
 import { MobileHeader, MobileHeaderText } from "./ProposalPage.style";
+import ErrorPopup from "./ProposalSections/components/ErrorPopup";
 import {
   clearProposalData,
   getProposalData,
   setIsLoading,
   submitProposalData,
 } from "./ProposalSections/ProposalSections.slice";
-
+import { setShowErrorPopup } from "./ProposalSections/ProposalSections.slice";
 import ReviewCart from "../ProductDetails/components/ReviewCart";
 import PencilIcon from "../../assets/svg-icons/PencilIcon";
 import { getProposalFields } from "./schema.slice";
@@ -47,6 +48,8 @@ const ProposalPage = () => {
   const cart = useSelector(state => state.cart);
   const [listOfForms, setListOfForms] = useState([]);
 
+  const { showErrorPopup } = useSelector(({ proposalPage }) => proposalPage);
+
   useEffect(() => {
     if (currentSchema instanceof Object)
       setListOfForms(Object.keys(currentSchema));
@@ -55,7 +58,7 @@ const ProposalPage = () => {
   const { activeIndex, proposalData } = useSelector(
     state => state.proposalPage,
   );
-  console.log(useSelector(({ greetingPage }) => greetingPage?.proposerDetails));
+  console.log("wvbiwrvbwhxxx", proposalData);
 
   const {
     colors: { primary_color, primary_shade },
@@ -156,23 +159,24 @@ const ProposalPage = () => {
               <MainTitle PrimaryColor={PrimaryColor}>
                 Proposer Details
               </MainTitle>
-              <div
-                css={`
-                  width: 30px;
-                  display: ${!proposalData[listOfForms[0]] && "none"};
-                  height: 30px;
-                  background: ${PrimaryShade};
-                  border-radius: 100%;
-                  display: flex;
-                  color: ${PrimaryColor};
-                  align-items: center;
-                  justify-content: center;
-                  font-size: 13px;
-                `}
-                className="btn p-0"
-              >
-                <FaPen />
-              </div>
+              
+                <div
+                  css={`
+                    width: 30px;
+                    height: 30px;
+                    background: ${PrimaryShade};
+                    border-radius: 100%;
+                    display: flex;
+                    color: ${PrimaryColor};
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 13px;
+                  `}
+                  className="btn p-0"
+                >
+                  <FaPen />
+                </div>
+          
             </span>
           )}
         </Card>
@@ -206,23 +210,24 @@ const ProposalPage = () => {
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Insured Details</MainTitle>
-              <div
-                css={`
-                  width: 30px;
-                  display: ${!proposalData[listOfForms[1]] && "none"};
-                  height: 30px;
-                  background: ${PrimaryShade};
-                  border-radius: 100%;
-                  display: flex;
-                  color: ${PrimaryColor};
-                  align-items: center;
-                  justify-content: center;
-                  font-size: 13px;
-                `}
-                className="btn p-0"
-              >
-                <FaPen />
-              </div>
+              {proposalData[listOfForms[0]] && (
+                <div
+                  css={`
+                    width: 30px;
+                    height: 30px;
+                    background: ${PrimaryShade};
+                    border-radius: 100%;
+                    display: flex;
+                    color: ${PrimaryColor};
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 13px;
+                  `}
+                  className="btn p-0"
+                >
+                  <FaPen />
+                </div>
+              )}
             </span>
           )}
         </Card>
@@ -257,24 +262,25 @@ const ProposalPage = () => {
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Medical Details</MainTitle>
-
-              <div
-                css={`
-                  width: 30px;
-                  display: ${!proposalData[listOfForms[2]] && "none"};
-                  height: 30px;
-                  background: ${PrimaryShade};
-                  border-radius: 100%;
-                  display: flex;
-                  color: ${PrimaryColor};
-                  align-items: center;
-                  justify-content: center;
-                  font-size: 13px;
-                `}
-                className="btn p-0"
-              >
-                <FaPen />
-              </div>
+              {proposalData[listOfForms[1]] && (
+                <div
+                  css={`
+                    width: 30px;
+                    display: ${!proposalData[listOfForms[2]] && "none"};
+                    height: 30px;
+                    background: ${PrimaryShade};
+                    border-radius: 100%;
+                    display: flex;
+                    color: ${PrimaryColor};
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 13px;
+                  `}
+                  className="btn p-0"
+                >
+                  <FaPen />
+                </div>
+              )}
             </span>
           )}
         </Card>
@@ -308,7 +314,9 @@ const ProposalPage = () => {
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Other Details</MainTitle>
-              <div
+              {
+                proposalData[listOfForms[2]] && (
+                  <div
                 css={`
                   width: 30px;
                   display: ${!proposalData[listOfForms[3]] && "none"};
@@ -325,6 +333,9 @@ const ProposalPage = () => {
               >
                 <FaPen />
               </div>
+                )
+              }
+              
             </span>
           )}
         </Card>
@@ -533,6 +544,22 @@ const ProposalPage = () => {
       <PlanUnavailable />
       <BMI />
       <NSTP />
+      {showErrorPopup.show && (
+        <ErrorPopup
+          show={showErrorPopup.show}
+          head={showErrorPopup.head}
+          msg={showErrorPopup.msg}
+          handleClose={() =>
+            dispatch(
+              setShowErrorPopup({
+                show: false,
+                head: "",
+                msg: "",
+              }),
+            )
+          }
+        />
+      )}
     </Page>
   );
 };

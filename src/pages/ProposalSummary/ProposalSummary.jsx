@@ -409,7 +409,7 @@ const ProposalSummary = () => {
                     <div className="-wrapper pad_proposal_s mt-2">
                       { }
                       {allFields ? (
-                        allFields.map((item, index) => {
+                      allFields.map((item, index) => {
                           return (
                             <SummaryTab
                               PrimaryColor={PrimaryColor}
