@@ -33,7 +33,7 @@ const FormBuilder = ({
   setNoForAllEmpty,
   keyStr,
   lastName,
-  isInsuredDetails
+  isInsuredDetails,
 }) => {
   const {
     updateValue,
@@ -55,7 +55,23 @@ const FormBuilder = ({
 
   const [trigger, setTrigger] = useState(false);
   const { proposalData } = useSelector(state => state.proposalPage);
-  const relationships = ["spouse", "son", "son1", "son2", "son3", "son4", "daughter", "daughter1", "daughter2", "daughter3", "daughter4", "father", "mother", "grand_father", "grand_mother"]
+  const relationships = [
+    "spouse",
+    "son",
+    "son1",
+    "son2",
+    "son3",
+    "son4",
+    "daughter",
+    "daughter1",
+    "daughter2",
+    "daughter3",
+    "daughter4",
+    "father",
+    "mother",
+    "grand_father",
+    "grand_mother",
+  ];
 
   useEffect(() => {
     if (trigger) {
@@ -149,7 +165,7 @@ const FormBuilder = ({
 
   return (
     <>
-      {console.log("schemaschemaschema", schema)}
+      {console.log("schemaschemaschema", values)}
       {schema instanceof Array &&
         schema.map((item, index) => {
           if (item instanceof Array) {
@@ -161,17 +177,19 @@ const FormBuilder = ({
                     values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
                     values[item[0]?.parent]?.members instanceof Object &&
-                    values[item[0]?.parent]?.members?.[member]
+                    values[item[0]?.parent]?.members?.[member] &&
+                    (item[0].render.when.includes("||")
+                      ? renderField(item[0], values, member)
+                      : true)
                   )
                     return (
                       <CustomWrapper>
                         <div className="col-md-12">
                           <Title>
-                            {
-                              proposalData["Insured Details"]?.[
+                            {member}
+                            {/* proposalData["Insured Details"]?.[
                                 member
-                              ]?.name?.split(" ")[0]
-                            }
+                              ]?.name?.split(" ")[0] */}
                           </Title>
                           {item.map(innerItem => {
                             const Comp = components[innerItem.type];
@@ -333,6 +351,7 @@ const FormBuilder = ({
                                       }
                                       submitTrigger={submitTrigger}
                                       setCustomValid={setCustomValid}
+                                      values={values}
                                       {...innerItem.additionalOptions}
                                     />
                                   </Wrapper>
@@ -348,7 +367,9 @@ const FormBuilder = ({
             );
           } else {
             const Comp = components[item.type];
-            const initialValue = relationships.includes(`${keyStr}`) ? lastName : null;
+            const initialValue = relationships.includes(`${keyStr}`)
+              ? lastName
+              : null;
             if (
               !renderField(item, values) &&
               item.render &&
@@ -436,7 +457,10 @@ const FormBuilder = ({
                           }
                         }}
                         age={item?.validate?.age}
-                        readOnly={item.readOnly || (isInsuredDetails && item.name === "mobile")}
+                        readOnly={
+                          item.readOnly
+                          //  ||(isInsuredDetails && item.name === "mobile")
+                        }
                         allValues={proposalData}
                         customMembers={
                           item.render &&
@@ -475,11 +499,16 @@ const FormBuilder = ({
                           generateRange(item.additionalOptions.customOptions)
                         }
                         asyncOptions={asyncOptions[item.name]}
-                        defaultValue={item.type === "text" && item.name === "name" ? values[item.name] || initialValue || item.value : values[item.name] || item.value}
+                        defaultValue={
+                          item.type === "text" && item.name === "name"
+                            ? values[item.name] || initialValue || item.value
+                            : values[item.name] || item.value
+                        }
                         value={values[item.name] || item.value}
                         error={errors[item.name] || additionalErrors[item.name]}
                         submitTrigger={submitTrigger}
                         setCustomValid={setCustomValid}
+                        values={values}
                         {...item.additionalOptions}
                       />
                     </Wrapper>
