@@ -16,24 +16,39 @@ const Toggle = ({
   value,
   error,
   onChange,
+  showMembersIf,
   notAllowed,
+  values,
   showMembers,
   customMembers,
 }) => {
   const { colors } = useTheme();
-
+  
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
+const [customShowMembers,setCustomshowMembers] = useState(false);
+console.log("bjffb",values,customShowMembers,showMembersIf?showMembersIf.split("||"):"");
+useEffect(() => {
+if(showMembersIf){
+
+  setCustomshowMembers(showMembersIf.split("||").some(name => {
+    
+    return values && values[name] && values[name][`is${name}`] === "Y" 
+  }))
+  console.log("bjffb",values,customShowMembers,showMembersIf?showMembersIf.split("||"):"");
+}
+},[values])
 
   const [boolean, setBoolean] = useState("N");
   const [membersStatus, setMembersStatus] = useState({});
+  console.log("hrfgvbrgvf", membersStatus);
   const { mediUnderwritting } = useSelector(
-    state => state.proposalPage.proposalData,
+    (state) => state.proposalPage.proposalData
   );
   const membersToMap = customMembers instanceof Array ? customMembers : members;
   // const membersToMap = members;
-  console.log(name, notAllowed, value);
+  
   const dispatch = useDispatch();
   useEffect(() => {
     if (value && notAllowed && value[`is${name}`] === "Y") {
@@ -108,7 +123,7 @@ const Toggle = ({
                 <input
                   type="radio"
                   name={`is${name}`}
-                  onChange={e => {
+                  onChange={(e) => {
                     if (notAllowed) {
                       dispatch(setShowPlanNotAvail(true));
                     } else {
@@ -135,9 +150,9 @@ const Toggle = ({
                   type="radio"
                   name={`is${name}`}
                   value="N"
-                  onChange={e => {
+                  onChange={(e) => {
                     setBoolean(e.target.value);
-                    setMembersStatus({});
+                    !showMembersIf && setMembersStatus({});
                   }}
                   checked={boolean === "N"}
                 />
@@ -157,7 +172,7 @@ const Toggle = ({
           </div>
         </div>
         {membersToMap.length && !(showMembers === false) ? (
-          boolean === "Y" && (
+          (customShowMembers || boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (
                 <>
@@ -166,7 +181,7 @@ const Toggle = ({
                       type="checkbox"
                       name={item}
                       id={"rb1" + name + index + item}
-                      onChange={e =>
+                      onChange={(e) =>
                         setMembersStatus({
                           ...membersStatus,
                           [e.target.name]: e.target.checked,
@@ -182,27 +197,29 @@ const Toggle = ({
                       `}
                     >
                       {item}
-                      <p
-                        className="formbuilder__error position-absolute"
-                        css={`
-                          bottom: -11px;
-                          left: 21px;
-                          /* right: 0; */
-                          background: white;
-                          font-size: 14px;
-                          @media (max-width: 767px) {
-                            bottom: -15px;
-                            left: 15px;
-                            background: unset;
-                          }
-                        `}
-                      >
-                        {error}
-                      </p>
                     </label>
                   </Fragment>
                 </>
               ))}
+              {!Object.keys(membersStatus).some(i => membersStatus[i]) && (
+                <p
+                  className="formbuilder__error position-absolute"
+                  css={`
+                    bottom: -11px;
+                    left: 21px;
+                    /* right: 0; */
+                    background: white;
+                    font-size: 14px;
+                    @media (max-width: 767px) {
+                      bottom: -15px;
+                      left: 15px;
+                      background: unset;
+                    }
+                  `}
+                >
+                  Please select one!
+                </p>
+              )}
             </Group>
           )
         ) : (
@@ -227,7 +244,7 @@ const Question = styled.p`
     position: absolute;
     left: -2px;
     top: 2px;
-    background-color: ${props => props.SecondaryColor};
+    background-color: ${(props) => props.SecondaryColor};
     border-radius: 50px;
     @media (max-width: 767px) {
       height: calc(100% - 6px);

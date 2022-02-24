@@ -1386,6 +1386,14 @@ function getRiderOptionsQueryString(riders = []) {
   return riderOptionsQueryString;
 }
 
+function getSelectedRiders(riders = []) {
+  const selectedRiders = riders.filter(
+    rider => !!(isMandatoryRider(rider) || rider.isSelected),
+  );
+
+  return selectedRiders;
+}
+
 export function useRiders({
   quote,
   groupCode,
@@ -1455,12 +1463,7 @@ export function useRiders({
   }, [data]);
 
   useEffect(() => {
-    onChange &&
-      onChange(
-        riders
-          .filter(rider => rider.isSelected)
-          .filter(rider => !isMandatoryRider(rider)),
-      );
+    onChange && onChange(getSelectedRiders(riders));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riders]);
 

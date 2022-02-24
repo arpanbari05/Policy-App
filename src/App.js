@@ -33,12 +33,16 @@ function App() {
       </Route>
       <Route exact path="/proposal">
         <LazyLoad>
-          <ProposalPage />
+          <LoadCart>
+            <ProposalPage />
+          </LoadCart>
         </LazyLoad>
       </Route>
       <Route exact path="/proposal_summary">
         <LazyLoad>
-          <ProposalSummary />
+          <LoadCart>
+            <ProposalSummary />
+          </LoadCart>
         </LazyLoad>
       </Route>
       <Route exact path="/thankyou/">
