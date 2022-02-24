@@ -17,14 +17,18 @@ const includesDigits = (str = "") => str.match(/(\d+)/);
 const getNumberFromString = (str = "") =>
   includesDigits(str) ? parseInt(includesDigits(str)[0]) : null;
 
-const findSelectedFilterArray = (filters, selectedFilter) => {
-  if (typeof selectedFilter === "object")
+const findSelectedFilterObject = (filters, selectedFilter) => {
+  if (typeof selectedFilter === "object") {
     return selectedFilter.map(selected =>
-      filters?.options?.filter(
-        filter => selected.display_name === filter.display_name,
-      ),
+      filters.options.find(filter => selected.includes(filter.display_name)),
     );
-}; // RETURNS SELECTED OPTIONS ARRAY [{}..] FOR EACH FILTER
+  }
+  if (typeof selectedFilter === "string") {
+    return filters.options.find(
+      filter => filter.display_name === selectedFilter,
+    );
+  }
+}; // RETURNS SELECTED OPTIONS ARRAY [{}..] or OBJECT FOR EACH FILTER
 
 const findFeature = quote => featureCode =>
   quote.features.find(feature => feature.code === featureCode);
@@ -99,39 +103,43 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   const [popularFilters, preExistingFilters, noClaimFilters, otherFilters] =
     morefilters; // ALL AVAILABLE FILTER OPTIONS
 
-  console.log("The populerfiltewrs ", popularFilters);
+  const popularFiltersSelectedNameArray = popularFiltersSelected
+    ? popularFiltersSelected.map(
+        singleSelectedOption => singleSelectedOption.display_name,
+      )
+    : [];
 
-  /*const popularFilter = popularFiltersSelected
-    ? popularFiltersSelected.filter(
+  const popularFiltersSelectedNameArrayAlt = popularFiltersSelectedNameArray
+    ? popularFiltersSelectedNameArray.filter(
         option => option !== "No Pre-policy Check up",
       )
     : popularFiltersSelected;
 
-  const isNoPreMedicalSelected = popularFiltersSelected
-    ? popularFiltersSelected.includes("No Pre-policy Check up")
-    : false;*/
+  const isNoPreMedicalSelected = popularFiltersSelectedNameArray
+    ? popularFiltersSelectedNameArray.includes("No Pre-policy Check up")
+    : false;
 
-  const selectedPopularFiltersArray = findSelectedFilterArray(
+  const selectedPopularFiltersArray = findSelectedFilterObject(
     {
       ...popularFilters,
       options: popularFilters.options.filter(
         option => option.code !== "no pre policy check up",
       ),
     },
-    popularFiltersSelected,
+    popularFiltersSelectedNameArrayAlt,
   );
 
-  const selectedPreExistingFilterArray = findSelectedFilterArray(
+  const selectedPreExistingFilterObject = findSelectedFilterObject(
     preExistingFilters,
     preExisting,
   );
 
-  const selectedNoClaimFilterArray = findSelectedFilterArray(
+  const selectedNoClaimFilterObject = findSelectedFilterObject(
     noClaimFilters,
     noClaim,
   );
 
-  const selectedOtherFiltersArray = findSelectedFilterArray(
+  const selectedOtherFiltersArray = findSelectedFilterObject(
     otherFilters,
     others,
   );
@@ -185,11 +193,7 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
       filter ? checkFeatureMatch(...filter) : true; //Accepts {} Returns BOOL
 
     const filtersMatch = filters => {
-      console.log(
-        "The filters match filter",
-        filters,
-        filters && filters.every(filter => checkFeatureMatch(filter)),
-      );
+      console.log("The filters", filters);
       return filters
         ? filters.every(filter => checkFeatureMatch(filter))
         : true; //Accepts [{}..] Returns BOOL
@@ -200,17 +204,18 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     const isNoClaimsMatch = filterMatch(selectedNoClaimFilterArray);
     const isPreExistingMatch = filterMatch(selectedPreExistingFilterArray);
 
-    /*const isNoPreMedicalMatch = isNoPreMedicalSelected
+    const isNoPreMedicalMatch = isNoPreMedicalSelected
       ? minAge < quote.ppmc_age_limit
-      : true;*/
+      : true;
+
     return (
       isCompanyMatch &&
       isPremiumMatch &&
       isPopularFiltersMatch &&
       isOtherFiltersMatch &&
       isPreExistingMatch &&
-      isNoClaimsMatch /*&&
-       isNoPreMedicalMatch */
+      isNoClaimsMatch &&
+      isNoPreMedicalMatch
     );
   }
 
