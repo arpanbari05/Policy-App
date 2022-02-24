@@ -32,7 +32,10 @@ const DateComp = ({
   console.log("jhcvugc", age);
   const [isFocused, setIsFocused] = useState(false);
   const onFocus = () => setIsFocused(true);
-
+  let newDate = new Date();
+  let currentYear = newDate.getFullYear();
+  let currentMonth = newDate.getMonth();
+  let currentDate = newDate.getDate();
   console.log(value);
 
   return (
@@ -48,10 +51,19 @@ const DateComp = ({
             : ""
         }
         minDate={
-          age && age[1] >= 0 ? moment().subtract(age[1], "years").toDate() : ""
-        }
-        maxDate={
-          age && age[0] >= 0 ? moment().subtract(age[0], "years").toDate() : ""
+
+age && age[1] >= 0 ?new Date(currentYear-(age[1] + 1), currentMonth, (currentDate - 1)): ""
+}
+maxDate={
+          age && age[0] >= 1
+            ? new Date(currentYear - age[0], currentMonth, currentDate)
+            : age[0]
+            ? new Date(
+                currentYear,
+                currentMonth - Number(age[0].toString().split(".")[1]),
+                currentDate
+              )
+            : ""
         }
         placeholderText={placeholder}
         onChange={date => {

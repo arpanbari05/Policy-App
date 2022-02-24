@@ -74,6 +74,33 @@ const FormBuilder = ({
     "grand_mother",
   ];
 
+
+  // if nominee relation selected as "self"
+  let dataForAutopopulate = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
+  );
+  const insuredDetails = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
+  );
+  dataForAutopopulate = {...dataForAutopopulate,...insuredDetails?insuredDetails["self"]:{}};
+
+  // for auto populate self data when nominee relation is self
+  useEffect(() => {
+    if (values.nominee_relation === "self") {
+      console.log("sngsgdd",{dataForAutopopulate,schema})
+      let acc = {};
+      schema.forEach(({name}) => {
+          let nameWithoutNominee = name.slice(name.indexOf("_")+1,name.length);
+          if(nameWithoutNominee === "contact") nameWithoutNominee = "mobile";
+          if(nameWithoutNominee.includes("address")) nameWithoutNominee = Object.keys(dataForAutopopulate).find(name => name.includes(nameWithoutNominee))
+          if (dataForAutopopulate[nameWithoutNominee]) acc[name] = dataForAutopopulate[nameWithoutNominee];
+        });
+     
+      console.table("ejrgvbjhsb",schema,dataForAutopopulate,acc);
+      setValues(prev => ({ ...prev, ...acc }));
+    }
+  }, [values.nominee_relation]);
+
   useEffect(() => {
     if (trigger) {
       triggerValidation(trigger);
