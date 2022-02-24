@@ -543,6 +543,7 @@ export function useUpdateMembers() {
             Object.assign(draft, response.data);
           }),
         );
+        dispatch(api.util.invalidateTags(["Cart"]));
         return response;
       },
     );

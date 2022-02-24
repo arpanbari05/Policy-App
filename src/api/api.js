@@ -178,9 +178,8 @@ export const api = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Cart"],
       onQueryStarted: async (_data, { dispatch, queryFulfilled }) => {
-        const { data } = await queryFulfilled;
+        const { data } = await queryFulfilled;     
         dispatch(
           api.util.updateQueryData("getEnquiries", undefined, draft => {
             if (draft) Object.assign(draft, data);
