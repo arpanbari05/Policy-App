@@ -157,8 +157,33 @@ export function getPercentageAmount(
   return percentageAmount;
 }
 
+export function getDiscountAmountForRiders(additionalDiscount, riders = []) {
+  const { percent } = additionalDiscount;
+  const discountedAmount = riders.reduce((sum, rider) => {
+    const discountedAmountOfRider = getPercentageAmount(
+      rider.total_premium,
+      percent,
+    );
+    return (sum += discountedAmountOfRider);
+  }, 0);
+
+  return discountedAmount;
+}
+
+export function getRidersTotalPremium(riders = []) {
+  const ridersTotalPremium = riders.reduce(
+    (sum, rider) => (sum += rider.total_premium),
+    0,
+  );
+  return ridersTotalPremium;
+}
+
 export function getDiscountAmount(additionalDiscount, cartEntry) {
+  const { health_riders, riders, total_premium: basePlanPremium } = cartEntry;
+
   let discountedAmount = 0;
+
+  const totalPremium = calculateTotalPremium(cartEntry);
 
   const {
     applied_on_riders,
@@ -168,12 +193,25 @@ export function getDiscountAmount(additionalDiscount, cartEntry) {
   } = additionalDiscount;
 
   if (applied_on_total_premium) {
-    const totalPremium = calculateTotalPremium(cartEntry);
-    const discountedAmount = getPercentageAmount(totalPremium, percent);
-    return Math.round(discountedAmount);
+    const discountedAmountOnTotalPremium = getPercentageAmount(
+      totalPremium,
+      percent,
+    );
+    return discountedAmountOnTotalPremium;
   }
 
   if (applied_on_riders) {
+    const ridersList = health_riders || riders || [];
+    const applicableRiders = ridersList.filter(rider =>
+      applied_on_riders.includes(rider.alias),
+    );
+    const ridersTotalPremium = getRidersTotalPremium(applicableRiders);
+    const discountedAmount = getPercentageAmount(
+      ridersTotalPremium + basePlanPremium,
+      percent,
+    );
+
+    return discountedAmount;
   }
 
   if (applied_on_discounts) {
