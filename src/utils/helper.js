@@ -147,17 +147,58 @@ export function isInViewport(element) {
   );
 }
 
-export function calculateTotalPremium({
-  total_premium: basePlanPremium = 0,
-  health_riders = [],
-  addons = [],
-} = {}) {
+export function getPercentageAmount(
+  amount,
+  percentage,
+  { roundOf = true } = {},
+) {
+  const percentageAmount = amount * (percentage / 100);
+  if (roundOf) return Math.round(percentageAmount);
+  return percentageAmount;
+}
+
+export function getDiscountAmount(additionalDiscount, cartEntry) {
+  let discountedAmount = 0;
+
+  const {
+    applied_on_riders,
+    applied_on_total_premium,
+    applied_on_discounts,
+    percent,
+  } = additionalDiscount;
+
+  if (applied_on_total_premium) {
+    const totalPremium = calculateTotalPremium(cartEntry);
+    const discountedAmount = getPercentageAmount(totalPremium, percent);
+    return Math.round(discountedAmount);
+  }
+
+  if (applied_on_riders) {
+  }
+
+  if (applied_on_discounts) {
+  }
+  return discountedAmount;
+}
+
+export function calculateTotalPremium(
+  cartEntry,
+  { additionalDiscounts = [] } = {},
+) {
+  const { total_premium: basePlanPremium = 0, health_riders = [] } = cartEntry;
   const totalPremium = items =>
     items.reduce((totalPremium, item) => totalPremium + item.total_premium, 0);
   const ridersPremium = totalPremium(health_riders);
-  const addOnsPremium = totalPremium(addons);
 
-  return ridersPremium + addOnsPremium + basePlanPremium;
+  const total_premium = ridersPremium + basePlanPremium;
+
+  let discountedAmount = 0;
+
+  for (let additionalDiscount of additionalDiscounts) {
+    discountedAmount += getDiscountAmount(additionalDiscount, cartEntry);
+  }
+
+  return total_premium - discountedAmount;
 }
 
 export function getAgeList({ min_age, max_age }) {
@@ -332,4 +373,18 @@ export function getFeature(quote, featureCode) {
 
 export function getFeatureForQuotes(quotes, featureCode) {
   return quotes.map(quote => getFeature(quote, featureCode));
+}
+
+export function getTotalPremium(cartEntries = []) {
+  let totalPremium = 0;
+
+  for (let cartEntry of cartEntries) {
+    totalPremium += +cartEntry.discounted_total_premium;
+  }
+
+  return totalPremium;
+}
+
+export function getFirstName(name = "") {
+  return name.split(" ")[0];
 }

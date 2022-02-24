@@ -11,11 +11,21 @@ import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useCompanies, useTheme } from "../../../customHooks";
 import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
-import { amount, calculateTotalPremium } from "../../../utils/helper";
+import {
+  amount,
+  calculateTotalPremium,
+  getFirstName,
+  getTotalPremium,
+} from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
-import { useGetCartQuery, useGetEnquiriesQuery, useDeleteGroupQuery } from "../../../api/api";
+import {
+  useGetCartQuery,
+  useGetEnquiriesQuery,
+  useDeleteGroupQuery,
+} from "../../../api/api";
 import { skipToken } from "@reduxjs/toolkit/query";
+import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -106,7 +116,6 @@ function AddOnDetailsCard({
     members,
     total_premium,
     sum_insured,
-    
   },
 }) {
   const companies = useSelector(
@@ -546,7 +555,9 @@ function ProductDetailsCardMobile({ cartItem }) {
 function ProductDetailsCard({ cartItem }) {
   const { companies } = useCompanies();
 
-  const { colors: { primary_color: PrimaryColor }} = useTheme();
+  const {
+    colors: { primary_color: PrimaryColor },
+  } = useTheme();
 
   const {
     product: {
@@ -722,67 +733,96 @@ function ProductDetailsCard({ cartItem }) {
 }
 
 function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
-  const { colors: { primary_color: PrimaryColor} } = useTheme();
-  const proposalDetails = useSelector(state => state.proposalPage.proposalData);
-  const firstName = proposalDetails["Proposer Details"]?.name;
-  const { memberGroups } = useSelector(state => state.greetingPage);
-  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
+  const {
+    colors: { primary_color: PrimaryColor },
+  } = useTheme();
+  const {
+    data: {
+      data: { name },
+    },
+  } = useGetEnquiriesQuery();
+  const firstName = getFirstName(name);
+  // const proposalDetails = useSelector(state => state.proposalPage.proposalData);
+  // const firstName = proposalDetails["Proposer Details"]?.name;
+  // const { memberGroups } = useSelector(state => state.greetingPage);
+  // const additionalDiscounts = useSelector(selectAdditionalDiscounts);
   const {
     data: {
       data: { groups },
     },
   } = useGetEnquiriesQuery();
-  const { data, isLoading, isUninitialized } = useGetCartQuery();
+  const { data, isLoading, isUninitialized, isFetching } = useGetCartQuery();
   const cart = data.data;
-  
-  const groupCodes = Object.keys(cart).filter((item) =>
-    Object.keys(memberGroups).includes(item)
-  );
 
-  const allAddOns = groupCodes.reduce(
-    (allAddOns, groupCode) => [...allAddOns, ...cart[groupCode].addons],
-    [],
-  );
+  // const groupCodes = Object.keys(cart).filter(item =>
+  //   Object.keys(memberGroups).includes(item),
+  // );
 
-  if (isLoading || isUninitialized) return <></>;
-  const getCartEntry = (groupId) => {
+  // const allAddOns = groupCodes.reduce(
+  //   (allAddOns, groupCode) => [...allAddOns, ...cart[groupCode].addons],
+  //   [],
+  // );
+
+  if (isLoading || isUninitialized || isFetching)
+    return (
+      <PopUpWithCloseButton
+        title={
+          <div>
+            <span
+              css={`
+                text-transform: capitalize;
+                ${mobile} {
+                  /* display: none; */
+                }
+              `}
+            >
+              Hi {firstName}, take a minute and review your cart before you
+              proceed
+            </span>
+          </div>
+        }
+        onClose={() => handleCloseClick(PrimaryColor)}
+      >
+        <CardSkeletonLoader />
+      </PopUpWithCloseButton>
+    );
+  const getCartEntry = groupId => {
     if (data.data) {
       return data.data.find(cartEntry => cartEntry.group.id === groupId);
     }
-  }
-  console.log({groups, cart})
+  };
+  // console.log({ groups, cart });
 
+  // const findAdditionalDiscount = discountAlias =>
+  //   additionalDiscounts.find(discount => discount.alias === discountAlias);
 
-  const findAdditionalDiscount = discountAlias =>
-    additionalDiscounts.find(discount => discount.alias === discountAlias);
+  // const totalPremium = groups.reduce((totalPremium, groupCode) => {
+  //   console.log(cart, groupCode);
+  //   const groupCart = cart.find(item => item.group.id === groupCode.id);
 
-  let totalPremium = groups.reduce((totalPremium, groupCode) => {
-    console.log(cart, groupCode);
-    const groupCart = cart.find(item => item.group.id === groupCode.id);
-    
-    const discounts = groupCart?.discounts;
-    let newTotalPremium = totalPremium + calculateTotalPremium(groupCart);
-    if (discounts) {
-      discounts.forEach(discountAlias => {
-        const discount = findAdditionalDiscount(discountAlias);
-        if (discount) {
-          newTotalPremium -= newTotalPremium * (discount.percent / 100);
-        }
-      });
-    }
-    return newTotalPremium;
-  }, 0);
+  //   const discounts = groupCart?.discounts;
+  //   let newTotalPremium = totalPremium + calculateTotalPremium(groupCart);
+  //   if (discounts) {
+  //     discounts.forEach(discountAlias => {
+  //       const discount = findAdditionalDiscount(discountAlias);
+  //       if (discount) {
+  //         newTotalPremium -= newTotalPremium * (discount.percent / 100);
+  //       }
+  //     });
+  //   }
+  //   return newTotalPremium;
+  // }, 0);
 
-  const reducedAddOns = allAddOns.reduce((reducedAddOns, addOn) => {
-    const { id } = addOn.product;
-    if (!reducedAddOns[id]) {
-      return {
-        ...reducedAddOns,
-        [id]: [addOn],
-      };
-    }
-    return { ...reducedAddOns, [id]: [...reducedAddOns[id], addOn] };
-  }, {});
+  // const reducedAddOns = allAddOns.reduce((reducedAddOns, addOn) => {
+  //   const { id } = addOn.product;
+  //   if (!reducedAddOns[id]) {
+  //     return {
+  //       ...reducedAddOns,
+  //       [id]: [addOn],
+  //     };
+  //   }
+  //   return { ...reducedAddOns, [id]: [...reducedAddOns[id], addOn] };
+  // }, {});
 
   // function addOnsReducer(reducedAddOns, addOn) {
   //   const addOnId = addOn.product.id;
@@ -802,6 +842,8 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
 
   // const { product } = useCartProduct(groupCodes[0]);
   // const { tenure } = product;
+
+  const totalPremium = getTotalPremium(cart);
 
   return (
     <PopUpWithCloseButton
@@ -871,42 +913,44 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
             }
           `}
         >
-          <div
-            css={`
-              font-weight: 900;
+          {
+            <div
+              css={`
+                font-weight: 900;
 
-              ${mobile} {
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-              }
-            `}
-          >
-            <div
-              css={`
-                color: #505f79;
-                font-size: 13px;
                 ${mobile} {
-                  font-size: 16px;
-                  font-weight: 600;
+                  display: flex;
+                  justify-content: space-between;
+                  width: 100%;
                 }
               `}
             >
-              Total Premium :
+              <div
+                css={`
+                  color: #505f79;
+                  font-size: 13px;
+                  ${mobile} {
+                    font-size: 16px;
+                    font-weight: 600;
+                  }
+                `}
+              >
+                Total Premium :
+              </div>
+              <div
+                css={`
+                  color: var(--abc-red);
+                  font-size: 20px;
+                  text-align: left;
+                  ${mobile} {
+                    font-size: 18px;
+                  }
+                `}
+              >
+                {amount(totalPremium)}
+              </div>
             </div>
-            <div
-              css={`
-                color: var(--abc-red);
-                font-size: 20px;
-                text-align: left;
-                ${mobile} {
-                  font-size: 18px;
-                }
-              `}
-            >
-              {amount(totalPremium)}
-            </div>
-          </div>
+          }
           <Link
             to={propsoalPageLink}
             css={`
@@ -1024,23 +1068,21 @@ function ProductCard({ groupCode, onClose, cartEntry, group }) {
           </button>
         </div> */}
       </div>
-      {
-        product ? (
-          <div
-            css={`
-              margin-bottom: 20px;
-              ${mobile} {
-                margin-top: 10px;
-              }
-            `}
-          >
-            <ProductDetailsCard cartItem={product} />
-            <ProductDetailsCardMobile cartItem={product} />
-          </div>
-        ) : (
-          <ProceedWithoutPlan group={group} />
-        )
-      }
+      {product ? (
+        <div
+          css={`
+            margin-bottom: 20px;
+            ${mobile} {
+              margin-top: 10px;
+            }
+          `}
+        >
+          <ProductDetailsCard cartItem={product} />
+          <ProductDetailsCardMobile cartItem={product} />
+        </div>
+      ) : (
+        <ProceedWithoutPlan group={group} />
+      )}
       {product?.addons.length > 0 && (
         <div
           css={`
@@ -1068,34 +1110,55 @@ function ProductCard({ groupCode, onClose, cartEntry, group }) {
   );
 }
 
-function ProceedWithoutPlan({group}) {
-  const { colors: { primary_color: PrimaryColor} } = useTheme();
+function ProceedWithoutPlan({ group }) {
+  const {
+    colors: { primary_color: PrimaryColor },
+  } = useTheme();
   const [groupId, setGroupId] = useState(skipToken);
   const { isLoading, data, error } = useDeleteGroupQuery(groupId);
   const handleContinue = () => {
     setGroupId(group.id);
-  }
+  };
 
   return (
     <div className="d-flex align-items-center justify-content-between mb-3 mx-1">
-      <p className="m-0">Are you sure you want to proceed without adding plan?</p>
-      <div className="d-flex" css={`gap: 1rem`}>
-        <button className="py-1 px-3" disabled={isLoading} css={`
-          border-radius: 2px;
-          background-color: ${PrimaryColor};
-          color: #fff;
-          &:disabled {
-            background-color: #ccc;
-          }
-        `} onClick={handleContinue}>Yes</button>
-        <button className="py-1 px-3" css={`
-          border-radius: 2px;
-          background-color: ${PrimaryColor};
-          color: #fff;
-        `}>No</button>
+      <p className="m-0">
+        Are you sure you want to proceed without adding plan?
+      </p>
+      <div
+        className="d-flex"
+        css={`
+          gap: 1rem;
+        `}
+      >
+        <button
+          className="py-1 px-3"
+          disabled={isLoading}
+          css={`
+            border-radius: 2px;
+            background-color: ${PrimaryColor};
+            color: #fff;
+            &:disabled {
+              background-color: #ccc;
+            }
+          `}
+          onClick={handleContinue}
+        >
+          Yes
+        </button>
+        <button
+          className="py-1 px-3"
+          css={`
+            border-radius: 2px;
+            background-color: ${PrimaryColor};
+            color: #fff;
+          `}
+        >
+          No
+        </button>
       </div>
     </div>
-  )
+  );
 }
 
 function GradientTitle({ title = "" }) {

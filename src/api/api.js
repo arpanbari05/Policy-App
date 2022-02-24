@@ -221,7 +221,7 @@ export const api = createApi({
       providesTags: ["Rider"],
     }),
     deleteGroup: builder.query({
-      query: (groupId) => ({ url: `groups/${groupId}`})
+      query: groupId => ({ url: `groups/${groupId}` }),
     }),
     getDiscounts: builder.query({
       query: ({
@@ -247,6 +247,7 @@ export const api = createApi({
         method: "PUT",
         body,
       }),
+      invalidatesTags: ["Cart"],
     }),
     updateEnquiry: builder.mutation({
       query: body => ({
