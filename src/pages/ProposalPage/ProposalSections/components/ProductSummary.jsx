@@ -13,8 +13,14 @@ import Card from "../../../../components/Card";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { BackgroundBorderTitle } from "../../../ProductDetails/components/ReviewCart";
 import { useGetAdditionalDiscountsQuery } from "../../../../api/api";
-import { useFrontendBoot, useTheme } from "../../../../customHooks";
-import { amount } from "../../../../utils/helper";
+import {
+  useCart,
+  useFrontendBoot,
+  useMembers,
+  useTheme,
+} from "../../../../customHooks";
+import { amount, getDisplayPremium } from "../../../../utils/helper";
+import { useGetCartQuery } from "../../../../api/api";
 
 const removeTotalPremium = cart => {
   let { totalPremium, ...y } = cart;
@@ -22,11 +28,30 @@ const removeTotalPremium = cart => {
 };
 
 const numToString = value => value.toLocaleString("en-IN");
-const ProductSummary = ({ cart, setActive }) => {
+const ProductSummary = ({ setActive }) => {
   const [show, setShow] = useState(false);
   const [collapse, setCollapse] = useState(false);
-  const { proposerDetails } = useSelector(state => state.greetingPage);
+  //const { proposerDetails } = useSelector(state => state.greetingPage);
   const { planDetails } = useSelector(state => state.proposalPage);
+
+  const { data: cartData } = useGetCartQuery();
+
+  const { groups } = useMembers();
+
+  const { getCartEntry } = useCart();
+
+  const tenure = getCartEntry(+groups[0].id)?.tenure;
+
+  const revisedNetPremiumArray = groups?.map(
+    singleGroup => getCartEntry(+singleGroup.id)?.netPremium,
+  );
+
+  const revisedNetPremium = revisedNetPremiumArray.length
+    ? revisedNetPremiumArray.reduce(
+        (acc = 0, singleNetPremium) => (acc += singleNetPremium),
+      )
+    : 0;
+
   const dispatch = useDispatch();
   useEffect(() => {
     setShow(planDetails.show);
@@ -107,7 +132,7 @@ const ProductSummary = ({ cart, setActive }) => {
               padding-bottom: 0px !important;
             `}
           >
-            {Object.values(removeTotalPremium(cart)).map((item, index) => (
+            {cartData?.data?.map((item, index) => (
               <CartSummary key={index} item={item} index={index} />
             ))}
             {planDetails.isRenewed ? (
@@ -161,7 +186,10 @@ const ProductSummary = ({ cart, setActive }) => {
                             }
                           `}
                         >
-                          ₹ {cart.totalPremium} / year
+                          {getDisplayPremium({
+                            total_premium: revisedNetPremium,
+                            tenure: tenure,
+                          })}
                         </span>
                       </button>
                     </div>
@@ -236,7 +264,7 @@ const ProductSummary = ({ cart, setActive }) => {
               color: black;
             `}
           >
-            ₹ {cart?.totalPremium}
+            {amount(revisedNetPremium)}
           </Price>
         </div>
       </Card>
@@ -350,7 +378,7 @@ function CartSummary({ item, index }) {
     additionalDiscounts.find(
       additionalDiscount => additionalDiscount.alias === discountAlias,
     );
-  
+
   console.log(policyTypes);
 
   return (
