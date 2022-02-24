@@ -9,9 +9,9 @@
   cursor: pointer;
   height: 23px;
   width: 23px;
-  left: 0px;
-  position: absolute;
-  top: 0;
+  position: relative;
+  /* left: 0px;
+  top: 0; */
 }
 
 .round label:after {

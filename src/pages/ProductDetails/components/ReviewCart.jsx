@@ -1,4 +1,4 @@
-import { Redirect, useHistory, useParams } from "react-router-dom";
+import { Link, Redirect, useHistory, useParams } from "react-router-dom";
 import { useCartProduct } from "../../Cart";
 import styled from "styled-components/macro";
 import care_health from "../../../assets/logos/Care.png";
@@ -8,15 +8,18 @@ import {
   selectAdditionalDiscounts,
   setexpandMobile,
 } from "../productDetails.slice";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ReviewCartPopup, { PopUpWithCloseButton } from "./ReviewCardPopup";
 // import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
 import EditMembersContent from "./EditMembersContent";
 import { mobile, small } from "../../../utils/mediaQueries";
 import CardModal from "../../../components/Common/Modal/CardModal";
-import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
-import { amount } from "../../../utils/helper";
+import {
+  amount,
+  figureToWords,
+  getDiscountAmount,
+} from "../../../utils/helper";
 import {
   useAdditionalDiscount,
   useCart,
@@ -28,11 +31,22 @@ import {
   useUpdateGroupMembers,
   useUrlEnquiry,
 } from "../../../customHooks";
-import { Button, CircleLoader, MembersList } from "../../../components";
-import { FaPen } from "react-icons/fa";
+import {
+  Button,
+  CircleLoader,
+  CloseButton,
+  MembersList,
+} from "../../../components";
+import { FaChevronRight, FaPen } from "react-icons/fa";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { ErrorMessage } from "../../InputPage/components/FormComponents";
 import { NewReviewCartPopup } from "../../../components/NewReviewCartPopup";
+import {
+  MemberOptions,
+  useMembersForm,
+} from "../../../components/MemberOptions";
+import { Modal } from "react-bootstrap";
+import { api, useGetEnquiriesQuery } from "../../../api/api";
 
 const plantypes = {
   M: "Multi Individual",
@@ -42,6 +56,12 @@ const plantypes = {
 
 export function CartDetails({ groupCode, ...props }) {
   const { colors } = useTheme();
+
+  const { getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const { unavailable_message } = cartEntry;
 
   return (
     <CartDetailsWrap {...props}>
@@ -71,13 +91,38 @@ export function CartDetails({ groupCode, ...props }) {
       </div>
 
       <div>
-        <BasePlanDetails groupCode={groupCode} />
-        <RidersList groupCode={groupCode} />
-        <DiscountsList groupCode={groupCode} />
-        <TotalPremium groupCode={groupCode} />
+        <BasePlanDetails
+          groupCode={groupCode}
+          isUnavailable={unavailable_message}
+        />
+        {unavailable_message ? (
+          <UnavailableMessage message={unavailable_message} />
+        ) : (
+          <div>
+            <RidersList groupCode={groupCode} />
+            <DiscountsList groupCode={groupCode} />
+            <TotalPremium groupCode={groupCode} />{" "}
+          </div>
+        )}
         <ReviewCartButtonNew groupCode={groupCode} />
       </div>
     </CartDetailsWrap>
+  );
+}
+
+function UnavailableMessage({ message = "" }) {
+  const { colors } = useTheme();
+  return (
+    <div
+      className="p-3 my-3"
+      css={`
+        background-color: ${colors.secondary_shade};
+        color: #666;
+        font-size: 0.79rem;
+      `}
+    >
+      {message}
+    </div>
   );
 }
 
@@ -139,10 +184,18 @@ function DiscountsList({ groupCode, ...props }) {
 
 function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
   const { name } = additionalDiscount;
-  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
-  const discountAmount = amount(getDiscountAmount(additionalDiscount));
+  // const { getDiscountAmount } = useAdditionalDiscount(groupCode);
+  // const discountAmount = amount(getDiscountAmount(additionalDiscount));
 
-  return <CartDetailRow title={name} value={discountAmount} {...props} />;
+  const { getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const discountAmount = getDiscountAmount(additionalDiscount, cartEntry);
+
+  return (
+    <CartDetailRow title={name} value={amount(discountAmount)} {...props} />
+  );
 }
 
 function RidersList({ groupCode, ...props }) {
@@ -170,7 +223,7 @@ function RiderDetails({ rider, ...props }) {
   );
 }
 
-function Members({ groupCode, ...props }) {
+function Members({ groupCode, editable = true, ...props }) {
   const { getGroupMembers } = useMembers();
   const currentGroupMembers = getGroupMembers(groupCode);
 
@@ -186,37 +239,23 @@ function Members({ groupCode, ...props }) {
           font-size: 0.763rem;
         `}
       />
-      <EditMembersButton groupCode={groupCode} />
+      {editable ? <EditMembersButton groupCode={groupCode} /> : null}
     </div>
   );
+}
+
+function getCartEntryFromUpdateResult(updateResultData, groupCode) {
+  const cartEntry = updateResultData.getCartResult.data.find(
+    cartEntry => +cartEntry.group.id === +groupCode,
+  );
+
+  return cartEntry;
 }
 
 function EditMembersButton({ groupCode, ...props }) {
   const { colors } = useTheme();
 
-  const [showEditMembersModal, setShowEditMembersModal] = useState(false);
-
-  const handleClick = () => {
-    setShowEditMembersModal(true);
-  };
-
-  const closeEditMembersModal = () => setShowEditMembersModal(false);
-
-  const {
-    updateGroupMembers,
-    query: { isLoading, error, isError },
-  } = useUpdateGroupMembers(groupCode);
-
-  const handleSubmit = data => {
-    updateGroupMembers(data.members).then(res => {
-      if (res.error) return;
-      closeEditMembersModal();
-    });
-  };
-
-  let serverErrors;
-
-  if (isError) serverErrors = Object.values(error.data.errors);
+  const modalToggle = useToggle(false);
 
   return (
     <div {...props}>
@@ -230,24 +269,199 @@ function EditMembersButton({ groupCode, ...props }) {
           color: ${colors.primary_color};
           padding: 0;
         `}
-        onClick={handleClick}
+        onClick={modalToggle.on}
       >
         <FaPen />
       </Button>
-      {showEditMembersModal && (
-        <EditMembersModal
-          onClose={closeEditMembersModal}
-          onSubmit={handleSubmit}
-          groupCode={groupCode}
-        >
-          {serverErrors
-            ? serverErrors.map(error => (
-                <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
-              ))
-            : null}
-        </EditMembersModal>
-      )}
+      {modalToggle.isOn && <EditMembers onClose={modalToggle.off} />}
     </div>
+  );
+}
+
+function EditMembers({ onClose }) {
+  const { colors } = useTheme();
+
+  const { groupCode } = useParams();
+
+  const {
+    data: {
+      data: { name },
+    },
+  } = useGetEnquiriesQuery();
+
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  const firstName = name.split(" ")[0];
+
+  const { getCartEntry } = useCart();
+
+  const currentCartEntry = useMemo(() => getCartEntry(groupCode), []);
+
+  const dispatch = useDispatch();
+
+  const { getGroupMembers } = useMembers();
+
+  const groupMembers = getGroupMembers(groupCode);
+
+  const { getSelectedMembers, ...memberForm } = useMembersForm(groupMembers);
+
+  const {
+    updateGroupMembers,
+    query: { isLoading, error, isError, data },
+  } = useUpdateGroupMembers(groupCode);
+
+  const handleSubmit = () => {
+    const members = getSelectedMembers();
+    updateGroupMembers(members).then(res => {
+      if (res.error) return;
+      dispatch(
+        api.util.invalidateTags([
+          "Cart",
+          "Rider",
+          "AdditionalDiscount",
+          "TenureDiscount",
+        ]),
+      );
+      const updatedCartEntry = getCartEntryFromUpdateResult(
+        res.data,
+        groupCode,
+      );
+      if (updatedCartEntry.total_premium === currentCartEntry.total_premium)
+        onClose && onClose();
+    });
+  };
+
+  let serverErrors;
+
+  if (isError) serverErrors = Object.values(error.data.errors);
+
+  if (data) {
+    const { unavailable_message, ...updatedCartEntry } =
+      getCartEntryFromUpdateResult(data, groupCode);
+    const handleCloseClick = () => {
+      onClose && onClose();
+    };
+    return (
+      <Modal
+        show
+        onHide={onClose}
+        css={`
+          & .modal-dialog {
+            max-width: 600px;
+          }
+        `}
+      >
+        <div className="p-3 position-relative">
+          <div
+            className="position-absolute"
+            css={`
+              height: 2em;
+              width: 0.37em;
+              background-color: ${colors.primary_color};
+              top: 50%;
+              left: 0;
+              transform: translateY(-50%);
+              border-radius: 1em;
+            `}
+          />
+          <h1
+            css={`
+              font-weight: 900;
+              font-size: 1.27rem;
+            `}
+          >
+            Hi <span className="text-capitalize">{firstName}, </span>
+            {unavailable_message
+              ? "Plan Unavailable due to change in date of birth"
+              : "Revised Premium due to change in date of birth"}
+          </h1>
+        </div>
+
+        <div className="p-3 pt-0">
+          <Members groupCode={groupCode} editable={false} />
+          <BasePlanDetails
+            groupCode={groupCode}
+            isUnavailable={unavailable_message}
+            revisedPremium
+          />
+          {!unavailable_message ? (
+            <div>
+              <CartDetailRow
+                title="Premium"
+                value={
+                  <span
+                    css={`
+                      text-decoration: line-through;
+                    `}
+                  >
+                    {amount(currentCartEntry.total_premium)}
+                  </span>
+                }
+              />
+              <CartDetailRow
+                title={
+                  <span
+                    css={`
+                      color: ${colors.secondary_color};
+                    `}
+                  >
+                    Revised Premium
+                  </span>
+                }
+                value={amount(updatedCartEntry.total_premium)}
+              />
+            </div>
+          ) : null}
+          {unavailable_message ? (
+            <UnavailableMessage message={unavailable_message} />
+          ) : (
+            <div>
+              <RidersList groupCode={groupCode} />
+              <DiscountsList groupCode={groupCode} />
+            </div>
+          )}
+        </div>
+        <div
+          className="p-3 pt-0 d-flex justify-content-center"
+          css={`
+            gap: 1em;
+          `}
+        >
+          <Button className="w-50" onClick={handleCloseClick}>
+            Close
+          </Button>
+          <Link
+            to={getUrlWithEnquirySearch(`/quotes/${groupCode}`)}
+            className="w-50 d-flex align-items-center justify-content-center"
+            css={`
+              background-color: ${colors.primary_color};
+              &,
+              &:hover {
+                color: #fff;
+              }
+            `}
+          >
+            View Quotes <FaChevronRight />
+          </Link>
+        </div>
+      </Modal>
+    );
+  }
+
+  return (
+    <EditMembersModal onClose={onClose}>
+      <div className="p-3">
+        <MemberOptions {...memberForm} selectable={false} />
+        {serverErrors
+          ? serverErrors.map(error => (
+              <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
+            ))
+          : null}
+      </div>
+      <Button className="w-100" onClick={handleSubmit} loader={isLoading}>
+        Update
+      </Button>
+    </EditMembersModal>
   );
 }
 
@@ -256,25 +470,15 @@ const StyledErrorMessage = styled(ErrorMessage)`
   text-align: center;
 `;
 
-function EditMembers({ groupCode, ...props }) {}
-
-function BasePlanDetails({ groupCode, ...props }) {
+function BasePlanDetails({
+  groupCode,
+  isUnavailable = false,
+  revisedPremium = false,
+  ...props
+}) {
   const { getCartEntry } = useCart();
-  const history = useHistory();
   const { journeyType } = useFrontendBoot();
   const cartEntry = getCartEntry(parseInt(groupCode));
-  const quotesRedirectUrl = useUrlEnquiry();
-
-  /* //? REDIRECT CODE IF PRODUCT IS NOT IN CART.
-  if (!cartEntry) {
-    return (
-      <Redirect
-        to={`quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
-      />
-    );
-  } */
-
-  
 
   const {
     icLogoSrc,
@@ -312,15 +516,38 @@ function BasePlanDetails({ groupCode, ...props }) {
         </div>
         <div>{name}</div>
       </div>
-      <div className="mt-2">
-        <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
-        {journeyType === "top_up" ? (
-          <CartDetailRow title="Deductible" value={amount(deductible)} />
-        ) : null}
-        <CartDetailRow title="Cover" value={amount(sum_insured)} />
-        <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
-        <CartDetailRow title="Premium" value={amount(total_premium)} />
-      </div>
+      {!isUnavailable ? (
+        <div className="mt-2">
+          <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
+          {journeyType === "top_up" ? (
+            <CartDetailRow
+              title="Deductible"
+              value={`₹ ${figureToWords(deductible)}`}
+            />
+          ) : null}
+          <CartDetailRow
+            title="Cover"
+            value={`₹ ${figureToWords(sum_insured)}`}
+          />
+          <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
+          {!revisedPremium ? (
+            <CartDetailRow
+              title="Premium"
+              value={
+                <span
+                  css={`
+                    text-decoration: ${revisedPremium
+                      ? "line-through"
+                      : "none"};
+                  `}
+                >
+                  {amount(total_premium)}
+                </span>
+              }
+            />
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -328,7 +555,13 @@ function BasePlanDetails({ groupCode, ...props }) {
 function TotalPremium({ groupCode, ...props }) {
   const { getCartEntry } = useCart();
 
-  const { netPremium, tenure } = getCartEntry(groupCode);
+  const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
+
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
+  const { netPremium, tenure } = getCartEntry(groupCode, {
+    additionalDiscounts,
+  });
 
   const displayNetPremium = `${amount(netPremium)} / ${
     tenure === 1 ? "Year" : `${tenure} Years`
@@ -367,8 +600,16 @@ function TotalPremium({ groupCode, ...props }) {
 function ReviewCartButtonNew({ groupCode, ...props }) {
   const history = useHistory();
   const url = useUrlQuery();
-  const { updateCart } = useCart();
+  const { updateCart, getCartEntry } = useCart();
+
+  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+    useAdditionalDiscount(groupCode);
+
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
   const [updateCartMutation, query] = updateCart(groupCode);
+
+  const cartEntry = getCartEntry(groupCode);
 
   const { getNextGroupProduct } = useCart();
 
@@ -385,7 +626,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
   const enquiryId = urlQueryStrings.get("enquiryId");
 
   const handleClick = () => {
-    updateCartMutation().then(() => {
+    updateCartMutation({ additionalDiscounts }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
@@ -403,12 +644,16 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
     history.push(getUrlWithEnquirySearch("/proposal"));
   };
 
+  if (additionalDiscountsQuery.isLoading || additionalDiscountsQuery.isFetching)
+    return <CircleLoader animation="border" />;
+
   return (
     <div>
       <Button
         onClick={handleClick}
         className="w-100"
-        loader={query.isLoading}
+        loader={!nextGroupProduct && query.isLoading}
+        disabled={cartEntry.unavailable_message || query.isLoading}
         {...props}
       >
         {nextGroupProduct ? (
@@ -432,14 +677,15 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
         )}
       </Button>
       {reviewCartModalNew.isOn && (
-        // <CartSummaryModal
-        //   onContine={handleContinueClick}
-        //   onClose={cartSummaryModal.off}
-        // />
-        <NewReviewCartPopup
-          onContine={handleContinueClick}
+        <ReviewCartPopup
+          propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
           onClose={reviewCartModalNew.off}
         />
+
+        // <NewReviewCartPopup
+        //   onContine={handleContinueClick}
+        //   onClose={reviewCartModalNew.off}
+        // />
       )}
     </div>
   );
@@ -895,7 +1141,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
         `}
       >
         <CartDetailRow title="Plan Type" value={existingPlanType} />
-        <CartDetailRow title="Cover" value={coverAmount} />
+        <CartDetailRow title="Cover" value={figureToWords(coverAmount)} />
         <CartDetailRow
           title="Policy Term"
           value={`${tenure + " " + (tenure >= 2 ? "Years" : "Year")} `}

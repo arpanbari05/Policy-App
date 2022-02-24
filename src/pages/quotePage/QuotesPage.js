@@ -15,6 +15,9 @@ import { useState } from "react";
 import SortBy from "./components/filters/SortBy";
 import assistant from "../../assets/images/call-center-service.png";
 import { QuotesLoader } from "./components";
+import TalkToUsModal from "../../components/Common/Modal/TalkToUsModal";
+import { useFrontendBoot } from "../../customHooks/index";
+import { useGetEnquiriesQuery } from "../../api/api";
 
 function QuotesPage() {
   const { colors } = useTheme();
@@ -105,6 +108,16 @@ export default QuotesPage;
 
 function ShowingPlanType() {
   const { colors } = useTheme();
+  const { journeyType } = useFrontendBoot();
+  const { data } = useGetEnquiriesQuery();
+  const { groupCode } = useParams();
+
+  const planTypes = {
+    I: "Individual",
+    F: "Family Floater",
+    M: "Multi Individual",
+  };
+
   return (
     <h1
       className="m-0"
@@ -115,7 +128,15 @@ function ShowingPlanType() {
         font-weight: 900;
       `}
     >
-      Showing Top up plans
+      {`Showing ${
+        journeyType === "top_up"
+          ? "Top Up "
+          : planTypes[
+              data?.data?.groups?.find(
+                singleGroup => singleGroup.id === +groupCode,
+              )?.plan_type
+            ] + " "
+      }plans`}
     </h1>
   );
 }
@@ -148,6 +169,7 @@ function ClearFilters(props) {
 }
 
 function AssistanceCard(props) {
+  const [showTalk, setShowTalk] = useState(false);
   const { colors } = useTheme();
   return (
     <div
@@ -184,6 +206,7 @@ function AssistanceCard(props) {
           background-color: #fff;
           font-weight: 900;
         `}
+        onClick={() => setShowTalk(true)}
       >
         Talk to us
       </button>
@@ -198,6 +221,7 @@ function AssistanceCard(props) {
         src={assistant}
         alt="assistant"
       />
+      <TalkToUsModal show={showTalk} handleClose={() => setShowTalk(false)} />
     </div>
   );
 }

@@ -119,7 +119,16 @@ const Insurer = ({
                 </Col> */}
 
                 {sortedCompanies?.map(item => (
-                  <Col md={12} key={data?.companies[item].short_name}>
+                  <Col md={12} key={data?.companies[item].short_name}
+                    onClick={() => {
+                      if (insurer.includes(data?.companies[item]))
+                        setInsurer(
+                          insurer.filter(
+                            ins => ins !== data?.companies[item],
+                          ),
+                        );
+                      else setInsurer([...insurer, data?.companies[item]]);
+                    }}>
                     <div className="inputGroup">
                       <input
                         id={data?.companies[item].short_name}
@@ -138,15 +147,6 @@ const Insurer = ({
                           background: "transparent",
                           border: "1px solid #d2d8e2",
                           display: "flex",
-                        }}
-                        onClick={() => {
-                          if (insurer.includes(data?.companies[item]))
-                            setInsurer(
-                              insurer.filter(
-                                ins => ins !== data?.companies[item],
-                              ),
-                            );
-                          else setInsurer([...insurer, data?.companies[item]]);
                         }}
                       >
                         <img

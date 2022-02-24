@@ -63,7 +63,7 @@ const ProposalSummary = () => {
   const enquiryId = url.get("enquiryId");
   const dispatch = useDispatch();
 
-  const getTermConditionData = async (company_id, callback = () => {}) => {
+  const getTermConditionData = async (company_id, callback = () => { }) => {
     try {
       const { data } = await getTermConditions(company_id);
 
@@ -407,7 +407,7 @@ const ProposalSummary = () => {
                       your proposal details before you proceed
                     </p> */}
                     <div className="-wrapper pad_proposal_s mt-2">
-                      {}
+                      { }
                       {allFields ? (
                         allFields.map((item, index) => {
                           return (
@@ -446,7 +446,7 @@ const ProposalSummary = () => {
             </Col>
           </Row>
 
-         
+
           <div
             css={`
               @media (max-width: 1199px) {
@@ -459,7 +459,7 @@ const ProposalSummary = () => {
             `}
           >
             <ProductSummaryMobile cart={cart} payNow={onClick} />
-          </div>         
+          </div>
         </div>
       </div>
     </Page>

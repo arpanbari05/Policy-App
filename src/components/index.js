@@ -125,11 +125,17 @@ export function FullScreenLoader() {
 export function Button({
   children,
   loader = false,
+  disabled = false,
   arrow = false,
   css,
+  onClick,
   ...props
 }) {
   const { colors } = useTheme();
+  const handleClick = evt => {
+    if (loader || disabled) return;
+    onClick && onClick(evt);
+  };
   return (
     <button
       css={`
@@ -151,7 +157,8 @@ export function Button({
 
         ${css};
       `}
-      disabled={loader}
+      disabled={loader || disabled}
+      onClick={handleClick}
       {...props}
     >
       {children}
@@ -200,11 +207,21 @@ export function Counter({
   count = min,
   onIncrement,
   onDecrement,
+  onChange,
+  member,
   ...props
 }) {
   const handleDecrement = () => {
     const newCount = count - 1;
-    if (newCount >= min) onIncrement && onDecrement(newCount);
+    if (newCount >= min) {
+      onIncrement && onDecrement();
+    } else {
+      onChange({
+        ...member,
+        isSelected: false,
+        age: false,
+      });
+    }
   };
 
   const handleIncrement = () => {
@@ -218,7 +235,7 @@ export function Counter({
       css={`
         color: lightgrey;
         font-size: 1.2rem;
-        gap: 0.6em;
+        gap: .3125em;
         & button {
           padding: 0;
           background: none;

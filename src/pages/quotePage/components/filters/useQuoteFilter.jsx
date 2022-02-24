@@ -43,7 +43,6 @@ const checkFeature = quote => featureObject => {
   if (code === "no_claim_bonus" && operator === "equals") {
     const upto = getNumberFromString(value);
     const valueToCompare = getNumberFromString(value_to_compare);
-    console.log({ upto, valueToCompare });
 
     const [min, max] = noClaimBonusRange[valueToCompare];
 
@@ -143,7 +142,6 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   const selectedPremiumCode = getSelectedFilter("premium")?.code;
 
   function filterQuote(quote) {
-    console.log(quote);
     let isCompanyMatch = false;
     let isPremiumMatch = false;
     const { company_alias, total_premium: premiumOriginal } = quote;
@@ -171,12 +169,6 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
         } else isPremiumMatch = false;
       } else if (selectedPremiumCode.includes(">")) {
         const tempPremium = selectedPremiumCode.split(">")[1];
-        console.log(
-          "ewhweh",
-          selectedPremiumCode,
-          parseInt(premium),
-          parseInt(tempPremium),
-        );
         if (parseInt(premium) >= parseInt(tempPremium)) {
           isPremiumMatch = true;
         } else isPremiumMatch = false;
@@ -203,14 +195,6 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     const isNoPreMedicalMatch = isNoPreMedicalSelected
       ? minAge < quote.ppmc_age_limit
       : true;
-
-    console.log(isCompanyMatch &&
-      isPremiumMatch &&
-      isPopularFiltersMatch &&
-      isOtherFiltersMatch &&
-      isPreExistingMatch &&
-      isRenewalBonusMatch &&
-      isNoPreMedicalMatch);
     return (
       isCompanyMatch &&
       isPremiumMatch &&
@@ -223,7 +207,6 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   }
 
   function filterQuotes(quotes) {
-    console.log(quotes?.filter(filterQuote));
     return quotes?.filter(filterQuote);
   }
 

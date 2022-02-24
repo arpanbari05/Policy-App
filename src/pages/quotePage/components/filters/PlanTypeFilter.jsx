@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import TooltipImg from "../../../../assets/svg/tooltip-icon.js";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { ApplyBtn, OptionWrapper } from "./Filter.style";
@@ -115,6 +115,7 @@ function FilterModal({ onClose, ...props }) {
 }
 
 function PlanType({ baseplantype, checked = false, onChange, ...props }) {
+  const target = useRef(null);
   const handleChange = evt => {
     if (evt.target.checked) onChange && onChange(baseplantype, checked);
   };
@@ -125,6 +126,9 @@ function PlanType({ baseplantype, checked = false, onChange, ...props }) {
       `}
       className="option d-flex align-items-center justify-content-between"
       {...props}
+      onClick={() => {
+        console.log(target.current.click());
+      }}
     >
       <label htmlFor={baseplantype.code}>
         <OverlayTrigger
@@ -145,6 +149,7 @@ function PlanType({ baseplantype, checked = false, onChange, ...props }) {
         value={baseplantype.display_name}
         checked={checked}
         onChange={handleChange}
+        ref={target}
       />
     </li>
   );
