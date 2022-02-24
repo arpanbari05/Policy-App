@@ -23,6 +23,11 @@ const proposal = createSlice({
     policyStatus: [],
     noForAllChecked: false,
     policyLoading: true,
+    showErrorPopup: {
+      show: false,
+      head: "",
+      msg: "",
+    },
     planDetails: {
       title: "Your Plan Details",
       show: false,
@@ -35,7 +40,9 @@ const proposal = createSlice({
       state.proposalData = { ...state.proposalData, ...action.payload };
       state.isLoading = false;
     },
-
+    setShowErrorPopup: (state, action) => {
+      state.showErrorPopup = action.payload;
+    },
     noForAllCheckedFalse: state => {
       state.noForAllChecked = false;
     },
@@ -89,6 +96,7 @@ export const {
   setPlanDetails,
   noForAllCheckedFalse,
   noForAllCheckedTrue,
+  setShowErrorPopup,
 } = proposal.actions;
 const ls = new SecureLS();
 export const saveProposalData = (proposalData, next, failure) => {
@@ -100,12 +108,20 @@ export const saveProposalData = (proposalData, next, failure) => {
 
       //console.log("saveProposalData success", response);
       if (response.statusCode === 200) next(response.data);
-      else if (!response.data) failure(response.errors);
-      console.log(response);
+      else if (!response.data){
+        dispatch(
+          setShowErrorPopup({
+            show: true,
+            head: "",
+            msg: response.message,
+          })
+        );
+      } 
+      console.log("bchkadvbchav",response);
     } catch (err) {
       //console.error("saveProposalData error", err);
       dispatch(setIsLoading(false));
-      alert(err.message);
+   
     }
   };
 };
@@ -162,11 +178,21 @@ export const submitProposalData = next => {
 
       if (res.statusCode === 200) {
         next();
-      } else throw new Error(res.message);
+      } else if (res.message) {
+        dispatch(
+          setShowErrorPopup({
+            show: true,
+            head: "",
+            msg: res.message,
+          })
+        );
+      }
     } catch (err) {
       console.log("Error occured in submitProposal data");
       console.error(err);
-      swal(err.message).then(dispatch(setActiveIndex(0)));
+      
+      // dispatch(setActiveIndex(0));
+      // swal(err.message).then(dispatch(setActiveIndex(0)));
     }
   };
 };

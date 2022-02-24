@@ -21,6 +21,7 @@ const useProposalSections = (
   const [isValid, setValid] = useState(
     partialLength ? Array(partialLength) : undefined,
   );
+ 
   const [customValid, setCustomValid] = useState();
   const dispatch = useDispatch();
   const [additionalErrors, setAdditionalErrors] = useState({});
