@@ -41,11 +41,19 @@ const PlanTypeFilter = () => {
 export default PlanTypeFilter;
 
 function FilterModal({ onClose, ...props }) {
+  const { journeyType } = useFrontendBoot();
   const { colors } = useTheme();
 
   const {
     data: { baseplantypes },
   } = useFrontendBoot();
+
+  const renderPlanTypes =
+    journeyType === "top_up"
+      ? baseplantypes.filter(
+          singelPlanType => singelPlanType.code !== "arogya_sanjeevani",
+        )
+      : baseplantypes;
 
   const { getSelectedFilter } = useFilters();
 
@@ -98,7 +106,7 @@ function FilterModal({ onClose, ...props }) {
     >
       <div>
         <OptionWrapper PrimaryColor={colors.primary_color}>
-          {baseplantypes.map(baseplantype => {
+          {renderPlanTypes.map(baseplantype => {
             return (
               <PlanType
                 baseplantype={baseplantype}
