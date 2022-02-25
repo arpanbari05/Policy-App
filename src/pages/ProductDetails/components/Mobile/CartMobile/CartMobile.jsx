@@ -23,6 +23,8 @@ import { useHistory } from "react-router-dom";
 import useUrlQuery from "../../../../../customHooks/useUrlQuery";
 import CartSummaryModal from "../../../../../components/CartSummaryModal";
 import { NewReviewCartPopup } from "../../../../../components/NewReviewCartPopup";
+import ReviewCartPopup from "../../ReviewCardPopup";
+
 
 const plantypes = {
   M: "Multi Individual",
@@ -49,8 +51,17 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
+  const urlQueryStrings = new URLSearchParams(window.location.search);
+
+  const enquiryId = urlQueryStrings.get("enquiryId");
+
+  const { getSelectedAdditionalDiscounts } =
+    useAdditionalDiscount(groupCode);
+
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
   const handleClick = () => {
-    updateCartMutation().then(() => {
+    updateCartMutation({ additionalDiscounts }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
@@ -157,10 +168,10 @@ const CartMobile = ({ groupCode, ...props }) => {
           )}
         </Button>
         {!nextGroupProduct && reviewCartModalNew.isOn && (
-          <NewReviewCartPopup
-            onContine={handleContinueClick}
-            onClose={reviewCartModalNew.off}
-          />
+          <ReviewCartPopup
+          propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
+          onClose={reviewCartModalNew.off}
+        />
         )}
       </div>
 
