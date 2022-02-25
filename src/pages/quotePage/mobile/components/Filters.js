@@ -21,10 +21,33 @@ import { RiCheckboxBlankLine, RiCheckboxFill } from "react-icons/ri";
 export function useFiltersSlot({ initialFilters } = {}) {
   const [filters, setFilters] = useState(initialFilters);
 
-  const updateFilter = (code, option) => {
-    const isChecked = filters[code]?.code === option.code;
-    let updateFilters = { ...filters, [code]: option };
-    if (isChecked) updateFilters = { ...filters, [code]: null };
+  const updateFilter = (code, option, type) => {
+    const isChecked = filters[code]?.find(
+      singleSelectedOption => singleSelectedOption?.code === option.code,
+    );
+
+    let updateFilters =
+      type === "radio"
+        ? {
+            ...filters,
+            [code]: filters[code] ? [option] : [option], // IMPLEMENTS RADIO FUNCTIONALITY
+          }
+        : {
+            ...filters,
+            [code]: filters[code] ? [...filters[code], option] : [option], // IMPLEMENTS CHECKBOX FUNCTIONALITY
+          };
+
+    if (isChecked)
+      updateFilters = {
+        ...filters,
+        [code]:
+          type === "radio"
+            ? undefined
+            : filters[code]?.filter(
+                singleSelectedOption =>
+                  singleSelectedOption?.code !== option.code,
+              ),
+      }; // REMOVAL LOGIC
     setFilters(updateFilters);
   };
 
@@ -42,7 +65,6 @@ export function getAllSelectedFilters(filters, filterSelector) {
 
   return allFilters;
 }
-
 
 export function FilterModal({ onClose }) {
   const { boxShadows } = useTheme();
@@ -195,12 +217,15 @@ export function FilterOptions({
   type,
   ...props
 }) {
-  const selectedOption = currentOption;
+  const selectedOption = currentOption ? [...currentOption] : []; // [{}..] Read Only Behaviour reccomended.
 
-  const isSelected = option => option.code === selectedOption?.code;
+  const isSelected = option =>
+    selectedOption.find(singleOption => singleOption?.code === option?.code)
+      ? true
+      : false;
 
-  const handleChange = (option, checked) => {
-    onChange && onChange(code, option, checked);
+  const handleChange = option => {
+    onChange && onChange(code, option, type);
   };
 
   return (
@@ -262,7 +287,10 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
           font-size: 0.79rem;
         `}
       >
-        <FilterDataSet name={option.display_name} description={option.description} />
+        <FilterDataSet
+          name={option.display_name}
+          description={option.description}
+        />
         <span
           css={`
             font-size: 1.6rem;
@@ -457,14 +485,14 @@ function MobileModal({ onClose, children }) {
   );
 }
 
-function FilterDataSet ({ name, description, ...props }) {
+function FilterDataSet({ name, description, ...props }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const target = useRef(null);
   useOutsiteClick(target, () => setShowTooltip(false));
-  
+
   const toggleTooltip = () => {
-    setShowTooltip( prev => !prev );
-  }
+    setShowTooltip(prev => !prev);
+  };
   return (
     <OverlayTrigger
       show={showTooltip}
@@ -476,5 +504,5 @@ function FilterDataSet ({ name, description, ...props }) {
         <IoMdInformationCircleOutline className="mx-1" />
       </div>
     </OverlayTrigger>
-  )
+  );
 }

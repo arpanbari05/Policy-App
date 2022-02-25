@@ -189,18 +189,17 @@ const FormBuilder = ({
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
-  console.log(asyncOptions, "ehe");
+
 
   return (
     <>
-      {console.log("schemaschemaschema", values)}
       {schema instanceof Array &&
         schema.map((item, index) => {
           if (item instanceof Array) {
             return (
               <>
                 {item[0]?.additionalOptions?.members?.map(member => {
-                  console.log(member, proposalData, "gsda");
+                  console.log("gsdajhfgj",renderField(item[0], values, member));
                   if (
                     values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
@@ -430,6 +429,7 @@ const FormBuilder = ({
             } else
               return (
                 <>
+
                   {renderField(item, values) && (
                     <Wrapper
                       key={index}
@@ -537,6 +537,7 @@ const FormBuilder = ({
                         submitTrigger={submitTrigger}
                         setCustomValid={setCustomValid}
                         values={values}
+                        // showMembersIf={item.additionalOptions.showMembersIf || ""}
                         {...item.additionalOptions}
                       />
                     </Wrapper>

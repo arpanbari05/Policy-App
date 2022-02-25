@@ -459,5 +459,5 @@ function useQuotesPage() {
     recFilterdQuotes,
   };
 }
-
+ 
 export default useQuotesPage;
