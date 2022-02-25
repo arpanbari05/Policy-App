@@ -31,6 +31,17 @@ const removeTotalPremium = cart => {
   return y;
 };
 
+const availCart = (cart) => {
+  let {
+    totalPremium,
+    discounted_total_premium,
+    feature_options,
+    ...groupsCart
+  } = cart;
+  console.log("ngjis", groupsCart);
+  return groupsCart;
+};
+
 const numToString = value => value.toLocaleString("en-IN");
 const ProductSummary = ({ setActive }) => {
   const [show, setShow] = useState(false);
@@ -141,6 +152,12 @@ const ProductSummary = ({ setActive }) => {
             {cartData?.data?.map((item, index) => (
               <CartSummary key={index} item={item} index={index} />
             ))}
+            {/* {Object.values(availCart(cart)).map(
+              (item, index) =>
+                Object.keys(item).length && (
+                  <CartSummary key={index} item={item} index={index} />
+                )
+            )} */}
             {planDetails.isRenewed ? (
               <>
                 <div class="rider-box_product_pro_medical_box">
@@ -370,13 +387,14 @@ function CartSummary({ item, index }) {
   const [showAddOns, setShowAddOns] = useState(false);
   const { policyTypes } = useSelector(state => state.quotePage);
   const { isLoading, isUninitialized, data } = useGetAdditionalDiscountsQuery({
-    productId: item.product.id,
-    groupCode: item.group.id,
-    sum_insured: item.sum_insured,
-    tenure: item.tenure,
+    productId: item?.product?.id,
+    groupCode: item?.group?.id,
+    sum_insured: item?.sum_insured,
+    tenure: item?.tenure,
   });
 
   if (isLoading || isUninitialized) return <p>Loading cart summary...</p>;
+  if (!item) return <></>;
 
   const additionalDiscounts = data.data;
 
@@ -547,9 +565,8 @@ function CartSummary({ item, index }) {
               css={`
                 padding-left: 10px;
               `}
-              className={`p_cover_medical_pop_span ${
-                planDetails.isRenewed ? "revised-premium" : ""
-              }`}
+              className={`p_cover_medical_pop_span ${planDetails.isRenewed ? "revised-premium" : ""
+                }`}
             >
               ₹{" "}
               {planDetails.isRenewed
