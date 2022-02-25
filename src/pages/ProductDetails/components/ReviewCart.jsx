@@ -26,6 +26,8 @@ import {
   useFrontendBoot,
   useMembers,
   useRider,
+  useRiders,
+  useTenureDiscount,
   useTheme,
   useToggle,
   useUpdateGroupMembers,
@@ -47,6 +49,7 @@ import {
 } from "../../../components/MemberOptions";
 import { Modal } from "react-bootstrap";
 import { api, useGetEnquiriesQuery } from "../../../api/api";
+import _ from "lodash";
 
 const plantypes = {
   M: "Multi Individual",
@@ -559,9 +562,13 @@ function TotalPremium({ groupCode, ...props }) {
 
   const additionalDiscounts = getSelectedAdditionalDiscounts();
 
-  const { netPremium, tenure } = getCartEntry(groupCode, {
+  const cartEntry = getCartEntry(groupCode, {
     additionalDiscounts,
   });
+
+  const { netPremium, tenure } = cartEntry;
+
+  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
   const displayNetPremium = `${amount(netPremium)} / ${
     tenure === 1 ? "Year" : `${tenure} Years`
@@ -591,10 +598,31 @@ function TotalPremium({ groupCode, ...props }) {
           font-size: 17px;
         `}
       >
-        {displayNetPremium}
+        {isTotalPremiumLoading ? (
+          <CircleLoader animation="border" />
+        ) : (
+          displayNetPremium
+        )}
       </div>
     </div>
   );
+}
+
+function isQueryLoading(query) {
+  return _.some([query.isUninitialized, query.isLoading, query.isFetching]);
+}
+
+function useTotalPremiumLoader(cartEntry) {
+  const { group } = cartEntry;
+  const tenureDiscount = useTenureDiscount(group.id);
+  const riders = useRiders({ quote: cartEntry, groupCode: group.id });
+
+  const isTotalPremiumLoading = _.some([
+    isQueryLoading(tenureDiscount.query),
+    isQueryLoading(riders.query),
+  ]);
+
+  return isTotalPremiumLoading;
 }
 
 function ReviewCartButtonNew({ groupCode, ...props }) {
@@ -610,6 +638,8 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
   const [updateCartMutation, query] = updateCart(groupCode);
 
   const cartEntry = getCartEntry(groupCode);
+
+  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
   const { getNextGroupProduct } = useCart();
 
@@ -644,16 +674,19 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
     history.push(getUrlWithEnquirySearch("/proposal"));
   };
 
-  if (additionalDiscountsQuery.isLoading || additionalDiscountsQuery.isFetching)
-    return <CircleLoader animation="border" />;
-
   return (
     <div>
       <Button
         onClick={handleClick}
         className="w-100"
         loader={!nextGroupProduct && query.isLoading}
-        disabled={cartEntry.unavailable_message || query.isLoading}
+        disabled={
+          cartEntry.unavailable_message ||
+          query.isLoading ||
+          additionalDiscountsQuery.isLoading ||
+          additionalDiscountsQuery.isFetching ||
+          isTotalPremiumLoading
+        }
         {...props}
       >
         {nextGroupProduct ? (
@@ -2011,7 +2044,6 @@ const ReviewCart = ({ groupCode, unEditable }) => {
         <EditMembersModal
           onClose={() => setShowEditMembers(false)}
           group={group}
-          
         />
       )}
     </>

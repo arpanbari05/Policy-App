@@ -619,10 +619,10 @@ export function useCart() {
           { additionalDiscounts },
         );
         return updateCartMutation({
+          ...cartEntry,
           cartId: id,
           [journeyType === "health" ? "riders" : "top_up_riders"]:
             health_riders.map(getRiderSendData),
-          ...cartEntry,
           discounted_total_premium,
         });
       },
