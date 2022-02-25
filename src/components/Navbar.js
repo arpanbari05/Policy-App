@@ -73,58 +73,60 @@ const Navbar = () => {
           >
             {GO_BACK_LOCATIONS.filter(loc =>
               location.pathname.startsWith(loc),
-            ) && (
-              <div
-                className="d-flex justify-content-center align-items-center"
-                css={`
-                  // background: ${colors.primary_color};
-                  width: 35px;
-                  margin-right: 5px;
-                  border-radius: 100%;
-                  height: 35px;
-                  color: ${colors.primary_color};
-                  cursor: pointer;
-                  &:hover {
-                    background: ${colors.primary_color}10;
-                  }
-                `}
-                onClick={() => {
-                  switch (location.pathname) {
-                    case `/productdetails/${groupCode}`:
-                      const getLink = () => {
-                        if (!prevoiusGroup)
+            ) &&
+              location.pathname !== "/input/basic-details" && (
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  css={`
+                    // background: ${colors.primary_color};
+                    width: 35px;
+                    margin-right: 5px;
+                    border-radius: 100%;
+                    height: 35px;
+                    color: ${colors.primary_color};
+                    cursor: pointer;
+                    &:hover {
+                      background: ${colors.primary_color}10;
+                    }
+                  `}
+                  onClick={() => {
+                    switch (location.pathname) {
+                      case `/productdetails/${groupCode}`:
+                        const getLink = () => {
+                          if (!prevoiusGroup)
+                            return getUrlWithEnquirySearch(
+                              `/quotes/${groupCode}`,
+                            );
+
                           return getUrlWithEnquirySearch(
-                            `/quotes/${groupCode}`,
+                            `/productdetails/${prevoiusGroup.id}`,
                           );
+                        };
+                        history.replace(getLink());
+                        setIsOnProductDetails(true);
+                        break;
 
-                        return getUrlWithEnquirySearch(
-                          `/productdetails/${prevoiusGroup.id}`,
-                        );
-                      };
-                      history.replace(getLink());
-                      setIsOnProductDetails(true);
-                      break;
+                      case "/proposal":
+                        history.goBack();
+                        break;
 
-                    case "/proposal":
-                      history.goBack();
-                      break;
+                      case "/proposal_summary":
+                        history.push(getUrlWithEnquirySearch("/proposal"));
+                        break;
 
-                    case "/proposal_summary":
-                      history.push(getUrlWithEnquirySearch("/proposal"));
-                      break;
+                      case `/quotes/${groupCode}`:
+                        history.replace("/");
+                        break;
 
-                    case `/quotes/${groupCode}`:
-                      history.replace("/");
-                      break;
-
-                    default:
-                      return;
-                  }
-                }}
-              >
-                <FaChevronLeft />
-              </div>
-            )}
+                      default:
+                        history.goBack();
+                        return;
+                    }
+                  }}
+                >
+                  <FaChevronLeft />
+                </div>
+              )}
             <Link to="/">
               <img
                 src={fyntune}

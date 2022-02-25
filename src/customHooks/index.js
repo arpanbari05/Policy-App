@@ -514,6 +514,7 @@ export function useUpdateMembers() {
       name: enquiryData.name,
       gender: enquiryData.input.gender,
       deductible: enquiryData.input.deductible,
+      params: enquiryData.input.params,
       members: members
         ? members.map(member => ({
             type: member.code,
@@ -543,6 +544,7 @@ export function useUpdateMembers() {
             Object.assign(draft, response.data);
           }),
         );
+        dispatch(api.util.invalidateTags(["Cart"]));
         return response;
       },
     );

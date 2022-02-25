@@ -19,7 +19,11 @@ import {
   useMembers,
   useTheme,
 } from "../../../../customHooks";
-import { amount, getDisplayPremium } from "../../../../utils/helper";
+import {
+  amount,
+  getDisplayPremium,
+  getTotalPremium,
+} from "../../../../utils/helper";
 import { useGetCartQuery } from "../../../../api/api";
 
 const removeTotalPremium = cart => {
@@ -38,19 +42,21 @@ const ProductSummary = ({ setActive }) => {
 
   const { groups } = useMembers();
 
-  const { getCartEntry } = useCart();
+  const { getCartEntry, cartEntries } = useCart();
 
   const tenure = getCartEntry(+groups[0].id)?.tenure;
 
-  const revisedNetPremiumArray = groups?.map(
-    singleGroup => getCartEntry(+singleGroup.id)?.netPremium,
-  );
+  // const revisedNetPremiumArray = groups?.map(
+  //   singleGroup => getCartEntry(+singleGroup.id)?.netPremium,
+  // );
 
-  const revisedNetPremium = revisedNetPremiumArray.length
-    ? revisedNetPremiumArray.reduce(
-        (acc = 0, singleNetPremium) => (acc += singleNetPremium),
-      )
-    : 0;
+  // const revisedNetPremium = revisedNetPremiumArray.length
+  //   ? revisedNetPremiumArray.reduce(
+  //       (acc = 0, singleNetPremium) => (acc += singleNetPremium),
+  //     )
+  //   : 0;
+
+  const revisedNetPremium = getTotalPremium(cartEntries);
 
   const dispatch = useDispatch();
   useEffect(() => {
