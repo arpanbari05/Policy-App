@@ -178,9 +178,8 @@ export const api = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Cart"],
       onQueryStarted: async (_data, { dispatch, queryFulfilled }) => {
-        const { data } = await queryFulfilled;
+        const { data } = await queryFulfilled;     
         dispatch(
           api.util.updateQueryData("getEnquiries", undefined, draft => {
             if (draft) Object.assign(draft, data);
@@ -221,7 +220,7 @@ export const api = createApi({
       providesTags: ["Rider"],
     }),
     deleteGroup: builder.query({
-      query: (groupId) => ({ url: `groups/${groupId}`})
+      query: groupId => ({ url: `groups/${groupId}` }),
     }),
     getDiscounts: builder.query({
       query: ({
@@ -247,6 +246,7 @@ export const api = createApi({
         method: "PUT",
         body,
       }),
+      invalidatesTags: ["Cart"],
     }),
     updateEnquiry: builder.mutation({
       query: body => ({

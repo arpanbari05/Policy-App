@@ -6,7 +6,6 @@ import SpinLoader from "../../../../../components/Common/SpinLoader/SpinLoader";
 import ProgessBar from "../../../../SeeDetails/components/AboutCompany/ProgessBar";
 import BarGroupMobile from "./BarGroupMobile";
 import BarMarketMobile from "./BarMarketMobile";
-import ProgressBarMobile from "./ProgressBarMobile";
 import { mobile } from "../../../../../utils/mediaQueries";
 import { useTheme } from "../../../../../customHooks";
 
@@ -121,55 +120,16 @@ function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
                       <div>
                         <BarMarketMobile
                           data={aboutCompany.data.market_sizes}
+                          colors={aboutCompany.data.group_color
+                            .map(group_color => Object.values(group_color)[0])
+                            .slice(0, 3)
+                            .reverse()}
                         />
                       </div>
                     )}
                   </Graph>
 
                   <Detail>
-                    <p
-                      css={`
-                        font-size: 12px;
-                        @media (max-width: 450px) {
-                          font-size: 10px;
-                        }
-
-                        & span {
-                          font-size: 13px;
-                          @media (max-width: 450px) {
-                            margin-right: 2px !important;
-                            padding: 2px 7px !important;
-                          }
-                        }
-                      `}
-                    >
-                      <span
-                        className="span_square_red"
-                        css={`
-                          background: ${colors.primary_color};
-                          border-radius: 6px;
-                          padding: 4px 8px;
-                        `}
-                        style={{ marginRight: "10px", fontSize: "10px" }}
-                      >
-                        &nbsp;
-                      </span>{" "}
-                      {2020} &nbsp; &nbsp; &nbsp;
-                      {/* <span className="span_border_right_plan">|</span> &nbsp;
-                      &nbsp; &nbsp;{" "} */}
-                      {/* <span
-                        className="span_square_pink"
-                        css={`
-                          background: #ffe7e7;
-                          border-radius: 6px;
-                          padding: 4px 8px;
-                        `}
-                        style={{ marginRight: "10px", fontSize: "10px" }}
-                      >
-                        &nbsp;
-                      </span>{" "}
-                      Current Market Premium 2021 */}
-                    </p>
                     <p
                       style={{
                         fontSize: "12px",
@@ -192,60 +152,18 @@ function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
                   <Graph>
                     <div>
                       {aboutCompany.data && (
-                        <div>
-                          <BarGroupMobile
-                            data={aboutCompany.data.claim_settlement_ratios}
-                          />
-                        </div>
+                        <BarGroupMobile
+                          data={aboutCompany.data.claim_settlement_ratios}
+                          colors={aboutCompany.data.group_color
+                            .map(group_color => Object.values(group_color)[0])
+                            .slice(0, 3)
+                            .reverse()}
+                        />
                       )}
                     </div>
                   </Graph>
 
                   <Detail>
-                    <p
-                      css={`
-                        font-size: 12px;
-                        @media (max-width: 450px) {
-                          font-size: 10px;
-                        }
-
-                        & span {
-                          font-size: 13px;
-                          @media (max-width: 450px) {
-                            margin-right: 2px !important;
-                            padding: 2px 7px !important;
-                          }
-                        }
-                      `}
-                      style={{ fontSize: "12px" }}
-                    >
-                      <span
-                        className="span_square_red"
-                        css={`
-                          background: ${colors.primary_color};
-                          border-radius: 6px;
-                          padding: 4px 8px;
-                        `}
-                        style={{ marginRight: "10px", fontSize: "10px" }}
-                      >
-                        &nbsp;
-                      </span>{" "}
-                      {2020} &nbsp; &nbsp; &nbsp;
-                      {/* <span className="span_border_right_plan">|</span> &nbsp;
-                      &nbsp; &nbsp;{" "}
-                      <span
-                        className="span_square_pink"
-                        css={`
-                          background: #ffe7e7;
-                          border-radius: 6px;
-                          padding: 4px 8px;
-                        `}
-                        style={{ marginRight: "10px", fontSize: "10px" }}
-                      >
-                        &nbsp;
-                      </span>{" "}
-                      Current Market Premium 2021 */}
-                    </p>
                     <p
                       style={{
                         fontSize: "12px",
@@ -268,24 +186,24 @@ function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
                   <Graph>
                     <div
                       style={{
-                        paddingTop: "50px",
                         margin: "10px",
-                        marginBottom: "50px",
                       }}
                     >
                       {aboutCompany?.data?.claim_incured_ratios?.map(
                         (data, i) => {
                           return (
                             data.year !== null && (
-                              // <ProgressBarMobile
-                              //   year={data.year}
-                              //   value={`${parseFloat(data.percent)}`}
-                              //   color={data.color}
-                              // />
                               <ProgessBar
                                 year={data.year}
                                 value={`${parseFloat(data.percent)}`}
-                                color={data.color}
+                                color={
+                                  aboutCompany.data.group_color
+                                    .map(
+                                      group_color =>
+                                        Object.values(group_color)[0],
+                                    )
+                                    .reverse()[i + 1]
+                                }
                               />
                             )
                           );
@@ -295,49 +213,6 @@ function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
                   </Graph>
 
                   <Detail>
-                    <p
-                      css={`
-                        font-size: 12px;
-                        @media (max-width: 450px) {
-                          font-size: 10px;
-                        }
-
-                        & span {
-                          font-size: 13px;
-                          @media (max-width: 450px) {
-                            margin-right: 2px !important;
-                            padding: 2px 7px !important;
-                          }
-                        }
-                      `}
-                    >
-                      <span
-                        className="span_square_red"
-                        css={`
-                          background: ${colors.primary_color};
-                          border-radius: 6px;
-                          padding: 4px 8px;
-                        `}
-                        style={{ marginRight: "10px", fontSize: "10px" }}
-                      >
-                        &nbsp;
-                      </span>{" "}
-                      {2020} &nbsp; &nbsp; &nbsp;
-                      {/* <span className="span_border_right_plan">|</span> &nbsp;
-                      &nbsp; &nbsp;{" "}
-                      <span
-                        className="span_square_pink"
-                        css={`
-                          background: #ffe7e7;
-                          border-radius: 6px;
-                          padding: 4px 8px;
-                        `}
-                        style={{ marginRight: "10px", fontSize: "10px" }}
-                      >
-                        &nbsp;
-                      </span>{" "}
-                      Current Market Premium 2021 */}
-                    </p>
                     <p
                       style={{
                         fontSize: "12px",

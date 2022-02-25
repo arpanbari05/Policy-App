@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Card from "../../components/Card";
-import mobile_input_first from "../../assets/images/mobile_input_first.png";
 import styled from "styled-components/macro";
 import { bg } from "../../assets/images";
 import { IoIosCheckmarkCircle } from "react-icons/io";
@@ -14,6 +13,7 @@ import LocationForm from "./components/LocationForm";
 import DeductibleForm from "./components/DeductibleForm";
 import "styled-components/macro";
 import { Spinner } from "react-bootstrap";
+import MedicalHistoryForm from "./components/MedicalHistoryForm";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -27,6 +27,7 @@ const InputPage = () => {
   const { colors } = useTheme();
 
   const { currentForm } = useParams();
+  console.log("CURRENT_FORM", currentForm);
 
   return (
     <Page>
@@ -123,6 +124,7 @@ const InputPage = () => {
                 )}
 
                 {currentForm === "deductible" && <DeductibleForm />}
+                {currentForm === "medicalHistory" && <MedicalHistoryForm />}
               </div>
             </Card>
             {isBasicDetailsRoute && (

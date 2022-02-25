@@ -73,7 +73,7 @@ function LocationForm() {
         if (!nextGroup) {
           if (journeyType === "top_up")
             nextPath = getUrlWithEnquirySearch(`/input/deductible`);
-          else nextPath = getUrlWithEnquirySearch(`/quotes/${firstGroup.id}`);
+          else nextPath = getUrlWithEnquirySearch(`/input/medicalHistory`);
         }
         history.push(nextPath);
       },
@@ -169,6 +169,7 @@ function LocationForm() {
             className="d-flex flex-wrap"
             css={`
               gap: 0.39em;
+              margin-top: 10px;
             `}
           >
             {popularcities.map(city => (

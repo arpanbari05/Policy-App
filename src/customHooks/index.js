@@ -514,6 +514,7 @@ export function useUpdateMembers() {
       name: enquiryData.name,
       gender: enquiryData.input.gender,
       deductible: enquiryData.input.deductible,
+      params: enquiryData.input.params,
       members: members
         ? members.map(member => ({
             type: member.code,
@@ -543,6 +544,7 @@ export function useUpdateMembers() {
             Object.assign(draft, response.data);
           }),
         );
+        dispatch(api.util.invalidateTags(["Cart"]));
         return response;
       },
     );
@@ -565,7 +567,7 @@ export function useCart() {
 
   const { getCompany } = useCompanies();
 
-  function getCartEntry(groupCode) {
+  function getCartEntry(groupCode, { additionalDiscounts = [] } = {}) {
     const cartEntry = cartEntries.find(
       cartEntry => cartEntry.group.id === parseInt(groupCode),
     );
@@ -579,7 +581,7 @@ export function useCart() {
     return {
       ...cartEntry,
       plantype: group.plan_type,
-      netPremium: calculateTotalPremium(cartEntry),
+      netPremium: calculateTotalPremium(cartEntry, { additionalDiscounts }),
       netPremiumWithoutDiscount: calculateTotalPremium(cartEntry),
       icLogoSrc,
     };
@@ -609,14 +611,21 @@ export function useCart() {
 
   function updateCart(groupCode) {
     const { id, health_riders, ...cartEntry } = getCartEntry(groupCode);
+
     return [
-      () =>
-        updateCartMutation({
+      ({ additionalDiscounts = [] }) => {
+        const discounted_total_premium = calculateTotalPremium(
+          { health_riders, ...cartEntry },
+          { additionalDiscounts },
+        );
+        return updateCartMutation({
           cartId: id,
           [journeyType === "health" ? "riders" : "top_up_riders"]:
             health_riders.map(getRiderSendData),
           ...cartEntry,
-        }),
+          discounted_total_premium,
+        });
+      },
       updateCartMutationQuery,
     ];
   }
@@ -1388,6 +1397,14 @@ function getRiderOptionsQueryString(riders = []) {
   return riderOptionsQueryString;
 }
 
+function getSelectedRiders(riders = []) {
+  const selectedRiders = riders.filter(
+    rider => !!(isMandatoryRider(rider) || rider.isSelected),
+  );
+
+  return selectedRiders;
+}
+
 export function useRiders({
   quote,
   groupCode,
@@ -1457,12 +1474,7 @@ export function useRiders({
   }, [data]);
 
   useEffect(() => {
-    onChange &&
-      onChange(
-        riders
-          .filter(rider => rider.isSelected)
-          .filter(rider => !isMandatoryRider(rider)),
-      );
+    onChange && onChange(getSelectedRiders(riders));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riders]);
 

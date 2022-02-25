@@ -663,6 +663,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
           <CartSummaryModal
             onClose={cartSummaryModal.off}
             onContine={gotoProductPage}
+            allClose={handleClose}
           />
         )}
       </ProductHeaderWrap>

@@ -235,7 +235,7 @@ export function Counter({
       css={`
         color: lightgrey;
         font-size: 1.2rem;
-        gap: .3125em;
+        gap: 0.3125em;
         & button {
           padding: 0;
           background: none;
@@ -398,7 +398,10 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
   } = useQuote();
 
   const handleBuyClick = () => {
-    buyQuote(quote, quote.riders || [])
+    const { mandatory_riders } = quote;
+    const riders = quote.riders || [];
+
+    buyQuote(quote, [...mandatory_riders, ...riders])
       .then(cartSummaryModal.on)
       .catch(() => alert("Something went wrong while buying the quote!"));
   };

@@ -33,7 +33,7 @@ const FormBuilder = ({
   setNoForAllEmpty,
   keyStr,
   lastName,
-  isInsuredDetails
+  isInsuredDetails,
 }) => {
   const {
     updateValue,
@@ -56,7 +56,50 @@ const FormBuilder = ({
 
   const [trigger, setTrigger] = useState(false);
   const { proposalData } = useSelector(state => state.proposalPage);
-  const relationships = ["spouse", "son", "son1", "son2", "son3", "son4", "daughter", "daughter1", "daughter2", "daughter3", "daughter4", "father", "mother", "grand_father", "grand_mother"]
+  const relationships = [
+    "spouse",
+    "son",
+    "son1",
+    "son2",
+    "son3",
+    "son4",
+    "daughter",
+    "daughter1",
+    "daughter2",
+    "daughter3",
+    "daughter4",
+    "father",
+    "mother",
+    "grand_father",
+    "grand_mother",
+  ];
+
+
+  // if nominee relation selected as "self"
+  let dataForAutopopulate = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
+  );
+  const insuredDetails = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
+  );
+  dataForAutopopulate = {...dataForAutopopulate,...insuredDetails?insuredDetails["self"]:{}};
+
+  // for auto populate self data when nominee relation is self
+  useEffect(() => {
+    if (values.nominee_relation === "self") {
+      console.log("sngsgdd",{dataForAutopopulate,schema})
+      let acc = {};
+      schema.forEach(({name}) => {
+          let nameWithoutNominee = name.slice(name.indexOf("_")+1,name.length);
+          if(nameWithoutNominee === "contact") nameWithoutNominee = "mobile";
+          if(nameWithoutNominee.includes("address")) nameWithoutNominee = Object.keys(dataForAutopopulate).find(name => name.includes(nameWithoutNominee))
+          if (dataForAutopopulate[nameWithoutNominee]) acc[name] = dataForAutopopulate[nameWithoutNominee];
+        });
+     
+      console.table("ejrgvbjhsb",schema,dataForAutopopulate,acc);
+      setValues(prev => ({ ...prev, ...acc }));
+    }
+  }, [values.nominee_relation]);
 
   useEffect(() => {
     if (trigger) {
@@ -146,11 +189,10 @@ const FormBuilder = ({
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
-  console.log(asyncOptions, "ehe");
+
 
   return (
     <>
-      {console.log("schemaschemaschema", schema)}
       {schema instanceof Array &&
         schema.map((item, index) => {
           if (item instanceof Array) {
@@ -162,17 +204,19 @@ const FormBuilder = ({
                     values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
                     values[item[0]?.parent]?.members instanceof Object &&
-                    values[item[0]?.parent]?.members?.[member]
+                    values[item[0]?.parent]?.members?.[member] &&
+                    (item[0].render.when.includes("||")
+                      ? renderField(item[0], values, member)
+                      : true)
                   )
                     return (
                       <CustomWrapper>
                         <div className="col-md-12">
                           <Title>
-                            {
-                              proposalData["Insured Details"]?.[
+                            {member}
+                            {/* proposalData["Insured Details"]?.[
                                 member
-                              ]?.name?.split(" ")[0]
-                            }
+                              ]?.name?.split(" ")[0] */}
                           </Title>
                           {item.map(innerItem => {
                             const Comp = components[innerItem.type];
@@ -334,6 +378,7 @@ const FormBuilder = ({
                                       }
                                       submitTrigger={submitTrigger}
                                       setCustomValid={setCustomValid}
+                                      values={values}
                                       {...innerItem.additionalOptions}
                                     />
                                   </Wrapper>
@@ -349,7 +394,9 @@ const FormBuilder = ({
             );
           } else {
             const Comp = components[item.type];
-            const initialValue = relationships.includes(`${keyStr}`) ? lastName : null;
+            const initialValue = relationships.includes(`${keyStr}`)
+              ? lastName
+              : null;
             if (
               !renderField(item, values) &&
               item.render &&
@@ -382,6 +429,7 @@ const FormBuilder = ({
             } else
               return (
                 <>
+
                   {renderField(item, values) && (
                     <Wrapper
                       key={index}
@@ -437,7 +485,10 @@ const FormBuilder = ({
                           }
                         }}
                         age={item?.validate?.age}
-                        readOnly={item.readOnly || (isInsuredDetails && item.name === "mobile")}
+                        readOnly={
+                          item.readOnly
+                          //  ||(isInsuredDetails && item.name === "mobile")
+                        }
                         allValues={proposalData}
                         customMembers={
                           item.render &&
@@ -476,11 +527,17 @@ const FormBuilder = ({
                           generateRange(item.additionalOptions.customOptions)
                         }
                         asyncOptions={asyncOptions[item.name]}
-                        defaultValue={item.type === "text" && item.name === "name" ? values[item.name] || initialValue || item.value : values[item.name] || item.value}
+                        defaultValue={
+                          item.type === "text" && item.name === "name"
+                            ? values[item.name] || initialValue || item.value
+                            : values[item.name] || item.value
+                        }
                         value={values[item.name] || item.value}
                         error={errors[item.name] || additionalErrors[item.name]}
                         submitTrigger={submitTrigger}
                         setCustomValid={setCustomValid}
+                        values={values}
+                        // showMembersIf={item.additionalOptions.showMembersIf || ""}
                         {...item.additionalOptions}
                       />
                     </Wrapper>

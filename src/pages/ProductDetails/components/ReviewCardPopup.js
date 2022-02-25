@@ -11,7 +11,12 @@ import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useCompanies, useTheme } from "../../../customHooks";
 import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
-import { amount, calculateTotalPremium } from "../../../utils/helper";
+import {
+  amount,
+  calculateTotalPremium,
+  getFirstName,
+  getTotalPremium,
+} from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
 import {
@@ -20,6 +25,7 @@ import {
   useDeleteGroupQuery,
 } from "../../../api/api";
 import { skipToken } from "@reduxjs/toolkit/query";
+import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -730,65 +736,93 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
   const {
     colors: { primary_color: PrimaryColor },
   } = useTheme();
-  const { data: enquiryData } = useGetEnquiriesQuery();
-  const firstName = enquiryData?.data?.name?.split(" ")[0];
-  const { memberGroups } = useSelector(state => state.greetingPage);
-  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
+  const {
+    data: {
+      data: { name },
+    },
+  } = useGetEnquiriesQuery();
+  const firstName = getFirstName(name);
+  // const proposalDetails = useSelector(state => state.proposalPage.proposalData);
+  // const firstName = proposalDetails["Proposer Details"]?.name;
+  // const { memberGroups } = useSelector(state => state.greetingPage);
+  // const additionalDiscounts = useSelector(selectAdditionalDiscounts);
   const {
     data: {
       data: { groups },
     },
   } = useGetEnquiriesQuery();
-  const { data, isLoading, isUninitialized } = useGetCartQuery();
+  const { data, isLoading, isUninitialized, isFetching } = useGetCartQuery();
   const cart = data.data;
 
-  const groupCodes = Object.keys(cart).filter(item =>
-    Object.keys(memberGroups).includes(item),
-  );
+  // const groupCodes = Object.keys(cart).filter(item =>
+  //   Object.keys(memberGroups).includes(item),
+  // );
 
-  const allAddOns = groupCodes.reduce(
-    (allAddOns, groupCode) => [...allAddOns, ...cart[groupCode].addons],
-    [],
-  );
+  // const allAddOns = groupCodes.reduce(
+  //   (allAddOns, groupCode) => [...allAddOns, ...cart[groupCode].addons],
+  //   [],
+  // );
 
-  if (isLoading || isUninitialized) return <></>;
+  if (isLoading || isUninitialized || isFetching)
+    return (
+      <PopUpWithCloseButton
+        title={
+          <div>
+            <span
+              css={`
+                text-transform: capitalize;
+                ${mobile} {
+                  /* display: none; */
+                }
+              `}
+            >
+              Hi {firstName}, take a minute and review your cart before you
+              proceed
+            </span>
+          </div>
+        }
+        onClose={() => handleCloseClick(PrimaryColor)}
+      >
+        <CardSkeletonLoader />
+      </PopUpWithCloseButton>
+    );
   const getCartEntry = groupId => {
     if (data.data) {
       return data.data.find(cartEntry => cartEntry.group.id === groupId);
     }
   };
-  console.log({ groups, cart });
+  // console.log({ groups, cart });
 
-  const findAdditionalDiscount = discountAlias =>
-    additionalDiscounts.find(discount => discount.alias === discountAlias);
+  // const findAdditionalDiscount = discountAlias =>
+  //   additionalDiscounts.find(discount => discount.alias === discountAlias);
 
-  let totalPremium = groups.reduce((totalPremium, groupCode) => {
-    console.log(cart, groupCode);
-    const groupCart = cart.find(item => item.group.id === groupCode.id);
+  // const totalPremium = groups.reduce((totalPremium, groupCode) => {
+  //   console.log(cart, groupCode);
+  //   const groupCart = cart.find(item => item.group.id === groupCode.id);
 
-    const discounts = groupCart?.discounts;
-    let newTotalPremium = totalPremium + calculateTotalPremium(groupCart);
-    if (discounts) {
-      discounts.forEach(discountAlias => {
-        const discount = findAdditionalDiscount(discountAlias);
-        if (discount) {
-          newTotalPremium -= newTotalPremium * (discount.percent / 100);
-        }
-      });
-    }
-    return newTotalPremium;
-  }, 0);
+  //   const discounts = groupCart?.discounts;
+  //   let newTotalPremium = totalPremium + calculateTotalPremium(groupCart);
+  //   if (discounts) {
+  //     discounts.forEach(discountAlias => {
+  //       const discount = findAdditionalDiscount(discountAlias);
+  //       if (discount) {
+  //         newTotalPremium -= newTotalPremium * (discount.percent / 100);
+  //       }
+  //     });
+  //   }
+  //   return newTotalPremium;
+  // }, 0);
 
-  const reducedAddOns = allAddOns.reduce((reducedAddOns, addOn) => {
-    const { id } = addOn.product;
-    if (!reducedAddOns[id]) {
-      return {
-        ...reducedAddOns,
-        [id]: [addOn],
-      };
-    }
-    return { ...reducedAddOns, [id]: [...reducedAddOns[id], addOn] };
-  }, {});
+  // const reducedAddOns = allAddOns.reduce((reducedAddOns, addOn) => {
+  //   const { id } = addOn.product;
+  //   if (!reducedAddOns[id]) {
+  //     return {
+  //       ...reducedAddOns,
+  //       [id]: [addOn],
+  //     };
+  //   }
+  //   return { ...reducedAddOns, [id]: [...reducedAddOns[id], addOn] };
+  // }, {});
 
   // function addOnsReducer(reducedAddOns, addOn) {
   //   const addOnId = addOn.product.id;
@@ -808,6 +842,8 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
 
   // const { product } = useCartProduct(groupCodes[0]);
   // const { tenure } = product;
+
+  const totalPremium = getTotalPremium(cart);
 
   return (
     <PopUpWithCloseButton
@@ -877,42 +913,44 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
             }
           `}
         >
-          <div
-            css={`
-              font-weight: 900;
+          {
+            <div
+              css={`
+                font-weight: 900;
 
-              ${mobile} {
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-              }
-            `}
-          >
-            <div
-              css={`
-                color: #505f79;
-                font-size: 13px;
                 ${mobile} {
-                  font-size: 16px;
-                  font-weight: 600;
+                  display: flex;
+                  justify-content: space-between;
+                  width: 100%;
                 }
               `}
             >
-              Total Premium :
+              <div
+                css={`
+                  color: #505f79;
+                  font-size: 13px;
+                  ${mobile} {
+                    font-size: 16px;
+                    font-weight: 600;
+                  }
+                `}
+              >
+                Total Premium :
+              </div>
+              <div
+                css={`
+                  color: var(--abc-red);
+                  font-size: 20px;
+                  text-align: left;
+                  ${mobile} {
+                    font-size: 18px;
+                  }
+                `}
+              >
+                {amount(totalPremium)}
+              </div>
             </div>
-            <div
-              css={`
-                color: var(--abc-red);
-                font-size: 20px;
-                text-align: left;
-                ${mobile} {
-                  font-size: 18px;
-                }
-              `}
-            >
-              {amount(totalPremium)}
-            </div>
-          </div>
+          }
           <Link
             to={propsoalPageLink}
             css={`

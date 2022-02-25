@@ -13,7 +13,7 @@ import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader
 import CardModal from "./Common/Modal/CardModal";
 import { figureToWords } from "../utils/helper";
 
-function CartSummaryModal({ onClose, onContine }) {
+function CartSummaryModal({ onClose, onContine, allClose }) {
   const { data: enquiryData } = useGetEnquiriesQuery();
   const firstName = enquiryData?.data?.name?.split(" ")[0];
   return (
@@ -23,14 +23,18 @@ function CartSummaryModal({ onClose, onContine }) {
       buttonValue="Continue"
       handleClose={onClose}
       content={
-        <CartSummaryContent onContine={onContine} closeModal={onClose} />
+        <CartSummaryContent
+          onContine={onContine}
+          closeModal={onClose}
+          allClose={allClose}
+        />
       }
       noFooter={true}
     />
   );
 }
 
-function CartSummaryContent({ closeModal, onContine, ...props }) {
+function CartSummaryContent({ closeModal, onContine, allClose, ...props }) {
   const {
     data: {
       data: { groups },
@@ -40,7 +44,7 @@ function CartSummaryContent({ closeModal, onContine, ...props }) {
   return (
     <div {...props}>
       {groups.map(group => (
-        <GroupCard group={group} closeModal={closeModal} />
+        <GroupCard group={group} closeModal={closeModal} allClose={allClose} />
       ))}
       <hr
         css={`
@@ -124,7 +128,7 @@ function Footer({ closeModal, onContine, ...props }) {
   );
 }
 
-function GroupCard({ group, closeModal, ...props }) {
+function GroupCard({ group, closeModal, allClose, ...props }) {
   const { members } = group;
 
   return (
@@ -161,14 +165,18 @@ function GroupCard({ group, closeModal, ...props }) {
           {members.join(" + ")?.replaceAll("_", "-")}
         </h5>
 
-        <ToggleProductCTA group={group} closeModal={closeModal} />
+        <ToggleProductCTA
+          group={group}
+          closeModal={closeModal}
+          allClose={allClose}
+        />
       </div>
       <RenderProductSummaryCard group={group} />
     </div>
   );
 }
 
-function ToggleProductCTA({ group, closeModal, ...props }) {
+function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
   const dispatch = useDispatch();
   const { data, isLoading, isUninitialized } = useGetCartQuery();
 
@@ -203,6 +211,7 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
 
   function handleAddPlanClick() {
     closeModal && closeModal();
+    allClose();
     history.push({
       pathname: `/quotes/${group.id}`,
       search: `enquiryId=${enquiryId}`,

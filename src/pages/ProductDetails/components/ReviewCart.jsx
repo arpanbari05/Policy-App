@@ -15,7 +15,11 @@ import EditMembersContent from "./EditMembersContent";
 import { mobile, small } from "../../../utils/mediaQueries";
 import CardModal from "../../../components/Common/Modal/CardModal";
 import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
-import { amount, figureToWords } from "../../../utils/helper";
+import {
+  amount,
+  figureToWords,
+  getDiscountAmount,
+} from "../../../utils/helper";
 import {
   useAdditionalDiscount,
   useCart,
@@ -180,10 +184,18 @@ function DiscountsList({ groupCode, ...props }) {
 
 function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
   const { name } = additionalDiscount;
-  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
-  const discountAmount = amount(getDiscountAmount(additionalDiscount));
+  // const { getDiscountAmount } = useAdditionalDiscount(groupCode);
+  // const discountAmount = amount(getDiscountAmount(additionalDiscount));
 
-  return <CartDetailRow title={name} value={discountAmount} {...props} />;
+  const { getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const discountAmount = getDiscountAmount(additionalDiscount, cartEntry);
+
+  return (
+    <CartDetailRow title={name} value={amount(discountAmount)} {...props} />
+  );
 }
 
 function RidersList({ groupCode, ...props }) {
@@ -508,9 +520,15 @@ function BasePlanDetails({
         <div className="mt-2">
           <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
           {journeyType === "top_up" ? (
-            <CartDetailRow title="Deductible" value={`₹ ${figureToWords(deductible)}`} />
+            <CartDetailRow
+              title="Deductible"
+              value={`₹ ${figureToWords(deductible)}`}
+            />
           ) : null}
-          <CartDetailRow title="Cover" value={`₹ ${figureToWords(sum_insured)}`} />
+          <CartDetailRow
+            title="Cover"
+            value={`₹ ${figureToWords(sum_insured)}`}
+          />
           <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
           {!revisedPremium ? (
             <CartDetailRow
@@ -537,7 +555,13 @@ function BasePlanDetails({
 function TotalPremium({ groupCode, ...props }) {
   const { getCartEntry } = useCart();
 
-  const { netPremium, tenure } = getCartEntry(groupCode);
+  const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
+
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
+  const { netPremium, tenure } = getCartEntry(groupCode, {
+    additionalDiscounts,
+  });
 
   const displayNetPremium = `${amount(netPremium)} / ${
     tenure === 1 ? "Year" : `${tenure} Years`
@@ -577,6 +601,12 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
   const history = useHistory();
   const url = useUrlQuery();
   const { updateCart, getCartEntry } = useCart();
+
+  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+    useAdditionalDiscount(groupCode);
+
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
   const [updateCartMutation, query] = updateCart(groupCode);
 
   const cartEntry = getCartEntry(groupCode);
@@ -596,7 +626,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
   const enquiryId = urlQueryStrings.get("enquiryId");
 
   const handleClick = () => {
-    updateCartMutation().then(() => {
+    updateCartMutation({ additionalDiscounts }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
@@ -614,12 +644,15 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
     history.push(getUrlWithEnquirySearch("/proposal"));
   };
 
+  if (additionalDiscountsQuery.isLoading || additionalDiscountsQuery.isFetching)
+    return <CircleLoader animation="border" />;
+
   return (
     <div>
       <Button
         onClick={handleClick}
         className="w-100"
-        loader={query.isLoading}
+        loader={!nextGroupProduct && query.isLoading}
         disabled={cartEntry.unavailable_message || query.isLoading}
         {...props}
       >
@@ -645,9 +678,9 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
       </Button>
       {reviewCartModalNew.isOn && (
         <ReviewCartPopup
-            propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
-            onClose={reviewCartModalNew.off}
-          />
+          propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
+          onClose={reviewCartModalNew.off}
+        />
 
         // <NewReviewCartPopup
         //   onContine={handleContinueClick}
@@ -1978,6 +2011,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
         <EditMembersModal
           onClose={() => setShowEditMembers(false)}
           group={group}
+          
         />
       )}
     </>
