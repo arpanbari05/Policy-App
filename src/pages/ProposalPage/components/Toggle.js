@@ -16,11 +16,11 @@ const Toggle = ({
   value,
   error,
   onChange,
-  showMembersIf,
   notAllowed,
   values,
   showMembers,
   customMembers,
+  showMembersIf,
 }) => {
   const { colors } = useTheme();
   
@@ -28,7 +28,6 @@ const Toggle = ({
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
 const [customShowMembers,setCustomshowMembers] = useState(false);
-console.log("bjffb",values,customShowMembers,showMembersIf?showMembersIf.split("||"):"");
 useEffect(() => {
 if(showMembersIf){
 

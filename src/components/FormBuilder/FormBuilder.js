@@ -189,11 +189,10 @@ const FormBuilder = ({
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
-  console.log(asyncOptions, "ehe");
+
 
   return (
     <>
-      {console.log("schemaschemaschema", values)}
       {schema instanceof Array &&
         schema.map((item, index) => {
           if (item instanceof Array) {
@@ -430,6 +429,7 @@ const FormBuilder = ({
             } else
               return (
                 <>
+
                   {renderField(item, values) && (
                     <Wrapper
                       key={index}
@@ -537,6 +537,7 @@ const FormBuilder = ({
                         submitTrigger={submitTrigger}
                         setCustomValid={setCustomValid}
                         values={values}
+                        // showMembersIf={item.additionalOptions.showMembersIf || ""}
                         {...item.additionalOptions}
                       />
                     </Wrapper>
