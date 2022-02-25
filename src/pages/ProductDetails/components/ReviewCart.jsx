@@ -507,12 +507,8 @@ function BasePlanDetails({
       >
         <div
           className="d-flex align-items-center"
-          css={`
-            width: 3.39em;
-            background-color: #fff;
-          `}
         >
-          <img src={icLogoSrc} alt={alias} className="w-100" />
+          <img css={`height: 45px;`} src={icLogoSrc} alt={alias} />
         </div>
         <div>{name}</div>
       </div>

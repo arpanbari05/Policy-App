@@ -79,7 +79,8 @@ const ProposalPage = () => {
 
   useEffect(() => {
     dispatch(getProposalFields());
-    if (!Object.keys(proposalData).length) dispatch(getProposalData());
+    // if (!Object.keys(proposalData).length) 
+    dispatch(getProposalData());
     dispatch(getCart());
   }, []);
   useEffect(() => {

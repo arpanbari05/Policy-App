@@ -19,11 +19,11 @@ const ErrorPopup = ({show, head, msg, handleClose}) => {
     return (
       <PopupWrapper>
         <Popup>
-          <CloseButton
+          {/* <CloseButton
             onClick={handleClose}
-          >
-            <i class="fas fa-times"></i>
-          </CloseButton>
+          > */}
+            <i style={{margin: "10px 10px 0 0", cursor: "pointer"}} class="fas fa-times" onClick={handleClose}></i>
+          {/* </CloseButton> */}
           <Container>
             {head && (<span>{head}</span>)}
             <p>

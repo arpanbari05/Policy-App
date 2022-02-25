@@ -880,6 +880,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
             group={groupCode}
             onClose={onClose}
             cartEntry={getCartEntry(groupCode.id)}
+            link={propsoalPageLink}
           />
         ))}{" "}
         {/* {Object.keys(reducedAddOns).length > 0 && (
@@ -998,7 +999,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
 
 export default ReviewCartPopup;
 
-function ProductCard({ groupCode, onClose, cartEntry, group }) {
+function ProductCard({ groupCode, onClose, cartEntry, group, link }) {
   const history = useHistory();
   // const { product, deleteProduct } = useCartProduct(groupCode);
   const urlQuery = useUrlQuery();
@@ -1068,21 +1069,23 @@ function ProductCard({ groupCode, onClose, cartEntry, group }) {
           </button>
         </div> */}
       </div>
-      {product ? (
-        <div
-          css={`
-            margin-bottom: 20px;
-            ${mobile} {
-              margin-top: 10px;
-            }
-          `}
-        >
-          <ProductDetailsCard cartItem={product} />
-          <ProductDetailsCardMobile cartItem={product} />
-        </div>
-      ) : (
-        <ProceedWithoutPlan group={group} />
-      )}
+      {
+        product ? (
+          <div
+            css={`
+              margin-bottom: 20px;
+              ${mobile} {
+                margin-top: 10px;
+              }
+            `}
+          >
+            <ProductDetailsCard cartItem={product} />
+            <ProductDetailsCardMobile cartItem={product} />
+          </div>
+        ) : (
+          <ProceedWithoutPlan handleClose={onClose} link={link} group={group} />
+        )
+      }
       {product?.addons.length > 0 && (
         <div
           css={`
@@ -1110,52 +1113,35 @@ function ProductCard({ groupCode, onClose, cartEntry, group }) {
   );
 }
 
-function ProceedWithoutPlan({ group }) {
-  const {
-    colors: { primary_color: PrimaryColor },
-  } = useTheme();
+function ProceedWithoutPlan({group, link, handleClose = () => {}}) {
+  const history = useHistory();
+  const { colors: { primary_color: PrimaryColor} } = useTheme();
   const [groupId, setGroupId] = useState(skipToken);
   const { isLoading, data, error } = useDeleteGroupQuery(groupId);
   const handleContinue = () => {
     setGroupId(group.id);
-  };
+    if (!error && !isLoading) {
+      history.push(link);
+    }
+  }
 
   return (
     <div className="d-flex align-items-center justify-content-between mb-3 mx-1">
-      <p className="m-0">
-        Are you sure you want to proceed without adding plan?
-      </p>
-      <div
-        className="d-flex"
-        css={`
-          gap: 1rem;
-        `}
-      >
-        <button
-          className="py-1 px-3"
-          disabled={isLoading}
-          css={`
-            border-radius: 2px;
-            background-color: ${PrimaryColor};
-            color: #fff;
-            &:disabled {
-              background-color: #ccc;
-            }
-          `}
-          onClick={handleContinue}
-        >
-          Yes
-        </button>
-        <button
-          className="py-1 px-3"
-          css={`
-            border-radius: 2px;
-            background-color: ${PrimaryColor};
-            color: #fff;
-          `}
-        >
-          No
-        </button>
+      <p className="m-0">Are you sure you want to proceed without adding plan?</p>
+      <div className="d-flex" css={`gap: 1rem`}>
+        <button className="py-1 px-3" disabled={isLoading} css={`
+          border-radius: 2px;
+          background-color: ${PrimaryColor};
+          color: #fff;
+          &:disabled {
+            background-color: #ccc;
+          }
+        `} onClick={handleContinue}>Yes</button>
+        <button className="py-1 px-3" css={`
+          border-radius: 2px;
+          background-color: ${PrimaryColor};
+          color: #fff;
+        `} onClick={handleClose}>No</button>
       </div>
     </div>
   );
