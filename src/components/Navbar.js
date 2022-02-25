@@ -36,9 +36,13 @@ const GO_BACK_LOCATIONS = [
 
 const Navbar = () => {
   const location = useLocation();
+
   const history = useHistory();
+
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
   const { journeyType } = useFrontendBoot();
+
   const isRootRoute = useRouteMatch({
     path: ["/", "/input/basic-details"],
     exact: true,
@@ -212,6 +216,8 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
     skip: !!isRootRoute,
   });
 
+  const pinCode = data?.data?.input?.pincode;
+
   const [show, setShow] = useState(false);
 
   const { colors } = useTheme();
@@ -254,7 +260,7 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
           `}
         >
           <Members />
-          <Info label="Pincode" value="999999" />
+          <Info label="Pincode" value={pinCode} />
         </div>
       )}
     </div>

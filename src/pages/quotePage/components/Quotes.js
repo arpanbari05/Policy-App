@@ -17,8 +17,6 @@ import { CompareQuoteTrayItem, CompareTrayAdd } from ".";
 function Quotes({ sortBy = "relevence", ...props }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
 
-  console.log("The data", data);
-
   let mergedQuotes = data;
 
   if (data) {
