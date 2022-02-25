@@ -23,7 +23,7 @@ import {
   setPolicyTypes,
   setPolicyType,
   setIsOnProductDetails,
-  setShouldRedirectToQuotes
+  setShouldRedirectToQuotes,
 } from "../pages/quotePage/quote.slice";
 import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
@@ -37,10 +37,15 @@ const GO_BACK_LOCATIONS = [
 
 const Navbar = () => {
   const location = useLocation();
-  const dispatch = useDispatch()
+
+  const dispatch = useDispatch();
+
   const history = useHistory();
+
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
   const { journeyType } = useFrontendBoot();
+
   const isRootRoute = useRouteMatch({
     path: ["/", "/input/basic-details"],
     exact: true,
@@ -128,11 +133,11 @@ const Navbar = () => {
                         const getLink = () => {
                           console.log(prevoiusGroup);
                           if (!prevoiusGroup) {
-                            console.log("In prev")
+                            console.log("In prev");
                             return getUrlWithEnquirySearch(
                               `/quotes/${groupCode}`,
-                              );
-                            }
+                            );
+                          }
                           return getUrlWithEnquirySearch(
                             `/productdetails/${prevoiusGroup.id}`,
                           );
@@ -241,6 +246,8 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
     skip: !!isRootRoute,
   });
 
+  const pinCode = data?.data?.input?.pincode;
+
   const [show, setShow] = useState(false);
 
   const { colors } = useTheme();
@@ -283,7 +290,7 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
           `}
         >
           <Members />
-          <Info label="Pincode" value="999999" />
+          <Info label="Pincode" value={pinCode} />
         </div>
       )}
     </div>
