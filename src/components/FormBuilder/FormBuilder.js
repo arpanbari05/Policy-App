@@ -199,7 +199,7 @@ const FormBuilder = ({
             return (
               <>
                 {item[0]?.additionalOptions?.members?.map(member => {
-                  console.log(member, proposalData, "gsda");
+                  console.log("gsdajhfgj",renderField(item[0], values, member));
                   if (
                     values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&

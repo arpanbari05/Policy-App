@@ -18,7 +18,7 @@ export const renderField = (item, value, member) => {
     //   if (check) return true;
     //   else return false;
     // } else
-    if (item.parent && member) {
+    if (item.parent && member && !when.includes("||")) {
       if (
         value[item.parent] &&
         value[item.parent].members instanceof Object &&
