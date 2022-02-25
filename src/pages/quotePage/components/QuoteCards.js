@@ -217,7 +217,7 @@ function QuoteCard({
             src={logoSrc}
             alt={quote.company_alias}
             css={`
-              max-width: 5em;
+              min-width: 4.0em;
               max-height: 3em;
             `}
           />

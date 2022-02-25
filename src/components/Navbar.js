@@ -23,6 +23,7 @@ import {
   setPolicyTypes,
   setPolicyType,
   setIsOnProductDetails,
+  setShouldRedirectToQuotes
 } from "../pages/quotePage/quote.slice";
 import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
@@ -36,6 +37,7 @@ const GO_BACK_LOCATIONS = [
 
 const Navbar = () => {
   const location = useLocation();
+  const dispatch = useDispatch()
   const history = useHistory();
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
   const { journeyType } = useFrontendBoot();
@@ -68,7 +70,31 @@ const Navbar = () => {
         }
       `}
     >
-      <Card width={"100%"} height={"60px"} clasName="position-relative">
+      <Card width={"100%"} height={"53px"} clasName="position-relative">
+        {location.pathname === "/proposal_summary" && (
+          <Link
+            className="d-flex justify-content-center align-items-center"
+            css={`
+              background: #f1f4f8;
+              width: 35px;
+              margin-right: 20px;
+              border-radius: 100%;
+              height: 35px;
+              top: 50%;
+              left: 20px;
+              transform: translateY(-50%);
+              position: absolute;
+              color: #707b8b;
+            `}
+            to={getUrlWithEnquirySearch("/proposal")}
+            //  onClick={() => {
+            //       history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
+            //     }}
+          >
+            <FaChevronLeft />
+          </Link>
+        )}
+
         <div className="container d-flex justify-content-between align-items-center h-100">
           <div
             css={`
@@ -100,15 +126,18 @@ const Navbar = () => {
                     switch (location.pathname) {
                       case `/productdetails/${groupCode}`:
                         const getLink = () => {
-                          if (!prevoiusGroup)
+                          console.log(prevoiusGroup);
+                          if (!prevoiusGroup) {
+                            console.log("In prev")
                             return getUrlWithEnquirySearch(
                               `/quotes/${groupCode}`,
-                            );
-
+                              );
+                            }
                           return getUrlWithEnquirySearch(
                             `/productdetails/${prevoiusGroup.id}`,
                           );
                         };
+                        dispatch(setShouldRedirectToQuotes(true));
                         history.replace(getLink());
                         setIsOnProductDetails(true);
                         break;
