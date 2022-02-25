@@ -220,7 +220,7 @@ export const api = createApi({
       providesTags: ["Rider"],
     }),
     deleteGroup: builder.query({
-      query: groupId => ({ url: `groups/${groupId}` }),
+      query: (groupId) => ({ url: `groups/${groupId}`, method: "DELETE"})
     }),
     getDiscounts: builder.query({
       query: ({

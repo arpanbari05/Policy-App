@@ -6,7 +6,7 @@ import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
-import { useQuote, useTheme, useToggle, useUrlEnquiry } from "../customHooks";
+import { useQuote, useTheme, useToggle, useUrlEnquiry, useMembers } from "../customHooks";
 import {
   amount,
   calculateTotalPremium,
@@ -16,6 +16,7 @@ import CartSummaryModal from "./CartSummaryModal";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import FilterSkeletonLoader from "./Common/filter-skeleton-loader/FilterSkeletonLoader";
 import * as mq from "../utils/mediaQueries";
+import { useSelector } from "react-redux";
 
 export function ScreenTopLoader({ progress, show }) {
   const { colors } = useTheme();
@@ -406,14 +407,20 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
       .catch(() => alert("Something went wrong while buying the quote!"));
   };
 
-  const { data } = useGetCartQuery();
+  // const { data } = useGetCartQuery();
 
   const { enquiryId } = useUrlEnquiry();
+  const { memberGroups } = useSelector(state => state.greetingPage);
+  const { policyTypes } = useSelector((state) => state.quotePage);
+  const { cart } = useSelector(state => state);
+  console.log(cart);
 
   function gotoProductPage() {
-    const groupCodes = data.data.map(cartEntry => cartEntry.group.id);
-
+    // const groupCodes = data.data.map(cartEntry => cartEntry.group.id);
+    const groupCodes = Object.keys(policyTypes).map(key => parseInt(key));
+    console.log(groupCodes);
     const firstGroupWithQuote = Math.min(...groupCodes);
+
 
     history.push({
       pathname: `/productdetails/${firstGroupWithQuote}`,
