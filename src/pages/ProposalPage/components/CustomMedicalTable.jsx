@@ -20,8 +20,12 @@ const CustomMedicalTable = ({
   onChange = () => {},
   setCustomValid,
   value,
+  values,
   customMembers,
+  showMembersIf,
 }) => {
+  {console.log("cvodhac",label,showMembersIf)}
+
   const defaultToggleValue = value => {
     let x = {};
     let members = {};
@@ -82,6 +86,8 @@ const CustomMedicalTable = ({
         onChange={onChange}
         customMembers={customMembers}
         customOptions={customOptions}
+        showMembersIf={showMembersIf}
+        values={ values}
       />
     </>
   );
