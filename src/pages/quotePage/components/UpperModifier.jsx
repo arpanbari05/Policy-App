@@ -37,9 +37,10 @@ export function GroupLinks({ ...props }) {
   const { groups } = useMembers();
   return (
     <div
-      className="d-flex align-items-center mx-3 h-100 justify-content-center"
+      className="d-flex align-items-center mx-3 h-100 text-center overflow-scroll"
       css={`
         gap: 1em;
+        font-size: 9px !important;
       `}
       {...props}
     >
@@ -69,7 +70,7 @@ export function GroupLink({ group, ...props }) {
 
   return (
     <div
-      className="d-flex align-items-center position-relative h-100"
+      className="d-flex align-items-center position-relative h-100 m-auto"
       {...props}
     >
       <Link

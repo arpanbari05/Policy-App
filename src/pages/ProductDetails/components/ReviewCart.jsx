@@ -9,7 +9,7 @@ import {
   setexpandMobile,
 } from "../productDetails.slice";
 import { useEffect, useMemo, useState } from "react";
-import ReviewCartPopup, { PopUpWithCloseButton } from "./ReviewCardPopup";
+import ReviewCartPopup from "./ReviewCardPopup";
 // import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
 import EditMembersContent from "./EditMembersContent";
 import { mobile, small } from "../../../utils/mediaQueries";
