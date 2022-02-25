@@ -57,11 +57,7 @@ function DeductibleFilterModal({ onClose, ...props }) {
       handleClose={() => onClose && onClose()}
       customizedTopMargin="65"
       tooltipDesc="Select Deductible preiod."
-      css={`
-        & .modal-body {
-          overflow: visible;
-        }
-      `}
+      noBodyOverflow
       {...props}
     >
       <div className="mt-3">

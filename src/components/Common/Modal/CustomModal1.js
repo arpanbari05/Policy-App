@@ -48,7 +48,7 @@ const ModalBody = styled.div`
   position: relative;
   flex: 1 1 auto;
   padding: 0 1rem;
-  overflow: auto;
+  overflow: ${({ noBodyOverflow }) => (noBodyOverflow ? "unset" : "auto")};
   max-height: 20em;
 `;
 const ModalFooter = styled.div`
@@ -79,6 +79,7 @@ const CustomModal1 = ({
   leftAlignmnetMargin,
   customizedTopMargin,
   tooltipDesc,
+  noBodyOverflow,
   ...props
 }) => {
   return (
@@ -100,7 +101,9 @@ const CustomModal1 = ({
             <FaTimes />
           </button>
         </ModalHeader>
-        <ModalBody className="modal-body">{children}</ModalBody>
+        <ModalBody className="modal-body" noBodyOverflow={noBodyOverflow}>
+          {children}
+        </ModalBody>
         <ModalFooter>{footerJSX}</ModalFooter>
       </ModalContent>
     </>
