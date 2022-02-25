@@ -23,6 +23,7 @@ import { useHistory } from "react-router-dom";
 import useUrlQuery from "../../../../../customHooks/useUrlQuery";
 import CartSummaryModal from "../../../../../components/CartSummaryModal";
 import { NewReviewCartPopup } from "../../../../../components/NewReviewCartPopup";
+import ReviewCartPopup from "../../ReviewCardPopup";
 
 const plantypes = {
   M: "Multi Individual",
@@ -63,10 +64,11 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const additionalDiscounts = getSelectedAdditionalDiscounts();
 
+  const enquiryId = url.get("enquiryId");
+
   const handleClick = () => {
     updateCartMutation({ additionalDiscounts }).then(() => {
       if (nextGroupProduct) {
-        const enquiryId = url.get("enquiryId");
         history.push({
           pathname: `/productdetails/${nextGroupProduct.group.id}`,
           search: `enquiryId=${enquiryId}`,
@@ -178,8 +180,8 @@ const CartMobile = ({ groupCode, ...props }) => {
           )}
         </Button>
         {!nextGroupProduct && reviewCartModalNew.isOn && (
-          <NewReviewCartPopup
-            onContine={handleContinueClick}
+          <ReviewCartPopup
+            propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
             onClose={reviewCartModalNew.off}
           />
         )}

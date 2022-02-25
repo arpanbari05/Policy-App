@@ -285,8 +285,13 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
         <div
           className="d-flex align-items-center justify-content-between py-2"
           css={`
+            font-size: 10px;
             border-top: 1px solid #aaa;
             border-bottom: 1px solid #aaa;
+
+            @media (max-width: 395px) {
+              font-size: 9px !important;
+            }
           `}
         >
           <Members />
@@ -318,7 +323,11 @@ export function Members() {
     <div
       className="d-flex"
       css={`
-        font-size: 0.79rem;
+        font-size: 10px !important;
+
+        @media (max-width: 395px) {
+          font-size: 9px !important;
+        }
       `}
     >
       {members.map(member => (
@@ -346,6 +355,10 @@ function Info({ label, value, ...props }) {
         gap: 0.67em;
         &:not(:last-child) {
           border-right: 1px solid ${colors.secondary_shade};
+        }
+
+        @media (max-width: 410px) {
+          gap: 0.30em;
         }
       `}
       {...props}

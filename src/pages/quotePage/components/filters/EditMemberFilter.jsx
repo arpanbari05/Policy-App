@@ -174,7 +174,7 @@ export function EditMembers({ onClose, ...props }) {
           }
         `}
       >
-        <div className="p-3" css={`font-size: 16px`}>
+        <div className="p-3" css={`font-size: 16px @media (max-width: 767px) { font-size: 14px; }`}>
           <MemberOptions {...memberForm} />
         </div>
         {error &&
