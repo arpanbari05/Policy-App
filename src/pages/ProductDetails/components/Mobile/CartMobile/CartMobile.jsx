@@ -31,16 +31,25 @@ const plantypes = {
 };
 const CartMobile = ({ groupCode, ...props }) => {
   const [toggleCard, setToggleCard] = useState(false);
+
   const { colors } = useTheme();
+
   const history = useHistory();
+
   const { getCartEntry } = useCart();
+
   const cartEntry = getCartEntry(parseInt(groupCode));
+
   const { netPremium } = cartEntry;
+
   const reviewCartModalNew = useToggle();
+
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
   const url = useUrlQuery();
+
   const { updateCart } = useCart();
+
   const [updateCartMutation, query] = updateCart(groupCode);
 
   const { getNextGroupProduct } = useCart();
@@ -49,8 +58,13 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
+  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+    useAdditionalDiscount(groupCode);
+
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
   const handleClick = () => {
-    updateCartMutation().then(() => {
+    updateCartMutation({ additionalDiscounts }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
@@ -145,15 +159,22 @@ const CartMobile = ({ groupCode, ...props }) => {
           {...props}
           className="rounded"
         >
-          {nextGroupProduct && (
-            <>
-              {"Proceed"}
-              {query.isLoading ? <CircleLoader animation="border" /> : null}
-            </>
-          )}
-          {!nextGroupProduct && "Review Your Cart"}
-          {query.isLoading && !nextGroupProduct && (
+          {additionalDiscountsQuery.isLoading ||
+          additionalDiscountsQuery.isFetching ? (
             <CircleLoader animation="border" />
+          ) : (
+            <>
+              {nextGroupProduct && (
+                <>
+                  {"Proceed"}
+                  {query.isLoading ? <CircleLoader animation="border" /> : null}
+                </>
+              )}
+              {!nextGroupProduct && "Review Your Cart"}
+              {query.isLoading && !nextGroupProduct && (
+                <CircleLoader animation="border" />
+              )}
+            </>
           )}
         </Button>
         {!nextGroupProduct && reviewCartModalNew.isOn && (
@@ -320,9 +341,15 @@ const PlanCard = ({ groupCode, ...props }) => {
       {...props}
     >
       <TitleValueRenderer title="Plan Type" value={plantypes[plantype]} />
-      <TitleValueRenderer title="Cover" value={`₹ ${figureToWords(sum_insured)}`} />
+      <TitleValueRenderer
+        title="Cover"
+        value={`₹ ${figureToWords(sum_insured)}`}
+      />
       {journeyType === "top_up" ? (
-        <TitleValueRenderer title="Deductible" value={`₹ ${figureToWords(deductible)}`} />
+        <TitleValueRenderer
+          title="Deductible"
+          value={`₹ ${figureToWords(deductible)}`}
+        />
       ) : null}
       <TitleValueRenderer title="Policy term" value={displayPolicyTerm} />
       <TitleValueRenderer title="Premium" value={amount(netPremium)} />
