@@ -24,9 +24,18 @@ const findSelectedFilterObject = (filters, selectedFilter) => {
     );
   }
   if (typeof selectedFilter === "string") {
-    return filters.options.find(
+    const findObj = filters.options.find(
       filter => filter.display_name === selectedFilter,
     );
+    return findObj
+      ? {
+          ...findObj,
+          code: findObj.code
+            .split("_")
+            .slice(0, findObj.code.split("_").length - 1)
+            .join("_"), // ALTERS code KEY [ Remove when code key is same for all options ]
+        }
+      : undefined;
   }
 }; // RETURNS SELECTED OPTIONS ARRAY [{}..] or OBJECT FOR EACH FILTER
 
@@ -41,7 +50,14 @@ const checkFeature = quote => featureObject => {
 
   const { operator, value_to_compare, code } = featureObject;
 
-  const value = feature?.value?.toUpperCase();
+  console.log(
+    "Thhe operater , value_to_compare , code",
+    operator,
+    value_to_compare,
+    code,
+  );
+
+  const value = feature?.value?.toUpperCase()?.trim();
 
   if (code === "no_claim_bonus" && operator === "equals") {
     const upto = getNumberFromString(value);
@@ -54,8 +70,8 @@ const checkFeature = quote => featureObject => {
 
   const valueToCompare =
     typeof value_to_compare === "string"
-      ? value_to_compare.toUpperCase()
-      : value_to_compare.map(val => val.toUpperCase());
+      ? value_to_compare.toUpperCase().trim()
+      : value_to_compare.map(val => val.toUpperCase().trim());
 
   if (operator === "equals") return value === valueToCompare;
   if (operator === "not_equals") return value !== valueToCompare;
@@ -66,19 +82,9 @@ const checkFeature = quote => featureObject => {
 };
 
 function useQuoteFilter({ givenMoreFilters } = {}) {
-  const {
-    // insurers,
-    // premium,
-    moreFilters,
-  } = useSelector(state => state.quotePage.filters);
-
   const { getSelectedFilter } = useFilters();
 
   const insurers = getSelectedFilter("insurers");
-
-  const {
-    data: { morefilters },
-  } = useFrontendBoot();
 
   const proposerDetailsMembers = useSelector(
     state => state.greetingPage.proposerDetails.members,
@@ -93,6 +99,16 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   );
 
   const minAge = getMinOfArray(currentGroupMembersAge);
+
+  const {
+    // insurers,
+    // premium,
+    moreFilters,
+  } = useSelector(state => state.quotePage.filters);
+
+  const {
+    data: { morefilters },
+  } = useFrontendBoot();
 
   const {
     popular_filters: popularFiltersSelected,
@@ -146,7 +162,7 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
 
   const selectedNoClaimFilterObject = findSelectedFilterObject(
     noClaimFilters,
-    noClaim ? noClaim[0].display_name : "", // NAME ARRAY
+    noClaim ? noClaim[0].display_name : "", // NAME
   );
 
   const selectedPremiumCode = getSelectedFilter("premium")?.code;
@@ -192,10 +208,11 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     } else isPremiumMatch = true;
     const checkFeatureMatch = checkFeature(quote);
 
-    const filterMatch = filter => (filter ? checkFeatureMatch(filter) : true); //Accepts {} Returns BOOL
+    const filterMatch = filter => {
+      return filter ? checkFeatureMatch(filter) : true;
+    }; //Accepts {} Returns BOOL
 
     const filtersMatch = filters => {
-      console.log("The filters", filters);
       return filters
         ? filters.every(filter => checkFeatureMatch(filter))
         : true; //Accepts [{}..] Returns BOOL
