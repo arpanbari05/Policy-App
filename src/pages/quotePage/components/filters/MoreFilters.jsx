@@ -50,6 +50,8 @@ function FilterModal({ onClose }) {
     data: { morefilters },
   } = useFrontendBoot();
 
+  console.log("The morefilters", morefilters);
+
   const { getSelectedFilter } = useFilters();
 
   const { filters, updateFilter, clearFilters } = useFiltersSlot({
@@ -62,6 +64,7 @@ function FilterModal({ onClose }) {
   const { updateFilters } = useUpdateFilters();
 
   const handleShowPlansClick = () => {
+    console.log("The filteres to update", filters);
     updateFilters(filters);
     onClose && onClose();
   };
@@ -73,6 +76,8 @@ function FilterModal({ onClose }) {
   const filteredQuotes = data ? filterQuotes(getFlatQuotes(data)) : [];
 
   const length = filteredQuotes?.length;
+
+  // HAVE TO RENDER THESE QUOTES
 
   return (
     <Modal
@@ -106,12 +111,14 @@ function FilterModal({ onClose }) {
         `}
       >
         {morefilters.map((filter, idx) => (
-          <FilterGroup
-            filter={filter}
-            key={filter.code + idx}
-            currentOption={filters[filter.code]}
-            onChange={updateFilter}
-          />
+          <>
+            <FilterGroup
+              filter={filter}
+              key={filter.code + idx}
+              currentOption={filters[filter.code]}
+              onChange={updateFilter}
+            />
+          </>
         ))}
       </div>
       <div className="p-3 d-flex align-items-center justify-content-between">
@@ -124,6 +131,7 @@ function FilterModal({ onClose }) {
 
 function FilterGroup({ filter, currentOption, onChange }) {
   const { colors } = useTheme();
+
   return (
     <section
       css={`

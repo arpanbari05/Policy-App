@@ -14,9 +14,11 @@ import CardModal from "./Common/Modal/CardModal";
 import { figureToWords } from "../utils/helper";
 
 function CartSummaryModal({ onClose, onContine, allClose }) {
+  const { data: enquiryData } = useGetEnquiriesQuery();
+  const firstName = enquiryData?.data?.name?.split(" ")[0];
   return (
     <CardModal
-      title="Hey User, Take a minute and review your cart before you proceed"
+      title={`Hey ${firstName}, Take a minute and review your cart before you proceed`}
       show
       buttonValue="Continue"
       handleClose={onClose}

@@ -17,6 +17,8 @@ import { CompareQuoteTrayItem, CompareTrayAdd } from ".";
 function Quotes({ sortBy = "relevence", ...props }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
 
+  console.log("The data", data);
+
   let mergedQuotes = data;
 
   if (data) {
@@ -26,7 +28,7 @@ function Quotes({ sortBy = "relevence", ...props }) {
     mergedQuotes = data.map(icQuotes => ({
       ...icQuotes,
       data: { data: mergeQuotes(icQuotes?.data?.data, { sortBy }) },
-    })); // filter merged quotes.
+    })); // filter particular-ic quotes .
     if (sortBy === "premium-low-to-high") {
       mergedQuotes = mergedQuotes.filter(
         icQuotes => !!icQuotes?.data?.data[0]?.length,
