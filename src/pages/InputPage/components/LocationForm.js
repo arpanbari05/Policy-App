@@ -169,6 +169,7 @@ function LocationForm() {
             className="d-flex flex-wrap"
             css={`
               gap: 0.39em;
+              margin-top: 10px;
             `}
           >
             {popularcities.map(city => (

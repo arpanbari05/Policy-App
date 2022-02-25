@@ -319,6 +319,7 @@ export const MobileProductDetailsFooter = ({
         <CartSummaryModal
           onClose={cartSummaryModal.off}
           onContine={gotoProductPage}
+          allClose={onClose}
         />
       )}
     </FooterOuter>

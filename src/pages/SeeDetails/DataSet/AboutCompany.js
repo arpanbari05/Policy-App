@@ -1,12 +1,9 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import "styled-components/macro";
-import { PieChart } from "react-minimal-pie-chart";
-import BarGroup from "../components/AboutCompany/BarGroup";
 import DataContainer from "../components/AboutCompany/DataContainer";
 import ProgessBar from "../components/AboutCompany/ProgessBar";
-import { useDispatch, useSelector } from "react-redux";
-import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
+import { useSelector } from "react-redux";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import BarMarketMobile from "../MobileComponents/AboutCompanyMobile/BarMarketMobile";
 import BarGroupMobile from "../MobileComponents/AboutCompanyMobile/BarGroupMobile";
@@ -16,16 +13,6 @@ import { mobile } from "../../../utils/mediaQueries";
 const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
   const { loading } = useSelector(state => state.seeDetails);
   const { colors } = useTheme();
-
-  const addPremium = premiums => {
-    let sum = 0;
-    premiums?.map(data => {
-      if (data.premium !== null) {
-        sum += parseFloat(data.premium);
-      }
-    });
-    return sum;
-  };
 
   return (
     <>
@@ -54,7 +41,7 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                   <Row
                     className="single-feature-box_main"
                     style={{
-                      padding: "47px 20px ",
+                      padding: "20px ",
                     }}
                   >
                     <Col lg={12} className="order-lg-first">
@@ -107,12 +94,6 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                             />
                           </Col>
                           <Col md={4} className="margin_row_pie">
-                            {/* <div
-                              id="myChart"
-                              className="chart--container"
-                              style={{ overflow: "hidden" }}
-                            > */}
-
                             {aboutCompany.data && (
                               <div>
                                 <BarMarketMobile
@@ -165,38 +146,6 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                                 />
                               )}
                             </div>
-                            {/* <div id="bar-chart">
-                              <div className="graph">
-                                <ul className="x-axis">
-                                  {aboutCompany?.data?.claim_settlement_ratios?.map(
-                                    data => {
-                                      return (
-                                        data.year !== null && (
-                                          <li>
-                                            <span>{data.year}</span>
-                                          </li>
-                                        )
-                                      );
-                                    },
-                                  )}
-                                </ul>
-                                <div className="bars">
-                                  {aboutCompany?.data?.claim_settlement_ratios?.map(
-                                    data => {
-                                      return (
-                                        data.year !== null && (
-                                          <BarGroup
-                                            value={`${parseFloat(
-                                              data.percent,
-                                            )}`}
-                                          />
-                                        )
-                                      );
-                                    },
-                                  )}
-                                </div>
-                              </div>
-                            </div> */}
                           </Col>
                           <Col md={6} className="margin_market_row">
                             <DataContainer
@@ -250,22 +199,6 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                                   );
                                 },
                               )}
-                              {/* <ProgessBar year={"2020-2021"} value={"52%"} />
-                      <ProgessBar
-                        year={"2020-2021"}
-                        value={"62%"}
-                        color={"yellow"}
-                      />
-                      <ProgessBar
-                        year={"2020-2021"}
-                        value={"32%"}
-                        color={"blue"}
-                      />
-                      <ProgessBar
-                        year={"2020-2021"}
-                        value={"72%"}
-                        color={"yellow"}
-                      /> */}
                             </Col>
                           </Col>
                         </Row>
