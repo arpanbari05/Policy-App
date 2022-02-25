@@ -11,7 +11,12 @@ import {
 } from "react-router-dom";
 import ThemeModal from "./ThemeModal";
 import { useGetEnquiriesQuery } from "../api/api";
-import { useMembers, useTheme, useUrlEnquiry } from "../customHooks";
+import {
+  useFrontendBoot,
+  useMembers,
+  useTheme,
+  useUrlEnquiry,
+} from "../customHooks";
 import { FaRegCopy } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -28,10 +33,12 @@ const GO_BACK_LOCATIONS = [
   "/quotes",
   "/productdetails",
 ];
+
 const Navbar = () => {
   const location = useLocation();
   const history = useHistory();
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
+  const { journeyType } = useFrontendBoot();
   const isRootRoute = useRouteMatch({
     path: ["/", "/input/basic-details"],
     exact: true,
@@ -115,8 +122,10 @@ const Navbar = () => {
                         break;
 
                       case `/quotes/${groupCode}`:
-                        history.replace("/");
-                        break;
+                        history.replace(
+                          getUrlWithEnquirySearch(`/input/medicalHistory`),
+                        );
+                        return;
 
                       default:
                         history.goBack();
