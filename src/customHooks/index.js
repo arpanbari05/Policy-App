@@ -417,7 +417,7 @@ export function useUpdateGroupMembers(groupCode) {
 
   const { getFilters } = useFilter();
 
-  const { getCartEntry, updateCartEntry } = useCart();
+  const { getCartEntry } = useCart();
 
   const { getSelectedMembers } = useMembers();
 
@@ -452,8 +452,8 @@ export function useUpdateGroupMembers(groupCode) {
       quote: { product, sum_insured },
     }).then(res => {
       if (res.error) return res;
-      const { updatedQuote, updateEnquiriesResult } = res.data;
-      // updateCartEntry(groupCode, getQuoteSendData(updatedQuote));
+      const { updateEnquiriesResult } = res.data;
+
       dispatch(
         api.util.updateQueryData("getEnquiries", undefined, enquiriesDraft => {
           Object.assign(enquiriesDraft, updateEnquiriesResult);
@@ -555,9 +555,7 @@ export function useUpdateMembers() {
 
 export function useCart() {
   const dispatch = useDispatch();
-  const {
-    data: { data: cartEntries },
-  } = useGetCartQuery();
+  const { data } = useGetCartQuery();
 
   const {
     data: {
@@ -568,7 +566,7 @@ export function useCart() {
   const { getCompany } = useCompanies();
 
   function getCartEntry(groupCode, { additionalDiscounts = [] } = {}) {
-    const cartEntry = cartEntries.find(
+    const cartEntry = data?.data.find(
       cartEntry => cartEntry.group.id === parseInt(groupCode),
     );
 
@@ -632,7 +630,7 @@ export function useCart() {
 
   function getNextGroupProduct(currentGroupCode) {
     const nextGroup = currentGroupCode + 1;
-    const nextGroupProduct = cartEntries.find(
+    const nextGroupProduct = data?.data.find(
       cartEntry => parseInt(cartEntry.group.id) === nextGroup,
     );
 
@@ -640,7 +638,7 @@ export function useCart() {
   }
 
   return {
-    cartEntries,
+    cartEntries: data?.data,
     getCartEntry,
     updateCartEntry,
     updateCart,
