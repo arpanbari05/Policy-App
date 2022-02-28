@@ -257,7 +257,7 @@ export function FilterOptions({
 
   return (
     <OptionsWrap {...props}>
-      {options.map(option => (
+      {options.filter(opt => opt.code !== "no_claim_bonus_2").map(option => (
         <FilterOption
           key={option.code}
           option={option}
