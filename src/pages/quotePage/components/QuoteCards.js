@@ -202,8 +202,9 @@ function QuoteCard({
       <div
         className="d-flex align-items-center"
         css={`
-          padding-top: 11px;
-          padding-bottom: 8px;
+          min-height: 140px;
+          padding-top: 8px;
+          padding-bottom: 11px;
         `}
       >
         <div
@@ -217,7 +218,7 @@ function QuoteCard({
             src={logoSrc}
             alt={quote.company_alias}
             css={`
-              min-width: 4.0em;
+              min-width: 4em;
               max-height: 3em;
             `}
           />
@@ -269,17 +270,17 @@ function QuoteCard({
           <div
             className="px-3 d-flex flex-column align-items-center"
             css={`
-              gap: 0.6em;
+              gap: ${isDeductibleJourney ? ".6rem" : "0.8em"};
             `}
           >
             <PremiumButton quote={quote} />
-            <div
-              className="rounded p-1 w-100 d-flex justify-content-between"
-              css={`
-                border: 1px solid ${colors.border.one};
-              `}
-            >
-              {isDeductibleJourney ? (
+            {isDeductibleJourney && (
+              <div
+                className="rounded p-1 w-100 d-flex justify-content-between"
+                css={`
+                  border: 1px solid ${colors.border.one};
+                `}
+              >
                 <QuoteCardOption label={"Deductible:"}>
                   <QuoteCardSelect
                     options={deductibles.map(deductible => ({
@@ -297,8 +298,26 @@ function QuoteCard({
                     onChange={handleDeductibleChange}
                   />
                 </QuoteCardOption>
-              ) : null}
-              <QuoteCardOption info label={"Cover:"}>
+                <QuoteCardOption info label={"Cover:"}>
+                  <QuoteCardSelect
+                    options={sumInsureds.map(sumInsured => ({
+                      value: sumInsured,
+                      label: numberToDigitWord(sumInsured)
+                        .replace("₹", "")
+                        .replace("Lakh", "L"),
+                    }))}
+                    value={{
+                      value: selectedSumInsured,
+                      label: numberToDigitWord(selectedSumInsured)
+                        .replace("₹", "")
+                        .replace("Lakh", "L"),
+                    }}
+                    onChange={handleSumInsuredChange}
+                  />
+                </QuoteCardOption>
+              </div>
+            )}
+            {/* <QuoteCardOption info label={"Cover:"}>
                 <QuoteCardSelect
                   options={sumInsureds.map(sumInsured => ({
                     value: sumInsured,
@@ -314,8 +333,39 @@ function QuoteCard({
                   }}
                   onChange={handleSumInsuredChange}
                 />
-              </QuoteCardOption>
-            </div>
+              </QuoteCardOption> */}
+            {!isDeductibleJourney && (
+              <div
+                className="d-flex align-items-center justify-content-center gap-2"
+                css={`
+                  & > * {
+                    min-width: 70px;
+                  }
+                `}
+              >
+                <span
+                  className="text-[13] font-bold"
+                  style={{ minWidth: "auto" }}
+                >
+                  Cover:
+                </span>
+                <QuoteCardSelect
+                  options={sumInsureds.map(sumInsured => ({
+                    value: sumInsured,
+                    label: numberToDigitWord(sumInsured)
+                      .replace("₹", "")
+                      .replace("Lakh", "L"),
+                  }))}
+                  value={{
+                    value: selectedSumInsured,
+                    label: numberToDigitWord(selectedSumInsured)
+                      .replace("₹", "")
+                      .replace("Lakh", "L"),
+                  }}
+                  onChange={handleSumInsuredChange}
+                />
+              </div>
+            )}
             <div
               css={`
                 font-size: 0.83rem;
@@ -394,16 +444,23 @@ function QuoteCardSelect({ ...props }) {
       isSearchable={false}
       components={{ DropdownIndicator: FaChevronDown }}
       styles={{
-        valueContainer: provided => ({ ...provided, padding: 0 }),
+        option: provided => ({ ...provided, fontSize: "13px" }),
+        menu: provided => ({ ...provided, fontSize: "13px" }),
+        valueContainer: provided => ({
+          ...provided,
+          padding: 0,
+          fontSize: "13px",
+        }),
         indicatorSeparator: () => ({ display: "none" }),
         dropdownIndicator: provided => ({
           ...provided,
           padding: 0,
           color: "black",
-          fontSize: "0.79rem",
+          fontSize: "13px",
         }),
         control: provided => ({
           ...provided,
+          fontSize: "13px",
           border: "none",
           minHeight: "initial",
         }),

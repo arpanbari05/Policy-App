@@ -16,6 +16,7 @@ const TitleWrapper = styled.div`
   font-weight: 600;
   border-bottom: 1px dashed #ced4da;
   height: 54px;
+  text-transform: capitalize;
   @media (max-width: 767px) {
     height: 29px;
     font-size: 16px;
