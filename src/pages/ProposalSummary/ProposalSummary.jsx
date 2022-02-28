@@ -40,6 +40,8 @@ const ProposalSummary = () => {
   const { proposalData, policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
   );
+  {console.log("sdjbnskdj",policyStatus)}
+
   const { theme } = useSelector(state => state.frontendBoot);
 
   const { colors } = useTheme();
@@ -188,7 +190,7 @@ const ProposalSummary = () => {
                         }}
                       >
                         <span>Pay Now </span>
-                        <div> ₹ {cart?.totalPremium}</div>
+                        <div> ₹ {item?.total_premium}</div>
                       </PayButton>
                     </PayItem>
                   ))}
@@ -233,7 +235,7 @@ const ProposalSummary = () => {
                   <span>Total Premium</span>
                   <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
                     <span class="font_weight_normal text-white">
-                      ₹ {cart?.totalPremium}
+                      ₹ {policyStatus.reduce((acc,item) => acc + parseInt(item.total_premium),0)}
                     </span>
                   </p>{" "}
                 </div>

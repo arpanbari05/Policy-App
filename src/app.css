@@ -43,11 +43,12 @@
 }
 
 .logo_style_common {
-  width: 80px !important;
+  /* width: 123px !important; */
   height: 45px !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-right: 10px;
 
   margin-bottom: 10px;
 }

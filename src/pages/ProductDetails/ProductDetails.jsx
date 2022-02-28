@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { RidersSection } from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
 import { CartDetails } from "./components/ReviewCart";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Redirect, useHistory, useLocation, useParams } from "react-router-dom";
 import ProductCard from "./components/AddOnProductCard";
 import useUrlQuery from "../../customHooks/useUrlQuery";
@@ -28,7 +28,9 @@ import _ from "lodash";
 const ProductDetails = () => {
   const { groupCode } = useParams();
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
+  const { shouldRedirectToQuotes } = useSelector(state => state.quotePage);
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -38,11 +40,13 @@ const ProductDetails = () => {
 
   const [showNav, setShowNav] = useState(false);
 
-  const { getCartEntry } = useCart();
+  const { getCartEntry, getNextGroupProduct } = useCart();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
 
   const quotesRedirectUrl = useUrlEnquiry();
+
+  const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
   useEffect(() => {
     function scrollListener() {
@@ -51,6 +55,7 @@ const ProductDetails = () => {
     }
 
     document.addEventListener("scroll", scrollListener);
+    // dispatch(setShouldRedirectToQuotes(false));
     return () => document.removeEventListener("scroll", scrollListener);
   }, []);
 
@@ -74,6 +79,20 @@ const ProductDetails = () => {
 
   //? REDIRECT CODE IF PRODUCT IS NOT IN CART.
   if (!cartEntry) {
+    console.log(shouldRedirectToQuotes);
+    if (shouldRedirectToQuotes) {
+      return (
+        <Redirect
+          to={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
+        />
+      );
+    } else if (nextGroupProduct) {
+      return (
+        <Redirect
+          to={`/productdetails/${nextGroupProduct.group.id}?enquiryId=${quotesRedirectUrl.enquiryId}`}
+        />
+      );
+    }
     return (
       <Redirect
         to={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}

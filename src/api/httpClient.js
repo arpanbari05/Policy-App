@@ -2,6 +2,7 @@ import axios from "axios";
 import { stringify } from "querystring";
 import SecureLS from "secure-ls";
 
+
 const defaultOptions = {
   headers: {},
   queryParams: null,
@@ -27,6 +28,7 @@ restClient.interceptors.response.use(
 );
 
 const httpClient = async (url = "", options = defaultOptions) => {
+
   const ls = new SecureLS();
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
   let fullPath = `${baseUrl}${url}`;
@@ -54,7 +56,9 @@ const httpClient = async (url = "", options = defaultOptions) => {
     method: options.method || "GET",
     data: options.data,
   })
-    .then(response => ({
+    .then(response => {
+      
+      return {
       data: response.data,
       errors: response.data.errors,
       error: response.data.error,
@@ -63,7 +67,7 @@ const httpClient = async (url = "", options = defaultOptions) => {
       success:
         (response.status === 200 || response.status === 201) &&
         response.data.status,
-    }))
+    }})
     .catch(err => {
       // alert(err);
       return {

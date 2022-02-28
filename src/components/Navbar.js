@@ -23,6 +23,7 @@ import {
   setPolicyTypes,
   setPolicyType,
   setIsOnProductDetails,
+  setShouldRedirectToQuotes,
 } from "../pages/quotePage/quote.slice";
 import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
@@ -36,7 +37,11 @@ const GO_BACK_LOCATIONS = [
 
 const Navbar = () => {
   const location = useLocation();
+
+  const dispatch = useDispatch();
+
   const history = useHistory();
+
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
   const isRootRoute = useRouteMatch({
     path: ["/", "/input/basic-details"],
@@ -57,7 +62,7 @@ const Navbar = () => {
 
   const { getPreviousGroup, getLastGroup } = useMembers();
 
-  const lastGroup = getLastGroup();
+  // const lastGroup = getLastGroup();
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
@@ -69,7 +74,31 @@ const Navbar = () => {
         }
       `}
     >
-      <Card width={"100%"} height={"60px"} clasName="position-relative">
+      <Card width={"100%"} height={"53px"} clasName="position-relative">
+        {location.pathname === "/proposal_summary" && (
+          <Link
+            className="d-flex justify-content-center align-items-center"
+            css={`
+              background: #f1f4f8;
+              width: 35px;
+              margin-right: 20px;
+              border-radius: 100%;
+              height: 35px;
+              top: 50%;
+              left: 20px;
+              transform: translateY(-50%);
+              position: absolute;
+              color: #707b8b;
+            `}
+            to={getUrlWithEnquirySearch("/proposal")}
+            //  onClick={() => {
+            //       history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
+            //     }}
+          >
+            <FaChevronLeft />
+          </Link>
+        )}
+
         <div className="container d-flex justify-content-between align-items-center h-100">
           <div
             css={`
@@ -101,25 +130,28 @@ const Navbar = () => {
                     switch (location.pathname) {
                       case `/productdetails/${groupCode}`:
                         const getLink = () => {
-                          if (!prevoiusGroup)
+                          console.log(prevoiusGroup);
+                          if (!prevoiusGroup) {
+                            console.log("In prev");
                             return getUrlWithEnquirySearch(
                               `/quotes/${groupCode}`,
                             );
-
+                          }
                           return getUrlWithEnquirySearch(
                             `/productdetails/${prevoiusGroup.id}`,
                           );
                         };
+                        dispatch(setShouldRedirectToQuotes(true));
                         history.replace(getLink());
                         setIsOnProductDetails(true);
                         break;
 
                       case "/proposal":
-                        history.replace(
-                          getUrlWithEnquirySearch(
-                            `/productdetails/${lastGroup.id}`,
-                          ),
-                        );
+                        // history.replace(
+                        //   getUrlWithEnquirySearch(
+                        //     `/productdetails/${lastGroup.id}`,
+                        //   ),
+                        // );
                         break;
 
                       case "/proposal_summary":
@@ -217,6 +249,8 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
     skip: !!isRootRoute,
   });
 
+  const pinCode = data?.data?.input?.pincode;
+
   const [show, setShow] = useState(false);
 
   const { colors } = useTheme();
@@ -254,12 +288,17 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
         <div
           className="d-flex align-items-center justify-content-between py-2"
           css={`
+            font-size: 10px;
             border-top: 1px solid #aaa;
             border-bottom: 1px solid #aaa;
+
+            @media (max-width: 395px) {
+              font-size: 9px !important;
+            }
           `}
         >
           <Members />
-          <Info label="Pincode" value="999999" />
+          <Info label="Pincode" value={pinCode} />
         </div>
       )}
     </div>
@@ -287,7 +326,11 @@ export function Members() {
     <div
       className="d-flex"
       css={`
-        font-size: 0.79rem;
+        font-size: 10px !important;
+
+        @media (max-width: 395px) {
+          font-size: 9px !important;
+        }
       `}
     >
       {members.map(member => (
@@ -315,6 +358,10 @@ function Info({ label, value, ...props }) {
         gap: 0.67em;
         &:not(:last-child) {
           border-right: 1px solid ${colors.secondary_shade};
+        }
+
+        @media (max-width: 410px) {
+          gap: 0.30em;
         }
       `}
       {...props}

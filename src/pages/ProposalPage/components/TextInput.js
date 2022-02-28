@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowPlanNotAvail } from "../ProposalSections/ProposalSections.slice";
 const TextInput = ({
+  name,
   label,
   placeholder,
   type,
@@ -38,31 +39,14 @@ const TextInput = ({
       );
 
   const [isFocused, setIsFocused] = useState(false);
+  const [fallbackValue, setFallbackValue] = useState();
   console.log(allValues, age, innerMember, "test");
 
   const fullName = value || "";
-  const forbiddedSymbols = [
-    "#",
-    "!",
-    "%",
-    "$",
-    "&",
-    "-",
-    "+",
-    "=",
-    "^",
-    "*",
-    "_",
-    "(",
-    ")",
-    "{",
-    "}",
-    ",",
-    "?",
-    '"',
-    "'",
-    "@",
-  ];
+  const forbiddedSymbols = "`~!@#$%^&*()_-+={[}]|:.;'<>?/\"\\".split("");
+  if (checkValidation?.matches === "pan" || checkValidation?.matches === "name") {
+    forbiddedSymbols.concat([","])
+  }
   const checkPreviousChar = (value, checkValue) => {
     let check = true;
 
@@ -106,8 +90,6 @@ const TextInput = ({
   // useEffect(() => {
   //   setInnerValue(value);
   // }, [value]);
-  console.log(error);
-  
   return (
     <InputContainer>
       <Input
@@ -116,13 +98,18 @@ const TextInput = ({
         required={required || undefined}
         onChange={e => {
           if (checkAge) {
-            (parseInt(e.target.value) <= age || e.target.value === "") &&
+            if (parseInt(e.target.value) <= age || e.target.value === "") {
               onChange(e);
-          } else if (checkValidation?.["matches"] === "name") {
-            checkPreviousChar(e.target.value, " ") &&
+              setFallbackValue(e.target.value);
+            }
+          } else if (checkValidation?.["matches"] === "name" || checkValidation?.["matches"] === "pan" || checkValidation?.["matches"] === "address") {
+            if (
+              checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&
-              checkAllChar(e.target.value, forbiddedSymbols) &&
-              onChange(e);
+              checkAllChar(e.target.value, forbiddedSymbols)) {
+                onChange(e);
+                setFallbackValue(e.target.value);
+              }
           } else {
             if (
               notAllowed &&
@@ -138,6 +125,7 @@ const TextInput = ({
               e.target.value = e.target.value.toLocaleUpperCase();
             }
             onChange(e);
+            setFallbackValue(e.target.value);
           }
         }}
         onFocus={onFocus}
@@ -147,7 +135,7 @@ const TextInput = ({
         }}
         onInput={onInput}
         onKeyDown={onKeyDown}
-        value={value}
+        value={(typeof fallbackValue === "string") ? fallbackValue : value}
         onKeyPress={onKeyPress}
         maxLength={maxLength}
         textTransform={textTransform}
