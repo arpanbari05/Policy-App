@@ -414,12 +414,8 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
       .catch(() => alert("Something went wrong while buying the quote!"));
   };
 
-  // const { data } = useGetCartQuery();
-
   const { enquiryId } = useUrlEnquiry();
   const { cartEntries } = useCart();
-
-  console.log({ cartEntries });
 
   function gotoProductPage() {
     const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
