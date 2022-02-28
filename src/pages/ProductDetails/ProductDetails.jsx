@@ -55,7 +55,6 @@ const ProductDetails = () => {
     }
 
     document.addEventListener("scroll", scrollListener);
-    // dispatch(setShouldRedirectToQuotes(false));
     return () => document.removeEventListener("scroll", scrollListener);
   }, []);
 
@@ -79,20 +78,19 @@ const ProductDetails = () => {
 
   //? REDIRECT CODE IF PRODUCT IS NOT IN CART.
   if (!cartEntry) {
-    console.log(shouldRedirectToQuotes);
-    if (shouldRedirectToQuotes) {
-      return (
-        <Redirect
-          to={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
-        />
-      );
-    } else if (nextGroupProduct) {
-      return (
-        <Redirect
-          to={`/productdetails/${nextGroupProduct.group.id}?enquiryId=${quotesRedirectUrl.enquiryId}`}
-        />
-      );
-    }
+    // if (shouldRedirectToQuotes) {
+    //   return (
+    //     <Redirect
+    //       to={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
+    //     />
+    //   );
+    // } else if (nextGroupProduct) {
+    //   return (
+    //     <Redirect
+    //       to={`/productdetails/${nextGroupProduct.group.id}?enquiryId=${quotesRedirectUrl.enquiryId}`}
+    //     />
+    //   );
+    // }
     return (
       <Redirect
         to={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}

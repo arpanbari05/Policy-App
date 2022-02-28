@@ -33,7 +33,6 @@ const quotePageSlice = createSlice({
     quotesOnCompare: false,
     quotesForCompare: [],
     selectedPlan: {},
-    shouldRedirectToQuotes: false,
     createCartData: {},
     cartItems: [],
     filterQuotes: [],
@@ -96,9 +95,6 @@ const quotePageSlice = createSlice({
     },
     setSelectedAddOns: (state, action) => {
       state.selectedAddOns = action.payload;
-    },
-    setShouldRedirectToQuotes: (state, action) => {
-      state.shouldRedirectToQuotes = action.payload;
     },
     addSelectedRiders: (state, action) => {
       state.selectedRiders = {
@@ -305,7 +301,6 @@ export const {
   setFilters,
   setPolicyTypes,
   setPolicyType,
-  setShouldRedirectToQuotes,
   setIsOnProductDetails,
 
   saveProductDiscountResponse,

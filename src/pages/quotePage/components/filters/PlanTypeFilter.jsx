@@ -51,8 +51,8 @@ function FilterModal({ onClose, ...props }) {
   const renderPlanTypes =
     journeyType === "top_up"
       ? baseplantypes.filter(
-          singelPlanType => singelPlanType.code !== "arogya_sanjeevani",
-        )
+        singelPlanType => singelPlanType.code !== "arogya_sanjeevani",
+      )
       : baseplantypes;
 
   const { getSelectedFilter } = useFilters();
@@ -135,7 +135,7 @@ function PlanType({ baseplantype, checked = false, onChange, ...props }) {
       className="option d-flex align-items-center justify-content-between"
       {...props}
       onClick={() => {
-        console.log(target.current.click());
+        target.current.click();
       }}
     >
       <label htmlFor={baseplantype.code}>

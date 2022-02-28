@@ -94,7 +94,7 @@ const TextInput = ({
     <InputContainer>
       <Input
         type={type || "text"}
-        placeholder={placeholder || ""}
+        placeholder={checkValidation?.required && placeholder ? `${placeholder}*` : placeholder || ""}
         required={required || undefined}
         onChange={e => {
           if (checkAge) {
