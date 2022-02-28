@@ -10,7 +10,7 @@ const Others = ({
     <>
       <article>
         <Row className=" mt--38">
-          {moreFilter[codeIndexMapMoreFilter["others"]]?.options.map(
+          {moreFilter[codeIndexMapMoreFilter["others"]]?.options.filter(option => option?.code !== "no_claim_bonus_2").map(
             (item, index) => (
               <Col md={12} className="padding-none">
                 <div className="inputGroup">
