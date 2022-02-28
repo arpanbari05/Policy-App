@@ -88,70 +88,224 @@ function ComparePage() {
           <CompareProductCards compareQuotes={compareQuotes} />
         </CompareHeaderWrap>
         <div className="mt-3">
-          <PlanDetailsSection
-            compareQuotes={compareQuotes}
-            select={{
-              selectedSectionView,
-              setSelectedSectionView,
-              isSelectedSectionView,
-              setIsSelectedSectionView,
-            }}
-          />
-          <KeyBenefitsSection
-            compareQuotes={compareQuotes}
-            select={{
-              selectedSectionView,
-              setSelectedSectionView,
-              isSelectedSectionView,
-              setIsSelectedSectionView,
-            }}
-          />
-          <BasicFeaturesSection
-            compareQuotes={compareQuotes}
-            showDifference={showDifferenceToggle.isOn}
-            select={{
-              selectedSectionView,
-              setSelectedSectionView,
-              isSelectedSectionView,
-              setIsSelectedSectionView,
-            }}
-          />
-          <SpecialFeaturesSection
-            compareQuotes={compareQuotes}
-            select={{
-              selectedSectionView,
-              setSelectedSectionView,
-              isSelectedSectionView,
-              setIsSelectedSectionView,
-            }}
-          />
-          <OptionalCoversSection
-            compareQuotes={compareQuotes}
-            select={{
-              selectedSectionView,
-              setSelectedSectionView,
-              isSelectedSectionView,
-              setIsSelectedSectionView,
-            }}
-          />
-          <WaitingPeriodSection
-            compareQuotes={compareQuotes}
-            select={{
-              selectedSectionView,
-              setSelectedSectionView,
-              isSelectedSectionView,
-              setIsSelectedSectionView,
-            }}
-          />
-          <WhatsNotCoveredSection
-            compareQuotes={compareQuotes}
-            select={{
-              selectedSectionView,
-              setSelectedSectionView,
-              isSelectedSectionView,
-              setIsSelectedSectionView,
-            }}
-          />
+          {/* {console.log("COMPARE_QUOTES:", compareQuotes)}
+          {console.log("SELECT_ELEMENTS:", selectedSectionView)}
+          {console.log("BASIC_FEATURES:", BASIC_FEATURES)} */}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (value === "Sum Insured" || value === "Tenure") {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <PlanDetailsSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <PlanDetailsSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (value === "Unique Feature") {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <KeyBenefitsSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <KeyBenefitsSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {/* ==================  Basic Features ===================== */}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (
+                BASIC_FEATURES.findIndex(item => item.title === value) !== -1
+              ) {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <BasicFeaturesSection
+                compareQuotes={compareQuotes}
+                showDifference={showDifferenceToggle.isOn}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <BasicFeaturesSection
+              compareQuotes={compareQuotes}
+              showDifference={showDifferenceToggle.isOn}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {/* ================ Spacial Features ==================== */}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (
+                SPECIAL_FEATURES.findIndex(item => item.title === value) !== -1
+              ) {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <SpecialFeaturesSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <SpecialFeaturesSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {/* ================= Additional-Benefits */}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (value === "Optional Covers") {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <OptionalCoversSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <OptionalCoversSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {/* ================ Waiting Period ================ */}
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (
+                WAITING_PERIOD.findIndex(item => item.title === value) !== -1
+              ) {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <WaitingPeriodSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <WaitingPeriodSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {/* ============== What Not Covered ================ */}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (
+                WHATS_NOT_COVERED.findIndex(item => item.title === value) !== -1
+              ) {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <WhatsNotCoveredSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <WhatsNotCoveredSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
         </div>
       </Container>
     </Page>
