@@ -18,7 +18,7 @@ import {
 import { useHistory, useParams } from "react-router-dom";
 import "styled-components/macro";
 import { BiPrinter } from "react-icons/bi";
-import { getFeatureForQuotes } from "../../utils/helper";
+import { getFeatureForQuotes, numToLakh } from "../../utils/helper";
 import { useGetCompareFeaturesQuery } from "../../api/api";
 import {
   BASIC_FEATURES,
@@ -33,9 +33,21 @@ import { downloadComparePage } from "./utils";
 import { ProductCard, ShowDifference } from "./components";
 import { AddPlanCard, OptionalCoversValue } from "./mobile/components";
 import AddPlansModal from "./components/AddPlansModal";
+import { useState } from "react";
 
 function ComparePage() {
   const { groupCode } = useParams();
+  const [selectedSectionView, setSelectedSectionView] = useState({});
+  const [isSelectedSectionView, setIsSelectedSectionView] = useState(false);
+
+  useEffect(() => {
+    const value = Object.keys(selectedSectionView).find(
+      value => selectedSectionView[`${value}`] === true,
+    );
+    if (!value) {
+      setIsSelectedSectionView(false);
+    }
+  }, [selectedSectionView]);
 
   const {
     getCompareQuotes,
@@ -76,23 +88,231 @@ function ComparePage() {
           <CompareProductCards compareQuotes={compareQuotes} />
         </CompareHeaderWrap>
         <div className="mt-3">
-          <PlanDetailsSection compareQuotes={compareQuotes} />
-          <KeyBenefitsSection compareQuotes={compareQuotes} />
-          <BasicFeaturesSection
-            compareQuotes={compareQuotes}
-            showDifference={showDifferenceToggle.isOn}
-          />
-          <SpecialFeaturesSection compareQuotes={compareQuotes} />
-          <OptionalCoversSection compareQuotes={compareQuotes} />
-          <WaitingPeriodSection compareQuotes={compareQuotes} />
-          <WhatsNotCoveredSection compareQuotes={compareQuotes} />
+          {/* {console.log("COMPARE_QUOTES:", compareQuotes)}
+          {console.log("SELECT_ELEMENTS:", selectedSectionView)}
+          {console.log("BASIC_FEATURES:", BASIC_FEATURES)} */}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (value === "Sum Insured" || value === "Tenure") {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <PlanDetailsSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <PlanDetailsSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (value === "Unique Feature") {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <KeyBenefitsSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <KeyBenefitsSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {/* ==================  Basic Features ===================== */}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (
+                BASIC_FEATURES.findIndex(item => item.title === value) !== -1
+              ) {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <BasicFeaturesSection
+                compareQuotes={compareQuotes}
+                showDifference={showDifferenceToggle.isOn}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <BasicFeaturesSection
+              compareQuotes={compareQuotes}
+              showDifference={showDifferenceToggle.isOn}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {/* ================ Spacial Features ==================== */}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (
+                SPECIAL_FEATURES.findIndex(item => item.title === value) !== -1
+              ) {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <SpecialFeaturesSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <SpecialFeaturesSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {/* ================= Additional-Benefits */}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (value === "Optional Covers") {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <OptionalCoversSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <OptionalCoversSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {/* ================ Waiting Period ================ */}
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (
+                WAITING_PERIOD.findIndex(item => item.title === value) !== -1
+              ) {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <WaitingPeriodSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <WaitingPeriodSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
+
+          {/* ============== What Not Covered ================ */}
+
+          {isSelectedSectionView ? (
+            Object.keys(selectedSectionView).find(value => {
+              if (
+                WHATS_NOT_COVERED.findIndex(item => item.title === value) !== -1
+              ) {
+                if (selectedSectionView[`${value}`] === true) return value;
+              }
+            }) && (
+              <WhatsNotCoveredSection
+                compareQuotes={compareQuotes}
+                select={{
+                  selectedSectionView,
+                  setSelectedSectionView,
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                }}
+              />
+            )
+          ) : (
+            <WhatsNotCoveredSection
+              compareQuotes={compareQuotes}
+              select={{
+                selectedSectionView,
+                setSelectedSectionView,
+                isSelectedSectionView,
+                setIsSelectedSectionView,
+              }}
+            />
+          )}
         </div>
       </Container>
     </Page>
   );
 }
 
-function OptionalCoversSection({ compareQuotes }) {
+function OptionalCoversSection({ compareQuotes, select }) {
   const { updateCompareQuote } = useQuotesCompare();
   const { groupCode } = useParams();
 
@@ -109,15 +329,29 @@ function OptionalCoversSection({ compareQuotes }) {
       title="Additional Benefits"
       description="You can add 'Riders' to your basic health insurance plan for additional benefits."
     >
-      <FeatureRow title="Optional Covers">
-        {compareQuotes.map((quote, idx) => (
-          <OptionalCoversValue
-            quote={quote}
-            onChange={handleRidersChange}
-            key={idx}
-          />
-        ))}
-      </FeatureRow>
+      {!select.isSelectedSectionView ? (
+        <FeatureRow title="Optional Covers" select={select}>
+          {compareQuotes.map((quote, idx) => (
+            <OptionalCoversValue
+              quote={quote}
+              onChange={handleRidersChange}
+              key={idx}
+            />
+          ))}
+        </FeatureRow>
+      ) : (
+        select.selectedSectionView["Optional Covers"] && (
+          <FeatureRow title="Optional Covers" select={select}>
+            {compareQuotes.map((quote, idx) => (
+              <OptionalCoversValue
+                quote={quote}
+                onChange={handleRidersChange}
+                key={idx}
+              />
+            ))}
+          </FeatureRow>
+        )
+      )}
     </CompareSection>
   );
 }
@@ -229,13 +463,13 @@ function BackButton(props) {
   );
 }
 
-function PlanDetailsSection({ compareQuotes = [], ...props }) {
+function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
   const { journeyType } = useFrontendBoot();
 
   return (
     <CompareSection title="Plan Details" {...props}>
       {journeyType === "top_up" ? (
-        <FeatureRow title={"Deductible"} description="">
+        <FeatureRow title={"Deductible"} description="" select={select}>
           {compareQuotes.map((quote, idx) => (
             <DeductibleFeatureValue
               key={quote.deductible + quote.product.id + idx}
@@ -244,24 +478,62 @@ function PlanDetailsSection({ compareQuotes = [], ...props }) {
           ))}
         </FeatureRow>
       ) : null}
-      <FeatureRow
-        title={"Sum Insured"}
-        description={DESCRIPTIONS["sum_insured"]}
-      >
-        {compareQuotes.map((quote, idx) => (
-          <SumInsuredFeatureValue
-            key={quote.sum_insured + quote.product.id + idx}
-            compareQuote={quote}
-          />
-        ))}
-      </FeatureRow>
-      <FeatureRow title={"Tenure"}>
-        {compareQuotes.map((quote, idx) => (
-          <div key={quote.tenure + quote.sum_insured + quote.product.id + idx}>
-            {quote.tenure + `${quote.tenure > 1 ? " Years" : " Year"}`}
-          </div>
-        ))}
-      </FeatureRow>
+
+      {console.log("SELECTION_DATA:", select.selectedSectionView)}
+
+      {!select.isSelectedSectionView ? (
+        <FeatureRow
+          title={"Sum Insured"}
+          description={DESCRIPTIONS["sum_insured"]}
+          select={select}
+        >
+          {compareQuotes.map((quote, idx) => (
+            <SumInsuredFeatureValue
+              key={quote.sum_insured + quote.product.id + idx}
+              compareQuote={quote}
+            />
+          ))}
+        </FeatureRow>
+      ) : (
+        select.selectedSectionView["Sum Insured"] && (
+          <FeatureRow
+            title={"Sum Insured"}
+            description={DESCRIPTIONS["sum_insured"]}
+            select={select}
+          >
+            {compareQuotes.map((quote, idx) => (
+              <SumInsuredFeatureValue
+                key={quote.sum_insured + quote.product.id + idx}
+                compareQuote={quote}
+              />
+            ))}
+          </FeatureRow>
+        )
+      )}
+
+      {!select.isSelectedSectionView ? (
+        <FeatureRow title={"Tenure"} select={select}>
+          {compareQuotes.map((quote, idx) => (
+            <div
+              key={quote.tenure + quote.sum_insured + quote.product.id + idx}
+            >
+              {quote.tenure + `${quote.tenure > 1 ? " Years" : " Year"}`}
+            </div>
+          ))}
+        </FeatureRow>
+      ) : (
+        select.selectedSectionView["Tenure"] && (
+          <FeatureRow title={"Tenure"} select={select}>
+            {compareQuotes.map((quote, idx) => (
+              <div
+                key={quote.tenure + quote.sum_insured + quote.product.id + idx}
+              >
+                {quote.tenure + `${quote.tenure > 1 ? " Years" : " Year"}`}
+              </div>
+            ))}
+          </FeatureRow>
+        )
+      )}
     </CompareSection>
   );
 }
@@ -320,12 +592,12 @@ function SumInsuredFeatureValue({ compareQuote, ...props }) {
   return (
     <div className="d-flex align-items-center" {...props}>
       {isLoading ? (
-        <div>{compareQuote.sum_insured}</div>
+        <div>{numToLakh(compareQuote.sum_insured)}</div>
       ) : (
         <select value={compareQuote.sum_insured} onChange={handleChange}>
           {sumInsureds.map(sumInsured => (
             <option key={sumInsured} value={sumInsured}>
-              {sumInsured}
+              {numToLakh(sumInsured)}
             </option>
           ))}
         </select>
@@ -413,23 +685,40 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
   );
 }
 
-function KeyBenefitsSection({ compareQuotes = [], ...props }) {
+function KeyBenefitsSection({ compareQuotes = [], select, ...props }) {
   const uniqueFeatures = getFeatureForQuotes(compareQuotes, "unique_feature");
 
   return (
     <CompareSection title="Key Benefits" {...props}>
-      <FeatureRow title={"Unique Feature"}>
-        {uniqueFeatures.map((feature, idx) =>
-          feature ? (
-            <div key={feature.code + idx}>
-              <ul>
-                {feature &&
-                  feature.value.split("\n").map(value => <li>{value}</li>)}
-              </ul>
-            </div>
-          ) : null,
-        )}
-      </FeatureRow>
+      {!select.isSelectedSectionView ? (
+        <FeatureRow title={"Unique Feature"} select={select}>
+          {uniqueFeatures.map((feature, idx) =>
+            feature ? (
+              <div key={feature.code + idx}>
+                <ul>
+                  {feature &&
+                    feature.value?.split("\n").map(value => <li>{value}</li>)}
+                </ul>
+              </div>
+            ) : null,
+          )}
+        </FeatureRow>
+      ) : (
+        select.selectedSectionView["Unique Feature"] && (
+          <FeatureRow title={"Unique Feature"} select={select}>
+            {uniqueFeatures.map((feature, idx) =>
+              feature ? (
+                <div key={feature.code + idx}>
+                  <ul>
+                    {feature &&
+                      feature.value?.split("\n").map(value => <li>{value}</li>)}
+                  </ul>
+                </div>
+              ) : null,
+            )}
+          </FeatureRow>
+        )
+      )}
     </CompareSection>
   );
 }
@@ -437,6 +726,7 @@ function KeyBenefitsSection({ compareQuotes = [], ...props }) {
 function BasicFeaturesSection({
   compareQuotes = [],
   showDifference = false,
+  select,
   ...props
 }) {
   const { features, onLoad } = useFeatureLoadHandler();
@@ -452,11 +742,12 @@ function BasicFeaturesSection({
           )
         )
           return null;
-        return (
+        return !select.isSelectedSectionView ? (
           <FeatureRow
             title={feature.title}
             key={feature.title}
             description={feature.description}
+            select={select}
           >
             {compareQuotes.map((quote, idx) => (
               <FeatureValue
@@ -469,80 +760,166 @@ function BasicFeaturesSection({
               />
             ))}
           </FeatureRow>
+        ) : (
+          select.selectedSectionView[`${feature.title}`] && (
+            <FeatureRow
+              title={feature.title}
+              key={feature.title}
+              description={feature.description}
+              select={select}
+            >
+              {compareQuotes.map((quote, idx) => (
+                <FeatureValue
+                  compareQuote={quote}
+                  sectionTitle={"Basic Features"}
+                  featureTitle={feature.title}
+                  key={quote.product.id + quote.sum_insured + idx}
+                  onLoad={onLoad}
+                  tooltipPlacement={idx === 2 ? "left" : "right"}
+                />
+              ))}
+            </FeatureRow>
+          )
         );
       })}
     </CompareSection>
   );
 }
 
-function SpecialFeaturesSection({ compareQuotes = [], ...props }) {
+function SpecialFeaturesSection({ compareQuotes = [], select, ...props }) {
   return (
     <CompareSection title="Special Features" {...props}>
-      {SPECIAL_FEATURES.map(feature => (
-        <FeatureRow
-          title={feature.title}
-          key={feature.title}
-          description={feature.description}
-        >
-          {compareQuotes.map((quote, idx) => (
-            <FeatureValue
-              compareQuote={quote}
-              sectionTitle={"Special Features"}
-              featureTitle={feature.title}
-              key={quote.product.id + quote.sum_insured + idx}
-              tooltipPlacement={idx === 2 ? "left" : "right"}
-            />
-          ))}
-        </FeatureRow>
-      ))}
+      {SPECIAL_FEATURES.map(feature =>
+        !select.isSelectedSectionView ? (
+          <FeatureRow
+            title={feature.title}
+            key={feature.title}
+            description={feature.description}
+            select={select}
+          >
+            {compareQuotes.map((quote, idx) => (
+              <FeatureValue
+                compareQuote={quote}
+                sectionTitle={"Special Features"}
+                featureTitle={feature.title}
+                key={quote.product.id + quote.sum_insured + idx}
+                tooltipPlacement={idx === 2 ? "left" : "right"}
+              />
+            ))}
+          </FeatureRow>
+        ) : (
+          select.selectedSectionView[`${feature.title}`] && (
+            <FeatureRow
+              title={feature.title}
+              key={feature.title}
+              description={feature.description}
+              select={select}
+            >
+              {compareQuotes.map((quote, idx) => (
+                <FeatureValue
+                  compareQuote={quote}
+                  sectionTitle={"Special Features"}
+                  featureTitle={feature.title}
+                  key={quote.product.id + quote.sum_insured + idx}
+                  tooltipPlacement={idx === 2 ? "left" : "right"}
+                />
+              ))}
+            </FeatureRow>
+          )
+        ),
+      )}
     </CompareSection>
   );
 }
 
-function WaitingPeriodSection({ compareQuotes = [], ...props }) {
+function WaitingPeriodSection({ compareQuotes = [], select, ...props }) {
   return (
     <CompareSection title="Waiting Period" {...props}>
-      {WAITING_PERIOD.map(feature => (
-        <FeatureRow
-          title={feature.title}
-          key={feature.title}
-          description={feature.description}
-        >
-          {compareQuotes.map((quote, idx) => (
-            <FeatureValue
-              compareQuote={quote}
-              sectionTitle={"Waiting Period"}
-              featureTitle={feature.title}
-              key={quote.product.id + quote.sum_insured + idx}
-              tooltipPlacement={idx === 2 ? "left" : "right"}
-            />
-          ))}
-        </FeatureRow>
-      ))}
+      {WAITING_PERIOD.map(feature =>
+        !select.isSelectedSectionView ? (
+          <FeatureRow
+            title={feature.title}
+            key={feature.title}
+            description={feature.description}
+            select={select}
+          >
+            {compareQuotes.map((quote, idx) => (
+              <FeatureValue
+                compareQuote={quote}
+                sectionTitle={"Waiting Period"}
+                featureTitle={feature.title}
+                key={quote.product.id + quote.sum_insured + idx}
+                tooltipPlacement={idx === 2 ? "left" : "right"}
+              />
+            ))}
+          </FeatureRow>
+        ) : (
+          select.selectedSectionView[`${feature.title}`] && (
+            <FeatureRow
+              title={feature.title}
+              key={feature.title}
+              description={feature.description}
+              select={select}
+            >
+              {compareQuotes.map((quote, idx) => (
+                <FeatureValue
+                  compareQuote={quote}
+                  sectionTitle={"Waiting Period"}
+                  featureTitle={feature.title}
+                  key={quote.product.id + quote.sum_insured + idx}
+                  tooltipPlacement={idx === 2 ? "left" : "right"}
+                />
+              ))}
+            </FeatureRow>
+          )
+        ),
+      )}
     </CompareSection>
   );
 }
 
-function WhatsNotCoveredSection({ compareQuotes = [], ...props }) {
+function WhatsNotCoveredSection({ compareQuotes = [], select, ...props }) {
   return (
     <CompareSection title="What's not covered?" {...props}>
-      {WHATS_NOT_COVERED.map(feature => (
-        <FeatureRow
-          title={feature.title}
-          key={feature.title}
-          description={feature.description}
-        >
-          {compareQuotes.map((quote, idx) => (
-            <FeatureValue
-              compareQuote={quote}
-              sectionTitle={"What's not covered?"}
-              featureTitle={feature.title}
-              key={quote.product.id + quote.sum_insured + idx}
-              tooltipPlacement={idx === 2 ? "left" : "right"}
-            />
-          ))}
-        </FeatureRow>
-      ))}
+      {WHATS_NOT_COVERED.map(feature =>
+        !select.isSelectedSectionView ? (
+          <FeatureRow
+            title={feature.title}
+            key={feature.title}
+            description={feature.description}
+            select={select}
+          >
+            {compareQuotes.map((quote, idx) => (
+              <FeatureValue
+                compareQuote={quote}
+                sectionTitle={"What's not covered?"}
+                featureTitle={feature.title}
+                key={quote.product.id + quote.sum_insured + idx}
+                tooltipPlacement={idx === 2 ? "left" : "right"}
+              />
+            ))}
+          </FeatureRow>
+        ) : (
+          select.selectedSectionView[`${feature.title}`] && (
+            <FeatureRow
+              title={feature.title}
+              key={feature.title}
+              description={feature.description}
+              select={select}
+            >
+              {compareQuotes.map((quote, idx) => (
+                <FeatureValue
+                  compareQuote={quote}
+                  sectionTitle={"What's not covered?"}
+                  featureTitle={feature.title}
+                  key={quote.product.id + quote.sum_insured + idx}
+                  tooltipPlacement={idx === 2 ? "left" : "right"}
+                />
+              ))}
+            </FeatureRow>
+          )
+        ),
+      )}
     </CompareSection>
   );
 }
@@ -601,9 +978,12 @@ function FeatureRow({
   description = "",
   tooltipPlacement = "right",
   children,
+  select,
   ...props
 }) {
   const { colors } = useTheme();
+  const [selectBlock, setSelectBlock] = useState(false);
+
   return (
     <div
       className="p-3 d-flex"
@@ -618,20 +998,79 @@ function FeatureRow({
           min-width: 20%;
         `}
       >
-        <OverlayTrigger
-          placement={tooltipPlacement}
-          overlay={renderTooltipDesc({
-            description,
-          })}
+        <section
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          `}
         >
-          <span
+          <input
+            type="checkbox"
             css={`
-              border-bottom: 2px dotted;
+              height: 17px;
+              width: 17px;
             `}
+            onChange={() => {
+              let demoObject = {};
+
+              if (!selectBlock) {
+                setSelectBlock(true);
+                demoObject[`${title}`] = true;
+                select.setSelectedSectionView({
+                  ...select.selectedSectionView,
+                  ...demoObject,
+                });
+              } else {
+                setSelectBlock(false);
+                demoObject[`${title}`] = false;
+                select.setSelectedSectionView({
+                  ...select.selectedSectionView,
+                  ...demoObject,
+                });
+              }
+            }}
+          />
+
+          <OverlayTrigger
+            placement={tooltipPlacement}
+            overlay={renderTooltipDesc({
+              description,
+            })}
           >
-            {title}
-          </span>
-        </OverlayTrigger>
+            <span
+              css={`
+                border-bottom: 2px dotted;
+              `}
+            >
+              {title}
+            </span>
+          </OverlayTrigger>
+        </section>
+        {selectBlock && (
+          <button
+            css={`
+              color: #0a87ff;
+              text-decoration: underline;
+              padding-left: 24px;
+              cursor: pointer;
+              font-size: 13px;
+              font-weight: 600;
+              margin-top: 10px;
+            `}
+            onClick={() => {
+              if (select.isSelectedSectionView) {
+                select.setIsSelectedSectionView(false);
+              } else {
+                select.setIsSelectedSectionView(true);
+              }
+            }}
+          >
+            {select.isSelectedSectionView
+              ? "Show All Rows"
+              : "Show Only Selected"}
+          </button>
+        )}
       </div>
       <div
         className="d-flex flex-grow-1"
