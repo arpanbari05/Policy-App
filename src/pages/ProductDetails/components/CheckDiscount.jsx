@@ -10,8 +10,9 @@ import {
   useTheme,
 } from "../../../customHooks";
 import { FaCheck } from "react-icons/fa";
+import { useEffect } from "react";
 
-const CheckDiscountSection = ({ groupCode, ...props }) => {
+const CheckDiscountSection = ({ groupCode, cartEntry, ...props }) => {
   return (
     <FeatureSection
       heading="Check Discounts"
@@ -22,22 +23,36 @@ const CheckDiscountSection = ({ groupCode, ...props }) => {
       `}
       {...props}
     >
-      <TenureDiscounts groupCode={groupCode} />
+      <TenureDiscounts groupCode={groupCode} cartEntry={cartEntry} />
       <AdditionalDiscounts groupCode={groupCode} />
     </FeatureSection>
   );
 };
 
-function TenureDiscounts({ groupCode, ...props }) {
+function TenureDiscounts({ groupCode, cartEntry, ...props }) {
   const {
     applyTenureDiscount,
     isTenureDiscountSelected,
     query: { data, isLoading, isUninitialized, isFetching },
   } = useTenureDiscount(groupCode);
 
-  if (isLoading || isUninitialized || isFetching) return <CardSkeletonLoader />;
+  const { tenure } = cartEntry;
 
-  const discounts = data.data;
+  const discounts = data?.data;
+
+  useEffect(() => {
+    if (discounts) {
+      const tenureDiscount = discounts.find(
+        discount => +discount.tenure === tenure,
+      );
+      if (tenureDiscount) {
+        applyTenureDiscount(tenureDiscount);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [discounts]);
+
+  if (isLoading || isUninitialized || isFetching) return <CardSkeletonLoader />;
 
   if (!discounts || !discounts.length) return <p>No discounts found!</p>;
 

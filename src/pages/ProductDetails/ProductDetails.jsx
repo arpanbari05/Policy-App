@@ -16,79 +16,14 @@ import {
   MobileHeaderText,
 } from "../ProposalPage/ProposalPage.style";
 import "styled-components/macro";
-import { LoadCart, Page } from "../../components";
+import { Page } from "../../components";
 import PageNotFound from "../PageNotFound";
-import { FaChevronLeft } from "react-icons/fa";
-import { useCart, useMembers, useUrlEnquiry } from "../../customHooks";
-import { setIsOnProductDetails, setShouldRedirectToQuotes } from "../quotePage/quote.slice";
+import { useCart, useUrlEnquiry } from "../../customHooks";
 import CartMobile from "./components/Mobile/CartMobile/CartMobile";
-
-function GoBackButton({ ...props }) {
-  const { groupCode } = useParams();
-
-  const { getPreviousGroup } = useMembers();
-
-  const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
-  const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
-
-  const history = useHistory();
-
-  const getLink = () => {
-    if (!prevoiusGroup) return getUrlWithEnquirySearch(`/quotes/${groupCode}`);
-
-    return getUrlWithEnquirySearch(`/productdetails/${prevoiusGroup.id}`);
-  };
-
-  const handleClick = () => {
-    history.replace(getLink());
-    setIsOnProductDetails(true);
-  };
-
-  return (
-    <button
-      className="btn"
-      type="button"
-      onClick={handleClick}
-      css={`
-        width: max-content;
-        padding: 0 !important;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        color: var(--abc-red);
-        font-size: 17px;
-        display: flex;
-        align-items: center;
-        ${mobile} {
-          display: none;
-        }
-      `}
-      {...props}
-    >
-      <div
-        className="d-flex justify-content-center align-items-center"
-        css={`
-          background: #f1f4f8;
-          width: 45px;
-          margin-right: 20px;
-          border-radius: 100%;
-          height: 45px;
-          color: #707b8b;
-        `}
-      >
-        <FaChevronLeft />
-      </div>
-      <span
-        css={`
-          color: #3b4c69;
-          font-weight: 600;
-        `}
-      >
-        Go Back
-      </span>
-    </button>
-  );
-}
+import FeatureSection from "./components/FeatureSection/FeatureSection";
+import Select from "react-select";
+import { numberToDigitWord } from "../../utils/helper";
+import _ from "lodash";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
@@ -120,7 +55,7 @@ const ProductDetails = () => {
     }
 
     document.addEventListener("scroll", scrollListener);
-    dispatch(setShouldRedirectToQuotes(false));
+    // dispatch(setShouldRedirectToQuotes(false));
     return () => document.removeEventListener("scroll", scrollListener);
   }, []);
 
@@ -203,7 +138,6 @@ const ProductDetails = () => {
             }
           `}
         >
-          {/* <GoBackButton groupCode={groupCode} /> */}
           <div
             css={`
               width: 70%;
@@ -267,7 +201,11 @@ const ProductDetails = () => {
                 }
               `}
             >
-              <CheckDiscount groupCode={parseInt(groupCode)} />
+              <SumInsuredSection cartEntry={cartEntry} />
+              <CheckDiscount
+                groupCode={parseInt(groupCode)}
+                cartEntry={cartEntry}
+              />
               <RidersSection />
             </Col>
           </div>
@@ -279,3 +217,36 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
+
+function getSumInsuredOptions(arr = []) {
+  return arr.map(item => ({ value: item, label: numberToDigitWord(item) }));
+}
+
+function SumInsuredSection({ cartEntry }) {
+  const { updateCartEntry } = useCart();
+
+  const { available_sum_insureds, group, sum_insured } = cartEntry;
+
+  if (!available_sum_insureds) return null;
+
+  const handleChange = option => {
+    updateCartEntry(group.id, { sum_insured: option.value });
+  };
+
+  const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+
+  return (
+    <FeatureSection heading="Sum Insured" subHeading="Modify sum insured">
+      <div className="w-50">
+        <Select
+          defaultValue={{
+            value: sum_insured,
+            label: numberToDigitWord(sum_insured),
+          }}
+          options={sumInsuredOptions}
+          onChange={handleChange}
+        />
+      </div>
+    </FeatureSection>
+  );
+}

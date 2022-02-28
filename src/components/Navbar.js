@@ -43,9 +43,6 @@ const Navbar = () => {
   const history = useHistory();
 
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
-  const { journeyType } = useFrontendBoot();
-
   const isRootRoute = useRouteMatch({
     path: ["/", "/input/basic-details"],
     exact: true,
@@ -63,7 +60,9 @@ const Navbar = () => {
 
   const { groupCode } = useParams();
 
-  const { getPreviousGroup } = useMembers();
+  const { getPreviousGroup, getLastGroup } = useMembers();
+
+  // const lastGroup = getLastGroup();
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
@@ -148,7 +147,11 @@ const Navbar = () => {
                         break;
 
                       case "/proposal":
-                        history.goBack();
+                        // history.replace(
+                        //   getUrlWithEnquirySearch(
+                        //     `/productdetails/${lastGroup.id}`,
+                        //   ),
+                        // );
                         break;
 
                       case "/proposal_summary":
