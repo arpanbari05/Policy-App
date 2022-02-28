@@ -21,7 +21,9 @@ const Toggle = ({
   showMembers,
   customMembers,
   showMembersIf,
+
 }) => {
+
   const { colors } = useTheme();
   
   const PrimaryColor = colors.primary_color,
@@ -73,7 +75,7 @@ if(showMembersIf){
   useEffect(() => {
     let isValid = true;
 
-    if (boolean === "Y" && !Object.values(membersStatus).includes(true)) {
+    if ((boolean === "Y" || customShowMembers) && !Object.values(membersStatus).includes(true)) {
       isValid = false;
     }
 
