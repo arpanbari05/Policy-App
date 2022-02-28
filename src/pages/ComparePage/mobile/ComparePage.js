@@ -456,7 +456,7 @@ function SumInsuredFeatureValue({ quote, onChange, allQuotes }) {
             );
 
             return (
-              index !== 0 && (
+              index === -1 && (
                 <option key={sumInsured} value={sumInsured}>
                   {numberToDigitWord(sumInsured)}
                 </option>

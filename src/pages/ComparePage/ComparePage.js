@@ -491,7 +491,7 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
             <SumInsuredFeatureValue
               key={quote.sum_insured + quote.product.id + idx}
               compareQuote={quote}
-              allQuotesToCompare={compareQuotes}
+              allQuotes={compareQuotes}
             />
           ))}
         </FeatureRow>
@@ -506,6 +506,7 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
               <SumInsuredFeatureValue
                 key={quote.sum_insured + quote.product.id + idx}
                 compareQuote={quote}
+                allQuotes={compareQuotes}
               />
             ))}
           </FeatureRow>
@@ -549,11 +550,7 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
   );
 }
 
-function SumInsuredFeatureValue({
-  compareQuote,
-  allQuotesToCompare,
-  ...props
-}) {
+function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
   const getCompareFeaturesQuery = useGetCompareFeaturesQuery(
     compareQuote?.product.id,
   );
@@ -584,13 +581,11 @@ function SumInsuredFeatureValue({
       }, [])
     : [];
 
-  const similarQuotes = allQuotesToCompare.filter(
+  const similarQuotes = allQuotes.filter(
     quoteValue =>
       quoteValue.product.name === compareQuote.product.name &&
       quoteValue.sum_insured.toString() !== compareQuote.sum_insured.toString(),
   );
-
-  console.log("Filtered:", similarQuotes);
 
   const { groupCode } = useParams();
 
@@ -615,14 +610,7 @@ function SumInsuredFeatureValue({
   return (
     <div className="d-flex align-items-center" {...props}>
       {isLoading ? (
-        <div
-          css={`
-            font-size: 16px;
-            color: #647188;
-          `}
-        >
-          {numToLakh(compareQuote.sum_insured)}
-        </div>
+        <div>{numToLakh(compareQuote.sum_insured)}</div>
       ) : (
         <select
           value={compareQuote.sum_insured}
@@ -636,9 +624,8 @@ function SumInsuredFeatureValue({
             const index = similarQuotes.findIndex(
               quoteData => quoteData.sum_insured === sumInsured,
             );
-            console.log(index);
             return (
-              index !== 0 && (
+              index === -1 && (
                 <option key={sumInsured} value={sumInsured}>
                   {numToLakh(sumInsured)}
                 </option>
@@ -647,14 +634,7 @@ function SumInsuredFeatureValue({
           })}
         </select>
       )}
-      {isLoading && (
-        <CircleLoader
-          animation="border"
-          css={`
-            color: #647188;
-          `}
-        />
-      )}
+      {isLoading && <CircleLoader animation="border" />}
     </div>
   );
 }
