@@ -377,6 +377,7 @@ export const {
   useUpdateCompareQuotesMutation,
   useGetCompareQuotesQuery,
   useGetCompareFeaturesQuery,
+  usePrefetch
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {
