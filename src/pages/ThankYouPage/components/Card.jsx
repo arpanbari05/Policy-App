@@ -117,7 +117,7 @@ const Card = ({ values, isLoading }) => {
         <StatusWrapper>
           <DocImage>
             <img
-              src={repolicy}
+              src={mail}
               alt="repolicy"
               css={`
                 width: 36px;
@@ -125,8 +125,8 @@ const Card = ({ values, isLoading }) => {
             ></img>
           </DocImage>
           <DocMessage>
-            Your proposal's medical underwriting is approved. You will receive a
-            call shortly from us on further process.
+            You will receive the Policy in your inbox once generated. In case
+            it's under medical underwriting it might take longer.{" "}
           </DocMessage>
         </StatusWrapper>
       )}
