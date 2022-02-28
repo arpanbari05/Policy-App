@@ -153,7 +153,7 @@ function CoverFilterModal({ onClose, ...props }) {
 
 function CoverOption({ cover, checked, onChange, ...props }) {
 
-  const inputRef = useRef(null);
+  const inputRef = useRef();
 
   const handleChange = evt => {
     if (evt.target.checked) onChange && onChange(cover);
@@ -167,7 +167,7 @@ function CoverOption({ cover, checked, onChange, ...props }) {
       className="option d-flex align-items-center justify-content-between"
       {...props}
       onClick={() => {
-        console.log(inputRef.current.click())
+        inputRef.current.click()
       }}
     >
       <label htmlFor={cover.code}>{cover.display_name}</label>

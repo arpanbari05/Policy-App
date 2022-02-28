@@ -58,13 +58,14 @@ const DropDown = ({
         error={error}
         height={height}
         borderR={borderR}
+        // placeholder={checkValidation?.required && dropPlaceholder ? `${dropPlaceholder}*` : dropPlaceholder || "- Select -"}
       >
         {((Object.keys(selectOption).length !== 1 &&
           checkValidation?.required &&
           !asyncOptions) ||
           asyncOptions ||
           !checkValidation?.required) && (
-          <option value={"- Select -"}>{dropPlaceholder || "- Select -"}</option>
+          <option value={"- Select -"}>{checkValidation?.required && dropPlaceholder ? `${dropPlaceholder}*` : dropPlaceholder || "- Select -"}</option>
         )}
         {selectedValues?.title &&
         selectedValues.title === "mrs" &&
