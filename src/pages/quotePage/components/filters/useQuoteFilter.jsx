@@ -50,13 +50,6 @@ const checkFeature = quote => featureObject => {
 
   const { operator, value_to_compare, code } = featureObject;
 
-  console.log(
-    "Thhe operater , value_to_compare , code",
-    operator,
-    value_to_compare,
-    code,
-  );
-
   const value = feature?.value?.toUpperCase()?.trim();
 
   if (code === "no_claim_bonus" && operator === "equals") {

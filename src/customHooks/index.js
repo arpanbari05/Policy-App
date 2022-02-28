@@ -849,6 +849,7 @@ export function useGetQuotes(queryConfig = {}) {
     queryConfig,
   );
 
+  //? SUPPLIES FILTERED QUOTE [PREMIUM + MORE FILTERS]
   if (data) {
     data = data.map(insurerQuotes => {
       return {

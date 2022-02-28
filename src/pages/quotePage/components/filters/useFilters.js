@@ -60,7 +60,6 @@ function useFilters() {
 
   function getSelectedFilter(code) {
     if (extras) {
-      console.log("i executed");
       if (code === "insurers") {
         if (extras["insurers"]) return extras["insurers"];
         return [];
