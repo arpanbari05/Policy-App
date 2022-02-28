@@ -117,12 +117,10 @@ const MedicalHistoryForm = () => {
                         setAppLoading(false);
                         return;
                       }
-                      setTimeout(() => {
-                        history.push(
-                          getUrlWithEnquirySearch(`/quotes/${groups[0].id}`),
-                        );
-                        setAppLoading(false);
-                      }, 3000);
+                      history.push(
+                        getUrlWithEnquirySearch(`/quotes/${groups[0].id}`),
+                      );
+                      setAppLoading(false);
                     });
                   } else {
                     setSelected(e.target.value);

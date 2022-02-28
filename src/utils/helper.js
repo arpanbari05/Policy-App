@@ -368,9 +368,10 @@ export function mergeQuotes(quotes, { sortBy = "relevance" } = {}) {
     mergedQuotes[name] = [quote];
   }
 
-  let sortedMergeQuotes = Object.values(mergedQuotes).sort();
+  let sortedMergeQuotes = Object.values(mergedQuotes);
 
   if (sortBy === "premium-low-to-high") {
+    sortedMergeQuotes = Object.values(mergedQuotes).sort();
     sortedMergeQuotes = sortedMergeQuotes.map(quotes =>
       quotes.sort((quoteA, quoteB) =>
         quoteA?.total_premium > quoteB?.total_premium ? 1 : -1,

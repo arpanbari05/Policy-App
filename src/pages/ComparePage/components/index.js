@@ -46,6 +46,8 @@ export function ShowDifference({ onChange, checked, ...props }) {
             line-height: 1;
             margin-top: 0.2em;
             font-weight: 600;
+            font-size: 13px;
+            color: #212529;
           `}
         >
           Show difference
@@ -68,7 +70,7 @@ export function ProductCard({ quote, onRemove, ...props }) {
       className="p-3 d-flex flex-column align-items-center justify-content-between position-relative"
       css={`
         box-shadow: ${boxShadows.five};
-        gap: 2em;
+        gap: 20px;
         ${mq.mobile} {
           box-shadow: none;
           border: 1px solid ${colors.border.two};
@@ -78,7 +80,11 @@ export function ProductCard({ quote, onRemove, ...props }) {
       `}
       {...props}
     >
-      <CircleCloseButton placeOnCorner onClick={handleCloseClick} />
+      <CircleCloseButton
+        placeOnCorner
+        onClick={handleCloseClick}
+        className="compare-pdf-hide"
+      />
       <img
         src={logo}
         alt={quote.company_alias}
@@ -93,6 +99,8 @@ export function ProductCard({ quote, onRemove, ...props }) {
         css={`
           text-align: center;
           font-weight: 900;
+          font-size: 14px;
+          color: #253858;
 
           ${mq.mobile} {
             font-size: 0.79rem;
