@@ -795,7 +795,34 @@ select {
 /*  Tooltip styling */
 .tooltip-inner {
   text-align: left !important;
+  pointer-events: none;
+  animation: moveToBottom .5s;
 }
+
+@media (min-width: 767px) {
+  .tooltip-inner {
+    animation: moveToRight .5s;
+  }
+}
+
+@keyframes moveToBottom {
+  from {
+    transform: translateY(-50px);
+  } 
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes moveToRight {
+  from {
+    transform: translateX(-90px);
+  } 
+  to {
+    transform: translateX(0);
+  }
+}
+
 h1,
 h2,
 h3,
