@@ -37,10 +37,13 @@ export function GroupLinks({ ...props }) {
   const { groups } = useMembers();
   return (
     <div
-      className="d-flex align-items-center mx-3 h-100 text-center overflow-scroll"
+      className="d-flex align-items-center mx-3 h-100 text-center"
       css={`
         gap: 1em;
         font-size: 9px !important;
+        ${mq.mobile} {
+          overflow: scroll;
+        }
       `}
       {...props}
     >

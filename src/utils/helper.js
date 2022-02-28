@@ -89,6 +89,19 @@ export const noSpclChars = event => {
     event.preventDefault();
   }
 };
+
+export const numToLakh = SItoConvert => {
+  if (SItoConvert > 9999999) {
+    let calculated = Number(SItoConvert) / Number(10000000);
+    return `${calculated} ${calculated > 1 ? "Crores" : "Crore"}`;
+  } else if (SItoConvert > 99999) {
+    let calculated = Number(SItoConvert) / Number(100000);
+    return `${calculated} ${calculated > 1 ? "Lakhs" : "Lakh"}`;
+  } else {
+    return SItoConvert;
+  }
+};
+
 export const numberToDigitWord = (
   number,
   type,

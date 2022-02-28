@@ -23,7 +23,6 @@ import {
   setPolicyTypes,
   setPolicyType,
   setIsOnProductDetails,
-  setShouldRedirectToQuotes,
 } from "../pages/quotePage/quote.slice";
 import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
@@ -130,9 +129,7 @@ const Navbar = () => {
                     switch (location.pathname) {
                       case `/productdetails/${groupCode}`:
                         const getLink = () => {
-                          console.log(prevoiusGroup);
                           if (!prevoiusGroup) {
-                            console.log("In prev");
                             return getUrlWithEnquirySearch(
                               `/quotes/${groupCode}`,
                             );
@@ -141,12 +138,12 @@ const Navbar = () => {
                             `/productdetails/${prevoiusGroup.id}`,
                           );
                         };
-                        dispatch(setShouldRedirectToQuotes(true));
                         history.replace(getLink());
                         setIsOnProductDetails(true);
                         break;
 
                       case "/proposal":
+                        history.goBack();
                         // history.replace(
                         //   getUrlWithEnquirySearch(
                         //     `/productdetails/${lastGroup.id}`,
@@ -183,7 +180,6 @@ const Navbar = () => {
                 `}
               />
             </Link>
-            {console.log("location.pathname", location.pathname)}
             {!location.pathname.startsWith("/input") && trace_id && (
               <div
                 css={`

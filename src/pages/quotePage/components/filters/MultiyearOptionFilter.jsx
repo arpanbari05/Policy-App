@@ -77,7 +77,7 @@ function MultiYearOption({ tenure, onChange, checked, ...props }) {
       className="option d-flex align-items-center justify-content-between"
       {...props}
       onClick={() => {
-        console.log(target.current.click());
+        target.current.click();
       }}
     >
       <label htmlFor={"tenure-" + tenure.code}>
