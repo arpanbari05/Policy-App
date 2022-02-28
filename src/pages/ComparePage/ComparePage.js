@@ -73,8 +73,9 @@ function ComparePage() {
           >
             <h1
               css={`
-                font-size: 1.2rem;
+                font-size: 20px;
                 font-weight: 900;
+                color: #253858;
               `}
             >
               Product Comparison
@@ -386,7 +387,7 @@ function CompareProductCards({ compareQuotes = [], ...props }) {
       className="d-flex"
       css={`
         flex: 1;
-        gap: 6em;
+        gap: 4rem;
         & > div {
           flex: 1;
         }
@@ -417,11 +418,16 @@ function DownloadButton({ ...props }) {
 
   return (
     <button
-      className="rounded d-flex align-items-center py-1 px-3 mt-3 compare-pdf-hide"
+      className="compare-pdf-hide rounded d-flex align-items-center"
       css={`
         background: #fff;
         border: 1px solid ${colors.border.one};
         gap: 0.39em;
+        font-size: 16px;
+        color: #212529;
+        font-weight: 900;
+        margin-top: 1rem;
+        padding: 6px 5px !important;
       `}
       onClick={handleClick}
       {...props}
@@ -510,6 +516,11 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
           {compareQuotes.map((quote, idx) => (
             <div
               key={quote.tenure + quote.sum_insured + quote.product.id + idx}
+              css={`
+                font-size: 16px;
+                color: #647188;
+                margin-left: 5px;
+              `}
             >
               {quote.tenure + `${quote.tenure > 1 ? " Years" : " Year"}`}
             </div>
@@ -521,6 +532,11 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
             {compareQuotes.map((quote, idx) => (
               <div
                 key={quote.tenure + quote.sum_insured + quote.product.id + idx}
+                css={`
+                  font-size: 16px;
+                  color: #647188;
+                  margin-left: 5px;
+                `}
               >
                 {quote.tenure + `${quote.tenure > 1 ? " Years" : " Year"}`}
               </div>
@@ -588,7 +604,14 @@ function SumInsuredFeatureValue({ compareQuote, ...props }) {
       {isLoading ? (
         <div>{numToLakh(compareQuote.sum_insured)}</div>
       ) : (
-        <select value={compareQuote.sum_insured} onChange={handleChange}>
+        <select
+          value={compareQuote.sum_insured}
+          onChange={handleChange}
+          css={`
+            font-size: 16px;
+            color: #647188;
+          `}
+        >
           {sumInsureds.map(sumInsured => (
             <option key={sumInsured} value={sumInsured}>
               {numToLakh(sumInsured)}
@@ -662,13 +685,26 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
   };
 
   return (
-    <div className="d-flex align-items-center" {...props}>
+    <div
+      className="d-flex align-items-center"
+      {...props}
+      css={`
+        font-size: 16px;
+      `}
+    >
       {isLoading ? (
         <div>{compareQuote.deductible}</div>
       ) : (
         <select value={compareQuote.deductible} onChange={handleChange}>
           {deductibles.map(deductible => (
-            <option key={deductible} value={deductible}>
+            <option
+              key={deductible}
+              value={deductible}
+              css={`
+                font-size: inherit;
+                color: #647188;
+              `}
+            >
               {deductible}
             </option>
           ))}
@@ -688,7 +724,13 @@ function KeyBenefitsSection({ compareQuotes = [], select, ...props }) {
         <FeatureRow title={"Unique Feature"} select={select}>
           {uniqueFeatures.map((feature, idx) =>
             feature ? (
-              <div key={feature.code + idx}>
+              <div
+                key={feature.code + idx}
+                css={`
+                  font-size: 16px;
+                  color: #647188;
+                `}
+              >
                 <ul>
                   {feature &&
                     feature.value?.split("\n").map(value => <li>{value}</li>)}
@@ -702,7 +744,13 @@ function KeyBenefitsSection({ compareQuotes = [], select, ...props }) {
           <FeatureRow title={"Unique Feature"} select={select}>
             {uniqueFeatures.map((feature, idx) =>
               feature ? (
-                <div key={feature.code + idx}>
+                <div
+                  key={feature.code + idx}
+                  css={`
+                    font-size: 16px;
+                    color: #647188;
+                  `}
+                >
                   <ul>
                     {feature &&
                       feature.value?.split("\n").map(value => <li>{value}</li>)}
@@ -961,7 +1009,14 @@ function FeatureValue({
           description: feature.short_description,
         })}
       >
-        <div>{feature.feature_value}</div>
+        <div
+          css={`
+            font-size: 16px;
+            color: #647188;
+          `}
+        >
+          {feature.feature_value}
+        </div>
       </OverlayTrigger>
     </div>
   );
@@ -980,10 +1035,11 @@ function FeatureRow({
 
   return (
     <div
-      className="p-3 d-flex"
+      className="d-flex"
       css={`
         border-bottom: 1px solid ${colors.border.one};
         gap: 3em;
+        padding: 10px 20px;
       `}
       {...props}
     >
@@ -1005,6 +1061,7 @@ function FeatureRow({
               height: 17px;
               width: 17px;
             `}
+            className="compare-pdf-hide"
             onChange={() => {
               let demoObject = {};
 
@@ -1035,6 +1092,9 @@ function FeatureRow({
             <span
               css={`
                 border-bottom: 2px dotted;
+                font-size: 16px;
+                font-weight: bold;
+                color: #273a5a;
               `}
             >
               {title}
@@ -1052,6 +1112,7 @@ function FeatureRow({
               font-weight: 600;
               margin-top: 10px;
             `}
+            className="compare-pdf-hide"
             onClick={() => {
               if (select.isSelectedSectionView) {
                 select.setIsSelectedSectionView(false);
@@ -1090,7 +1151,9 @@ function CompareSection({ title = "", children, ...props }) {
         className="p-3 position-relative"
         css={`
           text-transform: capitalize;
-          font-size: 1.37rem;
+          font-size: 20px;
+          color: #505f79;
+          font-weight: bold;
           background-color: ${colors.primary_shade};
         `}
       >

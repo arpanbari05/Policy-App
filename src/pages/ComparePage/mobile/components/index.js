@@ -261,7 +261,7 @@ export function AddPlanCard({ compareQuotes, children, ...props }) {
           background-color: ${colors.primary_shade};
           color: ${colors.primary_color};
           font-weight: 900;
-          min-height: 12.7em;
+          min-height: 12em;
           ${mq.mobile} {
             min-height: 7.97em;
           }
@@ -271,7 +271,7 @@ export function AddPlanCard({ compareQuotes, children, ...props }) {
         <div
           className="d-flex align-items-center justify-content-center rounded"
           css={`
-            height: 36%;
+            height: 34%;
             width: 36%;
 
             background-color: ${colors.secondary_shade};
