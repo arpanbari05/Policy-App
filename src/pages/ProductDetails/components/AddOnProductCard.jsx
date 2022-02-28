@@ -73,8 +73,7 @@ function ProductCard() {
         {/* ************logo******** */}
         <div
           css={`
-            width: 50px;
-            height: 50px;
+            height: 50px; 
             background-color: #fff;
             display: flex;
             align-items: center;
@@ -83,11 +82,11 @@ function ProductCard() {
             border-radius: 2px;
 
             ${small} {
-              max-width: 45px;
+              height: 45px;
             }
           `}
         >
-          <img src={icLogoSrc} alt={companyAlias} className="w-100" />
+          <img css={`height: 100% !important;`} src={icLogoSrc} alt={companyAlias} />
         </div>
         {/* *************name*********** */}
         <div

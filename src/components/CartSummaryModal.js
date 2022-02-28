@@ -13,10 +13,12 @@ import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader
 import CardModal from "./Common/Modal/CardModal";
 import { figureToWords } from "../utils/helper";
 
-function CartSummaryModal({ onClose, onContine, allClose }) {
+function CartSummaryModal({ onClose = () => {}, onContine = () => {}, allClose = () => {} }) {
+  const { data: enquiryData } = useGetEnquiriesQuery();
+  const firstName = enquiryData?.data?.name?.split(" ")[0];
   return (
     <CardModal
-      title="Hey User, Take a minute and review your cart before you proceed"
+      title={`Hey ${firstName}, Take a minute and review your cart before you proceed`}
       show
       buttonValue="Continue"
       handleClose={onClose}
@@ -476,7 +478,9 @@ const ProductContainer = styled.div`
   align-items: center;
 
   & img {
-    width: 68px;
+    width: 100%; 
+    max-width: 95px; 
+    height: auto; 
   }
   @media (max-width: 767px) {
     display: none;

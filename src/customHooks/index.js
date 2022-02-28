@@ -619,10 +619,10 @@ export function useCart() {
           { additionalDiscounts },
         );
         return updateCartMutation({
+          ...cartEntry,
           cartId: id,
           [journeyType === "health" ? "riders" : "top_up_riders"]:
             health_riders.map(getRiderSendData),
-          ...cartEntry,
           discounted_total_premium,
         });
       },
@@ -828,7 +828,14 @@ export function useGetQuotes(queryConfig = {}) {
 
   const { groupCode } = useParams();
 
-  const { filterQuotes } = useQuoteFilter();
+  const { filterQuotes } = useQuoteFilter({
+    givenMoreFilters: {
+      no_claim_bonus: getSelectedFilter("no_claim_bonus"),
+      others: getSelectedFilter("others"),
+      popular_filters: getSelectedFilter("popular_filters"),
+      pre_existing_ailments: getSelectedFilter("pre_existing_ailments"),
+    },
+  });
 
   let { data, ...getCustomQuotesQuery } = useGetCustomQuotesQuery(
     {
@@ -845,10 +852,12 @@ export function useGetQuotes(queryConfig = {}) {
   );
 
   if (data) {
-    data = data.map(insurerQuotes => ({
-      ...insurerQuotes,
-      data: { data: filterQuotes(insurerQuotes.data.data) },
-    }));
+    data = data.map(insurerQuotes => {
+      return {
+        ...insurerQuotes,
+        data: { data: filterQuotes(insurerQuotes.data.data) },
+      };
+    });
   }
 
   const isLoading = data?.length < insurersToFetch.length;

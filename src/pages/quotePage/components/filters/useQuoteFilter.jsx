@@ -18,18 +18,30 @@ const getNumberFromString = (str = "") =>
   includesDigits(str) ? parseInt(includesDigits(str)[0]) : null;
 
 const findSelectedFilterObject = (filters, selectedFilter) => {
-  if (typeof selectedFilter === "object")
+  if (typeof selectedFilter === "object") {
     return selectedFilter.map(selected =>
       filters.options.find(filter => selected.includes(filter.display_name)),
     );
-  if (typeof selectedFilter === "string")
-    return filters.options.find(
+  }
+  if (typeof selectedFilter === "string") {
+    const findObj = filters.options.find(
       filter => filter.display_name === selectedFilter,
     );
-};
+    return findObj
+      ? {
+          ...findObj,
+          code: findObj.code
+            .split("_")
+            .slice(0, findObj.code.split("_").length - 1)
+            .join("_"), // ALTERS code KEY [ Remove when code key is same for all options ]
+        }
+      : undefined;
+  }
+}; // RETURNS SELECTED OPTIONS ARRAY [{}..] or OBJECT FOR EACH FILTER
 
-const findFeature = quote => featureCode =>
-  quote.features.find(feature => feature.code === featureCode);
+const findFeature = quote => featureCode => {
+  return quote.features.find(feature => feature.code === featureCode);
+};
 
 const checkFeature = quote => featureObject => {
   const feature = findFeature(quote)(featureObject.code);
@@ -38,7 +50,14 @@ const checkFeature = quote => featureObject => {
 
   const { operator, value_to_compare, code } = featureObject;
 
-  const value = feature.value.toUpperCase();
+  console.log(
+    "Thhe operater , value_to_compare , code",
+    operator,
+    value_to_compare,
+    code,
+  );
+
+  const value = feature?.value?.toUpperCase()?.trim();
 
   if (code === "no_claim_bonus" && operator === "equals") {
     const upto = getNumberFromString(value);
@@ -51,8 +70,8 @@ const checkFeature = quote => featureObject => {
 
   const valueToCompare =
     typeof value_to_compare === "string"
-      ? value_to_compare.toUpperCase()
-      : value_to_compare.map(val => val.toUpperCase());
+      ? value_to_compare.toUpperCase().trim()
+      : value_to_compare.map(val => val.toUpperCase().trim());
 
   if (operator === "equals") return value === valueToCompare;
   if (operator === "not_equals") return value !== valueToCompare;
@@ -63,19 +82,9 @@ const checkFeature = quote => featureObject => {
 };
 
 function useQuoteFilter({ givenMoreFilters } = {}) {
-  const {
-    // insurers,
-    // premium,
-    moreFilters,
-  } = useSelector(state => state.quotePage.filters);
-
   const { getSelectedFilter } = useFilters();
 
   const insurers = getSelectedFilter("insurers");
-
-  const {
-    data: { morefilters },
-  } = useFrontendBoot();
 
   const proposerDetailsMembers = useSelector(
     state => state.greetingPage.proposerDetails.members,
@@ -92,52 +101,69 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
   const minAge = getMinOfArray(currentGroupMembersAge);
 
   const {
-    popularFilter: popularFiltersSelected,
+    // insurers,
+    // premium,
+    moreFilters,
+  } = useSelector(state => state.quotePage.filters);
+
+  const {
+    data: { morefilters },
+  } = useFrontendBoot();
+
+  const {
+    popular_filters: popularFiltersSelected,
+    pre_existing_ailments: preExisting,
+    no_claim_bonus: noClaim,
     others,
-    preExisting,
-    renewalBonus,
-  } = givenMoreFilters || moreFilters;
+  } = givenMoreFilters || moreFilters; // SELECTED FILTER OPTIONS
 
-  const [
-    popularFilters,
-    preExistingFilters,
-    renewalBonusFilters,
-    otherFilters,
-  ] = morefilters;
+  const [popularFilters, preExistingFilters, noClaimFilters, otherFilters] =
+    morefilters; // ALL AVAILABLE FILTER OPTIONS
 
-  const popularFilter = popularFiltersSelected
-    ? popularFiltersSelected.filter(
+  const popularFiltersSelectedNameArray = popularFiltersSelected
+    ? popularFiltersSelected.map(
+        singleSelectedOption => singleSelectedOption.display_name,
+      )
+    : [];
+
+  const othersFiltersNameArray = others
+    ? others.map(singleSelectedOption => singleSelectedOption.display_name)
+    : [];
+
+  const popularFiltersSelectedNameArrayAlt = popularFiltersSelectedNameArray
+    ? popularFiltersSelectedNameArray.filter(
         option => option !== "No Pre-policy Check up",
       )
     : popularFiltersSelected;
 
-  const isNoPreMedicalSelected = popularFiltersSelected
-    ? popularFiltersSelected.includes("No Pre-policy Check up")
+  const isNoPreMedicalSelected = popularFiltersSelectedNameArray
+    ? popularFiltersSelectedNameArray.includes("No Pre-policy Check up")
     : false;
 
-  const selectedPopularFilters = findSelectedFilterObject(
+  const selectedPopularFiltersArray = findSelectedFilterObject(
     {
       ...popularFilters,
       options: popularFilters.options.filter(
         option => option.code !== "no pre policy check up",
       ),
     },
-    popularFilter,
+    popularFiltersSelectedNameArrayAlt, // NAMES ARRAY
   );
 
-  const selectedPreExistingFilter = findSelectedFilterObject(
+  const selectedOtherFiltersArray = findSelectedFilterObject(
+    otherFilters,
+    othersFiltersNameArray, // NAMES ARRAY
+  );
+
+  const selectedPreExistingFilterObject = findSelectedFilterObject(
     preExistingFilters,
-    preExisting,
+    preExisting ? preExisting[0].display_name : "", // NAME
   );
 
-  const selectedRenewalBonusFilter = findSelectedFilterObject(
-    renewalBonusFilters,
-    renewalBonus,
+  const selectedNoClaimFilterObject = findSelectedFilterObject(
+    noClaimFilters,
+    noClaim ? noClaim[0].display_name : "", // NAME
   );
-
-  const selectedOtherFilters = findSelectedFilterObject(otherFilters, others);
-
-  // const selectedPremiumCode = premium?.code;
 
   const selectedPremiumCode = getSelectedFilter("premium")?.code;
 
@@ -182,26 +208,32 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     } else isPremiumMatch = true;
     const checkFeatureMatch = checkFeature(quote);
 
-    const filterMatch = filter => (filter ? checkFeatureMatch(filter) : true);
+    const filterMatch = filter => {
+      return filter ? checkFeatureMatch(filter) : true;
+    }; //Accepts {} Returns BOOL
 
-    const filtersMatch = filters =>
-      filters ? filters.every(filter => checkFeatureMatch(filter)) : true;
+    const filtersMatch = filters => {
+      return filters
+        ? filters.every(filter => checkFeatureMatch(filter))
+        : true; //Accepts [{}..] Returns BOOL
+    };
 
-    const isPopularFiltersMatch = filtersMatch(selectedPopularFilters);
-    const isOtherFiltersMatch = filtersMatch(selectedOtherFilters);
-    const isRenewalBonusMatch = filterMatch(selectedRenewalBonusFilter);
-    const isPreExistingMatch = filterMatch(selectedPreExistingFilter);
+    const isPopularFiltersMatch = filtersMatch(selectedPopularFiltersArray);
+    const isOtherFiltersMatch = filtersMatch(selectedOtherFiltersArray);
+    const isNoClaimsMatch = filterMatch(selectedNoClaimFilterObject);
+    const isPreExistingMatch = filterMatch(selectedPreExistingFilterObject);
 
     const isNoPreMedicalMatch = isNoPreMedicalSelected
       ? minAge < quote.ppmc_age_limit
       : true;
+
     return (
       isCompanyMatch &&
       isPremiumMatch &&
       isPopularFiltersMatch &&
       isOtherFiltersMatch &&
       isPreExistingMatch &&
-      isRenewalBonusMatch &&
+      isNoClaimsMatch &&
       isNoPreMedicalMatch
     );
   }

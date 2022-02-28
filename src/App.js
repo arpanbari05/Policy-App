@@ -7,7 +7,7 @@ import { lazy } from "react";
 import { Suspense } from "react";
 import { FullScreenLoader, LoadCart } from "./components";
 import ComparePage from "./pages/ComparePage";
-// import ErrorPage from "./components/Common/ErrorPage/ErrorPage";
+import ErrorPage from "./components/Common/ErrorPage/ErrorPage";
 
 const ProposalPage = lazy(() => import("./pages/ProposalPage/ProposalPage"));
 const ProposalSummary = lazy(() =>
@@ -22,7 +22,11 @@ function App() {
         <Redirect from="/" to="/input/basic-details" />
       </Route>
       <Route exact path="/input/:currentForm" component={InputPage} />
-      <Route exact path="/quotes/:groupCode" component={QuotesPage} />
+      <Route exact path="/quotes/:groupCode">
+        <LoadCart>
+          <QuotesPage />
+        </LoadCart>
+      </Route>
       <Route exact path="/productdetails/:groupCode">
         <LoadCart>
           <ProductDetails />
@@ -50,9 +54,9 @@ function App() {
           <ThankYouPage />
         </LazyLoad>
       </Route>
-      {/* <Route path="*" component={ErrorPage} /> */}
+      <Route path="*" component={ErrorPage} />
 
-      <Route path="*" component={PageNotFound} />
+      {/* <Route path="*" component={PageNotFound} /> */}
       {process.env.NODE_ENV === "development" && (
         <Route path={"/test"} exact>
           Hi
