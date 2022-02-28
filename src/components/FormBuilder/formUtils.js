@@ -62,13 +62,13 @@ export const renderField = (item, value, member) => {
         }
       }
       if (when.includes("||")) {
-        let temp = when.split("||");
-        let check = temp.some(data => value[data] === is);
-        if (check) {
-          return true;
-        } else {
-          return false;
-        }
+        const temp = when.split("||");
+        let check = false;
+        check = temp.some(
+          data => value[data] && value[data][`is${data}`] === is,
+        );
+        console.log("wvhsrjvh",item);
+        return check;
       }
       if (value[when] === is) return true;
       else return false;

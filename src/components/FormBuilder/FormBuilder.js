@@ -52,7 +52,7 @@ const FormBuilder = ({
     noForAll,
     setNoForAll,
   );
-  console.log(values);
+
 
   const [trigger, setTrigger] = useState(false);
   const { proposalData } = useSelector(state => state.proposalPage);
@@ -446,7 +446,9 @@ const FormBuilder = ({
                         checkValidation={item.validate}
                         selectedValues={values}
                         onChange={(e, value) => {
+                         
                           if (item.parent && item.members) {
+                            
                             insertValue(
                               item.parent,
                               item.members,
@@ -461,7 +463,10 @@ const FormBuilder = ({
                               });
                             } else if (!item.type.includes("custom")) {
                               updateValue(item.name, e.target.value);
-                            } else updateValue(item.name, e);
+                            } else{
+                              console.log("sdvbkjvb",e,value,item);
+                              updateValue(item.name, e);
+                            } 
                           }
                           if (
                             item.fill &&
