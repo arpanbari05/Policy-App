@@ -491,6 +491,7 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
             <SumInsuredFeatureValue
               key={quote.sum_insured + quote.product.id + idx}
               compareQuote={quote}
+              allQuotesToCompare={compareQuotes}
             />
           ))}
         </FeatureRow>
@@ -548,7 +549,11 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
   );
 }
 
-function SumInsuredFeatureValue({ compareQuote, ...props }) {
+function SumInsuredFeatureValue({
+  compareQuote,
+  allQuotesToCompare,
+  ...props
+}) {
   const getCompareFeaturesQuery = useGetCompareFeaturesQuery(
     compareQuote?.product.id,
   );
@@ -579,6 +584,14 @@ function SumInsuredFeatureValue({ compareQuote, ...props }) {
       }, [])
     : [];
 
+  const similarQuotes = allQuotesToCompare.filter(
+    quoteValue =>
+      quoteValue.product.name === compareQuote.product.name &&
+      quoteValue.sum_insured.toString() !== compareQuote.sum_insured.toString(),
+  );
+
+  console.log("Filtered:", similarQuotes);
+
   const { groupCode } = useParams();
 
   const getQuoteBySumInsured = sumInsured =>
@@ -602,7 +615,14 @@ function SumInsuredFeatureValue({ compareQuote, ...props }) {
   return (
     <div className="d-flex align-items-center" {...props}>
       {isLoading ? (
-        <div>{numToLakh(compareQuote.sum_insured)}</div>
+        <div
+          css={`
+            font-size: 16px;
+            color: #647188;
+          `}
+        >
+          {numToLakh(compareQuote.sum_insured)}
+        </div>
       ) : (
         <select
           value={compareQuote.sum_insured}
@@ -612,14 +632,29 @@ function SumInsuredFeatureValue({ compareQuote, ...props }) {
             color: #647188;
           `}
         >
-          {sumInsureds.map(sumInsured => (
-            <option key={sumInsured} value={sumInsured}>
-              {numToLakh(sumInsured)}
-            </option>
-          ))}
+          {sumInsureds.map(sumInsured => {
+            const index = similarQuotes.findIndex(
+              quoteData => quoteData.sum_insured === sumInsured,
+            );
+            console.log(index);
+            return (
+              index !== 0 && (
+                <option key={sumInsured} value={sumInsured}>
+                  {numToLakh(sumInsured)}
+                </option>
+              )
+            );
+          })}
         </select>
       )}
-      {isLoading && <CircleLoader animation="border" />}
+      {isLoading && (
+        <CircleLoader
+          animation="border"
+          css={`
+            color: #647188;
+          `}
+        />
+      )}
     </div>
   );
 }

@@ -390,7 +390,12 @@ function SumInsuredSection({ quotes, select, onChange, ...props }) {
     >
       <FeatureRow>
         {quotes.map((quote, idx) => (
-          <SumInsuredFeatureValue quote={quote} key={idx} onChange={onChange} />
+          <SumInsuredFeatureValue
+            quote={quote}
+            key={idx}
+            onChange={onChange}
+            allQuotes={quotes}
+          />
         ))}
       </FeatureRow>
     </FeatureSection>
@@ -412,7 +417,7 @@ function SumInsuredSection({ quotes, select, onChange, ...props }) {
   );
 }
 
-function SumInsuredFeatureValue({ quote, onChange }) {
+function SumInsuredFeatureValue({ quote, onChange, allQuotes }) {
   const { icQuotes, isLoading } = useGetQuote(quote.company_alias);
 
   const { groupCode } = useParams();
@@ -427,6 +432,11 @@ function SumInsuredFeatureValue({ quote, onChange }) {
     : [];
 
   const sumInsureds = getSumInsureds(currentQuotes);
+  const similarQuotes = allQuotes.filter(
+    quoteValue =>
+      quoteValue.product.name === quote.product.name &&
+      quoteValue.sum_insured.toString() !== quote.sum_insured.toString(),
+  );
 
   const handleChange = evt => {
     const updatedQuote = findQuoteBySumInsured(currentQuotes, evt.target.value);
@@ -440,11 +450,19 @@ function SumInsuredFeatureValue({ quote, onChange }) {
         <div>{numberToDigitWord(quote.sum_insured)}</div>
       ) : (
         <select value={quote.sum_insured} onChange={handleChange}>
-          {sumInsureds.map(sumInsured => (
-            <option key={sumInsured} value={sumInsured}>
-              {numberToDigitWord(sumInsured)}
-            </option>
-          ))}
+          {sumInsureds.map(sumInsured => {
+            const index = similarQuotes.findIndex(
+              quoteData => quoteData.sum_insured === sumInsured,
+            );
+
+            return (
+              index !== 0 && (
+                <option key={sumInsured} value={sumInsured}>
+                  {numberToDigitWord(sumInsured)}
+                </option>
+              )
+            );
+          })}
         </select>
       )}
       {isLoading ? <CircleLoader animation="border" /> : null}
