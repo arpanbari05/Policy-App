@@ -491,6 +491,7 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
             <SumInsuredFeatureValue
               key={quote.sum_insured + quote.product.id + idx}
               compareQuote={quote}
+              allQuotes={compareQuotes}
             />
           ))}
         </FeatureRow>
@@ -505,6 +506,7 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
               <SumInsuredFeatureValue
                 key={quote.sum_insured + quote.product.id + idx}
                 compareQuote={quote}
+                allQuotes={compareQuotes}
               />
             ))}
           </FeatureRow>
@@ -548,7 +550,7 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
   );
 }
 
-function SumInsuredFeatureValue({ compareQuote, ...props }) {
+function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
   const getCompareFeaturesQuery = useGetCompareFeaturesQuery(
     compareQuote?.product.id,
   );
@@ -578,6 +580,12 @@ function SumInsuredFeatureValue({ compareQuote, ...props }) {
         return sumInsureds;
       }, [])
     : [];
+
+  const similarQuotes = allQuotes.filter(
+    quoteValue =>
+      quoteValue.product.name === compareQuote.product.name &&
+      quoteValue.sum_insured.toString() !== compareQuote.sum_insured.toString(),
+  );
 
   const { groupCode } = useParams();
 
@@ -612,11 +620,18 @@ function SumInsuredFeatureValue({ compareQuote, ...props }) {
             color: #647188;
           `}
         >
-          {sumInsureds.map(sumInsured => (
-            <option key={sumInsured} value={sumInsured}>
-              {numToLakh(sumInsured)}
-            </option>
-          ))}
+          {sumInsureds.map(sumInsured => {
+            const index = similarQuotes.findIndex(
+              quoteData => quoteData.sum_insured === sumInsured,
+            );
+            return (
+              index === -1 && (
+                <option key={sumInsured} value={sumInsured}>
+                  {numToLakh(sumInsured)}
+                </option>
+              )
+            );
+          })}
         </select>
       )}
       {isLoading && <CircleLoader animation="border" />}
