@@ -314,10 +314,10 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
           font-size: 0.79rem;
         `}
       >
-        <FilterDataSet
-          name={option.display_name}
-          description={option.description}
-        />
+          <FilterDataSet
+            name={option.display_name}
+            description={option.description}
+          />
         <span
           css={`
             font-size: 1.6rem;
@@ -515,20 +515,22 @@ function MobileModal({ onClose, children }) {
 function FilterDataSet({ name, description, ...props }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const target = useRef(null);
-  useOutsiteClick(target, () => setShowTooltip(false));
+  // useOutsiteClick(target, () => setShowTooltip(false));
 
   const toggleTooltip = () => {
     setShowTooltip(prev => !prev);
   };
   return (
     <OverlayTrigger
-      show={showTooltip}
-      placement="bottom"
+      // show={showTooltip}
+      placement="right"
       overlay={<Tooltip {...props}>{description}</Tooltip>}
     >
-      <div className="d-flex align-items-center" onClick={toggleTooltip}>
-        {name}
-        <IoMdInformationCircleOutline className="mx-1" />
+      <div className="d-flex align-items-center gap-1">
+        {name} 
+      <span>
+        <IoMdInformationCircleOutline />
+      </span>
       </div>
     </OverlayTrigger>
   );

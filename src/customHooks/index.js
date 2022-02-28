@@ -172,7 +172,7 @@ export function useFrontendBoot() {
   }
 
   // return { journeyType, tenantName, data, isLoading, isUninitialized };
-  return { journeyType, tenantName, data };
+  return { journeyType, tenantName, data, insuredMembers: enquiryData?.data?.input?.members, groups: enquiryData?.data?.groups };
 }
 
 export function useFilter() {
