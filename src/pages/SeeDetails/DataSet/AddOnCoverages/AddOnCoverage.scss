@@ -1,0 +1,61 @@
+.addon_plan_details_t_c_c {
+  font-size: 21px !important;
+  color: #000 !important;
+
+  text-align: left;
+  margin: 5px 0 3px;
+  line-height: 25px;
+}
+.plan_table_add_modal_p {
+  text-align: left !important;
+  font-size: 17px !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  color: #8b8b8f !important;
+}
+.btn_addon {
+  display: inline-block;
+  color: black;
+  /* border: 1px solid #c5c5c5; */
+  padding: 10px 5px !important;
+  font-size: 23px !important;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  background: #fff8f9;
+  position: relative;
+  right: 40px;
+  font-weight: 600;
+}
+
+.text-over {
+  display: -webkit-box;
+  max-width: 200px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.text-over:hover {
+  overflow: initial;
+  text-overflow: initial;
+  display: block;
+}
+.rider-card-label {
+  z-index: 0 !important;
+  height: max-content !important;
+
+  border: 2px solid transparent !important;
+
+  &:hover {
+    height: max-content !important;
+    border: 2px solid #f2d8d9 !important;
+  }
+
+  & .btn_addon {
+    &:hover {
+      color: #d68d87 !important;
+    }
+  }
+}

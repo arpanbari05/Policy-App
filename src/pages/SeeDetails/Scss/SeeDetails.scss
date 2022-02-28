@@ -1,0 +1,67 @@
+.see-details {
+  padding: 0 !important;
+  .modal-dialog {
+    min-width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .title_h4 {
+    &_p,
+    & {
+      font-weight: 900;
+      color: #253858;
+    }
+  }
+  .modal-content {
+    height: auto;
+    min-height: 100%;
+    border-radius: 0;
+  }
+
+  &__tab-modal {
+    padding: 8px 20px !important;
+  }
+  &__z-link {
+    display: block !important;
+  }
+  .theme-tab-basic.theme-tab .tabs-menu li a:before {
+    top: 44px;
+  }
+}
+.value__feature {
+  display: contents;
+}
+.inline__header {
+  display: inline-block;
+}
+.ModalBackdrop.show {
+  opacity: 0 !important;
+  z-index: 0 !important;
+}
+
+.feature-offer-box__p {
+  font-size: 14px;
+  line-height: 18px;
+  color: #000000;
+  font-weight: 400;
+}
+.break-on-overflow {
+  word-break: break-all;
+  width: 120%;
+}
+.claimProcessMain__p {
+  text-align: justify;
+  line-height: 18px;
+  color: #000000;
+  font-weight: 400;
+}
+
+.pie__center {
+  color: black;
+  margin: 0 auto;
+  text-align: center;
+  position: absolute;
+  top: 105px;
+  left: 38%;
+}

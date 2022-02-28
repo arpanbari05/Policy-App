@@ -1,0 +1,122 @@
+.terms__wrapper {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: rgba(188, 172, 172, 0.25) 0px -5px 28px;
+  background: #fff;
+  z-index: 111;
+  padding: 9px 0 11px;
+}
+.font_15_p_s {
+  // font-size: 12px !important;
+  margin-bottom: 5px !important;
+}
+.font_sub_p_s{
+  margin-bottom: 20px !important;
+}
+@media (max-width: 767px) {
+  .terms__wrapper {
+    display: none;
+  }
+}
+.summary_proposal_back {
+  // top: 50%;
+  // transform: translateY(-50%);
+  top: 26px;
+}
+.summary_footer_width {
+  width: 90%;
+}
+.summary_proposal_header {
+  padding-top: 18px !important;
+  padding-bottom: 15px !important;
+}
+.termsInner__wrapper {
+  display: flex;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+  padding-left: 20px;
+}
+.btn_p_s_pay_now {
+  &:focus {
+    outline: none !important;
+    box-shadow: none;
+  }
+}
+.card_proposal_summary {
+  position: relative;
+}
+.Iaccept {
+  padding-left: 8px;
+  line-height: 21px;
+  font-size: 15px;
+  color: #000;
+}
+.TermsAndConditions {
+  color: #0a87ff;
+  font-size: 15px;
+  font-weight: 600;
+}
+.product__summary {
+  border: 1px solid #dfdfdf;
+  border-radius: 8px;
+  /* box-shadow: #e2e3ed 0px 6px 12px !important; */
+}
+@media (max-width: 767px) {
+  .font_15_p_s {
+    font-size: 12px !important;
+    margin-bottom: 0px !important;
+  }
+  .font_sub_p_s {
+    font-size: 14px;
+    margin-bottom: 15px !important;
+    word-break: break-all;
+  }
+  .proposal_summary_d_i {
+    font-size: 16px;
+  }
+  .hide-on-mobile {
+    display: none;
+  }
+  .no-padding-mobile {
+    padding: 0 8px;
+  }
+}
+.quotes_compare_div {
+  display: flex;
+  flex-direction: row;
+  width: 70%;
+  align-items: center;
+}
+.quotes_compare_buttons_div {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.btn_p_summary_pay_now {
+  background: #0a87ff !important;
+  border-radius: 10px;
+  padding: 6px 12px;
+}
+
+.btn_p_s_pay_now {
+  background: #0a87ff;
+  color: #fff;
+  font-size: 21px;
+  font-weight: bolder;
+  margin-left: -12px;
+  margin-right: 30px;
+}
+
+.element-tile-two {
+  font-size: 24px;
+  color: #000;
+  text-align: center;
+  // padding-bottom: 25px;
+  // margin-bottom: 20px;
+  /* border-bottom: 1px solid rgba(0,0,0,0.06); */
+  margin-top: 5px;
+  font-weight: 900;
+}

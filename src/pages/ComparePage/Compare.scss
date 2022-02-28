@@ -1,0 +1,322 @@
+.addToCompare__Modal {
+  & .modal-dialog {
+    max-width: 95%;
+  }
+}
+#product-comparison-header {
+  & th {
+    position: sticky;
+    top: 0;
+    box-shadow: inset 0px -6px 6px -6px #e9decd;
+    z-index: 9999;
+  }
+}
+tr {
+  padding: 15 10px !important;
+}
+
+.table-hover>tbody>tr:hover {
+  --bs-table-hover-bg: #fff !important;
+}
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+  border: 0 !important;
+}
+.table thead tr th {
+  width: 26.667%;
+  background-color: #fff;
+
+
+}
+th{
+  padding: 12px 12px !important;
+}
+
+.exclusions__showless {
+  display: none !important;
+}
+.showless__button {
+  display: none;
+  color: #0a87ff;
+}
+.showmore__button {
+  color:#0a87ff;
+}
+#exclusions1:checked {
+  & ~ .exclusions__showmore {
+    display: none !important;
+  }
+  & ~ .showmore__button {
+    display: none !important;
+  }
+  & ~ .exclusions__showless {
+    display: inline-block !important;
+  }
+  & ~ .showless__button {
+    display: inline-block !important;
+  }
+}
+#exclusions2:checked {
+  & ~ .exclusions__showmore {
+    display: none !important;
+  }
+  & ~ .showmore__button {
+    display: none !important;
+  }
+  & ~ .exclusions__showless {
+    display: inline-block !important;
+  }
+  & ~ .showless__button {
+    display: inline-block !important;
+  }
+}
+#exclusions0:checked {
+  & ~ .exclusions__showmore {
+    display: none !important;
+  }
+  & ~ .showmore__button {
+    display: none !important;
+  }
+  & ~ .exclusions__showless {
+    display: inline-block !important;
+  }
+  & ~ .showless__button {
+    display: inline-block !important;
+  }
+}
+
+.exclusions__showmore {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.compare-custom-select {
+  width: 50%;
+  height: inherit;
+
+  display: inline-block;
+  padding: 0px 8px;
+  border-radius: 8px;
+  
+  background-color: #f9f9f9;
+  :hover{
+    background:#f9f9f9 !important;
+  }
+  &.first {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: solid 1px #d0d2df;
+  }
+  &.second {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  & .custom-placeholder {
+    // padding: 10px 12px 2px;
+    border-radius: 8px;
+    position: relative;
+    & span {
+  
+      font-size: 14px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      display: inline-block;
+
+      max-width: 95%;
+      letter-spacing: normal;
+      text-align: left;
+      color: #5d5d5d;
+    }
+    & .arrow-conrtainer {
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    &:hover {
+      background-color: #f9f9f9;
+    }
+  }
+}
+.nohover {
+  &:hover {
+    background-color: #fff !important;
+  }
+}
+.options {
+  height: 150px;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0px;
+  width: 100%;
+  z-index: 1000000;
+  border-radius: 16px;
+  box-shadow: 5px 5px 30px 0 rgba(0, 75, 131, 0.09);
+  background-color: #ffffff;
+  overflow-y: auto;
+
+  &__item {
+    margin: 5px 12px 2px 12px;
+    padding: 8px 13.2px 8px 8.4px;
+    border-radius: 5px;
+    //
+    &.checked {
+      background-color: #eff7ff;
+      
+    }
+    &:hover {
+      background-color: #eff7ff;
+    }
+  }
+}
+.hidden-select {
+  display: none;
+  &:focus {
+    & > .compare-custom-select > .custom-placeholder {
+      background-color: #fff;
+    }
+  }
+}
+.AddtoCompare {
+  &__addButton {
+    background: #f4f3f8;
+    position: relative;
+    height: 66px;
+
+    border-radius: 13px;
+    & p {
+      color: #202026;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    & h4 {
+      font-size: 28px;
+      display: block;
+      color: #000;
+      font-weight: 900;
+    }
+    & .alignCenter {
+      display: flex;
+      align-items: center;
+    }
+  }
+  &__Image {
+    width: 100px;
+  }
+  &__Title {
+    text-align: left;
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 15px;
+  }
+  &__Cell {
+    & .check {
+      content: "\2713";
+      width: 35px;
+      height: 35px;
+      line-height: 34px;
+      border-radius: 100%;
+      border: 2px solid #ffffff;
+      background-color: #de9b9e;
+      z-index: 999;
+      position: relative;
+
+      color: #fff;
+      font-family: "FontAwesome";
+      font-size: 15px;
+    }
+    & .plus {
+      background-color: #9498b5;
+      border-color: #ffffff;
+      cursor: pointer;
+      width: 35px !important;
+      height: 35px;
+      width: 46px;
+      color: white !important;
+      font-size: 19px;
+      position: relative;
+      border-radius: 50px;
+      & .fa-plus {
+        position: absolute;
+        top: 8px;
+        left: 9px;
+      }
+    }
+
+    position: relative;
+    color: #202026;
+    background-color: #fff;
+    font-size: 26px;
+    text-align: center;
+    height: 112px;
+    line-height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 22px;
+    border: 3px solid transparent;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    border-radius: 15px;
+    border: 1px solid #f6f6f9;
+    margin-bottom: 39px;
+    height: 154px;
+  }
+}
+.mobile-view {
+  display: none;
+}
+.plan-container-mobile {
+  width: 100%;
+  box-shadow: 0 3px 6px 0 #dbe1ee;
+  background-color: #ffffff;
+  margin-top: 0px;
+  padding: 5px 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .rider-wrapper {
+    margin-bottom: 5px !important;
+  }
+  .table-wrapper {
+    margin-top: 0px !important;
+  }
+  .mobile-view {
+    display: block;
+  }
+  .desktop-header {
+    display: none;
+  }
+  .compare_t_bor_l {
+    display: none !important;
+  }
+  .agn-our-pricing.mgt-5 {
+    margin-top: 0px !important;
+  }
+}
+select { 
+  border: none;
+}
+
+@media (max-width: 1200px) {
+  .table thead tr th {
+    width: 20.667%;
+ 
+}
+}

@@ -1,0 +1,506 @@
+import { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
+import { FaArrowCircleLeft, FaChevronLeft, FaTimes } from "react-icons/fa";
+import { FiArrowRight } from "react-icons/fi";
+import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
+import { Link, useHistory } from "react-router-dom";
+import styled from "styled-components/macro";
+import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
+import {
+  useQuote,
+  useTheme,
+  useToggle,
+  useUrlEnquiry,
+  useMembers,
+  useCart,
+} from "../customHooks";
+import {
+  amount,
+  calculateTotalPremium,
+  getDisplayPremium,
+} from "../utils/helper";
+import CartSummaryModal from "./CartSummaryModal";
+import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
+import FilterSkeletonLoader from "./Common/filter-skeleton-loader/FilterSkeletonLoader";
+import * as mq from "../utils/mediaQueries";
+import { useSelector } from "react-redux";
+
+export function ScreenTopLoader({ progress, show }) {
+  const { colors } = useTheme();
+
+  if (!show) return null;
+
+  return (
+    <div
+      className="position-fixed"
+      css={`
+        top: 0;
+        height: 0.2em;
+        background-color: ${colors.primary_color};
+        width: ${progress}%;
+        transition: 0.3s ease-in;
+        z-index: 99;
+      `}
+    />
+  );
+}
+
+export function LoadEnquiries({ children }) {
+  const { isLoading, isFetching, isUninitialized, isError, refetch } =
+    useGetEnquiriesQuery();
+
+  if (isError)
+    return (
+      <Page>
+        <p>Something went wrong while fetching enquiry details!</p>
+        <button onClick={refetch}>Retry</button>ƒ
+      </Page>
+    );
+
+  if (isLoading || isFetching || isUninitialized) return <FullScreenLoader />;
+
+  return children;
+}
+
+export function Page({
+  children,
+  loader,
+  noNavbarForMobile = false,
+  backButton: BackButton = <></>,
+  ...props
+}) {
+  return (
+    <div {...props}>
+      {loader ? loader : null}
+      <Import
+        mobile={() =>
+          import("./Navbar").then(res => ({
+            default: noNavbarForMobile ? res.None : res.NavbarMobile,
+          }))
+        }
+        desktop={() => import("./Navbar")}
+      >
+        {NavBar => <NavBar backButton={BackButton} />}
+      </Import>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+export function FullScreenLoader() {
+  return (
+    <div className="pb-3" aria-label="loading">
+      {/* <Navbar /> */}
+      <div
+        style={{
+          width: "80%",
+          margin: "20px auto",
+        }}
+      >
+        <FilterSkeletonLoader />
+
+        <div className="d-flex justify-content-between">
+          <div
+            style={{
+              width: "60%",
+              margin: "20px",
+            }}
+          >
+            <CardSkeletonLoader noOfCards={3} />
+          </div>
+          <div
+            style={{
+              width: "32%",
+              margin: "20px",
+            }}
+          >
+            <CardSkeletonLoader noOfCards={1} />
+          </div>
+        </div>
+        <div
+          style={{
+            width: "60%",
+            margin: "20px",
+          }}
+        >
+          <CardSkeletonLoader noOfCards={3} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Button({
+  children,
+  loader = false,
+  disabled = false,
+  arrow = false,
+  css,
+  onClick,
+  ...props
+}) {
+  const { colors } = useTheme();
+  const handleClick = evt => {
+    if (loader || disabled) return;
+    onClick && onClick(evt);
+  };
+  return (
+    <button
+      css={`
+        background: ${colors.primary_color};
+        border: none;
+        color: #fff;
+        border-radius: 2px;
+        height: 2.8em;
+        min-width: max-content;
+        padding: 0 1em;
+        cursor: pointer;
+        font-weight: 900;
+
+        &:disabled {
+          background-color: ${colors.secondary_shade};
+          color: #666;
+          cursor: default;
+        }
+
+        ${css};
+      `}
+      disabled={loader || disabled}
+      onClick={handleClick}
+      {...props}
+    >
+      {children}
+      {loader ? (
+        <CircleLoader animation="border" />
+      ) : (
+        arrow && (
+          <FiArrowRight
+            css={`
+              font-size: 1.27em;
+              margin-left: 0.27em;
+            `}
+          />
+        )
+      )}
+    </button>
+  );
+}
+
+export const CircleLoader = styled(Spinner)`
+  height: 1.37em;
+  width: 1.37em;
+  font-size: 0.67em;
+  margin-left: 0.67em;
+`;
+
+export const MemberText = styled.span`
+  text-transform: capitalize;
+`;
+
+export function MembersList({ members = [], ...props }) {
+  const displayMembers = members.map(member => member.display_name).join(", ");
+  return <MemberText {...props}>{displayMembers}</MemberText>;
+}
+
+export function LoadCart({ children }) {
+  const { isLoading, isUninitialized } = useGetCartQuery();
+
+  if (isLoading || isUninitialized) return <FullScreenLoader />;
+  return children;
+}
+
+export function Counter({
+  min = 1,
+  max = 4,
+  count = min,
+  onIncrement,
+  onDecrement,
+  onChange,
+  member,
+  ...props
+}) {
+  const handleDecrement = () => {
+    const newCount = count - 1;
+    if (newCount >= min) {
+      onIncrement && onDecrement();
+    } else {
+      onChange({
+        ...member,
+        isSelected: false,
+        age: false,
+      });
+    }
+  };
+
+  const handleIncrement = () => {
+    const newCount = count + 1;
+    if (newCount <= max) onDecrement && onIncrement(newCount);
+  };
+
+  return (
+    <div
+      className="d-flex align-items-center justify-content-between"
+      css={`
+        color: lightgrey;
+        font-size: 1.2rem;
+        gap: 0.3125em;
+        & button {
+          padding: 0;
+          background: none;
+          border: none;
+          color: inherit;
+          line-height: 1;
+        }
+      `}
+      {...props}
+    >
+      <button type="button" aria-label="increment" onClick={handleDecrement}>
+        <IoRemoveCircle />
+      </button>
+      <span
+        aria-label="count"
+        css={`
+          color: #6b7789;
+          font-size: 0.89rem;
+        `}
+      >
+        {count}
+      </span>
+      <button type="button" aria-label="decrement" onClick={handleIncrement}>
+        <IoAddCircle />
+      </button>
+    </div>
+  );
+}
+
+export function ErrorFallback({ error, resetErrorBoundary }) {
+  return (
+    <Page>
+      <div role={"alert"}>
+        <p>Something went wrong</p>
+        <pre>{error.message}</pre>
+        <button onClick={resetErrorBoundary}>Reload</button>
+      </div>
+    </Page>
+  );
+}
+
+export function GoBackButton({ children, ...props }) {
+  return (
+    <button
+      className="btn"
+      type="button"
+      css={`
+        width: max-content;
+        padding: 0 !important;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        color: var(--abc-red);
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+      `}
+      {...props}
+    >
+      <div
+        className="d-flex justify-content-center align-items-center"
+        css={`
+          background: #f1f4f8;
+          width: 45px;
+          margin-right: 20px;
+          border-radius: 100%;
+          height: 45px;
+          color: #707b8b;
+        `}
+      >
+        <FaChevronLeft />
+      </div>
+      <span
+        css={`
+          color: #3b4c69;
+          font-weight: 600;
+        `}
+      >
+        {children}
+      </span>
+    </button>
+  );
+}
+
+export function CloseButton({ onClick, css = "", className = "", ...props }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`position-absolute ${className}`}
+      css={`
+        top: 1em;
+        right: 1em;
+        line-height: 1;
+        ${css};
+      `}
+      {...props}
+    >
+      <FaTimes />
+    </button>
+  );
+}
+
+export function CircleCloseButton({
+  placeOnCorner = false,
+  css = ``,
+  className = ``,
+  ...props
+}) {
+  return (
+    <button
+      className={`d-flex align-items-center justify-content-center shadow rounded-circle ${className} ${
+        placeOnCorner ? "position-absolute" : ""
+      }`}
+      css={`
+        height: 1.67em;
+        width: 1.67em;
+        background-color: #fff;
+        z-index: 120;
+        ${placeOnCorner
+          ? `top: 0; right: 0; transform: translate(30%, -30%);`
+          : ""}
+        ${mq.mobile} {
+          font-size: 0.79rem;
+        }
+        ${css};
+      `}
+      {...props}
+    >
+      <FaTimes />
+    </button>
+  );
+}
+
+export function useGotoProductDetailsPage() {
+  const history = useHistory();
+  const { data } = useGetCartQuery();
+  const { enquiryId } = useUrlEnquiry();
+
+  function gotoProductPage() {
+    const groupCodes = data.data.map(cartEntry => cartEntry.group.id);
+
+    const firstGroupWithQuote = Math.min(...groupCodes);
+
+    history.push({
+      pathname: `/productdetails/${firstGroupWithQuote}`,
+      search: `enquiryId=${enquiryId}`,
+    });
+  }
+
+  return { gotoProductPage };
+}
+
+export function PremiumButton({ quote, displayTenure = true, ...props }) {
+  const history = useHistory();
+
+  const cartSummaryModal = useToggle(false);
+
+  const {
+    buyQuote,
+    queryState: { isLoading },
+  } = useQuote();
+
+  const handleBuyClick = () => {
+    const { mandatory_riders } = quote;
+    const riders = quote.riders || [];
+
+    buyQuote(quote, [...mandatory_riders, ...riders])
+      .then(cartSummaryModal.on)
+      .catch(() => alert("Something went wrong while buying the quote!"));
+  };
+
+  // const { data } = useGetCartQuery();
+
+  const { enquiryId } = useUrlEnquiry();
+  const { memberGroups } = useSelector(state => state.greetingPage);
+  const { policyTypes } = useSelector(state => state.quotePage);
+  // const { cart } = useSelector(state => state);
+  const { cartEntries } = useCart();
+
+  console.log({ cartEntries });
+
+  function gotoProductPage() {
+    // const groupCodes = data.data.map(cartEntry => cartEntry.group.id);
+    const groupCodes = Object.keys(policyTypes).map(key => parseInt(key));
+    console.log(groupCodes);
+    const firstGroupWithQuote = Math.min(...groupCodes);
+
+    history.push({
+      pathname: `/productdetails/${firstGroupWithQuote}`,
+      search: `enquiryId=${enquiryId}`,
+    });
+  }
+
+  const handleContinueClick = () => {
+    gotoProductPage();
+  };
+
+  const netPremium = calculateTotalPremium({
+    total_premium: quote.total_premium,
+    health_riders: quote.riders || quote.health_riders,
+  });
+
+  return (
+    <div className="w-100">
+      <Button
+        className="w-100 rounded"
+        onClick={handleBuyClick}
+        loader={isLoading}
+        {...props}
+      >
+        {displayTenure
+          ? getDisplayPremium({
+              total_premium: netPremium,
+              tenure: quote.tenure,
+            })
+          : amount(netPremium)}
+      </Button>
+      {cartSummaryModal.isOn && (
+        <CartSummaryModal
+          onContine={handleContinueClick}
+          onClose={cartSummaryModal.off}
+        />
+      )}
+    </div>
+  );
+}
+
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+export function Import({ mobile, desktop, children }) {
+  const [Component, setComponent] = useState(null);
+
+  useEffect(() => {
+    const importCallback = isMobile ? mobile : desktop;
+
+    if (importCallback) {
+      importCallback().then(componentDetails => {
+        setComponent(componentDetails);
+      });
+    }
+  }, [desktop, mobile]);
+
+  return children(Component ? Component.default : () => null);
+}
+
+export function BackButtonMobile({ path, css = "", ...props }) {
+  const { colors } = useTheme();
+  return (
+    <Link
+      {...props}
+      css={`
+        color: ${colors.primary_color};
+        font-size: 1.29em;
+        ${css};
+      `}
+      to={path}
+    >
+      <FaArrowCircleLeft />
+    </Link>
+  );
+}

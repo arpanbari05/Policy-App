@@ -1,0 +1,153 @@
+.padding-none {
+  padding: 0px !important;
+}
+
+.margin_top_14 {
+  margin-top: 14px;
+  margin-left: 0px;
+  margin-right: 0px;
+  flex-flow: column;
+}
+.revised-premium {
+  text-decoration: line-through;
+  &-title {
+    color: #1f874c !important;
+  }
+}
+.font_grey {
+  color: #57667e;
+  
+}
+.color_span_total_revise {
+  color: #343434;
+  font-weight: 600;
+  font-size: 14px;
+  
+}
+.color_span_total_blck_medical {
+  color: #0f0f0f;
+  font-weight: 900;
+  font-size: 20px;
+  
+}
+.btn_continue_medi_revise_pop {
+  background: #ce1933;
+  color: #fff;
+  width: 91%;
+  padding: 12px;
+  margin-top: 1px;
+  border-radius: 9px;
+}
+.rider-box_product_pro_medical_box {
+  border-radius: 8px;
+  background-color: #f9fafb;
+  padding: 7px 3px 7px 17px;
+  margin: 10px 0 0;
+  justify-content: space-between;
+}
+.product_summary {
+  &__title {
+    font-size: 20px;
+    line-height: 28px;
+    margin-bottom: 12px;
+    font-weight: 900;
+   
+    background: linear-gradient(
+      90deg, rgb(239, 247, 255) 0%, rgb(255, 255, 255) 100%);
+          color: rgb(10, 135, 255);
+    padding: 10px;
+    width: 100%;
+    margin: 0 -2px;
+    border-radius: 8px;
+
+  }
+}
+.customClassModalDialog {
+  & > div {
+    max-width: 590px;
+  }
+}
+.rider-box_product_pro_medical {
+  border-radius: 8px;
+  color:#505f79;
+  font-size: 10px;
+  // border: 1px solid #dce2ec;
+  background-color: #fff;
+  padding: 10px 0;
+  margin: 10px 0;
+  margin-top: -5px;
+  justify-content: space-between;
+}
+.paln_name_t_product_pro_medical {
+  margin-left: -78px;
+  margin-top: 6px;
+  color: #000;
+  font-size: 17px;
+ 
+  display: flex;
+}
+.float_left_addon_c {
+  float: left;
+  margin: -26px 27px;
+}
+.logo_add_review {
+  width: 85px;
+  margin-left: 11px;
+  margin-top: -26px;
+  /* width: 48px; */
+  border-radius: 51px;
+}
+.img_top_m_custom_medical {
+  margin-top: -4px;
+  width: 50px;
+  // margin-left: -13px;
+}
+.p_cover_medical_pop {
+  // color: #0a87ff;
+  // font-weight: 900;
+  font-size: 12px;
+  float: left;
+  // padding-left: 8px;
+  // margin-top: 5px;
+  margin-bottom: 2px;
+}
+.p_cover_medical_pop_span {
+  color: #000;
+  // top: -7px !important;
+  font-weight: 600;
+  position: relative;
+  font-size: 11px;
+}
+
+.display_in_m_medical {
+  display: inline-block;
+  margin: 0 8px 0px -3px;
+}
+.font_weight_normal_mediacl {
+  font-weight: normal !important;
+  color: #000;
+  font-size: 15px;
+
+}
+.bottom_addon_cover_medical {
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  position: absolute;
+  border-radius: 50px;
+  width: 180px;
+  left: 50%;
+    transform: translate(-50%, 0);
+  padding: 8px 12px;
+  bottom: -18px;
+  z-index: 111111;
+  color: #0a87ff;
+  font-size: 16px;
+  background: #fff;
+}
+@media only screen and (max-width: 767px) {
+  .hide-mobile {
+    display: none;
+  }
+  .no-padding-mobile {
+    padding: 0 !important;
+  }
+}

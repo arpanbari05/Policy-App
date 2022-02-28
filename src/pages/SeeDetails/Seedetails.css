@@ -1,0 +1,19 @@
+.hide {
+  @media (max: width 767px;) {
+    display: none;
+  }
+}
+
+.single-feature-box {
+  margin-top: 103px;
+}
+
+.text_red_title {
+  color: #0a87ff;
+}
+.span_square_red {
+  background-color: #0a87ff;
+}
+.span_square_pink {
+  background-color: #eaeef2;
+}

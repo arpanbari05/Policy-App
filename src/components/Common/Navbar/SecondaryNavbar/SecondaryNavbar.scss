@@ -1,0 +1,24 @@
+.secondaryNavbar {
+  background: #d68d87;
+  height: 44px;
+  display: flex;
+  align-items: center;
+
+  &__header {
+    color: #fff;
+    font-size: 26px !important;
+    text-transform: uppercase;
+    font-weight: 700;
+
+    // padding-left: 3.7%;
+    padding-left: 39px;
+    // margin-top: 6px;
+  }
+  &__infoList {
+    & li {
+      display: inline-block;
+      line-height: 28px;
+      padding: 0 4vw;
+    }
+  }
+}

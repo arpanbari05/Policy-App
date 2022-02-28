@@ -1,0 +1,38 @@
+.featureExclusion ul li:before {
+  content: "\f103";
+  margin-top: 5px;
+  font-family: "Flaticon";
+  position: absolute;
+  line-height: 30px;
+  font-size: 20px;
+  font-weight: 600;
+  left: 0;
+  top: 0;
+  color: #f7a600;
+}
+
+.featureExclusion {
+  margin: 10px 20px;
+}
+.featureExclusion > li {
+  background-color: "yellow";
+}
+.featureNotCovered {
+  font-size: 14px;
+
+  line-height: 42px;
+  color: #000;
+  /* width: fit-content; */
+  position: relative;
+  padding-left: 35px;
+}
+.featureNotCovered:hover {
+  font-size: 14px;
+  line-height: 42px;
+  color: #000;
+  position: relative;
+  padding-left: 35px;
+  padding: 3px 13px 0 33px;
+  background: #de9b9e29;
+  border-radius: 8px;
+}
