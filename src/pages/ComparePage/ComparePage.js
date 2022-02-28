@@ -77,7 +77,7 @@ function ComparePage() {
                 font-weight: 900;
               `}
             >
-              Product Comparision
+              Product Comparison
             </h1>
             <ShowDifference
               onChange={showDifferenceToggle.toggle}
