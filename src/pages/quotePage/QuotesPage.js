@@ -5,7 +5,6 @@ import useUpdateFilters from "./components/filters/useUpdateFilters";
 import LowerModifier from "./components/LowerModifier";
 import Quotes from "./components/Quotes";
 import UpperModifier from "./components/UpperModifier";
-import "styled-components/macro";
 import { useMembers, useTheme } from "../../customHooks";
 import { useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
@@ -18,6 +17,7 @@ import { QuotesLoader } from "./components";
 import TalkToUsModal from "../../components/Common/Modal/TalkToUsModal";
 import { useFrontendBoot } from "../../customHooks/index";
 import { useGetEnquiriesQuery } from "../../api/api";
+import "styled-components/macro";
 
 function QuotesPage() {
   const { colors } = useTheme();

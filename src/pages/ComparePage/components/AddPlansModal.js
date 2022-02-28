@@ -6,6 +6,7 @@ import "styled-components/macro";
 import { Button, CircleCloseButton, CircleLoader } from "../../../components";
 import {
   useCompanies,
+  useFrontendBoot,
   useGetQuotes,
   useQuoteCard,
   useQuotesCompare,
@@ -150,19 +151,16 @@ function Quotes({ compareList, ...props }) {
 
   return (
     <div
-      className="px-3 pb-3 d-flex flex-wrap"
+      className="px-3 pb-3"
       css={`
-        gap: 1em;
+        gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
         & > div {
-          flex: 1;
-          max-width: calc(50% - 0.5em);
         }
 
         ${mq.mobile} {
-          flex-direction: column;
-          & > div {
-            max-width: 100%;
-          }
+          grid-template-columns: repeat(2, 1fr);
         }
       `}
       {...props}
@@ -201,6 +199,7 @@ function QuoteCard({
   compare: { checkFn, onChange } = {},
   ...props
 }) {
+  const { journeyType } = useFrontendBoot();
   const { colors } = useTheme();
   const { getCompanyLogo } = useCompanies();
 
@@ -296,11 +295,13 @@ function QuoteCard({
               width: 10em;
             `}
             value={product.id}
-            onChange={evt =>
+            onChange={evt => {
               setProduct(
-                products.find(product => product.id === evt.target.value),
-              )
-            }
+                products.find(
+                  productData => productData.id.toString() === evt.target.value,
+                ),
+              );
+            }}
           >
             {products.map(product => (
               <option key={product.name} value={product.id}>
@@ -309,18 +310,20 @@ function QuoteCard({
             ))}
           </select>
         </QuoteCardOption>
-        <QuoteCardOption title="Deductible:">
-          <select
-            value={deductible}
-            onChange={evt => setDeductible(parseInt(evt.target.value))}
-          >
-            {deductibles.map(deductible => (
-              <option key={deductible} value={deductible}>
-                {deductible}
-              </option>
-            ))}
-          </select>
-        </QuoteCardOption>
+        {journeyType === "top_up" && (
+          <QuoteCardOption title="Deductible:">
+            <select
+              value={deductible}
+              onChange={evt => setDeductible(parseInt(evt.target.value))}
+            >
+              {deductibles.map(deductible => (
+                <option key={deductible} value={deductible}>
+                  {deductible}
+                </option>
+              ))}
+            </select>
+          </QuoteCardOption>
+        )}
         <QuoteCardOption title="Sum Insured:">
           <select
             value={sumInsured}

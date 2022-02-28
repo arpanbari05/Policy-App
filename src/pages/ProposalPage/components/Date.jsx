@@ -9,7 +9,7 @@ const DateComp = ({
   label,
   placeholder,
   type,
-  required,
+  checkValidation,
   onChange,
   error,
   onBlur,
@@ -70,7 +70,7 @@ const DateComp = ({
               )
             : ""
         }
-        placeholderText={placeholder}
+        placeholderText={checkValidation?.required && placeholder ? `${placeholder}*` : placeholder || ""}
         onChange={date => {
           onChange({ target: { value: moment(date).format("DD-MM-YYYY") } });
         }}

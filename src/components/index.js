@@ -6,7 +6,14 @@ import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
-import { useQuote, useTheme, useToggle, useUrlEnquiry, useMembers } from "../customHooks";
+import {
+  useQuote,
+  useTheme,
+  useToggle,
+  useUrlEnquiry,
+  useMembers,
+  useCart,
+} from "../customHooks";
 import {
   amount,
   calculateTotalPremium,
@@ -410,17 +417,14 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
   // const { data } = useGetCartQuery();
 
   const { enquiryId } = useUrlEnquiry();
-  const { memberGroups } = useSelector(state => state.greetingPage);
-  const { policyTypes } = useSelector((state) => state.quotePage);
-  const { cart } = useSelector(state => state);
-  console.log(cart);
+  const { cartEntries } = useCart();
+
+  console.log({ cartEntries });
 
   function gotoProductPage() {
-    // const groupCodes = data.data.map(cartEntry => cartEntry.group.id);
-    const groupCodes = Object.keys(policyTypes).map(key => parseInt(key));
-    console.log(groupCodes);
+    const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
+    // const groupCodes = Object.keys(policyTypes).map(key => parseInt(key));
     const firstGroupWithQuote = Math.min(...groupCodes);
-
 
     history.push({
       pathname: `/productdetails/${firstGroupWithQuote}`,

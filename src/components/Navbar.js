@@ -23,7 +23,6 @@ import {
   setPolicyTypes,
   setPolicyType,
   setIsOnProductDetails,
-  setShouldRedirectToQuotes,
 } from "../pages/quotePage/quote.slice";
 import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
@@ -43,9 +42,6 @@ const Navbar = () => {
   const history = useHistory();
 
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
-  const { journeyType } = useFrontendBoot();
-
   const isRootRoute = useRouteMatch({
     path: ["/", "/input/basic-details"],
     exact: true,
@@ -63,7 +59,9 @@ const Navbar = () => {
 
   const { groupCode } = useParams();
 
-  const { getPreviousGroup } = useMembers();
+  const { getPreviousGroup, getLastGroup } = useMembers();
+
+  // const lastGroup = getLastGroup();
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
@@ -131,9 +129,7 @@ const Navbar = () => {
                     switch (location.pathname) {
                       case `/productdetails/${groupCode}`:
                         const getLink = () => {
-                          console.log(prevoiusGroup);
                           if (!prevoiusGroup) {
-                            console.log("In prev");
                             return getUrlWithEnquirySearch(
                               `/quotes/${groupCode}`,
                             );
@@ -142,13 +138,17 @@ const Navbar = () => {
                             `/productdetails/${prevoiusGroup.id}`,
                           );
                         };
-                        dispatch(setShouldRedirectToQuotes(true));
                         history.replace(getLink());
                         setIsOnProductDetails(true);
                         break;
 
                       case "/proposal":
                         history.goBack();
+                        // history.replace(
+                        //   getUrlWithEnquirySearch(
+                        //     `/productdetails/${lastGroup.id}`,
+                        //   ),
+                        // );
                         break;
 
                       case "/proposal_summary":
@@ -180,7 +180,6 @@ const Navbar = () => {
                 `}
               />
             </Link>
-            {console.log("location.pathname", location.pathname)}
             {!location.pathname.startsWith("/input") && trace_id && (
               <div
                 css={`
@@ -285,8 +284,13 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
         <div
           className="d-flex align-items-center justify-content-between py-2"
           css={`
+            font-size: 10px;
             border-top: 1px solid #aaa;
             border-bottom: 1px solid #aaa;
+
+            @media (max-width: 395px) {
+              font-size: 9px !important;
+            }
           `}
         >
           <Members />
@@ -318,7 +322,11 @@ export function Members() {
     <div
       className="d-flex"
       css={`
-        font-size: 0.79rem;
+        font-size: 10px !important;
+
+        @media (max-width: 395px) {
+          font-size: 9px !important;
+        }
       `}
     >
       {members.map(member => (
@@ -346,6 +354,10 @@ function Info({ label, value, ...props }) {
         gap: 0.67em;
         &:not(:last-child) {
           border-right: 1px solid ${colors.secondary_shade};
+        }
+
+        @media (max-width: 410px) {
+          gap: 0.30em;
         }
       `}
       {...props}

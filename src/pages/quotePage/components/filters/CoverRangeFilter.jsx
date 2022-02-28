@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styled from "styled-components";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import "styled-components/macro";
@@ -152,6 +152,9 @@ function CoverFilterModal({ onClose, ...props }) {
 }
 
 function CoverOption({ cover, checked, onChange, ...props }) {
+
+  const inputRef = useRef();
+
   const handleChange = evt => {
     if (evt.target.checked) onChange && onChange(cover);
   };
@@ -163,11 +166,15 @@ function CoverOption({ cover, checked, onChange, ...props }) {
       `}
       className="option d-flex align-items-center justify-content-between"
       {...props}
+      onClick={() => {
+        inputRef.current.click()
+      }}
     >
       <label htmlFor={cover.code}>{cover.display_name}</label>
       <input
         type="radio"
         id={cover.code}
+        ref={inputRef}
         checked={checked}
         name="selectCover"
         onChange={handleChange}
