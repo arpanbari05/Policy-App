@@ -22,7 +22,11 @@ function App() {
         <Redirect from="/" to="/input/basic-details" />
       </Route>
       <Route exact path="/input/:currentForm" component={InputPage} />
-      <Route exact path="/quotes/:groupCode" component={QuotesPage} />
+      <Route exact path="/quotes/:groupCode">
+        <LoadCart>
+          <QuotesPage />
+        </LoadCart>
+      </Route>
       <Route exact path="/productdetails/:groupCode">
         <LoadCart>
           <ProductDetails />
