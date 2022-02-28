@@ -31,6 +31,7 @@ import { getTermConditions } from "../ProposalPage/serviceApi";
 import { useFrontendBoot, useTheme, useUrlEnquiry } from "../../customHooks";
 import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
+import {Link} from "react-router-dom"
 
 const ProposalSummary = () => {
   const history = useHistory();
@@ -249,17 +250,20 @@ const ProposalSummary = () => {
           background: ${PrimaryColor};
         `}
       >
-        <MobileHeaderText
-          onClick={() => {
-            history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
-          }}
+        <Link
+        to={getUrlWithEnquirySearch("/proposal")}
+          // onClick={() => {
+          //   history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
+          // }}
         >
+        <MobileHeaderText>
           <i
             class="fa fa-arrow-circle-left"
             style={{ marginRight: "10px", cursor: "pointer" }}
           ></i>{" "}
           Review
-        </MobileHeaderText>
+          </MobileHeaderText>
+        </Link>
       </MobileHeader>
 
       <div className="container-fluid mt-20 ">

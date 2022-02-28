@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SecureLS from "secure-ls";
 import styled from "styled-components/macro";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams, Link } from "react-router-dom";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
@@ -31,7 +31,7 @@ import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
 import Card from "../../components/Card";
 import { Col, Container, Row } from "react-bootstrap";
 import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
-import { useTheme } from "../../customHooks";
+import { useTheme,useUrlEnquiry, useCart } from "../../customHooks";
 import { Page } from "../../components";
 
 /* ===============================test================================= */
@@ -39,15 +39,23 @@ import { Page } from "../../components";
 /* ===============================test================================= */
 const ProposalPage = () => {
   const history = useHistory();
+  const [memberGroups,setMemberGroups] = useState([]);
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
   const [active, setActive] = useState(0);
   const [proposerDactive, setProposerDactive] = useState(true);
   const { currentSchema } = useSelector(state => state.schema);
   const queryStrings = useUrlQuery();
   const enquiryId = queryStrings.get("enquiryId");
   //const currentSchema = starSchema;
-  const cart = useSelector(state => state.cart);
+  let {cartEntries} = useCart();
+  
+  
   const [listOfForms, setListOfForms] = useState([]);
+  
+  // const membersGroup = Object.keys(cart).filter(key => parseInt(key) !== NaN);
+  
 
+  console.log("sfjnvl", useCart());
   const { showErrorPopup } = useSelector(({ proposalPage }) => proposalPage);
 
   useEffect(() => {
@@ -58,7 +66,7 @@ const ProposalPage = () => {
   const { activeIndex, proposalData } = useSelector(
     state => state.proposalPage,
   );
-  console.log("wvbiwrvbwhxxx", proposalData);
+  console.log("wvbiwrvbwhxxx",cartEntries.map(cartItem => cartItem.group.id));
 
   const {
     colors: { primary_color, primary_shade },
@@ -82,6 +90,7 @@ const ProposalPage = () => {
     // if (!Object.keys(proposalData).length) 
     dispatch(getProposalData());
     dispatch(getCart());
+    setMemberGroups(cartEntries.map(cartItem => cartItem.group.id));
   }, []);
   useEffect(() => {
     setActive(activeIndex);
@@ -350,7 +359,20 @@ const ProposalPage = () => {
           background: ${PrimaryColor};
         `}
       >
-        <MobileHeaderText>Proposal Form </MobileHeaderText>
+        <Link
+        to={getUrlWithEnquirySearch(`/productdetails/${Math.max(...memberGroups)}`)}
+          // onClick={() => {
+          //   history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
+          // }}
+        >
+        <MobileHeaderText>
+          <i
+            class="fa fa-arrow-circle-left"
+            style={{ marginRight: "10px", cursor: "pointer" }}
+          ></i>{" "}
+          Proposal Form
+          </MobileHeaderText>
+        </Link>
       </MobileHeader>
       <div
         className="container-fluid mt-20 pb-100"
