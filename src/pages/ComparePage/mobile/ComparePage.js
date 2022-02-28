@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CircleLoader } from "../../../components";
 import {
@@ -35,8 +36,6 @@ import {
   WAITING_PERIOD,
   WHATS_NOT_COVERED,
 } from "../data";
-import { useEffect } from "react";
-import { useState } from "react";
 import _ from "lodash";
 import AddPlansModal from "../components/AddPlansModal";
 
@@ -47,9 +46,20 @@ function findQuoteBySumInsured(quotes, sum_insured) {
 }
 
 function ComparePage() {
+  const [selectedSectionView, setSelectedSectionView] = useState({});
+  const [isSelectedSectionView, setIsSelectedSectionView] = useState(false);
   const { colors } = useTheme();
   const { data, isLoading, isUninitialized, isError } =
     useGetCompareQuotesQuery();
+
+  useEffect(() => {
+    const value = Object.keys(selectedSectionView).find(
+      value => selectedSectionView[`${value}`] === true,
+    );
+    if (!value) {
+      setIsSelectedSectionView(false);
+    }
+  }, [selectedSectionView]);
 
   const { groupCode } = useParams();
 
@@ -127,29 +137,87 @@ function ComparePage() {
         ))}
       </section>
 
-      <SumInsuredSection quotes={quotes} />
+      <SumInsuredSection
+        quotes={quotes}
+        select={{
+          isSelectedSectionView,
+          setIsSelectedSectionView,
+          selectedSectionView,
+          setSelectedSectionView,
+        }}
+      />
 
-      <FeatureSection title={"Tenure"} description={DESCRIPTIONS["tenure"]}>
-        <FeatureRow>
-          {quotes.map((quote, idx) => (
-            <FeatureValue key={idx}>
-              <select value={quote.tenure} onChange={alert}>
-                <option value={quote.tenure}>
-                  {tenureInWords(quote.tenure)}
-                </option>
-              </select>
-            </FeatureValue>
-          ))}
-        </FeatureRow>
-      </FeatureSection>
+      {!isSelectedSectionView ? (
+        <FeatureSection
+          title={"Tenure"}
+          description={DESCRIPTIONS["tenure"]}
+          select={{
+            isSelectedSectionView,
+            setIsSelectedSectionView,
+            selectedSectionView,
+            setSelectedSectionView,
+          }}
+        >
+          <FeatureRow>
+            {quotes.map((quote, idx) => (
+              <FeatureValue key={idx}>
+                <select value={quote.tenure} onChange={alert}>
+                  <option value={quote.tenure}>
+                    {tenureInWords(quote.tenure)}
+                  </option>
+                </select>
+              </FeatureValue>
+            ))}
+          </FeatureRow>
+        </FeatureSection>
+      ) : selectedSectionView["Tenure"] ? (
+        <FeatureSection
+          title={"Tenure"}
+          description={DESCRIPTIONS["tenure"]}
+          select={{
+            isSelectedSectionView,
+            setIsSelectedSectionView,
+            selectedSectionView,
+            setSelectedSectionView,
+          }}
+        >
+          <FeatureRow>
+            {quotes.map((quote, idx) => (
+              <FeatureValue key={idx}>
+                <select value={quote.tenure} onChange={alert}>
+                  <option value={quote.tenure}>
+                    {tenureInWords(quote.tenure)}
+                  </option>
+                </select>
+              </FeatureValue>
+            ))}
+          </FeatureRow>
+        </FeatureSection>
+      ) : (
+        <></>
+      )}
 
-      <UniqueFeaturesSection quotes={quotes} />
+      <UniqueFeaturesSection
+        quotes={quotes}
+        select={{
+          isSelectedSectionView,
+          setIsSelectedSectionView,
+          selectedSectionView,
+          setSelectedSectionView,
+        }}
+      />
 
       <CompareFeatureSection
         sectionTitle="Basic Features"
         features={BASIC_FEATURES}
         quotes={quotes}
         difference={differenceToggle.isOn}
+        select={{
+          isSelectedSectionView,
+          setIsSelectedSectionView,
+          selectedSectionView,
+          setSelectedSectionView,
+        }}
       />
 
       <CompareFeatureSection
@@ -157,15 +225,36 @@ function ComparePage() {
         features={SPECIAL_FEATURES}
         quotes={quotes}
         difference={differenceToggle.isOn}
+        select={{
+          isSelectedSectionView,
+          setIsSelectedSectionView,
+          selectedSectionView,
+          setSelectedSectionView,
+        }}
       />
 
-      <OptionalCoversSection quotes={quotes} onChange={handleRidersChange} />
+      <OptionalCoversSection
+        quotes={quotes}
+        onChange={handleRidersChange}
+        select={{
+          isSelectedSectionView,
+          setIsSelectedSectionView,
+          selectedSectionView,
+          setSelectedSectionView,
+        }}
+      />
 
       <CompareFeatureSection
         sectionTitle="Waiting Period"
         features={WAITING_PERIOD}
         quotes={quotes}
         difference={differenceToggle.isOn}
+        select={{
+          isSelectedSectionView,
+          setIsSelectedSectionView,
+          selectedSectionView,
+          setSelectedSectionView,
+        }}
       />
 
       <CompareFeatureSection
@@ -173,6 +262,12 @@ function ComparePage() {
         features={WHATS_NOT_COVERED}
         quotes={quotes}
         difference={differenceToggle.isOn}
+        select={{
+          isSelectedSectionView,
+          setIsSelectedSectionView,
+          selectedSectionView,
+          setSelectedSectionView,
+        }}
       />
     </div>
   );
@@ -182,6 +277,7 @@ function CompareFeatureSection({
   sectionTitle = "",
   features = [],
   quotes,
+  select,
   difference = true,
 }) {
   const [sameFeatures, setSameFeatures] = useState({});
@@ -197,11 +293,12 @@ function CompareFeatureSection({
     <>
       {features.map(feature => {
         if (sameFeatures[feature.title] && difference) return null;
-        return (
+        return !select.isSelectedSectionView ? (
           <FeatureSection
             key={feature.title}
             title={feature.title}
             description={feature.description}
+            select={select}
           >
             <CompareFeatureRow
               quotes={quotes}
@@ -210,6 +307,22 @@ function CompareFeatureSection({
               onFeaturesLoad={handleFeaturesLoad}
             />
           </FeatureSection>
+        ) : select.selectedSectionView[`${feature.title}`] ? (
+          <FeatureSection
+            key={feature.title}
+            title={feature.title}
+            description={feature.description}
+            select={select}
+          >
+            <CompareFeatureRow
+              quotes={quotes}
+              sectionTitle={sectionTitle}
+              feature={feature}
+              onFeaturesLoad={handleFeaturesLoad}
+            />
+          </FeatureSection>
+        ) : (
+          <></>
         );
       })}
     </>
@@ -267,11 +380,30 @@ function CompareFeatureValue({ quote, sectionTitle, featureTitle, onLoad }) {
   return <FeatureValue>{feature.feature_value}</FeatureValue>;
 }
 
-function SumInsuredSection({ quotes, onChange, ...props }) {
-  return (
+function SumInsuredSection({ quotes, select, onChange, ...props }) {
+  return !select.isSelectedSectionView ? (
     <FeatureSection
       title={"Sum Insured"}
       description={DESCRIPTIONS["sum_insured"]}
+      select={select}
+      {...props}
+    >
+      <FeatureRow>
+        {quotes.map((quote, idx) => (
+          <SumInsuredFeatureValue
+            quote={quote}
+            key={idx}
+            onChange={onChange}
+            allQuotes={quotes}
+          />
+        ))}
+      </FeatureRow>
+    </FeatureSection>
+  ) : select.selectedSectionView["Sum Insured"] ? (
+    <FeatureSection
+      title={"Sum Insured"}
+      description={DESCRIPTIONS["sum_insured"]}
+      select={select}
       {...props}
     >
       <FeatureRow>
@@ -280,10 +412,12 @@ function SumInsuredSection({ quotes, onChange, ...props }) {
         ))}
       </FeatureRow>
     </FeatureSection>
+  ) : (
+    <></>
   );
 }
 
-function SumInsuredFeatureValue({ quote, onChange }) {
+function SumInsuredFeatureValue({ quote, onChange, allQuotes }) {
   const { icQuotes, isLoading } = useGetQuote(quote.company_alias);
 
   const { groupCode } = useParams();
@@ -298,6 +432,11 @@ function SumInsuredFeatureValue({ quote, onChange }) {
     : [];
 
   const sumInsureds = getSumInsureds(currentQuotes);
+  const similarQuotes = allQuotes.filter(
+    quoteValue =>
+      quoteValue.product.name === quote.product.name &&
+      quoteValue.sum_insured.toString() !== quote.sum_insured.toString(),
+  );
 
   const handleChange = evt => {
     const updatedQuote = findQuoteBySumInsured(currentQuotes, evt.target.value);
@@ -311,11 +450,19 @@ function SumInsuredFeatureValue({ quote, onChange }) {
         <div>{numberToDigitWord(quote.sum_insured)}</div>
       ) : (
         <select value={quote.sum_insured} onChange={handleChange}>
-          {sumInsureds.map(sumInsured => (
-            <option key={sumInsured} value={sumInsured}>
-              {numberToDigitWord(sumInsured)}
-            </option>
-          ))}
+          {sumInsureds.map(sumInsured => {
+            const index = similarQuotes.findIndex(
+              quoteData => quoteData.sum_insured === sumInsured,
+            );
+
+            return (
+              index === -1 && (
+                <option key={sumInsured} value={sumInsured}>
+                  {numberToDigitWord(sumInsured)}
+                </option>
+              )
+            );
+          })}
         </select>
       )}
       {isLoading ? <CircleLoader animation="border" /> : null}
@@ -323,11 +470,12 @@ function SumInsuredFeatureValue({ quote, onChange }) {
   );
 }
 
-function UniqueFeaturesSection({ quotes }) {
-  return (
+function UniqueFeaturesSection({ quotes, select }) {
+  return !select.isSelectedSectionView ? (
     <FeatureSection
       title={"Unique Features"}
       description={DESCRIPTIONS["unique_features"]}
+      select={select}
     >
       <FeatureRow>
         {quotes.map((quote, idx) => (
@@ -335,6 +483,20 @@ function UniqueFeaturesSection({ quotes }) {
         ))}
       </FeatureRow>
     </FeatureSection>
+  ) : select.selectedSectionView["Unique Features"] ? (
+    <FeatureSection
+      title={"Unique Features"}
+      description={DESCRIPTIONS["unique_features"]}
+      select={select}
+    >
+      <FeatureRow>
+        {quotes.map((quote, idx) => (
+          <UniqueFeatureValue key={idx} quote={quote} />
+        ))}
+      </FeatureRow>
+    </FeatureSection>
+  ) : (
+    <></>
   );
 }
 
@@ -359,11 +521,12 @@ function UniqueFeatureValue({ quote }) {
 
 export default ComparePage;
 
-function OptionalCoversSection({ quotes, onChange }) {
-  return (
+function OptionalCoversSection({ quotes, select, onChange }) {
+  return !select.isSelectedSectionView ? (
     <FeatureSection
       title="Optional Covers"
       description="You can add 'Riders' to your basic health insurance plan for additional benefits."
+      select={select}
     >
       <FeatureRow>
         {quotes.map((quote, idx) => (
@@ -371,5 +534,19 @@ function OptionalCoversSection({ quotes, onChange }) {
         ))}
       </FeatureRow>
     </FeatureSection>
+  ) : select.selectedSectionView["Optional Covers"] ? (
+    <FeatureSection
+      title="Optional Covers"
+      description="You can add 'Riders' to your basic health insurance plan for additional benefits."
+      select={select}
+    >
+      <FeatureRow>
+        {quotes.map((quote, idx) => (
+          <OptionalCoversValue quote={quote} key={idx} onChange={onChange} />
+        ))}
+      </FeatureRow>
+    </FeatureSection>
+  ) : (
+    <></>
   );
 }

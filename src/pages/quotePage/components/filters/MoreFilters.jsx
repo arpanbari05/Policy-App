@@ -123,7 +123,13 @@ function FilterModal({ onClose }) {
       </div>
       <div className="p-3 d-flex align-items-center justify-content-between">
         <button onClick={clearFilters}>Clear Filters</button>
-        <Button onClick={handleShowPlansClick}>Show {length} plans</Button>
+        {
+          length ? (
+            <Button onClick={handleShowPlansClick}>Show {length} plans</Button>
+          ) : (
+            <button disabled onClick={clearFilters}>No plan available</button>
+          )
+        }
       </div>
     </Modal>
   );

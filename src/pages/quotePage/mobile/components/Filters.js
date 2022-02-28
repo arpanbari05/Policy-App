@@ -18,36 +18,51 @@ import "styled-components/macro";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { RiCheckboxBlankLine, RiCheckboxFill } from "react-icons/ri";
 
+const availableMoreFilters = {
+  popular_filters: true,
+  pre_existing_ailments: true,
+  no_claim_bonus: true,
+  others: true,
+};
+
 export function useFiltersSlot({ initialFilters } = {}) {
   const [filters, setFilters] = useState(initialFilters);
 
   const updateFilter = (code, option, type) => {
-    const isChecked = filters[code]?.find(
-      singleSelectedOption => singleSelectedOption?.code === option.code,
-    );
+    let isChecked, updateFilters;
+    //MORE FILTERS UPDATION CHECK FUNCTIONALITY *MOBILE OR DESKTOP*
+    if (availableMoreFilters[code]) {
+      isChecked = filters[code]?.find(
+        singleSelectedOption => singleSelectedOption?.code === option.code,
+      );
 
-    let updateFilters =
-      type === "radio"
-        ? {
-            ...filters,
-            [code]: filters[code] ? [option] : [option], // IMPLEMENTS RADIO FUNCTIONALITY
-          }
-        : {
-            ...filters,
-            [code]: filters[code] ? [...filters[code], option] : [option], // IMPLEMENTS CHECKBOX FUNCTIONALITY
-          };
+      updateFilters =
+        type === "radio"
+          ? {
+              ...filters,
+              [code]: filters[code] ? [option] : [option], // IMPLEMENTS RADIO FUNCTIONALITY
+            }
+          : {
+              ...filters,
+              [code]: filters[code] ? [...filters[code], option] : [option], // IMPLEMENTS CHECKBOX FUNCTIONALITY
+            };
 
-    if (isChecked)
-      updateFilters = {
-        ...filters,
-        [code]:
-          type === "radio"
-            ? undefined
-            : filters[code]?.filter(
-                singleSelectedOption =>
-                  singleSelectedOption?.code !== option.code,
-              ),
-      }; // REMOVAL LOGIC
+      if (isChecked)
+        updateFilters = {
+          ...filters,
+          [code]:
+            type === "radio"
+              ? undefined
+              : filters[code]?.filter(
+                  singleSelectedOption =>
+                    singleSelectedOption?.code !== option.code,
+                ),
+        }; // REMOVAL LOGIC
+    } else {
+      isChecked = filters[code]?.code === option.code;
+      updateFilters = { ...filters, [code]: option };
+      if (isChecked) updateFilters = { ...filters, [code]: null };
+    }
     setFilters(updateFilters);
   };
 
@@ -83,16 +98,18 @@ export function FilterModal({ onClose }) {
   } = useUpdateFilters();
 
   const { filters, updateFilter, clearFilters } = useFiltersSlot({
-    initialFilters: getAllSelectedFilters(
-      [
-        "premium",
-        "cover",
-        "plantype",
-        "deductible",
-        ...morefilters.map(filter => filter.code),
-      ],
-      getSelectedFilter,
-    ),
+    initialFilters: () => {
+      return getAllSelectedFilters(
+        [
+          "premium",
+          "cover",
+          "plantype",
+          "deductible",
+          ...morefilters.map(filter => filter.code),
+        ],
+        getSelectedFilter,
+      );
+    },
   });
 
   const handleClearFiltersClick = () => {
@@ -215,14 +232,24 @@ export function FilterOptions({
   currentOption,
   onChange,
   type,
+  filterGroup,
   ...props
 }) {
-  const selectedOption = currentOption ? [...currentOption] : []; // [{}..] Read Only Behaviour reccomended.
+  let selectedOption, isSelected;
 
-  const isSelected = option =>
-    selectedOption.find(singleOption => singleOption?.code === option?.code)
-      ? true
-      : false;
+  //MORE FILTERS CHECK FUNCTIONALITY *MOBILE OR DESKTOP*
+  if (availableMoreFilters[code]) {
+    selectedOption = currentOption ? [...currentOption] : [];
+
+    isSelected = option =>
+      selectedOption.find(singleOption => singleOption?.code === option?.code)
+        ? true
+        : false;
+  } else {
+    selectedOption = currentOption;
+
+    isSelected = option => option.code === selectedOption?.code;
+  }
 
   const handleChange = option => {
     onChange && onChange(code, option, type);
@@ -230,7 +257,7 @@ export function FilterOptions({
 
   return (
     <OptionsWrap {...props}>
-      {options.map(option => (
+      {options.filter(opt => opt.code !== "no_claim_bonus_2").map(option => (
         <FilterOption
           key={option.code}
           option={option}

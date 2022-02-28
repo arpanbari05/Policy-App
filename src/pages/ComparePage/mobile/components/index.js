@@ -13,6 +13,7 @@ import { BsPlusLg } from "react-icons/bs";
 import React from "react";
 import * as mq from "../../../../utils/mediaQueries";
 import { RiderPremium } from "../../../ProductDetails/components/CustomizeYourPlan";
+import { useState } from "react";
 
 export function Header() {
   const { colors } = useTheme();
@@ -91,10 +92,12 @@ export function FeatureValue({ children, isLoading = false, ...props }) {
 export function FeatureSection({
   title,
   children,
+  select,
   description = "",
   ...props
 }) {
   const { colors } = useTheme();
+  const [selectBlock, setSelectBlock] = useState(false);
 
   return (
     <section
@@ -103,16 +106,79 @@ export function FeatureSection({
       `}
       {...props}
     >
-      <h2
+      <div
         className="p-2"
         css={`
-          font-size: 0.89rem;
           background-color: ${colors.secondary_shade};
         `}
       >
-        {title}
-        <InfoPopupToggle title={title} description={description} />
-      </h2>
+        <section
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          `}
+        >
+          <input
+            type="checkbox"
+            css={`
+              height: 15px;
+              width: 15px;
+            `}
+            onChange={() => {
+              let demoObject = {};
+
+              if (!selectBlock) {
+                setSelectBlock(true);
+                demoObject[`${title}`] = true;
+                select.setSelectedSectionView({
+                  ...select.selectedSectionView,
+                  ...demoObject,
+                });
+              } else {
+                setSelectBlock(false);
+                demoObject[`${title}`] = false;
+                select.setSelectedSectionView({
+                  ...select.selectedSectionView,
+                  ...demoObject,
+                });
+              }
+            }}
+          />
+          <h1
+            css={`
+              font-size: 0.89rem;
+            `}
+          >
+            {title}
+            <InfoPopupToggle title={title} description={description} />
+          </h1>
+        </section>
+
+        {selectBlock && (
+          <button
+            css={`
+              color: #0a87ff;
+              text-decoration: underline;
+              padding-left: 25px;
+              cursor: pointer;
+              font-size: 10px;
+              font-weight: 600;
+            `}
+            onClick={() => {
+              if (select.isSelectedSectionView) {
+                select.setIsSelectedSectionView(false);
+              } else {
+                select.setIsSelectedSectionView(true);
+              }
+            }}
+          >
+            {select.isSelectedSectionView
+              ? "Show All Rows"
+              : "Show Only Selected"}
+          </button>
+        )}
+      </div>
       <div
         className="p-2"
         css={`
@@ -195,7 +261,7 @@ export function AddPlanCard({ compareQuotes, children, ...props }) {
           background-color: ${colors.primary_shade};
           color: ${colors.primary_color};
           font-weight: 900;
-          min-height: 12.7em;
+          min-height: 12em;
           ${mq.mobile} {
             min-height: 7.97em;
           }
@@ -205,7 +271,7 @@ export function AddPlanCard({ compareQuotes, children, ...props }) {
         <div
           className="d-flex align-items-center justify-content-center rounded"
           css={`
-            height: 36%;
+            height: 34%;
             width: 36%;
 
             background-color: ${colors.secondary_shade};
