@@ -73,7 +73,7 @@ const ProductDetails = () => {
 
   const {
     journeyType,
-    data: { tenent },
+    data: { tenant },
   } = useFrontendBoot();
 
   if (!enquiryId) return <PageNotFound />;
@@ -189,7 +189,7 @@ const ProductDetails = () => {
             >
               {journeyType === "renewal" ? (
                 <SumInsuredSection cartEntry={cartEntry} />
-              ) : tenent.alias === "renew_buy" ? null : (
+              ) : tenant.alias === "renew_buy" ? null : (
                 <SumInsuredOptionsSection cartEntry={cartEntry} />
               )}
               <CheckDiscount
