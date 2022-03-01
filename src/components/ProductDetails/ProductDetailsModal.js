@@ -54,7 +54,7 @@ function useRidersSlot() {
   return { selectedRiders, onChange };
 }
 
-function ProductDetailsModal({ quote, onClose, ...props }) {
+function ProductDetailsModal({ quote, onClose, defaultActiveKey="plan-details", defaultActiveKeyMobile="mobile-plan-details", ...props }) {
   const handleClose = () => onClose && onClose();
 
   console.log("The quote", quote);
@@ -96,8 +96,7 @@ function ProductDetailsModal({ quote, onClose, ...props }) {
             selectedRiders={selectedRiders}
             onClose={handleClose}
           />
-
-          <ProductDetailsTabs>
+          <ProductDetailsTabs defaultActiveKey={defaultActiveKey}>
             <Tab eventKey="plan-details" title="Plan Details">
               <RenderPlanDetails quote={quote} />
             </Tab>
@@ -117,7 +116,7 @@ function ProductDetailsModal({ quote, onClose, ...props }) {
             </Tab>
           </ProductDetailsTabs>
 
-          <MobileProductDetailsTabs>
+          <MobileProductDetailsTabs defaultActiveKey={defaultActiveKeyMobile}>
             <Tab eventKey="mobile-plan-details" title="Plan Details">
               <MobileRenderPlanDetails quote={quote} />
             </Tab>

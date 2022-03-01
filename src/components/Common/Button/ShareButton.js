@@ -3,11 +3,11 @@ import { useTheme } from "../../../customHooks";
 import { RiShareForwardFill } from "react-icons/ri";
 import styled from "styled-components";
 
-const Sharebutton = () => {
+const Sharebutton = ({ onClick = () => {} }) => {
   const { colors } = useTheme();
 
   return (
-    <ShareButton color={colors.primary_color}>
+    <ShareButton onClick={onClick} color={colors.primary_color}>
       <span style={{marginRight: 5}}>Share</span>
       <RiShareForwardFill color={colors.primary_color} />
     </ShareButton>
@@ -17,6 +17,7 @@ const Sharebutton = () => {
 export default Sharebutton;
 
 const ShareButton = styled.button`
+  background-color: #fff;
   display: flex;
   align-items: center;
   border-radius: 100px;

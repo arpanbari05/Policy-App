@@ -354,7 +354,7 @@ const ProposalPage = () => {
   };
   return (
     <Page>
-      <MobileHeader
+      {/* <MobileHeader
         css={`
           background: ${PrimaryColor};
         `}
@@ -373,7 +373,7 @@ const ProposalPage = () => {
           Proposal Form
           </MobileHeaderText>
         </Link>
-      </MobileHeader>
+      </MobileHeader> */}
       <div
         className="container-fluid mt-20 pb-100"
         css={`

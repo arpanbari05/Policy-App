@@ -39,6 +39,7 @@ import { every, uniq } from "lodash";
 import config from "../config";
 import { useCallback } from "react";
 import { quoteCompareFeature } from "../test/data/quoteFeatures";
+import { refreshUserData } from "../pages/InputPage/greetingPage.slice";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -230,6 +231,10 @@ export function useMembers() {
   const { data } = useGetEnquiriesQuery();
 
   const { selectedGroup } = useSelector(state => state.quotePage);
+
+  useEffect(() => {
+    dispatch(refreshUserData(data?.data));
+  }, []);
 
   useEffect(() => {
     const groupPolicyTypes = {};
