@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { performValidations, renderField } from "./formUtils";
 

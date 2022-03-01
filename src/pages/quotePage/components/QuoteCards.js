@@ -195,7 +195,8 @@ function QuoteCard({
     onChange && onChange({ checked, quote });
   };
 
-  const features = isDeductibleJourney ? quoteFeatures : quote.features;
+  let features = isDeductibleJourney ? quoteFeatures : quote.features;
+  features = features.filter(feature => featuresDisplayedOnQuoteCard.includes(feature.code));
 
   return (
     <div {...props}>
@@ -256,11 +257,10 @@ function QuoteCard({
             row-gap: 15px;
           `}
         >
-          {features.map(feature =>
-            featuresDisplayedOnQuoteCard.includes(feature.code) ? (
-              <QuoteFeature key={feature.code} feature={feature} />
-            ) : null,
-          )}
+          {console.log(features)}
+          {features.slice(1, 3).map(feature => (<QuoteFeature key={feature.code} feature={feature} />))}
+          {features.slice(0, 1).map(feature => (<QuoteFeature key={feature.code} feature={feature} />))}
+          {features.slice(3).map(feature => (<QuoteFeature key={feature.code} feature={feature} />))}
         </div>
         <div
           css={`
@@ -317,29 +317,12 @@ function QuoteCard({
                 </QuoteCardOption>
               </div>
             )}
-            {/* <QuoteCardOption info label={"Cover:"}>
-                <QuoteCardSelect
-                  options={sumInsureds.map(sumInsured => ({
-                    value: sumInsured,
-                    label: numberToDigitWord(sumInsured)
-                      .replace("₹", "")
-                      .replace("Lakh", "L"),
-                  }))}
-                  value={{
-                    value: selectedSumInsured,
-                    label: numberToDigitWord(selectedSumInsured)
-                      .replace("₹", "")
-                      .replace("Lakh", "L"),
-                  }}
-                  onChange={handleSumInsuredChange}
-                />
-              </QuoteCardOption> */}
             {!isDeductibleJourney && (
               <div
                 className="d-flex align-items-center justify-content-center gap-2"
                 css={`
                   & > * {
-                    min-width: 70px;
+                    min-width: 80px;
                   }
                 `}
               >
@@ -354,13 +337,11 @@ function QuoteCard({
                     value: sumInsured,
                     label: numberToDigitWord(sumInsured)
                       .replace("₹", "")
-                      .replace("Lakh", "L"),
                   }))}
                   value={{
                     value: selectedSumInsured,
                     label: numberToDigitWord(selectedSumInsured)
                       .replace("₹", "")
-                      .replace("Lakh", "L"),
                   }}
                   onChange={handleSumInsuredChange}
                 />
