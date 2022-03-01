@@ -13,6 +13,7 @@ const useFormBuilder = (
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState();
   const updateValue = (name, value) => {
+    console.log("kfvbadhbkv",name, value,formName)
     setValues({ ...values, [name]: value });
     fetchValues({ ...values, [name]: value });
     if (value instanceof Object) {
@@ -21,6 +22,12 @@ const useFormBuilder = (
       }
     }
   };
+  useEffect(() => {
+    console.log("svnsjdk",values,Object.keys(values).every(el => values[el].isValid))
+if(formName === "Medical Details" && !Object.keys(values).every(el => values[el].isValid)) {
+  setIsValid(false)
+}
+  },[values])
   const updateValues = (multipleValues = {}) => {
     setValues({ ...values, ...multipleValues });
     fetchValues({ ...values, ...multipleValues });
@@ -110,11 +117,9 @@ const useFormBuilder = (
             });
           });
         } else {
-         
           let errorMsg =
             item.validate &&
             performValidations(item.validate, values, item.name);
-
           if (renderField(item, values)) {
             errorsTemp[item.name] = errorMsg;
             if (errorMsg) tempIsValid = false;

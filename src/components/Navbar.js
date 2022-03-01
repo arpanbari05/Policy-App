@@ -104,7 +104,7 @@ const Navbar = () => {
       `}
     >
       <Card width={"100%"} height={"53px"} clasName="position-relative">
-        {location.pathname === "/proposal_summary" && (
+        {/* {location.pathname === "/proposal_summary" && (
           <Link
             className="d-flex justify-content-center align-items-center"
             css={`
@@ -126,7 +126,7 @@ const Navbar = () => {
           >
             <FaChevronLeft />
           </Link>
-        )}
+        )} */}
 
         <div className="container d-flex justify-content-between align-items-center h-100">
           <div

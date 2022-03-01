@@ -65,7 +65,6 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     //   Object.keys(values?.[key] || {})?.some(
     //     data => values?.[key]?.[data]?.[`is${data}`] === "Y",
     //   );
-
     if (key.length !== key2.length) {
       let noForAll2 = {};
       Object.keys(values || {}).forEach(element => {
@@ -99,6 +98,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed.push(item);
         }
+console.log("sbjslkh",values[item])
+
       });
 
       if (key2.length < 1) {

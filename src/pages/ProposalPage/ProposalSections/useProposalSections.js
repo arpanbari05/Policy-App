@@ -29,6 +29,7 @@ const useProposalSections = (
   const [finalSubmit, setFinalSubmit] = useState(false);
   const cart = useSelector(state => state.cart);
   const [previousCart] = useState(cart);
+
   useEffect(() => {
     if (typeof isValid === "object") {
       if (
