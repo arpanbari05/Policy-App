@@ -269,7 +269,7 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
               src={fyntune}
               alt="fyntune"
               css={`
-                width: 7.93em;
+                width: 8.93em;
               `}
             />
           </Link>
