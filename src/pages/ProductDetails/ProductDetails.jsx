@@ -18,7 +18,7 @@ import {
 import "styled-components/macro";
 import { Page } from "../../components";
 import PageNotFound from "../PageNotFound";
-import { useCart, useUrlEnquiry } from "../../customHooks";
+import { useCart, useFrontendBoot, useUrlEnquiry } from "../../customHooks";
 import CartMobile from "./components/Mobile/CartMobile/CartMobile";
 import FeatureSection from "./components/FeatureSection/FeatureSection";
 import Select from "react-select";
@@ -70,6 +70,11 @@ const ProductDetails = () => {
   useEffect(() => {
     window.location.hash = "";
   }, [groupCode]);
+
+  const {
+    journeyType,
+    data: { tenent },
+  } = useFrontendBoot();
 
   if (!enquiryId) return <PageNotFound />;
 
@@ -182,7 +187,11 @@ const ProductDetails = () => {
                 }
               `}
             >
-              <SumInsuredSection cartEntry={cartEntry} />
+              {journeyType === "renewal" ? (
+                <SumInsuredSection cartEntry={cartEntry} />
+              ) : tenent.alias === "renew_buy" ? null : (
+                <SumInsuredOptionsSection cartEntry={cartEntry} />
+              )}
               <CheckDiscount
                 groupCode={parseInt(groupCode)}
                 cartEntry={cartEntry}
@@ -203,31 +212,31 @@ function getSumInsuredOptions(arr = []) {
   return arr.map(item => ({ value: item, label: numberToDigitWord(item) }));
 }
 
-// function SumInsuredSection({ cartEntry }) {
-//   const { updateCartEntry } = useCart();
+function SumInsuredOptionsSection({ cartEntry }) {
+  const { updateCartEntry } = useCart();
 
-//   const { available_sum_insureds, group, sum_insured } = cartEntry;
+  const { available_sum_insureds, group, sum_insured } = cartEntry;
 
-//   if (!available_sum_insureds) return null;
+  if (!available_sum_insureds) return null;
 
-//   const handleChange = option => {
-//     updateCartEntry(group.id, { sum_insured: option.value });
-//   };
+  const handleChange = option => {
+    updateCartEntry(group.id, { sum_insured: option.value });
+  };
 
-//   const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+  const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
 
-//   return (
-//     <FeatureSection heading="Sum Insured" subHeading="Modify sum insured">
-//       <div className="w-50">
-//         <Select
-//           defaultValue={{
-//             value: sum_insured,
-//             label: numberToDigitWord(sum_insured),
-//           }}
-//           options={sumInsuredOptions}
-//           onChange={handleChange}
-//         />
-//       </div>
-//     </FeatureSection>
-//   );
-// }
+  return (
+    <FeatureSection heading="Sum Insured" subHeading="Modify sum insured">
+      <div className="w-50">
+        <Select
+          defaultValue={{
+            value: sum_insured,
+            label: numberToDigitWord(sum_insured),
+          }}
+          options={sumInsuredOptions}
+          onChange={handleChange}
+        />
+      </div>
+    </FeatureSection>
+  );
+}
