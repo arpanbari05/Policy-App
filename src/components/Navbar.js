@@ -26,6 +26,7 @@ import {
 import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
 import { CircleLoader } from ".";
+import { fyntune } from "../assets/images";
 
 const GO_BACK_LOCATIONS = [
   "/proposal",
@@ -195,7 +196,16 @@ const Navbar = () => {
                   <FaChevronLeft />
                 </div>
               )}
-            <LogoLink />
+            <Link to="/">
+              <img
+                src={fyntune}
+                alt={`companylogo`}
+                css={`
+                  cursor: pointer;
+                  height: 2.52em;
+                `}
+              />
+            </Link>
             {!location.pathname.startsWith("/input") && trace_id && (
               <div
                 css={`
@@ -263,19 +273,21 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
 
   const pinCode = data?.data?.input?.pincode;
 
-  const [show, setShow] = useState(false);
-
-  const { colors } = useTheme();
-
   const trace_id = data?.data?.trace_id;
 
   return (
     <div
       css={`
         font-size: 0.762rem;
+        box-shadow: grey 0px 0px 10px;
       `}
     >
-      <div className="py-3 px-2 d-flex align-items-center justify-content-between">
+      <div
+        className="d-flex align-items-center justify-content-between"
+        css={`
+          padding: 10px;
+        `}
+      >
         <div
           className="d-flex align-items-center"
           css={`
@@ -283,7 +295,15 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
           `}
         >
           {BackButton}
-          <LogoLink />
+          <Link to={"/input/basic-details"}>
+            <img
+              src={fyntune}
+              alt="fyntune"
+              css={`
+                width: 8.93em;
+              `}
+            />
+          </Link>
         </div>
 
         {location.pathname !== "/" && trace_id && <TraceId />}

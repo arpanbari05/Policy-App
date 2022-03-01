@@ -68,6 +68,7 @@ const InputPage = () => {
                 font-weight: 900;
                 font-size: 13px;
                 margin-bottom: 0;
+                margin-top: 4px;
               `}
             >
               Buy Health Insurance Plan In Few Simple Steps.
@@ -95,6 +96,7 @@ const InputPage = () => {
               }
               @media(max-width:835px){
       margin: 20px auto;
+      margin-bottom: 10px;
       width: 96%;
     }
               `}
@@ -166,7 +168,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;
-  padding-top: 30px;
+  padding-top: 10px;
   width: 100%;
   & > div {
     width: 50%;
@@ -225,7 +227,7 @@ function HeaderCard() {
       BgColor={`#edf0f49e`}
       padding={`27px`}
       styledCss={`
-    margin: 0 auto;
+    margin: 10px auto;
     box-shadow: none!important;
     width: 585px;
     @media(max-width:1200px){

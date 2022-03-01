@@ -29,7 +29,6 @@ import styles from "../styles";
 import {
   capitalize,
   getMonthsForYear,
-  getQuoteSendData,
   getRiderCartData,
   matchQuotes,
   mergeQuotes,
@@ -44,6 +43,7 @@ import { quoteCompareFeature } from "../test/data/quoteFeatures";
 const journeyTypeInsurances = {
   top_up: ["top_up"],
   health: ["health"],
+  renewal: ["health"],
 };
 
 function checkInsurenceType(company, insuranceTypesToCheck = []) {
@@ -126,31 +126,27 @@ export function useQuote() {
 }
 
 export function useTheme() {
-  // const {
-  //   data: {
-  //     settings: {
-  //       primary_color,
-  //       primary_shade,
-  //       secondary_color,
-  //       secondary_shade,
-  //     },
-  //   },
-  // } = useGetFrontendBootQuery();
+  const {
+    data: {
+      settings: {
+        primary_color,
+        primary_shade,
+        secondary_color,
+        secondary_shade,
+      },
+    },
+  } = useGetFrontendBootQuery();
 
   return {
     ...styles,
     colors: {
       ...styles.colors,
-      primary_color: "#0a87ff",
-      primary_shade: "#ecf6ff",
-      secondary_color: "#2cd44a",
-      secondary_shade: "#eef1f4",
+      primary_color,
+      primary_shade,
+      secondary_color,
+      secondary_shade,
     },
   };
-
-  // return {
-  //   colors: { primary_color, primary_shade, secondary_color, secondary_shade },
-  // };
 }
 
 export function useFrontendBoot() {
@@ -160,9 +156,6 @@ export function useFrontendBoot() {
     isUninitialized,
     ...query
   } = useGetFrontendBootQuery();
-
-  // if (isUninitialized || isLoading)
-  //   return { ...query, isLoading, isUninitialized, data };
 
   const { data: enquiryData } = useGetEnquiriesQuery();
 
@@ -176,7 +169,9 @@ export function useFrontendBoot() {
     journeyType = enquiryData?.data?.section;
   }
 
-  // return { journeyType, tenantName, data, isLoading, isUninitialized };
+  //Uncomment this to switch to renewal journey type
+  // journeyType = "renewal";
+
   return {
     query,
     journeyType,
@@ -1136,6 +1131,16 @@ export function useNameInput(initialValue = "", setFullNameError) {
 
 const validateNumber = (str = "") => /\d/g.test(str);
 
+const filterNo = (setNumber, number, value) => {
+  if (number.length === 0) {
+    if (value >= 6 && value !== 0) {
+      setNumber(value);
+    }
+  } else {
+    setNumber(value);
+  }
+};
+
 export function useNumberInput(
   initialValue = "",
   setNumberError,
@@ -1157,7 +1162,7 @@ export function useNumberInput(
     const isNumber = validateNumber(givenValue);
 
     if (isNumber) {
-      setValue(givenValue);
+      filterNo(setValue, value, givenValue);
     }
   };
 

@@ -8,11 +8,33 @@ export function BackLink({ ...props }) {
     <Link
       css={`
         color: #000;
+        height: 58px;
+        width: 172px;
+        background: unset;
+        padding: 10px 11px;
+        color: rgb(37, 56, 88);
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 600;
+        gap: 3px;
+
+        @media (max-width: 480px) {
+          background: rgb(239, 243, 245);
+          color: rgb(70, 86, 113);
+          font-size: 13px;
+          height: 40px;
+          max-width: 120px;
+          width: 100%;
+          padding: 0;
+        }
       `}
       {...props}
     >
       <BiArrowBack />
-      Back
+      <span>Back</span>
     </Link>
   );
 }
@@ -20,13 +42,21 @@ export function BackLink({ ...props }) {
 export function InputFormCta({
   backLink,
   onContinueClick,
+  name,
+  formNo,
   loader = false,
   ...props
 }) {
   const handleClick = () => onContinueClick && onContinueClick();
   return (
     <div
-      className="d-flex justify-content-around align-items-center"
+      className="d-flex justify-content-between align-items-center"
+      css={`
+        padding: 0px 28px;
+        @media (max-width: 480px) {
+          padding: ${name === "location" ? "0" : "0 17px"};
+        }
+      `}
       {...props}
     >
       <BackLink to={backLink} />
@@ -35,10 +65,23 @@ export function InputFormCta({
         arrow
         loader={loader}
         css={`
-          width: 7.9em;
+          height: 58px;
+          width: 100%;
+          max-width: 172px;
+          font-size: 20px;
+          font-weight: 400;
+
+          @media (max-width: 480px) {
+            font-size: 13px;
+            height: 40px;
+            width: 100%;
+            max-width: 120px;
+            padding: 5px 11px;
+            font-weight: normal;
+          }
         `}
       >
-        Continue
+        {formNo === 5 ? "View Quotes" : "Continue"}
       </Button>
     </div>
   );
