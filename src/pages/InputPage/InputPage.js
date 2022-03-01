@@ -68,6 +68,7 @@ const InputPage = () => {
                 font-weight: 900;
                 font-size: 13px;
                 margin-bottom: 0;
+                margin-top: 4px;
               `}
             >
               Buy Health Insurance Plan In Few Simple Steps.
