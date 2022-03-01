@@ -11,6 +11,7 @@ import React from "react";
 import "styled-components/macro";
 import { FilterModal } from "./Filters";
 import Talktouspopup from "../../../../components/TalkToUs";
+import ShareQuoteModal from "../../../../components/ShareQuoteModal";
 
 export function BottomNavigation({ sortBy = <></>, ...props }) {
   const { boxShadows } = useTheme();
@@ -35,7 +36,9 @@ export function BottomNavigation({ sortBy = <></>, ...props }) {
       <NavItemToggle icon={<RiFilter2Line />} label="Filter">
         <FilterModal />
       </NavItemToggle>
-      <NavItemToggle icon={<RiShareLine />} label="Share"></NavItemToggle>
+      <NavItemToggle icon={<RiShareLine />} label="Share">
+        <ShareQuoteModal hideBtn={true} showModal />
+      </NavItemToggle>
       <NavItemToggle icon={<RiChatSmile3Line />} label="Talk to us">
         <Talktouspopup show />
       </NavItemToggle>

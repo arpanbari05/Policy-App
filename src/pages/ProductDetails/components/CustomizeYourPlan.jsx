@@ -295,7 +295,7 @@ const RiderCardWrap = styled.div`
     background: rgb(243, 244, 249) !important;
     border-radius: 10px;
     box-shadow: ${({ isSelected }) =>
-      isSelected ? "rgb(16 24 48 / 12%) 0px 8px 12px 0px" : "unset"};
+    isSelected ? "rgb(16 24 48 / 12%) 0px 8px 12px 0px" : "unset"};
   }
   ${small} {
     gap: unset;
@@ -314,7 +314,7 @@ const RiderName = styled.h1`
 function RiderDescription({ rider, ...props }) {
   const { description } = rider;
 
-  const [showMore, setShowMore] = useState(true);
+  const [showMore, setShowMore] = useState(false);
 
   const { colors } = useTheme();
 
@@ -328,10 +328,10 @@ function RiderDescription({ rider, ...props }) {
   return (
     <RiderDescriptionWrap className="m-0" {...props}>
       {showMore ? description : description.slice(0, 40)}
-      {/*description.length > 40 ? (
-        <ShowMoreButton
-          className="btn p-0 mx-1"
-          css={`
+      {description.length > 40 ? (
+      <ShowMoreButton
+        className="btn p-0 mx-1"
+        css={`
             &,
             &:hover {
               color: ${colors.primary_color};
@@ -340,12 +340,12 @@ function RiderDescription({ rider, ...props }) {
               font-weight: bold;
             }
           `}
-          onClick={handleShowMore}
-          type="button"
-        >
-          {showMore ? "Read less" : "...Read more"}
-        </ShowMoreButton>
-          ) : null*/}
+        onClick={handleShowMore}
+        type="button"
+      >
+        {showMore ? "Read less" : "...Read more"}
+      </ShowMoreButton>
+      ) : null}
     </RiderDescriptionWrap>
   );
 }
