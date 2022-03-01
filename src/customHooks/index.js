@@ -13,6 +13,7 @@ import {
   useGetCustomQuotesQuery,
   useGetDiscountsQuery,
   useGetEnquiriesQuery,
+  useGetFrontendBootQuery,
   useGetRidersQuery,
   useUpdateCartMutation,
   useUpdateCompareQuotesMutation,
@@ -28,7 +29,6 @@ import styles from "../styles";
 import {
   capitalize,
   getMonthsForYear,
-  getQuoteSendData,
   getRiderCartData,
   matchQuotes,
   mergeQuotes,
@@ -43,6 +43,7 @@ import { quoteCompareFeature } from "../test/data/quoteFeatures";
 const journeyTypeInsurances = {
   top_up: ["top_up"],
   health: ["health"],
+  renewal: ["health"],
 };
 
 function checkInsurenceType(company, insuranceTypesToCheck = []) {
@@ -125,43 +126,40 @@ export function useQuote() {
 }
 
 export function useTheme() {
-  // const {
-  //   data: {
-  //     settings: {
-  //       primary_color,
-  //       primary_shade,
-  //       secondary_color,
-  //       secondary_shade,
-  //     },
-  //   },
-  // } = useGetFrontendBootQuery();
+  const {
+    data: {
+      settings: {
+        primary_color,
+        primary_shade,
+        secondary_color,
+        secondary_shade,
+      },
+    },
+  } = useGetFrontendBootQuery();
 
   return {
     ...styles,
     colors: {
       ...styles.colors,
-      primary_color: "#0a87ff",
-      primary_shade: "#ecf6ff",
-      secondary_color: "#2cd44a",
-      secondary_shade: "#eef1f4",
+      primary_color,
+      primary_shade,
+      secondary_color,
+      secondary_shade,
     },
   };
-
-  // return {
-  //   colors: { primary_color, primary_shade, secondary_color, secondary_shade },
-  // };
 }
 
 export function useFrontendBoot() {
-  // const { data, isLoading, isUninitialized, ...query } =
-  //   useGetFrontendBootQuery();
-
-  // if (isUninitialized || isLoading)
-  //   return { ...query, isLoading, isUninitialized, data };
+  const {
+    data: frontendData,
+    isLoading,
+    isUninitialized,
+    ...query
+  } = useGetFrontendBootQuery();
 
   const { data: enquiryData } = useGetEnquiriesQuery();
 
-  const data = config;
+  const data = { ...frontendData, ...config };
 
   const tenantName = data.tenant.name;
 
@@ -171,8 +169,11 @@ export function useFrontendBoot() {
     journeyType = enquiryData?.data?.section;
   }
 
-  // return { journeyType, tenantName, data, isLoading, isUninitialized };
+  //Uncomment this to switch to renewal journey type
+  // journeyType = "renewal";
+
   return {
+    query,
     journeyType,
     tenantName,
     data,

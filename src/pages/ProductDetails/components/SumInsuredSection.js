@@ -3,7 +3,9 @@ import { OptionCard, WrapWithTitle } from ".";
 import { CircleLoader } from "../../../components";
 import { useCart, useGetQuote } from "../../../customHooks";
 import { amount, matchQuotes, numberToDigitWord } from "../../../utils/helper";
+import { mobile } from "../../../utils/mediaQueries";
 import FeatureSection from "./FeatureSection/FeatureSection";
+import "styled-components/macro";
 
 function SumInsuredSection({ cartEntry }) {
   const { available_sum_insureds, sum_insured } = cartEntry;
@@ -21,7 +23,14 @@ function SumInsuredSection({ cartEntry }) {
   return (
     <FeatureSection heading="Upgrade Sum Insured">
       <WrapWithTitle title="Choose Sum Insured">
-        <div className="d-flex justify-content-around">
+        <div
+          className="d-flex justify-content-around"
+          css={`
+            ${mobile} {
+              flex-direction: column;
+            }
+          `}
+        >
           {nextTwoSumInsureds.map(sumInsured => (
             <SumInsuredOption
               sum_insured={sumInsured}

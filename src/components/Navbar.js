@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { fyntune } from "../assets/images";
 import Card from "./Card";
 import "styled-components/macro";
 import {
@@ -26,6 +25,8 @@ import {
 } from "../pages/quotePage/quote.slice";
 import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
+import { CircleLoader } from ".";
+import { fyntune } from "../assets/images";
 
 const GO_BACK_LOCATIONS = [
   "/proposal",
@@ -33,6 +34,31 @@ const GO_BACK_LOCATIONS = [
   "/quotes",
   "/productdetails",
 ];
+
+function LogoLink() {
+  const {
+    query: { isLoading },
+    ...frontendBoot
+  } = useFrontendBoot();
+
+  if (isLoading) return <CircleLoader animation="border" />;
+
+  const { settings } = frontendBoot.data;
+
+  return (
+    <Link to="/">
+      <img
+        src={settings.logo}
+        alt={`companylogo`}
+        css={`
+          cursor: pointer;
+          /* height: 1.92em; */
+          width: 130px;
+        `}
+      />
+    </Link>
+  );
+}
 
 const Navbar = () => {
   const location = useLocation();

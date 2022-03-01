@@ -1,12 +1,12 @@
-import { members } from "./members";
-import { deductibles } from "./deductibles";
-import { companies } from "./companies";
+// import { members } from "./members";
+// import { deductibles } from "./deductibles";
+// import { companies } from "./companies";
 
 const config = {
-  genders: [
-    { code: "M", display_name: "Male" },
-    { code: "F", display_name: "Female" },
-  ],
+  // genders: [
+  //   { code: "M", display_name: "Male" },
+  //   { code: "F", display_name: "Female" },
+  // ],
   plantypes: [
     { code: "I", display_name: "Individual", description: "" },
     {
@@ -22,23 +22,23 @@ const config = {
         "Multi-individual plan covers each family member under separate sum insured. You get discount if you cover 2 or more family members under multi-individual plan.",
     },
   ],
-  members,
-  popularcities: [
-    { name: "Delhi", pincode: 110001 },
-    { name: "Pune", pincode: 410301 },
-    { name: "Bengaluru", pincode: 560001 },
-    { name: "Mumbai", pincode: 400002 },
-    { name: "Gurgaon", pincode: 122001 },
-    { name: "Ahmedabad", pincode: 380001 },
-    { name: "Thane", pincode: 400601 },
-  ],
-  existingdiseases: [
-    { code: "diabetes", display_name: "Diabetes" },
-    { code: "hypertension", display_name: "Hypertension" },
-    { code: "heart_disease", display_name: "Heart Disease" },
-    { code: "other_diseases", display_name: "Other Diseases" },
-  ],
-  companies,
+  // members,
+  // popularcities: [
+  //   { name: "Delhi", pincode: 110001 },
+  //   { name: "Pune", pincode: 410301 },
+  //   { name: "Bengaluru", pincode: 560001 },
+  //   { name: "Mumbai", pincode: 400002 },
+  //   { name: "Gurgaon", pincode: 122001 },
+  //   { name: "Ahmedabad", pincode: 380001 },
+  //   { name: "Thane", pincode: 400601 },
+  // ],
+  // existingdiseases: [
+  //   { code: "diabetes", display_name: "Diabetes" },
+  //   { code: "hypertension", display_name: "Hypertension" },
+  //   { code: "heart_disease", display_name: "Heart Disease" },
+  //   { code: "other_diseases", display_name: "Other Diseases" },
+  // ],
+  // companies,
   premiums: [
     { code: "<5000", display_name: "< \u20b95,000" },
     { code: "5000-10000", display_name: "\u20b95,000 - \u20b910,000" },
@@ -246,34 +246,34 @@ const config = {
     { code: "base_health", display_name: "Base health" },
     { code: "1_crore_plan", display_name: "1 crore plan" },
   ],
-  defaultfilters: { cover: "300000-500000", tenure: "1", plan_type: "F" },
-  settings: {
-    journey_type: "cross_sell",
-    mobile: "",
-    email: "",
-    license: "",
-    logo: "",
-    primary_color: "#0a87ff",
-    secondary_color: "#2cd44a",
-    primary_shade: "#ecf6ff",
-    secondary_shade: "#eef1f4",
-    addons_visibilty: "1",
-    riders_visibilty: "1",
-    footer: "",
-    multiindividual_visibilty: "1",
-    top_up_flow: ["Single_Top_Up_Journey"],
-  },
-  tenant: {
-    id: 3,
-    name: "Fyntune",
-    alias: "fyntune",
-    email: "health@gmail.com",
-    term_frontend_domain:
-      "termdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in/",
-    topup_frontend_domain:
-      "https://topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in",
-  },
-  deductibles,
+  // defaultfilters: { cover: "300000-500000", tenure: "1", plan_type: "F" },
+  // settings: {
+  //   journey_type: "cross_sell",
+  //   mobile: "",
+  //   email: "",
+  //   license: "",
+  //   logo: "",
+  //   primary_color: "#0a87ff",
+  //   secondary_color: "#2cd44a",
+  //   primary_shade: "#ecf6ff",
+  //   secondary_shade: "#eef1f4",
+  //   addons_visibilty: "1",
+  //   riders_visibilty: "1",
+  //   footer: "",
+  //   multiindividual_visibilty: "1",
+  //   top_up_flow: ["Single_Top_Up_Journey"],
+  // },
+  // tenant: {
+  //   id: 3,
+  //   name: "Fyntune",
+  //   alias: "fyntune",
+  //   email: "health@gmail.com",
+  //   term_frontend_domain:
+  //     "termdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in/",
+  //   topup_frontend_domain:
+  //     "https://topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in",
+  // },
+  // deductibles,
 };
 
 export default config;

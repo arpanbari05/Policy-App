@@ -1,14 +1,14 @@
-import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { useCartProduct } from "../../Cart";
 import { mobile, small } from "../../../utils/mediaQueries";
-import "styled-components/macro";
 import styled from "styled-components/macro";
-import { useCart } from "../../../customHooks";
-import { amount } from "../../../utils/helper";
+import { useCart, useFrontendBoot, useTheme } from "../../../customHooks";
+import { amount, numberToDigitWord } from "../../../utils/helper";
+import "styled-components/macro";
 
 function ProductCard() {
   const { groupCode } = useParams();
+
+  const { journeyType } = useFrontendBoot();
 
   const { getCartEntry } = useCart();
 
@@ -19,33 +19,23 @@ function ProductCard() {
   const {
     product: {
       name: productName,
-      company: { alias: companyAlias, csr: companyCSR },
+      company: { alias: companyAlias },
     },
     sum_insured,
     icLogoSrc,
-    total_premium,
     netPremium,
-    tenure,
   } = cartEntry;
 
   const sumInsured = amount(sum_insured);
 
   const totalPremiumAmount = amount(netPremium);
 
-  const displayPremium = `${amount(total_premium)} / ${
-    tenure > 1 ? `${tenure} Years` : "Year"
-  }`;
-
   return (
     <div
       css={`
-        /* background-color: var(--light-pink); */
-        /* height: 106px; */
-        /* border-radius: 4px; */
         display: flex;
         align-items: center;
         justify-content: space-between;
-        /* padding: 0 20px; */
         border-radius: 3px;
         padding: 5px 10px;
 
@@ -73,7 +63,7 @@ function ProductCard() {
         {/* ************logo******** */}
         <div
           css={`
-            height: 50px; 
+            height: 50px;
             background-color: #fff;
             display: flex;
             align-items: center;
@@ -86,7 +76,13 @@ function ProductCard() {
             }
           `}
         >
-          <img css={`height: 100% !important;`} src={icLogoSrc} alt={companyAlias} />
+          <img
+            css={`
+              height: 100% !important;
+            `}
+            src={icLogoSrc}
+            alt={companyAlias}
+          />
         </div>
         {/* *************name*********** */}
         <div
@@ -139,145 +135,12 @@ function ProductCard() {
         </div>
       </div>
 
-      {/* ***********detail display panel********* */}
-      <DetailDispalyPanel className="d-flex">
-        <div className="detail_child">
-          <span
-            css={`
-              color: #5a6981;
-              font-size: 13px;
-              /* width: 90px; */
+      {journeyType === "renewal" ? (
+        <PolicyDetails cartEntry={cartEntry} />
+      ) : (
+        <PlanDetails cartEntry={cartEntry} />
+      )}
 
-              ${mobile} {
-                font-size: 14px;
-                font-weight: 400;
-              }
-
-              ${small} {
-                font-size: 8px;
-                width: auto;
-                line-height: normal;
-              }
-            `}
-          >
-            Cover :
-          </span>
-          <span
-            className="detail_amount"
-            css={`
-              font-size: 13px;
-              color: #565657;
-              font-weight: 600;
-              ${mobile} {
-                font-size: 14px;
-                color: #000;
-                font-weight: 400;
-              }
-
-              ${small} {
-                font-size: 11px;
-                line-height: normal;
-                margin-top: 3px;
-              }
-            `}
-          >
-            {" "}
-            {sumInsured}
-          </span>
-        </div>
-
-        <div className="detail_child">
-          <span
-            css={`
-              color: #5a6981;
-              font-size: 13px;
-              /* width: 90px; */
-
-              ${mobile} {
-                font-size: 12px;
-                font-weight: 400;
-              }
-
-              ${small} {
-                font-size: 8px;
-                width: auto;
-                line-height: normal;
-              }
-            `}
-          >
-            Premium :
-          </span>
-          <span
-            className="detail_amount"
-            css={`
-              font-size: 13px;
-              color: #565657;
-              font-weight: 600;
-              ${mobile} {
-                font-size: 14px;
-                color: #000;
-                font-weight: 400;
-              }
-
-              ${small} {
-                font-size: 11px;
-                line-height: normal;
-                margin-top: 3px;
-              }
-            `}
-          >
-            {" "}
-            {displayPremium}
-          </span>
-        </div>
-
-        <div className="detail_child">
-          <span
-            css={`
-              color: #5a6981;
-              font-size: 13px;
-              /* width: 90px; */
-
-              ${mobile} {
-                font-size: 14px;
-                font-weight: 400;
-              }
-
-              ${small} {
-                font-size: 8px;
-                width: auto;
-                line-height: normal;
-              }
-            `}
-          >
-            Claim Settlement Ratio :
-          </span>
-          <span
-            className="detail_amount"
-            css={`
-              font-size: 13px;
-              color: #565657;
-              font-weight: 600;
-              ${mobile} {
-                font-size: 14px;
-                color: #000;
-                font-weight: 400;
-              }
-
-              ${small} {
-                font-size: 11px;
-                line-height: normal;
-                margin-top: 3px;
-              }
-            `}
-          >
-            {" "}
-            {companyCSR}%
-          </span>
-        </div>
-      </DetailDispalyPanel>
-
-      {/* **********totalPremium panel*********** */}
       <div
         css={`
           background-color: #f4f6f8;
@@ -292,7 +155,6 @@ function ProductCard() {
           }
           ${small} {
             height: 37px;
-            /* width: 67px; */
             border-radius: 7px;
             background-color: white;
           }
@@ -302,7 +164,6 @@ function ProductCard() {
           css={`
             color: #5a6981;
             font-size: 13px;
-            /* width: 90px; */
             @media (max-width: 992px) {
               font-size: 11px;
             }
@@ -341,6 +202,158 @@ function ProductCard() {
 
 export default ProductCard;
 
+function PlanDetails({ cartEntry }) {
+  const {
+    product: {
+      company: { csr: companyCSR },
+    },
+    sum_insured,
+    total_premium,
+    tenure,
+  } = cartEntry;
+
+  const sumInsured = amount(sum_insured);
+
+  const displayPremium = `${amount(total_premium)} / ${
+    tenure > 1 ? `${tenure} Years` : "Year"
+  }`;
+  return (
+    <DetailDispalyPanel className="d-flex">
+      <div className="detail_child">
+        <span
+          css={`
+            color: #5a6981;
+            font-size: 13px;
+
+            ${mobile} {
+              font-size: 14px;
+              font-weight: 400;
+            }
+
+            ${small} {
+              font-size: 8px;
+              width: auto;
+              line-height: normal;
+            }
+          `}
+        >
+          Cover :
+        </span>
+        <span
+          className="detail_amount"
+          css={`
+            font-size: 13px;
+            color: #565657;
+            font-weight: 600;
+            ${mobile} {
+              font-size: 14px;
+              color: #000;
+              font-weight: 400;
+            }
+
+            ${small} {
+              font-size: 11px;
+              line-height: normal;
+              margin-top: 3px;
+            }
+          `}
+        >
+          {sumInsured}
+        </span>
+      </div>
+
+      <div className="detail_child">
+        <span
+          css={`
+            color: #5a6981;
+            font-size: 13px;
+
+            ${mobile} {
+              font-size: 12px;
+              font-weight: 400;
+            }
+
+            ${small} {
+              font-size: 8px;
+              width: auto;
+              line-height: normal;
+            }
+          `}
+        >
+          Premium :
+        </span>
+        <span
+          className="detail_amount"
+          css={`
+            font-size: 13px;
+            color: #565657;
+            font-weight: 600;
+            ${mobile} {
+              font-size: 14px;
+              color: #000;
+              font-weight: 400;
+            }
+
+            ${small} {
+              font-size: 11px;
+              line-height: normal;
+              margin-top: 3px;
+            }
+          `}
+        >
+          {" "}
+          {displayPremium}
+        </span>
+      </div>
+
+      <div className="detail_child">
+        <span
+          css={`
+            color: #5a6981;
+            font-size: 13px;
+            /* width: 90px; */
+
+            ${mobile} {
+              font-size: 14px;
+              font-weight: 400;
+            }
+
+            ${small} {
+              font-size: 8px;
+              width: auto;
+              line-height: normal;
+            }
+          `}
+        >
+          Claim Settlement Ratio :
+        </span>
+        <span
+          className="detail_amount"
+          css={`
+            font-size: 13px;
+            color: #565657;
+            font-weight: 600;
+            ${mobile} {
+              font-size: 14px;
+              color: #000;
+              font-weight: 400;
+            }
+
+            ${small} {
+              font-size: 11px;
+              line-height: normal;
+              margin-top: 3px;
+            }
+          `}
+        >
+          {" "}
+          {companyCSR}%
+        </span>
+      </div>
+    </DetailDispalyPanel>
+  );
+}
+
 const DetailDispalyPanel = styled.div`
   background: #fafbfc;
   padding: 17px;
@@ -356,3 +369,50 @@ const DetailDispalyPanel = styled.div`
     color: #dedfe0;
   }
 `;
+
+function PolicyDetails({ cartEntry }) {
+  const { sum_insured, tenure } = cartEntry;
+  return (
+    <div
+      css={`
+        font-size: 0.79rem;
+      `}
+      className="d-flex"
+    >
+      <Detail label={"Proposer Name"}>Testing With A Very Long Name</Detail>
+      <Detail label={"Policy No."}>123123123</Detail>
+      <Detail label={"Policy Term"}>{tenure}Yr</Detail>
+      <Detail label={"Sum Insured"}>{numberToDigitWord(sum_insured)}</Detail>
+    </div>
+  );
+}
+
+function Detail({ label, children }) {
+  const { colors } = useTheme();
+
+  return (
+    <div
+      css={`
+        :not(:last-child) {
+          border-right: 1px solid;
+        }
+        padding: 0 2em;
+      `}
+    >
+      <div
+        css={`
+          color: ${colors.font.one};
+        `}
+      >
+        {label}
+      </div>
+      <div
+        css={`
+          font-weight: 900;
+        `}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}

@@ -45,8 +45,8 @@ const DropDown = ({
     } else setSelectOption(options);
   }, [asyncOptions]);
 
-  let placeholder = dropPlaceholder || "- Select -"
-  placeholder = checkValidation?.required && `${placeholder}*`;
+  let placeholder = dropPlaceholder || label || "- Select -";
+  placeholder = checkValidation?.required ? `${placeholder}*` : placeholder;
 
   return (
     <SelectContainer height={height}>
