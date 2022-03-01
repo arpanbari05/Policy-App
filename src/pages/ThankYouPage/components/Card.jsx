@@ -265,15 +265,15 @@ const CompanyName = styled.div`
 `;
 const DownloadPolicy = styled.a`
   display: inline-block;
-  height: 58px;
+  /* height: 58px; */
   border-radius: 16px;
   background-color: ${props => props.PrimaryColor};
-  padding: ${props => (props.track ? "14px" : "12px")} 22px 14px;
+  padding: 5px 10px;
   text-align: ${props => props.track && "center"};
   /* font-family: pf_handbook_proregular; */
   font-weight: 600;
-  font-size: 20px;
-  min-width: 190px;
+  font-size: 16px;
+  /* min-width: 190px; */
   color: #fff !important;
   & img {
     display: inline-block;

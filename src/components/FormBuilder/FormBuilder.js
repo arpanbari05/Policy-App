@@ -51,6 +51,7 @@ const FormBuilder = ({
     options.defaultValues,
     noForAll,
     setNoForAll,
+    formName
   );
 
 
@@ -229,13 +230,7 @@ const FormBuilder = ({
                                 renderField(innerItem, values, member) && (
                                   <Wrapper
                                     key={index + member + innerItem.name}
-                                    width={
-                                      innerItem.width === "25%"
-                                        ? "33%"
-                                        : innerItem.width === "75%"
-                                        ? "66%"
-                                        : innerItem.width
-                                    }
+                                    width={item.width}
                                     medical
                                   >
                                     <Comp
@@ -433,13 +428,7 @@ const FormBuilder = ({
                   {renderField(item, values) && (
                     <Wrapper
                       key={index}
-                      width={
-                        item.width === "25%"
-                          ? "33%"
-                          : item.width === "75%"
-                          ? "66%"
-                          : item.width
-                      }
+                      width={item.width}
                     >
                       <Comp
                         name={item.name}
@@ -465,6 +454,7 @@ const FormBuilder = ({
                               updateValue(item.name, e.target.value);
                             } else{
                               console.log("sdvbkjvb",e,value,item);
+                              // if()
                               updateValue(item.name, e);
                             } 
                           }
@@ -568,7 +558,7 @@ const HR = styled.hr`
   }
 `;
 const Wrapper = styled.div`
-  width: ${props => (props.width ? props.width : "33%")};
+  width: ${props => (props.width ? props.width : "25%")};
   display: inline-block;
   padding-left: ${props => (props.medical ? "0px" : "15px")};
   padding-right: 15px;
