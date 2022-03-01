@@ -52,7 +52,7 @@ export function InputFormCta({
     <div
       className="d-flex justify-content-between align-items-center"
       css={`
-        padding: 0px 30px;
+        padding: 0px 28px;
         @media (max-width: 480px) {
           padding: ${name === "location" ? "0" : "0 17px"};
         }
@@ -67,9 +67,7 @@ export function InputFormCta({
         css={`
           height: 58px;
           width: 100%;
-          background: rgb(10, 135, 255);
-          color: white;
-          width: 172px;
+          max-width: 172px;
           font-size: 20px;
           font-weight: 400;
 

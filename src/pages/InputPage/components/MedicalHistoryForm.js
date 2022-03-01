@@ -157,7 +157,16 @@ const MedicalHistoryForm = () => {
           );
         })}
       {customErrors && <ErrorMessage>{customErrors}</ErrorMessage>}
-      <div className="mt-3">
+      <div
+        className="mt-3"
+        css={`
+          margin-bottom: 20px;
+
+          @media (max-width: 480px) {
+            margin-bottom: 0;
+          }
+        `}
+      >
         <InputFormCta
           backLink={() => {
             if (journeyType !== "top_up") {

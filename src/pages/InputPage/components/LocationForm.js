@@ -245,12 +245,14 @@ function PopularCity({
           cursor: pointer;
           background-color: ${colors.secondary_shade};
           border: 1px solid ${colors.secondary_shade};
-          padding: 0.73em 2em;
+
           border-radius: 2em;
           font-size: 0.87rem;
           font-weight: 900;
           line-height: 12px;
           letter-spacing: 1px;
+          font-weight: 900;
+          padding: 13px 26px;
 
           @media (max-width: 480px) {
             min-width: fit-content;
