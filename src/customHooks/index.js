@@ -13,6 +13,7 @@ import {
   useGetCustomQuotesQuery,
   useGetDiscountsQuery,
   useGetEnquiriesQuery,
+  useGetFrontendBootQuery,
   useGetRidersQuery,
   useUpdateCartMutation,
   useUpdateCompareQuotesMutation,
@@ -153,15 +154,19 @@ export function useTheme() {
 }
 
 export function useFrontendBoot() {
-  // const { data, isLoading, isUninitialized, ...query } =
-  //   useGetFrontendBootQuery();
+  const {
+    data: frontendData,
+    isLoading,
+    isUninitialized,
+    ...query
+  } = useGetFrontendBootQuery();
 
   // if (isUninitialized || isLoading)
   //   return { ...query, isLoading, isUninitialized, data };
 
   const { data: enquiryData } = useGetEnquiriesQuery();
 
-  const data = config;
+  const data = { ...frontendData, ...config };
 
   const tenantName = data.tenant.name;
 
@@ -172,7 +177,14 @@ export function useFrontendBoot() {
   }
 
   // return { journeyType, tenantName, data, isLoading, isUninitialized };
-  return { journeyType, tenantName, data };
+  return {
+    query,
+    journeyType,
+    tenantName,
+    data,
+    insuredMembers: enquiryData?.data?.input?.members,
+    groups: enquiryData?.data?.groups,
+  };
 }
 
 export function useFilter() {
