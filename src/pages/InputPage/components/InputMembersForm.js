@@ -107,8 +107,10 @@ function InputMembersForm(props) {
           className="w-100"
           css={`
             background-color: ${colors.primary_shade};
-
+            margin-bottom: 20px;
+            margin-top: 10px;
             height: 43px;
+            font-size: 20px;
             &:hover {
               background-color: ${colors.secondary_shade};
             }

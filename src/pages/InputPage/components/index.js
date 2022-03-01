@@ -8,19 +8,27 @@ export function BackLink({ ...props }) {
     <Link
       css={`
         color: #000;
-        background: rgb(239, 243, 245);
-        color: rgb(70, 86, 113);
-        font-size: 13px;
+        height: 58px;
+        width: 172px;
+        background: unset;
+        padding: 10px 11px;
+        color: rgb(37, 56, 88);
+        font-weight: 900;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 20px;
         font-weight: 600;
         gap: 3px;
 
         @media (max-width: 480px) {
+          background: rgb(239, 243, 245);
+          color: rgb(70, 86, 113);
+          font-size: 13px;
           height: 40px;
           max-width: 120px;
           width: 100%;
+          padding: 0;
         }
       `}
       {...props}
@@ -44,6 +52,7 @@ export function InputFormCta({
     <div
       className="d-flex justify-content-between align-items-center"
       css={`
+        padding: 0px 30px;
         @media (max-width: 480px) {
           padding: ${name === "location" ? "0" : "0 17px"};
         }
@@ -56,7 +65,13 @@ export function InputFormCta({
         arrow
         loader={loader}
         css={`
-          width: 7.9em;
+          height: 58px;
+          width: 100%;
+          background: rgb(10, 135, 255);
+          color: white;
+          width: 172px;
+          font-size: 20px;
+          font-weight: 400;
 
           @media (max-width: 480px) {
             font-size: 13px;
