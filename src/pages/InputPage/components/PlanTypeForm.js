@@ -64,19 +64,29 @@ function PlanTypeForm(props) {
         })}
       </div>
 
-      <div className="mt-3">
+      <div
+        className="mt-3"
+        css={`
+          margin-bottom: 59px;
+          min-height: 80px;
+          line-height: 1.2;
+        `}
+      >
         <h2
           css={`
             font-size: 1rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
           `}
         >
           What is {onHoverPlanType.display_name}?
         </h2>
         <p
           css={`
-            font-size: 0.79rem;
-            color: ${colors.font.two};
-            width: 80%;
+            font-size: 12px;
+            font-weight: 900;
+            color: rgb(150, 150, 181);
+            width: 97%;
           `}
         >
           {onHoverPlanType.description}
