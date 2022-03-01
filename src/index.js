@@ -9,7 +9,7 @@ ReactDOM.render(
   <React.StrictMode>
     <GlobalStyles />
     <AppProviders>
-    <ErrorBoundary>
+      <ErrorBoundary>
         <App />
       </ErrorBoundary>
     </AppProviders>

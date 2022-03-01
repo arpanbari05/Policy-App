@@ -19,7 +19,10 @@ function App() {
   return (
     <Switch>
       <Route path="/" exact>
-        <Redirect from="/" to="/input/basic-details" />
+        <Redirect
+          from="/"
+          to={true ? "input/renewal-details" : "/input/basic-details"}
+        />
       </Route>
       <Route exact path="/input/:currentForm" component={InputPage} />
       <Route exact path="/quotes/:groupCode">
