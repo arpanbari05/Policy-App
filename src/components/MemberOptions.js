@@ -7,7 +7,7 @@ import RoundDD from "./RoundDD";
 import { Counter } from ".";
 import "styled-components/macro";
 
-const modifyMembersToCount = (members) => {
+const modifyMembersToCount = members => {
   let sonCount = 0;
   let daughterCount = 0;
   const updatedMembers = members.map(member => {
@@ -15,32 +15,31 @@ const modifyMembersToCount = (members) => {
       sonCount += 1;
       return {
         ...member,
-       display_name_count: `Son ${sonCount}` 
-      }
+        display_name_count: `Son ${sonCount}`,
+      };
     } else if (member.display_name === "Daughter") {
       daughterCount += 1;
       return {
         ...member,
-       display_name_count: `Daughter ${daughterCount}` 
-      }
-    } else return { ...member, display_name_count: member.display_name }
-  })
+        display_name_count: `Daughter ${daughterCount}`,
+      };
+    } else return { ...member, display_name_count: member.display_name };
+  });
 
   return updatedMembers.map(member => {
     if (member.display_name === "Son" && sonCount === 1) {
       return {
         ...member,
-        display_name_count: `Son`
-      }
+        display_name_count: `Son`,
+      };
     } else if (member.display_name === "Daughter" && daughterCount === 1) {
       return {
         ...member,
-        display_name_count: `Daughter`
-      }
-    } else return { ...member }
+        display_name_count: `Daughter`,
+      };
+    } else return { ...member };
   });
-
-}
+};
 
 function validateMembers(members = []) {
   let isValid = true;
@@ -131,7 +130,7 @@ export function useMembersForm(initialMembersList = []) {
     members.filter(member => !!member.isSelected);
 
   const updateMembersList = (membersList = []) => {
-    setMembers(membersList)
+    setMembers(membersList);
   };
 
   const membersWithCount = modifyMembersToCount(members);
@@ -237,7 +236,7 @@ function MemberOption({
         padding: 2px 10px;
         border: solid 1px #b0bed0;
         flex: 1 1 21em;
-        gap: .7em;
+        gap: 0.7em;
       `}
       {...props}
     >
@@ -245,6 +244,7 @@ function MemberOption({
         className="d-flex align-items-center flex-grow-1 align-self-stretch"
         role="button"
         css={`
+          font-size: 15px;
           line-height: 1;
           font-weight: 900;
         `}

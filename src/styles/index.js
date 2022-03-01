@@ -29,7 +29,7 @@ const styles = {
 
 export default styles;
 
-export const rootFontSize = "calc(16 * 100vw / 1440)";
+export const rootFontSize = "16px";
 
 export const GlobalStyles = createGlobalStyle({
   html: {

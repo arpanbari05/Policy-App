@@ -1131,6 +1131,16 @@ export function useNameInput(initialValue = "", setFullNameError) {
 
 const validateNumber = (str = "") => /\d/g.test(str);
 
+const filterNo = (setNumber, number, value) => {
+  if (number.length === 0) {
+    if (value >= 6 && value !== 0) {
+      setNumber(value);
+    }
+  } else {
+    setNumber(value);
+  }
+};
+
 export function useNumberInput(
   initialValue = "",
   setNumberError,
@@ -1152,7 +1162,7 @@ export function useNumberInput(
     const isNumber = validateNumber(givenValue);
 
     if (isNumber) {
-      setValue(givenValue);
+      filterNo(setValue, value, givenValue);
     }
   };
 

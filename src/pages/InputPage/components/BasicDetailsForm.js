@@ -252,6 +252,13 @@ const BasicDetailsForm = ({ ...props }) => {
           className="w-100"
           disabled={createEnquiryQuery.isLoading}
           loader={createEnquiryQuery.isLoading}
+          css={`
+            @media (max-width: 480px) {
+              font-size: 13px;
+              font-weight: normal;
+              padding: 5px 11px;
+            }
+          `}
         >
           Get Started {!createEnquiryQuery.isLoading && <IoArrowForwardSharp />}
         </Button>
