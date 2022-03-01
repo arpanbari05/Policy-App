@@ -11,6 +11,7 @@ import {
 } from "../../../customHooks";
 import { FaCheck } from "react-icons/fa";
 import { useEffect } from "react";
+import { WrapWithTitle } from ".";
 
 const CheckDiscountSection = ({ groupCode, cartEntry, ...props }) => {
   return (
@@ -390,75 +391,6 @@ function AdditionalDiscount({
           <i class="fas fa-plus"></i>
         )}
       </button>
-    </div>
-  );
-}
-
-function WrapWithTitle({ title, children }) {
-  return (
-    <div
-      css={`
-        padding: 10px 30px 30px;
-        border-radius: 20px;
-        border: 1px solid #dfdfdf;
-        margin-bottom: 1rem;
-
-        ${mobile} {
-          border: none;
-          padding: 0;
-        }
-      `}
-    >
-      <div
-        css={`
-          ${mobile} {
-            border: none;
-            position: relative;
-          }
-        `}
-      >
-        <h3
-          css={`
-            font-size: 17px;
-            color: #68758b;
-            font-weight: 600;
-            margin: auto;
-            margin-bottom: 30px;
-            text-align: center;
-
-            ${mobile} {
-              margin-bottom: 10px;
-              position: relative;
-              font-size: 16px;
-              width: max-content;
-              padding: 0 10px;
-              background-color: #fff;
-              z-index: 10;
-            }
-
-            ${small} {
-              font-size: 12px;
-            }
-          `}
-        >
-          {title}
-        </h3>
-        <div
-          css={`
-            display: none;
-            ${mobile} {
-              display: block;
-              position: absolute;
-              top: 50%;
-              transform: translateY(-50%);
-              height: 1px;
-              width: 100%;
-              background-color: #ddd;
-            }
-          `}
-        />
-      </div>
-      {children}
     </div>
   );
 }

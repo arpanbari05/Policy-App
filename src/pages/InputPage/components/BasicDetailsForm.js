@@ -10,6 +10,7 @@ import {
   useNumberInput,
   useEmailInput,
   useTheme,
+  useFrontendBoot,
 } from "../../../customHooks";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
@@ -23,6 +24,9 @@ import validateInput from "../../../utils/inputPageUtils";
 
 const BasicDetailsForm = ({ ...props }) => {
   const { colors } = useTheme();
+  const {
+    data: { tenant },
+  } = useFrontendBoot();
 
   let inputData = {};
 
@@ -43,7 +47,7 @@ const BasicDetailsForm = ({ ...props }) => {
   });
   const emailInput = useEmailInput(inputData.email || "", setEmailErrors);
   const [gender, setGender] = useState(inputData.gender || "M");
-  const [journeyType, setJourneyType] = useState("top_up");
+  const [journeyType, setJourneyType] = useState("health");
   const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
   const urlSearchParams = useUrlQuery();
   const history = useHistory();
@@ -211,34 +215,37 @@ const BasicDetailsForm = ({ ...props }) => {
               <ErrorMessage>{emailError.message}</ErrorMessage>
             </div>
           </div>
-          <div>
-            Journey Type:
-            <label className="mx-3">
-              <input
-                type={"radio"}
-                name="journeyType"
-                value={"top_up"}
-                className="mx-1"
-                checked={journeyType === "top_up"}
-                onChange={() => {
-                  setJourneyType("top_up");
-                }}
-              />
-              Topup
-            </label>
-            <label>
-              <input
-                type={"radio"}
-                name="journeyType"
-                value={"health"}
-                className="mx-1"
-                onChange={() => {
-                  setJourneyType("health");
-                }}
-              />
-              Health
-            </label>
-          </div>
+          {tenant.alias === "fyntune" ? (
+            <div>
+              Journey Type:
+              <label className="mx-3">
+                <input
+                  type={"radio"}
+                  name="journeyType"
+                  value={"top_up"}
+                  className="mx-1"
+                  checked={journeyType === "top_up"}
+                  onChange={() => {
+                    setJourneyType("top_up");
+                  }}
+                />
+                Topup
+              </label>
+              <label>
+                <input
+                  type={"radio"}
+                  name="journeyType"
+                  value={"health"}
+                  className="mx-1"
+                  checked={journeyType === "health"}
+                  onChange={() => {
+                    setJourneyType("health");
+                  }}
+                />
+                Health
+              </label>
+            </div>
+          ) : null}
         </div>
 
         <Button
@@ -246,6 +253,16 @@ const BasicDetailsForm = ({ ...props }) => {
           className="w-100"
           disabled={createEnquiryQuery.isLoading}
           loader={createEnquiryQuery.isLoading}
+          css={`
+            height: 58px;
+            font-weight: normal;
+            font-size: 20px;
+            @media (max-width: 480px) {
+              font-size: 13px;
+              font-weight: normal;
+              padding: 5px 11px;
+            }
+          `}
         >
           Get Started {!createEnquiryQuery.isLoading && <IoArrowForwardSharp />}
         </Button>

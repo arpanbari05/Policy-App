@@ -45,7 +45,8 @@ const DropDown = ({
     } else setSelectOption(options);
   }, [asyncOptions]);
 
-  console.log(value)
+  let placeholder = dropPlaceholder || label || "- Select -";
+  placeholder = checkValidation?.required ? `${placeholder}*` : placeholder;
 
   return (
     <SelectContainer height={height}>
@@ -65,7 +66,7 @@ const DropDown = ({
           !asyncOptions) ||
           asyncOptions ||
           !checkValidation?.required) && (
-          <option value={"- Select -"}>{checkValidation?.required && dropPlaceholder ? `${dropPlaceholder}*` : dropPlaceholder || "- Select -"}</option>
+          <option value={placeholder}>{placeholder}</option>
         )}
         {selectedValues?.title &&
         selectedValues.title === "mrs" &&

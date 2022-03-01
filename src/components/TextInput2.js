@@ -48,6 +48,9 @@ const TextInput2 = React.forwardRef(
           padding: 19px 0.75rem;
           color: #505b6d;
           font-weight: 900;
+          @media (max-width: 480px) {
+            font-size: 14px;
+          }
         }
 
         input::-webkit-outer-spin-button,

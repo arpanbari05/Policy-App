@@ -5,9 +5,15 @@ import { Link, useParams } from "react-router-dom";
 import { MemberText } from "../../../components";
 import "styled-components/macro";
 import * as mq from "../../../utils/mediaQueries";
+import ShareQuoteModal from "../../../components/ShareQuoteModal";
+import useComparePage from "../../../pages/ComparePage/useComparePage";
+import useQuotesPage from "../useQuotes";
+
 
 function UpperModifier() {
   const { colors } = useTheme();
+  const { emailStatus } = useComparePage();
+  const { imageSendQuote: sendQuote } = useQuotesPage();
 
   return (
     <div
@@ -25,6 +31,12 @@ function UpperModifier() {
         >
           <EditMemberFilter />
           <GroupLinks />
+          <div css={`margin-left: auto`}>
+            <ShareQuoteModal
+              imageSend={sendQuote}
+              emailStatus={emailStatus}
+              stage="QUOTE" />
+          </div>
         </div>
       </Container>
     </div>

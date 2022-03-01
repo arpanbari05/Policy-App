@@ -15,6 +15,7 @@ import {
 import _ from "lodash";
 import { useEffect, useState } from "react";
 import * as mq from "../../../utils/mediaQueries";
+import { numToLakh } from "../../../utils/helper";
 
 function AddPlansModal({ onClose, compareQuotes = [], ...props }) {
   const handleClose = () => onClose && onClose();
@@ -129,6 +130,7 @@ export default AddPlansModal;
 
 function Quotes({ compareList, ...props }) {
   const { data, isLoading } = useGetQuotes();
+  const { journeyType } = useFrontendBoot();
 
   if (!data) return null;
 
@@ -155,7 +157,9 @@ function Quotes({ compareList, ...props }) {
       css={`
         gap: 20px;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: ${journeyType === "top_up"
+          ? "repeat(2, 1fr)"
+          : "repeat(3, 1fr)"};
         & > div {
         }
 
@@ -286,14 +290,18 @@ function QuoteCard({
       <div
         className="d-flex mt-2"
         css={`
-          gap: 1em;
+          background-color: rgb(249, 249, 249);
+          padding: 8px 10px;
+          border-radius: 10px;
+          gap: ${journeyType === "top_up" ? "3em" : "2em"};
         `}
       >
         <QuoteCardOption title="Product:">
           <select
             css={`
-              width: 10em;
+              width: 12em;
             `}
+            title={product.name}
             value={product.id}
             onChange={evt => {
               setProduct(
@@ -304,7 +312,11 @@ function QuoteCard({
             }}
           >
             {products.map(product => (
-              <option key={product.name} value={product.id}>
+              <option
+                key={product.name}
+                value={product.id}
+                title={product.name}
+              >
                 {product.name}
               </option>
             ))}
@@ -318,7 +330,7 @@ function QuoteCard({
             >
               {deductibles.map(deductible => (
                 <option key={deductible} value={deductible}>
-                  {deductible}
+                  {numToLakh(deductible)}
                 </option>
               ))}
             </select>
@@ -331,7 +343,7 @@ function QuoteCard({
           >
             {sumInsureds.map(sumInsured => (
               <option key={sumInsured} value={sumInsured}>
-                {sumInsured}
+                {numToLakh(sumInsured)}
               </option>
             ))}
           </select>
@@ -342,21 +354,20 @@ function QuoteCard({
 }
 
 function QuoteCardOption({ title = "", children, ...props }) {
-  const { colors } = useTheme();
   return (
     <div>
       <div
         css={`
-          font-size: 0.79rem;
-          color: ${colors.font.three};
-          padding-left: 0.3em;
+          color: rgb(80, 95, 121);
+          font-size: 14px;
         `}
       >
         {title}
       </div>
       <div
         css={`
-          font-size: 0.83rem;
+          font-weight: 900;
+          font-size: 14px;
         `}
       >
         {children}
@@ -409,10 +420,10 @@ function CompareQuoteCard({ quote, onRemove, ...props }) {
           </QuoteCardOption>
         ) : null}
         <QuoteCardOption title="Sum Insured:">
-          {quote.sum_insured}
+          {numToLakh(quote.sum_insured)}
         </QuoteCardOption>
         <QuoteCardOption title="Premium:">
-          {quote.total_premium}
+          {quote.total_premium} / Year
         </QuoteCardOption>
       </div>
     </div>

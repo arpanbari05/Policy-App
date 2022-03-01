@@ -51,8 +51,10 @@ const FormBuilder = ({
     options.defaultValues,
     noForAll,
     setNoForAll,
+    formName
   );
-  console.log(values);
+
+
 
   const [trigger, setTrigger] = useState(false);
   const { proposalData } = useSelector(state => state.proposalPage);
@@ -229,13 +231,7 @@ const FormBuilder = ({
                                 renderField(innerItem, values, member) && (
                                   <Wrapper
                                     key={index + member + innerItem.name}
-                                    width={
-                                      innerItem.width === "25%"
-                                        ? "33%"
-                                        : innerItem.width === "75%"
-                                        ? "66%"
-                                        : innerItem.width
-                                    }
+                                    width={item.width}
                                     medical
                                   >
                                     <Comp
@@ -433,20 +429,16 @@ const FormBuilder = ({
                   {renderField(item, values) && (
                     <Wrapper
                       key={index}
-                      width={
-                        item.width === "25%"
-                          ? "33%"
-                          : item.width === "75%"
-                          ? "66%"
-                          : item.width
-                      }
+                      width={item.width}
                     >
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}
                         selectedValues={values}
                         onChange={(e, value) => {
+                         
                           if (item.parent && item.members) {
+                            
                             insertValue(
                               item.parent,
                               item.members,
@@ -460,8 +452,13 @@ const FormBuilder = ({
                                 [item.name + "__value"]: value,
                               });
                             } else if (!item.type.includes("custom")) {
+                              console.log("sdvnsjdbvs",item.name, e.target.value)
                               updateValue(item.name, e.target.value);
-                            } else updateValue(item.name, e);
+                            } else{
+                              console.log("sdvbkjvb",e,value,item);
+                              // if()
+                              updateValue(item.name, e);
+                            } 
                           }
                           if (
                             item.fill &&
@@ -563,10 +560,11 @@ const HR = styled.hr`
   }
 `;
 const Wrapper = styled.div`
-  width: ${props => (props.width ? props.width : "33%")};
+  width: ${props => (props.width ? props.width : "25%")};
   display: inline-block;
   padding-left: ${props => (props.medical ? "0px" : "15px")};
   padding-right: 15px;
+  margin-bottom: 10px;
   @media (max-width: 1023px) {
     width: 100%;
     padding-left: 8px;

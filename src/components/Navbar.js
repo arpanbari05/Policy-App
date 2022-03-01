@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { fyntune } from "../assets/images";
 import Card from "./Card";
 import "styled-components/macro";
 import {
@@ -24,8 +23,12 @@ import {
   setPolicyType,
   setIsOnProductDetails,
 } from "../pages/quotePage/quote.slice";
+import useComparePage from "../pages/ComparePage/useComparePage";
 import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
+import { CircleLoader } from ".";
+import { fyntune } from "../assets/images";
+import ShareQuoteModal from "./ShareQuoteModal";
 
 const GO_BACK_LOCATIONS = [
   "/proposal",
@@ -33,6 +36,31 @@ const GO_BACK_LOCATIONS = [
   "/quotes",
   "/productdetails",
 ];
+
+function LogoLink() {
+  const {
+    query: { isLoading },
+    ...frontendBoot
+  } = useFrontendBoot();
+
+  if (isLoading) return <CircleLoader animation="border" />;
+
+  const { settings } = frontendBoot.data;
+
+  return (
+    <Link to="/">
+      <img
+        src={settings.logo}
+        alt={`companylogo`}
+        css={`
+          cursor: pointer;
+          /* height: 1.92em; */
+          width: 130px;
+        `}
+      />
+    </Link>
+  );
+}
 
 const Navbar = () => {
   const location = useLocation();
@@ -65,6 +93,8 @@ const Navbar = () => {
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
+  const { emailStatus, imageSend } = useComparePage();
+
   return (
     <div
       css={`
@@ -74,7 +104,7 @@ const Navbar = () => {
       `}
     >
       <Card width={"100%"} height={"53px"} clasName="position-relative">
-        {location.pathname === "/proposal_summary" && (
+        {/* {location.pathname === "/proposal_summary" && (
           <Link
             className="d-flex justify-content-center align-items-center"
             css={`
@@ -96,7 +126,7 @@ const Navbar = () => {
           >
             <FaChevronLeft />
           </Link>
-        )}
+        )} */}
 
         <div className="container d-flex justify-content-between align-items-center h-100">
           <div
@@ -176,7 +206,7 @@ const Navbar = () => {
                 alt={`companylogo`}
                 css={`
                   cursor: pointer;
-                  height: 1.92em;
+                  height: 2.52em;
                 `}
               />
             </Link>
@@ -197,8 +227,25 @@ const Navbar = () => {
                 display: flex;
               `}
             >
-              {(location.pathname === "/proposal" ||
-                location.pathname === "/proposal_summary") && <ShareButton />}
+              {
+                location.pathname === "/proposal" && (
+                  <ShareQuoteModal stage="PROPOSAL" />
+                )
+              }
+              {
+                location.pathname === "/proposal_summary" && (
+                  <ShareQuoteModal stage="PROPOSAL_SUMMARY" />
+                )
+              }
+              {
+                location.pathname === `/compare/${groupCode}` && (
+                  <ShareQuoteModal
+                    imageSend={imageSend}
+                    emailStatus={emailStatus}
+                    stage={"COMPARE"}
+                  />
+                )
+              }
               <div
                 css={`
                   background-color: ${colors.secondary_shade};
@@ -247,19 +294,21 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
 
   const pinCode = data?.data?.input?.pincode;
 
-  const [show, setShow] = useState(false);
-
-  const { colors } = useTheme();
-
   const trace_id = data?.data?.trace_id;
 
   return (
     <div
       css={`
         font-size: 0.762rem;
+        box-shadow: grey 0px 0px 10px;
       `}
     >
-      <div className="py-3 px-2 d-flex align-items-center justify-content-between">
+      <div
+        className="d-flex align-items-center justify-content-between"
+        css={`
+          padding: 10px;
+        `}
+      >
         <div
           className="d-flex align-items-center"
           css={`
@@ -272,7 +321,7 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
               src={fyntune}
               alt="fyntune"
               css={`
-                width: 7.93em;
+                width: 8.93em;
               `}
             />
           </Link>
@@ -288,7 +337,7 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
             border-top: 1px solid #aaa;
             border-bottom: 1px solid #aaa;
 
-            @media (max-width: 395px) {
+            @media (max-width: 500px) {
               font-size: 9px !important;
             }
           `}
@@ -322,9 +371,9 @@ export function Members() {
     <div
       className="d-flex"
       css={`
-        font-size: 10px !important;
+        font-size: 12px !important;
 
-        @media (max-width: 395px) {
+        @media (max-width: 500px) {
           font-size: 9px !important;
         }
       `}
@@ -357,7 +406,7 @@ function Info({ label, value, ...props }) {
         }
 
         @media (max-width: 410px) {
-          gap: 0.30em;
+          gap: 0.3em;
         }
       `}
       {...props}

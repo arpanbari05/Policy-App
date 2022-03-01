@@ -97,7 +97,15 @@ const MedicalHistoryForm = () => {
         padding: 17px;
       `}
     >
-      <Title>Any of the Insured Member have a Medical History?</Title>
+      <Title
+        css={`
+          @media (max-width: 480px) {
+            font-size: 16px;
+          }
+        `}
+      >
+        Any of the Insured Member have a Medical History?
+      </Title>
       <CustomProgressBar now={5} total={5} />
       <div
         css={`
@@ -149,7 +157,16 @@ const MedicalHistoryForm = () => {
           );
         })}
       {customErrors && <ErrorMessage>{customErrors}</ErrorMessage>}
-      <div className="mt-3">
+      <div
+        className="mt-3"
+        css={`
+          margin-bottom: 20px;
+
+          @media (max-width: 480px) {
+            margin-bottom: 0;
+          }
+        `}
+      >
         <InputFormCta
           backLink={() => {
             if (journeyType !== "top_up") {
@@ -160,6 +177,8 @@ const MedicalHistoryForm = () => {
           }}
           onContinueClick={handleSubmit}
           loader={appLoading}
+          name="location"
+          formNo={5}
         />
       </div>
     </div>

@@ -19,7 +19,7 @@ import "styled-components/macro";
 import { element } from "prop-types";
 import CheckBox from "../components/Checkbox/Checkbox";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
-import { useTheme } from "../../../customHooks";
+import { useFrontendBoot, useTheme } from "../../../customHooks";
 
 const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   const [show, setShow] = useState(1);
@@ -55,6 +55,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   const dispatch = useDispatch();
   const { noForAllChecked } = useSelector(state => state.proposalPage);
   const proposalDetails = useSelector(state => state.proposalPage.proposalData);
+  const { insuredMembers: membersDataFromGreetingPage, groups } = useFrontendBoot();
   const fullName = proposalDetails["Proposer Details"]?.name;
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
@@ -64,7 +65,6 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     //   Object.keys(values?.[key] || {})?.some(
     //     data => values?.[key]?.[data]?.[`is${data}`] === "Y",
     //   );
-
     if (key.length !== key2.length) {
       let noForAll2 = {};
       Object.keys(values || {}).forEach(element => {
@@ -98,6 +98,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed.push(item);
         }
+console.log("sbjslkh",values[item])
+
       });
 
       if (key2.length < 1) {
@@ -114,31 +116,96 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
       }
     }
   };
-  // console.log("hehe3he", values);
   useEffect(() => {
     if (
       name === "Insured Details" &&
-      Object.keys(schema).some(item => item === "self") &&
+      Object.values(schema).length &&
+      // && Object.keys(values).
       proposalData["Proposer Details"]
     ) {
-      console.log("hehe3he");
       let prefilledValues = {};
-      schema["self"].forEach(item => {
-        if (proposalData["Proposer Details"][item.name])
-          prefilledValues = {
-            ...prefilledValues,
-            [item.name]: proposalData["Proposer Details"][item.name],
-          };
-      });
 
-      setValues({
-        ...values,
-        self: {
-          ...(values?.self ? values.self : {}),
+      if (schema) {
+        // let tempAllMemberDetail = {...values};
+        let currentYear = new Date().getUTCFullYear();
+        let currentMonth = new Date().getMonth();
+        let currentDate = new Date().getDate();
+        Object.keys(schema).forEach((memberType) => {
+          if (memberType === "self") {
+            let tempObj = {};
+            schema["self"].forEach((item) => {
+              if (
+                (proposalData["Proposer Details"][item.name] &&
+                  (!proposalData["Insured Details"] ||
+                    !proposalData["Insured Details"][memberType][item.name])) ||
+                (proposalData["Proposer Details"][item.name] &&
+                  proposalData["Insured Details"][memberType][item.name] &&
+                  proposalData["Insured Details"][memberType][item.name] !==
+                  proposalData["Proposer Details"][item.name])
+              )
+                tempObj = {
+                  ...tempObj,
+                  [item.name]: proposalData["Proposer Details"][item.name],
+                };
+            });
+            prefilledValues[memberType] =
+              values && values[memberType]
+                ? { ...values[memberType], ...tempObj }
+                : tempObj;
+          } else if (
+            // for autopopulate Estimated DOB
+            !proposalData["Insured Details"] ||
+            !proposalData["Insured Details"][memberType].dob
+          ) {
+            let memberAge = membersDataFromGreetingPage.find(
+              (member) => member.type === memberType
+            )?.age;
+            let estimatedMemberDOB;
+            if (`${memberAge}`.includes("Month") || `${memberAge}`.includes(".")) {
+              let current = new Date();
+              current.setMonth(
+                current.getMonth() -
+                (`${memberAge}`.includes(".")
+                  ? parseInt(`${memberAge}`.split(".")[1])
+                  : parseInt(memberAge))
+              );
+
+              estimatedMemberDOB = `${current.getDate()}-${current.getMonth() + 1
+                }-${current.getUTCFullYear()}`;
+            } else {
+              estimatedMemberDOB = `${currentDate}-${currentMonth + 1}-${currentYear - parseInt(memberAge)
+                }`;
+            }
+
+            prefilledValues[memberType] = {
+              ...(values && values.hasOwnProperty(memberType)
+                ? values[memberType]
+                : {}),
+              dob: estimatedMemberDOB,
+            };
+          }
+          if (
+            !proposalData["Insured Details"] ||
+            !proposalData["Insured Details"][memberType]?.insured_marital
+          ) {
+            if (findGroupMembersCount(memberType) > 1)
+              prefilledValues[memberType] = {
+                ...prefilledValues[memberType],
+                insured_marital: "2",
+              };
+            else prefilledValues[memberType] = {
+              ...prefilledValues[memberType],
+              insured_marital: "1",
+            };
+          }
+        });
+        setValues({
+          ...values,
           ...prefilledValues,
-        },
-      });
-    } else if (
+        });
+      }
+    }
+    else if (
       name === "Medical Details" &&
       !Object.keys(values ? values : {}).length
     ) {
@@ -173,15 +240,15 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
           if (
             element?.populate &&
             tempObj[keyValue][element.populate.split("/")[0].split("=")[0]] ===
-              element.populate.split("/")[0].split("=")[1] &&
+            element.populate.split("/")[0].split("=")[1] &&
             tempObj[keyValue][element.name] !==
-              proposalData[element.populate.split("/")[1].split(".")[0]][
-                element.populate.split("/")[1].split(".")[1]
-              ]
+            proposalData[element.populate.split("/")[1].split(".")[0]][
+            element.populate.split("/")[1].split(".")[1]
+            ]
           ) {
             tempObj[keyValue][element.name] =
               proposalData[element.populate.split("/")[1].split(".")[0]][
-                element.populate.split("/")[1].split(".")[1]
+              element.populate.split("/")[1].split(".")[1]
               ];
           }
         });
@@ -205,40 +272,44 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     return updatedNumber;
   }
 
-  console.log(proposalDetails);
+  const findGroupMembersCount = (member) => {
+    groups.forEach(group => {
+      return group.members.includes(member.toLowerCase()) ? group.members.count : 0;
+    })
+  }
 
   return (
     <div>
       {Object.keys(schema).map((item, index) => {
         let result = [];
-        console.log(values);
-        // if(values && name ==="Insured Details"){
-        //   Object.keys(values[item]).forEach((key) => {
-        //   if (key === "dob" && values[item][key]) {
-        //     console.log(values[item][key]);
-        //     let updatedKey = values[item][key].split("-");
-        //     const date = updatedKey[0];
-        //     const month = updatedKey[1];
-        //     const year = updatedKey[2];
-        //     updatedKey = `${formatter(date)}-${formatter(month)}-${year}`;
-        //     result.push(updatedKey);
-        //   }else if (key === "name" && values[item][key]) {
-        //     result.unshift(`${values[item]["title"]}. ${values[item][key]}`);
-        //   } else if (key !== "title") {
-        //     result.push(`${values[item][key]}`);
-        //   }
-        // })
-        // }
-        // console.log(result);
+        if (values && name === "Insured Details") {
+          Object.keys(values[item]).forEach((key) => {
+            if (key === "dob" && values[item][key]) {
+              let updatedKey = values[item][key].split("-");
+              const date = updatedKey[0];
+              const month = updatedKey[1];
+              const year = updatedKey[2];
+              updatedKey = `${formatter(date)}-${formatter(month)}-${year}`;
+              result[1] = updatedKey;
+            } else if (key === "name" && values[item][key]) {
+              result[0] = `${values[item]["title"]}. ${values[item][key]}`;
+            } else if (key !== "title") {
+              // result[2] = `${values[item][key]}`;
+            }
+          })
+
+          result = result.filter(r => r);
+        }
         return (
           <Panel
             formName={name}
             isFilled={
               Object.keys(values && values[item] ? values[item] : {}).length
             }
-            values={Object.values(
-              values && values[item] ? values[item] : {},
-            ).join(", ")}
+            // values={Object.values(
+            //   values && values[item] ? values[item] : {},
+            // ).join(", ")}
+            values={result.join(", ")}
             key={index}
             title={`${item}`}
             show={show === "all" ? true : show === index + 1 ? true : false}
@@ -308,7 +379,6 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                 </div>
               )}
               <Form>
-                {console.log("jhcvugc", schema)}
                 <FormBuilder
                   isInsuredDetails
                   keyStr={item}

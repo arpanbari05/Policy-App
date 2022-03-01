@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
 import { getTermConditions } from "../ProposalPage/serviceApi";
+import { useCart,} from "../../customHooks/index";
 
 const TermModal = ({
   title,
@@ -30,12 +31,13 @@ const TermModal = ({
       console.error(error);
     }
   };
-
-  const cart = useSelector(state => state.cart);
+  const { cartEntries } = useCart();
+  const cart = cartEntries;
   const prod_id = Object.keys(cart)[0];
-  console.log("hkjm", term);
+
   useEffect(() => {
-    if (cart[prod_id].product.company.id) {
+    console.log("bjksfv",cart,prod_id)
+    if (cart[prod_id].product && cart[prod_id].product.company.id) {
       getTermConditionData(cart[prod_id].product.company.id, setTerm);
     }
   }, []);

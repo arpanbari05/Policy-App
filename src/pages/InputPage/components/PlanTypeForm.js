@@ -3,7 +3,6 @@ import CustomProgressBar from "../../../components/ProgressBar";
 import RadioButton from "../../../components/RadioButton";
 import {
   useFrontendBoot,
-  useTheme,
   useUpdateEnquiry,
   useUrlEnquiry,
 } from "../../../customHooks";
@@ -13,8 +12,6 @@ import { useHistory } from "react-router-dom";
 import { InputFormCta } from ".";
 
 function PlanTypeForm(props) {
-  const { colors } = useTheme();
-
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
 
   let {
@@ -40,7 +37,7 @@ function PlanTypeForm(props) {
   };
 
   return (
-    <div className="p-3" {...props}>
+    <div className="p-3 pb-5" {...props}>
       <div>
         <Title className="w-100">Which plan would you like to opt for?</Title>
         <CustomProgressBar now={3} total={4} />
@@ -64,19 +61,29 @@ function PlanTypeForm(props) {
         })}
       </div>
 
-      <div className="mt-3">
+      <div
+        className="mt-3"
+        css={`
+          margin-bottom: 59px;
+          min-height: 80px;
+          line-height: 1.2;
+        `}
+      >
         <h2
           css={`
             font-size: 1rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
           `}
         >
           What is {onHoverPlanType.display_name}?
         </h2>
         <p
           css={`
-            font-size: 0.79rem;
-            color: ${colors.font.two};
-            width: 80%;
+            font-size: 12px;
+            font-weight: 900;
+            color: rgb(150, 150, 181);
+            width: 97%;
           `}
         >
           {onHoverPlanType.description}

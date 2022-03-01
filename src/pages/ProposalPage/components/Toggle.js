@@ -21,7 +21,9 @@ const Toggle = ({
   showMembers,
   customMembers,
   showMembersIf,
+
 }) => {
+
   const { colors } = useTheme();
   
   const PrimaryColor = colors.primary_color,
@@ -38,14 +40,14 @@ if(showMembersIf){
   console.log("bjffb",values,customShowMembers,showMembersIf?showMembersIf.split("||"):"");
 }
 },[values])
+const membersToMap = customMembers instanceof Array ? customMembers : members;
 
   const [boolean, setBoolean] = useState("N");
   const [membersStatus, setMembersStatus] = useState({});
-  console.log("hrfgvbrgvf", membersStatus);
+  console.log("hrfgvbrgvf",membersStatus);
   const { mediUnderwritting } = useSelector(
     (state) => state.proposalPage.proposalData
   );
-  const membersToMap = customMembers instanceof Array ? customMembers : members;
   // const membersToMap = members;
   
   const dispatch = useDispatch();
@@ -68,22 +70,31 @@ if(showMembersIf){
       setBoolean("N");
       setMembersStatus({});
     }
-  }, [value]);
+    if(customShowMembers && label.toLowerCase().includes("mandatory")){
+      setBoolean("Y")
+    }
+  }, [value,customShowMembers]);
 
   useEffect(() => {
     let isValid = true;
 
-    if (boolean === "Y" && !Object.values(membersStatus).includes(true)) {
+    if ((boolean === "Y" && showMembers) && !Object.values(membersStatus).includes(true)) {
       isValid = false;
     }
 
+if(customShowMembers && !Object.values(membersStatus).includes(true)){
+  console.log("sbjsdd",customShowMembers,name,membersStatus,!Object.values(membersStatus).includes(true));
+
+  isValid = false;
+} 
+ 
     onChange({
       ...value,
       [`is${name}`]: boolean,
       members: membersStatus,
       isValid,
     });
-  }, [boolean, membersStatus]);
+  }, [boolean,membersStatus]);
 
   return (
     <>

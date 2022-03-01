@@ -59,6 +59,7 @@ const Height = ({ onChange, value, error }) => {
             })
           }
           value={combinedValue.feet}
+          checkValidation={{required: true}}
         />
         <DropDown
           dropPlaceholder="inches"

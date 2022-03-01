@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { RidersSection } from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
 import { CartDetails } from "./components/ReviewCart";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Redirect, useHistory, useLocation, useParams } from "react-router-dom";
 import ProductCard from "./components/AddOnProductCard";
 import useUrlQuery from "../../customHooks/useUrlQuery";
@@ -18,19 +18,18 @@ import {
 import "styled-components/macro";
 import { Page } from "../../components";
 import PageNotFound from "../PageNotFound";
-import { useCart, useUrlEnquiry } from "../../customHooks";
+import { useCart, useFrontendBoot, useUrlEnquiry } from "../../customHooks";
 import CartMobile from "./components/Mobile/CartMobile/CartMobile";
 import FeatureSection from "./components/FeatureSection/FeatureSection";
 import Select from "react-select";
 import { numberToDigitWord } from "../../utils/helper";
-import _ from "lodash";
+import { FaArrowCircleLeft } from "react-icons/fa";
+import SumInsuredSection from "./components/SumInsuredSection";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
-  const { shouldRedirectToQuotes } = useSelector(state => state.quotePage);
   const location = useLocation();
-  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -40,13 +39,11 @@ const ProductDetails = () => {
 
   const [showNav, setShowNav] = useState(false);
 
-  const { getCartEntry, getNextGroupProduct } = useCart();
+  const { getCartEntry } = useCart();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
 
   const quotesRedirectUrl = useUrlEnquiry();
-
-  const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
   useEffect(() => {
     function scrollListener() {
@@ -74,23 +71,14 @@ const ProductDetails = () => {
     window.location.hash = "";
   }, [groupCode]);
 
+  const {
+    journeyType,
+    data: { tenant },
+  } = useFrontendBoot();
+
   if (!enquiryId) return <PageNotFound />;
 
-  //? REDIRECT CODE IF PRODUCT IS NOT IN CART.
   if (!cartEntry) {
-    // if (shouldRedirectToQuotes) {
-    //   return (
-    //     <Redirect
-    //       to={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
-    //     />
-    //   );
-    // } else if (nextGroupProduct) {
-    //   return (
-    //     <Redirect
-    //       to={`/productdetails/${nextGroupProduct.group.id}?enquiryId=${quotesRedirectUrl.enquiryId}`}
-    //     />
-    //   );
-    // }
     return (
       <Redirect
         to={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
@@ -106,7 +94,7 @@ const ProductDetails = () => {
             history.goBack();
           }}
         >
-          <i class="fas fa-arrow-circle-left"></i>{" "}
+          <FaArrowCircleLeft />
           <span className="mx-2"> Go Back</span>
         </MobileHeaderText>
       </MobileHeader>
@@ -199,7 +187,11 @@ const ProductDetails = () => {
                 }
               `}
             >
-              <SumInsuredSection cartEntry={cartEntry} />
+              {journeyType === "renewal" ? (
+                <SumInsuredSection cartEntry={cartEntry} />
+              ) : tenant.alias === "renew_buy" ? null : (
+                <SumInsuredOptionsSection cartEntry={cartEntry} />
+              )}
               <CheckDiscount
                 groupCode={parseInt(groupCode)}
                 cartEntry={cartEntry}
@@ -220,7 +212,7 @@ function getSumInsuredOptions(arr = []) {
   return arr.map(item => ({ value: item, label: numberToDigitWord(item) }));
 }
 
-function SumInsuredSection({ cartEntry }) {
+function SumInsuredOptionsSection({ cartEntry }) {
   const { updateCartEntry } = useCart();
 
   const { available_sum_insureds, group, sum_insured } = cartEntry;

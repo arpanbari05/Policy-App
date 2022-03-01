@@ -8,6 +8,7 @@ import { PremiumButton } from "../../../components";
 import { numberToDigitWord } from "../../../utils/helper";
 import { uniq } from "lodash";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { IoIosArrowForward } from "react-icons/io";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
@@ -149,6 +150,7 @@ function QuoteCard({
     : quotes.map(quote => parseInt(quote.sum_insured)).sort((a, b) => a - b);
 
   const [selectedSumInsured, setSelectedSumInsured] = useState();
+  const [defaultActiveKey, setdefaultActiveKey] = useState("plan-details");
 
   const quote = quotes.find(quote =>
     isDeductibleJourney
@@ -195,7 +197,37 @@ function QuoteCard({
     onChange && onChange({ checked, quote });
   };
 
-  const features = isDeductibleJourney ? quoteFeatures : quote.features;
+  let features = isDeductibleJourney ? quoteFeatures : quote.features;
+  features = features.filter(feature =>
+    featuresDisplayedOnQuoteCard.includes(feature.code),
+  );
+
+  // const handleSeeDetailsClick = (clickedFrom) => {
+  //   handleSeeDetails(
+  //     {
+  //       quote: quote,
+  //       activeSum: activeCover,
+  //     },
+  //     clickedFrom
+  //   );
+  //   const selectedPlan = {
+  //     company_alias: quote?.company_alias,
+  //     logo: quote?.logo,
+  //     product: quote?.product,
+  //     total_premium: quote?.total_premium[activeCover],
+  //     premium: quote?.premium[activeCover],
+  //     sum_insured: quote?.sum_insured[activeCover],
+  //     tax_amount: quote?.tax_amount[activeCover],
+  //     tenure: quote?.tenure[activeCover],
+  //   };
+
+  //   dispatch(
+  //     saveSelectedPlan({
+  //       ...selectedPlan,
+  //       product_id: selectedPlan.product?.id,
+  //     })
+  //   );
+  // };
 
   return (
     <div {...props}>
@@ -212,6 +244,7 @@ function QuoteCard({
           css={`
             flex: 1;
             gap: 12px;
+            border-right: 1px solid ${colors.border.one};
           `}
         >
           <img
@@ -226,13 +259,16 @@ function QuoteCard({
             className="px-2 text-center"
             css={`
               font-weight: 900;
-              font-size: 0.88rem;
+              font-size: 0.8rem;
             `}
           >
             {quote.product.name}
           </span>
           <button
-            onClick={productDetailsModal.on}
+            onClick={() => {
+              productDetailsModal.on();
+              setdefaultActiveKey("plan-details");
+            }}
             type="button"
             className="p-0 border-0 border-bottom"
             css={`
@@ -247,24 +283,34 @@ function QuoteCard({
           </button>
         </div>
         <div
-          className="d-flex flex-wrap px-3"
+          className="d-grid mx-3"
           css={`
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
             flex: 2;
-            border-left: 1px solid;
-            border-right: 1px solid;
-            border-color: ${colors.border.one};
             row-gap: 15px;
+            column-gap: 5px;
+            margin-bottom: 10px;
           `}
         >
-          {features.map(feature =>
-            featuresDisplayedOnQuoteCard.includes(feature.code) ? (
-              <QuoteFeature key={feature.code} feature={feature} />
-            ) : null,
-          )}
+          {console.log(features)}
+          {features.slice(1, 3).map(feature => (
+            <QuoteFeature key={feature.code} feature={feature} />
+          ))}
+          {features.slice(0, 1).map(feature => (
+            <QuoteFeature key={feature.code} feature={feature} icon={<IoIosArrowForward />} onNavigate={() => {
+              productDetailsModal.on();
+              setdefaultActiveKey("cashless-hospitals");
+            }} />
+          ))}
+          {features.slice(3).map(feature => (
+            <QuoteFeature key={feature.code} feature={feature} />
+          ))}
         </div>
         <div
           css={`
             flex: 1;
+            border-left: 1px solid ${colors.border.one};
           `}
         >
           <div
@@ -317,50 +363,31 @@ function QuoteCard({
                 </QuoteCardOption>
               </div>
             )}
-            {/* <QuoteCardOption info label={"Cover:"}>
-                <QuoteCardSelect
-                  options={sumInsureds.map(sumInsured => ({
-                    value: sumInsured,
-                    label: numberToDigitWord(sumInsured)
-                      .replace("₹", "")
-                      .replace("Lakh", "L"),
-                  }))}
-                  value={{
-                    value: selectedSumInsured,
-                    label: numberToDigitWord(selectedSumInsured)
-                      .replace("₹", "")
-                      .replace("Lakh", "L"),
-                  }}
-                  onChange={handleSumInsuredChange}
-                />
-              </QuoteCardOption> */}
             {!isDeductibleJourney && (
               <div
                 className="d-flex align-items-center justify-content-center gap-2"
                 css={`
                   & > * {
-                    min-width: 70px;
+                    min-width: 80px;
                   }
                 `}
               >
                 <span
-                  className="text-[13] font-bold"
-                  style={{ minWidth: "auto" }}
+                  style={{ minWidth: "auto", fontWeight: "bold", fontSize: 13 }}
                 >
                   Cover:
                 </span>
                 <QuoteCardSelect
                   options={sumInsureds.map(sumInsured => ({
                     value: sumInsured,
-                    label: numberToDigitWord(sumInsured)
-                      .replace("₹", "")
-                      .replace("Lakh", "L"),
+                    label: numberToDigitWord(sumInsured).replace("₹", ""),
                   }))}
                   value={{
                     value: selectedSumInsured,
-                    label: numberToDigitWord(selectedSumInsured)
-                      .replace("₹", "")
-                      .replace("Lakh", "L"),
+                    label: numberToDigitWord(selectedSumInsured).replace(
+                      "₹",
+                      "",
+                    ),
                   }}
                   onChange={handleSumInsuredChange}
                 />
@@ -404,7 +431,7 @@ function QuoteCard({
                     css={`
                       width: 17px;
                       height: 17px;
-                      border: 1px solid #dcdcdc;
+                      border: 1px solid ${colors.primary_color};
                       border-radius: 50%;
                       margin: 1px 5px 1px 1px;
                     `}
@@ -432,7 +459,7 @@ function QuoteCard({
         </div>
       </div>
       {productDetailsModal.isOn && (
-        <ProductDetailsModal quote={quote} onClose={productDetailsModal.off} />
+        <ProductDetailsModal quote={quote} onClose={productDetailsModal.off} defaultActiveKey={defaultActiveKey} />
       )}
     </div>
   );
@@ -444,12 +471,21 @@ function QuoteCardSelect({ ...props }) {
       isSearchable={false}
       components={{ DropdownIndicator: FaChevronDown }}
       styles={{
-        option: provided => ({ ...provided, fontSize: "13px" }),
-        menu: provided => ({ ...provided, fontSize: "13px" }),
+        option: provided => ({
+          ...provided,
+          fontSize: "13px",
+          fontWeight: "bold",
+        }),
+        menu: provided => ({
+          ...provided,
+          fontSize: "13px",
+          fontWeight: "bold",
+        }),
         valueContainer: provided => ({
           ...provided,
           padding: 0,
           fontSize: "13px",
+          fontWeight: "bold",
         }),
         indicatorSeparator: () => ({ display: "none" }),
         dropdownIndicator: provided => ({
@@ -457,10 +493,12 @@ function QuoteCardSelect({ ...props }) {
           padding: 0,
           color: "black",
           fontSize: "13px",
+          fontWeight: "bold",
         }),
         control: provided => ({
           ...provided,
           fontSize: "13px",
+          fontWeight: "bold",
           border: "none",
           minHeight: "initial",
         }),
@@ -517,7 +555,7 @@ const shortDescriptionFeatures = [
   "room_rent_charges",
 ];
 
-function QuoteFeature({ feature }) {
+function QuoteFeature({ feature, icon, onNavigate }) {
   const showShortDescription = shortDescriptionFeatures.includes(feature.code);
   const description = showShortDescription
     ? feature.short_description
@@ -546,10 +584,15 @@ function QuoteFeature({ feature }) {
         <div
           css={`
             width: auto;
-            font-size: 0.79rem;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
           `}
+          onClick={onNavigate}
         >
           {feature.value}
+          {icon}
         </div>
       </div>
     </OverlayTrigger>

@@ -60,6 +60,8 @@ const plantypes = {
 export function CartDetails({ groupCode, ...props }) {
   const { colors } = useTheme();
 
+  const { journeyType } = useFrontendBoot();
+
   const { getCartEntry } = useCart();
 
   const cartEntry = getCartEntry(groupCode);
@@ -107,7 +109,23 @@ export function CartDetails({ groupCode, ...props }) {
             <TotalPremium groupCode={groupCode} />{" "}
           </div>
         )}
-        <ReviewCartButtonNew groupCode={groupCode} />
+        {journeyType === "renewal" ? (
+          <div
+            className="d-flex mt-1"
+            css={`
+              gap: 0.3em;
+              & button {
+                flex: 1;
+                font-size: 0.79rem;
+              }
+            `}
+          >
+            <Button>{"Quick Pay & Renew"}</Button>
+            <Button>Modify Details</Button>
+          </div>
+        ) : (
+          <ReviewCartButtonNew groupCode={groupCode} />
+        )}
       </div>
     </CartDetailsWrap>
   );
@@ -508,10 +526,14 @@ function BasePlanDetails({
           gap: 1em;
         `}
       >
-        <div
-          className="d-flex align-items-center"
-        >
-          <img css={`height: 45px;`} src={icLogoSrc} alt={alias} />
+        <div className="d-flex align-items-center">
+          <img
+            css={`
+              height: 45px;
+            `}
+            src={icLogoSrc}
+            alt={alias}
+          />
         </div>
         <div>{name}</div>
       </div>
