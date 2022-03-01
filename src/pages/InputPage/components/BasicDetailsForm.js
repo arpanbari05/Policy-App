@@ -47,7 +47,7 @@ const BasicDetailsForm = ({ ...props }) => {
   });
   const emailInput = useEmailInput(inputData.email || "", setEmailErrors);
   const [gender, setGender] = useState(inputData.gender || "M");
-  const [journeyType, setJourneyType] = useState("top_up");
+  const [journeyType, setJourneyType] = useState("health");
   const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
   const urlSearchParams = useUrlQuery();
   const history = useHistory();
@@ -237,6 +237,7 @@ const BasicDetailsForm = ({ ...props }) => {
                   name="journeyType"
                   value={"health"}
                   className="mx-1"
+                  checked={journeyType === "health"}
                   onChange={() => {
                     setJourneyType("health");
                   }}
@@ -253,6 +254,9 @@ const BasicDetailsForm = ({ ...props }) => {
           disabled={createEnquiryQuery.isLoading}
           loader={createEnquiryQuery.isLoading}
           css={`
+            height: 58px;
+            font-weight: normal;
+            font-size: 20px;
             @media (max-width: 480px) {
               font-size: 13px;
               font-weight: normal;
