@@ -3,7 +3,6 @@ import CustomProgressBar from "../../../components/ProgressBar";
 import RadioButton from "../../../components/RadioButton";
 import {
   useFrontendBoot,
-  useTheme,
   useUpdateEnquiry,
   useUrlEnquiry,
 } from "../../../customHooks";
@@ -13,8 +12,6 @@ import { useHistory } from "react-router-dom";
 import { InputFormCta } from ".";
 
 function PlanTypeForm(props) {
-  const { colors } = useTheme();
-
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
 
   let {
@@ -40,7 +37,7 @@ function PlanTypeForm(props) {
   };
 
   return (
-    <div className="p-3" {...props}>
+    <div className="p-3 pb-5" {...props}>
       <div>
         <Title className="w-100">Which plan would you like to opt for?</Title>
         <CustomProgressBar now={3} total={4} />
