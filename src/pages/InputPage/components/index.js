@@ -8,11 +8,25 @@ export function BackLink({ ...props }) {
     <Link
       css={`
         color: #000;
+        background: rgb(239, 243, 245);
+        color: rgb(70, 86, 113);
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        gap: 3px;
+
+        @media (max-width: 480px) {
+          height: 40px;
+          max-width: 120px;
+          width: 100%;
+        }
       `}
       {...props}
     >
       <BiArrowBack />
-      Back
+      <span>Back</span>
     </Link>
   );
 }
@@ -26,8 +40,13 @@ export function InputFormCta({
   const handleClick = () => onContinueClick && onContinueClick();
   return (
     <div
-      className="d-flex justify-content-around align-items-center"
+      className="d-flex justify-content-between align-items-center"
       {...props}
+      css={`
+        @media (max-width: 480px) {
+          padding: 0 17px;
+        }
+      `}
     >
       <BackLink to={backLink} />
       <Button
@@ -36,6 +55,15 @@ export function InputFormCta({
         loader={loader}
         css={`
           width: 7.9em;
+
+          @media (max-width: 480px) {
+            font-size: 13px;
+            height: 40px;
+            width: 100%;
+            max-width: 120px;
+            padding: 5px 11px;
+            font-weight: normal;
+          }
         `}
       >
         Continue

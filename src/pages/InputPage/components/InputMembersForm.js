@@ -16,7 +16,7 @@ import {
 import styled from "styled-components/macro";
 import { useHistory } from "react-router-dom";
 import { InputFormCta } from ".";
-import { FaPlusCircle } from "react-icons/fa";
+import { RiAddCircleFill, RiAddCircleLine } from "react-icons/ri";
 import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
 import { Button } from "../../../components";
 
@@ -104,24 +104,27 @@ function InputMembersForm(props) {
           <StyledErrorMessage className="m-0 mt-3">{error}</StyledErrorMessage>
         ) : null}
         <button
-          className="w-100 py-2 my-3"
+          className="w-100"
           css={`
             background-color: ${colors.primary_shade};
-            font-weight: 900;
+
+            height: 43px;
             &:hover {
               background-color: ${colors.secondary_shade};
+            }
+
+            @media (max-width: 480px) {
+              font-size: 13px;
+              height: 43px;
+              margin-bottom: 20px;
+              margin-top: 10px;
             }
           `}
           onClick={editMembersToggle.on}
           {...props}
         >
-          <FaPlusCircle
-            css={`
-              color: ${colors.primary_color};
-              font-size: 1.2rem;
-            `}
-          />{" "}
-          Other Members
+          <RiAddCircleFill size={25} color={colors.primary_color} /> Other
+          Members
         </button>
         {editMembersToggle.isOn ? (
           <EditMembers

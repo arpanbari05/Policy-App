@@ -256,7 +256,12 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
         box-shadow: grey 0px 0px 10px;
       `}
     >
-      <div className="py-3 px-2 d-flex align-items-center justify-content-between">
+      <div
+        className="d-flex align-items-center justify-content-between"
+        css={`
+          padding: 10px;
+        `}
+      >
         <div
           className="d-flex align-items-center"
           css={`
