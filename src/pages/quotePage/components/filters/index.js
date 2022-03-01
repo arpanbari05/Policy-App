@@ -17,7 +17,7 @@ export function FilterHead({ label, children, onClick, ...props }) {
     >
       <div
         css={`
-          font-size: 0.79rem;
+          font-size: 11px;
           color: ${colors.font.three};
         `}
       >
@@ -26,7 +26,7 @@ export function FilterHead({ label, children, onClick, ...props }) {
       <div
         className="d-flex align-items-center justify-content-between"
         css={`
-          font-size: 0.89rem;
+          font-size: 12px;
           gap: 1em;
           min-width: max-content;
           font-weight: 900;

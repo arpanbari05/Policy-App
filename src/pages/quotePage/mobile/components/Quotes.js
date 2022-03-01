@@ -9,6 +9,7 @@ import {
   useTheme,
   useToggle,
   useUrlEnquiry,
+  useFrontendBoot,
 } from "../../../../customHooks";
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 import "styled-components/macro";
@@ -211,6 +212,9 @@ function QuoteCards({ quotesData, compare, ...props }) {
 }
 
 function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
+  const [defaultActiveKey, setdefaultActiveKey] = useState(
+    "mobile-plan-details",
+  );
   const { colors } = useTheme();
 
   const {
@@ -218,6 +222,8 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
     logoSrc,
     deductibles,
     selectedDeductible,
+    selectedSumInsured,
+    sumInsureds,
     handleDeductibleChange,
   } = useQuoteCard({
     quotes,
@@ -225,12 +231,19 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
 
   const productDetailsToggle = useToggle(false);
 
+  const { journeyType } = useFrontendBoot();
+
   if (!quote) return null;
 
   const isCompareQuote = compare.checkFn(quote);
 
   const handleCompareChange = evt => {
     compare.onChange && compare.onChange(evt.target.checked, quote, evt);
+  };
+
+  const handleProductDetailsModal = defaultKey => {
+    productDetailsToggle.on();
+    setdefaultActiveKey(defaultKey);
   };
 
   return (
@@ -276,7 +289,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
           />
         </label>
         <button
-          onClick={productDetailsToggle.on}
+          onClick={() => handleProductDetailsModal("mobile-plan-details")}
           className="d-flex align-items-center"
           css={`
             ${isFirstQuote
@@ -314,25 +327,71 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
             >
               {quote.product.name}
             </div>
-            <div
-              css={`
-                font-size: 0.73rem;
-              `}
-            >
-              Deductible:
-              <select
-                value={selectedDeductible}
-                onChange={evt =>
-                  handleDeductibleChange({ value: evt.target.value })
-                }
-              >
-                {deductibles.map(deductible => (
-                  <option key={deductible} value={deductible}>
-                    {numberToDigitWord(deductible)}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {journeyType === "top_up" && (
+              <>
+                <div
+                  css={`
+                    font-size: 0.73rem;
+                  `}
+                >
+                  Deductible:
+                  <select
+                    value={selectedDeductible}
+                    onChange={evt =>
+                      handleDeductibleChange({ value: evt.target.value })
+                    }
+                  >
+                    {deductibles.map(deductible => (
+                      <option key={deductible} value={deductible}>
+                        {numberToDigitWord(deductible)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div
+                  css={`
+                    font-size: 0.73rem;
+                  `}
+                >
+                  Cover:
+                  <select
+                    value={selectedSumInsured}
+                    onChange={evt =>
+                      handleDeductibleChange({ value: evt.target.value })
+                    }
+                  >
+                    {sumInsureds.map(deductible => (
+                      <option key={deductible} value={deductible}>
+                        {numberToDigitWord(deductible)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
+            {journeyType === "health" && (
+              <>
+                <div
+                  css={`
+                    font-size: 0.73rem;
+                  `}
+                >
+                  Cover:
+                  <select
+                    value={selectedSumInsured}
+                    onChange={evt =>
+                      handleDeductibleChange({ value: evt.target.value })
+                    }
+                  >
+                    {sumInsureds.map(deductible => (
+                      <option key={deductible} value={deductible}>
+                        {numberToDigitWord(deductible)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
           </div>
         </div>
         <div>
@@ -348,7 +407,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
           />
         </div>
       </div>
-      <QuoteFeatures features={quote.features} />
+      <QuoteFeatures handleNavigate={() => handleProductDetailsModal("mobile-plan-details")} features={quote.features} />
       {productDetailsToggle.isOn && (
         <ProductDetailsModal quote={quote} onClose={productDetailsToggle.off} />
       )}
@@ -356,8 +415,11 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
   );
 }
 
-function QuoteFeatures({ features = [] }) {
+function QuoteFeatures({ features = [], handleNavigate = () => {} }) {
   const { colors } = useTheme();
+  features = features.filter((feature, index) =>
+    featuresDisplayedOnQuoteCard.includes(feature.code),
+  );
   return (
     <div
       className="p-2 d-flex flex-wrap"
@@ -366,16 +428,20 @@ function QuoteFeatures({ features = [] }) {
         background-color: ${colors.primary_shade};
       `}
     >
-      {features.map((feature, index) =>
-        featuresDisplayedOnQuoteCard.includes(feature.code) ? (
-          <QuoteFeature feature={feature} key={feature.name} index={index} />
-        ) : null,
-      )}
+      {features.slice(1, 3).map((feature, index) => (
+        <QuoteFeature feature={feature} key={feature.name} index={index} />
+      ))}
+      {features.slice(0, 1).map((feature, index) => (
+        <QuoteFeature feature={feature} key={feature.name} index={index} onNavigate={handleNavigate} />
+      ))}
+      {features.slice(3).map((feature, index) => (
+        <QuoteFeature feature={feature} key={feature.name} index={index} />
+      ))}
     </div>
   );
 }
 
-function QuoteFeature({ feature, index }) {
+function QuoteFeature({ feature, index, onNavigate }) {
   const { colors } = useTheme();
   return (
     <div
@@ -393,6 +459,7 @@ function QuoteFeature({ feature, index }) {
         css={`
           color: ${colors.primary_color};
         `}
+        // onClick={onNavigate}
       >
         {feature.value}
       </span>
@@ -428,19 +495,15 @@ function ChevronRightCircle({ css = "", className = "", ...props }) {
   );
 }
 
-export function QuoteCardDataset(
-  description,
-  index,
-  PrimaryColor
-) {
+export function QuoteCardDataset(description, index, PrimaryColor) {
   const [showTooltip, setShowTooltip] = useState(false);
   const target = useRef(null);
   useOutsiteClick(target, () => setShowTooltip(false));
-  
+
   const renderTooltip = props => <Tooltip {...props}>{description}</Tooltip>;
   const toggleTooltip = () => {
-    setShowTooltip( prev => !prev );
-  }
+    setShowTooltip(prev => !prev);
+  };
 
   return (
     <span

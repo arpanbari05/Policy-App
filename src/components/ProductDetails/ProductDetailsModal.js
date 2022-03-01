@@ -10,7 +10,13 @@ import {
   useGetProductBrochureQuery,
   useGetProductFeaturesQuery,
 } from "../../api/api";
-import { useCompanies, useQuote, useTheme, useToggle } from "../../customHooks";
+import {
+  useCompanies,
+  useFrontendBoot,
+  useQuote,
+  useTheme,
+  useToggle,
+} from "../../customHooks";
 import ClaimProcess from "../../pages/SeeDetails/DataSet/ClaimProcess";
 import {
   amount,
@@ -24,7 +30,7 @@ import AboutCompany from "../../pages/SeeDetails/DataSet/AboutCompany";
 import PlanDetails from "../../pages/SeeDetails/DataSet/PlanDetails";
 import { Riders } from "../../pages/ProductDetails/components/CustomizeYourPlan";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CartSummaryModal from "../CartSummaryModal";
 import {
   MobileProductHeader,
@@ -48,7 +54,7 @@ function useRidersSlot() {
   return { selectedRiders, onChange };
 }
 
-function ProductDetailsModal({ quote, onClose, ...props }) {
+function ProductDetailsModal({ quote, onClose, defaultActiveKey="plan-details", defaultActiveKeyMobile="mobile-plan-details", ...props }) {
   const handleClose = () => onClose && onClose();
 
   console.log("The quote", quote);
@@ -90,8 +96,7 @@ function ProductDetailsModal({ quote, onClose, ...props }) {
             selectedRiders={selectedRiders}
             onClose={handleClose}
           />
-
-          <ProductDetailsTabs>
+          <ProductDetailsTabs defaultActiveKey={defaultActiveKey}>
             <Tab eventKey="plan-details" title="Plan Details">
               <RenderPlanDetails quote={quote} />
             </Tab>
@@ -111,7 +116,7 @@ function ProductDetailsModal({ quote, onClose, ...props }) {
             </Tab>
           </ProductDetailsTabs>
 
-          <MobileProductDetailsTabs>
+          <MobileProductDetailsTabs defaultActiveKey={defaultActiveKeyMobile}>
             <Tab eventKey="mobile-plan-details" title="Plan Details">
               <MobileRenderPlanDetails quote={quote} />
             </Tab>
@@ -290,10 +295,10 @@ function RenderClaimProcess({ quote, ...props }) {
     productBrochureQuery.isUninitialized,
   ]);
 
-  const isError = some([
-    claimProcessQuery.isError,
-    productBrochureQuery.isError,
-  ]);
+  // const isError = some([
+  //   claimProcessQuery.isError,
+  //   productBrochureQuery.isError,
+  // ]);
 
   if (isLoading)
     return (
@@ -521,6 +526,8 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
     queryState: { isLoading },
   } = useQuote();
 
+  const { journeyType } = useFrontendBoot();
+
   const cartSummaryModal = useToggle();
 
   const handleClose = () => {
@@ -615,7 +622,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
               `}
             >
               {" "}
-              {amount(total_premium)}
+              {amount(total_premium)} / Year
             </span>
           </div>
           <div
@@ -649,10 +656,13 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
             width: 12.97em;
             height: 3.97em;
             font-size: 0.939rem;
+            font-weight: normal;
           `}
           loader={isLoading}
         >
-          {getDisplayPremium({ total_premium: netPremium, tenure })}
+          {journeyType === "top_up"
+            ? getDisplayPremium({ total_premium: netPremium, tenure })
+            : "Proceed to Buy"}
         </Button>
 
         <CloseButton className="p-0" onClick={handleClose}>

@@ -168,11 +168,11 @@ const StickyTop = styled.div`
   } ;
 `;
 
-export function MobileProductDetailsTabs({ children, ...props }) {
+export function MobileProductDetailsTabs({ children, defaultActiveKey, ...props }) {
   const { colors } = useTheme();
   return (
     <StyledTabs
-      defaultActiveKey="mobile-plan-details"
+      defaultActiveKey={defaultActiveKey}
       id="product-details-tabs"
       className="align-items-center justify-content-between"
       css={`

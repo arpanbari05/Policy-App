@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const FilterWrapper = styled.div`
-  padding: 5px 20px;
+  padding: 3px 20px;
   cursor: pointer;
   &:hover {
     background-color: #eef1f4;
@@ -28,12 +28,12 @@ export const FilterWrapper = styled.div`
     }
   }
 
-  @media (max-width: 1399px) {
+  @media (max-width: 1499px) {
     .filter_head {
-      font-size: 13px;
+      font-size: 11px;
     }
     .filter_sub_head {
-      font-size: 14px;
+      font-size: 12px;
     }
   }
 `;

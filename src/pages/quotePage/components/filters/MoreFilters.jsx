@@ -108,6 +108,9 @@ function FilterModal({ onClose }) {
         className="p-3 pb-0 d-flex flex-column"
         css={`
           gap: 1em;
+          min-height: 67vh;
+          height: 67vh;
+          overflow: auto;
         `}
       >
         {morefilters.map((filter, idx) => (
@@ -121,13 +124,17 @@ function FilterModal({ onClose }) {
           </>
         ))}
       </div>
-      <div className="p-3 d-flex align-items-center justify-content-between">
-        <button onClick={clearFilters}>Clear Filters</button>
+      <div className="p-3 d-flex justify-content-between">
+        <button css={`width: 50% !important`} onClick={clearFilters}>
+          <span css={`border-bottom: 3px dotted #777;`}>
+            Clear filters
+          </span>
+        </button>
         {
           length ? (
-            <Button onClick={handleShowPlansClick}>Show {length} plans</Button>
+            <Button css={`width: 50% !important`} onClick={handleShowPlansClick}>Show {length} plans</Button>
           ) : (
-            <button disabled onClick={clearFilters}>No plan available</button>
+            <button css={`width: 50% !important; height: 2.8em;`} disabled onClick={clearFilters}>No plan available</button>
           )
         }
       </div>

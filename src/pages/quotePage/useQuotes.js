@@ -20,19 +20,19 @@ import {
   deleteQuotes,
 } from "./quote.slice";
 import { updateGroups } from "./serviceApi";
+import { useFrontendBoot } from "../../customHooks/index";
 
 function useQuotesPage() {
-  const companies = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data,
-  );
-
   // const filtersForTest = useSelector((state) => state.quotePage.filters);
   // console.log(
   //   "Filters PlanType applied to the quotes page",
   //   filtersForTest.planType
   // );
 
-  const imageSendQuote = email => {
+  const { cover, tenure, plan_type, companies } = useFrontendBoot().data;
+  const { data } = useFrontendBoot();
+
+  const imageSendQuote = (email, stage) => {
     const input = document.getElementById("printQuotePage");
 
     html2canvas(input, {
@@ -46,6 +46,7 @@ function useQuotesPage() {
           image: imgData,
           group_id: groupCode,
           share_quote: "quote",
+          stage,
         }),
       );
     });
@@ -57,11 +58,6 @@ function useQuotesPage() {
     filterQuotes: QuotesToAdd,
     shouldFetchQuotes,
   } = useSelector(state => state.quotePage);
-
-  const { cover, tenure, plan_type } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters,
-  );
-  const { data } = useSelector(({ frontendBoot }) => frontendBoot.frontendData);
 
   const findCode = (fitlerName, fitlerValue) => {
     if (fitlerName === "covers" && Number(fitlerValue) > 9999999) {

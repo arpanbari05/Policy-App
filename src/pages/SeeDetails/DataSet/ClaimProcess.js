@@ -67,6 +67,7 @@ const dataSet = dataArray => {
               css={`
                 color: #253858;
                 margin-bottom: 0px;
+                margin-top: 8px;
               `}
             >
               {data.description}{" "}
@@ -129,11 +130,8 @@ const dataSet = dataArray => {
         css={`
           justify-content: center;
           align-items: center;
-          /* background-color: #eff7ff; */
           display: flex;
           border-radius: 100%;
-          /* width: 66px;
-      height:66px; */
         `}
       >
         <svg
@@ -225,9 +223,6 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                             Please reach out on details below for further
                             queries.
                           </h2>
-                          {/* <p className="p_important_sub">
-                            Don't Hesitate to contact us for any information.
-                          </p>{" "} */}
                         </div>
                         <hr className="hr_p_b_cliam" />
                         {claimform?.claim_url ? (
@@ -265,6 +260,7 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                                   css={`
                                     color: #253858;
                                     margin-bottom: 0px;
+                                    margin-top: 8px;
                                   `}
                                 >
                                   Download Claim Form here.{" "}

@@ -9,11 +9,15 @@ import styled from "styled-components";
 import { useRef, useState } from "react";
 import { EmailSent } from "../pages/ComparePage/ComparePage.style";
 import { setEmail as setlEmaiStatus } from "../pages/ComparePage/compare.slice";
+import { useTheme } from "../customHooks/index";
+import ShareButton from "../components/Common/Button/ShareButton";
+import { CircleLoader } from '../components/index';
 
-const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
-  const { theme } = useSelector(state => state.frontendBoot);
+const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBtn = false}) => {
+  console.log(imageSend, emailStatus);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const [show, setshow] = useState(showModal);
+  const { colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade } } = useTheme();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -24,7 +28,6 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails,
   );
-  const [showMsgs, setyShowMsgs] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [email, setEmail] = useState(
@@ -69,7 +72,7 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
       // setTimeout(() => {
       //   handleRotation();
       // }, 2000);
-      return imageSend(email);
+      return imageSend(email, stage);
     }
   };
 
@@ -79,169 +82,196 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
   // if(emailStatus){
   //   setIsSending(false);
   //
-  console.log("semding....", isSending);
+
+  const handleClose = () => setshow(false);
+  const handleShow = () => setshow(true);
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      animation={false}
-      css={`
-        .modal-dialog {
-          max-width: 650px !important;
-        }
+    <>
+      { !hideBtn && <ShareButton onClick={handleShow} /> }
+      <Modal
+        show={show}
+        onHide={handleClose}
+        animation={false}
+        css={`
+          .modal-dialog {
+            max-width: 650px !important;
+          }
 
-        .modal-footer {
-          padding: 0px !important;
+          .modal-footer {
+            padding: 0px !important;
 
-          border-top: none !important;
-        }
-        .modal-footer > * {
-          margin: 0px !important;
-        }
-      `}
-    >
-      <Modal.Header
-        // closeButton
-        style={{
-          backgroundColor: "#f5f7f9",
-        }}
+            border-top: none !important;
+          }
+          .modal-footer > * {
+            margin: 0px !important;
+          }
+        `}
       >
-        <Modal.Title
+        <Modal.Header
+          // closeButton
           style={{
-            fontSize: "20px",
-            fontWeight: "600",
-            color: "black",
+            backgroundColor: "#f5f7f9",
           }}
-          css={`
-            @media (max-width: 440px) {
-              font-size: 15px !important;
-            }
-          `}
         >
-          Hi, please choose the way you wish to share the quotes.
-        </Modal.Title>
-        <i
-          onClick={handleClose}
-          style={{ cursor: "pointer" }}
-          class="fas fa-times"
-        ></i>
-      </Modal.Header>
-      <Modal.Body>
-        <div
-          css={`
-            .icon_wrapper {
-              background-color: ${PrimaryShade};
-              color: ${PrimaryColor};
-            }
-          `}
-        >
-          <ShareOption
-            className="d-flex align-items-center justify-content-between  mb-3"
-            PrimaryColor={PrimaryColor}
+          <Modal.Title
+            style={{
+              fontSize: "20px",
+              fontWeight: "600",
+              color: "black",
+            }}
+            css={`
+              @media (max-width: 440px) {
+                font-size: 15px !important;
+              }
+            `}
           >
-            <div className="d-flex align-items-center position-relative w-100">
-              <div className="icon_wrapper">
-                <EmailIcon width="21" />
+            Hi, please choose the way you wish to share the quotes.
+          </Modal.Title>
+          <i
+            onClick={handleClose}
+            style={{ cursor: "pointer" }}
+            class="fas fa-times"
+          ></i>
+        </Modal.Header>
+        <Modal.Body>
+          <div
+            css={`
+              .icon_wrapper {
+                background-color: ${PrimaryShade};
+                color: ${PrimaryColor};
+              }
+            `}
+          >
+            <ShareOption
+              className="d-flex align-items-center justify-content-between  mb-3"
+              PrimaryColor={PrimaryColor}
+            >
+              <div className="d-flex align-items-center position-relative w-100">
+                <div className="icon_wrapper">
+                  <EmailIcon width="21" />
+                </div>
+                <input
+                  type="email"
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="Email"
+                  value={email}
+                  css={``}
+                />
+                {/* <span
+                  css={`
+                    position: absolute;
+                    top: 50%;
+                    right: 20px;
+                    color: black;
+                    transform: translateY(-50%) !important;
+                    display: none;
+                    background: #ffffff9e;
+                    @media (max-width: 400px) {
+                      display: ${isSending && !emailStatus.message
+                        ? "block"
+                        : "none"} !important;
+                    }
+                  `}
+                >
+                  <CircleLoader animation="border" />
+                </span> */}
               </div>
-              <input
-                type="email"
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Email"
-                value={email}
-                css={``}
-              />
-              {/* <span
-                css={`
-                  position: absolute;
-                  top: 50%;
-                  right: 20px;
-                  color: black;
-                  transform: translateY(-50%) !important;
-                  display: none;
-                  background: #ffffff9e;
-                  @media (max-width: 400px) {
+
+              <button
+                className="btn share_btn  position-relative"
+                onClick={e => {
+                  handleSendViaEmail(e);
+                }}
+              >
+                <span
+                  css={`
+                    @media (max-width: 400px) {
+                      display: none;
+                    }
+                  `}
+                >
+                  Share
+                </span>
+                <span
+                  css={`
+                    display: none;
+                    @media (max-width: 400px) {
+                      display: block;
+                    }
+                  `}
+                >
+                  {isSending && !emailStatus.message ? (
+                    <CircleLoader animation="border" />
+                  ) : (
+                    <i className="fas fa-share"></i>
+                  )}
+                </span>
+                <span
+                  css={`
+                    position: absolute;
+                    top: 50%;
+                    right: 20px;
+                    transform: translateY(-50%) !important;
                     display: ${isSending && !emailStatus.message
                       ? "block"
-                      : "none"} !important;
-                  }
-                `}
-              >
-                <i className="fa fa-circle-notch rotate" />
-              </span> */}
-            </div>
+                      : "none"};
+                    @media (max-width: 400px) {
+                      display: none !important;
+                    }
+                  `}
+                >
+                  <CircleLoader animation="border" />
+                </span>
+              </button>
+            </ShareOption>
 
-            <button
-              className="btn share_btn  position-relative"
-              onClick={e => {
-                handleSendViaEmail(e);
-              }}
+            <ShareOption
+              className="d-flex mb-3 align-items-center justify-content-between "
+              PrimaryColor={PrimaryColor}
             >
-              <span
-                css={`
-                  @media (max-width: 400px) {
-                    display: none;
-                  }
-                `}
-              >
-                Share
-              </span>
-              <span
-                css={`
-                  display: none;
-                  @media (max-width: 400px) {
-                    display: block;
-                  }
-                `}
-              >
-                {isSending && !emailStatus.message ? (
-                  <i className="fa fa-circle-notch rotate" />
-                ) : (
-                  <i className="fas fa-share"></i>
-                )}
-              </span>
-              <span
-                css={`
-                  position: absolute;
-                  top: 50%;
-                  right: 20px;
-                  transform: translateY(-50%) !important;
-                  display: ${isSending && !emailStatus.message
-                    ? "block"
-                    : "none"};
-                  @media (max-width: 400px) {
-                    display: none !important;
-                  }
-                `}
-              >
-                <i className="fa fa-circle-notch rotate" />
-              </span>
-            </button>
-          </ShareOption>
-
-          <ShareOption
-            className="d-flex mb-3 align-items-center justify-content-between "
-            PrimaryColor={PrimaryColor}
-          >
-            <div className="d-flex align-items-center">
-              <div className="icon_wrapper">
-                <WhtsappIcon width="21" />
+              <div className="d-flex align-items-center">
+                <div className="icon_wrapper">
+                  <WhtsappIcon width="21" />
+                </div>
+                <input
+                  type="number"
+                  onChange={e => handleNumberCheck(e, setWtsappNo)}
+                  placeholder="Mobile no."
+                  value={wtsappNo}
+                />
               </div>
-              <input
-                type="number"
-                onChange={e => handleNumberCheck(e, setWtsappNo)}
-                placeholder="Mobile no."
-                value={wtsappNo}
-              />
-            </div>
 
-            {Number(wtsappNo.length) === 10 ? (
-              <a
-                target="_blank"
-                ref={sendRef}
-                rel="noreferrer"
-                href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
-              >
-                <button className="btn share_btn">
+              {Number(wtsappNo.length) === 10 ? (
+                <a
+                  target="_blank"
+                  ref={sendRef}
+                  rel="noreferrer"
+                  href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
+                >
+                  <button className="btn share_btn">
+                    <span
+                      css={`
+                        @media (max-width: 400px) {
+                          display: none;
+                        }
+                      `}
+                    >
+                      Share
+                    </span>
+                    <span
+                      css={`
+                        display: none;
+                        @media (max-width: 400px) {
+                          display: block;
+                        }
+                      `}
+                    >
+                      <i className="fas fa-share"></i>
+                    </span>{" "}
+                  </button>
+                </a>
+              ) : (
+                <button className="btn share_btn px-5">
                   <span
                     css={`
                       @media (max-width: 400px) {
@@ -262,9 +292,27 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
                     <i className="fas fa-share"></i>
                   </span>{" "}
                 </button>
-              </a>
-            ) : (
-              <button className="btn share_btn px-5">
+              )}
+            </ShareOption>
+
+            <ShareOption
+              className="d-flex mb-3 align-items-center justify-content-between "
+              PrimaryColor={PrimaryColor}
+            >
+              <div className="d-flex align-items-center">
+                <div className="icon_wrapper">
+                  <SmsIcon width="21" />
+                </div>
+                <input
+                  type="number"
+                  placeholder="Mobile no."
+                  onChange={e => handleNumberCheck(e, setSmsNo)}
+                  placeholder="Mobile no."
+                  value={smsNo}
+                />
+              </div>
+
+              <button className="btn share_btn ">
                 <span
                   css={`
                     @media (max-width: 400px) {
@@ -285,66 +333,26 @@ const ShareQuoteModal = ({ show, handleClose, imageSend, emailStatus }) => {
                   <i className="fas fa-share"></i>
                 </span>{" "}
               </button>
+            </ShareOption>
+
+            <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>
+              * Please note that the premium may vary in future.
+            </InfoMessage>
+            {errorMsg ? (
+              <div className="text-center text-danger">{errorMsg}</div>
+            ) : (
+              ""
             )}
-          </ShareOption>
-
-          <ShareOption
-            className="d-flex mb-3 align-items-center justify-content-between "
-            PrimaryColor={PrimaryColor}
-          >
-            <div className="d-flex align-items-center">
-              <div className="icon_wrapper">
-                <SmsIcon width="21" />
-              </div>
-              <input
-                type="number"
-                placeholder="Mobile no."
-                onChange={e => handleNumberCheck(e, setSmsNo)}
-                placeholder="Mobile no."
-                value={smsNo}
-              />
-            </div>
-
-            <button className="btn share_btn ">
-              <span
-                css={`
-                  @media (max-width: 400px) {
-                    display: none;
-                  }
-                `}
-              >
-                Share
-              </span>
-              <span
-                css={`
-                  display: none;
-                  @media (max-width: 400px) {
-                    display: block;
-                  }
-                `}
-              >
-                <i className="fas fa-share"></i>
-              </span>{" "}
-            </button>
-          </ShareOption>
-
-          <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>
-            * Please note that the premium may vary in future.
-          </InfoMessage>
-          {errorMsg ? (
-            <div className="text-center text-danger">{errorMsg}</div>
-          ) : (
-            ""
-          )}
-          {emailStatus && (
-            <EmailSent status={emailStatus.status}>
-              {/* {handleRotation()} */}
-              {emailStatus.message}
-            </EmailSent>
-          )}
-        </div>
-      </Modal.Body>
-    </Modal>
+            {emailStatus && (
+              <EmailSent status={emailStatus.status}>
+                {/* {handleRotation()} */}
+                {emailStatus.message}
+              </EmailSent>
+            )}
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 
