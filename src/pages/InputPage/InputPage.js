@@ -168,7 +168,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;
-  padding-top: 30px;
+  padding-top: 10px;
   width: 100%;
   & > div {
     width: 50%;
@@ -227,7 +227,7 @@ function HeaderCard() {
       BgColor={`#edf0f49e`}
       padding={`27px`}
       styledCss={`
-    margin: 0 auto;
+    margin: 10px auto;
     box-shadow: none!important;
     width: 585px;
     @media(max-width:1200px){

@@ -176,7 +176,7 @@ const Navbar = () => {
                 alt={`companylogo`}
                 css={`
                   cursor: pointer;
-                  height: 1.92em;
+                  height: 2.52em;
                 `}
               />
             </Link>
