@@ -96,6 +96,7 @@ const InputPage = () => {
               }
               @media(max-width:835px){
       margin: 20px auto;
+      margin-bottom: 10px;
       width: 96%;
     }
               `}
