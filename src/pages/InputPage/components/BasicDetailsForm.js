@@ -254,6 +254,9 @@ const BasicDetailsForm = ({ ...props }) => {
           disabled={createEnquiryQuery.isLoading}
           loader={createEnquiryQuery.isLoading}
           css={`
+            height: 58px;
+            font-weight: normal;
+            font-size: 20px;
             @media (max-width: 480px) {
               font-size: 13px;
               font-weight: normal;

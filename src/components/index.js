@@ -151,7 +151,7 @@ export function Button({
         border: none;
         color: #fff;
         border-radius: 2px;
-        height: 58px;
+        height: 2.8em;
         min-width: max-content;
         padding: 0 1em;
         cursor: pointer;
