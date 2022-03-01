@@ -191,7 +191,8 @@ const ProposalSummary = () => {
                         }}
                       >
                         <span>Pay Now </span>
-                        <div> ₹ {item?.total_premium}</div>
+                        
+                        <div>₹ {parseInt(item?.total_premium).toLocaleString("en-In")}</div>
                       </PayButton>
                     </PayItem>
                   ))}
@@ -236,7 +237,8 @@ const ProposalSummary = () => {
                   <span>Total Premium</span>
                   <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
                     <span class="font_weight_normal text-white">
-                      ₹ {policyStatus.reduce((acc,item) => acc + parseInt(item.total_premium),0)}
+                    ₹ {parseInt(policyStatus.reduce((acc,item) => acc + parseInt(item.total_premium),0)).toLocaleString("en-In")}
+                    
                     </span>
                   </p>{" "}
                 </div>

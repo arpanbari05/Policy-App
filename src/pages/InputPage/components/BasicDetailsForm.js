@@ -10,6 +10,7 @@ import {
   useNumberInput,
   useEmailInput,
   useTheme,
+  useFrontendBoot,
 } from "../../../customHooks";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
@@ -23,6 +24,9 @@ import validateInput from "../../../utils/inputPageUtils";
 
 const BasicDetailsForm = ({ ...props }) => {
   const { colors } = useTheme();
+  const {
+    data: { tenant },
+  } = useFrontendBoot();
 
   let inputData = {};
 
@@ -211,35 +215,37 @@ const BasicDetailsForm = ({ ...props }) => {
               <ErrorMessage>{emailError.message}</ErrorMessage>
             </div>
           </div>
-          <div>
-            Journey Type:
-            <label className="mx-3">
-              <input
-                type={"radio"}
-                name="journeyType"
-                value={"top_up"}
-                className="mx-1"
-                checked={journeyType === "top_up"}
-                onChange={() => {
-                  setJourneyType("top_up");
-                }}
-              />
-              Topup
-            </label>
-            <label>
-              <input
-                type={"radio"}
-                name="journeyType"
-                value={"health"}
-                className="mx-1"
-                checked={journeyType === "health"}
-                onChange={() => {
-                  setJourneyType("health");
-                }}
-              />
-              Health
-            </label>
-          </div>
+          {tenant.alias === "fyntune" ? (
+            <div>
+              Journey Type:
+              <label className="mx-3">
+                <input
+                  type={"radio"}
+                  name="journeyType"
+                  value={"top_up"}
+                  className="mx-1"
+                  checked={journeyType === "top_up"}
+                  onChange={() => {
+                    setJourneyType("top_up");
+                  }}
+                />
+                Topup
+              </label>
+              <label>
+                <input
+                  type={"radio"}
+                  name="journeyType"
+                  value={"health"}
+                  className="mx-1"
+                  checked={journeyType === "health"}
+                  onChange={() => {
+                    setJourneyType("health");
+                  }}
+                />
+                Health
+              </label>
+            </div>
+          ) : null}
         </div>
 
         <Button
