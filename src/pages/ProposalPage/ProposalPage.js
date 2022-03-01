@@ -302,7 +302,7 @@ const ProposalPage = () => {
                 PrimaryColor={PrimaryColor}
                 bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
               >
-                {activeForm}
+                Nominee Details
               </MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
@@ -323,7 +323,7 @@ const ProposalPage = () => {
                 proposalData["Medical Details"] && setActive(3);
               }}
             >
-              <MainTitle PrimaryColor={PrimaryColor}>Other Details</MainTitle>
+              <MainTitle PrimaryColor={PrimaryColor}>Nominee Details</MainTitle>
               {
                 proposalData[listOfForms[2]] && (
                   <div

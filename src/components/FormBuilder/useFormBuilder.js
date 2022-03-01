@@ -7,6 +7,7 @@ const useFormBuilder = (
   defaultValues = {},
   noForAll,
   setNoForAll,
+  formName
 ) => {
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
@@ -109,6 +110,7 @@ const useFormBuilder = (
             });
           });
         } else {
+         
           let errorMsg =
             item.validate &&
             performValidations(item.validate, values, item.name);

@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Col } from "react-bootstrap";
 import "./ThankYouPage.scss";
 import Success from "../../assets/images/success.png";
-
+import {Page } from "../../components/index"
+import {useCart} from "../../customHooks/index"
 import Correct from "../../assets/images/correct.png";
 import Unsuccess from "../../assets/images/unsuccess.png";
 import CurR from "../../assets/images/img_cut_r.png";
@@ -51,12 +52,16 @@ const ThankYouPage = () => {
   const { policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
   );
-  const cart = useSelector(state => state.cart);
+  const cart = {
+    ...useSelector(state => state.cart),
+    totalPremium : policyStatus.reduce((acc,el) => acc + parseInt(el.total_premium),0)
+  };
+ 
 
   // const callFetch = ()=>{
   //   count!== 0 &&    setTimeout(()=>setCount(count-1), 30000)
   // }()
-  console.log(loading, policyStatus[0]?.pdf_path, "hehehe2");
+  console.log("hehehe2",loading, policyStatus);
   useEffect(() => {
     setLoading(true);
     dispatch(fetchPdf());
@@ -146,6 +151,7 @@ const ThankYouPage = () => {
   };
   if (payment)
     return (
+      <Page>
       <>
         <div className="hideOnMobile">
           <div className="thankheading__wrapper">
@@ -172,7 +178,7 @@ const ThankYouPage = () => {
                     <CheckMark />
                   </div>
                   <span>
-                    Your Payment for ₹ {cart.totalPremium} was successful
+                    Your Payment for ₹ {cart.totalPremium.toLocaleString("en-In")} was successful
                   </span>
                 </div>
                 <div>
@@ -227,7 +233,7 @@ const ThankYouPage = () => {
               }}
             >
               <div style={{ padding: "20px 0px 30px" }}>
-                {<img src={Success} alt="" className="img_success"></img>}
+                <img src={Success} alt="" className="img_success" />
               </div>
               <div
                 style={{
@@ -279,7 +285,7 @@ const ThankYouPage = () => {
                 </div>
                 Your Payment for{" "}
                 <i className="fa fa-inr" style={{ margin: "0px 2px" }} />
-                {cart.totalPremium} was successful
+                {cart.totalPremium.toLocaleString("en-In")} was successful
               </div>
               <div>
                 <div
@@ -343,10 +349,12 @@ const ThankYouPage = () => {
           </Outer>
         </div>
       </>
+      </Page>
     );
 
   if (!payment)
     return (
+      <Page>
       <>
         <div className="hideOnMobile">
           <div className="agn-counter-section-pay">
@@ -567,6 +575,7 @@ const ThankYouPage = () => {
           </Outer>
         </div>
       </>
+      </Page>
     );
 };
 
