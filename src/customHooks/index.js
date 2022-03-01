@@ -172,7 +172,13 @@ export function useFrontendBoot() {
   }
 
   // return { journeyType, tenantName, data, isLoading, isUninitialized };
-  return { journeyType, tenantName, data, insuredMembers: enquiryData?.data?.input?.members, groups: enquiryData?.data?.groups };
+  return {
+    journeyType,
+    tenantName,
+    data,
+    insuredMembers: enquiryData?.data?.input?.members,
+    groups: enquiryData?.data?.groups,
+  };
 }
 
 export function useFilter() {
@@ -1124,6 +1130,16 @@ export function useNameInput(initialValue = "", setFullNameError) {
 
 const validateNumber = (str = "") => /\d/g.test(str);
 
+const filterNo = (setNumber, number, value) => {
+  if (number.length === 0) {
+    if (value >= 6 && value !== 0) {
+      setNumber(value);
+    }
+  } else {
+    setNumber(value);
+  }
+};
+
 export function useNumberInput(
   initialValue = "",
   setNumberError,
@@ -1145,7 +1161,7 @@ export function useNumberInput(
     const isNumber = validateNumber(givenValue);
 
     if (isNumber) {
-      setValue(givenValue);
+      filterNo(setValue, value, givenValue);
     }
   };
 
