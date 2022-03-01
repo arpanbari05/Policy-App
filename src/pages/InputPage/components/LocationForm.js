@@ -66,7 +66,6 @@ function LocationForm() {
       res => {
         const errors = res.some(res => !!res.error);
         if (errors) return;
-        const firstGroup = groups[0];
         let nextPath = getUrlWithEnquirySearch(
           `/input/location-${groupCode + 1}`,
         );
@@ -166,10 +165,12 @@ function LocationForm() {
             Popular Cities
           </h2>
           <div
-            className="d-flex flex-wrap"
             css={`
-              gap: 0.39em;
-              margin-top: 10px;
+              display: flex;
+              flex-wrap: wrap;
+              gap: 0.49em;
+              margin: 10px 0;
+              padding-right: 10px;
             `}
           >
             {popularcities.map(city => (
@@ -183,11 +184,16 @@ function LocationForm() {
           </div>
         </div>
       )}
-      <div className="mt-3">
+      <div
+        css={`
+          margin-top: 2.5rem;
+        `}
+      >
         <InputFormCta
           backLink={getBackLink()}
           onContinueClick={handleSubmit}
           loader={updateEnquiryQuery.isLoading}
+          name="location"
         />
       </div>
     </div>
@@ -243,6 +249,14 @@ function PopularCity({
           border-radius: 2em;
           font-size: 0.87rem;
           font-weight: 900;
+          line-height: 12px;
+          letter-spacing: 1px;
+
+          @media (max-width: 480px) {
+            min-width: fit-content;
+            padding: 13px 20px;
+            font-size: 12px !important;
+          }
         `}
       >
         {name}

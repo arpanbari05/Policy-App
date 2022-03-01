@@ -34,6 +34,7 @@ export function BackLink({ ...props }) {
 export function InputFormCta({
   backLink,
   onContinueClick,
+  name,
   loader = false,
   ...props
 }) {
@@ -41,12 +42,12 @@ export function InputFormCta({
   return (
     <div
       className="d-flex justify-content-between align-items-center"
-      {...props}
       css={`
         @media (max-width: 480px) {
-          padding: 0 17px;
+          padding: ${name === "location" ? "0" : "0 17px"};
         }
       `}
+      {...props}
     >
       <BackLink to={backLink} />
       <Button
