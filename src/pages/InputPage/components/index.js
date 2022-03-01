@@ -35,6 +35,7 @@ export function InputFormCta({
   backLink,
   onContinueClick,
   name,
+  formNo,
   loader = false,
   ...props
 }) {
@@ -67,7 +68,7 @@ export function InputFormCta({
           }
         `}
       >
-        Continue
+        {formNo === 5 ? "View Quotes" : "Continue"}
       </Button>
     </div>
   );
