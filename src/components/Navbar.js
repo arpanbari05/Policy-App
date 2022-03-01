@@ -247,16 +247,13 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
 
   const pinCode = data?.data?.input?.pincode;
 
-  const [show, setShow] = useState(false);
-
-  const { colors } = useTheme();
-
   const trace_id = data?.data?.trace_id;
 
   return (
     <div
       css={`
         font-size: 0.762rem;
+        box-shadow: grey 0px 0px 10px;
       `}
     >
       <div className="py-3 px-2 d-flex align-items-center justify-content-between">
@@ -357,7 +354,7 @@ function Info({ label, value, ...props }) {
         }
 
         @media (max-width: 410px) {
-          gap: 0.30em;
+          gap: 0.3em;
         }
       `}
       {...props}
