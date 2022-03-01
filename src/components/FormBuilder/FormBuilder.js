@@ -55,6 +55,7 @@ const FormBuilder = ({
   );
 
 
+
   const [trigger, setTrigger] = useState(false);
   const { proposalData } = useSelector(state => state.proposalPage);
   const relationships = [
@@ -451,6 +452,7 @@ const FormBuilder = ({
                                 [item.name + "__value"]: value,
                               });
                             } else if (!item.type.includes("custom")) {
+                              console.log("sdvnsjdbvs",item.name, e.target.value)
                               updateValue(item.name, e.target.value);
                             } else{
                               console.log("sdvbkjvb",e,value,item);
@@ -562,6 +564,7 @@ const Wrapper = styled.div`
   display: inline-block;
   padding-left: ${props => (props.medical ? "0px" : "15px")};
   padding-right: 15px;
+  margin-bottom: 10px;
   @media (max-width: 1023px) {
     width: 100%;
     padding-left: 8px;

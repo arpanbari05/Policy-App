@@ -124,6 +124,8 @@ const ProposalPage = () => {
           & .formbuilder__error {
             color: #c7222a;
             font-size: 12px;
+            position: absolute;
+            
           }
         `}
       >
