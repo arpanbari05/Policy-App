@@ -24,6 +24,7 @@ import jsPDF from "jspdf";
 //import { useCartProduct } from "../Cart";
 import { useParams } from "react-router";
 import { removeQuotesForCompare } from "../quotePage/quote.slice";
+import { useFrontendBoot } from "../../customHooks";
 
 const useComparePage = () => {
   const dispatch = useDispatch();
@@ -114,14 +115,12 @@ const useComparePage = () => {
   };
 
   // reload functionality work
-  const { cover, tenure, plan_type } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data.defaultfilters,
-  );
-  const { companies } = useSelector(
-    ({ frontendBoot }) => frontendBoot.frontendData.data,
-  );
+  const { cover, tenure, plan_type, companies } = useFrontendBoot().data;
+  // const { companies } = useSelector(
+  //   ({ frontendBoot }) => frontendBoot.frontendData.data,
+  // );
   const { filters, fetchFilters } = useSelector(({ quotePage }) => quotePage);
-  const { data } = useSelector(({ frontendBoot }) => frontendBoot.frontendData);
+  const { data } = useFrontendBoot();
 
   const findCode = (fitlerName, fitlerValue) => {
     let code = `${fitlerValue}-${fitlerValue}`;

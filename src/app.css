@@ -796,7 +796,7 @@ select {
 .tooltip-inner {
   text-align: left !important;
   pointer-events: none;
-  animation: moveToBottom .5s;
+  animation: none;
 }
 
 @media (min-width: 767px) {

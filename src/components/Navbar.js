@@ -23,10 +23,12 @@ import {
   setPolicyType,
   setIsOnProductDetails,
 } from "../pages/quotePage/quote.slice";
+import useComparePage from "../pages/ComparePage/useComparePage";
 import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
 import { CircleLoader } from ".";
 import { fyntune } from "../assets/images";
+import ShareQuoteModal from "./ShareQuoteModal";
 
 const GO_BACK_LOCATIONS = [
   "/proposal",
@@ -90,6 +92,8 @@ const Navbar = () => {
   // const lastGroup = getLastGroup();
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
+
+  const { emailStatus, imageSend } = useComparePage();
 
   return (
     <div
@@ -223,8 +227,25 @@ const Navbar = () => {
                 display: flex;
               `}
             >
-              {(location.pathname === "/proposal" ||
-                location.pathname === "/proposal_summary") && <ShareButton />}
+              {
+                location.pathname === "/proposal" && (
+                  <ShareQuoteModal stage="PROPOSAL" />
+                )
+              }
+              {
+                location.pathname === "/proposal_summary" && (
+                  <ShareQuoteModal stage="PROPOSAL_SUMMARY" />
+                )
+              }
+              {
+                location.pathname === `/compare/${groupCode}` && (
+                  <ShareQuoteModal
+                    imageSend={imageSend}
+                    emailStatus={emailStatus}
+                    stage={"COMPARE"}
+                  />
+                )
+              }
               <div
                 css={`
                   background-color: ${colors.secondary_shade};
@@ -316,7 +337,7 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
             border-top: 1px solid #aaa;
             border-bottom: 1px solid #aaa;
 
-            @media (max-width: 395px) {
+            @media (max-width: 500px) {
               font-size: 9px !important;
             }
           `}
@@ -350,9 +371,9 @@ export function Members() {
     <div
       className="d-flex"
       css={`
-        font-size: 10px !important;
+        font-size: 12px !important;
 
-        @media (max-width: 395px) {
+        @media (max-width: 500px) {
           font-size: 9px !important;
         }
       `}

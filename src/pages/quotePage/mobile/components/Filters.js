@@ -313,6 +313,7 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
         css={`
           font-size: 0.79rem;
         `}
+        // onClick={handleChange}
       >
           <FilterDataSet
             name={option.display_name}
@@ -526,7 +527,7 @@ function FilterDataSet({ name, description, ...props }) {
       placement="right"
       overlay={<Tooltip {...props}>{description}</Tooltip>}
     >
-      <div className="d-flex align-items-center gap-1">
+      <div style={{fontWeight: "bold", fontSize: 14}} className="d-flex align-items-center gap-1">
         {name} 
       <span>
         <IoMdInformationCircleOutline />

@@ -157,6 +157,9 @@ export function Button({
         cursor: pointer;
         font-weight: 900;
 
+        &:hover {
+          background-image: linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,.1));
+        }
         &:disabled {
           background-color: ${colors.secondary_shade};
           color: #666;
