@@ -23,6 +23,7 @@ const journeyTitle = {
 
 const InputPage = () => {
   const isBasicDetailsRoute = useRouteMatch("/input/basic-details");
+  const isRenewalDetailsRoute = useRouteMatch("/input/renewal-details");
   const [showmore, setShowmore] = useState(false);
 
   const { colors } = useTheme();
@@ -130,7 +131,7 @@ const InputPage = () => {
                 {currentForm === "renewal-details" && <RenewalDetailsForm />}
               </div>
             </Card>
-            {isBasicDetailsRoute && (
+            {(isBasicDetailsRoute || isRenewalDetailsRoute) && (
               <TermsAndConditions
                 showmore={showmore}
                 setShowmore={setShowmore}

@@ -58,13 +58,35 @@ function DropDown2({ label, value, onChange, options, onBlur }) {
                 name="search-input"
                 autoFocus
                 value={searchInput}
-                onBlur={onBlur}
+                onBlur={() => {
+                  setSearchInput(value?.label);
+                  onBlur();
+                }}
+                onClick={() => {
+                  value?.label && setDisplayDD(true);
+                }}
               />
             )}
           </div>
 
-          {displayDD && <FiChevronUp color="grey" size="22px" />}
-          {!displayDD && <FiChevronDown color="grey" size="22px" />}
+          {displayDD && (
+            <FiChevronUp
+              onClick={() => {
+                setDisplayDD(false);
+              }}
+              color="grey"
+              size="22px"
+            />
+          )}
+          {!displayDD && (
+            <FiChevronDown
+              onClick={() => {
+                setDisplayDD(true);
+              }}
+              color="grey"
+              size="22px"
+            />
+          )}
         </div>
 
         {displayDD && (
@@ -91,7 +113,7 @@ const DDFieldOuter = styled.div`
 `;
 
 const CustomizedInput = styled.input`
-  width: 80%;
+  width: 100%;
   z-index: 20;
   font-weight: 900;
   outline: none;
@@ -103,7 +125,7 @@ const FloatingPlaceHolder = styled.span`
   font-weight: 900;
   transition: all 200ms;
   width: ${({ displayDD, isValueAvailable }) =>
-    displayDD || isValueAvailable ? "fit-content" : "90%"};
+    displayDD || isValueAvailable ? "100%" : "90%"};
   height: ${({ displayDD, isValueAvailable }) =>
     displayDD || isValueAvailable ? "fit-content" : "65"};
   display: flex;
@@ -119,20 +141,24 @@ const DropDown = ({ options, onChange, setDisplayDD, ...props }) => {
   return (
     <DropDownDD {...props}>
       {options ? (
-        options.map((singleOption, index) => (
-          <DDItem
-            onClick={() => {
-              setDisplayDD(false);
-              onChange(singleOption.label, singleOption.value);
-            }}
-            shadow={colors.primary_shade}
-            key={index}
-          >
-            {singleOption.label}
-          </DDItem>
-        ))
+        options?.length ? (
+          options?.map((singleOption, index) => (
+            <DDItem
+              onClick={() => {
+                setDisplayDD(false);
+                onChange(singleOption.label, singleOption.value);
+              }}
+              shadow={colors.primary_shade}
+              key={index}
+            >
+              {singleOption.label}
+            </DDItem>
+          ))
+        ) : (
+          <DDItem>No Result Found.</DDItem>
+        )
       ) : (
-        <></>
+        <DDItem>No companies available.</DDItem>
       )}
     </DropDownDD>
   );
