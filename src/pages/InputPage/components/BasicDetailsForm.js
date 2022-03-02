@@ -194,6 +194,7 @@ const BasicDetailsForm = ({ ...props }) => {
                 <TextInput2
                   label="Full Name"
                   name="name"
+                  type="text"
                   autoFocus
                   {...fullNameInput}
                   maxLength={60}
@@ -201,7 +202,7 @@ const BasicDetailsForm = ({ ...props }) => {
                 <ErrorMessage>{fullNameError.message}</ErrorMessage>
               </div>
               <div>
-                <TextInput2 label="Mobile No." name="mobile" {...mobileInput} />
+                <TextInput2 label="Mobile No." name="mobile" type="tel" {...mobileInput} />
                 <ErrorMessage>{mobileError.message}</ErrorMessage>
               </div>
             </div>

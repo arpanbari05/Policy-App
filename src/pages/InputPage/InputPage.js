@@ -11,6 +11,7 @@ import { useParams, useRouteMatch } from "react-router-dom";
 import PlanTypeForm from "./components/PlanTypeForm";
 import LocationForm from "./components/LocationForm";
 import DeductibleForm from "./components/DeductibleForm";
+import RenewalDetailsForm from "./components/RenewalDetailsForm";
 import "styled-components/macro";
 import { Spinner } from "react-bootstrap";
 import MedicalHistoryForm from "./components/MedicalHistoryForm";
@@ -27,7 +28,6 @@ const InputPage = () => {
   const { colors } = useTheme();
 
   const { currentForm } = useParams();
-  console.log("CURRENT_FORM", currentForm);
 
   return (
     <Page>
@@ -127,6 +127,7 @@ const InputPage = () => {
 
                 {currentForm === "deductible" && <DeductibleForm />}
                 {currentForm === "medicalHistory" && <MedicalHistoryForm />}
+                {currentForm === "renewal-details" && <RenewalDetailsForm />}
               </div>
             </Card>
             {isBasicDetailsRoute && (

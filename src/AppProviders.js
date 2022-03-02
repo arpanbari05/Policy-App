@@ -29,6 +29,10 @@ function AppLoaders({ children, ...props }) {
     path: "/input/basic-details",
     exact: true,
   });
+  const isRenewalDetailsRoute = useRouteMatch({
+    path: "/input/renewal-details",
+    exact: true,
+  });
 
   const isTestRoute = useRouteMatch({ path: "/test" });
 
@@ -37,9 +41,11 @@ function AppLoaders({ children, ...props }) {
   });
 
   if (isLoading || isUninitialized) return <FullScreenLoader />;
-  
-  if (some([isTestRoute, isRootRoute, isBasicDetailsRoute])) return children;
 
+  if (
+    some([isTestRoute, isRootRoute, isBasicDetailsRoute, isRenewalDetailsRoute])
+  )
+    return children;
 
   return <LoadEnquiries {...props}>{children}</LoadEnquiries>;
 }
