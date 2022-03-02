@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { formatCurrency } from "../utils/helper";
+import { formatCurrency, mergeQuotes } from "../utils/helper";
 
 const { REACT_APP_API_BASE_URL: baseUrl } = process.env;
 
@@ -348,10 +348,82 @@ export const api = createApi({
       query: productId => `products/${productId}/features`,
     }),
     getProposalData: builder.query({
-      query: () => ({url:"health/proposals"})
+      query: () => ({ url: "health/proposals" }),
+    }),
+    getTopUpAddOns: builder.query({
+      queryFn: async (
+        { sum_insured, groupCode, tenure, companies = [], insurance_type },
+        { dispatch },
+        _extraOptions,
+        fetchWithBaseQuery,
+      ) => {
+        const topUpUrls = companies.map(company_alias =>
+          quoteUrl(company_alias, insurance_type, {
+            sum_insured,
+            groupCode,
+            tenure,
+          }),
+        );
+
+        const topUpQuotesResponses = await getQuotePromises(
+          topUpUrls,
+          fetchWithBaseQuery,
+          { afterEach: res => console.log({ res }) },
+        );
+
+        const topUpQuotes = topUpQuotesResponses
+          .map(quotesResponse => quotesResponse.data?.data)
+          .map(quotes => mergeQuotes(quotes));
+
+        return {
+          data: topUpQuotes,
+        };
+      },
     }),
   }),
 });
+
+function getQuotePromises(urls, fetchWithBaseQuery, { afterEach } = {}) {
+  return Promise.all(
+    urls.map(url =>
+      fetchWithBaseQuery(url).then(res => {
+        afterEach && afterEach(res);
+        return res;
+      }),
+    ),
+  );
+}
+
+const quoteEndpoints = {
+  top_up: "topup-quotes",
+  critical_illness: "critical-illness-quotes",
+  cancer: "cancer-quotes",
+};
+
+function getQuoteEndpoint(insurance_type) {
+  return quoteEndpoints[insurance_type];
+}
+
+function quoteUrl(
+  company_alias,
+  insurance_type,
+  { sum_insured, tenure = 1, groupCode } = {},
+) {
+  const quoteEndpoint = getQuoteEndpoint(insurance_type);
+  let url = `companies/${company_alias}/${quoteEndpoint}?tenure=${tenure}&group=${groupCode}`;
+
+  if (insurance_type === "top_up") {
+    url = url.concat(`&deductible=${sum_insured}`);
+    return url;
+  }
+
+  if (sum_insured) {
+    url = url.concat(`&sum_insured=${sum_insured}`);
+    return url;
+  }
+
+  return url;
+}
 
 export const {
   useGetCitiesMutation,
@@ -382,26 +454,12 @@ export const {
   useGetCompareFeaturesQuery,
   usePrefetch,
   useGetProposalDataQuery,
+  useGetTopUpAddOnsQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {
   return builder.mutation({
-    queryFn: async (
-      {
-        members,
-        filters: {
-          sum_insured_range,
-          tenure,
-          plan_type,
-          group,
-          base_plan_type,
-        },
-        quote: { product, sum_insured },
-      },
-      { dispatch },
-      _extraOptions,
-      fetchWithBaseQuery,
-    ) => {
+    queryFn: async ({ members }, _utils, _extraOptions, fetchWithBaseQuery) => {
       try {
         const { data: updateEnquiriesResult, error: updateEnquiryError } =
           await fetchWithBaseQuery({
@@ -412,40 +470,11 @@ function updateGroupMembersQueryBuilder(builder) {
 
         if (updateEnquiryError) return { error: updateEnquiryError };
 
-        // const getQuoteResult = await fetchWithBaseQuery(
-        //   `companies/${product.company.alias}/quotes?sum_insured_range=${sum_insured_range}&tenure=${tenure}&plan_type=${plan_type}&group=${group}&base_plan_type=${base_plan_type}`,
-        // );
-
-        // if (getQuoteResult.data && updateEnquiriesResult) {
-        //   const updatedQuote = getQuoteResult.data.data.find(quote => {
-        //     const productIdmatch =
-        //       parseInt(quote.product.id) === parseInt(product.id);
-        //     const coverMatch =
-        //       parseInt(sum_insured) === parseInt(quote.sum_insured);
-        //     const isQuoteMatch = !!(productIdmatch && coverMatch);
-        //     return isQuoteMatch;
-        //   });
-        //   if (!updatedQuote)
-        //     return {
-        //       error: {
-        //         data: {
-        //           errors: [
-        //             "Your selected base plan is not eligible for given age",
-        //           ],
-        //         },
-        //       },
-        //     };
-
-        //   return { data: { updateEnquiriesResult } };
-        // }
-
         const getCartResult = await fetchWithBaseQuery({ url: "/cart-items" });
 
         return {
           data: { updateEnquiriesResult, getCartResult: getCartResult.data },
         };
-
-        // return getQuoteResult;
       } catch (error) {
         console.error(error);
         return error;

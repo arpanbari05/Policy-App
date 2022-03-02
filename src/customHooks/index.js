@@ -28,8 +28,11 @@ import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter
 import styles from "../styles";
 import {
   capitalize,
+  getAddOnSendData,
+  getInsuranceType,
   getMonthsForYear,
   getRiderCartData,
+  isAddOnPresent,
   matchQuotes,
   mergeQuotes,
 } from "../utils/helper";
@@ -40,6 +43,7 @@ import config from "../config";
 import { useCallback } from "react";
 import { quoteCompareFeature } from "../test/data/quoteFeatures";
 import { refreshUserData } from "../pages/InputPage/greetingPage.slice";
+import _ from "lodash";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -90,7 +94,18 @@ export function useCompanies() {
     return company.logo;
   }
 
-  return { getCompany, getCompanyLogo, companies };
+  function getCompanies(insurance_type) {
+    return Object.values(companies)
+      .filter(company => company.insurance_types.includes(insurance_type))
+      .map(company => company.alias);
+  }
+
+  return {
+    getCompany,
+    getCompanyLogo,
+    getCompanies,
+    companies,
+  };
 }
 
 export function useQuote() {
@@ -584,7 +599,9 @@ export function useCart() {
 
     if (!cartEntry) return;
 
-    const group = groups.find(group => group.id === parseInt(groupCode));
+    const group = groups.find(
+      group => parseInt(group.id) === parseInt(groupCode),
+    );
 
     const { logo: icLogoSrc } = getCompany(cartEntry.product.company.alias);
 
@@ -633,6 +650,7 @@ export function useCart() {
           cartId: id,
           [journeyType === "health" ? "riders" : "top_up_riders"]:
             health_riders.map(getRiderSendData),
+          addons: cartEntry.addons.map(getAddOnSendData),
           discounted_total_premium,
         });
       },
@@ -1239,12 +1257,14 @@ function getDeductibles(quotes = []) {
   return uniq(quotes.map(quote => quote.deductible));
 }
 
-export function useQuoteCard({ quotes = [] }) {
+export function useQuoteCard({ quotes = [], defaultValues = {} }) {
   const isDeductibleJourney = quotes[0]?.deductible;
 
   const deductibles = getDeductibles(quotes);
 
-  const [selectedDeductible, setSelectedDeductible] = useState(deductibles[0]);
+  const [selectedDeductible, setSelectedDeductible] = useState(
+    defaultValues.deductible || deductibles[0],
+  );
 
   const sumInsureds = isDeductibleJourney
     ? quotes
@@ -1255,7 +1275,9 @@ export function useQuoteCard({ quotes = [] }) {
         .sort((a, b) => a - b)
     : quotes.map(quote => parseInt(quote.sum_insured));
 
-  const [selectedSumInsured, setSelectedSumInsured] = useState(sumInsureds[0]);
+  const [selectedSumInsured, setSelectedSumInsured] = useState(
+    defaultValues.sumInsured || sumInsureds[0],
+  );
 
   const quote = quotes.find(quote =>
     isDeductibleJourney
@@ -1543,4 +1565,48 @@ export function useRiders({
   };
 
   return { query, riders, handleChange, getInititalRiders };
+}
+
+export function useAddOns(groupCode) {
+  const { updateCartEntry, getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const { addons } = cartEntry;
+
+  function addAddOn(addOn, members) {
+    const isAlreadyAdded = isAddOnPresent(addOn, members, cartEntry);
+    if (isAlreadyAdded) return;
+
+    let filteredAddOns = addons.slice();
+
+    const addOnToAdd = { ...addOn, members };
+
+    const insurance_type = getInsuranceType(addOn);
+
+    if (insurance_type === "top_up") {
+      filteredAddOns = addons.filter(
+        addOnAdded => getInsuranceType(addOnAdded) !== "top_up",
+      );
+    }
+
+    updateCartEntry(cartEntry.group.id, {
+      addons: [...filteredAddOns, addOnToAdd],
+    });
+  }
+
+  function removeAddOn(addOn, members) {
+    if (!addons) return;
+    updateCartEntry(cartEntry.group.id, {
+      addons: addons.filter(
+        addOnAdded =>
+          !(
+            matchQuotes(addOnAdded, addOn) &&
+            _.isEqual(addOnAdded.members, members)
+          ),
+      ),
+    });
+  }
+
+  return { addAddOn, removeAddOn };
 }

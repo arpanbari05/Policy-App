@@ -227,6 +227,7 @@ export function RiderPremium({ rider, isLoading = false, onChange }) {
         id={rider.id}
         checked={!!isSelected}
         onChange={handleChange}
+        disabled={isLoading}
       />
     </RiderPremiumWrap>
   );
