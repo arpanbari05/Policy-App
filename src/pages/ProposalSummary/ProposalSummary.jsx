@@ -28,17 +28,23 @@ import TermModal from "./TermsModal";
 import ReviewCart from "../ProductDetails/components/ReviewCart";
 import { getAboutCompany } from "../SeeDetails/serviceApi";
 import { getTermConditions } from "../ProposalPage/serviceApi";
-import { useFrontendBoot, useTheme, useUrlEnquiry } from "../../customHooks";
+import { useFrontendBoot, useTheme, useUrlEnquiry, useCart } from "../../customHooks";
 import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
+import {useGetProposalDataQuery} from "../../api/api";
 
 const ProposalSummary = () => {
   const history = useHistory();
+
+const {data:proposalData={} , isLoading} = useGetProposalDataQuery()
+
+console.log("snldvb",proposalData,isLoading)
+  let {cartEntries} = useCart();
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
   // let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
   const { currentSchema } = useSelector(state => state.schema);
-  const { proposalData, policyStatus, policyLoading } = useSelector(
+  const {  policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
   );
   {console.log("sdjbnskdj",policyStatus)}
@@ -125,7 +131,7 @@ const ProposalSummary = () => {
       document.body.removeChild(form);
     }
   };
-  const cart = useSelector(state => state.cart);
+  const cart = cartEntries;
   const prod_id = Object.keys(cart)[0];
   console.log("hkjm", term);
   useEffect(() => {
@@ -137,7 +143,7 @@ const ProposalSummary = () => {
   //   return <Redirect to="/proposal" />;
   // } else
   return (
-    <Page>
+    <Page noNavbarForMobile={true}>
       <div
         className="container-fluid terms__wrapper"
         css={`
@@ -416,7 +422,7 @@ const ProposalSummary = () => {
                     </p> */}
                     <div className="-wrapper pad_proposal_s mt-2">
                       { }
-                      {allFields ? (
+                      { proposalData.data && allFields ? (
                       allFields.map((item, index) => {
                           return (
                             <SummaryTab
@@ -425,7 +431,7 @@ const ProposalSummary = () => {
                               key={item}
                               title={item}
                               data={currentSchema[item]}
-                              values={proposalData[item]}
+                              values={proposalData.data[item]}
                               index={index}
                             ></SummaryTab>
                           );
