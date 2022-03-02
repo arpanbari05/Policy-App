@@ -81,9 +81,9 @@ const membersToMap = customMembers instanceof Array ? customMembers : members;
     if ((boolean === "Y" && showMembers) && !Object.values(membersStatus).includes(true)) {
       isValid = false;
     }
+   
 
-if(customShowMembers && !Object.values(membersStatus).includes(true)){
-  console.log("sbjsdd",customShowMembers,name,membersStatus,!Object.values(membersStatus).includes(true));
+if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(true)){
 
   isValid = false;
 } 
@@ -94,7 +94,7 @@ if(customShowMembers && !Object.values(membersStatus).includes(true)){
       members: membersStatus,
       isValid,
     });
-  }, [boolean,membersStatus]);
+  }, [boolean,membersStatus,customShowMembers]);
 
   return (
     <>

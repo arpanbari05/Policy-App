@@ -421,7 +421,6 @@ console.log("snldvb",proposalData,isLoading)
                       your proposal details before you proceed
                     </p> */}
                     <div className="-wrapper pad_proposal_s mt-2">
-                      { }
                       { proposalData.data && allFields ? (
                       allFields.map((item, index) => {
                           return (

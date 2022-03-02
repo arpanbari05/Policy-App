@@ -5,7 +5,15 @@ const DataContainer = ({ title, description }) => {
   return (
     <>
       <div className="market_border_left">
-        <h2 className="title_h4">{title}</h2>
+        <h2
+          className="title_h4"
+          css={`
+            font-weight: bold;
+            color: #253858;
+          `}
+        >
+          {title}
+        </h2>
       </div>
       {/* <p
         className="p_chart_title_l"

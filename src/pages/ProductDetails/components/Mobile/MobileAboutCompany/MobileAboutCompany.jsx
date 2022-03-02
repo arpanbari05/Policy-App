@@ -6,7 +6,7 @@ import SpinLoader from "../../../../../components/Common/SpinLoader/SpinLoader";
 import ProgessBar from "../../../../SeeDetails/components/AboutCompany/ProgessBar";
 import BarGroupMobile from "./BarGroupMobile";
 import BarMarketMobile from "./BarMarketMobile";
-import { mobile } from "../../../../../utils/mediaQueries";
+import { mobile, tabletAndMobile } from "../../../../../utils/mediaQueries";
 import { useTheme } from "../../../../../customHooks";
 
 function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
@@ -21,7 +21,7 @@ function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
       style={{ display: ActiveMainTab ? "block" : "none" }}
       css={`
         display: none !important;
-        ${mobile} {
+        ${tabletAndMobile} {
           display: block !important;
           padding-bottom: 70px !important;
         }

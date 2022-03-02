@@ -105,6 +105,7 @@ const FormBuilder = ({
 
   useEffect(() => {
     if (trigger) {
+      console.log("erngfn",trigger)
       triggerValidation(trigger);
       setTrigger(false);
     }
@@ -156,13 +157,13 @@ const FormBuilder = ({
 
         tempValues[item.name] = tempValue;
       }
-      if (item.type === "custom_toggle" && !values[item.name]) {
-        tempValues[item.name] = {
-          [`is${item.name}`]: "N",
-          members: {},
-          isValid: true,
-        };
-      }
+      // if (item.type === "custom_toggle" && !values[item.name]) {
+      //   tempValues[item.name] = {
+      //     [`is${item.name}`]: "N",
+      //     members: {},
+      //     isValid: true,
+      //   };
+      // }
     });
     updateValues(tempValues);
   }, [schema, errors]);
@@ -188,6 +189,7 @@ const FormBuilder = ({
     }
   }, []);
   useEffect(() => {
+
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
@@ -436,7 +438,7 @@ const FormBuilder = ({
                         checkValidation={item.validate}
                         selectedValues={values}
                         onChange={(e, value) => {
-                         
+                         console.log("sgbsjkk",e,value)
                           if (item.parent && item.members) {
                             
                             insertValue(

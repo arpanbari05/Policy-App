@@ -4,7 +4,12 @@ import "styled-components/macro";
 import styled from "styled-components/macro";
 import SearchBarWithCityDD from "./SearchBarWithCityDD";
 import SpinLoader from "../../../../../components/Common/SpinLoader/SpinLoader";
-import { mobile } from "../../../../../utils/mediaQueries";
+import {
+  mobile,
+  small,
+  tablet,
+  tabletAndMobile,
+} from "../../../../../utils/mediaQueries";
 
 function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
   const [searchText, setSearchText] = useState("");
@@ -36,7 +41,7 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
       style={{ display: ActiveMainTab ? "block" : "none" }}
       css={`
         display: none !important;
-        ${mobile} {
+        ${tabletAndMobile} {
           display: block !important;
           padding-bottom: 90px !important;
         }
@@ -48,7 +53,13 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
         ) : (
           <>
             <FeatureSection>
-              <h6 style={{ fontWeight: "600", marginTop: "10px" }}>
+              <h6
+                style={{
+                  fontWeight: "600",
+                  marginTop: "10px",
+                  fontSize: "17px",
+                }}
+              >
                 Hospitals Near By You
               </h6>
             </FeatureSection>
@@ -89,72 +100,7 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                   )}
               </table>
             </DisplayHospitals>
-            {/* 
-            <Search>
-              <div
-                style={{
-                  padding: "10px 10px",
-                  //   borderRight: "1px solid lightgray",
-                  width: "100%",
-                }}
-              >
-                <form
-                  action="#"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                  }}
-                  className="sidebar-search"
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <i
-                    className="fa fa-search "
-                    aria-hidden="true"
-                    style={{ marginRight: "10px" }}
-                  ></i>
-                  <input
-                    className="bg_transparent border_none"
-                    type="text"
-                    style={{ fontSize: "14px" }}
-                    value={searchText}
-                    onChange={(e) => {
-                      setSearchText(e.target.value);
-                    }}
-                    placeholder="Search Hospitals"
-                  />
-                </form>
-              </div>
-              {/* <div style={{ padding: "10px 10px", width: "50%" }}>
-                <form
-                  action="#"
-                  onSubmit={e => {
-                    e.preventDefault();
-                  }}
-                  className="sidebar-search"
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <i
-                    className="fa fa-search "
-                    aria-hidden="true"
-                    style={{ marginRight: "10px" }}
-                  ></i>
-                  <input
-                    className="bg_transparent border_none"
-                    type="text"
-                    style={{ width: "100%", fontSize: "14px" }}
-                    value={searchText.pincode}
-                    onChange={e => {
-                      e.preventDefault();
-                      setSearchText({
-                        ...searchText,
-                        searchValue: e.target.value,
-                        pincode: e.target.value,
-                      });
-                    }}
-                    placeholder="Search Pincode"
-                  />
-                </form>
-              </div> }
-            </Search> */}
+
             <hr />
             <div
               css={`
@@ -172,6 +118,13 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                 <tr
                   className="tr_table_search_hospital "
                   css={`
+                    ${mobile} {
+                      background: #f8f9fa;
+                      padding: 20px;
+                      height: 45px;
+                      line-height: 44px;
+                      border-radius: 8px;
+                    }
                     @media (max-width: 450px) {
                       display: none;
                     }
@@ -182,12 +135,25 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                       paddingTop: "unset",
                       whiteSpace: "nowrap",
                       paddingRight: "10px",
-
                       fontSize: "15px",
                     }}
+                    css={`
+                      padding: 12px !important;
+                      ${mobile} {
+                        padding: 2px 0 4px 13px;
+                        vertical-align: top;
+                        text-align: left;
+                        width: 30%;
+                        color: #aeaeae;
+                        font-size: 12px;
+                        font-weight: 100;
+                        border-bottom: unset;
+                      }
+                    `}
                   >
                     <span
                       css={`
+                        font-weight: 900;
                         display: none;
                         @media (max-width: 450px) {
                           display: block;
@@ -198,6 +164,8 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                     </span>
                     <span
                       css={`
+                        font-weight: 900;
+                        border: none;
                         @media (max-width: 450px) {
                           display: none;
                         }
@@ -210,10 +178,21 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                     style={{
                       paddingTop: "unset",
                       whiteSpace: "nowrap",
-
                       fontSize: "15px",
                     }}
                     css={`
+                    padding: 12px !important;
+                      ${mobile} {
+                        padding: 2px 0 4px 13px;
+                        vertical-align: top;
+                        text-align: left;
+                        width: 30%;
+                        color: #aeaeae;
+                        font-size: 12px
+                        font-weight: 100;
+                        padding: 12px !important;
+                        border-bottom : unset;
+                      }
                       @media (max-width: 450px) {
                         display: none;
                       }
@@ -225,7 +204,7 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
 
                 {foundHospital?.map(item => (
                   <>
-                    <tr style={{ borderBottom: "1px solid lightgray" }}>
+                    <tr>
                       <td style={{ padding: "5px 10px" }}>
                         <div>
                           <span

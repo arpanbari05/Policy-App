@@ -11,6 +11,7 @@ import {
 } from "../../../api/api";
 import {
   useCompanies,
+  useFrontendBoot,
   useQuote,
   useTheme,
   useToggle,
@@ -22,7 +23,7 @@ import {
   getDisplayPremium,
   getPlanFeatures,
 } from "../../../utils/helper";
-import { mobile, small } from "../../../utils/mediaQueries";
+import { mobile, small, tabletAndMobile } from "../../../utils/mediaQueries";
 import CardSkeletonLoader from "../../Common/card-skeleton-loader/CardSkeletonLoader";
 import { some } from "lodash";
 import AboutCompany from "../../../pages/SeeDetails/DataSet/AboutCompany";
@@ -44,19 +45,23 @@ export function MobileProductHeader({
   onClose,
   ...props
 }) {
-  const handleClose = () => {
-    onClose && onClose();
-  };
+  const { journeyType } = useFrontendBoot();
 
   const {
     product: { company, name },
     sum_insured,
     total_premium,
+    tenure,
   } = quote;
 
   const { getCompany } = useCompanies();
 
   const { logo, csr } = getCompany(company.alias);
+
+  const netPremium = calculateTotalPremium({
+    total_premium,
+    health_riders: selectedRiders,
+  });
 
   return (
     <StickyTop>
@@ -70,21 +75,25 @@ export function MobileProductHeader({
 
         <LowerDiv>
           <CoverDiv>
-            <span>Cover : </span>
+            <span>Cover</span>
             <br />
             <span>
               <b>{amount(sum_insured)}</b>
             </span>
           </CoverDiv>
           <PremiumDiv>
-            <span>Premium : </span>
+            <span>Premium</span>
             <br />
             <span>
-              <b>{amount(total_premium)}</b>
+              <b>
+                {journeyType === "top_up"
+                  ? getDisplayPremium({ total_premium: netPremium, tenure })
+                  : amount(netPremium)}
+              </b>
             </span>
           </PremiumDiv>
           <ClaimSettlementDiv>
-            <span>Claim Settlement Ratio : </span>
+            <span>Claim Settlement Ratio</span>
             <br />
             <span>
               <b>{csr}%</b>
@@ -107,6 +116,7 @@ const UpperDiv = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  padding-top: 5px;
 `;
 
 const CompLogo = styled.img`
@@ -157,7 +167,7 @@ const ClaimSettlementDiv = styled.div`
 
 const StickyTop = styled.div`
   display: none;
-  ${mobile} {
+  ${tabletAndMobile} {
     display: block;
     position: sticky;
     top: 0px;
@@ -168,7 +178,11 @@ const StickyTop = styled.div`
   } ;
 `;
 
-export function MobileProductDetailsTabs({ children, defaultActiveKey, ...props }) {
+export function MobileProductDetailsTabs({
+  children,
+  defaultActiveKey,
+  ...props
+}) {
   const { colors } = useTheme();
   return (
     <StyledTabs
@@ -197,7 +211,7 @@ export function MobileProductDetailsTabs({ children, defaultActiveKey, ...props 
 
 const StyledTabs = styled(Tabs)`
   display: none;
-  ${mobile} {
+  ${tabletAndMobile} {
     display: block;
     display: flex;
     box-shadow: rgb(0 75 131 / 13%) 0px 3px 6px 0px;
@@ -263,9 +277,11 @@ export const MobileProductDetailsFooter = ({
     queryState: { isLoading },
   } = useQuote();
 
-  const cartSummaryModal = useToggle();
+  const { journeyType } = useFrontendBoot();
 
-  const { total_premium } = quote;
+  const { sum_insured, total_premium, tenure } = quote;
+
+  const cartSummaryModal = useToggle();
 
   const handlePremiumClick = () => {
     buyQuote(quote, selectedRiders).then(cartSummaryModal.on);
@@ -274,6 +290,12 @@ export const MobileProductDetailsFooter = ({
   const { gotoProductPage } = useGotoProductDetailsPage();
 
   const { colors } = useTheme();
+
+  const netPremium = calculateTotalPremium({
+    total_premium,
+    health_riders: selectedRiders,
+  });
+
   return (
     <FooterOuter>
       <div>
@@ -295,7 +317,7 @@ export const MobileProductDetailsFooter = ({
             font-weight: bold;
           `}
         >
-          {amount(total_premium)}
+          {amount(netPremium)}
         </p>
       </div>
       <div>
@@ -380,7 +402,7 @@ export function MobileRenderPlanDetails({ quote, ...props }) {
 
 export const MobileDetailsSectionWrap = styled.section`
   display: none;
-  ${mobile} {
+  ${tabletAndMobile} {
     display: block;
     padding: 0 6%;
     margin: auto;
@@ -393,6 +415,7 @@ export const MobileSeeDetailsTop = ({ onClose }) => {
   const handleClose = () => {
     onClose && onClose();
   };
+
   return (
     <MobileSeeDetailsTopOuter primary_color={colors.primary_color}>
       <IoArrowBackCircleSharp
@@ -414,7 +437,7 @@ export const MobileSeeDetailsTop = ({ onClose }) => {
 
 export const MobileSeeDetailsTopOuter = styled.div`
   display: none;
-  ${mobile} {
+  ${tabletAndMobile} {
     display: flex;
     color: rgb(255, 255, 255);
     z-index: 9999;
