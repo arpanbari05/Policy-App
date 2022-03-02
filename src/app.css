@@ -75,12 +75,42 @@
 
 /* Generic Styles start here */
 
+* {
+  scrollbar-width: 7px;
+  scrollbar-color: #cccccc transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 7px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #cccccc;
+}
+
+@media (max-width: 480px) {
+  * {
+    scrollbar-width: 4px;
+  }
+
+  *::-webkit-scrollbar {
+    width: 4px;
+  }
+  .hide_on_mobile {
+    display: none;
+  }
+  .show_on_mobile {
+    display: block;
+  }
+}
+
 body {
   /* font-size: 16px; */
   font-weight: 400;
   font-family: "Inter-Regular";
   color: #000;
-  
 }
 
 a {
@@ -801,14 +831,14 @@ select {
 
 @media (min-width: 767px) {
   .tooltip-inner {
-    animation: moveToRight .5s;
+    animation: moveToRight 0.5s;
   }
 }
 
 @keyframes moveToBottom {
   from {
     transform: translateY(-50px);
-  } 
+  }
   to {
     transform: translateY(0);
   }
@@ -817,7 +847,7 @@ select {
 @keyframes moveToRight {
   from {
     transform: translateX(-90px);
-  } 
+  }
   to {
     transform: translateX(0);
   }
