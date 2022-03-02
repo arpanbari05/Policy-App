@@ -7,7 +7,7 @@ import FeatureSection from "../FeatureSection/FeatureSection";
 import styled from "styled-components/macro";
 import ErrorMessage from "../../../../components/Common/ErrorMessage/ErrorMessage";
 import { useSelector } from "react-redux";
-import { mobile, small } from "../../../../utils/mediaQueries";
+import { small, tabletAndMobile } from "../../../../utils/mediaQueries";
 import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { amount } from "../../../../utils/helper";
@@ -211,7 +211,7 @@ function MobileAddOnCoverages({
     <div
       css={`
         display: none !important;
-        ${mobile} {
+        ${tabletAndMobile} {
           background: white;
           padding: 20px 10px;
           display: block !important;
@@ -222,7 +222,7 @@ function MobileAddOnCoverages({
       <FeatureSection
         css={`
           display: none;
-          ${mobile} {
+          ${tabletAndMobile} {
             display: block;
           }
         `}
