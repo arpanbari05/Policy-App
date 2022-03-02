@@ -5,17 +5,17 @@ import { useTheme } from "../customHooks";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { autoCapitalizationHandler } from "../utils/helper";
 
-function DropDown2({ label, value, onChange, options }) {
+function DropDown2({ label, value, onChange, options, onBlur }) {
   const [displayDD, setDisplayDD] = useState(false);
 
   const [filteredOptions, setFilteredOptions] = useState(options);
 
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState();
 
   // SETS SEARCH TEXT INITIALLY AND WHEN ON OPTIONS CLICK
   useEffect(() => {
-    value.label && setSearchInput(value.label);
-  }, [value.label]);
+    value?.label && setSearchInput(value?.label);
+  }, [value?.label]);
 
   const searchInputChangeHandler = e => {
     const filterArray = options.filter(singleOption =>
@@ -46,17 +46,19 @@ function DropDown2({ label, value, onChange, options }) {
               onClick={() => {
                 setDisplayDD(true);
               }}
+              isValueAvailable={value?.label}
             >
               {label}
             </FloatingPlaceHolder>
 
-            {(displayDD || value.label) && (
+            {(displayDD || value?.label) && (
               <CustomizedInput
                 onChange={searchInputChangeHandler}
                 type="text"
                 name="search-input"
                 autoFocus
                 value={searchInput}
+                onBlur={onBlur}
               />
             )}
           </div>
@@ -100,12 +102,16 @@ const FloatingPlaceHolder = styled.span`
   color: #505b6d;
   font-weight: 900;
   transition: all 200ms;
-  width: ${({ displayDD }) => (displayDD ? "fit-content" : "90%")};
-  height: ${({ displayDD }) => (displayDD ? "fit-content" : "65")};
+  width: ${({ displayDD, isValueAvailable }) =>
+    displayDD || isValueAvailable ? "fit-content" : "90%"};
+  height: ${({ displayDD, isValueAvailable }) =>
+    displayDD || isValueAvailable ? "fit-content" : "65"};
   display: flex;
   align-items: center;
-  font-size: ${({ displayDD }) => (displayDD ? "12px" : "16px")};
-  opacity: ${({ displayDD }) => (displayDD ? "0.8" : "1")};
+  font-size: ${({ displayDD, isValueAvailable }) =>
+    displayDD || isValueAvailable ? "12px" : "16px"};
+  opacity: ${({ displayDD, isValueAvailable }) =>
+    displayDD || isValueAvailable ? "0.8" : "1"};
 `;
 
 const DropDown = ({ options, onChange, setDisplayDD, ...props }) => {

@@ -171,7 +171,7 @@ export function useFrontendBoot() {
   }
 
   //Uncomment this to switch to renewal journey type
-  // journeyType = "renewal";
+  //journeyType = "renewal";
 
   return {
     query,

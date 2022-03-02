@@ -1,20 +1,16 @@
-import styled from "styled-components/macro";
 import "styled-components/macro";
 import { mobile } from "../../../utils/mediaQueries";
 import CustomProgressBar from "../../../components/ProgressBar";
 import { ErrorMessage, Title } from "./FormComponents";
 import {
   useCompanies,
-  useUpdateEnquiry,
   useCreateEnquiry,
   usePolicyNumberInput,
 } from "../../../customHooks";
 import { getReactSelectOption } from "../../../utils/helper";
 import { useState } from "react";
-import { useGetEnquiriesQuery } from "../../../api/api";
 import TextInput2 from "../../../components/TextInput2";
 import { Button } from "../../../components";
-import Dropdown from "../../../components/Dropdown";
 import DropDown2 from "../../../components/DropDown2";
 
 const RenewalDetailsForm = ({ ...props }) => {
@@ -26,14 +22,17 @@ const RenewalDetailsForm = ({ ...props }) => {
     provideRenewal: true, //<Temporarily true>,
   }));
 
-  const [selectedRenewalIc, setSelectedRenewalIc] = useState({});
+  const [selectedRenewalIc, setSelectedRenewalIc] = useState();
+  const [isRenewalIcDDWasTouched, setIsRenewalIcDDWasTouched] = useState(false);
+  const isRenewalICValid = selectedRenewalIc !== undefined;
+  const showRenewalIcDDError = isRenewalIcDDWasTouched && !isRenewalICValid;
 
   const [policyNumberError, setPolicyNumberErrors] = useState({});
 
   const policyNumberInput = usePolicyNumberInput(
     "",
     setPolicyNumberErrors,
-    icArray.find(singleIC => singleIC.code === selectedRenewalIc.code),
+    icArray.find(singleIC => singleIC?.code === selectedRenewalIc?.code),
   );
 
   const [createEnquiryQuery] = useCreateEnquiry();
@@ -52,6 +51,7 @@ const RenewalDetailsForm = ({ ...props }) => {
     const updatedRenewalIc = { code: value, display_name: label };
     setSelectedRenewalIc(updatedRenewalIc);
   };
+
   return (
     <div {...props}>
       <form onSubmit={handleSubmit}>
@@ -70,14 +70,26 @@ const RenewalDetailsForm = ({ ...props }) => {
             <DropDown2
               label="Select Insurance Co."
               value={
-                Object.keys(selectedRenewalIc).length &&
-                getReactSelectOption(selectedRenewalIc)
+                selectedRenewalIc && getReactSelectOption(selectedRenewalIc)
               }
               onChange={handleRenewalICChange}
               options={icArray
                 .filter(singleIC => singleIC.provideRenewal)
                 .map(getReactSelectOption)}
+              onBlur={() => {
+                setIsRenewalIcDDWasTouched(true);
+              }}
             />
+
+            {showRenewalIcDDError && (
+              <ErrorMessage
+                css={`
+                  margin-bottom: unset;
+                `}
+              >
+                {"Please select the insurance company."}
+              </ErrorMessage>
+            )}
           </div>
           <div
             css={`
@@ -88,8 +100,19 @@ const RenewalDetailsForm = ({ ...props }) => {
             <TextInput2
               label="Policy Number"
               name="policy-number"
+              type="text"
+              autoComplete={false}
               {...policyNumberInput}
             />
+            {policyNumberError?.message && (
+              <ErrorMessage
+                css={`
+                  margin-bottom: unset;
+                `}
+              >
+                {policyNumberError?.message}
+              </ErrorMessage>
+            )}
           </div>
 
           <Button
