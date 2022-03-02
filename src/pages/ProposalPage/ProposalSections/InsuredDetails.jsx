@@ -231,6 +231,8 @@ console.log("sbjslkh",values[item])
   }, [values, noForAll]);
 
   useEffect(() => {
+    console.log("sbnlfkb",values)
+
     if (name === "Medical Details") {
       const key = Object.keys(values || {});
       let tempObj = JSON.parse(JSON.stringify(values || {}));
