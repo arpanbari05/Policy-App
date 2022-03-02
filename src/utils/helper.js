@@ -452,3 +452,32 @@ export const autoCapitalizationHandler = value => {
   }
   return splitStr.join(" "); /* Firstword Secondword */
 };
+
+export function getAddOnSendData(addOn) {
+  const addOnCartItem = {
+    deductible: addOn.deductible,
+    members: addOn.members,
+    premium: addOn.premium,
+    product_id: addOn.product.id,
+    sum_insured: addOn.sum_insured,
+    tax_amount: addOn.tax_amount,
+    tenure: addOn.tenure,
+    total_premium: addOn.total_premium,
+  };
+  return addOnCartItem;
+}
+
+export function isAddOnPresent(addOn, members, cartEntry) {
+  const { addons } = cartEntry;
+
+  if (!addons || !addons.length) return false;
+
+  return addons.some(
+    addOnAdded =>
+      matchQuotes(addOnAdded, addOn) && _.isEqual(addOnAdded.members, members),
+  );
+}
+
+export function getInsuranceType(quote) {
+  return quote.product.insurance_type.alias;
+}

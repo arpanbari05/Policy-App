@@ -25,6 +25,7 @@ import Select from "react-select";
 import { numberToDigitWord } from "../../utils/helper";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import SumInsuredSection from "./components/SumInsuredSection";
+import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
@@ -137,6 +138,7 @@ const ProductDetails = () => {
           </div>
         </div>
         <Row
+          className="pb-3"
           css={`
             justify-content: center;
             @media (max-width: 1200px) {
@@ -197,6 +199,7 @@ const ProductDetails = () => {
                 cartEntry={cartEntry}
               />
               <RidersSection />
+              <AddOnSection cartEntry={cartEntry} />
             </Col>
           </div>
         </Row>

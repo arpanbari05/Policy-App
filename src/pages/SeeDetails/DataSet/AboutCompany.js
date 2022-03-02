@@ -8,7 +8,7 @@ import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import BarMarketMobile from "../MobileComponents/AboutCompanyMobile/BarMarketMobile";
 import BarGroupMobile from "../MobileComponents/AboutCompanyMobile/BarGroupMobile";
 import { useTheme } from "../../../customHooks";
-import { mobile } from "../../../utils/mediaQueries";
+import { mobile, tabletAndMobile } from "../../../utils/mediaQueries";
 
 const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
   const { loading } = useSelector(state => state.seeDetails);
@@ -25,7 +25,7 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
           top: "0px",
         }}
         css={`
-          ${mobile} {
+          ${tabletAndMobile} {
             display: none !important;
           }
         `}
@@ -46,7 +46,13 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                   >
                     <Col lg={12} className="order-lg-first">
                       <div className="feature-img-box">
-                        <h2 className="title_h4_p plan_a_t">
+                        <h2
+                          className="title_h4_p plan_a_t"
+                          css={`
+                            font-weight: bold;
+                            color: #253858;
+                          `}
+                        >
                           About{" "}
                           <span style={{ color: colors.primary_color }}>
                             {company_name}

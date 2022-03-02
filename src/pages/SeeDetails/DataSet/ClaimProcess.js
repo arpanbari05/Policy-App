@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import "styled-components/macro";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import { useTheme } from "../../../customHooks";
+import { tabletAndMobile } from "../../../utils/mediaQueries";
 const populateData = (data, colors) => {
   return [
     {
@@ -68,6 +69,7 @@ const dataSet = dataArray => {
                 color: #253858;
                 margin-bottom: 0px;
                 margin-top: 8px;
+                word-wrap: break-word;
               `}
             >
               {data.description}{" "}
@@ -167,8 +169,8 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
           top: "10px",
         }}
         css={`
-          ${mobile} {
-            display: none;
+          ${tabletAndMobile} {
+            display: none !important;
           }
         `}
       >

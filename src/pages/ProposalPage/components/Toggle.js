@@ -81,20 +81,20 @@ const membersToMap = customMembers instanceof Array ? customMembers : members;
     if ((boolean === "Y" && showMembers) && !Object.values(membersStatus).includes(true)) {
       isValid = false;
     }
+   
 
-if(customShowMembers && !Object.values(membersStatus).includes(true)){
-  console.log("sbjsdd",customShowMembers,name,membersStatus,!Object.values(membersStatus).includes(true));
+if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(true)){
 
   isValid = false;
 } 
- 
+ console.log("fghfhg",showMembers)
     onChange({
       ...value,
       [`is${name}`]: boolean,
       members: membersStatus,
       isValid,
     });
-  }, [boolean,membersStatus]);
+  }, [boolean,membersStatus,customShowMembers]);
 
   return (
     <>
@@ -181,8 +181,9 @@ if(customShowMembers && !Object.values(membersStatus).includes(true)){
             </div>
           </div>
         </div>
-        {membersToMap.length && !(showMembers === false) ? (
-          (customShowMembers || boolean === "Y") && (
+        
+        {membersToMap.length && (showMembers || customShowMembers) ? (
+          (boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (
                 <>
