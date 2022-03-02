@@ -42,6 +42,7 @@ const modifyMembersToCount = members => {
 };
 
 function validateMembers(members = []) {
+  console.log("members", members);
   let isValid = true;
   const validatedMembers = members.map(member => {
     const { age, isSelected } = member;
