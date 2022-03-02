@@ -245,11 +245,16 @@ export function Counter({
 
   return (
     <div
-      className="d-flex align-items-center justify-content-between"
+      className="d-flex align-items-center justify-content-around"
       css={`
         color: lightgrey;
         font-size: 1.2rem;
         gap: 0.3125em;
+        transform: translateX(-50%);
+
+        @media (max-width: 480px) {
+          transform: translateX(0);
+        }
         & button {
           padding: 0;
           background: none;

@@ -232,8 +232,10 @@ function MemberOption({
 
   return (
     <div
-      className="d-flex align-items-center justify-content-between rounded-2"
+      className="rounded-2"
       css={`
+        display: flex;
+        align-items: center;
         padding: 2px 10px;
         border: solid 1px #b0bed0;
         flex: 1 1 21em;
