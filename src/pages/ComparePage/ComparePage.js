@@ -1014,6 +1014,9 @@ function FeatureValue({
     query: { isLoading, isUninitialized, isError },
     getFeature,
   } = useCompareFeature(compareQuote);
+  const [showMore, setShowMore] = useState(false);
+
+  const { colors } = useTheme();
 
   const feature = getFeature({ sectionTitle, featureTitle });
 
@@ -1047,7 +1050,28 @@ function FeatureValue({
             color: #647188;
           `}
         >
-          {feature.feature_value}
+          {sectionTitle === "What's not covered?" ? (
+            <>
+              {feature.feature_value.slice(
+                0,
+                showMore ? feature.feature_value.length : 200,
+              ) + "..."}
+              <button
+                onClick={() => {
+                  setShowMore(!showMore);
+                }}
+                css={`
+                  color: #0a87ff;
+                  font-size: 0.9rem;
+                  font-weight: bold;
+                `}
+              >
+                {showMore ? "Show Less" : "Show More"}
+              </button>
+            </>
+          ) : (
+            feature.feature_value
+          )}
         </div>
       </OverlayTrigger>
     </div>
