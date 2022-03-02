@@ -13,7 +13,7 @@ import {
 } from "react-icons/ri";
 import { useTheme } from "../../../../../customHooks";
 
-import { mobile } from "../../../../../utils/mediaQueries";
+import { mobile, tabletAndMobile } from "../../../../../utils/mediaQueries";
 // import "../ClaimProcessMobile/ClaimProcessMobile.css"
 
 function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
@@ -30,7 +30,7 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
       }}
       css={`
         display: none;
-        ${mobile} {
+        ${tabletAndMobile} {
           display: block;
           padding-bottom: 90px !important;
         }

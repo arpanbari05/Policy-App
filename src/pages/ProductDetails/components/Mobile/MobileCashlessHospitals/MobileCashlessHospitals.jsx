@@ -4,7 +4,12 @@ import "styled-components/macro";
 import styled from "styled-components/macro";
 import SearchBarWithCityDD from "./SearchBarWithCityDD";
 import SpinLoader from "../../../../../components/Common/SpinLoader/SpinLoader";
-import { mobile } from "../../../../../utils/mediaQueries";
+import {
+  mobile,
+  small,
+  tablet,
+  tabletAndMobile,
+} from "../../../../../utils/mediaQueries";
 
 function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
   const [searchText, setSearchText] = useState("");
@@ -36,7 +41,7 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
       style={{ display: ActiveMainTab ? "block" : "none" }}
       css={`
         display: none !important;
-        ${mobile} {
+        ${tabletAndMobile} {
           display: block !important;
           padding-bottom: 90px !important;
         }
@@ -89,72 +94,7 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                   )}
               </table>
             </DisplayHospitals>
-            {/* 
-            <Search>
-              <div
-                style={{
-                  padding: "10px 10px",
-                  //   borderRight: "1px solid lightgray",
-                  width: "100%",
-                }}
-              >
-                <form
-                  action="#"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                  }}
-                  className="sidebar-search"
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <i
-                    className="fa fa-search "
-                    aria-hidden="true"
-                    style={{ marginRight: "10px" }}
-                  ></i>
-                  <input
-                    className="bg_transparent border_none"
-                    type="text"
-                    style={{ fontSize: "14px" }}
-                    value={searchText}
-                    onChange={(e) => {
-                      setSearchText(e.target.value);
-                    }}
-                    placeholder="Search Hospitals"
-                  />
-                </form>
-              </div>
-              {/* <div style={{ padding: "10px 10px", width: "50%" }}>
-                <form
-                  action="#"
-                  onSubmit={e => {
-                    e.preventDefault();
-                  }}
-                  className="sidebar-search"
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <i
-                    className="fa fa-search "
-                    aria-hidden="true"
-                    style={{ marginRight: "10px" }}
-                  ></i>
-                  <input
-                    className="bg_transparent border_none"
-                    type="text"
-                    style={{ width: "100%", fontSize: "14px" }}
-                    value={searchText.pincode}
-                    onChange={e => {
-                      e.preventDefault();
-                      setSearchText({
-                        ...searchText,
-                        searchValue: e.target.value,
-                        pincode: e.target.value,
-                      });
-                    }}
-                    placeholder="Search Pincode"
-                  />
-                </form>
-              </div> }
-            </Search> */}
+
             <hr />
             <div
               css={`
@@ -172,8 +112,9 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                 <tr
                   className="tr_table_search_hospital "
                   css={`
-                    @media (max-width: 450px) {
-                      display: none;
+                    ${mobile} {
+                      background: #f8f9fa;
+                      height: 68px;
                     }
                   `}
                 >
@@ -182,9 +123,17 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                       paddingTop: "unset",
                       whiteSpace: "nowrap",
                       paddingRight: "10px",
-
                       fontSize: "15px",
                     }}
+                    css={`
+                      ${mobile} {
+                        padding: 12px !important;
+                        border: none;
+                        display: flex;
+                        align-items: center;
+                        height: 68px;
+                      }
+                    `}
                   >
                     <span
                       css={`
@@ -198,6 +147,7 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                     </span>
                     <span
                       css={`
+                        border: none;
                         @media (max-width: 450px) {
                           display: none;
                         }
@@ -214,12 +164,28 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                       fontSize: "15px",
                     }}
                     css={`
+                      ${mobile} {
+                        border: none;
+                        padding: 12px !important;
+                      }
                       @media (max-width: 450px) {
                         display: none;
                       }
                     `}
                   >
-                    Phone No.
+                    <span
+                      css={`
+                        border: none;
+                        height: 100%;
+                        width: 100%;
+                        background: blue;
+                        @media (max-width: 450px) {
+                          display: none;
+                        }
+                      `}
+                    >
+                      Phone No.
+                    </span>
                   </th>
                 </tr>
 

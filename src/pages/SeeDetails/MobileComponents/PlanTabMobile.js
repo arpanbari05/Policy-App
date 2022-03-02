@@ -6,6 +6,7 @@ import { Collapse } from "react-bootstrap";
 import downarrow from "./../../../assets/images/downarrow.png";
 import FeatureDefinitionMobile from "./FeatureDefinitionMobile";
 import { useTheme } from "../../../customHooks";
+import { mobile, tablet } from "../../../utils/mediaQueries";
 const PlanTabMobile = ({ data, item }) => {
   const [windowHeight, windowWidth] = useWindowSize();
   const [toggle, setToggle] = useState(false);
@@ -133,6 +134,7 @@ const PlanTabMobile = ({ data, item }) => {
                 css={`
                   font-weight: bold;
                   font-size: 16px;
+                  margin-bottom: 8px;
                 `}
                 onClick={() => setToggle(!toggle)}
               >
@@ -253,10 +255,10 @@ const PlanFeature = styled.div`
   border-radius: 10px;
   margin: 15px;
   padding: 25px 10px;
-  @media (max-width: 1023px) {
+  ${tablet} {
     padding: 12px 10px;
   }
-  @media (max-width: 767px) {
+  ${mobile} {
     margin: 8px 5px;
     padding: 15px 8px;
   }

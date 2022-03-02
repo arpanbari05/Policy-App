@@ -22,7 +22,7 @@ import {
   getDisplayPremium,
   getPlanFeatures,
 } from "../../../utils/helper";
-import { mobile, small } from "../../../utils/mediaQueries";
+import { mobile, small, tabletAndMobile } from "../../../utils/mediaQueries";
 import CardSkeletonLoader from "../../Common/card-skeleton-loader/CardSkeletonLoader";
 import { some } from "lodash";
 import AboutCompany from "../../../pages/SeeDetails/DataSet/AboutCompany";
@@ -157,7 +157,7 @@ const ClaimSettlementDiv = styled.div`
 
 const StickyTop = styled.div`
   display: none;
-  ${mobile} {
+  ${tabletAndMobile} {
     display: block;
     position: sticky;
     top: 0px;
@@ -168,7 +168,11 @@ const StickyTop = styled.div`
   } ;
 `;
 
-export function MobileProductDetailsTabs({ children, defaultActiveKey, ...props }) {
+export function MobileProductDetailsTabs({
+  children,
+  defaultActiveKey,
+  ...props
+}) {
   const { colors } = useTheme();
   return (
     <StyledTabs
@@ -197,7 +201,7 @@ export function MobileProductDetailsTabs({ children, defaultActiveKey, ...props 
 
 const StyledTabs = styled(Tabs)`
   display: none;
-  ${mobile} {
+  ${tabletAndMobile} {
     display: block;
     display: flex;
     box-shadow: rgb(0 75 131 / 13%) 0px 3px 6px 0px;
@@ -380,7 +384,7 @@ export function MobileRenderPlanDetails({ quote, ...props }) {
 
 export const MobileDetailsSectionWrap = styled.section`
   display: none;
-  ${mobile} {
+  ${tabletAndMobile} {
     display: block;
     padding: 0 6%;
     margin: auto;
@@ -393,6 +397,7 @@ export const MobileSeeDetailsTop = ({ onClose }) => {
   const handleClose = () => {
     onClose && onClose();
   };
+
   return (
     <MobileSeeDetailsTopOuter primary_color={colors.primary_color}>
       <IoArrowBackCircleSharp
@@ -414,7 +419,7 @@ export const MobileSeeDetailsTop = ({ onClose }) => {
 
 export const MobileSeeDetailsTopOuter = styled.div`
   display: none;
-  ${mobile} {
+  ${tabletAndMobile} {
     display: flex;
     color: rgb(255, 255, 255);
     z-index: 9999;

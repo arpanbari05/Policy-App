@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import "styled-components/macro";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import { useTheme } from "../../../customHooks";
+import { tabletAndMobile } from "../../../utils/mediaQueries";
 const populateData = (data, colors) => {
   return [
     {
@@ -167,7 +168,7 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
           top: "10px",
         }}
         css={`
-          ${mobile} {
+          ${tabletAndMobile} {
             display: none;
           }
         `}
