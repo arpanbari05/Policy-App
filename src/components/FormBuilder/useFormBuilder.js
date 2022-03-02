@@ -13,9 +13,9 @@ const useFormBuilder = (
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState();
   const updateValue = (name, value) => {
-    console.log("kfvbadhbkv",name, value,formName)
-    setValues({ ...values, [name]: value });
-    fetchValues({ ...values, [name]: value });
+
+    setValues(prev => ({ ...prev, [name]: value }));
+    fetchValues(prev => ({ ...prev, [name]: value }));
     if (value instanceof Object) {
       if (value?.[`is${name}`] && value?.[`is${name}`] === "Y" && noForAll) {
         setNoForAll(false);
@@ -23,12 +23,15 @@ const useFormBuilder = (
     }
   };
   useEffect(() => {
-    console.log("svnsjdk",values,Object.keys(values).every(el => values[el].isValid))
+    console.log('svbskjv',values)
 if(formName === "Medical Details" && !Object.keys(values).every(el => values[el].isValid)) {
-  setIsValid(false)
+  setIsValid(false);
 }
   },[values])
+
   const updateValues = (multipleValues = {}) => {
+    console.log("svnsjdk",multipleValues)
+
     setValues({ ...values, ...multipleValues });
     fetchValues({ ...values, ...multipleValues });
   };
@@ -86,10 +89,24 @@ if(formName === "Medical Details" && !Object.keys(values).every(el => values[el]
       }
     } else if (name) {
       let [filteredItem] = schema.filter(item => item.name === name);
+      // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
+
+     
       if (filteredItem) {
-        let errorMsg =
+        let errorMsg;
+          // if(filteredItem.additionalOptions.showMembersIf){
+          //   let parents = filteredItem.additionalOptions.showMembersIf.split("||");
+          //   let isChildSelected = parents.some(el => values[el] && values[el][`is${el}`] === "Y")
+          //   if(isChildSelected && !Object.values(values[name].members).includes(true)){
+          //     errorMsg = "Select parent";
+          //   }
+    
+          // }else{
+            errorMsg =
           filteredItem.validate &&
           performValidations(filteredItem.validate, values, name);
+          // }
+
         if (renderField(filteredItem, values)) {
           errorsTemp[filteredItem.name] = errorMsg;
 
