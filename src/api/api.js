@@ -179,7 +179,7 @@ export const api = createApi({
         body,
       }),
       onQueryStarted: async (_data, { dispatch, queryFulfilled }) => {
-        const { data } = await queryFulfilled;     
+        const { data } = await queryFulfilled;
         dispatch(
           api.util.updateQueryData("getEnquiries", undefined, draft => {
             if (draft) Object.assign(draft, data);
@@ -220,7 +220,7 @@ export const api = createApi({
       providesTags: ["Rider"],
     }),
     deleteGroup: builder.query({
-      query: (groupId) => ({ url: `groups/${groupId}`, method: "DELETE"})
+      query: groupId => ({ url: `groups/${groupId}`, method: "DELETE" }),
     }),
     getDiscounts: builder.query({
       query: ({

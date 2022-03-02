@@ -171,7 +171,7 @@ export function useFrontendBoot() {
   }
 
   //Uncomment this to switch to renewal journey type
-  // journeyType = "renewal";
+  //journeyType = "renewal";
 
   return {
     query,
@@ -1172,6 +1172,40 @@ export function useNumberInput(
   };
 
   return { value, onChange, type: "tel", maxLength };
+}
+
+const validatePolicyNumber = (str = "", selectedIC = {}) => {
+  return true;
+};
+export function usePolicyNumberInput(
+  initialValue = "",
+  setFullNameError,
+  selectedIC,
+) {
+  const [value, setValue] = useState(initialValue);
+
+  const onChange = evt => {
+    setFullNameError({});
+    const { value: givenValue } = evt.target;
+
+    if (!givenValue) {
+      setValue(givenValue);
+      return;
+    }
+
+    const isValidName = validatePolicyNumber(givenValue, selectedIC);
+
+    if (!isValidName) return;
+    setValue(givenValue);
+  };
+
+  const onBlur = () => {
+    setValue(currentValue => capitalize(currentValue.trim()));
+  };
+
+  const style = { textTransform: "capitalize" };
+
+  return { value, onChange, onBlur, style };
 }
 
 export function useQuotes({ sortBy = "relevence", quotesData = [] }) {
