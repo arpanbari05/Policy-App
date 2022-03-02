@@ -420,11 +420,15 @@ export function getSumInsureds(quotes = []) {
 }
 
 export function getFeature(quote, featureCode) {
+  console.log("quoteData", quote);
+
   return quote.features.find(feature => feature.code === featureCode);
 }
 
 export function getFeatureForQuotes(quotes, featureCode) {
-  return quotes.map(quote => getFeature(quote, featureCode));
+  return quotes.map(quote => {
+    return getFeature(quote, featureCode);
+  });
 }
 
 export function getTotalPremium(cartEntries = []) {

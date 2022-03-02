@@ -347,6 +347,9 @@ export const api = createApi({
     getCompareFeatures: builder.query({
       query: productId => `products/${productId}/features`,
     }),
+    getProposalData: builder.query({
+      query: () => ({url:"health/proposals"})
+    }),
   }),
 });
 
@@ -377,7 +380,8 @@ export const {
   useUpdateCompareQuotesMutation,
   useGetCompareQuotesQuery,
   useGetCompareFeaturesQuery,
-  usePrefetch
+  usePrefetch,
+  useGetProposalDataQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {
