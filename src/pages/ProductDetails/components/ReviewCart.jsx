@@ -23,6 +23,7 @@ import {
 import {
   useAdditionalDiscount,
   useCart,
+  useCompanies,
   useFrontendBoot,
   useMembers,
   useRider,
@@ -38,6 +39,7 @@ import {
   CircleLoader,
   CloseButton,
   MembersList,
+  MemberText,
 } from "../../../components";
 import { FaChevronRight, FaPen } from "react-icons/fa";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
@@ -106,6 +108,7 @@ export function CartDetails({ groupCode, ...props }) {
           <div>
             <RidersList groupCode={groupCode} />
             <DiscountsList groupCode={groupCode} />
+            <AddOnsList cartEntry={cartEntry} />
             <TotalPremium groupCode={groupCode} />{" "}
           </div>
         )}
@@ -143,6 +146,73 @@ function UnavailableMessage({ message = "" }) {
       `}
     >
       {message}
+    </div>
+  );
+}
+
+function AddOnsList({ cartEntry, ...props }) {
+  const { addons } = cartEntry;
+
+  if (!addons.length) return null;
+
+  return (
+    <CartSection title="Add-On Coverages" {...props}>
+      {addons.map((addOn, idx) => (
+        <AddOnDetailRow addOn={addOn} key={idx} />
+      ))}
+    </CartSection>
+  );
+}
+
+function AddOnDetailRow({ addOn }) {
+  return (
+    <CartDetailRow
+      title={<AddOnTitle addOn={addOn} />}
+      value={amount(addOn.total_premium)}
+    />
+  );
+}
+
+function AddOnTitle({ addOn }) {
+  const { members, product } = addOn;
+  const { getCompanyLogo } = useCompanies();
+  const logo = getCompanyLogo(product.company.alias);
+  return (
+    <div
+      css={`
+        display: flex;
+        align-items: center;
+      `}
+    >
+      <div
+        css={`
+          width: 25px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 25px;
+        `}
+      >
+        <img
+          css={`
+            width: 100%;
+          `}
+          src={logo}
+          alt={product.company.alias}
+        />
+      </div>
+      <span
+        css={`
+          font-size: 11px;
+          font-weight: 400;
+          width: 100%;
+          padding: 0px 5px;
+          /* display: flex;
+          align-items: center; */
+        `}
+      >
+        {product.name} <MemberText>({members.join(", ")})</MemberText>
+      </span>
     </div>
   );
 }

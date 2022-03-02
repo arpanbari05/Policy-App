@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { FaArrowCircleLeft, FaChevronLeft, FaTimes } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
-import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
+import {
+  IoAddCircle,
+  IoCheckmarkCircleSharp,
+  IoRemoveCircle,
+} from "react-icons/io5";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
@@ -24,6 +28,7 @@ import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader
 import FilterSkeletonLoader from "./Common/filter-skeleton-loader/FilterSkeletonLoader";
 import * as mq from "../utils/mediaQueries";
 import { useSelector } from "react-redux";
+import { GiCircle } from "react-icons/gi";
 
 export function ScreenTopLoader({ progress, show }) {
   const { colors } = useTheme();
@@ -151,7 +156,7 @@ export function Button({
         border: none;
         color: #fff;
         border-radius: 2px;
-        height: 2.8rem;
+        height: 2.8em;
         min-width: max-content;
         padding: 0 1em;
         cursor: pointer;
@@ -500,5 +505,75 @@ export function BackButtonMobile({ path, css = "", ...props }) {
     >
       <FaArrowCircleLeft />
     </Link>
+  );
+}
+
+export function OptionSelect({
+  selectable,
+  label,
+  checked,
+  onChange,
+  dropdown = <></>,
+  children,
+  ...props
+}) {
+  const { colors } = useTheme();
+
+  return (
+    <div
+      className="d-flex align-items-center justify-content-between rounded-2"
+      css={`
+        padding: 2px 10px;
+        border: solid 1px #b0bed0;
+        flex: 1 1 21em;
+        gap: 0.7em;
+      `}
+      {...props}
+    >
+      <label
+        className="d-flex align-items-center flex-grow-1 align-self-stretch"
+        role="button"
+        css={`
+          font-size: 15px;
+          line-height: 1;
+          font-weight: 900;
+        `}
+      >
+        {selectable ? (
+          <input
+            type="checkbox"
+            className="visually-hidden"
+            checked={checked}
+            onChange={onChange}
+          />
+        ) : null}
+        {selectable ? (
+          <div
+            css={`
+              font-size: 1.67rem;
+              line-height: 0;
+              margin-right: 0.3em;
+            `}
+          >
+            {checked ? (
+              <IoCheckmarkCircleSharp
+                css={`
+                  color: ${colors.primary_color};
+                `}
+              />
+            ) : (
+              <GiCircle
+                css={`
+                  color: #ccc;
+                `}
+              />
+            )}
+          </div>
+        ) : null}
+        {label}
+      </label>
+      {children}
+      <div>{dropdown}</div>
+    </div>
   );
 }
