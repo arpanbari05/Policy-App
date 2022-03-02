@@ -43,7 +43,13 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
           <>
             <FeatureSection>
               <div>
-                <h6 style={{ fontWeight: "600", marginTop: "10px" }}>
+                <h6
+                  style={{
+                    fontWeight: "600",
+                    marginTop: "10px",
+                    fontSize: "17px",
+                  }}
+                >
                   How do I file a claim?
                 </h6>
               </div>

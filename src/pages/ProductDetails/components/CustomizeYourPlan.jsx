@@ -10,6 +10,7 @@ import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { mobile } from "../../../utils/mediaQueries";
 import { amount } from "../../../utils/helper";
+import { DetailsSectionWrap } from "../../../components/ProductDetails/ProductDetailsModal";
 
 export function RidersSection() {
   let { groupCode } = useParams();
@@ -51,15 +52,22 @@ export function Riders({
     riders,
   } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
 
-  if (isLoading || isUninitialized) return <CardSkeletonLoader />;
+  if (isLoading || isUninitialized)
+    return (
+      <DetailsSectionWrap>
+        <CardSkeletonLoader />
+      </DetailsSectionWrap>
+    );
 
   if (isError)
     return (
-      <div>
-        <p>Something went wrong while getting riders!</p>
-        <p>{error.data?.message}</p>
-        <button onClick={refetch}>Retry</button>
-      </div>
+      <DetailsSectionWrap>
+        <div>
+          <p>Something went wrong while getting riders!</p>
+          <p>{error.data?.message}</p>
+          <button onClick={refetch}>Retry</button>
+        </div>
+      </DetailsSectionWrap>
     );
 
   let header = {
@@ -75,35 +83,37 @@ export function Riders({
   }
 
   return (
-    <FeatureSection
-      css={`
-        ${mobile} {
-          display: block !important;
-        }
-      `}
-      id="additional-riders"
-      {...header}
-      {...props}
-    >
-      <div
-        className="d-flex flex-wrap"
+    <DetailsSectionWrap className="mt-3">
+      <FeatureSection
         css={`
-          gap: 1.2em;
           ${mobile} {
-            gap: unset;
+            display: block !important;
           }
         `}
+        id="additional-riders"
+        {...header}
+        {...props}
       >
-        {riders.map(rider => (
-          <RiderCardNew
-            rider={rider}
-            onChange={handleChange}
-            key={rider.id}
-            isFetching={isFetching}
-          />
-        ))}
-      </div>
-    </FeatureSection>
+        <div
+          className="d-flex flex-wrap"
+          css={`
+            gap: 1.2em;
+            ${mobile} {
+              gap: unset;
+            }
+          `}
+        >
+          {riders.map(rider => (
+            <RiderCardNew
+              rider={rider}
+              onChange={handleChange}
+              key={rider.id}
+              isFetching={isFetching}
+            />
+          ))}
+        </div>
+      </FeatureSection>
+    </DetailsSectionWrap>
   );
 }
 

@@ -53,7 +53,13 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
         ) : (
           <>
             <FeatureSection>
-              <h6 style={{ fontWeight: "600", marginTop: "10px" }}>
+              <h6
+                style={{
+                  fontWeight: "600",
+                  marginTop: "10px",
+                  fontSize: "17px",
+                }}
+              >
                 Hospitals Near By You
               </h6>
             </FeatureSection>
@@ -114,7 +120,13 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                   css={`
                     ${mobile} {
                       background: #f8f9fa;
-                      height: 68px;
+                      padding: 20px;
+                      height: 45px;
+                      line-height: 44px;
+                      border-radius: 8px;
+                    }
+                    @media (max-width: 450px) {
+                      display: none;
                     }
                   `}
                 >
@@ -126,17 +138,22 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                       fontSize: "15px",
                     }}
                     css={`
+                      padding: 12px !important;
                       ${mobile} {
-                        padding: 12px !important;
-                        border: none;
-                        display: flex;
-                        align-items: center;
-                        height: 68px;
+                        padding: 2px 0 4px 13px;
+                        vertical-align: top;
+                        text-align: left;
+                        width: 30%;
+                        color: #aeaeae;
+                        font-size: 12px;
+                        font-weight: 100;
+                        border-bottom: unset;
                       }
                     `}
                   >
                     <span
                       css={`
+                        font-weight: 900;
                         display: none;
                         @media (max-width: 450px) {
                           display: block;
@@ -147,6 +164,7 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                     </span>
                     <span
                       css={`
+                        font-weight: 900;
                         border: none;
                         @media (max-width: 450px) {
                           display: none;
@@ -160,38 +178,33 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                     style={{
                       paddingTop: "unset",
                       whiteSpace: "nowrap",
-
                       fontSize: "15px",
                     }}
                     css={`
+                    padding: 12px !important;
                       ${mobile} {
-                        border: none;
+                        padding: 2px 0 4px 13px;
+                        vertical-align: top;
+                        text-align: left;
+                        width: 30%;
+                        color: #aeaeae;
+                        font-size: 12px
+                        font-weight: 100;
                         padding: 12px !important;
+                        border-bottom : unset;
                       }
                       @media (max-width: 450px) {
                         display: none;
                       }
                     `}
                   >
-                    <span
-                      css={`
-                        border: none;
-                        height: 100%;
-                        width: 100%;
-                        background: blue;
-                        @media (max-width: 450px) {
-                          display: none;
-                        }
-                      `}
-                    >
-                      Phone No.
-                    </span>
+                    Phone No.
                   </th>
                 </tr>
 
                 {foundHospital?.map(item => (
                   <>
-                    <tr style={{ borderBottom: "1px solid lightgray" }}>
+                    <tr>
                       <td style={{ padding: "5px 10px" }}>
                         <div>
                           <span

@@ -107,9 +107,7 @@ function ProductDetailsModal({
               <RenderPlanDetails quote={quote} />
             </Tab>
             <Tab eventKey="add-on-coverages" title="Add-on Coverages">
-              <DetailsSectionWrap className="mt-3">
-                <RidersSection quote={quote} {...ridersSlot} />
-              </DetailsSectionWrap>
+              <RidersSection quote={quote} {...ridersSlot} />
             </Tab>
             <Tab eventKey="cashless-hospitals" title="Cashless Hospitals">
               <CashlessHospitals quote={quote} />
@@ -314,13 +312,11 @@ function RenderClaimProcess({ quote, ...props }) {
     );
 
   return (
-    <DetailsSectionWrap {...props}>
-      <ClaimProcess
-        ActiveMainTab
-        claimProccess={claimProcessQuery.data}
-        claimform={(productBrochureQuery.data || [])[0]}
-      />
-    </DetailsSectionWrap>
+    <ClaimProcess
+      ActiveMainTab
+      claimProccess={claimProcessQuery.data}
+      claimform={(productBrochureQuery.data || [])[0]}
+    />
   );
 }
 
@@ -586,6 +582,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
           className="d-flex align-items-center"
           css={`
             gap: 1em;
+            width: 25%;
           `}
         >
           <LogoWrap>
@@ -616,7 +613,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 margin-left: 5px;
               `}
             >
-              {" "}
+              &nbsp;
               {amount(sum_insured)}
             </span>
           </div>
@@ -641,8 +638,10 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 font-weight: bold;
               `}
             >
-              {" "}
-              {amount(total_premium)} / Year
+              &nbsp;
+              {journeyType === "top_up"
+                ? getDisplayPremium({ total_premium: netPremium, tenure })
+                : amount(netPremium)}
             </span>
           </div>
           <div
@@ -664,26 +663,33 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 margin-left: 5px;
               `}
             >
+              &nbsp;
               {csr}%
             </span>
           </div>
         </QuoteInfoWrap>
-
-        <Button
-          onClick={handlePremiumClick}
-          className="rounded"
+        <div
           css={`
-            width: 12.97em;
-            height: 3.97em;
-            font-size: 0.939rem;
-            font-weight: normal;
+            width: 25%;
           `}
-          loader={isLoading}
+          className="d-flex align-items-center justify-content-center"
         >
-          {journeyType === "top_up"
-            ? getDisplayPremium({ total_premium: netPremium, tenure })
-            : "Proceed to Buy"}
-        </Button>
+          <Button
+            onClick={handlePremiumClick}
+            className="rounded"
+            css={`
+              width: 12.97em;
+              height: 3.97em;
+              font-size: 0.939rem;
+              font-weight: normal;
+            `}
+            loader={isLoading}
+          >
+            {journeyType === "top_up"
+              ? getDisplayPremium({ total_premium: netPremium, tenure })
+              : "Proceed to Buy"}
+          </Button>
+        </div>
 
         <CloseButton className="p-0" onClick={handleClose}>
           <FaTimes />
@@ -712,9 +718,6 @@ const QuoteInfoWrap = styled.div`
   justify-content: space-around;
   @media (max-width: 1190px) {
     width: 50%;
-  }
-  @media (max-width: 1050px) {
-    width: 60%;
   }
 `;
 

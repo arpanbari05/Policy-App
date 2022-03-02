@@ -86,6 +86,7 @@ const PlanTabMobile = ({ data, item }) => {
                               lineHeight: "1.1",
                             }}
                             css={`
+                              list-style-type: 	disc;
                               text-indent: -0.8em;
                               &::marker {
                                 color: #f7a600;

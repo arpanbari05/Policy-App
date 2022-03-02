@@ -11,6 +11,7 @@ import {
 } from "../../../api/api";
 import {
   useCompanies,
+  useFrontendBoot,
   useQuote,
   useTheme,
   useToggle,
@@ -44,19 +45,23 @@ export function MobileProductHeader({
   onClose,
   ...props
 }) {
-  const handleClose = () => {
-    onClose && onClose();
-  };
+  const { journeyType } = useFrontendBoot();
 
   const {
     product: { company, name },
     sum_insured,
     total_premium,
+    tenure,
   } = quote;
 
   const { getCompany } = useCompanies();
 
   const { logo, csr } = getCompany(company.alias);
+
+  const netPremium = calculateTotalPremium({
+    total_premium,
+    health_riders: selectedRiders,
+  });
 
   return (
     <StickyTop>
@@ -70,21 +75,25 @@ export function MobileProductHeader({
 
         <LowerDiv>
           <CoverDiv>
-            <span>Cover : </span>
+            <span>Cover</span>
             <br />
             <span>
               <b>{amount(sum_insured)}</b>
             </span>
           </CoverDiv>
           <PremiumDiv>
-            <span>Premium : </span>
+            <span>Premium</span>
             <br />
             <span>
-              <b>{amount(total_premium)}</b>
+              <b>
+                {journeyType === "top_up"
+                  ? getDisplayPremium({ total_premium: netPremium, tenure })
+                  : amount(netPremium)}
+              </b>
             </span>
           </PremiumDiv>
           <ClaimSettlementDiv>
-            <span>Claim Settlement Ratio : </span>
+            <span>Claim Settlement Ratio</span>
             <br />
             <span>
               <b>{csr}%</b>
@@ -107,6 +116,7 @@ const UpperDiv = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  padding-top: 5px;
 `;
 
 const CompLogo = styled.img`
@@ -267,9 +277,11 @@ export const MobileProductDetailsFooter = ({
     queryState: { isLoading },
   } = useQuote();
 
-  const cartSummaryModal = useToggle();
+  const { journeyType } = useFrontendBoot();
 
-  const { total_premium } = quote;
+  const { sum_insured, total_premium, tenure } = quote;
+
+  const cartSummaryModal = useToggle();
 
   const handlePremiumClick = () => {
     buyQuote(quote, selectedRiders).then(cartSummaryModal.on);
@@ -278,6 +290,12 @@ export const MobileProductDetailsFooter = ({
   const { gotoProductPage } = useGotoProductDetailsPage();
 
   const { colors } = useTheme();
+
+  const netPremium = calculateTotalPremium({
+    total_premium,
+    health_riders: selectedRiders,
+  });
+
   return (
     <FooterOuter>
       <div>
@@ -299,7 +317,7 @@ export const MobileProductDetailsFooter = ({
             font-weight: bold;
           `}
         >
-          {amount(total_premium)}
+          {amount(netPremium)}
         </p>
       </div>
       <div>

@@ -69,6 +69,7 @@ const dataSet = dataArray => {
                 color: #253858;
                 margin-bottom: 0px;
                 margin-top: 8px;
+                word-wrap: break-word;
               `}
             >
               {data.description}{" "}
@@ -169,7 +170,7 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
         }}
         css={`
           ${tabletAndMobile} {
-            display: none;
+            display: none !important;
           }
         `}
       >

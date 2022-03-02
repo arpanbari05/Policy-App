@@ -46,7 +46,13 @@ const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
                   >
                     <Col lg={12} className="order-lg-first">
                       <div className="feature-img-box">
-                        <h2 className="title_h4_p plan_a_t">
+                        <h2
+                          className="title_h4_p plan_a_t"
+                          css={`
+                            font-weight: bold;
+                            color: #253858;
+                          `}
+                        >
                           About{" "}
                           <span style={{ color: colors.primary_color }}>
                             {company_name}
