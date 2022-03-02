@@ -38,6 +38,7 @@ import {
 } from "../data";
 import _ from "lodash";
 import AddPlansModal from "../components/AddPlansModal";
+import TenureFeatureValueMobile from "../components/tenure/TenureMobile";
 
 function findQuoteBySumInsured(quotes, sum_insured) {
   return quotes.find(
@@ -160,13 +161,16 @@ function ComparePage() {
         >
           <FeatureRow>
             {quotes.map((quote, idx) => (
-              <FeatureValue key={idx}>
-                <select value={quote.tenure} onChange={alert}>
-                  <option value={quote.tenure}>
-                    {tenureInWords(quote.tenure)}
-                  </option>
-                </select>
-              </FeatureValue>
+              <TenureFeatureValueMobile
+                quote={quote}
+                groupCode={groupCode}
+                select={{
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                  selectedSectionView,
+                  setSelectedSectionView,
+                }}
+              />
             ))}
           </FeatureRow>
         </FeatureSection>
@@ -183,13 +187,15 @@ function ComparePage() {
         >
           <FeatureRow>
             {quotes.map((quote, idx) => (
-              <FeatureValue key={idx}>
-                <select value={quote.tenure} onChange={alert}>
-                  <option value={quote.tenure}>
-                    {tenureInWords(quote.tenure)}
-                  </option>
-                </select>
-              </FeatureValue>
+              <TenureFeatureValueMobile
+                quotes={quotes}
+                select={{
+                  isSelectedSectionView,
+                  setIsSelectedSectionView,
+                  selectedSectionView,
+                  setSelectedSectionView,
+                }}
+              />
             ))}
           </FeatureRow>
         </FeatureSection>
