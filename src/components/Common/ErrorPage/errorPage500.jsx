@@ -4,14 +4,17 @@ import styled from "styled-components";
 // import Navbar from "../Navbar/Navbar";
 import { reportErrors } from "./ServiceApi";
 import { Page } from "../../index";
-import { useGetFrontendBootQuery } from "../../../api/api"
+import { useGetFrontendBootQuery } from "../../../api/api";
 import { HiCheckCircle } from "react-icons/hi";
 
-function ErrorBoundary({children}) {
-  const [errorReported,setErrorReported] = useState(false);
-  const { isError } = useGetFrontendBootQuery();
-  console.log('bksdbs',useGetFrontendBootQuery())
-   const reportError = e => {
+function ErrorBoundary({ children }) {
+  const [errorReported, setErrorReported] = useState(false);
+
+  const { data, isError } = useGetFrontendBootQuery();
+
+  console.log("The data recived", data);
+
+  const reportError = e => {
     e.preventDefault();
     try {
       reportErrors({
@@ -22,7 +25,7 @@ function ErrorBoundary({children}) {
     } catch {}
   };
 
-  return isError?(
+  return isError ? (
     <Page>
       <ErrorPage className="row d-flex align-items-center">
         <div className="left_container col-md-6 col-sm-12 d-flex align-items-center justify-content-center">
@@ -57,13 +60,17 @@ function ErrorBoundary({children}) {
                 <span>Report Error</span>
               </Button>
             ) : (
-              <Button className="btn bg_color_grey">Error Reported <HiCheckCircle/></Button>
+              <Button className="btn bg_color_grey">
+                Error Reported <HiCheckCircle />
+              </Button>
             )}
           </div>
         </div>
       </ErrorPage>
     </Page>
-  ):(<>{children}</>)
+  ) : (
+    <>{children}</>
+  );
 }
 
 export default ErrorBoundary;
@@ -78,7 +85,7 @@ const ErrorPage = styled.div`
     background: #f7f7f7 !important;
     color: #cfcfcf;
   }
-  
+
   .left_container {
     .inner_circle {
       .a_404_text {
@@ -105,8 +112,8 @@ const ErrorPage = styled.div`
     }
   }
 
-  @media screen and (max-width:768px){
-    text-align:center;
+  @media screen and (max-width: 768px) {
+    text-align: center;
   }
 `;
 
@@ -137,8 +144,6 @@ const Success = styled.span`
 //     border-bottom: 1px dashed#0d6efd;
 //   }
 // `;
-
-
 
 // import React, { Component } from "react";
 // import { connect } from "react-redux";
@@ -189,8 +194,6 @@ const Success = styled.span`
 //   };
 
 //   render() {
-    
-
 
 //       return  this.state.errorInfo ||
 //       this.props.frontendError ||
@@ -236,8 +239,7 @@ const Success = styled.span`
 //         </div>
 //       </ErrorPage>
 //     </Page>
-        
-          
+
 //         </>
 //       ):this.props.children;
 //     // Normally, just render children
@@ -255,7 +257,7 @@ const Success = styled.span`
 // return (
 
 // )
-// }; 
+// };
 
 // const Message = styled.p`
 //   color: #777;
@@ -288,7 +290,7 @@ const Success = styled.span`
 //     background: #f7f7f7 !important;
 //     color: #cfcfcf;
 //   }
-  
+
 //   .left_container {
 //     .inner_circle {
 //       .a_404_text {

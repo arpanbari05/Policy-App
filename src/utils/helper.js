@@ -444,3 +444,11 @@ export function getTotalPremium(cartEntries = []) {
 export function getFirstName(name = "") {
   return name.split(" ")[0];
 }
+export const autoCapitalizationHandler = value => {
+  var splitStr = value.split(" ");
+  for (var i = 0; i < splitStr.length; i++) {
+    splitStr[i] =
+      splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+  }
+  return splitStr.join(" "); /* Firstword Secondword */
+};

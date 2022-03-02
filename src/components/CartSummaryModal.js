@@ -6,14 +6,18 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { Button } from ".";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
-import { useCompanies, useQuote } from "../customHooks";
+import { useCompanies, useQuote, useTheme } from "../customHooks";
 import useUrlQuery from "../customHooks/useUrlQuery";
 import { removeQuoteFromCart } from "../pages/Cart/cart.slice";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import CardModal from "./Common/Modal/CardModal";
 import { figureToWords } from "../utils/helper";
 
-function CartSummaryModal({ onClose = () => {}, onContine = () => {}, allClose = () => {} }) {
+function CartSummaryModal({
+  onClose = () => {},
+  onContine = () => {},
+  allClose = () => {},
+}) {
   const { data: enquiryData } = useGetEnquiriesQuery();
   const firstName = enquiryData?.data?.name?.split(" ")[0];
   return (
@@ -131,6 +135,8 @@ function Footer({ closeModal, onContine, ...props }) {
 function GroupCard({ group, closeModal, allClose, ...props }) {
   const { members } = group;
 
+  const { colors } = useTheme();
+
   return (
     <div
       css={`
@@ -159,7 +165,7 @@ function GroupCard({ group, closeModal, allClose, ...props }) {
               width: 6px;
               border-radius: 3px;
               margin-right: 14px;
-              background: #2cd44a;
+              background: ${colors.secondary_color};
             `}
           ></div>
           {members.join(" + ")?.replaceAll("_", "-")}
@@ -478,9 +484,9 @@ const ProductContainer = styled.div`
   align-items: center;
 
   & img {
-    width: 100%; 
-    max-width: 95px; 
-    height: auto; 
+    width: 100%;
+    max-width: 95px;
+    height: auto;
   }
   @media (max-width: 767px) {
     display: none;

@@ -8,7 +8,7 @@ import { Suspense } from "react";
 import { FullScreenLoader, LoadCart } from "./components";
 import ComparePage from "./pages/ComparePage";
 import ErrorPage from "./components/Common/ErrorPage/ErrorPage";
-
+import { useFrontendBoot } from "../src/customHooks";
 const ProposalPage = lazy(() => import("./pages/ProposalPage/ProposalPage"));
 const ProposalSummary = lazy(() =>
   import("./pages/ProposalSummary/ProposalSummary"),
@@ -16,10 +16,18 @@ const ProposalSummary = lazy(() =>
 const ThankYouPage = lazy(() => import("./pages/ThankYouPage/ThankYouPage"));
 
 function App() {
+  const { journeyType } = useFrontendBoot();
   return (
     <Switch>
       <Route path="/" exact>
-        <Redirect from="/" to="/input/basic-details" />
+        <Redirect
+          from="/"
+          to={
+            journeyType === "renewal"
+              ? "input/renewal-details"
+              : "/input/basic-details"
+          }
+        />
       </Route>
       <Route exact path="/input/:currentForm" component={InputPage} />
       <Route exact path="/quotes/:groupCode">

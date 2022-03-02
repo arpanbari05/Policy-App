@@ -16,7 +16,12 @@ import { RiPencilFill } from "react-icons/ri";
 import { FaTimes } from "react-icons/fa";
 import * as mq from "../../../../utils/mediaQueries";
 
-export function EditMembersModal({ onClose, children, ...props }) {
+export function EditMembersModal({
+  onClose,
+  children,
+  title = "Edit Members",
+  ...props
+}) {
   const handleHide = () => {
     onClose && onClose();
   };
@@ -44,7 +49,7 @@ export function EditMembersModal({ onClose, children, ...props }) {
       {...props}
     >
       <Modal.Header
-      className="w-100"
+        className="w-100"
         css={`
           background-color: #f5f7f9;
           ${mq.mobile} {
@@ -62,7 +67,7 @@ export function EditMembersModal({ onClose, children, ...props }) {
             color: "black",
           }}
         >
-          Edit Members
+          {title}
         </Modal.Title>
         <button onClick={handleHide}>
           <FaTimes />
@@ -174,7 +179,14 @@ export function EditMembers({ onClose, ...props }) {
           }
         `}
       >
-        <div className="p-3" css={`font-size: 16px @media (max-width: 767px) { font-size: 14px; }`}>
+        <div
+          className="p-3"
+          css={`
+            font-size: 16px @media (max-width: 767px) {
+              font-size: 14px;
+            }
+          `}
+        >
           <MemberOptions {...memberForm} />
         </div>
         {error &&

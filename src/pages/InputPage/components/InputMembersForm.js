@@ -164,15 +164,37 @@ function EditMembers({ onClose, onSubmit, initialMembersList = [], ...props }) {
   };
 
   return (
-    <EditMembersModal onClose={onClose} {...props}>
-      <form onSubmit={handleSubmit}>
+    <EditMembersModal
+      onClose={onClose}
+      {...props}
+      title="All your family members"
+    >
+      <form
+        onSubmit={handleSubmit}
+        css={`
+          @media (max-width: 480px) {
+            padding-bottom: 40px;
+          }
+        `}
+      >
         <div className="p-3">
           <MemberOptions {...membersForm} membersList={membersList} />
         </div>
         {isError || error ? (
           <StyledErrorMessage>{error}</StyledErrorMessage>
         ) : null}
-        <Button type="submit" className="w-100 rounded-0">
+        <Button
+          type="submit"
+          className="w-100 rounded-0"
+          css={`
+            @media (max-width: 480px) {
+              position: fixed;
+              width: 100%;
+              bottom: 0;
+              z-index: 100;
+            }
+          `}
+        >
           Apply
         </Button>
       </form>

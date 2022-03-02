@@ -220,7 +220,7 @@ const SummaryTab = ({ title, data, values, index }) => {
             // values?.[item]?.[data.name]?.members.length
             values?.[item]?.[data.name] instanceof Object &&
             values?.[item]?.[data.name]?.members &&
-            values?.[item]?.[data.name]?.members ? (
+            values?.[item]?.[data.name]?.members.length ? (
               Object.keys(values?.[item]?.[data.name]?.members).map(
                 (_item, _i) => {
                   return (
@@ -313,6 +313,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
+          {console.log("svjksfvb",values,item,data)}
           {values?.[item]?.[data.name] instanceof Object &&
           values?.[item]?.[data.name]?.members &&
           Object.keys(values?.[item]?.[data.name]?.members).length ? (
@@ -326,7 +327,8 @@ const SummaryTab = ({ title, data, values, index }) => {
                       style={{ display: "inline-block" }}
                       css={`font-weight: 900 !important;`}
                     >
-                      <MedicalAnswer>{_item?_item:"No"}</MedicalAnswer>
+                      <MedicalAnswer>{_item}</MedicalAnswer>
+                      
                     </div>
                   );
                 } else return <></>;
@@ -392,7 +394,7 @@ const SummaryTab = ({ title, data, values, index }) => {
               {title}
             </MainTitle>
             {
-              title === "Other Details" && <TitleWrapper css={`padding-left: 20px !important`}>Nominee Details</TitleWrapper>
+              title === "Other Details" && <TitleWrapper css={`padding-left: 20px !important; border-top:0px !important;`} >Nominee Details</TitleWrapper>
             }
           </Col>
         </Row>
