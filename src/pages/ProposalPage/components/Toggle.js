@@ -87,7 +87,7 @@ if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(
 
   isValid = false;
 } 
- 
+ console.log("fghfhg",showMembers)
     onChange({
       ...value,
       [`is${name}`]: boolean,
@@ -181,8 +181,9 @@ if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(
             </div>
           </div>
         </div>
-        {membersToMap.length && !(showMembers === false) ? (
-          (customShowMembers || boolean === "Y") && (
+        
+        {membersToMap.length && (showMembers || customShowMembers) ? (
+          (boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (
                 <>
