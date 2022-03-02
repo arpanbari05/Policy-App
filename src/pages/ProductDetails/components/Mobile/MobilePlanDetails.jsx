@@ -6,7 +6,7 @@ import { RiDownload2Line } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
 import { useTheme } from "../../../../customHooks/index";
-import { mobile } from "../../../../utils/mediaQueries";
+import { mobile, tabletAndMobile } from "../../../../utils/mediaQueries";
 
 function MobilePlanDetails({
   ActiveMainTab,
@@ -22,7 +22,7 @@ function MobilePlanDetails({
       style={{ display: ActiveMainTab ? "block" : "none" }}
       css={`
         display: none !important;
-        ${mobile} {
+        ${tabletAndMobile} {
           display: block !important;
           padding-bottom: 100px !important;
         }
@@ -59,6 +59,8 @@ function MobilePlanDetails({
                 css={`
                   font-size: 16px !important;
                   font-weight: bold;
+                  margin-bottom: 8px;
+                  color: #253858;
                 `}
               >
                 Downloads
@@ -144,8 +146,10 @@ function MobilePlanDetails({
 
 const DownloadCardWrapper = styled.div`
   display: none;
-  @media (max-width: 767px) {
+  ${tabletAndMobile} {
     display: block;
+  }
+  ${mobile} {
     margin: 5px !important;
   }
 `;

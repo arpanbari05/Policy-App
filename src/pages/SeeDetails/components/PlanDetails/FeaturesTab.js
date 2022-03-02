@@ -16,7 +16,8 @@ const dataSet = (dataArray, type) => {
       data.is_visible === 1 &&
         array.push(
           <span key={i}>
-            {data.header === "Permanent Exclusions" && (
+            {(data.header === "Permanent Exclusions" ||
+              data.header === "Major Exclusions") && (
               <div className="featureExclusion">
                 {data.value.split("\n").map(item => {
                   return (
@@ -27,6 +28,7 @@ const dataSet = (dataArray, type) => {
                         padding: "5px 8px",
                       }}
                       css={`
+                        list-style-type: disc;
                         &::marker {
                           color: #f7a600;
 
@@ -37,15 +39,18 @@ const dataSet = (dataArray, type) => {
                         }
                       `}
                     >
-                      {" "}
-                      {item}
+                      {/* TO REMOVE DOT(.) INCASE OF TOP_UP JOURNEY  */}
+                      {data.header === "Major Exclusions"
+                        ? item.slice(2)
+                        : item}
                     </li>
                   );
                 })}
               </div>
             )}
             {data.header !== "Co-Payment" &&
-              data.header !== "Permanent Exclusions" && (
+              data.header !== "Permanent Exclusions" &&
+              data.header !== "Major Exclusions" && (
                 <div>
                   <FeatureDefinition data={data} />
                 </div>

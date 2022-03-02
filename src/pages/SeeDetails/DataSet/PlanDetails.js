@@ -5,7 +5,7 @@ import FeaturesTab from "../components/PlanDetails/FeaturesTab";
 import { useSelector } from "react-redux";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import "styled-components/macro";
-import { mobile } from "../../../utils/mediaQueries";
+import { mobile, tabletAndMobile } from "../../../utils/mediaQueries";
 import { RiDownload2Line } from "react-icons/ri";
 import { useTheme } from "../../../customHooks";
 
@@ -35,7 +35,7 @@ const PlanDetails = ({
           top: "0px",
         }}
         css={`
-          ${mobile} {
+          ${tabletAndMobile} {
             display: none !important;
           }
         `}
@@ -79,7 +79,7 @@ const PlanDetails = ({
                       css={`
                         padding: 18px 0px;
                         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-                        ${mobile} {
+                        ${tabletAndMobile} {
                           display: none;
                         }
                       `}

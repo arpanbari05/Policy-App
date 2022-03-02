@@ -2,7 +2,8 @@ import { Modal, Tab, Tabs } from "react-bootstrap";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import styled from "styled-components/macro";
 import { Button, useGotoProductDetailsPage } from "..";
-import { mobile } from "../../utils/mediaQueries";
+import { tabletAndMobile } from "../../utils/mediaQueries";
+import "styled-components/macro";
 import {
   useGetAboutCompanyQuery,
   useGetClaimProcessQuery,
@@ -54,10 +55,15 @@ function useRidersSlot() {
   return { selectedRiders, onChange };
 }
 
-function ProductDetailsModal({ quote, onClose, defaultActiveKey="plan-details", defaultActiveKeyMobile="mobile-plan-details", ...props }) {
+function ProductDetailsModal({
+  quote,
+  onClose,
+  defaultActiveKey = "plan-details",
+  defaultActiveKeyMobile = "mobile-plan-details",
+  ...props
+}) {
   const handleClose = () => onClose && onClose();
 
-  console.log("The quote", quote);
   const { selectedRiders, ...ridersSlot } = useRidersSlot();
 
   return (
@@ -78,7 +84,7 @@ function ProductDetailsModal({ quote, onClose, defaultActiveKey="plan-details", 
           css={`
             padding-top: 7.27em;
             min-height: 100vh !important;
-            ${mobile} {
+            ${tabletAndMobile} {
               padding-top: unset !important;
               background-color: rgb(243, 244, 249);
             }
@@ -101,9 +107,7 @@ function ProductDetailsModal({ quote, onClose, defaultActiveKey="plan-details", 
               <RenderPlanDetails quote={quote} />
             </Tab>
             <Tab eventKey="add-on-coverages" title="Add-on Coverages">
-              <DetailsSectionWrap className="mt-3">
-                <RidersSection quote={quote} {...ridersSlot} />
-              </DetailsSectionWrap>
+              <RidersSection quote={quote} {...ridersSlot} />
             </Tab>
             <Tab eventKey="cashless-hospitals" title="Cashless Hospitals">
               <CashlessHospitals quote={quote} />
@@ -141,7 +145,7 @@ function ProductDetailsModal({ quote, onClose, defaultActiveKey="plan-details", 
       <Modal.Footer
         css={`
           display: none;
-          ${mobile} {
+          ${tabletAndMobile} {
             display: block;
             min-height: 83px;
             width: 100%;
@@ -180,7 +184,7 @@ function ProductDetailsTabs({ children, ...props }) {
             color: ${colors.primary_color};
           }
         }
-        ${mobile} {
+        ${tabletAndMobile} {
           display: none !important;
         }
       `}
@@ -220,7 +224,7 @@ const StyledTabs = styled(Tabs)`
       }
     }
   }
-  @media (max-width: 768px) {
+  ${tabletAndMobile} {
     display: none;
   }
 `;
@@ -308,13 +312,11 @@ function RenderClaimProcess({ quote, ...props }) {
     );
 
   return (
-    <DetailsSectionWrap {...props}>
-      <ClaimProcess
-        ActiveMainTab
-        claimProccess={claimProcessQuery.data}
-        claimform={(productBrochureQuery.data || [])[0]}
-      />
-    </DetailsSectionWrap>
+    <ClaimProcess
+      ActiveMainTab
+      claimProccess={claimProcessQuery.data}
+      claimform={(productBrochureQuery.data || [])[0]}
+    />
   );
 }
 
@@ -373,13 +375,19 @@ function CashlessHospitals({ quote, ...props }) {
   const handleSearchChange = evt => setSearch(evt.target.value);
 
   return (
-    <DetailsSectionWrap {...props}>
+    <DetailsSectionWrap
+      {...props}
+      css={`
+        margin-top: 20px;
+      `}
+    >
       <h1
         className="my-4"
         css={`
           font-size: 1.39rem;
-          color: #253858;
+          color: rgb(37, 56, 88);
           font-weight: 900;
+          margin-top: unset !important;
         `}
       >
         Hospitals Near You
@@ -472,32 +480,39 @@ function CashlessHospitals({ quote, ...props }) {
 function NetworkHospitalCard({ networkHospital, ...props }) {
   return (
     <div
-      className="p-3"
       css={`
         box-shadow: 0 3px 13px 0 rgb(0 0 0 / 16%);
-        min-height: 156px;
+        min-height: 125px;
         color: #253858;
+        padding: 15px;
         flex: 1 0 calc(100% / 3 - 0.8em);
       `}
       {...props}
     >
       <h2
-        className="mb-3"
         css={`
-          font-size: 1.2rem;
+          font-size: 17px;
           font-weight: 900;
+          margin-bottom: 8px;
         `}
       >
         {networkHospital.name}
       </h2>
       <p
         css={`
-          font-size: 0.79rem;
+          font-size: 13px;
+          margin-bottom: 8px;
         `}
       >
         {networkHospital.address}
       </p>
-      <p>Phone number: {networkHospital.phone}</p>
+      <p
+        css={`
+          margin-bottom: unset;
+        `}
+      >
+        Phone number: {networkHospital.phone}
+      </p>
     </div>
   );
 }
@@ -515,7 +530,8 @@ function NetworkHospitalRow({ networkHospital, ...props }) {
 export const DetailsSectionWrap = styled.section`
   padding: 0 6%;
   margin: auto;
-  ${mobile} {
+  margin-top: 40px;
+  ${tabletAndMobile} {
     display: none !important;
   }
 `;
@@ -566,6 +582,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
           className="d-flex align-items-center"
           css={`
             gap: 1em;
+            width: 25%;
           `}
         >
           <LogoWrap>
@@ -596,7 +613,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 margin-left: 5px;
               `}
             >
-              {" "}
+              &nbsp;
               {amount(sum_insured)}
             </span>
           </div>
@@ -621,8 +638,10 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 font-weight: bold;
               `}
             >
-              {" "}
-              {amount(total_premium)} / Year
+              &nbsp;
+              {journeyType === "top_up"
+                ? getDisplayPremium({ total_premium: netPremium, tenure })
+                : amount(netPremium)}
             </span>
           </div>
           <div
@@ -644,26 +663,33 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 margin-left: 5px;
               `}
             >
+              &nbsp;
               {csr}%
             </span>
           </div>
         </QuoteInfoWrap>
-
-        <Button
-          onClick={handlePremiumClick}
-          className="rounded"
+        <div
           css={`
-            width: 12.97em;
-            height: 3.97em;
-            font-size: 0.939rem;
-            font-weight: normal;
+            width: 25%;
           `}
-          loader={isLoading}
+          className="d-flex align-items-center justify-content-center"
         >
-          {journeyType === "top_up"
-            ? getDisplayPremium({ total_premium: netPremium, tenure })
-            : "Proceed to Buy"}
-        </Button>
+          <Button
+            onClick={handlePremiumClick}
+            className="rounded"
+            css={`
+              width: 12.97em;
+              height: 3.97em;
+              font-size: 0.939rem;
+              font-weight: normal;
+            `}
+            loader={isLoading}
+          >
+            {journeyType === "top_up"
+              ? getDisplayPremium({ total_premium: netPremium, tenure })
+              : "Proceed to Buy"}
+          </Button>
+        </div>
 
         <CloseButton className="p-0" onClick={handleClose}>
           <FaTimes />
@@ -693,14 +719,11 @@ const QuoteInfoWrap = styled.div`
   @media (max-width: 1190px) {
     width: 50%;
   }
-  @media (max-width: 1050px) {
-    width: 60%;
-  }
 `;
 
 const ProductHeaderWrap = styled.div`
   height: 7.27em;
-  padding: 0 6%;
+  padding: 5px 4%;
   box-shadow: rgb(0 0 0 / 16%) 0px 3px 16px 0px;
 `;
 
@@ -710,7 +733,7 @@ const FixedTop = styled.div`
   width: 100%;
   background-color: #fff;
   z-index: 99;
-  @media (max-width: 768px) {
+  ${tabletAndMobile} {
     display: none;
   } ;
 `;

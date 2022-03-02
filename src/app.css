@@ -295,6 +295,15 @@ select {
   font-size: 19px;
 }
 
+.noDisplayOnTabletAndMobile {
+  display: block;
+}
+@media screen and (max-width: 1024px) {
+  .noDisplayOnTabletAndMobile {
+    display: none;
+  }
+}
+
 .middle .box span {
   font-size: 16px;
   top: -62px;
