@@ -1134,7 +1134,7 @@ export function useNameInput(initialValue = "", setFullNameError) {
   return { value, onChange, onBlur, style };
 }
 
-const validateNumber = (str = "") => /\d/g.test(str);
+const validateNumber = (str = "") => /^\d*$/.test(str);
 
 const filterNo = (setNumber, number, value) => {
   if (number.length === 0) {
