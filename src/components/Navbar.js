@@ -27,7 +27,6 @@ import useComparePage from "../pages/ComparePage/useComparePage";
 import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
 import { CircleLoader } from ".";
-import { fyntune } from "../assets/images";
 import ShareQuoteModal from "./ShareQuoteModal";
 
 const GO_BACK_LOCATIONS = [
@@ -56,6 +55,7 @@ function LogoLink() {
           cursor: pointer;
           /* height: 1.92em; */
           width: 130px;
+          object-fit: contain;
         `}
       />
     </Link>
@@ -200,16 +200,7 @@ const Navbar = () => {
                   <FaChevronLeft />
                 </div>
               )}
-            <Link to="/">
-              <img
-                src={fyntune}
-                alt={`companylogo`}
-                css={`
-                  cursor: pointer;
-                  height: 2.52em;
-                `}
-              />
-            </Link>
+            <LogoLink />
             {!location.pathname.startsWith("/input") && trace_id && (
               <div
                 css={`
@@ -227,25 +218,19 @@ const Navbar = () => {
                 display: flex;
               `}
             >
-              {
-                location.pathname === "/proposal" && (
-                  <ShareQuoteModal stage="PROPOSAL" />
-                )
-              }
-              {
-                location.pathname === "/proposal_summary" && (
-                  <ShareQuoteModal stage="PROPOSAL_SUMMARY" />
-                )
-              }
-              {
-                location.pathname === `/compare/${groupCode}` && (
-                  <ShareQuoteModal
-                    imageSend={imageSend}
-                    emailStatus={emailStatus}
-                    stage={"COMPARE"}
-                  />
-                )
-              }
+              {location.pathname === "/proposal" && (
+                <ShareQuoteModal stage="PROPOSAL" />
+              )}
+              {location.pathname === "/proposal_summary" && (
+                <ShareQuoteModal stage="PROPOSAL_SUMMARY" />
+              )}
+              {location.pathname === `/compare/${groupCode}` && (
+                <ShareQuoteModal
+                  imageSend={imageSend}
+                  emailStatus={emailStatus}
+                  stage={"COMPARE"}
+                />
+              )}
               <div
                 css={`
                   background-color: ${colors.secondary_shade};
@@ -316,15 +301,7 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
           `}
         >
           {BackButton}
-          <Link to={"/input/basic-details"}>
-            <img
-              src={fyntune}
-              alt="fyntune"
-              css={`
-                width: 8.93em;
-              `}
-            />
-          </Link>
+          <LogoLink />
         </div>
 
         {location.pathname !== "/" && trace_id && <TraceId />}
