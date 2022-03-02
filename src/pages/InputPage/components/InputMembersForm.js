@@ -19,8 +19,11 @@ import { InputFormCta } from ".";
 import { RiAddCircleFill, RiAddCircleLine } from "react-icons/ri";
 import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
 import { Button } from "../../../components";
+import { useState } from "react";
+import { useEffect } from "react";
 
 function InputMembersForm(props) {
+  const [serverError, setServerError] = useState("");
   const { colors } = useTheme();
 
   const editMembersToggle = useToggle(false);
@@ -30,6 +33,15 @@ function InputMembersForm(props) {
   const { isLoading } = useGetEnquiriesQuery();
 
   const { getAllMembers } = useMembers();
+
+  // Remove error after 5sec
+  useEffect(() => {
+    if (serverError !== "") {
+      setTimeout(() => {
+        setServerError("");
+      }, 5000);
+    }
+  }, [serverError]);
 
   const {
     isError,
@@ -74,20 +86,28 @@ function InputMembersForm(props) {
       sendData.plan_type = "F";
     }
 
-    updateEnquiry(sendData).then(res => {
-      let nextPagePath = "/input/plantype";
+    updateEnquiry(sendData)
+      .then(res => {
+        if (res.error) {
+          Object.keys(res.error.data.errors).forEach(value => {
+            setServerError(res.error.data.errors[`${value}`][0]);
+          });
+          return;
+        }
+        let nextPagePath = "/input/plantype";
 
-      if (journeyType !== "top_up" && !isSingleMember) {
+        if (journeyType !== "top_up" && !isSingleMember) {
+          history.push(getUrlWithEnquirySearch(nextPagePath));
+          return;
+        }
+
+        const { groups } = res.data.data;
+        const firstGroup = Math.min(...groups.map(group => group.id));
+
+        nextPagePath = `/input/location-${firstGroup}`;
         history.push(getUrlWithEnquirySearch(nextPagePath));
-        return;
-      }
-
-      const { groups } = res.data.data;
-      const firstGroup = Math.min(...groups.map(group => group.id));
-
-      nextPagePath = `/input/location-${firstGroup}`;
-      history.push(getUrlWithEnquirySearch(nextPagePath));
-    });
+      })
+      .catch(error => console.log(error));
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -101,7 +121,14 @@ function InputMembersForm(props) {
       <div className="px-3">
         <MemberOptions {...membersForm} membersList={primaryMembers} />
         {isError || error ? (
-          <StyledErrorMessage className="m-0 mt-3">{error}</StyledErrorMessage>
+          <StyledErrorMessage className="m-0 mt-3 mb-2">
+            {error}
+          </StyledErrorMessage>
+        ) : null}
+        {serverError !== "" ? (
+          <StyledErrorMessage className="m-0 mt-2 mb-2">
+            {serverError}
+          </StyledErrorMessage>
         ) : null}
         <button
           className="w-100"
@@ -133,6 +160,7 @@ function InputMembersForm(props) {
             onClose={editMembersToggle.off}
             onSubmit={updateMembersList}
             initialMembersList={membersList}
+            serverError={serverError}
           />
         ) : null}
       </div>
@@ -145,7 +173,13 @@ function InputMembersForm(props) {
   );
 }
 
-function EditMembers({ onClose, onSubmit, initialMembersList = [], ...props }) {
+function EditMembers({
+  onClose,
+  serverError,
+  onSubmit,
+  initialMembersList = [],
+  ...props
+}) {
   const {
     isError,
     error,
@@ -183,6 +217,9 @@ function EditMembers({ onClose, onSubmit, initialMembersList = [], ...props }) {
         {isError || error ? (
           <StyledErrorMessage>{error}</StyledErrorMessage>
         ) : null}
+        {serverError !== "" ? (
+          <StyledErrorMessage>{serverError}</StyledErrorMessage>
+        ) : null}
         <Button
           type="submit"
           className="w-100 rounded-0"
@@ -203,8 +240,9 @@ function EditMembers({ onClose, onSubmit, initialMembersList = [], ...props }) {
 }
 
 const StyledErrorMessage = styled(ErrorMessage)`
-  font-size: 1rem;
-  text-align: center;
+  font-size: 12px;
+  color: red;
+  width: 100%;
 `;
 
 export default InputMembersForm;

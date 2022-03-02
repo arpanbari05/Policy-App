@@ -19,11 +19,14 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
 
   return (
     <div
-      className="d-flex align-items-center p-3 rounded position-relative"
+      className="d-flex align-items-center rounded position-relative"
       css={`
         background-color: ${colors.secondary_shade};
-        width: 20em;
+        width: 20rem;
         gap: 0.6em;
+        padding: 10px;
+        height: 65px;
+        font-size: 14px;
 
         ${mq.mobile} {
           width: auto;
