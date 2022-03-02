@@ -19,7 +19,10 @@ import { useHistory, useParams } from "react-router-dom";
 import "styled-components/macro";
 import { BiPrinter } from "react-icons/bi";
 import { getFeatureForQuotes, numToLakh } from "../../utils/helper";
-import { useGetCompareFeaturesQuery } from "../../api/api";
+import {
+  useGetAdditionalDiscountsQuery,
+  useGetCompareFeaturesQuery,
+} from "../../api/api";
 import {
   BASIC_FEATURES,
   DESCRIPTIONS,
@@ -34,6 +37,8 @@ import { ProductCard, ShowDifference } from "./components";
 import { AddPlanCard, OptionalCoversValue } from "./mobile/components";
 import AddPlansModal from "./components/AddPlansModal";
 import { useState } from "react";
+
+import TenureFeatureValue from "./components/tenure/Tenure";
 
 function ComparePage() {
   const { groupCode } = useParams();
@@ -467,6 +472,7 @@ function BackButton(props) {
 
 function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
   const { journeyType } = useFrontendBoot();
+  const { groupCode } = useParams();
 
   return (
     <CompareSection title="Plan Details" {...props}>
@@ -513,35 +519,29 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
         )
       )}
 
+      {console.log("CompareQuotes", compareQuotes)}
+
       {!select.isSelectedSectionView ? (
         <FeatureRow title={"Tenure"} select={select}>
           {compareQuotes.map((quote, idx) => (
-            <div
-              key={quote.tenure + quote.sum_insured + quote.product.id + idx}
-              css={`
-                font-size: 16px;
-                color: #647188;
-                margin-left: 5px;
-              `}
-            >
-              {quote.tenure + `${quote.tenure > 1 ? " Years" : " Year"}`}
-            </div>
+            <TenureFeatureValue
+              quote={quote}
+              id={quote.premium + idx}
+              groupCode={groupCode}
+              journeyType={journeyType}
+            />
           ))}
         </FeatureRow>
       ) : (
         select.selectedSectionView["Tenure"] && (
           <FeatureRow title={"Tenure"} select={select}>
             {compareQuotes.map((quote, idx) => (
-              <div
-                key={quote.tenure + quote.sum_insured + quote.product.id + idx}
-                css={`
-                  font-size: 16px;
-                  color: #647188;
-                  margin-left: 5px;
-                `}
-              >
-                {quote.tenure + `${quote.tenure > 1 ? " Years" : " Year"}`}
-              </div>
+              <TenureFeatureValue
+                quote={quote}
+                id={quote.premium + idx}
+                groupCode={groupCode}
+                journeyType={journeyType}
+              />
             ))}
           </FeatureRow>
         )
@@ -599,6 +599,7 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
 
   const handleChange = evt => {
     const updatedQuote = getQuoteBySumInsured(evt.target.value);
+    console.log(updatedQuote);
     if (!updatedQuote) return;
     updateCompareQuote({
       updatedQuote,
@@ -610,7 +611,14 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
   return (
     <div className="d-flex align-items-center" {...props}>
       {isLoading ? (
-        <div>{numToLakh(compareQuote.sum_insured)}</div>
+        <div
+          css={`
+            font-size: 16px;
+            color: #647188;
+          `}
+        >
+          {numToLakh(compareQuote.sum_insured)}
+        </div>
       ) : (
         <select
           value={compareQuote.sum_insured}
@@ -634,7 +642,14 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
           })}
         </select>
       )}
-      {isLoading && <CircleLoader animation="border" />}
+      {isLoading && (
+        <CircleLoader
+          animation="border"
+          css={`
+            color: #647188;
+          `}
+        />
+      )}
     </div>
   );
 }
@@ -733,6 +748,8 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
 function KeyBenefitsSection({ compareQuotes = [], select, ...props }) {
   const uniqueFeatures = getFeatureForQuotes(compareQuotes, "unique_feature");
 
+  console.log("COMPARE_QUOTES", compareQuotes);
+  console.log("uniqueFeatures", uniqueFeatures);
   return (
     <CompareSection title="Key Benefits" {...props}>
       {!select.isSelectedSectionView ? (

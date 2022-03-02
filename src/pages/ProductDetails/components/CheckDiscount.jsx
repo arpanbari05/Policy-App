@@ -41,6 +41,8 @@ function TenureDiscounts({ groupCode, cartEntry, ...props }) {
 
   const discounts = data?.data;
 
+  console.log("DISCOUNT", discounts);
+
   useEffect(() => {
     if (discounts) {
       const tenureDiscount = discounts.find(
@@ -76,6 +78,7 @@ function TenureDiscounts({ groupCode, cartEntry, ...props }) {
           }
         `}
       >
+        {console.log(discounts)}
         {discounts?.map(discount => (
           <TenureDiscount
             discount={discount}
