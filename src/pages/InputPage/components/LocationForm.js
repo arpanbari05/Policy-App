@@ -155,36 +155,37 @@ function LocationForm() {
           </div>
         )}
       </div>
-      {!selectedCity && (
-        <div className="mt-3">
-          <h2
-            css={`
-              font-size: 1rem;
-              font-weight: 900;
-            `}
-          >
-            Popular Cities
-          </h2>
-          <div
-            css={`
-              display: flex;
-              flex-wrap: wrap;
-              gap: 0.49em;
-              margin: 10px 0;
-              padding-right: 10px;
-            `}
-          >
-            {popularcities.map(city => (
-              <PopularCity
-                key={city.name}
-                onChange={handlePopularCityChange}
-                checked={checkCitySelected(city)}
-                city={city}
-              />
-            ))}
-          </div>
+
+      <div className="mt-3">
+        <h2
+          css={`
+            font-size: 1rem;
+            font-weight: 900;
+          `}
+        >
+          Popular Cities
+        </h2>
+        <div
+          css={`
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.49em;
+            margin: 10px 0;
+            padding-right: 10px;
+          `}
+        >
+          {popularcities.map(city => (
+            <PopularCity
+              key={city.name}
+              onChange={handlePopularCityChange}
+              checked={checkCitySelected(city)}
+              city={city}
+              selectedCity={selectedCity}
+            />
+          ))}
         </div>
-      )}
+      </div>
+
       <div
         css={`
           margin-top: 2.5rem;
@@ -206,6 +207,7 @@ export default LocationForm;
 function PopularCity({
   city,
   onChange,
+  selectedCity,
   checked = false,
   disabled = false,
   ...props
@@ -230,6 +232,15 @@ function PopularCity({
         checked={checked}
         onChange={handleChange}
         css={`
+          & + label {
+            ${selectedCity?.city === name &&
+            `
+            box-shadow: ${colors.primary_color} 0px 0px 1px 1px;
+            background-color: #fff;
+            border-color: transparent;
+            color: ${colors.primary_color};
+            `}
+          }
           & + label:hover,
           &:checked + label {
             box-shadow: ${colors.primary_color} 0px 0px 1px 1px;
