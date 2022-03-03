@@ -27,13 +27,10 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
         padding: 10px;
         height: 65px;
         font-size: 14px;
+        flex: 1;
 
         @media (max-width: 1286px) {
           width: 17rem;
-        }
-
-        ${mq.mobile} {
-          width: auto;
         }
       `}
     >
@@ -64,6 +61,12 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
             text-overflow: ellipsis;
 
             ${quote.product.name.length > 30 && "font-size: 0.72rem;"}
+
+            @media (max-width: 480px) {
+              font-size: ${quote.product.name.length > 30
+                ? "0.69rem;"
+                : "0.82rem;"};
+            }
           `}
         >
           {quote.product.name}
