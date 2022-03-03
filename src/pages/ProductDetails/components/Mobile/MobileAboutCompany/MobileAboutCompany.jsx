@@ -138,7 +138,7 @@ function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
                         lineHeight: "1.3",
                       }}
                     >
-                      <span className="text_red_title">
+                      <span style={{ color: colors.primary_color }}>
                         Why it is important:{" "}
                       </span>
                       Market size refers to measure of the consumers' preference
@@ -172,7 +172,7 @@ function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
                         lineHeight: "1.3",
                       }}
                     >
-                      <span className="text_red_title">
+                      <span style={{ color: colors.primary_color }}>
                         Why it is important:{" "}
                       </span>
                       Claim Settlement Ratio of an Insurer is the number of
@@ -221,7 +221,7 @@ function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
                         lineHeight: "1.3",
                       }}
                     >
-                      <span className="text_red_title">
+                      <span style={{ color: colors.primary_color }}>
                         Why it is important:{" "}
                       </span>
                       Claim Incurred Ratio refers to the net claims paid by an

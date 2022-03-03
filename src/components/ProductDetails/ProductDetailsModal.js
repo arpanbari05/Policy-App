@@ -22,6 +22,7 @@ import ClaimProcess from "../../pages/SeeDetails/DataSet/ClaimProcess";
 import {
   amount,
   calculateTotalPremium,
+  figureToWords,
   getDisplayPremium,
   getPlanFeatures,
 } from "../../utils/helper";
@@ -44,6 +45,7 @@ import {
   MobileRenderAboutCompany,
   MobileRenderCashlessHospitals,
 } from "./Mobile/MobileModalComponents";
+import SearchBarWithCityDD from "../../pages/ProductDetails/components/Mobile/MobileCashlessHospitals/SearchBarWithCityDD";
 
 function useRidersSlot() {
   const [selectedRiders, setSelectedRiders] = useState([]);
@@ -82,7 +84,7 @@ function ProductDetailsModal({
       >
         <div
           css={`
-            padding-top: 7.27em;
+            padding-top: 100px;
             min-height: 100vh !important;
             ${tabletAndMobile} {
               padding-top: unset !important;
@@ -174,6 +176,7 @@ function ProductDetailsTabs({ children, ...props }) {
   return (
     <StyledTabs
       defaultActiveKey="plan-details"
+      primary_color={colors.primary_color}
       id="product-details-tabs"
       className="align-items-center justify-content-between"
       css={`
@@ -198,7 +201,7 @@ function ProductDetailsTabs({ children, ...props }) {
 
 const StyledTabs = styled(Tabs)`
   box-shadow: rgb(0 75 131 / 13%) 0px 3px 6px 0px;
-  height: 4.67em;
+  height: 50px;
   padding: 0 6%;
   & .nav-item {
     height: 100%;
@@ -219,7 +222,7 @@ const StyledTabs = styled(Tabs)`
           left: 0px;
           transform: translateY(-100%);
           border-radius: 1.27em 1.27em 0 0;
-          background: rgb(10, 135, 255);
+          background: ${({ primary_color }) => primary_color};
         }
       }
     }
@@ -405,41 +408,9 @@ function CashlessHospitals({ quote, ...props }) {
           />
         ))}
       </div>
-      <div className="mt-5 position-relative">
-        <FaSearch
-          className="position-absolute"
-          css={`
-            right: 1em;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.2rem;
-          `}
-        />
-        <div className="d-flex">
-          <div
-            className="d-flex align-items-center justify-content-center px-5"
-            css={`
-              background-color: ${colors.primary_shade};
-              border: 1px solid;
-              border-color: ${colors.primary_color};
-              border-radius: 0.6em 0 0 0.6em;
-              font-weight: 900;
-            `}
-          >
-            Mumbai
-          </div>
-          <input
-            className="w-100 px-3"
-            placeholder="Search Hospitals"
-            css={`
-              height: 3.7em;
-              border: 1px solid ${colors.font.two};
-              border-radius: 0 0.6em 0.6em 0;
-            `}
-            onChange={handleSearchChange}
-          />
-        </div>
-      </div>
+      <br />
+      <SearchBarWithCityDD searchText={search} setSearchText={setSearch} />
+
       <table className="table margin_p_r_table table_pro_search mt-4">
         <tbody
           css={`
@@ -613,8 +584,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 margin-left: 5px;
               `}
             >
-              &nbsp;
-              {amount(sum_insured)}
+              &nbsp;₹ {figureToWords(sum_insured)}
             </span>
           </div>
           <div
@@ -638,10 +608,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 font-weight: bold;
               `}
             >
-              &nbsp;
-              {journeyType === "top_up"
-                ? getDisplayPremium({ total_premium: netPremium, tenure })
-                : amount(netPremium)}
+              &nbsp;{getDisplayPremium({ total_premium: netPremium, tenure })}
             </span>
           </div>
           <div
@@ -722,7 +689,7 @@ const QuoteInfoWrap = styled.div`
 `;
 
 const ProductHeaderWrap = styled.div`
-  height: 7.27em;
+  height: 100px;
   padding: 5px 4%;
   box-shadow: rgb(0 0 0 / 16%) 0px 3px 16px 0px;
 `;
