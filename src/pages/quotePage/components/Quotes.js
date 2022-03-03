@@ -114,7 +114,7 @@ function CompareQuotesTray({ compare, onClose }) {
         <div
           className="d-flex align-items-center justify-content-between"
           css={`
-            flex: 1;
+            gap: 10px;
           `}
         >
           {compare.quotes.map(quote => (
@@ -135,11 +135,19 @@ function CompareQuotesTray({ compare, onClose }) {
             gap: 1em;
           `}
         >
-          <Button onClick={handleCompareClick}>Compare</Button>
+          <Button
+            onClick={handleCompareClick}
+            css={`
+              min-width: 120px;
+            `}
+          >
+            Compare
+          </Button>
           <Button
             css={`
               background-color: ${colors.secondary_shade};
               color: #000;
+              min-width: 120px;
             `}
             onClick={handleCloseClick}
           >

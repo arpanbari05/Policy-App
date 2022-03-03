@@ -23,10 +23,14 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
       css={`
         background-color: ${colors.secondary_shade};
         width: 20rem;
-        gap: 0.6em;
+        gap: 0.6rem;
         padding: 10px;
         height: 65px;
         font-size: 14px;
+
+        @media (max-width: 1286px) {
+          width: 17rem;
+        }
 
         ${mq.mobile} {
           width: auto;
@@ -57,6 +61,9 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
           css={`
             font-size: 0.89rem;
             font-weight: 900;
+            text-overflow: ellipsis;
+
+            ${quote.product.name.length > 30 && "font-size: 0.72rem;"}
           `}
         >
           {quote.product.name}
@@ -81,10 +88,14 @@ export function CompareTrayAdd(props) {
       className="p-3 rounded"
       css={`
         background-color: #fff;
-        width: 20em;
-        gap: 1em;
+        width: 20rem;
+        gap: 0.6rem;
         border: 1px dashed ${colors.border.one};
         text-align: center;
+
+        @media (max-width: 1286px) {
+          width: 17rem;
+        }
 
         ${mq.mobile} {
           width: auto;

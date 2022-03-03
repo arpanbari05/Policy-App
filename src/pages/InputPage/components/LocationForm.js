@@ -174,7 +174,6 @@ function LocationForm() {
             padding-right: 10px;
           `}
         >
-          {console.log("selectedCity", selectedCity)}
           {popularcities.map(city => (
             <PopularCity
               key={city.name}

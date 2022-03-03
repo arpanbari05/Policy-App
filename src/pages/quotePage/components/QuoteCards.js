@@ -12,7 +12,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { BsCircleFill } from "react-icons/bs";
 import { RiInformationLine } from "react-icons/ri";
 
 const featuresDisplayedOnQuoteCard = [
@@ -293,15 +292,19 @@ function QuoteCard({
             margin-bottom: 10px;
           `}
         >
-          {console.log(features)}
           {features.slice(1, 3).map(feature => (
             <QuoteFeature key={feature.code} feature={feature} />
           ))}
           {features.slice(0, 1).map(feature => (
-            <QuoteFeature key={feature.code} feature={feature} icon={<IoIosArrowForward />} onNavigate={() => {
-              productDetailsModal.on();
-              setdefaultActiveKey("cashless-hospitals");
-            }} />
+            <QuoteFeature
+              key={feature.code}
+              feature={feature}
+              icon={<IoIosArrowForward />}
+              onNavigate={() => {
+                productDetailsModal.on();
+                setdefaultActiveKey("cashless-hospitals");
+              }}
+            />
           ))}
           {features.slice(3).map(feature => (
             <QuoteFeature key={feature.code} feature={feature} />
@@ -459,7 +462,11 @@ function QuoteCard({
         </div>
       </div>
       {productDetailsModal.isOn && (
-        <ProductDetailsModal quote={quote} onClose={productDetailsModal.off} defaultActiveKey={defaultActiveKey} />
+        <ProductDetailsModal
+          quote={quote}
+          onClose={productDetailsModal.off}
+          defaultActiveKey={defaultActiveKey}
+        />
       )}
     </div>
   );
