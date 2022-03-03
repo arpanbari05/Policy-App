@@ -191,15 +191,17 @@ const ProductDetails = () => {
             >
               {journeyType === "renewal" ? (
                 <SumInsuredSection cartEntry={cartEntry} />
-              ) : tenant.alias === "renew_buy" ? null : (
+              ) : tenant.alias === "fyntune" ? (
                 <SumInsuredOptionsSection cartEntry={cartEntry} />
-              )}
+              ) : null}
               <CheckDiscount
                 groupCode={parseInt(groupCode)}
                 cartEntry={cartEntry}
               />
               <RidersSection />
-              <AddOnSection cartEntry={cartEntry} />
+              {tenant.alias === "fyntune" ? (
+                <AddOnSection cartEntry={cartEntry} />
+              ) : null}
             </Col>
           </div>
         </Row>
