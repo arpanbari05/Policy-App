@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import "./MobileClaimProcesses.css";
 import styled from "styled-components";
 import "styled-components/macro";
 import { useSelector } from "react-redux";
@@ -18,6 +17,7 @@ import { mobile, tabletAndMobile } from "../../../../../utils/mediaQueries";
 
 function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
   const [activebtn, setActivebtn] = useState(1);
+
   const { loading } = useSelector(state => state.seeDetails);
 
   const { colors } = useTheme();
@@ -36,12 +36,37 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
         }
       `}
     >
-      <Outer>
+      <Outer
+        css={`
+          .tab {
+            display: block;
+          }
+          .tab__active {
+            display: block;
+          }
+          .tab__active:after {
+            content: "";
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 11px solid ${colors.primary_color};
+            position: relative;
+            bottom: -36px;
+            left: -40%;
+            transform: translateX(-50%);
+          }
+
+          @media (max-width: 350px) {
+            .tab__active:after {
+              display: none;
+            }
+          }
+        `}
+      >
         {loading ? (
           <SpinLoader />
         ) : (
           <>
-            <FeatureSection>
+            <FeatureSection secondary_color={colors.secondary_color}>
               <div>
                 <h6
                   style={{
@@ -56,10 +81,11 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
             </FeatureSection>
             <ActiveBar>
               <TabButton
+                primary_color={colors.primary_color}
                 onClick={() => setActivebtn(1)}
                 style={{
                   textAlign: "center",
-                  backgroundColor: activebtn === 1 && "#0a87ff",
+                  backgroundColor: activebtn === 1 && colors.primary_color,
                   color: activebtn === 1 && "#fff",
                 }}
                 className={`tab ${activebtn === 1 && "tab__active"} `}
@@ -76,9 +102,10 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                 </span>
               </TabButton>
               <TabButton
+                primary_color={colors.primary_color}
                 onClick={() => setActivebtn(2)}
                 style={{
-                  backgroundColor: activebtn === 2 && "#0a87ff",
+                  backgroundColor: activebtn === 2 && colors.primary_color,
                   color: activebtn === 2 && "#fff",
                 }}
                 className={`tab ${activebtn === 2 && "tab__active"} `}
@@ -95,9 +122,10 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                 </span>
               </TabButton>
               <TabButton
+                primary_color={colors.primary_color}
                 onClick={() => setActivebtn(3)}
                 style={{
-                  backgroundColor: activebtn === 3 && "#0a87ff",
+                  backgroundColor: activebtn === 3 && colors.primary_color,
                   color: activebtn === 3 && "#fff",
                 }}
                 className={`tab ${activebtn === 3 && "tab__active"} `}
@@ -385,7 +413,7 @@ const FeatureSection = styled.div`
   display: flex;
   &::before {
     content: "";
-    color: #2cd44a;
+    color: ${({ secondary_color }) => secondary_color};
     height: 39px;
     width: 9px;
     padding-right: 10px;
@@ -398,7 +426,7 @@ const FeatureSection = styled.div`
     /* left: -20px; */
     /* position: absolute; */
     /* background-color: #de9b9e; */
-    background-color: #2cd44a;
+    background-color: ${({ secondary_color }) => secondary_color};
     border-radius: 0 15px 15px 0;
   }
   @media (max-width: 1022px) {

@@ -397,8 +397,12 @@ function RiderOption({
         className="p-2"
         css={`
           background-color: ${colors.primary_shade};
+          min-width: 200px;
           ${small} {
-            max-width: 150px;
+            min-width: unset;
+            max-width: 170px;
+            font-size: 12px;
+        
           }
         `}
         name={key}

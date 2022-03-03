@@ -10,13 +10,18 @@ import {
   tablet,
   tabletAndMobile,
 } from "../../../../../utils/mediaQueries";
+import { useTheme } from "../../../../../customHooks";
 
 function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
   const [searchText, setSearchText] = useState("");
 
   const [searchByNameKeys, setSearchByNameKeys] = useState([]);
+
   const [searchByPincodeKeys, setSearchByPincodeKeys] = useState([]);
+
   const [foundHospital, setFoundHospital] = useState(hospitals.hospitals);
+
+  const { colors } = useTheme();
 
   const { loading } = useSelector(state => state.seeDetails);
   useEffect(() => {
@@ -52,7 +57,7 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
           <SpinLoader />
         ) : (
           <>
-            <FeatureSection>
+            <FeatureSection secondary_color={colors.secondary_color}>
               <h6
                 style={{
                   fontWeight: "600",
@@ -81,7 +86,7 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
                         >
                           <span
                             style={{
-                              color: "#0a87ff",
+                              color: colors.primary_color,
                             }}
                           >
                             {el.name}
@@ -308,7 +313,7 @@ const FeatureSection = styled.div`
   display: flex;
   &::before {
     content: "";
-    color: #2cd44a;
+    color: ${({ secondary_color }) => secondary_color};
     height: 39px;
     width: 9px;
     padding-right: 10px;
@@ -321,7 +326,7 @@ const FeatureSection = styled.div`
     /* left: -20px; */
     /* position: absolute; */
     /* background-color: #de9b9e; */
-    background-color: #2cd44a;
+    background-color: ${({ secondary_color }) => secondary_color};
     border-radius: 0 15px 15px 0;
   }
   @media (max-width: 767px) {

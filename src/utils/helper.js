@@ -393,6 +393,7 @@ export function capitalize(sentence = "") {
 export function figureToWords(amount) {
   return `${parseInt(amount) / 100000} Lakhs`;
 }
+
 export function matchQuotes(
   quote1,
   quote2,
@@ -420,8 +421,6 @@ export function getSumInsureds(quotes = []) {
 }
 
 export function getFeature(quote, featureCode) {
-  console.log("quoteData", quote);
-
   return quote.features.find(feature => feature.code === featureCode);
 }
 
@@ -444,6 +443,7 @@ export function getTotalPremium(cartEntries = []) {
 export function getFirstName(name = "") {
   return name.split(" ")[0];
 }
+
 export const autoCapitalizationHandler = value => {
   var splitStr = value.split(" ");
   for (var i = 0; i < splitStr.length; i++) {

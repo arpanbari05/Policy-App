@@ -20,6 +20,7 @@ import ClaimProcess from "../../../pages/SeeDetails/DataSet/ClaimProcess";
 import {
   amount,
   calculateTotalPremium,
+  figureToWords,
   getDisplayPremium,
   getPlanFeatures,
 } from "../../../utils/helper";
@@ -78,18 +79,14 @@ export function MobileProductHeader({
             <span>Cover</span>
             <br />
             <span>
-              <b>{amount(sum_insured)}</b>
+              <b>₹ {figureToWords(sum_insured)}</b>
             </span>
           </CoverDiv>
           <PremiumDiv>
             <span>Premium</span>
             <br />
             <span>
-              <b>
-                {journeyType === "top_up"
-                  ? getDisplayPremium({ total_premium: netPremium, tenure })
-                  : amount(netPremium)}
-              </b>
+              <b>{getDisplayPremium({ total_premium: netPremium, tenure })}</b>
             </span>
           </PremiumDiv>
           <ClaimSettlementDiv>
@@ -106,7 +103,7 @@ export function MobileProductHeader({
 }
 
 const ProductHeaderWrap = styled.div`
-  height: 120px;
+  height: 105px;
   box-sizing: border-box;
   box-shadow: rgb(0 0 0 / 16%) 0px 3px 16px 0px;
 `;
@@ -127,14 +124,14 @@ const CompLogo = styled.img`
 `;
 
 const ProdName = styled.span`
-  font-size: 18px;
+  font-size: 16px;
 `;
 
 const MiddleDiv = styled.div`
   display: flex;
   padding: 0px 40px;
   justify-content: flex-end;
-  height: 25px;
+  height: 10px;
 `;
 const LowerDiv = styled.div`
   height: 40px;
@@ -174,7 +171,7 @@ const StickyTop = styled.div`
     width: 100%;
     background-color: #fff;
     z-index: 99;
-    height: 120px;
+    height: 105px;
   } ;
 `;
 
@@ -421,12 +418,13 @@ export const MobileSeeDetailsTop = ({ onClose }) => {
       <IoArrowBackCircleSharp
         onClick={handleClose}
         color="#fff"
-        size={"16px"}
+        size={"18px"}
       />
       <span
         css={`
           margin-left: 10px;
           color: rgb(255, 255, 255);
+          font-size: 16px;
         `}
       >
         See Details
@@ -444,7 +442,7 @@ export const MobileSeeDetailsTopOuter = styled.div`
     top: 0px;
     height: 57px;
     width: 100%;
-    background: #0a87ff;
+    background: ${({ primary_color }) => primary_color};
     -webkit-box-align: center;
     align-items: center;
     -webkit-box-pack: justify;

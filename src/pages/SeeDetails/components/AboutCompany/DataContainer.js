@@ -1,7 +1,9 @@
 import React from "react";
 import "styled-components/macro";
+import { useTheme } from "../../../../customHooks";
 
 const DataContainer = ({ title, description }) => {
+  const { colors } = useTheme();
   return (
     <>
       <div className="market_border_left">
@@ -55,7 +57,9 @@ const DataContainer = ({ title, description }) => {
           line-height: 1.3 !important;
         `}
       >
-        <span className="text_red_title">Why it is important:</span>
+        <span style={{ color: colors.primary_color }}>
+          Why it is important:
+        </span>
         {description ? description.replace("Why it is important:", "") : ""}
       </p>
     </>
