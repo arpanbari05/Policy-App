@@ -5,7 +5,7 @@ import useUpdateFilters from "./components/filters/useUpdateFilters";
 import LowerModifier from "./components/LowerModifier";
 import Quotes from "./components/Quotes";
 import UpperModifier from "./components/UpperModifier";
-import { useMembers, useTheme } from "../../customHooks";
+import { useMembers, useTheme, useGetQuotes, } from "../../customHooks";
 import { useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
@@ -17,6 +17,7 @@ import { QuotesLoader } from "./components";
 import TalkToUsModal from "../../components/Common/Modal/TalkToUsModal";
 import { useFrontendBoot } from "../../customHooks/index";
 import { useGetEnquiriesQuery } from "../../api/api";
+import { mergeQuotes } from "../../utils/helper";
 import "styled-components/macro";
 
 function QuotesPage() {
@@ -111,6 +112,8 @@ function ShowingPlanType() {
   const { journeyType } = useFrontendBoot();
   const { data } = useGetEnquiriesQuery();
   const { groupCode } = useParams();
+  const { data: unmergedQuotes } = useGetQuotes();
+  const mergedQuotes = unmergedQuotes?.map(quote => mergeQuotes(quote.data.data));
 
   const planTypes = {
     I: "Individual",
@@ -128,7 +131,7 @@ function ShowingPlanType() {
         font-weight: 900;
       `}
     >
-      {`Showing ${
+      {`Showing ${mergedQuotes?.flat().length} ${
         journeyType === "top_up"
           ? "Top Up "
           : planTypes[
