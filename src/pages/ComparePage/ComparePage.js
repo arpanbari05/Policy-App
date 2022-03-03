@@ -329,7 +329,11 @@ function OptionalCoversSection({ compareQuotes, select }) {
       description="You can add 'Riders' to your basic health insurance plan for additional benefits."
     >
       {!select.isSelectedSectionView ? (
-        <FeatureRow title="Optional Covers" select={select}>
+        <FeatureRow
+          title="Optional Covers"
+          select={select}
+          description={DESCRIPTIONS["unique_features"]}
+        >
           {compareQuotes.map((quote, idx) => (
             <OptionalCoversValue
               quote={quote}
@@ -519,7 +523,11 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
       {console.log("CompareQuotes", compareQuotes)}
 
       {!select.isSelectedSectionView ? (
-        <FeatureRow title={"Tenure"} select={select}>
+        <FeatureRow
+          title={"Tenure"}
+          select={select}
+          description={DESCRIPTIONS["tenure"]}
+        >
           {compareQuotes.map((quote, idx) => (
             <TenureFeatureValue
               quote={quote}
@@ -744,13 +752,14 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
 
 function KeyBenefitsSection({ compareQuotes = [], select, ...props }) {
   const uniqueFeatures = getFeatureForQuotes(compareQuotes, "unique_feature");
-
-  console.log("COMPARE_QUOTES", compareQuotes);
-  console.log("uniqueFeatures", uniqueFeatures);
   return (
     <CompareSection title="Key Benefits" {...props}>
       {!select.isSelectedSectionView ? (
-        <FeatureRow title={"Unique Feature"} select={select}>
+        <FeatureRow
+          title={"Unique Feature"}
+          select={select}
+          description={DESCRIPTIONS[`unique_features`]}
+        >
           {uniqueFeatures.map((feature, idx) =>
             feature ? (
               <div
