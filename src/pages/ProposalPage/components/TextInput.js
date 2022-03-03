@@ -95,6 +95,7 @@ const TextInput = ({
       <Input
         type={type || "text"}
         placeholder={checkValidation?.required && placeholder ? `${placeholder}*` : placeholder || ""}
+        showStarRed={checkValidation?.required}
         required={required || undefined}
         onChange={e => {
           if (checkAge) {
@@ -171,6 +172,16 @@ const Input = styled.input`
   -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
   margin: 0;
+  /* ::-webkit-input-placeholder:after {
+   content: '*';
+   color: red;
+   font-size: 1.5rem;
+} */
+  /* ::-webkit-input-placeholder {
+  background:${(props) => props.showStarRed?"-webkit-linear-gradient(right, #AAA 0%, #AAA 80%,red 80%, red 100%)":"#939393"} ;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+} */
   text-transform: ${props => props.textTransform};
   font-family: inherit;
   line-height: inherit;

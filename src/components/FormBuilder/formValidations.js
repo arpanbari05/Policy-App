@@ -155,7 +155,9 @@ export const validationIndex = {
     if (value) {
       switch (checkParam) {
         case "name":
-          if (!/^[a-zA-Z]+ [a-zA-Z]+$/.test(value)) {
+
+          if (!value.trim().includes(" ")) {
+            console.log("ghbnsfklnl",value)
             return { status: false, message: "Please enter full name." };
           } else break;
         case "mobile":
