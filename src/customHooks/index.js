@@ -142,12 +142,25 @@ export function useQuote() {
 }
 
 export function useTheme() {
-  const { data, isLoading, isUninitialized, isError } = useGetFrontendBootQuery();
+  const {
+    data: {
+      settings: {
+        primary_color,
+        primary_shade,
+        secondary_color,
+        secondary_shade,
+      },
+    },
+  } = useGetFrontendBootQuery();
+
   return {
     ...styles,
     colors: {
       ...styles.colors,
-      ...data?.settings?.colors
+      primary_color,
+      primary_shade,
+      secondary_color,
+      secondary_shade,
     },
   };
 }
@@ -278,7 +291,9 @@ export function useMembers() {
   };
 
   const getMember = code => {
-    let member = members.find(member => member.code === code.replace(/[0-9]/g, ''));
+    let member = members.find(
+      member => member.code === code.replace(/[0-9]/g, ""),
+    );
 
     if (!member) return;
 
@@ -384,7 +399,11 @@ export function useMembers() {
     const group = getGroup(groupCode);
     if (!group) return;
 
-    return { city: group?.city, state: group?.state, pincode: group?.pincode || input?.pincode };
+    return {
+      city: group?.city,
+      state: group?.state,
+      pincode: group?.pincode || input?.pincode,
+    };
   }
 
   function getNextGroup(currentGroupCode) {
