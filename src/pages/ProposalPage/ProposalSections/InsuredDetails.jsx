@@ -345,7 +345,7 @@ console.log("sbjslkh",values[item])
                       }
                     `}
                   >
-                    <div style={{ marginRight: "5px" }}>
+                    <div style={{ marginRight: "15px" }}>
                       <Checkbox2
                         showTitle={false}
                         title={"No" + item}
@@ -373,6 +373,10 @@ console.log("sbjslkh",values[item])
                         font-size: 12px;
                         justify-content: flex-end;
                         color: ${initColor};
+                        @media (max-width: 1024px) {
+                        justify-content: flex-start;
+                        /* margin-left: -26px; */
+                      }
                       `}
                     >
                       Please select the checkbox if no for all questions item
