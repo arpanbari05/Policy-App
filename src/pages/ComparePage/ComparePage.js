@@ -193,6 +193,7 @@ function ComparePage() {
             }) && (
               <SpecialFeaturesSection
                 compareQuotes={compareQuotes}
+                showDifference={showDifferenceToggle.isOn}
                 select={{
                   selectedSectionView,
                   setSelectedSectionView,
@@ -204,6 +205,7 @@ function ComparePage() {
           ) : (
             <SpecialFeaturesSection
               compareQuotes={compareQuotes}
+              showDifference={showDifferenceToggle.isOn}
               select={{
                 selectedSectionView,
                 setSelectedSectionView,
@@ -253,6 +255,7 @@ function ComparePage() {
               }
             }) && (
               <WaitingPeriodSection
+                showDifference={showDifferenceToggle.isOn}
                 compareQuotes={compareQuotes}
                 select={{
                   selectedSectionView,
@@ -264,6 +267,7 @@ function ComparePage() {
             )
           ) : (
             <WaitingPeriodSection
+              showDifference={showDifferenceToggle.isOn}
               compareQuotes={compareQuotes}
               select={{
                 selectedSectionView,
@@ -285,6 +289,7 @@ function ComparePage() {
               }
             }) && (
               <WhatsNotCoveredSection
+                showDifference={showDifferenceToggle.isOn}
                 compareQuotes={compareQuotes}
                 select={{
                   selectedSectionView,
@@ -296,6 +301,7 @@ function ComparePage() {
             )
           ) : (
             <WhatsNotCoveredSection
+              showDifference={showDifferenceToggle.isOn}
               compareQuotes={compareQuotes}
               select={{
                 selectedSectionView,
@@ -866,11 +872,26 @@ function BasicFeaturesSection({
   );
 }
 
-function SpecialFeaturesSection({ compareQuotes = [], select, ...props }) {
+function SpecialFeaturesSection({
+  compareQuotes = [],
+  showDifference,
+  select,
+  ...props
+}) {
+  const { features, onLoad } = useFeatureLoadHandler();
   return (
     <CompareSection title="Special Features" {...props}>
-      {SPECIAL_FEATURES.map(feature =>
-        !select.isSelectedSectionView ? (
+      {SPECIAL_FEATURES.map(feature => {
+        if (
+          showDifference &&
+          features &&
+          features[feature.title] &&
+          features[feature.title].every(
+            val => val === features[feature.title][0],
+          )
+        )
+          return null;
+        return !select.isSelectedSectionView ? (
           <FeatureRow
             title={feature.title}
             key={feature.title}
@@ -883,6 +904,7 @@ function SpecialFeaturesSection({ compareQuotes = [], select, ...props }) {
                 sectionTitle={"Special Features"}
                 featureTitle={feature.title}
                 key={quote.product.id + quote.sum_insured + idx}
+                onLoad={onLoad}
                 tooltipPlacement={idx === 2 ? "left" : "right"}
               />
             ))}
@@ -901,22 +923,38 @@ function SpecialFeaturesSection({ compareQuotes = [], select, ...props }) {
                   sectionTitle={"Special Features"}
                   featureTitle={feature.title}
                   key={quote.product.id + quote.sum_insured + idx}
+                  onLoad={onLoad}
                   tooltipPlacement={idx === 2 ? "left" : "right"}
                 />
               ))}
             </FeatureRow>
           )
-        ),
-      )}
+        );
+      })}
     </CompareSection>
   );
 }
 
-function WaitingPeriodSection({ compareQuotes = [], select, ...props }) {
+function WaitingPeriodSection({
+  compareQuotes = [],
+  showDifference,
+  select,
+  ...props
+}) {
+  const { features, onLoad } = useFeatureLoadHandler();
   return (
     <CompareSection title="Waiting Period" {...props}>
-      {WAITING_PERIOD.map(feature =>
-        !select.isSelectedSectionView ? (
+      {WAITING_PERIOD.map(feature => {
+        if (
+          showDifference &&
+          features &&
+          features[feature.title] &&
+          features[feature.title].every(
+            val => val === features[feature.title][0],
+          )
+        )
+          return null;
+        return !select.isSelectedSectionView ? (
           <FeatureRow
             title={feature.title}
             key={feature.title}
@@ -929,6 +967,7 @@ function WaitingPeriodSection({ compareQuotes = [], select, ...props }) {
                 sectionTitle={"Waiting Period"}
                 featureTitle={feature.title}
                 key={quote.product.id + quote.sum_insured + idx}
+                onLoad={onLoad}
                 tooltipPlacement={idx === 2 ? "left" : "right"}
               />
             ))}
@@ -946,23 +985,39 @@ function WaitingPeriodSection({ compareQuotes = [], select, ...props }) {
                   compareQuote={quote}
                   sectionTitle={"Waiting Period"}
                   featureTitle={feature.title}
+                  onLoad={onLoad}
                   key={quote.product.id + quote.sum_insured + idx}
                   tooltipPlacement={idx === 2 ? "left" : "right"}
                 />
               ))}
             </FeatureRow>
           )
-        ),
-      )}
+        );
+      })}
     </CompareSection>
   );
 }
 
-function WhatsNotCoveredSection({ compareQuotes = [], select, ...props }) {
+function WhatsNotCoveredSection({
+  compareQuotes = [],
+  showDifference,
+  select,
+  ...props
+}) {
+  const { features, onLoad } = useFeatureLoadHandler();
   return (
     <CompareSection title="What's not covered?" {...props}>
-      {WHATS_NOT_COVERED.map(feature =>
-        !select.isSelectedSectionView ? (
+      {WHATS_NOT_COVERED.map(feature => {
+        if (
+          showDifference &&
+          features &&
+          features[feature.title] &&
+          features[feature.title].every(
+            val => val === features[feature.title][0],
+          )
+        )
+          return null;
+        return !select.isSelectedSectionView ? (
           <FeatureRow
             title={feature.title}
             key={feature.title}
@@ -975,6 +1030,7 @@ function WhatsNotCoveredSection({ compareQuotes = [], select, ...props }) {
                 sectionTitle={"What's not covered?"}
                 featureTitle={feature.title}
                 key={quote.product.id + quote.sum_insured + idx}
+                onLoad={onLoad}
                 tooltipPlacement={idx === 2 ? "left" : "right"}
               />
             ))}
@@ -992,14 +1048,15 @@ function WhatsNotCoveredSection({ compareQuotes = [], select, ...props }) {
                   compareQuote={quote}
                   sectionTitle={"What's not covered?"}
                   featureTitle={feature.title}
+                  onLoad={onLoad}
                   key={quote.product.id + quote.sum_insured + idx}
                   tooltipPlacement={idx === 2 ? "left" : "right"}
                 />
               ))}
             </FeatureRow>
           )
-        ),
-      )}
+        );
+      })}
     </CompareSection>
   );
 }
