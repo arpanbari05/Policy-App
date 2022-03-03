@@ -63,8 +63,8 @@ function ComparePage() {
   const { quotes: compareQuotes } = getCompareQuotes(groupCode);
 
   return (
-    <Page>
-      <Container className="pt-3" id="printCompare">
+    <Page id="printCompare">
+      <Container className="pt-3">
         <BackButton />
         <CompareHeaderWrap>
           <div
