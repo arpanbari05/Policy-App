@@ -14,6 +14,7 @@ import { every } from "lodash";
 import { useGetLocationDetailsQuery } from "../../../api/api";
 import "styled-components/macro";
 import { InputFormCta } from ".";
+import styled from "styled-components";
 
 function LocationForm() {
   const {
@@ -154,36 +155,37 @@ function LocationForm() {
           </div>
         )}
       </div>
-      {!selectedCity && (
-        <div className="mt-3">
-          <h2
-            css={`
-              font-size: 1rem;
-              font-weight: 900;
-            `}
-          >
-            Popular Cities
-          </h2>
-          <div
-            css={`
-              display: flex;
-              flex-wrap: wrap;
-              gap: 0.49em;
-              margin: 10px 0;
-              padding-right: 10px;
-            `}
-          >
-            {popularcities.map(city => (
-              <PopularCity
-                key={city.name}
-                onChange={handlePopularCityChange}
-                checked={checkCitySelected(city)}
-                city={city}
-              />
-            ))}
-          </div>
+
+      <div className="mt-3">
+        <h2
+          css={`
+            font-size: 1rem;
+            font-weight: 900;
+          `}
+        >
+          Popular Cities
+        </h2>
+        <div
+          css={`
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.49em;
+            margin: 10px 0;
+            padding-right: 10px;
+          `}
+        >
+          {popularcities.map(city => (
+            <PopularCity
+              key={city.name}
+              onChange={handlePopularCityChange}
+              checked={checkCitySelected(city)}
+              city={city}
+              selectedCity={selectedCity}
+            />
+          ))}
         </div>
-      )}
+      </div>
+
       <div
         css={`
           margin-top: 2.5rem;
@@ -205,6 +207,7 @@ export default LocationForm;
 function PopularCity({
   city,
   onChange,
+  selectedCity,
   checked = false,
   disabled = false,
   ...props
@@ -229,6 +232,15 @@ function PopularCity({
         checked={checked}
         onChange={handleChange}
         css={`
+          & + label {
+            ${selectedCity?.city === name &&
+            `
+            box-shadow: ${colors.primary_color} 0px 0px 1px 1px;
+            background-color: #fff;
+            border-color: transparent;
+            color: ${colors.primary_color};
+            `}
+          }
           & + label:hover,
           &:checked + label {
             box-shadow: ${colors.primary_color} 0px 0px 1px 1px;
@@ -299,6 +311,8 @@ function LocationOptions({
   showError = true,
   ...props
 }) {
+  const [mouseEntered, setMouseEntered] = useState(false);
+
   let skip = true;
 
   if (isNumber(searchQuery[0])) {
@@ -307,6 +321,8 @@ function LocationOptions({
     skip = false;
   }
 
+  const { colors } = useTheme();
+
   const { isFetching, isUninitialized, data } = useGetLocationDetailsQuery(
     { search: searchQuery },
     { skip },
@@ -314,7 +330,7 @@ function LocationOptions({
 
   if (isUninitialized) return null;
 
-  if (isFetching) return <p>Loading...</p>;
+  if (isFetching) return <p>...</p>;
 
   if (showError && data && !data.length)
     return <ErrorMessage>Please enter a valid Pincode or City</ErrorMessage>;
@@ -327,7 +343,16 @@ function LocationOptions({
 
   return (
     <div {...props}>
-      <ul className="p-0">
+      <CityDropDownStyles
+        colors={colors}
+        mouseEntered={mouseEntered}
+        onMouseEnter={() => {
+          setMouseEntered(true);
+        }}
+        onMouseLeave={() => {
+          setMouseEntered(false);
+        }}
+      >
         {data.map(location => (
           <Location
             location={location}
@@ -336,14 +361,12 @@ function LocationOptions({
             key={location.city}
           />
         ))}
-      </ul>
+      </CityDropDownStyles>
     </div>
   );
 }
 
 function Location({ location, isSelected = false, onChange, ...props }) {
-  const { colors } = useTheme();
-
   const handleClick = () => {
     onChange && onChange(location);
   };
@@ -354,16 +377,31 @@ function Location({ location, isSelected = false, onChange, ...props }) {
       role="option"
       aria-selected={isSelected}
       onClick={handleClick}
-      css={`
-        list-style: none;
-        padding: 0.6em;
-        &:hover {
-          background-color: ${colors.secondary_color};
-          color: #fff;
-        }
-      `}
     >
       {location.city}
     </li>
   );
 }
+
+const CityDropDownStyles = styled.ul`
+  background-color: white;
+  box-shadow: 0 0 1px 1px #34343433;
+  border-radius: 4px;
+  margin-top: 2px;
+  overflow: hidden;
+
+  li {
+    cursor: pointer;
+    list-style: none;
+    padding: 0.6em;
+    &:first-child {
+      background-color: ${props =>
+        !props.mouseEntered && props.colors.secondary_color};
+      color: ${props => (!props.mouseEntered ? "white" : "black")};
+    }
+    &:hover {
+      color: white;
+      background-color: ${props => props.colors.secondary_color};
+    }
+  }
+`;

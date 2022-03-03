@@ -70,7 +70,12 @@ export function FeatureRow({ children, css = ``, className = "", ...props }) {
   );
 }
 
-export function FeatureValue({ children, isLoading = false, ...props }) {
+export function FeatureValue({
+  children,
+  css = "",
+  isLoading = false,
+  ...props
+}) {
   const { colors } = useTheme();
 
   return (
@@ -81,6 +86,8 @@ export function FeatureValue({ children, isLoading = false, ...props }) {
         :not(:last-child) {
           border-right: 1px solid ${colors.border.two};
         }
+
+        ${css}
       `}
       {...props}
     >
