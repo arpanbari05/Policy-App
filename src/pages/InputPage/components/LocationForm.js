@@ -14,6 +14,7 @@ import { every } from "lodash";
 import { useGetLocationDetailsQuery } from "../../../api/api";
 import "styled-components/macro";
 import { InputFormCta } from ".";
+import styled from "styled-components";
 
 function LocationForm() {
   const {
@@ -307,6 +308,8 @@ function LocationOptions({
     skip = false;
   }
 
+  const { colors } = useTheme();
+
   const { isFetching, isUninitialized, data } = useGetLocationDetailsQuery(
     { search: searchQuery },
     { skip },
@@ -314,7 +317,7 @@ function LocationOptions({
 
   if (isUninitialized) return null;
 
-  if (isFetching) return <p>Loading...</p>;
+  if (isFetching) return <p>...</p>;
 
   if (showError && data && !data.length)
     return <ErrorMessage>Please enter a valid Pincode or City</ErrorMessage>;
@@ -327,7 +330,7 @@ function LocationOptions({
 
   return (
     <div {...props}>
-      <ul className="p-0">
+      <CityDropDownStyles colors={colors}>
         {data.map(location => (
           <Location
             location={location}
@@ -336,14 +339,12 @@ function LocationOptions({
             key={location.city}
           />
         ))}
-      </ul>
+      </CityDropDownStyles>
     </div>
   );
 }
 
 function Location({ location, isSelected = false, onChange, ...props }) {
-  const { colors } = useTheme();
-
   const handleClick = () => {
     onChange && onChange(location);
   };
@@ -354,16 +355,30 @@ function Location({ location, isSelected = false, onChange, ...props }) {
       role="option"
       aria-selected={isSelected}
       onClick={handleClick}
-      css={`
-        list-style: none;
-        padding: 0.6em;
-        &:hover {
-          background-color: ${colors.secondary_color};
-          color: #fff;
-        }
-      `}
     >
       {location.city}
     </li>
   );
 }
+
+const CityDropDownStyles = styled.ul`
+  background-color: white;
+  box-shadow: 0 0 1px 1px #34343433;
+  border-radius: 4px;
+  margin-top: 2px;
+  overflow: hidden;
+
+  li {
+    cursor: pointer;
+    list-style: none;
+    padding: 0.6em;
+    &:first-child {
+      background-color: ${props => props.colors.secondary_color};
+      color: white;
+    }
+    &:hover {
+      color: #111;
+      background-color: ${props => props.colors.secondary_color}33;
+    }
+  }
+`;
