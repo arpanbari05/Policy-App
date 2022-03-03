@@ -300,6 +300,8 @@ function LocationOptions({
   showError = true,
   ...props
 }) {
+  const [mouseEntered, setMouseEntered] = useState(false);
+
   let skip = true;
 
   if (isNumber(searchQuery[0])) {
@@ -330,7 +332,16 @@ function LocationOptions({
 
   return (
     <div {...props}>
-      <CityDropDownStyles colors={colors}>
+      <CityDropDownStyles
+        colors={colors}
+        mouseEntered={mouseEntered}
+        onMouseEnter={() => {
+          setMouseEntered(true);
+        }}
+        onMouseLeave={() => {
+          setMouseEntered(false);
+        }}
+      >
         {data.map(location => (
           <Location
             location={location}
@@ -373,12 +384,13 @@ const CityDropDownStyles = styled.ul`
     list-style: none;
     padding: 0.6em;
     &:first-child {
-      background-color: ${props => props.colors.secondary_color};
-      color: white;
+      background-color: ${props =>
+        !props.mouseEntered && props.colors.secondary_color};
+      color: ${props => (!props.mouseEntered ? "white" : "black")};
     }
     &:hover {
-      color: #111;
-      background-color: ${props => props.colors.secondary_color}33;
+      color: white;
+      background-color: ${props => props.colors.secondary_color};
     }
   }
 `;

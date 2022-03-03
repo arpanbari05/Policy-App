@@ -19,10 +19,7 @@ import { useHistory, useParams } from "react-router-dom";
 import "styled-components/macro";
 import { BiPrinter } from "react-icons/bi";
 import { getFeatureForQuotes, numToLakh } from "../../utils/helper";
-import {
-  useGetAdditionalDiscountsQuery,
-  useGetCompareFeaturesQuery,
-} from "../../api/api";
+import { useGetCompareFeaturesQuery } from "../../api/api";
 import {
   BASIC_FEATURES,
   DESCRIPTIONS,
@@ -1054,20 +1051,25 @@ function FeatureValue({
             <>
               {feature.feature_value.slice(
                 0,
-                showMore ? feature.feature_value.length : 200,
-              ) + "..."}
-              <button
-                onClick={() => {
-                  setShowMore(!showMore);
-                }}
-                css={`
-                  color: #0a87ff;
-                  font-size: 0.9rem;
-                  font-weight: bold;
-                `}
-              >
-                {showMore ? "Show Less" : "Show More"}
-              </button>
+                showMore ? feature.feature_value.length : 150,
+              ) +
+                `${
+                  feature.feature_value.length > 150 && !showMore ? "..." : " "
+                }`}
+              {feature.feature_value.length > 150 && (
+                <button
+                  onClick={() => {
+                    setShowMore(!showMore);
+                  }}
+                  css={`
+                    color: #0a87ff;
+                    font-size: 0.9rem;
+                    font-weight: bold;
+                  `}
+                >
+                  {showMore ? "Show Less" : "Show More"}
+                </button>
+              )}
             </>
           ) : (
             feature.feature_value
