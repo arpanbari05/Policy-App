@@ -116,6 +116,7 @@ function Footer({ closeModal, onContine, ...props }) {
             height: 60px;
             width: 200px;
             font-size: 20px;
+            height: 58px !important;
             @media (max-width: 480px) {
               width: 100%;
               font-size: 13px;
