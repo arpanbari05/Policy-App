@@ -182,7 +182,7 @@ if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(
           </div>
         </div>
         
-        {membersToMap.length && (showMembers || customShowMembers) ? (
+        {membersToMap.length && (showMembers !== false || customShowMembers) ? (
           (boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (
