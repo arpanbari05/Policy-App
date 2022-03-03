@@ -90,7 +90,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
       </Collapse>
       {!!collapsedQuotes.length && (
         <div
-          className="px-4"
+          className="px-3"
           css={`
             position: absolute;
             top: 100%;
@@ -98,6 +98,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
             transform: translate(-50%, -100%);
             background-color: ${colors.primary_shade};
             border-radius: 1.6em 1.6em 0 0;
+            padding-top: 1px;
           `}
         >
           <SeeText
@@ -370,7 +371,7 @@ function QuoteCard({
                 className="d-flex align-items-center justify-content-center gap-2"
                 css={`
                   & > * {
-                    min-width: 80px;
+                    min-width: 60px;
                   }
                 `}
               >
@@ -479,8 +480,10 @@ function QuoteCardSelect({ ...props }) {
       styles={{
         option: provided => ({
           ...provided,
-          fontSize: "13px",
+          fontSize: "12px",
           fontWeight: "bold",
+          padding: "7px 7px !important",
+          textAlign: "center !important"
         }),
         menu: provided => ({
           ...provided,
@@ -505,9 +508,15 @@ function QuoteCardSelect({ ...props }) {
           ...provided,
           fontSize: "13px",
           fontWeight: "bold",
-          border: "none",
           minHeight: "initial",
-        }),
+          outline: "none",
+          border: '0 !important',
+          // This line disable the blue border
+          boxShadow: '0 !important',
+          '&:hover': {
+              border: '0 !important'
+            }
+          }),
       }}
       {...props}
     />
