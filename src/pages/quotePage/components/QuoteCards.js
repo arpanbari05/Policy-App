@@ -90,7 +90,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
       </Collapse>
       {!!collapsedQuotes.length && (
         <div
-          className="px-4 pt-1"
+          className="px-4"
           css={`
             position: absolute;
             top: 100%;
@@ -104,7 +104,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
             css={`
               border-bottom: none !important;
               cursor: pointer;
-              font-size: 0.79rem;
+              font-size: 10.5px;
             `}
             onClick={() => {
               setShow(!show);
@@ -233,7 +233,7 @@ function QuoteCard({
       <div
         className="d-flex align-items-center"
         css={`
-          min-height: 140px;
+          min-height: 137px;
           padding-top: 8px;
           padding-bottom: 11px;
         `}
@@ -250,8 +250,7 @@ function QuoteCard({
             src={logoSrc}
             alt={quote.company_alias}
             css={`
-              min-width: 4em;
-              max-height: 3em;
+              height: 2.4rem;
             `}
           />
           <span
@@ -582,7 +581,7 @@ function QuoteFeature({ feature, icon, onNavigate }) {
       >
         <div
           css={`
-            font-size: 0.73rem;
+            font-size: 10px;
             color: ${colors.font.three};
           `}
         >
@@ -591,7 +590,7 @@ function QuoteFeature({ feature, icon, onNavigate }) {
         <div
           css={`
             width: auto;
-            font-size: 0.75rem;
+            font-size: 11px;
             display: flex;
             align-items: center;
             cursor: pointer;

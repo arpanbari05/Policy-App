@@ -53,8 +53,8 @@ function LogoLink() {
         alt={`companylogo`}
         css={`
           cursor: pointer;
-          /* height: 1.92em; */
-          width: 130px;
+          height: 1.92em;
+          // width: 130px;
           object-fit: contain;
         `}
       />
@@ -334,15 +334,18 @@ export const None = () => <></>;
 export function Members() {
   const { groupCode } = useParams();
 
-  const { getGroupMembers, isLoading, isUninitialized } = useMembers();
+  const { getGroupMembers, getGroupLocation, isLoading, isUninitialized } = useMembers();
 
   if (!groupCode) return null;
 
   if (isLoading || isUninitialized) return <p>Loading...</p>;
 
   const members = getGroupMembers(groupCode);
+  const groupLocation = getGroupLocation(groupCode);
 
-  if (!members) return null;
+  console.log(groupLocation);
+
+  if (!members || !groupLocation) return null;
 
   return (
     <div
@@ -358,7 +361,7 @@ export function Members() {
       {members.map(member => (
         <Member member={member} key={member.code} />
       ))}
-      {/* <Info label="Pincode" value={pincode} /> */}
+      <Info label="Pincode" value={groupLocation?.pincode} />
     </div>
   );
 }
@@ -433,7 +436,7 @@ export function TraceId() {
   if (copiedIndication) return <div>Copied to clipboard!</div>;
 
   return (
-    <div>
+    <div css={`font-size: 12px`}>
       Trace Id: <span>{trace_id}</span>{" "}
       <button
         css={`

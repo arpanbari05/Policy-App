@@ -142,25 +142,12 @@ export function useQuote() {
 }
 
 export function useTheme() {
-  const {
-    data: {
-      settings: {
-        primary_color,
-        primary_shade,
-        secondary_color,
-        secondary_shade,
-      },
-    },
-  } = useGetFrontendBootQuery();
-
+  const { data, isLoading, isUninitialized, isError } = useGetFrontendBootQuery();
   return {
     ...styles,
     colors: {
       ...styles.colors,
-      primary_color,
-      primary_shade,
-      secondary_color,
-      secondary_shade,
+      ...data?.settings?.colors
     },
   };
 }
@@ -177,7 +164,7 @@ export function useFrontendBoot() {
 
   const data = { ...frontendData, ...config };
 
-  const tenantName = data.tenant.name;
+  const tenantName = data?.tenant?.name;
 
   let journeyType = "health";
 
@@ -291,7 +278,7 @@ export function useMembers() {
   };
 
   const getMember = code => {
-    let member = members.find(member => member.code === code);
+    let member = members.find(member => member.code === code.replace(/[0-9]/g, ''));
 
     if (!member) return;
 
@@ -335,10 +322,10 @@ export function useMembers() {
         }
 
         let multipleMembers = selectedMembers.filter(selectedMember =>
-          selectedMember.code.startsWith(member.code),
+          selectedMember.code?.startsWith(member.code),
         );
 
-        if (!multipleMembers.length) {
+        if (!multipleMembers?.length) {
           allMembers.push({
             ...member,
             code: `${member.code}${1}`,
@@ -395,9 +382,9 @@ export function useMembers() {
 
   function getGroupLocation(groupCode) {
     const group = getGroup(groupCode);
-    if (!group || !group.pincode) return;
+    if (!group) return;
 
-    return { city: group.city, state: group.state, pincode: group.pincode };
+    return { city: group?.city, state: group?.state, pincode: group?.pincode || input?.pincode };
   }
 
   function getNextGroup(currentGroupCode) {
@@ -457,13 +444,13 @@ export function useUpdateGroupMembers(groupCode) {
 
     const members = selectedMembers.map(member => {
       const updatedMember = updatedMembers.find(
-        updatedMember => updatedMember.code === member.code,
+        updatedMember => updatedMember?.code === member?.code,
       );
       if (updatedMember)
-        return { age: updatedMember.age.code, type: updatedMember.code };
+        return { age: updatedMember?.age?.code, type: updatedMember?.code };
       return {
-        age: member.age.code,
-        type: member.code,
+        age: member?.age?.code,
+        type: member?.code,
       };
     });
 

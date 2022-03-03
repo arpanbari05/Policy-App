@@ -36,7 +36,7 @@ function QuotesPage() {
   if (!isGroupExist) return <PageNotFound />;
 
   return (
-    <Page loader={<QuotesLoader />}>
+    <Page id={"printQuotePage"} loader={<QuotesLoader />}>
       <ScrollToTopBtn />
       <UpperModifier />
       <LowerModifier
@@ -70,7 +70,7 @@ function QuotesPage() {
             css={`
               font-size: 0.89rem;
               color: ${colors.font.four};
-              text-align: right;
+              text-align: left;
               flex: 1;
             `}
           >
@@ -144,6 +144,7 @@ function ShowingPlanType() {
 function ClearFilters(props) {
   const { isFiltersDefault } = useFilters();
   const { resetFilters } = useUpdateFilters();
+  const { primary_color, primary_shade }  = useTheme().colors;
 
   if (isFiltersDefault) return null;
 
@@ -151,13 +152,13 @@ function ClearFilters(props) {
     <button
       onClick={resetFilters}
       css={`
-        background-color: #e2f0ff;
+        background-color: ${primary_shade};
         color: #0a87ff;
         font-weight: 900;
         width: max-content;
         padding: 0.6em 1em;
         border-radius: 24px;
-        border: 1px solid #0a87ff;
+        border: 1px solid ${primary_color};
         font-size: 0.73rem;
       `}
       {...props}

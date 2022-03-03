@@ -31,6 +31,7 @@ export function EditMembersModal({
       onHide={handleHide}
       show
       animation={false}
+      centered
       css={`
         .modal-dialog {
           max-width: 870px;

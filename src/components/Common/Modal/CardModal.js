@@ -115,7 +115,7 @@ const CardModal = ({
             onClick={handleClick}
             noIcon={BtnArrow ? false : true}
             width={`180px`}
-            styledCss={`margin-right: 15px !important; `}
+            styledCss={`margin-right: 15px !important; height: 58px;`}
           />
         )}
         <i

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import FeatureSection from "./FeatureSection/FeatureSection";
 import styled from "styled-components/macro";
@@ -12,7 +12,7 @@ import { mobile } from "../../../utils/mediaQueries";
 import { amount } from "../../../utils/helper";
 import { DetailsSectionWrap } from "../../../components/ProductDetails/ProductDetailsModal";
 
-export function RidersSection() {
+export function RidersSection({ loaderStop }) {
   let { groupCode } = useParams();
 
   groupCode = parseInt(groupCode);
@@ -30,6 +30,7 @@ export function RidersSection() {
   return (
     <div className="pb-3">
       <Riders
+        loaderStop={loaderStop}
         quote={quote}
         groupCode={groupCode}
         defaultSelectedRiders={quote.health_riders}
@@ -40,6 +41,7 @@ export function RidersSection() {
 }
 
 export function Riders({
+  loaderStop = () => {},
   quote,
   groupCode,
   onChange,
@@ -51,6 +53,7 @@ export function Riders({
     handleChange,
     riders,
   } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
+  const { colors: {primary_color }} = useTheme();
 
   if (isLoading || isUninitialized)
     return (
@@ -59,13 +62,17 @@ export function Riders({
       </DetailsSectionWrap>
     );
 
+  // useEffect(() => {
+  //   if (!isLoading && !isUninitialized) loaderStop();
+  // }, [isLoading, isUninitialized]);
+
   if (isError)
     return (
       <DetailsSectionWrap>
-        <div>
-          <p>Something went wrong while getting riders!</p>
-          <p>{error.data?.message}</p>
-          <button onClick={refetch}>Retry</button>
+        <div className="d-flex gap-3 align-items-center">
+          <p className="m-0">Something went wrong while getting riders!</p>
+          {/* <p>{error.data?.message}</p> */}
+          <button className="py-1 px-3 text-[#fff]" style={{background: primary_color, color: "#fff", borderRadius: 9999 }} onClick={refetch}>Retry</button>
         </div>
       </DetailsSectionWrap>
     );

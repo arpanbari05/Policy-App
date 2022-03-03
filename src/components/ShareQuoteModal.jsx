@@ -50,7 +50,7 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBt
   const handleNumberCheck = (e, setAction) => {
     e.preventDefault();
     if (Number(e.target.value.length) <= 10) {
-      if (![0, 1, 2, 3, 4, 5, 6].includes(Number(e.target.value[0]))) {
+      if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0]))) {
         return setAction(e.target.value);
       }
     }
@@ -130,7 +130,7 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBt
           <i
             onClick={handleClose}
             style={{ cursor: "pointer" }}
-            class="fas fa-times"
+            className="fas fa-times"
           ></i>
         </Modal.Header>
         <Modal.Body>

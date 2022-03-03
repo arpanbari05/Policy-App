@@ -90,6 +90,7 @@ const TextInput = ({
   // useEffect(() => {
   //   setInnerValue(value);
   // }, [value]);
+  console.log(checkValidation);
   return (
     <InputContainer>
       <Input
@@ -103,13 +104,20 @@ const TextInput = ({
               onChange(e);
               setFallbackValue(e.target.value);
             }
-          } else if (checkValidation?.["matches"] === "name" || checkValidation?.["matches"] === "pan" || checkValidation?.["matches"] === "address") {
+          } else if (checkValidation?.["matches"] === "name" || checkValidation?.["matches"] === "pan" || checkValidation?.["matches"] === "address" || checkValidation?.["matches"].includes("mobile")) {
             if (
               checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&
               checkAllChar(e.target.value, forbiddedSymbols)) {
-                onChange(e);
-                setFallbackValue(e.target.value);
+                if (checkValidation?.["matches"].includes("mobile")) {
+                  if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0]))) {
+                    onChange(e);
+                    setFallbackValue(e.target.value);
+                  }
+                } else {
+                  onChange(e);
+                  setFallbackValue(e.target.value);
+                }
               }
           } else {
             if (
