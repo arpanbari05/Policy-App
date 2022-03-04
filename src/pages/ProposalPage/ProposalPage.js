@@ -32,7 +32,7 @@ import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
 import Card from "../../components/Card";
 import { Col, Container, Row } from "react-bootstrap";
 import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
-import { useTheme,useUrlEnquiry, useCart } from "../../customHooks";
+import { useTheme, useUrlEnquiry, useCart } from "../../customHooks";
 import { Page } from "../../components";
 
 /* ===============================test================================= */
@@ -40,24 +40,28 @@ import { Page } from "../../components";
 /* ===============================test================================= */
 const ProposalPage = () => {
   const history = useHistory();
-  const [memberGroups,setMemberGroups] = useState([]);
+
+  const [memberGroups, setMemberGroups] = useState([]);
+
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
   const [active, setActive] = useState(0);
+
   const [proposerDactive, setProposerDactive] = useState(true);
+
   const { currentSchema } = useSelector(state => state.schema);
+
   const queryStrings = useUrlQuery();
+
   const enquiryId = queryStrings.get("enquiryId");
   //const currentSchema = starSchema;
-  let {cartEntries} = useCart();
-  
-  console.log("vndkjvbkj",cartEntries)
-  
-  const [listOfForms, setListOfForms] = useState([]);
-  
-  // const membersGroup = Object.keys(cart).filter(key => parseInt(key) !== NaN);
-  
 
-  console.log("sfjnvl", useCart());
+  let { cartEntries } = useCart();
+
+  const [listOfForms, setListOfForms] = useState([]);
+
+  // const membersGroup = Object.keys(cart).filter(key => parseInt(key) !== NaN);
+
   const { showErrorPopup } = useSelector(({ proposalPage }) => proposalPage);
 
   useEffect(() => {
@@ -68,12 +72,13 @@ const ProposalPage = () => {
   const { activeIndex, proposalData } = useSelector(
     state => state.proposalPage,
   );
-  console.log("wvbiwrvbwhxxx",proposalData);
+  console.log("wvbiwrvbwhxxx", proposalData);
   const {
     colors: { primary_color, primary_shade },
   } = useTheme();
 
   const PrimaryColor = primary_color;
+
   const PrimaryShade = primary_shade;
 
   useEffect(() => {
@@ -88,11 +93,12 @@ const ProposalPage = () => {
 
   useEffect(() => {
     dispatch(getProposalFields());
-    // if (!Object.keys(proposalData).length) 
+    // if (!Object.keys(proposalData).length)
     dispatch(getProposalData());
     dispatch(getCart());
     setMemberGroups(cartEntries.map(cartItem => cartItem.group.id));
   }, []);
+
   useEffect(() => {
     setActive(activeIndex);
   }, [activeIndex]);
@@ -109,6 +115,7 @@ const ProposalPage = () => {
         </div>
       );
     }
+
     if (!listOfForms.length) {
       <div style={{ textAlign: "center" }}>
         <p>Proposal Page not found against this IC</p>
@@ -126,7 +133,6 @@ const ProposalPage = () => {
             color: #c7222a;
             font-size: 12px;
             position: absolute;
-            
           }
         `}
       >
@@ -172,24 +178,23 @@ const ProposalPage = () => {
               <MainTitle PrimaryColor={PrimaryColor}>
                 Proposer Details
               </MainTitle>
-              
-                <div
-                  css={`
-                    width: 30px;
-                    height: 30px;
-                    background: ${PrimaryShade};
-                    border-radius: 100%;
-                    display: flex;
-                    color: ${PrimaryColor};
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 13px;
-                  `}
-                  className="btn p-0"
-                >
-                  <FaPen />
-                </div>
-          
+
+              <div
+                css={`
+                  width: 30px;
+                  height: 30px;
+                  background: ${PrimaryShade};
+                  border-radius: 100%;
+                  display: flex;
+                  color: ${PrimaryColor};
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 13px;
+                `}
+                className="btn p-0"
+              >
+                <FaPen />
+              </div>
             </span>
           )}
         </Card>
@@ -327,28 +332,25 @@ const ProposalPage = () => {
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Nominee Details</MainTitle>
-              {
-                proposalData[listOfForms[2]] && (
-                  <div
-                css={`
-                  width: 30px;
-                  display: ${!proposalData[listOfForms[3]] && "none"};
-                  height: 30px;
-                  background: ${PrimaryShade};
-                  border-radius: 100%;
-                  display: flex;
-                  color: ${PrimaryColor};
-                  align-items: center;
-                  justify-content: center;
-                  font-size: 13px;
-                `}
-                className="btn p-0"
-              >
-                <FaPen />
-              </div>
-                )
-              }
-              
+              {proposalData[listOfForms[2]] && (
+                <div
+                  css={`
+                    width: 30px;
+                    display: ${!proposalData[listOfForms[3]] && "none"};
+                    height: 30px;
+                    background: ${PrimaryShade};
+                    border-radius: 100%;
+                    display: flex;
+                    color: ${PrimaryColor};
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 13px;
+                  `}
+                  className="btn p-0"
+                >
+                  <FaPen />
+                </div>
+              )}
             </span>
           )}
         </Card>
@@ -363,17 +365,19 @@ const ProposalPage = () => {
         `}
       >
         <Link
-        to={getUrlWithEnquirySearch(`/productdetails/${Math.max(...memberGroups)}`)}
+          to={getUrlWithEnquirySearch(
+            `/productdetails/${Math.max(...memberGroups)}`,
+          )}
           // onClick={() => {
           //   history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
           // }}
         >
-        <MobileHeaderText>
-          <i
-            class="fa fa-arrow-circle-left"
-            style={{ marginRight: "10px", cursor: "pointer" }}
-          ></i>{" "}
-          Proposal Form
+          <MobileHeaderText>
+            <i
+              class="fa fa-arrow-circle-left"
+              style={{ marginRight: "10px", cursor: "pointer" }}
+            ></i>{" "}
+            Proposal Form
           </MobileHeaderText>
         </Link>
       </MobileHeader>

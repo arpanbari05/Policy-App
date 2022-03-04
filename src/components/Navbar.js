@@ -92,7 +92,7 @@ const Navbar = () => {
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
-  console.log("sfjksvb", prevoiusGroup)
+  console.log("sfjksvb", prevoiusGroup);
 
   const { emailStatus, imageSend } = useComparePage();
 
@@ -141,7 +141,9 @@ const Navbar = () => {
             {GO_BACK_LOCATIONS.filter(loc =>
               location.pathname.startsWith(loc),
             ) &&
-              location.pathname !== "/input/basic-details" && (
+              !["/input/basic-details", "/input/journey-type"].includes(
+                location.pathname,
+              ) && (
                 <div
                   className="d-flex justify-content-center align-items-center"
                   css={`
@@ -175,7 +177,7 @@ const Navbar = () => {
 
                       case "/proposal":
                         // history.goBack();
-                        console.log("wvdskjvb",lastGroup)
+                        console.log("wvdskjvb", lastGroup);
                         history.replace(
                           getUrlWithEnquirySearch(
                             `/productdetails/${lastGroup.id}`,
@@ -350,7 +352,7 @@ export function Members() {
     <div
       className="d-flex"
       css={`
-        font-size: .7rem !important;
+        font-size: 0.7rem !important;
       `}
     >
       {members.map(member => (
@@ -375,7 +377,7 @@ function Info({ label, value, onlyDesktop = false, ...props }) {
       className="d-flex"
       css={`
         padding: 0 0.79em;
-        font-size: .7rem;
+        font-size: 0.7rem;
         gap: 0.67em;
         &:not(:last-child) {
           border-right: 1px solid ${colors.secondary_shade};
@@ -438,7 +440,7 @@ export function TraceId() {
   return (
     <div
       css={`
-        font-size: .7rem !important;
+        font-size: 0.7rem !important;
       `}
     >
       Trace Id: <span>{trace_id}</span>{" "}

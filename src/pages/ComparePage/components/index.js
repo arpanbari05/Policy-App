@@ -4,6 +4,7 @@ import { useCompanies, useTheme } from "../../../customHooks";
 import "styled-components/macro";
 import * as mq from "../../../utils/mediaQueries";
 import { CircleCloseButton, PremiumButton } from "../../../components";
+import { useEffect } from "react";
 
 export function ShowDifference({ onChange, checked, ...props }) {
   const { colors } = useTheme();
@@ -50,20 +51,35 @@ export function ShowDifference({ onChange, checked, ...props }) {
             color: #212529;
           `}
         >
-          Show difference
+          Show differ ence
         </span>
       </label>
     </div>
   );
 }
 
-export function ProductCard({ quote, onRemove, ...props }) {
+export function ProductCard({
+  quote,
+  onRemove,
+  updateCompareQuotes = undefined,
+  compareQuotes,
+  compareQuoteChange,
+  setCompareQuoteChange,
+  ...props
+}) {
   const { boxShadows, colors } = useTheme();
   const { getCompanyLogo } = useCompanies();
 
+  useEffect(() => {
+    updateCompareQuotes && updateCompareQuotes(compareQuotes);
+  }, [compareQuoteChange]);
+
   const logo = getCompanyLogo(quote.company_alias);
 
-  const handleCloseClick = () => onRemove && onRemove(quote);
+  const handleCloseClick = () => {
+    onRemove && onRemove(quote);
+    setCompareQuoteChange && setCompareQuoteChange(!compareQuoteChange);
+  };
 
   return (
     <div

@@ -19,6 +19,7 @@ import {
   amount,
   figureToWords,
   getDiscountAmount,
+  getDisplayPremium,
 } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
@@ -260,6 +261,7 @@ function DiscountsList({ groupCode, ...props }) {
 
   if (!selectedAdditionalDiscounts.length) return null;
 
+  console.log("The selectedAdditionalDiscounts", selectedAdditionalDiscounts);
   return (
     <CartSection title="Discounts" {...props}>
       {selectedAdditionalDiscounts.map(additionalDiscount => (
@@ -432,6 +434,7 @@ function EditMembers({ onClose }) {
     const handleCloseClick = () => {
       onClose && onClose();
     };
+
     return (
       <Modal
         show
@@ -468,7 +471,7 @@ function EditMembers({ onClose }) {
           </h1>
         </div>
 
-        <div className="p-3 pt-0">
+        <div className="p-3 pt-0 pb-0">
           <Members groupCode={groupCode} editable={false} />
           <BasePlanDetails
             groupCode={groupCode}
@@ -512,16 +515,40 @@ function EditMembers({ onClose }) {
             </div>
           )}
         </div>
+        <hr className="mt-0" />
         <div
-          className="p-3 pt-0 d-flex justify-content-center"
+          className="p-3 pt-0 d-flex justify-content-between align-items-center"
           css={`
-            gap: 1em;
+            /* gap: 1em;*/
           `}
         >
-          <Button className="w-50" onClick={handleCloseClick}>
-            Close
-          </Button>
-          <Link
+          <DetailsWrap>
+            <Title>Previous Total Premium</Title>
+            <Value>
+              {getDisplayPremium({
+                total_premium: +currentCartEntry?.discounted_total_premium,
+                tenure: currentCartEntry?.tenure,
+              })}
+            </Value>
+          </DetailsWrap>
+          <DetailsWrap>
+            <Title style={{ color: colors.secondary_color }}>
+              Revised Total Premium
+            </Title>
+            <Value>
+              {getDisplayPremium({
+                total_premium: +updatedCartEntry?.discounted_total_premium,
+                tenure: updatedCartEntry?.tenure,
+              })}
+            </Value>
+          </DetailsWrap>
+          <DetailsWrap>
+            <Button className="w-100" onClick={handleCloseClick}>
+              Continue
+            </Button>
+          </DetailsWrap>
+
+          {/* <Link
             to={getUrlWithEnquirySearch(`/quotes/${groupCode}`)}
             className="w-50 d-flex align-items-center justify-content-center"
             css={`
@@ -533,7 +560,7 @@ function EditMembers({ onClose }) {
             `}
           >
             View Quotes <FaChevronRight />
-          </Link>
+          </Link> */}
         </div>
       </Modal>
     );
@@ -555,6 +582,30 @@ function EditMembers({ onClose }) {
     </EditMembersModal>
   );
 }
+
+const DetailsWrap = styled.div`
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Title = styled.span`
+  font-size: 15px;
+  color: rgb(86, 87, 88);
+  text-align: center;
+  ${small} {
+    font-size: 11px;
+  }
+`;
+const Value = styled.span`
+  font-size: 15px;
+  color: rgb(86, 87, 88);
+  ${small} {
+    font-size: 11px;
+  }
+`;
 
 const StyledErrorMessage = styled(ErrorMessage)`
   font-size: 1rem;
