@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchQuotes,
-  setFilters,
-  updateQuotesForCompare,
-} from "../quotePage/quote.slice";
+import { fetchQuotes, setFilters } from "../quotePage/quote.slice";
 
 import {
   getCompare,
@@ -15,13 +11,11 @@ import {
   setShouldNotFetch,
   setShoutGetCompare,
   updateQuotes,
-  setMergedCover,
 } from "../ComparePage/compare.slice";
 import { getFeatures, resetFeature } from "./compare.slice";
 import { setQuotesForCompare } from "../quotePage/quote.slice";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-//import { useCartProduct } from "../Cart";
 import { useParams } from "react-router";
 import { removeQuotesForCompare } from "../quotePage/quote.slice";
 import { useFrontendBoot } from "../../customHooks";
@@ -40,7 +34,6 @@ const useComparePage = () => {
     loading,
     quotes: mergedQuotes,
     emailStatus,
-    planType,
     discount,
     shoutGetCompare,
     shouldNotFetch,
@@ -115,10 +108,7 @@ const useComparePage = () => {
   };
 
   // reload functionality work
-  const { cover, tenure, plan_type, companies } = useFrontendBoot().data;
-  // const { companies } = useSelector(
-  //   ({ frontendBoot }) => frontendBoot.frontendData.data,
-  // );
+  const { cover, tenure, companies } = useFrontendBoot().data;
   const { filters, fetchFilters } = useSelector(({ quotePage }) => quotePage);
   const { data } = useFrontendBoot();
 
@@ -143,7 +133,6 @@ const useComparePage = () => {
 
       tempfilter !== null && dispatch(setFilters(tempfilter));
       if (!QuotesToAdd.length) {
-        console.log("I executed");
         dispatch(
           fetchQuotes(companies, {
             sum_insured:
@@ -233,24 +222,12 @@ const useComparePage = () => {
       });
 
       setMergedCover(tempMergedCover);
-      console.log("tempMergedCover", tempMergedCover);
     }
   }, [selectedQuotes, discount]);
 
-  // useEffect(() => {
-
-  //   const numberOfPlans = window.matchMedia("(max-width: 1023px)").matches
-  //     ? 2
-  //     : 3;
-  //   dispatch(updateQuotesForCompare([quotesForCompare]));
-  // }, [quotes]);
-
   useEffect(() => {
     const filteredQuotes = [];
-    // const shouldFetch = selectedQuotes.some(data =>
-    //   quotesForCompare.includes(`${data.product.id}${data.sum_insured}`),
-    // );
-    console.log("mergedQuotesmergedQuotes", mergedQuotes);
+
     if (!shouldNotFetch) {
       quotes.map(quote => {
         quote.map(data => {
@@ -275,7 +252,6 @@ const useComparePage = () => {
           }
         });
         dispatch(
-          //  updateQuotes({ product_id: quotesForCompare, group_id: groupCode }),
           updateQuotes({
             products: data,
           }),
@@ -301,7 +277,6 @@ const useComparePage = () => {
     setshowDiffCbx,
     removePlan,
     QuotesToAdd,
-    quotesForCompare,
     show,
     removePlan2point0,
     setShow,

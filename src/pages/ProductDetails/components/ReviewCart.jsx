@@ -424,7 +424,7 @@ function EditMembers({ onClose }) {
 
   let serverErrors;
 
-  if (isError) serverErrors = Object.values(error.data.errors);
+  if (isError) serverErrors = Object.values(error?.data?.errors);
 
   if (data) {
     const { unavailable_message, ...updatedCartEntry } =

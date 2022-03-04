@@ -16,7 +16,8 @@ import { tenures } from "../../data";
 import * as mq from "../../../../utils/mediaQueries";
 import "styled-components/macro";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import { RiCheckboxBlankLine, RiCheckboxFill } from "react-icons/ri";
+import { RiCheckboxBlankCircleLine, RiCheckboxFill } from "react-icons/ri";
+import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 
 const availableMoreFilters = {
   popular_filters: true,
@@ -332,12 +333,12 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
             checked ? (
               <IoRadioButtonOn />
             ) : (
-              <IoRadioButtonOff />
+              <RiCheckboxBlankCircleLine color="#aaa" />
             )
           ) : checked ? (
             <RiCheckboxFill />
           ) : (
-            <RiCheckboxBlankLine />
+            <MdOutlineCheckBoxOutlineBlank fontWeight={"300"} color="#aaa" />
           )}
         </span>
         <input
@@ -527,7 +528,7 @@ function FilterDataSet({ name, description, ...props }) {
       placement="right"
       overlay={<Tooltip {...props}>{description}</Tooltip>}
     >
-      <div style={{fontWeight: "bold", fontSize: 14}} className="d-flex align-items-center gap-1">
+      <div style={{fontWeight: "bold", fontSize: 13}} className="d-flex align-items-center gap-1">
         {name} 
       <span>
         <IoMdInformationCircleOutline />

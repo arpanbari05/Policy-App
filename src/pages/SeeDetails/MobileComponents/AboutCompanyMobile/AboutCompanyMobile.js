@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
 import SpinLoader from "../../../../components/Common/SpinLoader/SpinLoader";
+import { useTheme } from "../../../../customHooks";
 import ProgessBar from "../../components/AboutCompany/ProgessBar";
 import BarGroupMobile from "./BarGroupMobile";
 import BarMarketMobile from "./BarMarketMobile";
@@ -11,6 +12,7 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
   const [activebtn, setActivebtn] = useState(1);
 
   const { loading } = useSelector(state => state.seeDetails);
+  const { colors } = useTheme();
 
   return (
     <div
@@ -24,7 +26,10 @@ function AboutCompanyMobile({ ActiveMainTab, aboutCompany, company_name }) {
           <>
             <CompanyDetails>
               <h2 style={{ fontSize: "19px", marginBottom: "16px" }}>
-                About <span style={{ color: "#0a87ff" }}>{company_name}</span>{" "}
+                About{" "}
+                <span style={{ color: colors.primary_color }}>
+                  {company_name}
+                </span>{" "}
                 insurance
               </h2>
               <p

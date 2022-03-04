@@ -373,6 +373,7 @@ function CompareFeatureValue({ quote, sectionTitle, featureTitle, onLoad }) {
   } = useCompareFeature(quote);
 
   const feature = getFeature({ sectionTitle, featureTitle });
+  const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
     if (feature) onLoad && onLoad({ featureTitle, feature });
@@ -383,7 +384,39 @@ function CompareFeatureValue({ quote, sectionTitle, featureTitle, onLoad }) {
 
   if (!feature) return null;
 
-  return <FeatureValue>{feature.feature_value}</FeatureValue>;
+  return (
+    <FeatureValue
+      css={`
+        display: flex;
+        flex-direction: column;
+      `}
+    >
+      {sectionTitle === "What's not covered?" ? (
+        <p>
+          {feature.feature_value.slice(
+            0,
+            showMore ? feature.feature_value.length : 93,
+          ) + `${feature.feature_value.length > 93 && !showMore ? ".." : " "}`}
+          {feature.feature_value.length > 93 && (
+            <button
+              onClick={() => {
+                setShowMore(!showMore);
+              }}
+              css={`
+                color: #0a87ff;
+                font-size: 0.8rem;
+                font-weight: bold;
+              `}
+            >
+              {showMore ? "Show Less" : "Show More"}
+            </button>
+          )}
+        </p>
+      ) : (
+        feature.feature_value
+      )}
+    </FeatureValue>
+  );
 }
 
 function SumInsuredSection({ quotes, select, onChange, ...props }) {

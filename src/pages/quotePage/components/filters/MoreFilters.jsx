@@ -82,6 +82,7 @@ function FilterModal({ onClose }) {
   return (
     <Modal
       show
+      centered
       onHide={() => onClose && onClose()}
       animation={false}
       css={`
@@ -109,7 +110,6 @@ function FilterModal({ onClose }) {
         css={`
           gap: 1em;
           min-height: 67vh;
-          height: 67vh;
           overflow: auto;
         `}
       >
@@ -124,7 +124,7 @@ function FilterModal({ onClose }) {
           </>
         ))}
       </div>
-      <div className="p-3 d-flex justify-content-between">
+      <div className="pt-1 pb-3 px-3 d-flex justify-content-between">
         <button css={`width: 50% !important`} onClick={clearFilters}>
           <span css={`border-bottom: 3px dotted #777;`}>
             Clear filters

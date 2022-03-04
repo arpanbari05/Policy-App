@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { Col, Collapse, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import { Col, Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import "styled-components/macro";
-import { maxbupa } from "../../../assets/images";
 import { useParams } from "react-router";
-import CheckBox from "../../ComparePage/components/Checkbox/Checbox";
 import {
   removeQuotesForCompare,
   saveSelectedPlan,
@@ -106,7 +104,7 @@ function QuoteCard({ id, item, handleSeeDetails, handleClick }) {
       tax_amount: mergedQuotes[0]?.tax_amount[activeCover],
       tenure: mergedQuotes[0]?.tenure[activeCover],
     };
-    console.log(selectedPlan, selectedPlan.product?.id, "sgda");
+
     dispatch(
       saveSelectedPlan({
         ...selectedPlan,

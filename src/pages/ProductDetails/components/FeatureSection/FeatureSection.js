@@ -1,12 +1,14 @@
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components/macro";
+import { useTheme } from "../../../../customHooks";
 import { mobile } from "../../../../utils/mediaQueries";
 import { setCurrentSection } from "../../productDetails.slice";
 
 function FeatureSection({ heading, subHeading, children, id, ...props }) {
   const dispatch = useDispatch();
   const featureSectionRef = useRef(null);
+  const { colors } = useTheme();
   useEffect(() => {
     const checkIsInViewport = () => {
       if (featureSectionRef.current) {
@@ -24,16 +26,24 @@ function FeatureSection({ heading, subHeading, children, id, ...props }) {
   }, [dispatch, id]);
   return (
     <FeatureSectionContainer ref={featureSectionRef} id={id} {...props}>
-      <FeatureSection.Header heading={heading} subHeading={subHeading} />
+      <FeatureSection.Header
+        secondary_color={colors.secondary_color}
+        heading={heading}
+        subHeading={subHeading}
+      />
       {children}
     </FeatureSectionContainer>
   );
 }
 
-FeatureSection.Header = ({ heading, subHeading }) => {
+FeatureSection.Header = ({ heading, subHeading, secondary_color }) => {
   return (
     <FeatureSectionHeader>
-      {heading && <FeatureSectionHeading>{heading}</FeatureSectionHeading>}
+      {heading && (
+        <FeatureSectionHeading secondary_color={secondary_color}>
+          {heading}
+        </FeatureSectionHeading>
+      )}
       {subHeading && (
         <FeatureSectionSubHeading>{subHeading}</FeatureSectionSubHeading>
       )}
@@ -72,7 +82,7 @@ const FeatureSectionHeading = styled("p")`
       margin-right: 10px;
       position: relative;
 
-      background-color: #2cd44a;
+      background-color: ${({ secondary_color }) => secondary_color};
       border-radius: 0 15px 15px 0;
     }
   }

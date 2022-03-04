@@ -12,7 +12,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { BsCircleFill } from "react-icons/bs";
 import { RiInformationLine } from "react-icons/ri";
 
 const featuresDisplayedOnQuoteCard = [
@@ -91,7 +90,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
       </Collapse>
       {!!collapsedQuotes.length && (
         <div
-          className="px-4 pt-1"
+          className="px-3"
           css={`
             position: absolute;
             top: 100%;
@@ -99,13 +98,14 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
             transform: translate(-50%, -100%);
             background-color: ${colors.primary_shade};
             border-radius: 1.6em 1.6em 0 0;
+            padding-top: 1px;
           `}
         >
           <SeeText
             css={`
               border-bottom: none !important;
               cursor: pointer;
-              font-size: 0.79rem;
+              font-size: 10.5px;
             `}
             onClick={() => {
               setShow(!show);
@@ -234,7 +234,7 @@ function QuoteCard({
       <div
         className="d-flex align-items-center"
         css={`
-          min-height: 140px;
+          min-height: 137px;
           padding-top: 8px;
           padding-bottom: 11px;
         `}
@@ -251,8 +251,7 @@ function QuoteCard({
             src={logoSrc}
             alt={quote.company_alias}
             css={`
-              min-width: 4em;
-              max-height: 3em;
+              height: 2.4rem;
             `}
           />
           <span
@@ -293,15 +292,19 @@ function QuoteCard({
             margin-bottom: 10px;
           `}
         >
-          {console.log(features)}
           {features.slice(1, 3).map(feature => (
             <QuoteFeature key={feature.code} feature={feature} />
           ))}
           {features.slice(0, 1).map(feature => (
-            <QuoteFeature key={feature.code} feature={feature} icon={<IoIosArrowForward />} onNavigate={() => {
-              productDetailsModal.on();
-              setdefaultActiveKey("cashless-hospitals");
-            }} />
+            <QuoteFeature
+              key={feature.code}
+              feature={feature}
+              icon={<IoIosArrowForward />}
+              onNavigate={() => {
+                productDetailsModal.on();
+                setdefaultActiveKey("cashless-hospitals");
+              }}
+            />
           ))}
           {features.slice(3).map(feature => (
             <QuoteFeature key={feature.code} feature={feature} />
@@ -368,7 +371,7 @@ function QuoteCard({
                 className="d-flex align-items-center justify-content-center gap-2"
                 css={`
                   & > * {
-                    min-width: 80px;
+                    min-width: 60px;
                   }
                 `}
               >
@@ -459,7 +462,11 @@ function QuoteCard({
         </div>
       </div>
       {productDetailsModal.isOn && (
-        <ProductDetailsModal quote={quote} onClose={productDetailsModal.off} defaultActiveKey={defaultActiveKey} />
+        <ProductDetailsModal
+          quote={quote}
+          onClose={productDetailsModal.off}
+          defaultActiveKey={defaultActiveKey}
+        />
       )}
     </div>
   );
@@ -473,8 +480,10 @@ function QuoteCardSelect({ ...props }) {
       styles={{
         option: provided => ({
           ...provided,
-          fontSize: "13px",
+          fontSize: "12px",
           fontWeight: "bold",
+          padding: "7px 7px !important",
+          textAlign: "center !important"
         }),
         menu: provided => ({
           ...provided,
@@ -499,9 +508,15 @@ function QuoteCardSelect({ ...props }) {
           ...provided,
           fontSize: "13px",
           fontWeight: "bold",
-          border: "none",
           minHeight: "initial",
-        }),
+          outline: "none",
+          border: '0 !important',
+          // This line disable the blue border
+          boxShadow: '0 !important',
+          '&:hover': {
+              border: '0 !important'
+            }
+          }),
       }}
       {...props}
     />
@@ -575,7 +590,7 @@ function QuoteFeature({ feature, icon, onNavigate }) {
       >
         <div
           css={`
-            font-size: 0.73rem;
+            font-size: 10px;
             color: ${colors.font.three};
           `}
         >
@@ -584,7 +599,7 @@ function QuoteFeature({ feature, icon, onNavigate }) {
         <div
           css={`
             width: auto;
-            font-size: 0.75rem;
+            font-size: 11px;
             display: flex;
             align-items: center;
             cursor: pointer;

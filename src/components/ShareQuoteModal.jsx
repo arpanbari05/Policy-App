@@ -13,7 +13,7 @@ import { useTheme } from "../customHooks/index";
 import ShareButton from "../components/Common/Button/ShareButton";
 import { CircleLoader } from '../components/index';
 
-const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBtn = false}) => {
+const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBtn = false }) => {
   console.log(imageSend, emailStatus);
 
   const [show, setshow] = useState(showModal);
@@ -50,7 +50,7 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBt
   const handleNumberCheck = (e, setAction) => {
     e.preventDefault();
     if (Number(e.target.value.length) <= 10) {
-      if (![0, 1, 2, 3, 4, 5, 6].includes(Number(e.target.value[0]))) {
+      if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0]))) {
         return setAction(e.target.value);
       }
     }
@@ -83,11 +83,14 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBt
   //   setIsSending(false);
   //
 
-  const handleClose = () => setshow(false);
+  const handleClose = () => {
+    setshow(false);
+    setIsSending(false);
+  };
   const handleShow = () => setshow(true);
   return (
     <>
-      { !hideBtn && <ShareButton onClick={handleShow} /> }
+      {!hideBtn && <ShareButton onClick={handleShow} />}
       <Modal
         show={show}
         onHide={handleClose}
@@ -130,7 +133,7 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBt
           <i
             onClick={handleClose}
             style={{ cursor: "pointer" }}
-            class="fas fa-times"
+            className="fas fa-times"
           ></i>
         </Modal.Header>
         <Modal.Body>
@@ -178,6 +181,11 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBt
               </div>
 
               <button
+                css={`
+                  &:hover {
+                    bacground-image: linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,.1));
+                  }
+                `}
                 className="btn share_btn  position-relative"
                 onClick={e => {
                   handleSendViaEmail(e);

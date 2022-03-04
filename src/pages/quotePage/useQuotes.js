@@ -40,6 +40,7 @@ function useQuotesPage() {
       scrollY: -window.scrollY,
     }).then(canvas => {
       const imgData = canvas.toDataURL("image/png");
+      console.log(imgData);
       dispatch(
         sendEmailAction({
           email,

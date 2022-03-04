@@ -72,10 +72,11 @@ export function Page({
   loader,
   noNavbarForMobile = false,
   backButton: BackButton = <></>,
+  id = "",
   ...props
 }) {
   return (
-    <div {...props}>
+    <div id={id} {...props} >
       {loader ? loader : null}
       <Import
         mobile={() =>
@@ -450,7 +451,7 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
 
   const netPremium = calculateTotalPremium({
     total_premium: quote.total_premium,
-    health_riders: quote.riders || quote.health_riders,
+    health_riders: [...quote?.mandatory_riders] || quote.health_riders,
   });
 
   return (
@@ -459,6 +460,9 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
         className="w-100 rounded"
         onClick={handleBuyClick}
         loader={isLoading}
+        css={`
+          font-size: .89rem;
+        `}
         {...props}
       >
         {displayTenure

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Col, Row } from "react-bootstrap";
 import { RidersSection } from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
@@ -46,6 +46,8 @@ const ProductDetails = () => {
 
   const quotesRedirectUrl = useUrlEnquiry();
 
+  const loaderRef = useRef(null);
+
   useEffect(() => {
     function scrollListener() {
       if (window.scrollY >= 80) setShowNav(true);
@@ -89,6 +91,7 @@ const ProductDetails = () => {
 
   return (
     <Page noNavbarForMobile={true}>
+      {/* <Toploader loaderRef={loaderRef} /> */}
       <MobileHeader>
         <MobileHeaderText
           onClick={() => {
@@ -197,6 +200,7 @@ const ProductDetails = () => {
               <CheckDiscount
                 groupCode={parseInt(groupCode)}
                 cartEntry={cartEntry}
+                // loaderStart={() => console.log(loaderRef?.current?.continuousStart())}
               />
               <RidersSection />
               {tenant.alias === "fyntune" ? (
