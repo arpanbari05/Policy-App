@@ -16,16 +16,21 @@ const ProposalSummary = lazy(() =>
 const ThankYouPage = lazy(() => import("./pages/ThankYouPage/ThankYouPage"));
 
 function App() {
-  const { journeyType } = useFrontendBoot();
+  const {
+    data: { tenant },
+  } = useFrontendBoot();
   return (
     <Switch>
       <Route path="/" exact>
         <Redirect
           from="/"
           to={
-            journeyType === "renewal"
-              ? "input/renewal-details"
+            tenant.alias === "fyntune"
+              ? "/input/journey-type"
               : "/input/basic-details"
+            // journeyType === "renewal"
+            //   ? "input/renewal-details"
+            //   : "/input/basic-details"
           }
         />
       </Route>
