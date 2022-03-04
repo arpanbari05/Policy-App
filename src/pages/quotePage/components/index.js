@@ -29,7 +29,7 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
         font-size: 14px;
         flex: 1;
 
-        @media (max-width: 1286px) {
+        @media (max-width: 1390px) {
           width: 17rem;
         }
       `}

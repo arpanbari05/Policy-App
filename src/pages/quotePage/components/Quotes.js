@@ -109,12 +109,23 @@ function CompareQuotesTray({ compare, onClose }) {
         className="d-flex align-items-center justify-content-between"
         css={`
           gap: 1em;
+
+          @media (max-width: 1204px) {
+            margin-left: 20px !important;
+          }
+          @media (max-width: 1037px) {
+            margin-left: 2px !important;
+          }
         `}
       >
         <div
           className="d-flex align-items-center justify-content-between"
           css={`
-            gap: 10px;
+            gap: 3rem;
+
+            @media (max-width: 1370px) {
+              gap: 0.9rem;
+            }
           `}
         >
           {compare.quotes.map(quote => (
