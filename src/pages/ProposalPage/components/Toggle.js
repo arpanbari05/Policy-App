@@ -37,6 +37,8 @@ if(showMembersIf){
     
     return values && values[name] && values[name][`is${name}`] === "Y" 
   }))
+  {console.log("sdvnsv",customShowMembers,label)}
+
   console.log("bjffb",values,customShowMembers,showMembersIf?showMembersIf.split("||"):"");
 }
 },[values])
@@ -181,9 +183,8 @@ if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(
             </div>
           </div>
         </div>
-        
-        {membersToMap.length && (showMembers !== false || customShowMembers) ? (
-          (boolean === "Y") && (
+        {membersToMap.length && (showMembers !== false) ? (
+          (customShowMembers || boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (
                 <>
