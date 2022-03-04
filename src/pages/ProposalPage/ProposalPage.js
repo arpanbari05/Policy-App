@@ -19,6 +19,7 @@ import {
   getProposalData,
   setIsLoading,
   submitProposalData,
+  setSelectedIcs
 } from "./ProposalSections/ProposalSections.slice";
 import { setShowErrorPopup } from "./ProposalSections/ProposalSections.slice";
 import ReviewCart from "../ProductDetails/components/ReviewCart";

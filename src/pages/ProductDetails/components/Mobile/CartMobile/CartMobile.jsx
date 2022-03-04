@@ -435,7 +435,7 @@ function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
   const { getDiscountAmount } = useAdditionalDiscount(groupCode);
   const discountAmount = amount(getDiscountAmount(additionalDiscount));
 
-  return <HorizontalCard title={name} value={discountAmount} {...props} />;
+  return <HorizontalCard title={name} value={Math.floor(discountAmount)} {...props} />;
 }
 const Riders = ({ groupCode, ...props }) => {
   const { getSelectedRiders } = useRider(groupCode);
