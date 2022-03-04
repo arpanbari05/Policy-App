@@ -220,7 +220,7 @@ const SummaryTab = ({ title, data, values, index }) => {
             // values?.[item]?.[data.name]?.members.length
             values?.[item]?.[data.name] instanceof Object &&
             values?.[item]?.[data.name]?.members &&
-            values?.[item]?.[data.name]?.members.length ? (
+            Object.keys(values?.[item]?.[data.name]?.members).length ? (
               Object.keys(values?.[item]?.[data.name]?.members).map(
                 (_item, _i) => {
                   return (
@@ -598,7 +598,7 @@ const CustomMedicalTitle = styled.div`
 `;
 const InnerWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   padding-left: 12px;
 `;

@@ -4,11 +4,12 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
 import { useGetFrontendBootQuery } from "./api/api";
-import { FullScreenLoader } from "./components";
+import { ErrorFallback, FullScreenLoader } from "./components";
 import { LoadEnquiries } from "./components";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./app.css";
 import { some } from "lodash";
+import "styled-components/macro";
 
 function AppProviders({ children }) {
   return (
@@ -36,11 +37,29 @@ function AppLoaders({ children, ...props }) {
 
   const isTestRoute = useRouteMatch({ path: "/test" });
 
-  const { isLoading, isUninitialized } = useGetFrontendBootQuery(undefined, {
-    skip: !!isTestRoute,
-  });
+  const { isLoading, isUninitialized, isError } = useGetFrontendBootQuery(
+    undefined,
+    {
+      skip: !!isTestRoute,
+    },
+  );
 
   if (isLoading || isUninitialized) return <FullScreenLoader />;
+
+  if (isError)
+    return (
+      <div
+        className="d-flex flex-column align-items-center justify-content-center"
+        css={`
+          height: 100vh;
+          place-items: center;
+        `}
+      >
+        <p>Something went wrong!</p>
+
+        <button onClick={() => window.location.reload()}>Reload</button>
+      </div>
+    );
 
   if (
     some([isTestRoute, isRootRoute, isBasicDetailsRoute, isRenewalDetailsRoute])
