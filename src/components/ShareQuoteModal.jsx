@@ -13,7 +13,7 @@ import { useTheme } from "../customHooks/index";
 import ShareButton from "../components/Common/Button/ShareButton";
 import { CircleLoader } from '../components/index';
 
-const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBtn = false}) => {
+const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBtn = false }) => {
   console.log(imageSend, emailStatus);
 
   const [show, setshow] = useState(showModal);
@@ -83,11 +83,14 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBt
   //   setIsSending(false);
   //
 
-  const handleClose = () => setshow(false);
+  const handleClose = () => {
+    setshow(false);
+    setIsSending(false);
+  };
   const handleShow = () => setshow(true);
   return (
     <>
-      { !hideBtn && <ShareButton onClick={handleShow} /> }
+      {!hideBtn && <ShareButton onClick={handleShow} />}
       <Modal
         show={show}
         onHide={handleClose}
@@ -178,6 +181,11 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage ="" , hideBt
               </div>
 
               <button
+                css={`
+                  &:hover {
+                    bacground-image: linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,.1));
+                  }
+                `}
                 className="btn share_btn  position-relative"
                 onClick={e => {
                   handleSendViaEmail(e);

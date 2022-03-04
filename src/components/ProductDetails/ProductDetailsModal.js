@@ -572,7 +572,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
               @media (max-width: 1485px) {
                 font-size: 14px;
               }
-              @media (max-width: 1325px) {
+              @media (max-width: 1390px) {
                 font-size: 12px;
               }
             `}
@@ -597,7 +597,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
               @media (max-width: 1485px) {
                 font-size: 14px;
               }
-              @media (max-width: 1325px) {
+              @media (max-width: 1390px) {
                 font-size: 12px;
               }
             `}
@@ -618,7 +618,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
               @media (max-width: 1485px) {
                 font-size: 14px;
               }
-              @media (max-width: 1325px) {
+              @media (max-width: 1390px) {
                 font-size: 12px;
               }
             `}
@@ -637,7 +637,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
         </QuoteInfoWrap>
         <div
           css={`
-            width: 25%;
+            max-width: 300px;
           `}
           className="d-flex align-items-center justify-content-center"
         >
@@ -685,6 +685,9 @@ const QuoteInfoWrap = styled.div`
   justify-content: space-around;
   @media (max-width: 1190px) {
     width: 50%;
+  }
+  @media (max-width: 1090px) {
+    width: 55%;
   }
 `;
 

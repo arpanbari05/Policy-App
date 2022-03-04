@@ -53,8 +53,7 @@ function LogoLink() {
         alt={`companylogo`}
         css={`
           cursor: pointer;
-          height: 1.92em;
-          // width: 130px;
+          width: 130px;
           object-fit: contain;
         `}
       />
@@ -334,7 +333,8 @@ export const None = () => <></>;
 export function Members() {
   const { groupCode } = useParams();
 
-  const { getGroupMembers, getGroupLocation, isLoading, isUninitialized } = useMembers();
+  const { getGroupMembers, getGroupLocation, isLoading, isUninitialized } =
+    useMembers();
 
   if (!groupCode) return null;
 
@@ -436,7 +436,11 @@ export function TraceId() {
   if (copiedIndication) return <div>Copied to clipboard!</div>;
 
   return (
-    <div css={`font-size: 12px`}>
+    <div
+      css={`
+        font-size: 12px;
+      `}
+    >
       Trace Id: <span>{trace_id}</span>{" "}
       <button
         css={`

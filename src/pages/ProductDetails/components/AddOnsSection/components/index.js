@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Modal, Tabs } from "react-bootstrap";
 import { BsCircleFill } from "react-icons/bs";
 import { FaPen } from "react-icons/fa";
@@ -8,6 +9,8 @@ import RoundDD from "../../../../../components/RoundDD";
 import { useQuoteCard, useTheme } from "../../../../../customHooks";
 import { amount } from "../../../../../utils/helper";
 import { mobile, small } from "../../../../../utils/mediaQueries";
+import { getAddOnMembers } from "../utils";
+import _ from "lodash";
 
 export function Detail({ label, children, onClick, editable = true }) {
   return (
@@ -34,6 +37,7 @@ export function AddOnCheckButton({
   checked = false,
   quote,
   onChange,
+  totalPremium,
   ...props
 }) {
   const { colors } = useTheme();
@@ -57,7 +61,7 @@ export function AddOnCheckButton({
           }
         `}
       >
-        {amount(quote.total_premium)}
+        {amount(totalPremium)}
         <span
           className="mb-1 mx-2"
           css={`
@@ -109,10 +113,17 @@ function AddOnOption({ label, dropdown }) {
 }
 
 function getOptions(arr = []) {
-  return arr.map(item => ({ title: item + "", id: item }));
+  return arr.map(item => ({ title: _.capitalize(item + ""), id: item }));
 }
 
-export function EditModal({ onClose, show, quotes, onUpdate }) {
+export function EditModal({
+  onClose,
+  show,
+  quotes,
+  onUpdate,
+  currentQuote,
+  cartEntry,
+}) {
   const { colors } = useTheme();
 
   const {
@@ -126,8 +137,13 @@ export function EditModal({ onClose, show, quotes, onUpdate }) {
     quotes,
   });
 
+  const [member, setMember] = useState(currentQuote.member);
+
   const sumInsuredOptions = getOptions(sumInsureds);
   const deductibleOptions = getOptions(deductibles);
+  const memberOptions = getOptions(
+    getAddOnMembers(currentQuote, quotes, cartEntry),
+  );
 
   const handleClose = () => {
     onClose && onClose();
@@ -138,6 +154,7 @@ export function EditModal({ onClose, show, quotes, onUpdate }) {
       onUpdate({
         sumInsured: selectedSumInsured,
         deductible: selectedDeductible,
+        member
       });
     handleClose();
   };
@@ -193,9 +210,11 @@ export function EditModal({ onClose, show, quotes, onUpdate }) {
             label="Insured"
             dropdown={
               <AddOnOptionDropdown
-                selected={"All"}
-                list={[]}
-                onChange={({ id }) => {}}
+                selected={_.capitalize(member)}
+                list={memberOptions}
+                onChange={({ id }) => {
+                  setMember(id);
+                }}
               />
             }
           />

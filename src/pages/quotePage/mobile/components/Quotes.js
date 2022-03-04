@@ -225,6 +225,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
     selectedSumInsured,
     sumInsureds,
     handleDeductibleChange,
+    handleSumInsuredChange
   } = useQuoteCard({
     quotes,
   });
@@ -357,12 +358,12 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
                   <select
                     value={selectedSumInsured}
                     onChange={evt =>
-                      handleDeductibleChange({ value: evt.target.value })
+                      handleSumInsuredChange({ value: evt.target.value })
                     }
                   >
-                    {sumInsureds.map(deductible => (
-                      <option key={deductible} value={deductible}>
-                        {numberToDigitWord(deductible)}
+                    {sumInsureds.map(cover => (
+                      <option key={cover} value={cover}>
+                        {numberToDigitWord(cover)}
                       </option>
                     ))}
                   </select>
@@ -380,12 +381,12 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
                   <select
                     value={selectedSumInsured}
                     onChange={evt =>
-                      handleDeductibleChange({ value: evt.target.value })
+                      handleSumInsuredChange({ value: evt.target.value })
                     }
                   >
-                    {sumInsureds.map(deductible => (
-                      <option key={deductible} value={deductible}>
-                        {numberToDigitWord(deductible)}
+                    {sumInsureds.map(cover => (
+                      <option key={cover} value={cover}>
+                        {numberToDigitWord(cover)}
                       </option>
                     ))}
                   </select>

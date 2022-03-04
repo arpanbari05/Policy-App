@@ -13,8 +13,6 @@ import { CloseButton } from "../../../Cart/components/SidebarCart/SidebarCart";
 import { amount } from "../../../../utils/helper";
 import { mobile } from "../../../../utils/mediaQueries";
 import styled from "styled-components/macro";
-import { useSelector } from "react-redux";
-import { selectCompany } from "../../../../FrontendBoot/reducer/frontendBoot.slice";
 import AddOnDetailsMobile from "./AddOnDetailsMobile";
 import {
   DownloadButton,
@@ -24,6 +22,8 @@ import {
 } from "./helpers";
 
 import useAddOnDetails from "./helpers";
+import { useCompanies, useTheme } from "../../../../customHooks";
+import { FaTimes } from "react-icons/fa";
 
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
@@ -291,6 +291,8 @@ AddOnDetails.Downloads = function Downloads({
 }) {
   const { status, handleRetry } = useFetchDownloads({ addOn, setDownloads });
 
+  const { colors } = useTheme();
+
   if (status === "loading" || status === "idle") return <p>Loading...</p>;
   if (status === "error")
     return (
@@ -299,7 +301,7 @@ AddOnDetails.Downloads = function Downloads({
         <button
           onClick={handleRetry}
           css={`
-            color: var(--abc-red);
+            color: ${colors.primary_color};
           `}
         >
           Retry
@@ -328,10 +330,10 @@ AddOnDetails.Downloads = function Downloads({
 };
 
 export const addOnDetailsComponents = {
-  "Plan Highlights": AddOnDetails.PlanHighlights,
-  "What it Covers": AddOnDetails.WhatItCovers,
+  "Basic Features": AddOnDetails.PlanHighlights,
+  "What's Covered?": AddOnDetails.WhatItCovers,
   "Points to remember": AddOnDetails.WhatItCovers,
-  "What it does not cover": AddOnDetails.PlanHighlights,
+  Exclusions: AddOnDetails.PlanHighlights,
   Downloads: AddOnDetails.Downloads,
 };
 
@@ -355,13 +357,13 @@ AddOnDetails.NavBody = function NavBody({
               : null}
           </Tab.Pane>
         ))}
-        {/* <Tab.Pane eventKey="downloads">
+        <Tab.Pane eventKey="downloads">
           <AddOnDetails.Downloads
             addOn={addOn}
             downloads={downloads}
             setDownloads={setDownloads}
           />
-        </Tab.Pane> */}
+        </Tab.Pane>
       </Tab.Content>
     </Col>
   );
@@ -460,11 +462,17 @@ AddOnDetails.Header = function Header({ addOn = {}, handleClose = () => {} }) {
   const {
     sum_insured,
     total_premium,
-    company: { alias, name: companyName },
+    product: {
+      company: { alias, name: companyName },
+    },
     name: addOnName,
   } = addOn;
 
-  const { logo: logoSrc } = useSelector(selectCompany(alias));
+  const { colors } = useTheme();
+
+  const { getCompanyLogo } = useCompanies();
+
+  const logoSrc = getCompanyLogo(alias);
 
   const handleCloseClick = () => {
     handleClose();
@@ -482,15 +490,21 @@ AddOnDetails.Header = function Header({ addOn = {}, handleClose = () => {} }) {
         min-height: 90px;
       `}
     >
-      <CloseButton
+      <button
+        className="rounded-circle d-flex align-items-center justify-content-center"
         css={`
           position: absolute;
           top: 1.2rem;
           right: 1rem;
           color: #485467;
+          height: 2em;
+          width: 2em;
+          background-color: ${colors.secondary_shade};
         `}
         onClick={handleCloseClick}
-      />
+      >
+        <FaTimes />
+      </button>
       <div
         css={`
           display: flex;

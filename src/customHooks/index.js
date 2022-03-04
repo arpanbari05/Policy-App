@@ -33,6 +33,7 @@ import {
   getMonthsForYear,
   getRiderCartData,
   isAddOnPresent,
+  isTopUpQuote,
   matchQuotes,
   mergeQuotes,
 } from "../utils/helper";
@@ -142,12 +143,25 @@ export function useQuote() {
 }
 
 export function useTheme() {
-  const { data, isLoading, isUninitialized, isError } = useGetFrontendBootQuery();
+  const {
+    data: {
+      settings: {
+        primary_color,
+        primary_shade,
+        secondary_color,
+        secondary_shade,
+      },
+    },
+  } = useGetFrontendBootQuery();
+
   return {
     ...styles,
     colors: {
       ...styles.colors,
-      ...data?.settings?.colors
+      primary_color,
+      primary_shade,
+      secondary_color,
+      secondary_shade,
     },
   };
 }
@@ -278,7 +292,9 @@ export function useMembers() {
   };
 
   const getMember = code => {
-    let member = members.find(member => member.code === code.replace(/[0-9]/g, ''));
+    let member = members.find(
+      member => member.code === code.replace(/[0-9]/g, ""),
+    );
 
     if (!member) return;
 
@@ -384,7 +400,11 @@ export function useMembers() {
     const group = getGroup(groupCode);
     if (!group) return;
 
-    return { city: group?.city, state: group?.state, pincode: group?.pincode || input?.pincode };
+    return {
+      city: group?.city,
+      state: group?.state,
+      pincode: group?.pincode || input?.pincode,
+    };
   }
 
   function getNextGroup(currentGroupCode) {
@@ -1561,39 +1581,50 @@ export function useAddOns(groupCode) {
 
   const { addons } = cartEntry;
 
-  function addAddOn(addOn, members) {
-    const isAlreadyAdded = isAddOnPresent(addOn, members, cartEntry);
-    if (isAlreadyAdded) return;
-
+  function addAddOns(addOns = []) {
     let filteredAddOns = addons.slice();
 
-    const addOnToAdd = { ...addOn, members };
+    const addOnsToAdd = [];
 
-    const insurance_type = getInsuranceType(addOn);
+    for (let addOn of addOns) {
+      const isTopUpAddOn = isTopUpQuote(addOn);
 
-    if (insurance_type === "top_up") {
-      filteredAddOns = addons.filter(
-        addOnAdded => getInsuranceType(addOnAdded) !== "top_up",
+      const members = isTopUpAddOn ? cartEntry.group.members : [addOn.member];
+      const isAlreadyAdded = addons.some(
+        addOnAdded => addOnAdded.product.id === addOn.product.id,
       );
+      if (isAlreadyAdded) return;
+
+      const addOnToAdd = { ...addOn, members };
+
+      if (isTopUpAddOn) {
+        filteredAddOns = addons.filter(
+          addOnAdded => getInsuranceType(addOnAdded) !== "top_up",
+        );
+      }
+
+      addOnsToAdd.push(addOnToAdd);
     }
 
     updateCartEntry(cartEntry.group.id, {
-      addons: [...filteredAddOns, addOnToAdd],
+      addons: [...filteredAddOns, ...addOnsToAdd],
     });
   }
 
-  function removeAddOn(addOn, members) {
+  function removeAddOns(addOns = []) {
     if (!addons) return;
     updateCartEntry(cartEntry.group.id, {
-      addons: addons.filter(
-        addOnAdded =>
-          !(
-            matchQuotes(addOnAdded, addOn) &&
-            _.isEqual(addOnAdded.members, members)
-          ),
+      addons: addons.filter(addOnAdded =>
+        addOns.some(
+          addOnToRemove =>
+            !matchQuotes(addOnAdded, addOnToRemove, {
+              sum_insured: false,
+              deductible: false,
+            }),
+        ),
       ),
     });
   }
 
-  return { addAddOn, removeAddOn };
+  return { addAddOns, removeAddOns };
 }
