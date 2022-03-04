@@ -10,7 +10,12 @@ import {
 import FeatureSection from "../FeatureSection/FeatureSection";
 import { MemberText } from "../../../../components";
 import CardSkeletonLoader from "../../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
-import { amount, isAddOnPresent } from "../../../../utils/helper";
+import {
+  amount,
+  getAddOnsTotalPremium,
+  getInsuranceType,
+  matchQuotes,
+} from "../../../../utils/helper";
 import { Tab } from "react-bootstrap";
 import {
   AddOnCheckButton,
@@ -21,6 +26,7 @@ import {
   EditModal,
 } from "./components";
 import "styled-components/macro";
+import AddOnDetails from "../AddOnDetails/AddOnDetails";
 
 function AddOnSection({ cartEntry }) {
   const { colors } = useTheme();
@@ -115,40 +121,108 @@ function TopUpAddOns({ cartEntry, insurance_type }) {
   );
 }
 
+function getInitialMembers(addOn, cartEntry) {
+  if (!addOn) return [];
+  const insurance_type = getInsuranceType(addOn);
+  if (insurance_type === "top_up") {
+    return cartEntry.group.members;
+  }
+
+  const addOnAdded = cartEntry.addons.find(
+    addOnAdded => addOnAdded.product.id === addOn.product.id,
+  );
+
+  if (addOnAdded) {
+    return addOnAdded.members;
+  }
+
+  return [addOn.member];
+}
+
+function getInitialSumInsured(quotesList, cartEntry) {
+  const firstQuote = quotesList[0];
+  if (!firstQuote) return;
+
+  const addOnAdded = cartEntry.addons.find(
+    addOnAdded => addOnAdded.product.id === firstQuote.product.id,
+  );
+
+  if (addOnAdded) {
+    return addOnAdded.sum_insured;
+  }
+  return;
+}
+
+function getInitialDeductible(quotesList, cartEntry) {
+  const firstQuote = quotesList[0];
+  if (!firstQuote) return;
+
+  const addOnAdded = cartEntry.addons.find(
+    addOnAdded => addOnAdded.product.id === firstQuote.product.id,
+  );
+
+  if (addOnAdded) {
+    return addOnAdded.deductible;
+  }
+  return;
+}
+
 function AddOnCard({ quotesList = [], cartEntry }) {
   const { boxShadows, colors } = useTheme();
 
   const editToggle = useToggle(false);
+  const detailsToggle = useToggle(false);
 
-  const { quote, handleSumInsuredChange, handleDeductibleChange } =
-    useQuoteCard({
-      quotes: quotesList,
-    });
+  let { quote, handleSumInsuredChange, handleDeductibleChange } = useQuoteCard({
+    quotes: quotesList,
+    defaultValues: {
+      sumInsured: getInitialSumInsured(quotesList, cartEntry),
+      deductible: getInitialDeductible(quotesList, cartEntry),
+    },
+  });
 
-  const { addAddOn, removeAddOn } = useAddOns(cartEntry.group.id);
+  const { addAddOns, removeAddOns } = useAddOns(cartEntry.group.id);
 
   const { getCompanyLogo } = useCompanies();
 
-  const [members] = useState(cartEntry.group.members);
+  const [members, setMembers] = useState(() =>
+    getInitialMembers(quote, cartEntry),
+  );
 
   const handleUpdate = data => {
     handleSumInsuredChange({ value: data.sumInsured });
     handleDeductibleChange({ value: data.deductible });
+    setMembers(data.member === "all" ? cartEntry.group.members : [data.member]);
   };
 
+  if (quote && members.length === 1) {
+    quote = quotesList.find(
+      addOn => matchQuotes(addOn, quote) && addOn.member === members[0],
+    );
+  }
+
   if (!quote) return null;
+
+  const currentQuotes =
+    members.length > 1
+      ? quotesList.filter(addOn => matchQuotes(addOn, quote))
+      : [quote];
+
+  let totalPremium = getAddOnsTotalPremium(currentQuotes);
 
   const logo = getCompanyLogo(quote.company_alias);
 
   const handleChange = (quote, checked) => {
     if (checked) {
-      addAddOn(quote, members);
+      addAddOns(currentQuotes);
       return;
     }
-    removeAddOn(quote, members);
+    removeAddOns(currentQuotes);
   };
 
-  const checked = isAddOnPresent(quote, members, cartEntry);
+  const checked = currentQuotes.every(quote =>
+    cartEntry.addons.some(addOn => addOn.product.id === quote.product.id),
+  );
 
   return (
     <div
@@ -196,6 +270,7 @@ function AddOnCard({ quotesList = [], cartEntry }) {
                 font-size: 12px;
                 font-weight: 900;
               `}
+              onClick={detailsToggle.on}
             >
               View Details
             </button>
@@ -225,6 +300,7 @@ function AddOnCard({ quotesList = [], cartEntry }) {
         quote={quote}
         onChange={handleChange}
         checked={checked}
+        totalPremium={totalPremium}
       />
 
       <EditModal
@@ -232,7 +308,13 @@ function AddOnCard({ quotesList = [], cartEntry }) {
         onClose={editToggle.off}
         quotes={quotesList}
         onUpdate={handleUpdate}
+        currentQuote={quote}
+        cartEntry={cartEntry}
       />
+
+      {detailsToggle.isOn ? (
+        <AddOnDetails addOn={quote} handleClose={detailsToggle.off} />
+      ) : null}
     </div>
   );
 }

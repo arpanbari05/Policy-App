@@ -315,10 +315,6 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
             font-size: 10px;
             border-top: 1px solid #aaa;
             border-bottom: 1px solid #aaa;
-
-            @media (max-width: 500px) {
-              font-size: 9px !important;
-            }
           `}
         >
           <Members />
@@ -354,17 +350,13 @@ export function Members() {
     <div
       className="d-flex"
       css={`
-        font-size: 12px !important;
-
-        @media (max-width: 500px) {
-          font-size: 9px !important;
-        }
+        font-size: .7rem !important;
       `}
     >
       {members.map(member => (
         <Member member={member} key={member.code} />
       ))}
-      <Info label="Pincode" value={groupLocation?.pincode} />
+      <Info label="Pincode" value={groupLocation?.pincode} onlyDesktop />
     </div>
   );
 }
@@ -376,13 +368,14 @@ function Member({ member, ...props }) {
   );
 }
 
-function Info({ label, value, ...props }) {
+function Info({ label, value, onlyDesktop = false, ...props }) {
   const { colors } = useTheme();
   return (
     <div
       className="d-flex"
       css={`
         padding: 0 0.79em;
+        font-size: .7rem;
         gap: 0.67em;
         &:not(:last-child) {
           border-right: 1px solid ${colors.secondary_shade};
@@ -390,6 +383,10 @@ function Info({ label, value, ...props }) {
 
         @media (max-width: 410px) {
           gap: 0.3em;
+        }
+        @media (max-width: 767px) {
+          display: ${onlyDesktop ? "none" : "flex"} !important;
+          font-size: 9px;
         }
       `}
       {...props}
@@ -441,7 +438,7 @@ export function TraceId() {
   return (
     <div
       css={`
-        font-size: 12px;
+        font-size: .7rem !important;
       `}
     >
       Trace Id: <span>{trace_id}</span>{" "}

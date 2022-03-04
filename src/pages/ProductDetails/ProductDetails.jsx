@@ -76,7 +76,7 @@ const ProductDetails = () => {
 
   const {
     journeyType,
-    data: { tenant },
+    data: { settings, tenant },
   } = useFrontendBoot();
 
   if (!enquiryId) return <PageNotFound />;
@@ -202,8 +202,8 @@ const ProductDetails = () => {
                 cartEntry={cartEntry}
                 // loaderStart={() => console.log(loaderRef?.current?.continuousStart())}
               />
-              <RidersSection />
-              {tenant.alias === "fyntune" ? (
+              <RidersSection isProductDetailsPage={true} />
+              {+settings.addons_visibilty === 1 && journeyType === "health" ? (
                 <AddOnSection cartEntry={cartEntry} />
               ) : null}
             </Col>

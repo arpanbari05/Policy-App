@@ -499,7 +499,7 @@ function NetworkHospitalRow({ networkHospital, ...props }) {
 }
 
 export const DetailsSectionWrap = styled.section`
-  padding: 0 6%;
+  padding: 0;
   margin: auto;
   margin-top: 40px;
   ${tabletAndMobile} {

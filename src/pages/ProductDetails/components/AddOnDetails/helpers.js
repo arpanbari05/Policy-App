@@ -6,6 +6,8 @@ import * as mq from "../../../../utils/mediaQueries";
 import { getProductBrochureAPI } from "../../../SeeDetails/serviceApi";
 import { getAddOnDetails } from "../../serviceApi";
 import DownloadIcon from "../../../../assets/images/download.png";
+import { AiOutlineDownload } from "react-icons/ai";
+import { useTheme } from "../../../../customHooks";
 
 export function useAddOnDetails({ addOn = {} }) {
   const [addOnDetails, setAddonDetails] = useState(null);
@@ -16,7 +18,7 @@ export function useAddOnDetails({ addOn = {} }) {
 
   const fetchAddOnDetails = useCallback(() => {
     setStatus("loading");
-    getAddOnDetails({ productId: addOn.id })
+    getAddOnDetails({ productId: addOn.product.id })
       .then(res => {
         if (res.data) {
           setAddonDetails(res.data);
@@ -29,7 +31,7 @@ export function useAddOnDetails({ addOn = {} }) {
         setStatus("error");
         console.error(e);
       });
-  }, [addOn.id]);
+  }, [addOn.product.id]);
 
   useEffect(() => {
     fetchAddOnDetails();
@@ -54,7 +56,7 @@ export function useFetchDownloads({ addOn, setDownloads }) {
 
   const fetchDownloads = useCallback(() => {
     setStatus("loading");
-    getProductBrochureAPI({ productId: addOn.id })
+    getProductBrochureAPI({ productId: addOn.product.id })
       .then(res => {
         if (res.data) {
           setDownloads(res.data);
@@ -67,7 +69,7 @@ export function useFetchDownloads({ addOn, setDownloads }) {
         setStatus("error");
         console.error(e);
       });
-  }, [addOn.id, setDownloads]);
+  }, [addOn.product.id, setDownloads]);
 
   useEffect(() => {
     fetchDownloads();
@@ -124,6 +126,7 @@ export const ListItem = styled.div`
 `;
 
 export function DownloadButton({ title, url }) {
+  const { colors } = useTheme();
   return (
     <div
       css={`
@@ -160,6 +163,7 @@ export function DownloadButton({ title, url }) {
           `}
         >
           <p
+            className="m-0"
             css={`
               font-size: 18px;
               color: #000;
@@ -171,13 +175,7 @@ export function DownloadButton({ title, url }) {
           >
             {title}
           </p>
-          <img
-            src={DownloadIcon}
-            alt="download"
-            css={`
-              width: 37px;
-            `}
-          />
+          <AiOutlineDownload color={colors.primary_color} size={31} />
         </div>
       </a>
     </div>

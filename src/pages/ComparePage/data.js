@@ -140,5 +140,6 @@ export const DESCRIPTIONS = {
   sum_insured:
     "Cover Amount of the selected plan is the maximum pay out the Insurance company will offer",
   tenure: "Policy term for which you can buy this policy",
-  unique_features: "Benefits which are unique to this policy",
+  unique_features:
+    "Your health cover will have the above unique selling prepositions",
 };

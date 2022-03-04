@@ -11,9 +11,9 @@ import { EmailSent } from "../pages/ComparePage/ComparePage.style";
 import { setEmail as setlEmaiStatus } from "../pages/ComparePage/compare.slice";
 import { useTheme } from "../customHooks/index";
 import ShareButton from "../components/Common/Button/ShareButton";
-import { CircleLoader } from '../components/index';
+import { CircleLoader, Button } from '../components/index';
 
-const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBtn = false }) => {
+const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBtn = false, label }) => {
   console.log(imageSend, emailStatus);
 
   const [show, setshow] = useState(showModal);
@@ -90,7 +90,7 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBt
   const handleShow = () => setshow(true);
   return (
     <>
-      {!hideBtn && <ShareButton onClick={handleShow} />}
+      {!hideBtn && <ShareButton onClick={handleShow} label={label} />}
       <Modal
         show={show}
         onHide={handleClose}
@@ -146,7 +146,7 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBt
             `}
           >
             <ShareOption
-              className="d-flex align-items-center justify-content-between  mb-3"
+              className="d-flex align-items-center justify-content-between  mb-3 overflow-hidden"
               PrimaryColor={PrimaryColor}
             >
               <div className="d-flex align-items-center position-relative w-100">
@@ -179,62 +179,35 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBt
                   <CircleLoader animation="border" />
                 </span> */}
               </div>
+              <Button css={`display: flex; 2px; align-items: center; justify-content: center; min-width: 105px !important; max-width: 105px !important;`} onClick={e => {
+                handleSendViaEmail(e);
+              }} loader={isSending && !emailStatus.message}>
+                <div>
 
-              <button
-                css={`
-                  &:hover {
-                    bacground-image: linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,.1));
-                  }
-                `}
-                className="btn share_btn  position-relative"
-                onClick={e => {
-                  handleSendViaEmail(e);
-                }}
-              >
-                <span
-                  css={`
-                    @media (max-width: 400px) {
-                      display: none;
-                    }
-                  `}
-                >
-                  Share
-                </span>
-                <span
-                  css={`
-                    display: none;
-                    @media (max-width: 400px) {
-                      display: block;
-                    }
-                  `}
-                >
-                  {isSending && !emailStatus.message ? (
-                    <CircleLoader animation="border" />
-                  ) : (
-                    <i className="fas fa-share"></i>
-                  )}
-                </span>
-                <span
-                  css={`
-                    position: absolute;
-                    top: 50%;
-                    right: 20px;
-                    transform: translateY(-50%) !important;
-                    display: ${isSending && !emailStatus.message
-                      ? "block"
-                      : "none"};
-                    @media (max-width: 400px) {
-                      display: none !important;
-                    }
-                  `}
-                >
-                  <CircleLoader animation="border" />
-                </span>
-              </button>
+                  <span css={`
+                          display: flex;
+                          gap: 10px;
+                          align-items: center;
+                          @media (max-width: 400px) {
+                            display: none;
+                          }
+                        `}>
+                    Share
+                    <span css={`
+                        display: none;
+                        @media (max-width: 400px) {
+                          display: block;
+                        }
+                      `}>
+                      <i className="fas fa-share"></i>
+                    </span>
+                  </span>
+                </div>
+              </Button>
             </ShareOption>
 
             <ShareOption
-              className="d-flex mb-3 align-items-center justify-content-between "
+              className="d-flex mb-3 align-items-center justify-content-between overflow-hidden"
               PrimaryColor={PrimaryColor}
             >
               <div className="d-flex align-items-center">
@@ -256,55 +229,57 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBt
                   rel="noreferrer"
                   href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
                 >
-                  <button className="btn share_btn">
-                    <span
-                      css={`
-                        @media (max-width: 400px) {
-                          display: none;
-                        }
-                      `}
-                    >
-                      Share
-                    </span>
-                    <span
-                      css={`
+                  <Button css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}>
+                    <div>
+                      <span css={`
+                          display: flex;
+                          gap: 10px;
+                          align-items: center;
+                          @media (max-width: 400px) {
+                            display: none;
+                          }
+                        `}>
+                        Share
+                        <span css={`
                         display: none;
                         @media (max-width: 400px) {
                           display: block;
                         }
-                      `}
-                    >
-                      <i className="fas fa-share"></i>
-                    </span>{" "}
-                  </button>
+                      `}>
+                          <i className="fas fa-share"></i>
+                        </span>
+                      </span>
+                    </div>
+                  </Button>
                 </a>
               ) : (
-                <button className="btn share_btn px-5">
-                  <span
-                    css={`
-                      @media (max-width: 400px) {
+                <Button css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}>
+                  <div>
+                    <span css={`
+                          display: flex;
+                          gap: 10px;
+                          align-items: center;
+                          @media (max-width: 400px) {
+                            display: none;
+                          }
+                        `}>
+                      Share
+                      <span css={`
                         display: none;
-                      }
-                    `}
-                  >
-                    Share
-                  </span>
-                  <span
-                    css={`
-                      display: none;
-                      @media (max-width: 400px) {
-                        display: block;
-                      }
-                    `}
-                  >
-                    <i className="fas fa-share"></i>
-                  </span>{" "}
-                </button>
+                        @media (max-width: 400px) {
+                          display: block;
+                        }
+                      `}>
+                        <i className="fas fa-share"></i>
+                      </span>
+                    </span>
+                  </div>
+                </Button>
               )}
             </ShareOption>
 
             <ShareOption
-              className="d-flex mb-3 align-items-center justify-content-between "
+              className="d-flex mb-3 align-items-center justify-content-between overflow-hidden"
               PrimaryColor={PrimaryColor}
             >
               <div className="d-flex align-items-center">
@@ -320,27 +295,28 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBt
                 />
               </div>
 
-              <button className="btn share_btn ">
-                <span
-                  css={`
-                    @media (max-width: 400px) {
-                      display: none;
-                    }
-                  `}
-                >
-                  Share
-                </span>
-                <span
-                  css={`
-                    display: none;
-                    @media (max-width: 400px) {
-                      display: block;
-                    }
-                  `}
-                >
-                  <i className="fas fa-share"></i>
-                </span>{" "}
-              </button>
+              <Button css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}>
+                <div>
+                  <span css={`
+                          display: flex;
+                          gap: 5px;
+                          align-items: center;
+                          @media (max-width: 400px) {
+                            display: none;
+                          }
+                        `}>
+                    Share
+                    <span css={`
+                        display: none;
+                        @media (max-width: 400px) {
+                          display: block;
+                        }
+                      `}>
+                      <i className="fas fa-share"></i>
+                    </span>
+                  </span>
+                </div>
+              </Button>
             </ShareOption>
 
             <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>

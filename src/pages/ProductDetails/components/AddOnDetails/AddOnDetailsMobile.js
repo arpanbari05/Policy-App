@@ -8,6 +8,7 @@ import "styled-components/macro";
 import { ErrorMessage, ListItem, useFetchDownloads } from "./helpers";
 import useAddOnDetails from "./helpers";
 import AddOnDetails, { addOnDetailsComponents } from "./AddOnDetails";
+import { useCompanies } from "../../../../customHooks";
 
 function AddOnDetailsMobile({ addOn, handleClose, ...props }) {
   return (
@@ -38,12 +39,16 @@ function AddOnDetailsMobile({ addOn, handleClose, ...props }) {
 
 function Header({ handleClose, addOn, ...props }) {
   const {
-    company: { name: companyName, alias },
+    product: {
+      company: { name: companyName, alias },
+    },
     name: addOnName,
     sum_insured,
     total_premium,
   } = addOn;
-  const { logo } = useSelector(selectCompany(alias));
+  const { getCompanyLogo } = useCompanies();
+
+  const logo = getCompanyLogo(alias);
   return (
     <div
       css={`
