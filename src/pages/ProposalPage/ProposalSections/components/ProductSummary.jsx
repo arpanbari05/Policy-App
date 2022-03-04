@@ -42,7 +42,7 @@ const availCart = cart => {
     feature_options,
     ...groupsCart
   } = cart;
-  
+
   return groupsCart;
 };
 
