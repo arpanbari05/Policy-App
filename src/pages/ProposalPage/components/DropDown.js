@@ -12,7 +12,7 @@ const DropDown = ({
   options = { value: "key" },
   value,
   selectedValues,
-  allValues,
+  allValues = {},
   error,
   asyncOptions,
   dropPlaceholder,
@@ -20,29 +20,27 @@ const DropDown = ({
   checkValidation,
   excludeOptions,
 }) => {
-  // const excludeOptions = {
-  //   when: "Proposer.marital_status",
-  //   is: "single",
-  //   exclude: ["WIFE", "HUSBAND"],
-  // };
-  console.log(asyncOptions, label, "sdagsadg");
+
+
+  // useEffect(() => {
+  //   console.log("sdagsadgns",allValues,options);
+  //   if(allValues["Proposal Details"].gender === "M" ){
+
+  //   }
+  // },[])
 
   const excludeOptionsPage = excludeOptions?.when?.split(".")[0];
   const excludeOptionsVariable = excludeOptions?.when?.split(".")[1];
 
-  // console.log(
-  //   "sdga",
-  //   allValues[`${excludeOptionsPage} Details`]?.[excludeOptionsVariable] ===
-  //     excludeOptions.is,
-  //   excludeOptionsPage,
-  //   excludeOptionsVariable
-  // );
+
   const [selectOption, setSelectOption] = useState({});
   const [dataValue, setDataValue] = useState();
   useEffect(() => {
     if (asyncOptions) {
       setSelectOption(asyncOptions);
-    } else setSelectOption(options);
+    } else {
+      setSelectOption(options);
+    } 
   }, [asyncOptions]);
 
   let placeholder = dropPlaceholder || label || "- Select -";
