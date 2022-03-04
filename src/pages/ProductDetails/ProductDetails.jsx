@@ -202,7 +202,7 @@ const ProductDetails = () => {
                 cartEntry={cartEntry}
                 // loaderStart={() => console.log(loaderRef?.current?.continuousStart())}
               />
-              <RidersSection />
+              <RidersSection isProductDetailsPage={true} />
               {tenant.alias === "fyntune" ? (
                 <AddOnSection cartEntry={cartEntry} />
               ) : null}

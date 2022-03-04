@@ -12,7 +12,7 @@ import { mobile } from "../../../utils/mediaQueries";
 import { amount } from "../../../utils/helper";
 import { DetailsSectionWrap } from "../../../components/ProductDetails/ProductDetailsModal";
 
-export function RidersSection({ loaderStop }) {
+export function RidersSection({ loaderStop, isProductDetailsPage = false }) {
   let { groupCode } = useParams();
 
   groupCode = parseInt(groupCode);
@@ -35,6 +35,7 @@ export function RidersSection({ loaderStop }) {
         groupCode={groupCode}
         defaultSelectedRiders={quote.health_riders}
         onChange={handleRidersChange}
+        isProductDetailsPage={isProductDetailsPage}
       />
     </div>
   );
@@ -46,6 +47,7 @@ export function Riders({
   groupCode,
   onChange,
   defaultSelectedRiders = [],
+  isProductDetailsPage,
   ...props
 }) {
   const {
@@ -53,7 +55,9 @@ export function Riders({
     handleChange,
     riders,
   } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
-  const { colors: {primary_color }} = useTheme();
+  const {
+    colors: { primary_color },
+  } = useTheme();
 
   if (isLoading || isUninitialized)
     return (
@@ -72,7 +76,17 @@ export function Riders({
         <div className="d-flex gap-3 align-items-center">
           <p className="m-0">Something went wrong while getting riders!</p>
           {/* <p>{error.data?.message}</p> */}
-          <button className="py-1 px-3 text-[#fff]" style={{background: primary_color, color: "#fff", borderRadius: 9999 }} onClick={refetch}>Retry</button>
+          <button
+            className="py-1 px-3 text-[#fff]"
+            style={{
+              background: primary_color,
+              color: "#fff",
+              borderRadius: 9999,
+            }}
+            onClick={refetch}
+          >
+            Retry
+          </button>
         </div>
       </DetailsSectionWrap>
     );
@@ -116,6 +130,7 @@ export function Riders({
               onChange={handleChange}
               key={rider.id}
               isFetching={isFetching}
+              isProductDetailsPage={isProductDetailsPage}
             />
           ))}
         </div>
@@ -124,7 +139,13 @@ export function Riders({
   );
 }
 
-export function RiderCardNew({ rider, onChange, isFetching, ...props }) {
+export function RiderCardNew({
+  rider,
+  onChange,
+  isFetching,
+  isProductDetailsPage,
+  ...props
+}) {
   const { isSelected } = rider;
 
   const handleRiderOptionChange = riderOption => {
@@ -147,7 +168,10 @@ export function RiderCardNew({ rider, onChange, isFetching, ...props }) {
     >
       <div>
         <RiderName className="w-100">{rider.name}</RiderName>
-        <RiderDescription rider={rider} />
+        <RiderDescription
+          rider={rider}
+          isProductDetailsPage={isProductDetailsPage}
+        />
         <div
           className="d-flex flex-wrap mt-2"
           css={`
@@ -329,10 +353,10 @@ const RiderName = styled.h1`
   }
 `;
 
-function RiderDescription({ rider, ...props }) {
+function RiderDescription({ rider, isProductDetailsPage, ...props }) {
   const { description } = rider;
 
-  const [showMore, setShowMore] = useState(true);
+  const [showMore, setShowMore] = useState(!isProductDetailsPage);
 
   const { colors } = useTheme();
 
@@ -346,8 +370,8 @@ function RiderDescription({ rider, ...props }) {
   return (
     <RiderDescriptionWrap className="m-0" {...props}>
       {showMore ? description : description.slice(0, 40)}
-      {/*THIS FUNCTIONALITY IS CURRENTLY ON HOLD.*/}
-      {/* {description.length > 40 ? (
+
+      {isProductDetailsPage && description.length > 40 ? (
         <ShowMoreButton
           className="btn p-0 mx-1"
           css={`
@@ -365,7 +389,6 @@ function RiderDescription({ rider, ...props }) {
           {showMore ? "Read less" : "...Read more"}
         </ShowMoreButton>
       ) : null}
- */}{" "}
     </RiderDescriptionWrap>
   );
 }
