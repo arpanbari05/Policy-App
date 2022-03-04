@@ -397,15 +397,15 @@ function CompareProductCards({ compareQuotes = [], ...props }) {
   const [updateCompareQuotes] = getUpdateCompareQuotesMutation(
     parseInt(groupCode),
   );
+  useEffect(() => {
+    updateCompareQuotes(compareQuotes);
+  }, [compareQuoteChange]);
 
   const handleRemove = quote => {
     removeCompareQuote({ quote, groupCode });
     setCompareQuoteChange(!compareQuoteChange);
   };
 
-  useEffect(() => {
-    updateCompareQuotes(compareQuotes);
-  }, [compareQuoteChange]);
   return (
     <div
       className="d-flex"
