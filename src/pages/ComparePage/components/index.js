@@ -51,7 +51,7 @@ export function ShowDifference({ onChange, checked, ...props }) {
             color: #212529;
           `}
         >
-          Show difference
+          Show differ ence
         </span>
       </label>
     </div>
@@ -61,7 +61,7 @@ export function ShowDifference({ onChange, checked, ...props }) {
 export function ProductCard({
   quote,
   onRemove,
-  updateCompareQuotes,
+  updateCompareQuotes = undefined,
   compareQuotes,
   compareQuoteChange,
   setCompareQuoteChange,
@@ -71,14 +71,14 @@ export function ProductCard({
   const { getCompanyLogo } = useCompanies();
 
   useEffect(() => {
-    updateCompareQuotes(compareQuotes);
+    updateCompareQuotes && updateCompareQuotes(compareQuotes);
   }, [compareQuoteChange]);
 
   const logo = getCompanyLogo(quote.company_alias);
 
   const handleCloseClick = () => {
     onRemove && onRemove(quote);
-    setCompareQuoteChange(!compareQuoteChange);
+    setCompareQuoteChange && setCompareQuoteChange(!compareQuoteChange);
   };
 
   return (
