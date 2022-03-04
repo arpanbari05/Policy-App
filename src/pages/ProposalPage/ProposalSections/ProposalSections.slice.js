@@ -34,6 +34,7 @@ const proposal = createSlice({
       prevCart: {},
       isRenewed: false,
     },
+    selectedIcs: []
   },
   reducers: {
     setProposalData: (state, action) => {
@@ -53,6 +54,9 @@ const proposal = createSlice({
       state.proposalData = {};
     },
     setIsLoading: (state, { payload }) => {
+      state.isLoading = payload;
+    },
+    setSelectedIcs: (state, { payload }) => {
       state.isLoading = payload;
     },
     setPayment: (state, { payload }) => {
@@ -94,6 +98,7 @@ export const {
   setActiveIndex,
   setPolicyStatus,
   setPlanDetails,
+  setSelectedIcs,
   noForAllCheckedFalse,
   noForAllCheckedTrue,
   setShowErrorPopup,
@@ -150,6 +155,7 @@ export const getProposalData = () => {
     try {
       const { data } = await getProposal();
       const responseData = {};
+      console.log("sbsfb",data)
       const { activeIndex } = state().proposalPage;
       Object.keys(data.data).forEach(item => {
         if (!(data.data[item] instanceof Array)) {

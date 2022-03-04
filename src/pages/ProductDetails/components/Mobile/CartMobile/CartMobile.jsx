@@ -472,7 +472,11 @@ function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
   const discountAmount = getDiscountAmount(additionalDiscount, cartEntry);
 
   return (
-    <HorizontalCard title={name} value={amount(discountAmount)} {...props} />
+    <HorizontalCard
+      title={name}
+      value={amount(Math.floor(discountAmount))}
+      {...props}
+    />
   );
 }
 

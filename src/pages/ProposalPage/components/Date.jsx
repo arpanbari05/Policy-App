@@ -23,8 +23,14 @@ const DateComp = ({
   readOnly,
   startDate,
   endDate,
-  age=[0,0],
+  age,
 }) => {
+  console.log(
+    "sgsnkjgv",
+    label,
+
+    age,
+  );
   // const [innerValue, setInnerValue] = useState(value);
   // useEffect(() => {
   //   setInnerValue(value);
@@ -38,14 +44,14 @@ const DateComp = ({
 
   const startRef = useRef();
 
-  const onKeyDownHandler = (e) => {
+  const onKeyDownHandler = e => {
     if (e.keyCode === 9 || e.which === 9) {
       startRef.current.setOpen(false);
     }
     onKeyDown();
   };
 
-  console.log(age && age[1] >= 0, age, age[1])
+  console.log(age && age[1] >= 0, age, age[1]);
 
   return (
     <InputContainer error={!isFocused ? error : null}>
@@ -59,24 +65,45 @@ const DateComp = ({
         dateFormat={"dd-MM-yyyy"}
         selected={
           value && value !== "Invalid date" && value !== "value"
-            ? moment(value, "DD-MM-YYYY")?.toDate()
+            ? value.includes("NaN")
+              ? ""
+              : moment(value, "DD-MM-YYYY")?.toDate()
             : ""
         }
         minDate={
-          age && age[1] >= 1 ? new Date(currentYear - (age[1] + 1), currentMonth, (currentDate - 1)) : ""
+          // age && age[1] >= 1
+          //   ? new Date(currentYear - age[1], currentMonth, currentDate)
+          //   : age[1]
+          //     ? new Date(
+          //       currentYear,
+          //       currentMonth - Number(age[1].toString().split(".")[1]),
+          //       currentDate
+          //     )
+          //     : new Date(Date.now())
+          age && age[1] >= 1
+            ? new Date(
+                currentYear - (age[1] + 1),
+                currentMonth,
+                currentDate - 1,
+              )
+            : ""
         }
         maxDate={
           age && age[0] >= 1
             ? new Date(currentYear - age[0], currentMonth, currentDate)
             : age[0]
-              ? new Date(
+            ? new Date(
                 currentYear,
                 currentMonth - Number(age[0].toString().split(".")[1]),
-                currentDate
+                currentDate,
               )
-              : new Date(Date.now())
+            : new Date(Date.now())
         }
-        placeholderText={checkValidation?.required && placeholder ? `${placeholder}*` : placeholder || ""}
+        placeholderText={
+          checkValidation?.required && placeholder
+            ? `${placeholder}*`
+            : placeholder || ""
+        }
         onChange={date => {
           onChange({ target: { value: moment(date).format("DD-MM-YYYY") } });
         }}
@@ -141,7 +168,7 @@ const InputContainer = styled.div`
   }
   & input {
     border: ${props =>
-    props.error ? "solid 1px #c7222a" : "solid 1px #ced4da"};
+      props.error ? "solid 1px #c7222a" : "solid 1px #ced4da"};
     // border-radius: 8px;
     // background: ${props => (props.error ? "#fff6f7" : "transparent")};
     height: 55px;
@@ -159,7 +186,7 @@ const InputContainer = styled.div`
     padding: 0 25px;
     &:focus {
       border-color: ${props =>
-    props.error ? "#c7222a" : "solid 1px  #393939"};
+        props.error ? "#c7222a" : "solid 1px  #393939"};
       color: black;
     }
     @media (max-width: 767px) {

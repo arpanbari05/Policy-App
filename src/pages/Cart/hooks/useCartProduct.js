@@ -24,6 +24,9 @@ export function cartSendData(cartData) {
     addons: addOns,
     discounts,
   } = cartData;
+
+  
+
   const riders = health_riders
     ? health_riders.map(health_rider => ({
         ...health_rider,
