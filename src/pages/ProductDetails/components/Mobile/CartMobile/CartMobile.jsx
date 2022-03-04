@@ -2,13 +2,19 @@ import styled from "styled-components/macro";
 import "styled-components/macro";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { useState } from "react";
-import { amount, figureToWords } from "../../../../../utils/helper";
+import {
+  amount,
+  figureToWords,
+  getDiscountAmount,
+} from "../../../../../utils/helper";
 import {
   useAdditionalDiscount,
   useCart,
   useFrontendBoot,
   useMembers,
   useRider,
+  useRiders,
+  useTenureDiscount,
   useTheme,
   useToggle,
   useUpdateGroupMembers,
@@ -24,6 +30,7 @@ import useUrlQuery from "../../../../../customHooks/useUrlQuery";
 import CartSummaryModal from "../../../../../components/CartSummaryModal";
 import { NewReviewCartPopup } from "../../../../../components/NewReviewCartPopup";
 import ReviewCartPopup from "../../ReviewCardPopup";
+import _ from "lodash";
 
 const plantypes = {
   M: "Multi Individual",
@@ -38,10 +45,6 @@ const CartMobile = ({ groupCode, ...props }) => {
   const history = useHistory();
 
   const { getCartEntry } = useCart();
-
-  const cartEntry = getCartEntry(parseInt(groupCode));
-
-  const { netPremium } = cartEntry;
 
   const reviewCartModalNew = useToggle();
 
@@ -59,12 +62,20 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
+  const enquiryId = url.get("enquiryId");
+
   const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
     useAdditionalDiscount(groupCode);
 
   const additionalDiscounts = getSelectedAdditionalDiscounts();
 
-  const enquiryId = url.get("enquiryId");
+  const cartEntry = getCartEntry(groupCode, {
+    additionalDiscounts,
+  });
+
+  const { netPremium } = cartEntry;
+
+  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
   const handleClick = () => {
     updateCartMutation({ additionalDiscounts }).then(() => {
@@ -78,10 +89,6 @@ const CartMobile = ({ groupCode, ...props }) => {
 
       reviewCartModalNew.on();
     });
-  };
-
-  const handleContinueClick = () => {
-    history.push(getUrlWithEnquirySearch("/proposal"));
   };
 
   return (
@@ -149,7 +156,11 @@ const CartMobile = ({ groupCode, ...props }) => {
               }
             `}
           >
-            {amount(netPremium)}
+            {isTotalPremiumLoading ? (
+              <CircleLoader animation="border" />
+            ) : (
+              amount(netPremium)
+            )}
           </span>
         </section>
         <Button
@@ -253,7 +264,7 @@ const MemberAndEdit = ({ groupCode, ...props }) => {
       {...props}
     >
       <MembersList members={currentGroupMembers} />
-      <EditMembersButton groupCode={groupCode} />
+      {/* <EditMembersButton groupCode={groupCode} /> */}
     </div>
   );
 };
@@ -327,11 +338,20 @@ function EditMembers({ groupCode, ...props }) {}
 
 const PlanCard = ({ groupCode, ...props }) => {
   const { getCartEntry } = useCart();
-  const { journeyType } = useFrontendBoot();
-  const cartEntry = getCartEntry(parseInt(groupCode));
 
-  console.log("The cartEntry here", cartEntry);
+  const { journeyType } = useFrontendBoot();
+
+  const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
+
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
+  const cartEntry = getCartEntry(groupCode, {
+    additionalDiscounts,
+  });
+
   const { plantype, sum_insured, deductible, tenure, netPremium } = cartEntry;
+
+  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
   const displayPolicyTerm = `${
     tenure + " " + (tenure >= 2 ? "Years" : "Year")
@@ -354,7 +374,16 @@ const PlanCard = ({ groupCode, ...props }) => {
         />
       ) : null}
       <TitleValueRenderer title="Policy term" value={displayPolicyTerm} />
-      <TitleValueRenderer title="Premium" value={amount(netPremium)} />
+      <TitleValueRenderer
+        title="Premium"
+        value={
+          isTotalPremiumLoading ? (
+            <CircleLoader animation="border" />
+          ) : (
+            amount(netPremium)
+          )
+        }
+      />
     </PlanCardOuter>
   );
 };
@@ -401,11 +430,14 @@ const TitleValueRenderer = ({ title, value }) => {
 
 const Discounts = ({ groupCode, ...props }) => {
   const { colors } = useTheme();
+
   const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
 
   const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
 
   if (!selectedAdditionalDiscounts.length) return null;
+
+  console.log("the selectedAdditionalDiscounts", selectedAdditionalDiscounts);
 
   return (
     <>
@@ -432,11 +464,18 @@ const Discounts = ({ groupCode, ...props }) => {
 
 function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
   const { name } = additionalDiscount;
-  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
-  const discountAmount = amount(getDiscountAmount(additionalDiscount));
 
-  return <HorizontalCard title={name} value={discountAmount} {...props} />;
+  const { getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const discountAmount = getDiscountAmount(additionalDiscount, cartEntry);
+
+  return (
+    <HorizontalCard title={name} value={amount(discountAmount)} {...props} />
+  );
 }
+
 const Riders = ({ groupCode, ...props }) => {
   const { getSelectedRiders } = useRider(groupCode);
 
@@ -515,3 +554,20 @@ const HorizontalCard = ({ title, value, ...props }) => {
     </div>
   );
 };
+
+function isQueryLoading(query) {
+  return _.some([query.isUninitialized, query.isLoading, query.isFetching]);
+}
+
+function useTotalPremiumLoader(cartEntry) {
+  const { group } = cartEntry;
+  const tenureDiscount = useTenureDiscount(group.id);
+  const riders = useRiders({ quote: cartEntry, groupCode: group.id });
+
+  const isTotalPremiumLoading = _.some([
+    isQueryLoading(tenureDiscount.query),
+    isQueryLoading(riders.query),
+  ]);
+
+  return isTotalPremiumLoading;
+}

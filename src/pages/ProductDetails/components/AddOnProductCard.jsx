@@ -1,9 +1,17 @@
 import { useParams } from "react-router";
 import { mobile, small } from "../../../utils/mediaQueries";
 import styled from "styled-components/macro";
-import { useCart, useFrontendBoot, useTheme } from "../../../customHooks";
+import {
+  useAdditionalDiscount,
+  useCart,
+  useFrontendBoot,
+  useRiders,
+  useTenureDiscount,
+  useTheme,
+} from "../../../customHooks";
 import { amount, numberToDigitWord } from "../../../utils/helper";
 import "styled-components/macro";
+import _ from "lodash";
 
 function ProductCard() {
   const { groupCode } = useParams();
@@ -12,9 +20,13 @@ function ProductCard() {
 
   const { getCartEntry } = useCart();
 
-  const cartEntry = getCartEntry(parseInt(groupCode));
+  const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
 
-  if (!cartEntry) return <p>Empty Cart</p>;
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
+  const cartEntry = getCartEntry(groupCode, {
+    additionalDiscounts,
+  });
 
   const {
     product: {
@@ -24,7 +36,12 @@ function ProductCard() {
     sum_insured,
     icLogoSrc,
     netPremium,
+    tenure,
   } = cartEntry;
+
+  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
+
+  if (!cartEntry) return <p>Empty Cart</p>;
 
   const sumInsured = amount(sum_insured);
 
@@ -415,4 +432,21 @@ function Detail({ label, children }) {
       </div>
     </div>
   );
+}
+
+function isQueryLoading(query) {
+  return _.some([query.isUninitialized, query.isLoading, query.isFetching]);
+}
+
+function useTotalPremiumLoader(cartEntry) {
+  const { group } = cartEntry;
+  const tenureDiscount = useTenureDiscount(group.id);
+  const riders = useRiders({ quote: cartEntry, groupCode: group.id });
+
+  const isTotalPremiumLoading = _.some([
+    isQueryLoading(tenureDiscount.query),
+    isQueryLoading(riders.query),
+  ]);
+
+  return isTotalPremiumLoading;
 }
