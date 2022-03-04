@@ -55,6 +55,8 @@ export function Riders({
     handleChange,
     riders,
   } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
+
+  console.log("The riders", riders);
   const {
     colors: { primary_color },
   } = useTheme();
@@ -124,15 +126,17 @@ export function Riders({
             }
           `}
         >
-          {riders.filter(rider => rider.total_premium > 0).map(rider => (
-            <RiderCardNew
-              rider={rider}
-              onChange={handleChange}
-              key={rider.id}
-              isFetching={isFetching}
-              isProductDetailsPage={isProductDetailsPage}
-            />
-          ))}
+          {riders
+            .filter(rider => rider.total_premium > 0)
+            .map(rider => (
+              <RiderCardNew
+                rider={rider}
+                onChange={handleChange}
+                key={rider.id}
+                isFetching={isFetching}
+                isProductDetailsPage={isProductDetailsPage}
+              />
+            ))}
         </div>
       </FeatureSection>
     </DetailsSectionWrap>
