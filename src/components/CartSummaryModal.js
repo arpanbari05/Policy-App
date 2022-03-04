@@ -11,7 +11,7 @@ import useUrlQuery from "../customHooks/useUrlQuery";
 import { removeQuoteFromCart } from "../pages/Cart/cart.slice";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import CardModal from "./Common/Modal/CardModal";
-import { figureToWords } from "../utils/helper";
+import { calculateTotalPremium, figureToWords } from "../utils/helper";
 
 function CartSummaryModal({
   onClose = () => {},
@@ -333,6 +333,11 @@ function ProductSummaryCard({ cartEntry, ...props }) {
 
   const { logo: logoSrc } = getCompany(alias);
 
+  const netPremium = calculateTotalPremium({
+    total_premium,
+    health_riders: health_riders,
+  });
+
   return (
     <div {...props}>
       <div
@@ -394,7 +399,7 @@ function ProductSummaryCard({ cartEntry, ...props }) {
             <span class="label-add_product">Premium</span>
             <span>
               ₹{" "}
-              {parseInt(total_premium + health_riders).toLocaleString("en-IN")}
+              {parseInt(netPremium).toLocaleString("en-IN")}
             </span>
           </ProductData>
           <ProductData>
@@ -422,7 +427,7 @@ function ProductSummaryCard({ cartEntry, ...props }) {
         </ProductData>
         <ProductData>
           <span class="label-add_product">Premium</span>
-          <span>₹ {parseInt(total_premium).toLocaleString("en-IN")}</span>
+          <span>₹ {parseInt(netPremium).toLocaleString("en-IN")}</span>
         </ProductData>
         <ProductData>
           <span class="label-add_product">Tenure</span>

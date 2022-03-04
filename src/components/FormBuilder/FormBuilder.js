@@ -125,18 +125,7 @@ const FormBuilder = ({
       setValues("");
     }
   }, [noForAll]);
-  // useEffect(() => {
 
-  //   if (formName === "Other Details") {
-  //     if(
-  //       proposalData["Insured Details"][
-  //         values.RelationToProposerCode.toLowerCase()
-  //       ],
-  //     ){
-  //       setValues()
-  //     }
-  //   }
-  // }, [values]);
 
   const [fillBus, setFillBus] = useState([]);
   const { asyncOptions, asyncValues } = useSelector(state => state.formBuilder);
@@ -187,6 +176,8 @@ const FormBuilder = ({
         }),
       );
     }
+
+   
   }, []);
   useEffect(() => {
 

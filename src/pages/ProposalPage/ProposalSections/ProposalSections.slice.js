@@ -146,11 +146,11 @@ export const fetchPdf = options => {
   };
 };
 export const getProposalData = () => {
-  return async dispatch => {
+  return async (dispatch,state) => {
     try {
       const { data } = await getProposal();
       const responseData = {};
-
+      const { activeIndex } = state().proposalPage;
       Object.keys(data.data).forEach(item => {
         if (!(data.data[item] instanceof Array)) {
           responseData[item] = data.data[item];
@@ -158,7 +158,7 @@ export const getProposalData = () => {
       });
       console.log(Object.keys(responseData).length);
       dispatch(setProposalData(responseData));
-      dispatch(
+      activeIndex!==0 && !activeIndex && dispatch(
         setActiveIndex(
           Object.keys(responseData).length >= 4
             ? 3
