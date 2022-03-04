@@ -249,7 +249,11 @@ export function calculateTotalPremium(
     discountedAmount += getDiscountAmount(additionalDiscount, cartEntry);
   }
 
-  return total_premium - discountedAmount;
+  const totalPremiumAfterDiscount = total_premium - discountedAmount;
+
+  const addOnsTotalPremium = getAddOnsTotalPremium(cartEntry.addons);
+
+  return totalPremiumAfterDiscount + addOnsTotalPremium;
 }
 
 export function getAgeList({ min_age, max_age }) {
@@ -467,17 +471,29 @@ export function getAddOnSendData(addOn) {
   return addOnCartItem;
 }
 
-export function isAddOnPresent(addOn, members, cartEntry) {
+export function isAddOnPresent(addOn, cartEntry, { members } = {}) {
   const { addons } = cartEntry;
 
   if (!addons || !addons.length) return false;
 
-  return addons.some(
-    addOnAdded =>
-      matchQuotes(addOnAdded, addOn) && _.isEqual(addOnAdded.members, members),
+  return addons.some(addOnAdded =>
+    matchQuotes(addOnAdded, addOn, { sum_insured: false, deductible: false }) &&
+    members
+      ? _.isEqual(addOnAdded.members, members)
+      : true,
   );
 }
 
 export function getInsuranceType(quote) {
   return quote.product.insurance_type.alias;
+}
+
+export function isTopUpQuote(quote) {
+  const insurance_type = getInsuranceType(quote);
+
+  return insurance_type === "top_up";
+}
+
+export function getAddOnsTotalPremium(addOns = []) {
+  return addOns.reduce((sum, addOn) => (sum += addOn.total_premium), 0);
 }
