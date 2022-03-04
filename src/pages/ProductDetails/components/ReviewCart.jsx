@@ -261,6 +261,7 @@ function DiscountsList({ groupCode, ...props }) {
 
   if (!selectedAdditionalDiscounts.length) return null;
 
+  console.log("The selectedAdditionalDiscounts", selectedAdditionalDiscounts);
   return (
     <CartSection title="Discounts" {...props}>
       {selectedAdditionalDiscounts.map(additionalDiscount => (
@@ -433,7 +434,7 @@ function EditMembers({ onClose }) {
     const handleCloseClick = () => {
       onClose && onClose();
     };
-    
+
     return (
       <Modal
         show
