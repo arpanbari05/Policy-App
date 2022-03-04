@@ -416,6 +416,7 @@ export function useMembers() {
   }
 
   function getLastGroup() {
+    if (!groups) return;
     return groups[groups.length - 1];
   }
 
