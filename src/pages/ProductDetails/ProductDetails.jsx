@@ -203,7 +203,7 @@ const ProductDetails = () => {
                 // loaderStart={() => console.log(loaderRef?.current?.continuousStart())}
               />
               <RidersSection />
-              {+settings.addons_visibilty === 1 ? (
+              {+settings.addons_visibilty === 1 && journeyType === "health" ? (
                 <AddOnSection cartEntry={cartEntry} />
               ) : null}
             </Col>
