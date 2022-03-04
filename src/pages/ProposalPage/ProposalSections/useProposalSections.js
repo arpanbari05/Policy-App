@@ -54,7 +54,7 @@ const useProposalSections = (
       submit === "SUBMIT" &&
       setShow &&
       isValid.some(item => item === undefined || item === false)
-    ) {
+    ){
       setShow(isValid.indexOf(false) + 1);
     }
     if (

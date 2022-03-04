@@ -150,6 +150,8 @@ const checkValue = (str, max) => {
   return str;
 };
 export const checkAllow = (type, event, eventType) => {
+  console.log("sgbsjkk",event)
+
   // if (type === "address" && eventType === "down") {
   //   let key = event.keyCode;
   //   if (

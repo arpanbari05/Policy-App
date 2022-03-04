@@ -13,6 +13,7 @@ import {
   noForAllCheckedTrue,
   setProposalData,
 } from "./ProposalSections.slice";
+import {useGetProposalDataQuery} from "../../../api/api"
 import ProposalCheckBox from "../../../components/Common/ProposalSummary/summaryCheckBox";
 
 import "styled-components/macro";
@@ -40,6 +41,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     setShow,
   );
 
+  console.log("sfgblnfxbjk", values);
+
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -51,12 +54,16 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     canProceedArray: [],
   });
   const { proposalData } = useSelector(state => state.proposalPage);
+  console.log("vfjgjdfgh",proposalData);
+  
   const [mutateValues, setMutateValues] = useState();
   const dispatch = useDispatch();
   const { noForAllChecked } = useSelector(state => state.proposalPage);
-  const proposalDetails = useSelector(state => state.proposalPage.proposalData);
-  const { insuredMembers: membersDataFromGreetingPage, groups } = useFrontendBoot();
-  const fullName = proposalDetails["Proposer Details"]?.name;
+
+  const { insuredMembers: membersDataFromGreetingPage, groups } =
+    useFrontendBoot();
+  const fullName = proposalData["Proposer Details"]?.name;
+
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
     const key2 = Object.keys(noForAll || {});
@@ -65,6 +72,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     //   Object.keys(values?.[key] || {})?.some(
     //     data => values?.[key]?.[data]?.[`is${data}`] === "Y",
     //   );
+
     if (key.length !== key2.length) {
       let noForAll2 = {};
       Object.keys(values || {}).forEach(element => {
@@ -98,8 +106,15 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed.push(item);
         }
-console.log("sbjslkh",values[item])
-
+        console.log("sbjslkh", values[item]);
+        if (
+          Object.keys(values[item]).length &&
+          !Object.keys(values[item]).every(el =>
+            values[item][el] ? values[item][el].isValid : true,
+          )
+        ) {
+          checkCanProceed.push(item);
+        }
       });
 
       if (key2.length < 1) {
@@ -107,7 +122,7 @@ console.log("sbjslkh",values[item])
       }
 
       if (checkCanProceed.length < 1) {
-        setCanProceed({ canProceed: true, canProceedArray: [{}] });
+        setCanProceed({ canProceed: true, canProceedArray: [] });
       } else {
         setCanProceed({
           canProceed: false,
@@ -116,6 +131,7 @@ console.log("sbjslkh",values[item])
       }
     }
   };
+  console.log("sfgbnfjb", canProceed);
   useEffect(() => {
     if (
       name === "Insured Details" &&
@@ -130,10 +146,10 @@ console.log("sbjslkh",values[item])
         let currentYear = new Date().getUTCFullYear();
         let currentMonth = new Date().getMonth();
         let currentDate = new Date().getDate();
-        Object.keys(schema).forEach((memberType) => {
+        Object.keys(schema).forEach(memberType => {
           if (memberType === "self") {
             let tempObj = {};
-            schema["self"].forEach((item) => {
+            schema["self"].forEach(item => {
               if (
                 (proposalData["Proposer Details"][item.name] &&
                   (!proposalData["Insured Details"] ||
@@ -141,7 +157,7 @@ console.log("sbjslkh",values[item])
                 (proposalData["Proposer Details"][item.name] &&
                   proposalData["Insured Details"][memberType][item.name] &&
                   proposalData["Insured Details"][memberType][item.name] !==
-                  proposalData["Proposer Details"][item.name])
+                    proposalData["Proposer Details"][item.name])
               )
                 tempObj = {
                   ...tempObj,
@@ -158,23 +174,28 @@ console.log("sbjslkh",values[item])
             !proposalData["Insured Details"][memberType].dob
           ) {
             let memberAge = membersDataFromGreetingPage.find(
-              (member) => member.type === memberType
+              member => member.type === memberType,
             )?.age;
             let estimatedMemberDOB;
-            if (`${memberAge}`.includes("Month") || `${memberAge}`.includes(".")) {
+            if (
+              `${memberAge}`.includes("Month") ||
+              `${memberAge}`.includes(".")
+            ) {
               let current = new Date();
               current.setMonth(
                 current.getMonth() -
-                (`${memberAge}`.includes(".")
-                  ? parseInt(`${memberAge}`.split(".")[1])
-                  : parseInt(memberAge))
+                  (`${memberAge}`.includes(".")
+                    ? parseInt(`${memberAge}`.split(".")[1])
+                    : parseInt(memberAge)),
               );
 
-              estimatedMemberDOB = `${current.getDate()}-${current.getMonth() + 1
-                }-${current.getUTCFullYear()}`;
+              estimatedMemberDOB = `${current.getDate()}-${
+                current.getMonth() + 1
+              }-${current.getUTCFullYear()}`;
             } else {
-              estimatedMemberDOB = `${currentDate}-${currentMonth + 1}-${currentYear - parseInt(memberAge)
-                }`;
+              estimatedMemberDOB = `${currentDate}-${currentMonth + 1}-${
+                currentYear - parseInt(memberAge)
+              }`;
             }
 
             prefilledValues[memberType] = {
@@ -193,10 +214,11 @@ console.log("sbjslkh",values[item])
                 ...prefilledValues[memberType],
                 insured_marital: "2",
               };
-            else prefilledValues[memberType] = {
-              ...prefilledValues[memberType],
-              insured_marital: "1",
-            };
+            else
+              prefilledValues[memberType] = {
+                ...prefilledValues[memberType],
+                insured_marital: "1",
+              };
           }
         });
         setValues({
@@ -204,25 +226,32 @@ console.log("sbjslkh",values[item])
           ...prefilledValues,
         });
       }
-    }
-    else if (
-      name === "Medical Details" &&
-      !Object.keys(values ? values : {}).length
+    } else if (
+      name === "Medical Details"
+      // &&
+      // !Object.keys(values ? values : {}).length
     ) {
-      let initial = {};
-      Object.keys(schema).forEach(item =>
-        schema[item].forEach(innerItem => {
-          if (innerItem.name)
-            initial = {
-              ...initial,
-              [item]: {
-                ...(initial[item] ? initial[item] : {}),
-                [innerItem.name]: "",
-              },
-            };
-        }),
-      );
-      setValues(initial);
+      console.log("bfvefd", values);
+
+      // let initial = {};
+      // Object.keys(schema).forEach(item =>
+      //   schema[item].forEach(innerItem => {
+      //     if (innerItem.name && !values[item][innerItem.name])
+      //       initial = {
+      //         ...values,
+      //         [item]: {
+      //           ...(initial[item] ? initial[item] : {}),
+      //           [innerItem.name]: {
+      //             [`is${innerItem.name}`]:"N",
+      //             members: {},
+      //             isValid:true,
+      //           },
+      //         },
+      //       };
+      //   }),
+      // );
+      // console.log("sfbkfvn",initial)
+      // setValues(initial);
     }
   }, []);
 
@@ -231,7 +260,7 @@ console.log("sbjslkh",values[item])
   }, [values, noForAll]);
 
   useEffect(() => {
-    console.log("sbnlfkb",values)
+    console.log("sbnlfkb", values);
 
     if (name === "Medical Details") {
       const key = Object.keys(values || {});
@@ -242,15 +271,15 @@ console.log("sbjslkh",values[item])
           if (
             element?.populate &&
             tempObj[keyValue][element.populate.split("/")[0].split("=")[0]] ===
-            element.populate.split("/")[0].split("=")[1] &&
+              element.populate.split("/")[0].split("=")[1] &&
             tempObj[keyValue][element.name] !==
-            proposalData[element.populate.split("/")[1].split(".")[0]][
-            element.populate.split("/")[1].split(".")[1]
-            ]
+              proposalData[element.populate.split("/")[1].split(".")[0]][
+                element.populate.split("/")[1].split(".")[1]
+              ]
           ) {
             tempObj[keyValue][element.name] =
               proposalData[element.populate.split("/")[1].split(".")[0]][
-              element.populate.split("/")[1].split(".")[1]
+                element.populate.split("/")[1].split(".")[1]
               ];
           }
         });
@@ -261,9 +290,7 @@ console.log("sbjslkh",values[item])
     }
   }, [values]);
 
-  useEffect(() => {
-    checkCanProceed();
-  }, []);
+
 
   function formatter(number) {
     if (!isNaN(number)) number = parseInt(number);
@@ -274,18 +301,20 @@ console.log("sbjslkh",values[item])
     return updatedNumber;
   }
 
-  const findGroupMembersCount = (member) => {
+  const findGroupMembersCount = member => {
     groups.forEach(group => {
-      return group.members.includes(member.toLowerCase()) ? group.members.count : 0;
-    })
-  }
+      return group.members.includes(member.toLowerCase())
+        ? group.members.count
+        : 0;
+    });
+  };
 
   return (
     <div>
       {Object.keys(schema).map((item, index) => {
         let result = [];
         if (values && name === "Insured Details") {
-          Object.keys(values[item]).forEach((key) => {
+          Object.keys(values[item]).forEach(key => {
             if (key === "dob" && values[item][key]) {
               let updatedKey = values[item][key].split("-");
               const date = updatedKey[0];
@@ -298,7 +327,7 @@ console.log("sbjslkh",values[item])
             } else if (key !== "title") {
               // result[2] = `${values[item][key]}`;
             }
-          })
+          });
 
           result = result.filter(r => r);
         }
@@ -374,9 +403,9 @@ console.log("sbjslkh",values[item])
                         justify-content: flex-end;
                         color: ${initColor};
                         @media (max-width: 1024px) {
-                        justify-content: flex-start;
-                        /* margin-left: -26px; */
-                      }
+                          justify-content: flex-start;
+                          /* margin-left: -26px; */
+                        }
                       `}
                     >
                       Please select the checkbox if no for all questions item
