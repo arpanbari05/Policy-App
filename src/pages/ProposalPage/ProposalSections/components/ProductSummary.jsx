@@ -20,11 +20,13 @@ import {
   useFrontendBoot,
   useMembers,
   useTheme,
+  useAdditionalDiscount,
 } from "../../../../customHooks";
 import {
   amount,
   getDisplayPremium,
   getTotalPremium,
+  getDiscountAmount,
 } from "../../../../utils/helper";
 import { useGetCartQuery } from "../../../../api/api";
 
@@ -33,31 +35,33 @@ const removeTotalPremium = cart => {
   return y;
 };
 
-const availCart = (cart) => {
+const availCart = cart => {
   let {
     totalPremium,
     discounted_total_premium,
     feature_options,
     ...groupsCart
   } = cart;
-  console.log("ngjis", groupsCart);
+  
   return groupsCart;
 };
 
 const numToString = value => value.toLocaleString("en-IN");
 const ProductSummary = ({ setActive = () => {} }) => {
   const [show, setShow] = useState(false);
+
   const history = useHistory();
+
   const { data: cartData } = useGetCartQuery();
+
   const [collapse, setCollapse] = useState(false);
- console.log("fgvbjadka",cartData)
+
   let planUnavailableGroups = cartData.data.filter(
-    (key) =>key.unavailable_message !== ""
+    key => key.unavailable_message !== "",
   );
   //const { proposerDetails } = useSelector(state => state.greetingPage);
-  const { planDetails } = useSelector(state => state.proposalPage);
 
-  
+  const { planDetails } = useSelector(state => state.proposalPage);
 
   const { groups } = useMembers();
 
@@ -83,8 +87,9 @@ const ProductSummary = ({ setActive = () => {} }) => {
   }, [planDetails]);
 
   const { colors } = useTheme();
-console.log("wefgnisdh",colors)
-const PrimaryColor = colors.primary_color;
+
+  const PrimaryColor = colors.primary_color;
+
   const PrimaryShade = colors.primary_shade;
 
   const content = (
@@ -158,11 +163,14 @@ const PrimaryColor = colors.primary_color;
               padding-bottom: 0px !important;
             `}
           >
-           {cartData?.data?.map((item, index) => (
-              <CartSummary key={index} item={item} index={index} />
+            {cartData?.data?.map((item, index) => (
+              <CartSummary
+                key={index}
+                item={item}
+                index={index}
+                groupCode={item?.group?.id}
+              />
             ))}
-  
-        
           </section>
         </div>
       </div>
@@ -226,7 +234,7 @@ const PrimaryColor = colors.primary_color;
               padding-bottom: 0px !important;
             `}
           >
-             {cartData?.data?.map((item, index) => (
+            {cartData?.data?.map((item, index) => (
               <CartSummary key={index} item={item} index={index} />
             ))}
             {planDetails.isRenewed ? (
@@ -260,7 +268,7 @@ const PrimaryColor = colors.primary_color;
                           >
                             ₹{" "}
                             {parseInt(
-                              planDetails.prevCart.discounted_total_premium
+                              planDetails.prevCart.discounted_total_premium,
                             ).toLocaleString("en-IN")}{" "}
                             / year
                           </span>
@@ -291,17 +299,16 @@ const PrimaryColor = colors.primary_color;
                               }
                             `}
                           >
-                          {getDisplayPremium({
-                            total_premium: revisedNetPremium,
-                            tenure: tenure,
-                          })}
+                            {getDisplayPremium({
+                              total_premium: revisedNetPremium,
+                              tenure: tenure,
+                            })}
                           </span>
                         </button>
                       </div>
                       <div class="col-md-4" style={{ float: "right" }}>
                         <button
                           css={`
-
                             background: ${PrimaryColor};
                             color: #fff;
                             width: 91%;
@@ -315,14 +322,14 @@ const PrimaryColor = colors.primary_color;
                           class=" btn btn_continue_medi_revise_pop next"
                           value="Continue"
                           onClick={() => {
-                            setActive((prev) => prev + 1);
+                            setActive(prev => prev + 1);
                             dispatch(
                               setPlanDetails({
                                 title: "Your Plan Details",
                                 show: false,
                                 prevCart: {},
                                 isRenewed: false,
-                              })
+                              }),
                             );
                           }}
                         >
@@ -356,14 +363,14 @@ const PrimaryColor = colors.primary_color;
                             class=" btn btn-default"
                             value="Continue"
                             onClick={() => {
-                              setActive((prev) => prev + 1);
+                              setActive(prev => prev + 1);
                               dispatch(
                                 setPlanDetails({
                                   title: "Your Plan Details",
                                   show: false,
                                   prevCart: {},
                                   isRenewed: false,
-                                })
+                                }),
                               );
                             }}
                           >
@@ -489,7 +496,7 @@ const PrimaryColor = colors.primary_color;
               show: false,
               prevCart: {},
               isRenewed: false,
-            })
+            }),
           );
         }}
         customClass="customClassModalDialog"
@@ -560,34 +567,30 @@ const ViewPlanDetails = styled.span`
   }
 `;
 
-function CartSummary({ item, index }) {
+function CartSummary({ item, index, groupCode }) {
   const { data: frontendData, journeyType } = useFrontendBoot();
 
   const { planDetails } = useSelector(state => state.proposalPage);
+
   const prevCart = Object.values(removeTotalPremium(planDetails.prevCart));
 
   const [showRiders, setShowRiders] = useState(false);
+
   const [showDiscounts, setShowDiscounts] = useState(false);
+
   const [showAddOns, setShowAddOns] = useState(false);
+
   const { policyTypes } = useSelector(state => state.quotePage);
-  const { isLoading, isUninitialized, data } = useGetAdditionalDiscountsQuery({
-    productId: item?.product?.id,
-    groupCode: item?.group?.id,
-    sum_insured: item?.sum_insured,
-    tenure: item?.tenure,
-  });
+
+  const {
+    query: { isLoading, isUninitialized },
+    getSelectedAdditionalDiscounts,
+  } = useAdditionalDiscount(groupCode);
+
+  const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
 
   if (isLoading || isUninitialized) return <p>Loading cart summary...</p>;
   if (!item) return <></>;
-
-  const additionalDiscounts = data.data;
-
-  const findAdditionalDiscount = discountAlias =>
-    additionalDiscounts.find(
-      additionalDiscount => additionalDiscount.alias === discountAlias,
-    );
-
-  console.log(policyTypes);
 
   return (
     <>
@@ -749,8 +752,9 @@ function CartSummary({ item, index }) {
               css={`
                 padding-left: 10px;
               `}
-              className={`p_cover_medical_pop_span ${planDetails.isRenewed ? "revised-premium" : ""
-                }`}
+              className={`p_cover_medical_pop_span ${
+                planDetails.isRenewed ? "revised-premium" : ""
+              }`}
             >
               ₹{" "}
               {planDetails.isRenewed
@@ -885,7 +889,7 @@ function CartSummary({ item, index }) {
         ) : (
           <></>
         )}
-        {additionalDiscounts && item.discounts.length > 0 && (
+        {selectedAdditionalDiscounts && selectedAdditionalDiscounts.length > 0 && (
           <>
             {" "}
             <hr
@@ -933,43 +937,28 @@ function CartSummary({ item, index }) {
           </>
         )}
 
-        {additionalDiscounts && item.discounts.length && showDiscounts ? (
+        {selectedAdditionalDiscounts &&
+        selectedAdditionalDiscounts?.length &&
+        showDiscounts ? (
           <div
             className="row bg_medical_box_row"
             css={`
               // padding: 0 10px;
             `}
           >
-            {item.discounts.map(discountAlias => (
-              <div
-                css={`
-                  display: flex;
-                  flex-direction: row;
-
-                  justify-content: space-between;
-                `}
-              >
-                <p className="p_cover_medical_pop">
-                  {findAdditionalDiscount(discountAlias).name}
-                </p>
-                <span
-                  className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
-                  css={`
-                    padding-left: 10px;
-                  `}
-                >
-                  - ₹{" "}
-                  {(item.total_premium / 100) *
-                    findAdditionalDiscount(discountAlias).percent}
-                </span>
-              </div>
+            {selectedAdditionalDiscounts.map(singleDiscountObj => (
+              <DiscountDetail
+                title={singleDiscountObj?.name}
+                groupCode={groupCode}
+                additionalDiscount={singleDiscountObj}
+              ></DiscountDetail>
             ))}
           </div>
         ) : (
           <></>
         )}
       </div>
-      {console.log(item.addons, "asdg32")}
+
       {item.addons.length ? (
         <>
           {" "}
@@ -1201,3 +1190,37 @@ function CartSummary({ item, index }) {
     </>
   );
 }
+
+const DiscountDetail = ({
+  groupCode,
+  title,
+  value,
+  additionalDiscount,
+  ...props
+}) => {
+  const { getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const discountAmount = getDiscountAmount(additionalDiscount, cartEntry);
+  return (
+    <div
+      css={`
+        display: flex;
+        flex-direction: row;
+
+        justify-content: space-between;
+      `}
+    >
+      <p className="p_cover_medical_pop">{title}</p>
+      <span
+        className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+        css={`
+          padding-left: 10px;
+        `}
+      >
+        {amount(discountAmount)}
+      </span>
+    </div>
+  );
+};
