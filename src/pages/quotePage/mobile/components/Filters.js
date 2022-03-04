@@ -16,7 +16,8 @@ import { tenures } from "../../data";
 import * as mq from "../../../../utils/mediaQueries";
 import "styled-components/macro";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import { RiCheckboxBlankLine, RiCheckboxFill } from "react-icons/ri";
+import { RiCheckboxBlankCircleLine, RiCheckboxFill } from "react-icons/ri";
+import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 
 const availableMoreFilters = {
   popular_filters: true,
@@ -201,7 +202,7 @@ export function FilterModal({ onClose }) {
         </div>
       </Tab.Container>
       <div
-        className="p-3 position-fixed bottom-0 w-100 d-flex justify-content-between"
+        className="p-2 position-fixed bottom-0 w-100 d-flex justify-content-between"
         css={`
           border-radius: 1em 1em 0 0;
           box-shadow: ${boxShadows.six};
@@ -313,7 +314,7 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
         css={`
           font-size: 0.79rem;
         `}
-        // onClick={handleChange}
+        name={option.display_name}
       >
           <FilterDataSet
             name={option.display_name}
@@ -332,12 +333,12 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
             checked ? (
               <IoRadioButtonOn />
             ) : (
-              <IoRadioButtonOff />
+              <RiCheckboxBlankCircleLine color="#aaa" />
             )
           ) : checked ? (
             <RiCheckboxFill />
           ) : (
-            <RiCheckboxBlankLine />
+            <MdOutlineCheckBoxOutlineBlank fontWeight={"300"} color="#aaa" />
           )}
         </span>
         <input

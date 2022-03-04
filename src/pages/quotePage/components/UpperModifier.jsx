@@ -35,7 +35,8 @@ function UpperModifier() {
             <ShareQuoteModal
               imageSend={sendQuote}
               emailStatus={emailStatus}
-              stage="QUOTE" />
+              stage="QUOTE"
+              label="Share Quote" />
           </div>
         </div>
       </Container>
@@ -55,6 +56,9 @@ export function GroupLinks({ ...props }) {
         font-size: 9px !important;
         ${mq.mobile} {
           overflow: scroll;
+          &::-webkit-scrollbar {
+            display: none;
+          }
         }
       `}
       {...props}
@@ -99,7 +103,7 @@ export function GroupLink({ group, ...props }) {
           display: inline-block;
           background-color: #fff;
           border-radius: 2em;
-          min-width: 11em;
+          min-width: 8em;
           font-weight: 900;
           max-width: 12em;
           white-space: nowrap;
@@ -121,13 +125,13 @@ export function GroupLink({ group, ...props }) {
         <div
           className="position-absolute"
           css={`
-            height: 0.2em;
+            height: 3px;
             width: 90%;
             left: 50%;
             top: 100%;
             transform: translate(-50%, -100%);
             background-color: ${colors.primary_color};
-            border-radius: 0.3em 0.3em 0 0;
+            border-radius: 0.5em 0.5em 0 0;
           `}
         />
       )}

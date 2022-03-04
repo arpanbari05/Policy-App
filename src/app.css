@@ -840,7 +840,7 @@ select {
 
 @media (min-width: 767px) {
   .tooltip-inner {
-    animation: moveToRight 0.5s;
+    animation: moveToRight 0.3s;
   }
 }
 
@@ -855,10 +855,10 @@ select {
 
 @keyframes moveToRight {
   from {
-    transform: translateX(-90px);
+    transform: translateY(90px);
   }
   to {
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
