@@ -67,7 +67,6 @@ const ProposalPage = () => {
     state => state.proposalPage,
   );
   console.log("wvbiwrvbwhxxx",proposalData);
-
   const {
     colors: { primary_color, primary_shade },
   } = useTheme();

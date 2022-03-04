@@ -92,6 +92,8 @@ const Navbar = () => {
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
+  console.log("sfjksvb", prevoiusGroup)
+
   const { emailStatus, imageSend } = useComparePage();
 
   return (
@@ -172,12 +174,12 @@ const Navbar = () => {
                         break;
 
                       case "/proposal":
-                        history.goBack();
-                        // history.replace(
-                        //   getUrlWithEnquirySearch(
-                        //     `/productdetails/${lastGroup.id}`,
-                        //   ),
-                        // );
+                        // history.goBack();
+                        history.replace(
+                          getUrlWithEnquirySearch(
+                            `/productdetails/${prevoiusGroup.id}`,
+                          ),
+                        );
                         break;
 
                       case "/proposal_summary":

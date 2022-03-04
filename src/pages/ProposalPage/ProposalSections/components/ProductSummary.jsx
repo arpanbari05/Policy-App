@@ -9,8 +9,10 @@ import care from "./../../../../assets/images/Care_Health.png";
 import correct from "./../../../../assets/images/correct_icon.png";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import "./ProductSummary.scss";
+import { useHistory, Link } from "react-router-dom";
 import Card from "../../../../components/Card";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import { RiArrowRightSLine } from "react-icons/ri";
 import { BackgroundBorderTitle } from "../../../ProductDetails/components/ReviewCart";
 import { useGetAdditionalDiscountsQuery } from "../../../../api/api";
 import {
@@ -43,13 +45,19 @@ const availCart = (cart) => {
 };
 
 const numToString = value => value.toLocaleString("en-IN");
-const ProductSummary = ({ setActive }) => {
+const ProductSummary = ({ setActive = () => {} }) => {
   const [show, setShow] = useState(false);
+  const history = useHistory();
+  const { data: cartData } = useGetCartQuery();
   const [collapse, setCollapse] = useState(false);
+ console.log("fgvbjadka",cartData)
+  let planUnavailableGroups = cartData.data.filter(
+    (key) =>key.unavailable_message !== ""
+  );
   //const { proposerDetails } = useSelector(state => state.greetingPage);
   const { planDetails } = useSelector(state => state.proposalPage);
 
-  const { data: cartData } = useGetCartQuery();
+  
 
   const { groups } = useMembers();
 
@@ -75,7 +83,8 @@ const ProductSummary = ({ setActive }) => {
   }, [planDetails]);
 
   const { colors } = useTheme();
-
+console.log("wefgnisdh",colors)
+const PrimaryColor = colors.primary_color;
   const PrimaryShade = colors.primary_shade;
 
   const content = (
@@ -149,95 +158,250 @@ const ProductSummary = ({ setActive }) => {
               padding-bottom: 0px !important;
             `}
           >
-            {cartData?.data?.map((item, index) => (
+           {cartData?.data?.map((item, index) => (
               <CartSummary key={index} item={item} index={index} />
             ))}
-            {/* {Object.values(availCart(cart)).map(
-              (item, index) =>
-                Object.keys(item).length && (
-                  <CartSummary key={index} item={item} index={index} />
-                )
-            )} */}
+  
+        
+          </section>
+        </div>
+      </div>
+    </>
+  );
+
+  const contentForModal = (
+    <>
+      {/* <span
+        css={`
+          width: 100px;
+          height: 100px;
+          border-radius: 100%;
+          background: ${PrimaryShade};
+          position: absolute;
+          top: -41px;
+          z-index: -3;
+          left: -38px;
+        `}
+      ></span> */}
+      <span
+        onClick={() => {
+          setCollapse(!collapse);
+        }}
+        css={`
+          display: flex;
+          justify-content: space-between;
+          flex-direction: row;
+        `}
+      >
+        <span
+          css={`
+            display: none;
+            @media (max-width: 767px) {
+              display: block;
+              position: absolute;
+              right: 27px;
+              top: 19px;
+              transform: rotate(${collapse ? "-90deg" : "90deg"});
+            }
+          `}
+        >
+          <i class="fas fa-chevron-right"></i>
+        </span>
+      </span>
+      <div
+        className="row"
+        css={`
+          display: block;
+          @media (max-width: 767px) {
+            display: ${collapse ? "block" : "none"};
+            transition: all 2s linear;
+          }
+        `}
+      >
+        <div className="col-md-12 padding-none">
+          <section
+            className="light"
+            css={`
+              padding: 10px !important;
+              padding-bottom: 0px !important;
+            `}
+          >
+             {cartData?.data?.map((item, index) => (
+              <CartSummary key={index} item={item} index={index} />
+            ))}
             {planDetails.isRenewed ? (
               <>
-                <div class="rider-box_product_pro_medical_box">
-                  <div class="row padding_filter_footer_medical">
-                    <div class="col-md-12">
+                <div class="row padding_filter_footer_medical">
+                  {/* <div class="col-md-12">
                       <p class="font_grey">Total Premium</p>
-                    </div>
-                    <div class="col-md-4">
-                      <button
-                        type="button"
-                        name="Continue"
-                        class="next text-left"
-                        value="Continue"
-                      >
-                        <span class="color_span_total_revise">
-                          Previous Premium
-                        </span>
-                        <br />
-                        <span
-                          class="color_span_total_blck_medical text_decoration_line_through addon_plan_d_inter_1_product_pro_f_mediacl_btn revised-premium"
-                          css={`
-                            @media (max-width: 767px) {
-                              font-size: 16px !important;
-                              font-weight: bold !important;
-                            }
-                          `}
+                    </div> */}
+                  {parseInt(planDetails.prevCart.discounted_total_premium) !==
+                    0 && parseInt(revisedNetPremium) !== 0 ? (
+                    <>
+                      <div class="col-md-4">
+                        <button
+                          type="button"
+                          name="Continue"
+                          class="next text-left btn"
+                          value="Continue"
                         >
-                          ₹ {planDetails.prevCart.totalPremium} / year
-                        </span>
-                      </button>
-                    </div>
-                    <div class="col-md-4">
-                      <button
-                        type="button"
-                        name="Continue"
-                        class="next text-left"
-                        value="Continue"
-                      >
-                        <span class="color_span_total_revise revised-premium-title">
-                          Revised Premium
-                        </span>
-                        <br />
-                        <span
-                          class="color_span_total_blck_medical"
-                          css={`
-                            @media (max-width: 767px) {
-                              font-size: 16px !important;
-                              font-weight: bold !important;
-                            }
-                          `}
+                          <span class="color_span_total_revise">
+                            Previous Premium
+                          </span>
+                          <br />
+                          <span
+                            class="color_span_total_blck_medical text_decoration_line_through addon_plan_d_inter_1_product_pro_f_mediacl_btn revised-premium"
+                            css={`
+                              @media (max-width: 767px) {
+                                font-size: 16px !important;
+                                font-weight: bold !important;
+                              }
+                            `}
+                          >
+                            ₹{" "}
+                            {parseInt(
+                              planDetails.prevCart.discounted_total_premium
+                            ).toLocaleString("en-IN")}{" "}
+                            / year
+                          </span>
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          type="button"
+                          name="Continue"
+                          class="next text-left btn"
+                          value="Continue"
                         >
+                          <span
+                            css={`
+                              color: green;
+                            `}
+                            class="color_span_total_revise revised-premium-title"
+                          >
+                            Revised Premium
+                          </span>
+                          <br />
+                          <span
+                            class="color_span_total_blck_medical"
+                            css={`
+                              @media (max-width: 767px) {
+                                font-size: 16px !important;
+                                font-weight: bold !important;
+                              }
+                            `}
+                          >
                           {getDisplayPremium({
                             total_premium: revisedNetPremium,
                             tenure: tenure,
                           })}
-                        </span>
-                      </button>
-                    </div>
-                    <div class="col-md-4" style={{ float: "right" }}>
-                      <button
-                        type="button"
-                        name="Continue"
-                        class="btn btn_continue_medi_revise_pop next"
-                        value="Continue"
-                        onClick={() => {
-                          setActive(prev => prev + 1);
-                          dispatch(
-                            setPlanDetails({
-                              title: "Your Plan Details",
-                              show: false,
-                              prevCart: {},
-                              isRenewed: false,
-                            }),
-                          );
-                        }}
-                      >
-                        Continue
-                      </button>
-                    </div>
-                  </div>
+                          </span>
+                        </button>
+                      </div>
+                      <div class="col-md-4" style={{ float: "right" }}>
+                        <button
+                          css={`
+
+                            background: ${PrimaryColor};
+                            color: #fff;
+                            width: 91%;
+                            padding: 12px;
+                            margin-top: 1px;
+                            border-radius: 9px;
+                            border: none;
+                          `}
+                          type="button"
+                          name="Continue"
+                          class=" btn btn_continue_medi_revise_pop next"
+                          value="Continue"
+                          onClick={() => {
+                            setActive((prev) => prev + 1);
+                            dispatch(
+                              setPlanDetails({
+                                title: "Your Plan Details",
+                                show: false,
+                                prevCart: {},
+                                isRenewed: false,
+                              })
+                            );
+                          }}
+                        >
+                          Continue
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-100 d-flex align-items-center justify-content-center">
+                        <div class="col-md-4">
+                          <button
+                            css={`
+                              background: ${PrimaryColor};
+                              color: #fff;
+                              width: 91%;
+                              padding: 12px;
+                              margin-top: 1px;
+                              border-radius: 9px;
+                              border: none;
+                              &:hover {
+                                background-image: linear-gradient(
+                                  rgba(0, 0, 0, 0.2),
+                                  rgba(0, 0, 0, 0.2)
+                                );
+                                color: #fff !important;
+                              }
+                            `}
+                            type="button"
+                            name="Continue"
+                            class=" btn btn-default"
+                            value="Continue"
+                            onClick={() => {
+                              setActive((prev) => prev + 1);
+                              dispatch(
+                                setPlanDetails({
+                                  title: "Your Plan Details",
+                                  show: false,
+                                  prevCart: {},
+                                  isRenewed: false,
+                                })
+                              );
+                            }}
+                          >
+                            Close
+                          </button>
+                        </div>
+
+                        <div class="col-md-4">
+                          <Link
+                            to={`/quotes/${planUnavailableGroups[0]}${history.location.search}`}
+                            css={`
+                              background: ${PrimaryColor};
+                              color: #fff;
+                              width: 91%;
+                              padding: 12px;
+                              margin-top: 1px;
+                              border-radius: 9px;
+                              border: none;
+                              text-align: center;
+                              &:hover {
+                                background-image: linear-gradient(
+                                  rgba(0, 0, 0, 0.2),
+                                  rgba(0, 0, 0, 0.2)
+                                );
+                                color: #fff !important;
+                              }
+                            `}
+                            type="button"
+                            name="Continue"
+                            class=" btn btn_continue_medi_revise_pop next"
+                            value="Continue"
+                          >
+                            View Quotes <RiArrowRightSLine size={25} />
+                          </Link>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </>
             ) : (
@@ -248,6 +412,7 @@ const ProductSummary = ({ setActive }) => {
       </div>
     </>
   );
+
   return (
     <>
       <Card
@@ -311,6 +476,25 @@ const ProductSummary = ({ setActive }) => {
         revised={true}
 
       /> */}
+      <ViewPlanDetailModal
+        show={planDetails.show}
+        title={planDetails.title}
+        showButton={false}
+        content={contentForModal}
+        handleClose={() => {
+          setShow(false);
+          dispatch(
+            setPlanDetails({
+              title: "Your Plan Details",
+              show: false,
+              prevCart: {},
+              isRenewed: false,
+            })
+          );
+        }}
+        customClass="customClassModalDialog"
+        revised={true}
+      />
     </>
   );
 };
@@ -599,7 +783,7 @@ function CartSummary({ item, index }) {
           {planDetails.isRenewed ? (
             <>
               <div className="col-md-12"></div>
-              <div className="col-md-12">
+              <div className="col-md-12 d-flex justify-content-between">
                 <p className="p_cover_medical_pop revised-premium-title">
                   Revised Premium:{" "}
                 </p>

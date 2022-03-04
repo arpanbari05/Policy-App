@@ -24,7 +24,7 @@ const TextInput = ({
   readOnly,
   innerMember,
   checkAge,
-  defaultValue
+  defaultValue,
 }) => {
   const dispatch = useDispatch();
   // checkAge = limitagefromdob
@@ -44,8 +44,11 @@ const TextInput = ({
 
   const fullName = value || "";
   const forbiddedSymbols = "`~!@#$%^&*()_-+={[}]|:.;'<>?/\"\\".split("");
-  if (checkValidation?.matches === "pan" || checkValidation?.matches === "name") {
-    forbiddedSymbols.concat([","])
+  if (
+    checkValidation?.matches === "pan" ||
+    checkValidation?.matches === "name"
+  ) {
+    forbiddedSymbols.concat([","]);
   }
   const checkPreviousChar = (value, checkValue) => {
     let check = true;
@@ -72,6 +75,8 @@ const TextInput = ({
         check = false;
       }
     }
+    console.log("sdbvksdjvb", check);
+
     return check;
   };
 
@@ -95,7 +100,11 @@ const TextInput = ({
     <InputContainer>
       <Input
         type={type || "text"}
-        placeholder={checkValidation?.required && placeholder ? `${placeholder}*` : placeholder || ""}
+        placeholder={
+          checkValidation?.required && placeholder
+            ? `${placeholder}*`
+            : placeholder || ""
+        }
         showStarRed={checkValidation?.required}
         required={required || undefined}
         onChange={e => {
@@ -104,21 +113,29 @@ const TextInput = ({
               onChange(e);
               setFallbackValue(e.target.value);
             }
-          } else if (checkValidation?.["matches"] === "name" || checkValidation?.["matches"] === "pan" || checkValidation?.["matches"] === "address" || (checkValidation?.["matches"] && checkValidation?.["matches"].includes("mobile"))) {
+          } else if (
+            checkValidation?.["matches"] === "name" ||
+            checkValidation?.["matches"] === "pan" ||
+            checkValidation?.["matches"] === "address" ||
+            (checkValidation?.["matches"] &&
+              checkValidation?.["matches"].includes("mobile"))
+          ) {
             if (
               checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&
-              checkAllChar(e.target.value, forbiddedSymbols)) {
-                if (checkValidation?.["matches"].includes("mobile")) {
-                  if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0]))) {
-                    onChange(e);
-                    setFallbackValue(e.target.value);
-                  }
-                } else {
+              checkAllChar(e.target.value, forbiddedSymbols)
+            ) {
+              
+              if (checkValidation?.["matches"].includes("mobile")) {
+                if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0]))) {
                   onChange(e);
                   setFallbackValue(e.target.value);
                 }
+              } else {
+                onChange(e);
+                setFallbackValue(e.target.value);
               }
+            }
           } else {
             if (
               notAllowed &&
@@ -144,7 +161,7 @@ const TextInput = ({
         }}
         onInput={onInput}
         onKeyDown={onKeyDown}
-        value={(typeof fallbackValue === "string") ? fallbackValue : value}
+        value={typeof fallbackValue === "string" ? fallbackValue : value}
         onKeyPress={onKeyPress}
         maxLength={maxLength}
         textTransform={textTransform}
@@ -153,11 +170,7 @@ const TextInput = ({
         defaultValue={defaultValue}
       />
       <Label>{label}</Label>
-      {
-        !isFocused && (
-          <p className="formbuilder__error">{error}</p>
-        )
-      }
+      {!isFocused && <p className="formbuilder__error">{error}</p>}
     </InputContainer>
   );
 };
@@ -186,7 +199,10 @@ const Input = styled.input`
    font-size: 1.5rem;
 } */
   /* ::-webkit-input-placeholder {
-  background:${(props) => props.showStarRed?"-webkit-linear-gradient(right, #AAA 0%, #AAA 80%,red 80%, red 100%)":"#939393"} ;
+  background:${props =>
+    props.showStarRed
+      ? "-webkit-linear-gradient(right, #AAA 0%, #AAA 80%,red 80%, red 100%)"
+      : "#939393"} ;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 } */

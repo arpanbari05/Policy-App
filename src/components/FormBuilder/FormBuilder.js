@@ -423,7 +423,6 @@ const FormBuilder = ({
                         checkValidation={item.validate}
                         selectedValues={values}
                         onChange={(e, value) => {
-                         console.log("sgbsjkk",e,value)
                           if (item.parent && item.members) {
                             
                             insertValue(
@@ -487,6 +486,7 @@ const FormBuilder = ({
                         }
                         onInput={e => {
                           if (item.allow) {
+
                             checkAllow(item.allow, e, "input");
                           }
                         }}
