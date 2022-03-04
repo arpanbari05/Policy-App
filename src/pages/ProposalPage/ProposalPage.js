@@ -66,8 +66,7 @@ const ProposalPage = () => {
   const { activeIndex, proposalData } = useSelector(
     state => state.proposalPage,
   );
-  console.log("wvbiwrvbwhxxx",cartEntries.map(cartItem => cartItem.group.id));
-
+  console.log("wvbiwrvbwhxxx",proposalData);
   const {
     colors: { primary_color, primary_shade },
   } = useTheme();

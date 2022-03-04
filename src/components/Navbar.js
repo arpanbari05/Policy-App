@@ -88,9 +88,11 @@ const Navbar = () => {
 
   const { getPreviousGroup, getLastGroup } = useMembers();
 
-  // const lastGroup = getLastGroup();
+  const lastGroup = getLastGroup();
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
+
+  console.log("sfjksvb", prevoiusGroup)
 
   const { emailStatus, imageSend } = useComparePage();
 
@@ -172,12 +174,13 @@ const Navbar = () => {
                         break;
 
                       case "/proposal":
-                        history.goBack();
-                        // history.replace(
-                        //   getUrlWithEnquirySearch(
-                        //     `/productdetails/${lastGroup.id}`,
-                        //   ),
-                        // );
+                        // history.goBack();
+                        console.log("wvdskjvb",lastGroup)
+                        history.replace(
+                          getUrlWithEnquirySearch(
+                            `/productdetails/${lastGroup.id}`,
+                          ),
+                        );
                         break;
 
                       case "/proposal_summary":

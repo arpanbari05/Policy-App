@@ -58,7 +58,7 @@ function contains(target, pattern) {
 
 export const validationIndex = {
   required: (param, values, name) => {
-    console.log(name, param, "heheheh3");
+    console.log(name, param,values, "heheheh3");
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
 
