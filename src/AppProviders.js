@@ -35,6 +35,10 @@ function AppLoaders({ children, ...props }) {
     exact: true,
   });
 
+  const isJOurneyTypeRoute = useRouteMatch({
+    path: "/input/journey-type",
+    exact: true,
+  });
   const isTestRoute = useRouteMatch({ path: "/test" });
 
   const { isLoading, isUninitialized, isError } = useGetFrontendBootQuery(
@@ -62,7 +66,13 @@ function AppLoaders({ children, ...props }) {
     );
 
   if (
-    some([isTestRoute, isRootRoute, isBasicDetailsRoute, isRenewalDetailsRoute])
+    some([
+      isTestRoute,
+      isRootRoute,
+      isBasicDetailsRoute,
+      isRenewalDetailsRoute,
+      isJOurneyTypeRoute,
+    ])
   )
     return children;
 

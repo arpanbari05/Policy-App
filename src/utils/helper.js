@@ -292,7 +292,7 @@ export function getMonthsForYear(years) {
 }
 
 function monthsPercentage(months) {
-  return months / 12;
+  return Number(months / 12).toFixed(1);
 }
 
 export function getRiderCartData(rider) {

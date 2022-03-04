@@ -15,6 +15,7 @@ import RenewalDetailsForm from "./components/RenewalDetailsForm";
 import "styled-components/macro";
 import { Spinner } from "react-bootstrap";
 import MedicalHistoryForm from "./components/MedicalHistoryForm";
+import JourneyTypeForm from "./components/JourneyTypeForm";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -129,6 +130,7 @@ const InputPage = () => {
                 {currentForm === "deductible" && <DeductibleForm />}
                 {currentForm === "medicalHistory" && <MedicalHistoryForm />}
                 {currentForm === "renewal-details" && <RenewalDetailsForm />}
+                {currentForm === "journey-type" && <JourneyTypeForm />}
               </div>
             </Card>
             {(isBasicDetailsRoute || isRenewalDetailsRoute) && (
