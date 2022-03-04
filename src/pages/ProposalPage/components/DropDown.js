@@ -4,6 +4,7 @@ import { setAsyncOptions } from "../../../components/FormBuilder/FormBuilder.sli
 import down from "./../../../assets/images/down-arrow.svg";
 import up from "./../../../assets/images/up-arrow.svg";
 const DropDown = ({
+  name,
   label,
   onChange,
   height = false,
@@ -20,28 +21,35 @@ const DropDown = ({
   checkValidation,
   excludeOptions,
 }) => {
+  const [selectOption, setSelectOption] = useState(asyncOptions || options);
+  const [dataValue, setDataValue] = useState();
 
-
-  // useEffect(() => {
-  //   console.log("sdagsadgns",allValues,options);
-  //   if(allValues["Proposal Details"].gender === "M" ){
-
-  //   }
-  // },[])
+  useEffect(() => {
+    
+    
+  },[])
 
   const excludeOptionsPage = excludeOptions?.when?.split(".")[0];
   const excludeOptionsVariable = excludeOptions?.when?.split(".")[1];
 
 
-  const [selectOption, setSelectOption] = useState({});
-  const [dataValue, setDataValue] = useState();
+ 
   useEffect(() => {
     if (asyncOptions) {
       setSelectOption(asyncOptions);
     } else {
-      setSelectOption(options);
+      if(allValues["Proposer Details"] && name === "nominee_relation" ){
+        if(allValues["Proposer Details"].gender === "M"){
+          let {husband, ...validOptions} = options;
+          setSelectOption(validOptions)
+        }else if(allValues["Proposer Details"].gender === "F"){
+          const {wife, ...validOptions} = options;
+          setSelectOption(validOptions)
+        }
+      }
     } 
   }, [asyncOptions]);
+
 
   let placeholder = dropPlaceholder || label || "- Select -";
   placeholder = checkValidation?.required ? `${placeholder}*` : placeholder;

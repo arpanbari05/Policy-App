@@ -104,7 +104,7 @@ const TextInput = ({
               onChange(e);
               setFallbackValue(e.target.value);
             }
-          } else if (checkValidation?.["matches"] === "name" || checkValidation?.["matches"] === "pan" || checkValidation?.["matches"] === "address" || checkValidation?.["matches"].includes("mobile")) {
+          } else if (checkValidation?.["matches"] === "name" || checkValidation?.["matches"] === "pan" || checkValidation?.["matches"] === "address" || (checkValidation?.["matches"] && checkValidation?.["matches"].includes("mobile"))) {
             if (
               checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&

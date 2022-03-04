@@ -146,13 +146,7 @@ const FormBuilder = ({
 
         tempValues[item.name] = tempValue;
       }
-      // if (item.type === "custom_toggle" && !values[item.name]) {
-      //   tempValues[item.name] = {
-      //     [`is${item.name}`]: "N",
-      //     members: {},
-      //     isValid: true,
-      //   };
-      // }
+      
     });
     updateValues(tempValues);
   }, [schema, errors]);
