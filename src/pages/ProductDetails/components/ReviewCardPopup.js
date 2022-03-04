@@ -8,7 +8,7 @@ import CorrectIcon from "../../../assets/images/correct_icon.png";
 import EditIcon from "../../../assets/images/edit.png";
 import DeleteIcon from "../../../assets/images/remove.png";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
-import { useCompanies, useTheme } from "../../../customHooks";
+import { useCompanies, useFrontendBoot, useTheme } from "../../../customHooks";
 import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
 import {
@@ -229,9 +229,16 @@ function ProductDetailsCardMobile({ cartItem }) {
     total_premium,
     sum_insured,
     health_riders,
+    top_up_riders,
     addons,
   } = cartItem;
+
   const logoSrc = companies[alias].logo;
+
+  const { journeyType } = useFrontendBoot();
+
+  const displayRiders =
+    journeyType === "top_up" ? top_up_riders : health_riders;
 
   return (
     <>
@@ -372,7 +379,7 @@ function ProductDetailsCardMobile({ cartItem }) {
             flex-direction: column;
           `}
         >
-          {health_riders.map(health_rider => (
+          {displayRiders.map(rider => (
             <div
               css={`
                 /* flex: 1; */
@@ -396,7 +403,7 @@ function ProductDetailsCardMobile({ cartItem }) {
                   }
                 `}
               >
-                {health_rider.name}
+                {rider.name}
               </span>
             </div>
           ))}
@@ -558,6 +565,8 @@ function ProductDetailsCard({ cartItem }) {
     colors: { primary_color: PrimaryColor },
   } = useTheme();
 
+  const { journeyType } = useFrontendBoot();
+
   const {
     product: {
       name,
@@ -567,8 +576,13 @@ function ProductDetailsCard({ cartItem }) {
     tenure,
     sum_insured,
     health_riders,
+    top_up_riders,
   } = cartItem;
   const logoSrc = companies[alias].logo;
+
+  const displayRiders =
+    journeyType === "top_up" ? top_up_riders : health_riders;
+
   return (
     <div
       className="rider-box_product_pro"
@@ -704,9 +718,10 @@ function ProductDetailsCard({ cartItem }) {
         </div>
         <div class="rider-box1"></div>
       </div>
-      {health_riders.length > 0 ? <hr /> : null}
+
+      {displayRiders.length > 0 ? <hr /> : null}
       <div class="row w-100 flex-row">
-        {health_riders.map(health_rider => (
+        {displayRiders.map(rider => (
           <div
             css={`
               margin: 2px;
@@ -723,7 +738,7 @@ function ProductDetailsCard({ cartItem }) {
             >
               <AiOutlineCheckCircle />
             </span>{" "}
-            <span class="font_weight_normal">{health_rider.name}</span>
+            <span class="font_weight_normal">{rider.name}</span>
           </div>
         ))}
       </div>
@@ -790,57 +805,10 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
       return data.data.find(cartEntry => cartEntry.group.id === groupId);
     }
   };
-  // console.log({ groups, cart });
-
-  // const findAdditionalDiscount = discountAlias =>
-  //   additionalDiscounts.find(discount => discount.alias === discountAlias);
-
-  // const totalPremium = groups.reduce((totalPremium, groupCode) => {
-  //   console.log(cart, groupCode);
-  //   const groupCart = cart.find(item => item.group.id === groupCode.id);
-
-  //   const discounts = groupCart?.discounts;
-  //   let newTotalPremium = totalPremium + calculateTotalPremium(groupCart);
-  //   if (discounts) {
-  //     discounts.forEach(discountAlias => {
-  //       const discount = findAdditionalDiscount(discountAlias);
-  //       if (discount) {
-  //         newTotalPremium -= newTotalPremium * (discount.percent / 100);
-  //       }
-  //     });
-  //   }
-  //   return newTotalPremium;
-  // }, 0);
-
-  // const reducedAddOns = allAddOns.reduce((reducedAddOns, addOn) => {
-  //   const { id } = addOn.product;
-  //   if (!reducedAddOns[id]) {
-  //     return {
-  //       ...reducedAddOns,
-  //       [id]: [addOn],
-  //     };
-  //   }
-  //   return { ...reducedAddOns, [id]: [...reducedAddOns[id], addOn] };
-  // }, {});
-
-  // function addOnsReducer(reducedAddOns, addOn) {
-  //   const addOnId = addOn.product.id;
-  //   if (!reducedAddOns[addOnId])
-  //     return { ...reducedAddOns, [addOnId]: [addOn] };
-  //   return {
-  //     ...reducedAddOns,
-  //     [addOnId]: [...reducedAddOns[addOnId], addOn],
-  //   };
-  // }
 
   const handleCloseClick = PrimaryColor => {
     onClose();
   };
-
-  // console.log(cartEntry);
-
-  // const { product } = useCartProduct(groupCodes[0]);
-  // const { tenure } = product;
 
   const totalPremium = getTotalPremium(cart);
 
@@ -881,24 +849,8 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
             cartEntry={getCartEntry(groupCode.id)}
             link={propsoalPageLink}
           />
-        ))}{" "}
-        {/* {Object.keys(reducedAddOns).length > 0 && (
-          <>
-            <GradientTitle title="Add-on Coverages (Valid only 1 year)" />
-            <Row
-              css={`
-                padding: 0 15px;
-              `}
-            >
-              {Object.keys(reducedAddOns).map(addOnId => (
-                <AddOnDetailsCard
-                  key={addOnId}
-                  addOn={reducedAddOns[addOnId][0]}
-                />
-              ))}
-            </Row>
-          </>
-        )} */}
+        ))}
+
         <div
           css={`
             display: flex;
@@ -999,16 +951,10 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
 export default ReviewCartPopup;
 
 function ProductCard({ groupCode, onClose, cartEntry, group, link }) {
-  const history = useHistory();
-  // const { product, deleteProduct } = useCartProduct(groupCode);
   const urlQuery = useUrlQuery();
   const product = cartEntry;
 
-  const handleCloseClick = () => {
-    onClose();
-  };
-
-  const enquiryId = urlQuery.get("enquiryId");
+  //console.log("the product", product);
 
   const reducedAddOns = product?.addons?.reduce((reducedAddOns, addon) => {
     const {
