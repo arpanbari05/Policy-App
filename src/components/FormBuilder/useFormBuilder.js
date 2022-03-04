@@ -22,12 +22,7 @@ const useFormBuilder = (
       }
     }
   };
-  useEffect(() => {
-    console.log('svbskjv',values)
-if(formName === "Medical Details" && !Object.keys(values).every(el => values[el].isValid)) {
-  setIsValid(false);
-}
-  },[values])
+  
 
   const updateValues = (multipleValues = {}) => {
     console.log("svnsjdk",multipleValues)

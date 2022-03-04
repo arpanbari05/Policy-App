@@ -390,10 +390,22 @@ function CompareHeaderWrap({ children, ...props }) {
 
 function CompareProductCards({ compareQuotes = [], ...props }) {
   const { groupCode } = useParams();
+  const [compareQuoteChange, setCompareQuoteChange] = useState(false);
 
-  const { removeCompareQuote } = useQuotesCompare();
+  const { removeCompareQuote, getUpdateCompareQuotesMutation } =
+    useQuotesCompare();
+  const [updateCompareQuotes] = getUpdateCompareQuotesMutation(
+    parseInt(groupCode),
+  );
 
-  const handleRemove = quote => removeCompareQuote({ quote, groupCode });
+  const handleRemove = quote => {
+    removeCompareQuote({ quote, groupCode });
+    setCompareQuoteChange(!compareQuoteChange);
+  };
+
+  useEffect(() => {
+    updateCompareQuotes(compareQuotes);
+  }, [compareQuoteChange]);
   return (
     <div
       className="d-flex"

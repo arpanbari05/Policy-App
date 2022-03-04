@@ -86,12 +86,25 @@ function AddPlansModal({ onClose, compareQuotes = [], ...props }) {
       </div>
       <div className="p-3">
         <div
-          className="d-flex align-items-center justify-content-between"
           css={`
-            gap: 1em;
-            & > div {
-              flex: 1 1 calc(33% - 0.5em);
-              height: 8em;
+            gap: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            @media (min-width: 450px) {
+              & > div {
+                flex: 1 1 calc(33% - 0.5em);
+                height: 8em;
+              }
+            }
+
+            @media (max-width: 450px) {
+              gap: 1rem;
+              display: block;
+
+              & > div {
+                margin-bottom: 10px;
+              }
             }
           `}
         >
@@ -108,6 +121,10 @@ function AddPlansModal({ onClose, compareQuotes = [], ...props }) {
               className="rounded d-flex align-items-center justify-content-center"
               css={`
                 background-color: ${colors.secondary_shade};
+
+                @media (max-width: 450px) {
+                  height: 8em;
+                }
               `}
             >
               No plans added
@@ -153,9 +170,11 @@ function Quotes({ compareList, ...props }) {
 
   return (
     <div
-      className="px-3 pb-3"
+      className="pb-3"
       css={`
         gap: 20px;
+        padding-left: 1rem;
+        padding-right: 1rem;
         display: grid;
         grid-template-columns: ${journeyType === "top_up"
           ? "repeat(2, 1fr)"
@@ -164,7 +183,9 @@ function Quotes({ compareList, ...props }) {
         }
 
         ${mq.mobile} {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: 1fr;
+          padding-left: 0;
+          padding-right: 0;
         }
       `}
       {...props}
@@ -300,6 +321,11 @@ function QuoteCard({
           <select
             css={`
               width: 12em;
+
+              @media (max-width: 480px) {
+                width: 9rem;
+                font-size: 13px;
+              }
             `}
             title={product.name}
             value={product.id}
@@ -360,6 +386,9 @@ function QuoteCardOption({ title = "", children, ...props }) {
         css={`
           color: rgb(80, 95, 121);
           font-size: 14px;
+          @media (max-width: 480px) {
+            font-size: 13px;
+          }
         `}
       >
         {title}
@@ -368,6 +397,9 @@ function QuoteCardOption({ title = "", children, ...props }) {
         css={`
           font-weight: 900;
           font-size: 14px;
+          @media (max-width: 480px) {
+            font-size: 13px;
+          }
         `}
       >
         {children}

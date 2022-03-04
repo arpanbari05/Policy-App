@@ -21,37 +21,42 @@ const Toggle = ({
   showMembers,
   customMembers,
   showMembersIf,
-
 }) => {
-
   const { colors } = useTheme();
-  
+
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
-const [customShowMembers,setCustomshowMembers] = useState(false);
-useEffect(() => {
-if(showMembersIf){
+  const [customShowMembers, setCustomshowMembers] = useState(false);
+  useEffect(() => {
+    if (showMembersIf) {
+      setCustomshowMembers(
+        showMembersIf.split("||").some(name => {
+          return values && values[name] && values[name][`is${name}`] === "Y";
+        }),
+      );
+      {
+        console.log("sdvnsv", customShowMembers, label);
+      }
 
-  setCustomshowMembers(showMembersIf.split("||").some(name => {
-    
-    return values && values[name] && values[name][`is${name}`] === "Y" 
-  }))
-  {console.log("sdvnsv",customShowMembers,label)}
-
-  console.log("bjffb",values,customShowMembers,showMembersIf?showMembersIf.split("||"):"");
-}
-},[values])
-const membersToMap = customMembers instanceof Array ? customMembers : members;
+      console.log(
+        "bjffb",
+        values,
+        customShowMembers,
+        showMembersIf ? showMembersIf.split("||") : "",
+      );
+    }
+  }, [values]);
+  const membersToMap = customMembers instanceof Array ? customMembers : members;
 
   const [boolean, setBoolean] = useState("N");
   const [membersStatus, setMembersStatus] = useState({});
-  console.log("hrfgvbrgvf",membersStatus);
+  console.log("hrfgvbrgvf", membersStatus);
   const { mediUnderwritting } = useSelector(
-    (state) => state.proposalPage.proposalData
+    state => state.proposalPage.proposalData,
   );
   // const membersToMap = members;
-  
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (value && notAllowed && value[`is${name}`] === "Y") {
@@ -72,31 +77,30 @@ const membersToMap = customMembers instanceof Array ? customMembers : members;
       setBoolean("N");
       setMembersStatus({});
     }
-    if(customShowMembers && label.toLowerCase().includes("mandatory")){
-      setBoolean("Y")
+    if (customShowMembers && label.toLowerCase().includes("mandatory")) {
+      setBoolean("Y");
     }
-  }, [value,customShowMembers]);
+  }, [value, customShowMembers]);
 
   useEffect(() => {
     let isValid = true;
 
-    if ((boolean === "Y" && showMembers) && !Object.values(membersStatus).includes(true)) {
+    if (
+      boolean === "Y" &&
+      (showMembers !== false || customShowMembers) &&
+      !Object.values(membersStatus).includes(true)
+    ) {
       isValid = false;
     }
-   
 
-if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(true)){
-
-  isValid = false;
-} 
- console.log("fghfhg",showMembers)
+    console.log("fghfhg", showMembers);
     onChange({
       ...value,
       [`is${name}`]: boolean,
       members: membersStatus,
       isValid,
     });
-  }, [boolean,membersStatus,customShowMembers]);
+  }, [boolean, membersStatus, customShowMembers]);
 
   return (
     <>
@@ -135,7 +139,7 @@ if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(
                 <input
                   type="radio"
                   name={`is${name}`}
-                  onChange={(e) => {
+                  onChange={e => {
                     if (notAllowed) {
                       dispatch(setShowPlanNotAvail(true));
                     } else {
@@ -162,7 +166,7 @@ if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(
                   type="radio"
                   name={`is${name}`}
                   value="N"
-                  onChange={(e) => {
+                  onChange={e => {
                     setBoolean(e.target.value);
                     !showMembersIf && setMembersStatus({});
                   }}
@@ -183,7 +187,7 @@ if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(
             </div>
           </div>
         </div>
-        {membersToMap.length && (showMembers !== false) ? (
+        {membersToMap.length && showMembers !== false ? (
           (customShowMembers || boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (
@@ -193,7 +197,7 @@ if((showMembers || customShowMembers) && !Object.values(membersStatus).includes(
                       type="checkbox"
                       name={item}
                       id={"rb1" + name + index + item}
-                      onChange={(e) =>
+                      onChange={e =>
                         setMembersStatus({
                           ...membersStatus,
                           [e.target.name]: e.target.checked,
@@ -256,7 +260,7 @@ const Question = styled.p`
     position: absolute;
     left: -2px;
     top: 2px;
-    background-color: ${(props) => props.SecondaryColor};
+    background-color: ${props => props.SecondaryColor};
     border-radius: 50px;
     @media (max-width: 767px) {
       height: calc(100% - 6px);
