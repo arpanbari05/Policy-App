@@ -49,6 +49,7 @@ function findQuoteBySumInsured(quotes, sum_insured) {
 function ComparePage() {
   const [selectedSectionView, setSelectedSectionView] = useState({});
   const [isSelectedSectionView, setIsSelectedSectionView] = useState(false);
+  const [compareQuoteChange, setCompareQuoteChange] = useState(false);
   const { colors } = useTheme();
   const { data, isLoading, isUninitialized, isError } =
     useGetCompareQuotesQuery();
@@ -66,7 +67,15 @@ function ComparePage() {
 
   const differenceToggle = useToggle(false);
 
-  const { removeCompareQuote, updateCompareQuote } = useQuotesCompare();
+  const {
+    removeCompareQuote,
+    updateCompareQuote,
+    getUpdateCompareQuotesMutation,
+  } = useQuotesCompare();
+
+  const [updateCompareQuotes] = getUpdateCompareQuotesMutation(
+    parseInt(groupCode),
+  );
 
   const handleRemove = quote => removeCompareQuote({ quote, groupCode });
 
@@ -128,8 +137,17 @@ function ComparePage() {
           }
         `}
       >
+        {console.log("QUOTES", quotes)}
         {quotes.map((quote, idx) => (
-          <ProductCard quote={quote} onRemove={handleRemove} key={idx} />
+          <ProductCard
+            quote={quote}
+            onRemove={handleRemove}
+            key={idx}
+            updateCompareQuotes={updateCompareQuotes}
+            compareQuotes={quotes}
+            compareQuoteChange={compareQuoteChange}
+            setCompareQuoteChange={setCompareQuoteChange}
+          />
         ))}
         {_.range(2 - quotes.length).map(idx => (
           <AddPlanCard key={idx}>
