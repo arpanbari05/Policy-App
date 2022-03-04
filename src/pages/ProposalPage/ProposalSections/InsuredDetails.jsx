@@ -179,14 +179,14 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
             let estimatedMemberDOB;
             if (
               `${memberAge}`.includes("Month") ||
-              `${memberAge}`.includes(".")
+              `${`${memberAge}`}`.includes(".")
             ) {
               let current = new Date();
               current.setMonth(
                 current.getMonth() -
-                  (`${memberAge}`.includes(".")
-                    ? parseInt(`${memberAge}`.split(".")[1])
-                    : parseInt(memberAge)),
+                  (`${`${memberAge}`}`.includes(".")
+                    ? parseInt(`${memberAge.toFixed(1)}`.split(".")[1])
+                    : parseInt(memberAge.toFixed(1))),
               );
 
               estimatedMemberDOB = `${current.getDate()}-${
@@ -221,6 +221,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
               };
           }
         });
+    console.log("sbnlfkb", prefilledValues,membersDataFromGreetingPage);
+
         setValues({
           ...values,
           ...prefilledValues,
@@ -260,7 +262,6 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   }, [values, noForAll]);
 
   useEffect(() => {
-    console.log("sbnlfkb", values);
 
     if (name === "Medical Details") {
       const key = Object.keys(values || {});
@@ -314,6 +315,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
       {Object.keys(schema).map((item, index) => {
         let result = [];
         if (values && name === "Insured Details") {
+     
           Object.keys(values[item]).forEach(key => {
             if (key === "dob" && values[item][key]) {
               let updatedKey = values[item][key].split("-");

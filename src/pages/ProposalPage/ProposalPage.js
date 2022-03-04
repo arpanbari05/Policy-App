@@ -19,6 +19,7 @@ import {
   getProposalData,
   setIsLoading,
   submitProposalData,
+  setSelectedIcs
 } from "./ProposalSections/ProposalSections.slice";
 import { setShowErrorPopup } from "./ProposalSections/ProposalSections.slice";
 import ReviewCart from "../ProductDetails/components/ReviewCart";
@@ -49,6 +50,7 @@ const ProposalPage = () => {
   //const currentSchema = starSchema;
   let {cartEntries} = useCart();
   
+  console.log("vndkjvbkj",cartEntries)
   
   const [listOfForms, setListOfForms] = useState([]);
   

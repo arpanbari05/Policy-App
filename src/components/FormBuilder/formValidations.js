@@ -1,21 +1,7 @@
 import moment from "moment";
 import { date } from "yup";
 
-export const acceptedEmailExtensions = [
-  ".com",
-  ".org",
-  ".in",
-  ".outlook",
-  ".co.in",
-  ".rediff",
-  ".net",
-  ".co",
-  ".co.jp",
-  ".info",
-  ".local",
-  ".bike",
-  ".jll.com",
-];
+import { checkAllChar } from "../../utils/formUtils";
 
 const forbiddedSymbols = [
   "!",
@@ -27,6 +13,7 @@ const forbiddedSymbols = [
   "^",
   "*",
   "`",
+  "#",
   "~",
   "_",
   "(",
@@ -46,6 +33,22 @@ const forbiddedSymbols = [
   "|",
 ];
 
+const acceptedEmailExtensions = [
+  ".com",
+  ".org",
+  ".in",
+  ".outlook",
+  ".co.in",
+  ".rediff",
+  ".net",
+  ".co",
+  ".co.jp",
+  ".info",
+  ".local",
+  ".bike",
+  ".jll.com",
+];
+
 function contains(target, pattern) {
   var value = false;
   pattern.forEach(function (letter) {
@@ -58,7 +61,7 @@ function contains(target, pattern) {
 
 export const validationIndex = {
   required: (param, values, name) => {
-    console.log(name, param,values, "heheheh3");
+    console.log(name, param, "heheheh3");
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
 
@@ -125,6 +128,7 @@ export const validationIndex = {
     }
   },
   matches: (param, values, name) => {
+    console.log("wojvnno", param, values, name);
     const { parent, member, variableName } = name;
     let compareTo;
     const checkParam =
@@ -155,10 +159,14 @@ export const validationIndex = {
     if (value) {
       switch (checkParam) {
         case "name":
-
           if (!value.trim().includes(" ")) {
-            console.log("ghbnsfklnl",value)
             return { status: false, message: "Please enter full name." };
+          } else if (
+            (value.trim().match(/\ /g) || []).length > 5 ||
+            value.split("").length > 90
+          ) {
+            console.log("wqefvbhcks",value.split("").length)
+            return { status: false, message: "Please enter valid name." };
           } else break;
         case "mobile":
           if (!/^[6-9]\d{9}$/.test(value)) {
@@ -186,15 +194,17 @@ export const validationIndex = {
           if (!/^[0-9]*$/.test(value) || !(value >= min && value <= max)) {
             return {
               status: false,
-              message: `Please enter a valid value between ${
-                param.split("/")[1]
-              } and ${param.split("/")[2]}`,
+              message: `Please enter 1 to 200 weight`
+              // between ${
+              //   param.split("/")[1]
+              // } and ${param.split("/")[2]}`,
             };
           } else break;
         case "validYear":
           if (typeof value === "string" || value instanceof String) {
             let month = value?.split("-")[0];
             let year = value?.split("-")[1];
+            console.log("qcbib", param, value);
             if (
               !(
                 month > 0 &&
@@ -216,10 +226,195 @@ export const validationIndex = {
               message: "Please enter a valid value",
             };
           } else break;
-        case "date":
+
+        // futures dates
+        case "date/availNextNineMonths": {
+          let currentDate = new Date();
+
+          var maxDate = new Date();
+          maxDate.setMonth(maxDate.getMonth() + 10);
+          let maxDateNum = maxDate.getDate();
+          let maxMonth = maxDate.getMonth();
+          let maxYear = maxDate.getUTCFullYear();
+          console.log("qjhegcjheqf", maxYear);
           if (
+            value.split("-")[2] &&
+            (currentDate.getUTCFullYear() > parseInt(value.split("-")[2]) ||
+              (currentDate.getUTCFullYear() === parseInt(value.split("-")[2]) &&
+                currentDate.getUTCMonth() + 1 > parseInt(value.split("-")[1])))
+          ) {
+            return {
+              status: false,
+              message: "Please enter a future date",
+            };
+          }
+          if (
+            parseInt(value.split("-")[2]) &&
+            (maxYear < parseInt(value.split("-")[2]) ||
+              (maxYear === parseInt(value.split("-")[2]) &&
+                parseInt(value.split("-")[1]) > maxMonth) ||
+              (maxYear === parseInt(value.split("-")[2]) &&
+                parseInt(value.split("-")[1]) === maxMonth &&
+                maxDateNum < parseInt(value.split("-")[0])))
+          ) {
+            return {
+              status: false,
+              message: `Enter valid date`,
+            };
+          } else break;
+        }
+
+        // validation for - dates who having MM-YYYY format
+        case "date-MM-YYYY": {
+          let currentDate = new Date();
+          let input =
+            typeof name === "object"
+              ? values[name.parent][name.member][name.variableName].split("-")
+              : values[name].split("-");
+          let userDOB = name.dob
+            ? name.dob.split("-")
+            : [
+                currentDate.getUTCDate(),
+                currentDate.getUTCMonth() + 1,
+                currentDate.getUTCFullYear() - name.age,
+              ];
+          if (
+            (parseInt(input[1]) === currentDate.getUTCFullYear() &&
+              parseInt(input[0]) > currentDate.getUTCMonth() + 1) ||
+            parseInt(input[1]) > currentDate.getUTCFullYear() ||
+            (parseInt(input[1]) === parseInt(userDOB[2]) &&
+              parseInt(input[0]) < parseInt(userDOB[1])) ||
+            parseInt(input[1]) < parseInt(userDOB[2])
+          ) {
+            return {
+              status: false,
+              message: "Please enter valid date.",
+            };
+          } else break;
+        }
+
+        case "numberOfYears":
+          {
+            let currentDate = new Date();
+            let inputNumberOfYears = parseInt(
+              values[name.parent][name.member][name.variableName]
+            );
+            if (name.dob && name.dob.split("-")[2]) {
+              console.log(
+                "ibndfji",
+                name.dob.split("-")[2],
+                inputNumberOfYears
+              );
+              if (
+                currentDate.getUTCFullYear() - inputNumberOfYears <
+                  parseInt(name.dob.split("-")[2]) ||
+                parseInt(name.dob.split("-")[2]) + inputNumberOfYears >
+                  currentDate.getUTCFullYear()
+              ) {
+                return {
+                  status: false,
+                  message: "Please enter valid number of years.",
+                };
+              }
+            } else if (name.age && name.age < inputNumberOfYears) {
+              return {
+                status: false,
+                message: "Please enter valid number of years.",
+              };
+            } else break;
+          }
+          break;
+        case "onlyYear":
+          let currentDate = new Date();
+          let inputDate = values[name.parent][name.member][name.variableName];
+          if (
+            currentDate.getUTCFullYear() < parseInt(inputDate) ||
+            parseInt(inputDate) < currentDate.getUTCFullYear() - name.age
+          ) {
+            return {
+              status: false,
+              message: "Please enter a valid date.",
+            };
+          } else break;
+
+        case "date":
+          // values[name.parent][name.member][name.variableName]
+          console.log("cjhgvjvhjc", param, values, name);
+          {
+            let currentDate = new Date();
+
+            // if(name.dob && (parseInt(name.dob.split("-")[2])){
+
+            // }
+            let maxDateLimit = [
+              currentDate.getUTCDate(),
+              currentDate.getUTCMonth() + 1,
+              currentDate.getUTCFullYear(),
+            ];
+            let minDateLimit;
+            if (typeof name === "object") {
+              minDateLimit = name.dob
+                ? name.dob.split("-")
+                : [
+                    currentDate.getUTCDate(),
+                    currentDate.getUTCMonth() + 1,
+                    currentDate.getUTCFullYear() - name.age,
+                  ];
+            } else if (values && values.dob) {
+              minDateLimit = values.dob.split("-");
+            } else {
+              minDateLimit = ["00", "00", "0000"];
+            }
+            let inputDate =
+              typeof name === "object"
+                ? `${
+                    values[name.parent][name.member][name.variableName]
+                  }`?.split("-")
+                : values[name].split("-");
+            // console.log("sdvbnsdjvb",minDateLimit);
+            if (
+              (inputDate[2] &&
+                inputDate[0] > maxDateLimit[0] &&
+                parseInt(inputDate[1]) === parseInt(maxDateLimit[1]) &&
+                parseInt(inputDate[2]) === parseInt(maxDateLimit[2])) ||
+              (inputDate[0] < minDateLimit[0] &&
+                parseInt(inputDate[1]) === parseInt(minDateLimit[1]) &&
+                parseInt(inputDate[2]) === parseInt(minDateLimit[2]))
+            ) {
+              return {
+                status: false,
+                message: "Please enter a valid date.",
+              };
+            }
+            if (
+              inputDate[2] &&
+              (parseInt(inputDate[2]) > parseInt(maxDateLimit[2]) ||
+                parseInt(inputDate[2]) < parseInt(minDateLimit[2]))
+            ) {
+              return {
+                status: false,
+                message: "Please enter a valid date.",
+              };
+            }
+            if (
+              (inputDate[0] &&
+                inputDate[1] &&
+                parseInt(inputDate[1]) > parseInt(maxDateLimit[1]) &&
+                parseInt(inputDate[2]) === parseInt(maxDateLimit[2])) ||
+              (parseInt(inputDate[1]) < parseInt(minDateLimit[1]) &&
+                parseInt(inputDate[2]) === parseInt(minDateLimit[2]))
+            ) {
+              return {
+                status: false,
+                message: "Please enter a valid date.",
+              };
+            }
+          }
+
+          if (
+            // inputDate[0] && inputDate[1] && inputDate[2] &&
             !/^(0?[1-9]|[12][0-9]|3[01])[\-](0?[1-9]|1[012])[\-]\d{4}$/.test(
-              value,
+              value
             )
           ) {
             return {
@@ -228,19 +423,20 @@ export const validationIndex = {
             };
           } else break;
         case "email":
-          let passCase = true;
-          for (let index = 0; index < acceptedEmailExtensions.length; index++) {
-            const element = acceptedEmailExtensions[index];
-            if (value.includes(element)) {
-              passCase = false;
-              break;
-            }
+          let pass = false;
+          if (value.includes("@")) {
+            acceptedEmailExtensions.map((ext) => {
+              if (ext === value.slice(value.lastIndexOf("."), value.length)) {
+                pass = true;
+              }
+            });
           }
+          console.log("bgwefhweg", pass);
           if (
             !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-              value,
+              value
             ) ||
-            passCase
+            !pass || value.length > 40
           ) {
             return {
               status: false,
@@ -249,8 +445,8 @@ export const validationIndex = {
           } else break;
         case "pan":
           if (
-            !/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(
-              value.toUpperCase(),
+            !/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(
+              value.toUpperCase()
             )
           ) {
             return {
@@ -268,7 +464,7 @@ export const validationIndex = {
         case "gst":
           if (
             !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
-              value,
+              value
             )
           ) {
             return {
@@ -291,15 +487,10 @@ export const validationIndex = {
             };
           } else break;
         case "address":
-          if (!/\w{3,15}/.test(value)) {
+          if (!/^[A-Za-z0-9\s-./#&,]{3,}$/.test(value)) {
             return {
               status: false,
-              message: "Please enter more than 3 characters",
-            };
-          } else if (contains(value, forbiddedSymbols)) {
-            return {
-              status: false,
-              message: "Please enter a valid address",
+              message: "Enter valid address",
             };
           } else break;
         case "name":
@@ -328,7 +519,7 @@ export const validationIndex = {
     }
   },
   selectAtLeastOne: (param, values, name) => {
-    if (values[name] && values[name] instanceof Object) {
+    if (values[name] || values[name] instanceof Object) {
       if (!values[name].isValid)
         return {
           status: false,

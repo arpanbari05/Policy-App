@@ -213,7 +213,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
-          {console.log("gegegedd", values?.[item]?.[data.name])}
+          {console.log("gegegedd", values)}
           {
             // values?.[item]?.[data.name] instanceof Object &&
             // values?.[item]?.[data.name]?.members &&
@@ -223,9 +223,9 @@ const SummaryTab = ({ title, data, values, index }) => {
             Object.keys(values?.[item]?.[data.name]?.members).length ? (
               Object.keys(values?.[item]?.[data.name]?.members).map(
                 (_item, _i) => {
-                  return (
+                  return values?.[item]?.[data.name]?.members[_item]?(
                     <>
-                      <CustomMedicalTitle>{_item?_item:"No"}</CustomMedicalTitle>
+                      <CustomMedicalTitle>{_item}</CustomMedicalTitle>
                       <InnerWrapper>
                         {schema[i + 1].map(additionalQuestion => (
                           <AdditionalWrapper2 className="text-dark">
@@ -254,7 +254,7 @@ const SummaryTab = ({ title, data, values, index }) => {
                         ))}
                       </InnerWrapper>
                     </>
-                  );
+                  ):(<></>)
                 },
               )
             ) : (

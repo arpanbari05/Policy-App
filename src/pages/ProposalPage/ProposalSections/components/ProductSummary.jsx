@@ -959,8 +959,8 @@ function CartSummary({ item, index }) {
                   `}
                 >
                   - ₹{" "}
-                  {(item.total_premium / 100) *
-                    findAdditionalDiscount(discountAlias).percent}
+                  {Math.floor((item.total_premium / 100) *
+                    findAdditionalDiscount(discountAlias).percent)}
                 </span>
               </div>
             ))}

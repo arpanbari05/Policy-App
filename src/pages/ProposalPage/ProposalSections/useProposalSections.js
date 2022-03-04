@@ -72,19 +72,20 @@ const useProposalSections = (
               name === "Insured Details" &&
               !isValid.some(item => item === undefined || item === false)
             ) {
-              // if (response.failed_bmi.health) {
-              //   dispatch(
-              //     setShowBMI(
-              //       Object.keys(response.failed_bmi.health).join(", "),
-              //     ),
-              //   );
-              // } else {
+              if (response.failed_bmi.health) {
+                dispatch(
+                  setShowBMI(
+                    Object.keys(response.failed_bmi.health).join(", "),
+                  ),
+                );
+              } else {
 
               dispatch(
                 getCart(true, () => {
                   setActive(prev => prev + 1);
                 }),
               );
+              }
             } else if (
               name === "Medical Details" &&
               !isValid.some(item => item === undefined || item === false) &&
