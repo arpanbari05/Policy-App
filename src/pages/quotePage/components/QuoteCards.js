@@ -269,13 +269,14 @@ function QuoteCard({
               setdefaultActiveKey("plan-details");
             }}
             type="button"
-            className="p-0 border-0 border-bottom"
             css={`
               background: none;
               color: ${colors.primary_color};
               border-color: inherit !important;
               line-height: 1;
               font-size: 0.83rem;
+              padding-bottom: 2px;
+              border-bottom: 2px dotted ${colors.primary_color};
             `}
           >
             See Details
@@ -368,7 +369,7 @@ function QuoteCard({
             )}
             {!isDeductibleJourney && (
               <div
-                className="d-flex align-items-center justify-content-center gap-2"
+                className="d-flex align-items-center justify-content-center gap-1"
                 css={`
                   & > * {
                     min-width: 60px;

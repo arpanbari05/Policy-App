@@ -22,7 +22,7 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
       className="d-flex align-items-center rounded position-relative"
       css={`
         background-color: ${colors.secondary_shade};
-        width: 20rem;
+        width: 18rem;
         gap: 0.6rem;
         padding: 10px;
         height: 65px;
@@ -91,7 +91,7 @@ export function CompareTrayAdd(props) {
       className="p-3 rounded"
       css={`
         background-color: #fff;
-        width: 20rem;
+        width: 18rem;
         gap: 0.6rem;
         border: 1px dashed ${colors.border.one};
         text-align: center;

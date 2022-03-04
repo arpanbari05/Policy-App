@@ -124,7 +124,7 @@ function FilterModal({ onClose }) {
           </>
         ))}
       </div>
-      <div className="pt-1 pb-3 px-3 d-flex justify-content-between">
+      <div className="pb-2 px-2 d-flex justify-content-between" css={`padding-top: 7px;`}>
         <button css={`width: 50% !important`} onClick={clearFilters}>
           <span css={`border-bottom: 3px dotted #777;`}>
             Clear filters

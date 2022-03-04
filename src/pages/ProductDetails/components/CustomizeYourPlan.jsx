@@ -110,7 +110,7 @@ export function Riders({
             }
           `}
         >
-          {riders.map(rider => (
+          {riders.filter(rider => rider.total_premium > 0).map(rider => (
             <RiderCardNew
               rider={rider}
               onChange={handleChange}
