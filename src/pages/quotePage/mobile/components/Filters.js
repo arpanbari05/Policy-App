@@ -202,7 +202,7 @@ export function FilterModal({ onClose }) {
         </div>
       </Tab.Container>
       <div
-        className="p-3 position-fixed bottom-0 w-100 d-flex justify-content-between"
+        className="p-2 position-fixed bottom-0 w-100 d-flex justify-content-between"
         css={`
           border-radius: 1em 1em 0 0;
           box-shadow: ${boxShadows.six};
@@ -314,7 +314,7 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
         css={`
           font-size: 0.79rem;
         `}
-        // onClick={handleChange}
+        name={option.display_name}
       >
           <FilterDataSet
             name={option.display_name}
@@ -528,7 +528,7 @@ function FilterDataSet({ name, description, ...props }) {
       placement="right"
       overlay={<Tooltip {...props}>{description}</Tooltip>}
     >
-      <div style={{fontWeight: "bold", fontSize: 13}} className="d-flex align-items-center gap-1">
+      <div style={{fontWeight: "bold", fontSize: 14}} className="d-flex align-items-center gap-1">
         {name} 
       <span>
         <IoMdInformationCircleOutline />

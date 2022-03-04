@@ -116,6 +116,7 @@ const EditMemberFilter = () => {
           className="mx-2"
           css={`
             font-weight: 900;
+            font-size: 15px;
           `}
         >
           Members

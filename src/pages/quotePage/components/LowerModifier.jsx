@@ -29,7 +29,7 @@ const LowerModifier = ({ sortBy = <></> }) => {
         z-index: 99;
       `}
     >
-      <FiltersWrapper className="d-flex p-1">
+      <FiltersWrapper className="d-flex">
         {sortBy}
         <PremiumFilter />
         {journeyType === "health" ? <CoverRangeFilter /> : <DeductibleFilter />}
@@ -49,7 +49,7 @@ export default LowerModifier;
 
 const FiltersWrapper = styled.div`
   border: solid 1px #cacaca;
-  padding: 5px;
+  padding: 3px;
   border-radius: 3px;
   background-color: #fff;
 `;
