@@ -88,7 +88,7 @@ const Navbar = () => {
 
   const { getPreviousGroup, getLastGroup } = useMembers();
 
-  // const lastGroup = getLastGroup();
+  const lastGroup = getLastGroup();
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
@@ -175,9 +175,10 @@ const Navbar = () => {
 
                       case "/proposal":
                         // history.goBack();
+                        console.log("wvdskjvb",lastGroup)
                         history.replace(
                           getUrlWithEnquirySearch(
-                            `/productdetails/${prevoiusGroup.id}`,
+                            `/productdetails/${lastGroup.id}`,
                           ),
                         );
                         break;
