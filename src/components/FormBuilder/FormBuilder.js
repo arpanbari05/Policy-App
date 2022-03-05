@@ -100,6 +100,7 @@ const FormBuilder = ({
           let nameWithoutNominee = name.slice(name.indexOf("_")+1,name.length);
           if(nameWithoutNominee === "contact") nameWithoutNominee = "mobile";
           if(nameWithoutNominee.includes("address")) nameWithoutNominee = Object.keys(dataForAutopopulate).find(name => name.includes(nameWithoutNominee))
+          if(name.includes("pincode")) nameWithoutNominee = Object.keys(dataForAutopopulate).find(name => name.includes("pincode"))
           if (dataForAutopopulate[nameWithoutNominee]) acc[name] = dataForAutopopulate[nameWithoutNominee];
         });
      
@@ -423,11 +424,13 @@ const FormBuilder = ({
                       key={index}
                       width={item.width}
                     >
+  
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}
                         selectedValues={values}
                         onChange={(e, value) => {
+                          
                           if (item.parent && item.members) {
                             
                             insertValue(

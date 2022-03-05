@@ -26,7 +26,6 @@ const useFormBuilder = (
   
 
   const updateValues = (multipleValues = {}) => {
-    console.log("svnsjdk",multipleValues)
 
     setValues({ ...values, ...multipleValues });
     fetchValues({ ...values, ...multipleValues });

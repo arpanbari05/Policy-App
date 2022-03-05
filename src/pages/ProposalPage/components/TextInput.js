@@ -125,7 +125,6 @@ const TextInput = ({
               checkPreviousChar(e.target.value, ".") &&
               checkAllChar(e.target.value, forbiddedSymbols)
             ) {
-              
               if (checkValidation?.["matches"].includes("mobile")) {
                 if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0]))) {
                   onChange(e);
@@ -150,7 +149,9 @@ const TextInput = ({
             } else if (textTransform === "uppercase") {
               e.target.value = e.target.value.toLocaleUpperCase();
             }
-            onChange(e);
+            if (!checkValidation?.["matches"] === "address") {
+              onChange(e);
+            }
             setFallbackValue(e.target.value);
           }
         }}

@@ -28,6 +28,7 @@ const useProposalSections = (
   const [submit, setSubmit] = useState(false);
   const [finalSubmit, setFinalSubmit] = useState(false);
   const cart = useSelector(state => state.cart);
+  const {activeIndex} = useSelector(({proposalPage}) => proposalPage)
   const [previousCart] = useState(cart);
 
   useEffect(() => {
@@ -42,13 +43,15 @@ const useProposalSections = (
       }
     } else if (isValid && submit) {
       dispatch(
-        saveProposalData({ [name]: values }, () => setActive(prev => prev + 1)),
+        saveProposalData({ [name]: values }, () => setActive(prev => typeof activeIndex === 'string'? prev + 1:activeIndex)),
       );
 
       setSubmit(false);
     }
     setFinalSubmit(false);
   }, [isValid, submit, finalSubmit, customValid]);
+
+
   useEffect(() => {
     if (
       submit === "SUBMIT" &&

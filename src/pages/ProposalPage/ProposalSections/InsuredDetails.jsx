@@ -410,8 +410,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                     </div>
                     <span>No For All Questions </span>{" "}
                   </div>
-                  {/* {console.log("dbfjkv",values[item]?Object.keys(values[item]).some(key => values[item][key][`is${key}`]):"")} */}
-                  {!yesSelected[item] && (
+                  {console.log("dbfjkv",noForAll,yesSelected)}
+                  {(!noForAll[item] && !yesSelected[item]) && (
                     <p
                       css={`
                         display: flex;

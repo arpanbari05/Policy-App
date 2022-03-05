@@ -182,7 +182,18 @@ console.log("snldvb",proposalData,isLoading)
               />
             )}
           </div>
-          {show && (
+         
+          <div class="quotes_compare_buttons_div">
+            <div
+              className="row btn_p_summary_pay_now d-flex align-items-center"
+              onClick={() => checked && onClick()}
+              // style={{ margin: "0 25px" }}
+              css={`
+                background: ${PrimaryColor} !important;
+              `}
+            >
+              <div class="col-md-4 position-relative">
+              {true && (
             <MultipleWrapper>
               <PayList>
                 {policyStatus &&
@@ -205,16 +216,6 @@ console.log("snldvb",proposalData,isLoading)
               </PayList>
             </MultipleWrapper>
           )}
-          <div class="quotes_compare_buttons_div">
-            <div
-              className="row btn_p_summary_pay_now d-flex align-items-center"
-              onClick={() => checked && onClick()}
-              // style={{ margin: "0 25px" }}
-              css={`
-                background: ${PrimaryColor} !important;
-              `}
-            >
-              <div class="col-md-4">
                 <button
                   css={`
                     background: ${PrimaryColor} !important;
@@ -490,9 +491,9 @@ const MultipleWrapper = styled.div`
   height: 300px;
   position: absolute;
   background-color: #fff;
-  right: 60px;
+  left:-19px;
   border-radius: 8px;
-  bottom: 100%;
+  bottom: 150%;
   overflow-y: auto;
   overflow-x: hidden;
   box-shadow: 0 6px 12px #d4d8e4b5 !important;
