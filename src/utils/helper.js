@@ -1,4 +1,5 @@
 import _, { range } from "lodash";
+import { sendEmailAction } from "../pages/ComparePage/compare.slice";
 
 export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
