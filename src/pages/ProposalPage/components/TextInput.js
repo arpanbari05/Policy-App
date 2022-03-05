@@ -39,7 +39,7 @@ const TextInput = ({
       );
 
   const [isFocused, setIsFocused] = useState(false);
-  const [fallbackValue, setFallbackValue] = useState("");
+  const [fallbackValue, setFallbackValue] = useState();
   console.log(allValues, age, innerMember, "test");
 
   const fullName = value || "";
