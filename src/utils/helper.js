@@ -1,4 +1,5 @@
 import _, { range } from "lodash";
+import { sendEmailAction } from "../pages/ComparePage/compare.slice";
 
 export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
@@ -395,7 +396,13 @@ export function capitalize(sentence = "") {
 }
 
 export function figureToWords(amount) {
-  return `${parseInt(amount) / 100000} Lakhs`;
+  const countInLakhs = parseInt(amount) / 100000;
+  const countInCrores = countInLakhs / 100;
+  if (countInLakhs < 100) {
+    return countInLakhs > 1 ? `${countInLakhs} Lakhs` : `${countInLakhs} Lakhs`;
+  } else {
+    return countInCrores > 1 ? `${countInCrores} Crores` : `${countInCrores} Crore`;
+  }
 }
 
 export function matchQuotes(

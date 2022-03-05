@@ -1129,7 +1129,7 @@ function FeatureValue({
 
   if (isError) return <div>Error!</div>;
 
-  if (!feature) return null;
+  if (!feature) return <div />;
 
   return (
     <div {...props}>

@@ -55,7 +55,6 @@ export function Riders({
     riders,
   } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
 
-  console.log("The riders", riders);
   const {
     colors: { primary_color },
   } = useTheme();
@@ -104,6 +103,21 @@ export function Riders({
       "You can add 'Riders' to you basic health insurance plan for additional benefits. Currently no riders are available for this base plan.";
   }
 
+  const careRidersConditionChecker = (quote, riderAlias) => {
+    const isDisabled =
+      quote.company_alias === "care_health" &&
+      riderAlias === "REDPEDWAITPRD" &&
+      !riders.find(singleRider => singleRider?.alias === "CAREWITHNCB")
+        ?.isSelected;
+    const showPEDRiderWarning =
+      quote?.product?.name === "Care" && riderAlias === "REDPEDWAITPRD";
+
+    return {
+      isDisabled,
+      showPEDRiderWarning,
+    };
+  };
+
   return (
     <DetailsSectionWrap className="mt-3">
       <FeatureSection
@@ -134,6 +148,13 @@ export function Riders({
                 key={rider.id}
                 isFetching={isFetching}
                 isProductDetailsPage={isProductDetailsPage}
+                isDisabled={
+                  careRidersConditionChecker(quote, rider?.alias)?.isDisabled
+                }
+                showPEDRiderWarning={
+                  careRidersConditionChecker(quote, rider?.alias)
+                    ?.showPEDRiderWarning
+                }
               />
             ))}
         </div>
@@ -147,9 +168,13 @@ export function RiderCardNew({
   onChange,
   isFetching,
   isProductDetailsPage,
+  isDisabled,
+  showPEDRiderWarning,
   ...props
 }) {
   const { isSelected } = rider;
+
+  const { colors } = useTheme();
 
   const handleRiderOptionChange = riderOption => {
     onChange &&
@@ -164,38 +189,63 @@ export function RiderCardNew({
   };
 
   return (
-    <RiderCardWrap
-      className="d-flex align-items-center justify-content-between px-3 py-3"
-      {...props}
-      isSelected={isSelected}
-    >
-      <div>
-        <RiderName className="w-100">{rider.name}</RiderName>
-        <RiderDescription
-          rider={rider}
-          isProductDetailsPage={isProductDetailsPage}
-        />
-        <div
-          className="d-flex flex-wrap mt-2"
-          css={`
-            gap: 0.6em;
-          `}
-        >
-          {rider.options &&
-            Object.keys(rider.options).map(riderOptionKey => (
-              <RiderOption
-                option={{
-                  options: rider.options[riderOptionKey],
-                  key: riderOptionKey,
-                  selected: rider.options_selected?.[riderOptionKey],
-                }}
-                onChange={handleRiderOptionChange}
-                key={riderOptionKey}
-              />
-            ))}
+    <RiderCardWrap {...props} isSelected={isSelected}>
+      {showPEDRiderWarning && (
+        <div className="d-flex align-items-center justify-content-end">
+          <span
+            css={`
+              box-sizing: border-box;
+              padding: 0 15px;
+              border-radius: 0 0 0 15px;
+              background: ${isDisabled ? "grey" : colors.secondary_color};
+              color: white;
+              font-size: 12px;
+              ${tabletAndMobile} {
+                font-size: 10px;
+              }
+            `}
+          >
+            Can only be availed with No claim bonus
+          </span>
         </div>
+      )}
+      <div
+        className={`d-flex align-items-center justify-content-between px-3 py-3 ${
+          !showPEDRiderWarning && "h-100"
+        }`}
+      >
+        <div>
+          <RiderName className="w-100">{rider.name}</RiderName>
+          <RiderDescription
+            rider={rider}
+            isProductDetailsPage={isProductDetailsPage}
+          />
+          <div
+            className="d-flex flex-wrap mt-2"
+            css={`
+              gap: 0.6em;
+            `}
+          >
+            {rider.options &&
+              Object.keys(rider.options).map(riderOptionKey => (
+                <RiderOption
+                  option={{
+                    options: rider.options[riderOptionKey],
+                    key: riderOptionKey,
+                    selected: rider.options_selected?.[riderOptionKey],
+                  }}
+                  onChange={handleRiderOptionChange}
+                  key={riderOptionKey}
+                />
+              ))}
+          </div>
+        </div>
+        <RiderPremium
+          rider={rider}
+          onChange={isDisabled ? () => {} : onChange}
+          isLoading={isFetching}
+        />
       </div>
-      <RiderPremium rider={rider} onChange={onChange} isLoading={isFetching} />
     </RiderCardWrap>
   );
 }
@@ -411,7 +461,7 @@ const ShowMoreButton = styled.button`
 `;
 
 export const DetailsSectionWrap = styled.section`
-  padding: 0 6%;
+  padding: 0;
   margin: auto;
   margin-top: 40px;
   ${tabletAndMobile} {

@@ -7,7 +7,7 @@ const ContinueBtn = ({ onClick }) => {
   const { isLoading } = useSelector(state => state.proposalPage);
   return (
     <StyledButton
-      onClick={onClick}
+      onClick={isLoading ? () => {} : onClick}
       className="btn btn_start_proposal"
       noIcon
       styledCss={`

@@ -19,7 +19,7 @@ import {
   getProposalData,
   setIsLoading,
   submitProposalData,
-  setSelectedIcs
+  setSelectedIcs,
 } from "./ProposalSections/ProposalSections.slice";
 import { setShowErrorPopup } from "./ProposalSections/ProposalSections.slice";
 import ReviewCart from "../ProductDetails/components/ReviewCart";
@@ -61,8 +61,6 @@ const ProposalPage = () => {
   const [listOfForms, setListOfForms] = useState([]);
 
   // const membersGroup = Object.keys(cart).filter(key => parseInt(key) !== NaN);
-
-
 
   useEffect(() => {
     if (currentSchema instanceof Object)
@@ -358,7 +356,7 @@ const ProposalPage = () => {
     );
   };
   return (
-    <Page noNavbarForMobile={true}>
+    <Page noNavbarForMobile={true} id="proposalPage">
       <MobileHeader
         css={`
           background: ${PrimaryColor};
