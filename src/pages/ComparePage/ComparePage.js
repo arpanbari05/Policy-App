@@ -18,7 +18,11 @@ import {
 import { useHistory, useParams } from "react-router-dom";
 import "styled-components/macro";
 import { BiPrinter } from "react-icons/bi";
-import { getFeatureForQuotes, numToLakh } from "../../utils/helper";
+import {
+  getFeatureForQuotes,
+  getQuoteKey,
+  numToLakh,
+} from "../../utils/helper";
 import { useGetCompareFeaturesQuery } from "../../api/api";
 import {
   BASIC_FEATURES,
@@ -821,23 +825,51 @@ function KeyBenefitsSection({ compareQuotes = [], select, ...props }) {
   );
 }
 
+function getQuoteFeatureValue(quote, featuresOfQuotes, featureTitle) {
+  const quoteKey = getQuoteKey(quote);
+
+  const featureOfQuote = featuresOfQuotes[quoteKey];
+
+  if (!featureOfQuote) return false;
+
+  const feature = featureOfQuote[featureTitle];
+
+  if (!feature) return false;
+
+  return feature.feature_value;
+}
+
+function isSameFeatureValues(quotes = [], featuresOfQuotes = {}, featureTitle) {
+  const featureValues = [];
+
+  for (let quote of quotes) {
+    const featureValue = getQuoteFeatureValue(
+      quote,
+      featuresOfQuotes,
+      featureTitle,
+    );
+    if (!featureValue) featureValues.push("");
+    else featureValues.push(featureValue);
+  }
+
+  const isAllValuesSame = featureValues.every(val => val === featureValues[0]);
+
+  return isAllValuesSame;
+}
+
 function BasicFeaturesSection({
   compareQuotes = [],
   showDifference = false,
   select,
   ...props
 }) {
-  const { features, onLoad } = useFeatureLoadHandler();
+  const { features: featuresOfQuotes, onLoad } = useFeatureLoadHandler();
   return (
     <CompareSection title="Basic Features" {...props}>
       {BASIC_FEATURES.map(feature => {
         if (
           showDifference &&
-          features &&
-          features[feature.title] &&
-          features[feature.title].every(
-            val => val === features[feature.title][0],
-          )
+          isSameFeatureValues(compareQuotes, featuresOfQuotes, feature.title)
         )
           return null;
         return !select.isSelectedSectionView ? (
@@ -890,17 +922,13 @@ function SpecialFeaturesSection({
   select,
   ...props
 }) {
-  const { features, onLoad } = useFeatureLoadHandler();
+  const { features: featuresOfQuotes, onLoad } = useFeatureLoadHandler();
   return (
     <CompareSection title="Special Features" {...props}>
       {SPECIAL_FEATURES.map(feature => {
         if (
           showDifference &&
-          features &&
-          features[feature.title] &&
-          features[feature.title].every(
-            val => val === features[feature.title][0],
-          )
+          isSameFeatureValues(compareQuotes, featuresOfQuotes, feature.title)
         )
           return null;
         return !select.isSelectedSectionView ? (
@@ -953,17 +981,13 @@ function WaitingPeriodSection({
   select,
   ...props
 }) {
-  const { features, onLoad } = useFeatureLoadHandler();
+  const { features: featuresOfQuotes, onLoad } = useFeatureLoadHandler();
   return (
     <CompareSection title="Waiting Period" {...props}>
       {WAITING_PERIOD.map(feature => {
         if (
           showDifference &&
-          features &&
-          features[feature.title] &&
-          features[feature.title].every(
-            val => val === features[feature.title][0],
-          )
+          isSameFeatureValues(compareQuotes, featuresOfQuotes, feature.title)
         )
           return null;
         return !select.isSelectedSectionView ? (
@@ -1016,17 +1040,13 @@ function WhatsNotCoveredSection({
   select,
   ...props
 }) {
-  const { features, onLoad } = useFeatureLoadHandler();
+  const { features: featuresOfQuotes, onLoad } = useFeatureLoadHandler();
   return (
     <CompareSection title="What's not covered?" {...props}>
       {WHATS_NOT_COVERED.map(feature => {
         if (
           showDifference &&
-          features &&
-          features[feature.title] &&
-          features[feature.title].every(
-            val => val === features[feature.title][0],
-          )
+          isSameFeatureValues(compareQuotes, featuresOfQuotes, feature.title)
         )
           return null;
         return !select.isSelectedSectionView ? (
@@ -1096,7 +1116,7 @@ function FeatureValue({
   const feature = getFeature({ sectionTitle, featureTitle });
 
   useEffect(() => {
-    onLoad && onLoad({ sectionTitle, featureTitle, feature });
+    onLoad && onLoad({ sectionTitle, featureTitle, feature }, compareQuote);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feature]);
 
@@ -1268,7 +1288,7 @@ function FeatureRow({
         css={`
           gap: 6em;
           & > div {
-            flex: 1;
+            flex: 0 1 30%;
           }
         `}
       >

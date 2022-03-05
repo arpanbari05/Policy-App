@@ -31,16 +31,23 @@ export default styles;
 
 export const rootFontSize = "16px";
 
-const tenantFontFamily = {
-  fyntune: "Inter-Regular",
-  PINC: "Gothic720",
-  Sriyah: "Inter-Regular",
-  Robinhood: "Inter-Regular",
+const defaultFontFamily = "Inter-Regular";
+
+export const tenantFontFamily = {
+  Pinc: "Gothic720",
 };
+
+export function getFontFamily(tenant) {
+  const tenantFont = tenantFontFamily[tenant];
+
+  if (!tenantFont) return defaultFontFamily;
+
+  return tenantFont;
+}
 
 export const GlobalStyles = createGlobalStyle({
   body: {
-    fontFamily: tenantFontFamily["fyntune"],
+    fontFamily: getFontFamily("fynutne"),
   },
   html: {
     fontSize: rootFontSize,

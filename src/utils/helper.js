@@ -499,4 +499,8 @@ export function getAddOnsTotalPremium(addOns = []) {
   return addOns.reduce((sum, addOn) => (sum += addOn.total_premium), 0);
 }
 
+export function getQuoteKey(quote) {
+  const { product, sum_insured } = quote;
 
+  return `${product.id}+${sum_insured}`;
+}

@@ -205,7 +205,7 @@ export function InfoPopupToggle({ title, description }) {
     <div className="d-inline-block">
       <button onClick={descriptionToggle.on}>
         <IoMdInformationCircleOutline
-          className="mx-2"
+          className="mx-2 compare-pdf-hide"
           css={`
             margin-bottom: 0.2em;
             font-size: 1.2em;
