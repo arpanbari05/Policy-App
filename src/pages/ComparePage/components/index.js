@@ -51,7 +51,7 @@ export function ShowDifference({ onChange, checked, ...props }) {
             color: #212529;
           `}
         >
-          Show differ ence
+          Show difference
         </span>
       </label>
     </div>

@@ -33,7 +33,7 @@ export const rootFontSize = "16px";
 
 const defaultFontFamily = "Inter-Regular";
 
-const tenantFontFamily = {
+export const tenantFontFamily = {
   Pinc: "Gothic720",
 };
 

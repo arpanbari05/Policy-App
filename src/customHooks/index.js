@@ -23,7 +23,11 @@ import {
 } from "../api/api";
 import { getRiderSendData } from "../pages/Cart/hooks/useCartProduct";
 import useFilters from "../pages/quotePage/components/filters/useFilters";
-import { setPolicyTypes, setPolicyType } from "../pages/quotePage/quote.slice";
+import {
+  setPolicyTypes,
+  setPolicyType,
+  updateFetchedFilters,
+} from "../pages/quotePage/quote.slice";
 import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter";
 import styles from "../styles";
 import {
@@ -31,6 +35,7 @@ import {
   getAddOnSendData,
   getInsuranceType,
   getMonthsForYear,
+  getQuoteKey,
   getRiderCartData,
   isAddOnPresent,
   isTopUpQuote,
@@ -1382,25 +1387,36 @@ export function useGetQuote(company_alias) {
 }
 
 export function useFeatureLoadHandler() {
-  const [features, setFeatures] = useState(null);
+  const [features, setFeatures] = useState({});
 
-  const onLoad = ({ featureTitle, feature }) => {
+  const onLoad = ({ featureTitle, feature }, quote) => {
     if (!feature?.feature_value) return;
     setFeatures(features => {
-      if (!features) {
-        return { [featureTitle]: [feature?.feature_value] };
-      }
+      const quoteKey = getQuoteKey(quote);
 
-      if (!features[featureTitle])
-        return {
-          ...features,
-          [featureTitle]: [feature?.feature_value],
-        };
-
-      return {
+      const updatedFeatures = {
         ...features,
-        [featureTitle]: [...features[featureTitle], feature?.feature_value],
+        [quoteKey]: features[quoteKey]
+          ? { ...features[quoteKey], [featureTitle]: feature }
+          : { [featureTitle]: feature },
       };
+
+      return updatedFeatures;
+
+      // if (!features) {
+      //   return { [featureTitle]: [feature?.feature_value] };
+      // }
+
+      // if (!features[featureTitle])
+      //   return {
+      //     ...features,
+      //     [featureTitle]: [feature?.feature_value],
+      //   };
+
+      // return {
+      //   ...features,
+      //   [featureTitle]: [...features[featureTitle], feature?.feature_value],
+      // };
     });
   };
 
