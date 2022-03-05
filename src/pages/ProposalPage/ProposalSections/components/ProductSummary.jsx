@@ -21,6 +21,7 @@ import {
   useMembers,
   useTheme,
   useAdditionalDiscount,
+  useRider
 } from "../../../../customHooks";
 import {
   amount,
@@ -573,6 +574,7 @@ function CartSummary({ item, index, groupCode }) {
   const { planDetails } = useSelector(state => state.proposalPage);
 
   const prevCart = Object.values(removeTotalPremium(planDetails.prevCart || {}));
+  const health_riders = useRider(item?.group?.id).getSelectedRiders();
 
   const [showRiders, setShowRiders] = useState(false);
 
@@ -865,7 +867,7 @@ function CartSummary({ item, index, groupCode }) {
             `}
           >
             {console.log("asgehd23", item.health_riders)}
-            {item.health_riders.map(riders => (
+            {health_riders.map(riders => (
               <div
                 css={`
                   display: flex;

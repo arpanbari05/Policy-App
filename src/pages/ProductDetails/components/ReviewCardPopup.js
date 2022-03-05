@@ -26,6 +26,7 @@ import {
 } from "../../../api/api";
 import { skipToken } from "@reduxjs/toolkit/query";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
+import { useRider } from "../../../customHooks/index";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -228,11 +229,11 @@ function ProductDetailsCardMobile({ cartItem }) {
     },
     total_premium,
     sum_insured,
-    health_riders,
     top_up_riders,
     addons,
+    group: { id: groupCode}
   } = cartItem;
-
+  const health_riders = useRider(groupCode).getSelectedRiders();
   const logoSrc = companies[alias].logo;
 
   const { journeyType } = useFrontendBoot();
@@ -575,9 +576,10 @@ function ProductDetailsCard({ cartItem }) {
     total_premium,
     tenure,
     sum_insured,
-    health_riders,
     top_up_riders,
+    group: { id: groupCode }
   } = cartItem;
+  const health_riders = useRider(groupCode).getSelectedRiders();
   const logoSrc = companies[alias].logo;
 
   const displayRiders =
