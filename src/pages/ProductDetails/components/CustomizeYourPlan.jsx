@@ -110,7 +110,7 @@ export function Riders({
       !riders.find(singleRider => singleRider?.alias === "CAREWITHNCB")
         ?.isSelected;
     const showPEDRiderWarning =
-      quote.company_alias === "care_health" && riderAlias === "REDPEDWAITPRD";
+      quote?.product?.name === "Care" && riderAlias === "REDPEDWAITPRD";
 
     return {
       isDisabled,
@@ -199,6 +199,10 @@ export function RiderCardNew({
               border-radius: 0 0 0 15px;
               background: ${isDisabled ? "grey" : colors.secondary_color};
               color: white;
+              font-size: 12px;
+              ${tabletAndMobile} {
+                font-size: 10px;
+              }
             `}
           >
             Can only be availed with No claim bonus
@@ -207,7 +211,7 @@ export function RiderCardNew({
       )}
       <div
         className={`d-flex align-items-center justify-content-between px-3 py-3 ${
-          true ? "" : "h-100"
+          !showPEDRiderWarning && "h-100"
         }`}
       >
         <div>
