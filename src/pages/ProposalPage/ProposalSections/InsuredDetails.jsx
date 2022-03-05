@@ -13,7 +13,7 @@ import {
   noForAllCheckedTrue,
   setProposalData,
 } from "./ProposalSections.slice";
-import {useGetProposalDataQuery} from "../../../api/api"
+import { useGetProposalDataQuery } from "../../../api/api";
 import ProposalCheckBox from "../../../components/Common/ProposalSummary/summaryCheckBox";
 
 import "styled-components/macro";
@@ -46,7 +46,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
-
+  const [yesSelected, setYesSelected] = useState({});
   const [noForAll, setNoForAll] = useState({});
   const [initColor, setInitColor] = useState(PrimaryColor);
   const [canProceed, setCanProceed] = useState({
@@ -54,8 +54,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     canProceedArray: [],
   });
   const { proposalData } = useSelector(state => state.proposalPage);
-  console.log("vfjgjdfgh",proposalData);
-  
+  console.log("vfjgjdfgh", proposalData);
+
   const [mutateValues, setMutateValues] = useState();
   const dispatch = useDispatch();
   const { noForAllChecked } = useSelector(state => state.proposalPage);
@@ -176,6 +176,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
             let memberAge = membersDataFromGreetingPage.find(
               member => member.type === memberType,
             )?.age;
+            console.log("cghdhd", Number(memberAge));
             let estimatedMemberDOB;
             if (
               `${memberAge}`.includes("Month") ||
@@ -184,9 +185,10 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
               let current = new Date();
               current.setMonth(
                 current.getMonth() -
-                  (`${`${memberAge}`}`.includes(".")
-                    ? parseInt(`${memberAge.toFixed(1)}`.split(".")[1])
-                    : parseInt(memberAge.toFixed(1))),
+                  (`${memberAge}`.includes(".")
+                    ? parseInt(`${memberAge}`.split(".")[1])
+                    : parseInt(memberAge)) -
+                  1,
               );
 
               estimatedMemberDOB = `${current.getDate()}-${
@@ -221,7 +223,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
               };
           }
         });
-    console.log("sbnlfkb", prefilledValues,membersDataFromGreetingPage);
+        console.log("sbnlfkb", prefilledValues, membersDataFromGreetingPage);
 
         setValues({
           ...values,
@@ -258,11 +260,25 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
   }, []);
 
   useEffect(() => {
-    if (name === "Medical Details") checkCanProceed();
+    if (name === "Medical Details") {
+      checkCanProceed();
+      const keys = Object.keys(values || {});
+
+      let temp = keys.reduce(
+        (acc, key) => ({
+          ...acc,
+          [key]: Object.keys(values[key]).some(
+            el => values[key][el][`is${el}`] === "Y",
+          ),
+        }),
+        {},
+      );
+      setYesSelected(temp)
+      console.log("skbjvkvb", temp, values, keys);
+    }
   }, [values, noForAll]);
 
   useEffect(() => {
-
     if (name === "Medical Details") {
       const key = Object.keys(values || {});
       let tempObj = JSON.parse(JSON.stringify(values || {}));
@@ -291,8 +307,6 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     }
   }, [values]);
 
-
-
   function formatter(number) {
     if (!isNaN(number)) number = parseInt(number);
     const updatedNumber = number.toLocaleString("en-US", {
@@ -315,7 +329,6 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
       {Object.keys(schema).map((item, index) => {
         let result = [];
         if (values && name === "Insured Details") {
-     
           Object.keys(values[item]).forEach(key => {
             if (key === "dob" && values[item][key]) {
               let updatedKey = values[item][key].split("-");
@@ -397,7 +410,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                     </div>
                     <span>No For All Questions </span>{" "}
                   </div>
-                  {!noForAll[item] && (
+                  {/* {console.log("dbfjkv",values[item]?Object.keys(values[item]).some(key => values[item][key][`is${key}`]):"")} */}
+                  {!yesSelected[item] && (
                     <p
                       css={`
                         display: flex;
@@ -439,6 +453,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
                   setSubmit={setSubmit}
                   submitTrigger={submit}
                   noForAll={noForAll[item]}
+                  proposalData={proposalData}
                   setNoForAll={value => {
                     setNoForAll({ ...noForAll, [item]: value });
                   }}

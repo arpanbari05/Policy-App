@@ -24,6 +24,7 @@ export const api = createApi({
     "Cart",
     "AdditionalDiscount",
     "TenureDiscount",
+    "ProposalSummaryUpdate"
   ],
   endpoints: builder => ({
     getCities: builder.mutation({
@@ -349,6 +350,7 @@ export const api = createApi({
     }),
     getProposalData: builder.query({
       query: () => ({ url: "health/proposals" }),
+      providesTags: ["ProposalSummaryUpdate"],
     }),
     getTopUpAddOns: builder.query({
       queryFn: async (

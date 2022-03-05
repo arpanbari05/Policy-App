@@ -7,7 +7,8 @@ const useFormBuilder = (
   defaultValues = {},
   noForAll,
   setNoForAll,
-  formName
+  formName,
+  insuredDetails
 ) => {
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
@@ -72,7 +73,18 @@ const useFormBuilder = (
         item => item.name === variableName,
       );
 
+      console.log("sfbnkjf",insuredDetails,name)
+      
+
       if (filteredItem) {
+        name =
+      typeof name === "object"
+        ? {
+            ...name,
+      
+            dob: insuredDetails && insuredDetails[name.member] ? insuredDetails[name.member]?.dob : "",
+          }
+        : name;
         let errorMsg =
           filteredItem.validate &&
           performValidations(filteredItem.validate, values, name);
