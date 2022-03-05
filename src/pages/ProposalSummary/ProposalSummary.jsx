@@ -143,7 +143,7 @@ console.log("snldvb",proposalData,isLoading)
   //   return <Redirect to="/proposal" />;
   // } else
   return (
-    <Page noNavbarForMobile={true}>
+    <Page noNavbarForMobile={true} id={"proposalSummaryPage"}>
       <div
         className="container-fluid terms__wrapper"
         css={`

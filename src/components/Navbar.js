@@ -28,6 +28,7 @@ import ShareButton from "./Common/Button/ShareButton";
 import { FaChevronLeft } from "react-icons/fa";
 import { CircleLoader } from ".";
 import ShareQuoteModal from "./ShareQuoteModal";
+import { useShareFunctionality } from "../customHooks";
 
 const GO_BACK_LOCATIONS = [
   "/proposal",
@@ -93,7 +94,12 @@ const Navbar = () => {
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
-  console.log("sfjksvb", prevoiusGroup);
+  const { imageSend: proposalImageSend, emailStatus: proposalEmailStatus } =
+    useShareFunctionality("proposalPage", "proposalPage");
+  const {
+    imageSend: proposalSummaryImageSend,
+    emailStatus: proposalSummaryEmailStatus,
+  } = useShareFunctionality("proposalSummaryPage", "proposalSummaryPage");
 
   const { emailStatus, imageSend } = useComparePage();
 
@@ -224,10 +230,18 @@ const Navbar = () => {
               `}
             >
               {location.pathname === "/proposal" && (
-                <ShareQuoteModal stage="PROPOSAL" />
+                <ShareQuoteModal
+                  imageSend={proposalImageSend}
+                  emailStatus={proposalEmailStatus}
+                  stage="PROPOSAL"
+                />
               )}
               {location.pathname === "/proposal_summary" && (
-                <ShareQuoteModal stage="PROPOSAL_SUMMARY" />
+                <ShareQuoteModal
+                  imageSend={proposalSummaryImageSend}
+                  emailStatus={proposalSummaryEmailStatus}
+                  stage="PROPOSAL_SUMMARY"
+                />
               )}
               {location.pathname === `/compare/${groupCode}` && (
                 <ShareQuoteModal

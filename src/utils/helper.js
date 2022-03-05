@@ -1,4 +1,5 @@
 import _, { range } from "lodash";
+import { sendEmailAction } from "../pages/ComparePage/compare.slice";
 
 export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
@@ -497,3 +498,5 @@ export function isTopUpQuote(quote) {
 export function getAddOnsTotalPremium(addOns = []) {
   return addOns.reduce((sum, addOn) => (sum += addOn.total_premium), 0);
 }
+
+

@@ -45,6 +45,12 @@ import { useCallback } from "react";
 import { quoteCompareFeature } from "../test/data/quoteFeatures";
 import { refreshUserData } from "../pages/InputPage/greetingPage.slice";
 import _ from "lodash";
+import {
+  requestDownloadSuccess,
+  sendEmailAction,
+} from "../pages/ComparePage/compare.slice";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -1629,3 +1635,57 @@ export function useAddOns(groupCode) {
 
   return { addAddOns, removeAddOns };
 }
+
+export const useShareFunctionality = (desktopPageId, mobilePageId) => {
+  const dispatch = useDispatch();
+
+  const imageSend = email => {
+    const input = document.getElementById(desktopPageId);
+
+    html2canvas(input, {
+      scrollX: 0,
+      scrollY: -window.scrollY,
+    }).then(canvas => {
+      const imgData = canvas.toDataURL("image/png");
+      dispatch(sendEmailAction({ email, image: imgData }));
+    });
+  };
+
+  const imageSendM = email => {
+    const input = document.getElementById(mobilePageId);
+
+    html2canvas(input, {
+      scrollX: 0,
+      scrollY: -window.scrollY,
+    }).then(canvas => {
+      const imgData = canvas.toDataURL("image/png");
+      dispatch(sendEmailAction({ email, image: imgData }));
+    });
+  };
+
+  const download = () => {
+    const input = document.getElementById(desktopPageId);
+
+    html2canvas(
+      input,
+      { useCORS: true },
+      {
+        scrollX: 0,
+        scrollY: -window.scrollY,
+        useCORS: true,
+      },
+    ).then(canvas => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "px", "a4");
+      const imgProps = pdf.getImageProperties(imgData);
+      const width = pdf.internal.pageSize.getWidth();
+      const height = (imgProps.height * width) / imgProps.width;
+
+      pdf.addImage(imgData, "JPEG", 0, 0, width, height);
+      pdf.save(`${desktopPageId}.jpg`);
+      dispatch(requestDownloadSuccess());
+    });
+  };
+
+  return { imageSend, imageSendM, download };
+};

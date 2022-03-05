@@ -11,13 +11,20 @@ import { EmailSent } from "../pages/ComparePage/ComparePage.style";
 import { setEmail as setlEmaiStatus } from "../pages/ComparePage/compare.slice";
 import { useTheme } from "../customHooks/index";
 import ShareButton from "../components/Common/Button/ShareButton";
-import { CircleLoader, Button } from '../components/index';
+import { CircleLoader, Button } from "../components/index";
 
-const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBtn = false, label }) => {
-  console.log(imageSend, emailStatus);
-
+const ShareQuoteModal = ({
+  showModal,
+  imageSend,
+  emailStatus,
+  stage = "",
+  hideBtn = false,
+  label,
+}) => {
   const [show, setshow] = useState(showModal);
-  const { colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade } } = useTheme();
+  const {
+    colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
+  } = useTheme();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -179,26 +186,33 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBt
                   <CircleLoader animation="border" />
                 </span> */}
               </div>
-              <Button css={`display: flex; 2px; align-items: center; justify-content: center; min-width: 105px !important; max-width: 105px !important;`} onClick={e => {
-                handleSendViaEmail(e);
-              }} loader={isSending && !emailStatus.message}>
+              <Button
+                css={`display: flex; 2px; align-items: center; justify-content: center; min-width: 105px !important; max-width: 105px !important;`}
+                onClick={e => {
+                  handleSendViaEmail(e);
+                }}
+                loader={isSending && !emailStatus.message}
+              >
                 <div>
-
-                  <span css={`
-                          display: flex;
-                          gap: 10px;
-                          align-items: center;
-                          @media (max-width: 400px) {
-                            display: none;
-                          }
-                        `}>
+                  <span
+                    css={`
+                      display: flex;
+                      gap: 10px;
+                      align-items: center;
+                      @media (max-width: 400px) {
+                        display: none;
+                      }
+                    `}
+                  >
                     Share
-                    <span css={`
+                    <span
+                      css={`
                         display: none;
                         @media (max-width: 400px) {
                           display: block;
                         }
-                      `}>
+                      `}
+                    >
                       <i className="fas fa-share"></i>
                     </span>
                   </span>
@@ -229,23 +243,29 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBt
                   rel="noreferrer"
                   href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
                 >
-                  <Button css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}>
+                  <Button
+                    css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
+                  >
                     <div>
-                      <span css={`
+                      <span
+                        css={`
                           display: flex;
                           gap: 10px;
                           align-items: center;
                           @media (max-width: 400px) {
                             display: none;
                           }
-                        `}>
+                        `}
+                      >
                         Share
-                        <span css={`
-                        display: none;
-                        @media (max-width: 400px) {
-                          display: block;
-                        }
-                      `}>
+                        <span
+                          css={`
+                            display: none;
+                            @media (max-width: 400px) {
+                              display: block;
+                            }
+                          `}
+                        >
                           <i className="fas fa-share"></i>
                         </span>
                       </span>
@@ -253,23 +273,29 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBt
                   </Button>
                 </a>
               ) : (
-                <Button css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}>
+                <Button
+                  css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
+                >
                   <div>
-                    <span css={`
-                          display: flex;
-                          gap: 10px;
-                          align-items: center;
-                          @media (max-width: 400px) {
-                            display: none;
-                          }
-                        `}>
-                      Share
-                      <span css={`
-                        display: none;
+                    <span
+                      css={`
+                        display: flex;
+                        gap: 10px;
+                        align-items: center;
                         @media (max-width: 400px) {
-                          display: block;
+                          display: none;
                         }
-                      `}>
+                      `}
+                    >
+                      Share
+                      <span
+                        css={`
+                          display: none;
+                          @media (max-width: 400px) {
+                            display: block;
+                          }
+                        `}
+                      >
                         <i className="fas fa-share"></i>
                       </span>
                     </span>
@@ -290,28 +316,33 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBt
                   type="number"
                   placeholder="Mobile no."
                   onChange={e => handleNumberCheck(e, setSmsNo)}
-                  placeholder="Mobile no."
                   value={smsNo}
                 />
               </div>
 
-              <Button css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}>
+              <Button
+                css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
+              >
                 <div>
-                  <span css={`
-                          display: flex;
-                          gap: 5px;
-                          align-items: center;
-                          @media (max-width: 400px) {
-                            display: none;
-                          }
-                        `}>
+                  <span
+                    css={`
+                      display: flex;
+                      gap: 5px;
+                      align-items: center;
+                      @media (max-width: 400px) {
+                        display: none;
+                      }
+                    `}
+                  >
                     Share
-                    <span css={`
+                    <span
+                      css={`
                         display: none;
                         @media (max-width: 400px) {
                           display: block;
                         }
-                      `}>
+                      `}
+                    >
                       <i className="fas fa-share"></i>
                     </span>
                   </span>
@@ -319,7 +350,10 @@ const ShareQuoteModal = ({ showModal, imageSend, emailStatus, stage = "", hideBt
               </Button>
             </ShareOption>
 
-            <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>
+            <InfoMessage
+              className="p-3 text-center"
+              PrimaryShade={PrimaryShade}
+            >
               * Please note that the premium may vary in future.
             </InfoMessage>
             {errorMsg ? (

@@ -481,7 +481,9 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
             }
-          }}
+            console.log("Here i m clicked")
+          }
+        }
         />
       </div>
     </div>
