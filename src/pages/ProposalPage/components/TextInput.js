@@ -160,7 +160,7 @@ const TextInput = ({
         }}
         onInput={onInput}
         onKeyDown={onKeyDown}
-        value={typeof fallbackValue === "string" ? fallbackValue : value}
+        value={typeof fallbackValue === "string" ? fallbackValue : value || ""}
         onKeyPress={onKeyPress}
         maxLength={maxLength}
         textTransform={textTransform}
