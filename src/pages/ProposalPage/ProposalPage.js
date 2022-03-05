@@ -62,14 +62,14 @@ const ProposalPage = () => {
 
   // const membersGroup = Object.keys(cart).filter(key => parseInt(key) !== NaN);
 
-  const { showErrorPopup } = useSelector(({ proposalPage }) => proposalPage);
+
 
   useEffect(() => {
     if (currentSchema instanceof Object)
       setListOfForms(Object.keys(currentSchema));
   }, [currentSchema]);
   const dispatch = useDispatch();
-  const { activeIndex, proposalData } = useSelector(
+  const { activeIndex, proposalData, showErrorPopup } = useSelector(
     state => state.proposalPage,
   );
   console.log("wvbiwrvbwhxxx", proposalData);

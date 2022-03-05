@@ -37,7 +37,7 @@ import {useGetProposalDataQuery} from "../../api/api";
 const ProposalSummary = () => {
   const history = useHistory();
 
-const {data:proposalData={} , isLoading} = useGetProposalDataQuery()
+const {data:proposalData={} , isLoading} = useGetProposalDataQuery();
 
 console.log("snldvb",proposalData,isLoading)
   let {cartEntries} = useCart();
@@ -423,6 +423,7 @@ console.log("snldvb",proposalData,isLoading)
                     <div className="-wrapper pad_proposal_s mt-2">
                       { proposalData.data && allFields ? (
                       allFields.map((item, index) => {
+                        console.log("gbsjd",proposalData.data[item])
                           return (
                             <SummaryTab
                               PrimaryColor={PrimaryColor}
