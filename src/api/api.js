@@ -229,9 +229,10 @@ export const api = createApi({
         sum_insured,
         group,
         deductible,
+        feature_options = "",
         journeyType = "health",
       }) => {
-        let url = `products/${product_id}/discounts?sum_insured=${sum_insured}&group=${group}`;
+        let url = `products/${product_id}/discounts?sum_insured=${sum_insured}&group=${group}&${feature_options}`;
         if (journeyType === "top_up") {
           url = `products/${product_id}/topup-discounts?sum_insured=${sum_insured}&group=${group}&deductible=${deductible}`;
         }

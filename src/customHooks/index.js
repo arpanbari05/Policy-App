@@ -702,7 +702,7 @@ export function useRider(groupCode) {
     const cartEntry = getCartEntry(groupCode);
     const { health_riders } = cartEntry;
 
-    return health_riders;
+    return health_riders.filter(rider => rider.total_premium > 0);
   }
 
   function replaceRiders(riders = []) {
@@ -715,6 +715,7 @@ export function useRider(groupCode) {
 }
 
 export function useTenureDiscount(groupCode) {
+  const { feature_options } = useSelector(state => state.cart);
   const { journeyType } = useFrontendBoot();
 
   const { updateCartEntry, getCartEntry } = useCart();
@@ -725,6 +726,9 @@ export function useTenureDiscount(groupCode) {
     sum_insured: +sum_insured,
     product_id: product.id,
     group: groupCode,
+    feature_options: Object.keys(feature_options)
+    .map(key => `${key}=${feature_options[key]}`)
+    .join('&'),
     journeyType,
     deductible,
   });
@@ -1463,16 +1467,16 @@ export function useCompareFeature(compareQuote) {
 export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
   const { journeyType } = useFrontendBoot();
   const getRidersQueryParams = {
-    sum_insured: quote.sum_insured,
-    tenure: quote.tenure,
-    productId: quote.product.id,
+    sum_insured: quote?.sum_insured,
+    tenure: quote?.tenure,
+    productId: quote?.product.id,
     group: parseInt(groupCode),
     journeyType,
     ...queryOptions,
   };
 
-  if (quote.deductible) {
-    getRidersQueryParams.deductible = quote.deductible;
+  if (quote?.deductible) {
+    getRidersQueryParams.deductible = quote?.deductible;
   }
 
   return useGetRidersQuery(getRidersQueryParams);
@@ -1594,7 +1598,7 @@ export function useRiders({
     });
   };
 
-  return { query, riders, handleChange, getInititalRiders };
+  return { query, riders: riders.filter(rider => rider.total_premium > 0), handleChange, getInititalRiders };
 }
 
 export function useAddOns(groupCode) {

@@ -50,9 +50,8 @@ const DropDown = ({
     } 
   }, [asyncOptions]);
 
-
-  let placeholder = dropPlaceholder || label || "- Select -";
-  placeholder = checkValidation?.required ? `${placeholder}*` : placeholder;
+  label = label || "- Select -";
+  label = checkValidation?.required ? `${label}*` : label;
 
   return (
     <SelectContainer height={height}>
@@ -72,7 +71,7 @@ const DropDown = ({
           !asyncOptions) ||
           asyncOptions ||
           !checkValidation?.required) && (
-          <option value={placeholder}>{placeholder}</option>
+          <option value={dropPlaceholder || label || "- Select -"}>{dropPlaceholder || label || "- Select -"}</option>
         )}
         {selectedValues?.title &&
         selectedValues.title === "mrs" &&
