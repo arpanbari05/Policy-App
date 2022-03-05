@@ -23,14 +23,9 @@ const DateComp = ({
   readOnly,
   startDate,
   endDate,
-  age,
+  age=[0,0],
 }) => {
-  console.log(
-    "sgsnkjgv",
-    label,
 
-    age,
-  );
   // const [innerValue, setInnerValue] = useState(value);
   // useEffect(() => {
   //   setInnerValue(value);
@@ -51,7 +46,7 @@ const DateComp = ({
     onKeyDown();
   };
 
-  console.log(age && age[1] >= 0, age, age[1]);
+  // console.log(age && age[1] >= 0, age, age[1]);
 
   return (
     <InputContainer error={!isFocused ? error : null}>
@@ -80,7 +75,7 @@ const DateComp = ({
           //       currentDate
           //     )
           //     : new Date(Date.now())
-          age && age[1] >= 1
+          age.length && age[1] >= 1
             ? new Date(
                 currentYear - (age[1] + 1),
                 currentMonth,
@@ -89,7 +84,7 @@ const DateComp = ({
             : ""
         }
         maxDate={
-          age && age[0] >= 1
+          age.length && age[0] >= 1
             ? new Date(currentYear - age[0], currentMonth, currentDate)
             : age[0]
             ? new Date(
