@@ -31,7 +31,17 @@ export default styles;
 
 export const rootFontSize = "16px";
 
+const tenantFontFamily = {
+  fyntune: "Inter-Regular",
+  PINC: "Gothic720",
+  Sriyah: "Inter-Regular",
+  Robinhood: "Inter-Regular",
+};
+
 export const GlobalStyles = createGlobalStyle({
+  body: {
+    fontFamily: tenantFontFamily["fyntune"],
+  },
   html: {
     fontSize: rootFontSize,
     "@media (max-width: 1200px)": {
