@@ -411,7 +411,7 @@ const ShowMoreButton = styled.button`
 `;
 
 export const DetailsSectionWrap = styled.section`
-  padding: 0;
+  padding: 0 6%;
   margin: auto;
   margin-top: 40px;
   ${tabletAndMobile} {
