@@ -27,8 +27,6 @@ const TextInput = ({
   defaultValue,
 }) => {
   const dispatch = useDispatch();
-  // checkAge = limitagefromdob
-  //const  checkValidation = { checkAge: "limitagefromdob" };
   const age =
     checkAge &&
     parseInt(new Date().getFullYear()) -
@@ -39,17 +37,11 @@ const TextInput = ({
       );
 
   const [isFocused, setIsFocused] = useState(false);
-  const [fallbackValue, setFallbackValue] = useState();
-  console.log(allValues, age, innerMember, "test");
+  const [fallbackValue, setFallbackValue] = useState("");
+  const [isChanged, setChanged] = useState(false);
 
   const fullName = value || "";
-  const forbiddedSymbols = "`~!@#$%^&*()_-+={[}]|:.;'<>?/\"\\".split("");
-  if (
-    checkValidation?.matches === "pan" ||
-    checkValidation?.matches === "name"
-  ) {
-    forbiddedSymbols.concat([","]);
-  }
+  const forbiddedSymbols = "`~!@#$%^&*()_-+={[}]|:.;',<>?/\"\\".split("");
   const checkPreviousChar = (value, checkValue) => {
     let check = true;
 
@@ -95,21 +87,49 @@ const TextInput = ({
   // useEffect(() => {
   //   setInnerValue(value);
   // }, [value]);
-  console.log(checkValidation);
+  console.log({fallbackValue, isChanged});
   return (
     <InputContainer>
       <Input
         type={type || "text"}
-        placeholder={
-          checkValidation?.required && placeholder
-            ? `${placeholder}*`
-            : placeholder || ""
-        }
+        placeholder={placeholder}
         showStarRed={checkValidation?.required}
         required={required || undefined}
         onChange={e => {
-          if (checkAge) {
-            if (parseInt(e.target.value) <= age || e.target.value === "") {
+          setChanged(true);
+          if (checkAllChar(e.target.value, forbiddedSymbols)) {
+            if (checkValidation?.matches === "onlyDigits") {
+              let reg = new RegExp("^[0-9]*$");
+              if (reg.test(e.target.value)) {
+                onChange(e);
+                setFallbackValue(e.target.value);
+              }
+            } else if (checkAge) {
+              if (parseInt(e.target.value) <= age || e.target.value === "") {
+                onChange(e);
+                setFallbackValue(e.target.value);
+              }
+            } else if (checkValidation?.["matches"].includes("mobile")) {
+              console.log("hell0");
+              if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0])) && e.target.value.length <= 10) {
+                onChange(e);
+                setFallbackValue(e.target.value);
+              }
+            } else {
+              if (
+                notAllowed &&
+                mediUnderwritting &&
+                ((notAllowed.split("/")[0] !== "null" &&
+                  e.target.value <= parseInt(notAllowed.split("/")[0])) ||
+                  (notAllowed.split("/")[1] !== "null" &&
+                    e.target.value >= parseInt(notAllowed.split("/")[1])))
+              ) {
+                e.target.value = "";
+                dispatch(setShowPlanNotAvail(true));
+              } else if (textTransform === "uppercase") {
+                e.target.value = e.target.value.toLocaleUpperCase();
+              }
+              if (maxLength && e.target.value.length > maxLength) return;
               onChange(e);
               setFallbackValue(e.target.value);
             }
@@ -160,7 +180,7 @@ const TextInput = ({
         }}
         onInput={onInput}
         onKeyDown={onKeyDown}
-        value={typeof fallbackValue === "string" ? fallbackValue : value || ""}
+        value={isChanged ? fallbackValue : value}
         onKeyPress={onKeyPress}
         maxLength={maxLength}
         textTransform={textTransform}
@@ -168,8 +188,12 @@ const TextInput = ({
         error={!isFocused ? error : null}
         defaultValue={defaultValue}
       />
-      <Label>{label}</Label>
-      {!isFocused && <p className="formbuilder__error">{error}</p>}
+      <Label>{checkValidation?.required && label ? `${label}*` : label || ""}</Label>
+      {
+        !isFocused && (
+          <p className="formbuilder__error">{error}</p>
+        )
+      }
     </InputContainer>
   );
 };

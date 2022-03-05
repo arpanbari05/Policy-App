@@ -94,11 +94,7 @@ const DateComp = ({
               )
             : new Date(Date.now())
         }
-        placeholderText={
-          checkValidation?.required && placeholder
-            ? `${placeholder}*`
-            : placeholder || ""
-        }
+        placeholderText={placeholder}
         onChange={date => {
           onChange({ target: { value: moment(date).format("DD-MM-YYYY") } });
         }}
@@ -113,7 +109,7 @@ const DateComp = ({
         onBlur={() => setIsFocused(false)}
       />
 
-      <Label>{label}</Label>
+      <Label>{checkValidation?.required && label ? `${label}*` : label || ""}</Label>
       <Calendar
         error={!isFocused ? error : null}
         src={calendar}

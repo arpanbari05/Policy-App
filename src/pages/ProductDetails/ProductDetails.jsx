@@ -26,6 +26,7 @@ import { numberToDigitWord } from "../../utils/helper";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import SumInsuredSection from "./components/SumInsuredSection";
 import AddOnSection from "./components/AddOnsSection/AddOnsSection";
+import Benefit from "./components/Benefit";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
@@ -202,6 +203,7 @@ const ProductDetails = () => {
                 cartEntry={cartEntry}
                 // loaderStart={() => console.log(loaderRef?.current?.continuousStart())}
               />
+              <Benefit cartEntry={cartEntry} groupCode={parseInt(groupCode)} />
               <RidersSection isProductDetailsPage={true} />
               {+settings.addons_visibilty === 1 && journeyType === "health" ? (
                 <AddOnSection cartEntry={cartEntry} />
