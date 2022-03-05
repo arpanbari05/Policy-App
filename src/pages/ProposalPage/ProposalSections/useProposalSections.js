@@ -43,7 +43,7 @@ const useProposalSections = (
       }
     } else if (isValid && submit) {
       dispatch(
-        saveProposalData({ [name]: values }, () => setActive(prev => typeof activeIndex === 'string'? prev + 1:activeIndex)),
+        saveProposalData({ [name]: values }, () => setActive(prev => prev + 1)),
       );
 
       setSubmit(false);

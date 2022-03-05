@@ -116,7 +116,6 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
           checkCanProceed.push(item);
         }
       });
-
       if (key2.length < 1) {
         isNotChecked = true;
       }
