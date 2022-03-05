@@ -94,11 +94,14 @@ const Navbar = () => {
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
-  const { imageSend: proposalImageSend } =
-    useShareFunctionality("proposalPage", "proposalPage");
-  const {
-    imageSend: proposalSummaryImageSend
-  } = useShareFunctionality("proposalSummaryPage", "proposalSummaryPage");
+  const { imageSend: proposalImageSend } = useShareFunctionality(
+    "proposalPage",
+    "proposalPage",
+  );
+  const { imageSend: proposalSummaryImageSend } = useShareFunctionality(
+    "proposalSummaryPage",
+    "proposalSummaryPage",
+  );
 
   const { emailStatus, imageSend } = useComparePage();
 
@@ -144,7 +147,7 @@ const Navbar = () => {
               /* padding: 0px 100px; */
             `}
           >
-            {GO_BACK_LOCATIONS.filter(loc =>
+            {/* {GO_BACK_LOCATIONS.filter(loc =>
               location.pathname.startsWith(loc),
             ) &&
               !["/input/basic-details", "/input/journey-type"].includes(
@@ -209,7 +212,7 @@ const Navbar = () => {
                 >
                   <FaChevronLeft />
                 </div>
-              )}
+              )} */}
             <LogoLink />
             {!location.pathname.startsWith("/input") && trace_id && (
               <div
