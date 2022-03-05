@@ -42,6 +42,37 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "QuickSand";
+  src: url("./assets/fonts/QuickSand/Quicksand-VariableFont_wght.woff2")
+      format("woff2"),
+    url("./assets/fonts/QuickSand/Quicksand-VariableFont_wght.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "TT norms";
+  src: url("./assets/fonts/TT norms/TTNorms-Bold.woff2") format("woff2"),
+    url("./assets/fonts/TT norms/TTNorms-Bold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "ACaslonPro-Italic";
+  src: url("./assets/fonts/AdobeCarlsonPro/ACaslonPro-Italic.woff2")
+      format("woff2"),
+    url("./assets/fonts/AdobeCarlsonPro/ACaslonPro-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Gothic720";
+  src: url("./assets/fonts/Gothic720/tt0993m_.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .logo_style_common {
   /* width: 123px !important; */
   height: 45px !important;
@@ -109,7 +140,6 @@
 body {
   /* font-size: 16px; */
   font-weight: 400;
-  font-family: "Inter-Regular";
   color: #000;
 }
 
