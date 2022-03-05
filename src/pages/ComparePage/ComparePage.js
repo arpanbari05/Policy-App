@@ -832,7 +832,11 @@ function getQuoteFeatureValue(quote, featuresOfQuotes, featureTitle) {
 
   if (!featureOfQuote) return false;
 
-  return featureOfQuote[featureTitle].feature_value;
+  const feature = featureOfQuote[featureTitle];
+
+  if (!feature) return false;
+
+  return feature.feature_value;
 }
 
 function isSameFeatureValues(quotes = [], featuresOfQuotes = {}, featureTitle) {
@@ -844,7 +848,8 @@ function isSameFeatureValues(quotes = [], featuresOfQuotes = {}, featureTitle) {
       featuresOfQuotes,
       featureTitle,
     );
-    featureValues.push(featureValue);
+    if (!featureValue) featureValues.push("");
+    else featureValues.push(featureValue);
   }
 
   const isAllValuesSame = featureValues.every(val => val === featureValues[0]);
