@@ -34,7 +34,13 @@ const FormBuilder = ({
   keyStr,
   lastName,
   isInsuredDetails,
+  proposalData,
 }) => {
+
+  const insuredDetails = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
+  );
+
   const {
     updateValue,
     values,
@@ -51,13 +57,14 @@ const FormBuilder = ({
     options.defaultValues,
     noForAll,
     setNoForAll,
-    formName
+    formName,
+    insuredDetails
   );
 
 
 
   const [trigger, setTrigger] = useState(false);
-  const { proposalData } = useSelector(state => state.proposalPage);
+
   const relationships = [
     "spouse",
     "son",
@@ -81,9 +88,7 @@ const FormBuilder = ({
   let dataForAutopopulate = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
-  const insuredDetails = useSelector(
-    ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
-  );
+
   dataForAutopopulate = {...dataForAutopopulate,...insuredDetails?insuredDetails["self"]:{}};
 
   // for auto populate self data when nominee relation is self

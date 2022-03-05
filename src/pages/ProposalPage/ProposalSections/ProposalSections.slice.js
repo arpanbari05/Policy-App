@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import SecureLS from "secure-ls";
 import swal from "sweetalert";
 import { policyPdf } from "../../ThankYouPage/serviceApi";
+import {api} from "../../../api/api"
 import {
   getProposal,
   PaymentStatus,
@@ -109,6 +110,7 @@ export const saveProposalData = (proposalData, next, failure) => {
     try {
       dispatch(setIsLoading(true));
       const response = await saveProposal(proposalData);
+      dispatch(api.util.invalidateTags(["ProposalSummaryUpdate"]));
       dispatch(setProposalData(proposalData));
 
       //console.log("saveProposalData success", response);

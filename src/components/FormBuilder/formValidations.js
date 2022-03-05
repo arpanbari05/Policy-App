@@ -128,7 +128,7 @@ export const validationIndex = {
     }
   },
   matches: (param, values, name) => {
-    console.log("wojvnno", param, values, name);
+    
     const { parent, member, variableName } = name;
     let compareTo;
     const checkParam =
@@ -146,6 +146,7 @@ export const validationIndex = {
         : parent && member && values
         ? values?.[parent]?.[member]
         : values?.[name];
+        console.log("wojvnno", value,checkParam);
 
     if (checkParam === "alt") {
       compareTo =
@@ -202,6 +203,7 @@ export const validationIndex = {
           } else break;
         case "validYear":
           if (typeof value === "string" || value instanceof String) {
+            console.log("sknslkfn",value)
             let month = value?.split("-")[0];
             let year = value?.split("-")[1];
             console.log("qcbib", param, value);
@@ -327,9 +329,10 @@ export const validationIndex = {
         case "onlyYear":
           let currentDate = new Date();
           let inputDate = values[name.parent][name.member][name.variableName];
+          let birthYear = name.dob?name.dob.split("-")[2]:name.age;
           if (
             currentDate.getUTCFullYear() < parseInt(inputDate) ||
-            parseInt(inputDate) < currentDate.getUTCFullYear() - name.age
+            parseInt(inputDate) < parseInt(birthYear)
           ) {
             return {
               status: false,
