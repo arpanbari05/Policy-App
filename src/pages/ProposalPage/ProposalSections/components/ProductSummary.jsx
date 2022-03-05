@@ -572,7 +572,7 @@ function CartSummary({ item, index, groupCode }) {
 
   const { planDetails } = useSelector(state => state.proposalPage);
 
-  const prevCart = Object.values(removeTotalPremium(planDetails.prevCart));
+  const prevCart = Object.values(removeTotalPremium(planDetails.prevCart || {}));
 
   const [showRiders, setShowRiders] = useState(false);
 
