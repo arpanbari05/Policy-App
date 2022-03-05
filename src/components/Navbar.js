@@ -94,11 +94,10 @@ const Navbar = () => {
 
   const prevoiusGroup = getPreviousGroup(parseInt(groupCode));
 
-  const { imageSend: proposalImageSend, emailStatus: proposalEmailStatus } =
+  const { imageSend: proposalImageSend } =
     useShareFunctionality("proposalPage", "proposalPage");
   const {
-    imageSend: proposalSummaryImageSend,
-    emailStatus: proposalSummaryEmailStatus,
+    imageSend: proposalSummaryImageSend
   } = useShareFunctionality("proposalSummaryPage", "proposalSummaryPage");
 
   const { emailStatus, imageSend } = useComparePage();
@@ -232,14 +231,14 @@ const Navbar = () => {
               {location.pathname === "/proposal" && (
                 <ShareQuoteModal
                   imageSend={proposalImageSend}
-                  emailStatus={proposalEmailStatus}
+                  emailStatus={emailStatus}
                   stage="PROPOSAL"
                 />
               )}
               {location.pathname === "/proposal_summary" && (
                 <ShareQuoteModal
                   imageSend={proposalSummaryImageSend}
-                  emailStatus={proposalSummaryEmailStatus}
+                  emailStatus={emailStatus}
                   stage="PROPOSAL_SUMMARY"
                 />
               )}

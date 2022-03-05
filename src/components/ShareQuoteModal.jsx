@@ -22,30 +22,39 @@ const ShareQuoteModal = ({
   label,
 }) => {
   const [show, setshow] = useState(showModal);
+
   const {
     colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
   } = useTheme();
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(setlEmaiStatus(""));
     setErrorMsg("");
     //  setyShowMsgs(false)
   }, [show]);
+
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails,
   );
+
   const [errorMsg, setErrorMsg] = useState("");
+
   const [isSending, setIsSending] = useState(false);
+
   const [email, setEmail] = useState(
     details4autopopulate?.email ? details4autopopulate.email : "",
   );
+
   const [wtsappNo, setWtsappNo] = useState(
     details4autopopulate?.mobile ? details4autopopulate.mobile : "",
   );
+
   const [smsNo, setSmsNo] = useState(
     details4autopopulate?.mobile ? details4autopopulate.mobile : "",
   );
+
   const sendRef = useRef();
 
   // useEffect(() => {
@@ -68,10 +77,32 @@ const ShareQuoteModal = ({
 
     const validator =
       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
+
     if (!email) {
       return setErrorMsg("Enter email to send.");
     } else if (!validator.test(email)) {
       return setErrorMsg("Enter valid email.");
+    } else setErrorMsg("");
+
+    if (!errorMsg && email) {
+      setIsSending(true);
+      // setTimeout(() => {
+      //   handleRotation();
+      // }, 2000);
+      return imageSend(email, stage);
+    }
+  };
+
+  const handleSendViaSms = e => {
+    e.preventDefault();
+
+    const validator =
+      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
+
+    if (!email) {
+      return setErrorMsg("Enter Number to send.");
+    } else if (!validator.test(email)) {
+      return setErrorMsg("Enter valid number.");
     } else setErrorMsg("");
 
     if (!errorMsg && email) {
@@ -94,7 +125,9 @@ const ShareQuoteModal = ({
     setshow(false);
     setIsSending(false);
   };
+
   const handleShow = () => setshow(true);
+
   return (
     <>
       {!hideBtn && <ShareButton onClick={handleShow} label={label} />}
