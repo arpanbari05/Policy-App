@@ -149,9 +149,7 @@ const TextInput = ({
             } else if (textTransform === "uppercase") {
               e.target.value = e.target.value.toLocaleUpperCase();
             }
-            if (!checkValidation?.["matches"] === "address") {
-              onChange(e);
-            }
+            onChange(e);
             setFallbackValue(e.target.value);
           }
         }}
