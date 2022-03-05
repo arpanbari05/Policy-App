@@ -110,7 +110,7 @@ export function CartDetails({ groupCode, ...props }) {
             <RidersList groupCode={groupCode} />
             <DiscountsList groupCode={groupCode} />
             <AddOnsList cartEntry={cartEntry} />
-            <TotalPremium groupCode={groupCode} />{" "}
+            <TotalPremium groupCode={groupCode} />
           </div>
         )}
         {journeyType === "renewal" ? (
@@ -261,7 +261,6 @@ function DiscountsList({ groupCode, ...props }) {
 
   if (!selectedAdditionalDiscounts.length) return null;
 
-  console.log("The selectedAdditionalDiscounts", selectedAdditionalDiscounts);
   return (
     <CartSection title="Discounts" {...props}>
       {selectedAdditionalDiscounts.map(additionalDiscount => (

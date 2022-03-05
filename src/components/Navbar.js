@@ -53,7 +53,8 @@ function LogoLink() {
         alt={`companylogo`}
         css={`
           cursor: pointer;
-          width: 130px;
+          max-height: 55px;
+          max-width: 130px;
           object-fit: contain;
         `}
       />
@@ -104,7 +105,7 @@ const Navbar = () => {
         }
       `}
     >
-      <Card width={"100%"} height={"53px"} clasName="position-relative">
+      <Card width={"100%"} height={"55px"} clasName="position-relative">
         {/* {location.pathname === "/proposal_summary" && (
           <Link
             className="d-flex justify-content-center align-items-center"

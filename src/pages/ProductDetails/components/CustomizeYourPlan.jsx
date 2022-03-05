@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import FeatureSection from "./FeatureSection/FeatureSection";
 import styled from "styled-components/macro";
-import { small } from "../../../utils/mediaQueries";
+import { small, tabletAndMobile } from "../../../utils/mediaQueries";
 import { useCart, useRider, useRiders, useTheme } from "../../../customHooks";
 import { CircleLoader } from "../../../components";
 import { useParams } from "react-router-dom";
@@ -10,7 +10,6 @@ import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { mobile } from "../../../utils/mediaQueries";
 import { amount } from "../../../utils/helper";
-import { DetailsSectionWrap } from "../../../components/ProductDetails/ProductDetailsModal";
 
 export function RidersSection({ loaderStop, isProductDetailsPage = false }) {
   let { groupCode } = useParams();
@@ -409,4 +408,15 @@ const RiderDescriptionWrap = styled.p`
 
 const ShowMoreButton = styled.button`
   font-size: inherit;
+`;
+
+export const DetailsSectionWrap = styled.section`
+  padding: 0;
+  margin: auto;
+  margin-top: 40px;
+  ${tabletAndMobile} {
+    padding: 0 6%;
+    margin: auto;
+    padding-top: 40px;
+  }
 `;
