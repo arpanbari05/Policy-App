@@ -401,7 +401,9 @@ export function figureToWords(amount) {
   if (countInLakhs < 100) {
     return countInLakhs > 1 ? `${countInLakhs} Lakhs` : `${countInLakhs} Lakhs`;
   } else {
-    return countInCrores > 1 ? `${countInCrores} Crores` : `${countInCrores} Crore`;
+    return countInCrores > 1
+      ? `${countInCrores} Crores`
+      : `${countInCrores} Crore`;
   }
 }
 
@@ -509,4 +511,15 @@ export function getQuoteKey(quote) {
   const { product, sum_insured } = quote;
 
   return `${product.id}+${sum_insured}`;
+}
+
+export function isRiderPresent(riderAlias, riders = []) {
+  const isPresent = riders.some(rider => rider.alias === riderAlias);
+
+  return isPresent;
+}
+
+export function parseJson(serialized) {
+  if (typeof serialized === "string") return JSON.parse(serialized);
+  return serialized;
 }

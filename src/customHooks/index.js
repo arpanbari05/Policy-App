@@ -38,9 +38,11 @@ import {
   getQuoteKey,
   getRiderCartData,
   isAddOnPresent,
+  isRiderPresent,
   isTopUpQuote,
   matchQuotes,
   mergeQuotes,
+  parseJson,
 } from "../utils/helper";
 import { calculateTotalPremium } from "../utils/helper";
 import useUrlQuery from "./useUrlQuery";
@@ -1516,6 +1518,20 @@ function getSelectedRiders(riders = []) {
   return selectedRiders;
 }
 
+function validateDependentRider(rider, riders) {
+  const { available_only_with } = rider;
+
+  if (!available_only_with) return true;
+
+  let available_only_with_arr = parseJson(available_only_with);
+
+  const isValid = available_only_with_arr.every(alias =>
+    isRiderPresent(alias, getSelectedRiders(riders)),
+  );
+
+  return isValid;
+}
+
 export function useRiders({
   quote,
   groupCode,
@@ -1590,10 +1606,24 @@ export function useRiders({
   }, [riders]);
 
   const handleChange = changedRider => {
+    if (changedRider.isSelected) {
+      const isValid = validateDependentRider(
+        changedRider,
+        getSelectedRiders(riders),
+      );
+
+      if (!isValid) return;
+    }
+
     setRiders(riders => {
-      const updatedRiders = riders.map(rider =>
+      let updatedRiders = riders.map(rider =>
         rider.id === changedRider.id ? changedRider : rider,
       );
+
+      updatedRiders = updatedRiders.filter(updatedRider =>
+        validateDependentRider(updatedRider, getSelectedRiders(updatedRiders)),
+      );
+
       return updatedRiders;
     });
   };
