@@ -140,12 +140,6 @@ export const dateUtil = e => {
   }
 };
 
-// export function range(start, end) {
-//   return Array(end - start + 1)
-//     .fill()
-//     .map((_, idx) => start + idx);
-// }
-
 export function amount(number = 0) {
   return `₹ ${parseInt(number).toLocaleString("en-In")}`;
 }

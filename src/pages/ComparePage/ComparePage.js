@@ -671,6 +671,7 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
       )}
       {isLoading && (
         <CircleLoader
+          className="compare-pdf-hide"
           animation="border"
           css={`
             color: #647188;

@@ -10,6 +10,7 @@ import useComparePage from "../pages/ComparePage/useComparePage";
 import { CircleLoader } from ".";
 import ShareQuoteModal from "./ShareQuoteModal";
 import { useShareFunctionality } from "../customHooks";
+import { images } from "../assets/logos/logo";
 
 function LogoLink() {
   const {
@@ -19,12 +20,12 @@ function LogoLink() {
 
   if (isLoading) return <CircleLoader animation="border" />;
 
-  const { settings } = frontendBoot.data;
+  const { settings, tenant } = frontendBoot.data;
 
   return (
     <Link to="/">
       <img
-        src={settings.logo}
+        src={images[tenant.alias] || settings.logo}
         alt={`companylogo`}
         css={`
           cursor: pointer;

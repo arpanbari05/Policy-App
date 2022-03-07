@@ -202,7 +202,7 @@ export function FilterModal({ onClose }) {
         </div>
       </Tab.Container>
       <div
-        className="p-2 position-fixed bottom-0 w-100 d-flex justify-content-between"
+        className="p-3 position-fixed bottom-0 w-100 d-flex justify-content-between"
         css={`
           border-radius: 1em 1em 0 0;
           box-shadow: ${boxShadows.six};
@@ -423,15 +423,18 @@ function InsurerOption({ companyAlias, onChange, checked, ...props }) {
           font-size: 0.79rem;
         `}
       >
-        <img
-          src={company.logo}
-          alt={companyAlias}
-          css={`
-            width: 6em;
-            height: 3em;
-            object-fit: contain;
-          `}
-        />
+        <div className="d-flex align-items-center gap-1">
+          <img
+            src={company.logo}
+            alt={companyAlias}
+            css={`
+              // width: 6em;
+              height: 2em;
+              object-fit: contain;
+            `}
+          />
+          <span>{company.short_name}</span>
+        </div>
         <span
           css={`
             font-size: 1.6rem;

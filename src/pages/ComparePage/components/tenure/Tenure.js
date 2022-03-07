@@ -59,6 +59,7 @@ const TenureFeatureValue = ({ quote, groupCode, journeyType }) => {
     >
       {quote.tenure} {quote.tenure === 1 ? "Year" : "Years"}
       <CircleLoader
+        className="compare-pdf-hide"
         animation="border"
         css={`
           color: #647188 !important;

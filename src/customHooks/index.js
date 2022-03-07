@@ -37,7 +37,6 @@ import {
   getMonthsForYear,
   getQuoteKey,
   getRiderCartData,
-  isAddOnPresent,
   isRiderPresent,
   isTopUpQuote,
   matchQuotes,
@@ -904,6 +903,8 @@ export function useGetQuotes(queryConfig = {}) {
     queryConfig,
   );
 
+  const quotesWithoutMoreFilters = data;
+
   //? SUPPLIES FILTERED QUOTE [PREMIUM + MORE FILTERS]
   if (data) {
     data = data.map(insurerQuotes => {
@@ -932,6 +933,7 @@ export function useGetQuotes(queryConfig = {}) {
     isLoading,
     loadingPercentage,
     isNoQuotes,
+    quotesWithoutMoreFilters
   };
 }
 

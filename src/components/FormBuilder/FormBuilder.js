@@ -59,6 +59,7 @@ const FormBuilder = ({
     formName,
     insuredDetails,
   );
+  console.log("fhbvhifef", values);
 
   const [trigger, setTrigger] = useState(false);
 
@@ -181,6 +182,9 @@ const FormBuilder = ({
       );
     }
   }, []);
+
+
+
   useEffect(() => {
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
@@ -374,6 +378,14 @@ const FormBuilder = ({
                               );
                           })}
                         </div>
+                        {/* {
+                          schema[index-1].additionalOptions.showMembersIf &&
+                          schema[index-1].additionalOptions.showMembersIf.split("||").some(key => values[key][`is${key}`]) &&
+                          Object.keys(values[schema[index-1].name].members).filter(key => values[schema[index-1].name].members[key]).some(key => values[schema[index-1].name][key])
+
+                          && console.log("fekjbkdjabv",values[schema[index-1].name],values,item)
+                        } */}
+                        <p>error</p>
                       </CustomWrapper>
                     );
                 })}
@@ -524,6 +536,7 @@ const FormBuilder = ({
                         submitTrigger={submitTrigger}
                         setCustomValid={setCustomValid}
                         values={values}
+
                         // showMembersIf={item.additionalOptions.showMembersIf || ""}
                         {...item.additionalOptions}
                       />

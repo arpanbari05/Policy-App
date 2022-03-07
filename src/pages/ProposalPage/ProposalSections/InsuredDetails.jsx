@@ -41,7 +41,6 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
     setShow,
   );
 
-  console.log("sfgblnfxbjk", values);
 
   const { colors } = useTheme();
 
@@ -475,7 +474,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
-            if (name === "Medical Details" && canProceed.canProceed) {
+            if (name === "Medical Details" && canProceed.canProceed && !isValid.some(item => item === undefined || item === false)) {
               setSubmit("PARTIAL");
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
