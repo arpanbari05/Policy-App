@@ -24,7 +24,7 @@ export const api = createApi({
     "Cart",
     "AdditionalDiscount",
     "TenureDiscount",
-    "ProposalSummaryUpdate",
+    "ProposalSummaryUpdate"
   ],
   endpoints: builder => ({
     getCities: builder.mutation({
@@ -383,9 +383,6 @@ export const api = createApi({
         };
       },
     }),
-    getImage: builder.query({
-      query: imageSrc => imageSrc,
-    }),
   }),
 });
 
@@ -461,7 +458,6 @@ export const {
   usePrefetch,
   useGetProposalDataQuery,
   useGetTopUpAddOnsQuery,
-  useGetImageQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {
