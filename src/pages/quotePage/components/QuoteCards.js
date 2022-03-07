@@ -111,7 +111,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
               setShow(!show);
             }}
           >
-            {collapsedQuotes.length} More Plans{" "}
+            {!show ? `${collapsedQuotes.length} More Plans ` : "Hide Plans "}
             {show ? <FaChevronUp /> : <FaChevronDown />}
           </SeeText>
         </div>
