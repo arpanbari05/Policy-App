@@ -295,15 +295,15 @@ function TermsAndConditions(props) {
           margin: 0 auto;
         `}
       >
-        <i class="termchk"></i>By clicking on Get Started, I hereby authorise{" "}
-        {tenantName}. and all of its affiliates, subsidiaries, group companies
-        and related parties to access the details such as my name, address,
-        telephone number, e-mail address, birth date and / or anniversary date
-        shared by me, and contact me to provide information on the various
-        products and services offered. I understand that this consent will
-        override my NDNC registration, if any. I also understand that at any
-        point of time, I wish to stop receiving such communications from{" "}
-        {tenantName}, I can withdraw such consent anytime on (to provide a
+        <i className="termchk"></i>By clicking on Get Started, I hereby
+        authorise {tenantName}. and all of its affiliates, subsidiaries, group
+        companies and related parties to access the details such as my name,
+        address, telephone number, e-mail address, birth date and / or
+        anniversary date shared by me, and contact me to provide information on
+        the various products and services offered. I understand that this
+        consent will override my NDNC registration, if any. I also understand
+        that at any point of time, I wish to stop receiving such communications
+        from {tenantName}, I can withdraw such consent anytime on (to provide a
         contact number or email id or both){" "}
       </label>
     </div>

@@ -202,7 +202,12 @@ const BasicDetailsForm = ({ ...props }) => {
                 <ErrorMessage>{fullNameError.message}</ErrorMessage>
               </div>
               <div>
-                <TextInput2 label="Mobile No." name="mobile" type="tel" {...mobileInput} />
+                <TextInput2
+                  label="Mobile No."
+                  name="mobile"
+                  type="tel"
+                  {...mobileInput}
+                />
                 <ErrorMessage>{mobileError.message}</ErrorMessage>
               </div>
             </div>
@@ -265,7 +270,7 @@ const BasicDetailsForm = ({ ...props }) => {
             }
           `}
         >
-          Get Started {!createEnquiryQuery.isLoading && <IoArrowForwardSharp />}
+          Get Started
         </Button>
       </form>
     </div>

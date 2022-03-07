@@ -9,6 +9,7 @@ export const Title = styled.h1`
   font-size: 24px;
   font-weight: 900;
   color: ${styles.colors.font.one};
+  text-decoration: capitalize;
   @media (max-width: 480px) {
     font-size: 18px;
   }
