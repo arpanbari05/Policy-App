@@ -49,7 +49,7 @@ const ModalBody = styled.div`
   flex: 1 1 auto;
   padding: 0 1rem;
   overflow: ${({ noBodyOverflow }) => (noBodyOverflow ? "unset" : "auto")};
-  max-height: 20em;
+  max-height: 16em;
 `;
 const ModalFooter = styled.div`
   padding: 0px !important;
@@ -104,7 +104,7 @@ const CustomModal1 = ({
         <ModalBody className="modal-body" noBodyOverflow={noBodyOverflow}>
           {children}
         </ModalBody>
-        <ModalFooter>{footerJSX}</ModalFooter>
+        <ModalFooter style={{marginTop: 10}}>{footerJSX}</ModalFooter>
       </ModalContent>
     </>
   );

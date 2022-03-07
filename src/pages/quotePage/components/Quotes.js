@@ -78,6 +78,7 @@ export default Quotes;
 
 function CompareQuotesTray({ compare, onClose }) {
   const history = useHistory();
+
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
   const { boxShadows, colors } = useTheme();
@@ -92,6 +93,7 @@ function CompareQuotesTray({ compare, onClose }) {
     updateCompareQuotes(compare.quotes);
     history.push(getUrlWithEnquirySearch(`/compare/${groupCode}`));
   };
+
   const handleCloseClick = () => onClose && onClose();
 
   return (
@@ -151,6 +153,7 @@ function CompareQuotesTray({ compare, onClose }) {
             css={`
               min-width: 120px;
             `}
+            disabled={compare?.quotes?.length < 2}
           >
             Compare
           </Button>
