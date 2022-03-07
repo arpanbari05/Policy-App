@@ -21,7 +21,7 @@ import {
   useMembers,
   useTheme,
   useAdditionalDiscount,
-  useRider
+  useRider,
 } from "../../../../customHooks";
 import {
   amount,
@@ -48,6 +48,7 @@ const availCart = cart => {
 };
 
 const numToString = value => value.toLocaleString("en-IN");
+
 const ProductSummary = ({ setActive = () => {} }) => {
   const [show, setShow] = useState(false);
 
@@ -236,7 +237,12 @@ const ProductSummary = ({ setActive = () => {} }) => {
             `}
           >
             {cartData?.data?.map((item, index) => (
-              <CartSummary key={index} item={item} index={index} />
+              <CartSummary
+                key={index}
+                item={item}
+                index={index}
+                groupCode={item?.group?.id}
+              />
             ))}
             {planDetails.isRenewed ? (
               <>
@@ -573,7 +579,10 @@ function CartSummary({ item, index, groupCode }) {
 
   const { planDetails } = useSelector(state => state.proposalPage);
 
-  const prevCart = Object.values(removeTotalPremium(planDetails.prevCart || {}));
+  const prevCart = Object.values(
+    removeTotalPremium(planDetails.prevCart || {}),
+  );
+
   const health_riders = useRider(item?.group?.id).getSelectedRiders();
 
   const [showRiders, setShowRiders] = useState(false);
