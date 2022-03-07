@@ -213,7 +213,7 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
   let cartEntry = null;
 
   if (data.data) {
-    cartEntry = data.data.find(cartEntry => cartEntry.group.id === group.id);
+    cartEntry = data.data.find(cartEntry => cartEntry?.group?.id === group?.id);
   }
 
   function handleAddPlanClick() {
@@ -308,7 +308,7 @@ function RenderProductSummaryCard({ group, ...props }) {
   let cartEntry = null;
 
   if (data.data) {
-    cartEntry = data.data.find(cartEntry => cartEntry.group.id === group.id);
+    cartEntry = data.data.find(cartEntry => cartEntry?.group?.id === group?.id);
   }
 
   if (!cartEntry) return null;
