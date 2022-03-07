@@ -137,22 +137,22 @@ const Navbar = () => {
               </div>
             </div>
           )}
-          {location.pathname === "/" && (
-            <span
-              onClick={() => {
-                process.env.REACT_APP_PHASE === "DEV" && setShow(true);
-              }}
-              css={`
-                position: absolute;
-                right: 14px;
-                bottom: 2px;
-                font-size: 12px;
-                opacity: 0.1;
-              `}
-            >
-              Theme
-            </span>
-          )}
+
+          <span
+            onClick={() => {
+              process.env.REACT_APP_PHASE === "DEV" && setShow(true);
+            }}
+            css={`
+              position: absolute;
+              right: 14px;
+              bottom: 2px;
+              font-size: 12px;
+              opacity: 0.1;
+              cursor: pointer;
+            `}
+          >
+            Theme
+          </span>
         </div>
       </Card>
       <ThemeModal show={show} setShow={setShow} />
