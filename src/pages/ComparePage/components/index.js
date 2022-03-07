@@ -5,6 +5,7 @@ import "styled-components/macro";
 import * as mq from "../../../utils/mediaQueries";
 import { CircleCloseButton, PremiumButton } from "../../../components";
 import { useEffect } from "react";
+import { useGetImageQuery } from "../../../api/api";
 
 export function ShowDifference({ onChange, checked, ...props }) {
   const { colors } = useTheme();
@@ -75,6 +76,10 @@ export function ProductCard({
   }, [compareQuoteChange]);
 
   const logo = getCompanyLogo(quote.company_alias);
+
+  const imageQuery = useGetImageQuery(logo);
+
+  console.log({ imageQuery }, "TTT");
 
   const handleCloseClick = () => {
     onRemove && onRemove(quote);
