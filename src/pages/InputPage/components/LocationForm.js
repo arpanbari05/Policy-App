@@ -40,6 +40,7 @@ function LocationForm() {
     const location = getGroupLocation(groupCode);
     return location;
   };
+
   const [selectedCity, setSelectedCity] = useState(getInitialSelectedCity);
 
   const history = useHistory();
@@ -283,18 +284,36 @@ function isNumber(value) {
   return !isNaN(value);
 }
 
+const isValidCharacter = value => {
+  return /^[a-zA-Z]$/.test(value);
+};
+
+const isSpecialCharacter = value => {
+  return /^[@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]$/.test(value);
+};
+
 function useLocationInput(initialValue = "") {
   const [value, setValue] = useState(initialValue);
 
   const onChange = evt => {
     const { value: givenValue } = evt.target;
 
+    // PUTTING VALIDATION BY RECOGNIZING THE FIRST INPUT AS NUMBER.
     if (isNumber(givenValue[0])) {
       const isValidPincode = every([
         isNumber(givenValue),
         givenValue.length <= 6,
+        /^[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/.test(givenValue),
       ]);
       if (!isValidPincode) return;
+    }
+    // PUTTING VALIDATION BY RECOGNIZING THE FIRST INPUT AS ALPHABET.
+    if (isValidCharacter(givenValue[0])) {
+      const isValidCityName = /^[a-zA-Z]*$/.test(givenValue);
+      if (!isValidCityName) return;
+    }
+    if (isSpecialCharacter(givenValue[0])) {
+      return;
     }
     setValue(givenValue);
   };
