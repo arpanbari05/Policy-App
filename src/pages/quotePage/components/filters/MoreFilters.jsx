@@ -50,8 +50,6 @@ function FilterModal({ onClose }) {
     data: { morefilters },
   } = useFrontendBoot();
 
-  console.log("The morefilters", morefilters);
-
   const { getSelectedFilter } = useFilters();
 
   const { filters, updateFilter, clearFilters } = useFiltersSlot({
@@ -69,13 +67,13 @@ function FilterModal({ onClose }) {
     onClose && onClose();
   };
 
-  const { data } = useGetQuotes();
+  const { quotesWithoutMoreFilters } = useGetQuotes();
 
   const { filterQuotes } = useQuoteFilter({ givenMoreFilters: filters });
 
-  const filteredQuotes = data ? filterQuotes(getFlatQuotes(data)) : [];
+  const filteredQuotes = quotesWithoutMoreFilters ? filterQuotes(getFlatQuotes(quotesWithoutMoreFilters)) : [];
 
-  const length = filteredQuotes?.length;
+  const length = [...new Set(filteredQuotes.map(quote => quote?.product?.name))]?.length;
 
   // HAVE TO RENDER THESE QUOTES
 
