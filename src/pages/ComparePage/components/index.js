@@ -5,6 +5,7 @@ import "styled-components/macro";
 import * as mq from "../../../utils/mediaQueries";
 import { CircleCloseButton, PremiumButton } from "../../../components";
 import { useEffect } from "react";
+import { images } from "../../../assets/logos/logo";
 
 export function ShowDifference({ onChange, checked, ...props }) {
   const { colors } = useTheme();
@@ -74,16 +75,8 @@ export function ProductCard({
     updateCompareQuotes && updateCompareQuotes(compareQuotes);
   }, [compareQuoteChange]);
 
-  const logo = getCompanyLogo(quote.company_alias);
-
-  useEffect(() => {
-    fetch(logo)
-      .then(res => {
-        console.log(res, "TTT");
-        res.blob();
-      })
-      .then(res => console.log(res, "TTT"));
-  }, [logo]);
+  const companyLogo = getCompanyLogo(quote.company_alias);
+  const logo = images[quote.company_alias];
 
   const handleCloseClick = () => {
     onRemove && onRemove(quote);
@@ -111,7 +104,7 @@ export function ProductCard({
         className="compare-pdf-hide"
       />
       <img
-        src={logo}
+        src={logo || companyLogo}
         alt={quote.company_alias}
         css={`
           height: 3em;
