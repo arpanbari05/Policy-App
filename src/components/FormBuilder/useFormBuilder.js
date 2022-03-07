@@ -72,7 +72,6 @@ const useFormBuilder = (
         item => item.name === variableName,
       );
 
-      console.log("sfbnkjf",insuredDetails,name)
       
 
       if (filteredItem) {
@@ -96,6 +95,7 @@ const useFormBuilder = (
     } else if (name) {
       let [filteredItem] = schema.filter(item => item.name === name);
       // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
+     
 
      
       if (filteredItem) {
@@ -149,9 +149,11 @@ const useFormBuilder = (
           }
         }
 
-        setIsValid(tempIsValid);
+        
       });
     }
+    console.log("akfvbkadjvb",errorsTemp,tempIsValid)
+    setIsValid(tempIsValid);
     setErrors({ ...errors, ...errorsTemp });
   };
 
