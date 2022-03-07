@@ -61,7 +61,7 @@ export function Riders({
 
   if (isLoading || isUninitialized)
     return (
-      <DetailsSectionWrap>
+      <DetailsSectionWrap isProductDetailsPage={isProductDetailsPage}>
         <CardSkeletonLoader />
       </DetailsSectionWrap>
     );
@@ -72,7 +72,7 @@ export function Riders({
 
   if (isError)
     return (
-      <DetailsSectionWrap>
+      <DetailsSectionWrap isProductDetailsPage={isProductDetailsPage}>
         <div className="d-flex gap-3 align-items-center">
           <p className="m-0">Something went wrong while getting riders!</p>
           {/* <p>{error.data?.message}</p> */}
@@ -119,7 +119,7 @@ export function Riders({
   };
 
   return (
-    <DetailsSectionWrap className="mt-3">
+    <DetailsSectionWrap className="mt-3"  isProductDetailsPage={isProductDetailsPage}>
       <FeatureSection
         css={`
           ${mobile} {
@@ -461,7 +461,10 @@ const ShowMoreButton = styled.button`
 `;
 
 export const DetailsSectionWrap = styled.section`
-  padding: 0;
+  padding: 0
+    ${({ isProductDetailsPage }) => {
+      return !isProductDetailsPage && "6%";
+    }};
   margin: auto;
   margin-top: 40px;
   ${tabletAndMobile} {
