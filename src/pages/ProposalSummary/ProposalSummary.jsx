@@ -193,8 +193,8 @@ console.log("snldvb",proposalData,isLoading)
               `}
             >
               <div class="col-md-4 position-relative">
-              {true && (
-            <MultipleWrapper>
+              {show && (
+<MultipleWrapper>
               <PayList>
                 {policyStatus &&
                   policyStatus.map(item => (

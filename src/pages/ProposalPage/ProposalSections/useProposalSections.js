@@ -8,6 +8,7 @@ import {
   setProposalData,
   setShowBMI,
   setShowNSTP,
+  setActiveIndex
 } from "./ProposalSections.slice";
 
 const useProposalSections = (
@@ -39,11 +40,11 @@ const useProposalSections = (
         submit !== "PARTIAL" &&
         finalSubmit
       ) {
-        setActive(prev => prev + 1);
+        // setActive(prev => prev + 1);
       }
     } else if (isValid && submit) {
       dispatch(
-        saveProposalData({ [name]: values }, () => setActive(prev => prev + 1)),
+        saveProposalData({ [name]: values }, () => dispatch(setActiveIndex(false))),
       );
 
       setSubmit(false);
@@ -85,7 +86,8 @@ const useProposalSections = (
 
               dispatch(
                 getCart(true, () => {
-                  setActive(prev => prev + 1);
+                  // setActive(prev => prev + 1);
+                  dispatch(setActiveIndex(false))
                 }),
               );
               }
@@ -107,12 +109,14 @@ const useProposalSections = (
                 }
               });
               if (flag) dispatch(setShowNSTP(true));
-              setActive(prev => prev + 1);
+              // setActive(prev => prev + 1);
+              dispatch(setActiveIndex(false))
             } else if (
               !isValid.some(item => item === undefined || item === false) &&
               submit
             ) {
-              setActive(prev => prev + 1);
+              // setActive(prev => prev + 1);
+              dispatch(setActiveIndex(false))
             }
           },
           errors => {

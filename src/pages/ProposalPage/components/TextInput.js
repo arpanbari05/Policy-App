@@ -109,7 +109,7 @@ const TextInput = ({
                 onChange(e);
                 setFallbackValue(e.target.value);
               }
-            } else if (checkValidation?.["matches"].includes("mobile")) {
+            } else if (checkValidation?.["matches"] && checkValidation?.["matches"].includes("mobile")) {
               console.log("hell0");
               if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0])) && e.target.value.length <= 10) {
                 onChange(e);
@@ -145,7 +145,7 @@ const TextInput = ({
               checkPreviousChar(e.target.value, ".") &&
               checkAllChar(e.target.value, forbiddedSymbols)
             ) {
-              if (checkValidation?.["matches"].includes("mobile")) {
+              if (checkValidation?.["matches"] && checkValidation?.["matches"].includes("mobile")) {
                 if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0]))) {
                   onChange(e);
                   setFallbackValue(e.target.value);
@@ -189,11 +189,9 @@ const TextInput = ({
         defaultValue={defaultValue}
       />
       <Label>{checkValidation?.required && label ? `${label}*` : label || ""}</Label>
-      {
-        !isFocused && (
+     
           <p className="formbuilder__error">{error}</p>
-        )
-      }
+      
     </InputContainer>
   );
 };
