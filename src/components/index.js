@@ -76,7 +76,7 @@ export function Page({
   ...props
 }) {
   return (
-    <div id={id} {...props} >
+    <div id={id} {...props}>
       {loader ? loader : null}
       <Import
         mobile={() =>
@@ -182,18 +182,7 @@ export function Button({
       {...props}
     >
       {children}
-      {loader ? (
-        <CircleLoader animation="border" />
-      ) : (
-        arrow && (
-          <FiArrowRight
-            css={`
-              font-size: 1.27em;
-              margin-left: 0.27em;
-            `}
-          />
-        )
-      )}
+      {loader && <CircleLoader animation="border" />}
     </button>
   );
 }
@@ -461,7 +450,7 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
         onClick={handleBuyClick}
         loader={isLoading}
         css={`
-          font-size: .89rem;
+          font-size: 0.89rem;
         `}
         {...props}
       >
