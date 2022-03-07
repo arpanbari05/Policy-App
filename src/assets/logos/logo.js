@@ -34,7 +34,6 @@ const images = {
   aditya_birla: aditya,
   manipal_cigna: manipal,
   hdfc_ergo: hdfc,
-  icici_lombard: icici_lombard,
   sbi_general: sbi_g,
   kotak_mahindra: kotak_g,
   raheja_qbe_general: raheja_log,
@@ -49,9 +48,10 @@ const images = {
   national_insurance,
   new_india_assurance,
   universal_sompo,
+  icici_lombard,
   fyntune,
   renew_buy,
-  Pinc
+  Pinc,
 };
 
 export { images };
