@@ -124,28 +124,28 @@ function CoverFilterModal({ onClose, ...props }) {
               key={cover.code}
             />
           ))}
-        </OptionWrapper>
-        <div
-          style={{
-            fontWeight: "600",
-          }}
-          className="text-center w-100"
-        >
-          OR
-        </div>
+          <div
+            style={{
+              fontWeight: "600",
+            }}
+            className="text-center w-100"
+          >
+            OR
+          </div>
 
-        <CustomInputWrapper>
-          <input
-            type="number"
-            placeholder="Enter your own cover."
-            className="w-100"
-            value={customCover}
-            onChange={handleCustomCoverChange}
-          />
-          {customCoverError ? (
-            <div className="bottom_msg">{customCoverError}</div>
-          ) : null}
-        </CustomInputWrapper>
+          <CustomInputWrapper>
+            <input
+              type="number"
+              placeholder="Enter your own cover."
+              className="w-100"
+              value={customCover}
+              onChange={handleCustomCoverChange}
+            />
+            {customCoverError ? (
+              <div className="bottom_msg">{customCoverError}</div>
+            ) : null}
+          </CustomInputWrapper>
+        </OptionWrapper>
       </div>
     </CustomModal1>
   );
