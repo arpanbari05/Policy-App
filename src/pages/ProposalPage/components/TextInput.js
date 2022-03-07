@@ -134,6 +134,7 @@ const TextInput = ({
               setFallbackValue(e.target.value);
             }
           } else if (
+            checkValidation?.["matches"] === "alphanum" ||
             checkValidation?.["matches"] === "name" ||
             checkValidation?.["matches"] === "pan" ||
             checkValidation?.["matches"] === "address" ||
