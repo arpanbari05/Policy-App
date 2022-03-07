@@ -479,7 +479,7 @@ function EditMembers({ onClose }) {
           />
           {!unavailable_message ? (
             <div>
-              <CartDetailRow
+              {/* <CartDetailRow
                 title="Premium"
                 value={
                   <span
@@ -490,7 +490,7 @@ function EditMembers({ onClose }) {
                     {amount(currentCartEntry.total_premium)}
                   </span>
                 }
-              />
+              /> */}
               <CartDetailRow
                 title={
                   <span
@@ -522,24 +522,24 @@ function EditMembers({ onClose }) {
           `}
         >
           <DetailsWrap>
-            <Title>Previous Total Premium</Title>
-            <Value>
+            <DetailsWrap.Title>Previous Total Premium</DetailsWrap.Title>
+            <DetailsWrap.Value>
               {getDisplayPremium({
                 total_premium: +currentCartEntry?.discounted_total_premium,
                 tenure: currentCartEntry?.tenure,
               })}
-            </Value>
+            </DetailsWrap.Value>
           </DetailsWrap>
           <DetailsWrap>
-            <Title style={{ color: colors.secondary_color }}>
+            <DetailsWrap.Title style={{ color: colors.secondary_color }}>
               Revised Total Premium
-            </Title>
-            <Value>
+            </DetailsWrap.Title>
+            <DetailsWrap.Value>
               {getDisplayPremium({
                 total_premium: +updatedCartEntry?.discounted_total_premium,
                 tenure: updatedCartEntry?.tenure,
               })}
-            </Value>
+            </DetailsWrap.Value>
           </DetailsWrap>
           <DetailsWrap>
             <Button className="w-100" onClick={handleCloseClick}>
@@ -590,15 +590,16 @@ const DetailsWrap = styled.div`
   align-items: center;
 `;
 
-const Title = styled.span`
+DetailsWrap.Title = styled.span`
   font-size: 15px;
   color: rgb(86, 87, 88);
   text-align: center;
+  font-weight: 900;
   ${small} {
     font-size: 11px;
   }
 `;
-const Value = styled.span`
+DetailsWrap.Value = styled.span`
   font-size: 15px;
   color: rgb(86, 87, 88);
   ${small} {

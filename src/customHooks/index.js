@@ -727,8 +727,8 @@ export function useTenureDiscount(groupCode) {
     product_id: product.id,
     group: groupCode,
     feature_options: Object.keys(feature_options)
-    .map(key => `${key}=${feature_options[key]}`)
-    .join('&'),
+      .map(key => `${key}=${feature_options[key]}`)
+      .join("&"),
     journeyType,
     deductible,
   });
@@ -1598,7 +1598,12 @@ export function useRiders({
     });
   };
 
-  return { query, riders: riders.filter(rider => rider.total_premium > 0), handleChange, getInititalRiders };
+  return {
+    query,
+    riders: riders.filter(rider => rider.total_premium > 0),
+    handleChange,
+    getInititalRiders,
+  };
 }
 
 export function useAddOns(groupCode) {
