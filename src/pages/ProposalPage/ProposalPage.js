@@ -55,7 +55,7 @@ const ProposalPage = () => {
 
   const enquiryId = queryStrings.get("enquiryId");
   //const currentSchema = starSchema;
-
+  const [activateLoader, setActivateLoader] = useState(false);
   let { cartEntries } = useCart();
 
   const [listOfForms, setListOfForms] = useState([]);
@@ -79,15 +79,15 @@ const ProposalPage = () => {
 
   const PrimaryShade = primary_shade;
 
-  useEffect(() => {
-    if (listOfForms.length && active >= listOfForms.length) {
-      dispatch(
-        submitProposalData(() => {
-          history.push("/proposal_summary?enquiryId=" + enquiryId);
-        }),
-      );
-    }
-  }, [active]);
+  // useEffect(() => {
+  //   if (listOfForms.length && active >= listOfForms.length) {
+  //     dispatch(
+  //       submitProposalData(() => {
+  //         history.push("/proposal_summary?enquiryId=" + enquiryId);
+  //       }),
+  //     );
+  //   }
+  // }, [active]);
 
   useEffect(() => {
     dispatch(getProposalFields());
@@ -101,10 +101,53 @@ const ProposalPage = () => {
     setActive(activeIndex);
   }, [activeIndex]);
 
+// to get unfilled form 
+  useEffect(() => {
+    // if (listOfForms.length && active >= listOfForms.length) {
+    console.log("gbyutf", proposalData);
+
+    if (
+      Object.keys(proposalData).length &&
+      activeIndex === false 
+    ) {
+      let unfilledInfoTabIndex;
+
+      listOfForms.find((e) => {
+        if (!proposalData[e] || !Object.keys(proposalData[e]).length) {
+          return (unfilledInfoTabIndex = listOfForms.indexOf(e));
+
+          // setActive((prev) => prev + 1)
+        }
+      });
+      if (!unfilledInfoTabIndex) {
+        setActivateLoader(true);
+        dispatch(
+          submitProposalData(() => {
+            
+            history.replace("/proposal_summary?enquiryId=" + enquiryId);
+            // setContinueBtnClick(false)
+            setActivateLoader(false);
+          })
+        );
+      } else {
+        setActive(unfilledInfoTabIndex);
+      }
+    } else {
+      setActive(activeIndex);
+    }
+  }, [activeIndex, proposalData]);
+
+  // to stop loader on cancle cta error popup
+  useEffect(() => {
+    if (!showErrorPopup.show) {
+      setActivateLoader(false);
+    }
+  }, [showErrorPopup]);
+
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
 
-    if (active >= listOfForms.length && listOfForms.length) {
+    if (activateLoader) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
           {/* <span className="lds-dual-ring colored--loader"></span> */}
