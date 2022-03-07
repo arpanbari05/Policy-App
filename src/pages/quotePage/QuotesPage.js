@@ -156,7 +156,7 @@ function ClearFilters(props) {
       onClick={resetFilters}
       css={`
         background-color: ${primary_shade};
-        color: #0a87ff;
+        color: ${primary_color};
         font-weight: 900;
         width: max-content;
         padding: 0.6em 1em;
