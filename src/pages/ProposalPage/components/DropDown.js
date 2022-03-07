@@ -71,7 +71,7 @@ const DropDown = ({
           !asyncOptions) ||
           asyncOptions ||
           !checkValidation?.required) && (
-          <option disabled value={dropPlaceholder || label || "- Select -"}>{dropPlaceholder || label || "- Select -"}</option>
+          <option selected="true" disabled="disabled" value={dropPlaceholder || label || "- Select -"}>{dropPlaceholder || label || "- Select -"}</option>
         )}
         {selectedValues?.title &&
         selectedValues.title === "mrs" &&
