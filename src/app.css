@@ -900,3 +900,16 @@ h5,
 h6 {
   margin: 0;
 }
+
+.back_btn_navbar{
+  width: 20px;
+    height: 20px;
+    background: #ececec;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    margin-right: 10px;
+    font-size: 15px;
+    font-weight: 900;
+}

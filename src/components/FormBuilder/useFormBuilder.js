@@ -65,6 +65,7 @@ const useFormBuilder = (
   const triggerValidation = name => {
     let errorsTemp = {};
     let tempIsValid = true;
+
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
       let findGroup = schema.findIndex(el => el.name === parent);
@@ -92,6 +93,7 @@ const useFormBuilder = (
           if (errorMsg) tempIsValid = false;
         }
       }
+      setIsValid(tempIsValid);
     } else if (name) {
       let [filteredItem] = schema.filter(item => item.name === name);
       // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
@@ -119,6 +121,7 @@ const useFormBuilder = (
           if (errorMsg) tempIsValid = false;
         }
       }
+      setIsValid(tempIsValid);
     } else {
       schema.forEach(item => {
         if (item instanceof Array) {
@@ -146,14 +149,15 @@ const useFormBuilder = (
           if (renderField(item, values)) {
             errorsTemp[item.name] = errorMsg;
             if (errorMsg) tempIsValid = false;
+console.log("bfsfnbjkls",tempIsValid)
+
           }
         }
 
-        
+        setIsValid(tempIsValid);
       });
     }
-
-    setIsValid(tempIsValid);
+    
     setErrors({ ...errors, ...errorsTemp });
   };
 
