@@ -152,7 +152,7 @@ const useFormBuilder = (
         
       });
     }
-    console.log("akfvbkadjvb",errorsTemp,tempIsValid)
+
     setIsValid(tempIsValid);
     setErrors({ ...errors, ...errorsTemp });
   };
