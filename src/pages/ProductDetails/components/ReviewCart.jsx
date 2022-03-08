@@ -1510,7 +1510,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
     const additionalDiscounts = useSelector(selectAdditionalDiscounts);
     const findAdditionalDiscount = discountAlias =>
       additionalDiscounts.find(discount => discount.alias === discountAlias);
-    console.log(discounts, "discount");
+
     return (
       <>
         <div>
