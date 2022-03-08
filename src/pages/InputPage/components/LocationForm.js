@@ -143,6 +143,7 @@ function LocationForm() {
           id="location"
           value={selectedCity?.city || locationSearchQuery || ""}
           onChange={handleSearchQueryChange}
+          maxLength={35}
         />
         {error && <ErrorMessage>{error}</ErrorMessage>}
         {!selectedCity && (
