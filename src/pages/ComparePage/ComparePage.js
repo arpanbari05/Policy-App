@@ -542,8 +542,6 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
         )
       )}
 
-      {console.log("CompareQuotes", compareQuotes)}
-
       {!select.isSelectedSectionView ? (
         <FeatureRow
           title={"Tenure"}
@@ -626,7 +624,7 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
 
   const handleChange = evt => {
     const updatedQuote = getQuoteBySumInsured(evt.target.value);
-    console.log(updatedQuote);
+
     if (!updatedQuote) return;
     updateCompareQuote({
       updatedQuote,

@@ -119,7 +119,10 @@ export function Riders({
   };
 
   return (
-    <DetailsSectionWrap className="mt-3"  isProductDetailsPage={isProductDetailsPage}>
+    <DetailsSectionWrap
+      className="mt-3"
+      isProductDetailsPage={isProductDetailsPage}
+    >
       <FeatureSection
         css={`
           ${mobile} {
