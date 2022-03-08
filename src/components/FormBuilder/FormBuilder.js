@@ -59,7 +59,7 @@ const FormBuilder = ({
     formName,
     insuredDetails,
   );
-  console.log("fhbvhifef", values);
+
 
   const [trigger, setTrigger] = useState(false);
 
@@ -385,7 +385,7 @@ const FormBuilder = ({
 
                           && console.log("fekjbkdjabv",values[schema[index-1].name],values,item)
                         } */}
-                        <p>error</p>
+                        {/* <p>error</p> */}
                       </CustomWrapper>
                     );
                 })}
