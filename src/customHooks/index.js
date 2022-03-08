@@ -933,7 +933,7 @@ export function useGetQuotes(queryConfig = {}) {
     isLoading,
     loadingPercentage,
     isNoQuotes,
-    quotesWithoutMoreFilters
+    quotesWithoutMoreFilters,
   };
 }
 

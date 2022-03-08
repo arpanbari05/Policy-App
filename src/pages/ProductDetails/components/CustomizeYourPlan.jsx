@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { mobile } from "../../../utils/mediaQueries";
-import { amount } from "../../../utils/helper";
+import { amount, careRidersConditionChecker } from "../../../utils/helper";
 
 export function RidersSection({ loaderStop, isProductDetailsPage = false }) {
   let { groupCode } = useParams();
@@ -103,23 +103,11 @@ export function Riders({
       "You can add 'Riders' to you basic health insurance plan for additional benefits. Currently no riders are available for this base plan.";
   }
 
-  const careRidersConditionChecker = (quote, riderAlias) => {
-    const isDisabled =
-      quote.company_alias === "care_health" &&
-      riderAlias === "REDPEDWAITPRD" &&
-      !riders.find(singleRider => singleRider?.alias === "CAREWITHNCB")
-        ?.isSelected;
-    const showPEDRiderWarning =
-      quote?.product?.name === "Care" && riderAlias === "REDPEDWAITPRD";
-
-    return {
-      isDisabled,
-      showPEDRiderWarning,
-    };
-  };
-
   return (
-    <DetailsSectionWrap className="mt-3"  isProductDetailsPage={isProductDetailsPage}>
+    <DetailsSectionWrap
+      className="mt-3"
+      isProductDetailsPage={isProductDetailsPage}
+    >
       <FeatureSection
         css={`
           ${mobile} {
@@ -146,7 +134,9 @@ export function Riders({
                 rider={rider}
                 onChange={handleChange}
                 key={rider.id}
+                riders={riders}
                 isFetching={isFetching}
+                company={quote?.product?.company?.name}
                 isProductDetailsPage={isProductDetailsPage}
                 isDisabled={
                   careRidersConditionChecker(quote, rider?.alias)?.isDisabled
@@ -166,7 +156,9 @@ export function Riders({
 export function RiderCardNew({
   rider,
   onChange,
+  riders,
   isFetching,
+  company,
   isProductDetailsPage,
   isDisabled,
   showPEDRiderWarning,
@@ -175,6 +167,23 @@ export function RiderCardNew({
   const { isSelected } = rider;
 
   const { colors } = useTheme();
+
+  // CARE RIDERS RESTRICTIONS
+  useEffect(() => {
+    if (
+      company === "Care Health Insurance" &&
+      rider?.name === "No Claim Bonus" &&
+      !rider?.isSelected
+    ) {
+      const carePEDRider = riders?.find(
+        singleRider => singleRider?.alias === "REDPEDWAITPRD",
+      );
+      onChange({
+        ...carePEDRider,
+        isSelected: false,
+      });
+    }
+  }, [rider?.isSelected]);
 
   const handleRiderOptionChange = riderOption => {
     onChange &&
@@ -189,7 +198,7 @@ export function RiderCardNew({
   };
 
   return (
-    <RiderCardWrap {...props} isSelected={isSelected}>
+    <RiderCardWrap {...props} isSelected={isSelected} isDisabled={isDisabled}>
       {showPEDRiderWarning && (
         <div className="d-flex align-items-center justify-content-end">
           <span
@@ -382,6 +391,7 @@ const RiderCardWrap = styled.div`
     box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
   }
 
+  opacity: ${({ isDisabled }) => (isDisabled ? "0.8" : "1")};
   ${mobile} {
     flex: unset;
     gap: 1em;

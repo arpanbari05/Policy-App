@@ -542,8 +542,6 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
         )
       )}
 
-      {console.log("CompareQuotes", compareQuotes)}
-
       {!select.isSelectedSectionView ? (
         <FeatureRow
           title={"Tenure"}
@@ -626,7 +624,7 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
 
   const handleChange = evt => {
     const updatedQuote = getQuoteBySumInsured(evt.target.value);
-    console.log(updatedQuote);
+
     if (!updatedQuote) return;
     updateCompareQuote({
       updatedQuote,
@@ -1252,6 +1250,10 @@ function FeatureRow({
                 font-size: 16px;
                 font-weight: bold;
                 color: #273a5a;
+
+                @media (max-width: 1366px) {
+                  font-size: 14px;
+                }
               `}
             >
               {title}

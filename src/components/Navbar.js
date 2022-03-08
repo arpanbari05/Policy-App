@@ -41,7 +41,7 @@ function LogoLink() {
   );
 }
 
-const Navbar = () => {
+const Navbar = ({ backButton: BackButton = <></> }) => {
   const location = useLocation();
 
   const isRootRoute = useRouteMatch({
@@ -88,6 +88,8 @@ const Navbar = () => {
               height: 100%;
             `}
           >
+          {/* to change back btn style use class ".back_btn_navbar" for similarity */}
+          {BackButton}
             <LogoLink />
             {!location.pathname.startsWith("/input") && trace_id && (
               <div

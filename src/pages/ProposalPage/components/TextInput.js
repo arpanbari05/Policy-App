@@ -137,6 +137,7 @@ const TextInput = ({
             checkValidation?.["matches"] === "alphanum" ||
             checkValidation?.["matches"] === "name" ||
             checkValidation?.["matches"] === "pan" ||
+            checkValidation?.["matches"] === "onlyDigits" ||
             checkValidation?.["matches"] === "address" ||
             (checkValidation?.["matches"] &&
               checkValidation?.["matches"].includes("mobile"))
