@@ -475,7 +475,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continu
           onClick={() => {
             setInitColor("#c7222a");
             
-            if (name === "Medical Details" && canProceed.canProceed && !isValid.some(item => item === undefined || item === false)) {
+            if (name === "Medical Details" && canProceed.canProceed ) {
               setSubmit("PARTIAL");
               continueSideEffects();
             } else if (name !== "Medical Details") {
