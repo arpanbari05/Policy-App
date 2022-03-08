@@ -1064,13 +1064,15 @@ function ProceedWithoutPlan({ group, link, handleClose = () => {} }) {
     colors: { primary_color: PrimaryColor },
   } = useTheme();
   const [groupId, setGroupId] = useState(skipToken);
-  const { isLoading, data, error } = useDeleteGroupQuery(groupId);
+  const { isLoading, error, isUninitialized } = useDeleteGroupQuery(groupId);
   const handleContinue = () => {
     setGroupId(group.id);
-    if (!error && !isLoading) {
-      history.push(link);
-    }
   };
+
+  if (!error && !isLoading && !isUninitialized) {
+    history.push(link);
+  }
+
 
   return (
     <div className="d-flex align-items-center justify-content-between mb-3 mx-1">

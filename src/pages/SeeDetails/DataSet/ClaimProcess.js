@@ -90,9 +90,7 @@ const dataSet = dataArray => {
               }
             `}
           >
-            <a target="_blank" rel="noreferrer" href="#nothing">
-              {data.Image}
-            </a>
+            {data.Image}
           </div>
         </div>
       </div>,
