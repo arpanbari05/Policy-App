@@ -1250,6 +1250,10 @@ function FeatureRow({
                 font-size: 16px;
                 font-weight: bold;
                 color: #273a5a;
+
+                @media (max-width: 1366px) {
+                  font-size: 14px;
+                }
               `}
             >
               {title}
