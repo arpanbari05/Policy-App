@@ -67,7 +67,13 @@ export function useFiltersSlot({ initialFilters } = {}) {
     setFilters(updateFilters);
   };
 
-  const clearFilters = () => setFilters({});
+  const clearFilters = () =>
+    setFilters({
+      others: [],
+      popular_filters: [],
+      pre_existing_ailments: null,
+      no_claim_bonus: null,
+    });
 
   return { filters, updateFilter, clearFilters };
 }
@@ -258,15 +264,17 @@ export function FilterOptions({
 
   return (
     <OptionsWrap {...props}>
-      {options.filter(opt => opt.code !== "no_claim_bonus_2").map(option => (
-        <FilterOption
-          key={option.code}
-          option={option}
-          onChange={handleChange}
-          checked={isSelected(option)}
-          type={type}
-        />
-      ))}
+      {options
+        .filter(opt => opt.code !== "no_claim_bonus_2")
+        .map(option => (
+          <FilterOption
+            key={option.code}
+            option={option}
+            onChange={handleChange}
+            checked={isSelected(option)}
+            type={type}
+          />
+        ))}
     </OptionsWrap>
   );
 }
@@ -316,10 +324,10 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
         `}
         name={option.display_name}
       >
-          <FilterDataSet
-            name={option.display_name}
-            description={option.description}
-          />
+        <FilterDataSet
+          name={option.display_name}
+          description={option.description}
+        />
         <span
           css={`
             font-size: 1.6rem;
@@ -531,11 +539,14 @@ function FilterDataSet({ name, description, ...props }) {
       placement="right"
       overlay={<Tooltip {...props}>{description}</Tooltip>}
     >
-      <div style={{fontWeight: "bold", fontSize: 14}} className="d-flex align-items-center gap-1">
-        {name} 
-      <span>
-        <IoMdInformationCircleOutline />
-      </span>
+      <div
+        style={{ fontWeight: "bold", fontSize: 14 }}
+        className="d-flex align-items-center gap-1"
+      >
+        {name}
+        <span>
+          <IoMdInformationCircleOutline />
+        </span>
       </div>
     </OverlayTrigger>
   );

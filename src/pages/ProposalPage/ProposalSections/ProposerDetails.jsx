@@ -21,8 +21,9 @@ const ProposerDetails = ({
   defaultValue = {},
   activeForm,
   setProposerDactive,
+  continueSideEffects
 }) => {
-  const { values, setValues, setValid, submit, setSubmit, setCustomValid } =
+  const { values, setValues, setValid,isValid, submit, setSubmit, setCustomValid } =
     useProposalSections(setActive, name, defaultValue);
   const proposelSelectedDOBRedux = useSelector(
     ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob
@@ -110,7 +111,11 @@ const ProposerDetails = ({
         />
         <ContinueBtn
           onClick={() => {
-            setSubmit(true);
+            // if(isValid !== false && isValid !== undefined){
+              setSubmit(true);
+            continueSideEffects();
+            // }
+            
           }}
         />
       </div>

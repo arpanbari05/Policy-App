@@ -7,6 +7,7 @@ import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
 import { FaChevronLeft, FaPen, FaRegEdit } from "react-icons/fa";
+import { MdOutlineArrowBackIos } from "react-icons/md";
 import { starSchema } from "./ProposalDetailsSchema";
 import { InsuredDetails, ProposerDetails } from "./ProposalSections";
 import BMI from "./ProposalSections/components/BMI";
@@ -40,7 +41,7 @@ import { Page } from "../../components";
 /* ===============================test================================= */
 const ProposalPage = () => {
   const history = useHistory();
-
+const [continueBtnClick,setContinueBtnClick] = useState(false);
   const [memberGroups, setMemberGroups] = useState([]);
 
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
@@ -67,7 +68,7 @@ const ProposalPage = () => {
       setListOfForms(Object.keys(currentSchema));
   }, [currentSchema]);
   const dispatch = useDispatch();
-  const { activeIndex, proposalData, showErrorPopup } = useSelector(
+  const { activeIndex, proposalData, showErrorPopup,showBMI } = useSelector(
     state => state.proposalPage,
   );
   console.log("wvbiwrvbwhxxx", proposalData);
@@ -78,6 +79,18 @@ const ProposalPage = () => {
   const PrimaryColor = primary_color;
 
   const PrimaryShade = primary_shade;
+
+  const backButtonForNav = (
+    <Link
+      className="back_btn_navbar"
+      style={{ color: primary_color }}
+      to={getUrlWithEnquirySearch(
+        `/productdetails/${Math.max(...memberGroups)}`,
+      )}
+    >
+      <MdOutlineArrowBackIos />
+    </Link>
+  );
 
   // useEffect(() => {
   //   if (listOfForms.length && active >= listOfForms.length) {
@@ -101,14 +114,16 @@ const ProposalPage = () => {
     setActive(activeIndex);
   }, [activeIndex]);
 
-// to get unfilled form 
+  // to get unfilled form
   useEffect(() => {
     // if (listOfForms.length && active >= listOfForms.length) {
     console.log("gbyutf", proposalData);
 
     if (
       Object.keys(proposalData).length &&
-      activeIndex === false 
+      activeIndex === false &&
+      continueBtnClick &&
+      !showBMI
     ) {
       let unfilledInfoTabIndex;
 
@@ -125,7 +140,7 @@ const ProposalPage = () => {
           submitProposalData(() => {
             
             history.replace("/proposal_summary?enquiryId=" + enquiryId);
-            // setContinueBtnClick(false)
+            setContinueBtnClick(false)
             setActivateLoader(false);
           })
         );
@@ -200,6 +215,9 @@ const ProposalPage = () => {
                 active={active}
                 setActive={setActive}
                 name={activeForm}
+                continueSideEffects={() => {
+                  setContinueBtnClick(true)
+                }}
                 defaultValue={defaultData}
                 setProposerDactive={setProposerDactive}
               />
@@ -254,6 +272,9 @@ const ProposalPage = () => {
                 schema={currentSchema ? currentSchema[activeForm] : {}}
                 setActive={setActive}
                 name={activeForm}
+                continueSideEffects={() => {
+                  setContinueBtnClick(true)
+                }}
                 defaultValue={defaultData}
               />
             </>
@@ -305,6 +326,9 @@ const ProposalPage = () => {
                 schema={currentSchema ? currentSchema[activeForm] : {}}
                 setActive={setActive}
                 name={activeForm}
+                continueSideEffects={() => {
+                  setContinueBtnClick(true)
+                }}
                 defaultValue={defaultData}
               />
             </>
@@ -358,6 +382,9 @@ const ProposalPage = () => {
                 schema={currentSchema ? currentSchema[activeForm] : {}}
                 setActive={setActive}
                 name={activeForm}
+                continueSideEffects={() => {
+                  setContinueBtnClick(true)
+                }}
                 defaultValue={defaultData}
               />
             </>
@@ -399,7 +426,11 @@ const ProposalPage = () => {
     );
   };
   return (
-    <Page noNavbarForMobile={true} id="proposalPage">
+    <Page
+      noNavbarForMobile={true}
+      id="proposalPage"
+      backButton={backButtonForNav}
+    >
       <MobileHeader
         css={`
           background: ${PrimaryColor};
