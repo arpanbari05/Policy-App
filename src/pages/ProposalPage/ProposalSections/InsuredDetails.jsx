@@ -22,7 +22,7 @@ import CheckBox from "../components/Checkbox/Checkbox";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme } from "../../../customHooks";
 
-const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
+const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continueSideEffects }) => {
   const [show, setShow] = useState(1);
   const {
     values,
@@ -474,10 +474,13 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack }) => {
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
-            if (name === "Medical Details" && canProceed.canProceed && !isValid.some(item => item === undefined || item === false)) {
+            
+            if (name === "Medical Details" && canProceed.canProceed ) {
               setSubmit("PARTIAL");
+              continueSideEffects();
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
+              continueSideEffects();
             }
             console.log("Here i m clicked")
           }
