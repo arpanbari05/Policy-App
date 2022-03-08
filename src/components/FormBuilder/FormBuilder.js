@@ -381,11 +381,14 @@ const FormBuilder = ({
                         {/* {
                           schema[index-1].additionalOptions.showMembersIf &&
                           schema[index-1].additionalOptions.showMembersIf.split("||").some(key => values[key][`is${key}`]) &&
-                          Object.keys(values[schema[index-1].name].members).filter(key => values[schema[index-1].name].members[key]).some(key => values[schema[index-1].name][key])
-
-                          && console.log("fekjbkdjabv",values[schema[index-1].name],values,item)
+                          values[schema[index-1].name].members[member] &&
+                          !values[schema[index-1].name][member] ||
+                          (!Object.keys(values[schema[index-1].name][member]).length ||
+                          !Object.keys(values[schema[index-1].name][member]).some(key => values[schema[index-1].name][member][key] === "Y")) 
+                        ?(<p className="formbuilder__error">Select atleast one!</p>):(<></>)
                         } */}
-                        {/* <p>error</p> */}
+                        
+                        {/* .some(key => Object.keys(values[schema[index-1].name][key]).some(key2 => values[schema[index-1].name][key][key2] === "Y")) */}
                       </CustomWrapper>
                     );
                 })}
