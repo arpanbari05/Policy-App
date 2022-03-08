@@ -1,8 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import CardSkeletonLoader from "../../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
-import { useCartProduct } from "../../../Cart";
-import RiderCard from "../../../../components/Common/RiderCard/RiderCard";
-import { getAbhiRiders, getRiders } from "../../../SeeDetails/SeeDetails";
 import FeatureSection from "../FeatureSection/FeatureSection";
 import styled from "styled-components/macro";
 import ErrorMessage from "../../../../components/Common/ErrorMessage/ErrorMessage";
@@ -10,7 +7,7 @@ import { useSelector } from "react-redux";
 import { small, tabletAndMobile } from "../../../../utils/mediaQueries";
 import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { amount } from "../../../../utils/helper";
+import { amount, careRidersConditionChecker } from "../../../../utils/helper";
 import {
   useCart,
   useFrontendBoot,
@@ -207,21 +204,6 @@ function MobileAddOnCoverages({
       "You can add 'Riders' to you basic health insurance plan for additional benefits. Currently no riders are available for this base plan.";
   }
 
-  const careRidersConditionChecker = (quote, riderAlias) => {
-    const isDisabled =
-      quote.company_alias === "care_health" &&
-      riderAlias === "REDPEDWAITPRD" &&
-      !riders.find(singleRider => singleRider?.alias === "CAREWITHNCB")
-        ?.isSelected;
-    const showPEDRiderWarning =
-      quote?.product?.name === "Care" && riderAlias === "REDPEDWAITPRD";
-
-    return {
-      isDisabled,
-      showPEDRiderWarning,
-    };
-  };
-
   return (
     <div
       css={`
@@ -249,14 +231,17 @@ function MobileAddOnCoverages({
           {riders.map(rider => (
             <RiderCardNew
               rider={rider}
+              riders={riders}
+              company={quote?.product?.company?.name}
               onChange={handleChange}
               key={rider.id}
               isFetching={isFetching}
               isDisabled={
-                careRidersConditionChecker(quote, rider?.alias)?.isDisabled
+                careRidersConditionChecker(quote, rider?.alias, riders)
+                  ?.isDisabled
               }
               showPEDRiderWarning={
-                careRidersConditionChecker(quote, rider?.alias)
+                careRidersConditionChecker(quote, rider?.alias, riders)
                   .showPEDRiderWarning
               }
             />
@@ -271,6 +256,8 @@ export default MobileAddOnCoverages;
 
 function RiderCardNew({
   rider,
+  riders,
+  company,
   onChange,
   isFetching,
   isDisabled,
@@ -280,6 +267,23 @@ function RiderCardNew({
   const { isSelected } = rider;
 
   const { colors } = useTheme();
+
+  // CARE RIDERS RESTRICTIONS
+  useEffect(() => {
+    if (
+      company === "Care Health Insurance" &&
+      rider?.name === "No Claim Bonus" &&
+      !rider?.isSelected
+    ) {
+      const carePEDRider = riders?.find(
+        singleRider => singleRider?.alias === "REDPEDWAITPRD",
+      );
+      onChange({
+        ...carePEDRider,
+        isSelected: false,
+      });
+    }
+  }, [rider?.isSelected]);
 
   const handleChange = evt => {
     if (rider.is_mandatory) return;
