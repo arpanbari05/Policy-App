@@ -526,7 +526,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
     sum_insured,
     total_premium,
     tenure,
-    mandatory_riders
+    mandatory_riders,
   } = quote;
 
   const { getCompany } = useCompanies();
@@ -535,8 +535,8 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
 
   const netPremium = calculateTotalPremium({
     total_premium,
-    health_riders: mandatory_riders,
-  })
+    health_riders: selectedRiders?.length ? selectedRiders : mandatory_riders,
+  });
 
   const handlePremiumClick = () => {
     buyQuote(quote, selectedRiders).then(cartSummaryModal.on);
@@ -609,9 +609,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 font-weight: bold;
               `}
             >
-              &nbsp;
-              ₹{" "}
-              {parseInt(netPremium).toLocaleString("en-IN")}
+              &nbsp; ₹ {parseInt(netPremium).toLocaleString("en-IN")}
             </span>
           </div>
           <div
