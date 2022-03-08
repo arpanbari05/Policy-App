@@ -93,7 +93,7 @@ const useFormBuilder = (
           if (errorMsg) tempIsValid = false;
         }
       }
-      setIsValid(tempIsValid);
+      // setIsValid(tempIsValid);
     } else if (name) {
       let [filteredItem] = schema.filter(item => item.name === name);
       // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
@@ -121,7 +121,7 @@ const useFormBuilder = (
           if (errorMsg) tempIsValid = false;
         }
       }
-      setIsValid(tempIsValid);
+      // setIsValid(tempIsValid);
     } else {
       schema.forEach(item => {
         if (item instanceof Array) {
