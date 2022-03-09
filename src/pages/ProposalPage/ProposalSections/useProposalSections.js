@@ -11,6 +11,8 @@ import {
   setActiveIndex,
   setFailedBmiData,
 } from "./ProposalSections.slice";
+import { useRenewalPremiumModal } from "../../../customHooks";
+
 
 const useProposalSections = (
   setActive,
@@ -20,18 +22,27 @@ const useProposalSections = (
   setShow,
 ) => {
   const [values, setValues] = useState(defaultValue);
+
   const [isValid, setValid] = useState(
     partialLength ? Array(partialLength) : undefined,
   );
 
   const [customValid, setCustomValid] = useState();
+
   const dispatch = useDispatch();
+
   const [additionalErrors, setAdditionalErrors] = useState({});
+
   const [submit, setSubmit] = useState(false);
+
   const [finalSubmit, setFinalSubmit] = useState(false);
+
   const cart = useSelector(state => state.cart);
   const { activeIndex } = useSelector(({ proposalPage }) => proposalPage);
   const [previousCart] = useState(cart);
+
+  const revisedPremiumPopupUtilityObject =
+    useRenewalPremiumModal();
 
   useEffect(() => {
     if (typeof isValid === "object") {
@@ -87,12 +98,14 @@ const useProposalSections = (
                 );
               } else {
                 dispatch(setFailedBmiData(false))
-                dispatch(
+                revisedPremiumPopupUtilityObject.getUpdatedCart();
+                /* dispatch(
                   getCart(true, () => {
                     // setActive(prev => prev + 1);
+                    revisedPremiumPopup.on();
                     dispatch(setActiveIndex(false));
                   }),
-                );
+                ); */
               }
             } else if (
               name === "Medical Details" &&
@@ -156,6 +169,7 @@ const useProposalSections = (
     setFinalSubmit,
     setCustomValid,
     additionalErrors,
+    revisedPremiumPopupUtilityObject,
   };
 };
 

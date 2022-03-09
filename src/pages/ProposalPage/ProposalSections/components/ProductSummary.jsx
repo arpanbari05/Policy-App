@@ -61,7 +61,6 @@ const ProductSummary = ({ setActive = () => {} }) => {
   let planUnavailableGroups = cartData.data.filter(
     key => key.unavailable_message !== "",
   );
-  //const { proposerDetails } = useSelector(state => state.greetingPage);
 
   const { planDetails } = useSelector(state => state.proposalPage);
 
@@ -70,16 +69,6 @@ const ProductSummary = ({ setActive = () => {} }) => {
   const { getCartEntry, cartEntries } = useCart();
 
   const tenure = getCartEntry(+groups[0].id)?.tenure;
-
-  // const revisedNetPremiumArray = groups?.map(
-  //   singleGroup => getCartEntry(+singleGroup.id)?.netPremium,
-  // );
-
-  // const revisedNetPremium = revisedNetPremiumArray.length
-  //   ? revisedNetPremiumArray.reduce(
-  //       (acc = 0, singleNetPremium) => (acc += singleNetPremium),
-  //     )
-  //   : 0;
 
   const revisedNetPremium = getTotalPremium(cartEntries);
 
@@ -181,18 +170,6 @@ const ProductSummary = ({ setActive = () => {} }) => {
 
   const contentForModal = (
     <>
-      {/* <span
-        css={`
-          width: 100px;
-          height: 100px;
-          border-radius: 100%;
-          background: ${PrimaryShade};
-          position: absolute;
-          top: -41px;
-          z-index: -3;
-          left: -38px;
-        `}
-      ></span> */}
       <span
         onClick={() => {
           setCollapse(!collapse);
