@@ -113,7 +113,7 @@ export const performValidations = (validate, values, name) => {
   const validationArray = Object.keys(validate);
 console.log("sgvnnv",validate, values, name)
   for (let i = 0; i < validationArray.length; ++i) {
-    console.log("hge", validationIndex[validationArray[i]], name);
+    console.log("hgeddd", validationIndex[validationArray[i]], name);
     let result = validationIndex[validationArray[i]](
       validate[validationArray[i]],
       values,
