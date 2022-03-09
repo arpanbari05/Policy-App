@@ -47,7 +47,7 @@ const DropDown = ({
 
   label = label || "- Select -";
   label = checkValidation?.required ? `${label}*` : label;
-
+  console.log(label);
   return (
     <SelectContainer height={height}>
       <Select
@@ -67,8 +67,7 @@ const DropDown = ({
           !checkValidation?.required) && (
           <option
             selected="true"
-            disabled={dropPlaceholder !== "Feet" && "disabled"}
-            value={dropPlaceholder || label || "- Select -"}
+            value={label === "Pincode*" ? dropPlaceholder || label || "" : ""}
           >
             {dropPlaceholder || label || "- Select -"}
           </option>
