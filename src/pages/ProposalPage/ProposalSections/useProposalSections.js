@@ -11,6 +11,7 @@ import {
   setActiveIndex,
 } from "./ProposalSections.slice";
 import { useToggle } from "../../../customHooks";
+import ReviewCartPopup from "../../ProductDetails/components/ReviewCardPopup";
 
 const useProposalSections = (
   setActive,
@@ -91,13 +92,13 @@ const useProposalSections = (
                   ),
                 );
               } else {
-                revisedPremiumPopup.on();
-                /*dispatch(
-                getCart(true, () => {
-                  // setActive(prev => prev + 1);
-                  dispatch(setActiveIndex(false))
-                }),
-              )*/
+                dispatch(
+                  getCart(true, () => {
+                    // setActive(prev => prev + 1);
+                    revisedPremiumPopup.on();
+                    dispatch(setActiveIndex(false));
+                  }),
+                );
               }
             } else if (
               name === "Medical Details" &&
@@ -150,6 +151,8 @@ const useProposalSections = (
       );
     }
   }, [submit]);
+
+  console.log("I executed here The revisedPremiumPopup", revisedPremiumPopup);
 
   return {
     values,

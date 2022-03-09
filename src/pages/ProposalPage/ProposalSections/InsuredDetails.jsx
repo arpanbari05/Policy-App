@@ -21,6 +21,7 @@ import { element } from "prop-types";
 import CheckBox from "../components/Checkbox/Checkbox";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme } from "../../../customHooks";
+import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 
 const InsuredDetails = ({
   schema,
@@ -419,7 +420,7 @@ const InsuredDetails = ({
                     </div>
                     <span>No For All Questions </span>{" "}
                   </div>
-                  {console.log("dbfjkv", noForAll, yesSelected)}
+
                   {!noForAll[item] && !yesSelected[item] && (
                     <p
                       css={`
@@ -496,7 +497,10 @@ const InsuredDetails = ({
           }}
         />
       </div>
-      {revisedPremiumPopup.isOn && <>{/*Place revised premium popup here*/}</>}
+
+      {revisedPremiumPopup.isOn && (
+        <RevisedPremiumPopup onClose={revisedPremiumPopup.off} />
+      )}
     </div>
   );
 };

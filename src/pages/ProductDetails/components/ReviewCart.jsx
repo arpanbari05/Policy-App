@@ -385,7 +385,9 @@ function EditMembers({ onClose }) {
 
   const firstName = name.split(" ")[0];
 
-  const { getCartEntry } = useCart();
+  const { getCartEntry , cartEntries } = useCart();
+
+  console.log("The cartEntries", cartEntries)
 
   const currentCartEntry = useMemo(() => getCartEntry(groupCode), []);
 
@@ -607,11 +609,11 @@ export const RevisedPremiumPopup = ({ onClose, ...props }) => {
 
   const groupMembers = getGroupMembers(groupCode);
 
-  const { getSelectedMembers, ...memberForm } = useMembersForm(groupMembers);
+  const { getSelectedMembers } = useMembersForm(groupMembers);
 
   const {
     updateGroupMembers,
-    query: { isLoading, error, isError, data },
+    query: { data },
   } = useUpdateGroupMembers(groupCode);
 
   const handleSubmit = () => {
@@ -635,9 +637,9 @@ export const RevisedPremiumPopup = ({ onClose, ...props }) => {
     });
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     handleSubmit();
-  }, []);
+  }, []); */
 
   if (data) {
     const { unavailable_message, ...updatedCartEntry } =
