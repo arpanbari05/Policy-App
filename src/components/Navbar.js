@@ -29,11 +29,11 @@ function LogoLink() {
         alt={`companylogo`}
         css={`
           cursor: pointer;
-          max-width: 187px;
+          max-width: ${tenant.alias === "Pinc" ? "90px" : "187px"};
           object-fit: contain;
 
           @media (max-width: 480px) {
-            max-width: 110px;
+            max-width: ${tenant.alias === "Pinc" ? "70px" : "110px"};
           }
         `}
       />
@@ -88,8 +88,8 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
               height: 100%;
             `}
           >
-          {/* to change back btn style use class ".back_btn_navbar" for similarity */}
-          {BackButton}
+            {/* to change back btn style use class ".back_btn_navbar" for similarity */}
+            {BackButton}
             <LogoLink />
             {!location.pathname.startsWith("/input") && trace_id && (
               <div
