@@ -10,8 +10,8 @@ import {
   setShowNSTP,
   setActiveIndex,
 } from "./ProposalSections.slice";
-import { useToggle } from "../../../customHooks";
-import ReviewCartPopup from "../../ProductDetails/components/ReviewCardPopup";
+import { useRenewalPremiumModal } from "../../../customHooks";
+
 
 const useProposalSections = (
   setActive,
@@ -38,7 +38,8 @@ const useProposalSections = (
 
   const cart = useSelector(state => state.cart);
 
-  const revisedPremiumPopup = useToggle();
+  const revisedPremiumPopupUtilityObject =
+    useRenewalPremiumModal();
 
   useEffect(() => {
     if (typeof isValid === "object") {
@@ -92,13 +93,14 @@ const useProposalSections = (
                   ),
                 );
               } else {
-                dispatch(
+                revisedPremiumPopupUtilityObject.getUpdatedCart();
+                /* dispatch(
                   getCart(true, () => {
                     // setActive(prev => prev + 1);
                     revisedPremiumPopup.on();
                     dispatch(setActiveIndex(false));
                   }),
-                );
+                ); */
               }
             } else if (
               name === "Medical Details" &&
@@ -152,8 +154,6 @@ const useProposalSections = (
     }
   }, [submit]);
 
-  console.log("I executed here The revisedPremiumPopup", revisedPremiumPopup);
-
   return {
     values,
     setValues,
@@ -164,7 +164,7 @@ const useProposalSections = (
     setFinalSubmit,
     setCustomValid,
     additionalErrors,
-    revisedPremiumPopup,
+    revisedPremiumPopupUtilityObject,
   };
 };
 

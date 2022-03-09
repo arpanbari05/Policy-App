@@ -57,26 +57,53 @@ export const {
 
 export const getCart = (checkRenewal, next) => async (dispatch, getState) => {
   try {
-    if (
-      checkRenewal &&
-      (planUnavailableCheck ||
-        (prevCart.totalPremium &&
-          parseInt(prevCart.totalPremium).toLocaleString("en-IN") !==
-            parseInt(data.total_premium).toLocaleString("en-IN")))
-    ) {
-      dispatch(
-        setPlanDetails({
-          show: true,
-          title: `Hi ${
-            name.split(" ")[0].charAt(0).toUpperCase() +
-            name.split(" ")[0].slice(1)
-          }, Revised Premium due to change in date of birth`,
-          prevCart,
-          isRenewed: true,
-        }),
+    let prevCart = getState().cart;
+
+    // prevCart["discounted_total_premium"] = Object.keys(prevCart).map((acc,key) => {
+    //   if(parseInt(key) && key.discounted_total_premium) return acc += key.discounted_total_premium
+    // },0)
+
+    const name = getState().greetingPage.proposerDetails.name;
+    const { data, statusCode } = await getCartApi();
+    if (statusCode === 200) {
+      const { discounted_total_premium, total_premium, ...cartData } = data;
+      let fetchedCart = {
+        discounted_total_premium,
+        totalPremium: total_premium,
+      };
+
+      cartData.data.forEach(cartItem => {
+        const groupCode = cartItem.group.id;
+        fetchedCart[groupCode] = cartItem;
+      });
+
+      dispatch(setCart(fetchedCart));
+      dispatch(saveProductCart(data.data));
+      let planUnavailableCheck = cartData.data.some(
+        el => el.unavailable_message !== "" && el.unavailable_message !== null,
       );
-    } else if (checkRenewal) {
-      next();
+
+      if (
+        checkRenewal &&
+        (planUnavailableCheck ||
+          (prevCart.totalPremium &&
+            parseInt(prevCart.totalPremium).toLocaleString("en-IN") !==
+              parseInt(data.total_premium).toLocaleString("en-IN")))
+      ) {
+        dispatch(
+          setPlanDetails({
+            show: true,
+            title: `Hi ${
+              name.split(" ")[0].charAt(0).toUpperCase() +
+              name.split(" ")[0].slice(1)
+            }, Revised Premium due to change in date of birth`,
+            prevCart,
+            isRenewed: true,
+          }),
+        );
+      } else if (checkRenewal) {
+        next();
+      }
     }
   } catch (error) {}
 };

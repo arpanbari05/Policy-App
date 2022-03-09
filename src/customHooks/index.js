@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import {
@@ -37,6 +37,7 @@ import {
   getMonthsForYear,
   getQuoteKey,
   getRiderCartData,
+  getTotalPremium,
   isRiderPresent,
   isTopUpQuote,
   matchQuotes,
@@ -1745,4 +1746,58 @@ export const useShareFunctionality = (desktopPageId, mobilePageId) => {
   };
 
   return { imageSend, imageSendM, download };
+};
+
+export const useRenewalPremiumModal = () => {
+  const { cartEntries } = useCart();
+
+  const revisedPremiumPopupToggle = useToggle();
+
+  const dispatch = useDispatch();
+
+  const prevTotalPremium = useMemo(() => {
+    return getTotalPremium(cartEntries);
+  }, []); /* memorizes the first value it gets */
+
+  const updatedTotalPremium =
+    getTotalPremium(cartEntries); /* Gets the updated value each time */
+
+  const getUpdatedCart = () => {
+    dispatch(
+      api.util.invalidateTags([
+        "Cart",
+        "Rider",
+        "AdditionalDiscount",
+        "TenureDiscount",
+      ]),
+    );
+  }; /* Performs refetch from the server */
+
+  useEffect(() => {
+    if (+prevTotalPremium === +updatedTotalPremium) {
+      revisedPremiumPopupToggle.off();
+    }
+
+    if (+prevTotalPremium !== +updatedTotalPremium) {
+      revisedPremiumPopupToggle.on();
+    }
+  }, [
+    prevTotalPremium,
+    updatedTotalPremium,
+  ]); /* CONTROLS DISPLAY OF REVISED PREMIUM POPUP AUTOMATICALLY */
+
+  return {
+    getUpdatedCart,
+    revisedPremiumPopupToggle,
+    prevTotalPremium,
+    updatedTotalPremium,
+    updatedCartEntries: cartEntries,
+    on: () => {
+      revisedPremiumPopupToggle.on();
+    },
+    off: () => {
+      revisedPremiumPopupToggle.off();
+    },
+    isOn: revisedPremiumPopupToggle.isOn,
+  };
 };

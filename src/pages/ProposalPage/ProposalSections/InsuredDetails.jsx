@@ -41,7 +41,7 @@ const InsuredDetails = ({
     setSubmit,
     setFinalSubmit,
     additionalErrors,
-    revisedPremiumPopup,
+    revisedPremiumPopupUtilityObject,
   } = useProposalSections(
     setActive,
     name,
@@ -498,8 +498,11 @@ const InsuredDetails = ({
         />
       </div>
 
-      {revisedPremiumPopup.isOn && (
-        <RevisedPremiumPopup onClose={revisedPremiumPopup.off} />
+      {revisedPremiumPopupUtilityObject.isOn && (
+        <RevisedPremiumPopup
+          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+          onClose={revisedPremiumPopupUtilityObject.off}
+        />
       )}
     </div>
   );
