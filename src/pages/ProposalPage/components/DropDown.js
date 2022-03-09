@@ -47,7 +47,7 @@ const DropDown = ({
 
   label = label || "- Select -";
   label = checkValidation?.required ? `${label}*` : label;
-  dropPlaceholder == "Feet" && console.log("changes", value);
+
   return (
     <SelectContainer height={height}>
       <Select
