@@ -19,8 +19,9 @@ const RadioButtons = ({
   customMembers,
 }) => {
   const [boolean, setBoolean] = useState(!value ? customOptions[0] : value);
-  console.log(value, boolean, "fdsa23");
+
   const [membersStatus, setMembersStatus] = useState({});
+
   const { mediUnderwritting } = useSelector(
     state => state.proposalPage.proposalData,
   );
@@ -55,15 +56,8 @@ const RadioButtons = ({
                   <input
                     type="radio"
                     name={`is${data}`}
-                    //   onChange={e => {
-                    //     if (notAllowed && mediUnderwritting) {
-                    //       dispatch(setShowPlanNotAvail(true));
-                    //     } else {
-                    //       setBoolean(e.target.value);
-                    //     }
-                    //   }}
                     onChange={e => {
-                      onChange(e.target.value);
+                      onChange(e);
                       setBoolean(e.target.value);
                     }}
                     value={data}

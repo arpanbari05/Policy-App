@@ -517,3 +517,21 @@ export function parseJson(serialized) {
   if (typeof serialized === "string") return JSON.parse(serialized);
   return serialized;
 }
+
+// CARE RIDERS VALIDATIONS
+export const careRidersConditionChecker = (quote, riderAlias, riders) => {
+  const isDisabled =
+    quote?.product?.company?.name === "Care Health Insurance" &&
+    riderAlias === "REDPEDWAITPRD" &&
+    !riders?.find(singleRider => singleRider?.alias === "CAREWITHNCB")
+      ?.isSelected;
+
+  const showPEDRiderWarning =
+    quote?.product?.company?.name === "Care Health Insurance" &&
+    riderAlias === "REDPEDWAITPRD";
+
+  return {
+    isDisabled,
+    showPEDRiderWarning,
+  };
+};

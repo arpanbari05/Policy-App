@@ -60,7 +60,6 @@ const FormBuilder = ({
     insuredDetails,
   );
 
-
   const [trigger, setTrigger] = useState(false);
 
   const relationships = [
@@ -94,7 +93,6 @@ const FormBuilder = ({
   // for auto populate self data when nominee relation is self
   useEffect(() => {
     if (values.nominee_relation === "self") {
-      console.log("sngsgdd", { dataForAutopopulate, schema });
       let acc = {};
       schema.forEach(({ name }) => {
         let nameWithoutNominee = name.slice(name.indexOf("_") + 1, name.length);
@@ -183,8 +181,6 @@ const FormBuilder = ({
     }
   }, []);
 
-console.log("sbsfvbjsf",values)
-
   useEffect(() => {
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
@@ -197,7 +193,6 @@ console.log("sbsfvbjsf",values)
             return (
               <>
                 {item[0]?.additionalOptions?.members?.map(member => {
-           
                   if (
                     values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
@@ -396,7 +391,7 @@ console.log("sbsfvbjsf",values)
                           !Object.keys(values[schema[index-1].name][member]).some(key => values[schema[index-1].name][member][key] === "Y")) 
                         ?(<p className="formbuilder__error">Select atleast one!</p>):(<></>)
                         } */}
-                        
+
                         {/* .some(key => Object.keys(values[schema[index-1].name][key]).some(key2 => values[schema[index-1].name][key][key2] === "Y")) */}
                       </CustomWrapper>
                     );
@@ -548,7 +543,6 @@ console.log("sbsfvbjsf",values)
                         submitTrigger={submitTrigger}
                         setCustomValid={setCustomValid}
                         values={values}
-
                         // showMembersIf={item.additionalOptions.showMembersIf || ""}
                         {...item.additionalOptions}
                       />
