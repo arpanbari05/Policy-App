@@ -8,8 +8,9 @@ import {
   setProposalData,
   setShowBMI,
   setShowNSTP,
-  setActiveIndex
+  setActiveIndex,
 } from "./ProposalSections.slice";
+import { useToggle } from "../../../customHooks";
 
 const useProposalSections = (
   setActive,
@@ -19,18 +20,24 @@ const useProposalSections = (
   setShow,
 ) => {
   const [values, setValues] = useState(defaultValue);
+
   const [isValid, setValid] = useState(
     partialLength ? Array(partialLength) : undefined,
   );
- 
+
   const [customValid, setCustomValid] = useState();
+
   const dispatch = useDispatch();
+
   const [additionalErrors, setAdditionalErrors] = useState({});
+
   const [submit, setSubmit] = useState(false);
+
   const [finalSubmit, setFinalSubmit] = useState(false);
+
   const cart = useSelector(state => state.cart);
-  const {activeIndex} = useSelector(({proposalPage}) => proposalPage)
-  const [previousCart] = useState(cart);
+
+  const revisedPremiumPopup = useToggle();
 
   useEffect(() => {
     if (typeof isValid === "object") {
@@ -44,7 +51,9 @@ const useProposalSections = (
       }
     } else if (isValid && submit) {
       dispatch(
-        saveProposalData({ [name]: values }, () => dispatch(setActiveIndex(false))),
+        saveProposalData({ [name]: values }, () =>
+          dispatch(setActiveIndex(false)),
+        ),
       );
 
       setSubmit(false);
@@ -52,13 +61,12 @@ const useProposalSections = (
     setFinalSubmit(false);
   }, [isValid, submit, finalSubmit, customValid]);
 
-
   useEffect(() => {
     if (
       submit === "SUBMIT" &&
       setShow &&
       isValid.some(item => item === undefined || item === false)
-    ){
+    ) {
       setShow(isValid.indexOf(false) + 1);
     }
     if (
@@ -83,13 +91,13 @@ const useProposalSections = (
                   ),
                 );
               } else {
-
-              dispatch(
+                revisedPremiumPopup.on();
+                /*dispatch(
                 getCart(true, () => {
                   // setActive(prev => prev + 1);
                   dispatch(setActiveIndex(false))
                 }),
-              );
+              )*/
               }
             } else if (
               name === "Medical Details" &&
@@ -110,13 +118,13 @@ const useProposalSections = (
               });
               if (flag) dispatch(setShowNSTP(true));
               // setActive(prev => prev + 1);
-              dispatch(setActiveIndex(false))
+              dispatch(setActiveIndex(false));
             } else if (
               !isValid.some(item => item === undefined || item === false) &&
               submit
             ) {
               // setActive(prev => prev + 1);
-              dispatch(setActiveIndex(false))
+              dispatch(setActiveIndex(false));
             }
           },
           errors => {
@@ -153,6 +161,7 @@ const useProposalSections = (
     setFinalSubmit,
     setCustomValid,
     additionalErrors,
+    revisedPremiumPopup,
   };
 };
 

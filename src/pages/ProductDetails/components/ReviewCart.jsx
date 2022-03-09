@@ -381,7 +381,7 @@ function EditMembers({ onClose }) {
     },
   } = useGetEnquiriesQuery();
 
-  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+  //const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
   const firstName = name.split(" ")[0];
 
@@ -581,6 +581,202 @@ function EditMembers({ onClose }) {
     </EditMembersModal>
   );
 }
+
+export const RevisedPremiumPopup = ({ onClose, ...props }) => {
+  const { colors } = useTheme();
+
+  const { groupCode } = useParams();
+
+  const {
+    data: {
+      data: { name },
+    },
+  } = useGetEnquiriesQuery();
+
+  //const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  const firstName = name.split(" ")[0];
+
+  const { getCartEntry } = useCart();
+
+  const currentCartEntry = useMemo(() => getCartEntry(groupCode), []);
+
+  const dispatch = useDispatch();
+
+  const { getGroupMembers } = useMembers();
+
+  const groupMembers = getGroupMembers(groupCode);
+
+  const { getSelectedMembers, ...memberForm } = useMembersForm(groupMembers);
+
+  const {
+    updateGroupMembers,
+    query: { isLoading, error, isError, data },
+  } = useUpdateGroupMembers(groupCode);
+
+  const handleSubmit = () => {
+    const members = getSelectedMembers();
+    updateGroupMembers(members).then(res => {
+      if (res.error) return;
+      dispatch(
+        api.util.invalidateTags([
+          "Cart",
+          "Rider",
+          "AdditionalDiscount",
+          "TenureDiscount",
+        ]),
+      );
+      const updatedCartEntry = getCartEntryFromUpdateResult(
+        res.data,
+        groupCode,
+      );
+      if (updatedCartEntry.total_premium === currentCartEntry.total_premium)
+        onClose && onClose();
+    });
+  };
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  if (data) {
+    const { unavailable_message, ...updatedCartEntry } =
+      getCartEntryFromUpdateResult(data, groupCode);
+    const handleCloseClick = () => {
+      onClose && onClose();
+    };
+
+    return (
+      <Modal
+        show
+        onHide={onClose}
+        css={`
+          & .modal-dialog {
+            max-width: 600px;
+          }
+        `}
+      >
+        <div className="p-3 position-relative">
+          <div
+            className="position-absolute"
+            css={`
+              height: 2em;
+              width: 0.37em;
+              background-color: ${colors.primary_color};
+              top: 50%;
+              left: 0;
+              transform: translateY(-50%);
+              border-radius: 1em;
+            `}
+          />
+          <h1
+            css={`
+              font-weight: 900;
+              font-size: 1.27rem;
+            `}
+          >
+            Hi <span className="text-capitalize">{firstName}, </span>
+            {unavailable_message
+              ? "Plan Unavailable due to change in date of birth"
+              : "Revised Premium due to change in date of birth"}
+          </h1>
+        </div>
+
+        <div className="p-3 pt-0 pb-0">
+          <Members groupCode={groupCode} editable={false} />
+          <BasePlanDetails
+            groupCode={groupCode}
+            isUnavailable={unavailable_message}
+            revisedPremium
+          />
+          {!unavailable_message ? (
+            <div>
+              {/* <CartDetailRow
+                title="Premium"
+                value={
+                  <span
+                    css={`
+                      text-decoration: line-through;
+                    `}
+                  >
+                    {amount(currentCartEntry.total_premium)}
+                  </span>
+                }
+              /> */}
+              <CartDetailRow
+                title={
+                  <span
+                    css={`
+                      color: ${colors.secondary_color};
+                    `}
+                  >
+                    Revised Premium
+                  </span>
+                }
+                value={amount(updatedCartEntry.total_premium)}
+              />
+            </div>
+          ) : null}
+          {unavailable_message ? (
+            <UnavailableMessage message={unavailable_message} />
+          ) : (
+            <div>
+              <RidersList groupCode={groupCode} />
+              <DiscountsList groupCode={groupCode} />
+            </div>
+          )}
+        </div>
+        <hr className="mt-0" />
+        <div
+          className="p-3 pt-0 d-flex justify-content-between align-items-center"
+          css={`
+            /* gap: 1em;*/
+          `}
+        >
+          <DetailsWrap>
+            <DetailsWrap.Title>Previous Total Premium</DetailsWrap.Title>
+            <DetailsWrap.Value>
+              {getDisplayPremium({
+                total_premium: +currentCartEntry?.discounted_total_premium,
+                tenure: currentCartEntry?.tenure,
+              })}
+            </DetailsWrap.Value>
+          </DetailsWrap>
+          <DetailsWrap>
+            <DetailsWrap.Title style={{ color: colors.secondary_color }}>
+              Revised Total Premium
+            </DetailsWrap.Title>
+            <DetailsWrap.Value>
+              {getDisplayPremium({
+                total_premium: +updatedCartEntry?.discounted_total_premium,
+                tenure: updatedCartEntry?.tenure,
+              })}
+            </DetailsWrap.Value>
+          </DetailsWrap>
+          <DetailsWrap>
+            <Button className="w-100" onClick={handleCloseClick}>
+              Continue
+            </Button>
+          </DetailsWrap>
+
+          {/* <Link
+            to={getUrlWithEnquirySearch(`/quotes/${groupCode}`)}
+            className="w-50 d-flex align-items-center justify-content-center"
+            css={`
+              background-color: ${colors.primary_color};
+              &,
+              &:hover {
+                color: #fff;
+              }
+            `}
+          >
+            View Quotes <FaChevronRight />
+          </Link> */}
+        </div>
+      </Modal>
+    );
+  }
+};
 
 const DetailsWrap = styled.div`
   width: 30%;
