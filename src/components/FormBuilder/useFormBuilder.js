@@ -74,7 +74,6 @@ const useFormBuilder = (
       );
 
       
-console.log("dhdnl",filteredItem)
       if (filteredItem) {
         name =
       typeof name === "object"
@@ -98,6 +97,7 @@ console.log("dhdnl",filteredItem)
       let [filteredItem] = schema.filter(item => item.name === name);
       // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
      
+      console.log("dhdnl",name,filteredItem)
 
      
       if (filteredItem) {

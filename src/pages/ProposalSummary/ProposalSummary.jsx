@@ -6,6 +6,7 @@ import ProposalCheckBox from "../../components/Common/ProposalSummary/summaryChe
 import SummaryTab from "../ProposalPage/components/SummaryTab/SummaryTab";
 import { starSchema } from "../ProposalPage/ProposalDetailsSchema";
 import { getProposalFields } from "../ProposalPage/schema.slice";
+import { MdOutlineArrowBackIos } from "react-icons/md";
 import ProposalSummaryTab from "./../../components/Common/ProposalSummary/ProposalSummary";
 import {
   MobileHeader,
@@ -28,33 +29,50 @@ import TermModal from "./TermsModal";
 import ReviewCart from "../ProductDetails/components/ReviewCart";
 import { getAboutCompany } from "../SeeDetails/serviceApi";
 import { getTermConditions } from "../ProposalPage/serviceApi";
-import { useFrontendBoot, useTheme, useUrlEnquiry, useCart } from "../../customHooks";
+import {
+  useFrontendBoot,
+  useTheme,
+  useUrlEnquiry,
+  useCart,
+} from "../../customHooks";
 import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
-import {Link} from "react-router-dom";
-import {useGetProposalDataQuery} from "../../api/api";
+import { Link } from "react-router-dom";
+import { useGetProposalDataQuery } from "../../api/api";
 
 const ProposalSummary = () => {
   const history = useHistory();
-
-const {data:proposalData={} , isLoading} = useGetProposalDataQuery();
-
-console.log("snldvb",proposalData,isLoading)
-  let {cartEntries} = useCart();
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
-  // let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
-  const { currentSchema } = useSelector(state => state.schema);
-  const {  policyStatus, policyLoading } = useSelector(
-    state => state.proposalPage,
-  );
-  {console.log("sdjbnskdj",policyStatus)}
-
-  const { theme } = useSelector(state => state.frontendBoot);
-
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
   const PrimaryShade = colors.primary_shade;
+  const { data: proposalData = {}, isLoading } = useGetProposalDataQuery();
+
+  const backButtonForNav = (
+    <Link
+      className="back_btn_navbar"
+      style={{ color: PrimaryColor }}
+      to={getUrlWithEnquirySearch(`/proposal`)}
+    >
+      <MdOutlineArrowBackIos />
+    </Link>
+  );
+
+  console.log("snldvb", proposalData, isLoading);
+  let { cartEntries } = useCart();
+  // let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
+  const { currentSchema } = useSelector(state => state.schema);
+
+  const { policyStatus, policyLoading } = useSelector(
+    state => state.proposalPage,
+  );
+  {
+    console.log("sdjbnskdj", policyStatus);
+  }
+
+  const { theme } = useSelector(state => state.frontendBoot);
+
 
   // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { proposerDetails } = useSelector(state => state.greetingPage);
@@ -72,7 +90,7 @@ console.log("snldvb",proposalData,isLoading)
   const enquiryId = url.get("enquiryId");
   const dispatch = useDispatch();
 
-  const getTermConditionData = async (company_id, callback = () => { }) => {
+  const getTermConditionData = async (company_id, callback = () => {}) => {
     try {
       const { data } = await getTermConditions(company_id);
 
@@ -143,7 +161,11 @@ console.log("snldvb",proposalData,isLoading)
   //   return <Redirect to="/proposal" />;
   // } else
   return (
-    <Page noNavbarForMobile={true} id={"proposalSummaryPage"}>
+    <Page
+      noNavbarForMobile={true}
+      id={"proposalSummaryPage"}
+      backButton={backButtonForNav}
+    >
       <div
         className="container-fluid terms__wrapper"
         css={`
@@ -182,7 +204,7 @@ console.log("snldvb",proposalData,isLoading)
               />
             )}
           </div>
-         
+
           <div class="quotes_compare_buttons_div">
             <div
               className="row btn_p_summary_pay_now d-flex align-items-center"
@@ -193,29 +215,34 @@ console.log("snldvb",proposalData,isLoading)
               `}
             >
               <div class="col-md-4 position-relative">
-              {show && (
-<MultipleWrapper>
-              <PayList>
-                {policyStatus &&
-                  policyStatus.map(item => (
-                    <PayItem>
-                      <ItemName>{item?.product?.name}</ItemName>
-                      <PayButton
-                        PrimaryColor={PrimaryColor}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => {
-                          singlePay(item.proposal_id);
-                        }}
-                      >
-                        <span>Pay Now </span>
-                        
-                        <div>₹ {parseInt(item?.total_premium).toLocaleString("en-In")}</div>
-                      </PayButton>
-                    </PayItem>
-                  ))}
-              </PayList>
-            </MultipleWrapper>
-          )}
+                {show && (
+                  <MultipleWrapper>
+                    <PayList>
+                      {policyStatus &&
+                        policyStatus.map(item => (
+                          <PayItem>
+                            <ItemName>{item?.product?.name}</ItemName>
+                            <PayButton
+                              PrimaryColor={PrimaryColor}
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                singlePay(item.proposal_id);
+                              }}
+                            >
+                              <span>Pay Now </span>
+
+                              <div>
+                                ₹{" "}
+                                {parseInt(item?.total_premium).toLocaleString(
+                                  "en-In",
+                                )}
+                              </div>
+                            </PayButton>
+                          </PayItem>
+                        ))}
+                    </PayList>
+                  </MultipleWrapper>
+                )}
                 <button
                   css={`
                     background: ${PrimaryColor} !important;
@@ -244,8 +271,13 @@ console.log("snldvb",proposalData,isLoading)
                   <span>Total Premium</span>
                   <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
                     <span class="font_weight_normal text-white">
-                    ₹ {parseInt(policyStatus.reduce((acc,item) => acc + parseInt(item.total_premium),0)).toLocaleString("en-In")}
-                    
+                      ₹{" "}
+                      {parseInt(
+                        policyStatus.reduce(
+                          (acc, item) => acc + parseInt(item.total_premium),
+                          0,
+                        ),
+                      ).toLocaleString("en-In")}
                     </span>
                   </p>{" "}
                 </div>
@@ -260,17 +292,17 @@ console.log("snldvb",proposalData,isLoading)
         `}
       >
         <Link
-        to={getUrlWithEnquirySearch("/proposal")}
+          to={getUrlWithEnquirySearch("/proposal")}
           // onClick={() => {
           //   history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
           // }}
         >
-        <MobileHeaderText>
-          <i
-            class="fa fa-arrow-circle-left"
-            style={{ marginRight: "10px", cursor: "pointer" }}
-          ></i>{" "}
-          Review
+          <MobileHeaderText>
+            <i
+              class="fa fa-arrow-circle-left"
+              style={{ marginRight: "10px", cursor: "pointer" }}
+            ></i>{" "}
+            Review
           </MobileHeaderText>
         </Link>
       </MobileHeader>
@@ -374,7 +406,6 @@ console.log("snldvb",proposalData,isLoading)
               @media (max-width: 1023px) {
                 flex-direction: column;
               }
-             
             `}
           >
             <Col
@@ -422,9 +453,9 @@ console.log("snldvb",proposalData,isLoading)
                       your proposal details before you proceed
                     </p> */}
                     <div className="-wrapper pad_proposal_s mt-2">
-                      { proposalData.data && allFields ? (
-                      allFields.map((item, index) => {
-                        console.log("gbsjd",proposalData.data[item])
+                      {proposalData.data && allFields ? (
+                        allFields.map((item, index) => {
+                          console.log("gbsjd", proposalData.data[item]);
                           return (
                             <SummaryTab
                               PrimaryColor={PrimaryColor}
@@ -461,7 +492,6 @@ console.log("snldvb",proposalData,isLoading)
             </Col>
           </Row>
 
-
           <div
             css={`
               @media (max-width: 1199px) {
@@ -470,7 +500,6 @@ console.log("snldvb",proposalData,isLoading)
               @media (min-width: 1200px) {
                 display: none;
               }
-        
             `}
           >
             <ProductSummaryMobile cart={cart} payNow={onClick} />
@@ -491,7 +520,7 @@ const MultipleWrapper = styled.div`
   height: 300px;
   position: absolute;
   background-color: #fff;
-  left:-19px;
+  left: -19px;
   border-radius: 8px;
   bottom: 150%;
   overflow-y: auto;
@@ -526,4 +555,3 @@ const PayButton = styled.div`
     display: inline-block;
   }
 `;
-
