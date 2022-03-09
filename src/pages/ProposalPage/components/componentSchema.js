@@ -9,6 +9,7 @@ import Toggle from "./Toggle";
 import DateComp from "./Date";
 import CustomCheckBox from "./customCheckBox";
 import RadioButtons from "./RadioButtons";
+import CheckBoxGroup from "./CheckBoxGroup"
 export const components = {
   text: TextInput,
   select: DropDown,
@@ -21,4 +22,5 @@ export const components = {
   custom_table: OtherTable,
   custom_height: Height,
   date: DateComp,
+  checkboxGroup:CheckBoxGroup
 };

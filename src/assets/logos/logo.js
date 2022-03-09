@@ -23,7 +23,7 @@ import new_india_assurance from "./new_india_assurance.png";
 import universal_sompo from "./universal_sompo.png";
 import fyntune from "./fyntune.png";
 import renew_buy from "./renew_buy.png";
-import Pinc from "./Pinc.jpeg";
+import Pinc from "./Pinc2.png";
 
 const images = {
   go_digit: digit,

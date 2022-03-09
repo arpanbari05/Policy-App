@@ -522,12 +522,23 @@ export const validationIndex = {
     }
   },
   selectAtLeastOne: (param, values, name) => {
+  
     if (values[name] || values[name] instanceof Object) {
       if (!values[name].isValid)
         return {
           status: false,
           message: "Please select one",
-        };
+        }; 
+    }
+  },
+  selectAtLeastOneCheckbox: (param, values, name) => {
+    console.log("sbljshljs",param, values, name)
+    if (values[name] || values[name] instanceof Object) {
+      if (!Object.values(values).some(val => val === "Y"))
+        return {
+          status: false,
+          message: "Please select one",
+        }; 
     }
   },
   customMedicalRequired: (param, values, name) => {

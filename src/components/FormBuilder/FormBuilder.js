@@ -222,16 +222,29 @@ const FormBuilder = ({
                                 renderField(innerItem, values, member) && (
                                   <Wrapper
                                     key={index + member + innerItem.name}
-                                    width={item.width}
+                                    width={innerItem.width}
                                     medical
                                   >
                                     <Comp
                                       name={innerItem.name}
                                       checkValidation={innerItem.validate}
                                       innerMember={member}
-                                      onChange={e => {
-                                        console.log("The e", e);
-                                        if (
+                                      onChange={(e,value) => {
+                                        console.log(
+                                          "qdjbjics",
+                                          innerItem,
+                                          innerItem.parent,
+                                          innerItem.type,
+                                        );
+                                        if(innerItem.parent &&
+                                          innerItem.type === "checkboxGroup"){
+                                            insertValue(
+                                            innerItem.parent,
+                                            member,
+                                            innerItem.name,
+                                            value
+                                          );
+                                          }else if (
                                           innerItem.parent &&
                                           innerItem.type === "checkBox2"
                                         ) {
@@ -361,6 +374,7 @@ const FormBuilder = ({
                                       submitTrigger={submitTrigger}
                                       setCustomValid={setCustomValid}
                                       values={values}
+                                      item={innerItem}
                                       {...innerItem.additionalOptions}
                                     />
                                   </Wrapper>
