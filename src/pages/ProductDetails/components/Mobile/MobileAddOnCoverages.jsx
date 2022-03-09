@@ -242,7 +242,7 @@ function MobileAddOnCoverages({
               }
               showPEDRiderWarning={
                 careRidersConditionChecker(quote, rider?.alias, riders)
-                  .showPEDRiderWarning
+                  ?.showPEDRiderWarning
               }
             />
           ))}
