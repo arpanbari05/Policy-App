@@ -9,6 +9,7 @@ import {
   setShowBMI,
   setShowNSTP,
   setActiveIndex,
+  setFailedBmiData,
 } from "./ProposalSections.slice";
 import { useRenewalPremiumModal } from "../../../customHooks";
 
@@ -37,6 +38,8 @@ const useProposalSections = (
   const [finalSubmit, setFinalSubmit] = useState(false);
 
   const cart = useSelector(state => state.cart);
+  const { activeIndex } = useSelector(({ proposalPage }) => proposalPage);
+  const [previousCart] = useState(cart);
 
   const revisedPremiumPopupUtilityObject =
     useRenewalPremiumModal();
@@ -52,7 +55,6 @@ const useProposalSections = (
         // setActive(prev => prev + 1);
       }
     } else if (isValid && submit) {
-     
       dispatch(
         saveProposalData({ [name]: values }, () =>
           dispatch(setActiveIndex(false)),
@@ -77,24 +79,25 @@ const useProposalSections = (
       setShow &&
       !isValid.some(item => item === undefined || item === false)
     ) {
-      console.log("sfbnsflbjfs FIED")
+      console.log("sfbnsflbjfs FIED");
       dispatch(
         saveProposalData(
           { [name]: values },
           response => {
             dispatch(setMedUnderwritting(response?.is_medical_under_writing));
-
             if (
               name === "Insured Details" &&
               !isValid.some(item => item === undefined || item === false)
             ) {
               if (response.failed_bmi.health) {
+                dispatch(setFailedBmiData(response.failed_bmi.health))
                 dispatch(
                   setShowBMI(
                     Object.keys(response.failed_bmi.health).join(", "),
                   ),
                 );
               } else {
+                dispatch(setFailedBmiData(false))
                 revisedPremiumPopupUtilityObject.getUpdatedCart();
                 /* dispatch(
                   getCart(true, () => {

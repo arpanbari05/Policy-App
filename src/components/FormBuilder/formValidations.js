@@ -2,7 +2,14 @@ import moment from "moment";
 import { date } from "yup";
 
 import { checkAllChar } from "../../utils/formUtils";
-
+function test_same_digit(num) {
+  var first = num % 10;
+  while (num) {
+    if (num % 10 !== first) return false;
+num = Math.floor(num / 10);
+  }
+  return true
+}
 const forbiddedSymbols = [
   "!",
   "%",
@@ -176,7 +183,7 @@ export const validationIndex = {
             };
           } else break;
         case "alt":
-          if (!/^[6-9]\d{9}$/.test(value)) {
+          if (!/^[6-9]\d{9}$/.test(value) || test_same_digit(parseInt(value))) {
             return {
               status: false,
               message: "Please enter a valid mobile number.",

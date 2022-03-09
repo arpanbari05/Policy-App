@@ -180,7 +180,6 @@ const FormBuilder = ({
       );
     }
   }, []);
-console.log("sgnvlsdnvss",errors)
   useEffect(() => {
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
@@ -464,7 +463,6 @@ console.log("sgnvlsdnvss",errors)
                               );
                               updateValue(item.name, e.target.value);
                             } else {
-                              console.log("sdvbkjvb", e, value, item);
                               // if()
                               updateValue(item.name, e);
                             }

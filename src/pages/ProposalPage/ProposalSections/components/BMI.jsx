@@ -5,6 +5,7 @@ import { setShowBMI } from "../ProposalSections.slice";
 import { useHistory } from "react-router";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { FaTimes } from "react-icons/fa";
+import { setActiveIndex } from "../ProposalSections.slice";
 
 const BMI = () => {
   const { showBMI } = useSelector(state => state.proposalPage);
@@ -32,6 +33,7 @@ const BMI = () => {
               <button
                 onClick={() => {
                   dispatch(setShowBMI(false));
+                  dispatch(setActiveIndex(1));
                 }}
               >
                 OK

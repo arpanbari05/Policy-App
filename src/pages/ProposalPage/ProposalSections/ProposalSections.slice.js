@@ -24,6 +24,7 @@ const proposal = createSlice({
     policyStatus: [],
     noForAllChecked: false,
     policyLoading: true,
+    failedBmiData:false,
     showErrorPopup: {
       show: false,
       head: "",
@@ -62,6 +63,9 @@ const proposal = createSlice({
     },
     setPayment: (state, { payload }) => {
       state.Payment = payload;
+    },
+    setFailedBmiData: (state, { payload }) => {
+      state.failedBmiData = payload;
     },
     setMedUnderwritting: (state, { payload }) => {
       state.mediUnderwritting = payload;
@@ -103,6 +107,7 @@ export const {
   noForAllCheckedFalse,
   noForAllCheckedTrue,
   setShowErrorPopup,
+  setFailedBmiData
 } = proposal.actions;
 const ls = new SecureLS();
 export const saveProposalData = (proposalData, next, failure) => {
@@ -183,6 +188,7 @@ export const submitProposalData = next => {
   return async dispatch => {
     try {
       const res = await submitProposal({ enquiryId: ls.get("enquiryId") });
+      console.log("sfvblsfkn", res);
 
       if (res.statusCode === 200) {
         next();

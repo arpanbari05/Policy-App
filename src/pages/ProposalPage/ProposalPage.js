@@ -68,7 +68,7 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
       setListOfForms(Object.keys(currentSchema));
   }, [currentSchema]);
   const dispatch = useDispatch();
-  const { activeIndex, proposalData, showErrorPopup,showBMI } = useSelector(
+  const { activeIndex, proposalData, showErrorPopup,showBMI, failedBmiData } = useSelector(
     state => state.proposalPage,
   );
   console.log("wvbiwrvbwhxxx", proposalData);
@@ -122,8 +122,7 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
     if (
       Object.keys(proposalData).length &&
       activeIndex === false &&
-      continueBtnClick &&
-      !showBMI
+      continueBtnClick 
     ) {
       let unfilledInfoTabIndex;
 
@@ -312,7 +311,7 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
           )}
         </Card>
         <Card styledCss={`margin-bottom: 20px;`}>
-          {activeForm === "Medical Details" ? (
+          {activeForm === "Medical Details" && !failedBmiData ? (
             <>
               {" "}
               <MainTitle
@@ -341,11 +340,11 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
                 align-items: center;
               `}
               onClick={() => {
-                proposalData["Insured Details"] && setActive(2);
+                proposalData["Insured Details"] && !failedBmiData  && setActive(2);
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Medical Details</MainTitle>
-              {proposalData[listOfForms[1]] && (
+              {proposalData[listOfForms[1]] && !failedBmiData && (
                 <div
                   css={`
                     width: 30px;
