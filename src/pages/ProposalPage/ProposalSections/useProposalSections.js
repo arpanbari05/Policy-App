@@ -8,7 +8,8 @@ import {
   setProposalData,
   setShowBMI,
   setShowNSTP,
-  setActiveIndex
+  setActiveIndex,
+  setFailedBmiData,
 } from "./ProposalSections.slice";
 
 const useProposalSections = (
@@ -22,14 +23,14 @@ const useProposalSections = (
   const [isValid, setValid] = useState(
     partialLength ? Array(partialLength) : undefined,
   );
- 
+
   const [customValid, setCustomValid] = useState();
   const dispatch = useDispatch();
   const [additionalErrors, setAdditionalErrors] = useState({});
   const [submit, setSubmit] = useState(false);
   const [finalSubmit, setFinalSubmit] = useState(false);
   const cart = useSelector(state => state.cart);
-  const {activeIndex} = useSelector(({proposalPage}) => proposalPage)
+  const { activeIndex } = useSelector(({ proposalPage }) => proposalPage);
   const [previousCart] = useState(cart);
 
   useEffect(() => {
@@ -43,9 +44,10 @@ const useProposalSections = (
         // setActive(prev => prev + 1);
       }
     } else if (isValid && submit) {
-     
       dispatch(
-        saveProposalData({ [name]: values }, () => dispatch(setActiveIndex(false))),
+        saveProposalData({ [name]: values }, () =>
+          dispatch(setActiveIndex(false)),
+        ),
       );
 
       setSubmit(false);
@@ -53,13 +55,12 @@ const useProposalSections = (
     setFinalSubmit(false);
   }, [isValid, submit, finalSubmit, customValid]);
 
-
   useEffect(() => {
     if (
       submit === "SUBMIT" &&
       setShow &&
       isValid.some(item => item === undefined || item === false)
-    ){
+    ) {
       setShow(isValid.indexOf(false) + 1);
     }
     if (
@@ -67,31 +68,31 @@ const useProposalSections = (
       setShow &&
       !isValid.some(item => item === undefined || item === false)
     ) {
-      console.log("sfbnsflbjfs FIED")
+      console.log("sfbnsflbjfs FIED");
       dispatch(
         saveProposalData(
           { [name]: values },
           response => {
             dispatch(setMedUnderwritting(response?.is_medical_under_writing));
-
             if (
               name === "Insured Details" &&
               !isValid.some(item => item === undefined || item === false)
             ) {
               if (response.failed_bmi.health) {
+                dispatch(setFailedBmiData(response.failed_bmi.health))
                 dispatch(
                   setShowBMI(
                     Object.keys(response.failed_bmi.health).join(", "),
                   ),
                 );
               } else {
-
-              dispatch(
-                getCart(true, () => {
-                  // setActive(prev => prev + 1);
-                  dispatch(setActiveIndex(false))
-                }),
-              );
+                dispatch(setFailedBmiData(false))
+                dispatch(
+                  getCart(true, () => {
+                    // setActive(prev => prev + 1);
+                    dispatch(setActiveIndex(false));
+                  }),
+                );
               }
             } else if (
               name === "Medical Details" &&
@@ -112,13 +113,13 @@ const useProposalSections = (
               });
               if (flag) dispatch(setShowNSTP(true));
               // setActive(prev => prev + 1);
-              dispatch(setActiveIndex(false))
+              dispatch(setActiveIndex(false));
             } else if (
               !isValid.some(item => item === undefined || item === false) &&
               submit
             ) {
               // setActive(prev => prev + 1);
-              dispatch(setActiveIndex(false))
+              dispatch(setActiveIndex(false));
             }
           },
           errors => {
