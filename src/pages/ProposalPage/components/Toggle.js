@@ -266,6 +266,7 @@ const Question = styled.p`
 `;
 const Group = styled.div`
   display: flex;
+  flex-wrap: wrap;
   max-width: 600px;
   overflow: auto;
   align-items: center;
