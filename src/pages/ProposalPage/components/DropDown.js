@@ -47,7 +47,7 @@ const DropDown = ({
 
   label = label || "- Select -";
   label = checkValidation?.required ? `${label}*` : label;
-
+  dropPlaceholder == "Feet" && console.log("changes", value);
   return (
     <SelectContainer height={height}>
       <Select
@@ -59,29 +59,15 @@ const DropDown = ({
         error={error}
         height={height}
         borderR={borderR}
-        placeholder={checkValidation?.required && dropPlaceholder ? `${dropPlaceholder}*` : dropPlaceholder || "- Select -"}
       >
-        {console.log(
-          "dbgsdghdg",
-          selectOption,
-          dropPlaceholder,
-          checkValidation?.required,
-          asyncOptions,
-          (Object.keys(selectOption).length !== 1 &&
-          checkValidation?.required &&
-          !asyncOptions) ||
-          (asyncOptions ||
-          !checkValidation?.required),
-          value
-        )}
         {((Object.keys(selectOption).length !== 1 &&
           checkValidation?.required &&
           !asyncOptions) ||
-          (asyncOptions ||
-          !checkValidation?.required) )&& (
+          asyncOptions ||
+          !checkValidation?.required) && (
           <option
             selected="true"
-            disabled="disabled"
+            disabled={dropPlaceholder !== "Feet" && "disabled"}
             value={dropPlaceholder || label || "- Select -"}
           >
             {dropPlaceholder || label || "- Select -"}
