@@ -21,8 +21,16 @@ import { element } from "prop-types";
 import CheckBox from "../components/Checkbox/Checkbox";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme } from "../../../customHooks";
+import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 
-const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continueSideEffects }) => {
+const InsuredDetails = ({
+  schema,
+  setActive,
+  name,
+  defaultValue,
+  setBack,
+  continueSideEffects,
+}) => {
   const [show, setShow] = useState(1);
   const {
     values,
@@ -33,6 +41,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continu
     setSubmit,
     setFinalSubmit,
     additionalErrors,
+    revisedPremiumPopupUtilityObject,
   } = useProposalSections(
     setActive,
     name,
@@ -41,26 +50,32 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continu
     setShow,
   );
 
-
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
+
   const [yesSelected, setYesSelected] = useState({});
+
   const [noForAll, setNoForAll] = useState({});
+
   const [initColor, setInitColor] = useState(PrimaryColor);
+
   const [canProceed, setCanProceed] = useState({
     canProceed: false,
     canProceedArray: [],
   });
+
   const { proposalData } = useSelector(state => state.proposalPage);
-  console.log("vfjgjdfgh", proposalData);
 
   const [mutateValues, setMutateValues] = useState();
+
   const dispatch = useDispatch();
+
   const { noForAllChecked } = useSelector(state => state.proposalPage);
 
   const { insuredMembers: membersDataFromGreetingPage, groups } =
     useFrontendBoot();
+
   const fullName = proposalData["Proposer Details"]?.name;
 
   const checkCanProceed = () => {
@@ -105,7 +120,6 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continu
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed.push(item);
         }
-        console.log("sbjslkh", values[item]);
         if (
           Object.keys(values[item]).length &&
           !Object.keys(values[item]).every(el =>
@@ -129,7 +143,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continu
       }
     }
   };
-  console.log("sfgbnfjb", canProceed);
+
   useEffect(() => {
     if (
       name === "Insured Details" &&
@@ -233,8 +247,6 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continu
       // &&
       // !Object.keys(values ? values : {}).length
     ) {
-      console.log("bfvefd", values);
-
       // let initial = {};
       // Object.keys(schema).forEach(item =>
       //   schema[item].forEach(innerItem => {
@@ -271,7 +283,7 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continu
         }),
         {},
       );
-      setYesSelected(temp)
+      setYesSelected(temp);
       console.log("skbjvkvb", temp, values, keys);
     }
   }, [values, noForAll]);
@@ -408,8 +420,8 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continu
                     </div>
                     <span>No For All Questions </span>{" "}
                   </div>
-                  {console.log("dbfjkv",noForAll,yesSelected)}
-                  {(!noForAll[item] && !yesSelected[item]) && (
+
+                  {!noForAll[item] && !yesSelected[item] && (
                     <p
                       css={`
                         display: flex;
@@ -474,19 +486,24 @@ const InsuredDetails = ({ schema, setActive, name, defaultValue, setBack,continu
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
-            
-            if (name === "Medical Details" && canProceed.canProceed ) {
+
+            if (name === "Medical Details" && canProceed.canProceed) {
               setSubmit("PARTIAL");
               continueSideEffects();
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
               continueSideEffects();
             }
-            console.log("Here i m clicked")
-          }
-        }
+          }}
         />
       </div>
+
+      {revisedPremiumPopupUtilityObject.isOn && (
+        <RevisedPremiumPopup
+          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+          onClose={revisedPremiumPopupUtilityObject.off}
+        />
+      )}
     </div>
   );
 };
