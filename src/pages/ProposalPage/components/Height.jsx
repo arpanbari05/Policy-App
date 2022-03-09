@@ -39,7 +39,6 @@ const Height = ({ onChange, value, error }) => {
       );
     } else setFirst(false);
   }, [combinedValue]);
-
   return (
     <>
       <Wrapper error={error}>
@@ -59,9 +58,10 @@ const Height = ({ onChange, value, error }) => {
             })
           }
           value={combinedValue.feet}
-          checkValidation={{required: true}}
+          checkValidation={{ required: true }}
         />
         <DropDown
+          label="Inches"
           dropPlaceholder="inches"
           options={inches}
           height={true}
