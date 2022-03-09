@@ -60,7 +60,6 @@ const FormBuilder = ({
     insuredDetails,
   );
 
-
   const [trigger, setTrigger] = useState(false);
 
   const relationships = [
@@ -94,7 +93,6 @@ const FormBuilder = ({
   // for auto populate self data when nominee relation is self
   useEffect(() => {
     if (values.nominee_relation === "self") {
-      console.log("sngsgdd", { dataForAutopopulate, schema });
       let acc = {};
       schema.forEach(({ name }) => {
         let nameWithoutNominee = name.slice(name.indexOf("_") + 1, name.length);
@@ -182,9 +180,7 @@ const FormBuilder = ({
       );
     }
   }, []);
-
-
-
+console.log("sgnvlsdnvss",errors)
   useEffect(() => {
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
@@ -197,7 +193,6 @@ const FormBuilder = ({
             return (
               <>
                 {item[0]?.additionalOptions?.members?.map(member => {
-           
                   if (
                     values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
@@ -227,21 +222,29 @@ const FormBuilder = ({
                                 renderField(innerItem, values, member) && (
                                   <Wrapper
                                     key={index + member + innerItem.name}
-                                    width={item.width}
+                                    width={innerItem.width}
                                     medical
                                   >
                                     <Comp
                                       name={innerItem.name}
                                       checkValidation={innerItem.validate}
                                       innerMember={member}
-                                      onChange={e => {
+                                      onChange={(e,value) => {
                                         console.log(
                                           "qdjbjics",
                                           innerItem,
                                           innerItem.parent,
                                           innerItem.type,
                                         );
-                                        if (
+                                        if(innerItem.parent &&
+                                          innerItem.type === "checkboxGroup"){
+                                            insertValue(
+                                            innerItem.parent,
+                                            member,
+                                            innerItem.name,
+                                            value
+                                          );
+                                          }else if (
                                           innerItem.parent &&
                                           innerItem.type === "checkBox2"
                                         ) {
@@ -371,6 +374,7 @@ const FormBuilder = ({
                                       submitTrigger={submitTrigger}
                                       setCustomValid={setCustomValid}
                                       values={values}
+                                      item={innerItem}
                                       {...innerItem.additionalOptions}
                                     />
                                   </Wrapper>
@@ -387,7 +391,7 @@ const FormBuilder = ({
                           !Object.keys(values[schema[index-1].name][member]).some(key => values[schema[index-1].name][member][key] === "Y")) 
                         ?(<p className="formbuilder__error">Select atleast one!</p>):(<></>)
                         } */}
-                        
+
                         {/* .some(key => Object.keys(values[schema[index-1].name][key]).some(key2 => values[schema[index-1].name][key][key2] === "Y")) */}
                       </CustomWrapper>
                     );
@@ -539,7 +543,6 @@ const FormBuilder = ({
                         submitTrigger={submitTrigger}
                         setCustomValid={setCustomValid}
                         values={values}
-
                         // showMembersIf={item.additionalOptions.showMembersIf || ""}
                         {...item.additionalOptions}
                       />

@@ -61,7 +61,7 @@ function contains(target, pattern) {
 
 export const validationIndex = {
   required: (param, values, name) => {
-    console.log(name,values, param, "heheheh3");
+    console.log(name, values, param, "heheheh3");
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
 
@@ -128,7 +128,6 @@ export const validationIndex = {
     }
   },
   matches: (param, values, name) => {
-    
     const { parent, member, variableName } = name;
     let compareTo;
     const checkParam =
@@ -146,7 +145,7 @@ export const validationIndex = {
         : parent && member && values
         ? values?.[parent]?.[member]
         : values?.[name];
-        console.log("wojvnno", value,checkParam);
+    console.log("wojvnno", value, checkParam);
 
     if (checkParam === "alt") {
       compareTo =
@@ -166,7 +165,7 @@ export const validationIndex = {
             (value.trim().match(/\ /g) || []).length > 5 ||
             value.split("").length > 90
           ) {
-            console.log("wqefvbhcks",value.split("").length)
+            console.log("wqefvbhcks", value.split("").length);
             return { status: false, message: "Please enter valid name." };
           } else break;
         case "mobile":
@@ -195,7 +194,7 @@ export const validationIndex = {
           if (!/^[0-9]*$/.test(value) || !(value >= min && value <= max)) {
             return {
               status: false,
-              message: `Please enter 1 to 200 weight`
+              message: `Please enter 1 to 200 weight`,
               // between ${
               //   param.split("/")[1]
               // } and ${param.split("/")[2]}`,
@@ -203,7 +202,7 @@ export const validationIndex = {
           } else break;
         case "validYear":
           if (typeof value === "string" || value instanceof String) {
-            console.log("sknslkfn",value)
+            console.log("sknslkfn", value);
             let month = value?.split("-")[0];
             let year = value?.split("-")[1];
             console.log("qcbib", param, value);
@@ -299,13 +298,13 @@ export const validationIndex = {
           {
             let currentDate = new Date();
             let inputNumberOfYears = parseInt(
-              values[name.parent][name.member][name.variableName]
+              values[name.parent][name.member][name.variableName],
             );
             if (name.dob && name.dob.split("-")[2]) {
               console.log(
                 "ibndfji",
                 name.dob.split("-")[2],
-                inputNumberOfYears
+                inputNumberOfYears,
               );
               if (
                 currentDate.getUTCFullYear() - inputNumberOfYears <
@@ -329,7 +328,7 @@ export const validationIndex = {
         case "onlyYear":
           let currentDate = new Date();
           let inputDate = values[name.parent][name.member][name.variableName];
-          let birthYear = name.dob?name.dob.split("-")[2]:name.age;
+          let birthYear = name.dob ? name.dob.split("-")[2] : name.age;
           if (
             currentDate.getUTCFullYear() < parseInt(inputDate) ||
             parseInt(inputDate) < parseInt(birthYear)
@@ -417,7 +416,7 @@ export const validationIndex = {
           if (
             // inputDate[0] && inputDate[1] && inputDate[2] &&
             !/^(0?[1-9]|[12][0-9]|3[01])[\-](0?[1-9]|1[012])[\-]\d{4}$/.test(
-              value
+              value,
             )
           ) {
             return {
@@ -428,7 +427,7 @@ export const validationIndex = {
         case "email":
           let pass = false;
           if (value.includes("@")) {
-            acceptedEmailExtensions.map((ext) => {
+            acceptedEmailExtensions.map(ext => {
               if (ext === value.slice(value.lastIndexOf("."), value.length)) {
                 pass = true;
               }
@@ -437,9 +436,10 @@ export const validationIndex = {
           console.log("bgwefhweg", pass);
           if (
             !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-              value
+              value,
             ) ||
-            !pass || value.length > 40
+            !pass ||
+            value.length > 40
           ) {
             return {
               status: false,
@@ -447,11 +447,7 @@ export const validationIndex = {
             };
           } else break;
         case "pan":
-          if (
-            !/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(
-              value.toUpperCase()
-            )
-          ) {
+          if (!/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(value.toUpperCase())) {
             return {
               status: false,
               message: "Please enter a valid pan number.",
@@ -467,7 +463,7 @@ export const validationIndex = {
         case "gst":
           if (
             !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
-              value
+              value,
             )
           ) {
             return {
@@ -527,6 +523,25 @@ export const validationIndex = {
         return {
           status: false,
           message: "Please select one",
+        };
+    }
+  },
+  selectAtLeastOneCheckbox: (param, values, name) => {
+    const { parent, member, variableName } = name;
+    if (
+      values[parent] &&
+      values[parent][member] &&
+      values[parent][member][variableName]
+    ) {
+     
+      if (
+        !Object.values(values[parent][member][variableName]).some(
+          val => val === "Y",
+        )
+      )
+        return {
+          status: false,
+          message: "Please select atleast one",
         };
     }
   },

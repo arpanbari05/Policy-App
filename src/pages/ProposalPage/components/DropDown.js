@@ -24,30 +24,25 @@ const DropDown = ({
   const [selectOption, setSelectOption] = useState(asyncOptions || options);
   const [dataValue, setDataValue] = useState();
 
-  useEffect(() => {
-    
-    
-  },[])
+  useEffect(() => {}, []);
 
   const excludeOptionsPage = excludeOptions?.when?.split(".")[0];
   const excludeOptionsVariable = excludeOptions?.when?.split(".")[1];
 
-
- 
   useEffect(() => {
     if (asyncOptions) {
       setSelectOption(asyncOptions);
     } else {
-      if(allValues["Proposer Details"] && name === "nominee_relation" ){
-        if(allValues["Proposer Details"].gender === "M"){
-          let {husband, ...validOptions} = options;
-          setSelectOption(validOptions)
-        }else if(allValues["Proposer Details"].gender === "F"){
-          const {wife, ...validOptions} = options;
-          setSelectOption(validOptions)
+      if (allValues["Proposer Details"] && name === "nominee_relation") {
+        if (allValues["Proposer Details"].gender === "M") {
+          let { husband, ...validOptions } = options;
+          setSelectOption(validOptions);
+        } else if (allValues["Proposer Details"].gender === "F") {
+          const { wife, ...validOptions } = options;
+          setSelectOption(validOptions);
         }
       }
-    } 
+    }
   }, [asyncOptions]);
 
   label = label || "- Select -";
@@ -64,14 +59,33 @@ const DropDown = ({
         error={error}
         height={height}
         borderR={borderR}
-        // placeholder={checkValidation?.required && dropPlaceholder ? `${dropPlaceholder}*` : dropPlaceholder || "- Select -"}
+        placeholder={checkValidation?.required && dropPlaceholder ? `${dropPlaceholder}*` : dropPlaceholder || "- Select -"}
       >
+        {console.log(
+          "dbgsdghdg",
+          selectOption,
+          dropPlaceholder,
+          checkValidation?.required,
+          asyncOptions,
+          (Object.keys(selectOption).length !== 1 &&
+          checkValidation?.required &&
+          !asyncOptions) ||
+          (asyncOptions ||
+          !checkValidation?.required),
+          value
+        )}
         {((Object.keys(selectOption).length !== 1 &&
           checkValidation?.required &&
           !asyncOptions) ||
-          asyncOptions ||
-          !checkValidation?.required) && (
-          <option selected="true" disabled="disabled" value={dropPlaceholder || label || "- Select -"}>{dropPlaceholder || label || "- Select -"}</option>
+          (asyncOptions ||
+          !checkValidation?.required) )&& (
+          <option
+            selected="true"
+            disabled="disabled"
+            value={dropPlaceholder || label || "- Select -"}
+          >
+            {dropPlaceholder || label || "- Select -"}
+          </option>
         )}
         {selectedValues?.title &&
         selectedValues.title === "mrs" &&

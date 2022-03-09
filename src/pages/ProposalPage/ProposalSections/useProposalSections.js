@@ -52,6 +52,7 @@ const useProposalSections = (
         // setActive(prev => prev + 1);
       }
     } else if (isValid && submit) {
+     
       dispatch(
         saveProposalData({ [name]: values }, () =>
           dispatch(setActiveIndex(false)),
@@ -76,6 +77,7 @@ const useProposalSections = (
       setShow &&
       !isValid.some(item => item === undefined || item === false)
     ) {
+      console.log("sfbnsflbjfs FIED")
       dispatch(
         saveProposalData(
           { [name]: values },

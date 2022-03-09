@@ -139,10 +139,11 @@ export function Riders({
                 company={quote?.product?.company?.name}
                 isProductDetailsPage={isProductDetailsPage}
                 isDisabled={
-                  careRidersConditionChecker(quote, rider?.alias)?.isDisabled
+                  careRidersConditionChecker(quote, rider?.alias, riders)
+                    ?.isDisabled
                 }
                 showPEDRiderWarning={
-                  careRidersConditionChecker(quote, rider?.alias)
+                  careRidersConditionChecker(quote, rider?.alias, riders)
                     ?.showPEDRiderWarning
                 }
               />

@@ -27,7 +27,9 @@ const Toggle = ({
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
+
   const [customShowMembers, setCustomshowMembers] = useState(false);
+
   useEffect(() => {
     if (showMembersIf) {
       setCustomshowMembers(
@@ -35,23 +37,15 @@ const Toggle = ({
           return values && values[name] && values[name][`is${name}`] === "Y";
         }),
       );
-      {
-        console.log("sdvnsv", customShowMembers, label);
-      }
-
-      console.log(
-        "bjffb",
-        values,
-        customShowMembers,
-        showMembersIf ? showMembersIf.split("||") : "",
-      );
     }
   }, [values]);
+
   const membersToMap = customMembers instanceof Array ? customMembers : members;
 
   const [boolean, setBoolean] = useState("N");
+
   const [membersStatus, setMembersStatus] = useState({});
-  console.log("hrfgvbrgvf", membersStatus);
+
   const { mediUnderwritting } = useSelector(
     state => state.proposalPage.proposalData,
   );
@@ -93,7 +87,6 @@ const Toggle = ({
       isValid = false;
     }
 
-    console.log("fghfhg", showMembers);
     onChange({
       ...value,
       [`is${name}`]: boolean,
@@ -273,6 +266,9 @@ const Question = styled.p`
 `;
 const Group = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  max-width: 600px;
+  overflow: auto;
   align-items: center;
   padding: 0px 16px 17px;
   & input[type="checkbox"] {
