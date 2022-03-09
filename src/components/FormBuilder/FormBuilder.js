@@ -180,7 +180,7 @@ const FormBuilder = ({
       );
     }
   }, []);
-
+console.log("sgnvlsdnvss",errors)
   useEffect(() => {
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
