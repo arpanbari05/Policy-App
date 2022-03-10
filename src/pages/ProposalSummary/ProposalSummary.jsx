@@ -112,12 +112,14 @@ const ProposalSummary = () => {
   const ls = new SecureLS();
   const [checked, setChecked] = useState(false);
   const onClick = mobile => {
-    if (
-      frontendData?.data?.settings?.journey_type === "single" &&
-      (checked || mobile)
-    ) {
-      setShow(prev => !prev);
-    } else if (checked || mobile) {
+    console.log(frontendData?.data?.settings?.journey_type === "single")
+    // if (
+    //   frontendData?.data?.settings?.journey_type === "single" &&
+    //   (checked || mobile)
+    // ) {
+    //   setShow(prev => !prev);
+    // } else 
+    if (checked || mobile) {
       const form = document.createElement("form");
       form.method = "POST";
       form.action = process.env.REACT_APP_API_BASE_URL + "payments";
