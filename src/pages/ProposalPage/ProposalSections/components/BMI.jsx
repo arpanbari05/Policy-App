@@ -33,7 +33,6 @@ const BMI = () => {
               <button
                 onClick={() => {
                   dispatch(setShowBMI(false));
-                  dispatch(setActiveIndex(1));
                 }}
               >
                 OK

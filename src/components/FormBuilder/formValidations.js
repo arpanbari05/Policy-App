@@ -535,22 +535,22 @@ export const validationIndex = {
   },
   selectAtLeastOneCheckbox: (param, values, name) => {
     const { parent, member, variableName } = name;
-    if (
-      values[parent] &&
-      values[parent][member] &&
-      values[parent][member][variableName]
-    ) {
+
      
       if (
+        !values[parent] ||
+        !values[parent][member] ||
+        !values[parent][member][variableName] ||
+        Object.values(values[parent][member][variableName]).length === 0 ||
         !Object.values(values[parent][member][variableName]).some(
-          val => val === "Y",
+          val => val === "Y"
         )
       )
         return {
           status: false,
           message: "Please select atleast one",
         };
-    }
+    
   },
   customMedicalRequired: (param, values, name) => {
     if (values[name] && values[name] instanceof Object) {

@@ -43,7 +43,7 @@ const ProposalPage = () => {
   const history = useHistory();
 const [continueBtnClick,setContinueBtnClick] = useState(false);
   const [memberGroups, setMemberGroups] = useState([]);
-
+const [bmiFailBlock,setBmiFailBlock] = useState(false);
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
   const [active, setActive] = useState(0);
@@ -101,6 +101,13 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
   //     );
   //   }
   // }, [active]);
+
+  useEffect(() => {
+    if(failedBmiData && Object.keys(proposalData["Insured Details"]).length ===1){
+      setBmiFailBlock(true);
+      setActive(1)
+    }else setBmiFailBlock(false)
+  },[failedBmiData])
 
   useEffect(() => {
     dispatch(getProposalFields());
@@ -311,7 +318,7 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
           )}
         </Card>
         <Card styledCss={`margin-bottom: 20px;`}>
-          {activeForm === "Medical Details" && !failedBmiData ? (
+          {activeForm === "Medical Details" && !bmiFailBlock  ? (
             <>
               {" "}
               <MainTitle
@@ -340,11 +347,11 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
                 align-items: center;
               `}
               onClick={() => {
-                proposalData["Insured Details"] && !failedBmiData  && setActive(2);
+                proposalData["Insured Details"] &&  !bmiFailBlock  && setActive(2);
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Medical Details</MainTitle>
-              {proposalData[listOfForms[1]] && !failedBmiData && (
+              {proposalData[listOfForms[1]] &&  !bmiFailBlock && (
                 <div
                   css={`
                     width: 30px;
