@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "styled-components";
 
-const CustomCheckBox = ({ name, placeholder, value, onChange }) => {
+const CustomCheckBox = ({ name, placeholder, value, onChange,innerMember }) => {
   return (
     <div style={{display:"flex", alignItems:"center"}}>
       {" "}
@@ -11,12 +11,12 @@ const CustomCheckBox = ({ name, placeholder, value, onChange }) => {
       </span>
       <input
         className="inp-cbx"
-        id={name}
+        id={name+innerMember}
         type="checkbox"
         checked={value === "Y" ? true : false}
         onChange={onChange}
       />
-      <label className="cbx" htmlFor={name}>
+      <label className="cbx" htmlFor={name+innerMember}>
         <span>
           <svg width="12px" height="10px">
             <use xlinkHref="#check"></use>

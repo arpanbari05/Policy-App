@@ -132,7 +132,7 @@ const [bmiFailBlock,setBmiFailBlock] = useState(false);
   // to get unfilled form
   useEffect(() => {
     // if (listOfForms.length && active >= listOfForms.length) {
-    console.log("gbyutf", proposalData);
+     
 
     if (
       Object.keys(proposalData).length &&
@@ -140,7 +140,7 @@ const [bmiFailBlock,setBmiFailBlock] = useState(false);
       continueBtnClick
     ) {
       let unfilledInfoTabIndex;
-
+      console.log("sgbjfbj",unfilledInfoTabIndex)
       listOfForms.find(e => {
         if (!proposalData[e] || !Object.keys(proposalData[e]).length) {
           return (unfilledInfoTabIndex = listOfForms.indexOf(e));
