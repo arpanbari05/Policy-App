@@ -67,9 +67,6 @@ const ProposalSummary = () => {
   const { policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
   );
-  {
-    console.log("sdjbnskdj", policyStatus);
-  }
 
   const { theme } = useSelector(state => state.frontendBoot);
 

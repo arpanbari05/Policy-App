@@ -13,7 +13,6 @@ import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
 import {
   amount,
-  calculateTotalPremium,
   getFirstName,
   getTotalPremium,
 } from "../../../utils/helper";

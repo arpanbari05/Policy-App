@@ -234,9 +234,10 @@ export function calculateTotalPremium(
   const { total_premium: basePlanPremium = 0, health_riders = [] } = cartEntry;
   const totalPremium = items =>
     items.reduce((totalPremium, item) => totalPremium + item.total_premium, 0);
-  const ridersPremium = totalPremium(health_riders);
+  let ridersPremium = totalPremium(health_riders);
 
-  const total_premium = ridersPremium + basePlanPremium;
+  // const total_premium = ridersPremium + basePlanPremium;
+  const total_premium = basePlanPremium;
 
   let discountedAmount = 0;
 
@@ -244,11 +245,52 @@ export function calculateTotalPremium(
     discountedAmount += getDiscountAmount(additionalDiscount, cartEntry);
   }
 
-  const totalPremiumAfterDiscount = total_premium - discountedAmount;
+  let totalPremiumAfterDiscount = total_premium - discountedAmount;
 
   const addOnsTotalPremium = getAddOnsTotalPremium(cartEntry.addons);
 
-  return totalPremiumAfterDiscount + addOnsTotalPremium;
+  // Check if the plan company is RS
+  if (cartEntry?.product?.company?.alias === "royal_sundaram") {
+    // Hospital Rider
+    const hospitalRider = health_riders.find(
+      (rider) => rider.name === "Hospital Cash Benefit"
+    );
+
+    // Simply return TotalPremium if the is only hospitalRider
+    if (
+      (health_riders.length === 1 && hospitalRider) ||
+      health_riders.length === 0
+    ) {
+      return totalPremiumAfterDiscount + addOnsTotalPremium;
+    } else {
+      let calculatedPremium = Math.round(total_premium / 1.04 / 1.18);
+
+      // If hospitalRider is selected with other riders perform below logic
+      let calculatedRider = 0;
+      if (hospitalRider) {
+        health_riders.forEach((item) => {
+          if (item.name !== "Hospital Cash Benefit") {
+            calculatedRider += item.total_premium;
+          }
+        });
+        ridersPremium = calculatedRider;
+        totalPremiumAfterDiscount =
+          (calculatedPremium + ridersPremium + addOnsTotalPremium) * 1.04 * 1.18 +
+          hospitalRider.total_premium;
+      }
+
+      // If hospitalRider is not selected with other rider perform below logic
+      else {
+        totalPremiumAfterDiscount =
+          (calculatedPremium + ridersPremium + addOnsTotalPremium) * 1.04 * 1.18;
+      }
+    }
+  } else {
+    totalPremiumAfterDiscount += ridersPremium;
+  }
+
+  // return totalPremiumAfterDiscount + addOnsTotalPremium;
+  return totalPremiumAfterDiscount;
 }
 
 export function getAgeList({ min_age, max_age }) {

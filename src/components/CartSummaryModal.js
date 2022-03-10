@@ -14,6 +14,7 @@ import CardModal from "./Common/Modal/CardModal";
 import { calculateTotalPremium, figureToWords } from "../utils/helper";
 
 function CartSummaryModal({
+  selectedRiders = [],
   onClose = () => {},
   onContine = () => {},
   allClose = () => {},
@@ -28,6 +29,7 @@ function CartSummaryModal({
       handleClose={onClose}
       content={
         <CartSummaryContent
+          selectedRiders={selectedRiders}
           onContine={onContine}
           closeModal={onClose}
           allClose={allClose}
@@ -38,7 +40,7 @@ function CartSummaryModal({
   );
 }
 
-function CartSummaryContent({ closeModal, onContine, allClose, ...props }) {
+function CartSummaryContent({ closeModal, onContine, allClose, selectedRiders, ...props }) {
   const {
     data: {
       data: { groups },
@@ -48,7 +50,7 @@ function CartSummaryContent({ closeModal, onContine, allClose, ...props }) {
   return (
     <div {...props}>
       {groups.map(group => (
-        <GroupCard group={group} closeModal={closeModal} allClose={allClose} />
+        <GroupCard group={group} closeModal={closeModal} allClose={allClose} selectedRiders={selectedRiders} />
       ))}
       <hr
         css={`
@@ -133,7 +135,7 @@ function Footer({ closeModal, onContine, ...props }) {
   );
 }
 
-function GroupCard({ group, closeModal, allClose, ...props }) {
+function GroupCard({ group, closeModal, allClose, selectedRiders, ...props }) {
   const { members } = group;
 
   const { colors } = useTheme();
@@ -178,7 +180,7 @@ function GroupCard({ group, closeModal, allClose, ...props }) {
           allClose={allClose}
         />
       </div>
-      <RenderProductSummaryCard group={group} />
+      <RenderProductSummaryCard selectedRiders={selectedRiders} group={group} />
     </div>
   );
 }
@@ -316,13 +318,14 @@ function RenderProductSummaryCard({ group, ...props }) {
   return <ProductSummaryCard cartEntry={cartEntry} {...props} />;
 }
 
-function ProductSummaryCard({ cartEntry, ...props }) {
+function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
   const {
     deductible,
     sum_insured,
     total_premium,
     tenure,
     health_riders,
+    mandatory_riders,
     product: {
       company: { alias },
       name,
@@ -333,9 +336,10 @@ function ProductSummaryCard({ cartEntry, ...props }) {
 
   const { logo: logoSrc } = getCompany(alias);
 
+  console.log({mandatory_riders, health_riders})
   const netPremium = calculateTotalPremium({
     total_premium,
-    health_riders: health_riders,
+    health_riders: health_riders.length ? health_riders : selectedRiders,
   });
 
   return (

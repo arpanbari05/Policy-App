@@ -425,7 +425,7 @@ export function useMembers() {
   }
 
   function getPreviousGroup(currentGroupCode) {
-    return groups?.find(group => group.id === currentGroupCode - 1);
+    return groups?.find(group => group?.id === currentGroupCode - 1);
   }
 
   function getLastGroup() {
@@ -614,8 +614,8 @@ export function useCart() {
   const { getCompany } = useCompanies();
 
   function getCartEntry(groupCode, { additionalDiscounts = [] } = {}) {
-    const cartEntry = data?.data.find(
-      cartEntry => cartEntry.group.id === parseInt(groupCode),
+    const cartEntry = data?.data?.find(
+      cartEntry => cartEntry?.group?.id === parseInt(groupCode),
     );
 
     if (!cartEntry) return;
