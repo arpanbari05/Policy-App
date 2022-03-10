@@ -22,11 +22,13 @@ const DropDown = ({
   excludeOptions,
 }) => {
   const [selectOption, setSelectOption] = useState(asyncOptions || options);
+
   const [dataValue, setDataValue] = useState();
 
   useEffect(() => {}, []);
 
   const excludeOptionsPage = excludeOptions?.when?.split(".")[0];
+
   const excludeOptionsVariable = excludeOptions?.when?.split(".")[1];
 
   useEffect(() => {
@@ -46,8 +48,9 @@ const DropDown = ({
   }, [asyncOptions]);
 
   label = label || "- Select -";
+
   label = checkValidation?.required ? `${label}*` : label;
-  console.log(label);
+
   return (
     <SelectContainer height={height}>
       <Select
