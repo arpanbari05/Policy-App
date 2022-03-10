@@ -39,6 +39,9 @@ import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useGetProposalDataQuery } from "../../api/api";
+import ShareQuoteModal from "../../components/ShareQuoteModal";
+import GoBackButton from "../../components/GoBackButton";
+import { mobile } from "../../utils/mediaQueries";
 
 const ProposalSummary = () => {
   const history = useHistory();
@@ -69,7 +72,6 @@ const ProposalSummary = () => {
   );
 
   const { theme } = useSelector(state => state.frontendBoot);
-
 
   // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { proposerDetails } = useSelector(state => state.greetingPage);
@@ -405,6 +407,28 @@ const ProposalSummary = () => {
               }
             `}
           >
+            <div
+              className="container-fluid"
+              css={`
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                ${mobile} {
+                  display: none;
+                }
+              `}
+            >
+              <GoBackButton backPath={getUrlWithEnquirySearch("/proposal")} />
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                `}
+              >
+                <ShareQuoteModal />
+              </div>
+            </div>
             <Col
               md={3}
               css={`
