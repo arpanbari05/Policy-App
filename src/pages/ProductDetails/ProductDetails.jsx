@@ -10,7 +10,7 @@ import useUrlQuery from "../../customHooks/useUrlQuery";
 import { useEffect } from "react";
 import { useState } from "react";
 import ProductDetailsNavbar from "./components/ProductDetailsNavbar";
-import { mobile } from "../../utils/mediaQueries";
+import { mobile, small } from "../../utils/mediaQueries";
 import {
   MobileHeader,
   MobileHeaderText,
@@ -27,10 +27,13 @@ import { FaArrowCircleLeft } from "react-icons/fa";
 import SumInsuredSection from "./components/SumInsuredSection";
 import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 import Benefit from "./components/Benefit";
+import GoBackButton from "../../components/GoBackButton";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
+
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
+
   const location = useLocation();
 
   const history = useHistory();
@@ -129,6 +132,24 @@ const ProductDetails = () => {
             }
           `}
         >
+          <div
+            css={`
+              @media (max-width: 1200px) {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+              ${mobile} {
+                display: none;
+              }
+            `}
+          >
+            <GoBackButton
+              backPath={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
+            />
+          </div>
+
           <div
             css={`
               width: 70%;

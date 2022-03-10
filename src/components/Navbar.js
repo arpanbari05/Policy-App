@@ -60,14 +60,16 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
   const trace_id = data?.data?.trace_id;
 
   const { groupCode } = useParams();
-  const { imageSend: proposalImageSend } = useShareFunctionality(
+
+  /* const { imageSend: proposalImageSend } = useShareFunctionality(
     "proposalPage",
     "proposalPage",
   );
+
   const { imageSend: proposalSummaryImageSend } = useShareFunctionality(
     "proposalSummaryPage",
     "proposalSummaryPage",
-  );
+  ); */
 
   const { emailStatus, imageSend } = useComparePage();
 
@@ -79,7 +81,7 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
         }
       `}
     >
-      <Card width={"100%"} height={"55px"} clasName="position-relative">
+      <Card width={"100%"} height={"55px"} className="position-relative">
         <div className="container d-flex justify-content-between align-items-center h-100">
           <div
             css={`
@@ -89,7 +91,7 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
             `}
           >
             {/* to change back btn style use class ".back_btn_navbar" for similarity */}
-            {BackButton}
+            {/*BackButton*/}
             <LogoLink />
             {!location.pathname.startsWith("/input") && trace_id && (
               <div
@@ -108,6 +110,7 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
                 display: flex;
               `}
             >
+              {/*
               {location.pathname === "/proposal" && (
                 <ShareQuoteModal
                   imageSend={proposalImageSend}
@@ -121,7 +124,7 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
                   emailStatus={emailStatus}
                   stage="PROPOSAL_SUMMARY"
                 />
-              )}
+              )} */}
               {location.pathname === `/compare/${groupCode}` && (
                 <ShareQuoteModal
                   imageSend={imageSend}
@@ -129,6 +132,7 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
                   stage={"COMPARE"}
                 />
               )}
+
               <div
                 css={`
                   background-color: ${colors.secondary_shade};
