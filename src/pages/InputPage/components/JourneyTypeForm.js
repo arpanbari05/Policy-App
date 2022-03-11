@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Title } from "./FormComponents";
 import styled from "styled-components/macro";
 
 function JourneyTypeForm() {
+  const params = useParams();
+  console.log(params);
   return (
     <div
       css={`
