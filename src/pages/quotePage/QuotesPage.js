@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
 import { FaSync } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SortBy from "./components/filters/SortBy";
 import assistant from "../../assets/images/call-center-service.png";
 import { QuotesLoader } from "./components";
@@ -19,6 +19,8 @@ import { useFrontendBoot } from "../../customHooks/index";
 import { useGetEnquiriesQuery } from "../../api/api";
 import { mergeQuotes } from "../../utils/helper";
 import "styled-components/macro";
+import { useDispatch, useSelector } from "react-redux";
+import { replaceShareQuotes } from "./quote.slice";
 
 function QuotesPage() {
   const { colors } = useTheme();
@@ -108,12 +110,22 @@ function QuotesPage() {
 export default QuotesPage;
 
 function ShowingPlanType() {
+  const dispatch = useDispatch();
   const { colors } = useTheme();
   const { journeyType } = useFrontendBoot();
+  const {shareType } = useSelector(state => state.quotePage);
   const { data } = useGetEnquiriesQuery();
   const { groupCode } = useParams();
   const { data: unmergedQuotes } = useGetQuotes();
-  const mergedQuotes = unmergedQuotes?.map(quote => mergeQuotes(quote.data.data));
+  const mergedQuotes = unmergedQuotes?.map(quote => mergeQuotes(quote.data.data))?.flat();
+
+  useEffect(() => {
+    if (shareType.value === "quotation_list") {
+      dispatch(replaceShareQuotes(mergedQuotes))
+    } else if (shareType.value === "specific_quotes") {
+      dispatch(replaceShareQuotes([]))
+    }
+  }, [shareType])
 
   const planTypes = {
     I: "Individual",
@@ -131,7 +143,7 @@ function ShowingPlanType() {
         font-weight: 900;
       `}
     >
-      {`Showing ${mergedQuotes?.flat().length} ${
+      {`Showing ${mergedQuotes?.length} ${
         journeyType === "top_up"
           ? "Top Up "
           : planTypes[

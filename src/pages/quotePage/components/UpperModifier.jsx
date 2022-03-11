@@ -33,6 +33,7 @@ function UpperModifier() {
           <GroupLinks />
           <div css={`margin-left: auto`}>
             <ShareQuoteModal
+              shareQuotes={true}
               imageSend={sendQuote}
               emailStatus={emailStatus}
               stage="QUOTE"
