@@ -13,6 +13,8 @@ import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { RiInformationLine } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import { setQuotesToShare, removeQuoteFromShare } from "../quote.slice";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",
@@ -53,7 +55,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
       onChange: handleCompareChange,
     },
   });
-
+  
   return (
     <div
       className="position-relative"
@@ -136,19 +138,25 @@ function QuoteCard({
 
   const isDeductibleJourney = quotes[0]?.deductible;
 
+  const { shareType, quotesToShare } = useSelector(state => state.quotePage);
+
+  const dispatch = useDispatch();
+
   const deductibles = getDeductibles(quotes);
 
-  const [selectedDeductible, setSelectedDeductible] = useState(deductibles[0]);
+  
+  const [isShare, setIsShare] = useState(false);
 
+  const [selectedDeductible, setSelectedDeductible] = useState(Math.max(...deductibles));
   const sumInsureds = isDeductibleJourney
     ? quotes
         .filter(
           quote => parseInt(quote.deductible) === parseInt(selectedDeductible),
-        )
-        .map(quote => parseInt(quote.sum_insured))
-        .sort((a, b) => a - b)
-    : quotes.map(quote => parseInt(quote.sum_insured)).sort((a, b) => a - b);
-
+          )
+          .map(quote => parseInt(quote.sum_insured))
+          .sort((a, b) => a - b)
+          : quotes.map(quote => parseInt(quote.sum_insured)).sort((a, b) => a - b);
+          
   const [selectedSumInsured, setSelectedSumInsured] = useState();
   const [defaultActiveKey, setdefaultActiveKey] = useState("plan-details");
 
@@ -161,6 +169,7 @@ function QuoteCard({
 
   useEffect(() => {
     setSelectedSumInsured(sumInsureds[0]);
+    setSelectedDeductible(Math.max(...deductibles));
   }, [sortBy]); // SETS MIN-SUM-INSURED OPTION AS DEFAULT SELECTED
 
   const { getCompany } = useCompanies();
@@ -173,6 +182,11 @@ function QuoteCard({
   }, [quote, quotes, sumInsureds, deductibles]);
 
   const productDetailsModal = useToggle(false);
+
+  useEffect(() => {
+      const isInShare = quotesToShare?.find(shareQuote => shareQuote[0]?.product?.id === quote?.product?.id);
+      setIsShare(isInShare ? true : false);
+  }, [quotesToShare, shareType]);
 
   if (!quote) return null;
 
@@ -196,6 +210,15 @@ function QuoteCard({
     const { checked } = evt.target;
     onChange && onChange({ checked, quote });
   };
+
+  const handleShareQuoteChange = evt => {
+    const { checked } = evt.target;
+    if (checked) {
+      dispatch(setQuotesToShare(quotes));
+    } else {
+      dispatch(removeQuoteFromShare(quotes));
+    }
+  }
 
   let features = isDeductibleJourney ? quoteFeatures : quote.features;
   features = features.filter(feature =>
@@ -230,7 +253,7 @@ function QuoteCard({
   // };
 
   return (
-    <div {...props}>
+    <div id={quote.company_alias} {...props}>
       <div
         className="d-flex align-items-center"
         css={`
@@ -397,7 +420,66 @@ function QuoteCard({
                 />
               </div>
             )}
-            <div
+            {
+              shareType.value === "quotation_list" || shareType.value === "specific_quotes" ? (
+                // true ? (
+                  <div
+              css={`
+                font-size: 0.83rem;
+              `}
+            >
+              <label
+                className="d-flex align-items-center rounded"
+                htmlFor={quote?.product?.name}
+                css={`
+                  color: ${colors.font.one};
+                  font-weight: 900;
+                  cursor: pointer;
+                  // background-color: ${colors.secondary_shade};
+                `}
+              >
+                {isShare ? (
+                  <IoCheckmarkCircleSharp
+                    color={colors.primary_color}
+                    style={{ marginRight: 3 }}
+                    size={20}
+                  />
+                ) : (
+                  // <BsCircleFill
+                  //   css={`
+                  //     color: white;
+                  //   `}
+                  // />
+                  <div
+                    css={`
+                      width: 17px;
+                      height: 17px;
+                      border: 1px solid ${colors.primary_color};
+                      border-radius: 50%;
+                      margin: 1px 5px 1px 1px;
+                    `}
+                  />
+                )}
+                {/* </span> */}
+                <span
+                  css={`
+                    margin-top: 2px;
+                  `}
+                >
+                  Share
+                </span>
+              </label>
+              <input
+                className="visually-hidden"
+                type={"checkbox"}
+                id={quote?.product?.name}
+                name="share-quote"
+                checked={isShare}
+                onChange={handleShareQuoteChange}
+              />
+            </div>
+              ) : (
+                <div
               css={`
                 font-size: 0.83rem;
               `}
@@ -459,6 +541,8 @@ function QuoteCard({
                 onChange={handleCompareChange}
               />
             </div>
+              )
+            }
           </div>
         </div>
       </div>

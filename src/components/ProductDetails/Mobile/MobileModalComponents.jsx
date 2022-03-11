@@ -16,7 +16,6 @@ import {
   useTheme,
   useToggle,
 } from "../../../customHooks";
-import ClaimProcess from "../../../pages/SeeDetails/DataSet/ClaimProcess";
 import {
   amount,
   calculateTotalPremium,
