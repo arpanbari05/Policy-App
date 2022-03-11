@@ -380,7 +380,7 @@ export function MobileRenderPlanDetails({ quote, ...props }) {
   if (productBrochureQuery.isError)
     return (
       <MobileDetailsSectionWrap>
-        {productBrochureQuery.error.data.message}
+        {productBrochureQuery.error.data?.message}
       </MobileDetailsSectionWrap>
     );
 
