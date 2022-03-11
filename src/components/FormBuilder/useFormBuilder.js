@@ -126,8 +126,10 @@ const useFormBuilder = (
         if (item instanceof Array) {
           item[0].additionalOptions.members.forEach(member => {
             item.forEach(innerItem => {
+              console.log("wrgvhwrjv",values,innerItem.parent,values[innerItem.parent])
               let errorMsg =
-                innerItem.validate && values[innerItem.parent].members[member] && 
+                innerItem.validate && 
+                values[innerItem.parent] && values[innerItem.parent].members[member] && 
                 performValidations(innerItem.validate, values, {
                   variableName: innerItem.name,
                   parent: innerItem.parent,
