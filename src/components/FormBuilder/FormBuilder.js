@@ -148,7 +148,10 @@ const FormBuilder = ({
       });
 
       console.table("ejrgvbjhsb", schema, dataForAutopopulate, acc);
-      setValues(acc);
+      setValues(prev => ({
+        ...prev,
+        ...acc,
+      }));
     }
   }, [values.nominee_relation]);
 
