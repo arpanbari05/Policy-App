@@ -1,22 +1,19 @@
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useParams } from "react-router-dom";
 import InputPage from "./pages/InputPage/InputPage";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import QuotesPage from "./pages/quotePage/";
-import PageNotFound from "./pages/PageNotFound";
 import { lazy } from "react";
 import { Suspense } from "react";
 import { FullScreenLoader, LoadCart } from "./components";
 import ComparePage from "./pages/ComparePage";
-// import { setSelectedIcs } from "./pages/ProposalPage/ProposalSections/ProposalSections.slice";
 import ErrorPage from "./components/Common/ErrorPage/ErrorPage";
 import { useFrontendBoot } from "../src/customHooks";
+import { BaseComponent } from "./components/BaseComponent";
 const ProposalPage = lazy(() => import("./pages/ProposalPage/ProposalPage"));
 const ProposalSummary = lazy(() =>
   import("./pages/ProposalSummary/ProposalSummary"),
 );
 const ThankYouPage = lazy(() => import("./pages/ThankYouPage/ThankYouPage"));
-
-
 
 function App() {
   const {
@@ -24,19 +21,11 @@ function App() {
   } = useFrontendBoot();
   return (
     <Switch>
-      <Route path="/" exact>
-        <Redirect
-          from="/"
-          to={
-            tenant.alias === "fyntune"
-              ? "/input/journey-type"
-              : "/input/basic-details"
-            // journeyType === "renewal"
-            //   ? "input/renewal-details"
-            //   : "/input/basic-details"
-          }
-        />
-      </Route>
+      <Route
+        path="/"
+        component={() => <BaseComponent tenant={tenant} />}
+        exact
+      ></Route>
       <Route exact path="/input/:currentForm" component={InputPage} />
       <Route exact path="/quotes/:groupCode">
         <LoadCart>

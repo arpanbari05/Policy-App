@@ -6,9 +6,9 @@ function test_same_digit(num) {
   var first = num % 10;
   while (num) {
     if (num % 10 !== first) return false;
-num = Math.floor(num / 10);
+    num = Math.floor(num / 10);
   }
-  return true
+  return true;
 }
 const forbiddedSymbols = [
   "!",
@@ -134,6 +134,29 @@ export const validationIndex = {
       }
     }
   },
+  // allow: (param, values, name) => {
+  //   const { parent, member, variableName } = name;
+  //   let value =
+  //     parent && member && variableName && values
+  //       ? values?.[parent]?.[member]?.[variableName]
+  //       : parent && member && values
+  //       ? values?.[parent]?.[member]
+  //       : values?.[name];
+  //   if (param === "onlyNumbers") {
+  //     console.log(
+  //       "sghsdfjkv",value
+  //     )
+  //   }
+  //   let message = {
+  //     onlyNumbers: "Input should be number",
+  //   };
+  //   if (message[param]) {
+  //     return {
+  //       status: false,
+  //       message: message[param],
+  //     };
+  //   }
+  // },
   matches: (param, values, name) => {
     const { parent, member, variableName } = name;
     let compareTo;
@@ -535,22 +558,20 @@ export const validationIndex = {
   },
   selectAtLeastOneCheckbox: (param, values, name) => {
     const { parent, member, variableName } = name;
+
     if (
-      values[parent] &&
-      values[parent][member] &&
-      values[parent][member][variableName]
-    ) {
-     
-      if (
-        !Object.values(values[parent][member][variableName]).some(
-          val => val === "Y",
-        )
+      !values[parent] ||
+      !values[parent][member] ||
+      !values[parent][member][variableName] ||
+      Object.values(values[parent][member][variableName]).length === 0 ||
+      !Object.values(values[parent][member][variableName]).some(
+        val => val === "Y",
       )
-        return {
-          status: false,
-          message: "Please select atleast one",
-        };
-    }
+    )
+      return {
+        status: false,
+        message: "Please select atleast one",
+      };
   },
   customMedicalRequired: (param, values, name) => {
     if (values[name] && values[name] instanceof Object) {

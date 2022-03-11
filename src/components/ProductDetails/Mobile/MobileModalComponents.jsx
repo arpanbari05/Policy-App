@@ -52,6 +52,8 @@ export function MobileProductHeader({
     product: { company, name },
     sum_insured,
     total_premium,
+    mandatory_riders,
+    health_riders,
     tenure,
   } = quote;
 
@@ -61,7 +63,7 @@ export function MobileProductHeader({
 
   const netPremium = calculateTotalPremium({
     total_premium,
-    health_riders: selectedRiders,
+    health_riders: health_riders?.length ? health_riders : mandatory_riders,
   });
 
   return (
@@ -290,7 +292,7 @@ export const MobileProductDetailsFooter = ({
 
   const netPremium = calculateTotalPremium({
     total_premium,
-    health_riders: selectedRiders,
+    health_riders: quote?.mandatory_riders,
   });
 
   return (
@@ -336,6 +338,7 @@ export const MobileProductDetailsFooter = ({
 
       {cartSummaryModal.isOn && (
         <CartSummaryModal
+          selectedRiders={quote?.mandatory_riders}
           onClose={cartSummaryModal.off}
           onContine={gotoProductPage}
           allClose={onClose}

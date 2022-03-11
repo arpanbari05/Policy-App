@@ -8,13 +8,12 @@ const useFormBuilder = (
   noForAll,
   setNoForAll,
   formName,
-  insuredDetails
+  insuredDetails,
 ) => {
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState();
   const updateValue = (name, value) => {
-
     setValues(prev => ({ ...prev, [name]: value }));
     fetchValues(prev => ({ ...prev, [name]: value }));
     if (value instanceof Object) {
@@ -23,10 +22,8 @@ const useFormBuilder = (
       }
     }
   };
-  
 
   const updateValues = (multipleValues = {}) => {
-
     setValues({ ...values, ...multipleValues });
     fetchValues({ ...values, ...multipleValues });
   };
@@ -63,9 +60,9 @@ const useFormBuilder = (
   }, [defaultValues]);
 
   const triggerValidation = name => {
+    console.log("sgbmkfbmk", name, values);
     let errorsTemp = {};
     let tempIsValid = true;
-
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
       let findGroup = schema.findIndex(el => el.name === parent);
@@ -73,16 +70,18 @@ const useFormBuilder = (
         item => item.name === variableName,
       );
 
-      
       if (filteredItem) {
         name =
-      typeof name === "object"
-        ? {
-            ...name,
-      
-            dob: insuredDetails && insuredDetails[name.member] ? insuredDetails[name.member]?.dob : "",
-          }
-        : name;
+          typeof name === "object"
+            ? {
+                ...name,
+
+                dob:
+                  insuredDetails && insuredDetails[name.member]
+                    ? insuredDetails[name.member]?.dob
+                    : "",
+              }
+            : name;
         let errorMsg =
           filteredItem.validate &&
           performValidations(filteredItem.validate, values, name);
@@ -96,24 +95,23 @@ const useFormBuilder = (
     } else if (name) {
       let [filteredItem] = schema.filter(item => item.name === name);
       // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
-     
-      console.log("dhdnl",name,filteredItem)
 
-     
+      console.log("dhdnl", name, filteredItem);
+
       if (filteredItem) {
         let errorMsg;
-          // if(filteredItem.additionalOptions.showMembersIf){
-          //   let parents = filteredItem.additionalOptions.showMembersIf.split("||");
-          //   let isChildSelected = parents.some(el => values[el] && values[el][`is${el}`] === "Y")
-          //   if(isChildSelected && !Object.values(values[name].members).includes(true)){
-          //     errorMsg = "Select parent";
-          //   }
-    
-          // }else{
-            errorMsg =
+        // if(filteredItem.additionalOptions.showMembersIf){
+        //   let parents = filteredItem.additionalOptions.showMembersIf.split("||");
+        //   let isChildSelected = parents.some(el => values[el] && values[el][`is${el}`] === "Y")
+        //   if(isChildSelected && !Object.values(values[name].members).includes(true)){
+        //     errorMsg = "Select parent";
+        //   }
+
+        // }else{
+        errorMsg =
           filteredItem.validate &&
           performValidations(filteredItem.validate, values, name);
-          // }
+        // }
 
         if (renderField(filteredItem, values)) {
           errorsTemp[filteredItem.name] = errorMsg;
@@ -121,21 +119,26 @@ const useFormBuilder = (
           if (errorMsg) tempIsValid = false;
         }
       }
+
       // setIsValid(tempIsValid);
     } else {
       schema.forEach(item => {
         if (item instanceof Array) {
           item[0].additionalOptions.members.forEach(member => {
             item.forEach(innerItem => {
+              console.log("wrgvhwrjv",values,innerItem.parent,values[innerItem.parent])
               let errorMsg =
-                innerItem.validate &&
+                innerItem.validate && 
+                values[innerItem.parent] && values[innerItem.parent].members[member] && 
                 performValidations(innerItem.validate, values, {
                   variableName: innerItem.name,
                   parent: innerItem.parent,
                   member,
                 });
+              
 
               if (renderField(innerItem, values, member)) {
+
                 errorsTemp[innerItem.parent + member + innerItem.name] =
                   errorMsg;
                 if (errorMsg) tempIsValid = false;
@@ -147,17 +150,16 @@ const useFormBuilder = (
             item.validate &&
             performValidations(item.validate, values, item.name);
           if (renderField(item, values)) {
+
             errorsTemp[item.name] = errorMsg;
             if (errorMsg) tempIsValid = false;
-console.log("bfsfnbjkls",tempIsValid)
-
+            console.log("bfsfnbjkls", tempIsValid);
           }
         }
-
         setIsValid(tempIsValid);
       });
     }
-    
+
     setErrors({ ...errors, ...errorsTemp });
   };
 

@@ -39,6 +39,9 @@ import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useGetProposalDataQuery } from "../../api/api";
+import ShareQuoteModal from "../../components/ShareQuoteModal";
+import GoBackButton from "../../components/GoBackButton";
+import { mobile } from "../../utils/mediaQueries";
 
 const ProposalSummary = () => {
   const history = useHistory();
@@ -67,12 +70,8 @@ const ProposalSummary = () => {
   const { policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
   );
-  {
-    console.log("sdjbnskdj", policyStatus);
-  }
 
   const { theme } = useSelector(state => state.frontendBoot);
-
 
   // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const { proposerDetails } = useSelector(state => state.greetingPage);
@@ -119,7 +118,11 @@ const ProposalSummary = () => {
       frontendData?.data?.settings?.journey_type === "single" &&
       (checked || mobile)
     ) {
-      setShow(prev => !prev);
+      if (policyStatus?.length > 1) {
+        setShow(prev => !prev);
+      } else {
+        singlePay(policyStatus[0]?.proposal_id);
+      }
     } else if (checked || mobile) {
       const form = document.createElement("form");
       form.method = "POST";
@@ -408,6 +411,28 @@ const ProposalSummary = () => {
               }
             `}
           >
+            <div
+              className="container-fluid"
+              css={`
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                ${mobile} {
+                  display: none;
+                }
+              `}
+            >
+              <GoBackButton backPath={getUrlWithEnquirySearch("/proposal")} />
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                `}
+              >
+                <ShareQuoteModal />
+              </div>
+            </div>
             <Col
               md={3}
               css={`

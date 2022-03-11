@@ -39,6 +39,19 @@ const FormBuilder = ({
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
   );
+  // if nominee relation selected as "self"
+  let proposalDetails = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
+  );
+  let memberGroupsAsPerMembers = useSelector(({ greetingPage }) =>
+    greetingPage.proposerDetails.groups.reduce(
+      (acc, { id, members }) => ({
+        ...acc,
+        [members.reduce((acc, el) => acc + el, "")]: id,
+      }),
+      {},
+    ),
+  );
 
   const {
     updateValue,
@@ -80,39 +93,66 @@ const FormBuilder = ({
     "grand_mother",
   ];
 
-  // if nominee relation selected as "self"
-  let dataForAutopopulate = useSelector(
-    ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
-  );
 
-  dataForAutopopulate = {
-    ...dataForAutopopulate,
-    ...(insuredDetails ? insuredDetails["self"] : {}),
-  };
 
   // for auto populate self data when nominee relation is self
   useEffect(() => {
-    if (values.nominee_relation === "self") {
+    if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
+      let dataForAutopopulate;
+      if (values.nominee_relation === "self") {
+        dataForAutopopulate = {
+          ...proposalDetails,
+          ...(insuredDetails ? insuredDetails["self"] : {}),
+        };
+      } else if (insuredDetails[values.nominee_relation]) {
+        dataForAutopopulate = insuredDetails[values.nominee_relation];
+        let groupIdOfmember =
+          memberGroupsAsPerMembers[
+            Object.keys(memberGroupsAsPerMembers).find(key =>
+              key.includes(values.nominee_relation),
+            )
+          ];
+        let memberDetailsInProposerD = Object.keys(proposalDetails)
+          .filter(key => key.includes(groupIdOfmember))
+          .reduce((acc, key) => ({ ...acc, [key]: proposalDetails[key] }), {});
+
+        dataForAutopopulate = {
+          ...memberDetailsInProposerD,
+          ...insuredDetails[values.nominee_relation],
+        };
+
+        console.log("bndglbd", values.nominee_relation, dataForAutopopulate);
+      }
+
       let acc = {};
       schema.forEach(({ name }) => {
         let nameWithoutNominee = name.slice(name.indexOf("_") + 1, name.length);
         if (nameWithoutNominee === "contact") nameWithoutNominee = "mobile";
         if (nameWithoutNominee.includes("address"))
-          nameWithoutNominee = Object.keys(dataForAutopopulate).find(name =>
-            name.includes(nameWithoutNominee),
+          console.log(
+            "snfklnfk",
+            nameWithoutNominee,
+            name,
+            dataForAutopopulate,
+            memberGroupsAsPerMembers,
           );
+        nameWithoutNominee = Object.keys(dataForAutopopulate).find(key =>
+          key.includes(nameWithoutNominee),
+        );
         if (name.includes("pincode"))
-          nameWithoutNominee = Object.keys(dataForAutopopulate).find(name =>
-            name.includes("pincode"),
+          nameWithoutNominee = Object.keys(dataForAutopopulate).find(key =>
+            key.includes("pincode"),
           );
         if (dataForAutopopulate[nameWithoutNominee])
           acc[name] = dataForAutopopulate[nameWithoutNominee];
       });
 
       console.table("ejrgvbjhsb", schema, dataForAutopopulate, acc);
-      setValues(prev => ({ ...prev, ...acc }));
+      setValues(acc);
     }
   }, [values.nominee_relation]);
+
+
 
   useEffect(() => {
     if (trigger) {
@@ -228,22 +268,24 @@ const FormBuilder = ({
                                       name={innerItem.name}
                                       checkValidation={innerItem.validate}
                                       innerMember={member}
-                                      onChange={(e,value) => {
+                                      onChange={(e, value) => {
                                         console.log(
                                           "qdjbjics",
                                           innerItem,
                                           innerItem.parent,
                                           innerItem.type,
                                         );
-                                        if(innerItem.parent &&
-                                          innerItem.type === "checkboxGroup"){
-                                            insertValue(
+                                        if (
+                                          innerItem.parent &&
+                                          innerItem.type === "checkboxGroup"
+                                        ) {
+                                          insertValue(
                                             innerItem.parent,
                                             member,
                                             innerItem.name,
-                                            value
+                                            value,
                                           );
-                                          }else if (
+                                        } else if (
                                           innerItem.parent &&
                                           innerItem.type === "checkBox2"
                                         ) {

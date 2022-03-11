@@ -63,7 +63,7 @@ function ProductDetailsModal({
   defaultActiveKey = "plan-details",
   defaultActiveKeyMobile = "mobile-plan-details",
   ...props
-}) {
+}) {  
   const handleClose = () => onClose && onClose();
 
   const { selectedRiders, ...ridersSlot } = useRidersSlot();
@@ -665,6 +665,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
 
         {cartSummaryModal.isOn && (
           <CartSummaryModal
+            selectedRiders={mandatory_riders}
             onClose={cartSummaryModal.off}
             onContine={gotoProductPage}
             allClose={handleClose}

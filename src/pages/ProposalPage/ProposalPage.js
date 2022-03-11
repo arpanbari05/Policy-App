@@ -33,17 +33,26 @@ import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
 import Card from "../../components/Card";
 import { Col, Container, Row } from "react-bootstrap";
 import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
-import { useTheme, useUrlEnquiry, useCart } from "../../customHooks";
+import {
+  useTheme,
+  useUrlEnquiry,
+  useCart,
+  useShareFunctionality,
+} from "../../customHooks";
 import { Page } from "../../components";
+import GoBackButton from "../../components/GoBackButton";
+import ShareQuoteModal from "../../components/ShareQuoteModal";
+import useComparePage from "../ComparePage/useComparePage";
+import { mobile } from "../../utils/mediaQueries";
 
 /* ===============================test================================= */
 
 /* ===============================test================================= */
 const ProposalPage = () => {
   const history = useHistory();
-const [continueBtnClick,setContinueBtnClick] = useState(false);
+  const [continueBtnClick, setContinueBtnClick] = useState(false);
   const [memberGroups, setMemberGroups] = useState([]);
-
+const [bmiFailBlock,setBmiFailBlock] = useState(false);
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
   const [active, setActive] = useState(0);
@@ -68,9 +77,8 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
       setListOfForms(Object.keys(currentSchema));
   }, [currentSchema]);
   const dispatch = useDispatch();
-  const { activeIndex, proposalData, showErrorPopup,showBMI, failedBmiData } = useSelector(
-    state => state.proposalPage,
-  );
+  const { activeIndex, proposalData, showErrorPopup, showBMI, failedBmiData } =
+    useSelector(state => state.proposalPage);
   console.log("wvbiwrvbwhxxx", proposalData);
   const {
     colors: { primary_color, primary_shade },
@@ -103,6 +111,13 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
   // }, [active]);
 
   useEffect(() => {
+    if(failedBmiData && Object.keys(proposalData["Insured Details"]).length ===1){
+      setBmiFailBlock(true);
+      setActive(1)
+    }else setBmiFailBlock(false)
+  },[failedBmiData])
+
+  useEffect(() => {
     dispatch(getProposalFields());
     // if (!Object.keys(proposalData).length)
     dispatch(getProposalData());
@@ -117,16 +132,16 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
   // to get unfilled form
   useEffect(() => {
     // if (listOfForms.length && active >= listOfForms.length) {
-    console.log("gbyutf", proposalData);
+     
 
     if (
       Object.keys(proposalData).length &&
       activeIndex === false &&
-      continueBtnClick 
+      continueBtnClick
     ) {
       let unfilledInfoTabIndex;
-
-      listOfForms.find((e) => {
+      console.log("sgbjfbj",unfilledInfoTabIndex)
+      listOfForms.find(e => {
         if (!proposalData[e] || !Object.keys(proposalData[e]).length) {
           return (unfilledInfoTabIndex = listOfForms.indexOf(e));
 
@@ -137,11 +152,10 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
         setActivateLoader(true);
         dispatch(
           submitProposalData(() => {
-            
             history.replace("/proposal_summary?enquiryId=" + enquiryId);
-            setContinueBtnClick(false)
+            setContinueBtnClick(false);
             setActivateLoader(false);
-          })
+          }),
         );
       } else {
         setActive(unfilledInfoTabIndex);
@@ -215,7 +229,7 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
                 setActive={setActive}
                 name={activeForm}
                 continueSideEffects={() => {
-                  setContinueBtnClick(true)
+                  setContinueBtnClick(true);
                 }}
                 defaultValue={defaultData}
                 setProposerDactive={setProposerDactive}
@@ -272,7 +286,7 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
                 setActive={setActive}
                 name={activeForm}
                 continueSideEffects={() => {
-                  setContinueBtnClick(true)
+                  setContinueBtnClick(true);
                 }}
                 defaultValue={defaultData}
               />
@@ -311,7 +325,7 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
           )}
         </Card>
         <Card styledCss={`margin-bottom: 20px;`}>
-          {activeForm === "Medical Details" && !failedBmiData ? (
+          {activeForm === "Medical Details" && !bmiFailBlock  ? (
             <>
               {" "}
               <MainTitle
@@ -326,7 +340,7 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
                 setActive={setActive}
                 name={activeForm}
                 continueSideEffects={() => {
-                  setContinueBtnClick(true)
+                  setContinueBtnClick(true);
                 }}
                 defaultValue={defaultData}
               />
@@ -340,11 +354,11 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
                 align-items: center;
               `}
               onClick={() => {
-                proposalData["Insured Details"] && !failedBmiData  && setActive(2);
+                proposalData["Insured Details"] &&  !bmiFailBlock  && setActive(2);
               }}
             >
               <MainTitle PrimaryColor={PrimaryColor}>Medical Details</MainTitle>
-              {proposalData[listOfForms[1]] && !failedBmiData && (
+              {proposalData[listOfForms[1]] &&  !bmiFailBlock && (
                 <div
                   css={`
                     width: 30px;
@@ -382,7 +396,7 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
                 setActive={setActive}
                 name={activeForm}
                 continueSideEffects={() => {
-                  setContinueBtnClick(true)
+                  setContinueBtnClick(true);
                 }}
                 defaultValue={defaultData}
               />
@@ -452,6 +466,7 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
           </MobileHeaderText>
         </Link>
       </MobileHeader>
+
       <div
         className="container-fluid mt-20 pb-100"
         css={`
@@ -463,17 +478,51 @@ const [continueBtnClick,setContinueBtnClick] = useState(false);
         `}
       >
         <div
-          className="element-section mb-30"
+          className="element-section mb-30 "
           css={`
             // margin: 30px auto;
             // max-width: 1300px;
-            margin: 10px 30px 30px 30px;
+            margin: 30px 30px 30px 30px;
             @media (max-width: 1024px) {
               margin: 0;
               padding: 0;
             }
           `}
         >
+          <div
+            className="container-fluid"
+            css={`
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              ${mobile} {
+                display: none;
+              }
+            `}
+          >
+            <GoBackButton
+              backPath={getUrlWithEnquirySearch(
+                `/productdetails/${Math.max(...memberGroups)}`,
+              )}
+            />
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              `}
+            >
+              <span
+                css={`
+                  font-weight: 900;
+                  color: rgb(80, 95, 121);
+                `}
+              >
+                You are Just 5 minutes away from investing for your future
+              </span>
+              <ShareQuoteModal />
+            </div>
+          </div>
           <div>
             <Row
               css={`

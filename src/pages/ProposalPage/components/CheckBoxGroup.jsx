@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CustomCheckBox from "./customCheckBox";
 
-function CheckBoxGroup({ name, item, onChange, value, error }) {
+function CheckBoxGroup({ name, item, onChange, value, error, innerMember }) {
   const { subQuestion } = item;
 
   return (
@@ -12,6 +12,7 @@ function CheckBoxGroup({ name, item, onChange, value, error }) {
             <CustomCheckBox
               name={item.name}
               checkValidation={item.validate}
+              innerMember={innerMember}
               width="100%"
               value={value[item.name]?value[item.name]:"N"}
               onChange={e => {

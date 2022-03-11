@@ -23,7 +23,6 @@ const Toggle = ({
   showMembersIf,
 }) => {
   const { colors } = useTheme();
-
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
@@ -94,6 +93,9 @@ const Toggle = ({
       isValid,
     });
   }, [boolean, membersStatus, customShowMembers]);
+
+console.log("sgjsg",value,label,boolean)
+
 
   return (
     <>
