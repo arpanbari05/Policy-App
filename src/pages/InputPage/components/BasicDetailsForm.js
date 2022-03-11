@@ -14,15 +14,15 @@ import {
 } from "../../../customHooks";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
-import { IoArrowForwardSharp } from "react-icons/io5";
 import "styled-components/macro";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams, useLocation } from "react-router-dom";
 import { useGetEnquiriesQuery } from "../../../api/api";
 import { capitalize } from "../../../utils/helper";
 import * as mq from "../../../utils/mediaQueries";
 import validateInput from "../../../utils/inputPageUtils";
 
 const BasicDetailsForm = ({ ...props }) => {
+  const paramsData = useLocation();
   const { colors } = useTheme();
   const {
     data: { tenant },
@@ -50,6 +50,7 @@ const BasicDetailsForm = ({ ...props }) => {
   const [journeyType, setJourneyType] = useState("health");
   const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
   const urlSearchParams = useUrlQuery();
+
   const history = useHistory();
 
   const handleFormSubmit = async event => {
