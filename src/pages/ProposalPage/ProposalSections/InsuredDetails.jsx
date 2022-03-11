@@ -57,7 +57,6 @@ const InsuredDetails = ({
   const [yesSelected, setYesSelected] = useState({});
 
   const [noForAll, setNoForAll] = useState({});
-
   const [initColor, setInitColor] = useState(PrimaryColor);
 
   const [canProceed, setCanProceed] = useState({
@@ -143,6 +142,7 @@ const InsuredDetails = ({
       }
     }
   };
+
 
   useEffect(() => {
     if (
