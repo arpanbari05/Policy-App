@@ -1633,7 +1633,7 @@ export function useRiders({
 
   return {
     query,
-    riders: riders.filter(rider => rider.total_premium > 0),
+    riders: quote?.product?.company?.alias === "reliance_general" ? riders : riders.filter(rider => rider.total_premium > 0),
     handleChange,
     getInititalRiders,
   };
@@ -1762,7 +1762,7 @@ export const useRenewalPremiumModal = () => {
   const updatedTotalPremium =
     getTotalPremium(cartEntries); /* Gets the updated value each time */
 
-  const getUpdatedCart = () => {
+  const getUpdatedCart = (next) => {
     dispatch(
       api.util.invalidateTags([
         "Cart",
@@ -1771,6 +1771,7 @@ export const useRenewalPremiumModal = () => {
         "TenureDiscount",
       ]),
     );
+    next();
   }; /* Performs refetch from the server */
 
   useEffect(() => {

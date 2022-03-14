@@ -13,14 +13,14 @@ import {
   ViewQuotesWrapper,
 } from "./BMI";
 import { FaTimes } from "react-icons/fa";
+import { useMembers } from "../../../../customHooks/index"
 
 const PlanUnavailable = () => {
   const { showPlanNotAvail } = useSelector(state => state.proposalPage);
   const history = useHistory();
   const urlQuery = useUrlQuery();
   const enquiryId = urlQuery.get("enquiryId");
-  const { memberGroups } = useSelector(state => state.greetingPage);
-  const member = Object.keys(memberGroups)[0];
+  const member = useMembers().groups.map(el => el.id)[0];
   const dispatch = useDispatch();
   if (!showPlanNotAvail) return <></>;
   if (showPlanNotAvail)

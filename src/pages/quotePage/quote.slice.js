@@ -30,6 +30,9 @@ const quotePageSlice = createSlice({
     loadingQuotes: false,
     toggleUi: false,
     quotes: [],
+    quotesToShare: [],
+    quotesToCanvas: [],
+    shareType: {},
     quotesOnCompare: false,
     quotesForCompare: [],
     selectedPlan: {},
@@ -68,6 +71,23 @@ const quotePageSlice = createSlice({
     },
     setShouldFetchQuotes: (state, action) => {
       state.shouldFetchQuotes = action.payload;
+    },
+    setQuotesToShare: (state, action) => {
+      state.quotesToShare = [...state.quotesToShare, action.payload];
+    },
+    removeQuoteFromShare: (state, action) => {
+      state.quotesToShare = state.quotesToShare.filter(
+        data => data[0]?.product?.id !== action.payload[0]?.product?.id,
+      );
+    },
+    replaceShareQuotes: (state, action) => {
+      state.quotesToShare = action.payload;
+    },
+    setShareType: (state, action) => {
+      state.shareType = action.payload;
+    },
+    setQuotesToCanvas: (state, action) => {
+      state.quotesToCanvas = action.payload;
     },
     addSelectedAddOns: (state, action) => {
       state.selectedAddOns = {
@@ -148,12 +168,6 @@ const quotePageSlice = createSlice({
       state.selectedGroup = action.payload;
     },
     setFilters: (state, action) => {
-      console.log("fetchquotes setfilters", action.payload);
-      console.log("Total filters each time", {
-        ...state.filters,
-        ...action.payload,
-      });
-
       state.filters = { ...state.filters, ...action.payload };
     },
 
@@ -286,6 +300,11 @@ export const {
   saveQuotes,
   saveFilteredQuotes,
   saveFilteredPremium,
+  setQuotesToShare,
+  removeQuoteFromShare,
+  setShareType,
+  setQuotesToCanvas,
+  replaceShareQuotes,
   saveSelectedPlan,
   setShouldFetchQuotes,
   saveCartData,
@@ -342,7 +361,6 @@ export const fetchQuotes =
       const selectedBasePlanType = baseplantypes.find(
         bpt => bpt.display_name === filters.basePlanType,
       );
-      console.log("base", basePlanType, plan_type);
 
       dispatch(setLoadingQuotes(true));
       Object.keys(cancelTokens).forEach(cancelToken => {

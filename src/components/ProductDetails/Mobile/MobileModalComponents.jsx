@@ -16,7 +16,6 @@ import {
   useTheme,
   useToggle,
 } from "../../../customHooks";
-import ClaimProcess from "../../../pages/SeeDetails/DataSet/ClaimProcess";
 import {
   amount,
   calculateTotalPremium,
@@ -380,7 +379,7 @@ export function MobileRenderPlanDetails({ quote, ...props }) {
   if (productBrochureQuery.isError)
     return (
       <MobileDetailsSectionWrap>
-        {productBrochureQuery.error.data.message}
+        {productBrochureQuery.error.data?.message}
       </MobileDetailsSectionWrap>
     );
 

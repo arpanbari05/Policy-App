@@ -15,14 +15,13 @@ import {
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
 import "styled-components/macro";
-import { useHistory, useParams, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useGetEnquiriesQuery } from "../../../api/api";
 import { capitalize } from "../../../utils/helper";
 import * as mq from "../../../utils/mediaQueries";
 import validateInput from "../../../utils/inputPageUtils";
 
 const BasicDetailsForm = ({ ...props }) => {
-  const paramsData = useLocation();
   const { colors } = useTheme();
   const {
     data: { tenant },
@@ -207,6 +206,7 @@ const BasicDetailsForm = ({ ...props }) => {
                   label="Mobile No."
                   name="mobile"
                   type="tel"
+                  maxLength={10}
                   {...mobileInput}
                 />
                 <ErrorMessage>{mobileError.message}</ErrorMessage>
@@ -217,6 +217,7 @@ const BasicDetailsForm = ({ ...props }) => {
                 type="email"
                 name="email"
                 label="Email Id"
+                maxLength={50}
                 {...emailInput}
               />
               <ErrorMessage>{emailError.message}</ErrorMessage>

@@ -46,15 +46,11 @@ const ThankYouPage = () => {
     data: { tenant: tenantDetail, settings },
   } = useFrontendBoot();
 
-  const redirectionLink =
-    settings.account_login_link || "";
+  const accountLoginLink = settings.account_login_link || "";
 
-  useEffect(() => {
-    if (settings.account_login_link)
-      redirectionLink = settings.account_login_link;
-  }, [settings]);
+  const shopMoreLink = settings.shop_more_link || "";
 
-  console.log("xfbjhxhnb", useFrontendBoot(), settings, redirectionLink);
+  console.log("xfbjhxhnb", useFrontendBoot(), settings);
 
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -116,7 +112,7 @@ const ThankYouPage = () => {
             `}
           >
             You can track your policy status on{" "}
-            <a href={redirectionLink}>My Account Page.</a> at anytime.
+            <a href={accountLoginLink}>My Account Page.</a> at anytime.
           </div>
         </>
       );
@@ -131,8 +127,8 @@ const ThankYouPage = () => {
             `}
           >
             Your policy document has been successfully saved in{" "}
-            <a href={redirectionLink}>My Account Page.</a> You can
-            visit the My Account page to retrieve your policy copy at any time.
+            <a href={accountLoginLink}>My Account Page.</a> You can visit the My
+            Account page to retrieve your policy copy at any time.
           </div>
         </>
       );
@@ -145,9 +141,8 @@ const ThankYouPage = () => {
               color: ${PrimaryColor} !important;
             `}
           >
-            You can visit the{" "}
-            <a href={redirectionLink}>My Account Page.</a> to retrieve
-            your policy copy or track your policy status at any time.
+            You can visit the <a href={accountLoginLink}>My Account Page.</a> to
+            retrieve your policy copy or track your policy status at any time.
           </div>
         </>
       );
@@ -198,7 +193,7 @@ const ThankYouPage = () => {
                   </div>
                   <div>
                     <a
-                      href={redirectionLink}
+                      href={shopMoreLink}
                       className="shopmore__button  btn-link"
                       css={`
                         color: ${PrimaryColor} !important;
@@ -326,7 +321,7 @@ const ThankYouPage = () => {
                 <p style={{ fontSize: "14px", lineHeight: "1.3" }}>
                   Your policy document has been successfully saved in{" "}
                   <a
-                    href={redirectionLink}
+                    href={accountLoginLink}
                     style={{
                       color: PrimaryColor,
                       borderBottom: `1px dashed ${PrimaryColor}`,
@@ -341,7 +336,7 @@ const ThankYouPage = () => {
 
                 <p style={{ fontSize: "14px", marginTop: "20px" }}>
                   <a
-                    href={redirectionLink}
+                    href={shopMoreLink}
                     style={{
                       color: PrimaryColor,
                       borderBottom: `1px dashed ${PrimaryColor}`,

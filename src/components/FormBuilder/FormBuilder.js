@@ -148,7 +148,10 @@ const FormBuilder = ({
       });
 
       console.table("ejrgvbjhsb", schema, dataForAutopopulate, acc);
-      setValues(acc);
+      setValues(prev => ({
+        ...prev,
+        ...acc,
+      }));
     }
   }, [values.nominee_relation]);
 
@@ -478,7 +481,7 @@ const FormBuilder = ({
               return (
                 <>
                   {renderField(item, values) && (
-                    <Wrapper key={index} width={item.width}>
+                    <Wrapper key={index+item.name} width={item.width}>
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}
