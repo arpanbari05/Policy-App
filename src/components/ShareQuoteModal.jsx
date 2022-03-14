@@ -260,27 +260,26 @@ function Quote({
 const CanvasQuotes = () => {
   const { quotesToCanvas } = useSelector(state => state.quotePage);
 
-  const {
-    colors: { primary_color: PrimaryColor },
-  } = useTheme();
+  const { colors } = useTheme();
 
   return (
     <Canvas>
       <div id="share-quotes" className="canvas">
-        <ShareQuotesHeader color={PrimaryColor} cols="3fr 1fr 1fr">
+        <ShareQuotesHeader color={colors.primary_color} cols="3fr 1fr 1fr 1fr">
           <ShareQuotesHeaderItem>Insurer</ShareQuotesHeaderItem>
           <ShareQuotesHeaderItem>Premium</ShareQuotesHeaderItem>
           <ShareQuotesHeaderItem>Cover</ShareQuotesHeaderItem>
+          <ShareQuotesHeaderItem>Proceed</ShareQuotesHeaderItem>
         </ShareQuotesHeader>
         {quotesToCanvas.map(quote => (
-          <CanvasQuoteTemplate color={PrimaryColor} quote={quote} />
+          <CanvasQuoteTemplate colors={colors} quote={quote} />
         ))}
       </div>
     </Canvas>
   );
 };
 
-const CanvasQuoteTemplate = ({ quote, color }) => {
+const CanvasQuoteTemplate = ({ quote, colors }) => {
   const {
     product: { name },
     total_premium,
@@ -291,16 +290,20 @@ const CanvasQuoteTemplate = ({ quote, color }) => {
   const logoSrc = images[company_alias];
 
   return (
-    <ShareQuoteItem cols="3fr 1fr 1fr" gap={"10px"}>
+    <ShareQuoteItemCanvas
+      color={colors.primary_color}
+      shade={colors.primary_shade}
+    >
       <Plan>
         <img className="insurer" src={logoSrc} alt="quote" />
         <div className="plan">{name}</div>
       </Plan>
-      <Premium color={color}>
+      <Premium color={colors.primary_color}>
         ₹ {parseInt(total_premium).toLocaleString("en-IN")}
       </Premium>
       <Premium>{figureToWords(sum_insured)}</Premium>
-    </ShareQuoteItem>
+      <Proceed color={colors.primary_color}>Proceed</Proceed>
+    </ShareQuoteItemCanvas>
   );
 };
 
@@ -361,6 +364,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
       scrollY: -window.scrollY,
       allowTaint: true,
       useCORS: true,
+      scale: 2,
     }).then(canvas => {
       const imgData = canvas.toDataURL("image/png");
       console.log(imgData);
@@ -832,10 +836,20 @@ const ShareQuotes = styled.div`
 `;
 
 const Canvas = styled.div`
-  width: 500px;
+  width: 600px;
   position: absolute;
-  left: -9999px;
+  left: -99999px;
   z-index: 9999999;
+`;
+
+const Proceed = styled.div`
+  background: ${({ color }) => color};
+  color: #fff;
+  padding: 6px 5px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center !important;
 `;
 
 const ShareQuotesHeader = styled.div`
@@ -845,7 +859,7 @@ const ShareQuotesHeader = styled.div`
   background: ${props => props.color || "#eee"};
   background: ;
   padding: 8px;
-  color: black;
+  color: ${({ color }) => (color ? "#fff" : "#000")};
 
   & > * {
     text-align: left;
@@ -888,6 +902,22 @@ const ShareQuoteItem = styled.div`
     height: 30px;
     max-width: 60px;
     margin-right: 5px;
+  }
+`;
+
+const ShareQuoteItemCanvas = styled(ShareQuoteItem)`
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  gap: 10px;
+  border: 1px solid ${({ color }) => color};
+  background: ${({ shade }) => shade};
+  align-items: center;
+  margin: 2px 0;
+
+  & .insurer {
+    border: 1px solid ${({ color }) => color};
+    padding: 2px;
+    border-radius: 5px;
+    background: #fff;
   }
 `;
 
