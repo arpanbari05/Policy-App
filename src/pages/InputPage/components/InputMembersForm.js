@@ -167,6 +167,7 @@ function InputMembersForm(props) {
             onSubmit={updateMembersList}
             initialMembersList={membersList}
             serverError={serverError}
+            gender={data?.data?.input?.gender}
           />
         ) : null}
       </div>
@@ -184,6 +185,7 @@ function EditMembers({
   serverError,
   onSubmit,
   initialMembersList = [],
+  gender,
   ...props
 }) {
   const {
@@ -218,7 +220,12 @@ function EditMembers({
         `}
       >
         <div className="p-3">
-          <MemberOptions {...membersForm} membersList={membersList} />
+          <MemberOptions
+            {...membersForm}
+            membersList={membersList}
+            selectedMembers={getSelectedMembers()}
+            gender={gender}
+          />
         </div>
         {isError || error ? (
           <StyledErrorMessage>{error}</StyledErrorMessage>
