@@ -82,10 +82,11 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
 
   const { data, isUninitialized, isLoading } = useGetEnquiriesQuery();
 
-  const proposerDetailsMembers = !(isUninitialized || isLoading) && data?.data?.input?.members;
+  const proposerDetailsMembers =
+    !(isUninitialized || isLoading) && data?.data?.input?.members;
 
   const { groupCode } = useParams();
-  
+
   const members = useMembers().getGroupMembers(groupCode);
 
   const currentGroupMembersAge = members?.map(
@@ -218,9 +219,9 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     const isPreExistingMatch = filterMatch(selectedPreExistingFilterObject);
 
     const isNoPreMedicalMatch = isNoPreMedicalSelected
-      ? (minAge < quote.ppmc_age_limit && quote.ppmc_age_limit !== 100)
+      ? minAge < quote.ppmc_age_limit
       : true;
-        
+
     return (
       isCompanyMatch &&
       isPremiumMatch &&

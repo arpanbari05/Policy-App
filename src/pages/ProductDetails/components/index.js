@@ -23,15 +23,27 @@ export function WrapWithTitle({ title, children }) {
           ${mobile} {
             border: none;
             position: relative;
+            display: flex;
+            align-items: center;
           }
         `}
       >
+        <hr css={`
+          display: none;
+          ${mobile} {
+            display: block;
+            height: 1px;
+            background: #ddd;
+            flex-grow: 1;
+          }
+        `} />
         <h3
           css={`
             font-size: 17px;
             color: #68758b;
             font-weight: 600;
             margin: auto;
+            margin-top: 7px;
             margin-bottom: 30px;
             text-align: center;
 
@@ -42,7 +54,7 @@ export function WrapWithTitle({ title, children }) {
               width: max-content;
               padding: 0 10px;
               background-color: #fff;
-              z-index: 10;
+              // z-index: 10;
             }
 
             ${small} {
@@ -52,7 +64,16 @@ export function WrapWithTitle({ title, children }) {
         >
           {title}
         </h3>
-        <div
+        <hr css={`
+          display: none;
+          ${mobile} {
+            display: block;
+            height: 1px;
+            background: #ddd;
+            flex-grow: 1;
+          }
+        `} />
+        {/* <div
           css={`
             display: none;
             ${mobile} {
@@ -65,7 +86,7 @@ export function WrapWithTitle({ title, children }) {
               background-color: #ddd;
             }
           `}
-        />
+        /> */}
       </div>
       {children}
     </div>
