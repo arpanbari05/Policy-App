@@ -127,27 +127,25 @@ export function Riders({
             }
           `}
         >
-          {riders
-            .filter(rider => rider.total_premium > 0)
-            .map(rider => (
-              <RiderCardNew
-                rider={rider}
-                onChange={handleChange}
-                key={rider.id}
-                riders={riders}
-                isFetching={isFetching}
-                company={quote?.product?.company?.name}
-                isProductDetailsPage={isProductDetailsPage}
-                isDisabled={
-                  careRidersConditionChecker(quote, rider?.alias, riders)
-                    ?.isDisabled
-                }
-                showPEDRiderWarning={
-                  careRidersConditionChecker(quote, rider?.alias, riders)
-                    ?.showPEDRiderWarning
-                }
-              />
-            ))}
+          {riders.map(rider => (
+            <RiderCardNew
+              rider={rider}
+              onChange={handleChange}
+              key={rider.id}
+              riders={riders}
+              isFetching={isFetching}
+              company={quote?.product?.company?.name}
+              isProductDetailsPage={isProductDetailsPage}
+              isDisabled={
+                careRidersConditionChecker(quote, rider?.alias, riders)
+                  ?.isDisabled || rider.total_premium === 0
+              }
+              showPEDRiderWarning={
+                careRidersConditionChecker(quote, rider?.alias, riders)
+                  ?.showPEDRiderWarning
+              }
+            />
+          ))}
         </div>
       </FeatureSection>
     </DetailsSectionWrap>
@@ -387,7 +385,8 @@ const RiderCardWrap = styled.div`
   gap: 1em;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
   min-height: 110px;
-
+  background: ${({ isDisabled }) => isDisabled && "#f0f0f050"};
+  pointer-events: ${({ isDisabled }) => isDisabled && "none"};
   &:hover {
     box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
   }

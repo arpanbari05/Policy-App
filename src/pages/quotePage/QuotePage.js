@@ -75,12 +75,12 @@ function QuotePage1() {
 
   const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { PrimaryColor, SecondaryShade } = theme;
 
   const { groupCode } = useParams();
   const selectedGroup = groupCode;
   const { loadingQuotes, filters } = useSelector(state => state.quotePage);
-  console.log("Filters plantype on quote page", filters);
+
   const defaultfilters = {
     insurers: [],
     premium: "",
@@ -98,8 +98,6 @@ function QuotePage1() {
     basePlanType: "Base Health",
     moreFilters: {},
   };
-
-  console.log(quotes);
 
   const dispatch = useDispatch();
 

@@ -14,18 +14,18 @@ import ShareButton from "../components/Common/Button/ShareButton";
 import html2canvas from "html2canvas";
 import { Button } from "../components/index";
 import { figureToWords } from "../utils/helper";
-import { setQuotesToCanvas, setQuotesToShare } from "../pages/quotePage/quote.slice";
+import { setQuotesToCanvas } from "../pages/quotePage/quote.slice";
 import Sharequotespopup from "../pages/quotePage/components/ShareQuotesPopUp";
 import { images } from "../assets/logos/logo";
 
 const ShareQuoteModal = ({
   showModal,
-  imageSend,
+  imageSend: imageToSend,
   emailStatus,
   stage = "",
   hideBtn,
   label,
-  shareQuotes
+  shareQuotes,
 }) => {
   const [show, setshow] = useState(showModal);
 
@@ -34,6 +34,8 @@ const ShareQuoteModal = ({
   const [isSending, setIsSending] = useState(false);
 
   const [step, setStep] = useState(shareQuotes ? 1 : 2);
+
+  const [imageSend, setImageSend] = useState(imageToSend);
 
   const {
     colors: { primary_color: PrimaryColor },
@@ -47,7 +49,6 @@ const ShareQuoteModal = ({
     //  setyShowMsgs(false)
   }, [show]);
 
-  
   // if(emailStatus){
   //   setIsSending(false);
   //
@@ -61,110 +62,136 @@ const ShareQuoteModal = ({
 
   return (
     <>
-      {!hideBtn && <ShareButton shareQuotes={shareQuotes} onClick={handleShow} label={label} />}
-      {
-        show && (
-          <Modal
-            show={show}
-            onHide={handleClose}
-            animation={false}
-            css={`
-              .modal-dialog {
-                max-width: 650px !important;
-              }
+      {!hideBtn && (
+        <ShareButton
+          shareQuotes={shareQuotes}
+          onClick={handleShow}
+          label={label}
+        />
+      )}
+      {show && (
+        <Modal
+          show={show}
+          onHide={handleClose}
+          animation={false}
+          css={`
+            .modal-dialog {
+              max-width: 650px !important;
+            }
 
-              .modal-footer {
-                padding: 0px !important;
+            .modal-footer {
+              padding: 0px !important;
 
-                border-top: none !important;
-              }
-              .modal-footer > * {
-                margin: 0px !important;
-              }
-            `}
+              border-top: none !important;
+            }
+            .modal-footer > * {
+              margin: 0px !important;
+            }
+          `}
+        >
+          <Modal.Header
+            // closeButton
+            style={{
+              backgroundColor: "#f5f7f9",
+            }}
           >
-            <Modal.Header
-              // closeButton
+            <Modal.Title
               style={{
-                backgroundColor: "#f5f7f9",
+                fontSize: "20px",
+                fontWeight: "600",
+                color: "black",
               }}
-            >
-              <Modal.Title
-                style={{
-                  fontSize: "20px",
-                  fontWeight: "600",
-                  color: "black",
-                }}
-                css={`
-                  @media (max-width: 440px) {
-                    font-size: 15px !important;
-                  }
-                `}
-              >
-                {
-                  step === 1 ? (
-                    "Choose the quotes to share"
-                  ) : (
-                    "Hi, please choose the way you wish to share the quotes."
-                  )
+              css={`
+                @media (max-width: 440px) {
+                  font-size: 15px !important;
                 }
-              </Modal.Title>
-              <i
-                onClick={handleClose}
-                style={{ cursor: "pointer" }}
-                className="fas fa-times"
-              ></i>
-            </Modal.Header>
-            <Modal.Body>
-              {
-                shareQuotes && (
-                  <Flex gap={"5rem"}>
-                    <StepWrapper onClick={() => setStep(1)}>
-                      <Step active={step === 1} color={PrimaryColor}>1</Step>
-                      <span>Select plans</span>
-                    </StepWrapper>
+              `}
+            >
+              {step === 1
+                ? "Choose the quotes to share"
+                : "Hi, please choose the way you wish to share the quotes."}
+            </Modal.Title>
+            <i
+              onClick={handleClose}
+              style={{ cursor: "pointer" }}
+              className="fas fa-times"
+            ></i>
+          </Modal.Header>
+          <Modal.Body>
+            {shareQuotes && (
+              <Flex gap={"5rem"}>
+                <StepWrapper onClick={() => setStep(1)}>
+                  <Step active={step === 1} color={PrimaryColor}>
+                    1
+                  </Step>
+                  <span>Select plans</span>
+                </StepWrapper>
 
-                    <StepWrapper>
-                      <Step active={step === 2} color={PrimaryColor}>2</Step>
-                      <span>Share via</span>
-                    </StepWrapper>
-                  </Flex>
-                )
-              }
-              <ShareStep1 setStep={setStep} hide={step === 2} />
-              <ShareStep2 hide={step === 1} imageSend={imageSend} emailStatus={emailStatus} stage={stage} setIsSending={setIsSending} setErrorMsg={setErrorMsg} isSending={isSending} errorMsg={errorMsg} />
-            </Modal.Body>
-          </Modal>
-        )
-      }
+                <StepWrapper>
+                  <Step active={step === 2} color={PrimaryColor}>
+                    2
+                  </Step>
+                  <span>Share via</span>
+                </StepWrapper>
+              </Flex>
+            )}
+            <ShareStep1
+              setImageSend={setImageSend}
+              setStep={setStep}
+              hide={step === 2}
+            />
+            <ShareStep2
+              hide={step === 1}
+              imageSend={imageSend}
+              emailStatus={emailStatus}
+              stage={stage}
+              setIsSending={setIsSending}
+              setErrorMsg={setErrorMsg}
+              isSending={isSending}
+              errorMsg={errorMsg}
+            />
+          </Modal.Body>
+        </Modal>
+      )}
       <CanvasQuotes />
       <Sharequotespopup onClick={handleShow} show={!show} />
     </>
   );
 };
 
-function Quote({ quotes, onHandleAdd, onHandleRemove, selectedQuotes, setCanvasQuotes }) {
-
+function Quote({
+  quotes,
+  onHandleAdd,
+  onHandleRemove,
+  selectedQuotes,
+  setCanvasQuotes,
+}) {
   const {
     colors: { primary_color: PrimaryColor },
   } = useTheme();
 
-  const sumInsureds = quotes.map(quote => parseInt(quote.sum_insured)).sort((a, b) => a - b);
+  const sumInsureds = quotes
+    .map(quote => parseInt(quote.sum_insured))
+    .sort((a, b) => a - b);
 
-  const [selectedCover, setSelectedCover] = useState(sumInsureds[0]);  
-  const [checked, setChecked] = useState(false);   
+  const [selectedCover, setSelectedCover] = useState(sumInsureds[0]);
+  const [checked, setChecked] = useState(false);
 
-  const quote = quotes.find(quote => parseInt(quote.sum_insured) === parseInt(selectedCover));
+  const quote = quotes.find(
+    quote => parseInt(quote.sum_insured) === parseInt(selectedCover),
+  );
 
   useEffect(() => {
     if (!checked) {
       onHandleRemove(quotes);
-      setCanvasQuotes(prev => prev.filter(quote => quote?.product?.id !== quotes[0]?.product?.id));
+      setCanvasQuotes(prev =>
+        prev.filter(quote => quote?.product?.id !== quotes[0]?.product?.id),
+      );
     } else {
       onHandleAdd(quotes);
       setCanvasQuotes(prev => [...prev, quote]);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     const isInQuotes = selectedQuotes?.find(sQuotes => {
@@ -183,22 +210,27 @@ function Quote({ quotes, onHandleAdd, onHandleRemove, selectedQuotes, setCanvasQ
       if (!prev.find(q => q?.product?.id === quote?.product?.id)) {
         return [...prev, quote];
       } else {
-        return [...prev.filter(q => q?.product?.id !== quote?.product?.id), quote];
+        return [
+          ...prev.filter(q => q?.product?.id !== quote?.product?.id),
+          quote,
+        ];
       }
-    })
+    });
   }, [quote]);
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = e => {
     const { checked } = e.target;
     if (!checked) {
       onHandleRemove(quotes);
-      setCanvasQuotes(prev => prev.filter(quote => quote?.product?.id !== quotes[0]?.product?.id));
+      setCanvasQuotes(prev =>
+        prev.filter(quote => quote?.product?.id !== quotes[0]?.product?.id),
+      );
     } else {
       onHandleAdd(quotes);
       setCanvasQuotes(prev => [...prev, quote]);
     }
-  }
-         
+  };
+
   return (
     <ShareQuoteItem gap={"5px"}>
       <Plan>
@@ -206,27 +238,30 @@ function Quote({ quotes, onHandleAdd, onHandleRemove, selectedQuotes, setCanvasQ
         <div className="plan">{quote?.product?.name}</div>
       </Plan>
       <Premium color={PrimaryColor}>
-        ₹{" "}{parseInt(quote.total_premium).toLocaleString("en-IN")}
+        ₹ {parseInt(quote.total_premium).toLocaleString("en-IN")}
       </Premium>
       <div className="cover">
-        <select value={selectedCover} onChange={e => setSelectedCover(e.target.value)}>
-          {
-            sumInsureds.map((sum_insured) => (<option value={sum_insured}>₹{" "}{figureToWords(sum_insured)}</option>))
-          }
+        <select
+          value={selectedCover}
+          onChange={e => setSelectedCover(e.target.value)}
+        >
+          {sumInsureds.map(sum_insured => (
+            <option value={sum_insured}>₹ {figureToWords(sum_insured)}</option>
+          ))}
         </select>
       </div>
       <Checkbox>
         <input checked={checked} type="checkbox" onChange={onChangeHandler} />
       </Checkbox>
     </ShareQuoteItem>
-  )
+  );
 }
 
 const CanvasQuotes = () => {
   const { quotesToCanvas } = useSelector(state => state.quotePage);
 
   const {
-    colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
+    colors: { primary_color: PrimaryColor },
   } = useTheme();
 
   return (
@@ -237,22 +272,20 @@ const CanvasQuotes = () => {
           <ShareQuotesHeaderItem>Premium</ShareQuotesHeaderItem>
           <ShareQuotesHeaderItem>Cover</ShareQuotesHeaderItem>
         </ShareQuotesHeader>
-        {
-          quotesToCanvas.map((quote) => (
-            <QuoteTemplate color={PrimaryColor} quote={quote} />
-          ))
-        }
+        {quotesToCanvas.map(quote => (
+          <CanvasQuoteTemplate color={PrimaryColor} quote={quote} />
+        ))}
       </div>
     </Canvas>
-  )
-}
+  );
+};
 
-const QuoteTemplate = ({ quote, color }) => {
+const CanvasQuoteTemplate = ({ quote, color }) => {
   const {
     product: { name },
     total_premium,
     sum_insured,
-    company_alias
+    company_alias,
   } = quote;
 
   const logoSrc = images[company_alias];
@@ -260,24 +293,18 @@ const QuoteTemplate = ({ quote, color }) => {
   return (
     <ShareQuoteItem cols="3fr 1fr 1fr" gap={"10px"}>
       <Plan>
-      <img className="insurer" src={logoSrc} alt="quote" />
-      <div className="plan">{name}</div>
+        <img className="insurer" src={logoSrc} alt="quote" />
+        <div className="plan">{name}</div>
       </Plan>
       <Premium color={color}>
-        ₹{" "}{parseInt(total_premium).toLocaleString("en-IN")}
+        ₹ {parseInt(total_premium).toLocaleString("en-IN")}
       </Premium>
-      <Premium>
-        {figureToWords(sum_insured)}
-      </Premium>
+      <Premium>{figureToWords(sum_insured)}</Premium>
     </ShareQuoteItem>
-  )
-}
+  );
+};
 
-function ShareStep1({ setStep = () => {}, hide }) {
-  const {
-    colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
-  } = useTheme();
-
+function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
   const dispatch = useDispatch();
 
   const { quotesToShare } = useSelector(state => state.quotePage);
@@ -288,7 +315,7 @@ function ShareStep1({ setStep = () => {}, hide }) {
 
   useEffect(() => {
     setselectedQuotes(quotesToShare);
-  }, [])
+  }, []);
 
   useEffect(() => {
     dispatch(setQuotesToCanvas(canvasQuotes.filter(quote => quote)));
@@ -299,30 +326,31 @@ function ShareStep1({ setStep = () => {}, hide }) {
     setAllChecked(checked);
   }, [selectedQuote]);
 
-  const handleRemoveQuote = (quotes) => {
-    const filteredquotes = selectedQuote.filter(quote => quote[0]?.product?.id !== quotes[0]?.product?.id);
+  const handleRemoveQuote = quotes => {
+    const filteredquotes = selectedQuote.filter(
+      quote => quote[0]?.product?.id !== quotes[0]?.product?.id,
+    );
     setselectedQuotes(filteredquotes);
-  }
+  };
 
-  const handleAddQuote = (quotes) => {
+  const handleAddQuote = quotes => {
     setselectedQuotes(prev => [...prev, quotes]);
-  }
+  };
 
-  const handleReplaceQuotes = (quotes) => {
+  const handleReplaceQuotes = quotes => {
     setselectedQuotes(quotes);
-  }
+  };
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = e => {
     const { checked } = e.target;
     if (!checked) {
       handleReplaceQuotes([]);
       setCanvasQuotes([]);
-    } 
-    else {
+    } else {
       handleReplaceQuotes(quotesToShare);
       setCanvasQuotes(quotesToShare.map(quote => quote[0]));
-    } 
-  }
+    }
+  };
 
   const onNextHandler = () => {
     setLoader(true);
@@ -335,40 +363,71 @@ function ShareStep1({ setStep = () => {}, hide }) {
       useCORS: true,
     }).then(canvas => {
       const imgData = canvas.toDataURL("image/png");
-      console.log(imgData)
+      console.log(imgData);
+      setImageSend(imgData);
       setLoader(false);
       setStep(2);
     });
-  }
+  };
 
   return (
-    <div css={`display: ${hide ? "none" : "block"};`}>
+    <div
+      css={`
+        display: ${hide ? "none" : "block"};
+      `}
+    >
       <ShareQuotesWrapper>
         <ShareQuotesHeader>
           <ShareQuotesHeaderItem>Insurer</ShareQuotesHeaderItem>
           <ShareQuotesHeaderItem>Premium</ShareQuotesHeaderItem>
           <ShareQuotesHeaderItem>Cover</ShareQuotesHeaderItem>
-          <ShareQuotesHeaderItem center><span>All</span>
-            <input checked={allChecked} type={"checkbox"} onChange={onChangeHandler} />
+          <ShareQuotesHeaderItem center>
+            <span>All</span>
+            <input
+              checked={allChecked}
+              type={"checkbox"}
+              onChange={onChangeHandler}
+            />
           </ShareQuotesHeaderItem>
         </ShareQuotesHeader>
         <ShareQuotes>
-            {
-              quotesToShare.map((quotes) => (
-                <Quote quotes={quotes} onHandleAdd={handleAddQuote} onHandleRemove={handleRemoveQuote} selectedQuotes={selectedQuote} setCanvasQuotes={setCanvasQuotes} />
-              ))
-            }
+          {quotesToShare.map(quotes => (
+            <Quote
+              quotes={quotes}
+              onHandleAdd={handleAddQuote}
+              onHandleRemove={handleRemoveQuote}
+              selectedQuotes={selectedQuote}
+              setCanvasQuotes={setCanvasQuotes}
+            />
+          ))}
         </ShareQuotes>
       </ShareQuotesWrapper>
       <ShareFooterBtn>
-        <Button loader={loader} css={`width: 100px;`} onClick={onNextHandler}>Next</Button>
+        <Button
+          loader={loader}
+          css={`
+            width: 100px;
+          `}
+          onClick={onNextHandler}
+          disabled={!selectedQuote.length}
+        >
+          Next
+        </Button>
       </ShareFooterBtn>
     </div>
-  )
+  );
 }
 
-function ShareStep2({ imageSend, emailStatus, stage, setIsSending, setErrorMsg, isSending, errorMsg, hide }) {
-
+function ShareStep2({
+  imageSend,
+  emailStatus,
+  stage,
+  setIsSending,
+  setErrorMsg,
+  isSending,
+  errorMsg,
+  hide,
+}) {
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails,
   );
@@ -454,30 +513,30 @@ function ShareStep2({ imageSend, emailStatus, stage, setIsSending, setErrorMsg, 
 
   return (
     <div
-            css={`
-              display: ${hide ? "none" : "block"};
-              .icon_wrapper {
-                background-color: ${PrimaryShade};
-                color: ${PrimaryColor}; 
-              }
-            `}
-          >
-            <ShareOption
-              className="d-flex align-items-center justify-content-between  mb-3 overflow-hidden"
-              PrimaryColor={PrimaryColor}
-            >
-              <div className="d-flex align-items-center position-relative w-100">
-                <div className="icon_wrapper">
-                  <EmailIcon width="21" />
-                </div>
-                <input
-                  type="email"
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="Email"
-                  value={email}
-                  css={``}
-                />
-                {/* <span
+      css={`
+        display: ${hide ? "none" : "block"};
+        .icon_wrapper {
+          background-color: ${PrimaryShade};
+          color: ${PrimaryColor};
+        }
+      `}
+    >
+      <ShareOption
+        className="d-flex align-items-center justify-content-between  mb-3 overflow-hidden"
+        PrimaryColor={PrimaryColor}
+      >
+        <div className="d-flex align-items-center position-relative w-100">
+          <div className="icon_wrapper">
+            <EmailIcon width="21" />
+          </div>
+          <input
+            type="email"
+            onChange={e => setEmail(e.target.value)}
+            placeholder="Email"
+            value={email}
+            css={``}
+          />
+          {/* <span
                   css={`
                     position: absolute;
                     top: 50%;
@@ -495,190 +554,187 @@ function ShareStep2({ imageSend, emailStatus, stage, setIsSending, setErrorMsg, 
                 >
                   <CircleLoader animation="border" />
                 </span> */}
-              </div>
-              <Button
-                css={`display: flex; 2px; align-items: center; justify-content: center; min-width: 105px !important; max-width: 105px !important;`}
-                onClick={e => {
-                  handleSendViaEmail(e);
-                }}
-                loader={isSending && !emailStatus.message}
+        </div>
+        <Button
+          css={`display: flex; 2px; align-items: center; justify-content: center; min-width: 105px !important; max-width: 105px !important;`}
+          onClick={e => {
+            handleSendViaEmail(e);
+          }}
+          loader={isSending && !emailStatus.message}
+        >
+          <div>
+            <span
+              css={`
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                @media (max-width: 400px) {
+                  display: none;
+                }
+              `}
+            >
+              Share
+              <span
+                css={`
+                  display: none;
+                  @media (max-width: 400px) {
+                    display: block;
+                  }
+                `}
               >
-                <div>
-                  <span
-                    css={`
-                      display: flex;
-                      gap: 10px;
-                      align-items: center;
-                      @media (max-width: 400px) {
-                        display: none;
-                      }
-                    `}
-                  >
-                    Share
-                    <span
-                      css={`
-                        display: none;
-                        @media (max-width: 400px) {
-                          display: block;
-                        }
-                      `}
-                    >
-                      <i className="fas fa-share"></i>
-                    </span>
-                  </span>
-                </div>
-              </Button>
-            </ShareOption>
-
-            <ShareOption
-              className="d-flex mb-3 align-items-center justify-content-between overflow-hidden"
-              PrimaryColor={PrimaryColor}
-            >
-              <div className="d-flex align-items-center">
-                <div className="icon_wrapper">
-                  <WhtsappIcon width="21" />
-                </div>
-                <input
-                  type="number"
-                  onChange={e => handleNumberCheck(e, setWtsappNo)}
-                  placeholder="Mobile no."
-                  value={wtsappNo}
-                />
-              </div>
-
-              {Number(wtsappNo.length) === 10 ? (
-                <a
-                  target="_blank"
-                  ref={sendRef}
-                  rel="noreferrer"
-                  href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
-                >
-                  <Button
-                    css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
-                  >
-                    <div>
-                      <span
-                        css={`
-                          display: flex;
-                          gap: 10px;
-                          align-items: center;
-                          @media (max-width: 400px) {
-                            display: none;
-                          }
-                        `}
-                      >
-                        Share
-                        <span
-                          css={`
-                            display: none;
-                            @media (max-width: 400px) {
-                              display: block;
-                            }
-                          `}
-                        >
-                          <i className="fas fa-share"></i>
-                        </span>
-                      </span>
-                    </div>
-                  </Button>
-                </a>
-              ) : (
-                <Button
-                  css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
-                >
-                  <div>
-                    <span
-                      css={`
-                        display: flex;
-                        gap: 10px;
-                        align-items: center;
-                        @media (max-width: 400px) {
-                          display: none;
-                        }
-                      `}
-                    >
-                      Share
-                      <span
-                        css={`
-                          display: none;
-                          @media (max-width: 400px) {
-                            display: block;
-                          }
-                        `}
-                      >
-                        <i className="fas fa-share"></i>
-                      </span>
-                    </span>
-                  </div>
-                </Button>
-              )}
-            </ShareOption>
-
-            <ShareOption
-              className="d-flex mb-3 align-items-center justify-content-between overflow-hidden"
-              PrimaryColor={PrimaryColor}
-            >
-              <div className="d-flex align-items-center">
-                <div className="icon_wrapper">
-                  <SmsIcon width="21" />
-                </div>
-                <input
-                  type="number"
-                  placeholder="Mobile no."
-                  onChange={e => handleNumberCheck(e, setSmsNo)}
-                  value={smsNo}
-                />
-              </div>
-
-              <Button
-                css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
-              >
-                <div>
-                  <span
-                    css={`
-                      display: flex;
-                      gap: 5px;
-                      align-items: center;
-                      @media (max-width: 400px) {
-                        display: none;
-                      }
-                    `}
-                  >
-                    Share
-                    <span
-                      css={`
-                        display: none;
-                        @media (max-width: 400px) {
-                          display: block;
-                        }
-                      `}
-                    >
-                      <i className="fas fa-share"></i>
-                    </span>
-                  </span>
-                </div>
-              </Button>
-            </ShareOption>
-
-            <InfoMessage
-              className="p-3 text-center"
-              PrimaryShade={PrimaryShade}
-            >
-              * Please note that the premium may vary in future.
-            </InfoMessage>
-            {errorMsg ? (
-              <div className="text-center text-danger">{errorMsg}</div>
-            ) : (
-              ""
-            )}
-            {emailStatus && (
-              <EmailSent status={emailStatus.status}>
-                {/* {handleRotation()} */}
-                {emailStatus.message}
-              </EmailSent>
-            )}
+                <i className="fas fa-share"></i>
+              </span>
+            </span>
           </div>
-  )
+        </Button>
+      </ShareOption>
+
+      <ShareOption
+        className="d-flex mb-3 align-items-center justify-content-between overflow-hidden"
+        PrimaryColor={PrimaryColor}
+      >
+        <div className="d-flex align-items-center">
+          <div className="icon_wrapper">
+            <WhtsappIcon width="21" />
+          </div>
+          <input
+            type="number"
+            onChange={e => handleNumberCheck(e, setWtsappNo)}
+            placeholder="Mobile no."
+            value={wtsappNo}
+          />
+        </div>
+
+        {Number(wtsappNo.length) === 10 ? (
+          <a
+            target="_blank"
+            ref={sendRef}
+            rel="noreferrer"
+            href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
+          >
+            <Button
+              css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
+            >
+              <div>
+                <span
+                  css={`
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    @media (max-width: 400px) {
+                      display: none;
+                    }
+                  `}
+                >
+                  Share
+                  <span
+                    css={`
+                      display: none;
+                      @media (max-width: 400px) {
+                        display: block;
+                      }
+                    `}
+                  >
+                    <i className="fas fa-share"></i>
+                  </span>
+                </span>
+              </div>
+            </Button>
+          </a>
+        ) : (
+          <Button
+            css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
+          >
+            <div>
+              <span
+                css={`
+                  display: flex;
+                  gap: 10px;
+                  align-items: center;
+                  @media (max-width: 400px) {
+                    display: none;
+                  }
+                `}
+              >
+                Share
+                <span
+                  css={`
+                    display: none;
+                    @media (max-width: 400px) {
+                      display: block;
+                    }
+                  `}
+                >
+                  <i className="fas fa-share"></i>
+                </span>
+              </span>
+            </div>
+          </Button>
+        )}
+      </ShareOption>
+
+      <ShareOption
+        className="d-flex mb-3 align-items-center justify-content-between overflow-hidden"
+        PrimaryColor={PrimaryColor}
+      >
+        <div className="d-flex align-items-center">
+          <div className="icon_wrapper">
+            <SmsIcon width="21" />
+          </div>
+          <input
+            type="number"
+            placeholder="Mobile no."
+            onChange={e => handleNumberCheck(e, setSmsNo)}
+            value={smsNo}
+          />
+        </div>
+
+        <Button
+          css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
+        >
+          <div>
+            <span
+              css={`
+                display: flex;
+                gap: 5px;
+                align-items: center;
+                @media (max-width: 400px) {
+                  display: none;
+                }
+              `}
+            >
+              Share
+              <span
+                css={`
+                  display: none;
+                  @media (max-width: 400px) {
+                    display: block;
+                  }
+                `}
+              >
+                <i className="fas fa-share"></i>
+              </span>
+            </span>
+          </div>
+        </Button>
+      </ShareOption>
+
+      <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>
+        * Please note that the premium may vary in future.
+      </InfoMessage>
+      {errorMsg ? (
+        <div className="text-center text-danger">{errorMsg}</div>
+      ) : (
+        ""
+      )}
+      {emailStatus && (
+        <EmailSent status={emailStatus.status}>
+          {/* {handleRotation()} */}
+          {emailStatus.message}
+        </EmailSent>
+      )}
+    </div>
+  );
 }
 
 export default ShareQuoteModal;
@@ -767,7 +823,7 @@ const ShareQuotesWrapper = styled.div`
   border-radius: 7px;
   border: 1px solid #dcdcdc;
   overflow: hidden;
-  display: ${props => props.hide ? "none" : "block"};
+  display: ${props => (props.hide ? "none" : "block")};
 `;
 
 const ShareQuotes = styled.div`
@@ -799,7 +855,7 @@ const ShareQuotesHeader = styled.div`
 const ShareQuotesHeaderItem = styled.div`
   display: flex;
   align-items: center;
-  justify-content: ${props => props.center ? "center" : "flex-start"};
+  justify-content: ${props => (props.center ? "center" : "flex-start")};
   gap: 7px;
   width: 100%;
   font-weight: bold;
@@ -813,7 +869,7 @@ const ShareQuoteItem = styled.div`
   padding: 8px;
   border-bottom: 1px solid #dcdcdc;
   align-items: center;
-  
+
   & > * {
     text-align: left;
   }
@@ -856,7 +912,7 @@ const Checkbox = styled.div`
 const ShareFooterBtn = styled.div`
   padding-top: 15px;
   // padding-bottom: 10px;
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: center;
 `;
@@ -873,9 +929,9 @@ const Step = styled.div`
   height: 40px;
   border-radius: 50%;
   border: 1px solid;
-  border-color: ${props => props.active ? props.color : "#dcdcdc"};
-  background: ${props => props.active ? props.color : "transparent"};
-  color: ${props => props.active ? "#fff" : "black"};
+  border-color: ${props => (props.active ? props.color : "#dcdcdc")};
+  background: ${props => (props.active ? props.color : "transparent")};
+  color: ${props => (props.active ? "#fff" : "black")};
   font-weight: bold;
   display: flex;
   align-items: center;

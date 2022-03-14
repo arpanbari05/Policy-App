@@ -242,8 +242,6 @@ export function Members() {
   const members = getGroupMembers(groupCode);
   const groupLocation = getGroupLocation(groupCode);
 
-  console.log(groupLocation);
-
   if (!members || !groupLocation) return null;
 
   return (
