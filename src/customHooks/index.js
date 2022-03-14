@@ -1633,7 +1633,7 @@ export function useRiders({
 
   return {
     query,
-    riders: riders.filter(rider => rider.total_premium > 0),
+    riders: quote?.product?.company?.alias === "reliance_general" ? riders : riders.filter(rider => rider.total_premium > 0),
     handleChange,
     getInititalRiders,
   };

@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { useFrontendBoot } from "../../../../customHooks";
+import { useFrontendBoot, useMembers } from "../../../../customHooks";
 import useFilters from "./useFilters";
+import { useGetEnquiriesQuery } from "../../../../api/api";
 
 const noClaimBonusRange = {
   50: [0, 50],
@@ -79,16 +80,16 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
 
   const insurers = getSelectedFilter("insurers");
 
-  const proposerDetailsMembers = useSelector(
-    state => state.greetingPage.proposerDetails.members,
-  );
+  const { data, isUninitialized, isLoading } = useGetEnquiriesQuery();
 
-  const memberGroups = useSelector(state => state.greetingPage.memberGroups);
+  const proposerDetailsMembers = !(isUninitialized || isLoading) && data?.data?.input?.members;
 
   const { groupCode } = useParams();
+  
+  const members = useMembers().getGroupMembers(groupCode);
 
-  const currentGroupMembersAge = memberGroups[groupCode]?.map(
-    member => proposerDetailsMembers?.find(m => m.type === member)?.age,
+  const currentGroupMembersAge = members?.map(
+    member => proposerDetailsMembers?.find(m => m.code === member.type)?.age,
   );
 
   const minAge = getMinOfArray(currentGroupMembersAge);
@@ -217,9 +218,9 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     const isPreExistingMatch = filterMatch(selectedPreExistingFilterObject);
 
     const isNoPreMedicalMatch = isNoPreMedicalSelected
-      ? minAge < quote.ppmc_age_limit
+      ? (minAge < quote.ppmc_age_limit && quote.ppmc_age_limit !== 100)
       : true;
-
+        
     return (
       isCompanyMatch &&
       isPremiumMatch &&
