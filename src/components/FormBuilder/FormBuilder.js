@@ -481,7 +481,7 @@ const FormBuilder = ({
               return (
                 <>
                   {renderField(item, values) && (
-                    <Wrapper key={index} width={item.width}>
+                    <Wrapper key={index+item.name} width={item.width}>
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}

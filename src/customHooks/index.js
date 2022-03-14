@@ -1762,7 +1762,7 @@ export const useRenewalPremiumModal = () => {
   const updatedTotalPremium =
     getTotalPremium(cartEntries); /* Gets the updated value each time */
 
-  const getUpdatedCart = () => {
+  const getUpdatedCart = (next) => {
     dispatch(
       api.util.invalidateTags([
         "Cart",
@@ -1771,6 +1771,7 @@ export const useRenewalPremiumModal = () => {
         "TenureDiscount",
       ]),
     );
+    next();
   }; /* Performs refetch from the server */
 
   useEffect(() => {

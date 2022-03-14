@@ -203,11 +203,9 @@ const InsuredDetails = ({
                   1,
               );
 
-              estimatedMemberDOB = `${current.getDate()}-${
-                current.getMonth() + 1
-              }-${current.getUTCFullYear()}`;
+              estimatedMemberDOB = `${current.getUTCFullYear()}`;
             } else {
-              estimatedMemberDOB = `${currentDate}-${currentMonth + 1}-${
+              estimatedMemberDOB = `${
                 currentYear - parseInt(memberAge)
               }`;
             }
@@ -344,8 +342,8 @@ const InsuredDetails = ({
               let updatedKey = values[item][key].split("-");
               const date = updatedKey[0];
               const month = updatedKey[1];
-              const year = updatedKey[2];
-              updatedKey = `${formatter(date)}-${formatter(month)}-${year}`;
+              const year = updatedKey[2] || values[item][key];
+              updatedKey = `${year}`;
               result[1] = updatedKey;
             } else if (key === "name" && values[item][key]) {
               result[0] = `${values[item]["title"]}. ${values[item][key]}`;
