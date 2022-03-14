@@ -310,7 +310,8 @@ function ProductDetailsCardMobile({ cartItem }) {
               <div
                 css={`
                   display: flex;
-                  justify-content: space-between;
+                  gap: 10px;
+                  justify-content: center;
                 `}
               >
                 <div
@@ -333,7 +334,8 @@ function ProductDetailsCardMobile({ cartItem }) {
                   css={`
                     display: flex;
                     font-size: 12px;
-                    justify-content: space-between;
+                    gap: 10px;
+                    justify-content: center;
                   `}
                 >
                   <div>Premium:</div>
@@ -349,7 +351,8 @@ function ProductDetailsCardMobile({ cartItem }) {
               <div
                 css={`
                   display: flex;
-                  justify-content: space-between;
+                  justify-content: space-center;
+                  gap: 10px;
                 `}
               >
                 <div

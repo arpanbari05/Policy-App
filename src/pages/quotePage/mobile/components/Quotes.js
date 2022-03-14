@@ -322,7 +322,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
           <div>
             <div
               css={`
-                font-size: 0.66rem;
+                font-size: 0.75rem;
                 font-weight: 900;
               `}
             >

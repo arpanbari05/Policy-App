@@ -109,8 +109,10 @@ export function FilterModal({ onClose }) {
       return getAllSelectedFilters(
         [
           "premium",
+          "tenure",
           "cover",
           "plantype",
+          "insurers",
           "deductible",
           ...morefilters.map(filter => filter.code),
         ],
