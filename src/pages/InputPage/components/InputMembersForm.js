@@ -30,7 +30,7 @@ function InputMembersForm(props) {
 
   const { journeyType } = useFrontendBoot();
 
-  const { isLoading } = useGetEnquiriesQuery();
+  const { isLoading, data } = useGetEnquiriesQuery();
 
   const { getAllMembers } = useMembers();
 
@@ -119,7 +119,13 @@ function InputMembersForm(props) {
         <CustomProgressBar now={2} total={4} />
       </div>
       <div className="px-3">
-        <MemberOptions {...membersForm} membersList={primaryMembers} />
+        <MemberOptions
+          {...membersForm}
+          membersList={primaryMembers}
+          selectedMembers={getSelectedMembers()}
+          updateMembersList={updateMembersList}
+          gender={data?.data?.input?.gender}
+        />
         {isError || error ? (
           <StyledErrorMessage className="m-0 mt-3 mb-2">
             {error}
