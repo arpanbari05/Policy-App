@@ -132,6 +132,9 @@ const [bmiFailBlock,setBmiFailBlock] = useState(false);
   // to get unfilled form
   useEffect(() => {
     // if (listOfForms.length && active >= listOfForms.length) {
+      console.log("sbnfbl", Object.keys(proposalData).length ,
+      activeIndex === false ,
+      continueBtnClick)
      
 
     if (

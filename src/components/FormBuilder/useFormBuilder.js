@@ -96,7 +96,6 @@ const useFormBuilder = (
       let [filteredItem] = schema.filter(item => item.name === name);
       // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
 
-      console.log("dhdnl", name, filteredItem);
 
       if (filteredItem) {
         let errorMsg;
@@ -108,6 +107,7 @@ const useFormBuilder = (
         //   }
 
         // }else{
+
         errorMsg =
           filteredItem.validate &&
           performValidations(filteredItem.validate, values, name);

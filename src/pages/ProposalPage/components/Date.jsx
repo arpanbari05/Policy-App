@@ -1,10 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import calendar from "./../../../assets/images/calendar.png";
 import MaskedInput from "react-text-mask";
+
+
 const DateComp = ({
   label,
   placeholder,
@@ -23,13 +25,13 @@ const DateComp = ({
   readOnly,
   startDate,
   endDate,
-  age=[0,0],
+  age = [0, 0],
 }) => {
-
   // const [innerValue, setInnerValue] = useState(value);
   // useEffect(() => {
   //   setInnerValue(value);
   // }, [value]);
+  console.log("dbdnfblkdgl",value)
   const [isFocused, setIsFocused] = useState(false);
   const onFocus = () => setIsFocused(true);
   let newDate = new Date();
@@ -39,6 +41,22 @@ const DateComp = ({
 
   const startRef = useRef();
 
+  const formatFordatePicker = (val) => {
+    return val && val.length === 4 ? "yyyy":"dd-MM-yyyy"
+  }
+
+  const getMoment = val => {
+    console.log("sdsnfv", val, val.length === 4, moment(val, "YYYY").toDate());
+    return val.length === 4
+      ? moment(val, "YYYY")?.toDate()
+      : moment(val, "DD-MM-YYYY")?.toDate();
+  };
+
+  // const handleCalendarOpen = () => {
+  //   if (value.length === 4)
+  //     onChange({ target: { value: moment(value).format("DD-MM-YYYY") } });
+  // };
+
   const onKeyDownHandler = e => {
     if (e.keyCode === 9 || e.which === 9) {
       startRef.current.setOpen(false);
@@ -46,10 +64,10 @@ const DateComp = ({
     onKeyDown();
   };
 
-  // console.log(age && age[1] >= 0, age, age[1]);
 
   return (
     <InputContainer error={!isFocused ? error : null}>
+    
       <DatePicker
         id="date-picker"
         ref={startRef}
@@ -57,12 +75,12 @@ const DateComp = ({
         showYearDropdown
         yearDropdownItemNumber={100}
         scrollableYearDropdown={true}
-        dateFormat={"dd-MM-yyyy"}
+        dateFormat={formatFordatePicker(value)}
         selected={
           value && value !== "Invalid date" && value !== "value"
             ? value.includes("NaN")
               ? ""
-              : moment(value, "DD-MM-YYYY")?.toDate()
+              : getMoment(value)
             : ""
         }
         minDate={
@@ -107,9 +125,12 @@ const DateComp = ({
         readOnly={readOnly}
         onFocus={onFocus}
         onBlur={() => setIsFocused(false)}
+        // onCalendarOpen={handleCalendarOpen}
       />
 
-      <Label>{checkValidation?.required && label ? `${label}*` : label || ""}</Label>
+      <Label>
+        {checkValidation?.required && label ? `${label}*` : label || ""}
+      </Label>
       <Calendar
         error={!isFocused ? error : null}
         src={calendar}
