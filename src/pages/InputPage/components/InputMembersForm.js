@@ -16,7 +16,7 @@ import {
 import styled from "styled-components/macro";
 import { useHistory } from "react-router-dom";
 import { InputFormCta } from ".";
-import { RiAddCircleFill, RiAddCircleLine } from "react-icons/ri";
+import { RiAddCircleFill } from "react-icons/ri";
 import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
 import { Button } from "../../../components";
 import { useState } from "react";
@@ -125,6 +125,7 @@ function InputMembersForm(props) {
           selectedMembers={getSelectedMembers()}
           updateMembersList={updateMembersList}
           gender={data?.data?.input?.gender}
+          setServerError={setServerError}
         />
         {isError || error ? (
           <StyledErrorMessage className="m-0 mt-3 mb-2">
@@ -168,6 +169,7 @@ function InputMembersForm(props) {
             initialMembersList={membersList}
             serverError={serverError}
             gender={data?.data?.input?.gender}
+            setServerError={setServerError}
           />
         ) : null}
       </div>
@@ -185,6 +187,7 @@ function EditMembers({
   serverError,
   onSubmit,
   initialMembersList = [],
+  setServerError,
   gender,
   ...props
 }) {
@@ -225,6 +228,7 @@ function EditMembers({
             membersList={membersList}
             selectedMembers={getSelectedMembers()}
             gender={gender}
+            setServerError={setServerError}
           />
         </div>
         {isError || error ? (
