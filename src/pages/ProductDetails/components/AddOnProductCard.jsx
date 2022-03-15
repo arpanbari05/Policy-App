@@ -237,135 +237,33 @@ function PlanDetails({ cartEntry }) {
   return (
     <DetailDispalyPanel className="d-flex">
       <div className="detail_child">
-        <span
-          css={`
-            color: #5a6981;
-            font-size: 13px;
-
-            ${mobile} {
-              font-size: 14px;
-              font-weight: 400;
-            }
-
-            ${small} {
-              font-size: 8px;
-              width: auto;
-              line-height: normal;
-            }
-          `}
-        >
+        <LabelStyle mobile={mobile} small={small}>
           Cover :
-        </span>
-        <span
-          className="detail_amount"
-          css={`
-            font-size: 13px;
-            color: #565657;
-            font-weight: 600;
-            ${mobile} {
-              font-size: 14px;
-              color: #000;
-              font-weight: 400;
-            }
-
-            ${small} {
-              font-size: 11px;
-              line-height: normal;
-              margin-top: 3px;
-            }
-          `}
-        >
+        </LabelStyle>
+        <ValueStyle mobile={mobile} small={small} className="detail_amount">
+          {" "}
           {sumInsured}
-        </span>
+        </ValueStyle>
       </div>
 
       <div className="detail_child">
-        <span
-          css={`
-            color: #5a6981;
-            font-size: 13px;
-
-            ${mobile} {
-              font-size: 12px;
-              font-weight: 400;
-            }
-
-            ${small} {
-              font-size: 8px;
-              width: auto;
-              line-height: normal;
-            }
-          `}
-        >
+        <LabelStyle mobile={mobile} small={small}>
           Premium :
-        </span>
-        <span
-          className="detail_amount"
-          css={`
-            font-size: 13px;
-            color: #565657;
-            font-weight: 600;
-            ${mobile} {
-              font-size: 14px;
-              color: #000;
-              font-weight: 400;
-            }
-
-            ${small} {
-              font-size: 11px;
-              line-height: normal;
-              margin-top: 3px;
-            }
-          `}
-        >
+        </LabelStyle>
+        <ValueStyle mobile={mobile} small={small} className="detail_amount">
           {" "}
           {displayPremium}
-        </span>
+        </ValueStyle>
       </div>
 
       <div className="detail_child">
-        <span
-          css={`
-            color: #5a6981;
-            font-size: 13px;
-            /* width: 90px; */
-
-            ${mobile} {
-              font-size: 14px;
-              font-weight: 400;
-            }
-
-            ${small} {
-              font-size: 8px;
-              width: auto;
-              line-height: normal;
-            }
-          `}
-        >
+        <LabelStyle mobile={mobile} small={small}>
           Claim Settlement Ratio :
-        </span>
-        <span
-          className="detail_amount"
-          css={`
-            font-size: 13px;
-            color: #565657;
-            font-weight: 600;
-            ${mobile} {
-              font-size: 14px;
-              color: #000;
-              font-weight: 400;
-            }
-
-            ${small} {
-              font-size: 11px;
-              line-height: normal;
-              margin-top: 3px;
-            }
-          `}
-        >
+        </LabelStyle>
+        <ValueStyle mobile={mobile} small={small} className="detail_amount">
           {" "}
           {companyCSR}%
-        </span>
+        </ValueStyle>
       </div>
     </DetailDispalyPanel>
   );
@@ -384,6 +282,45 @@ const DetailDispalyPanel = styled.div`
     font-size: 15px;
     margin: 0px 15px;
     color: #dedfe0;
+  }
+`;
+
+const ValueStyle = styled.span`
+  font-size: 14px;
+  color: #565657;
+  font-weight: 600;
+  @media (max-width: 1350px) {
+    font-size: 12px !important;
+  }
+  ${props => props.mobile} {
+    font-size: 14px;
+    color: #000;
+    font-weight: 400;
+  }
+
+  ${props => props.small} {
+    font-size: 11px;
+    line-height: normal;
+    margin-top: 3px;
+  }
+`;
+
+const LabelStyle = styled.span`
+  color: #5a6981;
+  font-size: 14px;
+  @media (max-width: 1350px) {
+    font-size: 12px !important;
+  }
+
+  ${props => props.mobile} {
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  ${props => props.small} {
+    font-size: 8px;
+    width: auto;
+    line-height: normal;
   }
 `;
 
