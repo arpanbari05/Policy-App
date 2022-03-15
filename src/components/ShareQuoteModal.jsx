@@ -17,6 +17,46 @@ import { figureToWords } from "../utils/helper";
 import { setQuotesToCanvas } from "../pages/quotePage/quote.slice";
 import Sharequotespopup from "../pages/quotePage/components/ShareQuotesPopUp";
 import { images } from "../assets/logos/logo";
+import { mobile } from "../utils/mediaQueries";
+
+const ShareCTA = ({ onClick, loader }) => {
+  return (
+    <Button
+      loader={loader}
+      onClick={onClick}
+      css={`
+        min-width: 105px;
+        max-width: 105px;
+        ${mobile} {
+          min-width: 50px;
+          max-width: 50px;
+        }
+      `}
+    >
+      <span
+        css={`
+          font-size: 14px;
+          ${mobile} {
+            display: none;
+          }
+        `}
+      >
+        Share
+      </span>
+      <span
+        css={`
+          color: #fff;
+          display: none;
+          ${mobile} {
+            display: block;
+          }
+        `}
+      >
+        <i className="fas fa-share"></i>{" "}
+      </span>
+    </Button>
+  );
+};
 
 const ShareQuoteModal = ({
   showModal,
@@ -469,6 +509,12 @@ function ShareStep2({
     }
   };
 
+  const handleEmailCheck = (e) => {
+    if (e.target.value.length <= 50) {
+      setEmail(e.target.value);
+    }
+  }
+
   const handleSendViaEmail = e => {
     e.preventDefault();
 
@@ -535,62 +581,16 @@ function ShareStep2({
           </div>
           <input
             type="email"
-            onChange={e => setEmail(e.target.value)}
+            onChange={handleEmailCheck}
             placeholder="Email"
             value={email}
             css={``}
           />
-          {/* <span
-                  css={`
-                    position: absolute;
-                    top: 50%;
-                    right: 20px;
-                    color: black;
-                    transform: translateY(-50%) !important;
-                    display: none;
-                    background: #ffffff9e;
-                    @media (max-width: 400px) {
-                      display: ${isSending && !emailStatus.message
-                        ? "block"
-                        : "none"} !important;
-                    }
-                  `}
-                >
-                  <CircleLoader animation="border" />
-                </span> */}
         </div>
-        <Button
-          css={`display: flex; 2px; align-items: center; justify-content: center; min-width: 105px !important; max-width: 105px !important;`}
-          onClick={e => {
-            handleSendViaEmail(e);
-          }}
-          loader={isSending && !emailStatus.message}
-        >
-          <div>
-            <span
-              css={`
-                display: flex;
-                gap: 10px;
-                align-items: center;
-                @media (max-width: 400px) {
-                  display: none;
-                }
-              `}
-            >
-              Share
-              <span
-                css={`
-                  display: none;
-                  @media (max-width: 400px) {
-                    display: block;
-                  }
-                `}
-              >
-                <i className="fas fa-share"></i>
-              </span>
-            </span>
-          </div>
-        </Button>
+        <ShareCTA
+          onClick={e => handleSendViaEmail(e)}
+          loader={isSending && !emailStatus?.message}
+        />
       </ShareOption>
 
       <ShareOption
@@ -616,64 +616,10 @@ function ShareStep2({
             rel="noreferrer"
             href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
           >
-            <Button
-              css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
-            >
-              <div>
-                <span
-                  css={`
-                    display: flex;
-                    gap: 10px;
-                    align-items: center;
-                    @media (max-width: 400px) {
-                      display: none;
-                    }
-                  `}
-                >
-                  Share
-                  <span
-                    css={`
-                      display: none;
-                      @media (max-width: 400px) {
-                        display: block;
-                      }
-                    `}
-                  >
-                    <i className="fas fa-share"></i>
-                  </span>
-                </span>
-              </div>
-            </Button>
+            <ShareCTA />
           </a>
         ) : (
-          <Button
-            css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
-          >
-            <div>
-              <span
-                css={`
-                  display: flex;
-                  gap: 10px;
-                  align-items: center;
-                  @media (max-width: 400px) {
-                    display: none;
-                  }
-                `}
-              >
-                Share
-                <span
-                  css={`
-                    display: none;
-                    @media (max-width: 400px) {
-                      display: block;
-                    }
-                  `}
-                >
-                  <i className="fas fa-share"></i>
-                </span>
-              </span>
-            </div>
-          </Button>
+          <ShareCTA />
         )}
       </ShareOption>
 
@@ -693,34 +639,7 @@ function ShareStep2({
           />
         </div>
 
-        <Button
-          css={`display: flex; 2px; align-items: center; justify-content: center; width: 105px; max-width: 105px;`}
-        >
-          <div>
-            <span
-              css={`
-                display: flex;
-                gap: 5px;
-                align-items: center;
-                @media (max-width: 400px) {
-                  display: none;
-                }
-              `}
-            >
-              Share
-              <span
-                css={`
-                  display: none;
-                  @media (max-width: 400px) {
-                    display: block;
-                  }
-                `}
-              >
-                <i className="fas fa-share"></i>
-              </span>
-            </span>
-          </div>
-        </Button>
+        <ShareCTA />
       </ShareOption>
 
       <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>

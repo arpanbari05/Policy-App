@@ -35,6 +35,10 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes }) => {
       minHeight: "initial",
       borderRadius: "1000px",
       border: `2px solid ${colors.primary_color}`,
+      boxShadow: '0 !important',
+      "&:hover": {
+        border: `2px solid ${colors.primary_color}`,
+      },
       }),
       indicatorSeparator: () => ({ display: "none" }),
       option: provided => ({
