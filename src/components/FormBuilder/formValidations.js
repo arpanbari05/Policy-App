@@ -478,8 +478,8 @@ export const validationIndex = {
           } else break;
         case "pan":{
           if (
-            !/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(value.toUpperCase()) ||
-            (value[4] && values.name[values.name.lastIndexOf(" ")+1] !== value[4])
+            !/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(value.toUpperCase())
+            // || (value[4] && values.name[values.name.lastIndexOf(" ")+1] !== value[4])
           ) {
             return {
               status: false,
