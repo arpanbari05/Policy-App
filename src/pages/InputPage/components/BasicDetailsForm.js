@@ -67,7 +67,6 @@ const BasicDetailsForm = ({ ...props }) => {
     }
 
     try {
-      console.log(urlSearchParams);
       const data = {
         name: capitalize(fullNameInput.value),
         email: emailInput.value,

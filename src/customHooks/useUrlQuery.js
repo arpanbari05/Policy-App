@@ -6,17 +6,17 @@ function useUrlQuery() {
 }
 
 export function useUrlQueries() {
-  const queries = useLocation().search.split("?")[1];
-  const paramsList = queries.split("&");
+  const queries = useLocation().search?.split("?")[1];
+  const paramsList = queries?.split("&");
   const paramsObject = {};
-  paramsList.forEach(data => {
-    const value = data.search("=");
-    const itemName = data.slice(0, value);
-    const itemValue = data.slice(value + 1, data.length);
-    paramsObject[itemName] = itemValue;
-  });
+  paramsList?.length &&
+    paramsList?.forEach(data => {
+      const value = data.search("=");
+      const itemName = data.slice(0, value);
+      const itemValue = data.slice(value + 1, data.length);
+      paramsObject[itemName] = itemValue;
+    });
 
-  console.log(paramsObject);
   return paramsObject;
 }
 

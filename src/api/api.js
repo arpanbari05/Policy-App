@@ -24,7 +24,7 @@ export const api = createApi({
     "Cart",
     "AdditionalDiscount",
     "TenureDiscount",
-    "ProposalSummaryUpdate"
+    "ProposalSummaryUpdate",
   ],
   endpoints: builder => ({
     getCities: builder.mutation({
