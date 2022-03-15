@@ -115,7 +115,7 @@ const SelectContainer = styled.div`
 
 const Select = styled.select`
   appearance: none;
-  background: url(${down}) no-repeat 98%;
+  background: ${props => props.disabled?"":`url(${down}) no-repeat 98%`};
   list-style: none;
   list-style-type: none;
   user-select: none;

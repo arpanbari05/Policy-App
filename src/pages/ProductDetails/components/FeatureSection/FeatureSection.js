@@ -109,7 +109,6 @@ const FeatureSectionSubHeading = styled("p")`
   ${mobile} {
     font-size: 10px;
     color: #7b7b7f;
-    margin-bottom: unset !important;
   }
 `;
 

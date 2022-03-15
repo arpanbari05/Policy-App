@@ -10,6 +10,7 @@ import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { mobile } from "../../../utils/mediaQueries";
 import { amount, careRidersConditionChecker } from "../../../utils/helper";
+import { useSelector } from "react-redux";
 
 export function RidersSection({ loaderStop, isProductDetailsPage = false }) {
   let { groupCode } = useParams();
@@ -54,6 +55,11 @@ export function Riders({
     handleChange,
     riders,
   } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
+
+  const featureOptions = useSelector(({ cart }) => cart.feature_options);
+  const selectedFeatureOption = Object.keys(featureOptions).length
+    ? featureOptions[Object.keys(featureOptions)[0]]
+    : "more_cover";
 
   const {
     colors: { primary_color },
@@ -138,7 +144,10 @@ export function Riders({
               isProductDetailsPage={isProductDetailsPage}
               isDisabled={
                 careRidersConditionChecker(quote, rider?.alias, riders)
-                  ?.isDisabled || rider.total_premium === 0
+                  ?.isDisabled ||
+                (quote?.product?.company?.alias === "reliance_general" &&
+                  selectedFeatureOption ===
+                    rider?.name?.toLowerCase().split(" ").join("_"))
               }
               showPEDRiderWarning={
                 careRidersConditionChecker(quote, rider?.alias, riders)
@@ -183,6 +192,12 @@ export function RiderCardNew({
       });
     }
   }, [rider?.isSelected]);
+
+  useEffect(() => {
+    if (isDisabled) {
+      onChange({ ...rider, isSelected: false });
+    }
+  }, [isDisabled]);
 
   const handleRiderOptionChange = riderOption => {
     onChange &&
@@ -385,19 +400,20 @@ const RiderCardWrap = styled.div`
   gap: 1em;
   box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
   min-height: 110px;
-  background: ${({ isDisabled }) => isDisabled && "#f0f0f050"};
-  pointer-events: ${({ isDisabled }) => isDisabled && "none"};
+  background: ${({ isDisabled }) => isDisabled && "#f0f0f070"};
+
   &:hover {
-    box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
+    box-shadow: ${({ isDisabled }) =>
+      !isDisabled && "0 8px 12px 0 rgb(16 24 48 / 12%)"};
   }
 
-  opacity: ${({ isDisabled }) => (isDisabled ? "0.8" : "1")};
+  opacity: ${({ isDisabled }) => (isDisabled ? "0.7" : "1")};
   ${mobile} {
     flex: unset;
     gap: 1em;
     width: 100%;
     margin: 10px 0px;
-    background: rgb(243, 244, 249) !important;
+    background: rgb(243, 244, 249, .5) !important;
     border-radius: 10px;
     box-shadow: ${({ isSelected }) =>
       isSelected ? "rgb(16 24 48 / 12%) 0px 8px 12px 0px" : "unset"};
@@ -411,6 +427,7 @@ const RiderName = styled.h1`
   font-size: 1rem;
   color: #253858;
   font-weight: 900;
+  margin-bottom: 7px;
   ${mobile} {
     font-size: 13px;
   }
@@ -471,15 +488,12 @@ const ShowMoreButton = styled.button`
 `;
 
 export const DetailsSectionWrap = styled.section`
-  padding: 0
-    ${({ isProductDetailsPage }) => {
-      return !isProductDetailsPage && "6%";
-    }};
+  padding: 0;
   margin: auto;
   margin-top: 40px;
   ${tabletAndMobile} {
-    padding: 0 6%;
+    padding: 0;
     margin: auto;
-    padding-top: 40px;
+    padding-top: 20px;
   }
 `;

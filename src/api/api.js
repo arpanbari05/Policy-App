@@ -24,7 +24,7 @@ export const api = createApi({
     "Cart",
     "AdditionalDiscount",
     "TenureDiscount",
-    "ProposalSummaryUpdate"
+    "ProposalSummaryUpdate",
   ],
   endpoints: builder => ({
     getCities: builder.mutation({
@@ -197,6 +197,7 @@ export const api = createApi({
         group,
         selected_riders = [],
         additionalUrlQueries = "",
+        feature_options,
         journeyType = "health",
       }) => {
         let endpoint = "riders";
@@ -213,6 +214,14 @@ export const api = createApi({
         if (deductible) url = url.concat(`&deductible=${deductible}`);
 
         if (additionalUrlQueries) url = url.concat(`&${additionalUrlQueries}`);
+
+        if (feature_options) {
+          const featureOptionsQuery = [];
+          Object.keys(feature_options).forEach(key => {
+            featureOptionsQuery.push(`${key}=${feature_options[key]}`);
+          })
+          url = url.concat(`&${featureOptionsQuery.join("&")}`);
+        }
 
         return {
           url,

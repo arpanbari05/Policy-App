@@ -144,7 +144,6 @@ function QuoteCard({
 
   const deductibles = getDeductibles(quotes);
 
-  
   const [isShare, setIsShare] = useState(false);
 
   const [selectedDeductible, setSelectedDeductible] = useState(Math.max(...deductibles));

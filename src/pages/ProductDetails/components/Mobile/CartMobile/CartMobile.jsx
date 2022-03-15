@@ -114,27 +114,31 @@ const CartMobile = ({ groupCode, ...props }) => {
         `}
       >
         <section className="d-flex flex-column align-items-start justify-content-center">
-          <span
-            css={`
-              font-size: 14px;
-              ${small} {
-                font-size: 10px;
-              }
-            `}
-          >
-            Next step :{" "}
-          </span>
-          <span
-            css={`
-              font-size: 12px;
-              ${small} {
-                font-size: 12px;
-                font-weight: 900;
-              }
-            `}
-          >
-            Plan for :{" "}
-          </span>
+          {nextGroupProduct && (
+            <>
+              <span
+                css={`
+                  font-size: 14px;
+                  ${small} {
+                    font-size: 10px;
+                  }
+                `}
+              >
+                Next step :{" "}
+              </span>
+              <span
+                css={`
+                  font-size: 12px;
+                  ${small} {
+                    font-size: 12px;
+                    font-weight: 900;
+                  }
+                `}
+              >
+                Plan for :{" "}
+              </span>
+            </>
+          )}
           <span
             css={`
               font-size: 14px;

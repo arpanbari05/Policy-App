@@ -12,7 +12,7 @@ import {
   useTheme,
   useFrontendBoot,
 } from "../../../customHooks";
-import useUrlQuery from "../../../customHooks/useUrlQuery";
+import useUrlQuery, { useUrlQueries } from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
 import "styled-components/macro";
 import { useHistory } from "react-router-dom";
@@ -48,7 +48,7 @@ const BasicDetailsForm = ({ ...props }) => {
   const [gender, setGender] = useState(inputData.gender || "M");
   const [journeyType, setJourneyType] = useState("health");
   const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
-  const urlSearchParams = useUrlQuery();
+  const urlSearchParams = useUrlQueries();
 
   const history = useHistory();
 
@@ -67,13 +67,12 @@ const BasicDetailsForm = ({ ...props }) => {
     }
 
     try {
-      const params = Object.fromEntries(urlSearchParams.entries());
       const data = {
         name: capitalize(fullNameInput.value),
         email: emailInput.value,
         gender,
         mobile: mobileInput.value,
-        params,
+        params: urlSearchParams,
         section: journeyType,
       };
       const response = await createEnquiry(data);

@@ -1,13 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { useCartProduct } from "../../Cart";
 import FeatureSection from "./FeatureSection/FeatureSection";
 import { setFeatureOptions } from "../../Cart/cart.slice";
 import { RiCheckFill } from "react-icons/ri";
-import { useTenureDiscount, useTheme, useCart } from "../../../customHooks";
+import { useTheme } from "../../../customHooks";
 import HttpClient from "../../../api/httpClient";
-import { skipToken } from "@reduxjs/toolkit/query";
 
 const useRoomRent = (productId, sumInsured) => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +15,7 @@ const useRoomRent = (productId, sumInsured) => {
   useEffect(() => {
     setLoading(true);
     HttpClient(`product/${productId}/options?sum_insured=${sumInsured}`).then(
-      (response) => {
+      response => {
         if (response.statusCode === 200) {
           if (response.data.data.length !== 0) {
             setStatus("success");
@@ -30,7 +28,7 @@ const useRoomRent = (productId, sumInsured) => {
           setStatus("fail");
           setLoading(false);
         }
-      }
+      },
     );
   }, [productId, sumInsured]);
 
@@ -48,16 +46,16 @@ const Options = ({
   checked,
   setChecked,
 }) => {
-  const dispatch = useDispatch();
   const primaryKeys = Object.keys(options);
   let optionKeys = [];
-  if (primaryKeys.length && optionKeys.length) {
+  if (primaryKeys.length) {
     optionKeys = Object.keys(options[primaryKeys[0]]);
   }
   const [selectedOption, setSelectedOption] = useState({
     [`feature_${primaryKeys[0]}`]: optionKeys.length ? optionKeys[0] : null,
   });
 
+  console.log({ primaryKeys, optionKeys, options });
   useEffect(() => {
     if (checked) {
       setSelectedBenefit({
@@ -110,7 +108,8 @@ const ContentSection = ({
   setSelectedBenefit,
 }) => {
   const [checked, setChecked] = useState(false);
-  console.log(checked);
+
+  // useEffect(() => { });
   return (
     <StyledContentSection
       theme={theme}
@@ -176,18 +175,18 @@ const Benefit = ({ cartEntry: cart }) => {
         dispatch(
           setFeatureOptions({
             ...selectedBenefit,
-          })
+          }),
         );
       }
     }
   }, [status, loading]);
-  
+
   useEffect(() => {
     dispatch(
       setFeatureOptions({
         ...selectedBenefit,
-      })
-      );
+      }),
+    );
   }, [selectedBenefit]);
 
   return (

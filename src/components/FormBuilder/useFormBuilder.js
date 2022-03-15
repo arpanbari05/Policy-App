@@ -149,6 +149,21 @@ const useFormBuilder = (
           let errorMsg =
             item.validate &&
             performValidations(item.validate, values, item.name);
+
+            if (item.visibleOn) {
+              console.log("dfbjhdf", item, values);
+  
+              if (
+                values[Object.keys(item.visibleOn)[0]] ===
+                item.visibleOn[Object.keys(item.visibleOn)[0]]
+              )
+                errorMsg = performValidations(
+                  { required: true },
+                  values,
+                  item.name
+                );
+            }
+
           if (renderField(item, values)) {
 
             errorsTemp[item.name] = errorMsg;
