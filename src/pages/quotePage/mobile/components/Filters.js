@@ -61,8 +61,25 @@ export function useFiltersSlot({ initialFilters } = {}) {
         }; // REMOVAL LOGIC
     } else {
       isChecked = filters[code]?.code === option.code;
-      updateFilters = { ...filters, [code]: option };
-      if (isChecked) updateFilters = { ...filters, [code]: null };
+      if (type === "check") {
+        updateFilters = { ...filters };
+        if (!isChecked) {
+          updateFilters = {
+            ...filters,
+            [code]: updateFilters[code]?.filter(
+              filter => filter.alias !== option.alias,
+            ),
+          };
+        } else {
+          updateFilters = {
+            ...filters,
+            [code]: [...updateFilters[code], option],
+          };
+        }
+      } else {
+        updateFilters = { ...filters, [code]: option };
+        if (isChecked) updateFilters = { ...filters, [code]: null };
+      }
     }
     setFilters(updateFilters);
   };
@@ -152,8 +169,8 @@ export function FilterModal({ onClose }) {
             & .nav-link.active {
               background-image: linear-gradient(90deg, #0a87ff40, #fff);
             }
-            overflow: auto;
             margin-bottom: 3em;
+            padding-bottom: 1.5rem;
           `}
         >
           <Nav
@@ -161,6 +178,7 @@ export function FilterModal({ onClose }) {
             css={`
               flex: 1;
               box-shadow: ${boxShadows.one};
+              position: sticky;
             `}
           >
             <FilterNavItem eventKey={"premium"}>Premium</FilterNavItem>
@@ -185,6 +203,8 @@ export function FilterModal({ onClose }) {
             className="p-3"
             css={`
               flex: 2;
+              overflow: auto;
+              height: 82vh;
             `}
           >
             <RenderFilterOptions code="premium" options={premiums} />
@@ -196,7 +216,11 @@ export function FilterModal({ onClose }) {
             <RenderFilterOptions code="tenure" options={tenures} />
             <RenderFilterOptions code="plantype" options={plantypes} />
             <Tab.Pane eventKey="insurers">
-              <InsurersFilter />
+              <InsurersFilter
+                code="insurers"
+                onChange={updateFilter}
+                currentOptions={filters.insurers}
+              />
             </Tab.Pane>
             {morefilters.map(filter => (
               <RenderFilterOptions
@@ -383,32 +407,32 @@ function FilterNavItem({ children, eventKey, ...props }) {
   );
 }
 
-function InsurersFilter({ onChange, currentOption }) {
-  const { isLoading, data } = useGetQuotes();
-
-  const companies = data
-    ? data
-        .filter(icQuotes => !!icQuotes.data.data.length)
-        .map(icQuotes => icQuotes.company_alias)
-    : [];
+function InsurersFilter({ onChange, currentOptions, code }) {
+  const { companies } = useCompanies();
 
   const handleChange = (company, evt) => {
     if (evt.target.checked) {
-      onChange && onChange();
+      onChange && onChange(code, company, "check");
     }
   };
 
   return (
     <OptionsWrap>
-      {companies.map(company_alias => (
-        <InsurerOption companyAlias={company_alias} />
+      {Object.keys(companies).map(companyAlias => (
+        <InsurerOption
+          currentOptions={currentOptions}
+          companyAlias={companyAlias}
+          onChange={handleChange}
+        />
       ))}
-      {isLoading && <p>Loading...</p>}
     </OptionsWrap>
   );
 }
 
-function InsurerOption({ companyAlias, onChange, checked, ...props }) {
+function InsurerOption({ companyAlias, onChange, currentOptions, ...props }) {
+  const [checked, setChecked] = useState(
+    currentOptions.find(opt => opt.alias === companyAlias),
+  );
   const { getCompany } = useCompanies();
 
   const company = getCompany(companyAlias);
@@ -416,6 +440,7 @@ function InsurerOption({ companyAlias, onChange, checked, ...props }) {
   const { colors } = useTheme();
 
   const handleChange = evt => {
+    setChecked(evt.target.checked);
     onChange && onChange(company, evt);
   };
 
@@ -452,7 +477,11 @@ function InsurerOption({ companyAlias, onChange, checked, ...props }) {
             line-height: 1;
           `}
         >
-          {checked ? <IoRadioButtonOn /> : <IoRadioButtonOff />}
+          {checked ? (
+            <RiCheckboxFill />
+          ) : (
+            <MdOutlineCheckBoxOutlineBlank fontWeight={"300"} color="#aaa" />
+          )}
         </span>
         <input
           className="visually-hidden"

@@ -1554,6 +1554,7 @@ export function useRiders({
 
   useEffect(() => setRiders(getInititalRiders), [getInititalRiders]);
 
+  const { feature_options } = useSelector(({ cart }) => cart);
   const findLocalRider = riderToFind =>
     riders.find(rider => rider.id === riderToFind.id);
 
@@ -1576,7 +1577,7 @@ export function useRiders({
     getRidersQueryParams.selected_riders = affectsOtherRiders;
 
   const query = useGetRiders(quote, groupCode, {
-    queryOptions: getRidersQueryParams,
+    queryOptions: { getRidersQueryParams, feature_options },
   });
 
   const { data } = query;
@@ -1633,7 +1634,10 @@ export function useRiders({
 
   return {
     query,
-    riders: quote?.product?.company?.alias === "reliance_general" ? riders : riders.filter(rider => rider.total_premium > 0),
+    riders:
+      quote?.product?.company?.alias === "reliance_general"
+        ? riders
+        : riders.filter(rider => rider.total_premium > 0),
     handleChange,
     getInititalRiders,
   };
@@ -1762,7 +1766,7 @@ export const useRenewalPremiumModal = () => {
   const updatedTotalPremium =
     getTotalPremium(cartEntries); /* Gets the updated value each time */
 
-  const getUpdatedCart = (next) => {
+  const getUpdatedCart = next => {
     dispatch(
       api.util.invalidateTags([
         "Cart",
