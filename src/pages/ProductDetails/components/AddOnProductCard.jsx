@@ -120,7 +120,7 @@ function ProductCard() {
         >
           <div
             css={`
-              font-size: 15px;
+              font-size: 14px;
               font-weight: 600;
               color: #394a68;
 
