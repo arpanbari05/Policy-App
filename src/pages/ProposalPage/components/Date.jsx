@@ -6,7 +6,6 @@ import moment from "moment";
 import calendar from "./../../../assets/images/calendar.png";
 import MaskedInput from "react-text-mask";
 
-
 const DateComp = ({
   label,
   placeholder,
@@ -27,11 +26,6 @@ const DateComp = ({
   endDate,
   age = [0, 0],
 }) => {
-  // const [innerValue, setInnerValue] = useState(value);
-  // useEffect(() => {
-  //   setInnerValue(value);
-  // }, [value]);
-  console.log("dbdnfblkdgl",value)
   const [isFocused, setIsFocused] = useState(false);
   const onFocus = () => setIsFocused(true);
   let newDate = new Date();
@@ -41,21 +35,15 @@ const DateComp = ({
 
   const startRef = useRef();
 
-  const formatFordatePicker = (val) => {
-    return val && val.length === 4 ? "yyyy":"dd-MM-yyyy"
-  }
+  const formatFordatePicker = val => {
+    return val && val.length === 4 ? "yyyy" : "dd-MM-yyyy";
+  };
 
   const getMoment = val => {
-    console.log("sdsnfv", val, val.length === 4, moment(val, "YYYY").toDate());
     return val.length === 4
       ? moment(val, "YYYY")?.toDate()
       : moment(val, "DD-MM-YYYY")?.toDate();
   };
-
-  // const handleCalendarOpen = () => {
-  //   if (value.length === 4)
-  //     onChange({ target: { value: moment(value).format("DD-MM-YYYY") } });
-  // };
 
   const onKeyDownHandler = e => {
     if (e.keyCode === 9 || e.which === 9) {
@@ -64,10 +52,8 @@ const DateComp = ({
     onKeyDown();
   };
 
-
   return (
     <InputContainer error={!isFocused ? error : null}>
-    
       <DatePicker
         id="date-picker"
         ref={startRef}
@@ -84,15 +70,6 @@ const DateComp = ({
             : ""
         }
         minDate={
-          // age && age[1] >= 1
-          //   ? new Date(currentYear - age[1], currentMonth, currentDate)
-          //   : age[1]
-          //     ? new Date(
-          //       currentYear,
-          //       currentMonth - Number(age[1].toString().split(".")[1]),
-          //       currentDate
-          //     )
-          //     : new Date(Date.now())
           age.length && age[1] >= 1
             ? new Date(
                 currentYear - (age[1] + 1),

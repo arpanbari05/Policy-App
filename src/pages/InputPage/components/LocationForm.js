@@ -91,7 +91,9 @@ function LocationForm() {
 
   const handleSubmit = () => {
     if (!selectedCity) {
-      setError("Please enter a valid Pincode or City");
+      locationSearchQuery.length >= 6 && !error
+        ? setError("Please select a City from options")
+        : setError("Please enter a valid Pincode or City");
       return;
     }
     submit(selectedCity);
