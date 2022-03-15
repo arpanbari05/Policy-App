@@ -157,6 +157,7 @@ export function MemberOptions({
   getMultipleMembersCount,
   selectedMembers,
   gender,
+  setServerError,
   selectable = true,
   ...props
 }) {
@@ -176,6 +177,7 @@ export function MemberOptions({
           selectable={selectable}
           selectedMembers={selectedMembers}
           gender={gender}
+          setServerError={setServerError}
         >
           {member.multiple && member.isSelected && (
             <Counter
@@ -201,6 +203,7 @@ function MemberOption({
   selectedMembers,
   selectable = true,
   updateMembersList,
+  setServerError,
   gender,
   ...props
 }) {
@@ -265,8 +268,14 @@ function MemberOption({
       className="rounded-2"
       title={
         validateSpouse(selectedMembers, member) &&
-        "Please select a valid age for self!"
+        "Please select age 21 years and above for Spouse as per legal marriage age in India."
       }
+      onClick={() => {
+        validateSpouse(selectedMembers, member) &&
+          setServerError(
+            "Please select age 21 years and above for Spouse as per legal marriage age in India.",
+          );
+      }}
       css={`
         display: flex;
         align-items: center;
