@@ -440,7 +440,7 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
 
   const netPremium = calculateTotalPremium({
     total_premium: quote.total_premium,
-    health_riders: quote?.mandatory_riders, // quote?.riders doesn't contains mandatory rider
+    health_riders: quote.riders ? quote.riders : quote.mandatory_riders, // quote?.riders doesn't contains mandatory rider
   });
 
   return (
