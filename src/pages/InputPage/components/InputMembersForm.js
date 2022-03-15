@@ -169,6 +169,7 @@ function InputMembersForm(props) {
             initialMembersList={membersList}
             serverError={serverError}
             gender={data?.data?.input?.gender}
+            setServerError={setServerError}
           />
         ) : null}
       </div>
@@ -186,6 +187,7 @@ function EditMembers({
   serverError,
   onSubmit,
   initialMembersList = [],
+  setServerError,
   gender,
   ...props
 }) {
@@ -226,6 +228,7 @@ function EditMembers({
             membersList={membersList}
             selectedMembers={getSelectedMembers()}
             gender={gender}
+            setServerError={setServerError}
           />
         </div>
         {isError || error ? (
