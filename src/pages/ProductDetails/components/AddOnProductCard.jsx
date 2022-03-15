@@ -120,7 +120,7 @@ function ProductCard() {
         >
           <div
             css={`
-              font-size: 15px;
+              font-size: 14px;
               font-weight: 600;
               color: #394a68;
 
@@ -240,7 +240,7 @@ function PlanDetails({ cartEntry }) {
         <span
           css={`
             color: #5a6981;
-            font-size: 13px;
+            font-size: 12px;
 
             ${mobile} {
               font-size: 14px;
@@ -259,7 +259,7 @@ function PlanDetails({ cartEntry }) {
         <span
           className="detail_amount"
           css={`
-            font-size: 13px;
+            font-size: 12px;
             color: #565657;
             font-weight: 600;
             ${mobile} {
@@ -283,7 +283,7 @@ function PlanDetails({ cartEntry }) {
         <span
           css={`
             color: #5a6981;
-            font-size: 13px;
+            font-size: 12px;
 
             ${mobile} {
               font-size: 12px;
@@ -302,7 +302,7 @@ function PlanDetails({ cartEntry }) {
         <span
           className="detail_amount"
           css={`
-            font-size: 13px;
+            font-size: 12px;
             color: #565657;
             font-weight: 600;
             ${mobile} {
@@ -327,7 +327,7 @@ function PlanDetails({ cartEntry }) {
         <span
           css={`
             color: #5a6981;
-            font-size: 13px;
+            font-size: 12px;
             /* width: 90px; */
 
             ${mobile} {
@@ -347,7 +347,7 @@ function PlanDetails({ cartEntry }) {
         <span
           className="detail_amount"
           css={`
-            font-size: 13px;
+            font-size: 12px;
             color: #565657;
             font-weight: 600;
             ${mobile} {

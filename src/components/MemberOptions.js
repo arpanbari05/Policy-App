@@ -158,13 +158,17 @@ export function MemberOptions({
   selectedMembers,
   gender,
   selectable = true,
+  showCounter = true,
   ...props
 }) {
   return (
     <div
-      className="d-flex flex-wrap justify-content-between"
       css={`
         gap: 0.66em;
+        display: ${!showCounter ? "grid" : "flex"};
+        grid-template-columns: ${!showCounter && "repeat(2, 1fr)"};
+        flex-wrap: wrap;
+        justify-content: space-between;
       `}
       {...props}
     >
@@ -177,7 +181,7 @@ export function MemberOptions({
           selectedMembers={selectedMembers}
           gender={gender}
         >
-          {member.multiple && member.isSelected && (
+          {(member.multiple && member.isSelected && showCounter) && (
             <Counter
               onDecrement={() => {
                 handleCounterDecrement(member, index);
