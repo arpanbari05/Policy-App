@@ -118,8 +118,6 @@ const FormBuilder = ({
           ...memberDetailsInProposerD,
           ...insuredDetails[values.nominee_relation],
         };
-
-        console.log("bndglbd", values.nominee_relation, dataForAutopopulate);
       }
 
       let acc = {};
@@ -127,16 +125,9 @@ const FormBuilder = ({
         let nameWithoutNominee = name.slice(name.indexOf("_") + 1, name.length);
         if (nameWithoutNominee === "contact") nameWithoutNominee = "mobile";
         if (nameWithoutNominee.includes("address"))
-          console.log(
-            "snfklnfk",
-            nameWithoutNominee,
-            name,
-            dataForAutopopulate,
-            memberGroupsAsPerMembers,
+          nameWithoutNominee = Object.keys(dataForAutopopulate).find(key =>
+            key.includes(nameWithoutNominee),
           );
-        nameWithoutNominee = Object.keys(dataForAutopopulate).find(key =>
-          key.includes(nameWithoutNominee),
-        );
         if (name.includes("pincode"))
           nameWithoutNominee = Object.keys(dataForAutopopulate).find(key =>
             key.includes("pincode"),
@@ -145,7 +136,6 @@ const FormBuilder = ({
           acc[name] = dataForAutopopulate[nameWithoutNominee];
       });
 
-      console.table("ejrgvbjhsb", schema, dataForAutopopulate, acc);
       setValues(prev => ({
         ...prev,
         ...acc,
@@ -155,7 +145,6 @@ const FormBuilder = ({
 
   useEffect(() => {
     if (trigger) {
-      console.log("erngfn", trigger);
       triggerValidation(trigger);
       setTrigger(false);
     }
@@ -244,15 +233,9 @@ const FormBuilder = ({
                     return (
                       <CustomWrapper>
                         <div className="col-md-12">
-                          <Title>
-                            {member}
-                            {/* proposalData["Insured Details"]?.[
-                                member
-                              ]?.name?.split(" ")[0] */}
-                          </Title>
+                          <Title>{member}</Title>
                           {item.map(innerItem => {
                             const Comp = components[innerItem.type];
-
                             if (!Comp) {
                               alert("Type :" + innerItem.type + "Not found");
                               return <></>;
@@ -269,12 +252,6 @@ const FormBuilder = ({
                                       checkValidation={innerItem.validate}
                                       innerMember={member}
                                       onChange={(e, value) => {
-                                        console.log(
-                                          "qdjbjics",
-                                          innerItem,
-                                          innerItem.parent,
-                                          innerItem.type,
-                                        );
                                         if (
                                           innerItem.parent &&
                                           innerItem.type === "checkboxGroup"
@@ -474,7 +451,13 @@ const FormBuilder = ({
             if (!Comp) {
               alert("Type :" + item.type + "Not found");
               return <></>;
-            } else
+            } else if (
+              !item.visibleOn
+                ? true
+                : Object.keys(item.visibleOn).some(
+                    (i) => item.visibleOn[i] === values[i]
+                  )
+            )
               return (
                 <>
                   {renderField(item, values) && (

@@ -137,6 +137,7 @@ const PlanDetails = ({
                     </div>
                   </Col>
                   <Col md={6} className="tab-content">
+                    {console.log("FEATURES_LIST", planDetails.featureList)}
                     {planDetails.featureList &&
                       planDetails.featureList.map((data, i) => {
                         return (

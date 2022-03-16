@@ -75,8 +75,8 @@ const ProposerDetails = ({
           );
         }
       });
-      
-      setValues({ ...values, ...prefilledValues });
+  
+      setValues({  ...prefilledValues,...values });
     }
   }, []);
 
