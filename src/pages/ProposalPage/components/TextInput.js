@@ -82,6 +82,11 @@ const TextInput = ({
 
   const onFocus = () => setIsFocused(true);
 
+  // const [innerValue, setInnerValue] = useState(value);
+  // useEffect(() => {
+  //   setInnerValue(value);
+  // }, [value]);
+  console.log({ fallbackValue, isChanged });
   return (
     <InputContainer>
       <Input
@@ -158,6 +163,11 @@ const TextInput = ({
                 onChange(e);
                 setFallbackValue(e.target.value);
               }
+            }
+          } else if (checkValidation?.["matches"] === "email") {
+            if (e.target.value.length <= 40) {
+              onChange(e);
+              setFallbackValue(e.target.value);
             }
           } else {
             if (

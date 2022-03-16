@@ -81,6 +81,7 @@ function ProductCard() {
         <div
           css={`
             height: 50px;
+            max-width: 100%;
             background-color: #fff;
             display: flex;
             align-items: center;
@@ -104,11 +105,10 @@ function ProductCard() {
         {/* *************name*********** */}
         <div
           css={`
-            margin-left: 18px;
+            margin-left: 10px;
 
             /* width: fit-content; */
-            width: 170px;
-            max-width: 100%;
+            max-width: 170px;
             @media (max-width: 1201px) {
               width: 100%;
             }
@@ -286,7 +286,7 @@ const DetailDispalyPanel = styled.div`
 `;
 
 const ValueStyle = styled.span`
-  font-size: 14px;
+  font-size: 12px;
   color: #565657;
   font-weight: 600;
   @media (max-width: 1350px) {
@@ -307,7 +307,7 @@ const ValueStyle = styled.span`
 
 const LabelStyle = styled.span`
   color: #5a6981;
-  font-size: 14px;
+  font-size: 12px;
   @media (max-width: 1350px) {
     font-size: 12px !important;
   }
