@@ -53,10 +53,7 @@ const DateComp = ({
     onKeyDown();
   };
 
-<<<<<<< HEAD
 const openDatepicker = () => startRef.current.setOpen(true);
-=======
->>>>>>> 930ad1a512b778561211477c11e45a11f8768015
   return (
     <InputContainer error={!isFocused ? error : null}>
       <DatePicker

@@ -159,11 +159,6 @@ const FormBuilder = ({
       setSubmit("SUBMIT");
     }
   }, [submitTrigger]);
-  useEffect(() => {
-    if (noForAll) {
-      setValues("");
-    }
-  }, [noForAll]);
 
   const [fillBus, setFillBus] = useState([]);
   const { asyncOptions, asyncValues } = useSelector(state => state.formBuilder);
@@ -460,6 +455,8 @@ const FormBuilder = ({
             )
               return (
                 <>
+ 
+  { console.log("rghjskvdhjv", values)  }
                   {renderField(item, values) && (
                     <Wrapper key={index + item.name} width={item.width}>
                       <Comp
