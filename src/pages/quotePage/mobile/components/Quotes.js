@@ -225,7 +225,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
     selectedSumInsured,
     sumInsureds,
     handleDeductibleChange,
-    handleSumInsuredChange
+    handleSumInsuredChange,
   } = useQuoteCard({
     quotes,
   });
@@ -408,7 +408,10 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
           />
         </div>
       </div>
-      <QuoteFeatures handleNavigate={() => handleProductDetailsModal("mobile-plan-details")} features={quote.features} />
+      <QuoteFeatures
+        handleNavigate={() => handleProductDetailsModal("mobile-plan-details")}
+        features={quote.features}
+      />
       {productDetailsToggle.isOn && (
         <ProductDetailsModal quote={quote} onClose={productDetailsToggle.off} />
       )}
@@ -433,7 +436,12 @@ function QuoteFeatures({ features = [], handleNavigate = () => {} }) {
         <QuoteFeature feature={feature} key={feature.name} index={index} />
       ))}
       {features.slice(0, 1).map((feature, index) => (
-        <QuoteFeature feature={feature} key={feature.name} index={index} onNavigate={handleNavigate} />
+        <QuoteFeature
+          feature={feature}
+          key={feature.name}
+          index={index}
+          onNavigate={handleNavigate}
+        />
       ))}
       {features.slice(3).map((feature, index) => (
         <QuoteFeature feature={feature} key={feature.name} index={index} />
