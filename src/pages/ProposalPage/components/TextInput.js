@@ -35,7 +35,6 @@ const TextInput = ({
           checkAge.split("from")[1]
         ].split("-")[2],
       );
-
   const [isFocused, setIsFocused] = useState(false);
   const [fallbackValue, setFallbackValue] = useState("");
   const [isChanged, setChanged] = useState(false);
@@ -182,7 +181,7 @@ const TextInput = ({
         }}
         onInput={onInput}
         onKeyDown={onKeyDown}
-        value={isChanged ? fallbackValue : value}
+        value={isChanged ? fallbackValue : value?value:""}
         onKeyPress={onKeyPress}
         maxLength={maxLength}
         textTransform={textTransform}
@@ -190,6 +189,7 @@ const TextInput = ({
         error={!isFocused ? error : null}
         defaultValue={defaultValue}
       />
+
       <Label>{checkValidation?.required && label ? `${label}*` : label || ""}</Label>
      
           <p className="formbuilder__error">{error}</p>

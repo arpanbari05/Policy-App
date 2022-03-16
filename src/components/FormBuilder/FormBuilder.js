@@ -93,8 +93,6 @@ const FormBuilder = ({
     "grand_mother",
   ];
 
-
-
   // for auto populate self data when nominee relation is self
   useEffect(() => {
     if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
@@ -152,10 +150,8 @@ const FormBuilder = ({
         ...prev,
         ...acc,
       }));
-    }
+    } else setValues({ nominee_relation: values.nominee_relation });
   }, [values.nominee_relation]);
-
-
 
   useEffect(() => {
     if (trigger) {
@@ -182,6 +178,7 @@ const FormBuilder = ({
 
   const [fillBus, setFillBus] = useState([]);
   const { asyncOptions, asyncValues } = useSelector(state => state.formBuilder);
+
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -481,12 +478,13 @@ const FormBuilder = ({
               return (
                 <>
                   {renderField(item, values) && (
-                    <Wrapper key={index+item.name} width={item.width}>
+                    <Wrapper key={index + item.name} width={item.width}>
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}
                         selectedValues={values}
                         onChange={(e, value) => {
+                         
                           if (item.parent && item.members) {
                             insertValue(
                               item.parent,
@@ -501,12 +499,18 @@ const FormBuilder = ({
                                 [item.name + "__value"]: value,
                               });
                             } else if (!item.type.includes("custom")) {
-                              console.log(
-                                "sdvnsjdbvs",
-                                item.name,
-                                e.target.value,
-                              );
-                              updateValue(item.name, e.target.value);
+                           
+                              if (
+                                item.name === "nominee_relation" &&
+                                !insuredDetails[e.target.value]
+                              ){
+                                console.log(
+                                  "sdvnsjdbvs",
+                                  item.name,
+                                  e.target.value,
+                                );
+                                updateValue(item.name, e.target.value, true);
+                              }else updateValue(item.name, e.target.value);
                             } else {
                               // if()
                               updateValue(item.name, e);

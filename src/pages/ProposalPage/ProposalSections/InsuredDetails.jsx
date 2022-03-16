@@ -20,7 +20,7 @@ import "styled-components/macro";
 import { element } from "prop-types";
 import CheckBox from "../components/Checkbox/Checkbox";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
-import { useFrontendBoot, useTheme } from "../../../customHooks";
+import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 
 const InsuredDetails = ({
@@ -49,6 +49,9 @@ const InsuredDetails = ({
     Object.keys(schema).length,
     setShow,
   );
+
+const { getGroupMembers } = useMembers();
+// const allMembers = getGroupMembers();
 
   const { colors } = useTheme();
 
@@ -356,6 +359,7 @@ const InsuredDetails = ({
         }
         return (
           <Panel
+          allMembers={getGroupMembers(parseInt(item))}
             formName={name}
             isFilled={
               Object.keys(values && values[item] ? values[item] : {}).length

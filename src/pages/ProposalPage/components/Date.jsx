@@ -41,6 +41,7 @@ const DateComp = ({
 
   const startRef = useRef();
 
+
   const formatFordatePicker = (val) => {
     return val && val.length === 4 ? "yyyy":"dd-MM-yyyy"
   }
@@ -64,7 +65,7 @@ const DateComp = ({
     onKeyDown();
   };
 
-
+const openDatepicker = () => startRef.current.setOpen(true);
   return (
     <InputContainer error={!isFocused ? error : null}>
     
@@ -135,6 +136,7 @@ const DateComp = ({
         error={!isFocused ? error : null}
         src={calendar}
         alt="calendar"
+        onClick={openDatepicker}
       />
       {!isFocused && <p className="formbuilder__error">{error}</p>}
     </InputContainer>

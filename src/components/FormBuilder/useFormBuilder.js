@@ -13,9 +13,15 @@ const useFormBuilder = (
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState();
-  const updateValue = (name, value) => {
-    setValues(prev => ({ ...prev, [name]: value }));
+  const updateValue = (name, value, removeOtherValues=false) => {
+    if(removeOtherValues){
+      setValues({[name]: value});
+      fetchValues({[name]: value});
+    }else {
+      setValues(prev => ({ ...prev, [name]: value }));
     fetchValues(prev => ({ ...prev, [name]: value }));
+    }
+    
     if (value instanceof Object) {
       if (value?.[`is${name}`] && value?.[`is${name}`] === "Y" && noForAll) {
         setNoForAll(false);
