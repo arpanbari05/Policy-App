@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { FaArrowCircleLeft, FaChevronLeft, FaTimes } from "react-icons/fa";
-import { FiArrowRight } from "react-icons/fi";
 import {
   IoAddCircle,
   IoCheckmarkCircleSharp,
@@ -15,7 +14,6 @@ import {
   useTheme,
   useToggle,
   useUrlEnquiry,
-  useMembers,
   useCart,
 } from "../customHooks";
 import {
