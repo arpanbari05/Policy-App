@@ -67,7 +67,6 @@ const TextInput = ({
         check = false;
       }
     }
-    console.log("sdbvksdjvb", check);
 
     return check;
   };
@@ -113,7 +112,6 @@ const TextInput = ({
               checkValidation?.["matches"] &&
               checkValidation?.["matches"].includes("mobile")
             ) {
-              console.log("hell0");
               if (
                 ![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0])) &&
                 e.target.value.length <= 10
@@ -198,7 +196,7 @@ const TextInput = ({
         onKeyDown={onKeyDown}
         value={isChanged ? fallbackValue : value}
         onKeyPress={onKeyPress}
-        maxLength={maxLength}
+        maxLength={name === "name" ? 60 : maxLength}
         textTransform={textTransform}
         readOnly={readOnly}
         error={!isFocused ? error : null}
