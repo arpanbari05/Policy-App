@@ -8,18 +8,9 @@ import ContinueBtn from "../components/Buttons/ContinueBtn";
 import BackBtn from "../components/Buttons/BackBtn";
 import useProposalSections from "./useProposalSections";
 import useMedicalQuestions from "./useMedicalQuestions";
+import useInsuredDetails from "./useInsuredDetails";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  noForAllCheckedFalse,
-  noForAllCheckedTrue,
-  setProposalData,
-} from "./ProposalSections.slice";
-import { useGetProposalDataQuery } from "../../../api/api";
-import ProposalCheckBox from "../../../components/Common/ProposalSummary/summaryCheckBox";
-
 import "styled-components/macro";
-import { element } from "prop-types";
-import CheckBox from "../components/Checkbox/Checkbox";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
@@ -33,6 +24,10 @@ const InsuredDetails = ({
   continueSideEffects,
 }) => {
   const [show, setShow] = useState(1);
+  const { proposalData } = useSelector(state => state.proposalPage);
+  const { insuredMembers: membersDataFromGreetingPage } = useFrontendBoot();
+  const { getGroupMembers, groups } = useMembers();
+
   const {
     values,
     setValues,
@@ -50,12 +45,19 @@ const InsuredDetails = ({
     Object.keys(schema).length,
     setShow,
   );
-  const { proposalData } = useSelector(state => state.proposalPage);
+
+  const { getPanelDescContent } = useInsuredDetails(
+    name,
+    schema,
+    proposalData,
+    values,
+    membersDataFromGreetingPage,
+    groups,
+    setValues,
+  );
 
   const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
     useMedicalQuestions(schema, values, setValues, name, proposalData);
-
-  const { getGroupMembers } = useMembers();
 
   const { colors } = useTheme();
 
@@ -65,148 +67,11 @@ const InsuredDetails = ({
 
   const dispatch = useDispatch();
 
-  const { insuredMembers: membersDataFromGreetingPage, groups } =
-    useFrontendBoot();
-
   const fullName = proposalData["Proposer Details"]?.name;
-
-  useEffect(() => {
-    if (
-      name === "Insured Details" &&
-      Object.values(schema).length &&
-      // && Object.keys(values).
-      proposalData["Proposer Details"]
-    ) {
-      let prefilledValues = {};
-
-      if (schema) {
-        // let tempAllMemberDetail = {...values};
-        let currentYear = new Date().getUTCFullYear();
-        let currentMonth = new Date().getMonth();
-        let currentDate = new Date().getDate();
-        Object.keys(schema).forEach(memberType => {
-          if (memberType === "self") {
-            let tempObj = {};
-            schema["self"].forEach(item => {
-              if (
-                (proposalData["Proposer Details"][item.name] &&
-                  (!proposalData["Insured Details"] ||
-                    !proposalData["Insured Details"][memberType][item.name])) ||
-                (proposalData["Proposer Details"][item.name] &&
-                  proposalData["Insured Details"][memberType][item.name] &&
-                  proposalData["Insured Details"][memberType][item.name] !==
-                    proposalData["Proposer Details"][item.name])
-              )
-                tempObj = {
-                  ...tempObj,
-                  [item.name]: proposalData["Proposer Details"][item.name],
-                };
-            });
-            prefilledValues[memberType] =
-              values && values[memberType]
-                ? { ...values[memberType], ...tempObj }
-                : tempObj;
-          } else if (
-            // for autopopulate Estimated DOB
-            !proposalData["Insured Details"] ||
-            !proposalData["Insured Details"][memberType].dob
-          ) {
-            let memberAge = membersDataFromGreetingPage.find(
-              member => member.type === memberType,
-            )?.age;
-            console.log("cghdhd", Number(memberAge));
-            let estimatedMemberDOB;
-            if (
-              `${memberAge}`.includes("Month") ||
-              `${`${memberAge}`}`.includes(".")
-            ) {
-              let current = new Date();
-              current.setMonth(
-                current.getMonth() -
-                  (`${memberAge}`.includes(".")
-                    ? parseInt(`${memberAge}`.split(".")[1])
-                    : parseInt(memberAge)) -
-                  1,
-              );
-
-              estimatedMemberDOB = `${current.getUTCFullYear()}`;
-            } else {
-              estimatedMemberDOB = `${currentYear - parseInt(memberAge)}`;
-            }
-
-            prefilledValues[memberType] = {
-              ...(values && values.hasOwnProperty(memberType)
-                ? values[memberType]
-                : {}),
-              dob: estimatedMemberDOB,
-            };
-          }
-          if (
-            !proposalData["Insured Details"] ||
-            !proposalData["Insured Details"][memberType]?.insured_marital
-          ) {
-            if (findGroupMembersCount(memberType) > 1)
-              prefilledValues[memberType] = {
-                ...prefilledValues[memberType],
-                insured_marital: "2",
-              };
-            else
-              prefilledValues[memberType] = {
-                ...prefilledValues[memberType],
-                insured_marital: "1",
-              };
-          }
-        });
-        console.log("sbnlfkb", prefilledValues, membersDataFromGreetingPage);
-
-        setValues({
-          ...values,
-          ...prefilledValues,
-        });
-      }
-    }
-  }, []);
-
-  function formatter(number) {
-    if (!isNaN(number)) number = parseInt(number);
-    const updatedNumber = number.toLocaleString("en-US", {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    });
-    return updatedNumber;
-  }
-
-  const findGroupMembersCount = member => {
-    groups.forEach(group => {
-      return group.members.includes(member.toLowerCase())
-        ? group.members.count
-        : 0;
-    });
-  };
 
   return (
     <div>
       {Object.keys(schema).map((item, index) => {
-        let result = [];
-        if (values && name === "Insured Details") {
-          values[item] &&
-            Object.keys(values[item]).forEach(key => {
-              if (key === "dob" && values[item][key]) {
-                let updatedKey = values[item][key].split("-");
-                const date = updatedKey[0];
-                const month = updatedKey[1];
-                const year = updatedKey[2] || values[item][key];
-                updatedKey = `${year}`;
-                result[1] = updatedKey;
-              } else if (key === "name" && values[item][key]) {
-                result[0] = `${values[item]["title"]}. ${values[item][key]}`;
-              } else if (key !== "title") {
-                // result[2] = `${values[item][key]}`;
-              }
-            });
-
-          result = result.filter(r => r);
-        }
         return (
           <Panel
             allMembers={getGroupMembers(parseInt(item))}
@@ -214,10 +79,7 @@ const InsuredDetails = ({
             isFilled={
               Object.keys(values && values[item] ? values[item] : {}).length
             }
-            // values={Object.values(
-            //   values && values[item] ? values[item] : {},
-            // ).join(", ")}
-            values={result.join(", ")}
+            values={getPanelDescContent(item)}
             key={index}
             title={`${item}`}
             show={show === "all" ? true : show === index + 1 ? true : false}
@@ -262,11 +124,6 @@ const InsuredDetails = ({
                             ...noForAll,
                             [item]: e.target.checked,
                           });
-                          // if (noForAllChecked) {
-                          //   dispatch(noForAllCheckedFalse());
-                          // } else {
-                          //   dispatch(noForAllCheckedTrue());
-                          // }
                         }}
                       ></Checkbox2>{" "}
                     </div>
