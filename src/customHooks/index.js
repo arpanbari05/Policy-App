@@ -1576,8 +1576,9 @@ export function useRiders({
   if (affectsOtherRiders.length)
     getRidersQueryParams.selected_riders = affectsOtherRiders;
 
+  const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
   const query = useGetRiders(quote, groupCode, {
-    queryOptions: { getRidersQueryParams, feature_options },
+    queryOptions: { getRidersQueryParams, feature_options, selected_riders, },
   });
 
   const { data } = query;

@@ -81,6 +81,7 @@ function ProductCard() {
         <div
           css={`
             height: 50px;
+            max-width: 100%;
             background-color: #fff;
             display: flex;
             align-items: center;
@@ -104,11 +105,10 @@ function ProductCard() {
         {/* *************name*********** */}
         <div
           css={`
-            margin-left: 18px;
+            margin-left: 10px;
 
             /* width: fit-content; */
-            width: 170px;
-            max-width: 100%;
+            max-width: 170px;
             @media (max-width: 1201px) {
               width: 100%;
             }
