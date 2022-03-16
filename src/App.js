@@ -2,7 +2,7 @@ import { Switch, Route, Redirect, useParams } from "react-router-dom";
 import InputPage from "./pages/InputPage/InputPage";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import QuotesPage from "./pages/quotePage/";
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
 import { Suspense } from "react";
 import { FullScreenLoader, LoadCart } from "./components";
 import ComparePage from "./pages/ComparePage";
@@ -19,6 +19,28 @@ function App() {
   const {
     data: { tenant },
   } = useFrontendBoot();
+
+  useEffect(() => {
+    if (tenant.alias === "Renew Buy") {
+      const bodyElement = document.querySelector("body");
+      const scripts = document.querySelectorAll("script");
+      let isThere = false;
+      scripts.forEach(data => {
+        if (
+          data.src === "https://accounts.renewbuy.com/static/js/loginWidget.js"
+        ) {
+          isThere = true;
+        }
+      });
+      if (bodyElement && !isThere) {
+        const scriptElement = document.createElement("script");
+        scriptElement.src =
+          "https://accounts.renewbuy.com/static/js/loginWidget.js";
+
+        bodyElement.appendChild(scriptElement);
+      }
+    }
+  }, [tenant.alias]);
   return (
     <Switch>
       <Route
