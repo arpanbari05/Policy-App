@@ -246,7 +246,9 @@ const ThankYouPage = () => {
                 >
                   <span>Thankyou for choosing</span>
                   <br />
-                  <span>Fyntune!</span>
+                  <span> {tenantDetail && tenantDetail.name
+                    ? tenantDetail.name
+                    : "Fyntune"} !</span>
                 </div>
                 <div
                   style={{
