@@ -93,8 +93,6 @@ const FormBuilder = ({
     "grand_mother",
   ];
 
-
-
   // for auto populate self data when nominee relation is self
   useEffect(() => {
     if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
@@ -120,8 +118,6 @@ const FormBuilder = ({
           ...memberDetailsInProposerD,
           ...insuredDetails[values.nominee_relation],
         };
-
-        console.log("bndglbd", values.nominee_relation, dataForAutopopulate);
       }
 
       let acc = {};
@@ -129,16 +125,9 @@ const FormBuilder = ({
         let nameWithoutNominee = name.slice(name.indexOf("_") + 1, name.length);
         if (nameWithoutNominee === "contact") nameWithoutNominee = "mobile";
         if (nameWithoutNominee.includes("address"))
-          console.log(
-            "snfklnfk",
-            nameWithoutNominee,
-            name,
-            dataForAutopopulate,
-            memberGroupsAsPerMembers,
+          nameWithoutNominee = Object.keys(dataForAutopopulate).find(key =>
+            key.includes(nameWithoutNominee),
           );
-        nameWithoutNominee = Object.keys(dataForAutopopulate).find(key =>
-          key.includes(nameWithoutNominee),
-        );
         if (name.includes("pincode"))
           nameWithoutNominee = Object.keys(dataForAutopopulate).find(key =>
             key.includes("pincode"),
@@ -147,19 +136,15 @@ const FormBuilder = ({
           acc[name] = dataForAutopopulate[nameWithoutNominee];
       });
 
-      console.table("ejrgvbjhsb", schema, dataForAutopopulate, acc);
       setValues(prev => ({
         ...prev,
         ...acc,
       }));
-    }
+    } else setValues({ nominee_relation: values.nominee_relation });
   }, [values.nominee_relation]);
-
-
 
   useEffect(() => {
     if (trigger) {
-      console.log("erngfn", trigger);
       triggerValidation(trigger);
       setTrigger(false);
     }
@@ -174,14 +159,10 @@ const FormBuilder = ({
       setSubmit("SUBMIT");
     }
   }, [submitTrigger]);
-  useEffect(() => {
-    if (noForAll) {
-      setValues("");
-    }
-  }, [noForAll]);
 
   const [fillBus, setFillBus] = useState([]);
   const { asyncOptions, asyncValues } = useSelector(state => state.formBuilder);
+
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -247,15 +228,9 @@ const FormBuilder = ({
                     return (
                       <CustomWrapper>
                         <div className="col-md-12">
-                          <Title>
-                            {member}
-                            {/* proposalData["Insured Details"]?.[
-                                member
-                              ]?.name?.split(" ")[0] */}
-                          </Title>
+                          <Title>{member}</Title>
                           {item.map(innerItem => {
                             const Comp = components[innerItem.type];
-
                             if (!Comp) {
                               alert("Type :" + innerItem.type + "Not found");
                               return <></>;
@@ -272,12 +247,6 @@ const FormBuilder = ({
                                       checkValidation={innerItem.validate}
                                       innerMember={member}
                                       onChange={(e, value) => {
-                                        console.log(
-                                          "qdjbjics",
-                                          innerItem,
-                                          innerItem.parent,
-                                          innerItem.type,
-                                        );
                                         if (
                                           innerItem.parent &&
                                           innerItem.type === "checkboxGroup"
@@ -486,13 +455,16 @@ const FormBuilder = ({
             )
               return (
                 <>
+ 
+  { console.log("rghjskvdhjv", values)  }
                   {renderField(item, values) && (
-                    <Wrapper key={index+item.name} width={item.width}>
+                    <Wrapper key={index + item.name} width={item.width}>
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}
                         selectedValues={values}
                         onChange={(e, value) => {
+                         
                           if (item.parent && item.members) {
                             insertValue(
                               item.parent,
@@ -507,12 +479,18 @@ const FormBuilder = ({
                                 [item.name + "__value"]: value,
                               });
                             } else if (!item.type.includes("custom")) {
-                              console.log(
-                                "sdvnsjdbvs",
-                                item.name,
-                                e.target.value,
-                              );
-                              updateValue(item.name, e.target.value);
+                           
+                              if (
+                                item.name === "nominee_relation" &&
+                                !insuredDetails[e.target.value]
+                              ){
+                                console.log(
+                                  "sdvnsjdbvs",
+                                  item.name,
+                                  e.target.value,
+                                );
+                                updateValue(item.name, e.target.value, true);
+                              }else updateValue(item.name, e.target.value);
                             } else {
                               // if()
                               updateValue(item.name, e);

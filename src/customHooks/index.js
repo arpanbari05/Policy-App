@@ -1576,8 +1576,9 @@ export function useRiders({
   if (affectsOtherRiders.length)
     getRidersQueryParams.selected_riders = affectsOtherRiders;
 
+  const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
   const query = useGetRiders(quote, groupCode, {
-    queryOptions: { getRidersQueryParams, feature_options },
+    queryOptions: { getRidersQueryParams, feature_options, selected_riders, },
   });
 
   const { data } = query;
@@ -1636,8 +1637,10 @@ export function useRiders({
     query,
     riders:
       quote?.product?.company?.alias === "reliance_general"
-        ? riders
-        : riders.filter(rider => rider.total_premium > 0),
+        ? riders.sort((a, b) => a.total_premium - b.total_premium)
+        : riders
+            .filter(rider => rider.total_premium > 0)
+            .sort((a, b) => a.total_premium - b.total_premium),
     handleChange,
     getInititalRiders,
   };

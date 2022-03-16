@@ -123,7 +123,7 @@ function CompareQuotesTray({ compare, onClose }) {
         <div
           className="d-flex align-items-center justify-content-between"
           css={`
-            gap: 3rem;
+            gap: 1rem;
 
             @media (max-width: 1370px) {
               gap: 0.9rem;

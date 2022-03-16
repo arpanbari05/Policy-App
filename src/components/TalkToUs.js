@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Button from "./Common/Button/StyledButtonM";
+import { Button } from "./index";
 import TextInput from "./TextInput2";
-import { getProposerData } from "../pages/InputPage/ServiceApi/serviceApi";
 import { mobile } from "../utils/mediaQueries";
 import { useForm } from "react-hook-form";
 import { Modal } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
-
-const tollFreeNumber = "1800 010 000";
+import { useFrontendBoot } from "../customHooks/index";
+import { useGetEnquiriesQuery } from "../api/api";
 
 const TalkToUsContent = () => {
   const [proposerData, setProposerData] = useState({
@@ -17,24 +16,18 @@ const TalkToUsContent = () => {
     mobile: "",
   });
   const { register, handleSubmit } = useForm();
-
+  const { data } = useFrontendBoot();
+  const { data: enquiryData } = useGetEnquiriesQuery();
+  console.log(enquiryData);
   useEffect(() => {
-    const fetch = async () => {
-      const data = await getProposerData();
-      console.log(data);
-      setProposerData({
-        name: data.data.data.name,
-        email: data.data.data.email,
-        mobile: data.data.data.mobile,
-      });
-    };
-    fetch();
-  }, []);
+    setProposerData({
+      name: enquiryData.data.name,
+      email: enquiryData.data.email,
+      mobile: enquiryData.data.mobile,
+    });
+  }, [enquiryData]);
 
-  const onCallHandler = data => {
-    console.log("clicked");
-    console.log(data);
-  };
+  const onCallHandler = data => {};
 
   return (
     <Wrapper>
@@ -75,23 +68,25 @@ const TalkToUsContent = () => {
           }
           ref={() => register("email", { required: true })}
         />
-        <ButtonWrapper>
-          <Button
-            customClass="talk-to-us-button"
-            type="submit"
-            value={"CALL ME"}
-            noIcon
-          />
-        </ButtonWrapper>
+        <Button
+          type="submit"
+          css={`
+            height: 40px;
+            width: 100px;
+            margin: 0 auto;
+          `}
+        >
+          CALL ME
+        </Button>
       </FormWrapper>
       <Divider />
       <div>
         <Subtitle>For Immediate assistance call us at</Subtitle>
-        <Heading>{tollFreeNumber}</Heading>
+        <Heading>{data?.settings?.mobile}</Heading>
       </div>
       <Divider />
       <Title>
-        Email us at <a href={"#link"}>fyntune@gmail.com</a>
+        Email us at <a href={"#link"}>{data?.settings?.email}</a>
       </Title>
     </Wrapper>
   );
@@ -234,11 +229,6 @@ const Wrapper = styled.div`
 const FormWrapper = styled.form`
   display: grid;
   grid-gap: 10px;
-`;
-
-const ButtonWrapper = styled.div`
-  width: 150px !important;
-  margin: 0 auto !important;
 `;
 
 const Line = styled.hr`
