@@ -227,6 +227,116 @@ export function getDiscountAmount(additionalDiscount, cartEntry) {
   return discountedAmount;
 }
 
+
+function getTotalDiscount(additionalDiscounts, product) {
+  let totalPremium = null;
+  let totalPremiumWithoutAddons = null;
+  let totalRidersPremium = null;
+  let totalAddOnsPremium = null;
+  let totalDiscount = 0;
+
+  if (product) {
+    const { total_premium, health_riders, addons, discounts } = product;
+
+    totalRidersPremium = health_riders?.reduce(
+      (sum, rider) => sum + parseInt(rider?.total_premium),
+      0,
+    );
+
+    totalAddOnsPremium = addons?.reduce(
+      (sum, addon) => sum + parseInt(addon.total_premium || addon.premium),
+      0,
+    );
+
+    totalPremiumWithoutAddons = parseInt(total_premium) + totalRidersPremium;
+
+    totalPremium = totalPremiumWithoutAddons + totalAddOnsPremium;
+
+    const discountsApplied = discounts;
+
+    const findAdditionalDiscount = alias =>
+      additionalDiscounts.find(discount => discount.alias === alias);
+    if (discountsApplied) {
+      discountsApplied.forEach(discountAlias => {
+        const discount = findAdditionalDiscount(discountAlias);
+        if (!discount) return;
+
+        if (!discount.applied_on_riders && !discount.applied_on_discounts) {
+          const discountAmount = getPercentageAmount(
+            totalPremium,
+            discount.percent,
+          );
+          totalPremium -= discountAmount;
+          totalDiscount += discountAmount;
+          return;
+        }
+
+        if (
+          discount.applied_on_discounts &&
+          discount.applied_on_discounts.some(applied_on_discount =>
+            discountsApplied.includes(applied_on_discount),
+          )
+        ) {
+          let discountAmount = 0;
+          let thisTotalPremium = product.total_premium;
+
+          discount.applied_on_discounts.forEach(applied_on_discount => {
+            const appliedOnDiscount =
+              findAdditionalDiscount(applied_on_discount);
+
+            if (appliedOnDiscount.applied_on_riders) {
+              const thisDiscountAmount = Math.round(
+                (product.total_premium +
+                  (product.health_riders
+                    ? product.health_riders
+                        .filter(rider =>
+                          appliedOnDiscount.applied_on_riders.includes(
+                            rider.alias,
+                          ),
+                        )
+                        .reduce((sum, rider) => {
+                          thisTotalPremium += rider.total_premium;
+                          return sum + rider.total_premium;
+                        }, 0)
+                    : 0)) *
+                  (appliedOnDiscount.percent / 100),
+              );
+              discountAmount += thisDiscountAmount;
+            }
+          });
+
+          totalPremium -= getPercentageAmount(
+            thisTotalPremium - discountAmount,
+            discount.percent,
+          );
+          totalDiscount += getPercentageAmount(
+            thisTotalPremium - discountAmount,
+            discount.percent,
+          );
+          return;
+        }
+
+        if (discount.applied_on_riders) {
+          const discountAmount = Math.round(
+            (product.total_premium +
+              (product.health_riders
+                ? product.health_riders
+                    .filter(rider =>
+                      discount.applied_on_riders.includes(rider.alias),
+                    )
+                    .reduce((sum, rider) => sum + rider.total_premium, 0)
+                : 0)) *
+              (discount.percent / 100),
+          );
+          totalPremium -= discountAmount;
+          totalDiscount += discountAmount;
+        }
+      });
+    }
+  }
+  return totalDiscount;
+}
+
 export function calculateTotalPremium(
   cartEntry,
   { additionalDiscounts = [] } = {},
@@ -239,12 +349,11 @@ export function calculateTotalPremium(
   // const total_premium = ridersPremium + basePlanPremium;
   const total_premium = basePlanPremium;
 
-  let discountedAmount = 0;
+  const discountedAmount = getTotalDiscount(additionalDiscounts, cartEntry);
 
-  for (let additionalDiscount of additionalDiscounts) {
-    discountedAmount += getDiscountAmount(additionalDiscount, cartEntry);
-  }
-
+  // for (let additionalDiscount of additionalDiscounts) {
+  //   discountedAmount += getDiscountAmount(additionalDiscount, cartEntry);
+  // }
   let totalPremiumAfterDiscount = total_premium - discountedAmount;
 
   const addOnsTotalPremium = getAddOnsTotalPremium(cartEntry.addons);
