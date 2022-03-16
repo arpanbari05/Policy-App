@@ -286,7 +286,7 @@ const DetailDispalyPanel = styled.div`
 `;
 
 const ValueStyle = styled.span`
-  font-size: 14px;
+  font-size: 12px;
   color: #565657;
   font-weight: 600;
   @media (max-width: 1350px) {
@@ -307,7 +307,7 @@ const ValueStyle = styled.span`
 
 const LabelStyle = styled.span`
   color: #5a6981;
-  font-size: 14px;
+  font-size: 12px;
   @media (max-width: 1350px) {
     font-size: 12px !important;
   }
