@@ -35,10 +35,9 @@ const DateComp = ({
 
   const startRef = useRef();
 
-
-  const formatFordatePicker = (val) => {
-    return val && val.length === 4 ? "yyyy":"dd-MM-yyyy"
-  }
+  const formatFordatePicker = val => {
+    return val && val.length === 4 ? "yyyy" : "dd-MM-yyyy";
+  };
 
   const getMoment = val => {
     return val.length === 4
@@ -53,59 +52,62 @@ const DateComp = ({
     onKeyDown();
   };
 
-const openDatepicker = () => startRef.current.setOpen(true);
+  const openDatepicker = () => startRef.current.setOpen(true);
   return (
     <InputContainer error={!isFocused ? error : null}>
-      <DatePicker
-        id="date-picker"
-        ref={startRef}
-        onKeyDown={onKeyDownHandler}
-        showYearDropdown
-        yearDropdownItemNumber={100}
-        scrollableYearDropdown={true}
-        dateFormat={formatFordatePicker(value)}
-        selected={
-          value && value !== "Invalid date" && value !== "value"
-            ? value.includes("NaN")
-              ? ""
-              : getMoment(value)
-            : ""
-        }
-        minDate={
-          age.length && age[1] >= 1
-            ? new Date(
-                currentYear - (age[1] + 1),
-                currentMonth,
-                currentDate - 1,
-              )
-            : ""
-        }
-        maxDate={
-          age.length && age[0] >= 1
-            ? new Date(currentYear - age[0], currentMonth, currentDate)
-            : age[0]
-            ? new Date(
-                currentYear,
-                currentMonth - Number(age[0].toString().split(".")[1]),
-                currentDate,
-              )
-            : new Date(Date.now())
-        }
-        placeholderText={placeholder}
-        onChange={date => {
-          onChange({ target: { value: moment(date).format("DD-MM-YYYY") } });
-        }}
-        customInput={
-          <MaskedInput
-            guide={false}
-            mask={[/\d/, /\d/, "-", /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
-          />
-        }
-        readOnly={readOnly}
-        onFocus={onFocus}
-        onBlur={() => setIsFocused(false)}
-        // onCalendarOpen={handleCalendarOpen}
-      />
+      <DatePickerWrapper>
+        <DatePicker
+          id="date-picker"
+          ref={startRef}
+          onKeyDown={onKeyDownHandler}
+          showYearDropdown
+          yearDropdownItemNumber={100}
+          scrollableYearDropdown={true}
+          dateFormat={formatFordatePicker(value)}
+          selected={
+            value && value !== "Invalid date" && value !== "value"
+              ? value.includes("NaN")
+                ? ""
+                : getMoment(value)
+              : ""
+          }
+          minDate={
+            age.length && age[1] >= 1
+              ? new Date(
+                  currentYear - (age[1] + 1),
+                  currentMonth,
+                  currentDate - 1,
+                )
+              : ""
+          }
+          maxDate={
+            age.length && age[0] >= 1
+              ? new Date(currentYear - age[0], currentMonth, currentDate)
+              : age[0]
+              ? new Date(
+                  currentYear,
+                  currentMonth - Number(age[0].toString().split(".")[1]),
+                  currentDate,
+                )
+              : new Date(Date.now())
+          }
+          placeholderText={placeholder}
+          onChange={date => {
+            onChange({ target: { value: moment(date).format("DD-MM-YYYY") } });
+          }}
+          customInput={
+            <MaskedInput
+              guide={false}
+              mask={[/\d/, /\d/, "-", /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
+            />
+          }
+          readOnly={readOnly}
+          onFocus={onFocus}
+          onBlur={() => setIsFocused(false)}
+          wrapperClassName="date-picker"
+          // onCalendarOpen={handleCalendarOpen}
+        />
+      </DatePickerWrapper>
 
       <Label>
         {checkValidation?.required && label ? `${label}*` : label || ""}
@@ -122,6 +124,13 @@ const openDatepicker = () => startRef.current.setOpen(true);
 };
 
 export default DateComp;
+
+const DatePickerWrapper = styled.div`
+  .react-datepicker__month-container {
+    height: 300px;
+  }
+`;
+
 const Calendar = styled.img`
   position: absolute;
   height: 20px;
