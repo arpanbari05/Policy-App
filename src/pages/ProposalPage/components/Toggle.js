@@ -21,6 +21,7 @@ const Toggle = ({
   showMembers,
   customMembers,
   showMembersIf,
+  notAllowedIf,
 }) => {
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
@@ -162,8 +163,12 @@ console.log("sgjsg",value,label,boolean)
                   name={`is${name}`}
                   value="N"
                   onChange={e => {
-                    setBoolean(e.target.value);
-                    !showMembersIf && setMembersStatus({});
+                    if(notAllowedIf === "N") dispatch(setShowPlanNotAvail(true)); 
+                    else {
+                      setBoolean(e.target.value);
+                      !showMembersIf && setMembersStatus({});
+                    }
+                    
                   }}
                   checked={boolean === "N"}
                 />

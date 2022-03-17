@@ -455,8 +455,7 @@ const FormBuilder = ({
             )
               return (
                 <>
- 
-  { console.log("rghjskvdhjv", values)  }
+
                   {renderField(item, values) && (
                     <Wrapper key={index + item.name} width={item.width}>
                       <Comp
