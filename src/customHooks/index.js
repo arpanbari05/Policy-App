@@ -1578,7 +1578,7 @@ export function useRiders({
 
   const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
   const query = useGetRiders(quote, groupCode, {
-    queryOptions: { getRidersQueryParams, feature_options, selected_riders, },
+    queryOptions: { getRidersQueryParams, feature_options, selected_riders },
   });
 
   const { data } = query;
@@ -1755,7 +1755,7 @@ export const useShareFunctionality = (desktopPageId, mobilePageId) => {
   return { imageSend, imageSendM, download };
 };
 
-export const useRenewalPremiumModal = () => {
+export const useRevisedPremiumModal = () => {
   const { cartEntries } = useCart();
 
   const revisedPremiumPopupToggle = useToggle();

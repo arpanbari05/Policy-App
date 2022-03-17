@@ -28,6 +28,7 @@ import {
   getDisplayPremium,
   getTotalPremium,
   getDiscountAmount,
+  premiumWithAddons,
 } from "../../../../utils/helper";
 import { useGetCartQuery } from "../../../../api/api";
 
@@ -71,6 +72,10 @@ const ProductSummary = ({ setActive = () => {} }) => {
   const tenure = getCartEntry(+groups[0].id)?.tenure;
 
   const revisedNetPremium = getTotalPremium(cartEntries);
+
+  const allAddons = cartEntries
+    ?.map(singleCartEntry => singleCartEntry.addons)
+    .flat();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -284,7 +289,10 @@ const ProductSummary = ({ setActive = () => {} }) => {
                             `}
                           >
                             {getDisplayPremium({
-                              total_premium: revisedNetPremium,
+                              total_premium: premiumWithAddons(
+                                revisedNetPremium,
+                                allAddons,
+                              ),
                               tenure: tenure,
                             })}
                           </span>
@@ -443,7 +451,7 @@ const ProductSummary = ({ setActive = () => {} }) => {
               color: black;
             `}
           >
-            {amount(revisedNetPremium)}
+            {amount(premiumWithAddons(revisedNetPremium, allAddons))}
           </Price>
         </div>
       </Card>
