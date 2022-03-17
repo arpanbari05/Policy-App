@@ -11,7 +11,7 @@ import {
   setActiveIndex,
   setFailedBmiData,
 } from "./ProposalSections.slice";
-import { useRenewalPremiumModal } from "../../../customHooks";
+import { useRevisedPremiumModal } from "../../../customHooks";
 
 
 const useProposalSections = (
@@ -42,8 +42,8 @@ const useProposalSections = (
   const [previousCart] = useState(cart);
 
   const revisedPremiumPopupUtilityObject =
-    useRenewalPremiumModal();
-    
+    useRevisedPremiumModal();
+
   useEffect(() => {
     if (typeof isValid === "object") {
       if (

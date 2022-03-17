@@ -341,31 +341,26 @@ export function calculateTotalPremium(
   cartEntry,
   { additionalDiscounts = [] } = {},
 ) {
-  const { total_premium: basePlanPremium = 0, health_riders = [] } = cartEntry;
+  const { total_premium: basePlanPremium = 0, health_riders = [], addons=[] } = cartEntry;
   const totalPremium = items =>
     items.reduce((totalPremium, item) => totalPremium + item.total_premium, 0);
+
   let ridersPremium = totalPremium(health_riders);
 
-  // const total_premium = ridersPremium + basePlanPremium;
   const total_premium = basePlanPremium;
 
   const discountedAmount = getTotalDiscount(additionalDiscounts, cartEntry);
 
-  // for (let additionalDiscount of additionalDiscounts) {
-  //   discountedAmount += getDiscountAmount(additionalDiscount, cartEntry);
-  // }
   let totalPremiumAfterDiscount = total_premium - discountedAmount;
 
   const addOnsTotalPremium = getAddOnsTotalPremium(cartEntry.addons);
 
-  // Check if the plan company is RS
   if (cartEntry?.product?.company?.alias === "royal_sundaram") {
-    // Hospital Rider
+
     const hospitalRider = health_riders.find(
       (rider) => rider.name === "Hospital Cash Benefit"
     );
 
-    // Simply return TotalPremium if the is only hospitalRider
     if (
       (health_riders.length === 1 && hospitalRider)
     ) {
@@ -373,7 +368,6 @@ export function calculateTotalPremium(
     } else {
       let calculatedPremium = Math.round(total_premium / 1.04 / 1.18);
 
-      // If hospitalRider is selected with other riders perform below logic
       let calculatedRider = 0;
       if (hospitalRider) {
         health_riders.forEach((item) => {
@@ -386,8 +380,6 @@ export function calculateTotalPremium(
           (calculatedPremium + ridersPremium + addOnsTotalPremium) * 1.04 * 1.18 +
           hospitalRider.total_premium;
       }
-
-      // If hospitalRider is not selected with other rider perform below logic
       else {
         totalPremiumAfterDiscount =
           (calculatedPremium + ridersPremium + addOnsTotalPremium) * 1.04 * 1.18;
@@ -397,7 +389,6 @@ export function calculateTotalPremium(
     totalPremiumAfterDiscount += ridersPremium;
   }
 
-  // return totalPremiumAfterDiscount + addOnsTotalPremium;
   return totalPremiumAfterDiscount;
 }
 
@@ -684,4 +675,16 @@ export const careRidersConditionChecker = (quote, riderAlias, riders) => {
     isDisabled,
     showPEDRiderWarning,
   };
+};
+
+export const premiumWithAddons = (netPremium, addons = []) => {
+  if (addons.length) {
+    return (
+      netPremium +
+      addons
+        .map(singleAddon => singleAddon.total_premium)
+        .reduce((acc, amount) => (acc += amount))
+    );
+  }
+  return netPremium;
 };

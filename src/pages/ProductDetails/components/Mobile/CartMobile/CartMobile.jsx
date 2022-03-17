@@ -6,6 +6,7 @@ import {
   amount,
   figureToWords,
   getDiscountAmount,
+  premiumWithAddons,
 } from "../../../../../utils/helper";
 import {
   useAdditionalDiscount,
@@ -72,7 +73,7 @@ const CartMobile = ({ groupCode, ...props }) => {
     additionalDiscounts,
   });
 
-  const { netPremium } = cartEntry;
+  const { netPremium, addons } = cartEntry;
 
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
@@ -162,7 +163,7 @@ const CartMobile = ({ groupCode, ...props }) => {
             {isTotalPremiumLoading ? (
               <CircleLoader animation="border" />
             ) : (
-              amount(netPremium)
+              amount(premiumWithAddons(netPremium, addons))
             )}
           </span>
         </section>
@@ -352,9 +353,8 @@ const PlanCard = ({ groupCode, ...props }) => {
     additionalDiscounts,
   });
 
-  const { plantype, sum_insured, deductible, tenure, netPremium } = cartEntry;
-
-  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
+  const { plantype, sum_insured, deductible, tenure, premium } =
+    cartEntry;
 
   const displayPolicyTerm = `${
     tenure + " " + (tenure >= 2 ? "Years" : "Year")
@@ -377,16 +377,7 @@ const PlanCard = ({ groupCode, ...props }) => {
         />
       ) : null}
       <TitleValueRenderer title="Policy term" value={displayPolicyTerm} />
-      <TitleValueRenderer
-        title="Premium"
-        value={
-          isTotalPremiumLoading ? (
-            <CircleLoader animation="border" />
-          ) : (
-            amount(netPremium)
-          )
-        }
-      />
+      <TitleValueRenderer title="Premium" value={amount(premium)} />
     </PlanCardOuter>
   );
 };
