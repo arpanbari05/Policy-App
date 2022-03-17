@@ -13,7 +13,7 @@ export const MobileHeader = styled.div`
     align-items: center;
     padding: 10px;
     height: 54px;
-    background-color: #0a87ff;
+    background-color: ${({ primary_color }) => primary_color};
   }
 `;
 export const MobileHeaderText = styled.p`

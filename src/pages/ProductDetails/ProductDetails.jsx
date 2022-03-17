@@ -18,7 +18,12 @@ import {
 import "styled-components/macro";
 import { Page } from "../../components";
 import PageNotFound from "../PageNotFound";
-import { useCart, useFrontendBoot, useUrlEnquiry } from "../../customHooks";
+import {
+  useCart,
+  useFrontendBoot,
+  useTheme,
+  useUrlEnquiry,
+} from "../../customHooks";
 import CartMobile from "./components/Mobile/CartMobile/CartMobile";
 import FeatureSection from "./components/FeatureSection/FeatureSection";
 import Select from "react-select";
@@ -35,6 +40,8 @@ const ProductDetails = () => {
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
 
   const location = useLocation();
+
+  const { colors } = useTheme();
 
   const history = useHistory();
 
@@ -96,7 +103,7 @@ const ProductDetails = () => {
   return (
     <Page noNavbarForMobile={true}>
       {/* <Toploader loaderRef={loaderRef} /> */}
-      <MobileHeader>
+      <MobileHeader primary_color={colors?.primary_color}>
         <MobileHeaderText
           onClick={() => {
             history.goBack();
