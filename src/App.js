@@ -24,11 +24,6 @@ function App() {
 
   return (
     <>
-      <Helmet>
-        {tenant.alias === "Renew Buy" && (
-          <script src="https://accounts.renewbuy.com/static/js/loginWidget.js"></script>
-        )}
-      </Helmet>
       <Switch>
         <Route
           path="/"
