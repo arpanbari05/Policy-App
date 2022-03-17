@@ -40,7 +40,7 @@ const ProposerDetails = ({
     },
   } = useGetEnquiriesQuery();
 
-  // const {activeIndex} = useSelector(({propselPage}) => propselPage)
+  
   const dispatch = useDispatch();
   useEffect(() => {
     if (name === "Proposer Details") {
@@ -109,11 +109,8 @@ const ProposerDetails = ({
         />
         <ContinueBtn
           onClick={() => {
-            // if(isValid !== false && isValid !== undefined){
               setSubmit(true);
-            continueSideEffects();
-            // }
-            
+            continueSideEffects();            
           }}
         />
       </div>
