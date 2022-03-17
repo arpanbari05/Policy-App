@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import CardSkeletonLoader from "../../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import {
   useCompareSlot,
@@ -23,6 +23,8 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import { CompareQuoteTrayItem, CompareTrayAdd } from "../../components";
 import _ from "lodash";
 import { useHistory, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setQuotesToShare, removeQuoteFromShare } from "../../quote.slice";
 
 export function Quotes({ sortBy }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
@@ -230,9 +232,22 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
     quotes,
   });
 
+  const [isShare, setIsShare] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const { shareType, quotesToShare } = useSelector(state => state.quotePage);
+
   const productDetailsToggle = useToggle(false);
 
   const { journeyType } = useFrontendBoot();
+
+  useEffect(() => {
+    const isInShare = quotesToShare?.find(
+      shareQuote => shareQuote[0]?.product?.id === quote?.product?.id,
+    );
+    setIsShare(isInShare ? true : false);
+  }, [quotesToShare, shareType]);
 
   if (!quote) return null;
 
@@ -247,6 +262,15 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
     setdefaultActiveKey(defaultKey);
   };
 
+  const handleShareQuoteChange = evt => {
+    const { checked } = evt.target;
+    if (checked) {
+      dispatch(setQuotesToShare(quotes));
+    } else {
+      dispatch(removeQuoteFromShare(quotes));
+    }
+  };
+
   return (
     <div {...props}>
       <div
@@ -259,36 +283,70 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
           font-size: 0.73rem;
         `}
       >
-        <label
-          className="d-flex align-items-center"
-          css={`
-            gap: 0.3em;
-            ${isFirstQuote
-              ? `background-color: ${colors.secondary_shade};
+        {shareType.value === "quotation_list" ||
+        shareType.value === "specific_quotes" ? (
+          <label
+            className="d-flex align-items-center"
+            css={`
+              gap: 0.3em;
+              ${isFirstQuote
+                ? `background-color: ${colors.secondary_shade};
             border-radius: 0 3em 0 0;
             padding: 0.6em;
             padding-right: 2em;`
-              : ""}
-          `}
-        >
-          <span
-            css={`
-              color: ${colors.primary_color};
-              font-size: 1rem;
-              line-height: 1;
-              margin-bottom: 0.2em;
+                : ""}
             `}
           >
-            {isCompareQuote ? <IoRadioButtonOn /> : <IoRadioButtonOff />}
-          </span>
-          Compare
-          <input
-            className="visually-hidden"
-            type="checkbox"
-            checked={isCompareQuote}
-            onChange={handleCompareChange}
-          />
-        </label>
+            <span
+              css={`
+                color: ${colors.primary_color};
+                font-size: 1rem;
+                line-height: 1;
+                margin-bottom: 0.2em;
+              `}
+            >
+              {isShare ? <IoRadioButtonOn /> : <IoRadioButtonOff />}
+            </span>
+            Share
+            <input
+              className="visually-hidden"
+              type="checkbox"
+              checked={isShare}
+              onChange={handleShareQuoteChange}
+            />
+          </label>
+        ) : (
+          <label
+            className="d-flex align-items-center"
+            css={`
+              gap: 0.3em;
+              ${isFirstQuote
+                ? `background-color: ${colors.secondary_shade};
+              border-radius: 0 3em 0 0;
+              padding: 0.6em;
+              padding-right: 2em;`
+                : ""}
+            `}
+          >
+            <span
+              css={`
+                color: ${colors.primary_color};
+                font-size: 1rem;
+                line-height: 1;
+                margin-bottom: 0.2em;
+              `}
+            >
+              {isCompareQuote ? <IoRadioButtonOn /> : <IoRadioButtonOff />}
+            </span>
+            Compare
+            <input
+              className="visually-hidden"
+              type="checkbox"
+              checked={isCompareQuote}
+              onChange={handleCompareChange}
+            />
+          </label>
+        )}
         <button
           onClick={() => handleProductDetailsModal("mobile-plan-details")}
           className="d-flex align-items-center"
@@ -322,7 +380,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
           <div>
             <div
               css={`
-                font-size: 0.66rem;
+                font-size: 0.75rem;
                 font-weight: 900;
               `}
             >

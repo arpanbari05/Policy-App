@@ -98,12 +98,12 @@ const useProposalSections = (
                 );
               } else {
                 dispatch(setFailedBmiData(false))
-                revisedPremiumPopupUtilityObject.getUpdatedCart();
+                revisedPremiumPopupUtilityObject.getUpdatedCart(() => dispatch(setActiveIndex(false)));
                 /* dispatch(
                   getCart(true, () => {
                     // setActive(prev => prev + 1);
                     revisedPremiumPopup.on();
-                    dispatch(setActiveIndex(false));
+                    
                   }),
                 ); */
               }

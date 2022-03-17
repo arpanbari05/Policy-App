@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GiCircle } from "react-icons/gi";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { useTheme } from "../customHooks";
@@ -42,7 +42,6 @@ const modifyMembersToCount = members => {
 };
 
 function validateMembers(members = []) {
-  console.log("members", members);
   let isValid = true;
   const validatedMembers = members.map(member => {
     const { age, isSelected } = member;
@@ -156,14 +155,21 @@ export function MemberOptions({
   handleCounterIncrement,
   handleCounterDecrement,
   getMultipleMembersCount,
+  selectedMembers,
+  gender,
+  setServerError,
   selectable = true,
+  showCounter = true,
   ...props
 }) {
   return (
     <div
-      className="d-flex flex-wrap justify-content-between"
       css={`
         gap: 0.66em;
+        display: ${!showCounter ? "grid" : "flex"};
+        grid-template-columns: ${!showCounter && "repeat(2, 1fr)"};
+        flex-wrap: wrap;
+        justify-content: space-between;
       `}
       {...props}
     >
@@ -173,8 +179,11 @@ export function MemberOptions({
           onChange={handleMemberChange}
           key={member.code}
           selectable={selectable}
+          selectedMembers={selectedMembers}
+          gender={gender}
+          setServerError={setServerError}
         >
-          {member.multiple && member.isSelected && (
+          {(member.multiple && member.isSelected && showCounter) && (
             <Counter
               onDecrement={() => {
                 handleCounterDecrement(member, index);
@@ -195,7 +204,11 @@ function MemberOption({
   member,
   onChange,
   children,
+  selectedMembers,
   selectable = true,
+  updateMembersList,
+  setServerError,
+  gender,
   ...props
 }) {
   const {
@@ -204,6 +217,7 @@ function MemberOption({
 
   const handleChange = evt => {
     const { checked } = evt.target;
+
     onChange &&
       onChange({
         ...member,
@@ -230,9 +244,42 @@ function MemberOption({
 
   const selectedAge = member.age ? member.age.display_name : "Select Age";
 
+  const validateSpouse = (selectedMembers, member) => {
+    if (member.code === "spouse" && gender === "M") {
+      return (
+        selectedMembers[0]?.code === "self" &&
+        selectedMembers[0]?.age?.code < 21
+      );
+    } else {
+      return false;
+    }
+  };
+
+  const validateSelf = (selectedMembers, member) => {
+    if (member.code === "self" && gender === "M") {
+      return (
+        (selectedMembers[0]?.code === "spouse" ||
+          selectedMembers[1]?.code === "spouse") &&
+        (selectedMembers[0]?.age || selectedMembers[1]?.age)
+      );
+    } else {
+      return false;
+    }
+  };
+
   return (
     <div
       className="rounded-2"
+      title={
+        validateSpouse(selectedMembers, member) &&
+        "Please select age 21 years and above for Spouse as per legal marriage age in India."
+      }
+      onClick={() => {
+        validateSpouse(selectedMembers, member) &&
+          setServerError(
+            "Please select age 21 years and above for Spouse as per legal marriage age in India.",
+          );
+      }}
       css={`
         display: flex;
         align-items: center;
@@ -240,6 +287,21 @@ function MemberOption({
         border: solid 1px #b0bed0;
         flex: 1 1 21em;
         gap: 0.7em;
+        position: relative;
+
+        ${validateSpouse(selectedMembers, member) &&
+        `&::after {
+          position: absolute;
+          left: -2px;
+          top: -1px;
+          content: "";
+          height: 102%;
+          width: 101%;
+          z-index: 20;
+          background-color: #eeeeee44;
+          border-radius: 3px;
+
+        }`}
       `}
       {...props}
     >
@@ -289,7 +351,13 @@ function MemberOption({
       {children}
       <div>
         <RoundDD
-          list={ageList}
+          list={
+            !validateSelf(selectedMembers, member)
+              ? gender === "F" && member.code === "spouse"
+                ? ageList.slice(3, ageList.length)
+                : ageList
+              : ageList.slice(3, ageList.length)
+          }
           type="dropdown"
           selected={selectedAge}
           handleChange={handleAgeChange}

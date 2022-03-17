@@ -41,7 +41,7 @@ const Toggle = ({
 
   const membersToMap = customMembers instanceof Array ? customMembers : members;
 
-  const [boolean, setBoolean] = useState("N");
+  const [boolean, setBoolean] = useState("");
 
   const [membersStatus, setMembersStatus] = useState({});
 
@@ -59,11 +59,11 @@ const Toggle = ({
       setBoolean(value[`is${name}`]);
       setMembersStatus(value.members);
     }
-  }, []);
+  }, [value]);
 
   useEffect(() => {
     if (!value) {
-      setBoolean("N");
+      setBoolean("");
       setMembersStatus({});
     }
     if (value && notAllowed && value[`is${name}`] === "Y") {

@@ -27,6 +27,7 @@ import {
 } from "./components";
 import "styled-components/macro";
 import AddOnDetails from "../AddOnDetails/AddOnDetails";
+import * as mq from "../../../../utils/mediaQueries";
 
 function AddOnSection({ cartEntry }) {
   const { colors } = useTheme();
@@ -105,6 +106,13 @@ function TopUpAddOns({ cartEntry, insurance_type }) {
         gap: 1em;
         & > div {
           width: calc(50% - 1em);
+        }
+
+        ${mq.mobile} {
+          & > div {
+            width: 95%;
+            margin: 0 auto;
+          }
         }
       `}
     >
@@ -230,6 +238,7 @@ function AddOnCard({ quotesList = [], cartEntry }) {
       css={`
         box-shadow: ${boxShadows.one};
         border-radius: 1em;
+        background: #fff;
       `}
     >
       <div

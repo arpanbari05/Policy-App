@@ -13,9 +13,15 @@ const useFormBuilder = (
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState();
-  const updateValue = (name, value) => {
-    setValues(prev => ({ ...prev, [name]: value }));
+  const updateValue = (name, value, removeOtherValues=false) => {
+    if(removeOtherValues){
+      setValues({[name]: value});
+      fetchValues({[name]: value});
+    }else {
+      setValues(prev => ({ ...prev, [name]: value }));
     fetchValues(prev => ({ ...prev, [name]: value }));
+    }
+    
     if (value instanceof Object) {
       if (value?.[`is${name}`] && value?.[`is${name}`] === "Y" && noForAll) {
         setNoForAll(false);
@@ -96,7 +102,6 @@ const useFormBuilder = (
       let [filteredItem] = schema.filter(item => item.name === name);
       // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
 
-      console.log("dhdnl", name, filteredItem);
 
       if (filteredItem) {
         let errorMsg;
@@ -108,6 +113,7 @@ const useFormBuilder = (
         //   }
 
         // }else{
+
         errorMsg =
           filteredItem.validate &&
           performValidations(filteredItem.validate, values, name);
@@ -149,6 +155,21 @@ const useFormBuilder = (
           let errorMsg =
             item.validate &&
             performValidations(item.validate, values, item.name);
+
+            if (item.visibleOn) {
+              console.log("dfbjhdf", item, values);
+  
+              if (
+                values[Object.keys(item.visibleOn)[0]] ===
+                item.visibleOn[Object.keys(item.visibleOn)[0]]
+              )
+                errorMsg = performValidations(
+                  { required: true },
+                  values,
+                  item.name
+                );
+            }
+
           if (renderField(item, values)) {
 
             errorsTemp[item.name] = errorMsg;

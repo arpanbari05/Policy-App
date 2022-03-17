@@ -35,7 +35,6 @@ const TextInput = ({
           checkAge.split("from")[1]
         ].split("-")[2],
       );
-
   const [isFocused, setIsFocused] = useState(false);
   const [fallbackValue, setFallbackValue] = useState("");
   const [isChanged, setChanged] = useState(false);
@@ -67,7 +66,6 @@ const TextInput = ({
         check = false;
       }
     }
-    console.log("sdbvksdjvb", check);
 
     return check;
   };
@@ -87,7 +85,7 @@ const TextInput = ({
   // useEffect(() => {
   //   setInnerValue(value);
   // }, [value]);
-  console.log({fallbackValue, isChanged});
+  console.log({ fallbackValue, isChanged });
   return (
     <InputContainer>
       <Input
@@ -109,9 +107,14 @@ const TextInput = ({
                 onChange(e);
                 setFallbackValue(e.target.value);
               }
-            } else if (checkValidation?.["matches"] && checkValidation?.["matches"].includes("mobile")) {
-              console.log("hell0");
-              if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0])) && e.target.value.length <= 10) {
+            } else if (
+              checkValidation?.["matches"] &&
+              checkValidation?.["matches"].includes("mobile")
+            ) {
+              if (
+                ![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0])) &&
+                e.target.value.length <= 10
+              ) {
                 onChange(e);
                 setFallbackValue(e.target.value);
               }
@@ -147,7 +150,10 @@ const TextInput = ({
               checkPreviousChar(e.target.value, ".") &&
               checkAllChar(e.target.value, forbiddedSymbols)
             ) {
-              if (checkValidation?.["matches"] && checkValidation?.["matches"].includes("mobile")) {
+              if (
+                checkValidation?.["matches"] &&
+                checkValidation?.["matches"].includes("mobile")
+              ) {
                 if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0]))) {
                   onChange(e);
                   setFallbackValue(e.target.value);
@@ -156,6 +162,11 @@ const TextInput = ({
                 onChange(e);
                 setFallbackValue(e.target.value);
               }
+            }
+          } else if (checkValidation?.["matches"] === "email") {
+            if (e.target.value.length <= 40) {
+              onChange(e);
+              setFallbackValue(e.target.value);
             }
           } else {
             if (
@@ -182,14 +193,15 @@ const TextInput = ({
         }}
         onInput={onInput}
         onKeyDown={onKeyDown}
-        value={isChanged ? fallbackValue : value}
+        value={isChanged ? fallbackValue : value?value:""}
         onKeyPress={onKeyPress}
-        maxLength={maxLength}
+        maxLength={name === "name" ? 60 : maxLength}
         textTransform={textTransform}
         readOnly={readOnly}
         error={!isFocused ? error : null}
         defaultValue={defaultValue}
       />
+
       <Label>{checkValidation?.required && label ? `${label}*` : label || ""}</Label>
      
           <p className="formbuilder__error">{error}</p>

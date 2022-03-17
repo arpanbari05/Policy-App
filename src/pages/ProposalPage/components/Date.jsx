@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import calendar from "./../../../assets/images/calendar.png";
 import MaskedInput from "react-text-mask";
+
 const DateComp = ({
   label,
   placeholder,
@@ -23,13 +24,8 @@ const DateComp = ({
   readOnly,
   startDate,
   endDate,
-  age=[0,0],
+  age = [0, 0],
 }) => {
-
-  // const [innerValue, setInnerValue] = useState(value);
-  // useEffect(() => {
-  //   setInnerValue(value);
-  // }, [value]);
   const [isFocused, setIsFocused] = useState(false);
   const onFocus = () => setIsFocused(true);
   let newDate = new Date();
@@ -39,6 +35,17 @@ const DateComp = ({
 
   const startRef = useRef();
 
+
+  const formatFordatePicker = (val) => {
+    return val && val.length === 4 ? "yyyy":"dd-MM-yyyy"
+  }
+
+  const getMoment = val => {
+    return val.length === 4
+      ? moment(val, "YYYY")?.toDate()
+      : moment(val, "DD-MM-YYYY")?.toDate();
+  };
+
   const onKeyDownHandler = e => {
     if (e.keyCode === 9 || e.which === 9) {
       startRef.current.setOpen(false);
@@ -46,8 +53,7 @@ const DateComp = ({
     onKeyDown();
   };
 
-  // console.log(age && age[1] >= 0, age, age[1]);
-
+const openDatepicker = () => startRef.current.setOpen(true);
   return (
     <InputContainer error={!isFocused ? error : null}>
       <DatePicker
@@ -57,24 +63,15 @@ const DateComp = ({
         showYearDropdown
         yearDropdownItemNumber={100}
         scrollableYearDropdown={true}
-        dateFormat={"dd-MM-yyyy"}
+        dateFormat={formatFordatePicker(value)}
         selected={
           value && value !== "Invalid date" && value !== "value"
             ? value.includes("NaN")
               ? ""
-              : moment(value, "DD-MM-YYYY")?.toDate()
+              : getMoment(value)
             : ""
         }
         minDate={
-          // age && age[1] >= 1
-          //   ? new Date(currentYear - age[1], currentMonth, currentDate)
-          //   : age[1]
-          //     ? new Date(
-          //       currentYear,
-          //       currentMonth - Number(age[1].toString().split(".")[1]),
-          //       currentDate
-          //     )
-          //     : new Date(Date.now())
           age.length && age[1] >= 1
             ? new Date(
                 currentYear - (age[1] + 1),
@@ -107,13 +104,17 @@ const DateComp = ({
         readOnly={readOnly}
         onFocus={onFocus}
         onBlur={() => setIsFocused(false)}
+        // onCalendarOpen={handleCalendarOpen}
       />
 
-      <Label>{checkValidation?.required && label ? `${label}*` : label || ""}</Label>
+      <Label>
+        {checkValidation?.required && label ? `${label}*` : label || ""}
+      </Label>
       <Calendar
         error={!isFocused ? error : null}
         src={calendar}
         alt="calendar"
+        onClick={openDatepicker}
       />
       {!isFocused && <p className="formbuilder__error">{error}</p>}
     </InputContainer>

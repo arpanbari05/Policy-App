@@ -7,6 +7,7 @@ import styled from "styled-components";
 import ContinueBtn from "../components/Buttons/ContinueBtn";
 import BackBtn from "../components/Buttons/BackBtn";
 import useProposalSections from "./useProposalSections";
+import useMedicalQuestions from "./useMedicalQuestions";
 import { useDispatch, useSelector } from "react-redux";
 import {
   noForAllCheckedFalse,
@@ -20,7 +21,7 @@ import "styled-components/macro";
 import { element } from "prop-types";
 import CheckBox from "../components/Checkbox/Checkbox";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
-import { useFrontendBoot, useTheme } from "../../../customHooks";
+import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 
 const InsuredDetails = ({
@@ -49,100 +50,25 @@ const InsuredDetails = ({
     Object.keys(schema).length,
     setShow,
   );
+  const { proposalData } = useSelector(state => state.proposalPage);
+
+  const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
+    useMedicalQuestions(schema, values, setValues, name, proposalData);
+
+  const { getGroupMembers } = useMembers();
 
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
 
-  const [yesSelected, setYesSelected] = useState({});
-
-  const [noForAll, setNoForAll] = useState({});
   const [initColor, setInitColor] = useState(PrimaryColor);
 
-  const [canProceed, setCanProceed] = useState({
-    canProceed: false,
-    canProceedArray: [],
-  });
-
-  const { proposalData } = useSelector(state => state.proposalPage);
-
-  const [mutateValues, setMutateValues] = useState();
-
   const dispatch = useDispatch();
-
-  const { noForAllChecked } = useSelector(state => state.proposalPage);
 
   const { insuredMembers: membersDataFromGreetingPage, groups } =
     useFrontendBoot();
 
   const fullName = proposalData["Proposer Details"]?.name;
-
-  const checkCanProceed = () => {
-    const key = Object.keys(values || {});
-    const key2 = Object.keys(noForAll || {});
-    // const hasYes =
-    //   values?.[key] &&
-    //   Object.keys(values?.[key] || {})?.some(
-    //     data => values?.[key]?.[data]?.[`is${data}`] === "Y",
-    //   );
-
-    if (key.length !== key2.length) {
-      let noForAll2 = {};
-      Object.keys(values || {}).forEach(element => {
-        noForAll2[element] = noForAll[element] || false;
-      });
-
-      setNoForAll({ ...noForAll2 });
-    } else {
-      let isNotChecked = {};
-      let hasYes = {};
-      let checkCanProceed = [];
-      key2.forEach(item => {
-        if (noForAll[item] !== true) {
-          isNotChecked[item] = false;
-        } else {
-          isNotChecked[item] = true;
-        }
-        const temp =
-          values?.[item] &&
-          Object.keys(values?.[item] || {})?.some(
-            data => values?.[item]?.[data]?.[`is${data}`] === "Y",
-          );
-        if (temp === true) {
-          hasYes[item] = true;
-        } else {
-          hasYes[item] = false;
-        }
-      });
-
-      key.forEach(item => {
-        if (hasYes[item] === isNotChecked[item]) {
-          checkCanProceed.push(item);
-        }
-        if (
-          Object.keys(values[item]).length &&
-          !Object.keys(values[item]).every(el =>
-            values[item][el] ? values[item][el].isValid : true,
-          )
-        ) {
-          checkCanProceed.push(item);
-        }
-      });
-      if (key2.length < 1) {
-        isNotChecked = true;
-      }
-
-      if (checkCanProceed.length < 1) {
-        setCanProceed({ canProceed: true, canProceedArray: [] });
-      } else {
-        setCanProceed({
-          canProceed: false,
-          canProceedArray: [...checkCanProceed],
-        });
-      }
-    }
-  };
-
 
   useEffect(() => {
     if (
@@ -203,13 +129,9 @@ const InsuredDetails = ({
                   1,
               );
 
-              estimatedMemberDOB = `${current.getDate()}-${
-                current.getMonth() + 1
-              }-${current.getUTCFullYear()}`;
+              estimatedMemberDOB = `${current.getUTCFullYear()}`;
             } else {
-              estimatedMemberDOB = `${currentDate}-${currentMonth + 1}-${
-                currentYear - parseInt(memberAge)
-              }`;
+              estimatedMemberDOB = `${currentYear - parseInt(memberAge)}`;
             }
 
             prefilledValues[memberType] = {
@@ -242,80 +164,8 @@ const InsuredDetails = ({
           ...prefilledValues,
         });
       }
-    } else if (
-      name === "Medical Details"
-      // &&
-      // !Object.keys(values ? values : {}).length
-    ) {
-      // let initial = {};
-      // Object.keys(schema).forEach(item =>
-      //   schema[item].forEach(innerItem => {
-      //     if (innerItem.name && !values[item][innerItem.name])
-      //       initial = {
-      //         ...values,
-      //         [item]: {
-      //           ...(initial[item] ? initial[item] : {}),
-      //           [innerItem.name]: {
-      //             [`is${innerItem.name}`]:"N",
-      //             members: {},
-      //             isValid:true,
-      //           },
-      //         },
-      //       };
-      //   }),
-      // );
-      // console.log("sfbkfvn",initial)
-      // setValues(initial);
     }
   }, []);
-
-  useEffect(() => {
-    if (name === "Medical Details") {
-      checkCanProceed();
-      const keys = Object.keys(values || {});
-
-      let temp = keys.reduce(
-        (acc, key) => ({
-          ...acc,
-          [key]: Object.keys(values[key]).some(
-            el => values[key][el][`is${el}`] === "Y",
-          ),
-        }),
-        {},
-      );
-      setYesSelected(temp);
-      console.log("skbjvkvb", temp, values, keys);
-    }
-  }, [values, noForAll]);
-
-  useEffect(() => {
-    if (name === "Medical Details") {
-      const key = Object.keys(values || {});
-      let tempObj = JSON.parse(JSON.stringify(values || {}));
-      key.forEach(keyValue => {
-        schema?.[keyValue]?.forEach(element => {
-          //'nominee_relation=self/Proposer Details.name'
-          if (
-            element?.populate &&
-            tempObj[keyValue][element.populate.split("/")[0].split("=")[0]] ===
-              element.populate.split("/")[0].split("=")[1] &&
-            tempObj[keyValue][element.name] !==
-              proposalData[element.populate.split("/")[1].split(".")[0]][
-                element.populate.split("/")[1].split(".")[1]
-              ]
-          ) {
-            tempObj[keyValue][element.name] =
-              proposalData[element.populate.split("/")[1].split(".")[0]][
-                element.populate.split("/")[1].split(".")[1]
-              ];
-          }
-        });
-      });
-      if (JSON.stringify(values) !== JSON.stringify(tempObj)) {
-        setValues({ ...tempObj });
-      }
-    }
-  }, [values]);
 
   function formatter(number) {
     if (!isNaN(number)) number = parseInt(number);
@@ -339,25 +189,27 @@ const InsuredDetails = ({
       {Object.keys(schema).map((item, index) => {
         let result = [];
         if (values && name === "Insured Details") {
-          Object.keys(values[item]).forEach(key => {
-            if (key === "dob" && values[item][key]) {
-              let updatedKey = values[item][key].split("-");
-              const date = updatedKey[0];
-              const month = updatedKey[1];
-              const year = updatedKey[2];
-              updatedKey = `${formatter(date)}-${formatter(month)}-${year}`;
-              result[1] = updatedKey;
-            } else if (key === "name" && values[item][key]) {
-              result[0] = `${values[item]["title"]}. ${values[item][key]}`;
-            } else if (key !== "title") {
-              // result[2] = `${values[item][key]}`;
-            }
-          });
+          values[item] &&
+            Object.keys(values[item]).forEach(key => {
+              if (key === "dob" && values[item][key]) {
+                let updatedKey = values[item][key].split("-");
+                const date = updatedKey[0];
+                const month = updatedKey[1];
+                const year = updatedKey[2] || values[item][key];
+                updatedKey = `${year}`;
+                result[1] = updatedKey;
+              } else if (key === "name" && values[item][key]) {
+                result[0] = `${values[item]["title"]}. ${values[item][key]}`;
+              } else if (key !== "title") {
+                // result[2] = `${values[item][key]}`;
+              }
+            });
 
           result = result.filter(r => r);
         }
         return (
           <Panel
+            allMembers={getGroupMembers(parseInt(item))}
             formName={name}
             isFilled={
               Object.keys(values && values[item] ? values[item] : {}).length
@@ -410,11 +262,11 @@ const InsuredDetails = ({
                             ...noForAll,
                             [item]: e.target.checked,
                           });
-                          if (noForAllChecked) {
-                            dispatch(noForAllCheckedFalse());
-                          } else {
-                            dispatch(noForAllCheckedTrue());
-                          }
+                          // if (noForAllChecked) {
+                          //   dispatch(noForAllCheckedFalse());
+                          // } else {
+                          //   dispatch(noForAllCheckedTrue());
+                          // }
                         }}
                       ></Checkbox2>{" "}
                     </div>

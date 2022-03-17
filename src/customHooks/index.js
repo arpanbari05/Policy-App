@@ -1554,6 +1554,7 @@ export function useRiders({
 
   useEffect(() => setRiders(getInititalRiders), [getInititalRiders]);
 
+  const { feature_options } = useSelector(({ cart }) => cart);
   const findLocalRider = riderToFind =>
     riders.find(rider => rider.id === riderToFind.id);
 
@@ -1575,8 +1576,9 @@ export function useRiders({
   if (affectsOtherRiders.length)
     getRidersQueryParams.selected_riders = affectsOtherRiders;
 
+  const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
   const query = useGetRiders(quote, groupCode, {
-    queryOptions: getRidersQueryParams,
+    queryOptions: { getRidersQueryParams, feature_options, selected_riders, },
   });
 
   const { data } = query;
@@ -1633,7 +1635,12 @@ export function useRiders({
 
   return {
     query,
-    riders: riders.filter(rider => rider.total_premium > 0),
+    riders:
+      quote?.product?.company?.alias === "reliance_general"
+        ? riders.sort((a, b) => a.total_premium - b.total_premium)
+        : riders
+            .filter(rider => rider.total_premium > 0)
+            .sort((a, b) => a.total_premium - b.total_premium),
     handleChange,
     getInititalRiders,
   };
@@ -1762,7 +1769,7 @@ export const useRenewalPremiumModal = () => {
   const updatedTotalPremium =
     getTotalPremium(cartEntries); /* Gets the updated value each time */
 
-  const getUpdatedCart = () => {
+  const getUpdatedCart = next => {
     dispatch(
       api.util.invalidateTags([
         "Cart",
@@ -1771,6 +1778,7 @@ export const useRenewalPremiumModal = () => {
         "TenureDiscount",
       ]),
     );
+    next();
   }; /* Performs refetch from the server */
 
   useEffect(() => {

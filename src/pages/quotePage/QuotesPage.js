@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import SortBy from "./components/filters/SortBy";
 import assistant from "../../assets/images/call-center-service.png";
 import { QuotesLoader } from "./components";
-import TalkToUsModal from "../../components/Common/Modal/TalkToUsModal";
+import TalkToUsModal from "../../components/TalkToUs";
 import { useFrontendBoot } from "../../customHooks/index";
 import { useGetEnquiriesQuery } from "../../api/api";
 import { mergeQuotes } from "../../utils/helper";
@@ -237,7 +237,7 @@ function AssistanceCard(props) {
         src={assistant}
         alt="assistant"
       />
-      <TalkToUsModal show={showTalk} handleClose={() => setShowTalk(false)} />
+      <TalkToUsModal show={showTalk} onClose={() => setShowTalk(false)} />
     </div>
   );
 }

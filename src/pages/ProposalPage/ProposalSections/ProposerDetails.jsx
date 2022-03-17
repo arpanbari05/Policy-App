@@ -50,10 +50,8 @@ const ProposerDetails = ({
       let currentYear = new Date().getFullYear();
       let currentMonth = new Date().getMonth();
       let currentDate = new Date().getDate();
-      let estimatedProposerDOB = `${currentDate}-${currentMonth + 1}-${
-        currentYear - proposerAge
-      }`;
-
+    
+      let estimatedProposerDOB = `${currentYear - proposerAge}`
       let prefilledValues = {
         name: proposerName,
         gender,
@@ -77,8 +75,8 @@ const ProposerDetails = ({
           );
         }
       });
-      
-      setValues({ ...values, ...prefilledValues });
+  
+      setValues({  ...prefilledValues,...values });
     }
   }, []);
 

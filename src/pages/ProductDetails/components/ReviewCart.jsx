@@ -574,7 +574,7 @@ function EditMembers({ onClose }) {
   return (
     <EditMembersModal onClose={onClose}>
       <div className="p-3">
-        <MemberOptions {...memberForm} selectable={false} />
+        <MemberOptions showCounter={false} {...memberForm} selectable={false} />
         {serverErrors
           ? serverErrors.map(error => (
               <StyledErrorMessage key={error}>{error}</StyledErrorMessage>

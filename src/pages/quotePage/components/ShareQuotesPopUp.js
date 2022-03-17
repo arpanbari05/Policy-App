@@ -20,7 +20,8 @@ const Sharequotespopup = ({ onClick = () => {}, show }) => {
                 {`${quotesToShare.length} plan(s) selected`}
             </Plan>
             <Button css={`height: 40px;`} onClick={onClick}>
-                <RiShareForwardFill color='#fff' /><span>Share</span>
+                    <span>Share</span>
+                    <RiShareForwardFill color='#fff' />
             </Button>
             <Clear onClick={clearHandler}>Clear</Clear>
         </ShareQuoteWrapper>
