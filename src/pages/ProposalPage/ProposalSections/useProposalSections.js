@@ -43,7 +43,7 @@ const useProposalSections = (
 
   const revisedPremiumPopupUtilityObject =
     useRenewalPremiumModal();
-
+    
   useEffect(() => {
     if (typeof isValid === "object") {
       if (
