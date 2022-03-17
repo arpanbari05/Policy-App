@@ -73,12 +73,13 @@ const ThankYouPage = () => {
   useEffect(() => {
     setLoading(true);
     dispatch(fetchPdf());
-
-    const getClear = setInterval(() => dispatch(fetchPdf()), 3000);
-    setTimeout(() => {
-      clearInterval(getClear);
       setLoading(false);
-    }, 60000);
+
+    // const getClear = setInterval(() => dispatch(fetchPdf()), 3000);
+    // setTimeout(() => {
+    //   clearInterval(getClear);
+    //   setLoading(false);
+    // }, 60000);
   }, []);
 
   useEffect(() => {

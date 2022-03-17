@@ -66,7 +66,7 @@ const ProductSummary = ({ setActive = () => {} }) => {
 
   const { groups } = useMembers();
 
-  const { getCartEntry, cartEntries } = useCart();
+  const { getCartEntry, cartEntries, discounted_total_premium } = useCart();
 
   const tenure = getCartEntry(+groups[0].id)?.tenure;
 
@@ -443,7 +443,7 @@ const ProductSummary = ({ setActive = () => {} }) => {
               color: black;
             `}
           >
-            {amount(revisedNetPremium)}
+            {amount(discounted_total_premium)}
           </Price>
         </div>
       </Card>

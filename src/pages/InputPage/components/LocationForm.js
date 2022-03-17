@@ -196,6 +196,8 @@ function LocationForm() {
         `}
       >
         <InputFormCta
+          disabled={!selectedCity?.pincode}
+          loaderPrimaryColor
           backLink={getBackLink()}
           onContinueClick={handleSubmit}
           loader={updateEnquiryQuery.isLoading}

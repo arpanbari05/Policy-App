@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { Col, Row } from "react-bootstrap";
 import { RidersSection } from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
 import { CartDetails } from "./components/ReviewCart";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory, useLocation, useParams } from "react-router-dom";
 import ProductCard from "./components/AddOnProductCard";
 import useUrlQuery from "../../customHooks/useUrlQuery";
@@ -27,12 +27,17 @@ import {
 import CartMobile from "./components/Mobile/CartMobile/CartMobile";
 import FeatureSection from "./components/FeatureSection/FeatureSection";
 import Select from "react-select";
-import { numberToDigitWord } from "../../utils/helper";
+import { getTotalPremium, numberToDigitWord } from "../../utils/helper";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import SumInsuredSection from "./components/SumInsuredSection";
 import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 import Benefit from "./components/Benefit";
 import GoBackButton from "../../components/GoBackButton";
+import {
+  api,
+  useGetEnquiriesQuery,
+  useUpdateEnquiryMutation,
+} from "../../api/api";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
@@ -47,6 +52,10 @@ const ProductDetails = () => {
 
   const urlQueries = useUrlQuery();
 
+  const [updateEnquiry] = useUpdateEnquiryMutation();
+
+  const { data } = useGetEnquiriesQuery();
+
   const enquiryId = urlQueries.get("enquiryId");
 
   const [showNav, setShowNav] = useState(false);
@@ -56,8 +65,6 @@ const ProductDetails = () => {
   const cartEntry = getCartEntry(parseInt(groupCode));
 
   const quotesRedirectUrl = useUrlEnquiry();
-
-  const loaderRef = useRef(null);
 
   useEffect(() => {
     function scrollListener() {
@@ -84,6 +91,10 @@ const ProductDetails = () => {
   useEffect(() => {
     window.location.hash = "";
   }, [groupCode]);
+
+  useEffect(() => {
+    updateEnquiry(data?.data);
+  }, []);
 
   const {
     journeyType,

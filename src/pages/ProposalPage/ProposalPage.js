@@ -50,9 +50,13 @@ import { mobile } from "../../utils/mediaQueries";
 /* ===============================test================================= */
 const ProposalPage = () => {
   const history = useHistory();
+
   const [continueBtnClick, setContinueBtnClick] = useState(false);
+
   const [memberGroups, setMemberGroups] = useState([]);
+
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
+
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
   const [active, setActive] = useState(0);
@@ -64,13 +68,12 @@ const ProposalPage = () => {
   const queryStrings = useUrlQuery();
 
   const enquiryId = queryStrings.get("enquiryId");
-  //const currentSchema = starSchema;
+
   const [activateLoader, setActivateLoader] = useState(false);
+
   let { cartEntries } = useCart();
 
   const [listOfForms, setListOfForms] = useState([]);
-
-  // const membersGroup = Object.keys(cart).filter(key => parseInt(key) !== NaN);
 
   useEffect(() => {
     if (currentSchema instanceof Object)
@@ -100,16 +103,6 @@ const ProposalPage = () => {
     </Link>
   );
 
-  // useEffect(() => {
-  //   if (listOfForms.length && active >= listOfForms.length) {
-  //     dispatch(
-  //       submitProposalData(() => {
-  //         history.push("/proposal_summary?enquiryId=" + enquiryId);
-  //       }),
-  //     );
-  //   }
-  // }, [active]);
-
   useEffect(() => {
     if (
       failedBmiData &&
@@ -122,7 +115,6 @@ const ProposalPage = () => {
 
   useEffect(() => {
     dispatch(getProposalFields());
-    // if (!Object.keys(proposalData).length)
     dispatch(getProposalData());
     dispatch(getCart());
     setMemberGroups(cartEntries.map(cartItem => cartItem.group.id));

@@ -37,7 +37,7 @@ const BackButton = ({
           justify-content: center;
         `}
       >
-        {icon ? (
+        {/* {icon ? (
           icon
         ) : (
           <div
@@ -54,7 +54,7 @@ const BackButton = ({
           >
             <IoArrowBackSharp />
           </div>
-        )}
+        )} */}
         <div>{value ? value : children}</div>
       </div>
     </Button>

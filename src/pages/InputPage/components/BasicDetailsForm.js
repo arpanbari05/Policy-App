@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CustomProgressBar from "../../../components/ProgressBar";
 import { Title, ErrorMessage } from "./FormComponents";
 import ReactSwitch from "react-switch";
@@ -20,6 +20,7 @@ import { useGetEnquiriesQuery } from "../../../api/api";
 import { capitalize } from "../../../utils/helper";
 import * as mq from "../../../utils/mediaQueries";
 import validateInput from "../../../utils/inputPageUtils";
+import styled from "styled-components";
 
 const BasicDetailsForm = ({ ...props }) => {
   const { colors } = useTheme();
@@ -40,24 +41,37 @@ const BasicDetailsForm = ({ ...props }) => {
   const [emailError, setEmailErrors] = useState({});
   const [mobileError, setMobileErrors] = useState({});
   const [fullNameError, setFullNameErrors] = useState({});
+  const [shouldProceed, setShouldProceed] = useState(false);
   const fullNameInput = useNameInput(inputData.name || "", setFullNameErrors);
   const mobileInput = useNumberInput(inputData.mobile || "", setMobileErrors, {
     maxLength: 10,
   });
   const emailInput = useEmailInput(inputData.email || "", setEmailErrors);
-  const [gender, setGender] = useState(inputData.gender || "M");
+  const [gender, setGender] = useState(inputData.gender || "");
   const [journeyType, setJourneyType] = useState("health");
   const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
   const urlSearchParams = useUrlQueries();
 
   const history = useHistory();
 
+  useEffect(() => {
+    const validation = validateInput(
+      fullNameInput,
+      emailInput,
+      mobileInput,
+      setFullNameErrors,
+      setEmailErrors,
+      setMobileErrors,
+    );
+    setShouldProceed(validation);
+  }, [fullNameInput.value, emailInput.value, mobileInput.value]);
+
   const handleFormSubmit = async event => {
     event.preventDefault();
     const validation = validateInput(
-      fullNameInput.value,
-      emailInput.value,
-      mobileInput.value,
+      fullNameInput,
+      emailInput,
+      mobileInput,
       setFullNameErrors,
       setEmailErrors,
       setMobileErrors,
@@ -113,71 +127,68 @@ const BasicDetailsForm = ({ ...props }) => {
               }
             `}
           >
-            <label
+            <div
               css={`
                 width: 100%;
-                display: flex;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
                 align-items: center;
-                margin-bottom: 35px;
+                margin-bottom: 15px;
                 margin-top: 13px;
                 font-weight: 900;
-                & > div {
-                  margin: 0 10px;
-                }
+                gap: 1rem;
                 & img {
-                  height: 45px;
+                  height: 40px;
                 }
               `}
             >
-              <img
-                src={boy}
-                alt={"girl"}
-                css={`
-                  filter: ${gender !== "M" && "grayscale(100%)"};
-                `}
-              />
-              <span
-                css={`
-                  margin-left: 10px;
-                  color: ${gender === "M" && colors.primary_color};
-                `}
+              <GenderWrapper
+                active={gender === "M"}
+                name="male-input"
+                color={colors.primary_color}
+                onClick={() => setGender("M")}
               >
-                Male
-              </span>
-              <ReactSwitch
-                onColor={colors.primary_color}
-                offColor={colors.primary_color}
-                onHandleColor={colors.primary_shade}
-                handleDiameter={25}
-                uncheckedIcon={false}
-                checkedIcon={false}
-                boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                height={18}
-                width={40}
-                onChange={() => {
-                  gender === "M" ? setGender("F") : setGender("M");
-                }}
-                checked={gender === "M" ? false : true}
-              />
-              <span
-                css={`
-                  margin-right: 10px;
-                  color: ${gender === "F" && colors.primary_color};
-                `}
+                <img
+                  src={boy}
+                  alt={"girl"}
+                  css={`
+                    filter: ${gender !== "M" && "grayscale(100%)"};
+                  `}
+                />
+                <span
+                  css={`
+                    color: ${gender === "M" && colors.primary_color};
+                    margin: 0 5px;
+                  `}
+                >
+                  Male
+                </span>
+              </GenderWrapper>
+              <GenderWrapper
+                name="female-input"
+                active={gender === "F"}
+                color={colors.primary_color}
+                onClick={() => setGender("F")}
               >
-                Female
-              </span>
-              <img
-                src={girl}
-                alt={"girl"}
-                css={`
-                  filter: ${gender !== "F" && "grayscale(100%)"};
-                `}
-              />
-            </label>
+                <img
+                  src={girl}
+                  alt={"girl"}
+                  css={`
+                    filter: ${gender !== "F" && "grayscale(100%)"};
+                    margin: 0 5px;
+                  `}
+                />
+                <span
+                  css={`
+                    color: ${gender === "F" && colors.primary_color};
+                  `}
+                >
+                  Female
+                </span>
+              </GenderWrapper>
+            </div>
             <div
-              className="d-flex aling-items-center justify-content-between w-100"
+              className="d-flex align-items-center justify-content-between w-100"
               css={`
                 gap: 1em;
                 & > div {
@@ -258,7 +269,7 @@ const BasicDetailsForm = ({ ...props }) => {
         <Button
           type="submit"
           className="w-100"
-          disabled={createEnquiryQuery.isLoading}
+          disabled={createEnquiryQuery.isLoading || !shouldProceed || !gender}
           loader={createEnquiryQuery.isLoading}
           css={`
             height: 58px;
@@ -279,3 +290,16 @@ const BasicDetailsForm = ({ ...props }) => {
 };
 
 export default BasicDetailsForm;
+
+const GenderWrapper = styled.label`
+  padding: 7px 0;
+  border-radius: 4px;
+  border: 2px solid;
+  border-color: ${props => (props.active ? props.color : "#ddd")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  cursor: pointer;
+  gap: 10px;
+`;

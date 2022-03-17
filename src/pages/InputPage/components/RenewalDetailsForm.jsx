@@ -118,7 +118,7 @@ const RenewalDetailsForm = ({ ...props }) => {
           <Button
             type="submit"
             className="w-100"
-            disabled={createEnquiryQuery.isLoading}
+            disabled={createEnquiryQuery.isLoading || !selectedRenewalIc || !policyNumberInput?.value}
             loader={createEnquiryQuery.isLoading}
           >
             Proceed for Renewal

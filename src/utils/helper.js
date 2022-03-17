@@ -367,10 +367,9 @@ export function calculateTotalPremium(
 
     // Simply return TotalPremium if the is only hospitalRider
     if (
-      (health_riders.length === 1 && hospitalRider) ||
-      health_riders.length === 0
+      (health_riders.length === 1 && hospitalRider)
     ) {
-      return totalPremiumAfterDiscount + addOnsTotalPremium;
+      return totalPremiumAfterDiscount + addOnsTotalPremium + health_riders[0]?.total_premium;
     } else {
       let calculatedPremium = Math.round(total_premium / 1.04 / 1.18);
 

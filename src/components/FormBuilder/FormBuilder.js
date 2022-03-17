@@ -136,10 +136,7 @@ const FormBuilder = ({
           acc[name] = dataForAutopopulate[nameWithoutNominee];
       });
 
-      setValues(prev => ({
-        ...prev,
-        ...acc,
-      }));
+      setValues({...acc,nominee_relation: values.nominee_relation});
     } else setValues({ nominee_relation: values.nominee_relation });
   }, [values.nominee_relation]);
 
