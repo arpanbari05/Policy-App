@@ -12,18 +12,7 @@ export default function validateInput(
   setMobileErrors,
 ) {
   let isValidate = true;
-  // const fullNameArray = fullName.split(" ");
 
-  //   ============== FullName Validations =============================
-
-  // if (
-  //   fullNameArray.length === 1 ||
-  //   fullNameArray[1] === "" ||
-  //   fullNameArray[0].toLowerCase() === fullNameArray[1].toLowerCase()
-  // ) {
-  //   setFullNameErrors({ message: "Please enter a valid FullName." });
-  //   isValidate = false;
-  // }
   if (fullName.length < 3) {
     setFullNameErrors({ message: "Please enter a valid FullName." });
     isValidate = false;
