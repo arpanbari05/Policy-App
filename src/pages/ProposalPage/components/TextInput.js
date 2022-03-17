@@ -164,7 +164,7 @@ const TextInput = ({
               }
             }
           } else if (checkValidation?.["matches"] === "email") {
-            if (e.target.value.length <= 40) {
+            if (e.target.value.length <= 64) {
               onChange(e);
               setFallbackValue(e.target.value);
             }
