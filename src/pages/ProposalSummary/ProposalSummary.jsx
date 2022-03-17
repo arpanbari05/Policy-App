@@ -42,14 +42,17 @@ import { useGetProposalDataQuery } from "../../api/api";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import GoBackButton from "../../components/GoBackButton";
 import { mobile } from "../../utils/mediaQueries";
+import { amount, getTotalPremium } from "../../utils/helper";
 
 const ProposalSummary = () => {
-  const history = useHistory();
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
+
   const PrimaryShade = colors.primary_shade;
+
   const { data: proposalData = {}, isLoading } = useGetProposalDataQuery();
 
   const backButtonForNav = (
@@ -62,31 +65,28 @@ const ProposalSummary = () => {
     </Link>
   );
 
-  console.log("snldvb", proposalData, isLoading);
   let { cartEntries } = useCart();
-  // let groupCode = useSelector(({ quotePage }) => quotePage.selectedGroup);
+
   const { currentSchema } = useSelector(state => state.schema);
 
-  const { policyStatus, policyLoading } = useSelector(
-    state => state.proposalPage,
-  );
+  const { policyStatus } = useSelector(state => state.proposalPage);
 
-  const { theme } = useSelector(state => state.frontendBoot);
-
-  // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
-  const { proposerDetails } = useSelector(state => state.greetingPage);
   const [show, setShow] = useState(false);
+
   const [termShow, setTermShow] = useState(false);
 
   const frontendBoot = useFrontendBoot();
 
   const frontendData = { data: frontendBoot.data };
-  // const { frontendData } = useSelector(state => state.frontendBoot);
 
   const [allFields, setAllFields] = useState([]);
+
   const [term, setTerm] = useState({});
+
   const url = useUrlQuery();
+
   const enquiryId = url.get("enquiryId");
+
   const dispatch = useDispatch();
 
   const getTermConditionData = async (company_id, callback = () => {}) => {
@@ -107,12 +107,15 @@ const ProposalSummary = () => {
     dispatch(getProposalData());
     dispatch(fetchPdf({ noRepeat: true }));
   }, []);
+
   useEffect(() => {
     setAllFields(Object.keys(currentSchema));
   }, [currentSchema]);
 
   const ls = new SecureLS();
+
   const [checked, setChecked] = useState(false);
+
   const onClick = mobile => {
     if (
       frontendData?.data?.settings?.journey_type === "single" &&
@@ -137,6 +140,7 @@ const ProposalSummary = () => {
       document.body.removeChild(form);
     }
   };
+
   const singlePay = id => {
     if (checked) {
       const form = document.createElement("form");
@@ -152,17 +156,19 @@ const ProposalSummary = () => {
       document.body.removeChild(form);
     }
   };
+
   const cart = cartEntries;
+
+  const totalPremium = getTotalPremium(cartEntries);
+
   const prod_id = Object.keys(cart)[0];
-  console.log("hkjm", term);
+
   useEffect(() => {
     if (cart[prod_id]?.product?.company?.id) {
       getTermConditionData(cart[prod_id].product.company.id, setTerm);
     }
   }, []);
-  // if (!Object.keys(proposalData).length) {
-  //   return <Redirect to="/proposal" />;
-  // } else
+
   return (
     <Page
       noNavbarForMobile={true}
@@ -212,7 +218,6 @@ const ProposalSummary = () => {
             <div
               className="row btn_p_summary_pay_now d-flex align-items-center"
               onClick={() => checked && onClick()}
-              // style={{ margin: "0 25px" }}
               css={`
                 background: ${PrimaryColor} !important;
               `}
@@ -229,7 +234,7 @@ const ProposalSummary = () => {
                               PrimaryColor={PrimaryColor}
                               style={{ cursor: "pointer" }}
                               onClick={() => {
-                                singlePay(item.proposal_id);
+                                singlePay(item?.proposal_id);
                               }}
                             >
                               <span>Pay Now </span>
@@ -274,15 +279,9 @@ const ProposalSummary = () => {
                   <span>Total Premium</span>
                   <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
                     <span class="font_weight_normal text-white">
-                      ₹{" "}
-                      {parseInt(
-                        policyStatus.reduce(
-                          (acc, item) => acc + parseInt(item.total_premium),
-                          0,
-                        ),
-                      ).toLocaleString("en-In")}
+                      {amount(totalPremium)}
                     </span>
-                  </p>{" "}
+                  </p>
                 </div>
               </div>
             </div>

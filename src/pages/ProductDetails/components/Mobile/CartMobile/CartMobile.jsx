@@ -27,8 +27,6 @@ import { EditMembersModal } from "../../../../quotePage/components/filters/EditM
 import { ErrorMessage } from "../../../../InputPage/components/FormComponents";
 import { useHistory } from "react-router-dom";
 import useUrlQuery from "../../../../../customHooks/useUrlQuery";
-import CartSummaryModal from "../../../../../components/CartSummaryModal";
-import { NewReviewCartPopup } from "../../../../../components/NewReviewCartPopup";
 import ReviewCartPopup from "../../ReviewCardPopup";
 import _ from "lodash";
 
@@ -37,6 +35,7 @@ const plantypes = {
   I: "Individual",
   F: "Family Floater",
 };
+
 const CartMobile = ({ groupCode, ...props }) => {
   const [toggleCard, setToggleCard] = useState(false);
 
