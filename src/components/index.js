@@ -141,6 +141,7 @@ export function Button({
   arrow = false,
   css,
   onClick,
+  loaderPrimaryColor = false,
   ...props
 }) {
   const { colors } = useTheme();
@@ -168,8 +169,8 @@ export function Button({
           );
         }
         &:disabled {
-          background-color: ${colors.secondary_shade};
-          color: #666;
+          background-color: ${loaderPrimaryColor && loader ? colors.primary_color : colors.secondary_shade};
+          color: ${loaderPrimaryColor && loader ? "#fff" : "#666"};
           cursor: default;
         }
 

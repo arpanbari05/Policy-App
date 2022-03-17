@@ -57,6 +57,8 @@ function InputMembersForm(props) {
     member => member.is_primary || member.isSelected,
   );
 
+  const noOfSelectedMembers = getSelectedMembers()?.length;
+
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
 
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
@@ -174,6 +176,7 @@ function InputMembersForm(props) {
         ) : null}
       </div>
       <InputFormCta
+        disabled={!noOfSelectedMembers || isError || error}
         backLink={`/input/basic-details`}
         onContinueClick={handleSubmit}
         loader={updateEnquiryQuery.isLoading}

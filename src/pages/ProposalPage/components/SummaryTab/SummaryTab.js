@@ -17,7 +17,28 @@ const convertToFt = value => {
   let inches = value % 12;
   return `${feet} ft ${inches} in`;
 };
-const SummaryTab = ({ title, data, values, index }) => {
+const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
+  const filterUnderscore = str =>
+    str.includes("_") ? str.replaceAll("_", " ") : str;
+  const modifyMembersName = name => {
+    let EditedName = "";
+
+    if (title === "Insured Details" && name.includes("_")) {
+      EditedName = name.replace(/_/g, " ");
+    } else if (title !== "Insured Details" && name.includes("_")) {
+      let allMembers = getGroupMembers(parseInt(name));
+      EditedName = allMembers
+        .map(member => member.code)
+        .filter(member => name.includes(member))
+        .join(", ")
+        .replaceAll("_", " ");
+    } else {
+      EditedName = name;
+    }
+
+    return EditedName;
+  };
+
   const url = useUrlQuery();
   const enquiryId = url.get("enquiryId");
   const dispatch = useDispatch();
@@ -45,18 +66,20 @@ const SummaryTab = ({ title, data, values, index }) => {
   }, []);
 
   const dateFormatter = str => {
-
-    return str?str.split("-").reduce((acc, el, i) => {
-      if (i < str.split("-").length - 1) {
-        return acc + `${el.padStart(2, "0")}-`;
-      } else {
-        return acc + `${el.padStart(4, "0")}`;
-      }
-    }, ""):str;
+    return str
+      ? str.split("-").reduce((acc, el, i) => {
+          if (i < str.split("-").length - 1) {
+            return acc + `${el.padStart(2, "0")}-`;
+          } else {
+            return acc + `${el.padStart(4, "0")}`;
+          }
+        }, "")
+      : str;
   };
 
   const normalRender = useCallback((data, i) => {
-    if (data.type === "title") return <TitleWrapper>{data.name}</TitleWrapper>;
+    if (data.type === "title")
+      return <TitleWrapper>{filterUnderscore(data.name)}</TitleWrapper>;
     if (data.type === "date") {
       return (
         <Col
@@ -67,11 +90,11 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" >
-            {data.additionalOptions.label}
-          </p>
+          <p className="font_15_p_s">{data.additionalOptions.label}</p>
 
-          <p className="font_sub_p_s" style={{ fontWeight: "900" }}>{dateFormatter(values?.[data.name])}</p>
+          <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
+            {dateFormatter(values?.[data.name])}
+          </p>
         </Col>
       );
     }
@@ -93,9 +116,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           key={i}
         >
           {console.log("bvidwbvidbvb", values)}
-          <p className="font_15_p_s" >
-            {data.additionalOptions.label}
-          </p>
+          <p className="font_15_p_s">{data.additionalOptions.label}</p>
           <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
             {data.name === "town" || data.name === "area"
               ? values[data.name + "__value"]
@@ -113,10 +134,10 @@ const SummaryTab = ({ title, data, values, index }) => {
         style={{ display: "inline-block" }}
         key={i}
       >
-        <p className="font_15_p_s" >
-          {data.additionalOptions.label}
+        <p className="font_15_p_s">{data.additionalOptions.label}</p>
+        <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
+          {values[data.name]}
         </p>
-        <p className="font_sub_p_s" style={{ fontWeight: "900" }}>{values[data.name]}</p>
       </Col>
     ) : (
       data.type === "custom_toggle" && (
@@ -138,7 +159,9 @@ const SummaryTab = ({ title, data, values, index }) => {
                     class="col-md-2 mb-12"
                     style={{ display: "inline-block" }}
                   >
-                    <p class="font_15_p_s medical_details_p_s">{item?item:"No"}</p>
+                    <p class="font_15_p_s medical_details_p_s">
+                      {item ? item : "No"}
+                    </p>
                   </div>
                 );
               } else return <></>;
@@ -174,9 +197,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" >
-            {data.additionalOptions.label}
-          </p>
+          <p className="font_15_p_s">{data.additionalOptions.label}</p>
           <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
             {dateFormatter(values?.[item]?.[data.name])}
           </p>
@@ -193,9 +214,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           key={i}
           style={{ display: "inline-block" }}
         >
-          <p className="font_15_p_s" >
-            {"Height"}
-          </p>
+          <p className="font_15_p_s">{"Height"}</p>
           <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
             {convertToFt(values?.[item]?.[data.name])}
           </p>
@@ -223,21 +242,21 @@ const SummaryTab = ({ title, data, values, index }) => {
             Object.keys(values?.[item]?.[data.name]?.members).length ? (
               Object.keys(values?.[item]?.[data.name]?.members).map(
                 (_item, _i) => {
-                  return values?.[item]?.[data.name]?.members[_item]?(
+                  return values?.[item]?.[data.name]?.members[_item] ? (
                     <>
                       <CustomMedicalTitle>{_item}</CustomMedicalTitle>
                       <InnerWrapper>
                         {schema[i + 1].map(additionalQuestion => (
                           <AdditionalWrapper2 className="text-dark">
-                            <AdditionalQuestion
-                              className="font_15_p_s"
-                              
-                            >
+                            <AdditionalQuestion className="font_15_p_s">
                               {additionalQuestion.additionalOptions.label ||
                                 additionalQuestion.additionalOptions
                                   .placeholder}
                             </AdditionalQuestion>
-                            <AdditionalAnswer className="font_sub_p_s" style={{ fontWeight: "900" }}>
+                            <AdditionalAnswer
+                              className="font_sub_p_s"
+                              style={{ fontWeight: "900" }}
+                            >
                               <p
                                 style={{
                                   overflowWrap: "break-word",
@@ -254,7 +273,9 @@ const SummaryTab = ({ title, data, values, index }) => {
                         ))}
                       </InnerWrapper>
                     </>
-                  ):(<></>)
+                  ) : (
+                    <></>
+                  );
                 },
               )
             ) : (
@@ -276,9 +297,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s" >
-            {data.additionalOptions.label}
-          </p>
+          <p className="font_15_p_s">{data.additionalOptions.label}</p>
           <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
             {getValueFromCode(values?.[item]?.[data.name], data)}
           </p>
@@ -295,10 +314,10 @@ const SummaryTab = ({ title, data, values, index }) => {
             key={i}
             style={{ display: "inline-block" }}
           >
-            <p className="font_15_p_s">
-              {data.additionalOptions.label}
+            <p className="font_15_p_s">{data.additionalOptions.label}</p>
+            <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
+              {values?.[item]?.[data.name]}
             </p>
-            <p className="font_sub_p_s" style={{ fontWeight: "900" }}>{values?.[item]?.[data.name]}</p>
           </Col>
         )}
       </>
@@ -313,7 +332,7 @@ const SummaryTab = ({ title, data, values, index }) => {
           <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
-          {console.log("svjksfvb",values,item,data)}
+          {console.log("svjksfvb", values, item, data)}
           {values?.[item]?.[data.name] instanceof Object &&
           values?.[item]?.[data.name]?.members &&
           Object.keys(values?.[item]?.[data.name]?.members).length ? (
@@ -325,10 +344,11 @@ const SummaryTab = ({ title, data, values, index }) => {
                       key={_i}
                       class="col-md-2 mb-12"
                       style={{ display: "inline-block" }}
-                      css={`font-weight: 900 !important;`}
+                      css={`
+                        font-weight: 900 !important;
+                      `}
                     >
                       <MedicalAnswer>{_item}</MedicalAnswer>
-                      
                     </div>
                   );
                 } else return <></>;
@@ -351,14 +371,16 @@ const SummaryTab = ({ title, data, values, index }) => {
   }, []);
 
   return (
-    <Card styledCss={`
+    <Card
+      styledCss={`
     margin-bottom: 20px;
     
     @media screen and (max-width:768px){
       margin-bottom: 10px;
       padding:5px 2px;
   }
-    `}>
+    `}
+    >
       <div className="card_proposal_summary  box-shadow_plan_box_p_s_s_proposal_form_l">
         <EditWrapper
           PrimaryColor={PrimaryColor}
@@ -393,16 +415,23 @@ const SummaryTab = ({ title, data, values, index }) => {
             >
               {title}
             </MainTitle>
-            {
-              title === "Other Details" && <TitleWrapper css={`padding-left: 20px !important; border-top:0px !important;`} >Nominee Details</TitleWrapper>
-            }
+            {title === "Other Details" && (
+              <TitleWrapper
+                css={`
+                  padding-left: 20px !important;
+                  border-top: 0px !important;
+                `}
+              >
+                Nominee Details
+              </TitleWrapper>
+            )}
           </Col>
         </Row>
         <br className="hide-on-mobile" />
         <Row
           css={`
             margin-left: 10px;
-            margin-top:-28px;
+            margin-top: -28px;
           `}
         >
           {data instanceof Array
@@ -412,36 +441,35 @@ const SummaryTab = ({ title, data, values, index }) => {
                   <Border>
                     <TitleWrapper>
                       <span style={{ textTransform: "capitalize" }}>
-                        {item.includes("_")
-                          ? item.split("_").slice(1).join(", ")
-                          : item}
+                        {modifyMembersName(item)}
                       </span>
                     </TitleWrapper>
                     {data[item].map((_data, index) => {
-                      return title === "Other Details"?
-                      objectRender(
-                        {
-                          ..._data,
-                          additionalOptions:{
-                            ..._data.additionalOptions,
-                            label:_data.additionalOptions.label.includes("Nominee's")?
-                            _data.additionalOptions.label.replace("Nominee's","")
-                            :
-                            _data.additionalOptions.label.replace("Nominee","")
-                          }
-                        },
-                        index,
-                        item,
-                        title,
-                        data[item]
-                      )
-                      :objectRender(
-                        _data,
-                        index,
-                        item,
-                        title,
-                        data[item]
-                      );
+                      return title === "Other Details"
+                        ? objectRender(
+                            {
+                              ..._data,
+                              additionalOptions: {
+                                ..._data.additionalOptions,
+                                label: _data.additionalOptions.label.includes(
+                                  "Nominee's",
+                                )
+                                  ? _data.additionalOptions.label.replace(
+                                      "Nominee's",
+                                      "",
+                                    )
+                                  : _data.additionalOptions.label.replace(
+                                      "Nominee",
+                                      "",
+                                    ),
+                              },
+                            },
+                            index,
+                            item,
+                            title,
+                            data[item],
+                          )
+                        : objectRender(_data, index, item, title, data[item]);
                     })}
                   </Border>
                 </>
@@ -534,7 +562,6 @@ const MedicalQuestionWrapper = styled.p`
   line-height: 27px !important;
   color: #000000;
 
-  
   position: relative;
   padding-left: 12px;
   width: 78%;
@@ -565,7 +592,7 @@ const MedicalAnswer = styled.p`
   text-transform: capitalize;
   padding-left: 15px;
   font-size: 15px;
-  font-weight:900;
+  font-weight: 900;
   @media (max-width: 767px) {
     font-size: 12px;
   }
@@ -629,7 +656,7 @@ const MainTitle = styled.h2`
   color: ${props => props.bg && props.PrimaryColor};
   font-size: 21px;
   padding: 10px;
-  @media screen and (max-width:768px){
-    margin-top:0px;
+  @media screen and (max-width: 768px) {
+    margin-top: 0px;
   }
 `;

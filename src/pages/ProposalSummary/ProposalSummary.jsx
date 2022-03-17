@@ -13,6 +13,7 @@ import {
   MobileHeaderText,
 } from "./../ProposalPage/ProposalPage.style";
 import "styled-components/macro";
+
 import {
   fetchPdf,
   getProposalData,
@@ -34,6 +35,7 @@ import {
   useTheme,
   useUrlEnquiry,
   useCart,
+  useMembers
 } from "../../customHooks";
 import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
@@ -46,7 +48,7 @@ import { amount, getTotalPremium } from "../../utils/helper";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
+  const { getGroupMembers, groups } = useMembers();
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -486,6 +488,7 @@ const ProposalSummary = () => {
                               PrimaryShade={PrimaryShade}
                               key={item}
                               title={item}
+                              getGroupMembers={getGroupMembers}
                               data={currentSchema[item]}
                               values={proposalData.data[item]}
                               index={index}
