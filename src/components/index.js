@@ -56,7 +56,7 @@ export function LoadEnquiries({ children }) {
     return (
       <Page>
         <p>Something went wrong while fetching enquiry details!</p>
-        <button onClick={refetch}>Retry</button>ƒ
+        <button onClick={refetch}>Retry</button>
       </Page>
     );
 
