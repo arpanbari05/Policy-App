@@ -1119,9 +1119,11 @@ export function useCompareFeatures({ productIds }) {
 
 export function useEmailInput(initialValue = "", setEmailError) {
   const [value, setValue] = useState(initialValue);
+  const [touched, setTouched] = useState(false);
 
   const onChange = evt => {
     setEmailError({});
+    setTouched(true);
     const { value: givenValue } = evt.target;
 
     if (!givenValue) {
@@ -1132,7 +1134,7 @@ export function useEmailInput(initialValue = "", setEmailError) {
     setValue(givenValue.toLowerCase());
   };
 
-  return { value, onChange };
+  return { value, onChange, touched };
 }
 
 const validateName = (name = "") => /^[a-zA-Z.\s]*$/.test(name);
@@ -1154,8 +1156,10 @@ const checkPreviousChar = (value, checkValue, stateValue) => {
 
 export function useNameInput(initialValue = "", setFullNameError) {
   const [value, setValue] = useState(initialValue);
+  const [touched, setTouched] = useState(false);
 
   const onChange = evt => {
+    setTouched(true);
     setFullNameError({});
     const { value: givenValue } = evt.target;
 
@@ -1178,7 +1182,7 @@ export function useNameInput(initialValue = "", setFullNameError) {
 
   const style = { textTransform: "capitalize" };
 
-  return { value, onChange, onBlur, style };
+  return { value, onChange, onBlur, style, touched };
 }
 
 const validateNumber = (str = "") => /^\d*$/.test(str);
@@ -1199,8 +1203,10 @@ export function useNumberInput(
   { maxLength = 60 } = {},
 ) {
   const [value, setValue] = useState(initialValue);
+  const [touched, setTouched] = useState(false);
 
   const onChange = evt => {
+    setTouched(true);
     setNumberError({});
     const { value: givenValue } = evt.target;
 
@@ -1218,7 +1224,7 @@ export function useNumberInput(
     }
   };
 
-  return { value, onChange, type: "tel", maxLength };
+  return { value, onChange, type: "tel", maxLength, touched };
 }
 
 const validatePolicyNumber = (str = "", selectedIC = {}) => {

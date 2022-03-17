@@ -76,6 +76,7 @@ function DeductibleForm({ ...props }) {
       </div>
       <div className="mt-3">
         <InputFormCta
+          disabled={!selectedDeductible}
           backLink={getUrlWithEnquirySearch(
             `/input/location-${getLastGroup().id}`,
           )}

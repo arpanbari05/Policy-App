@@ -168,6 +168,8 @@ const MedicalHistoryForm = () => {
         `}
       >
         <InputFormCta
+          loaderPrimaryColor
+          disabled={(selected === "Yes" && !diseaseArray.length) || !selected}
           backLink={() => {
             if (journeyType !== "top_up") {
               return getUrlWithEnquirySearch(`/input/location-${groups[0].id}`);

@@ -404,7 +404,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
       scrollY: -window.scrollY,
       allowTaint: true,
       useCORS: true,
-      scale: 2,
+      scale: .9,
     }).then(canvas => {
       const imgData = canvas.toDataURL("image/png");
       console.log(imgData);
