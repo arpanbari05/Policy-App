@@ -10,6 +10,8 @@ import ErrorPage from "./components/Common/ErrorPage/ErrorPage";
 import { useFrontendBoot } from "../src/customHooks";
 import { BaseComponent } from "./components/BaseComponent";
 import { Helmet } from "react-helmet";
+import CacheBuster from "react-cache-buster";
+import { version } from "../package.json";
 const ProposalPage = lazy(() => import("./pages/ProposalPage/ProposalPage"));
 const ProposalSummary = lazy(() =>
   import("./pages/ProposalSummary/ProposalSummary"),
@@ -21,9 +23,15 @@ function App() {
   const {
     data: { tenant },
   } = useFrontendBoot();
+  const isProduction = process.env.NODE_ENV === "production";
+  console.log(process.env.NODE_ENV);
 
   return (
-    <>
+    <CacheBuster
+      currentVersion={version}
+      isEnabled={isProduction}
+      isVerboseMode={false}
+    >
       <Switch>
         <Route
           path="/"
@@ -72,7 +80,7 @@ function App() {
           </Route>
         )}
       </Switch>
-    </>
+    </CacheBuster>
   );
 }
 
