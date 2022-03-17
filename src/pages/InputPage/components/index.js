@@ -33,18 +33,20 @@ export function BackLink({ ...props }) {
       `}
       {...props}
     >
-      <BiArrowBack />
+      {/* <BiArrowBack /> */}
       <span>Back</span>
     </Link>
   );
 }
 
 export function InputFormCta({
+  disabled,
   backLink,
   onContinueClick,
   name,
   formNo,
   loader = false,
+  loaderPrimaryColor,
   ...props
 }) {
   const handleClick = () => onContinueClick && onContinueClick();
@@ -61,6 +63,8 @@ export function InputFormCta({
     >
       <BackLink to={backLink} />
       <Button
+        loaderPrimaryColor={loaderPrimaryColor}
+        disabled={disabled}
         onClick={handleClick}
         arrow
         loader={loader}
