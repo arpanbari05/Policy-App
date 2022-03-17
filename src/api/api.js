@@ -266,6 +266,7 @@ export const api = createApi({
         body,
       }),
       onQueryStarted: async (_args, { dispatch, queryFulfilled }) => {
+
         const res = await queryFulfilled;
         dispatch(
           api.util.updateQueryData("getEnquiries", undefined, draft => {

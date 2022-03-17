@@ -11,11 +11,6 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
     const key2 = Object.keys(noForAll || {});
-    // const hasYes =
-    //   values?.[key] &&
-    //   Object.keys(values?.[key] || {})?.some(
-    //     data => values?.[key]?.[data]?.[`is${data}`] === "Y",
-    //   );
 
     if (key.length !== key2.length) {
       let noForAll2 = {};
@@ -131,6 +126,7 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
     }
   }, [values, noForAll]);
 
+  // when no for all click
   useEffect(() => {
     if (name === "Medical Details") {
         console.log("sgsjghjskl",noForAll)
@@ -140,12 +136,21 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
         .forEach(key => {
           let tempGroupVal = {};
           schema[key].forEach(el => {
-            if (!Array.isArray(el)) {
+           if (!Array.isArray(el)) {
+            if(el.additionalOptions.notAllowedIf === "N") {
+              tempGroupVal[el.name] = {
+                [`is${el.name}`]: "Y",
+                members: {},
+                isValid: true,
+              };
+            }else{
               tempGroupVal[el.name] = {
                 [`is${el.name}`]: "N",
                 members: {},
                 isValid: true,
               };
+            }
+              
             }
           });
           customizedVal[key] = tempGroupVal;

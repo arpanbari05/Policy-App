@@ -469,7 +469,7 @@ export const validationIndex = {
               value,
             ) ||
             !pass ||
-            value.length > 40
+            value.length > 64
           ) {
             return {
               status: false,
