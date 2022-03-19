@@ -43,6 +43,7 @@ const FormBuilder = ({
   let proposalDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
+  const [nomineeRelationAutopopulated,setNomineeRelationAutopopulated] = useState(false)
   let memberGroupsAsPerMembers = useSelector(({ greetingPage }) =>
     greetingPage.proposerDetails.groups.reduce(
       (acc, { id, members }) => ({
@@ -137,7 +138,8 @@ const FormBuilder = ({
       });
 
       setValues({...acc,nominee_relation: values.nominee_relation});
-    } else setValues({ nominee_relation: values.nominee_relation });
+      setNomineeRelationAutopopulated(true)
+    } 
   }, [values.nominee_relation]);
 
   useEffect(() => {
@@ -471,7 +473,8 @@ const FormBuilder = ({
                            
                               if (
                                 item.name === "nominee_relation" &&
-                                !insuredDetails[e.target.value]
+                                !insuredDetails[e.target.value] &&
+                                nomineeRelationAutopopulated
                               ){
                                 console.log(
                                   "sdvnsjdbvs",
@@ -479,6 +482,7 @@ const FormBuilder = ({
                                   e.target.value,
                                 );
                                 updateValue(item.name, e.target.value, true);
+                                setNomineeRelationAutopopulated(false)
                               }else updateValue(item.name, e.target.value);
                             } else {
                               // if()
