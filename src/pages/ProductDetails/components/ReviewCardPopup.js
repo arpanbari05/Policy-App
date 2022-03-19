@@ -11,11 +11,7 @@ import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useCompanies, useFrontendBoot, useTheme } from "../../../customHooks";
 import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
-import {
-  amount,
-  getFirstName,
-  getTotalPremium,
-} from "../../../utils/helper";
+import { amount, getFirstName, getTotalPremium } from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
 import {
@@ -23,6 +19,7 @@ import {
   useGetEnquiriesQuery,
   useDeleteGroupQuery,
 } from "../../../api/api";
+import { premiumWithAddons } from "../../../../src/utils/helper";
 import { skipToken } from "@reduxjs/toolkit/query";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import { useRider } from "../../../customHooks/index";
@@ -230,7 +227,7 @@ function ProductDetailsCardMobile({ cartItem }) {
     sum_insured,
     top_up_riders,
     addons,
-    group: { id: groupCode}
+    group: { id: groupCode },
   } = cartItem;
   const health_riders = useRider(groupCode).getSelectedRiders();
   const logoSrc = companies[alias].logo;
@@ -579,7 +576,7 @@ function ProductDetailsCard({ cartItem }) {
     tenure,
     sum_insured,
     top_up_riders,
-    group: { id: groupCode }
+    group: { id: groupCode },
   } = cartItem;
   const health_riders = useRider(groupCode).getSelectedRiders();
   const logoSrc = companies[alias].logo;
@@ -754,32 +751,27 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
   const {
     colors: { primary_color: PrimaryColor },
   } = useTheme();
+
   const {
     data: {
       data: { name },
     },
   } = useGetEnquiriesQuery();
   const firstName = getFirstName(name);
-  // const proposalDetails = useSelector(state => state.proposalPage.proposalData);
-  // const firstName = proposalDetails["Proposer Details"]?.name;
-  // const { memberGroups } = useSelector(state => state.greetingPage);
-  // const additionalDiscounts = useSelector(selectAdditionalDiscounts);
+
   const {
     data: {
       data: { groups },
     },
   } = useGetEnquiriesQuery();
+
   const { data, isLoading, isUninitialized, isFetching } = useGetCartQuery();
-  const cart = data.data;
 
-  // const groupCodes = Object.keys(cart).filter(item =>
-  //   Object.keys(memberGroups).includes(item),
-  // );
+  const cart = data?.data;
 
-  // const allAddOns = groupCodes.reduce(
-  //   (allAddOns, groupCode) => [...allAddOns, ...cart[groupCode].addons],
-  //   [],
-  // );
+  const allAddons = cart?.map(singleCartEntry => singleCartEntry.addons).flat();
+
+  console.log("The all addons", allAddons);
 
   if (isLoading || isUninitialized || isFetching)
     return (
@@ -903,7 +895,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
                   }
                 `}
               >
-                {amount(totalPremium)}
+                {amount(premiumWithAddons(totalPremium, allAddons))}
               </div>
             </div>
           }
@@ -1074,7 +1066,6 @@ function ProceedWithoutPlan({ group, link, handleClose = () => {} }) {
   if (!error && !isLoading && !isUninitialized) {
     history.push(link);
   }
-
 
   return (
     <div className="d-flex align-items-center justify-content-between mb-3 mx-1">
