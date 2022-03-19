@@ -1480,12 +1480,16 @@ export function useCompareFeature(compareQuote) {
 
 export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
   const { journeyType } = useFrontendBoot();
+
   const getRidersQueryParams = {
     sum_insured: quote?.sum_insured,
     tenure: quote?.tenure,
     productId: quote?.product.id,
     group: parseInt(groupCode),
     journeyType,
+    additionalUrlQueries:
+      queryOptions?.getRidersQueryParams?.additionalUrlQueries,
+    selected_riders: queryOptions?.getRidersQueryParams?.selected_riders,
     ...queryOptions,
   };
 
@@ -1507,7 +1511,7 @@ function isMandatoryRider(rider) {
 function getRiderOptionsQueryString(riders = []) {
   const riderOptionsQueryString = riders.reduce(
     (urlQueries, rider) =>
-      rider.options_selected
+      rider?.options_selected
         ? urlQueries.concat(
             Object.keys(rider.options_selected)
               .map(
@@ -1564,6 +1568,7 @@ export function useRiders({
   useEffect(() => setRiders(getInititalRiders), [getInititalRiders]);
 
   const { feature_options } = useSelector(({ cart }) => cart);
+
   const findLocalRider = riderToFind =>
     riders.find(rider => rider.id === riderToFind.id);
 
@@ -1586,6 +1591,7 @@ export function useRiders({
     getRidersQueryParams.selected_riders = affectsOtherRiders;
 
   const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
+
   const query = useGetRiders(quote, groupCode, {
     queryOptions: { getRidersQueryParams, feature_options, selected_riders },
   });
@@ -1631,7 +1637,7 @@ export function useRiders({
 
     setRiders(riders => {
       let updatedRiders = riders.map(rider =>
-        rider.id === changedRider.id ? changedRider : rider,
+        rider?.id === changedRider?.id ? changedRider : rider,
       );
 
       updatedRiders = updatedRiders.filter(updatedRider =>
