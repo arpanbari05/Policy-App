@@ -522,7 +522,7 @@ export const validationIndex = {
             };
           } else break;
         case "address":
-          if (!/^[A-Za-z0-9\s-./#&,]{3,}$/.test(value)) {
+          if (!/^[A-Za-z0-9\s-./#&,"]{3,}$/.test(value)) {
             return {
               status: false,
               message: "Enter valid address",

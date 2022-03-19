@@ -1,23 +1,21 @@
 import { schemaIndex } from "../../pages/ProposalPage/schemaIndex";
 import { validationIndex } from "./formValidations";
 export const renderField = (item, value, member) => {
+  console.log("lvlhvcsc", item, value);
+  // conditional rendering of fields other than medical questions uses item.visibleOn
+  if (item.visibleOn) {
+    let show = false;
+    let checkKeys = Object.keys(item.visibleOn);
+    checkKeys.forEach(key => {
+      if (item.visibleOn[key].includes(value[key])) show = true;
+    });
+    return show;
+  }
+
+  // conditional rendering of medical questions uses item.render
   if (item.render) {
     const { when, is } = item.render;
 
-    // console.log('item3',item.parent,item.name)
-    // if (item.parent && item.parent.includes("||") && member) {
-    //   let check = false;
-
-    //   const temp = item.parent.split("||");
-    //   check = temp.some(
-    //     data =>
-    //       value[data] &&
-    //       value[data].members instanceof Object &&
-    //       value[data].members[member],
-    //   );
-    //   if (check) return true;
-    //   else return false;
-    // } else
     if (item.parent && member && !when.includes("||")) {
       if (
         value[item.parent] &&
@@ -67,7 +65,7 @@ export const renderField = (item, value, member) => {
         check = temp.some(
           data => value[data] && value[data][`is${data}`] === is,
         );
-        console.log("wvhsrjvh",item);
+        console.log("wvhsrjvh", item);
         return check;
       }
       if (value[when] === is) return true;
@@ -111,9 +109,8 @@ export const fetchMembers = (when, values) => {
 };
 export const performValidations = (validate, values, name) => {
   const validationArray = Object.keys(validate);
-console.log("sgvnnv",validate, values, name)
+  console.log("sgvnnv", validate, values, name);
   for (let i = 0; i < validationArray.length; ++i) {
-    
     let result = validationIndex[validationArray[i]](
       validate[validationArray[i]],
       values,
@@ -150,7 +147,7 @@ const checkValue = (str, max) => {
   return str;
 };
 export const checkAllow = (type, event, eventType) => {
-  console.log("sgbsjkk",event)
+  console.log("sgbsjkk", event);
 
   // if (type === "address" && eventType === "down") {
   //   let key = event.keyCode;
