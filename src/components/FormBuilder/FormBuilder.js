@@ -443,14 +443,7 @@ const FormBuilder = ({
             if (!Comp) {
               alert("Type :" + item.type + "Not found");
               return <></>;
-            } else if (
-              !item.visibleOn
-                ? true
-                : Object.keys(item.visibleOn).some(
-                    (i) => item.visibleOn[i] === values[i]
-                  )
-            )
-              return (
+            } return (
                 <>
 
                   {renderField(item, values) && (
