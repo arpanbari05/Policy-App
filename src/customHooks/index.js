@@ -604,7 +604,9 @@ export function useUpdateMembers() {
 export function useCart() {
   const dispatch = useDispatch();
   const { data } = useGetCartQuery();
-const {discounted_total_premium} = data;
+
+  // const { discounted_total_premium } = data;
+
   const {
     data: {
       data: { groups },
@@ -617,7 +619,7 @@ const {discounted_total_premium} = data;
     const cartEntry = data?.data?.find(
       cartEntry => cartEntry?.group?.id === parseInt(groupCode),
     );
-console.log("dbndfjlb",data)
+    console.log("dbndfjlb", data);
     if (!cartEntry) return;
 
     const group = groups.find(
@@ -694,7 +696,7 @@ console.log("dbndfjlb",data)
     updateCartEntry,
     updateCart,
     getNextGroupProduct,
-    discounted_total_premium
+    discounted_total_premium: data?.discounted_total_premium,
   };
 }
 
