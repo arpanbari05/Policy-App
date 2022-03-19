@@ -20,6 +20,7 @@ import {
   figureToWords,
   getDiscountAmount,
   getDisplayPremium,
+  premiumWithAddons,
 } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
@@ -33,6 +34,7 @@ import {
   useTheme,
   useToggle,
   useUpdateGroupMembers,
+  useAddOns,
   useUrlEnquiry,
 } from "../../../customHooks";
 import {
@@ -862,13 +864,14 @@ function TotalPremium({ groupCode, ...props }) {
     additionalDiscounts,
   });
 
-  const { netPremium, tenure } = cartEntry;
+  const { netPremium, tenure, addons } = cartEntry;
 
+  
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
-  const displayNetPremium = `${amount(netPremium)} / ${
-    tenure === 1 ? "Year" : `${tenure} Years`
-  }`;
+  const displayNetPremium = `${amount(
+    premiumWithAddons(netPremium, addons),
+  )} / ${tenure === 1 ? "Year" : `${tenure} Years`}`;
 
   return (
     <div
@@ -1357,9 +1360,11 @@ const ReviewCart = ({ groupCode, unEditable }) => {
   const [reviewCartPopup, setReviewCartPopup] = useState(false);
 
   const cart = useSelector(state => state.cart);
+
   const displayPlanType_code = useSelector(
     state => state.quotePage.filters.planType,
   );
+
   const existingPlanType = useSelector(
     state => state.quotePage.filters.planType,
   );
