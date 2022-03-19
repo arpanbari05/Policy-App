@@ -351,6 +351,7 @@ function RiderOption({
   ...props
 }) {
   const { colors } = useTheme();
+  
   const handleChange = evt => {
     onChange && onChange({ key, options, selected: evt.target.value });
   };
