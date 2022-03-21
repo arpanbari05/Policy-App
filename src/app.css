@@ -866,13 +866,20 @@ select {
   text-align: left !important;
   pointer-events: none;
   animation: none;
+  font-size: 0.75rem;
 }
 
+@media (max-width: 400px) {
+  .tooltip-inner {
+    font-size: .70rem;
+  }
+}
 @media (min-width: 767px) {
   .tooltip-inner {
     animation: moveToRight 0.3s;
   }
 }
+
 
 @keyframes moveToBottom {
   from {
@@ -901,15 +908,15 @@ h6 {
   margin: 0;
 }
 
-.back_btn_navbar{
+.back_btn_navbar {
   width: 20px;
-    height: 20px;
-    background: #ececec;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 100%;
-    margin-right: 10px;
-    font-size: 15px;
-    font-weight: 900;
+  height: 20px;
+  background: #ececec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  margin-right: 10px;
+  font-size: 15px;
+  font-weight: 900;
 }

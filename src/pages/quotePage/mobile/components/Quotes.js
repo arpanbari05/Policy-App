@@ -380,7 +380,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
           <div>
             <div
               css={`
-                font-size: 0.75rem;
+                font-size: 0.85rem;
                 font-weight: 900;
               `}
             >
@@ -390,7 +390,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
               <>
                 <div
                   css={`
-                    font-size: 0.73rem;
+                    font-size: 0.79rem;
                   `}
                 >
                   Deductible:
@@ -409,7 +409,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
                 </div>
                 <div
                   css={`
-                    font-size: 0.73rem;
+                    font-size: 0.79rem;
                   `}
                 >
                   Cover:
@@ -432,7 +432,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
               <>
                 <div
                   css={`
-                    font-size: 0.73rem;
+                    font-size: 0.79rem;
                   `}
                 >
                   Cover:
@@ -459,7 +459,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
             quote={quote}
             className="px-3"
             css={`
-              font-size: 0.79rem;
+              font-size: 13px;
               width: 7.3em;
               margin-left: 0.6em;
             `}
@@ -514,9 +514,13 @@ function QuoteFeature({ feature, index, onNavigate }) {
     <div
       className="px-1 d-flex"
       css={`
-        font-size: 0.65rem;
+        font-size: 0.75rem;
         :not(:last-child) {
           border-right: 1px solid ${colors.border.one};
+        }
+
+        @media (max-width: 400px) {
+          font-size: .70rem;
         }
       `}
     >
