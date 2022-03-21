@@ -1824,3 +1824,49 @@ export const useRevisedPremiumModal = () => {
     isOn: revisedPremiumPopupToggle.isOn,
   };
 };
+
+export const useDD = ({ initialValue = {}, required, errorLabel }) => {
+  const [value, setValue] = useState(initialValue);
+
+  const [isValueInputTouched, setIsValueInputTouched] = useState(false);
+
+  const [error, setError] = useState({});
+
+  const isValueValid = !error?.message;
+
+  const showError = isValueInputTouched && !isValueValid;
+
+  const ddErrorThrowingValidations = useCallback(
+    (value, setError) => {
+      //? Only validates if required.
+      if (required) {
+        if (!Object.keys(value).length) {
+          return setError({ message: `Please select a ${errorLabel}.` });
+        }
+        return setError({});
+      }
+      return setError({});
+    },
+    [value],
+  );
+
+  useEffect(() => {
+    ddErrorThrowingValidations(value, setError);
+  }, [value, setError, ddErrorThrowingValidations]);
+
+  const valueInputTouchedHandler = () => setIsValueInputTouched(true);
+
+  const valueChangeHandler = (label, value) => {
+    const updatedValue = { code: value, display_name: label };
+    setValue(updatedValue);
+  };
+
+  return {
+    value,
+    error,
+    showError,
+    isValueValid,
+    shouldShowError: valueInputTouchedHandler,
+    onChange: valueChangeHandler,
+  };
+};
