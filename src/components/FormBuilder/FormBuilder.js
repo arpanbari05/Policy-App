@@ -96,19 +96,22 @@ const FormBuilder = ({
 
   // for auto populate self data when nominee relation is self
   useEffect(() => {
+
     if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
+    let nomineeRelation = values.nominee_relation;
+
       let dataForAutopopulate;
-      if (values.nominee_relation === "self") {
+      if (nomineeRelation === "self") {
         dataForAutopopulate = {
           ...proposalDetails,
           ...(insuredDetails ? insuredDetails["self"] : {}),
         };
-      } else if (insuredDetails[values.nominee_relation]) {
-        dataForAutopopulate = insuredDetails[values.nominee_relation];
+      } else if (insuredDetails[nomineeRelation]) {
+        dataForAutopopulate = insuredDetails[nomineeRelation];
         let groupIdOfmember =
           memberGroupsAsPerMembers[
             Object.keys(memberGroupsAsPerMembers).find(key =>
-              key.includes(values.nominee_relation),
+              key.includes(nomineeRelation),
             )
           ];
         let memberDetailsInProposerD = Object.keys(proposalDetails)
@@ -117,7 +120,7 @@ const FormBuilder = ({
 
         dataForAutopopulate = {
           ...memberDetailsInProposerD,
-          ...insuredDetails[values.nominee_relation],
+          ...insuredDetails[nomineeRelation],
         };
       }
 
@@ -137,7 +140,7 @@ const FormBuilder = ({
           acc[name] = dataForAutopopulate[nameWithoutNominee];
       });
 
-      setValues({...acc,nominee_relation: values.nominee_relation});
+      setValues({...acc,nominee_relation: nomineeRelation});
       setNomineeRelationAutopopulated(true)
     } 
   }, [values.nominee_relation]);
