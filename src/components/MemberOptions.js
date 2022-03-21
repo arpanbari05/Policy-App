@@ -183,7 +183,7 @@ export function MemberOptions({
           gender={gender}
           setServerError={setServerError}
         >
-          {(member.multiple && member.isSelected && showCounter) && (
+          {member.multiple && member.isSelected && showCounter && (
             <Counter
               onDecrement={() => {
                 handleCounterDecrement(member, index);
@@ -218,6 +218,7 @@ function MemberOption({
   const handleChange = evt => {
     const { checked } = evt.target;
 
+    console.log(member.age);
     onChange &&
       onChange({
         ...member,
