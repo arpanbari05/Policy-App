@@ -35,6 +35,8 @@ const FormBuilder = ({
   lastName,
   isInsuredDetails,
   proposalData,
+  canProceed,
+  yesSelected,
 }) => {
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -72,6 +74,8 @@ const FormBuilder = ({
     setNoForAll,
     formName,
     insuredDetails,
+    canProceed,
+    yesSelected
   );
 
   const [trigger, setTrigger] = useState(false);
@@ -242,6 +246,7 @@ const FormBuilder = ({
                                   <Wrapper
                                     key={index + member + innerItem.name}
                                     width={innerItem.width}
+                                    id={innerItem.parent+member+innerItem.name}
                                     medical
                                   >
                                     <Comp
@@ -452,7 +457,7 @@ const FormBuilder = ({
                 <>
 
                   {renderField(item, values) && (
-                    <Wrapper key={index + item.name} width={item.width}>
+                    <Wrapper key={index + item.name} id={item.name} width={item.width}>
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}

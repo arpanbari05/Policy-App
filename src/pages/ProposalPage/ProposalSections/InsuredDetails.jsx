@@ -14,6 +14,7 @@ import "styled-components/macro";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
+import { date } from "yup";
 
 const InsuredDetails = ({
   schema,
@@ -69,6 +70,8 @@ const InsuredDetails = ({
 
   const fullName = proposalData["Proposer Details"]?.name;
 
+  console.log("sfglknsflv",canProceed,noForAll)
+
   return (
     <div>
       {Object.keys(schema).map((item, index) => {
@@ -117,6 +120,7 @@ const InsuredDetails = ({
                       <Checkbox2
                         showTitle={false}
                         title={"No" + item}
+                        
                         //value={noForAll[item]}
                         checked={noForAll[item]}
                         onChange={e => {
@@ -132,6 +136,7 @@ const InsuredDetails = ({
 
                   {!noForAll[item] && !yesSelected[item] && (
                     <p
+                    id={item}
                       css={`
                         display: flex;
                         font-size: 12px;
@@ -155,6 +160,7 @@ const InsuredDetails = ({
                   lastName={fullName?.split(" ").slice(-1)}
                   schema={schema[item]}
                   components={components}
+                  
                   fetchValues={res => {
                     setValues({ ...values, [item]: res });
                   }}
@@ -173,6 +179,8 @@ const InsuredDetails = ({
                   submitTrigger={submit}
                   noForAll={noForAll[item]}
                   proposalData={proposalData}
+                  canProceed={!yesSelected[item]?canProceed:""}
+                  yesSelected={yesSelected}
                   setNoForAll={value => {
                     setNoForAll({ ...noForAll, [item]: value });
                   }}
@@ -195,7 +203,7 @@ const InsuredDetails = ({
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
-
+            name === "Medical Details" && checkCanProceed()
             if (name === "Medical Details" && canProceed.canProceed) {
               setSubmit("PARTIAL");
               continueSideEffects();
