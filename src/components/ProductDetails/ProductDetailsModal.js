@@ -63,7 +63,7 @@ function ProductDetailsModal({
   defaultActiveKey = "plan-details",
   defaultActiveKeyMobile = "mobile-plan-details",
   ...props
-}) {  
+}) {
   const handleClose = () => onClose && onClose();
 
   const { selectedRiders, ...ridersSlot } = useRidersSlot();
@@ -74,7 +74,7 @@ function ProductDetailsModal({
       className="noPadding"
       onHide={handleClose}
       dialogClassName="m-0 mw-100 "
-      contentClassName="border-0 rounded-0"
+      contentClassName="border-0 rounded-0 pb-5"
       {...props}
     >
       <Modal.Body
@@ -109,7 +109,9 @@ function ProductDetailsModal({
               <RenderPlanDetails quote={quote} />
             </Tab>
             <Tab eventKey="add-on-coverages" title="Add-on Coverages">
-              <RidersSection quote={quote} {...ridersSlot} />
+              <DetailsSectionWrap>
+                <RidersSection quote={quote} {...ridersSlot} />
+              </DetailsSectionWrap>
             </Tab>
             <Tab eventKey="cashless-hospitals" title="Cashless Hospitals">
               <CashlessHospitals quote={quote} />

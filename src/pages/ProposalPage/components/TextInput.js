@@ -95,9 +95,34 @@ const TextInput = ({
         required={required || undefined}
         onChange={e => {
           setChanged(true);
-          if (checkAllChar(e.target.value, forbiddedSymbols)) {
+          if (checkValidation && checkValidation["matches"] === "address") {
+            let acceptedSpecialChar = ['"', ".", "-", ",","#","&","/"];
+            if (
+              checkAllChar(
+                e.target.value,
+                forbiddedSymbols.filter(el => !acceptedSpecialChar.includes(el)),
+              )
+            ) {
+              onChange(e);
+              setFallbackValue(e.target.value);
+            }
+          }else if(checkValidation["matches"] === "name"){
+            let acceptedSpecialChar = ["."];
+            if (
+              checkPreviousChar(e.target.value, " ") &&
+              checkPreviousChar(e.target.value, ".") &&
+              checkAllChar(
+                e.target.value,
+                forbiddedSymbols.filter(el => !acceptedSpecialChar.includes(el)),
+              )
+            ) {
+              onChange(e);
+              setFallbackValue(e.target.value);
+            }
+          }else if (checkAllChar(e.target.value, forbiddedSymbols)) {
             if (checkValidation?.matches === "onlyDigits") {
               let reg = new RegExp("^[0-9]*$");
+
               if (reg.test(e.target.value)) {
                 onChange(e);
                 setFallbackValue(e.target.value);
@@ -137,13 +162,13 @@ const TextInput = ({
               setFallbackValue(e.target.value);
             }
           } else if (
-            checkValidation?.["matches"] === "alphanum" ||
-            checkValidation?.["matches"] === "name" ||
-            checkValidation?.["matches"] === "pan" ||
-            checkValidation?.["matches"] === "onlyDigits" ||
-            checkValidation?.["matches"] === "address" ||
-            (checkValidation?.["matches"] &&
-              checkValidation?.["matches"].includes("mobile"))
+            checkValidation &&
+            (checkValidation["matches"] === "alphanum" ||
+            checkValidation["matches"] === "pan" ||
+            checkValidation["matches"] === "onlyDigits" ||
+            checkValidation["matches"] === "annIncome" ||
+            (checkValidation["matches"] &&
+              checkValidation["matches"].includes("mobile")))
           ) {
             if (
               checkPreviousChar(e.target.value, " ") &&
@@ -193,7 +218,7 @@ const TextInput = ({
         }}
         onInput={onInput}
         onKeyDown={onKeyDown}
-        value={isChanged ? fallbackValue : value?value:""}
+        value={isChanged ? fallbackValue : value ? value : ""}
         onKeyPress={onKeyPress}
         maxLength={name === "name" ? 60 : maxLength}
         textTransform={textTransform}
@@ -202,10 +227,11 @@ const TextInput = ({
         defaultValue={defaultValue}
       />
 
-      <Label>{checkValidation?.required && label ? `${label}*` : label || ""}</Label>
-     
-          <p className="formbuilder__error">{error}</p>
-      
+      <Label>
+        {checkValidation?.required && label ? `${label}*` : label || ""}
+      </Label>
+
+      <p className="formbuilder__error">{error}</p>
     </InputContainer>
   );
 };

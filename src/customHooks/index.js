@@ -605,6 +605,8 @@ export function useCart() {
   const dispatch = useDispatch();
   const { data } = useGetCartQuery();
 
+  // const { discounted_total_premium } = data;
+
   const {
     data: {
       data: { groups },
@@ -617,7 +619,7 @@ export function useCart() {
     const cartEntry = data?.data?.find(
       cartEntry => cartEntry?.group?.id === parseInt(groupCode),
     );
-
+    console.log("dbndfjlb", data);
     if (!cartEntry) return;
 
     const group = groups.find(
@@ -694,6 +696,7 @@ export function useCart() {
     updateCartEntry,
     updateCart,
     getNextGroupProduct,
+    discounted_total_premium: data?.discounted_total_premium,
   };
 }
 
@@ -1477,12 +1480,16 @@ export function useCompareFeature(compareQuote) {
 
 export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
   const { journeyType } = useFrontendBoot();
+
   const getRidersQueryParams = {
     sum_insured: quote?.sum_insured,
     tenure: quote?.tenure,
     productId: quote?.product.id,
     group: parseInt(groupCode),
     journeyType,
+    additionalUrlQueries:
+      queryOptions?.getRidersQueryParams?.additionalUrlQueries,
+    selected_riders: queryOptions?.getRidersQueryParams?.selected_riders,
     ...queryOptions,
   };
 
@@ -1504,7 +1511,7 @@ function isMandatoryRider(rider) {
 function getRiderOptionsQueryString(riders = []) {
   const riderOptionsQueryString = riders.reduce(
     (urlQueries, rider) =>
-      rider.options_selected
+      rider?.options_selected
         ? urlQueries.concat(
             Object.keys(rider.options_selected)
               .map(
@@ -1561,6 +1568,7 @@ export function useRiders({
   useEffect(() => setRiders(getInititalRiders), [getInititalRiders]);
 
   const { feature_options } = useSelector(({ cart }) => cart);
+
   const findLocalRider = riderToFind =>
     riders.find(rider => rider.id === riderToFind.id);
 
@@ -1638,7 +1646,7 @@ export function useRiders({
 
     setRiders(riders => {
       let updatedRiders = riders.map(rider =>
-        rider.id === changedRider.id ? changedRider : rider,
+        rider?.id === changedRider?.id ? changedRider : rider,
       );
 
       updatedRiders = updatedRiders.filter(updatedRider =>
@@ -1771,7 +1779,7 @@ export const useShareFunctionality = (desktopPageId, mobilePageId) => {
   return { imageSend, imageSendM, download };
 };
 
-export const useRenewalPremiumModal = () => {
+export const useRevisedPremiumModal = () => {
   const { cartEntries } = useCart();
 
   const revisedPremiumPopupToggle = useToggle();
@@ -1824,5 +1832,51 @@ export const useRenewalPremiumModal = () => {
       revisedPremiumPopupToggle.off();
     },
     isOn: revisedPremiumPopupToggle.isOn,
+  };
+};
+
+export const useDD = ({ initialValue = {}, required, errorLabel }) => {
+  const [value, setValue] = useState(initialValue);
+
+  const [isValueInputTouched, setIsValueInputTouched] = useState(false);
+
+  const [error, setError] = useState({});
+
+  const isValueValid = !error?.message;
+
+  const showError = isValueInputTouched && !isValueValid;
+
+  const ddErrorThrowingValidations = useCallback(
+    (value, setError) => {
+      //? Only validates if required.
+      if (required) {
+        if (!Object.keys(value).length) {
+          return setError({ message: `Please select a ${errorLabel}.` });
+        }
+        return setError({});
+      }
+      return setError({});
+    },
+    [value],
+  );
+
+  useEffect(() => {
+    ddErrorThrowingValidations(value, setError);
+  }, [value, setError, ddErrorThrowingValidations]);
+
+  const valueInputTouchedHandler = () => setIsValueInputTouched(true);
+
+  const valueChangeHandler = (label, value) => {
+    const updatedValue = { code: value, display_name: label };
+    setValue(updatedValue);
+  };
+
+  return {
+    value,
+    error,
+    showError,
+    isValueValid,
+    shouldShowError: valueInputTouchedHandler,
+    onChange: valueChangeHandler,
   };
 };
