@@ -1591,9 +1591,18 @@ export function useRiders({
     getRidersQueryParams.selected_riders = affectsOtherRiders;
 
   const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
-
+  let optionsSelected = {};
+  riders.forEach(rider => {
+    if (rider.options_selected) {
+      optionsSelected = {
+        ...optionsSelected,
+        ...rider.options_selected
+      }
+    }
+  });
+  const options_query = Object.keys(optionsSelected).map(opt => `${opt}=${optionsSelected[opt]}`).join("&");
   const query = useGetRiders(quote, groupCode, {
-    queryOptions: { getRidersQueryParams, feature_options, selected_riders },
+    queryOptions: { getRidersQueryParams, feature_options, selected_riders, options_query },
   });
 
   const { data } = query;
@@ -1654,8 +1663,7 @@ export function useRiders({
       quote?.product?.company?.alias === "reliance_general"
         ? riders.sort((a, b) => a.total_premium - b.total_premium)
         : riders
-            .filter(rider => rider.total_premium > 0)
-            .sort((a, b) => a.total_premium - b.total_premium),
+            .filter(rider => rider.total_premium > 0),
     handleChange,
     getInititalRiders,
   };
@@ -1801,7 +1809,8 @@ export const useRevisedPremiumModal = () => {
       revisedPremiumPopupToggle.off();
     }
 
-    if (+prevTotalPremium !== +updatedTotalPremium) {
+    // if (+prevTotalPremium !== +updatedTotalPremium) {
+    if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
       revisedPremiumPopupToggle.on();
     }
   }, [
@@ -1822,5 +1831,51 @@ export const useRevisedPremiumModal = () => {
       revisedPremiumPopupToggle.off();
     },
     isOn: revisedPremiumPopupToggle.isOn,
+  };
+};
+
+export const useDD = ({ initialValue = {}, required, errorLabel }) => {
+  const [value, setValue] = useState(initialValue);
+
+  const [isValueInputTouched, setIsValueInputTouched] = useState(false);
+
+  const [error, setError] = useState({});
+
+  const isValueValid = !error?.message;
+
+  const showError = isValueInputTouched && !isValueValid;
+
+  const ddErrorThrowingValidations = useCallback(
+    (value, setError) => {
+      //? Only validates if required.
+      if (required) {
+        if (!Object.keys(value).length) {
+          return setError({ message: `Please select a ${errorLabel}.` });
+        }
+        return setError({});
+      }
+      return setError({});
+    },
+    [value],
+  );
+
+  useEffect(() => {
+    ddErrorThrowingValidations(value, setError);
+  }, [value, setError, ddErrorThrowingValidations]);
+
+  const valueInputTouchedHandler = () => setIsValueInputTouched(true);
+
+  const valueChangeHandler = (label, value) => {
+    const updatedValue = { code: value, display_name: label };
+    setValue(updatedValue);
+  };
+
+  return {
+    value,
+    error,
+    showError,
+    isValueValid,
+    shouldShowError: valueInputTouchedHandler,
+    onChange: valueChangeHandler,
   };
 };
