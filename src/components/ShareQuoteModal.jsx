@@ -25,6 +25,8 @@ const ShareCTA = ({ onClick, loader }) => {
       loader={loader}
       onClick={onClick}
       css={`
+        border-radius: 5px;
+        height: 55px;
         min-width: 105px;
         max-width: 105px;
         ${mobile} {
@@ -160,18 +162,22 @@ const ShareQuoteModal = ({
           <Modal.Body>
             {shareQuotes && (
               <Flex gap={"5rem"}>
-                <StepWrapper onClick={() => setStep(1)}>
-                  <Step active={step === 1} color={PrimaryColor}>
+                <StepWrapper
+                  onClick={() => setStep(1)}
+                  active={step === 1}
+                  color={PrimaryColor}
+                >
+                  {/* <Step active={step === 1} color={PrimaryColor}>
                     1
-                  </Step>
-                  <span>Select plans</span>
+                  </Step> */}
+                  <span>1. Select plans</span>
                 </StepWrapper>
 
-                <StepWrapper>
-                  <Step active={step === 2} color={PrimaryColor}>
+                <StepWrapper active={step === 2} color={PrimaryColor}>
+                  {/* <Step active={step === 2} color={PrimaryColor}>
                     2
-                  </Step>
-                  <span>Share via</span>
+                  </Step> */}
+                  <span>2. Share via</span>
                 </StepWrapper>
               </Flex>
             )}
@@ -404,7 +410,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
       scrollY: -window.scrollY,
       allowTaint: true,
       useCORS: true,
-      scale: .9,
+      scale: 0.9,
     }).then(canvas => {
       const imgData = canvas.toDataURL("image/png");
       console.log(imgData);
@@ -509,11 +515,11 @@ function ShareStep2({
     }
   };
 
-  const handleEmailCheck = (e) => {
+  const handleEmailCheck = e => {
     if (e.target.value.length <= 50) {
       setEmail(e.target.value);
     }
-  }
+  };
 
   const handleSendViaEmail = e => {
     e.preventDefault();
@@ -572,7 +578,7 @@ function ShareStep2({
       `}
     >
       <ShareOption
-        className="d-flex align-items-center justify-content-between  mb-3 overflow-hidden"
+        className="d-flex align-items-center justify-content-between  mb-3"
         PrimaryColor={PrimaryColor}
       >
         <div className="d-flex align-items-center position-relative w-100">
@@ -594,7 +600,7 @@ function ShareStep2({
       </ShareOption>
 
       <ShareOption
-        className="d-flex mb-3 align-items-center justify-content-between overflow-hidden"
+        className="d-flex mb-3 align-items-center justify-content-between"
         PrimaryColor={PrimaryColor}
       >
         <div className="d-flex align-items-center">
@@ -624,7 +630,7 @@ function ShareStep2({
       </ShareOption>
 
       <ShareOption
-        className="d-flex mb-3 align-items-center justify-content-between overflow-hidden"
+        className="d-flex mb-3 align-items-center justify-content-between"
         PrimaryColor={PrimaryColor}
       >
         <div className="d-flex align-items-center">
@@ -867,10 +873,28 @@ const ShareFooterBtn = styled.div`
 `;
 
 const StepWrapper = styled.div`
+  position: relative;
   display: flex;
+  padding: 10px 0;
   gap: 5px;
   align-items: center;
   cursor: pointer;
+  font-weight: bold;
+  color: ${props => (props.active ? props.color : "#777")};
+  ${props =>
+    props.active &&
+    `
+    &::before {
+      content: "";
+      height: 4px;
+      width: 100%;
+      background-color: ${props.color};
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      border-radius: 20px 20px 0 0;
+    }
+  `}
 `;
 
 const Step = styled.div`
@@ -893,4 +917,9 @@ const Flex = styled.div`
   justify-content: center;
   gap: ${props => props.gap || "10px"};
   margin-bottom: 15px;
+  width: calc(100% + 2rem);
+  margin-left: -1rem;
+  margin-top: -1rem;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
 `;

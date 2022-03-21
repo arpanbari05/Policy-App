@@ -1583,8 +1583,18 @@ export function useRiders({
     getRidersQueryParams.selected_riders = affectsOtherRiders;
 
   const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
+  let optionsSelected = {};
+  riders.forEach(rider => {
+    if (rider.options_selected) {
+      optionsSelected = {
+        ...optionsSelected,
+        ...rider.options_selected
+      }
+    }
+  });
+  const options_query = Object.keys(optionsSelected).map(opt => `${opt}=${optionsSelected[opt]}`).join("&");
   const query = useGetRiders(quote, groupCode, {
-    queryOptions: { getRidersQueryParams, feature_options, selected_riders, },
+    queryOptions: { getRidersQueryParams, feature_options, selected_riders, options_query },
   });
 
   const { data } = query;
@@ -1792,7 +1802,8 @@ export const useRenewalPremiumModal = () => {
       revisedPremiumPopupToggle.off();
     }
 
-    if (+prevTotalPremium !== +updatedTotalPremium) {
+    // if (+prevTotalPremium !== +updatedTotalPremium) {
+    if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
       revisedPremiumPopupToggle.on();
     }
   }, [
