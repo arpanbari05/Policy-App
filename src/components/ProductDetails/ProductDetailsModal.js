@@ -74,7 +74,7 @@ function ProductDetailsModal({
       className="noPadding"
       onHide={handleClose}
       dialogClassName="m-0 mw-100 "
-      contentClassName="border-0 rounded-0"
+      contentClassName="border-0 rounded-0 pb-5"
       {...props}
     >
       <Modal.Body
