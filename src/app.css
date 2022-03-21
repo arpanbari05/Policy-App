@@ -866,12 +866,11 @@ select {
   text-align: left !important;
   pointer-events: none;
   animation: none;
-  font-size: 0.75rem;
 }
 
 @media (max-width: 400px) {
   .tooltip-inner {
-    font-size: .70rem;
+    font-size: 11px;
   }
 }
 @media (min-width: 767px) {

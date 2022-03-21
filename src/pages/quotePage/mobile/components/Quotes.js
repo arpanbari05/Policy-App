@@ -520,7 +520,7 @@ function QuoteFeature({ feature, index, onNavigate }) {
         }
 
         @media (max-width: 400px) {
-          font-size: .70rem;
+          font-size: 11px;
         }
       `}
     >

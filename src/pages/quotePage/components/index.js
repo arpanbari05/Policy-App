@@ -58,17 +58,15 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
           css={`
             font-size: 0.89rem;
             font-weight: 900;
-            width: 75px;
-            white-space: nowrap;
-            overflow: hidden !important;
-            text-overflow: ellipsis;
 
             ${quote.product.name.length > 30 && "font-size: 0.72rem;"}
 
             @media (max-width: 480px) {
-              font-size: ${quote.product.name.length > 30
-                ? "0.69rem;"
-                : "0.82rem;"};
+              font-size: .69rem;
+              width: 75px;
+              white-space: nowrap;
+              overflow: hidden !important;
+              text-overflow: ellipsis;
             }
           `}
         >

@@ -197,7 +197,6 @@ export const api = createApi({
         group,
         selected_riders = [],
         additionalUrlQueries = "",
-        options_query,
         feature_options,
         journeyType = "health",
       }) => {
@@ -222,10 +221,6 @@ export const api = createApi({
             featureOptionsQuery.push(`${key}=${feature_options[key]}`);
           })
           url = url.concat(`&${featureOptionsQuery.join("&")}`);
-        }
-
-        if (options_query) {
-          url = url.concat(`${options_query}`);
         }
 
         return {

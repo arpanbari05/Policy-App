@@ -1663,8 +1663,7 @@ export function useRiders({
       quote?.product?.company?.alias === "reliance_general"
         ? riders.sort((a, b) => a.total_premium - b.total_premium)
         : riders
-            .filter(rider => rider.total_premium > 0)
-            .sort((a, b) => a.total_premium - b.total_premium),
+            .filter(rider => rider.total_premium > 0),
     handleChange,
     getInititalRiders,
   };
