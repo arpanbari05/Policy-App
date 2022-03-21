@@ -59,6 +59,7 @@ function Quotes({ sortBy = "relevence", ...props }) {
         <QuoteCards
           key={insurersQuotes.company_alias}
           quotesData={insurersQuotes.data}
+          cashlessHospitalsCount={insurersQuotes.cashless_hospitals_count}
           compare={quotesCompare}
           sortBy={sortBy}
         />

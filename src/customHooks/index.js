@@ -167,14 +167,15 @@ export function useTheme() {
     },
   } = useGetFrontendBootQuery();
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = useSelector(state => state.frontendBoot.theme);
   return {
     ...styles,
     colors: {
       ...styles.colors,
-      primary_color,
-      primary_shade,
-      secondary_color,
-      secondary_shade,
+      primary_color: PrimaryColor || primary_color,
+      primary_shade: PrimaryShade || primary_shade,
+      secondary_color: SecondaryColor || secondary_color,
+      secondary_shade: SecondaryShade || secondary_shade,
     },
   };
 }
@@ -913,8 +914,8 @@ export function useGetQuotes(queryConfig = {}) {
   if (data) {
     data = data.map(insurerQuotes => {
       return {
-        ...insurerQuotes,
-        data: { data: filterQuotes(insurerQuotes.data.data) },
+        ...insurerQuotes.data,
+        data: { ...insurerQuotes, data: filterQuotes(insurerQuotes.data.data) },
       };
     });
   }
@@ -1596,13 +1597,20 @@ export function useRiders({
     if (rider.options_selected) {
       optionsSelected = {
         ...optionsSelected,
-        ...rider.options_selected
-      }
+        ...rider.options_selected,
+      };
     }
   });
-  const options_query = Object.keys(optionsSelected).map(opt => `${opt}=${optionsSelected[opt]}`).join("&");
+  const options_query = Object.keys(optionsSelected)
+    .map(opt => `${opt}=${optionsSelected[opt]}`)
+    .join("&");
   const query = useGetRiders(quote, groupCode, {
-    queryOptions: { getRidersQueryParams, feature_options, selected_riders, options_query },
+    queryOptions: {
+      getRidersQueryParams,
+      feature_options,
+      selected_riders,
+      options_query,
+    },
   });
 
   const { data } = query;
@@ -1662,8 +1670,7 @@ export function useRiders({
     riders:
       quote?.product?.company?.alias === "reliance_general"
         ? riders.sort((a, b) => a.total_premium - b.total_premium)
-        : riders
-            .filter(rider => rider.total_premium > 0),
+        : riders.filter(rider => rider.total_premium > 0),
     handleChange,
     getInititalRiders,
   };
