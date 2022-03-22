@@ -5,16 +5,36 @@ import { ErrorMessage, Title } from "./FormComponents";
 import {
   useCompanies,
   useCreateEnquiry,
+  useDD,
+  useFrontendBoot,
   usePolicyNumberInput,
 } from "../../../customHooks";
 import { getReactSelectOption } from "../../../utils/helper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextInput2 from "../../../components/TextInput2";
 import { Button } from "../../../components";
 import DropDown2 from "../../../components/DropDown2";
+import { useUpdateRenewalQueryMutation } from "../../../api/api";
+import { useHistory } from "react-router-dom";
 
 const RenewalDetailsForm = ({ ...props }) => {
   const { companies } = useCompanies();
+
+  const history = useHistory();
+
+  const { journeyType } = useFrontendBoot();
+
+  const [updateRenewalQuery, { data, isLoading, isSuccess }] =
+    useUpdateRenewalQueryMutation();
+
+  useEffect(() => {
+    isSuccess &&
+      history.push(
+        `/productdetails/${data?.data?.groups[0]?.id}?enquiryId=${data?.data?.enquiry_id}`,
+      );
+  }, [isSuccess]);
+
+  const renewalEnquiriesLoading = isLoading;
 
   const icArray = Object.values(companies).map(singleIC => ({
     display_name: singleIC.name,
@@ -22,34 +42,40 @@ const RenewalDetailsForm = ({ ...props }) => {
     provideRenewal: true, //<Temporarily true>,
   }));
 
-  const [selectedRenewalIc, setSelectedRenewalIc] = useState();
-  const [isRenewalIcDDWasTouched, setIsRenewalIcDDWasTouched] = useState(false);
-  const isRenewalICValid = selectedRenewalIc !== undefined;
-  const showRenewalIcDDError = isRenewalIcDDWasTouched && !isRenewalICValid;
+  const {
+    isValueValid: isSelectedIcValid,
+    showError: showIcError,
+    error: icError,
+    ...icDdUtils
+  } = useDD({
+    initialValue: {},
+    required: true,
+    errorLabel: "Insurance Company",
+  });
 
   const [policyNumberError, setPolicyNumberErrors] = useState({});
 
   const policyNumberInput = usePolicyNumberInput(
     "",
     setPolicyNumberErrors,
-    icArray.find(singleIC => singleIC?.code === selectedRenewalIc?.code),
+    icArray.find(singleIC => singleIC?.code === icDdUtils?.value?.code),
   );
 
   const [createEnquiryQuery] = useCreateEnquiry();
 
   function submit(renewalIC, policyNumber) {
-    if (!renewalIC || !policyNumber) return;
+    if (!isSelectedIcValid || !policyNumber) return;
+
+    updateRenewalQuery({
+      company_alias: renewalIC?.code,
+      policy_no: policyNumber,
+    });
     //<New SUBMIT api call>.then(()=><Redirection>)
   }
 
   const handleSubmit = e => {
     e.preventDefault();
-    submit(selectedRenewalIc, policyNumberInput.value);
-  };
-
-  const handleRenewalICChange = (label, value) => {
-    const updatedRenewalIc = { code: value, display_name: label };
-    setSelectedRenewalIc(updatedRenewalIc);
+    submit(icDdUtils?.value, policyNumberInput.value);
   };
 
   return (
@@ -69,25 +95,21 @@ const RenewalDetailsForm = ({ ...props }) => {
           <div>
             <DropDown2
               label="Select Insurance Co."
-              value={
-                selectedRenewalIc && getReactSelectOption(selectedRenewalIc)
-              }
-              onChange={handleRenewalICChange}
+              value={getReactSelectOption(icDdUtils?.value)}
+              onChange={icDdUtils?.onChange}
               options={icArray
-                .filter(singleIC => singleIC.provideRenewal)
+                .filter(singleIC => singleIC?.provideRenewal)
                 .map(getReactSelectOption)}
-              onBlur={() => {
-                setIsRenewalIcDDWasTouched(true);
-              }}
+              onBlur={icDdUtils?.shouldShowError}
             />
 
-            {showRenewalIcDDError && (
+            {showIcError && (
               <ErrorMessage
                 css={`
                   margin-bottom: unset;
                 `}
               >
-                {"Please select the insurance company."}
+                {icError?.message}
               </ErrorMessage>
             )}
           </div>
@@ -101,7 +123,6 @@ const RenewalDetailsForm = ({ ...props }) => {
               label="Policy Number"
               name="policy-number"
               type="text"
-              autoComplete={false}
               {...policyNumberInput}
             />
             {policyNumberError?.message && (
@@ -118,8 +139,12 @@ const RenewalDetailsForm = ({ ...props }) => {
           <Button
             type="submit"
             className="w-100"
-            disabled={createEnquiryQuery.isLoading || !selectedRenewalIc || !policyNumberInput?.value}
-            loader={createEnquiryQuery.isLoading}
+            disabled={
+              createEnquiryQuery?.isLoading ||
+              !isSelectedIcValid ||
+              !policyNumberInput?.value
+            }
+            loader={renewalEnquiriesLoading}
           >
             Proceed for Renewal
           </Button>

@@ -853,14 +853,13 @@ function CartSummary({ item, index, groupCode }) {
             </div>
           </>
         )}
-        {item.health_riders.length && showRiders ? (
+        {health_riders.length && showRiders ? (
           <div
             className="row bg_medical_box_row"
             css={`
               // padding: 0 10px;
             `}
           >
-            {console.log("asgehd23", item.health_riders)}
             {health_riders.map(riders => (
               <div
                 css={`

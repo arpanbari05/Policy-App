@@ -105,6 +105,7 @@ console.log("sgjsg",value,label,boolean)
           <div className="row">
             <div className="col-lg-8 col-md-12">
               <Question
+              id={name}
                 className="mb-10 p_propsal_form_r_q_m toggle_question"
                 SecondaryColor={SecondaryColor}
               >
@@ -217,6 +218,7 @@ console.log("sgjsg",value,label,boolean)
                   </Fragment>
                 </>
               ))}
+              
               {!Object.keys(membersStatus).some(i => membersStatus[i]) && (
                 <p
                   className="formbuilder__error position-absolute"

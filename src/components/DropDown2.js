@@ -10,7 +10,7 @@ function DropDown2({ label, value, onChange, options, onBlur }) {
 
   const [filteredOptions, setFilteredOptions] = useState(options);
 
-  const [searchInput, setSearchInput] = useState();
+  const [searchInput, setSearchInput] = useState("");
 
   // SETS SEARCH TEXT INITIALLY AND WHEN ON OPTIONS CLICK
   useEffect(() => {
@@ -18,6 +18,8 @@ function DropDown2({ label, value, onChange, options, onBlur }) {
   }, [value?.label]);
 
   const searchInputChangeHandler = e => {
+    if (!/^[a-zA-Z\s]*$/.test(e.target.value)) return;
+    
     const filterArray = options.filter(singleOption =>
       singleOption?.label.includes(autoCapitalizationHandler(e.target.value)),
     );

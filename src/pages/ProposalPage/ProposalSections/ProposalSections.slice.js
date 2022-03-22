@@ -111,23 +111,35 @@ export const {
 } = proposal.actions;
 const ls = new SecureLS();
 export const saveProposalData = (proposalData, next, failure) => {
-  return async dispatch => {
+  return async (dispatch,state) => {
     try {
       dispatch(setIsLoading(true));
       const response = await saveProposal(proposalData);
       dispatch(api.util.invalidateTags(["ProposalSummaryUpdate"]));
       dispatch(setProposalData(proposalData));
-
+      console.log("dfbjdflb",state())
       //console.log("saveProposalData success", response);
       if (response.statusCode === 200) next(response.data);
       else if (!response.data){
-        dispatch(
-          setShowErrorPopup({
-            show: true,
-            head: "",
-            msg: response.message,
-          })
-        );
+        if (typeof response.errors === "object") {
+          Object.keys(response.errors).map((i) => {
+            dispatch(
+              setShowErrorPopup({
+                show: true,
+                head: i,
+                msg: response.errors[i],
+              })
+            );
+          });
+        } else {
+          dispatch(
+            setShowErrorPopup({
+              show: true,
+              head: "Error",
+              msg: response.message,
+            })
+          );
+        }
       } 
       console.log("bchkadvbchav",response);
     } catch (err) {
@@ -204,6 +216,16 @@ export const submitProposalData = next => {
     } catch (err) {
       console.log("Error occured in submitProposal data");
       console.error(err);
+
+      if(err.message){
+        dispatch(
+          setShowErrorPopup({
+            show: true,
+            head: "",
+            msg: err.message,
+          })
+        );
+      }
       
       // dispatch(setActiveIndex(0));
       // swal(err.message).then(dispatch(setActiveIndex(0)));

@@ -158,7 +158,7 @@ function GroupCard({ group, closeModal, allClose, selectedRiders, ...props }) {
           css={`
             font-weight: bold;
             @media (max-width: 400px) {
-              font-size: 10px !important;
+              font-size: 12px !important;
             }
           `}
         >

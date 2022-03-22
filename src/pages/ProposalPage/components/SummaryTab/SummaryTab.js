@@ -80,7 +80,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
   const normalRender = useCallback((data, i) => {
     if (data.type === "title")
       return <TitleWrapper>{filterUnderscore(data.name)}</TitleWrapper>;
-    if (data.type === "date") {
+    if (data.type === "date" && values?.[data.name]) {
       return (
         <Col
           md={4}
@@ -125,7 +125,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
         </Col>
       );
 
-    return data.type === "text" || data.type === "checkbox" ? (
+    return (data.type === "text" || data.type === "checkbox") && values[data.name] ? (
       <Col
         md={4}
         sm={4}
@@ -187,7 +187,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
     ) {
       return <></>;
     }
-    if (data.type === "date") {
+    if (data.type === "date" && values?.[item]?.[data.name]) {
       return (
         <Col
           md={4}

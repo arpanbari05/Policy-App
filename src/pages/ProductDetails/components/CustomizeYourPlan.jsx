@@ -33,7 +33,7 @@ export function RidersSection({ loaderStop, isProductDetailsPage = false }) {
         loaderStop={loaderStop}
         quote={quote}
         groupCode={groupCode}
-        defaultSelectedRiders={quote.health_riders}
+        defaultSelectedRiders={quote?.health_riders}
         onChange={handleRidersChange}
         isProductDetailsPage={isProductDetailsPage}
       />
@@ -351,6 +351,11 @@ function RiderOption({
   ...props
 }) {
   const { colors } = useTheme();
+
+  useEffect(() => {
+    onChange && onChange({ key, options, selected: options[0] });
+  }, []);
+
   const handleChange = evt => {
     onChange && onChange({ key, options, selected: evt.target.value });
   };
@@ -386,8 +391,8 @@ function RiderOption({
         onChange={handleChange}
       >
         {optionsList.map(option => (
-          <option key={option.code} value={option.code}>
-            {option.display_name}
+          <option key={option.code} value={option?.code}>
+            {option?.display_name}
           </option>
         ))}
       </select>

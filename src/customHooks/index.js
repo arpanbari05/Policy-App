@@ -167,14 +167,15 @@ export function useTheme() {
     },
   } = useGetFrontendBootQuery();
 
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = useSelector(state => state.frontendBoot.theme);
   return {
     ...styles,
     colors: {
       ...styles.colors,
-      primary_color,
-      primary_shade,
-      secondary_color,
-      secondary_shade,
+      primary_color: PrimaryColor || primary_color,
+      primary_shade: PrimaryShade || primary_shade,
+      secondary_color: SecondaryColor || secondary_color,
+      secondary_shade: SecondaryShade || secondary_shade,
     },
   };
 }
@@ -199,7 +200,7 @@ export function useFrontendBoot() {
     journeyType = enquiryData?.data?.section;
   }
 
-  //Uncomment this to switch to renewal journey type
+  //? Uncomment this to switch to renewal journey type
   //journeyType = "renewal";
 
   return {
@@ -218,6 +219,7 @@ export function useFilter() {
       defaultfilters: { cover, tenure, plan_type },
     },
   } = useFrontendBoot();
+
   const {
     data: {
       data: { groups },
@@ -619,7 +621,7 @@ export function useCart() {
     const cartEntry = data?.data?.find(
       cartEntry => cartEntry?.group?.id === parseInt(groupCode),
     );
-    console.log("dbndfjlb", data);
+
     if (!cartEntry) return;
 
     const group = groups.find(
@@ -705,9 +707,12 @@ export function useRider(groupCode) {
 
   function getSelectedRiders() {
     const cartEntry = getCartEntry(groupCode);
-    const { health_riders } = cartEntry;
 
-    return health_riders.filter(rider => rider.total_premium > 0);
+    const { health_riders, top_up_riders } = cartEntry;
+
+    return health_riders?.length
+      ? health_riders.filter(rider => rider.total_premium > 0)
+      : top_up_riders.filter(rider => rider.total_premium > 0);
   }
 
   function replaceRiders(riders = []) {
@@ -913,8 +918,8 @@ export function useGetQuotes(queryConfig = {}) {
   if (data) {
     data = data.map(insurerQuotes => {
       return {
-        ...insurerQuotes,
-        data: { data: filterQuotes(insurerQuotes.data.data) },
+        ...insurerQuotes.data,
+        data: { ...insurerQuotes, data: filterQuotes(insurerQuotes.data.data) },
       };
     });
   }
@@ -1480,12 +1485,16 @@ export function useCompareFeature(compareQuote) {
 
 export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
   const { journeyType } = useFrontendBoot();
+
   const getRidersQueryParams = {
     sum_insured: quote?.sum_insured,
     tenure: quote?.tenure,
     productId: quote?.product.id,
     group: parseInt(groupCode),
     journeyType,
+    additionalUrlQueries:
+      queryOptions?.getRidersQueryParams?.additionalUrlQueries,
+    selected_riders: queryOptions?.getRidersQueryParams?.selected_riders,
     ...queryOptions,
   };
 
@@ -1507,7 +1516,7 @@ function isMandatoryRider(rider) {
 function getRiderOptionsQueryString(riders = []) {
   const riderOptionsQueryString = riders.reduce(
     (urlQueries, rider) =>
-      rider.options_selected
+      rider?.options_selected
         ? urlQueries.concat(
             Object.keys(rider.options_selected)
               .map(
@@ -1550,22 +1559,23 @@ export function useRiders({
   onChange,
   defaultSelectedRiders = [],
 }) {
-  const getInititalRiders = useCallback(() => {
+  const getInitialRiders = useCallback(() => {
     return defaultSelectedRiders.map(rider => ({
       ...rider,
-      id: rider.rider_id,
+      id: rider?.rider_id,
       isSelected: true,
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupCode]);
 
-  const [riders, setRiders] = useState(getInititalRiders);
+  const [riders, setRiders] = useState(getInitialRiders);
 
-  useEffect(() => setRiders(getInititalRiders), [getInititalRiders]);
+  useEffect(() => setRiders(getInitialRiders), [getInitialRiders]); //? a fallback to assign initial-riders
 
   const { feature_options } = useSelector(({ cart }) => cart);
+
   const findLocalRider = riderToFind =>
-    riders.find(rider => rider.id === riderToFind.id);
+    riders.find(rider => rider?.id === riderToFind?.id);
 
   const isRiderSelected = riderToCheck => {
     if (riderToCheck.is_mandatory) return true;
@@ -1586,8 +1596,25 @@ export function useRiders({
     getRidersQueryParams.selected_riders = affectsOtherRiders;
 
   const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
+  let optionsSelected = {};
+  riders.forEach(rider => {
+    if (rider.options_selected) {
+      optionsSelected = {
+        ...optionsSelected,
+        ...rider.options_selected,
+      };
+    }
+  });
+  const options_query = Object.keys(optionsSelected)
+    .map(opt => `${opt}=${optionsSelected[opt]}`)
+    .join("&");
   const query = useGetRiders(quote, groupCode, {
-    queryOptions: { getRidersQueryParams, feature_options, selected_riders },
+    queryOptions: {
+      getRidersQueryParams,
+      feature_options,
+      selected_riders,
+      options_query,
+    },
   });
 
   const { data } = query;
@@ -1631,7 +1658,7 @@ export function useRiders({
 
     setRiders(riders => {
       let updatedRiders = riders.map(rider =>
-        rider.id === changedRider.id ? changedRider : rider,
+        rider?.id === changedRider?.id ? changedRider : rider,
       );
 
       updatedRiders = updatedRiders.filter(updatedRider =>
@@ -1647,11 +1674,9 @@ export function useRiders({
     riders:
       quote?.product?.company?.alias === "reliance_general"
         ? riders.sort((a, b) => a.total_premium - b.total_premium)
-        : riders
-            .filter(rider => rider.total_premium > 0)
-            .sort((a, b) => a.total_premium - b.total_premium),
+        : riders.filter(rider => rider.total_premium > 0),
     handleChange,
-    getInititalRiders,
+    getInitialRiders,
   };
 }
 
@@ -1795,7 +1820,8 @@ export const useRevisedPremiumModal = () => {
       revisedPremiumPopupToggle.off();
     }
 
-    if (+prevTotalPremium !== +updatedTotalPremium) {
+    // if (+prevTotalPremium !== +updatedTotalPremium) {
+    if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
       revisedPremiumPopupToggle.on();
     }
   }, [
@@ -1816,5 +1842,51 @@ export const useRevisedPremiumModal = () => {
       revisedPremiumPopupToggle.off();
     },
     isOn: revisedPremiumPopupToggle.isOn,
+  };
+};
+
+export const useDD = ({ initialValue = {}, required, errorLabel }) => {
+  const [value, setValue] = useState(initialValue);
+
+  const [isValueInputTouched, setIsValueInputTouched] = useState(false);
+
+  const [error, setError] = useState({});
+
+  const isValueValid = !error?.message;
+
+  const showError = isValueInputTouched && !isValueValid;
+
+  const ddErrorThrowingValidations = useCallback(
+    (value, setError) => {
+      //? Only validates if required.
+      if (required) {
+        if (!Object.keys(value).length) {
+          return setError({ message: `Please select a ${errorLabel}.` });
+        }
+        return setError({});
+      }
+      return setError({});
+    },
+    [value],
+  );
+
+  useEffect(() => {
+    ddErrorThrowingValidations(value, setError);
+  }, [value, setError, ddErrorThrowingValidations]);
+
+  const valueInputTouchedHandler = () => setIsValueInputTouched(true);
+
+  const valueChangeHandler = (label, value) => {
+    const updatedValue = { code: value, display_name: label };
+    setValue(updatedValue);
+  };
+
+  return {
+    value,
+    error,
+    showError,
+    isValueValid,
+    shouldShowError: valueInputTouchedHandler,
+    onChange: valueChangeHandler,
   };
 };

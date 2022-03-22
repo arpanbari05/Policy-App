@@ -261,6 +261,7 @@ function DiscountsList({ groupCode, ...props }) {
 
   const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
 
+
   if (!selectedAdditionalDiscounts.length) return null;
 
   return (

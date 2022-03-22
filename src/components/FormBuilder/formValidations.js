@@ -309,6 +309,8 @@ export const validationIndex = {
                 currentDate.getUTCMonth() + 1,
                 currentDate.getUTCFullYear() - name.age,
               ];
+          console.log("dfnlsvv", input, userDOB);
+
           if (
             (parseInt(input[1]) === currentDate.getUTCFullYear() &&
               parseInt(input[0]) > currentDate.getUTCMonth() + 1) ||
@@ -476,12 +478,12 @@ export const validationIndex = {
               message: "Please enter a valid email.",
             };
           } else break;
-        case "pan":{
-
+        case "pan": {
           if (
-            !/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(value.toUpperCase())
+            !/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(value.toUpperCase()) ||
             // pancard number's 5th char must be equal to the first char of last name of the user
-            || (value[4] && values.name[values.name.lastIndexOf(" ")+1] !== value[4])
+            (value[4] &&
+              values.name[values.name.lastIndexOf(" ") + 1] !== value[4])
           ) {
             return {
               status: false,
@@ -516,6 +518,13 @@ export const validationIndex = {
           } else break;
         case "onlyDigits":
           if (!/^[0-9]*$/.test(value)) {
+            return {
+              status: false,
+              message: "Please enter only digits",
+            };
+          } else break;
+        case "annIncome":
+          if (!/^[0-9]*$/.test(value) && parseInt(value) > 0) {
             return {
               status: false,
               message: "Please enter only digits",

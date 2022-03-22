@@ -17,7 +17,6 @@ import { useParams } from "react-router-dom";
 const LowerModifier = ({ sortBy = <></> }) => {
   const { getSelectedFilter } = useFilters();
   const selectedPolicyTypeFilter = getSelectedFilter("plantype");
-  const planType = useSelector(({ quotePage }) => quotePage.filters.planType);
   const { journeyType } = useFrontendBoot();
 
   return (

@@ -122,6 +122,7 @@ const TextInput = ({
           }else if (checkAllChar(e.target.value, forbiddedSymbols)) {
             if (checkValidation?.matches === "onlyDigits") {
               let reg = new RegExp("^[0-9]*$");
+
               if (reg.test(e.target.value)) {
                 onChange(e);
                 setFallbackValue(e.target.value);
@@ -165,6 +166,7 @@ const TextInput = ({
             (checkValidation["matches"] === "alphanum" ||
             checkValidation["matches"] === "pan" ||
             checkValidation["matches"] === "onlyDigits" ||
+            checkValidation["matches"] === "annIncome" ||
             (checkValidation["matches"] &&
               checkValidation["matches"].includes("mobile")))
           ) {

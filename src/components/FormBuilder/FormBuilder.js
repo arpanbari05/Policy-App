@@ -35,6 +35,8 @@ const FormBuilder = ({
   lastName,
   isInsuredDetails,
   proposalData,
+  canProceed,
+  yesSelected,
 }) => {
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -43,6 +45,7 @@ const FormBuilder = ({
   let proposalDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
+  const [nomineeRelationAutopopulated,setNomineeRelationAutopopulated] = useState(false)
   let memberGroupsAsPerMembers = useSelector(({ greetingPage }) =>
     greetingPage.proposerDetails.groups.reduce(
       (acc, { id, members }) => ({
@@ -71,6 +74,8 @@ const FormBuilder = ({
     setNoForAll,
     formName,
     insuredDetails,
+    canProceed,
+    yesSelected
   );
 
   const [trigger, setTrigger] = useState(false);
@@ -95,19 +100,22 @@ const FormBuilder = ({
 
   // for auto populate self data when nominee relation is self
   useEffect(() => {
+
     if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
+    let nomineeRelation = values.nominee_relation;
+
       let dataForAutopopulate;
-      if (values.nominee_relation === "self") {
+      if (nomineeRelation === "self") {
         dataForAutopopulate = {
           ...proposalDetails,
           ...(insuredDetails ? insuredDetails["self"] : {}),
         };
-      } else if (insuredDetails[values.nominee_relation]) {
-        dataForAutopopulate = insuredDetails[values.nominee_relation];
+      } else if (insuredDetails[nomineeRelation]) {
+        dataForAutopopulate = insuredDetails[nomineeRelation];
         let groupIdOfmember =
           memberGroupsAsPerMembers[
             Object.keys(memberGroupsAsPerMembers).find(key =>
-              key.includes(values.nominee_relation),
+              key.includes(nomineeRelation),
             )
           ];
         let memberDetailsInProposerD = Object.keys(proposalDetails)
@@ -116,7 +124,7 @@ const FormBuilder = ({
 
         dataForAutopopulate = {
           ...memberDetailsInProposerD,
-          ...insuredDetails[values.nominee_relation],
+          ...insuredDetails[nomineeRelation],
         };
       }
 
@@ -136,8 +144,9 @@ const FormBuilder = ({
           acc[name] = dataForAutopopulate[nameWithoutNominee];
       });
 
-      setValues({...acc,nominee_relation: values.nominee_relation});
-    } else setValues({ nominee_relation: values.nominee_relation });
+      setValues({...acc,nominee_relation: nomineeRelation});
+      setNomineeRelationAutopopulated(true)
+    } 
   }, [values.nominee_relation]);
 
   useEffect(() => {
@@ -237,6 +246,7 @@ const FormBuilder = ({
                                   <Wrapper
                                     key={index + member + innerItem.name}
                                     width={innerItem.width}
+                                    id={innerItem.parent+member+innerItem.name}
                                     medical
                                   >
                                     <Comp
@@ -447,7 +457,7 @@ const FormBuilder = ({
                 <>
 
                   {renderField(item, values) && (
-                    <Wrapper key={index + item.name} width={item.width}>
+                    <Wrapper key={index + item.name} id={item.name} width={item.width}>
                       <Comp
                         name={item.name}
                         checkValidation={item.validate}
@@ -471,7 +481,8 @@ const FormBuilder = ({
                            
                               if (
                                 item.name === "nominee_relation" &&
-                                !insuredDetails[e.target.value]
+                                !insuredDetails[e.target.value] &&
+                                nomineeRelationAutopopulated
                               ){
                                 console.log(
                                   "sdvnsjdbvs",
@@ -479,6 +490,7 @@ const FormBuilder = ({
                                   e.target.value,
                                 );
                                 updateValue(item.name, e.target.value, true);
+                                setNomineeRelationAutopopulated(false)
                               }else updateValue(item.name, e.target.value);
                             } else {
                               // if()
