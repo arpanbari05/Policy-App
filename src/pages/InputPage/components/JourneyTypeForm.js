@@ -4,7 +4,7 @@ import styled from "styled-components/macro";
 
 function JourneyTypeForm() {
   const params = useParams();
-  console.log(params);
+
   return (
     <div
       css={`
