@@ -129,7 +129,19 @@ export function useQuote() {
 
   const { groupCode } = useParams();
 
+  const { groups } = useMembers();
+
+  const currentGroup = groups?.find(group => group.id === +groupCode);
+
+  const { data } = useGetCartQuery();
+
   function buyQuote(quote, riders = []) {
+    data?.data?.forEach(cart => {
+      if (cart?.group?.type !== currentGroup.type) {
+        deleteQuote(cart.id);
+      }
+    });
+
     const quoteData = {
       total_premium: quote.total_premium,
       sum_insured: quote.sum_insured,
@@ -167,7 +179,8 @@ export function useTheme() {
     },
   } = useGetFrontendBootQuery();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = useSelector(state => state.frontendBoot.theme);
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } =
+    useSelector(state => state.frontendBoot.theme);
   return {
     ...styles,
     colors: {

@@ -1,14 +1,15 @@
 import { useMembers, useTheme, useUrlEnquiry } from "../../../customHooks";
 import { Container } from "react-bootstrap";
 import EditMemberFilter from "./filters/EditMemberFilter";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { MemberText } from "../../../components";
 import "styled-components/macro";
 import * as mq from "../../../utils/mediaQueries";
 import ShareQuoteModal from "../../../components/ShareQuoteModal";
 import useComparePage from "../../../pages/ComparePage/useComparePage";
 import useQuotesPage from "../useQuotes";
-
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 function UpperModifier() {
   const { colors } = useTheme();
@@ -31,13 +32,18 @@ function UpperModifier() {
         >
           <EditMemberFilter />
           <GroupLinks />
-          <div css={`margin-left: auto`}>
+          <div
+            css={`
+              margin-left: auto;
+            `}
+          >
             <ShareQuoteModal
               shareQuotes={true}
               imageSend={sendQuote}
               emailStatus={emailStatus}
               stage="QUOTE"
-              label="Share Quote" />
+              label="Share Quote"
+            />
           </div>
         </div>
       </Container>
@@ -49,6 +55,49 @@ export default UpperModifier;
 
 export function GroupLinks({ ...props }) {
   const { groups } = useMembers();
+
+  const { colors } = useTheme();
+
+  const { groupCode } = useParams();
+
+  const allMembersGroup = groups.find(group => group.type === "all");
+
+  const [partioned, setPartioned] = useState(
+    !(+groupCode === allMembersGroup?.id),
+  );
+
+  const history = useHistory();
+
+  const { enquiryId } = useUrlEnquiry();
+
+  let groupsToShow = [...groups];
+
+  useEffect(() => {
+    setPartioned(!(+groupCode === allMembersGroup?.id));
+  }, [groupCode]);
+
+  if (partioned) {
+    groupsToShow = groups.filter(group => group.id !== allMembersGroup?.id);
+  } else {
+    groupsToShow = [allMembersGroup];
+  }
+
+  const onCombinedPlanHandler = () => {
+    history.push({
+      pathname: `/quotes/${allMembersGroup?.id}`,
+      search: `enquiryId=${enquiryId}`,
+    });
+    setPartioned(false);
+  };
+
+  const onPartitionedPlanHandler = () => {
+    history.push({
+      pathname: `/quotes/${groups[0].id}`,
+      search: `enquiryId=${enquiryId}`,
+    });
+    setPartioned(true);
+  };
+
   return (
     <div
       className="d-flex align-items-center mx-3 h-100 text-center"
@@ -64,9 +113,17 @@ export function GroupLinks({ ...props }) {
       `}
       {...props}
     >
-      {groups.map(group => (
+      {groupsToShow.map(group => (
         <GroupLink group={group} key={group.id} />
       ))}
+      {allMembersGroup &&
+        (partioned ? (
+          <ToggleGroupTypeBtn color={colors.primary_color} onClick={onCombinedPlanHandler}>View Plans for All Members</ToggleGroupTypeBtn>
+        ) : (
+          <ToggleGroupTypeBtn color={colors.primary_color} onClick={onPartitionedPlanHandler}>
+            View Separate Plans
+          </ToggleGroupTypeBtn>
+        ))}
     </div>
   );
 }
@@ -139,6 +196,28 @@ export function GroupLink({ group, ...props }) {
     </div>
   );
 }
+
+const ToggleGroupTypeBtn = styled.button`
+  display: inline-block;
+  // background-color: ${props => props.color};
+  border-radius: 2em;
+  font-weight: 900;
+  font-size: 0.79rem;
+  line-height: 1;
+  padding: 1em;
+  color: ${props => props.color};
+  pointer: cursor;
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+  }
+  ${mq.mobile} {
+    background: none;
+    border-radius: 0;
+    min-width: max-content;
+  }
+`;
 
 // import { useState, useEffect, useRef } from "react";
 // import styled from "styled-components";
