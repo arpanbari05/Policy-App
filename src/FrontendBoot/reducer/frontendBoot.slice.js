@@ -12,7 +12,12 @@ const frontEndBoot = createSlice({
   name: "frontendBoot",
   initialState: {
     frontendData: {},
-    // theme,
+    theme: {
+      PrimaryColor: "",
+      SecondaryColor: "",
+      PrimaryShade: "",
+      SecondaryShade: "",
+    },
     tempModifications: {
       hideMultiIndivedualPlans: false,
     },

@@ -200,7 +200,13 @@ const BasicDetailsForm = ({ ...props }) => {
                 }
               `}
             >
-              <div>
+              <div
+                css={`
+                  @media (max-width: 770px) {
+                    width: 100%;
+                  }
+                `}
+              >
                 <TextInput2
                   label="Full Name"
                   name="name"
@@ -211,7 +217,14 @@ const BasicDetailsForm = ({ ...props }) => {
                 />
                 <ErrorMessage>{fullNameError.message}</ErrorMessage>
               </div>
-              <div>
+
+              <div
+                css={`
+                  @media (max-width: 770px) {
+                    width: 100%;
+                  }
+                `}
+              >
                 <TextInput2
                   label="Mobile No."
                   name="mobile"

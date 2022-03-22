@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import useOutsiteClick from "../customHooks/useOutsideClick";
 import { useTheme } from "../customHooks";
+import { months2years } from "../utils/helper";
 
 const RoundDD = ({
   disabled,
@@ -37,7 +38,15 @@ const RoundDD = ({
     setIsOpen(!isOpen);
   };
   const handleSelect = (value, data) => {
-    handleChange(code, value, type, data);
+    console.log(data);
+    const isMonth = data.title.search("Months");
+    console.log(isMonth);
+    const newData = {
+      title: data.title,
+      id: months2years(data.title.split(" ")[0]),
+    };
+    console.log();
+    handleChange(code, value, type, isMonth === -1 ? data : newData);
 
     setIsOpen(!isOpen);
   };
@@ -152,7 +161,6 @@ export const Label = styled.label`
   position: absolute;
   z-index: -1;
   top: -10px;
-
   left: 18px;
   font-size: 12px;
 `;
@@ -191,10 +199,12 @@ export const Header = styled.a`
   @media (max-width: 767px) {
     margin: unset;
     width: 130px;
+    padding: ${props => (props.sortByDD ? "auto" : "10px 15px !important")};
   }
   @media (max-width: 480px) {
     background-color: #fff !important;
     border: 1px solid #b0bed0;
+    padding: ${props => (props.sortByDD ? "auto" : "7px 15px !important")};
   }
 `;
 

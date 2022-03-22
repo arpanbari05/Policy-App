@@ -340,8 +340,11 @@ export function calculateTotalPremium(
   cartEntry,
   { additionalDiscounts = [] } = {},
 ) {
-  const { total_premium: basePlanPremium = 0, health_riders = [] } = cartEntry;
-
+  const {
+    total_premium: basePlanPremium = 0,
+    health_riders = [],
+    addons = [],
+  } = cartEntry;
   const totalPremium = items =>
     items.reduce((totalPremium, item) => totalPremium + item.total_premium, 0);
 
@@ -428,7 +431,7 @@ export function getAgeList({ min_age, max_age }) {
 }
 
 export function getMonthsForYear(years) {
-  return Math.floor(years * 12);
+  return Math.round(years * 12);
 }
 
 function monthsPercentage(months) {
@@ -692,3 +695,9 @@ export const premiumWithAddons = (netPremium, addons = []) => {
   }
   return netPremium;
 };
+
+// year to month
+export function months2years(months) {
+  var dur1 = parseInt(months) / 12;
+  return dur1.toFixed(2);
+}

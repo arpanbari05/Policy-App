@@ -24,6 +24,7 @@ const ThemeModal = ({ show, setShow }) => {
       SecondaryShade: secondaryShade,
     };
     dispatch(updateTheme({ ...obj }));
+    setShow(false);
   };
 
   return (

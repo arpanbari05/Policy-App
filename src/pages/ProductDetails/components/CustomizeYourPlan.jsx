@@ -351,7 +351,11 @@ function RiderOption({
   ...props
 }) {
   const { colors } = useTheme();
-  
+
+  useEffect(() => {
+    onChange && onChange({ key, options, selected: options[0] });
+  }, []);
+
   const handleChange = evt => {
     onChange && onChange({ key, options, selected: evt.target.value });
   };

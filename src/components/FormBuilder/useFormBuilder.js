@@ -9,19 +9,21 @@ const useFormBuilder = (
   setNoForAll,
   formName,
   insuredDetails,
+  canProceed,
+  yesSelected,
 ) => {
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState();
-  const updateValue = (name, value, removeOtherValues=false) => {
-    if(removeOtherValues){
-      setValues({[name]: value});
-      fetchValues({[name]: value});
-    }else {
+  const updateValue = (name, value, removeOtherValues = false) => {
+    if (removeOtherValues) {
+      setValues({ [name]: value });
+      fetchValues({ [name]: value });
+    } else {
       setValues(prev => ({ ...prev, [name]: value }));
-    fetchValues(prev => ({ ...prev, [name]: value }));
+      fetchValues(prev => ({ ...prev, [name]: value }));
     }
-    
+
     if (value instanceof Object) {
       if (value?.[`is${name}`] && value?.[`is${name}`] === "Y" && noForAll) {
         setNoForAll(false);
@@ -102,7 +104,6 @@ const useFormBuilder = (
       let [filteredItem] = schema.filter(item => item.name === name);
       // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
 
-
       if (filteredItem) {
         let errorMsg;
         // if(filteredItem.additionalOptions.showMembersIf){
@@ -132,19 +133,23 @@ const useFormBuilder = (
         if (item instanceof Array) {
           item[0].additionalOptions.members.forEach(member => {
             item.forEach(innerItem => {
-              console.log("wrgvhwrjv",values,innerItem.parent,values[innerItem.parent])
+              console.log(
+                "wrgvhwrjv",
+                values,
+                innerItem.parent,
+                values[innerItem.parent],
+              );
               let errorMsg =
-                innerItem.validate && 
-                values[innerItem.parent] && values[innerItem.parent].members[member] && 
+                innerItem.validate &&
+                values[innerItem.parent] &&
+                values[innerItem.parent].members[member] &&
                 performValidations(innerItem.validate, values, {
                   variableName: innerItem.name,
                   parent: innerItem.parent,
                   member,
                 });
-              
 
               if (renderField(innerItem, values, member)) {
-
                 errorsTemp[innerItem.parent + member + innerItem.name] =
                   errorMsg;
                 if (errorMsg) tempIsValid = false;
@@ -156,22 +161,21 @@ const useFormBuilder = (
             item.validate &&
             performValidations(item.validate, values, item.name);
 
-            if (item.visibleOn) {
-              console.log("dfbjhdf", item, values);
-  
-              if (
-                values[Object.keys(item.visibleOn)[0]] ===
-                item.visibleOn[Object.keys(item.visibleOn)[0]]
-              )
-                errorMsg = performValidations(
-                  { required: true },
-                  values,
-                  item.name
-                );
-            }
+          if (item.visibleOn) {
+            console.log("dfbjhdf", item, values);
+
+            if (
+              values[Object.keys(item.visibleOn)[0]] ===
+              item.visibleOn[Object.keys(item.visibleOn)[0]]
+            )
+              errorMsg = performValidations(
+                { required: true },
+                values,
+                item.name,
+              );
+          }
 
           if (renderField(item, values)) {
-
             errorsTemp[item.name] = errorMsg;
             if (errorMsg) tempIsValid = false;
             console.log("bfsfnbjkls", tempIsValid);
@@ -187,6 +191,28 @@ const useFormBuilder = (
   const clearField = name => {
     setValues({ ...values, [name]: null });
   };
+
+  // to scroll page as per error
+  useEffect(() => {
+    let filteredKey = Object.keys(errors).filter(key => errors[key]);
+    if (canProceed && !canProceed.canProceed)
+      filteredKey = canProceed.canProceedArray;
+    console.log("srgvshfvjkl", errors, filteredKey, yesSelected);
+    if (filteredKey.length) {
+      let scrollPositions = filteredKey.map(key => {
+        let element = document.getElementById(key);
+        if (element) {
+          let y = element.getBoundingClientRect().top - 100 + window.scrollY;
+          return y;
+        }
+      });
+
+      window.scroll({
+        top: Math.min(...scrollPositions),
+        behavior: "smooth",
+      });
+    }
+  }, [errors, canProceed]);
 
   return {
     values,
