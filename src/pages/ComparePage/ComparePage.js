@@ -586,8 +586,10 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
   const icQuotes =
     data &&
     data.find(
-      icQuotes => icQuotes.company_alias === compareQuote.company_alias,
+      icQuotes => icQuotes.data.company_alias === compareQuote.company_alias,
     );
+
+  console.log(data);
 
   const isLoading = !data || !icQuotes;
 
@@ -619,6 +621,7 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
       every([
         parseInt(quote.sum_insured) === parseInt(sumInsured),
         quote.deductible === compareQuote.deductible,
+        compareQuote.product.name === quote.product.name,
       ]),
     );
 
