@@ -18,6 +18,7 @@ import "styled-components/macro";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { RiCheckboxBlankCircleLine, RiCheckboxFill } from "react-icons/ri";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
+import useWindowSize from "../../../../customHooks/useWindowSize";
 
 const availableMoreFilters = {
   popular_filters: true,
@@ -109,6 +110,7 @@ export function FilterModal({ onClose }) {
   const { boxShadows } = useTheme();
 
   const { getSelectedFilter } = useFilters();
+  const selectedPolicyTypeFilter = getSelectedFilter("plantype");
 
   const {
     data: { premiums, covers, plantypes, morefilters, deductibles },
@@ -148,7 +150,7 @@ export function FilterModal({ onClose }) {
     onClose && onClose();
   };
 
-  const RenderFilterOptions = ({ code, options, type }) => (
+  const RenderFilterOptions = ({ code, options, type, showTooltip }) => (
     <Tab.Pane eventKey={code}>
       <FilterOptions
         code={code}
@@ -156,6 +158,7 @@ export function FilterModal({ onClose }) {
         currentOption={filters[code]}
         onChange={updateFilter}
         type={type}
+        showTooltip={showTooltip}
       />
     </Tab.Pane>
   );
@@ -188,7 +191,8 @@ export function FilterModal({ onClose }) {
               <FilterNavItem eventKey={"deductible"}>Deductible</FilterNavItem>
             )}
             <FilterNavItem eventKey={"tenure"}>Multiyear Options</FilterNavItem>
-            {journeyType === "health" ? (
+            {selectedPolicyTypeFilter.display_name !== "Individual" &&
+            journeyType !== "top_up" ? (
               <FilterNavItem eventKey={"plantype"}>Policy type</FilterNavItem>
             ) : null}
             <FilterNavItem eventKey={"insurers"}>Insurers</FilterNavItem>
@@ -207,20 +211,39 @@ export function FilterModal({ onClose }) {
               height: 82vh;
             `}
           >
-            <RenderFilterOptions code="premium" options={premiums} />
+            <RenderFilterOptions
+              showTooltip={false}
+              code="premium"
+              options={premiums}
+            />
             {journeyType === "health" ? (
-              <RenderFilterOptions code="cover" options={covers} />
+              <RenderFilterOptions
+                showTooltip={false}
+                code="cover"
+                options={covers}
+              />
             ) : (
-              <RenderFilterOptions code="deductible" options={deductibles} />
+              <RenderFilterOptions
+                showTooltip={false}
+                code="deductible"
+                options={deductibles}
+              />
             )}
-            <RenderFilterOptions code="tenure" options={tenures} />
-            <RenderFilterOptions code="plantype" options={plantypes} />
+            <RenderFilterOptions
+              showTooltip={false}
+              code="tenure"
+              options={tenures}
+            />
+            <RenderFilterOptions
+              code="plantype"
+              options={plantypes.filter(plantype => plantype.code !== "I")}
+            />
             <Tab.Pane eventKey="insurers">
-              <InsurersFilter
+              {/* <InsurersFilter
                 code="insurers"
                 onChange={updateFilter}
                 currentOptions={filters.insurers}
-              />
+              /> */}
             </Tab.Pane>
             {morefilters.map(filter => (
               <RenderFilterOptions
@@ -266,6 +289,7 @@ export function FilterOptions({
   onChange,
   type,
   filterGroup,
+  showTooltip,
   ...props
 }) {
   let selectedOption, isSelected;
@@ -294,6 +318,7 @@ export function FilterOptions({
         .filter(opt => opt.code !== "no_claim_bonus_2")
         .map(option => (
           <FilterOption
+            showTooltip={showTooltip}
             key={option.code}
             option={option}
             onChange={handleChange}
@@ -323,7 +348,14 @@ function OptionsWrap({ children, className, css = "", ...props }) {
   );
 }
 
-function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
+function FilterOption({
+  option,
+  checked,
+  onChange,
+  type = "radio",
+  showTooltip = true,
+  ...props
+}) {
   const { colors } = useTheme();
 
   const handleChange = () => {
@@ -353,6 +385,7 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
         <FilterDataSet
           name={option.display_name}
           description={option.description}
+          tooltip={showTooltip}
         />
         <span
           css={`
@@ -420,22 +453,27 @@ function InsurersFilter({ onChange, currentOptions, code }) {
     <OptionsWrap>
       {Object.keys(companies).map(companyAlias => (
         <InsurerOption
+          key={companyAlias}
           currentOptions={currentOptions}
           companyAlias={companyAlias}
           onChange={handleChange}
+          company={companies[companyAlias]}
         />
       ))}
     </OptionsWrap>
   );
 }
 
-function InsurerOption({ companyAlias, onChange, currentOptions, ...props }) {
+function InsurerOption({
+  companyAlias,
+  onChange,
+  currentOptions,
+  company,
+  ...props
+}) {
   const [checked, setChecked] = useState(
     currentOptions.find(opt => opt.alias === companyAlias),
   );
-  const { getCompany } = useCompanies();
-
-  const company = getCompany(companyAlias);
 
   const { colors } = useTheme();
 
@@ -556,29 +594,69 @@ function MobileModal({ onClose, children }) {
   );
 }
 
-function FilterDataSet({ name, description, ...props }) {
+function FilterDataSet({ name, description, tooltip, ...props }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const target = useRef(null);
-  // useOutsiteClick(target, () => setShowTooltip(false));
+  const [innerHeight, innerWidth] = useWindowSize();
+  useOutsiteClick(target, () => setShowTooltip(false));
+
+  console.log(innerWidth);
 
   const toggleTooltip = () => {
     setShowTooltip(prev => !prev);
   };
-  return (
-    <OverlayTrigger
-      // show={showTooltip}
-      placement="right"
-      overlay={<Tooltip {...props}>{description}</Tooltip>}
-    >
+
+  const tooltipWrapper =
+    innerWidth < 768 ? (
       <div
-        style={{ fontWeight: "bold", fontSize: 14 }}
-        className="d-flex align-items-center gap-1"
+        css={`
+          gap: 3px;
+        `}
+        className="d-flex align-items-center"
       >
-        {name}
-        <span>
-          <IoMdInformationCircleOutline />
-        </span>
+        <div
+          style={{ fontWeight: "bold", fontSize: 14 }}
+          className="d-flex align-items-center gap-1"
+        >
+          {name}
+        </div>
+        <OverlayTrigger
+          show={showTooltip}
+          placement="bottom"
+          overlay={<Tooltip {...props}>{description}</Tooltip>}
+        >
+          <span ref={target} onClick={toggleTooltip}>
+            <IoMdInformationCircleOutline />
+          </span>
+        </OverlayTrigger>
       </div>
-    </OverlayTrigger>
+    ) : (
+      <div
+        css={`
+          gap: 3px;
+        `}
+        className="d-flex align-items-center"
+      >
+        <div
+          style={{ fontWeight: "bold", fontSize: 14 }}
+          className="d-flex align-items-center gap-1"
+        >
+          {name}
+        </div>
+        <OverlayTrigger
+          placement="right"
+          overlay={<Tooltip {...props}>{description}</Tooltip>}
+        >
+          <span>
+            <IoMdInformationCircleOutline />
+          </span>
+        </OverlayTrigger>
+      </div>
+    );
+
+  return tooltip ? (
+    <>{tooltipWrapper}</>
+  ) : (
+    <div style={{ fontWeight: "bold", fontSize: 14 }}>{name}</div>
   );
 }

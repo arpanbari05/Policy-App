@@ -362,6 +362,21 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
           See details <ChevronRightCircle />
         </button>
       </div>
+      {quote?.usp_message?.length > 0 && (
+        <div
+          css={`
+            background: ${colors.secondary_color};
+            padding: 3px 12px;
+            border-radius: .6rem .6rem 0 0;
+            color: white;
+            font-size: 10px;
+            text-align: center;
+            // width: max-content;
+          `}
+        >
+          {quote?.usp_message[0]}
+        </div>
+      )}
       <div className="p-2 d-flex align-items-center justify-content-between">
         <div
           className="d-flex"

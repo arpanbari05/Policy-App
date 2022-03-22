@@ -240,6 +240,8 @@ function QuoteCard({
     featuresDisplayedOnQuoteCard.includes(feature.code),
   );
 
+  console.log(quote);
+
   // const handleSeeDetailsClick = (clickedFrom) => {
   //   handleSeeDetails(
   //     {
@@ -269,12 +271,27 @@ function QuoteCard({
 
   return (
     <div id={quote.company_alias} {...props}>
+      {quote?.usp_message?.length > 0 && (
+        <div
+          css={`
+            background: ${colors.secondary_color};
+            padding: 3px 13px;
+            width: max-content !important;
+            font-size: 10px !important;
+            color: #fff;
+            border-radius: 0 0 100px 0;
+          `}
+        >
+          {quote?.usp_message[0]}
+        </div>
+      )}
       <div
         className="d-flex align-items-center"
         css={`
-          min-height: 137px;
+          min-height: 139px;
           padding-top: 8px;
           padding-bottom: 11px;
+          margin-top: ${quote?.usp_message?.length && "-10px"};
         `}
       >
         <div
@@ -283,6 +300,7 @@ function QuoteCard({
             flex: 1;
             gap: 12px;
             border-right: 1px solid ${colors.border.one};
+            margin-top: 10px;
           `}
         >
           <img
