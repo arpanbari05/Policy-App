@@ -227,7 +227,6 @@ export function getDiscountAmount(additionalDiscount, cartEntry) {
   return discountedAmount;
 }
 
-
 function getTotalDiscount(additionalDiscounts, product) {
   let totalPremium = null;
   let totalPremiumWithoutAddons = null;
@@ -341,7 +340,8 @@ export function calculateTotalPremium(
   cartEntry,
   { additionalDiscounts = [] } = {},
 ) {
-  const { total_premium: basePlanPremium = 0, health_riders = [], addons=[] } = cartEntry;
+  const { total_premium: basePlanPremium = 0, health_riders = [] } = cartEntry;
+
   const totalPremium = items =>
     items.reduce((totalPremium, item) => totalPremium + item.total_premium, 0);
 
@@ -356,33 +356,37 @@ export function calculateTotalPremium(
   const addOnsTotalPremium = getAddOnsTotalPremium(cartEntry.addons);
 
   if (cartEntry?.product?.company?.alias === "royal_sundaram") {
-
     const hospitalRider = health_riders.find(
-      (rider) => rider.name === "Hospital Cash Benefit"
+      rider => rider.name === "Hospital Cash Benefit",
     );
 
-    if (
-      (health_riders.length === 1 && hospitalRider)
-    ) {
-      return totalPremiumAfterDiscount + addOnsTotalPremium + health_riders[0]?.total_premium;
+    if (health_riders.length === 1 && hospitalRider) {
+      return (
+        totalPremiumAfterDiscount +
+        addOnsTotalPremium +
+        health_riders[0]?.total_premium
+      );
     } else {
       let calculatedPremium = Math.round(total_premium / 1.04 / 1.18);
 
       let calculatedRider = 0;
       if (hospitalRider) {
-        health_riders.forEach((item) => {
+        health_riders.forEach(item => {
           if (item.name !== "Hospital Cash Benefit") {
             calculatedRider += item.total_premium;
           }
         });
         ridersPremium = calculatedRider;
         totalPremiumAfterDiscount =
-          (calculatedPremium + ridersPremium + addOnsTotalPremium) * 1.04 * 1.18 +
+          (calculatedPremium + ridersPremium + addOnsTotalPremium) *
+            1.04 *
+            1.18 +
           hospitalRider.total_premium;
-      }
-      else {
+      } else {
         totalPremiumAfterDiscount =
-          (calculatedPremium + ridersPremium + addOnsTotalPremium) * 1.04 * 1.18;
+          (calculatedPremium + ridersPremium + addOnsTotalPremium) *
+          1.04 *
+          1.18;
       }
     }
   } else {

@@ -13,7 +13,12 @@ import { FaCheck } from "react-icons/fa";
 import { useEffect } from "react";
 import { WrapWithTitle } from ".";
 
-const CheckDiscountSection = ({ loaderStart = () => {}, groupCode, cartEntry, ...props }) => {
+const CheckDiscountSection = ({
+  loaderStart = () => {},
+  groupCode,
+  cartEntry,
+  ...props
+}) => {
   // useEffect(() => loaderStart(), []);
   return (
     <FeatureSection
@@ -41,8 +46,6 @@ function TenureDiscounts({ groupCode, cartEntry, ...props }) {
   const { tenure } = cartEntry;
 
   const discounts = data?.data;
-
-  console.log("DISCOUNT", discounts);
 
   useEffect(() => {
     if (discounts) {

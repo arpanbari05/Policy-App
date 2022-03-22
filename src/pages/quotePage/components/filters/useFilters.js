@@ -45,16 +45,15 @@ function useFilters() {
 
   const {
     data: {
-      data: {
-        groups,
-        input: { deductible },
-      },
+      data: { groups, input },
     },
   } = useGetEnquiriesQuery();
 
   let currentGroup = groups.find(group => group.id === parseInt(groupCode));
 
   const { extras } = currentGroup;
+
+  const deductible = input?.deductible;
 
   defaultfilters = { ...defaultfilters, ...defaultFilters };
 

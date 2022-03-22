@@ -9,9 +9,14 @@ import {
   useTenureDiscount,
   useTheme,
 } from "../../../customHooks";
-import { amount, numberToDigitWord } from "../../../utils/helper";
+import {
+  amount,
+  numberToDigitWord,
+  tenureInWords,
+} from "../../../utils/helper";
 import "styled-components/macro";
 import _ from "lodash";
+import { useGetEnquiriesQuery } from "../../../api/api";
 
 function ProductCard() {
   const { groupCode } = useParams();
@@ -326,6 +331,12 @@ const LabelStyle = styled.span`
 
 function PolicyDetails({ cartEntry }) {
   const { sum_insured, tenure } = cartEntry;
+  const { data } = useGetEnquiriesQuery();
+
+  console.log("The data", data);
+  const name = data?.data?.name;
+  const policy_number = data?.data?.policy_no;
+
   return (
     <div
       css={`
@@ -333,9 +344,9 @@ function PolicyDetails({ cartEntry }) {
       `}
       className="d-flex"
     >
-      <Detail label={"Proposer Name"}>Testing With A Very Long Name</Detail>
-      <Detail label={"Policy No."}>123123123</Detail>
-      <Detail label={"Policy Term"}>{tenure}Yr</Detail>
+      <Detail label={"Proposer Name"}>{name}</Detail>
+      <Detail label={"Policy No."}>{policy_number}</Detail>
+      <Detail label={"Policy Term"}>{tenureInWords(tenure)}</Detail>
       <Detail label={"Sum Insured"}>{numberToDigitWord(sum_insured)}</Detail>
     </div>
   );
