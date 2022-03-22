@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: IC-Product-Page-Issue
-labels: BUG, open
+labels: bug, open
 assignees: siddhijavalkar
 
 ---
