@@ -290,6 +290,10 @@ function MemberOption({
         gap: 0.7em;
         position: relative;
 
+        @media (max-width: 720px) {
+          padding: 0px 10px;
+        }
+
         ${validateSpouse(selectedMembers, member) &&
         `&::after {
           position: absolute;
@@ -313,6 +317,10 @@ function MemberOption({
           font-size: 15px;
           line-height: 1;
           font-weight: 900;
+
+          @media (max-width: 420px) {
+            font-size: 13px;
+          }
         `}
       >
         {selectable ? (
@@ -336,12 +344,19 @@ function MemberOption({
               <IoCheckmarkCircleSharp
                 css={`
                   color: ${primary_color};
+                  @media (max-width: 420px) {
+                    height: 20px;
+                  }
                 `}
               />
             ) : (
               <GiCircle
                 css={`
                   color: #ccc;
+
+                  @media (max-width: 420px) {
+                    height: 20px;
+                  }
                 `}
               />
             )}
