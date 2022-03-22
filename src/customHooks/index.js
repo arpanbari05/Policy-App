@@ -1596,13 +1596,20 @@ export function useRiders({
     if (rider.options_selected) {
       optionsSelected = {
         ...optionsSelected,
-        ...rider.options_selected
-      }
+        ...rider.options_selected,
+      };
     }
   });
-  const options_query = Object.keys(optionsSelected).map(opt => `${opt}=${optionsSelected[opt]}`).join("&");
+  const options_query = Object.keys(optionsSelected)
+    .map(opt => `${opt}=${optionsSelected[opt]}`)
+    .join("&");
   const query = useGetRiders(quote, groupCode, {
-    queryOptions: { getRidersQueryParams, feature_options, selected_riders, options_query },
+    queryOptions: {
+      getRidersQueryParams,
+      feature_options,
+      selected_riders,
+      options_query,
+    },
   });
 
   const { data } = query;
@@ -1662,8 +1669,7 @@ export function useRiders({
     riders:
       quote?.product?.company?.alias === "reliance_general"
         ? riders.sort((a, b) => a.total_premium - b.total_premium)
-        : riders
-            .filter(rider => rider.total_premium > 0),
+        : riders.filter(rider => rider.total_premium > 0),
     handleChange,
     getInititalRiders,
   };

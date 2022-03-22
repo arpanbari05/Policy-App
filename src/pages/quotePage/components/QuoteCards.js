@@ -55,7 +55,7 @@ function QuoteCards({ quotesData, sortBy, compare, ...props }) {
       onChange: handleCompareChange,
     },
   });
-  
+
   return (
     <div
       className="position-relative"
@@ -146,16 +146,18 @@ function QuoteCard({
 
   const [isShare, setIsShare] = useState(false);
 
-  const [selectedDeductible, setSelectedDeductible] = useState(Math.max(...deductibles));
+  const [selectedDeductible, setSelectedDeductible] = useState(
+    Math.max(...deductibles),
+  );
   const sumInsureds = isDeductibleJourney
     ? quotes
         .filter(
           quote => parseInt(quote.deductible) === parseInt(selectedDeductible),
-          )
-          .map(quote => parseInt(quote.sum_insured))
-          .sort((a, b) => a - b)
-          : quotes.map(quote => parseInt(quote.sum_insured)).sort((a, b) => a - b);
-          
+        )
+        .map(quote => parseInt(quote.sum_insured))
+        .sort((a, b) => a - b)
+    : quotes.map(quote => parseInt(quote.sum_insured)).sort((a, b) => a - b);
+
   const [selectedSumInsured, setSelectedSumInsured] = useState();
   const [defaultActiveKey, setdefaultActiveKey] = useState("plan-details");
 
@@ -183,8 +185,10 @@ function QuoteCard({
   const productDetailsModal = useToggle(false);
 
   useEffect(() => {
-      const isInShare = quotesToShare?.find(shareQuote => shareQuote[0]?.product?.id === quote?.product?.id);
-      setIsShare(isInShare ? true : false);
+    const isInShare = quotesToShare?.find(
+      shareQuote => shareQuote[0]?.product?.id === quote?.product?.id,
+    );
+    setIsShare(isInShare ? true : false);
   }, [quotesToShare, shareType]);
 
   if (!quote) return null;
@@ -217,12 +221,14 @@ function QuoteCard({
     } else {
       dispatch(removeQuoteFromShare(quotes));
     }
-  }
+  };
 
   let features = isDeductibleJourney ? quoteFeatures : quote.features;
   features = features.filter(feature =>
     featuresDisplayedOnQuoteCard.includes(feature.code),
   );
+
+  console.log(quote);
 
   // const handleSeeDetailsClick = (clickedFrom) => {
   //   handleSeeDetails(
@@ -253,12 +259,27 @@ function QuoteCard({
 
   return (
     <div id={quote.company_alias} {...props}>
+      {quote?.usp_message?.length > 0 && (
+        <div
+          css={`
+            background: ${colors.secondary_color};
+            padding: 3px 13px;
+            width: max-content !important;
+            font-size: 10px !important;
+            color: #fff;
+            border-radius: 0 0 100px 0;
+          `}
+        >
+          {quote?.usp_message[0]}
+        </div>
+      )}
       <div
         className="d-flex align-items-center"
         css={`
-          min-height: 137px;
+          min-height: 139px;
           padding-top: 8px;
           padding-bottom: 11px;
+          margin-top: ${quote?.usp_message?.length && "-10px"};
         `}
       >
         <div
@@ -267,6 +288,7 @@ function QuoteCard({
             flex: 1;
             gap: 12px;
             border-right: 1px solid ${colors.border.one};
+            margin-top: 10px;
           `}
         >
           <img
@@ -419,129 +441,128 @@ function QuoteCard({
                 />
               </div>
             )}
-            {
-              shareType.value === "quotation_list" || shareType.value === "specific_quotes" ? (
-                // true ? (
-                  <div
-              css={`
-                font-size: 0.83rem;
-              `}
-            >
-              <label
-                className="d-flex align-items-center rounded"
-                htmlFor={quote?.product?.name}
+            {shareType.value === "quotation_list" ||
+            shareType.value === "specific_quotes" ? (
+              // true ? (
+              <div
                 css={`
-                  color: ${colors.font.one};
-                  font-weight: 900;
-                  cursor: pointer;
-                  // background-color: ${colors.secondary_shade};
+                  font-size: 0.83rem;
                 `}
               >
-                {isShare ? (
-                  <IoCheckmarkCircleSharp
-                    color={colors.primary_color}
-                    style={{ marginRight: 3 }}
-                    size={20}
-                  />
-                ) : (
-                  // <BsCircleFill
-                  //   css={`
-                  //     color: white;
-                  //   `}
-                  // />
-                  <div
-                    css={`
-                      width: 17px;
-                      height: 17px;
-                      border: 1px solid ${colors.primary_color};
-                      border-radius: 50%;
-                      margin: 1px 5px 1px 1px;
-                    `}
-                  />
-                )}
-                {/* </span> */}
-                <span
+                <label
+                  className="d-flex align-items-center rounded"
+                  htmlFor={quote?.product?.name}
                   css={`
-                    margin-top: 2px;
+                    color: ${colors.font.one};
+                    font-weight: 900;
+                    cursor: pointer;
+                    // background-color: ${colors.secondary_shade};
                   `}
                 >
-                  Share
-                </span>
-              </label>
-              <input
-                className="visually-hidden"
-                type={"checkbox"}
-                id={quote?.product?.name}
-                name="share-quote"
-                checked={isShare}
-                onChange={handleShareQuoteChange}
-              />
-            </div>
-              ) : (
-                <div
-              css={`
-                font-size: 0.83rem;
-              `}
-            >
-              <label
-                className="d-flex align-items-center rounded"
-                htmlFor={quote.product.id + quote.total_premium}
+                  {isShare ? (
+                    <IoCheckmarkCircleSharp
+                      color={colors.primary_color}
+                      style={{ marginRight: 3 }}
+                      size={20}
+                    />
+                  ) : (
+                    // <BsCircleFill
+                    //   css={`
+                    //     color: white;
+                    //   `}
+                    // />
+                    <div
+                      css={`
+                        width: 17px;
+                        height: 17px;
+                        border: 1px solid ${colors.primary_color};
+                        border-radius: 50%;
+                        margin: 1px 5px 1px 1px;
+                      `}
+                    />
+                  )}
+                  {/* </span> */}
+                  <span
+                    css={`
+                      margin-top: 2px;
+                    `}
+                  >
+                    Share
+                  </span>
+                </label>
+                <input
+                  className="visually-hidden"
+                  type={"checkbox"}
+                  id={quote?.product?.name}
+                  name="share-quote"
+                  checked={isShare}
+                  onChange={handleShareQuoteChange}
+                />
+              </div>
+            ) : (
+              <div
                 css={`
-                  color: ${colors.font.one};
-                  font-weight: 900;
-                  cursor: pointer;
-                  // background-color: ${colors.secondary_shade};
+                  font-size: 0.83rem;
                 `}
               >
-                {/* <span
+                <label
+                  className="d-flex align-items-center rounded"
+                  htmlFor={quote.product.id + quote.total_premium}
+                  css={`
+                    color: ${colors.font.one};
+                    font-weight: 900;
+                    cursor: pointer;
+                    // background-color: ${colors.secondary_shade};
+                  `}
+                >
+                  {/* <span
                   css={`
                     font-size: 1.27rem;
                     margin-right: 0.3em;
                     color: ${colors.primary_color};
                   `}
                 > */}
-                {isCompareQuote ? (
-                  <IoCheckmarkCircleSharp
-                    color={colors.primary_color}
-                    style={{ marginRight: 3 }}
-                    size={20}
-                  />
-                ) : (
-                  // <BsCircleFill
-                  //   css={`
-                  //     color: white;
-                  //   `}
-                  // />
-                  <div
+                  {isCompareQuote ? (
+                    <IoCheckmarkCircleSharp
+                      color={colors.primary_color}
+                      style={{ marginRight: 3 }}
+                      size={20}
+                    />
+                  ) : (
+                    // <BsCircleFill
+                    //   css={`
+                    //     color: white;
+                    //   `}
+                    // />
+                    <div
+                      css={`
+                        width: 17px;
+                        height: 17px;
+                        border: 1px solid ${colors.primary_color};
+                        border-radius: 50%;
+                        margin: 1px 5px 1px 1px;
+                      `}
+                    />
+                  )}
+                  {/* </span> */}
+                  <span
                     css={`
-                      width: 17px;
-                      height: 17px;
-                      border: 1px solid ${colors.primary_color};
-                      border-radius: 50%;
-                      margin: 1px 5px 1px 1px;
+                      margin-top: 2px;
                     `}
-                  />
-                )}
-                {/* </span> */}
-                <span
-                  css={`
-                    margin-top: 2px;
-                  `}
-                >
-                  Compare
-                </span>
-              </label>
-              <input
-                className="visually-hidden"
-                type={"checkbox"}
-                id={quote.product.id + quote.total_premium}
-                name="compare-quote"
-                checked={isCompareQuote}
-                onChange={handleCompareChange}
-              />
-            </div>
-              )
-            }
+                  >
+                    Compare
+                  </span>
+                </label>
+                <input
+                  className="visually-hidden"
+                  type={"checkbox"}
+                  id={quote.product.id + quote.total_premium}
+                  name="compare-quote"
+                  checked={isCompareQuote}
+                  onChange={handleCompareChange}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -567,7 +588,7 @@ function QuoteCardSelect({ ...props }) {
           fontSize: "12px",
           fontWeight: "bold",
           padding: "7px 7px !important",
-          textAlign: "center !important"
+          textAlign: "center !important",
         }),
         menu: provided => ({
           ...provided,
@@ -594,13 +615,13 @@ function QuoteCardSelect({ ...props }) {
           fontWeight: "bold",
           minHeight: "initial",
           outline: "none",
-          border: '0 !important',
+          border: "0 !important",
           // This line disable the blue border
-          boxShadow: '0 !important',
-          '&:hover': {
-              border: '0 !important'
-            }
-          }),
+          boxShadow: "0 !important",
+          "&:hover": {
+            border: "0 !important",
+          },
+        }),
       }}
       {...props}
     />

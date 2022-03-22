@@ -292,7 +292,7 @@ function Info({ label, value, onlyDesktop = false, ...props }) {
           display: ${onlyDesktop ? "none" : "flex"} !important;
         }
         @media (max-width: 406px) {
-          font-size: 10px;
+          // font-size: 10px;
           gap: 2px;
           padding: 0 5px;
         }
