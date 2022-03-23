@@ -111,6 +111,7 @@ const TextInput = ({
             if (
               checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&
+              e.target.value.length <= 60 &&
               checkAllChar(
                 e.target.value,
                 forbiddedSymbols.filter(el => !acceptedSpecialChar.includes(el)),

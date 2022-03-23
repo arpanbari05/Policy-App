@@ -29,11 +29,15 @@ function LogoLink() {
         alt={`companylogo`}
         css={`
           cursor: pointer;
-          max-width: ${tenant.alias === "Pinc" ? "90px" : "187px"};
+          max-width: ${tenant.alias.toLowerCase() === "pinc"
+            ? "90px"
+            : "187px"};
           object-fit: contain;
 
           @media (max-width: 480px) {
-            max-width: ${tenant.alias === "Pinc" ? "70px" : "110px"};
+            max-width: ${tenant.alias.toLowerCase() === "pinc"
+              ? "70px"
+              : "110px"};
           }
         `}
       />
@@ -277,9 +281,9 @@ function Info({ label, value, onlyDesktop = false, ...props }) {
     <div
       className="d-flex"
       css={`
-        padding: 0 .79em;
-        font-size: .7rem;
-        gap: .67em;
+        padding: 0 0.79em;
+        font-size: 0.7rem;
+        gap: 0.67em;
         &:not(:last-child) {
           border-right: 1px solid ${colors.secondary_shade};
         }

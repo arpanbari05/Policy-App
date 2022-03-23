@@ -74,7 +74,7 @@ const DateComp = ({
           minDate={
             age.length && age[1] >= 1
               ? new Date(
-                  currentYear - (age[1] + 1),
+                  currentYear - (age[1]),
                   currentMonth,
                   currentDate - 1,
                 )

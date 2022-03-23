@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Modal, Col, Row } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { BackgroundBorderTitle } from "./ReviewCart";
@@ -771,11 +771,17 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
   } = useGetEnquiriesQuery();
   const firstName = getFirstName(name);
 
-  const {
+  const { groupCode } = useParams();
+
+  let {
     data: {
       data: { groups },
     },
   } = useGetEnquiriesQuery();
+
+  const currentGroup = groups.find(group => group.id === +groupCode);
+
+  groups = groups.filter(group => group.type === currentGroup.type);
 
   const { data, isLoading, isUninitialized, isFetching } = useGetCartQuery();
 

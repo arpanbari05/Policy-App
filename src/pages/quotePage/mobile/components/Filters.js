@@ -106,7 +106,7 @@ export function getAllSelectedFilters(filters, filterSelector) {
   return allFilters;
 }
 
-export function FilterModal({ onClose }) {
+export function FilterModal({ onClose, show }) {
   const { boxShadows } = useTheme();
 
   const { getSelectedFilter } = useFilters();
@@ -164,7 +164,7 @@ export function FilterModal({ onClose }) {
   );
 
   return (
-    <MobileModal onClose={onClose}>
+    <MobileModal onClose={onClose} show={show}>
       <Tab.Container id="left-tabs-example" defaultActiveKey="premium">
         <div
           className="d-flex min-vh-100"
@@ -239,11 +239,11 @@ export function FilterModal({ onClose }) {
               options={plantypes.filter(plantype => plantype.code !== "I")}
             />
             <Tab.Pane eventKey="insurers">
-              {/* <InsurersFilter
+              <InsurersFilter
                 code="insurers"
                 onChange={updateFilter}
                 currentOptions={filters.insurers}
-              /> */}
+              />
             </Tab.Pane>
             {morefilters.map(filter => (
               <RenderFilterOptions
@@ -467,7 +467,7 @@ function InsurersFilter({ onChange, currentOptions, code }) {
 function InsurerOption({
   companyAlias,
   onChange,
-  currentOptions,
+  currentOptions = [],
   company,
   ...props
 }) {
@@ -532,21 +532,98 @@ function InsurerOption({
   );
 }
 
-function MobileModal({ onClose, children }) {
-  const { colors } = useTheme();
+function CustomFilterModal({ show, children }) {
   return (
-    <Modal
-      show
-      onHide={onClose}
+    <div
       css={`
-        & .modal-dialog {
-          margin: 0;
-        }
-
-        & .modal-content {
-          border-radius: 0;
-        }
+        display: ${show ? "block" : "none"};
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999999;
+        background: white;
       `}
+    >
+      <div
+        css={`
+          width: 100%;
+          height: 100vh;
+        `}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function MobileModal({ onClose, children, show }) {
+  const { colors } = useTheme();
+  console.log(show);
+  return (
+    // <Modal
+    //   show={true}
+    //   // onHide={onClose}
+    //   css={`
+    //     .modal-backdrop .show {
+    //       display: ${show ? "block" : "none"};
+    //     }
+    //     & .modal-dialog {
+    //       margin: 0;
+    //       display: ${show ? "block" : "none"};
+    //     }
+
+    //     & .modal-content {
+    //       border-radius: 0;
+    //     }
+    //   `}
+    // >
+    //   <div
+    //     css={`
+    //       height: 100vh;
+    //       width: 100vw;
+    //       overflow: auto;
+    //     `}
+    //   >
+    //     <div
+    //       className="p-3"
+    //       css={`
+    //         background-color: ${colors.primary_color};
+    //         color: #fff;
+    //       `}
+    //     >
+    //       <div
+    //         className="d-flex align-items-center"
+    //         css={`
+    //           gap: 1em;
+    //         `}
+    //       >
+    //         <button
+    //           onClick={onClose}
+    //           css={`
+    //             color: #fff;
+    //             line-height: 1;
+    //           `}
+    //         >
+    //           <FaArrowLeft />
+    //         </button>
+    //         <h1
+    //           className="m-0"
+    //           css={`
+    //             font-size: 1rem;
+    //             font-weight: 900;
+    //           `}
+    //         >
+    //           Filters
+    //         </h1>
+    //       </div>
+    //     </div>
+    //     {children}
+    //   </div>
+    // </Modal>
+    <CustomFilterModal
+      show={show}
     >
       <div
         css={`
@@ -590,7 +667,7 @@ function MobileModal({ onClose, children }) {
         </div>
         {children}
       </div>
-    </Modal>
+    </CustomFilterModal>
   );
 }
 

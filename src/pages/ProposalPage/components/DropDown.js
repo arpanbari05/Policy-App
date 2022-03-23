@@ -5,6 +5,7 @@ import down from "./../../../assets/images/down-arrow.svg";
 import up from "./../../../assets/images/up-arrow.svg";
 const DropDown = ({
   name,
+  values,
   label,
   onChange,
   height = false,
@@ -20,12 +21,53 @@ const DropDown = ({
   readOnly,
   checkValidation,
   excludeOptions,
+  directUpdateValue,
 }) => {
   const [selectOption, setSelectOption] = useState(asyncOptions || options);
 
-  const [dataValue, setDataValue] = useState();
+  useEffect(() => {
+    console.log(
+      "dbnjdfkbf",
+      values,
+      selectOption,
+      label,
+      options,
+      value
+    );
+    if (
+      values &&
+      values.gender &&
+      values.gender === "F" &&
+      label.toLowerCase().includes("title")
+    ) {
+      setSelectOption(
+        Object.keys(options).reduce((acc, key) => {
+          return key !== "mr"
+            ? { ...acc, [key]: options[key] }
+            : { ...acc };
+        }, {}),
+      );
+    }else if(
+      values &&
+      values.gender &&
+      values.gender === "M" &&
+      label.toLowerCase().includes("title")
+    ){
+      setSelectOption(
+        Object.keys(options).reduce((acc, key) => {
+          return key !== "ms" && key !== "mrs"
+            ? { ...acc, [key]: options[key] }
+            : { ...acc };
+        }, {}),
+      );
+    }
+  }, [values]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if(Object.keys(selectOption).length === 1 && !values[name]) directUpdateValue(name,selectOption[Object.keys(selectOption)[0]]);
+  },[selectOption]);
+
+  const [dataValue, setDataValue] = useState();
 
   const excludeOptionsPage = excludeOptions?.when?.split(".")[0];
 
@@ -58,7 +100,9 @@ const DropDown = ({
           onChange(e, selectOption[e.target.value]);
         }}
         value={value}
-        disabled={(Object.keys(selectOption).length === 1 && !asyncOptions) || readOnly}
+        disabled={
+          (Object.keys(selectOption).length === 1 && !asyncOptions) || readOnly
+        }
         error={error}
         height={height}
         borderR={borderR}
@@ -115,7 +159,7 @@ const SelectContainer = styled.div`
 
 const Select = styled.select`
   appearance: none;
-  background: ${props => props.disabled?"":`url(${down}) no-repeat 98%`};
+  background: ${props => (props.disabled ? "" : `url(${down}) no-repeat 98%`)};
   list-style: none;
   list-style-type: none;
   user-select: none;
