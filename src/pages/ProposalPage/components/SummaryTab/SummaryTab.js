@@ -51,6 +51,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
   const PrimaryShade = colors.primary_shade;
   // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
   const getValueFromCode = useCallback((value, data) => {
+    console.log("vnxfjx",value, data)
     if (asyncOptions[data.name]) {
       return asyncOptions[data.name][value];
     }
@@ -122,10 +123,9 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
           
           <p className="font_15_p_s">{data.additionalOptions.label}</p>
           <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
-        
             {data.name === "town" || data.name === "area"
               ? values[data.name + "__value"]
-              : values[data.name]}
+              : getValueFromCode(values[data.name],data)}
           </p>
         </Col>
       );

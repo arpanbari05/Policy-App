@@ -399,13 +399,18 @@ export function calculateTotalPremium(
   return totalPremiumAfterDiscount;
 }
 
+function getMonthsForYearFloor(years) {
+  return Math.floor(years * 12);
+}
+
 export function getAgeList({ min_age, max_age }) {
   const minAge = parseFloat(min_age);
   const maxAge = parseFloat(max_age);
   if (minAge < 1) {
-    const startMonth = getMonthsForYear(minAge);
+    const startMonth = getMonthsForYearFloor(minAge);
+
     if (maxAge < 1) {
-      const endMonth = getMonthsForYear(maxAge);
+      const endMonth = getMonthsForYearFloor(maxAge);
       return range(startMonth, endMonth + 1).map(month => ({
         code: monthsPercentage(month),
         display_name: month + " Months",
@@ -666,7 +671,7 @@ export function parseJson(serialized) {
   return serialized;
 }
 
-// CARE RIDERS VALIDATIONS
+//? CARE RIDERS VALIDATIONS
 export const careRidersConditionChecker = (quote, riderAlias, riders) => {
   const isDisabled =
     quote?.product?.company?.name === "Care Health Insurance" &&
@@ -696,7 +701,7 @@ export const premiumWithAddons = (netPremium, addons = []) => {
   return netPremium;
 };
 
-// year to month
+//? year to month
 export function months2years(months) {
   var dur1 = parseInt(months) / 12;
   return dur1.toFixed(2);

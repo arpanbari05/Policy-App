@@ -53,13 +53,31 @@ import {
   useMembersForm,
 } from "../../../components/MemberOptions";
 import { Modal } from "react-bootstrap";
-import { api, useGetEnquiriesQuery } from "../../../api/api";
+import {
+  api,
+  useGetEnquiriesQuery,
+  useUpdateCartMutation,
+} from "../../../api/api";
 import _ from "lodash";
 
 const plantypes = {
   M: "Multi Individual",
   I: "Individual",
   F: "Family Floater",
+};
+
+const singlePay = id => {
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = process.env.REACT_APP_API_BASE_URL + "payments";
+  form.style.display = "none";
+  const input = document.createElement("input");
+  input.name = "proposal_id";
+  input.value = id;
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
 };
 
 export function CartDetails({ groupCode, ...props }) {
@@ -72,6 +90,9 @@ export function CartDetails({ groupCode, ...props }) {
   const cartEntry = getCartEntry(groupCode);
 
   const { unavailable_message } = cartEntry;
+
+  const modifyDetailsNotAllowed =
+    cartEntry?.product?.company?.alias === "universal_sompo";
 
   return (
     <CartDetailsWrap {...props}>
@@ -126,8 +147,8 @@ export function CartDetails({ groupCode, ...props }) {
               }
             `}
           >
-            <Button>{"Quick Pay & Renew"}</Button>
-            <Button>Modify Details</Button>
+            <QuickPayAndRenewButton groupCode={groupCode} />
+            {!modifyDetailsNotAllowed && <Button>Modify Details</Button>}
           </div>
         ) : (
           <ReviewCartButtonNew groupCode={groupCode} />
@@ -136,6 +157,81 @@ export function CartDetails({ groupCode, ...props }) {
     </CartDetailsWrap>
   );
 }
+
+const QuickPayAndRenewButton = ({ groupCode }) => {
+  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+    useAdditionalDiscount(groupCode);
+
+  const { getNextGroupProduct, getCartEntry } = useCart();
+
+  const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
+
+  const url = useUrlQuery();
+
+  const history = useHistory();
+
+  const { updateCart } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
+
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
+  const [updateCartMutation, { isLoading }] = updateCart(groupCode);
+
+  const { getMembersText } = useMembers();
+
+  const handleClick = () => {
+    updateCartMutation({ additionalDiscounts, generate_proposal: true }).then(
+      resObj => {
+        if (nextGroupProduct) {
+          const enquiryId = url.get("enquiryId");
+          history.push({
+            pathname: `/productdetails/${nextGroupProduct.group.id}`,
+            search: `enquiryId=${enquiryId}`,
+          });
+          return;
+        }
+
+        singlePay(resObj?.data?.proposal_id);
+      },
+    );
+  };
+
+  return (
+    <Button
+      onClick={handleClick}
+      loader={!nextGroupProduct && isLoading}
+      disabled={
+        cartEntry.unavailable_message ||
+        isLoading ||
+        additionalDiscountsQuery.isLoading ||
+        additionalDiscountsQuery.isFetching ||
+        isTotalPremiumLoading
+      }
+    >
+      {nextGroupProduct ? (
+        <div className="d-flex justify-content-between align-items-center">
+          <div
+            css={`
+              font-size: 0.79rem;
+              text-align: left;
+            `}
+          >
+            <div>Next Step:</div>
+            <div>Plan for {getMembersText(nextGroupProduct.group)}</div>
+          </div>
+          <div>
+            Proceed {isLoading ? <CircleLoader animation="border" /> : null}
+          </div>
+        </div>
+      ) : (
+        "Quick pay & Renew"
+      )}
+    </Button>
+  );
+};
 
 function UnavailableMessage({ message = "" }) {
   const { colors } = useTheme();
@@ -260,7 +356,6 @@ function DiscountsList({ groupCode, ...props }) {
   const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
 
   const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
-
 
   if (!selectedAdditionalDiscounts.length) return null;
 
@@ -867,7 +962,6 @@ function TotalPremium({ groupCode, ...props }) {
 
   const { netPremium, tenure, addons } = cartEntry;
 
-  
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
   const displayNetPremium = `${amount(
@@ -927,7 +1021,9 @@ function useTotalPremiumLoader(cartEntry) {
 
 function ReviewCartButtonNew({ groupCode, ...props }) {
   const history = useHistory();
+
   const url = useUrlQuery();
+
   const { updateCart, getCartEntry } = useCart();
 
   const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
@@ -943,13 +1039,13 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const { getNextGroupProduct } = useCart();
 
+  const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
+
   const reviewCartModalNew = useToggle();
 
   const { getMembersText } = useMembers();
 
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
-  const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
   const urlQueryStrings = new URLSearchParams(window.location.search);
 
