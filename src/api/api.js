@@ -199,6 +199,10 @@ export const api = createApi({
           endpoint = "top_up-riders";
         }
 
+        if (journeyType === "renewal") {
+          endpoint = "renewal-riders";
+        }
+
         let url = `products/${productId}/${endpoint}?sum_insured=${sum_insured}&tenure=${tenure}&group=${group}`;
 
         if (selected_riders.length)

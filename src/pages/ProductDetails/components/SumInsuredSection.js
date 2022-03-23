@@ -53,12 +53,12 @@ function SumInsuredOption({ sum_insured, cartEntry, checked }) {
 
   const handleChange = ({ isSelected, sum_insured }) => {
     if (!isSelected || isLoading) return;
-    updateCartEntry(group.id, { sum_insured });
+    updateCartEntry(group?.id, { sum_insured });
   };
 
   const quote =
     icQuotes &&
-    icQuotes.data.data.find(quote =>
+    icQuotes?.data?.data.find(quote =>
       matchQuotes(quote, { sum_insured, product }, { deductible: false }),
     );
 

@@ -2,8 +2,8 @@
 name: Bug report
 about: Create a report to help us improve
 title: IC-Product-Page-Issue
-labels: BUG, open
-assignees: siddhijavalkar
+labels: bug, open
+assignees: aakritibakshi
 
 ---
 
