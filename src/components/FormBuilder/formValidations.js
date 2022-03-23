@@ -479,17 +479,24 @@ export const validationIndex = {
             };
           } else break;
         case "pan": {
+
           if (
-            !/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(value.toUpperCase()) ||
-            // pancard number's 5th char must be equal to the first char of last name of the user
-            (value[4] &&
-              values.name[values.name.lastIndexOf(" ") + 1] !== value[4])
+            !/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(value.toUpperCase())
           ) {
             return {
               status: false,
               message: "Please enter a valid pan number.",
             };
-          } else break;
+          }else if((value[4] &&
+            // pancard number's 5th char must be equal to the first char of last name of the user
+
+            values.name[values.name.lastIndexOf(" ") + 1] !== value[4])){
+              return {
+                status: false,
+                message: "5th char must be equal to your last name's 1st char.",
+              };
+            }
+           else break;
         }
         case "aadhar":
           if (!/^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/.test(value)) {
