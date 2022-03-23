@@ -666,7 +666,7 @@ export function parseJson(serialized) {
   return serialized;
 }
 
-// CARE RIDERS VALIDATIONS
+//? CARE RIDERS VALIDATIONS
 export const careRidersConditionChecker = (quote, riderAlias, riders) => {
   const isDisabled =
     quote?.product?.company?.name === "Care Health Insurance" &&
@@ -696,7 +696,7 @@ export const premiumWithAddons = (netPremium, addons = []) => {
   return netPremium;
 };
 
-// year to month
+//? year to month
 export function months2years(months) {
   var dur1 = parseInt(months) / 12;
   return dur1.toFixed(2);

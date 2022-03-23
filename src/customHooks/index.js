@@ -167,7 +167,8 @@ export function useTheme() {
     },
   } = useGetFrontendBootQuery();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = useSelector(state => state.frontendBoot.theme);
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } =
+    useSelector(state => state.frontendBoot.theme);
   return {
     ...styles,
     colors: {
@@ -605,6 +606,7 @@ export function useUpdateMembers() {
 
 export function useCart() {
   const dispatch = useDispatch();
+
   const { data } = useGetCartQuery();
 
   // const { discounted_total_premium } = data;
@@ -665,7 +667,7 @@ export function useCart() {
     const { id, health_riders, ...cartEntry } = getCartEntry(groupCode);
 
     return [
-      ({ additionalDiscounts = [] }) => {
+      ({ additionalDiscounts = [], generate_proposal = false }) => {
         const discounted_total_premium = calculateTotalPremium(
           { health_riders, ...cartEntry },
           { additionalDiscounts },
@@ -677,6 +679,7 @@ export function useCart() {
             health_riders.map(getRiderSendData),
           addons: cartEntry.addons.map(getAddOnSendData),
           discounted_total_premium,
+          generate_proposal,
         });
       },
       updateCartMutationQuery,
@@ -883,6 +886,7 @@ export function useUrlEnquiry() {
 
 export function useGetQuotes(queryConfig = {}) {
   const insurersToFetch = useInsurersToFetch();
+
   const { journeyType } = useFrontendBoot();
 
   const { getSelectedFilter } = useFilters();
@@ -1406,11 +1410,10 @@ export function useGetQuote(company_alias) {
   const { data } = useGetQuotes();
 
   const icQuotes =
-    data && data.find(icQuotes => icQuotes.company_alias === company_alias);
+    data &&
+    data.find(icQuotes => icQuotes?.data?.company_alias === company_alias);
 
   const isLoading = !data || !icQuotes;
-
-  // function getQuote(quote) {}
 
   return { isLoading, data, icQuotes };
 }
