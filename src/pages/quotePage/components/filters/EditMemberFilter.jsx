@@ -15,6 +15,7 @@ import { Button } from "../../../../components";
 import { RiPencilFill } from "react-icons/ri";
 import { FaTimes } from "react-icons/fa";
 import * as mq from "../../../../utils/mediaQueries";
+import { useGetEnquiriesQuery } from "../../../../api/api";
 
 export function EditMembersModal({
   onClose,
@@ -144,11 +145,13 @@ const EditMemberFilter = () => {
 
 export function EditMembers({ onClose, ...props }) {
   const { getAllMembers } = useMembers();
+  const [clientError, setClientError] = useState("");
 
   const { isError, validate, getSelectedMembers, ...memberForm } =
     useMembersForm(getAllMembers);
 
   const { updateMembers, isLoading, error } = useUpdateMembers();
+  const { data } = useGetEnquiriesQuery();
 
   let serverErrors = [];
 
@@ -189,7 +192,12 @@ export function EditMembers({ onClose, ...props }) {
             }
           `}
         >
-          <MemberOptions {...memberForm} />
+          <MemberOptions
+            {...memberForm}
+            gender={data?.data?.input?.gender}
+            selectedMembers={getSelectedMembers()}
+            setServerError={setClientError}
+          />
         </div>
         {error &&
           serverErrors.map(serverError => (
@@ -197,6 +205,9 @@ export function EditMembers({ onClose, ...props }) {
               {serverError}
             </StyledErrorMessage>
           ))}
+        {clientError !== "" && (
+          <StyledErrorMessage>{clientError}</StyledErrorMessage>
+        )}
         <Button
           type="submit"
           loader={isLoading}
