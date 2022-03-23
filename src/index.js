@@ -12,13 +12,17 @@ ReactDOM.render(
     <GlobalStyles />
     <AppProviders>
       <ErrorBoundary>
-        <CacheBuster
-          currentVersion={version}
-          isEnabled={process.env.NODE_ENV === "production"}
-          isVerboseMode={false}
-        >
+        {process.env.NODE_ENV === "production" ? (
+          <CacheBuster
+            currentVersion={version}
+            isEnabled={process.env.NODE_ENV === "production"}
+            isVerboseMode={false}
+          >
+            <App />
+          </CacheBuster>
+        ) : (
           <App />
-        </CacheBuster>
+        )}
       </ErrorBoundary>
     </AppProviders>
   </React.StrictMode>,
