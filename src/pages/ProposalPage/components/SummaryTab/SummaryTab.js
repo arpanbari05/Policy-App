@@ -78,8 +78,12 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
   };
 
   const normalRender = useCallback((data, i) => {
-    if (data.type === "title")
+  
+
+    if (data.type === "title"){
       return <TitleWrapper>{filterUnderscore(data.name)}</TitleWrapper>;
+
+    }
     if (data.type === "date" && values?.[data.name]) {
       return (
         <Col
@@ -115,12 +119,13 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          {console.log("bvidwbvidbvb", values)}
+          
           <p className="font_15_p_s">{data.additionalOptions.label}</p>
           <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
+        
             {data.name === "town" || data.name === "area"
               ? values[data.name + "__value"]
-              : getValueFromCode(values[data.name], data)}
+              : values[data.name]}
           </p>
         </Col>
       );
@@ -135,6 +140,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
         key={i}
       >
         <p className="font_15_p_s">{data.additionalOptions.label}</p>
+
         <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
           {values[data.name]}
         </p>
@@ -232,7 +238,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
           <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
-          {console.log("gegegedd", values)}
+         
           {
             // values?.[item]?.[data.name] instanceof Object &&
             // values?.[item]?.[data.name]?.members &&
@@ -298,6 +304,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
           key={i}
         >
           <p className="font_15_p_s">{data.additionalOptions.label}</p>
+
           <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
             {getValueFromCode(values?.[item]?.[data.name], data)}
           </p>
@@ -332,7 +339,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
           <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
-          {console.log("svjksfvb", values, item, data)}
+        
           {values?.[item]?.[data.name] instanceof Object &&
           values?.[item]?.[data.name]?.members &&
           Object.keys(values?.[item]?.[data.name]?.members).length ? (
@@ -434,6 +441,8 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
             margin-top: -28px;
           `}
         >
+   
+
           {data instanceof Array
             ? data.map(normalRender)
             : Object.keys(data).map((item, index) => (
