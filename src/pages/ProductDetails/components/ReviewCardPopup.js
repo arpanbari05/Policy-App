@@ -8,10 +8,20 @@ import CorrectIcon from "../../../assets/images/correct_icon.png";
 import EditIcon from "../../../assets/images/edit.png";
 import DeleteIcon from "../../../assets/images/remove.png";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
-import { useCompanies, useFrontendBoot, useTheme } from "../../../customHooks";
+import {
+  useCompanies,
+  useFrontendBoot,
+  useMembers,
+  useTheme,
+} from "../../../customHooks";
 import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
-import { amount, getFirstName, getTotalPremium } from "../../../utils/helper";
+import {
+  amount,
+  displayFormattedMembers,
+  getFirstName,
+  getTotalPremium,
+} from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
 import {
@@ -578,7 +588,9 @@ function ProductDetailsCard({ cartItem }) {
     top_up_riders,
     group: { id: groupCode },
   } = cartItem;
+
   const health_riders = useRider(groupCode).getSelectedRiders();
+
   const logoSrc = companies[alias].logo;
 
   const displayRiders =
@@ -777,8 +789,6 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
 
   const allAddons = cart?.map(singleCartEntry => singleCartEntry.addons).flat();
 
-  console.log("The all addons", allAddons);
-
   if (isLoading || isUninitialized || isFetching)
     return (
       <PopUpWithCloseButton
@@ -953,10 +963,9 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
 export default ReviewCartPopup;
 
 function ProductCard({ groupCode, onClose, cartEntry, group, link }) {
-  const urlQuery = useUrlQuery();
   const product = cartEntry;
 
-  //console.log("the product", product);
+  const { getMembersText } = useMembers();
 
   const reducedAddOns = product?.addons?.reduce((reducedAddOns, addon) => {
     const {
@@ -992,29 +1001,7 @@ function ProductCard({ groupCode, onClose, cartEntry, group, link }) {
           align-items: center;
         `}
       >
-        <GradientTitle title={group?.members?.join(" + ")} />
-        {/* <div
-          css={`
-            display: flex;
-          `}
-        >
-          <Link
-            to={`/productdetails/${groupCode}?enquiryId=${enquiryId}`}
-            onClick={handleCloseClick}
-          >
-            <img src={EditIcon} alt="edit" />
-          </Link>
-          <button
-            onClick={() => {
-              handleCloseClick();
-              deleteProduct().then(() => {
-                history.push(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
-              });
-            }}
-          >
-            <img src={DeleteIcon} alt="remove-quote" />
-          </button>
-        </div> */}
+        <GradientTitle title={getMembersText({ id: groupCode })} />
       </div>
       {product ? (
         <div

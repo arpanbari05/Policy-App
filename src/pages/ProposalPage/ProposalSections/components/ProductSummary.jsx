@@ -576,6 +576,8 @@ function CartSummary({ item, index, groupCode }) {
 
   const [showAddOns, setShowAddOns] = useState(false);
 
+  const { getMembersText } = useMembers();
+
   const { policyTypes } = useSelector(state => state.quotePage);
 
   const {
@@ -607,7 +609,7 @@ function CartSummary({ item, index, groupCode }) {
             className="text_title_filter p_modal_title_bg_filters_product "
             style={{ textTransform: "capitalize", fontSize: "14px" }}
           >
-            {item.group.members.join(" , ")}
+            {getMembersText({ id: groupCode })}
           </h5>
         </div>
         <div className="col-md-3 text-right"></div>
@@ -640,29 +642,8 @@ function CartSummary({ item, index, groupCode }) {
           </span>
 
           <span>{item.product.name}</span>
-          {/* <div className="logo_add_review float_left_addon_c">
-        <img
-          css={`
-            width: 74px;
-          `}
-          src={
-            frontendData.data.companies[
-              item.product.company.alias
-            ].logo
-          }
-          className="img_top_m_custom_medical"
-          alt="logo"
-        />
-      </div> */}
-          {/* <div
-        css={`
-          font-size: 20px;
-        `}
-      >
-        <p>{item.product.name}</p>
-      </div> */}
         </div>
-        {/* <hr /> */}
+
         <div
           className="row"
           css={`
@@ -796,15 +777,6 @@ function CartSummary({ item, index, groupCode }) {
           ) : (
             <></>
           )}
-
-          {/* <div className="col-md-6">
-    <p className="p_cover_medical_pop color_green">
-      Revised Premium:{" "}
-    </p>
-    <span className="p_cover_medical_pop_span">
-    ₹ 15,225 / year
-    </span>
-  </div> */}
         </div>
         {item.health_riders.length > 0 && (
           <>
@@ -823,17 +795,6 @@ function CartSummary({ item, index, groupCode }) {
                 top: -5px;
               `}
             >
-              {/*<p
-            className="p_cover_medical_pop"
-            css={`
-              width: 100%;
-              color: #0a87ff;
-              font-weight: 900;
-              margin-bottom: 5px;
-            `}
-          >
-            Riders:{" "}
-          </p>*/}
               <BackgroundBorderTitle title="Riders:" />
 
               {!showRiders && (

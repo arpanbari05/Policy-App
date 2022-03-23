@@ -333,9 +333,8 @@ function PolicyDetails({ cartEntry }) {
   const { sum_insured, tenure } = cartEntry;
   const { data } = useGetEnquiriesQuery();
 
-  console.log("The data", data);
   const name = data?.data?.name;
-  const policy_number = data?.data?.policy_no;
+  const policy_number = data?.data?.renewal_policy?.prev_policy_no;
 
   return (
     <div

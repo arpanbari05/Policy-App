@@ -152,9 +152,6 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                 </h3>
                 <Paragraph
                   className="leade_p"
-                  style={{
-                    textAlign: "justify",
-                  }}
                   dangerouslySetInnerHTML={{
                     __html: claimProccess.cashless_claim,
                   }}
@@ -172,9 +169,6 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                 </h3>
                 <Paragraph
                   className="leade_p"
-                  style={{
-                    textAlign: "justify",
-                  }}
                   dangerouslySetInnerHTML={{
                     __html: claimProccess.document_required,
                   }}
@@ -193,7 +187,6 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                 <Paragraph
                   className="leade_p"
                   style={{
-                    textAlign: "justify",
                     fontSize: "14px",
                   }}
                   dangerouslySetInnerHTML={{
