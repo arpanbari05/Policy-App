@@ -35,7 +35,7 @@ import {
   useTheme,
   useUrlEnquiry,
   useCart,
-  useMembers
+  useMembers,
 } from "../../customHooks";
 import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
@@ -281,7 +281,12 @@ const ProposalSummary = () => {
                   <span>Total Premium</span>
                   <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
                     <span class="font_weight_normal text-white">
-                      {amount(policyStatus.reduce((acc,el) => acc += el.total_premium,0))}
+                      {amount(
+                        policyStatus.reduce(
+                          (acc, el) => (acc += el.total_premium),
+                          0,
+                        ),
+                      )}
                     </span>
                   </p>
                 </div>
@@ -295,12 +300,7 @@ const ProposalSummary = () => {
           background: ${PrimaryColor};
         `}
       >
-        <Link
-          to={getUrlWithEnquirySearch("/proposal")}
-          // onClick={() => {
-          //   history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
-          // }}
-        >
+        <Link to={getUrlWithEnquirySearch("/proposal")}>
           <MobileHeaderText>
             <i
               class="fa fa-arrow-circle-left"

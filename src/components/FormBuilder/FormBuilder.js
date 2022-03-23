@@ -45,7 +45,8 @@ const FormBuilder = ({
   let proposalDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
-  const [nomineeRelationAutopopulated,setNomineeRelationAutopopulated] = useState(false)
+  const [nomineeRelationAutopopulated, setNomineeRelationAutopopulated] =
+    useState(false);
   let memberGroupsAsPerMembers = useSelector(({ greetingPage }) =>
     greetingPage.proposerDetails.groups.reduce(
       (acc, { id, members }) => ({
@@ -75,7 +76,7 @@ const FormBuilder = ({
     formName,
     insuredDetails,
     canProceed,
-    yesSelected
+    yesSelected,
   );
 
   const [trigger, setTrigger] = useState(false);
@@ -100,9 +101,8 @@ const FormBuilder = ({
 
   // for auto populate self data when nominee relation is self
   useEffect(() => {
-
     if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
-    let nomineeRelation = values.nominee_relation;
+      let nomineeRelation = values.nominee_relation;
 
       let dataForAutopopulate;
       if (nomineeRelation === "self") {
@@ -144,9 +144,9 @@ const FormBuilder = ({
           acc[name] = dataForAutopopulate[nameWithoutNominee];
       });
 
-      setValues({...acc,nominee_relation: nomineeRelation});
-      setNomineeRelationAutopopulated(true)
-    } 
+      setValues({ ...acc, nominee_relation: nomineeRelation });
+      setNomineeRelationAutopopulated(true);
+    }
   }, [values.nominee_relation]);
 
   useEffect(() => {
@@ -168,7 +168,6 @@ const FormBuilder = ({
 
   const [fillBus, setFillBus] = useState([]);
   const { asyncOptions, asyncValues } = useSelector(state => state.formBuilder);
-
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -246,7 +245,9 @@ const FormBuilder = ({
                                   <Wrapper
                                     key={index + member + innerItem.name}
                                     width={innerItem.width}
-                                    id={innerItem.parent+member+innerItem.name}
+                                    id={
+                                      innerItem.parent + member + innerItem.name
+                                    }
                                     medical
                                   >
                                     <Comp
@@ -453,133 +454,138 @@ const FormBuilder = ({
             if (!Comp) {
               alert("Type :" + item.type + "Not found");
               return <></>;
-            } return (
-                <>
-
-                  {renderField(item, values) && (
-                    <Wrapper key={index + item.name} id={item.name} width={item.width}>
-                      <Comp
-                        name={item.name}
-                        checkValidation={item.validate}
-                        selectedValues={values}
-                        onChange={(e, value) => {
-                         
-                          if (item.parent && item.members) {
-                            insertValue(
-                              item.parent,
-                              item.members,
-                              item.name,
-                              e.target.value,
-                            );
+            }
+            return (
+              <>
+                {renderField(item, values) && (
+                  <Wrapper
+                    key={index + item.name}
+                    id={item.name}
+                    width={item.width}
+                  >
+                    <Comp
+                      name={item.name}
+                      checkValidation={item.validate}
+                      selectedValues={values}
+                      onChange={(e, value) => {
+                        if (item.parent && item.members) {
+                          insertValue(
+                            item.parent,
+                            item.members,
+                            item.name,
+                            e.target.value,
+                          );
+                        } else {
+                          if (item.name === "town" || item.name === "area") {
+                            updateValues({
+                              [item.name]: e.target.value,
+                              [item.name + "__value"]: value,
+                            });
+                          } else if (!item.type.includes("custom")) {
+                            if (
+                              item.name === "nominee_relation" &&
+                              !insuredDetails[e.target.value] &&
+                              nomineeRelationAutopopulated
+                            ) {
+                              console.log(
+                                "sdvnsjdbvs",
+                                item.name,
+                                e.target.value,
+                              );
+                              updateValue(item.name, e.target.value, true);
+                              setNomineeRelationAutopopulated(false);
+                            } else updateValue(item.name, e.target.value);
                           } else {
-                            if (item.name === "town" || item.name === "area") {
-                              updateValues({
-                                [item.name]: e.target.value,
-                                [item.name + "__value"]: value,
-                              });
-                            } else if (!item.type.includes("custom")) {
-                           
-                              if (
-                                item.name === "nominee_relation" &&
-                                !insuredDetails[e.target.value] &&
-                                nomineeRelationAutopopulated
-                              ){
-                                console.log(
-                                  "sdvnsjdbvs",
-                                  item.name,
-                                  e.target.value,
-                                );
-                                updateValue(item.name, e.target.value, true);
-                                setNomineeRelationAutopopulated(false)
-                              }else updateValue(item.name, e.target.value);
-                            } else {
-                              // if()
-                              updateValue(item.name, e);
-                            }
+                            // if()
+
+                            updateValue(item.name, e);
                           }
-                          if (
-                            item.fill &&
-                            (e.target.value.length === 6 ||
-                              item.type === "select")
-                          ) {
-                            dispatch(
-                              callApi(fillBus[item.name].using, {
-                                [item.name]: e.target.value,
-                                [fillBus[item.name].alsoUse]:
-                                  values[fillBus[item.name].alsoUse],
-                              }),
-                              fillBus[item.name],
-                            );
-                          }
-                          if (options.validateOn === "change") {
-                            setTrigger(item.name);
-                          }
-                          if (item.allow) {
-                            checkAllow(item.allow, e, "change");
-                          }
-                        }}
-                        age={item?.validate?.age}
-                        readOnly={
-                          item.readOnly
-                          //  ||(isInsuredDetails && item.name === "mobile")
                         }
-                        allValues={proposalData}
-                        customMembers={
-                          item.render &&
-                          item.render.when.includes(".") &&
-                          !(
-                            "showMembers" in
-                            schema.find(
-                              _i => _i.name === item.render.when.split(".")[0],
-                            ).additionalOptions
-                          ) &&
-                          fetchMembers(item.render.when, values)
+                        if (
+                          item.fill &&
+                          (e.target.value.length === 6 ||
+                            item.type === "select")
+                        ) {
+                          dispatch(
+                            callApi(fillBus[item.name].using, {
+                              [item.name]: e.target.value,
+                              [fillBus[item.name].alsoUse]:
+                                values[fillBus[item.name].alsoUse],
+                            }),
+                            fillBus[item.name],
+                          );
                         }
-                        onInput={e => {
-                          if (item.allow) {
-                            checkAllow(item.allow, e, "input");
-                          }
-                        }}
-                        onBlur={e => {
-                          if (options.validateOn === "blur") {
-                            setTrigger(item.name);
-                          }
-                        }}
-                        onKeyDown={e => {
-                          if (item.allow) {
-                            checkAllow(item.allow, e, "down");
-                          }
-                        }}
-                        onKeyPress={e => {
-                          if (item.allow) {
-                            checkAllow(item.allow, e, "press");
-                          }
-                        }}
-                        options={
-                          item.additionalOptions &&
-                          item.additionalOptions.customOptions &&
-                          generateRange(item.additionalOptions.customOptions)
+                        if (options.validateOn === "change") {
+                          setTrigger(item.name);
                         }
-                        asyncOptions={asyncOptions[item.name]}
-                        defaultValue={
-                          item.type === "text" && item.name === "name"
-                            ? values[item.name] || initialValue || item.value
-                            : values[item.name] || item.value
+                        if (item.allow) {
+                          checkAllow(item.allow, e, "change");
                         }
-                        value={values[item.name] || item.value}
-                        error={errors[item.name] || additionalErrors[item.name]}
-                        submitTrigger={submitTrigger}
-                        setCustomValid={setCustomValid}
-                        values={values}
-                        // showMembersIf={item.additionalOptions.showMembersIf || ""}
-                        {...item.additionalOptions}
-                      />
-                    </Wrapper>
-                  )}
-                  {item.type === "custom_toggle" &&
-                    renderField(item, values) && <HR />}
-                </>
-              );
+                      }}
+                      age={item?.validate?.age}
+                      directUpdateValue={(name,value) => updateValue(name,value)}
+                      readOnly={
+                        item.readOnly
+                        //  ||(isInsuredDetails && item.name === "mobile")
+                      }
+                      allValues={proposalData}
+                      customMembers={
+                        item.render &&
+                        item.render.when.includes(".") &&
+                        !(
+                          "showMembers" in
+                          schema.find(
+                            _i => _i.name === item.render.when.split(".")[0],
+                          ).additionalOptions
+                        ) &&
+                        fetchMembers(item.render.when, values)
+                      }
+                      onInput={e => {
+                        if (item.allow) {
+                          checkAllow(item.allow, e, "input");
+                        }
+                      }}
+                      onBlur={e => {
+                        if (options.validateOn === "blur") {
+                          setTrigger(item.name);
+                        }
+                      }}
+                      onKeyDown={e => {
+                        if (item.allow) {
+                          checkAllow(item.allow, e, "down");
+                        }
+                      }}
+                      onKeyPress={e => {
+                        if (item.allow) {
+                          checkAllow(item.allow, e, "press");
+                        }
+                      }}
+                      options={
+                        item.additionalOptions &&
+                        item.additionalOptions.customOptions &&
+                        generateRange(item.additionalOptions.customOptions)
+                      }
+                      asyncOptions={asyncOptions[item.name]}
+                      defaultValue={
+                        item.type === "text" && item.name === "name"
+                          ? values[item.name] || initialValue || item.value
+                          : values[item.name] || item.value
+                      }
+                      value={values[item.name] || item.value}
+                      error={errors[item.name] || additionalErrors[item.name]}
+                      submitTrigger={submitTrigger}
+                      setCustomValid={setCustomValid}
+                      values={values}
+                      // showMembersIf={item.additionalOptions.showMembersIf || ""}
+                      {...item.additionalOptions}
+                    />
+                  </Wrapper>
+                )}
+                {item.type === "custom_toggle" && renderField(item, values) && (
+                  <HR />
+                )}
+              </>
+            );
           }
         })}
     </>
