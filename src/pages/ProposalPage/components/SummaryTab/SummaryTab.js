@@ -150,7 +150,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
         <Col
           md={12}
           key={i}
-          style={{ display: "inline-block" }}
+          // style={{ display: "inline-block" }}
           className="details_border_b_p_s"
         >
           <p className="text_b_black_g">{data.additionalOptions.label}</p>
@@ -232,7 +232,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
         <Col
           md={12}
           key={i}
-          style={{ display: "inline-block" }}
+          // style={{ display: "inline-block" }}
           className="details_border_b_p_s"
         >
           <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
@@ -333,7 +333,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
         <Col
           md={12}
           key={i}
-          style={{ display: "inline-block" }}
+          // style={{ display: "inline-block" }}
           className="details_border_b_p_s"
         >
           <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>

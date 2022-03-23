@@ -6,16 +6,35 @@ import {
   useCompanies,
   useCreateEnquiry,
   useDD,
+  useFrontendBoot,
   usePolicyNumberInput,
 } from "../../../customHooks";
 import { getReactSelectOption } from "../../../utils/helper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextInput2 from "../../../components/TextInput2";
 import { Button } from "../../../components";
 import DropDown2 from "../../../components/DropDown2";
+import { useUpdateRenewalQueryMutation } from "../../../api/api";
+import { useHistory } from "react-router-dom";
 
 const RenewalDetailsForm = ({ ...props }) => {
   const { companies } = useCompanies();
+
+  const history = useHistory();
+
+  const { journeyType } = useFrontendBoot();
+
+  const [updateRenewalQuery, { data, isLoading, isSuccess }] =
+    useUpdateRenewalQueryMutation();
+
+  useEffect(() => {
+    isSuccess &&
+      history.push(
+        `/productdetails/${data?.data?.groups[0]?.id}?enquiryId=${data?.data?.enquiry_id}`,
+      );
+  }, [isSuccess]);
+
+  const renewalEnquiriesLoading = isLoading;
 
   const icArray = Object.values(companies).map(singleIC => ({
     display_name: singleIC.name,
@@ -47,6 +66,10 @@ const RenewalDetailsForm = ({ ...props }) => {
   function submit(renewalIC, policyNumber) {
     if (!isSelectedIcValid || !policyNumber) return;
 
+    updateRenewalQuery({
+      company_alias: renewalIC?.code,
+      policy_no: policyNumber,
+    });
     //<New SUBMIT api call>.then(()=><Redirection>)
   }
 
@@ -121,7 +144,7 @@ const RenewalDetailsForm = ({ ...props }) => {
               !isSelectedIcValid ||
               !policyNumberInput?.value
             }
-            loader={createEnquiryQuery.isLoading}
+            loader={renewalEnquiriesLoading}
           >
             Proceed for Renewal
           </Button>

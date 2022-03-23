@@ -431,7 +431,7 @@ export function getAgeList({ min_age, max_age }) {
 }
 
 export function getMonthsForYear(years) {
-  return Math.floor(years * 12);
+  return Math.round(years * 12);
 }
 
 function monthsPercentage(months) {

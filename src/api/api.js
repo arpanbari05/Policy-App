@@ -138,13 +138,6 @@ export const api = createApi({
           })),
         };
       },
-      // onQueryStarted: (_, { dispatch, queryFulfilled }) => {
-      //   queryFulfilled
-      //     .then((response) =>
-      //       dispatch(saveFrontendData({ data: response.data }))
-      //     )
-      //     .catch(console.error);
-      // },
     }),
     updateGroups: builder.mutation({
       query: ({ groupCode, ...body }) => ({
@@ -219,7 +212,7 @@ export const api = createApi({
           const featureOptionsQuery = [];
           Object.keys(feature_options).forEach(key => {
             featureOptionsQuery.push(`${key}=${feature_options[key]}`);
-          })
+          });
           url = url.concat(`&${featureOptionsQuery.join("&")}`);
         }
 
@@ -245,6 +238,9 @@ export const api = createApi({
         if (journeyType === "top_up") {
           url = `products/${product_id}/topup-discounts?sum_insured=${sum_insured}&group=${group}&deductible=${deductible}`;
         }
+        if (journeyType === "renewal") {
+          url = `products/${product_id}/renewal-discounts?sum_insured=${sum_insured}&group=${group}&deductible=${deductible}`;
+        }
         return {
           url,
         };
@@ -266,7 +262,6 @@ export const api = createApi({
         body,
       }),
       onQueryStarted: async (_args, { dispatch, queryFulfilled }) => {
-
         const res = await queryFulfilled;
         dispatch(
           api.util.updateQueryData("getEnquiries", undefined, draft => {
@@ -393,6 +388,31 @@ export const api = createApi({
         };
       },
     }),
+    updateRenewalQuery: builder.mutation({
+      query: ({ company_alias, policy_no, section = "health" }) => {
+        return {
+          url: "renewal-enquiries",
+          body: {
+            company_alias,
+            policy_no,
+            section,
+          },
+          method: "POST",
+        };
+      },
+      onQueryStarted: async (args, { dispatch, queryFulfilled }) => {
+        try {
+          const res = await queryFulfilled;
+          dispatch(
+            api.util.updateQueryData("getEnquiries", undefined, draft => {
+              //?draft : the targeted object i.e. getEnquires object from store.
+              return Object.assign(draft, res?.data);
+              //? assign(targetObject , newObject)<updated object>
+            }),
+          );
+        } catch (error) {}
+      },
+    }),
   }),
 });
 
@@ -468,6 +488,7 @@ export const {
   usePrefetch,
   useGetProposalDataQuery,
   useGetTopUpAddOnsQuery,
+  useUpdateRenewalQueryMutation,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Col, Spinner } from "react-bootstrap";
 import { FaPlusCircle, FaTrashAlt } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components/macro";
 import { Button } from ".";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
@@ -41,11 +41,17 @@ function CartSummaryModal({
 }
 
 function CartSummaryContent({ closeModal, onContine, allClose, selectedRiders, ...props }) {
-  const {
+  let {
     data: {
       data: { groups },
     },
   } = useGetEnquiriesQuery();
+
+  const { groupCode } = useParams();
+
+  const currentGroup = groups.find(group => group.id === +groupCode);
+
+  groups = groups.filter(group => group.type === currentGroup.type);
 
   return (
     <div {...props}>
@@ -158,7 +164,7 @@ function GroupCard({ group, closeModal, allClose, selectedRiders, ...props }) {
           css={`
             font-weight: bold;
             @media (max-width: 400px) {
-              font-size: 10px !important;
+              font-size: 12px !important;
             }
           `}
         >
@@ -336,7 +342,6 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
 
   const { logo: logoSrc } = getCompany(alias);
 
-  console.log({mandatory_riders, health_riders})
   const netPremium = calculateTotalPremium({
     total_premium,
     health_riders: health_riders.length ? health_riders : selectedRiders,

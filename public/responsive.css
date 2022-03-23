@@ -3935,6 +3935,7 @@
     }
     .font_sub_p_s {
         /* font-family: 'PFEncoreSansPromed'; */
+        word-break: break-all;
         font-size: 12px;
         line-height: 20px;
     }
