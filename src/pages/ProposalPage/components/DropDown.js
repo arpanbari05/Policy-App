@@ -58,8 +58,7 @@ const DropDown = ({
           onChange(e, selectOption[e.target.value]);
         }}
         value={value}
-        // disabled={(Object.keys(selectOption).length === 1 && !asyncOptions) || readOnly}
-        disabled={false}
+        disabled={(Object.keys(selectOption).length === 1 && !asyncOptions) || readOnly}
         error={error}
         height={height}
         borderR={borderR}
