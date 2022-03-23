@@ -64,7 +64,7 @@ const DropDown = ({
   }, [values]);
 
   useEffect(() => {
-    if(Object.keys(selectOption).length === 1 && !values[name]) directUpdateValue(name,selectOption[Object.keys(selectOption)[0]]);
+    if(Object.keys(selectOption).length === 1 && !values[name]) directUpdateValue(name,Object.keys(selectOption)[0]);
   },[selectOption]);
 
   const [dataValue, setDataValue] = useState();
