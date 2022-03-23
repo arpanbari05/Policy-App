@@ -73,6 +73,14 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "open-sans";
+  src: url("./assets/fonts/Open-Sans/OpenSans-VariableFont_wdth\,wght.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .logo_style_common {
   /* width: 123px !important; */
   height: 45px !important;
@@ -878,7 +886,6 @@ select {
     animation: moveToRight 0.3s;
   }
 }
-
 
 @keyframes moveToBottom {
   from {
