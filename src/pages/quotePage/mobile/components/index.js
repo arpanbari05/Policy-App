@@ -33,7 +33,7 @@ export function BottomNavigation({ sortBy = <></>, ...props }) {
       <NavItemToggle icon={<BsPeopleFill />} label="Edit">
         <EditMembers />
       </NavItemToggle>
-      <NavItemToggle icon={<RiFilter2Line />} label="Filter">
+      <NavItemToggle icon={<RiFilter2Line />} label="Filter" filter>
         <FilterModal />
       </NavItemToggle>
       <NavItemToggle icon={<RiShareLine />} label="Share">
@@ -76,21 +76,37 @@ export function NavItem({ icon: Icon = <></>, children, onClick, ...props }) {
   );
 }
 
-function NavItemToggle({ icon: Icon = <></>, label = "", children }) {
+function NavItemToggle({ icon: Icon = <></>, label = "", children, filter = false }) {
   const toggle = useToggle(false);
   return (
     <div>
       <NavItem onClick={toggle.toggle} icon={Icon}>
         {label}
       </NavItem>
-      {toggle.isOn
+      {
+        filter ? React.Children.map(children, child =>
+          React.cloneElement(child, {
+            onClose: toggle.off,
+            onHide: toggle.off,
+            show: toggle.isOn
+          }),
+        ) : toggle.isOn
         ? React.Children.map(children, child =>
             React.cloneElement(child, {
               onClose: toggle.off,
               onHide: toggle.off,
             }),
           )
-        : null}
+        : null
+      }
+      {/* {toggle.isOn
+        ? React.Children.map(children, child =>
+            React.cloneElement(child, {
+              onClose: toggle.off,
+              onHide: toggle.off,
+            }),
+          )
+        : null} */}
     </div>
   );
 }
