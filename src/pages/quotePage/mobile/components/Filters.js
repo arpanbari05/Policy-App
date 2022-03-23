@@ -18,6 +18,7 @@ import "styled-components/macro";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { RiCheckboxBlankCircleLine, RiCheckboxFill } from "react-icons/ri";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
+import useWindowSize from "../../../../customHooks/useWindowSize";
 
 const availableMoreFilters = {
   popular_filters: true,
@@ -105,10 +106,11 @@ export function getAllSelectedFilters(filters, filterSelector) {
   return allFilters;
 }
 
-export function FilterModal({ onClose }) {
+export function FilterModal({ onClose, show }) {
   const { boxShadows } = useTheme();
 
   const { getSelectedFilter } = useFilters();
+  const selectedPolicyTypeFilter = getSelectedFilter("plantype");
 
   const {
     data: { premiums, covers, plantypes, morefilters, deductibles },
@@ -148,7 +150,7 @@ export function FilterModal({ onClose }) {
     onClose && onClose();
   };
 
-  const RenderFilterOptions = ({ code, options, type }) => (
+  const RenderFilterOptions = ({ code, options, type, showTooltip }) => (
     <Tab.Pane eventKey={code}>
       <FilterOptions
         code={code}
@@ -156,12 +158,13 @@ export function FilterModal({ onClose }) {
         currentOption={filters[code]}
         onChange={updateFilter}
         type={type}
+        showTooltip={showTooltip}
       />
     </Tab.Pane>
   );
 
   return (
-    <MobileModal onClose={onClose}>
+    <MobileModal onClose={onClose} show={show}>
       <Tab.Container id="left-tabs-example" defaultActiveKey="premium">
         <div
           className="d-flex min-vh-100"
@@ -188,7 +191,8 @@ export function FilterModal({ onClose }) {
               <FilterNavItem eventKey={"deductible"}>Deductible</FilterNavItem>
             )}
             <FilterNavItem eventKey={"tenure"}>Multiyear Options</FilterNavItem>
-            {journeyType === "health" ? (
+            {selectedPolicyTypeFilter.display_name !== "Individual" &&
+            journeyType !== "top_up" ? (
               <FilterNavItem eventKey={"plantype"}>Policy type</FilterNavItem>
             ) : null}
             <FilterNavItem eventKey={"insurers"}>Insurers</FilterNavItem>
@@ -207,14 +211,33 @@ export function FilterModal({ onClose }) {
               height: 82vh;
             `}
           >
-            <RenderFilterOptions code="premium" options={premiums} />
+            <RenderFilterOptions
+              showTooltip={false}
+              code="premium"
+              options={premiums}
+            />
             {journeyType === "health" ? (
-              <RenderFilterOptions code="cover" options={covers} />
+              <RenderFilterOptions
+                showTooltip={false}
+                code="cover"
+                options={covers}
+              />
             ) : (
-              <RenderFilterOptions code="deductible" options={deductibles} />
+              <RenderFilterOptions
+                showTooltip={false}
+                code="deductible"
+                options={deductibles}
+              />
             )}
-            <RenderFilterOptions code="tenure" options={tenures} />
-            <RenderFilterOptions code="plantype" options={plantypes} />
+            <RenderFilterOptions
+              showTooltip={false}
+              code="tenure"
+              options={tenures}
+            />
+            <RenderFilterOptions
+              code="plantype"
+              options={plantypes.filter(plantype => plantype.code !== "I")}
+            />
             <Tab.Pane eventKey="insurers">
               <InsurersFilter
                 code="insurers"
@@ -266,6 +289,7 @@ export function FilterOptions({
   onChange,
   type,
   filterGroup,
+  showTooltip,
   ...props
 }) {
   let selectedOption, isSelected;
@@ -294,6 +318,7 @@ export function FilterOptions({
         .filter(opt => opt.code !== "no_claim_bonus_2")
         .map(option => (
           <FilterOption
+            showTooltip={showTooltip}
             key={option.code}
             option={option}
             onChange={handleChange}
@@ -323,7 +348,14 @@ function OptionsWrap({ children, className, css = "", ...props }) {
   );
 }
 
-function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
+function FilterOption({
+  option,
+  checked,
+  onChange,
+  type = "radio",
+  showTooltip = true,
+  ...props
+}) {
   const { colors } = useTheme();
 
   const handleChange = () => {
@@ -353,6 +385,7 @@ function FilterOption({ option, checked, onChange, type = "radio", ...props }) {
         <FilterDataSet
           name={option.display_name}
           description={option.description}
+          tooltip={showTooltip}
         />
         <span
           css={`
@@ -420,22 +453,27 @@ function InsurersFilter({ onChange, currentOptions, code }) {
     <OptionsWrap>
       {Object.keys(companies).map(companyAlias => (
         <InsurerOption
+          key={companyAlias}
           currentOptions={currentOptions}
           companyAlias={companyAlias}
           onChange={handleChange}
+          company={companies[companyAlias]}
         />
       ))}
     </OptionsWrap>
   );
 }
 
-function InsurerOption({ companyAlias, onChange, currentOptions, ...props }) {
+function InsurerOption({
+  companyAlias,
+  onChange,
+  currentOptions = [],
+  company,
+  ...props
+}) {
   const [checked, setChecked] = useState(
     currentOptions.find(opt => opt.alias === companyAlias),
   );
-  const { getCompany } = useCompanies();
-
-  const company = getCompany(companyAlias);
 
   const { colors } = useTheme();
 
@@ -494,21 +532,98 @@ function InsurerOption({ companyAlias, onChange, currentOptions, ...props }) {
   );
 }
 
-function MobileModal({ onClose, children }) {
-  const { colors } = useTheme();
+function CustomFilterModal({ show, children }) {
   return (
-    <Modal
-      show
-      onHide={onClose}
+    <div
       css={`
-        & .modal-dialog {
-          margin: 0;
-        }
-
-        & .modal-content {
-          border-radius: 0;
-        }
+        display: ${show ? "block" : "none"};
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999999;
+        background: white;
       `}
+    >
+      <div
+        css={`
+          width: 100%;
+          height: 100vh;
+        `}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function MobileModal({ onClose, children, show }) {
+  const { colors } = useTheme();
+  console.log(show);
+  return (
+    // <Modal
+    //   show={true}
+    //   // onHide={onClose}
+    //   css={`
+    //     .modal-backdrop .show {
+    //       display: ${show ? "block" : "none"};
+    //     }
+    //     & .modal-dialog {
+    //       margin: 0;
+    //       display: ${show ? "block" : "none"};
+    //     }
+
+    //     & .modal-content {
+    //       border-radius: 0;
+    //     }
+    //   `}
+    // >
+    //   <div
+    //     css={`
+    //       height: 100vh;
+    //       width: 100vw;
+    //       overflow: auto;
+    //     `}
+    //   >
+    //     <div
+    //       className="p-3"
+    //       css={`
+    //         background-color: ${colors.primary_color};
+    //         color: #fff;
+    //       `}
+    //     >
+    //       <div
+    //         className="d-flex align-items-center"
+    //         css={`
+    //           gap: 1em;
+    //         `}
+    //       >
+    //         <button
+    //           onClick={onClose}
+    //           css={`
+    //             color: #fff;
+    //             line-height: 1;
+    //           `}
+    //         >
+    //           <FaArrowLeft />
+    //         </button>
+    //         <h1
+    //           className="m-0"
+    //           css={`
+    //             font-size: 1rem;
+    //             font-weight: 900;
+    //           `}
+    //         >
+    //           Filters
+    //         </h1>
+    //       </div>
+    //     </div>
+    //     {children}
+    //   </div>
+    // </Modal>
+    <CustomFilterModal
+      show={show}
     >
       <div
         css={`
@@ -552,33 +667,73 @@ function MobileModal({ onClose, children }) {
         </div>
         {children}
       </div>
-    </Modal>
+    </CustomFilterModal>
   );
 }
 
-function FilterDataSet({ name, description, ...props }) {
+function FilterDataSet({ name, description, tooltip, ...props }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const target = useRef(null);
-  // useOutsiteClick(target, () => setShowTooltip(false));
+  const [innerHeight, innerWidth] = useWindowSize();
+  useOutsiteClick(target, () => setShowTooltip(false));
+
+  console.log(innerWidth);
 
   const toggleTooltip = () => {
     setShowTooltip(prev => !prev);
   };
-  return (
-    <OverlayTrigger
-      // show={showTooltip}
-      placement="right"
-      overlay={<Tooltip {...props}>{description}</Tooltip>}
-    >
+
+  const tooltipWrapper =
+    innerWidth < 768 ? (
       <div
-        style={{ fontWeight: "bold", fontSize: 14 }}
-        className="d-flex align-items-center gap-1"
+        css={`
+          gap: 3px;
+        `}
+        className="d-flex align-items-center"
       >
-        {name}
-        <span>
-          <IoMdInformationCircleOutline />
-        </span>
+        <div
+          style={{ fontWeight: "bold", fontSize: 14 }}
+          className="d-flex align-items-center gap-1"
+        >
+          {name}
+        </div>
+        <OverlayTrigger
+          show={showTooltip}
+          placement="bottom"
+          overlay={<Tooltip {...props}>{description}</Tooltip>}
+        >
+          <span ref={target} onClick={toggleTooltip}>
+            <IoMdInformationCircleOutline />
+          </span>
+        </OverlayTrigger>
       </div>
-    </OverlayTrigger>
+    ) : (
+      <div
+        css={`
+          gap: 3px;
+        `}
+        className="d-flex align-items-center"
+      >
+        <div
+          style={{ fontWeight: "bold", fontSize: 14 }}
+          className="d-flex align-items-center gap-1"
+        >
+          {name}
+        </div>
+        <OverlayTrigger
+          placement="right"
+          overlay={<Tooltip {...props}>{description}</Tooltip>}
+        >
+          <span>
+            <IoMdInformationCircleOutline />
+          </span>
+        </OverlayTrigger>
+      </div>
+    );
+
+  return tooltip ? (
+    <>{tooltipWrapper}</>
+  ) : (
+    <div style={{ fontWeight: "bold", fontSize: 14 }}>{name}</div>
   );
 }

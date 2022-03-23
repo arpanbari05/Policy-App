@@ -129,7 +129,19 @@ export function useQuote() {
 
   const { groupCode } = useParams();
 
+  const { groups } = useMembers();
+
+  const currentGroup = groups?.find(group => group.id === +groupCode);
+
+  const { data } = useGetCartQuery();
+
   function buyQuote(quote, riders = []) {
+    data?.data?.forEach(cart => {
+      if (cart?.group?.type !== currentGroup.type) {
+        deleteQuote(cart.id);
+      }
+    });
+
     const quoteData = {
       total_premium: quote.total_premium,
       sum_insured: quote.sum_insured,
@@ -167,7 +179,8 @@ export function useTheme() {
     },
   } = useGetFrontendBootQuery();
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = useSelector(state => state.frontendBoot.theme);
+  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } =
+    useSelector(state => state.frontendBoot.theme);
   return {
     ...styles,
     colors: {
@@ -200,7 +213,7 @@ export function useFrontendBoot() {
     journeyType = enquiryData?.data?.section;
   }
 
-  //Uncomment this to switch to renewal journey type
+  //? Uncomment this to switch to renewal journey type
   //journeyType = "renewal";
 
   return {
@@ -219,6 +232,7 @@ export function useFilter() {
       defaultfilters: { cover, tenure, plan_type },
     },
   } = useFrontendBoot();
+
   const {
     data: {
       data: { groups },
@@ -620,7 +634,7 @@ export function useCart() {
     const cartEntry = data?.data?.find(
       cartEntry => cartEntry?.group?.id === parseInt(groupCode),
     );
-    console.log("dbndfjlb", data);
+
     if (!cartEntry) return;
 
     const group = groups.find(
@@ -706,9 +720,12 @@ export function useRider(groupCode) {
 
   function getSelectedRiders() {
     const cartEntry = getCartEntry(groupCode);
-    const { health_riders } = cartEntry;
 
-    return health_riders.filter(rider => rider.total_premium > 0);
+    const { health_riders, top_up_riders } = cartEntry;
+
+    return health_riders?.length
+      ? health_riders.filter(rider => rider.total_premium > 0)
+      : top_up_riders.filter(rider => rider.total_premium > 0);
   }
 
   function replaceRiders(riders = []) {
@@ -1555,23 +1572,23 @@ export function useRiders({
   onChange,
   defaultSelectedRiders = [],
 }) {
-  const getInititalRiders = useCallback(() => {
+  const getInitialRiders = useCallback(() => {
     return defaultSelectedRiders.map(rider => ({
       ...rider,
-      id: rider.rider_id,
+      id: rider?.rider_id,
       isSelected: true,
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupCode]);
 
-  const [riders, setRiders] = useState(getInititalRiders);
+  const [riders, setRiders] = useState(getInitialRiders);
 
-  useEffect(() => setRiders(getInititalRiders), [getInititalRiders]);
+  useEffect(() => setRiders(getInitialRiders), [getInitialRiders]); //? a fallback to assign initial-riders
 
   const { feature_options } = useSelector(({ cart }) => cart);
 
   const findLocalRider = riderToFind =>
-    riders.find(rider => rider.id === riderToFind.id);
+    riders.find(rider => rider?.id === riderToFind?.id);
 
   const isRiderSelected = riderToCheck => {
     if (riderToCheck.is_mandatory) return true;
@@ -1672,7 +1689,7 @@ export function useRiders({
         ? riders.sort((a, b) => a.total_premium - b.total_premium)
         : riders.filter(rider => rider.total_premium > 0),
     handleChange,
-    getInititalRiders,
+    getInitialRiders,
   };
 }
 
