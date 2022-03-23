@@ -5,7 +5,7 @@ import useUpdateFilters from "./components/filters/useUpdateFilters";
 import LowerModifier from "./components/LowerModifier";
 import Quotes from "./components/Quotes";
 import UpperModifier from "./components/UpperModifier";
-import { useMembers, useTheme, useGetQuotes, } from "../../customHooks";
+import { useMembers, useTheme, useGetQuotes } from "../../customHooks";
 import { useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
@@ -113,19 +113,21 @@ function ShowingPlanType() {
   const dispatch = useDispatch();
   const { colors } = useTheme();
   const { journeyType } = useFrontendBoot();
-  const {shareType } = useSelector(state => state.quotePage);
+  const { shareType } = useSelector(state => state.quotePage);
   const { data } = useGetEnquiriesQuery();
   const { groupCode } = useParams();
   const { data: unmergedQuotes } = useGetQuotes();
-  const mergedQuotes = unmergedQuotes?.map(quote => mergeQuotes(quote.data.data))?.flat();
+  const mergedQuotes = unmergedQuotes
+    ?.map(quote => mergeQuotes(quote.data.data))
+    ?.flat();
 
   useEffect(() => {
     if (shareType.value === "quotation_list") {
-      dispatch(replaceShareQuotes(mergedQuotes))
+      dispatch(replaceShareQuotes(mergedQuotes));
     } else if (shareType.value === "specific_quotes") {
-      dispatch(replaceShareQuotes([]))
+      dispatch(replaceShareQuotes([]));
     }
-  }, [shareType])
+  }, [shareType]);
 
   const planTypes = {
     I: "Individual",
@@ -159,7 +161,7 @@ function ShowingPlanType() {
 function ClearFilters(props) {
   const { isFiltersDefault } = useFilters();
   const { resetFilters } = useUpdateFilters();
-  const { primary_color, primary_shade }  = useTheme().colors;
+  const { primary_color, primary_shade } = useTheme().colors;
 
   if (isFiltersDefault) return null;
 
@@ -187,6 +189,7 @@ function ClearFilters(props) {
 function AssistanceCard(props) {
   const [showTalk, setShowTalk] = useState(false);
   const { colors } = useTheme();
+  const { tenantAlias } = useFrontendBoot();
   return (
     <div
       {...props}
@@ -201,7 +204,9 @@ function AssistanceCard(props) {
           font-weight: 900;
         `}
       >
-        Health Insurance Assistance
+        {tenantAlias === "renew_buy"
+          ? "Need assistance with health insurance plans?"
+          : "Health Insurance Assistance"}
       </h1>
       <p
         className="mt-3"
@@ -210,9 +215,9 @@ function AssistanceCard(props) {
           color: ${colors.font.one};
         `}
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu nisl a
-        lorem auctor ultrices auctor vel elit. Aliquam quis consequat tellus.
-        Aliquam pellentesque ligula massa, aliquet fermentum nisl varius ac.
+        {tenantAlias === "renew_buy"
+          ? "Health Insurance plans by insurers have various offerings such as list of hospitals covered, co-payment clauses, family health insurance plans, no claim bonuses etc. In case of any support or assistance, connect with a RenewBuy Health Expert and solve all your and your customers queries."
+          : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu nisl a lorem auctor ultrices auctor vel elit. Aliquam quis consequat tellus. Aliquam pellentesque ligula massa, aliquet fermentum nisl varius ac."}
       </p>
       <button
         className="px-3 py-2 rounded"
