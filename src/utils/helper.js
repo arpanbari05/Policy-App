@@ -655,9 +655,10 @@ export function getAddOnsTotalPremium(addOns = []) {
 }
 
 export function getQuoteKey(quote) {
-  const { product, sum_insured } = quote;
+  console.log(quote);
+  // const { product, sum_insured } = quote;
 
-  return `${product.id}+${sum_insured}`;
+  return `${quote?.product.id}+${quote?.sum_insured}`;
 }
 
 export function isRiderPresent(riderAlias, riders = []) {

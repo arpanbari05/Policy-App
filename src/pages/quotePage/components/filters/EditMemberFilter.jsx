@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ErrorMessage } from "../../../InputPage/components/FormComponents";
 import {
@@ -19,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import EditPincode from "../../../../components/EditPincode";
 import LocationForm from "../../../InputPage/components/LocationForm";
 import { setShowEditMembers } from "../../quote.slice";
+import { useGetEnquiriesQuery } from "../../../../api/api";
 
 export function EditMembersModal({
   children,
@@ -163,11 +165,13 @@ export function EditMembers({ ...props }) {
   const { getAllMembers } = useMembers();
   const dispatch = useDispatch();
   const { editStep: step } = useSelector(({ quotePage }) => quotePage);
+  const [clientError, setClientError] = useState("");
 
   const { isError, validate, getSelectedMembers, ...memberForm } =
     useMembersForm(getAllMembers);
 
   const { updateMembers, isLoading, error } = useUpdateMembers();
+  const { data } = useGetEnquiriesQuery();
 
   let serverErrors = [];
 
@@ -236,6 +240,9 @@ export function EditMembers({ ...props }) {
                   {serverError}
                 </StyledErrorMessage>
               ))}
+            {clientError !== "" && (
+              <StyledErrorMessage>{clientError}</StyledErrorMessage>
+            )}
             <Button
               type="submit"
               loader={isLoading}
