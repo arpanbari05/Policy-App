@@ -37,6 +37,20 @@ const plantypes = {
   F: "Family Floater",
 };
 
+const singlePay = id => {
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = process.env.REACT_APP_API_BASE_URL + "payments";
+  form.style.display = "none";
+  const input = document.createElement("input");
+  input.name = "proposal_id";
+  input.value = id;
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+};
+
 const CartMobile = ({ groupCode, ...props }) => {
   const [toggleCard, setToggleCard] = useState(false);
 
@@ -58,7 +72,7 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const { getNextGroupProduct } = useCart();
 
-  const { getMembersText } = useMembers();
+  const { journeyType } = useFrontendBoot();
 
   const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
@@ -77,19 +91,8 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
-  const handleClick = () => {
-    updateCartMutation({ additionalDiscounts }).then(() => {
-      if (nextGroupProduct) {
-        history.push({
-          pathname: `/productdetails/${nextGroupProduct.group.id}`,
-          search: `enquiryId=${enquiryId}`,
-        });
-        return;
-      }
-
-      reviewCartModalNew.on();
-    });
-  };
+  const modifyDetailsNotAllowed =
+    cartEntry?.product?.company?.alias === "universal_sompo";
 
   return (
     <Outer toggleCard={toggleCard}>
@@ -167,33 +170,24 @@ const CartMobile = ({ groupCode, ...props }) => {
             )}
           </span>
         </section>
-        <Button
-          onClick={handleClick}
-          disabled={query.isLoading}
-          css={`
-            color: ${query.isLoading ? "black" : "white"};
-          `}
-          {...props}
-          className="rounded"
-        >
-          {additionalDiscountsQuery.isLoading ||
-          additionalDiscountsQuery.isFetching ? (
-            <CircleLoader animation="border" />
-          ) : (
-            <>
-              {nextGroupProduct && (
-                <>
-                  {"Proceed"}
-                  {query.isLoading ? <CircleLoader animation="border" /> : null}
-                </>
-              )}
-              {!nextGroupProduct && "Review Your Cart"}
-              {query.isLoading && !nextGroupProduct && (
-                <CircleLoader animation="border" />
-              )}
-            </>
-          )}
-        </Button>
+        {journeyType === "renewal" ? (
+          <div
+            className="d-flex mt-1"
+            css={`
+              gap: 0.3em;
+              & button {
+                flex: 1;
+                font-size: 0.79rem;
+              }
+            `}
+          >
+            <QuickPayAndRenewButtonMobile groupCode={groupCode} />
+            {!modifyDetailsNotAllowed && <ModifyDetailsButtonMobile />}
+          </div>
+        ) : (
+          <ReviewCartButtonMobileNew groupCode={groupCode} />
+        )}
+
         {!nextGroupProduct && reviewCartModalNew.isOn && (
           <ReviewCartPopup
             propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
@@ -233,6 +227,133 @@ const StyledButton = styled.button`
 `;
 
 export default CartMobile;
+
+function ReviewCartButtonMobileNew({ groupCode, ...props }) {
+  const history = useHistory();
+
+  const url = useUrlQuery();
+
+  const { updateCart, getCartEntry } = useCart();
+
+  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+    useAdditionalDiscount(groupCode);
+
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
+  const [updateCartMutation, query] = updateCart(groupCode);
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
+
+  const { getNextGroupProduct } = useCart();
+
+  const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
+
+  const reviewCartModalNew = useToggle();
+
+  const urlQueryStrings = new URLSearchParams(window.location.search);
+
+  const enquiryId = urlQueryStrings.get("enquiryId");
+
+  const handleClick = () => {
+    updateCartMutation({ additionalDiscounts }).then(() => {
+      if (nextGroupProduct) {
+        const enquiryId = url.get("enquiryId");
+        history.push({
+          pathname: `/productdetails/${nextGroupProduct.group.id}`,
+          search: `enquiryId=${enquiryId}`,
+        });
+        return;
+      }
+
+      reviewCartModalNew.on();
+    });
+  };
+
+  return (
+    <div>
+      <Button
+        onClick={handleClick}
+        className="w-100"
+        loader={!nextGroupProduct && query.isLoading}
+        disabled={
+          cartEntry.unavailable_message ||
+          query.isLoading ||
+          additionalDiscountsQuery.isLoading ||
+          additionalDiscountsQuery.isFetching ||
+          isTotalPremiumLoading
+        }
+        {...props}
+      >
+        {"Review Your Cart"}
+      </Button>
+      {reviewCartModalNew.isOn && (
+        <ReviewCartPopup
+          propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
+          onClose={reviewCartModalNew.off}
+        />
+      )}
+    </div>
+  );
+}
+
+const QuickPayAndRenewButtonMobile = ({ groupCode }) => {
+  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+    useAdditionalDiscount(groupCode);
+
+  const { getCartEntry } = useCart();
+
+  const { updateCart } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
+
+  const additionalDiscounts = getSelectedAdditionalDiscounts();
+
+  const [updateCartMutation, { isLoading }] = updateCart(groupCode);
+
+  const handleClick = () => {
+    updateCartMutation({ additionalDiscounts, generate_proposal: true }).then(
+      resObj => {
+        singlePay(resObj?.data?.data?.proposal_id);
+      },
+    );
+  };
+
+  return (
+    <Button
+      onClick={handleClick}
+      loader={isLoading}
+      disabled={
+        cartEntry.unavailable_message ||
+        isLoading ||
+        additionalDiscountsQuery.isLoading ||
+        additionalDiscountsQuery.isFetching ||
+        isTotalPremiumLoading
+      }
+    >
+      {"Quick pay & Renew"}
+    </Button>
+  );
+};
+
+const ModifyDetailsButtonMobile = () => {
+  const history = useHistory();
+
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  return (
+    <Button
+      onClick={() => {
+        history.push(getUrlWithEnquirySearch(`/proposal`));
+      }}
+    >
+      Modify Details
+    </Button>
+  );
+};
 
 const CartSection = ({ groupCode, ...props }) => {
   return (
@@ -353,8 +474,7 @@ const PlanCard = ({ groupCode, ...props }) => {
     additionalDiscounts,
   });
 
-  const { plantype, sum_insured, deductible, tenure, premium } =
-    cartEntry;
+  const { plantype, sum_insured, deductible, tenure, netPremium } = cartEntry;
 
   const displayPolicyTerm = `${
     tenure + " " + (tenure >= 2 ? "Years" : "Year")
@@ -377,7 +497,7 @@ const PlanCard = ({ groupCode, ...props }) => {
         />
       ) : null}
       <TitleValueRenderer title="Policy term" value={displayPolicyTerm} />
-      <TitleValueRenderer title="Premium" value={amount(premium)} />
+      <TitleValueRenderer title="Premium" value={amount(netPremium)} />
     </PlanCardOuter>
   );
 };
