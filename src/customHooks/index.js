@@ -212,10 +212,13 @@ export function useFrontendBoot() {
   let journeyType = "health";
 
   if (enquiryData?.data) {
-    journeyType = enquiryData?.data?.section;
+    journeyType =
+      enquiryData?.data?.type === "new"
+        ? enquiryData?.data?.section
+        : "renewal";
   }
 
-  //? Uncomment this to switch to renewal journey type
+  //!TODO: Uncomment this to switch to renewal journey type (no longer needed)
   //journeyType = "renewal";
 
   return {
@@ -635,8 +638,6 @@ export function useCart() {
 
   const { data } = useGetCartQuery();
 
-  // const { discounted_total_premium } = data;
-
   const {
     data: {
       data: { groups },
@@ -806,7 +807,7 @@ export function useAdditionalDiscount(groupCode) {
     product,
     sum_insured,
     tenure,
-    discounts,
+    discounts = [],
     total_premium,
     netPremiumWithoutDiscount,
   } = getCartEntry(groupCode);
@@ -860,7 +861,7 @@ export function useAdditionalDiscount(groupCode) {
     if (queryState.isLoading || queryState.isError) return [];
 
     const selectedAdditionalDiscounts = data.data.filter(additionalDiscount =>
-      discounts.includes(additionalDiscount.alias),
+      discounts?.includes(additionalDiscount.alias),
     );
 
     return selectedAdditionalDiscounts;
