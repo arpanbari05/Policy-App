@@ -6,11 +6,13 @@ import ThemeModal from "./ThemeModal";
 import { useGetEnquiriesQuery } from "../api/api";
 import { useFrontendBoot, useMembers, useTheme } from "../customHooks";
 import { FaRegCopy } from "react-icons/fa";
+import { RiPencilFill } from "react-icons/ri";
 import useComparePage from "../pages/ComparePage/useComparePage";
 import { CircleLoader } from ".";
 import ShareQuoteModal from "./ShareQuoteModal";
 import { useShareFunctionality } from "../customHooks";
 import { images } from "../assets/logos/logo";
+import EditPincode from "./EditPincode";
 
 function LogoLink() {
   const {
@@ -174,6 +176,8 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
 export function NavbarMobile({ backButton: BackButton = <></> }) {
   const location = useLocation();
 
+  const { groupCode } = useParams();
+
   const isRootRoute = useRouteMatch({
     path: ["/", "/input/basic-details"],
     exact: true,
@@ -183,7 +187,15 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
     skip: !!isRootRoute,
   });
 
-  const pinCode = data?.data?.input?.pincode;
+  const { getGroupLocation, getFirstGroupLocation } = useMembers();
+
+  const groupLocation = getGroupLocation(groupCode);
+
+  // Group location for all members group
+  const firstGroupLocation = getFirstGroupLocation();
+
+  const city = groupLocation?.city || firstGroupLocation?.city;
+  const pincode = groupLocation?.pincode || firstGroupLocation?.pincode;
 
   const trace_id = data?.data?.trace_id;
 
@@ -222,7 +234,7 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
           `}
         >
           <Members />
-          <Info label="Pincode" value={pinCode} />
+          <Info label={city} value={pincode} />
         </div>
       )}
     </div>
@@ -236,8 +248,15 @@ export const None = () => <></>;
 export function Members() {
   const { groupCode } = useParams();
 
-  const { getGroupMembers, getGroupLocation, isLoading, isUninitialized } =
-    useMembers();
+  const { colors } = useTheme();
+
+  const {
+    getGroupMembers,
+    getGroupLocation,
+    getFirstGroupLocation,
+    isLoading,
+    isUninitialized,
+  } = useMembers();
 
   if (!groupCode) return null;
 
@@ -245,6 +264,9 @@ export function Members() {
 
   const members = getGroupMembers(groupCode);
   const groupLocation = getGroupLocation(groupCode);
+
+  // Group location for all members group
+  const firstGroupLocation = getFirstGroupLocation();
 
   if (!members || !groupLocation) return null;
 
@@ -263,7 +285,25 @@ export function Members() {
       {members.map(member => (
         <Member member={member} key={member.code} />
       ))}
-      <Info label="Pincode" value={groupLocation?.pincode} onlyDesktop />
+      <Info
+        label={groupLocation?.city || firstGroupLocation?.city}
+        value={groupLocation?.pincode || firstGroupLocation?.pincode}
+        onlyDesktop
+      >
+        <span
+          css={`
+            color: ${colors.primary_color};
+            cursor: pointer;
+            margin-top: -2px;
+            &:hover {
+              color: #000;
+            }
+          `}
+        >
+          {/* <RiPencilFill size={14} onClick={() => setShowPincode(true)} /> */}
+        </span>
+      </Info>
+      {/* <EditPincode show={showPincode} onClose={() => setShowPincode(false)} /> */}
     </div>
   );
 }
@@ -275,11 +315,11 @@ function Member({ member, ...props }) {
   );
 }
 
-function Info({ label, value, onlyDesktop = false, ...props }) {
+function Info({ label, value, onlyDesktop = false, children, ...props }) {
   const { colors } = useTheme();
   return (
     <div
-      className="d-flex"
+      className="d-flex align-items-center justify-content-center"
       css={`
         padding: 0 0.79em;
         font-size: 0.7rem;
@@ -311,7 +351,8 @@ function Info({ label, value, onlyDesktop = false, ...props }) {
       >
         {label}
       </div>
-      <div>{value}</div>
+      {value && <div>{value}</div>}
+      {children}
     </div>
   );
 }

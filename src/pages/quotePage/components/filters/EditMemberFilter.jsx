@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ErrorMessage } from "../../../InputPage/components/FormComponents";
 import {
@@ -15,21 +14,32 @@ import { Button } from "../../../../components";
 import { RiPencilFill } from "react-icons/ri";
 import { FaTimes } from "react-icons/fa";
 import * as mq from "../../../../utils/mediaQueries";
+import { setEditStep } from "../../quote.slice";
+import { useDispatch, useSelector } from "react-redux";
+import EditPincode from "../../../../components/EditPincode";
+import LocationForm from "../../../InputPage/components/LocationForm";
+import { setShowEditMembers } from "../../quote.slice";
 
 export function EditMembersModal({
-  onClose,
   children,
   title = "Edit Members",
   ...props
 }) {
+  const dispatch = useDispatch();
+
   const handleHide = () => {
-    onClose && onClose();
+    // onClose && onClose();
+    dispatch(setShowEditMembers(false));
   };
+
+  const { editStep: step, showEditMembers: show } = useSelector(
+    ({ quotePage }) => quotePage,
+  );
 
   return (
     <Modal
       onHide={handleHide}
-      show
+      show={show}
       animation={false}
       centered
       css={`
@@ -68,7 +78,7 @@ export function EditMembersModal({
             color: "black",
           }}
         >
-          {title}
+          {step === 2 ? "Edit Location" : title}
         </Modal.Title>
         <button onClick={handleHide}>
           <FaTimes />
@@ -95,13 +105,19 @@ const StyledErrorMessage = styled(ErrorMessage)`
 
 const EditMemberFilter = () => {
   const { colors } = useTheme();
+  const dispatch = useDispatch();
+  const { showEditMembers: show } = useSelector(({ quotePage }) => quotePage);
 
-  const [showModal, setShowModal] = useState(false);
+  const onEditMemberClick = () => {
+    dispatch(setShowEditMembers(true));
+    dispatch(setEditStep(1));
+  };
+
   return (
     <>
       <div
         className="d-flex align-items-center"
-        onClick={() => setShowModal(true)}
+        onClick={onEditMemberClick}
         role="button"
       >
         <div
@@ -137,13 +153,16 @@ const EditMemberFilter = () => {
           />
         </div>
       </div>
-      {showModal && <EditMembers onClose={() => setShowModal(false)} />}
+      {show && <EditMembers />}
     </>
   );
 };
 
-export function EditMembers({ onClose, ...props }) {
+export function EditMembers({ ...props }) {
+  const { colors } = useTheme();
   const { getAllMembers } = useMembers();
+  const dispatch = useDispatch();
+  const { editStep: step } = useSelector(({ quotePage }) => quotePage);
 
   const { isError, validate, getSelectedMembers, ...memberForm } =
     useMembersForm(getAllMembers);
@@ -167,53 +186,88 @@ export function EditMembers({ onClose, ...props }) {
     if (!selectedMembers.length) return;
 
     updateMembers({ members: selectedMembers }).then(res => {
-      if (!res.error) onClose && onClose();
+      if (!res.error) {
+        dispatch(setEditStep(2));
+      }
     });
   };
 
   return (
-    <EditMembersModal onClose={onClose} {...props}>
-      <form
-        onSubmit={handleSubmit}
-        css={`
-          ${mq.mobile} {
-            padding-bottom: 3em;
-          }
-        `}
-      >
-        <div
-          className="p-3"
-          css={`
-            font-size: 16px @media (max-width: 767px) {
-              font-size: 14px;
-            }
-          `}
-        >
-          <MemberOptions {...memberForm} />
-        </div>
-        {error &&
-          serverErrors.map(serverError => (
-            <StyledErrorMessage key={serverError}>
-              {serverError}
-            </StyledErrorMessage>
-          ))}
-        <Button
-          type="submit"
-          loader={isLoading}
-          className="w-100 rounded-0"
-          css={`
-            ${mq.mobile} {
-              position: fixed;
-              bottom: 0;
-              left: 0;
-              z-index: 99;
-            }
-          `}
-        >
-          Apply
-        </Button>
-      </form>
-    </EditMembersModal>
+    <>
+      <EditMembersModal {...props}>
+        <Tab color={colors.secondary_shade}>
+          <TabItem
+            color={colors.primary_color}
+            active={step === 1}
+            onClick={() => dispatch(setEditStep(1))}
+          >
+            Members
+          </TabItem>
+          <TabItem
+            color={colors.primary_color}
+            active={step === 2}
+            onClick={() => dispatch(setEditStep(2))}
+          >
+            Pincode
+          </TabItem>
+        </Tab>
+        {step === 1 ? (
+          <form
+            onSubmit={handleSubmit}
+            css={`
+              ${mq.mobile} {
+                padding-bottom: 3em;
+              }
+            `}
+          >
+            <div
+              className="p-3"
+              css={`
+                font-size: 16px @media (max-width: 767px) {
+                  font-size: 14px;
+                }
+              `}
+            >
+              <MemberOptions {...memberForm} />
+            </div>
+            {error &&
+              serverErrors.map(serverError => (
+                <StyledErrorMessage key={serverError}>
+                  {serverError}
+                </StyledErrorMessage>
+              ))}
+            <Button
+              type="submit"
+              loader={isLoading}
+              className="w-100 rounded-0"
+              css={`
+                ${mq.mobile} {
+                  position: fixed;
+                  bottom: 0;
+                  left: 0;
+                  z-index: 99;
+                }
+              `}
+            >
+              Apply
+            </Button>
+          </form>
+        ) : (
+          // <EditPincode show={show} onClose={onClose} />
+          <div
+            css={`
+              padding: 1em 4em;
+              ${mq.mobile} {
+                padding: 0;
+                height: calc(100vh - 3.91em);
+              }
+            `}
+          >
+            <LocationForm edit={true} />
+          </div>
+        )}
+      </EditMembersModal>
+    </>
   );
 }
 
@@ -226,4 +280,39 @@ const EditMembersButton = styled.button`
   border-radius: 100%;
   margin: 0px 5px;
   border: none;
+`;
+const Tab = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4em;
+  background: ${props => props.color};
+  position: sticky;
+  border-bottom: 1px solid #dcdcdc;
+`;
+const TabItem = styled.div`
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  padding: 10px 0;
+  gap: 5px;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  color: ${props => (props.active ? props.color : "#777")};
+  ${props =>
+    props.active &&
+    `
+  &::before {
+    content: "";
+    height: 4px;
+    width: 100%;
+    background-color: ${props.color};
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 20px 20px 0 0;
+  }
+`}
 `;

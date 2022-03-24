@@ -12,9 +12,19 @@ import "styled-components/macro";
 import { FilterModal } from "./Filters";
 import Talktouspopup from "../../../../components/TalkToUs";
 import ShareQuoteModal from "../../../../components/ShareQuoteModal";
+import { setEditStep, setShowEditMembers } from "../../quote.slice";
+import { useDispatch } from "react-redux";
 
 export function BottomNavigation({ sortBy = <></>, ...props }) {
   const { boxShadows } = useTheme();
+
+  const dispatch = useDispatch();
+
+  const onEditMemberClick = () => {
+    dispatch(setShowEditMembers(true));
+    dispatch(setEditStep(1));
+  };
+
   return (
     <div
       className="p-2 position-fixed bottom-0 w-100 d-flex"
@@ -30,9 +40,12 @@ export function BottomNavigation({ sortBy = <></>, ...props }) {
       `}
       {...props}
     >
-      <NavItemToggle icon={<BsPeopleFill />} label="Edit">
-        <EditMembers />
-      </NavItemToggle>
+      <EditMembers />
+      <NavItemToggle
+        onClick={onEditMemberClick}
+        icon={<BsPeopleFill />}
+        label="Edit"
+      />
       <NavItemToggle icon={<RiFilter2Line />} label="Filter" filter>
         <FilterModal />
       </NavItemToggle>
@@ -76,29 +89,35 @@ export function NavItem({ icon: Icon = <></>, children, onClick, ...props }) {
   );
 }
 
-function NavItemToggle({ icon: Icon = <></>, label = "", children, filter = false }) {
+function NavItemToggle({
+  icon: Icon = <></>,
+  label = "",
+  children,
+  onClick,
+  filter = false,
+}) {
   const toggle = useToggle(false);
   return (
     <div>
-      <NavItem onClick={toggle.toggle} icon={Icon}>
+      <NavItem onClick={onClick || toggle.toggle} icon={Icon}>
         {label}
       </NavItem>
-      {
-        filter ? React.Children.map(children, child =>
-          React.cloneElement(child, {
-            onClose: toggle.off,
-            onHide: toggle.off,
-            show: toggle.isOn
-          }),
-        ) : toggle.isOn
+      {filter
+        ? React.Children.map(children, child =>
+            React.cloneElement(child, {
+              onClose: toggle.off,
+              onHide: toggle.off,
+              show: toggle.isOn,
+            }),
+          )
+        : toggle.isOn
         ? React.Children.map(children, child =>
             React.cloneElement(child, {
               onClose: toggle.off,
               onHide: toggle.off,
             }),
           )
-        : null
-      }
+        : null}
       {/* {toggle.isOn
         ? React.Children.map(children, child =>
             React.cloneElement(child, {

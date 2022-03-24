@@ -8,6 +8,8 @@ import useUpdateFilters from "./useUpdateFilters.js";
 import { useFrontendBoot, useTheme } from "../../../../customHooks/index.js";
 import "styled-components/macro";
 import { Filter, FilterHead } from "./index.js";
+import { RiCheckboxFill } from "react-icons/ri";
+import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 
 const DESCRIPTIONS = {
   arogya_sanjeevani:
@@ -51,8 +53,8 @@ function FilterModal({ onClose, ...props }) {
   const renderPlanTypes =
     journeyType === "top_up"
       ? baseplantypes.filter(
-        singelPlanType => singelPlanType.code !== "arogya_sanjeevani",
-      )
+          singelPlanType => singelPlanType.code !== "arogya_sanjeevani",
+        )
       : baseplantypes;
 
   const { getSelectedFilter } = useFilters();
@@ -80,6 +82,7 @@ function FilterModal({ onClose, ...props }) {
       };
     }
 
+    console.log(updatedBasePlanTypeFilter);
     updateFilters(updatedBasePlanTypeFilter);
 
     onClose && onClose();
@@ -127,6 +130,8 @@ function PlanType({ baseplantype, checked = false, onChange, ...props }) {
   const handleChange = evt => {
     if (evt.target.checked) onChange && onChange(baseplantype, checked);
   };
+  const { colors } = useTheme();
+
   return (
     <li
       css={`
@@ -150,8 +155,18 @@ function PlanType({ baseplantype, checked = false, onChange, ...props }) {
           </span>
         </OverlayTrigger>
       </label>
+      {checked ? (
+        <RiCheckboxFill size={25} color={colors.primary_color} />
+      ) : (
+        <MdOutlineCheckBoxOutlineBlank
+          size={25}
+          fontWeight={"300"}
+          color="#aaa"
+        />
+      )}
       <input
-        type="radio"
+        style={{ display: "none" }}
+        type="checkbox"
         name="select_plan_type"
         id={baseplantype.code}
         value={baseplantype.display_name}

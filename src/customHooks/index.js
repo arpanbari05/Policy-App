@@ -203,7 +203,7 @@ export function useFrontendBoot() {
 
   const { data: enquiryData } = useGetEnquiriesQuery();
 
-  const data = { ...frontendData, ...config };
+  const data = { ...config, ...frontendData };
 
   const tenantName = data?.tenant?.name;
 
@@ -438,8 +438,18 @@ export function useMembers() {
     };
   }
 
+  function getFirstGroupLocation() {
+    return {
+      city: groups[0]?.city,
+      state: groups[0]?.state,
+      pincode: groups[0]?.pincode,
+    };
+  }
+
   function getNextGroup(currentGroupCode) {
-    return groups.filter(group => group.type !== "all").find(group => group.id === currentGroupCode + 1);
+    return groups
+      .filter(group => group.type !== "all")
+      .find(group => group.id === currentGroupCode + 1);
   }
 
   function getPreviousGroup(currentGroupCode) {
@@ -468,6 +478,7 @@ export function useMembers() {
     getAllMembers,
     getGroup,
     getGroupLocation,
+    getFirstGroupLocation,
     getNextGroup,
     getPreviousGroup,
     getLastGroup,
@@ -931,6 +942,8 @@ export function useGetQuotes(queryConfig = {}) {
     queryConfig,
   );
 
+  const isLoading = data?.length < insurersToFetch.length - 2;
+
   const quotesWithoutMoreFilters = data;
 
   //? SUPPLIES FILTERED QUOTE [PREMIUM + MORE FILTERS]
@@ -943,7 +956,7 @@ export function useGetQuotes(queryConfig = {}) {
     });
   }
 
-  const isLoading = data?.length < insurersToFetch.length;
+  // const isLoading = data?.length < insurersToFetch.length;
 
   const loadingPercentage =
     !data || data.length === 0

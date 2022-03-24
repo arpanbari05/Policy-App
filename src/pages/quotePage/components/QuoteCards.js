@@ -240,8 +240,6 @@ function QuoteCard({
     featuresDisplayedOnQuoteCard.includes(feature.code),
   );
 
-  console.log(quote);
-
   // const handleSeeDetailsClick = (clickedFrom) => {
   //   handleSeeDetails(
   //     {
