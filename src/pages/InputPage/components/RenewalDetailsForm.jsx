@@ -16,6 +16,7 @@ import { Button } from "../../../components";
 import DropDown2 from "../../../components/DropDown2";
 import { useUpdateRenewalQueryMutation } from "../../../api/api";
 import { useHistory } from "react-router-dom";
+import styled from "styled-components";
 
 const RenewalDetailsForm = ({ ...props }) => {
   const { companies } = useCompanies();
@@ -89,7 +90,16 @@ const RenewalDetailsForm = ({ ...props }) => {
             }
           `}
         >
-          <Title>Your Renewal Details?</Title>
+          <FlexSectionStyled>
+            <Title>Your Renewal Details?</Title>
+            <LinkButton
+              onClick={() => {
+                history.push("/input/basic-details");
+              }}
+            >
+              Fresh policy
+            </LinkButton>
+          </FlexSectionStyled>
           <CustomProgressBar now={1} total={1} />
 
           <div>
@@ -153,5 +163,21 @@ const RenewalDetailsForm = ({ ...props }) => {
     </div>
   );
 };
+
+const LinkButton = styled.button`
+  padding: 5px 15px;
+  border: 1.5px solid #787878;
+  border-radius: 4px;
+  color: #787878;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+`;
+
+const FlexSectionStyled = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 export default RenewalDetailsForm;
