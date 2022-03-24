@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import CustomProgressBar from "../../../components/ProgressBar";
 import { Title, ErrorMessage } from "./FormComponents";
-import ReactSwitch from "react-switch";
 import { boy, girl } from "../../../assets/images";
 import TextInput2 from "../../../components/TextInput2";
 import {
@@ -12,7 +11,7 @@ import {
   useTheme,
   useFrontendBoot,
 } from "../../../customHooks";
-import useUrlQuery, { useUrlQueries } from "../../../customHooks/useUrlQuery";
+import { useUrlQueries } from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
 import "styled-components/macro";
 import { useHistory } from "react-router-dom";
@@ -115,7 +114,22 @@ const BasicDetailsForm = ({ ...props }) => {
             }
           `}
         >
-          <Title>Tell Us about yourself?</Title>
+          {tenant.alias === "fyntune" ? (
+            <FlexSectionStyled>
+              <Title>Tell Us about yourself?</Title>
+              <LinkButton
+                onClick={() => {
+                  history.push({
+                    pathname: "/input/renewal-details",
+                  });
+                }}
+              >
+                Renew policy
+              </LinkButton>
+            </FlexSectionStyled>
+          ) : (
+            <Title>Tell Us about yourself?</Title>
+          )}
           <CustomProgressBar now={1} total={5} />
           <div
             css={`
@@ -315,4 +329,20 @@ const GenderWrapper = styled.label`
   flex-grow: 1;
   cursor: pointer;
   gap: 10px;
+`;
+
+const LinkButton = styled.button`
+  padding: 5px 15px;
+  border: 1.5px solid #787878;
+  border-radius: 4px;
+  color: #787878;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+`;
+
+const FlexSectionStyled = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
