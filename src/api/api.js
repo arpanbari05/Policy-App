@@ -393,7 +393,7 @@ export const api = createApi({
       },
     }),
     updateRenewalQuery: builder.mutation({
-      query: ({ company_alias, policy_no, section = "health" }) => {
+      query: ({ company_alias, policy_no, section = "renewal" }) => {
         return {
           url: "renewal-enquiries",
           body: {
