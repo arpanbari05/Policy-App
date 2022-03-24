@@ -207,6 +207,8 @@ export function useFrontendBoot() {
 
   const tenantName = data?.tenant?.name;
 
+  const tenantAlias = data?.tenant?.alias;
+
   let journeyType = "health";
 
   if (enquiryData?.data) {
@@ -220,6 +222,7 @@ export function useFrontendBoot() {
     query,
     journeyType,
     tenantName,
+    tenantAlias,
     data,
     insuredMembers: enquiryData?.data?.input?.members,
     groups: enquiryData?.data?.groups,
@@ -431,12 +434,12 @@ export function useMembers() {
     return {
       city: group?.city,
       state: group?.state,
-      pincode: group?.pincode || input?.pincode,
+      pincode: group?.pincode,
     };
   }
 
   function getNextGroup(currentGroupCode) {
-    return groups.find(group => group.id === currentGroupCode + 1);
+    return groups.filter(group => group.type !== "all").find(group => group.id === currentGroupCode + 1);
   }
 
   function getPreviousGroup(currentGroupCode) {
