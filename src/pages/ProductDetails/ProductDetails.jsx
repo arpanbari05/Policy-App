@@ -150,23 +150,25 @@ const ProductDetails = () => {
             }
           `}
         >
-          <div
-            css={`
-              @media (max-width: 1200px) {
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              }
-              ${mobile} {
-                display: none;
-              }
-            `}
-          >
-            <GoBackButton
-              backPath={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
-            />
-          </div>
+          {journeyType !== "renewal" && (
+            <div
+              css={`
+                @media (max-width: 1200px) {
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                }
+                ${mobile} {
+                  display: none;
+                }
+              `}
+            >
+              <GoBackButton
+                backPath={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
+              />
+            </div>
+          )}
 
           <div
             css={`

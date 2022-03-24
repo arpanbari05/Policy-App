@@ -212,11 +212,14 @@ export function useFrontendBoot() {
   let journeyType = "health";
 
   if (enquiryData?.data) {
-    journeyType = enquiryData?.data?.section;
+    journeyType =
+      enquiryData?.data?.type === "new"
+        ? enquiryData?.data?.section
+        : "renewal";
   }
 
-  //TODO: Uncomment this to switch to renewal journey type
-  journeyType = "renewal";
+  //!TODO: Uncomment this to switch to renewal journey type (no longer needed)
+  //journeyType = "renewal";
 
   return {
     query,
@@ -439,7 +442,9 @@ export function useMembers() {
   }
 
   function getNextGroup(currentGroupCode) {
-    return groups.filter(group => group.type !== "all").find(group => group.id === currentGroupCode + 1);
+    return groups
+      .filter(group => group.type !== "all")
+      .find(group => group.id === currentGroupCode + 1);
   }
 
   function getPreviousGroup(currentGroupCode) {
