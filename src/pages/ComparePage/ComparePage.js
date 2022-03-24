@@ -588,9 +588,6 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
     data.find(
       icQuotes => icQuotes.data.company_alias === compareQuote.company_alias,
     );
-
-  console.log(data);
-
   const isLoading = !data || !icQuotes;
 
   const isCurrentCompareQuote = quote =>
