@@ -13,7 +13,6 @@ import {
 } from "./ProposalSections.slice";
 import { useRevisedPremiumModal } from "../../../customHooks";
 
-
 const useProposalSections = (
   setActive,
   name,
@@ -28,7 +27,8 @@ const useProposalSections = (
   );
 
   const [customValid, setCustomValid] = useState();
-
+  const revisedPremiumPopupUtilityObject =
+    useRevisedPremiumModal();
   const dispatch = useDispatch();
 
   const [additionalErrors, setAdditionalErrors] = useState({});
@@ -38,13 +38,49 @@ const useProposalSections = (
   const [finalSubmit, setFinalSubmit] = useState(false);
 
   const cart = useSelector(state => state.cart);
-  const { activeIndex } = useSelector(({ proposalPage }) => proposalPage);
+  const { activeIndex, proposalData } = useSelector(
+    ({ proposalPage }) => proposalPage,
+  );
   const [previousCart] = useState(cart);
+// to update self details without opening form
+  // const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
 
-  const revisedPremiumPopupUtilityObject =
-    useRevisedPremiumModal();
+  // const hasAnyChangeInObj = (newVal,oldVal) => {
+  //   let newValKeys = Object.keys(newVal);
+  //   let oldValKeys = Object.keys(oldVal);
+  //   // if(newValKeys.length !== oldValKeys.length) return true  
+  //   console.log("wfgbkjwb",newVal,oldVal)
+
+  //   return newValKeys.some(newValKey => newVal[newValKey]!==oldVal[newValKey])
+  // }
+
+  // useEffect(() => {
+  //   console.log("fhfsjsfssf", proposalData);
+  //   if (
+  //     proposalData["Insured Details"] &&
+  //     proposalData["Insured Details"].self
+  //   ) {
+  //     let tempObj = {...proposalData["Insured Details"].self};
+  //     let keysOfInsuredSelf = Object.keys(proposalData["Insured Details"].self)
+  //     keysOfInsuredSelf.forEach(key => {
+  //       if(proposalData["Proposer Details"][key]) tempObj[key] = proposalData["Proposer Details"][key]
+  //     });
+
+  //     if(hasAnyChangeInObj(tempObj,proposalData["Insured Details"].self)){
+  //       dispatch(
+  //         saveProposalData({ [name]: {...proposalData["Insured Details"],self:tempObj} }, () =>
+  //           dispatch(setActiveIndex(false)),
+  //         ),
+  //       );
+  //       console.log("vbksdvbkjd",tempObj,proposalData)
+  //     }
+
+     
+  //   }
+  // }, [proposalData["Proposer Details"]]);
 
   useEffect(() => {
+    console.log("wfbckha", { isValid, submit, name });
     if (typeof isValid === "object") {
       if (
         !isValid.some(item => item === undefined || item === false) &&
@@ -90,15 +126,17 @@ const useProposalSections = (
               !isValid.some(item => item === undefined || item === false)
             ) {
               if (response.failed_bmi.health) {
-                dispatch(setFailedBmiData(response.failed_bmi.health))
+                dispatch(setFailedBmiData(response.failed_bmi.health));
                 dispatch(
                   setShowBMI(
                     Object.keys(response.failed_bmi.health).join(", "),
                   ),
                 );
               } else {
-                dispatch(setFailedBmiData(false))
-                revisedPremiumPopupUtilityObject.getUpdatedCart(() => dispatch(setActiveIndex(false)));
+                dispatch(setFailedBmiData(false));
+                revisedPremiumPopupUtilityObject.getUpdatedCart(() =>
+                  dispatch(setActiveIndex(false)),
+                );
                 /* dispatch(
                   getCart(true, () => {
                     // setActive(prev => prev + 1);

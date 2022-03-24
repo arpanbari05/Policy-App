@@ -322,9 +322,31 @@ export function OptionalCoversValue({ quote, onChange }) {
           gap: 1em;
         `}
       >
-        {riders.map(rider => (
-          <Rider rider={rider} key={rider.name} onChange={handleChange} />
-        ))}
+        {riders.length ? (
+          riders.map(rider => (
+            <Rider rider={rider} key={rider.name} onChange={handleChange} />
+          ))
+        ) : (
+          <div
+            css={`
+              color: #273a5a;
+              h4 {
+                font-size: 0.9rem;
+                font-weight: 600;
+              }
+              p {
+                font-size: 0.7rem;
+              }
+            `}
+          >
+            <h4>Oops! No Riders available.</h4>
+            <p>
+              You can add 'Riders' to you basic health insurance plan for
+              additional benefits. Currently no riders are available for this
+              base plan.
+            </p>
+          </div>
+        )}
       </div>
     </FeatureValue>
   );

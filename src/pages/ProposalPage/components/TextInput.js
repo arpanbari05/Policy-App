@@ -38,7 +38,7 @@ const TextInput = ({
   const [isFocused, setIsFocused] = useState(false);
   const [fallbackValue, setFallbackValue] = useState("");
   const [isChanged, setChanged] = useState(false);
-
+const regForOnlyDigit =  new RegExp("^[0-9]*$");;
   const fullName = value || "";
   const forbiddedSymbols = "`~!@#$%^&*()_-+={[}]|:.;',<>?/\"\\".split("");
   const checkPreviousChar = (value, checkValue) => {
@@ -111,6 +111,7 @@ const TextInput = ({
             if (
               checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&
+              !regForOnlyDigit.test(e.target.value) &&
               e.target.value.length <= 60 &&
               checkAllChar(
                 e.target.value,
@@ -122,9 +123,8 @@ const TextInput = ({
             }
           }else if (checkAllChar(e.target.value, forbiddedSymbols)) {
             if (checkValidation?.matches === "onlyDigits") {
-              let reg = new RegExp("^[0-9]*$");
 
-              if (reg.test(e.target.value)) {
+              if (regForOnlyDigit.test(e.target.value)) {
                 onChange(e);
                 setFallbackValue(e.target.value);
               }
@@ -147,11 +147,11 @@ const TextInput = ({
             } else {
               if (
                 notAllowed &&
-                mediUnderwritting &&
+                // mediUnderwritting &&
                 ((notAllowed.split("/")[0] !== "null" &&
-                  e.target.value <= parseInt(notAllowed.split("/")[0])) ||
+                  e.target.value < parseInt(notAllowed.split("/")[0])) ||
                   (notAllowed.split("/")[1] !== "null" &&
-                    e.target.value >= parseInt(notAllowed.split("/")[1])))
+                    e.target.value > parseInt(notAllowed.split("/")[1])))
               ) {
                 e.target.value = "";
                 dispatch(setShowPlanNotAvail(true));
@@ -195,13 +195,14 @@ const TextInput = ({
               setFallbackValue(e.target.value);
             }
           } else {
+            console.log("sgvjsvl",notAllowed)
             if (
               notAllowed &&
-              mediUnderwritting &&
+              // mediUnderwritting &&
               ((notAllowed.split("/")[0] !== "null" &&
-                e.target.value <= parseInt(notAllowed.split("/")[0])) ||
+                parseInt(e.target.value) <= parseInt(notAllowed.split("/")[0])) ||
                 (notAllowed.split("/")[1] !== "null" &&
-                  e.target.value >= parseInt(notAllowed.split("/")[1])))
+                parseInt(e.target.value) >= parseInt(notAllowed.split("/")[1])))
             ) {
               e.target.value = "";
               dispatch(setShowPlanNotAvail(true));
