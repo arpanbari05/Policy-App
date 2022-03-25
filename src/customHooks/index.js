@@ -427,7 +427,7 @@ export function useMembers() {
   };
 
   function getGroup(groupCode) {
-    return groups.find(group => group.id === parseInt(groupCode));
+    return groups?.find(group => group.id === parseInt(groupCode));
   }
 
   function getGroupLocation(groupCode) {
@@ -442,11 +442,13 @@ export function useMembers() {
   }
 
   function getFirstGroupLocation() {
-    return {
-      city: groups[0]?.city,
-      state: groups[0]?.state,
-      pincode: groups[0]?.pincode,
-    };
+    return (
+      groups?.length && {
+        city: groups[0]?.city,
+        state: groups[0]?.state,
+        pincode: groups[0]?.pincode,
+      }
+    );
   }
 
   function getNextGroup(currentGroupCode) {
