@@ -28,15 +28,17 @@ export function WrapWithTitle({ title, children }) {
           }
         `}
       >
-        <hr css={`
-          display: none;
-          ${mobile} {
-            display: block;
-            height: 1px;
-            background: #ddd;
-            flex-grow: 1;
-          }
-        `} />
+        <hr
+          css={`
+            display: none;
+            ${mobile} {
+              display: block;
+              height: 1px;
+              background: #ddd;
+              flex-grow: 1;
+            }
+          `}
+        />
         <h3
           css={`
             font-size: 17px;
@@ -64,15 +66,17 @@ export function WrapWithTitle({ title, children }) {
         >
           {title}
         </h3>
-        <hr css={`
-          display: none;
-          ${mobile} {
-            display: block;
-            height: 1px;
-            background: #ddd;
-            flex-grow: 1;
-          }
-        `} />
+        <hr
+          css={`
+            display: none;
+            ${mobile} {
+              display: block;
+              height: 1px;
+              background: #ddd;
+              flex-grow: 1;
+            }
+          `}
+        />
         {/* <div
           css={`
             display: none;
@@ -100,11 +104,17 @@ export function OptionCard({
   highlight,
   label,
   children,
+  sum_insured,
   ...props
 }) {
   const { colors } = useTheme();
   const handleChange = evt => {
-    onChange && onChange({ ...option, isSelected: evt.target.checked });
+    onChange &&
+      onChange({
+        ...option,
+        sum_insured: sum_insured,
+        isSelected: evt.target.checked,
+      });
   };
 
   return (
