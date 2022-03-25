@@ -75,9 +75,9 @@ const BasicDetailsForm = ({ ...props }) => {
       setEmailErrors,
       setMobileErrors,
     );
-    const currentGroup = JSON.parse(localStorage.getItem("groups"))?.find(
-      group => group.id,
-    );
+    const currentGroup =
+      localStorage.getItem("groups") &&
+      JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
     if (!validation) {
       return;
@@ -99,7 +99,7 @@ const BasicDetailsForm = ({ ...props }) => {
         if (!enquiryId) throw Error("Something went wrong");
         history.push({
           pathname: "/input/members",
-          search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
+          search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
         });
       }
     } catch (error) {
