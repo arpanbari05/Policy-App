@@ -358,7 +358,8 @@ export function calculateTotalPremium(
 
   const addOnsTotalPremium = getAddOnsTotalPremium(cartEntry.addons);
 
-  if (cartEntry?.product?.company?.alias === "royal_sundaram") {
+  // if (cartEntry?.product?.company?.alias === "royal_sundaram") {
+  if (false) {
     const hospitalRider = health_riders.find(
       rider => rider.name === "Hospital Cash Benefit",
     );
@@ -393,7 +394,7 @@ export function calculateTotalPremium(
       }
     }
   } else {
-    totalPremiumAfterDiscount += ridersPremium;
+    totalPremiumAfterDiscount += ridersPremium + addOnsTotalPremium;
   }
 
   return totalPremiumAfterDiscount;
