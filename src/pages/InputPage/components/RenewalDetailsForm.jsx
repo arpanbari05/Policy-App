@@ -172,6 +172,12 @@ const LinkButton = styled.button`
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
+
+  @media (max-width: 420px) {
+    padding: 5px 5px;
+    font-size: 0.7rem;
+    min-width: 90px;
+  }
 `;
 
 const FlexSectionStyled = styled.section`
