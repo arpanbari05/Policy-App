@@ -395,6 +395,7 @@ function RiderDetails({ rider, ...props }) {
 
 function Members({ groupCode, editable = true, ...props }) {
   const { getGroupMembers } = useMembers();
+
   const currentGroupMembers = getGroupMembers(groupCode);
 
   return (
