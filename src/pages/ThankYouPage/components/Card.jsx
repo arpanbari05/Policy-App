@@ -22,7 +22,10 @@ const Card = ({ values, isLoading }) => {
   // const { frontendData } = useSelector(state => state.frontendBoot);
   return values?.product ? (
     <CardWrapper>
+    <div className="d-flex align-items-center justify-content-between">
+    <div className="d-flex align-items-center">
       <LogoWrapper>
+      
         <img
           src={
             values?.product?.company.alias &&
@@ -34,7 +37,9 @@ const Card = ({ values, isLoading }) => {
           `}
         ></img>
       </LogoWrapper>
+      
       <CompanyName reducePadding>{values?.product?.name}</CompanyName>
+      </div>
       <div style={{ float: "right" }}>
         {values?.pdf_path ? (
           values?.pdf_path && (
@@ -63,6 +68,8 @@ const Card = ({ values, isLoading }) => {
           </DownloadPolicy>
         )}
       </div>
+      </div>
+      
       <Wrap>
         {values?.policy_no ? (
           <PolicyWrapper>
@@ -265,25 +272,34 @@ const CompanyName = styled.div`
 `;
 const DownloadPolicy = styled.a`
   display: inline-block;
-  /* height: 58px; */
+  /* height: 40px; */
   border-radius: 16px;
-  background-color: ${props => props.PrimaryColor};
+  background-color: ${(props) => props.PrimaryColor};
   padding: 5px 10px;
-  text-align: ${props => props.track && "center"};
+  text-align: ${(props) => props.track && "center"};
   /* font-family: pf_handbook_proregular; */
   font-weight: 600;
-  font-size: 16px;
-  /* min-width: 190px; */
+  font-size: 14px;
+  min-width: 160px;
   color: #fff !important;
   & img {
     display: inline-block;
+    width: 12%;
   }
   & svg {
     transform: translateY(4px);
   }
 
   @media (max-width: 768px) {
-    font-size: 15px;
+    font-size: 10px;
+    width: fit-content;
+    height: auto;
+    padding: 4px;
+    margin: auto;
+    min-width: auto;
+    img {
+      width: 11%;
+    }
   }
 `;
 const PolicyWrapper = styled.div`

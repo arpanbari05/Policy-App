@@ -524,17 +524,22 @@ export const validationIndex = {
             };
           } else break;
         case "onlyDigits":
-          if (!/^[0-9]*$/.test(value)) {
+          if (!/^[0-9]*$/.test(value) ) {
             return {
               status: false,
               message: "Please enter only digits",
             };
-          } else break;
-        case "annIncome":
-          if (!/^[0-9]*$/.test(value) && parseInt(value) > 0) {
+          } else if(parseInt(value) ===  0){
             return {
               status: false,
-              message: "Please enter only digits",
+              message: "Please enter valid value",
+            };
+          } else break;
+        case "annIncome":
+          if (!/^[0-9]*$/.test(value) && parseInt(value) ===  0) {
+            return {
+              status: false,
+              message: "Please enter valid value",
             };
           } else break;
         case "address":

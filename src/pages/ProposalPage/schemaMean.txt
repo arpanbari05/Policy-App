@@ -1,0 +1,19 @@
+Medical Details : {
+    groupcode_membersInGroupcode : [
+        {
+
+        type : "custom_toggle"/"custom_medical" -- This key is intoduced to check the medical question has sub questions or not --
+                                                -- "custom_toggle" : means this medical question, not have any sub questions --
+                                                -- "custom_medical" : means this medical question, have sub questions --    
+        name : "NAME OF QUESTION"                                         
+        width: "WIDTH OF THE QUESTION CONTROLLED BY THE BACK-END"
+        additionalOptions : {
+            notAllowedIf : "N"                  -- This key is intoduced to add open "plan not valid" popup/modal, this key can only have a value "N", it is for special case medical questions which usr can not mark as "NO" --
+            notAllowed   : true/false           -- This key is intoduced to invalidate plan when user select "Yes" for medical question and to show "plan not valid" popup/modal --
+            showMembers  : true/false           -- This key is intoduced to control render of members select options under medicalquestions --
+            members      : ["self",etc.]        -- This key is intoduced to get list of members assigned to the groupcode --
+        }
+    },
+    ]
+}
+

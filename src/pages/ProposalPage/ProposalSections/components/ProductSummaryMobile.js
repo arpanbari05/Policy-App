@@ -270,14 +270,15 @@ sggs
               padding-left: 20px;
               position: absolute;
               top: 20px;
-              /* @media (max-width: 768px) {
-                position: unset;
-              } */
+               @media (max-width: 400px) {
+                padding-left: 10px !important;
+
+              } 
             `}
           >
             <div css={`
             @media screen and (max-width:440px){
-              font-size:14px !important;  
+              font-size:13px !important;  
             }
             `}>
               <ProposalCheckBox
@@ -289,7 +290,7 @@ sggs
               />{" "}
               <span className="Iaccept" css={`
             @media screen and (max-width:440px){
-              font-size:14px !important;  
+              font-size:12px !important;  
             }
             `}>I Accept the&nbsp;</span>
               <span
@@ -331,6 +332,7 @@ sggs
             <h6
               style={{
                 fontSize: "14px",
+                
               }}
               css={`
                 @media (min-width: 768px) {
@@ -417,6 +419,9 @@ const Outer = styled.div`
 
   display: flex;
   justify-content: flex-end;
+  @media screen and (max-width:440px){
+    padding: 21px 20px !important;  
+  }
 `;
 const Premium = styled.button`
   text-align: left;
@@ -431,6 +436,10 @@ const View = styled.button`
   @media (min-width: 768px) {
     font-size: 21px !important;
     padding: 10px 20px !important;
+  }
+  @media (max-width: 400px) {
+    font-size: 11px !important;
+    padding: 5px 7px !important;
   }
 `;
 
