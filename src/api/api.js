@@ -417,6 +417,10 @@ export const api = createApi({
         } catch (error) {}
       },
     }),
+    getRenewalSumInsureds: builder.query({
+      query: ({ product_id, groupCode, tenure }) =>
+        `products/${product_id}/renewal-suminsureds?group=${groupCode}&tenure=${tenure}`,
+    }),
   }),
 });
 
@@ -493,6 +497,7 @@ export const {
   useGetProposalDataQuery,
   useGetTopUpAddOnsQuery,
   useUpdateRenewalQueryMutation,
+  useGetRenewalSumInsuredsQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {
