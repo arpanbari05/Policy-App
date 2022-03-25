@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ErrorMessage } from "../../../InputPage/components/FormComponents";
 import {
@@ -17,7 +17,6 @@ import { FaTimes } from "react-icons/fa";
 import * as mq from "../../../../utils/mediaQueries";
 import { setEditStep } from "../../quote.slice";
 import { useDispatch, useSelector } from "react-redux";
-import EditPincode from "../../../../components/EditPincode";
 import LocationForm from "../../../InputPage/components/LocationForm";
 import { setShowEditMembers } from "../../quote.slice";
 import { useGetEnquiriesQuery } from "../../../../api/api";
@@ -166,6 +165,15 @@ export function EditMembers({ ...props }) {
   const dispatch = useDispatch();
   const { editStep: step } = useSelector(({ quotePage }) => quotePage);
   const [clientError, setClientError] = useState("");
+
+  // Remove error after 5sec
+  useEffect(() => {
+    if (clientError !== "") {
+      setTimeout(() => {
+        setClientError("");
+      }, 5000);
+    }
+  }, [clientError]);
 
   const { isError, validate, getSelectedMembers, ...memberForm } =
     useMembersForm(getAllMembers);
