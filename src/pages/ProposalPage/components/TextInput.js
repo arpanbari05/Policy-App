@@ -38,7 +38,7 @@ const TextInput = ({
   const [isFocused, setIsFocused] = useState(false);
   const [fallbackValue, setFallbackValue] = useState("");
   const [isChanged, setChanged] = useState(false);
-const regForOnlyDigit =  new RegExp("^[0-9]*$");;
+  const regForOnlyDigit = new RegExp("^[0-9]*$");
   const fullName = value || "";
   const forbiddedSymbols = "`~!@#$%^&*()_-+={[}]|:.;',<>?/\"\\".split("");
   const checkPreviousChar = (value, checkValue) => {
@@ -96,17 +96,19 @@ const regForOnlyDigit =  new RegExp("^[0-9]*$");;
         onChange={e => {
           setChanged(true);
           if (checkValidation && checkValidation["matches"] === "address") {
-            let acceptedSpecialChar = ['"', ".", "-", ",","#","&","/"];
+            let acceptedSpecialChar = ['"', ".", "-", ",", "#", "&", "/"];
             if (
               checkAllChar(
                 e.target.value,
-                forbiddedSymbols.filter(el => !acceptedSpecialChar.includes(el)),
+                forbiddedSymbols.filter(
+                  el => !acceptedSpecialChar.includes(el),
+                ),
               )
             ) {
               onChange(e);
               setFallbackValue(e.target.value);
             }
-          }else if(checkValidation["matches"] === "name"){
+          } else if (checkValidation["matches"] === "name") {
             let acceptedSpecialChar = ["."];
             if (
               checkPreviousChar(e.target.value, " ") &&
@@ -115,16 +117,25 @@ const regForOnlyDigit =  new RegExp("^[0-9]*$");;
               e.target.value.length <= 60 &&
               checkAllChar(
                 e.target.value,
-                forbiddedSymbols.filter(el => !acceptedSpecialChar.includes(el)),
+                forbiddedSymbols.filter(
+                  el => !acceptedSpecialChar.includes(el),
+                ),
               )
             ) {
               onChange(e);
               setFallbackValue(e.target.value);
             }
-          }else if (checkAllChar(e.target.value, forbiddedSymbols)) {
+          } else if (checkAllChar(e.target.value, forbiddedSymbols)) {
             if (checkValidation?.matches === "onlyDigits") {
-
               if (regForOnlyDigit.test(e.target.value)) {
+                onChange(e);
+                setFallbackValue(e.target.value);
+              }
+            } else if (checkValidation["matches"] === "annIncome") {
+              if (
+                regForOnlyDigit.test(e.target.value) &&
+                parseInt(e.target.value)
+              ) {
                 onChange(e);
                 setFallbackValue(e.target.value);
               }
@@ -148,6 +159,7 @@ const regForOnlyDigit =  new RegExp("^[0-9]*$");;
               if (
                 notAllowed &&
                 // mediUnderwritting &&
+                notAllowed.includes("null") &&
                 ((notAllowed.split("/")[0] !== "null" &&
                   e.target.value < parseInt(notAllowed.split("/")[0])) ||
                   (notAllowed.split("/")[1] !== "null" &&
@@ -165,11 +177,11 @@ const regForOnlyDigit =  new RegExp("^[0-9]*$");;
           } else if (
             checkValidation &&
             (checkValidation["matches"] === "alphanum" ||
-            checkValidation["matches"] === "pan" ||
-            checkValidation["matches"] === "onlyDigits" ||
-            checkValidation["matches"] === "annIncome" ||
-            (checkValidation["matches"] &&
-              checkValidation["matches"].includes("mobile")))
+              checkValidation["matches"] === "pan" ||
+              checkValidation["matches"] === "onlyDigits" ||
+              checkValidation["matches"] === "annIncome" ||
+              (checkValidation["matches"] &&
+                checkValidation["matches"].includes("mobile")))
           ) {
             if (
               checkPreviousChar(e.target.value, " ") &&
@@ -195,14 +207,16 @@ const regForOnlyDigit =  new RegExp("^[0-9]*$");;
               setFallbackValue(e.target.value);
             }
           } else {
-            console.log("sgvjsvl",notAllowed)
+            console.log("sgvjsvl", notAllowed);
             if (
               notAllowed &&
               // mediUnderwritting &&
               ((notAllowed.split("/")[0] !== "null" &&
-                parseInt(e.target.value) <= parseInt(notAllowed.split("/")[0])) ||
+                parseInt(e.target.value) <=
+                  parseInt(notAllowed.split("/")[0])) ||
                 (notAllowed.split("/")[1] !== "null" &&
-                parseInt(e.target.value) >= parseInt(notAllowed.split("/")[1])))
+                  parseInt(e.target.value) >=
+                    parseInt(notAllowed.split("/")[1])))
             ) {
               e.target.value = "";
               dispatch(setShowPlanNotAvail(true));
@@ -214,8 +228,22 @@ const regForOnlyDigit =  new RegExp("^[0-9]*$");;
           }
         }}
         onFocus={onFocus}
-        onBlur={() => {
+        onBlur={e => {
           onBlur();
+          if (
+            notAllowed &&
+            !notAllowed.includes("null") &&
+            ((notAllowed.split("/")[0] !== "null" &&
+              e.target.value < parseInt(notAllowed.split("/")[0])) ||
+              (notAllowed.split("/")[1] !== "null" &&
+                e.target.value > parseInt(notAllowed.split("/")[1])))
+          ) {
+            e.target.value = "";
+            dispatch(setShowPlanNotAvail(true));
+            onChange(e);
+            setFallbackValue(e.target.value);
+            
+          }
           setIsFocused(false);
         }}
         onInput={onInput}

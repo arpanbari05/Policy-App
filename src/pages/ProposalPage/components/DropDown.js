@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { setAsyncOptions } from "../../../components/FormBuilder/FormBuilder.slice";
 import down from "./../../../assets/images/down-arrow.svg";
 import up from "./../../../assets/images/up-arrow.svg";
+import useAppropriateOptions from "./useAppropriateOptions";
+
 const DropDown = ({
   name,
   values,
@@ -23,71 +25,23 @@ const DropDown = ({
   excludeOptions,
   directUpdateValue,
 }) => {
-  const [selectOption, setSelectOption] = useState(asyncOptions || options);
-
-  useEffect(() => {
-    console.log(
-      "dbnjdfkbf",
-      values,
-      selectOption,
-      label,
-      options,
-      value
-    );
-    if (
-      values &&
-      values.gender &&
-      values.gender === "F" &&
-      label.toLowerCase().includes("title")
-    ) {
-      setSelectOption(
-        Object.keys(options).reduce((acc, key) => {
-          return key !== "mr"
-            ? { ...acc, [key]: options[key] }
-            : { ...acc };
-        }, {}),
-      );
-    }else if(
-      values &&
-      values.gender &&
-      values.gender === "M" &&
-      label.toLowerCase().includes("title")
-    ){
-      setSelectOption(
-        Object.keys(options).reduce((acc, key) => {
-          return key !== "ms" && key !== "mrs"
-            ? { ...acc, [key]: options[key] }
-            : { ...acc };
-        }, {}),
-      );
-    }
-  }, [values]);
-
-  useEffect(() => {
-    if(Object.keys(selectOption).length === 1 && !values[name]) directUpdateValue(name,Object.keys(selectOption)[0]);
-  },[selectOption]);
+  
+  const { selectOption } = useAppropriateOptions({
+    values,
+    allValues,
+    asyncOptions,
+    options,
+    label,
+    name,
+    directUpdateValue,
+    value,
+  });
 
   const [dataValue, setDataValue] = useState();
 
   const excludeOptionsPage = excludeOptions?.when?.split(".")[0];
 
   const excludeOptionsVariable = excludeOptions?.when?.split(".")[1];
-
-  useEffect(() => {
-    if (asyncOptions) {
-      setSelectOption(asyncOptions);
-    } else {
-      if (allValues["Proposer Details"] && name === "nominee_relation") {
-        if (allValues["Proposer Details"].gender === "M") {
-          let { husband, ...validOptions } = options;
-          setSelectOption(validOptions);
-        } else if (allValues["Proposer Details"].gender === "F") {
-          const { wife, ...validOptions } = options;
-          setSelectOption(validOptions);
-        }
-      }
-    }
-  }, [asyncOptions]);
 
   label = label || "- Select -";
 
