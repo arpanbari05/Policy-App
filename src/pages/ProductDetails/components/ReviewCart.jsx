@@ -59,6 +59,7 @@ import {
   useUpdateCartMutation,
 } from "../../../api/api";
 import _ from "lodash";
+import { setShowEditMembers } from "../../quotePage/quote.slice";
 
 const plantypes = {
   M: "Multi Individual",
@@ -428,6 +429,8 @@ function EditMembersButton({ groupCode, ...props }) {
 
   const modalToggle = useToggle(false);
 
+  const dispatch = useDispatch();
+
   return (
     <div {...props}>
       <Button
@@ -440,11 +443,12 @@ function EditMembersButton({ groupCode, ...props }) {
           color: ${colors.primary_color};
           padding: 0;
         `}
-        onClick={modalToggle.on}
+        // onClick={modalToggle.on}
+        onClick={() => dispatch(setShowEditMembers(true))}
       >
         <FaPen />
       </Button>
-      {modalToggle.isOn && <EditMembers onClose={modalToggle.off} />}
+      <EditMembers />
     </div>
   );
 }
@@ -1032,13 +1036,17 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const enquiryId = urlQueryStrings.get("enquiryId");
 
+  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
+    group => group.id,
+  );
+
   const handleClick = () => {
     updateCartMutation({ additionalDiscounts }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
           pathname: `/productdetails/${nextGroupProduct.group.id}`,
-          search: `enquiryId=${enquiryId}`,
+          search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
         });
         return;
       }

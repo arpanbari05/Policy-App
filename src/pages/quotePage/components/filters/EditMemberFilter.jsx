@@ -232,7 +232,12 @@ export function EditMembers({ ...props }) {
                 }
               `}
             >
-              <MemberOptions {...memberForm} />
+              <MemberOptions
+                {...memberForm}
+                setServerError={setClientError}
+                gender={data?.data?.input?.gender}
+                selectedMembers={getSelectedMembers()}
+              />
             </div>
             {error &&
               serverErrors.map(serverError => (
@@ -256,7 +261,7 @@ export function EditMembers({ ...props }) {
                 }
               `}
             >
-              Apply
+              Apply & Proceed
             </Button>
           </form>
         ) : (

@@ -675,6 +675,10 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
         //     Object.assign(draft, response.data);
         //   })
         // );
+        const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
+          group => group.id,
+        );
+
         dispatch(setAppLoading(true));
         ls.set("enquiryId", response?.data?.data?.enquiry_id);
         console.log("kvbwbdv", response.data.data.trace_id);
@@ -697,7 +701,7 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
 
         history.push({
           pathname: `/quotes/${Object.keys(newMemberGroups)[0]}`,
-          search: `enquiryId=${newData.enquiryId}`,
+          search: `enquiryId=${newData.enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
         });
         dispatch(
           api.util.updateQueryData("getEnquiries", undefined, draft => {

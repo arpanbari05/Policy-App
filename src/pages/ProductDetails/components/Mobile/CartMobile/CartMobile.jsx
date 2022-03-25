@@ -256,13 +256,17 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
 
   const enquiryId = urlQueryStrings.get("enquiryId");
 
+  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
+    group => group.id,
+  );
+
   const handleClick = () => {
     updateCartMutation({ additionalDiscounts }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
           pathname: `/productdetails/${nextGroupProduct.group.id}`,
-          search: `enquiryId=${enquiryId}`,
+          search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
         });
         return;
       }

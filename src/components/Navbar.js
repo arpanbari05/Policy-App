@@ -13,6 +13,7 @@ import ShareQuoteModal from "./ShareQuoteModal";
 import { useShareFunctionality } from "../customHooks";
 import { images } from "../assets/logos/logo";
 import EditPincode from "./EditPincode";
+import useUrlQuery, { useUrlQueries } from "../customHooks/useUrlQuery";
 
 function LogoLink() {
   const {
@@ -248,6 +249,12 @@ export const None = () => <></>;
 export function Members() {
   const { groupCode } = useParams();
 
+  const urlQueryStrings = new URLSearchParams(window.location.search);
+  const city = urlQueryStrings.get("city");
+  const pincode = urlQueryStrings.get("pincode");
+
+  console.log(useUrlQuery());
+
   const { colors } = useTheme();
 
   const {
@@ -286,8 +293,8 @@ export function Members() {
         <Member member={member} key={member.code} />
       ))}
       <Info
-        label={groupLocation?.city || firstGroupLocation?.city}
-        value={groupLocation?.pincode || firstGroupLocation?.pincode}
+        label={groupLocation?.city || city || firstGroupLocation?.city}
+        value={groupLocation?.pincode || pincode || firstGroupLocation?.pincode}
         onlyDesktop
       >
         <span

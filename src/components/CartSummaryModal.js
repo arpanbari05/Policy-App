@@ -40,7 +40,13 @@ function CartSummaryModal({
   );
 }
 
-function CartSummaryContent({ closeModal, onContine, allClose, selectedRiders, ...props }) {
+function CartSummaryContent({
+  closeModal,
+  onContine,
+  allClose,
+  selectedRiders,
+  ...props
+}) {
   let {
     data: {
       data: { groups },
@@ -56,7 +62,12 @@ function CartSummaryContent({ closeModal, onContine, allClose, selectedRiders, .
   return (
     <div {...props}>
       {groups.map(group => (
-        <GroupCard group={group} closeModal={closeModal} allClose={allClose} selectedRiders={selectedRiders} />
+        <GroupCard
+          group={group}
+          closeModal={closeModal}
+          allClose={allClose}
+          selectedRiders={selectedRiders}
+        />
       ))}
       <hr
         css={`
@@ -224,12 +235,16 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
     cartEntry = data.data.find(cartEntry => cartEntry?.group?.id === group?.id);
   }
 
+  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
+    group => group.id,
+  );
+
   function handleAddPlanClick() {
     closeModal && closeModal();
     allClose();
     history.push({
       pathname: `/quotes/${group.id}`,
-      search: `enquiryId=${enquiryId}`,
+      search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
     });
   }
 
@@ -406,10 +421,7 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
           </ProductData>
           <ProductData>
             <span class="label-add_product">Premium</span>
-            <span>
-              ₹{" "}
-              {parseInt(netPremium).toLocaleString("en-IN")}
-            </span>
+            <span>₹ {parseInt(netPremium).toLocaleString("en-IN")}</span>
           </ProductData>
           <ProductData>
             <span class="label-add_product">Tenure</span>

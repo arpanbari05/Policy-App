@@ -73,7 +73,7 @@ const ThankYouPage = () => {
   useEffect(() => {
     setLoading(true);
     dispatch(fetchPdf());
-      setLoading(false);
+    setLoading(false);
 
     // const getClear = setInterval(() => dispatch(fetchPdf()), 3000);
     // setTimeout(() => {
@@ -98,6 +98,11 @@ const ThankYouPage = () => {
       document.body.style.background = "";
     }
   }, [pathname]);
+
+  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
+    group => group.id,
+  );
+
   const Disclaimer = () => {
     if (
       policyStatus.every(
@@ -247,9 +252,13 @@ const ThankYouPage = () => {
                 >
                   <span>Thankyou for choosing</span>
                   <br />
-                  <span> {tenantDetail && tenantDetail.name
-                    ? tenantDetail.name
-                    : "Fyntune"} !</span>
+                  <span>
+                    {" "}
+                    {tenantDetail && tenantDetail.name
+                      ? tenantDetail.name
+                      : "Fyntune"}{" "}
+                    !
+                  </span>
                 </div>
                 <div
                   style={{
@@ -460,7 +469,9 @@ const ThankYouPage = () => {
                         onClick={() => {
                           history.push({
                             pathname: "/quotes",
-                            search: `enquiryId=${ls.get("enquiryId")}`,
+                            search: `enquiryId=${ls.get("enquiryId")}&pincode=${
+                              currentGroup.pincode
+                            }&city=${currentGroup.city}`,
                           });
                         }}
                       >
@@ -481,7 +492,9 @@ const ThankYouPage = () => {
                         onClick={() => {
                           history.push({
                             pathname: "/proposal",
-                            search: `enquiryId=${ls.get("enquiryId")}`,
+                            search: `enquiryId=${ls.get("enquiryId")}&pincode=${
+                              currentGroup.pincode
+                            }&city=${currentGroup.city}`,
                           });
                         }}
                       >
@@ -557,7 +570,9 @@ const ThankYouPage = () => {
                   onClick={() => {
                     history.push({
                       pathname: "/proposal",
-                      search: `enquiryId=${ls.get("enquiryId")}`,
+                      search: `enquiryId=${ls.get("enquiryId")}&pincode=${
+                        currentGroup.pincode
+                      }&city=${currentGroup.city}`,
                     });
                   }}
                 >

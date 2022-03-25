@@ -39,6 +39,10 @@ const NavDropdown = ({ children, customClassName }) => {
     ({ frontendBoot }) => frontendBoot?.frontendData?.data,
   );
 
+  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
+    group => group.id,
+  );
+
   return (
     <>
       <span onClick={handleClick} className="navdropdown">
@@ -277,7 +281,11 @@ const NavDropdown = ({ children, customClassName }) => {
                                 onClick={() =>
                                   history.push({
                                     pathname: "/quotes",
-                                    search: `enquiryId=${ls.get("enquiryId")}`,
+                                    search: `enquiryId=${ls.get(
+                                      "enquiryId",
+                                    )}&pincode=${currentGroup.pincode}&city=${
+                                      currentGroup.city
+                                    }`,
                                   })
                                 }
                                 style={{

@@ -169,7 +169,9 @@ export function Button({
           );
         }
         &:disabled {
-          background-color: ${loaderPrimaryColor && loader ? colors.primary_color : colors.secondary_shade};
+          background-color: ${loaderPrimaryColor && loader
+            ? colors.primary_color
+            : colors.secondary_shade};
           color: ${loaderPrimaryColor && loader ? "#fff" : "#666"};
           cursor: default;
         }
@@ -391,9 +393,13 @@ export function useGotoProductDetailsPage() {
 
     const firstGroupWithQuote = Math.min(...groupCodes);
 
+    const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
+      group => group.id,
+    );
+
     history.push({
       pathname: `/productdetails/${firstGroupWithQuote}`,
-      search: `enquiryId=${enquiryId}`,
+      search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
     });
   }
 
@@ -422,6 +428,10 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
   const { enquiryId } = useUrlEnquiry();
   const { cartEntries } = useCart();
 
+  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
+    group => group.id,
+  );
+
   function gotoProductPage() {
     const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
     // const groupCodes = Object.keys(policyTypes).map(key => parseInt(key));
@@ -429,7 +439,7 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
 
     history.push({
       pathname: `/productdetails/${firstGroupWithQuote}`,
-      search: `enquiryId=${enquiryId}`,
+      search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
     });
   }
 

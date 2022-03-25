@@ -189,7 +189,7 @@ function ClearFilters(props) {
 function AssistanceCard(props) {
   const [showTalk, setShowTalk] = useState(false);
   const { colors } = useTheme();
-  const { tenantAlias } = useFrontendBoot();
+  const { data } = useFrontendBoot();
   return (
     <div
       {...props}
@@ -198,7 +198,13 @@ function AssistanceCard(props) {
         background-color: ${colors.secondary_shade};
       `}
     >
-      <h1
+      <div
+        css={`
+          margin-bottom: 15px;
+        `}
+        dangerouslySetInnerHTML={{ __html: data?.settings?.talk_to_us_info }}
+      ></div>
+      {/* <h1
         css={`
           font-size: 1rem;
           font-weight: 900;
@@ -218,7 +224,7 @@ function AssistanceCard(props) {
         {tenantAlias === "renew_buy"
           ? "Health Insurance plans by insurers have various offerings such as list of hospitals covered, co-payment clauses, family health insurance plans, no claim bonuses etc. In case of any support or assistance, connect with a RenewBuy Health Expert and solve all your and your customers queries."
           : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu nisl a lorem auctor ultrices auctor vel elit. Aliquam quis consequat tellus. Aliquam pellentesque ligula massa, aliquet fermentum nisl varius ac."}
-      </p>
+      </p> */}
       <button
         className="px-3 py-2 rounded"
         css={`
