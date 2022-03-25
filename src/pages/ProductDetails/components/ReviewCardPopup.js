@@ -323,14 +323,14 @@ function ProductDetailsCardMobile({ cartItem }) {
               >
                 <div
                   css={`
-                    font-size: 12px;
+                    font-size: 10px;
                   `}
                 >
                   Cover:
                 </div>
                 <div
                   css={`
-                    font-size: 12px;
+                    font-size: 10px;
                   `}
                 >
                   {amount(sum_insured)}
@@ -340,7 +340,7 @@ function ProductDetailsCardMobile({ cartItem }) {
                 <div
                   css={`
                     display: flex;
-                    font-size: 12px;
+                    font-size: 10px;
                     gap: 10px;
                     justify-content: center;
                   `}
@@ -364,14 +364,14 @@ function ProductDetailsCardMobile({ cartItem }) {
               >
                 <div
                   css={`
-                    font-size: 12px;
+                    font-size: 10px;
                   `}
                 >
                   Premium:
                 </div>
                 <div
                   css={`
-                    font-size: 12px;
+                    font-size: 10px;
                   `}
                 >
                   {amount(total_premium)}
