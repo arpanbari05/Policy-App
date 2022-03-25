@@ -80,7 +80,7 @@ const ShareQuoteModal = ({
   const [imageSend, setImageSend] = useState(imageToSend);
 
   const {
-    colors: { primary_color: PrimaryColor },
+    colors: { primary_color: PrimaryColor, secondary_shade: SecondaryShade },
   } = useTheme();
 
   const dispatch = useDispatch();
@@ -161,7 +161,7 @@ const ShareQuoteModal = ({
           </Modal.Header>
           <Modal.Body>
             {shareQuotes && (
-              <Flex gap={"5rem"}>
+              <Flex color={SecondaryShade} gap={"5rem"}>
                 <StepWrapper
                   onClick={() => setStep(1)}
                   active={step === 1}
@@ -920,6 +920,6 @@ const Flex = styled.div`
   width: calc(100% + 2rem);
   margin-left: -1rem;
   margin-top: -1rem;
-  background: #eee;
+  background: ${props => props.color || "#eee"};
   border-bottom: 1px solid #ddd;
 `;

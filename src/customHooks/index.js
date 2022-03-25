@@ -203,7 +203,7 @@ export function useFrontendBoot() {
 
   const { data: enquiryData } = useGetEnquiriesQuery();
 
-  const data = { ...frontendData, ...config };
+  const data = { ...config, ...frontendData };
 
   const tenantName = data?.tenant?.name;
 
@@ -212,10 +212,13 @@ export function useFrontendBoot() {
   let journeyType = "health";
 
   if (enquiryData?.data) {
-    journeyType = enquiryData?.data?.section;
+    journeyType =
+      enquiryData?.data?.type === "new"
+        ? enquiryData?.data?.section
+        : "renewal";
   }
 
-  //? Uncomment this to switch to renewal journey type
+  //!TODO: Uncomment this to switch to renewal journey type (no longer needed)
   //journeyType = "renewal";
 
   return {
@@ -438,8 +441,18 @@ export function useMembers() {
     };
   }
 
+  function getFirstGroupLocation() {
+    return {
+      city: groups[0]?.city,
+      state: groups[0]?.state,
+      pincode: groups[0]?.pincode,
+    };
+  }
+
   function getNextGroup(currentGroupCode) {
-    return groups.filter(group => group.type !== "all").find(group => group.id === currentGroupCode + 1);
+    return groups
+      .filter(group => group.type !== "all")
+      .find(group => group.id === currentGroupCode + 1);
   }
 
   function getPreviousGroup(currentGroupCode) {
@@ -468,6 +481,7 @@ export function useMembers() {
     getAllMembers,
     getGroup,
     getGroupLocation,
+    getFirstGroupLocation,
     getNextGroup,
     getPreviousGroup,
     getLastGroup,
@@ -623,8 +637,6 @@ export function useCart() {
   const dispatch = useDispatch();
 
   const { data } = useGetCartQuery();
-
-  // const { discounted_total_premium } = data;
 
   const {
     data: {
@@ -795,7 +807,7 @@ export function useAdditionalDiscount(groupCode) {
     product,
     sum_insured,
     tenure,
-    discounts,
+    discounts = [],
     total_premium,
     netPremiumWithoutDiscount,
   } = getCartEntry(groupCode);
@@ -849,7 +861,7 @@ export function useAdditionalDiscount(groupCode) {
     if (queryState.isLoading || queryState.isError) return [];
 
     const selectedAdditionalDiscounts = data.data.filter(additionalDiscount =>
-      discounts.includes(additionalDiscount.alias),
+      discounts?.includes(additionalDiscount.alias),
     );
 
     return selectedAdditionalDiscounts;
@@ -931,6 +943,8 @@ export function useGetQuotes(queryConfig = {}) {
     queryConfig,
   );
 
+  const isLoading = data?.length < insurersToFetch.length - 2;
+
   const quotesWithoutMoreFilters = data;
 
   //? SUPPLIES FILTERED QUOTE [PREMIUM + MORE FILTERS]
@@ -943,7 +957,7 @@ export function useGetQuotes(queryConfig = {}) {
     });
   }
 
-  const isLoading = data?.length < insurersToFetch.length;
+  // const isLoading = data?.length < insurersToFetch.length;
 
   const loadingPercentage =
     !data || data.length === 0

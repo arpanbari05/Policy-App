@@ -393,7 +393,7 @@ export const api = createApi({
       },
     }),
     updateRenewalQuery: builder.mutation({
-      query: ({ company_alias, policy_no, section = "health" }) => {
+      query: ({ company_alias, policy_no, section = "renewal" }) => {
         return {
           url: "renewal-enquiries",
           body: {
@@ -416,6 +416,10 @@ export const api = createApi({
           );
         } catch (error) {}
       },
+    }),
+    getRenewalSumInsureds: builder.query({
+      query: ({ product_id, groupCode, tenure }) =>
+        `products/${product_id}/renewal-suminsureds?group=${groupCode}&tenure=${tenure}`,
     }),
   }),
 });
@@ -493,6 +497,7 @@ export const {
   useGetProposalDataQuery,
   useGetTopUpAddOnsQuery,
   useUpdateRenewalQueryMutation,
+  useGetRenewalSumInsuredsQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {

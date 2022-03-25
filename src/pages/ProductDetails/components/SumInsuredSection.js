@@ -6,6 +6,7 @@ import { amount, matchQuotes, numberToDigitWord } from "../../../utils/helper";
 import { mobile } from "../../../utils/mediaQueries";
 import FeatureSection from "./FeatureSection/FeatureSection";
 import "styled-components/macro";
+import { useGetRenewalSumInsuredsQuery } from "../../../api/api";
 
 function SumInsuredSection({ cartEntry }) {
   const { available_sum_insureds, sum_insured } = cartEntry;
@@ -46,8 +47,20 @@ function SumInsuredSection({ cartEntry }) {
 }
 
 function SumInsuredOption({ sum_insured, cartEntry, checked }) {
-  const { product, group } = cartEntry;
-  const { isLoading, icQuotes } = useGetQuote(product.company.alias);
+  const { product, group, tenure } = cartEntry;
+
+  const { data, isLoading, isUninitialized, isFetching } =
+    useGetRenewalSumInsuredsQuery({
+      product_id: product?.id,
+      groupCode: group?.id,
+      tenure,
+    });
+
+  const sumInsuredLoading = isLoading || isUninitialized || isFetching;
+
+  const matchedSumInsuredQuote = data?.data?.find(
+    singleOption => +singleOption?.sum_insured === +sum_insured,
+  );
 
   const { updateCartEntry } = useCart();
 
@@ -56,25 +69,20 @@ function SumInsuredOption({ sum_insured, cartEntry, checked }) {
     updateCartEntry(group?.id, { sum_insured });
   };
 
-  const quote =
-    icQuotes &&
-    icQuotes?.data?.data.find(quote =>
-      matchQuotes(quote, { sum_insured, product }, { deductible: false }),
-    );
-
-  if (!isLoading && !quote) return null;
+  if (!sumInsuredLoading && !matchedSumInsuredQuote) return null;
 
   return (
     <OptionCard
       label={numberToDigitWord(sum_insured)}
-      option={quote}
+      option={matchedSumInsuredQuote}
       onChange={handleChange}
       checked={checked}
+      sum_insured={sum_insured}
     >
-      {isLoading ? (
+      {sumInsuredLoading ? (
         <CircleLoader animation="border" />
       ) : (
-        amount(quote.total_premium)
+        amount(matchedSumInsuredQuote?.total_premium)
       )}
     </OptionCard>
   );

@@ -148,7 +148,7 @@ export function CartDetails({ groupCode, ...props }) {
             `}
           >
             <QuickPayAndRenewButton groupCode={groupCode} />
-            {!modifyDetailsNotAllowed && <Button>Modify Details</Button>}
+            {!modifyDetailsNotAllowed && <ModifyDetailsButton />}
           </div>
         ) : (
           <ReviewCartButtonNew groupCode={groupCode} />
@@ -162,13 +162,7 @@ const QuickPayAndRenewButton = ({ groupCode }) => {
   const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
     useAdditionalDiscount(groupCode);
 
-  const { getNextGroupProduct, getCartEntry } = useCart();
-
-  const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
-
-  const url = useUrlQuery();
-
-  const history = useHistory();
+  const { getCartEntry } = useCart();
 
   const { updateCart } = useCart();
 
@@ -180,21 +174,10 @@ const QuickPayAndRenewButton = ({ groupCode }) => {
 
   const [updateCartMutation, { isLoading }] = updateCart(groupCode);
 
-  const { getMembersText } = useMembers();
-
   const handleClick = () => {
     updateCartMutation({ additionalDiscounts, generate_proposal: true }).then(
       resObj => {
-        if (nextGroupProduct) {
-          const enquiryId = url.get("enquiryId");
-          history.push({
-            pathname: `/productdetails/${nextGroupProduct.group.id}`,
-            search: `enquiryId=${enquiryId}`,
-          });
-          return;
-        }
-
-        singlePay(resObj?.data?.proposal_id);
+        singlePay(resObj?.data?.data?.proposal_id);
       },
     );
   };
@@ -202,7 +185,7 @@ const QuickPayAndRenewButton = ({ groupCode }) => {
   return (
     <Button
       onClick={handleClick}
-      loader={!nextGroupProduct && isLoading}
+      loader={isLoading}
       disabled={
         cartEntry.unavailable_message ||
         isLoading ||
@@ -211,24 +194,23 @@ const QuickPayAndRenewButton = ({ groupCode }) => {
         isTotalPremiumLoading
       }
     >
-      {nextGroupProduct ? (
-        <div className="d-flex justify-content-between align-items-center">
-          <div
-            css={`
-              font-size: 0.79rem;
-              text-align: left;
-            `}
-          >
-            <div>Next Step:</div>
-            <div>Plan for {getMembersText(nextGroupProduct.group)}</div>
-          </div>
-          <div>
-            Proceed {isLoading ? <CircleLoader animation="border" /> : null}
-          </div>
-        </div>
-      ) : (
-        "Quick pay & Renew"
-      )}
+      {"Quick pay & Renew"}
+    </Button>
+  );
+};
+
+const ModifyDetailsButton = () => {
+  const history = useHistory();
+
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  return (
+    <Button
+      onClick={() => {
+        history.push(getUrlWithEnquirySearch(`/proposal`));
+      }}
+    >
+      Modify Details
     </Button>
   );
 };
@@ -365,7 +347,7 @@ function DiscountsList({ groupCode, ...props }) {
         <DiscountDetails
           additionalDiscount={additionalDiscount}
           groupCode={groupCode}
-          key={additionalDiscount.alias}
+          key={additionalDiscount?.alias}
         />
       ))}
     </CartSection>
@@ -374,8 +356,6 @@ function DiscountsList({ groupCode, ...props }) {
 
 function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
   const { name } = additionalDiscount;
-  // const { getDiscountAmount } = useAdditionalDiscount(groupCode);
-  // const discountAmount = amount(getDiscountAmount(additionalDiscount));
 
   const { getCartEntry } = useCart();
 
@@ -415,6 +395,7 @@ function RiderDetails({ rider, ...props }) {
 
 function Members({ groupCode, editable = true, ...props }) {
   const { getGroupMembers } = useMembers();
+
   const currentGroupMembers = getGroupMembers(groupCode);
 
   return (

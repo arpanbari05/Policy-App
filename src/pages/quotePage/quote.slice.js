@@ -34,6 +34,8 @@ const quotePageSlice = createSlice({
     quotesToCanvas: [],
     shareType: {},
     quotesOnCompare: false,
+    showEditMembers: false,
+    editStep: 1,
     quotesForCompare: [],
     selectedPlan: {},
     createCartData: {},
@@ -79,6 +81,13 @@ const quotePageSlice = createSlice({
       state.quotesToShare = state.quotesToShare.filter(
         data => data[0]?.product?.id !== action.payload[0]?.product?.id,
       );
+    },
+    setShowEditMembers: (state, action) => {
+      state.showEditMembers = action.payload;
+    },
+    setEditStep: (state, action) => {
+      console.log(action.payload);
+      state.editStep = action.payload;
     },
     replaceShareQuotes: (state, action) => {
       state.quotesToShare = action.payload;
@@ -303,6 +312,8 @@ export const {
   setQuotesToShare,
   removeQuoteFromShare,
   setShareType,
+  setShowEditMembers,
+  setEditStep,
   setQuotesToCanvas,
   replaceShareQuotes,
   saveSelectedPlan,

@@ -20,6 +20,7 @@ import JourneyTypeForm from "./components/JourneyTypeForm";
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
   health: "HEALTH INSURANCE",
+  renew: "RENEW POLICY",
 };
 
 const InputPage = () => {

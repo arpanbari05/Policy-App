@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../components";
 import "styled-components/macro";
 
-export function BackLink({ ...props }) {
+export function BackLink({ goBack = () => {}, ...props }) {
   return (
     <Link
+      onClick={goBack}
       css={`
         color: #000;
         height: 58px;
@@ -42,11 +43,13 @@ export function BackLink({ ...props }) {
 export function InputFormCta({
   disabled,
   backLink,
+  goBack,
   onContinueClick,
   name,
   formNo,
   loader = false,
   loaderPrimaryColor,
+  edit = false,
   ...props
 }) {
   const handleClick = () => onContinueClick && onContinueClick();
@@ -54,14 +57,14 @@ export function InputFormCta({
     <div
       className="d-flex justify-content-between align-items-center"
       css={`
-        padding: 0px 28px;
+        padding: ${edit ? "0" : "0px 28px"};
         @media (max-width: 480px) {
           padding: ${name === "location" ? "0" : "0 17px"};
         }
       `}
       {...props}
     >
-      <BackLink to={backLink} />
+      <BackLink goBack={goBack} to={backLink} />
       <Button
         loaderPrimaryColor={loaderPrimaryColor}
         disabled={disabled}

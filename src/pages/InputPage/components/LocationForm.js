@@ -9,35 +9,47 @@ import {
   useUpdateEnquiry,
   useUrlEnquiry,
 } from "../../../customHooks";
-import { ErrorMessage, Title } from "./FormComponents";
+import { ErrorMessage, SubTitle, Title } from "./FormComponents";
 import { every } from "lodash";
 import { useGetLocationDetailsQuery } from "../../../api/api";
 import "styled-components/macro";
 import { InputFormCta } from ".";
 import styled from "styled-components";
+import { Button } from "../../../components";
+import { useDispatch } from "react-redux";
+import { setEditStep, setShowEditMembers } from "../../quotePage/quote.slice";
 
-function LocationForm() {
+function LocationForm({ edit = false, close = () => {} }) {
+  const { colors } = useTheme();
   const {
     data: { popularcities },
     journeyType,
   } = useFrontendBoot();
-  const { currentForm } = useParams();
-  const groupCode = parseInt(currentForm.split("-")[1]);
+  const { currentForm, groupCode: groupId } = useParams();
   const {
-    groups,
+    groups: allGroups,
     getGroupLocation,
     getNextGroup,
     getPreviousGroup,
     getMembersText,
     getGroupMembers,
+    getGroup,
   } = useMembers();
+  const groupCode = parseInt(currentForm?.split("-")[1] || groupId);
+  const currentGroup = getGroup(groupCode);
+  const groups = allGroups.filter(group => group.type === currentGroup.type);
+  const [currentGroupCode, setCurrentGroupCode] = useState(
+    currentGroup?.type === "all" ? groups[0].id : groupCode,
+  );
 
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
 
   const [error, setError] = useState(null);
 
+  const dispatch = useDispatch();
+
   const getInitialSelectedCity = () => {
-    const location = getGroupLocation(groupCode);
+    const location = getGroupLocation(currentGroupCode);
     return location;
   };
 
@@ -47,11 +59,16 @@ function LocationForm() {
 
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
-  const nextGroup = getNextGroup(groupCode);
+  const nextGroup = getNextGroup(currentGroupCode);
+
+  const previousGroup = getPreviousGroup(currentGroupCode);
+
+  useEffect(() => {
+    setSelectedCity(getInitialSelectedCity);
+    reset();
+  }, [currentGroupCode]);
 
   const getBackLink = () => {
-    const previousGroup = getPreviousGroup(groupCode);
-
     const isSingleMember = !groups.some(group => group.members.length > 1);
 
     if (previousGroup)
@@ -63,13 +80,30 @@ function LocationForm() {
     return getUrlWithEnquirySearch(`/input/plantype`);
   };
 
+  const goBack = () => {
+    if (previousGroup) {
+      setCurrentGroupCode(prev => prev - 1);
+    } else {
+      dispatch(setEditStep(1));
+    }
+  };
+
   const submit = ({ pincode }) => {
-    updateEnquiry({ is_pincode_search: false, pincode, groupCode }).then(
-      res => {
-        const errors = res.some(res => !!res.error);
-        if (errors) return;
+    updateEnquiry({
+      is_pincode_search: false,
+      pincode,
+      groupCode: currentGroupCode,
+    }).then(res => {
+      const errors = res.some(res => !!res.error);
+      if (errors) return;
+      if (edit) {
+        if (nextGroup) setCurrentGroupCode(prev => prev + 1);
+        else {
+          return dispatch(setShowEditMembers(false));
+        }
+      } else {
         let nextPath = getUrlWithEnquirySearch(
-          `/input/location-${groupCode + 1}`,
+          `/input/location-${currentGroupCode + 1}`,
         );
         if (!nextGroup) {
           if (journeyType === "top_up")
@@ -77,13 +111,13 @@ function LocationForm() {
           else nextPath = getUrlWithEnquirySearch(`/input/medicalHistory`);
         }
         history.push(nextPath);
-      },
-    );
+      }
+    });
   };
 
   const handlePopularCityChange = city => {
     setSelectedCity({ ...city, city: city.name });
-    submit(city);
+    !edit && submit(city);
   };
 
   const checkCitySelected = city =>
@@ -107,7 +141,7 @@ function LocationForm() {
 
   const handleLocationChange = location => {
     setSelectedCity(location);
-    submit(location);
+    !edit && submit(location);
   };
 
   const clearCity = () => {
@@ -124,20 +158,47 @@ function LocationForm() {
     setError(null);
   }, [locationSearchQuery, selectedCity]);
 
-  const membersText = getMembersText({ id: parseInt(groupCode) });
+  const membersText = getMembersText({ id: parseInt(currentGroupCode) });
 
-  const groupMembers = getGroupMembers(parseInt(groupCode));
+  const groupMembers = getGroupMembers(parseInt(currentGroupCode));
 
   const isSelf = groupMembers.some(member => member.code === "self");
 
   return (
     <div className="p-3">
-      <Title>
-        Tell Us Where {isSelf ? "You" : `Your ${membersText}`}{" "}
-        {isSelf ? "Live" : "Lives"}?
-      </Title>
-      <CustomProgressBar now={4} total={5} />
-      <div>
+      {edit && (
+        <div className="d-flex justify-content-center align-items-center gap-3">
+          {groups.map(group => (
+            <GroupWrapper
+              active={group.id === currentGroupCode}
+              color={colors.primary_color}
+              onClick={() => setCurrentGroupCode(group.id)}
+            >
+              <Group
+                active={group.id === currentGroupCode}
+                color={colors.primary_color}
+                shade={colors.secondary_shade}
+              >
+                {group?.members?.join(",")}
+              </Group>
+              <span className="pointer"></span>
+            </GroupWrapper>
+          ))}
+        </div>
+      )}
+
+      {!edit && (
+        <Title>
+          Tell Us Where {isSelf ? "You" : `Your ${membersText}`}{" "}
+          {isSelf ? "Live" : "Lives"}?
+        </Title>
+      )}
+      {!edit && <CustomProgressBar now={4} total={5} />}
+      <div
+        css={`
+          margin-top: 1em;
+        `}
+      >
         <TextInput
           clear={clearCity}
           label={"Enter Pincode or City"}
@@ -146,6 +207,9 @@ function LocationForm() {
           value={selectedCity?.city || locationSearchQuery || ""}
           onChange={handleSearchQueryChange}
           maxLength={35}
+          styledCss={
+            edit && `width: 70%; margin-left: auto; margin-right: auto;`
+          }
         />
         {error && <ErrorMessage>{error}</ErrorMessage>}
         {!selectedCity && (
@@ -155,55 +219,97 @@ function LocationForm() {
               onChange={handleLocationChange}
               searchQuery={locationSearchQuery}
               showError={!error}
+              css={edit && `width: 70%; margin-left: auto; margin-right: auto;`}
             />
           </div>
         )}
-      </div>
 
-      <div className="mt-3">
-        <h2
-          css={`
-            font-size: 1rem;
-            font-weight: 900;
-          `}
-        >
-          Popular Cities
-        </h2>
+        {edit && (
+          <div
+            css={`
+              width: 70%;
+              margin-left: auto;
+              margin-right: auto;
+            `}
+            className="mt-3"
+          >
+            <SubTitle>
+              Tell Us Where {isSelf ? "You" : `Your ${membersText}`}{" "}
+              {isSelf ? "Live" : "Lives"}?
+            </SubTitle>
+          </div>
+        )}
+      </div>
+      {!edit && (
+        <div className="mt-3">
+          <h2
+            css={`
+              font-size: 1rem;
+              font-weight: 900;
+            `}
+          >
+            Popular Cities
+          </h2>
+          <div
+            css={`
+              display: flex;
+              flex-wrap: wrap;
+              gap: 0.49em;
+              margin: 10px 0;
+              padding-right: 10px;
+            `}
+          >
+            {popularcities.map(city => (
+              <PopularCity
+                key={city.name}
+                onChange={handlePopularCityChange}
+                checked={checkCitySelected(city)}
+                city={city}
+                selectedCity={selectedCity}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* {false ? (
         <div
           css={`
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.49em;
-            margin: 10px 0;
-            padding-right: 10px;
+            text-align: center;
           `}
         >
-          {popularcities.map(city => (
-            <PopularCity
-              key={city.name}
-              onChange={handlePopularCityChange}
-              checked={checkCitySelected(city)}
-              city={city}
-              selectedCity={selectedCity}
-            />
-          ))}
+          <Button
+            css={`
+              width: 40%;
+              height: 3em;
+              margin: 1em auto 0 auto;
+            `}
+            onClick={() => submit(selectedCity)}
+            disabled={!selectedCity?.pincode}
+            loader={updateEnquiryQuery?.isLoading}
+          >
+            Update
+          </Button>
         </div>
-      </div>
-
+      ) : ( */}
       <div
         css={`
           margin-top: 2.5rem;
+          ${edit ? `width: 70%; margin-left: auto; margin-right: auto;` : ""}
         `}
       >
         <InputFormCta
           disabled={!selectedCity?.pincode}
           loaderPrimaryColor
-          backLink={getBackLink()}
+          backLink={!edit && getBackLink()}
+          goBack={edit && goBack}
           onContinueClick={handleSubmit}
           loader={updateEnquiryQuery.isLoading}
           name="location"
+          edit={edit}
         />
       </div>
+      {/* )} */}
     </div>
   );
 }
@@ -427,5 +533,49 @@ const CityDropDownStyles = styled.ul`
       color: white;
       background-color: ${props => props.colors.secondary_color};
     }
+  }
+`;
+
+const Group = styled.div`
+  width: 130px;
+  white-space: nowrap;
+  text-transform: capitalize;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  font-size: 0.9em;
+  font-weight: bold;
+  position: relative;
+  color: ${props => (props.active ? "#fff" : "black")};
+  padding: 0.75rem 0.8rem;
+  background: ${props => (props.active ? props.color : props.shade)};
+  border-radius: 1000px;
+  text-align: center;
+  transition: width 4s;
+
+  &:hover {
+    min-width: 130px;
+    width: max-content;
+    white-space: wrap;
+    overflow: none;
+    text-overflow: none;
+  }
+`;
+
+const GroupWrapper = styled.div`
+  position: relative;
+  cursor: pointer;
+
+  & span {
+    content: "";
+    width: 15px;
+    height: 10px;
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    -webkit-clip-path: polygon(0 0, 50% 100%, 100% 0);
+    background: ${props => props.color};
+    display: ${props => (props.active ? "block" : "none")};
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 90%);
   }
 `;

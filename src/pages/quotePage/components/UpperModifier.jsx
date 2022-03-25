@@ -15,8 +15,8 @@ function UpperModifier() {
   const { colors } = useTheme();
   const { emailStatus } = useComparePage();
   const { imageSendQuote: sendQuote } = useQuotesPage();
-
-  return (
+  
+    return (
     <div
       css={`
         background-color: ${colors.secondary_shade};
@@ -118,9 +118,17 @@ export function GroupLinks({ ...props }) {
       ))}
       {allMembersGroup &&
         (partioned ? (
-          <ToggleGroupTypeBtn color={colors.primary_color} onClick={onCombinedPlanHandler}>View Plans for All Members</ToggleGroupTypeBtn>
+          <ToggleGroupTypeBtn
+            color={colors.primary_color}
+            onClick={onCombinedPlanHandler}
+          >
+            View Plans for All Members
+          </ToggleGroupTypeBtn>
         ) : (
-          <ToggleGroupTypeBtn color={colors.primary_color} onClick={onPartitionedPlanHandler}>
+          <ToggleGroupTypeBtn
+            color={colors.primary_color}
+            onClick={onPartitionedPlanHandler}
+          >
             View Separate Plans
           </ToggleGroupTypeBtn>
         ))}
@@ -204,7 +212,7 @@ const ToggleGroupTypeBtn = styled.button`
   font-weight: 900;
   font-size: 0.79rem;
   line-height: 1;
-  padding: 1em;
+  // padding: 1em;
   color: ${props => props.color};
   pointer: cursor;
   &:hover {

@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { mobile, small } from "../../../utils/mediaQueries";
+import { mobile, small, tabletAndMobile } from "../../../utils/mediaQueries";
 import styled from "styled-components/macro";
 import {
   useAdditionalDiscount,
@@ -340,6 +340,9 @@ function PolicyDetails({ cartEntry }) {
     <div
       css={`
         font-size: 0.79rem;
+        @media (max-width: 1200px) {
+          display: none !important;
+        }
       `}
       className="d-flex"
     >
