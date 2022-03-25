@@ -75,7 +75,7 @@ const BasicDetailsForm = ({ ...props }) => {
       setEmailErrors,
       setMobileErrors,
     );
-    const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
+    const currentGroup = JSON.parse(localStorage.getItem("groups"))?.find(
       group => group.id,
     );
 
