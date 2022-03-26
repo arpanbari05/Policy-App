@@ -152,7 +152,7 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
 
   const selectedPreExistingFilterObject = findSelectedFilterObject(
     preExistingFilters,
-    preExisting ? preExisting[0].display_name : "", // NAME
+    preExisting ? preExisting[0]?.display_name : "", // NAME
   );
 
   const selectedNoClaimFilterObject = findSelectedFilterObject(

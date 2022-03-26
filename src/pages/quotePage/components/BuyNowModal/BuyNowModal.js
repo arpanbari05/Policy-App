@@ -153,9 +153,9 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
 
   const enquiryId = urlSearchParams.get("enquiryId");
 
-  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-    group => group.id,
-  );
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   if (!members) return <p>No Members found for groupCode {groupCode}</p>;
 
@@ -254,7 +254,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
                 setShowBuyNow(false);
                 history.push({
                   pathname: `/quotes/${groupCode}`,
-                  search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
+                  search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
                 });
                 dispatch(setSelectedGroup(groupCode));
               }}

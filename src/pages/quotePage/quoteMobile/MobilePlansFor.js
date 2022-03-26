@@ -19,9 +19,9 @@ const MobilePlansFor = () => {
 
   const enquiryId = urlQueryStrings.get("enquiryId");
 
-  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-    group => group.id,
-  );
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   return (
     <div
@@ -41,7 +41,7 @@ const MobilePlansFor = () => {
             onClick={() => {
               history.push({
                 pathname: `/quotes/${group}`,
-                search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
+                search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
               });
               dispatch(setSelectedGroup(group));
               // getQuotes(members.filter((m) => m.group === group));

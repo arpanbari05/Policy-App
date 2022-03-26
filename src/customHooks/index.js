@@ -203,7 +203,7 @@ export function useFrontendBoot() {
 
   const { data: enquiryData } = useGetEnquiriesQuery();
 
-  const data = { ...config, ...frontendData };
+  const data = { ...frontendData, ...config };
 
   const tenantName = data?.tenant?.name;
 
@@ -278,7 +278,9 @@ export function useMembers() {
   //   ({ greetingPage }) => greetingPage,
   // );
 
-  const reduxGroup = JSON.parse(localStorage.getItem("groups"));
+  const reduxGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups"));
   let {
     data: { members },
   } = useFrontendBoot();
@@ -631,9 +633,9 @@ export function useUpdateMembers() {
       ...data,
     };
 
-    const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-      group => group.id,
-    );
+    const currentGroup =
+      localStorage.getItem("groups") &&
+      JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
     return createEnquiry({ ...updateData, updateCache: false }).then(
       response => {
@@ -1888,6 +1890,7 @@ export const useRevisedPremiumModal = () => {
 
     // if (+prevTotalPremium !== +updatedTotalPremium) {
     if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
+
       revisedPremiumPopupToggle.on();
     }
   }, [

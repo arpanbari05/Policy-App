@@ -69,9 +69,9 @@ const ComparePopup = ({ groupCode }) => {
     setShow(false);
   }, [groupCode]);
 
-  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-    group => group.id,
-  );
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   return (
     <div
@@ -161,8 +161,8 @@ const ComparePopup = ({ groupCode }) => {
                 history.push({
                   pathname: `/compare/${groupCode}`,
                   search: `enquiryId=${ls.get("enquiryId")}&pincode=${
-                    currentGroup.pincode
-                  }&city=${currentGroup.city}`,
+                    currentGroup?.pincode
+                  }&city=${currentGroup?.city}`,
                 });
               }}
               style={{

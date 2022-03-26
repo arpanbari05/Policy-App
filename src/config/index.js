@@ -46,14 +46,14 @@ const config = {
     { code: "15000-20000", display_name: "\u20b915,000 - \u20b920,000" },
     { code: ">20000", display_name: "> \u20b920,000" },
   ],
-  covers: [
-    { code: "100000-300000", display_name: "1 to 3 Lacs" },
-    { code: "300000-500000", display_name: "3 to 5 Lacs" },
-    { code: "500000-1000000", display_name: "5 to 10 Lacs" },
-    { code: "1000000-1500000", display_name: "10 to 15 Lacs" },
-    { code: "1500000-2500000", display_name: "15 to 25 Lacs" },
-    { code: "2500001-100000000", display_name: "More than 25 Lacs" },
-  ],
+  // covers: [
+  //   { code: "100000-300000", display_name: "1 to 3 Lacs" },
+  //   { code: "300000-500000", display_name: "3 to 5 Lacs" },
+  //   { code: "500000-1000000", display_name: "5 to 10 Lacs" },
+  //   { code: "1000000-1500000", display_name: "10 to 15 Lacs" },
+  //   { code: "1500000-2500000", display_name: "15 to 25 Lacs" },
+  //   { code: "2500001-100000000", display_name: "More than 25 Lacs" },
+  // ],
   morefilters: [
     {
       group_name: "Popular Filters",

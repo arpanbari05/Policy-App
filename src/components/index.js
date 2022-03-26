@@ -393,9 +393,9 @@ export function useGotoProductDetailsPage() {
 
     const firstGroupWithQuote = Math.min(...groupCodes);
 
-    const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-      group => group.id,
-    );
+    const currentGroup =
+      localStorage.getItem("groups") &&
+      JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
     history.push({
       pathname: `/productdetails/${firstGroupWithQuote}`,
@@ -428,9 +428,9 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
   const { enquiryId } = useUrlEnquiry();
   const { cartEntries } = useCart();
 
-  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-    group => group.id,
-  );
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   function gotoProductPage() {
     const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);

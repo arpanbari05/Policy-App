@@ -99,9 +99,9 @@ const ThankYouPage = () => {
     }
   }, [pathname]);
 
-  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-    group => group.id,
-  );
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   const Disclaimer = () => {
     if (
@@ -470,8 +470,8 @@ const ThankYouPage = () => {
                           history.push({
                             pathname: "/quotes",
                             search: `enquiryId=${ls.get("enquiryId")}&pincode=${
-                              currentGroup.pincode
-                            }&city=${currentGroup.city}`,
+                              currentGroup?.pincode
+                            }&city=${currentGroup?.city}`,
                           });
                         }}
                       >
@@ -493,8 +493,8 @@ const ThankYouPage = () => {
                           history.push({
                             pathname: "/proposal",
                             search: `enquiryId=${ls.get("enquiryId")}&pincode=${
-                              currentGroup.pincode
-                            }&city=${currentGroup.city}`,
+                              currentGroup?.pincode
+                            }&city=${currentGroup?.city}`,
                           });
                         }}
                       >
@@ -571,8 +571,8 @@ const ThankYouPage = () => {
                     history.push({
                       pathname: "/proposal",
                       search: `enquiryId=${ls.get("enquiryId")}&pincode=${
-                        currentGroup.pincode
-                      }&city=${currentGroup.city}`,
+                        currentGroup?.pincode
+                      }&city=${currentGroup?.city}`,
                     });
                   }}
                 >

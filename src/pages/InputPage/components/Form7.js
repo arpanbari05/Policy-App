@@ -25,9 +25,9 @@ const Form7 = ({ handleChange, currentForm }) => {
     display: "Select Your Deductible",
     code: 0,
   });
-  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-    group => group.id,
-  );
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   const [showError, setShowError] = useState(false);
   const ls = new SecureLS();
@@ -35,8 +35,8 @@ const Form7 = ({ handleChange, currentForm }) => {
     history.push({
       pathname: `/quotes/${groupCode}`,
       search: `enquiryId=${ls.get("enquiryId")}&pincode=${
-        currentGroup.pincode
-      }&city=${currentGroup.city}`,
+        currentGroup?.pincode
+      }&city=${currentGroup?.city}`,
     });
   };
   const handleSubmit = () => {

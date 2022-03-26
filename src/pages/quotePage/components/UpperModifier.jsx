@@ -82,14 +82,14 @@ export function GroupLinks({ ...props }) {
     groupsToShow = [allMembersGroup];
   }
 
-  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-    group => group.id,
-  );
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   const onCombinedPlanHandler = () => {
     history.push({
       pathname: `/quotes/${allMembersGroup?.id}`,
-      search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
+      search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
     });
     setPartioned(false);
   };
@@ -97,7 +97,7 @@ export function GroupLinks({ ...props }) {
   const onPartitionedPlanHandler = () => {
     history.push({
       pathname: `/quotes/${groups[0].id}`,
-      search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
+      search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
     });
     setPartioned(true);
   };

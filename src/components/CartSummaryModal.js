@@ -235,9 +235,9 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
     cartEntry = data.data.find(cartEntry => cartEntry?.group?.id === group?.id);
   }
 
-  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-    group => group.id,
-  );
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   function handleAddPlanClick() {
     closeModal && closeModal();

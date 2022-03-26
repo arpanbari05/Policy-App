@@ -189,7 +189,13 @@ function ClearFilters(props) {
 function AssistanceCard(props) {
   const [showTalk, setShowTalk] = useState(false);
   const { colors } = useTheme();
-  const { data } = useFrontendBoot();
+  const {
+    data: {
+      settings: { talk_to_us_info },
+    },
+    tenantAlias,
+  } = useFrontendBoot();
+  console.log({ talk_to_us_info });
   return (
     <div
       {...props}
@@ -202,29 +208,34 @@ function AssistanceCard(props) {
         css={`
           margin-bottom: 15px;
         `}
-        dangerouslySetInnerHTML={{ __html: data?.settings?.talk_to_us_info }}
+        dangerouslySetInnerHTML={{ __html: talk_to_us_info }}
       ></div>
-      {/* <h1
-        css={`
-          font-size: 1rem;
-          font-weight: 900;
-        `}
-      >
-        {tenantAlias === "renew_buy"
-          ? "Need assistance with health insurance plans?"
-          : "Health Insurance Assistance"}
-      </h1>
-      <p
-        className="mt-3"
-        css={`
-          font-size: 0.89rem;
-          color: ${colors.font.one};
-        `}
-      >
-        {tenantAlias === "renew_buy"
-          ? "Health Insurance plans by insurers have various offerings such as list of hospitals covered, co-payment clauses, family health insurance plans, no claim bonuses etc. In case of any support or assistance, connect with a RenewBuy Health Expert and solve all your and your customers queries."
-          : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu nisl a lorem auctor ultrices auctor vel elit. Aliquam quis consequat tellus. Aliquam pellentesque ligula massa, aliquet fermentum nisl varius ac."}
-      </p> */}
+      {!talk_to_us_info && (
+        <>
+          {" "}
+          <h1
+            css={`
+              font-size: 1rem;
+              font-weight: 900;
+            `}
+          >
+            {tenantAlias === "renew_buy"
+              ? "Need assistance with health insurance plans?"
+              : "Health Insurance Assistance"}
+          </h1>
+          <p
+            className="mt-3"
+            css={`
+              font-size: 0.89rem;
+              color: ${colors.font.one};
+            `}
+          >
+            {tenantAlias === "renew_buy"
+              ? "Health Insurance plans by insurers have various offerings such as list of hospitals covered, co-payment clauses, family health insurance plans, no claim bonuses etc. In case of any support or assistance, connect with a RenewBuy Health Expert and solve all your and your customers queries."
+              : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu nisl a lorem auctor ultrices auctor vel elit. Aliquam quis consequat tellus. Aliquam pellentesque ligula massa, aliquet fermentum nisl varius ac."}
+          </p>
+        </>
+      )}
       <button
         className="px-3 py-2 rounded"
         css={`

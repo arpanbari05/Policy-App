@@ -39,9 +39,9 @@ const NavDropdown = ({ children, customClassName }) => {
     ({ frontendBoot }) => frontendBoot?.frontendData?.data,
   );
 
-  const currentGroup = JSON.parse(localStorage.getItem("groups")).find(
-    group => group.id,
-  );
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   return (
     <>
@@ -283,7 +283,7 @@ const NavDropdown = ({ children, customClassName }) => {
                                     pathname: "/quotes",
                                     search: `enquiryId=${ls.get(
                                       "enquiryId",
-                                    )}&pincode=${currentGroup.pincode}&city=${
+                                    )}&pincode=${currentGroup?.pincode}&city=${
                                       currentGroup.city
                                     }`,
                                   })
