@@ -209,18 +209,23 @@ function AssistanceCard(props) {
           margin-bottom: 15px;
 
           & > p,
-          & > p > span {
+          & > *,
+          & > p > font,
+          & > p > span,
+          & > p > font > span {
             font-size: 0.89rem !important;
             color: ${colors.font.one} !important;
-            margin-top: 1rem !important;
-            font-family: Inter-Regular !important;
-            line-height: 1.5;
+            line-height: 1.5 !important;
+            font-family: inherit !important;
           }
-          & > p:first-child,
-          & > p:first-child > span {
+          
+          & > p:first-child > *,
+          & > p:first-child > font,
+          & > p:first-child > span,
+          & > p:first-child > font > span {
             font-size: 1rem !important;
-            font-weight: 900;
-            font-family: Inter-Regular !important;
+            font-weight: 900 !important;
+            font-family: inherit !important;
           }
         `}
         dangerouslySetInnerHTML={{ __html: talk_to_us_info }}
