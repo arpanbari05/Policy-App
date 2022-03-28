@@ -9,8 +9,10 @@ import {
   setShowBMI,
   setShowNSTP,
   setActiveIndex,
+  getProposalData,
   setFailedBmiData,
 } from "./ProposalSections.slice";
+
 import { useRevisedPremiumModal } from "../../../customHooks";
 
 const useProposalSections = (
@@ -25,6 +27,8 @@ const useProposalSections = (
   const [isValid, setValid] = useState(
     partialLength ? Array(partialLength) : undefined,
   );
+
+  const schema = useSelector(({schema}) => schema.currentSchema)
 
   const [customValid, setCustomValid] = useState();
   const revisedPremiumPopupUtilityObject =
@@ -45,39 +49,47 @@ const useProposalSections = (
 // to update self details without opening form
   // const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
 
-  // const hasAnyChangeInObj = (newVal,oldVal) => {
-  //   let newValKeys = Object.keys(newVal);
-  //   let oldValKeys = Object.keys(oldVal);
-  //   // if(newValKeys.length !== oldValKeys.length) return true  
-  //   console.log("wfgbkjwb",newVal,oldVal)
-
-  //   return newValKeys.some(newValKey => newVal[newValKey]!==oldVal[newValKey])
-  // }
+  
 
   // useEffect(() => {
-  //   console.log("fhfsjsfssf", proposalData);
+    
   //   if (
+  //     submit === "SUBMIT" &&
   //     proposalData["Insured Details"] &&
   //     proposalData["Insured Details"].self
   //   ) {
-  //     let tempObj = {...proposalData["Insured Details"].self};
-  //     let keysOfInsuredSelf = Object.keys(proposalData["Insured Details"].self)
-  //     keysOfInsuredSelf.forEach(key => {
-  //       if(proposalData["Proposer Details"][key]) tempObj[key] = proposalData["Proposer Details"][key]
-  //     });
-
-  //     if(hasAnyChangeInObj(tempObj,proposalData["Insured Details"].self)){
-  //       dispatch(
-  //         saveProposalData({ [name]: {...proposalData["Insured Details"],self:tempObj} }, () =>
-  //           dispatch(setActiveIndex(false)),
-  //         ),
-  //       );
-  //       console.log("vbksdvbkjd",tempObj,proposalData)
-  //     }
+      
+  //     dispatch(getProposalData(() => {
+  //       const hasAnyChangeInObj = (newVal,oldVal) => {
+  //         let newValKeys = Object.keys(newVal);
+  //         let oldValKeys = Object.keys(oldVal);
+  //         // if(newValKeys.length !== oldValKeys.length) return true  
+  //         console.log("wfgbkjwb",newVal,oldVal,newValKeys.some(newValKey => newVal[newValKey]!==oldVal[newValKey]))
+      
+  //         return newValKeys.some(newValKey => newVal[newValKey]!==oldVal[newValKey])
+  //       }
+  //       let tempObj = {...proposalData["Insured Details"].self};
+  //       let keysOfInsuredSelf = schema["Insured Details"].self.map(obj => obj.name)
+  //       keysOfInsuredSelf.forEach(key => {
+  //         if(proposalData["Proposer Details"][key]) tempObj[key] = proposalData["Proposer Details"][key]
+  //       });
+  //       console.log("fhfsjsfssf", tempObj,keysOfInsuredSelf,proposalData["Insured Details"].self,proposalData["Proposer Details"]);
+  
+  //       if(hasAnyChangeInObj(tempObj,proposalData["Insured Details"].self)){
+  
+  //         dispatch(
+  //           saveProposalData({ "Insured Details": {...proposalData["Insured Details"],self:tempObj} }, () =>
+  //             dispatch(setActiveIndex(false)),
+  //           ),
+  //         );
+  //         console.log("vbksdvbkjd",tempObj,proposalData)
+  //       }
+  //     }));
+     
 
      
   //   }
-  // }, [proposalData["Proposer Details"]]);
+  // }, [submit]);
 
   useEffect(() => {
     console.log("wfbckha", { isValid, submit, name });

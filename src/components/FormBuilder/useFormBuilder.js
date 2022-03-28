@@ -11,6 +11,7 @@ const useFormBuilder = (
   insuredDetails,
   canProceed,
   yesSelected,
+  proposalDetails
 ) => {
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
@@ -30,6 +31,29 @@ const useFormBuilder = (
       }
     }
   };
+
+  const checkReadOnly = (name) => {
+    let nomineeRelation = values.nominee_relation;
+    let nameWithOutNominee = name.slice(
+            name.indexOf("_") + 1,
+            name.length,
+          ) === "contact"?"mobile":name.slice(
+            name.indexOf("_") + 1,
+            name.length,
+          );
+    let dataTocheck = {}
+    if(insuredDetails){
+      if (insuredDetails[nomineeRelation] && nomineeRelation === "self") {
+        dataTocheck = {
+          ...proposalDetails,
+          ...(insuredDetails["self"]),
+        };
+      } else if (insuredDetails[nomineeRelation]) {
+        dataTocheck = insuredDetails[nomineeRelation]
+      }
+    }
+    return  dataTocheck[nameWithOutNominee]?true:false
+  }
 
   const updateValues = (multipleValues = {}) => {
     setValues({ ...values, ...multipleValues });
@@ -226,6 +250,7 @@ const useFormBuilder = (
     insertValue,
     setErrors,
     updateValues,
+    checkReadOnly,
   };
 };
 export default useFormBuilder;
