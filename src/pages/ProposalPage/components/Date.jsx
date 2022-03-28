@@ -41,7 +41,7 @@ const DateComp = ({
 
   const getMoment = val => {
     return val.length === 4
-      ? moment(val, "YYYY")?.toDate()
+      ? moment(val, "YYYY")?.year()
       : moment(val, "DD-MM-YYYY")?.toDate();
   };
 
@@ -60,10 +60,12 @@ const DateComp = ({
           id="date-picker"
           ref={startRef}
           onKeyDown={onKeyDownHandler}
+          
           showYearDropdown
           yearDropdownItemNumber={100}
           scrollableYearDropdown={true}
           dateFormat={formatFordatePicker(value)}
+          onClick={(e) => console.log("sfbhsfkjv",e)}
           selected={
             value && value !== "Invalid date" && value !== "value"
               ? value.includes("NaN")
