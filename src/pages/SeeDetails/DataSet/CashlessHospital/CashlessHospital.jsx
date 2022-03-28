@@ -7,16 +7,7 @@ import "styled-components/macro";
 const CashlessHospital = ({ ActiveMainTab, hospitals, company }) => {
   const { loading } = useSelector(state => state.seeDetails);
   const [searchText, setSearchText] = useState("");
-  const [searchByNameKeys, setSearchByNameKeys] = useState([]);
-  const [searchByPincodeKeys, setSearchByPincodeKeys] = useState([]);
-  const [foundHospital, setFoundHospital] = useState(hospitals.hospitals);
-
-  // useEffect(() => {
-  //   if (hospitals.searchByName && hospitals.searchByPincode) {
-  //     setSearchByNameKeys(Object.keys(hospitals.searchByName));
-  //     setSearchByPincodeKeys(Object.keys(hospitals.searchByPincode));
-  //   }
-  // }, [hospitals]);
+  const [foundHospital, setFoundHospital] = useState(hospitals?.hospitals);
 
   useEffect(() => {
     setFoundHospital(hospitals.hospitals);
@@ -24,46 +15,16 @@ const CashlessHospital = ({ ActiveMainTab, hospitals, company }) => {
 
   useEffect(() => {
     if (searchText.length > 0) {
-      const tempArray = hospitals.hospitals.filter(data =>
-        data.name.toLowerCase().includes(searchText.toLowerCase()),
+      const tempArray = hospitals?.hospitals?.filter(data =>
+        data?.name?.toLowerCase()?.includes(searchText?.toLowerCase()),
       );
 
       setFoundHospital(tempArray);
     } else if (searchText.length < 1) {
-      setFoundHospital(hospitals.hospitals);
+      setFoundHospital(hospitals?.hospitals);
     }
-
-    // if (
-    //   searchText.searchValue &&
-    //   hospitals.searchByName &&
-    //   hospitals.searchByPincode
-    // ) {
-    //   if (
-    //     searchText.searchValue === searchText.pincode &&
-    //     searchText.searchValue.length === 6
-    //   ) {
-    //     let matches = [];
-    //     searchByPincodeKeys.forEach(item => {
-    //       if (item.includes(searchText.pincode))
-    //         matches.push(...hospitals.searchByPincode[item]);
-    //     });
-
-    //     setFoundHospital(matches);
-    //   } else if (
-    //     searchText.searchValue === searchText.name &&
-    //     searchText.searchValue.length >= 4
-    //   ) {
-    //     let matches = [];
-    //     searchByNameKeys.forEach(item => {
-    //       let re = new RegExp(searchText.name, "i");
-    //       if (item.match(re)) matches.push(...hospitals.searchByName[item]);
-    //     });
-
-    //     setFoundHospital(matches);
-    //   }
-    // }
   }, [searchText]);
-  console.log("hero", company);
+
   return (
     <div
       className={`z-content ${ActiveMainTab && "z-active"}`}
@@ -94,14 +55,13 @@ const CashlessHospital = ({ ActiveMainTab, hospitals, company }) => {
                   Hospitals Near You
                 </h2>
               </div>
-              {/* <p className='color_gray_sub mb-15 title_h4_title'>
-          Loreum ipsum site visit
-        </p> */}
+
               <div className="row hospital_new_css_r">
-                {hospitals.displayHospitals &&
-                  hospitals.displayHospitals.map(item => {
+                {hospitals?.displayHospitals &&
+                  hospitals?.displayHospitals.map((item, index) => {
                     return (
                       <div
+                        key={index}
                         className="col-md-4"
                         css={`
                           & ul {
@@ -132,7 +92,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals, company }) => {
                                 font-weight: 900;
                               `}
                             >
-                              {item[0].name}
+                              {item[0]?.name}
                             </h4>
                             <h6
                               className="rn-title"
@@ -145,7 +105,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals, company }) => {
                                 color: #253858;
                               `}
                             >
-                              {item[0].address}
+                              {item[0]?.address}
                             </h6>
                             <div
                               className="date"
@@ -153,7 +113,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals, company }) => {
                                 color: #253858;
                               `}
                             >
-                              Phone number: {item[0].phone}
+                              Phone number: {item[0]?.phone}
                             </div>
                           </li>
                           <li>
@@ -165,7 +125,7 @@ const CashlessHospital = ({ ActiveMainTab, hospitals, company }) => {
                                 font-weight: 900;
                               `}
                             >
-                              {item[1].name}
+                              {item[1]?.name}
                             </h4>
                             <h6
                               css={`
