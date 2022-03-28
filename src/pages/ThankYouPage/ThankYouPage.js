@@ -21,6 +21,7 @@ import Card from "./components/Card";
 import styled from "styled-components";
 import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
+import { small } from "../../utils/mediaQueries";
 //import CardMobile from "./components/CardMobile";
 
 const ThankYouPage = () => {
@@ -274,6 +275,11 @@ const ThankYouPage = () => {
                     borderRadius: "55px",
                     // letterSpacing: "1px"
                   }}
+                  css={`
+                    ${small} {
+                      font-size: 11px !important;
+                    }
+                  `}
                 >
                   <div
                     style={{
@@ -298,7 +304,7 @@ const ThankYouPage = () => {
                   </div>
                   Your Payment for{" "}
                   <i className="fa fa-inr" style={{ margin: "0px 2px" }} />
-                  {cart.totalPremium.toLocaleString("en-In")} was successful
+                  {"000000"} was successful
                 </div>
                 <div>
                   <div
