@@ -584,7 +584,7 @@ function ShareStep2({
       return setErrorMsg("Enter valid email.");
     } else setErrorMsg("");
 
-    if (!errorMsg && email) {
+    if (!errorMsg) {
       setIsSending(data.mode[0]);
       const response = await shareViaEmailApi(data);
       let successMsg;
@@ -641,7 +641,7 @@ function ShareStep2({
               quote_img: imageSend,
             });
           }}
-          loader={isSending && !emailStatus?.message}
+          // loader={isSending && !emailStatus?.message}
         />
       </ShareOption>
 
@@ -686,23 +686,24 @@ function ShareStep2({
           <input
             type="number"
             placeholder="Mobile no."
-            // onChange={e => handleNumberCheck(e, setSmsNo)}
-            onClick={e => {
-              setEmailStatus({ status: 0, message: null });
-              Number(smsNo.length) === 10 &&
-                handleShare(e, {
-                  mode: ["SMS"],
-                  stage,
-                  email: "",
-                  whatsapp: "",
-                  sms: smsNo,
-                });
-            }}
             value={smsNo}
+            onChange={e => handleNumberCheck(e, setSmsNo)}
           />
         </div>
 
-        <ShareCTA />
+        <ShareCTA
+          onClick={e => {
+            setEmailStatus({ status: 0, message: null });
+            Number(smsNo.length) === 10 &&
+              handleShare(e, {
+                mode: ["SMS"],
+                stage,
+                email: "",
+                whatsapp: "",
+                sms: smsNo,
+              });
+          }}
+        />
       </ShareOption>
 
       <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>
