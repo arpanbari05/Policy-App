@@ -286,11 +286,15 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
     cartEntry = data.data.find(cartEntry => cartEntry.group.id === group.id);
   }
 
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+
   function handleAddPlanClick() {
     closeModal && closeModal();
     history.push({
       pathname: `/quotes/${group.id}`,
-      search: `enquiryId=${enquiryId}`,
+      search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
     });
   }
 

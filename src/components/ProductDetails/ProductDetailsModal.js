@@ -351,12 +351,12 @@ function RenderAboutCompany({ quote, ...props }) {
 }
 
 function CashlessHospitals({ quote, ...props }) {
-  const { colors } = useTheme();
   const {
     product: { company },
   } = quote;
+
   const { isLoading, isUninitialized, isError, data } =
-    useGetNetworkHospitalsQuery(company.alias);
+    useGetNetworkHospitalsQuery(company?.alias);
 
   const [search, setSearch] = useState("");
 
@@ -367,14 +367,14 @@ function CashlessHospitals({ quote, ...props }) {
       </DetailsSectionWrap>
     );
 
-  if (isError) return <p>Cannot get hosiptals.</p>;
+  if (isError) return <p>Cannot get hospitals.</p>;
 
   const { data: networkHospitals } = data;
 
   const nearNetworkHospitals = networkHospitals.slice(0, 6);
 
   const filteredHospitals = networkHospitals.filter(hospital =>
-    hospital.name.toLowerCase().startsWith(search.toLowerCase()),
+    hospital?.name?.toLowerCase().startsWith(search.toLowerCase()),
   );
 
   const handleSearchChange = evt => setSearch(evt.target.value);
@@ -403,15 +403,15 @@ function CashlessHospitals({ quote, ...props }) {
           gap: 1.2em;
         `}
       >
-        {nearNetworkHospitals.map(networkHospital => (
-          <NetworkHospitalCard
-            networkHospital={networkHospital}
-            key={networkHospital.name + networkHospital.pincode}
-          />
+        {nearNetworkHospitals?.map((networkHospital, index) => (
+          <NetworkHospitalCard networkHospital={networkHospital} key={index} />
         ))}
       </div>
       <br />
-      <SearchBarWithCityDD searchText={search} setSearchText={setSearch} />
+      <SearchBarWithCityDD
+        searchText={search}
+        setSearchText={handleSearchChange}
+      />
 
       <table className="table margin_p_r_table table_pro_search mt-4">
         <tbody
@@ -438,11 +438,8 @@ function CashlessHospitals({ quote, ...props }) {
               <th>Phone Number</th>
             )}
           </tr>
-          {filteredHospitals.map(networkHospital => (
-            <NetworkHospitalRow
-              networkHospital={networkHospital}
-              key={networkHospital.name + networkHospital.pincode}
-            />
+          {filteredHospitals?.map((networkHospital, index) => (
+            <NetworkHospitalRow networkHospital={networkHospital} key={index} />
           ))}
         </tbody>
       </table>
@@ -469,7 +466,7 @@ function NetworkHospitalCard({ networkHospital, ...props }) {
           margin-bottom: 8px;
         `}
       >
-        {networkHospital.name}
+        {networkHospital?.name}
       </h2>
       <p
         css={`
@@ -477,14 +474,14 @@ function NetworkHospitalCard({ networkHospital, ...props }) {
           margin-bottom: 8px;
         `}
       >
-        {networkHospital.address}
+        {networkHospital?.address}
       </p>
       <p
         css={`
           margin-bottom: unset;
         `}
       >
-        Phone number: {networkHospital.phone}
+        Phone number: {networkHospital?.phone}
       </p>
     </div>
   );
@@ -493,9 +490,9 @@ function NetworkHospitalCard({ networkHospital, ...props }) {
 function NetworkHospitalRow({ networkHospital, ...props }) {
   return (
     <tr {...props}>
-      <td>{networkHospital.name}</td>
-      <td>{networkHospital.address}</td>
-      <td>{networkHospital.phone}</td>
+      <td>{networkHospital?.name}</td>
+      <td>{networkHospital?.address}</td>
+      <td>{networkHospital?.phone}</td>
     </tr>
   );
 }

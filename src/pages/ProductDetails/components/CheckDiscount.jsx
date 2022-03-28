@@ -82,7 +82,6 @@ function TenureDiscounts({ groupCode, cartEntry, ...props }) {
           }
         `}
       >
-        {console.log(discounts)}
         {discounts?.map(discount => (
           <TenureDiscount
             discount={discount}
@@ -322,6 +321,12 @@ function AdditionalDiscount({
   const handleApplyClick = () => {
     onApplyClick && onApplyClick(additionalDiscount);
   };
+
+  const { fixed_discount_value } = additionalDiscount;
+
+  useEffect(() => {
+    fixed_discount_value && handleApplyClick();
+  }, [fixed_discount_value]); //TODO : a flag wanted from backend that mention the discount to be auto-applied.
 
   return (
     <div

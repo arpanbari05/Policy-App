@@ -15,7 +15,6 @@ import { useGetLocationDetailsQuery } from "../../../api/api";
 import "styled-components/macro";
 import { InputFormCta } from ".";
 import styled from "styled-components";
-import { Button } from "../../../components";
 import { useDispatch } from "react-redux";
 import { setEditStep, setShowEditMembers } from "../../quotePage/quote.slice";
 
@@ -38,8 +37,12 @@ function LocationForm({ edit = false, close = () => {} }) {
   const groupCode = parseInt(currentForm?.split("-")[1] || groupId);
   const currentGroup = getGroup(groupCode);
   const groups = allGroups.filter(group => group.type === currentGroup.type);
+  const groupWithoutLocation = groups.find(group => !group.pincode);
+  console.log(groupWithoutLocation);
   const [currentGroupCode, setCurrentGroupCode] = useState(
-    currentGroup?.type === "all" ? groups[0].id : groupCode,
+    currentGroup?.type === "all"
+      ? groups[0].id
+      : groupWithoutLocation?.id || groupCode,
   );
 
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
@@ -97,9 +100,18 @@ function LocationForm({ edit = false, close = () => {} }) {
       const errors = res.some(res => !!res.error);
       if (errors) return;
       if (edit) {
+        // checking if all groups have pincode, if so close modal
+        // if (!res?.data?.groups?.find(group => !group.pincode))
+        //   return dispatch(setShowEditMembers(false));
+
+        // checking if next group exist
         if (nextGroup) setCurrentGroupCode(prev => prev + 1);
         else {
-          return dispatch(setShowEditMembers(false));
+          if (groupWithoutLocation) {
+            setCurrentGroupCode(groupWithoutLocation.id);
+          } else {
+            return dispatch(setShowEditMembers(false));
+          }
         }
       } else {
         let nextPath = getUrlWithEnquirySearch(
@@ -154,10 +166,6 @@ function LocationForm({ edit = false, close = () => {} }) {
     setSelectedCity(null);
   };
 
-  useEffect(() => {
-    setError(null);
-  }, [locationSearchQuery, selectedCity]);
-
   const membersText = getMembersText({ id: parseInt(currentGroupCode) });
 
   const groupMembers = getGroupMembers(parseInt(currentGroupCode));
@@ -167,24 +175,57 @@ function LocationForm({ edit = false, close = () => {} }) {
   return (
     <div className="p-3">
       {edit && (
-        <div className="d-flex justify-content-center align-items-center gap-3">
-          {groups.map(group => (
-            <GroupWrapper
-              active={group.id === currentGroupCode}
-              color={colors.primary_color}
-              onClick={() => setCurrentGroupCode(group.id)}
+        <>
+          {getGroup(currentGroupCode).pincode && (
+            <div
+              css={`
+                text-align: center;
+                margin-bottom: 2em;
+                color: ${colors.secondary_color};
+
+                @media (max-width: 768px) {
+                  margin-bottom: 1em;
+                }
+              `}
             >
-              <Group
+              <SubTitle>Location already exist. Do you want to edit?</SubTitle>
+            </div>
+          )}
+          <div
+            css={`
+              @media (max-width: 768px) {
+                margin: 0 auto;
+                overflow: auto;
+                height: 80px;
+                text-align: center;
+              }
+
+              &::-webkit-scrollbar {
+                display: none;
+              }
+            `}
+            className="d-flex align-items-center gap-3"
+          >
+            {groups.map(group => (
+              <GroupWrapper
                 active={group.id === currentGroupCode}
                 color={colors.primary_color}
-                shade={colors.secondary_shade}
+                onClick={() => setCurrentGroupCode(group.id)}
               >
-                {group?.members?.join(",")}
-              </Group>
-              <span className="pointer"></span>
-            </GroupWrapper>
-          ))}
-        </div>
+                <Group
+                  active={group.id === currentGroupCode}
+                  color={colors.primary_color}
+                  shade={colors.secondary_shade}
+                >
+                  {group?.members
+                    ?.map(memberText => memberText.split("_").join("-"))
+                    .join(",")}
+                </Group>
+                <span className="pointer"></span>
+              </GroupWrapper>
+            ))}
+          </div>
+        </>
       )}
 
       {!edit && (
@@ -197,6 +238,7 @@ function LocationForm({ edit = false, close = () => {} }) {
       <div
         css={`
           margin-top: 1em;
+          position: relative;
         `}
       >
         <TextInput
@@ -208,18 +250,31 @@ function LocationForm({ edit = false, close = () => {} }) {
           onChange={handleSearchQueryChange}
           maxLength={35}
           styledCss={
-            edit && `width: 70%; margin-left: auto; margin-right: auto;`
+            edit &&
+            `width: 70%; margin-left: auto; margin-right: auto; @media(max-width: 768px) {width: 100%;}`
           }
         />
-        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {error && (
+          <div css={edit && `width: 70%; margin: 3px auto;`}>
+            <ErrorMessage>{error}</ErrorMessage>
+          </div>
+        )}
         {!selectedCity && (
-          <div>
+          <div
+            css={`
+              ${edit && "position: absolute; width: 100%;"}
+            `}
+          >
             <LocationOptions
               selected={selectedCity}
               onChange={handleLocationChange}
               searchQuery={locationSearchQuery}
               showError={!error}
-              css={edit && `width: 70%; margin-left: auto; margin-right: auto;`}
+              setError={setError}
+              css={
+                edit &&
+                `width: 70%; margin-left: auto; margin-right: auto; @media(max-width: 768px) {width: 100%;}`
+              }
             />
           </div>
         )}
@@ -230,6 +285,9 @@ function LocationForm({ edit = false, close = () => {} }) {
               width: 70%;
               margin-left: auto;
               margin-right: auto;
+              @media (max-width: 768px) {
+                width: 100%;
+              }
             `}
             className="mt-3"
           >
@@ -295,7 +353,9 @@ function LocationForm({ edit = false, close = () => {} }) {
       <div
         css={`
           margin-top: 2.5rem;
-          ${edit ? `width: 70%; margin-left: auto; margin-right: auto;` : ""}
+          ${edit
+            ? `width: 70%; margin-left: auto; margin-right: auto; @media(max-width: 768px) {width: 100%;}`
+            : ""}
         `}
       >
         <InputFormCta
@@ -439,6 +499,8 @@ function LocationOptions({
   selected,
   onChange,
   showError = true,
+  setError = () => {},
+  css = "",
   ...props
 }) {
   const [mouseEntered, setMouseEntered] = useState(false);
@@ -462,8 +524,11 @@ function LocationOptions({
 
   if (isFetching) return <p>...</p>;
 
-  if (showError && data && !data.length)
-    return <ErrorMessage>Please enter a valid Pincode or City</ErrorMessage>;
+  if (showError && data && !data.length) {
+    const errorMsg = "Please enter a valid Pincode or City";
+    setError(errorMsg);
+    return <ErrorMessage>{errorMsg}</ErrorMessage>;
+  }
 
   const handleChange = location => {
     onChange && onChange(location);
@@ -564,6 +629,13 @@ const Group = styled.div`
 const GroupWrapper = styled.div`
   position: relative;
   cursor: pointer;
+
+  &:first-child {
+    margin-left: auto;
+  }
+  &:last-child {
+    margin-right: auto;
+  }
 
   & span {
     content: "";

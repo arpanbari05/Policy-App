@@ -31,8 +31,9 @@ const useProposalSections = (
   const schema = useSelector(({schema}) => schema.currentSchema)
 
   const [customValid, setCustomValid] = useState();
-  const revisedPremiumPopupUtilityObject =
-    useRevisedPremiumModal();
+
+  const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
+
   const dispatch = useDispatch();
 
   const [additionalErrors, setAdditionalErrors] = useState({});
@@ -42,11 +43,13 @@ const useProposalSections = (
   const [finalSubmit, setFinalSubmit] = useState(false);
 
   const cart = useSelector(state => state.cart);
+
   const { activeIndex, proposalData } = useSelector(
     ({ proposalPage }) => proposalPage,
   );
+
   const [previousCart] = useState(cart);
-// to update self details without opening form
+  // to update self details without opening form
   // const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
 
   
@@ -87,12 +90,10 @@ const useProposalSections = (
   //     }));
      
 
-     
   //   }
   // }, [submit]);
 
   useEffect(() => {
-    console.log("wfbckha", { isValid, submit, name });
     if (typeof isValid === "object") {
       if (
         !isValid.some(item => item === undefined || item === false) &&
@@ -104,9 +105,11 @@ const useProposalSections = (
       }
     } else if (isValid && submit) {
       dispatch(
-        saveProposalData({ [name]: values }, () =>
-          dispatch(setActiveIndex(false)),
-        ),
+        saveProposalData({ [name]: values }, () => {
+          name === "Proposer Details" &&
+            window.scrollTo({ top: 0, behavior: "smooth" }); //? scrolls to the top
+          dispatch(setActiveIndex(false));
+        }),
       );
 
       setSubmit(false);
@@ -127,7 +130,6 @@ const useProposalSections = (
       setShow &&
       !isValid.some(item => item === undefined || item === false)
     ) {
-      console.log("sfbnsflbjfs FIED");
       dispatch(
         saveProposalData(
           { [name]: values },

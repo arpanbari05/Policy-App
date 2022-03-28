@@ -225,7 +225,7 @@ const InnerWrapper = styled.div`
 
 function HeaderCard() {
   const { colors } = useTheme();
-  const { journeyType, isLoading, isUninitialized } = useFrontendBoot();
+  const { journeyType, data, isLoading, isUninitialized } = useFrontendBoot();
 
   return (
     <Card
@@ -271,8 +271,18 @@ function HeaderCard() {
             <h3>{journeyTitle[journeyType]}</h3>
           )}
         </div>
-        <h1>Buy Health Insurance plan in few simple steps</h1>
-        <PlanList />
+        {data?.settings?.input_banner_info ? (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: data?.settings?.input_banner_info,
+            }}
+          ></div>
+        ) : (
+          <>
+            <h1>Buy Health Insurance plan in few simple steps</h1>
+            <PlanList />
+          </>
+        )}
       </PlanCard>
     </Card>
   );

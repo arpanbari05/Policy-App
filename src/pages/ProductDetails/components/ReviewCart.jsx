@@ -59,6 +59,7 @@ import {
   useUpdateCartMutation,
 } from "../../../api/api";
 import _ from "lodash";
+import { setShowEditMembers } from "../../quotePage/quote.slice";
 
 const plantypes = {
   M: "Multi Individual",
@@ -89,7 +90,7 @@ export function CartDetails({ groupCode, ...props }) {
 
   const cartEntry = getCartEntry(groupCode);
 
-  const { unavailable_message } = cartEntry;
+  const { unavailable_message, service_tax } = cartEntry;
 
   const modifyDetailsNotAllowed =
     cartEntry?.product?.company?.alias === "universal_sompo";
@@ -133,6 +134,7 @@ export function CartDetails({ groupCode, ...props }) {
             <RidersList groupCode={groupCode} />
             <DiscountsList groupCode={groupCode} />
             <AddOnsList cartEntry={cartEntry} />
+            <Taxes service_tax={service_tax} />
             <TotalPremium groupCode={groupCode} />
           </div>
         )}
@@ -320,15 +322,17 @@ function CartSection({ title = "", children, ...props }) {
       `}
       {...props}
     >
-      <h2
-        className="mb-2"
-        css={`
-          color: ${colors.primary_color};
-          font-size: 0.83rem;
-        `}
-      >
-        {title}
-      </h2>
+      {title && (
+        <h2
+          className="mb-2"
+          css={`
+            color: ${colors.primary_color};
+            font-size: 0.83rem;
+          `}
+        >
+          {title}
+        </h2>
+      )}
       <div>{children}</div>
     </div>
   );
@@ -386,6 +390,23 @@ function RidersList({ groupCode, ...props }) {
   );
 }
 
+function Taxes({ service_tax }) {
+  const { colors } = useTheme();
+  return (
+    <CartSection>
+      <CartDetailRow
+        titleCss={`
+          color: ${colors.primary_color} !important;
+          font-weight: bold;
+          margin: 5px 0;
+        `}
+        title="GST"
+        value={amount(service_tax)}
+      />
+    </CartSection>
+  );
+}
+
 function RiderDetails({ rider, ...props }) {
   const { name, total_premium } = rider;
   return (
@@ -428,6 +449,8 @@ function EditMembersButton({ groupCode, ...props }) {
 
   const modalToggle = useToggle(false);
 
+  const dispatch = useDispatch();
+
   return (
     <div {...props}>
       <Button
@@ -440,11 +463,12 @@ function EditMembersButton({ groupCode, ...props }) {
           color: ${colors.primary_color};
           padding: 0;
         `}
-        onClick={modalToggle.on}
+        // onClick={modalToggle.on}
+        onClick={() => dispatch(setShowEditMembers(true))}
       >
         <FaPen />
       </Button>
-      {modalToggle.isOn && <EditMembers onClose={modalToggle.off} />}
+      <EditMembers />
     </div>
   );
 }
@@ -855,7 +879,9 @@ function BasePlanDetails({
   ...props
 }) {
   const { getCartEntry } = useCart();
+
   const { journeyType } = useFrontendBoot();
+
   const cartEntry = getCartEntry(parseInt(groupCode));
 
   const {
@@ -864,7 +890,7 @@ function BasePlanDetails({
     sum_insured,
     deductible,
     tenure,
-    total_premium,
+    premium,
     product: {
       name,
       company: { alias },
@@ -919,7 +945,7 @@ function BasePlanDetails({
                       : "none"};
                   `}
                 >
-                  {amount(total_premium)}
+                  {amount(premium)}
                 </span>
               }
             />
@@ -1032,13 +1058,17 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const enquiryId = urlQueryStrings.get("enquiryId");
 
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+
   const handleClick = () => {
     updateCartMutation({ additionalDiscounts }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
           pathname: `/productdetails/${nextGroupProduct.group.id}`,
-          search: `enquiryId=${enquiryId}`,
+          search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
         });
         return;
       }
@@ -1101,7 +1131,8 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
   );
 }
 
-function CartDetailRow({ title, value }) {
+function CartDetailRow({ title, value, titleCss }) {
+  console.log(titleCss);
   return (
     <div
       css={`
@@ -1120,12 +1151,9 @@ function CartDetailRow({ title, value }) {
       <div
         css={`
           font-size: 11px;
-          color: #555555;
+          color: #555;
           /* width: 70%; */
-          ${mobile} {
-            color: #5c5959;
-          }
-
+          ${titleCss}
           ${small} {
             font-size: 10px;
             line-height: 12px;

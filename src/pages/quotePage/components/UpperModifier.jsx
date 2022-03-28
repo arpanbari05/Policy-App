@@ -15,8 +15,8 @@ function UpperModifier() {
   const { colors } = useTheme();
   const { emailStatus } = useComparePage();
   const { imageSendQuote: sendQuote } = useQuotesPage();
-  
-    return (
+
+  return (
     <div
       css={`
         background-color: ${colors.secondary_shade};
@@ -82,10 +82,14 @@ export function GroupLinks({ ...props }) {
     groupsToShow = [allMembersGroup];
   }
 
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+
   const onCombinedPlanHandler = () => {
     history.push({
       pathname: `/quotes/${allMembersGroup?.id}`,
-      search: `enquiryId=${enquiryId}`,
+      search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
     });
     setPartioned(false);
   };
@@ -93,7 +97,7 @@ export function GroupLinks({ ...props }) {
   const onPartitionedPlanHandler = () => {
     history.push({
       pathname: `/quotes/${groups[0].id}`,
-      search: `enquiryId=${enquiryId}`,
+      search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
     });
     setPartioned(true);
   };

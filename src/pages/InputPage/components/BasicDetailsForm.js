@@ -75,6 +75,10 @@ const BasicDetailsForm = ({ ...props }) => {
       setEmailErrors,
       setMobileErrors,
     );
+    const currentGroup =
+      localStorage.getItem("groups") &&
+      JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+
     if (!validation) {
       return;
     }
@@ -95,7 +99,7 @@ const BasicDetailsForm = ({ ...props }) => {
         if (!enquiryId) throw Error("Something went wrong");
         history.push({
           pathname: "/input/members",
-          search: `enquiryId=${enquiryId}`,
+          search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
         });
       }
     } catch (error) {

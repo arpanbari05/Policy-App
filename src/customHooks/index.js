@@ -203,7 +203,7 @@ export function useFrontendBoot() {
 
   const { data: enquiryData } = useGetEnquiriesQuery();
 
-  const data = { ...config, ...frontendData };
+  const data = { ...frontendData, ...config };
 
   const tenantName = data?.tenant?.name;
 
@@ -274,6 +274,13 @@ export function useFilter() {
 
 export function useMembers() {
   const dispatch = useDispatch();
+  // const { groups: reduxGroup } = useSelector(
+  //   ({ greetingPage }) => greetingPage,
+  // );
+
+  const reduxGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups"));
   let {
     data: { members },
   } = useFrontendBoot();
@@ -313,7 +320,24 @@ export function useMembers() {
 
   if (data) {
     input = data.data.input;
-    groups = data.data.groups;
+    if (reduxGroup?.length) {
+      const updatedGroup = data.data?.groups?.map(group => {
+        const reduxGroupMatch = reduxGroup?.find(reGrp => {
+          return reGrp?.members?.some(mem => group?.members?.includes(mem));
+        });
+        return {
+          ...group,
+          city: group?.city || reduxGroupMatch?.city,
+          pincode: group?.pincode || reduxGroupMatch?.pincode,
+        };
+      });
+
+      groups = updatedGroup;
+      localStorage.setItem("groups", JSON.stringify(updatedGroup));
+    } else {
+      groups = data.data.groups;
+      localStorage.setItem("groups", JSON.stringify(data.data.groups));
+    }
   }
 
   const selectedMembers = (input?.members || []).map(member => ({
@@ -609,6 +633,10 @@ export function useUpdateMembers() {
       ...data,
     };
 
+    const currentGroup =
+      localStorage.getItem("groups") &&
+      JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+
     return createEnquiry({ ...updateData, updateCache: false }).then(
       response => {
         if (!response.data) return response;
@@ -619,7 +647,7 @@ export function useUpdateMembers() {
         } = response;
         history.push({
           pathname: `/quotes/${groups[0].id}`,
-          search: `enquiryId=${enquiry_id}`,
+          search: `enquiryId=${enquiry_id}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
         });
         dispatch(
           api.util.updateQueryData("getEnquiries", undefined, draft => {
@@ -906,8 +934,14 @@ export function useUrlEnquiry() {
 
   const enquiryId = urlQueryStrings.get("enquiryId");
 
+  const { groupCode } = useParams();
+
+  const { groups } = useMembers();
+
+  const currentGroup = groups.find(group => group.id === +groupCode);
+
   function getUrlWithEnquirySearch(path = "") {
-    return `${path}?enquiryId=${enquiryId}`;
+    return `${path}?enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`;
   }
 
   return { enquiryId, getUrlWithEnquirySearch };

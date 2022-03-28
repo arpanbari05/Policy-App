@@ -256,13 +256,17 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
 
   const enquiryId = urlQueryStrings.get("enquiryId");
 
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+
   const handleClick = () => {
     updateCartMutation({ additionalDiscounts }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
           pathname: `/productdetails/${nextGroupProduct.group.id}`,
-          search: `enquiryId=${enquiryId}`,
+          search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
         });
         return;
       }
@@ -474,7 +478,15 @@ const PlanCard = ({ groupCode, ...props }) => {
     additionalDiscounts,
   });
 
-  const { plantype, sum_insured, deductible, tenure, netPremium } = cartEntry;
+  const {
+    plantype,
+    sum_insured,
+    deductible,
+    tenure,
+    netPremium,
+    premium,
+    service_tax,
+  } = cartEntry;
 
   const displayPolicyTerm = `${
     tenure + " " + (tenure >= 2 ? "Years" : "Year")
@@ -482,7 +494,7 @@ const PlanCard = ({ groupCode, ...props }) => {
 
   return (
     <PlanCardOuter
-      className="d-flex flex-wrap align-items-center justify-content-between"
+      className="d-flex flex-wrap align-items-center g-8"
       {...props}
     >
       <TitleValueRenderer title="Plan Type" value={plantypes[plantype]} />
@@ -497,7 +509,8 @@ const PlanCard = ({ groupCode, ...props }) => {
         />
       ) : null}
       <TitleValueRenderer title="Policy term" value={displayPolicyTerm} />
-      <TitleValueRenderer title="Premium" value={amount(netPremium)} />
+      <TitleValueRenderer title="Premium" value={amount(premium)} />
+      <TitleValueRenderer title="GST" value={amount(service_tax)} />
     </PlanCardOuter>
   );
 };
