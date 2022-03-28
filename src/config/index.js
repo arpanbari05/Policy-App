@@ -50,7 +50,7 @@ const config = {
     { code: "100000-300000", display_name: "Upto 3 Lakhs" },
     { code: "300000-500000", display_name: "More than 3 to 5 Lakhs" },
     { code: "500001-1000000", display_name: "More than 5 to 10 Lakhs" },
-    { code: "1000001-1500000", display_name: " More than 10 to 15 Lakhs" },
+    { code: "1000001-1500000", display_name: "More than 10 to 15 Lakhs" },
     { code: "1500001-2500000", display_name: "More than 15 to 25 Lakhs" },
     { code: "2500001-100000000", display_name: "More than 25 Lakhs" },
   ],
