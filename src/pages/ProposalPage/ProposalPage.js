@@ -211,7 +211,7 @@ const ProposalPage = () => {
                 bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
               >
                 {activeForm}
-              </MainTitle>{" "}
+              </MainTitle>
               <ProposerDetails
                 key={activeForm}
                 schema={

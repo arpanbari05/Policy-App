@@ -18,15 +18,6 @@ function useAppropriateOptions({
 
   // selutation determination
   useEffect(() => {
-    console.log(
-      "dbnjdfkbf",
-      values,
-      selectOption,
-      label,
-      options,
-      value,
-      allValues["Proposer Details"],
-    );
     if (
       values &&
       values.gender &&

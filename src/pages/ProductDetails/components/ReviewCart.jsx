@@ -879,7 +879,9 @@ function BasePlanDetails({
   ...props
 }) {
   const { getCartEntry } = useCart();
+
   const { journeyType } = useFrontendBoot();
+
   const cartEntry = getCartEntry(parseInt(groupCode));
 
   const {
