@@ -207,6 +207,21 @@ function AssistanceCard(props) {
       <div
         css={`
           margin-bottom: 15px;
+
+          & > p,
+          & > p > span {
+            font-size: 0.89rem !important;
+            color: ${colors.font.one} !important;
+            margin-top: 1rem !important;
+            font-family: Inter-Regular !important;
+            line-height: 1.5;
+          }
+          & > p:first-child,
+          & > p:first-child > span {
+            font-size: 1rem !important;
+            font-weight: 900;
+            font-family: Inter-Regular !important;
+          }
         `}
         dangerouslySetInnerHTML={{ __html: talk_to_us_info }}
       ></div>
