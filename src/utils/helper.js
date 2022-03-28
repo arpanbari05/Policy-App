@@ -158,10 +158,15 @@ export function isInViewport(element) {
 export function getPercentageAmount(
   amount,
   percentage,
+  fixed_discount_value,
   { roundOf = true } = {},
 ) {
-  const percentageAmount = amount * (percentage / 100);
+  let percentageAmount = amount * (percentage / 100);
+
+  if (fixed_discount_value) percentageAmount = fixed_discount_value;
+
   if (roundOf) return Math.round(percentageAmount);
+
   return percentageAmount;
 }
 
@@ -198,6 +203,7 @@ export function getDiscountAmount(additionalDiscount, cartEntry) {
     applied_on_total_premium,
     applied_on_discounts,
     percent,
+    fixed_discount_value,
   } = additionalDiscount;
 
   if (applied_on_total_premium) {
@@ -205,6 +211,7 @@ export function getDiscountAmount(additionalDiscount, cartEntry) {
       totalPremium,
       percent,
     );
+
     return discountedAmountOnTotalPremium;
   }
 
@@ -224,6 +231,20 @@ export function getDiscountAmount(additionalDiscount, cartEntry) {
 
   if (applied_on_discounts) {
   }
+
+  if (fixed_discount_value) {
+    discountedAmount = +fixed_discount_value;
+  }
+
+  if (
+    !applied_on_discounts &&
+    !applied_on_riders &&
+    !applied_on_total_premium &&
+    !fixed_discount_value
+  ) {
+    discountedAmount = getPercentageAmount(basePlanPremium, percent);
+  }
+
   return discountedAmount;
 }
 
@@ -235,7 +256,12 @@ function getTotalDiscount(additionalDiscounts, product) {
   let totalDiscount = 0;
 
   if (product) {
-    const { total_premium, health_riders, addons, discounts } = product;
+    const {
+      total_premium,
+      health_riders,
+      addons,
+      discounts: discountsApplied,
+    } = product;
 
     totalRidersPremium = health_riders?.reduce(
       (sum, rider) => sum + parseInt(rider?.total_premium),
@@ -251,21 +277,23 @@ function getTotalDiscount(additionalDiscounts, product) {
 
     totalPremium = totalPremiumWithoutAddons + totalAddOnsPremium;
 
-    const discountsApplied = discounts;
-
     const findAdditionalDiscount = alias =>
       additionalDiscounts.find(discount => discount.alias === alias);
+
     if (discountsApplied) {
       discountsApplied.forEach(discountAlias => {
         const discount = findAdditionalDiscount(discountAlias);
         if (!discount) return;
 
-        if (!discount.applied_on_riders && !discount.applied_on_discounts) {
+        if (!discount?.applied_on_riders && !discount?.applied_on_discounts) {
           const discountAmount = getPercentageAmount(
             totalPremium,
-            discount.percent,
+            discount?.percent,
+            discount?.fixed_discount_value,
           );
+
           totalPremium -= discountAmount;
+
           totalDiscount += discountAmount;
           return;
         }
@@ -345,6 +373,7 @@ export function calculateTotalPremium(
     health_riders = [],
     addons = [],
   } = cartEntry;
+
   const totalPremium = items =>
     items.reduce((totalPremium, item) => totalPremium + item.total_premium, 0);
 

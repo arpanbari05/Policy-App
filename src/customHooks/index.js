@@ -1890,7 +1890,6 @@ export const useRevisedPremiumModal = () => {
 
     // if (+prevTotalPremium !== +updatedTotalPremium) {
     if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
-
       revisedPremiumPopupToggle.on();
     }
   }, [
