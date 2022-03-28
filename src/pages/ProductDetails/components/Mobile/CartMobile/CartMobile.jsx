@@ -478,7 +478,15 @@ const PlanCard = ({ groupCode, ...props }) => {
     additionalDiscounts,
   });
 
-  const { plantype, sum_insured, deductible, tenure, netPremium } = cartEntry;
+  const {
+    plantype,
+    sum_insured,
+    deductible,
+    tenure,
+    netPremium,
+    premium,
+    service_tax,
+  } = cartEntry;
 
   const displayPolicyTerm = `${
     tenure + " " + (tenure >= 2 ? "Years" : "Year")
@@ -486,7 +494,7 @@ const PlanCard = ({ groupCode, ...props }) => {
 
   return (
     <PlanCardOuter
-      className="d-flex flex-wrap align-items-center justify-content-between"
+      className="d-flex flex-wrap align-items-center g-8"
       {...props}
     >
       <TitleValueRenderer title="Plan Type" value={plantypes[plantype]} />
@@ -501,7 +509,8 @@ const PlanCard = ({ groupCode, ...props }) => {
         />
       ) : null}
       <TitleValueRenderer title="Policy term" value={displayPolicyTerm} />
-      <TitleValueRenderer title="Premium" value={amount(netPremium)} />
+      <TitleValueRenderer title="Premium" value={amount(premium)} />
+      <TitleValueRenderer title="GST" value={amount(service_tax)} />
     </PlanCardOuter>
   );
 };

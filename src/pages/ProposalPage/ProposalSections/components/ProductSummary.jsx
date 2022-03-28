@@ -562,6 +562,8 @@ const ViewPlanDetails = styled.span`
 function CartSummary({ item, index, groupCode }) {
   const { data: frontendData, journeyType } = useFrontendBoot();
 
+  const { colors } = useTheme();
+
   const { planDetails } = useSelector(state => state.proposalPage);
 
   const prevCart = Object.values(
@@ -735,8 +737,8 @@ function CartSummary({ item, index, groupCode }) {
             >
               ₹{" "}
               {planDetails.isRenewed
-                ? numToString(prevCart[index].total_premium)
-                : numToString(item.total_premium)}{" "}
+                ? numToString(prevCart[index].premium)
+                : numToString(item.premium)}{" "}
               / {item.tenure > 1 ? item.tenure + " years" : "year"}{" "}
             </span>
           </div>
@@ -769,7 +771,7 @@ function CartSummary({ item, index, groupCode }) {
                   Revised Premium:{" "}
                 </p>
                 <span className="p_cover_medical_pop_span ">
-                  ₹ {numToString(item.total_premium)} /{" "}
+                  ₹ {numToString(item.premium)} /{" "}
                   {item.tenure > 1 ? item.tenure + " years" : "year"}{" "}
                 </span>
               </div>
@@ -1143,6 +1145,35 @@ function CartSummary({ item, index, groupCode }) {
             </div>
           </div>
         ))}
+      <div
+        css={`
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          padding: 12px 0;
+          border-top: 1px solid #ddd;
+          margin-top: -10px;
+        `}
+      >
+        <p
+          css={`
+            color: ${colors.primary_color};
+            font-weight: bold;
+            font-size: 14px;
+          `}
+          className="p_cover_medical_pop"
+        >
+          {"GST"}
+        </p>
+        <span
+          className="p_cover_medical_pop_span addon_plan_d_inter_1_product_pro_f_mediacl"
+          css={`
+            padding-left: 10px;
+          `}
+        >
+          {amount(item?.service_tax)}
+        </span>
+      </div>
     </>
   );
 }

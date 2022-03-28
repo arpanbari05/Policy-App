@@ -90,7 +90,7 @@ export function CartDetails({ groupCode, ...props }) {
 
   const cartEntry = getCartEntry(groupCode);
 
-  const { unavailable_message } = cartEntry;
+  const { unavailable_message, service_tax } = cartEntry;
 
   const modifyDetailsNotAllowed =
     cartEntry?.product?.company?.alias === "universal_sompo";
@@ -134,6 +134,7 @@ export function CartDetails({ groupCode, ...props }) {
             <RidersList groupCode={groupCode} />
             <DiscountsList groupCode={groupCode} />
             <AddOnsList cartEntry={cartEntry} />
+            <Taxes service_tax={service_tax} />
             <TotalPremium groupCode={groupCode} />
           </div>
         )}
@@ -321,15 +322,17 @@ function CartSection({ title = "", children, ...props }) {
       `}
       {...props}
     >
-      <h2
-        className="mb-2"
-        css={`
-          color: ${colors.primary_color};
-          font-size: 0.83rem;
-        `}
-      >
-        {title}
-      </h2>
+      {title && (
+        <h2
+          className="mb-2"
+          css={`
+            color: ${colors.primary_color};
+            font-size: 0.83rem;
+          `}
+        >
+          {title}
+        </h2>
+      )}
       <div>{children}</div>
     </div>
   );
@@ -383,6 +386,23 @@ function RidersList({ groupCode, ...props }) {
       ) : (
         riders.map(rider => <RiderDetails rider={rider} key={rider.id} />)
       )}
+    </CartSection>
+  );
+}
+
+function Taxes({ service_tax }) {
+  const { colors } = useTheme();
+  return (
+    <CartSection>
+      <CartDetailRow
+        titleCss={`
+          color: ${colors.primary_color} !important;
+          font-weight: bold;
+          margin: 5px 0;
+        `}
+        title="GST"
+        value={amount(service_tax)}
+      />
     </CartSection>
   );
 }
@@ -868,7 +888,7 @@ function BasePlanDetails({
     sum_insured,
     deductible,
     tenure,
-    total_premium,
+    premium,
     product: {
       name,
       company: { alias },
@@ -923,7 +943,7 @@ function BasePlanDetails({
                       : "none"};
                   `}
                 >
-                  {amount(total_premium)}
+                  {amount(premium)}
                 </span>
               }
             />
@@ -1109,7 +1129,8 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
   );
 }
 
-function CartDetailRow({ title, value }) {
+function CartDetailRow({ title, value, titleCss }) {
+  console.log(titleCss);
   return (
     <div
       css={`
@@ -1128,12 +1149,9 @@ function CartDetailRow({ title, value }) {
       <div
         css={`
           font-size: 11px;
-          color: #555555;
+          color: #555;
           /* width: 70%; */
-          ${mobile} {
-            color: #5c5959;
-          }
-
+          ${titleCss}
           ${small} {
             font-size: 10px;
             line-height: 12px;
