@@ -18,6 +18,13 @@ import { setQuotesToCanvas } from "../pages/quotePage/quote.slice";
 import Sharequotespopup from "../pages/quotePage/components/ShareQuotesPopUp";
 import { images } from "../assets/logos/logo";
 import { mobile } from "../utils/mediaQueries";
+import HttpClient from "../api/httpClient";
+
+const shareViaEmailApi = data =>
+  HttpClient("renewbuy/communications", {
+    method: "POST",
+    data,
+  });
 
 const ShareCTA = ({ onClick, loader }) => {
   return (
@@ -77,7 +84,7 @@ const ShareQuoteModal = ({
 
   const [step, setStep] = useState(shareQuotes ? 1 : 2);
 
-  const [imageSend, setImageSend] = useState(imageToSend);
+  const [imageSend, setImageSend] = useState();
 
   const {
     colors: { primary_color: PrimaryColor, secondary_shade: SecondaryShade },
@@ -190,6 +197,7 @@ const ShareQuoteModal = ({
               hide={step === 1}
               imageSend={imageSend}
               emailStatus={emailStatus}
+              setEmailStatus={setlEmaiStatus}
               stage={stage}
               setIsSending={setIsSending}
               setErrorMsg={setErrorMsg}
@@ -470,7 +478,6 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
 
 function ShareStep2({
   imageSend,
-  emailStatus,
   stage,
   setIsSending,
   setErrorMsg,
@@ -497,6 +504,8 @@ function ShareStep2({
   const [smsNo, setSmsNo] = useState(
     details4autopopulate?.mobile ? details4autopopulate.mobile : "",
   );
+
+  const [emailStatus, setEmailStatus] = useState({ status: 0, message: null });
 
   const sendRef = useRef();
 
@@ -556,15 +565,42 @@ function ShareStep2({
 
     if (!errorMsg && email) {
       setIsSending(true);
-      // setTimeout(() => {
-      //   handleRotation();
-      // }, 2000);
       return imageSend(email, stage);
     }
   };
 
   const handleRotation = () => {
     setIsSending(false);
+  };
+
+  const handleShare = async (e, data) => {
+    e.preventDefault();
+
+    const validator =
+      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
+    if (data.mode[0] === "EMAIL" && data.email === "") {
+      return setErrorMsg("Enter email to send.");
+    } else if (data.mode[0] === "EMAIL" && !validator.test(data.email)) {
+      return setErrorMsg("Enter valid email.");
+    } else setErrorMsg("");
+
+    if (!errorMsg && email) {
+      setIsSending(data.mode[0]);
+      const response = await shareViaEmailApi(data);
+      let successMsg;
+      if (data.mode[0] === "EMAIL") successMsg = "Email sent successfully";
+      if (data.mode[0] === "WHATSAPP")
+        successMsg = "Whatsapp message sent successfully";
+      if (data.mode[0] === "SMS") successMsg = "SMS sent successfully";
+      setEmailStatus({
+        status: response.statusCode,
+        message:
+          `${response.statusCode}`.startsWith("2") && successMsg
+            ? successMsg
+            : "Not sent!",
+      });
+      setIsSending(false);
+    }
   };
 
   return (
@@ -594,7 +630,17 @@ function ShareStep2({
           />
         </div>
         <ShareCTA
-          onClick={e => handleSendViaEmail(e)}
+          // onClick={e => handleSendViaEmail(e)}
+          onClick={e => {
+            handleShare(e, {
+              mode: ["EMAIL"],
+              stage,
+              email,
+              whatsapp: "",
+              sms: "",
+              quote_img: imageSend,
+            });
+          }}
           loader={isSending && !emailStatus?.message}
         />
       </ShareOption>
@@ -640,7 +686,18 @@ function ShareStep2({
           <input
             type="number"
             placeholder="Mobile no."
-            onChange={e => handleNumberCheck(e, setSmsNo)}
+            // onChange={e => handleNumberCheck(e, setSmsNo)}
+            onClick={e => {
+              setEmailStatus({ status: 0, message: null });
+              Number(smsNo.length) === 10 &&
+                handleShare(e, {
+                  mode: ["SMS"],
+                  stage,
+                  email: "",
+                  whatsapp: "",
+                  sms: smsNo,
+                });
+            }}
             value={smsNo}
           />
         </div>
