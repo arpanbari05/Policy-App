@@ -9,8 +9,9 @@ const SearchBarWithCityDD = ({ searchText, setSearchText }) => {
   const { colors } = useTheme();
 
   const searchInputChangeHandler = e => {
-    setSearchText(e.target.value);
+    setSearchText(e);
   };
+
   return (
     <SearchBarWithCityDDOuter>
       <CityDD
