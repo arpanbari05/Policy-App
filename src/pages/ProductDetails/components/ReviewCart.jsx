@@ -1121,18 +1121,12 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
           propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
           onClose={reviewCartModalNew.off}
         />
-
-        // <NewReviewCartPopup
-        //   onContine={handleContinueClick}
-        //   onClose={reviewCartModalNew.off}
-        // />
       )}
     </div>
   );
 }
 
 function CartDetailRow({ title, value, titleCss }) {
-  console.log(titleCss);
   return (
     <div
       css={`

@@ -253,8 +253,6 @@ export function Members() {
   const city = urlQueryStrings.get("city");
   const pincode = urlQueryStrings.get("pincode");
 
-  console.log(useUrlQuery());
-
   const { colors } = useTheme();
 
   const {

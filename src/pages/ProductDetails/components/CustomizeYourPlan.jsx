@@ -57,6 +57,7 @@ export function Riders({
   } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
 
   const featureOptions = useSelector(({ cart }) => cart.feature_options);
+
   const selectedFeatureOption = Object.keys(featureOptions).length
     ? featureOptions[Object.keys(featureOptions)[0]]
     : "more_cover";
@@ -71,10 +72,6 @@ export function Riders({
         <CardSkeletonLoader />
       </DetailsSectionWrap>
     );
-
-  // useEffect(() => {
-  //   if (!isLoading && !isUninitialized) loaderStop();
-  // }, [isLoading, isUninitialized]);
 
   if (isError)
     return (
@@ -142,6 +139,9 @@ export function Riders({
               isFetching={isFetching}
               company={quote?.product?.company?.name}
               isProductDetailsPage={isProductDetailsPage}
+              isRelianceGeneralPlan={
+                quote?.product?.company?.alias === "reliance_general"
+              }
               isDisabled={
                 careRidersConditionChecker(quote, rider?.alias, riders)
                   ?.isDisabled ||
@@ -170,13 +170,14 @@ export function RiderCardNew({
   isProductDetailsPage,
   isDisabled,
   showPEDRiderWarning,
+  isRelianceGeneralPlan,
   ...props
 }) {
   const { isSelected } = rider;
 
   const { colors } = useTheme();
 
-  // CARE RIDERS RESTRICTIONS
+  //? CARE RIDERS RESTRICTIONS-1
   useEffect(() => {
     if (
       company === "Care Health Insurance" &&
@@ -186,6 +187,7 @@ export function RiderCardNew({
       const carePEDRider = riders?.find(
         singleRider => singleRider?.alias === "REDPEDWAITPRD",
       );
+
       onChange({
         ...carePEDRider,
         isSelected: false,
@@ -193,9 +195,10 @@ export function RiderCardNew({
     }
   }, [rider?.isSelected]);
 
+  //? CARE RIDERS RESTRICTIONS-2
   useEffect(() => {
-    if (isDisabled) {
-      onChange({ ...rider, isSelected: false });
+    if (isDisabled && showPEDRiderWarning) {
+      !isRelianceGeneralPlan && onChange({ ...rider, isSelected: false });
     }
   }, [isDisabled]);
 
@@ -279,6 +282,7 @@ export function RiderPremium({ rider, isLoading = false, onChange }) {
 
   const handleChange = evt => {
     if (rider.is_mandatory) return;
+
     onChange && onChange({ ...rider, isSelected: evt.target.checked });
   };
 
@@ -418,7 +422,7 @@ const RiderCardWrap = styled.div`
     gap: 1em;
     width: 100%;
     margin: 10px 0px;
-    background: rgb(243, 244, 249, .5) !important;
+    background: rgb(243, 244, 249, 0.5) !important;
     border-radius: 10px;
     box-shadow: ${({ isSelected }) =>
       isSelected ? "rgb(16 24 48 / 12%) 0px 8px 12px 0px" : "unset"};

@@ -39,7 +39,6 @@ const cartSlice = createSlice({
       };
     },
     setFeatureOptions: (state, action) => {
-      // state.feature_options = { ...state.feature_options, ...action.payload };
       state.feature_options = { ...action.payload };
     },
   },

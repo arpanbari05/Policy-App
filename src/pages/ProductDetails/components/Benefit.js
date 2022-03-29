@@ -47,7 +47,9 @@ const Options = ({
   setChecked,
 }) => {
   const primaryKeys = Object.keys(options);
+
   let optionKeys = [];
+
   if (primaryKeys.length) {
     optionKeys = Object.keys(options[primaryKeys[0]]);
   }
@@ -55,7 +57,6 @@ const Options = ({
     [`feature_${primaryKeys[0]}`]: optionKeys.length ? optionKeys[0] : null,
   });
 
-  console.log({ primaryKeys, optionKeys, options });
   useEffect(() => {
     if (checked) {
       setSelectedBenefit({
@@ -109,7 +110,6 @@ const ContentSection = ({
 }) => {
   const [checked, setChecked] = useState(false);
 
-  // useEffect(() => { });
   return (
     <StyledContentSection
       theme={theme}
@@ -160,13 +160,17 @@ const ContentSection = ({
     </StyledContentSection>
   );
 };
+
 const Benefit = ({ cartEntry: cart }) => {
   const { colors: theme } = useTheme();
+
   const { loading, status, response } = useRoomRent(
     cart?.product.id,
     cart?.sum_insured,
   );
+
   const [selectedBenefit, setSelectedBenefit] = useState({});
+
   const dispatch = useDispatch();
 
   useEffect(() => {

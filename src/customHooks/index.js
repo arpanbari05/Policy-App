@@ -1642,12 +1642,18 @@ export function useRiders({
 
   const { feature_options } = useSelector(({ cart }) => cart);
 
+  const reliance_general_feature_option_value =
+    quote?.product?.company?.alias === "reliance_general" &&
+    feature_options[Object.keys(feature_options)[0]]; //? free rider name to be selected by default
+
   const findLocalRider = riderToFind =>
     riders.find(rider => rider?.id === riderToFind?.id);
 
   const isRiderSelected = riderToCheck => {
     if (riderToCheck.is_mandatory) return true;
+
     const localRider = findLocalRider(riderToCheck);
+
     return localRider && localRider.isSelected;
   };
 
@@ -1664,7 +1670,9 @@ export function useRiders({
     getRidersQueryParams.selected_riders = affectsOtherRiders;
 
   const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
+
   let optionsSelected = {};
+
   riders.forEach(rider => {
     if (rider.options_selected) {
       optionsSelected = {
@@ -1673,9 +1681,11 @@ export function useRiders({
       };
     }
   });
+
   const options_query = Object.keys(optionsSelected)
     .map(opt => `${opt}=${optionsSelected[opt]}`)
     .join("&");
+
   const query = useGetRiders(quote, groupCode, {
     queryOptions: {
       getRidersQueryParams,
@@ -1698,7 +1708,10 @@ export function useRiders({
           return {
             ...rider,
             isSelected:
-              rider.is_mandatory || (localRider && localRider.isSelected),
+              rider.is_mandatory ||
+              (localRider && localRider.isSelected) ||
+              reliance_general_feature_option_value ===
+                rider?.name?.toLowerCase()?.split(" ")?.join("_"),
             options_selected: localRider
               ? localRider.options_selected
               : rider.options_selected,
@@ -1882,7 +1895,12 @@ export const useRevisedPremiumModal = () => {
     );
     next();
   }; /* Performs refetch from the server */
-  console.log("wrgfbkjwrf",revisedPremiumPopupToggle,updatedTotalPremium,prevTotalPremium)
+  console.log(
+    "wrgfbkjwrf",
+    revisedPremiumPopupToggle,
+    updatedTotalPremium,
+    prevTotalPremium,
+  );
   useEffect(() => {
     if (+prevTotalPremium === +updatedTotalPremium) {
       revisedPremiumPopupToggle.off();
@@ -1896,8 +1914,6 @@ export const useRevisedPremiumModal = () => {
     prevTotalPremium,
     updatedTotalPremium,
   ]); /* CONTROLS DISPLAY OF REVISED PREMIUM POPUP AUTOMATICALLY */
-
-  
 
   return {
     getUpdatedCart,
