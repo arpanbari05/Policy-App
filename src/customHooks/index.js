@@ -979,7 +979,7 @@ export function useGetQuotes(queryConfig = {}) {
     queryConfig,
   );
 
-  const isLoading = data?.length < insurersToFetch.length - 2;
+  const isLoading = data?.length < insurersToFetch?.length - 2;
 
   const quotesWithoutMoreFilters = data;
 
@@ -996,14 +996,14 @@ export function useGetQuotes(queryConfig = {}) {
   // const isLoading = data?.length < insurersToFetch.length;
 
   const loadingPercentage =
-    !data || data.length === 0
+    !data || data?.length === 0
       ? 6
-      : (data.length / (insurersToFetch.length - 1)) * 100;
+      : (data?.length / (insurersToFetch?.length - 1)) * 100;
 
   const isNoQuotes =
     data &&
     !isLoading &&
-    data.every(insurerQuotes => insurerQuotes.data.data.length === 0);
+    data.every(insurerQuotes => insurerQuotes?.data?.data?.length === 0);
 
   return {
     ...getCustomQuotesQuery,
