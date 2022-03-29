@@ -511,6 +511,8 @@ function ShareStep2({
     ({ greetingPage }) => greetingPage.proposerDetails,
   );
 
+  const { companies } = useCompanies();
+
   const {
     colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
   } = useTheme();
@@ -530,6 +532,8 @@ function ShareStep2({
   const [emailStatus, setEmailStatus] = useState({ status: 0, message: null });
 
   const sendRef = useRef();
+
+  console.log(companies);
 
   // useEffect(() => {
   //   if(emailStatus.status){
@@ -660,7 +664,8 @@ function ShareStep2({
               email,
               whatsapp: "",
               sms: "",
-              quote_img: imageSend ? imageSend : undefined,
+              image_to_send: imageSend ? imageSend : undefined,
+              insureres: Object.keys(companies),
             });
           }}
           // loader={isSending && !emailStatus?.message}
@@ -723,6 +728,7 @@ function ShareStep2({
                 email: "",
                 whatsapp: "",
                 sms: smsNo,
+                insurers: Object.keys(companies),
               });
           }}
         />
