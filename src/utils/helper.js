@@ -535,8 +535,9 @@ export function getDisplayPremium({ total_premium, tenure }) {
   }`;
 }
 
-export function mergeQuotes(quotes, { sortBy = "relevance" } = {}) {
+export function mergeQuotes(quotes = [], { sortBy = "relevance" } = {}) {
   const mergedQuotes = {};
+  console.log(quotes);
 
   for (let quote of quotes) {
     const {

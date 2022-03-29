@@ -218,7 +218,7 @@ function AssistanceCard(props) {
             line-height: 1.5 !important;
             font-family: inherit !important;
           }
-          
+
           & > p:first-child > *,
           & > p:first-child > font,
           & > p:first-child > span,
