@@ -57,6 +57,8 @@ const FormBuilder = ({
     ),
   );
 
+
+
   const {
     updateValue,
     values,
@@ -67,6 +69,7 @@ const FormBuilder = ({
     insertValue,
     setErrors,
     updateValues,
+    checkReadOnly
   } = useFormBuilder(
     schema,
     fetchValues,
@@ -77,6 +80,7 @@ const FormBuilder = ({
     insuredDetails,
     canProceed,
     yesSelected,
+    proposalDetails
   );
 
   const [trigger, setTrigger] = useState(false);
@@ -99,6 +103,8 @@ const FormBuilder = ({
     "grand_mother",
   ];
 
+  
+
   // for auto populate self data when nominee relation is self
   useEffect(() => {
     if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
@@ -110,6 +116,7 @@ const FormBuilder = ({
           ...proposalDetails,
           ...(insuredDetails ? insuredDetails["self"] : {}),
         };
+
       } else if (insuredDetails[nomineeRelation]) {
         dataForAutopopulate = insuredDetails[nomineeRelation];
         let groupIdOfmember =
@@ -467,6 +474,7 @@ const FormBuilder = ({
                       name={item.name}
                       checkValidation={item.validate}
                       selectedValues={values}
+                      data={item.data}
                       onChange={(e, value) => {
                         if (item.parent && item.members) {
                           insertValue(
@@ -523,10 +531,11 @@ const FormBuilder = ({
                         }
                       }}
                       age={item?.validate?.age}
-                      directUpdateValue={(name,value) => updateValue(name,value)}
+                      directUpdateValue={(name, value) =>
+                        updateValue(name, value)
+                      }
                       readOnly={
-                        item.readOnly
-                        //  ||(isInsuredDetails && item.name === "mobile")
+                        item.readOnly || checkReadOnly(item.name)
                       }
                       allValues={proposalData}
                       customMembers={
