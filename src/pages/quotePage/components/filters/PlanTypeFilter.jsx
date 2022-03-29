@@ -8,8 +8,8 @@ import useUpdateFilters from "./useUpdateFilters.js";
 import { useFrontendBoot, useTheme } from "../../../../customHooks/index.js";
 import "styled-components/macro";
 import { Filter, FilterHead } from "./index.js";
-import { RiCheckboxFill } from "react-icons/ri";
-import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
+import { RiCheckboxBlankCircleLine } from "react-icons/ri";
+import { IoRadioButtonOn } from "react-icons/io5";
 
 const DESCRIPTIONS = {
   arogya_sanjeevani:
@@ -156,13 +156,9 @@ function PlanType({ baseplantype, checked = false, onChange, ...props }) {
         </OverlayTrigger>
       </label>
       {checked ? (
-        <RiCheckboxFill size={25} color={colors.primary_color} />
+        <IoRadioButtonOn size={25} color={colors.primary_color} />
       ) : (
-        <MdOutlineCheckBoxOutlineBlank
-          size={25}
-          fontWeight={"300"}
-          color="#aaa"
-        />
+        <RiCheckboxBlankCircleLine size={25} fontWeight={"300"} color="#aaa" />
       )}
       <input
         style={{ display: "none" }}
