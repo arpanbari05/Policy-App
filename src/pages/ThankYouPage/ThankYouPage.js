@@ -304,7 +304,7 @@ const ThankYouPage = () => {
                   </div>
                   Your Payment for{" "}
                   <i className="fa fa-inr" style={{ margin: "0px 2px" }} />
-                  {"000000"} was successful
+                  {cart.totalPremium.toLocaleString("en-In")} was successful
                 </div>
                 <div>
                   <div
