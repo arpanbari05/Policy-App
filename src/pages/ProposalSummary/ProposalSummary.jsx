@@ -431,7 +431,7 @@ const ProposalSummary = () => {
                   justify-content: center;
                 `}
               >
-                <ShareQuoteModal />
+                <ShareQuoteModal stage="PROPOSAL_SUMMARY" />
               </div>
             </div>
             <Col

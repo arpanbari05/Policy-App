@@ -514,7 +514,7 @@ const ProposalPage = () => {
               >
                 You are Just 5 minutes away from investing for your future
               </span>
-              <ShareQuoteModal />
+              <ShareQuoteModal stage="PROPOSAL" />
             </div>
           </div>
           <div>

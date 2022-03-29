@@ -21,7 +21,9 @@ function Quotes({ sortBy = "relevence", ...props }) {
 
   if (data) {
     mergedQuotes = data.filter(
-      icQuotes => !!icQuotes?.data?.data[0]?.total_premium,
+      icQuotes =>
+        icQuotes?.data?.data?.length &&
+        !!icQuotes?.data?.data[0]?.total_premium,
     ); // filter non-zero premium quotes.
     mergedQuotes = data.map(icQuotes => ({
       ...icQuotes,

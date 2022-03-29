@@ -40,11 +40,15 @@ import AddPlansModal from "./components/AddPlansModal";
 import { useState } from "react";
 
 import TenureFeatureValue from "./components/tenure/Tenure";
+import useComparePage from "./useComparePage";
+import ShareQuoteModal from "../../components/ShareQuoteModal";
+import useWindowSize from "../../customHooks/useWindowSize";
 
 function ComparePage() {
   const { groupCode } = useParams();
   const [selectedSectionView, setSelectedSectionView] = useState({});
   const [isSelectedSectionView, setIsSelectedSectionView] = useState(false);
+  const { imageSend, imageSendM } = useComparePage();
 
   useEffect(() => {
     const value = Object.keys(selectedSectionView).find(
@@ -66,10 +70,15 @@ function ComparePage() {
 
   const { quotes: compareQuotes } = getCompareQuotes(groupCode);
 
+  console.log(imageSend);
+
   return (
     <Page id="printCompare">
       <Container className="pt-3">
-        <BackButton />
+        <div className="d-flex align-items-center justify-content-between">
+          <BackButton />
+          <ShareQuoteModal stage="COMPARE" imageSend={imageSend} />
+        </div>
         <CompareHeaderWrap>
           <div
             className="d-flex flex-column align-items-center justify-content-center"
