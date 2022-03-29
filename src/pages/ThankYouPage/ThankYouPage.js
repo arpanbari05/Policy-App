@@ -21,6 +21,7 @@ import Card from "./components/Card";
 import styled from "styled-components";
 import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
+import ShareQuoteModal from "../../components/ShareQuoteModal";
 //import CardMobile from "./components/CardMobile";
 
 const ThankYouPage = () => {
@@ -157,6 +158,16 @@ const ThankYouPage = () => {
     return (
       <Page>
         <>
+          <div
+            css={`
+              margin-top: 30px;
+              margin-right: 80px;
+              display: flex;
+              justify-content: flex-end;
+            `}
+          >
+            <ShareQuoteModal cssProps={"margin-top: 30px;"} stage="THANK_YOU" />
+          </div>
           <div className="hideOnMobile">
             <div className="thankheading__wrapper">
               <div className="thankheading__message">

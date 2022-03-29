@@ -132,13 +132,13 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
                   stage="PROPOSAL_SUMMARY"
                 />
               )} */}
-              {location.pathname === `/compare/${groupCode}` && (
+              {/* {location.pathname === `/compare/${groupCode}` && (
                 <ShareQuoteModal
                   imageSend={imageSend}
                   emailStatus={emailStatus}
                   stage={"COMPARE"}
                 />
-              )}
+              )} */}
 
               <div
                 css={`

@@ -26,6 +26,17 @@ const shareViaEmailApi = data =>
     data,
   });
 
+const printImageById = async id => {
+  const input = document.getElementById(id);
+
+  const canvas = await html2canvas(input, {
+    scrollX: 0,
+    scrollY: -window.scrollY,
+  });
+  const imgData = canvas.toDataURL("image/png");
+  return imgData;
+};
+
 const ShareCTA = ({ onClick, loader }) => {
   return (
     <Button
@@ -75,6 +86,7 @@ const ShareQuoteModal = ({
   hideBtn,
   label,
   shareQuotes,
+  cssProps = "",
 }) => {
   const [show, setshow] = useState(showModal);
 
@@ -91,6 +103,16 @@ const ShareQuoteModal = ({
   } = useTheme();
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getImage = async () => {
+      const id = stage === "COMPARE" && "printCompare";
+      const image = id && (await printImageById(id));
+      console.log(image);
+      setImageSend(image);
+    };
+    getImage();
+  }, []);
 
   useEffect(() => {
     dispatch(setlEmaiStatus(""));
@@ -575,7 +597,7 @@ function ShareStep2({
 
   const handleShare = async (e, data) => {
     e.preventDefault();
-
+    console.log(imageSend);
     const validator =
       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
     if (data.mode[0] === "EMAIL" && data.email === "") {
@@ -638,7 +660,7 @@ function ShareStep2({
               email,
               whatsapp: "",
               sms: "",
-              quote_img: imageSend,
+              quote_img: imageSend ? imageSend : undefined,
             });
           }}
           // loader={isSending && !emailStatus?.message}
