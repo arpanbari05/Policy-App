@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import PremiumFilter from "./filters/PremiumFilter";
 import CoverRangeFilter from "./filters/CoverRangeFilter";
@@ -11,13 +11,20 @@ import { useFrontendBoot } from "../../../customHooks";
 import useFilters from "./filters/useFilters.js";
 import DeductibleFilter from "./filters/DeductibleFilter";
 import { Container } from "react-bootstrap";
-import { useParams } from "react-router-dom";
-
+import ErrorPopup from "../../ProposalPage/ProposalSections/components/ErrorPopup";
+import { setPosPopup } from "../quote.slice";
 
 const LowerModifier = ({ sortBy = <></> }) => {
   const { getSelectedFilter } = useFilters();
   const selectedPolicyTypeFilter = getSelectedFilter("plantype");
   const { journeyType } = useFrontendBoot();
+  const dispatch = useDispatch();
+  const { pos_popup } = useSelector(({ quotePage }) => quotePage);
+  const {
+    data: {
+      settings: { pos_nonpos_switch_message },
+    },
+  } = useFrontendBoot();
 
   return (
     <Container
@@ -32,7 +39,8 @@ const LowerModifier = ({ sortBy = <></> }) => {
         {sortBy}
         <PremiumFilter />
         {journeyType === "health" ? <CoverRangeFilter /> : <DeductibleFilter />}
-        {selectedPolicyTypeFilter.display_name !== "Individual" && journeyType !== "top_up" ? (
+        {selectedPolicyTypeFilter.display_name !== "Individual" &&
+        journeyType !== "top_up" ? (
           <PolicyTypeFilter />
         ) : null}
         <MultiyearOptionFilter />
@@ -40,6 +48,12 @@ const LowerModifier = ({ sortBy = <></> }) => {
         <InsurerFilter />
         <MoreFilters />
       </FiltersWrapper>
+      {pos_popup && (
+        <ErrorPopup
+          handleClose={() => dispatch(setPosPopup(false))}
+          htmlProps={pos_nonpos_switch_message}
+        />
+      )}
     </Container>
   );
 };

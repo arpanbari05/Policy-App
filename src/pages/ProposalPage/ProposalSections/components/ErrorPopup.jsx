@@ -13,33 +13,31 @@ import {
   ViewQuotesWrapper,
 } from "./BMI";
 
-const ErrorPopup = ({show, head, msg, handleClose}) => {
-  
- 
-    return (
-      <PopupWrapper>
-        <Popup>
-          {/* <CloseButton
+const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
+  return (
+    <PopupWrapper>
+      <Popup>
+        {/* <CloseButton
             onClick={handleClose}
           > */}
-            <i style={{margin: "10px 10px 0 0", cursor: "pointer"}} class="fas fa-times" onClick={handleClose}></i>
-          {/* </CloseButton> */}
-          <Container>
-            {head && (<span>{head}</span>)}
-            <p>
-            {/* Based on your medical declaration, this plan is not valid for you,
+        <i
+          style={{ margin: "10px 10px 0 0", cursor: "pointer" }}
+          class="fas fa-times"
+          onClick={handleClose}
+        ></i>
+        {/* </CloseButton> */}
+        <Container>
+          {head && <span>{head}</span>}
+          {htmlProps && <div dangerouslySetInnerHTML={{ __html: htmlProps }} />}
+          {/* Based on your medical declaration, this plan is not valid for you,
               Please choose a different plan/insurer */}
-            {msg}
-            </p>
-            <ButtonWrapper>
-              <button
-              className="btn"
-                onClick={handleClose}
-              >
-                OK
-              </button>
-            </ButtonWrapper>
-            {/* <ViewQuotesWrapper>
+          {msg && <p>{msg}</p>}
+          <ButtonWrapper>
+            <button className="btn" onClick={handleClose}>
+              OK
+            </button>
+          </ButtonWrapper>
+          {/* <ViewQuotesWrapper>
               <button
                 onClick={() => {
                   history.push(`/quotes/${member}?enquiryId=${enquiryId}`);
@@ -48,17 +46,13 @@ const ErrorPopup = ({show, head, msg, handleClose}) => {
                 View Quotes {">"}
               </button>
             </ViewQuotesWrapper> */}
-          </Container>
-        </Popup>
-      </PopupWrapper>
-    );
-}
+        </Container>
+      </Popup>
+    </PopupWrapper>
+  );
+};
 
 export default ErrorPopup;
-
-
-
-
 
 // const PlanUnavailable = () => {
 //   const { showPlanNotAvail } = useSelector(state => state.proposalPage);
@@ -70,7 +64,7 @@ export default ErrorPopup;
 //   const dispatch = useDispatch();
 //   if (!showPlanNotAvail) return <></>;
 //   if (showPlanNotAvail)
-    
+
 // };
 
 // export default PlanUnavailable;
