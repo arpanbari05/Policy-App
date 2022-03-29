@@ -1882,7 +1882,7 @@ export const useRevisedPremiumModal = () => {
     );
     next();
   }; /* Performs refetch from the server */
-
+  console.log("wrgfbkjwrf",revisedPremiumPopupToggle,updatedTotalPremium,prevTotalPremium)
   useEffect(() => {
     if (+prevTotalPremium === +updatedTotalPremium) {
       revisedPremiumPopupToggle.off();
@@ -1896,6 +1896,8 @@ export const useRevisedPremiumModal = () => {
     prevTotalPremium,
     updatedTotalPremium,
   ]); /* CONTROLS DISPLAY OF REVISED PREMIUM POPUP AUTOMATICALLY */
+
+  
 
   return {
     getUpdatedCart,

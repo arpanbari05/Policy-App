@@ -108,7 +108,11 @@ const useProposalSections = (
         saveProposalData({ [name]: values }, () => {
           name === "Proposer Details" &&
             window.scrollTo({ top: 0, behavior: "smooth" }); //? scrolls to the top
+            // revisedPremiumPopupUtilityObject.getUpdatedCart(() =>
+            //       dispatch(setActiveIndex(false)),
+            //     );
           dispatch(setActiveIndex(false));
+
         }),
       );
 
@@ -151,13 +155,6 @@ const useProposalSections = (
                 revisedPremiumPopupUtilityObject.getUpdatedCart(() =>
                   dispatch(setActiveIndex(false)),
                 );
-                /* dispatch(
-                  getCart(true, () => {
-                    // setActive(prev => prev + 1);
-                    revisedPremiumPopup.on();
-                    
-                  }),
-                ); */
               }
             } else if (
               name === "Medical Details" &&
