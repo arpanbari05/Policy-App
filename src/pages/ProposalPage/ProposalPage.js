@@ -687,6 +687,7 @@ const ProposalPage = () => {
       <PlanUnavailable />
       <BMI />
       <NSTP />
+      
       {showErrorPopup.show && (
         <ErrorPopup
           show={showErrorPopup.show}

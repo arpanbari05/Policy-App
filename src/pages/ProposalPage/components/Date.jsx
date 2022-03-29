@@ -26,6 +26,7 @@ const DateComp = ({
   endDate,
   age = [0, 0],
 }) => {
+  
   const [isFocused, setIsFocused] = useState(false);
   const onFocus = () => setIsFocused(true);
   let newDate = new Date();
@@ -40,10 +41,14 @@ const DateComp = ({
   };
 
   const getMoment = val => {
+    
     return val.length === 4
-      ? moment(val, "YYYY")?.year()
+      ? moment(val, "yyyy")?.toDate()
       : moment(val, "DD-MM-YYYY")?.toDate();
   };
+
+ 
+
 
   const onKeyDownHandler = e => {
     if (e.keyCode === 9 || e.which === 9) {
@@ -51,6 +56,7 @@ const DateComp = ({
     }
     onKeyDown();
   };
+  
 
   const openDatepicker = () => startRef.current.setOpen(true);
   return (
@@ -60,18 +66,17 @@ const DateComp = ({
           id="date-picker"
           ref={startRef}
           onKeyDown={onKeyDownHandler}
-          
           showYearDropdown
           yearDropdownItemNumber={100}
           scrollableYearDropdown={true}
           dateFormat={formatFordatePicker(value)}
-          onClick={(e) => console.log("sfbhsfkjv",e)}
           selected={
             value && value !== "Invalid date" && value !== "value"
               ? value.includes("NaN")
                 ? ""
                 : getMoment(value)
               : ""
+
           }
           minDate={
             age.length && age[1] >= 1
