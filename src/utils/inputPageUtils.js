@@ -45,7 +45,7 @@ export default function validateInput({
     isValidate = false;
   }
   if (
-    !isEnquiryOptional("email", settings) &&
+    !isEnquiryOptional("name", settings) &&
     fullNameInput?.value?.length === 0
   ) {
     setFullNameErrors({ message: "Full Name is required." });
