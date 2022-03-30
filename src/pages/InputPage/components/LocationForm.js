@@ -104,7 +104,7 @@ function LocationForm({ edit = false, close = () => {} }) {
         else {
           if (
             groupWithoutLocation &&
-            groupWithoutLocation?.id === currentGroupCode
+            groupWithoutLocation?.id !== currentGroupCode
           ) {
             setCurrentGroupCode(groupWithoutLocation.id);
           } else {

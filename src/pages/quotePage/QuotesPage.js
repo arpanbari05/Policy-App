@@ -160,7 +160,7 @@ function ShowingPlanType() {
               )?.plan_type
             ] + " "
       }plans`} */}
-      {`Showing ${displayPolicyTypeFitler} plans`}
+      {`Showing ${mergedQuotes?.length} ${displayPolicyTypeFitler} plans`}
     </h1>
   );
 }
