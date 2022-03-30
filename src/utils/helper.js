@@ -763,3 +763,17 @@ export function renderDisclaimer({ tenantName }) {
     consent anytime on "("to provide a contact number or email id or both")"`;
   }
 }
+
+export function isThemeApp() {
+  const domain = window.location.host;
+  if (
+    domain.includes("localhost:") ||
+    domain === "renewbuy-health.fynity.in" ||
+    domain === "topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in" ||
+    domain === "uat-health.pincinsurance.com"
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
