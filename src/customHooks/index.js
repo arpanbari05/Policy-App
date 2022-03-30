@@ -329,6 +329,10 @@ export function useMembers() {
           ...group,
           city: group?.city || reduxGroupMatch?.city,
           pincode: group?.pincode || reduxGroupMatch?.pincode,
+          extras: {
+            ...group?.extras,
+            ...reduxGroupMatch?.extras,
+          },
         };
       });
 

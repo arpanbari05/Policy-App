@@ -129,6 +129,12 @@ function ShowingPlanType() {
     }
   }, [shareType]);
 
+  const { getSelectedFilter } = useFilters();
+
+  const selectedPolicyTypeFilter = getSelectedFilter("plantype");
+
+  const displayPolicyTypeFitler = selectedPolicyTypeFilter.display_name;
+
   const planTypes = {
     I: "Individual",
     F: "Family Floater",
@@ -145,7 +151,7 @@ function ShowingPlanType() {
         font-weight: 900;
       `}
     >
-      {`Showing ${mergedQuotes?.length} ${
+      {/* {`Showing ${mergedQuotes?.length} ${
         journeyType === "top_up"
           ? "Top Up "
           : planTypes[
@@ -153,7 +159,8 @@ function ShowingPlanType() {
                 singleGroup => singleGroup.id === +groupCode,
               )?.plan_type
             ] + " "
-      }plans`}
+      }plans`} */}
+      {`Showing ${displayPolicyTypeFitler} plans`}
     </h1>
   );
 }

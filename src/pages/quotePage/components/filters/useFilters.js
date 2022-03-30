@@ -43,11 +43,35 @@ function useFilters() {
     data: { defaultfilters, morefilters, ...filters },
   } = useFrontendBoot();
 
-  const {
+  let {
     data: {
-      data: { groups, input },
+      data: { input, groups },
     },
   } = useGetEnquiriesQuery();
+
+  const reduxGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups"));
+
+  if (reduxGroup?.length) {
+    const updatedGroup = data.data?.groups?.map(group => {
+      const reduxGroupMatch = reduxGroup?.find(reGrp => {
+        return reGrp?.members?.some(mem => group?.members?.includes(mem));
+      });
+      return {
+        ...group,
+        city: group?.city || reduxGroupMatch?.city,
+        pincode: group?.pincode || reduxGroupMatch?.pincode,
+        extras: {
+          ...group?.extras,
+          ...reduxGroupMatch?.extras,
+        },
+      };
+    });
+
+    groups = updatedGroup;
+    localStorage.setItem("groups", JSON.stringify(updatedGroup));
+  }
 
   let currentGroup = groups.find(group => group.id === parseInt(groupCode));
 

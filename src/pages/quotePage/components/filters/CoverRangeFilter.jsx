@@ -508,15 +508,7 @@ const CoverRangeFilter = () => {
 
   const { getSelectedFilter } = useFilters();
 
-  // const {
-  //   data: { covers },
-  // } = useGetFrontendBootQuery();
-
   const selectedCover = getSelectedFilter("cover");
-
-  // const displayCover = covers.find(
-  //   (cover) => cover.code === selectedCover
-  // ).display_name;
 
   const displayCover = selectedCover.display_name;
 
