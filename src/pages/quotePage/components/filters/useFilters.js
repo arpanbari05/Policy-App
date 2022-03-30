@@ -145,7 +145,27 @@ function useFilters() {
     );
   }
 
-  const isFiltersDefault = !!!extras;
+  const { cover, plantype, baseplantype, tenure } = defaultfilters;
+  const selectedCover = getSelectedFilter("cover");
+  const selectedPlanType = getSelectedFilter("plantype");
+  const selectedTenure = getSelectedFilter("tenure");
+  const selectedBasePlanType = getSelectedFilter("baseplantype");
+  const selectedInsurers = getSelectedFilter("insurers");
+  const selectedDeductible = getSelectedFilter("deductible");
+
+  const isFiltersDefault =
+    selectedCover.code === cover &&
+    (selectedPlanType.code === plantype || selectedPlanType === "I") &&
+    selectedBasePlanType.code === baseplantype &&
+    selectedTenure.code === tenure &&
+    selectedInsurers.length < 1 &&
+    (selectedDeductible.code
+      ? selectedDeductible?.code === deductible
+      : true) &&
+    !extras?.others?.length &&
+    !extras?.pre_existing_ailments?.length &&
+    !extras?.popular_filters?.length &&
+    !extras?.no_claim_bonus?.length;
 
   return { getSelectedFilter, isFiltersDefault };
 }
