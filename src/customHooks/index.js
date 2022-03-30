@@ -1560,9 +1560,7 @@ export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
     productId: quote?.product.id,
     group: parseInt(groupCode),
     journeyType,
-    additionalUrlQueries:
-      queryOptions?.getRidersQueryParams?.additionalUrlQueries,
-    selected_riders: queryOptions?.getRidersQueryParams?.selected_riders,
+
     ...queryOptions,
   };
 
@@ -1574,7 +1572,7 @@ export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
 }
 
 function isAffectsOtherRiders(rider) {
-  return !!rider.affects_other_riders;
+  return rider?.affects_other_riders;
 }
 
 function isMandatoryRider(rider) {
@@ -1642,19 +1640,17 @@ export function useRiders({
 
   const { feature_options } = useSelector(({ cart }) => cart);
 
-  const reliance_general_feature_option_value =
-    quote?.product?.company?.alias === "reliance_general" &&
-    feature_options[Object.keys(feature_options)[0]]; //? free rider name to be selected by default
-
   const findLocalRider = riderToFind =>
     riders.find(rider => rider?.id === riderToFind?.id);
 
+  const additionalUrlQueries = getRiderOptionsQueryString(riders);
+
   const isRiderSelected = riderToCheck => {
-    if (riderToCheck.is_mandatory) return true;
+    if (riderToCheck?.is_mandatory) return true;
 
     const localRider = findLocalRider(riderToCheck);
 
-    return localRider && localRider.isSelected;
+    return localRider && localRider?.isSelected;
   };
 
   const affectsOtherRiders = riders
@@ -1662,14 +1658,12 @@ export function useRiders({
     .filter(isAffectsOtherRiders)
     .map(rider => rider.alias);
 
-  const getRidersQueryParams = {
-    additionalUrlQueries: getRiderOptionsQueryString(riders),
-  };
+  /*if (affectsOtherRiders.length)
+    getRidersQueryParams.selected_riders = affectsOtherRiders; */
 
-  if (affectsOtherRiders.length)
-    getRidersQueryParams.selected_riders = affectsOtherRiders;
+  let selected_riders = [];
 
-  const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
+  if (affectsOtherRiders.length) selected_riders = affectsOtherRiders;
 
   let optionsSelected = {};
 
@@ -1688,23 +1682,30 @@ export function useRiders({
 
   const query = useGetRiders(quote, groupCode, {
     queryOptions: {
-      getRidersQueryParams,
+      additionalUrlQueries,
       feature_options,
       selected_riders,
       options_query,
     },
   });
 
+  //? RELIANCE FUNCTIONALITY
+  const reliance_general_feature_option_value =
+    quote?.product?.company?.alias === "reliance_general" &&
+    feature_options[Object.keys(feature_options)[0]]; //? free rider name to be selected by default
+
   const { data } = query;
 
   useEffect(() => {
     if (data) {
       const { data: ridersData } = data;
+
       setRiders(riders => {
         return ridersData.map(rider => {
           const localRider = riders.find(
             localRider => localRider.id === rider.id,
           );
+
           return {
             ...rider,
             isSelected:
@@ -1712,9 +1713,7 @@ export function useRiders({
               (localRider && localRider.isSelected) ||
               reliance_general_feature_option_value ===
                 rider?.name?.toLowerCase()?.split(" ")?.join("_"),
-            options_selected: localRider
-              ? localRider.options_selected
-              : rider.options_selected,
+            options_selected: rider?.options_selected,
           };
         });
       });

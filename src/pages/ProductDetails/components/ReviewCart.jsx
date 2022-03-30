@@ -1102,7 +1102,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
           <div className="d-flex justify-content-between align-items-center">
             <div
               css={`
-                font-size: 0.79rem;
+                font-size: 0.65rem;
                 text-align: left;
               `}
             >
