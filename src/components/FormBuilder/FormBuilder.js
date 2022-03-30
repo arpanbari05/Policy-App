@@ -69,7 +69,8 @@ const FormBuilder = ({
     insertValue,
     setErrors,
     updateValues,
-    checkReadOnly
+    checkReadOnly,
+    updateValidateObjSchema
   } = useFormBuilder(
     schema,
     fetchValues,
@@ -297,7 +298,7 @@ const FormBuilder = ({
                                               innerItem.name,
                                               e.target.value,
                                             );
-                                          } else updateValue(innerItem.name, e);
+                                          } else e.target.value && updateValue(innerItem.name, e.target.value);
                                         }
                                         if (
                                           innerItem.fill &&
@@ -472,7 +473,7 @@ const FormBuilder = ({
                   >
                     <Comp
                       name={item.name}
-                      checkValidation={item.validate}
+                      checkValidation={updateValidateObjSchema(item)}
                       selectedValues={values}
                       data={item.data}
                       onChange={(e, value) => {
