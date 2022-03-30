@@ -1,28 +1,8 @@
-export const settings = {
-  journey_type: "single",
-  mobile: "000000000000000",
-  email: "fyntunesolutionshealth@gmail.com",
-  license: "00000000000000",
-  logo: "https://health-admin-bucket.s3.ap-south-1.amazonaws.com/tenant_logos/fyntune.3b50b50a.png",
-  primary_color: "#0a87ff",
-  secondary_color: "#2cd44a",
-  primary_shade: "#ecf6ff",
-  secondary_shade: "#eef1f4",
-  addons_visibilty: "1",
-  riders_visibilty: "1",
-  footer: "",
-  input_banner_info: "",
-  talk_to_us_info: "",
-  multiindividual_visibilty: "1",
-  top_up_flow: ["Single_Top_Up_Journey"],
-  account_login_link: null,
-  shop_more_link: null,
-  b2b_enquiry_optionals: ["email", "mobile", "gender"],
-  b2c_enquiry_optionals: ["email", "mobile", "gender"],
-};
-
 export function isEnquiryOptional(value, setting) {
-  return setting?.b2b_enquiry_optionals?.includes(value);
+  return (
+    localStorage.getItem("SSO_user") !== null &&
+    setting?.b2b_enquiry_optionals?.includes(value)
+  );
 }
 const validateEmail = str => {
   var pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
