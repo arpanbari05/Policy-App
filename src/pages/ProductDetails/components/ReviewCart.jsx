@@ -447,8 +447,6 @@ function getCartEntryFromUpdateResult(updateResultData, groupCode) {
 function EditMembersButton({ groupCode, ...props }) {
   const { colors } = useTheme();
 
-  const modalToggle = useToggle(false);
-
   const dispatch = useDispatch();
 
   return (
@@ -463,7 +461,6 @@ function EditMembersButton({ groupCode, ...props }) {
           color: ${colors.primary_color};
           padding: 0;
         `}
-        // onClick={modalToggle.on}
         onClick={() => dispatch(setShowEditMembers(true))}
       >
         <FaPen />
@@ -473,7 +470,7 @@ function EditMembersButton({ groupCode, ...props }) {
   );
 }
 
-function EditMembers({ onClose }) {
+function EditMembers({}) {
   const { colors } = useTheme();
 
   const { groupCode } = useParams();
@@ -485,6 +482,8 @@ function EditMembers({ onClose }) {
   } = useGetEnquiriesQuery();
 
   //const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  const revisedPremiumModalToggle = useToggle(false);
 
   const firstName = name.split(" ")[0];
 
@@ -508,7 +507,7 @@ function EditMembers({ onClose }) {
   const handleSubmit = () => {
     const members = getSelectedMembers();
     updateGroupMembers(members).then(res => {
-      if (res.error) return;
+      if (res?.error) return;
       dispatch(
         api.util.invalidateTags([
           "Cart",
@@ -522,7 +521,10 @@ function EditMembers({ onClose }) {
         groupCode,
       );
       if (updatedCartEntry.total_premium === currentCartEntry.total_premium)
-        onClose && onClose();
+        revisedPremiumModalToggle.off();
+
+      if (updatedCartEntry.total_premium !== currentCartEntry.total_premium)
+        revisedPremiumModalToggle.on();
     });
   };
 
@@ -534,13 +536,13 @@ function EditMembers({ onClose }) {
     const { unavailable_message, ...updatedCartEntry } =
       getCartEntryFromUpdateResult(data, groupCode);
     const handleCloseClick = () => {
-      onClose && onClose();
+      revisedPremiumModalToggle.off();
     };
 
     return (
       <Modal
-        show
-        onHide={onClose}
+        show={revisedPremiumModalToggle.isOn}
+        onHide={handleCloseClick}
         css={`
           & .modal-dialog {
             max-width: 600px;
@@ -675,7 +677,7 @@ function EditMembers({ onClose }) {
   }
 
   return (
-    <EditMembersModal onClose={onClose}>
+    <EditMembersModal>
       <div className="p-3">
         <MemberOptions showCounter={false} {...memberForm} selectable={false} />
         {serverErrors
