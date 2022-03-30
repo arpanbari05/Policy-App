@@ -27,7 +27,7 @@ import styled from "styled-components";
 const BasicDetailsForm = ({ ...props }) => {
   const { colors } = useTheme();
   const {
-    data: { tenant, setting },
+    data: { tenant, settings },
   } = useFrontendBoot();
 
   let inputData = {};
@@ -71,7 +71,7 @@ const BasicDetailsForm = ({ ...props }) => {
   const handleFormSubmit = async event => {
     event.preventDefault();
     const validation = validateInput({
-      setting,
+      settings,
       fullNameInput,
       emailInput,
       mobileInput,
@@ -308,7 +308,8 @@ const BasicDetailsForm = ({ ...props }) => {
           type="submit"
           className="w-100"
           disabled={
-            createEnquiryQuery.isLoading || isEnquiryOptional("gender", setting)
+            createEnquiryQuery.isLoading ||
+            isEnquiryOptional("gender", settings)
               ? null
               : !gender
           }
