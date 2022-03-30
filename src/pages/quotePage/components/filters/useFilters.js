@@ -43,11 +43,35 @@ function useFilters() {
     data: { defaultfilters, morefilters, ...filters },
   } = useFrontendBoot();
 
-  const {
+  let {
     data: {
-      data: { groups, input },
+      data: { input, groups },
     },
   } = useGetEnquiriesQuery();
+
+  const reduxGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups"));
+
+  if (reduxGroup?.length) {
+    const updatedGroup = data.data?.groups?.map(group => {
+      const reduxGroupMatch = reduxGroup?.find(reGrp => {
+        return reGrp?.members?.some(mem => group?.members?.includes(mem));
+      });
+      return {
+        ...group,
+        city: group?.city || reduxGroupMatch?.city,
+        pincode: group?.pincode || reduxGroupMatch?.pincode,
+        extras: {
+          ...group?.extras,
+          ...reduxGroupMatch?.extras,
+        },
+      };
+    });
+
+    groups = updatedGroup;
+    localStorage.setItem("groups", JSON.stringify(updatedGroup));
+  }
 
   let currentGroup = groups.find(group => group.id === parseInt(groupCode));
 
@@ -121,7 +145,27 @@ function useFilters() {
     );
   }
 
-  const isFiltersDefault = !!!extras;
+  const { cover, plantype, baseplantype, tenure } = defaultfilters;
+  const selectedCover = getSelectedFilter("cover");
+  const selectedPlanType = getSelectedFilter("plantype");
+  const selectedTenure = getSelectedFilter("tenure");
+  const selectedBasePlanType = getSelectedFilter("baseplantype");
+  const selectedInsurers = getSelectedFilter("insurers");
+  const selectedDeductible = getSelectedFilter("deductible");
+
+  const isFiltersDefault =
+    selectedCover.code === cover &&
+    (selectedPlanType.code === plantype || selectedPlanType === "I") &&
+    selectedBasePlanType.code === baseplantype &&
+    selectedTenure.code === tenure &&
+    selectedInsurers.length < 1 &&
+    (selectedDeductible.code
+      ? selectedDeductible?.code === deductible
+      : true) &&
+    !extras?.others?.length &&
+    !extras?.pre_existing_ailments?.length &&
+    !extras?.popular_filters?.length &&
+    !extras?.no_claim_bonus?.length;
 
   return { getSelectedFilter, isFiltersDefault };
 }

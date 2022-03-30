@@ -30,7 +30,7 @@ const validateEmail = str => {
 };
 
 export default function validateInput({
-  setting,
+  settings,
   fullNameInput,
   emailInput,
   mobileInput,
@@ -40,11 +40,14 @@ export default function validateInput({
 }) {
   let isValidate = true;
 
-  if (fullNameInput?.value?.length < 3) {
+  if (fullNameInput?.value?.length > 0 && fullNameInput?.value?.length < 3) {
     setFullNameErrors({ message: "Please enter a valid FullName." });
     isValidate = false;
   }
-  if (fullNameInput?.value?.length === 0) {
+  if (
+    !isEnquiryOptional("name", settings) &&
+    fullNameInput?.value?.length === 0
+  ) {
     setFullNameErrors({ message: "Full Name is required." });
     isValidate = false;
   }
@@ -59,7 +62,7 @@ export default function validateInput({
     isValidate = false;
   }
   if (mobileInput.value.length === 0) {
-    if (!isEnquiryOptional("mobile", setting)) {
+    if (!isEnquiryOptional("mobile", settings)) {
       setMobileErrors({ message: "Mobile No. is required." });
       isValidate = false;
     }
@@ -70,7 +73,7 @@ export default function validateInput({
     setEmailErrors({ message: "Please enter a valid Email id." });
     isValidate = false;
   }
-  if (!isEnquiryOptional("email", setting) && emailInput.value.length === 0) {
+  if (!isEnquiryOptional("email", settings) && emailInput.value.length === 0) {
     setEmailErrors({ message: "Email is required." });
     isValidate = false;
   }

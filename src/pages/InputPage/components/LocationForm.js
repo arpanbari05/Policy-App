@@ -100,14 +100,12 @@ function LocationForm({ edit = false, close = () => {} }) {
       const errors = res.some(res => !!res.error);
       if (errors) return;
       if (edit) {
-        // checking if all groups have pincode, if so close modal
-        // if (!res?.data?.groups?.find(group => !group.pincode))
-        //   return dispatch(setShowEditMembers(false));
-
-        // checking if next group exist
         if (nextGroup) setCurrentGroupCode(prev => prev + 1);
         else {
-          if (groupWithoutLocation) {
+          if (
+            groupWithoutLocation &&
+            groupWithoutLocation?.id !== currentGroupCode
+          ) {
             setCurrentGroupCode(groupWithoutLocation.id);
           } else {
             return dispatch(setShowEditMembers(false));
