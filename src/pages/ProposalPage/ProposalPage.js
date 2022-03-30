@@ -44,7 +44,7 @@ import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import useComparePage from "../ComparePage/useComparePage";
 import { mobile } from "../../utils/mediaQueries";
-
+// import dummy from "./dumySchema";
 /* ===============================test================================= */
 
 /* ===============================test================================= */
@@ -64,6 +64,7 @@ const ProposalPage = () => {
   const [proposerDactive, setProposerDactive] = useState(true);
 
   const { currentSchema } = useSelector(state => state.schema);
+  // const currentSchema = dummy;
 
   const queryStrings = useUrlQuery();
 
@@ -164,6 +165,7 @@ const ProposalPage = () => {
     }
   }, [showErrorPopup]);
 
+
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
 
@@ -262,6 +264,7 @@ const ProposalPage = () => {
             </span>
           )}
         </Card>
+
         <Card styledCss={`margin-bottom: 20px;`}>
           {activeForm === "Insured Details" ? (
             <>

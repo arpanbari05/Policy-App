@@ -279,6 +279,7 @@ const InputContainer = styled.div`
 `;
 const Input = styled.input`
   list-style: none;
+  -webkit-user-select: text;
   list-style-type: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
