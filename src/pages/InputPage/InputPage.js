@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Card from "../../components/Card";
 import styled from "styled-components/macro";
-import { bg } from "../../assets/images";
+import { bg, checkRB } from "../../assets/images";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { Page } from "../../components";
 import { useFrontendBoot, useTheme } from "../../customHooks";
@@ -16,6 +16,7 @@ import "styled-components/macro";
 import { Spinner } from "react-bootstrap";
 import MedicalHistoryForm from "./components/MedicalHistoryForm";
 import JourneyTypeForm from "./components/JourneyTypeForm";
+import { renderDisclaimer } from "../../utils/helper";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -273,6 +274,30 @@ function HeaderCard() {
         </div>
         {data?.settings?.input_banner_info ? (
           <div
+            css={`
+              p {
+                font-size: 1.4rem;
+                margin-bottom: 2.3rem;
+              }
+
+              li {
+                position: relative;
+                margin-top: 10px;
+                margin-left: 50px;
+                font-size: 14px;
+                &::before {
+                  content: "";
+                  position: absolute;
+                  height: 20px;
+                  width: 20px;
+                  left: -30px;
+                  top: 0px;
+                  border-radius: 100%;
+                  background-image: url(${checkRB});
+                  background-size: cover;
+                }
+              }
+            `}
             dangerouslySetInnerHTML={{
               __html: data?.settings?.input_banner_info,
             }}
@@ -306,16 +331,7 @@ function TermsAndConditions(props) {
           margin: 0 auto;
         `}
       >
-        <i className="termchk"></i>By clicking on Get Started, I hereby
-        authorise {tenantName}. and all of its affiliates, subsidiaries, group
-        companies and related parties to access the details such as my name,
-        address, telephone number, e-mail address, birth date and / or
-        anniversary date shared by me, and contact me to provide information on
-        the various products and services offered. I understand that this
-        consent will override my NDNC registration, if any. I also understand
-        that at any point of time, I wish to stop receiving such communications
-        from {tenantName}, I can withdraw such consent anytime on (to provide a
-        contact number or email id or both){" "}
+        {renderDisclaimer({ tenantName })}
       </label>
     </div>
   );
