@@ -23,36 +23,45 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
       let isNotChecked = {};
       let hasYes = {};
       let checkCanProceed = [];
+      
       key2.forEach(item => {
-        if (noForAll[item] !== true) {
-          isNotChecked[item] = false;
-        } else {
-          isNotChecked[item] = true;
-        }
-        const temp =
-          values?.[item] &&
-          Object.keys(values?.[item] || {})?.some(
-            data => values?.[item]?.[data]?.[`is${data}`] === "Y",
-          );
-        if (temp === true) {
+        console.log("wkfbwkd",typeof values[item] )
+        if(typeof values[item] === "object" && values[item]){
+          if (noForAll[item] !== true) {
+            isNotChecked[item] = false;
+          } else {
+            isNotChecked[item] = true;
+          }
+          const temp =
+            Object.keys(values[item])?.some(
+              data => values?.[item]?.[data]?.[`is${data}`] === "Y",
+            );
+          if (temp === true) {
+            hasYes[item] = true;
+          } else {
+            hasYes[item] = false;
+          }
+        }else{
           hasYes[item] = true;
-        } else {
-          hasYes[item] = false;
         }
       });
 
       key.forEach(item => {
+        console.log("wfkwbhdkf",{checkCanProceed,hasYes,item,isNotChecked})
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed.push(item);
         }
-        if (
-          Object.keys(values[item]).length &&
-          !Object.keys(values[item]).every(el =>
-            values[item][el] ? values[item][el].isValid : true,
-          )
-        ) {
-          checkCanProceed.push(item);
-        }
+        Object.keys(values[item]).length && Object.keys(values[item]).forEach(el => {
+          values[item][el] && !values[item][el].isValid && checkCanProceed.push(el);
+        })
+        // if (
+          
+        //   !Object.keys(values[item]).every(el =>
+        //     values[item][el] ? values[item][el].isValid : true,
+        //   )
+        // ) {
+          
+        // }
       });
       if (key2.length < 1) {
         isNotChecked = true;

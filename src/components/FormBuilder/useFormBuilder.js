@@ -32,6 +32,10 @@ const useFormBuilder = (
     }
   };
 
+  const updateValidateObjSchema = (item) => {
+    return item.visibleOn && renderField(item,values) ?{...item.validate,required:true}:item.validate
+  }
+
   const checkReadOnly = (name) => {
     let nomineeRelation = values.nominee_relation;
     let nameWithOutNominee = name.slice(
@@ -221,7 +225,7 @@ const useFormBuilder = (
     let filteredKey = Object.keys(errors).filter(key => errors[key]);
     if (canProceed && !canProceed.canProceed)
       filteredKey = canProceed.canProceedArray;
-    console.log("srgvshfvjkl", errors, filteredKey, yesSelected);
+    console.log("srgvshfvjkl", errors, filteredKey, yesSelected,canProceed);
     if (filteredKey.length) {
       let scrollPositions = filteredKey.map(key => {
         let element = document.getElementById(key);
@@ -230,7 +234,7 @@ const useFormBuilder = (
           return y;
         }
       });
-
+console.log("svbkjsbnv",scrollPositions)
       window.scroll({
         top: Math.min(...scrollPositions),
         behavior: "smooth",
@@ -251,6 +255,7 @@ const useFormBuilder = (
     setErrors,
     updateValues,
     checkReadOnly,
+    updateValidateObjSchema,
   };
 };
 export default useFormBuilder;

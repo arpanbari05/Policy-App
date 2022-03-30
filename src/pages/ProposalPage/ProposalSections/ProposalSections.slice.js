@@ -157,13 +157,16 @@ const setSelfFieldsChange = ({
         updatedObj[key] = checkFrom[key];
     });
     updatedVal = { ...checkFor, self: updatedObj };
+    
   }
 
   dispatch(
     saveProposalData({
       [updationFor]: updatedVal,
     }),
+   
   );
+  
   // return updatedObj;
 };
 
@@ -182,9 +185,10 @@ const hasAnyChangeInObj = (newVal, oldVal) => {
 };
 
 export const saveProposalData = (proposalData, next, failure) => {
+  
   return async (dispatch, state) => {
     try {
-      console.log("sbcccsfb", proposalData);
+      console.log("sbcccsfb", proposalData,failure,next);
 
       let prevProposalData = state().proposalPage.proposalData;
       let schema = state().schema;
@@ -196,6 +200,12 @@ export const saveProposalData = (proposalData, next, failure) => {
       console.log("dfbjdflb", state());
       //console.log("saveProposalData success", response);
       if (response.statusCode === 200) {
+        dispatch(
+          api.util.invalidateTags([
+            "Cart",
+          ],undefined,),
+        )
+
         if (
           Object.keys(prevProposalData).length &&
           prevProposalData["Insured Details"].self &&
@@ -212,11 +222,11 @@ export const saveProposalData = (proposalData, next, failure) => {
             updationFor: "Insured Details",
             dispatch: dispatch,
           });
-        }
-        if (
+          
+        }else if (
           Object.keys(prevProposalData).length &&
           prevProposalData["Other Details"] &&
-          (proposalData["Proposer Details"] || proposalData["Insured Details"])
+          proposalData["Insured Details"]
         ) {
           setSelfFieldsChange({
             checkFor: prevProposalData["Other Details"],
@@ -231,6 +241,7 @@ export const saveProposalData = (proposalData, next, failure) => {
           });
         }
         next(response.data);
+        
       } else if (!response.data) {
         if (typeof response.errors === "object") {
           Object.keys(response.errors).map(i => {
@@ -253,6 +264,7 @@ export const saveProposalData = (proposalData, next, failure) => {
         }
       }
       console.log("bchkadvbchav", response);
+      
     } catch (err) {
       //console.error("saveProposalData error", err);
       dispatch(setIsLoading(false));
