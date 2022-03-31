@@ -281,12 +281,7 @@ const ProposalSummary = () => {
                   <span>Total Premium</span>
                   <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
                     <span class="font_weight_normal text-white">
-                      {amount(
-                        policyStatus.reduce(
-                          (acc, el) => (acc += el.total_premium),
-                          0,
-                        ),
-                      )}
+                      {amount(totalPremium)}
                     </span>
                   </p>
                 </div>
