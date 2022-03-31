@@ -48,7 +48,7 @@ const config = {
   ],
   // covers: [
   //   { code: "100000-300000", display_name: "Upto 3 Lakhs" },
-  //   { code: "300000-500000", display_name: "More than 3 to 5 Lakhs" },
+  //   { code: "300001-500000", display_name: "More than 3 to 5 Lakhs" },
   //   { code: "500001-1000000", display_name: "More than 5 to 10 Lakhs" },
   //   { code: "1000001-1500000", display_name: "More than 10 to 15 Lakhs" },
   //   { code: "1500001-2500000", display_name: "More than 15 to 25 Lakhs" },
@@ -246,7 +246,7 @@ const config = {
     { code: "base_health", display_name: "Base health" },
     { code: "1_crore_plan", display_name: "1 crore plan" },
   ],
-  // defaultfilters: { cover: "300000-500000", tenure: "1", plan_type: "F" },
+  // defaultfilters: { cover: "300001-500000", tenure: "1", plan_type: "F" },
   // settings: {
   //   journey_type: "cross_sell",
   //   mobile: "",
