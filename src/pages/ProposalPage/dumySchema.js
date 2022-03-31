@@ -571,14 +571,20 @@ const dummy = {
             {
                 "type": "members_text_group",
                 "name": "complete_health_essential_medical_ques_Q1",
+                
                 "width": "100%",
+                
                 "additionalOptions": {
                     "label": "Blood Sugar Level [Normal Range  70mg to 99mg]",
                     "members": [
                         "self",
                         "spouse"
-                    ]
+                    ],
+                    "maxLength": 3,
+                        "notAllowed": "70/99",
+                        "child_name": "complete_health_essential_medical_ques_1",
                 },
+                "allow": "onlyNumbers",
                 "validate": {
                     "required": true
                 }

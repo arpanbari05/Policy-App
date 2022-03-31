@@ -38,6 +38,7 @@ import {
   useUrlEnquiry,
   useCart,
   useShareFunctionality,
+  useRevisedPremiumModal,
 } from "../../customHooks";
 import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
@@ -124,13 +125,13 @@ const ProposalPage = () => {
   useEffect(() => {
     setActive(activeIndex);
   }, [activeIndex]);
-
+  const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
   // to get unfilled form
   useEffect(() => {
     if (
       Object.keys(proposalData).length &&
       activeIndex === false &&
-      continueBtnClick
+      continueBtnClick 
     ) {
       let unfilledInfoTabIndex;
 
@@ -141,7 +142,7 @@ const ProposalPage = () => {
           // setActive((prev) => prev + 1)
         }
       });
-      if (!unfilledInfoTabIndex) {
+      if (!unfilledInfoTabIndex && !revisedPremiumPopupUtilityObject.isOn) {
         setActivateLoader(true);
         dispatch(
           submitProposalData(() => {
