@@ -320,8 +320,8 @@ function RenderClaimProcess({ quote, ...props }) {
   return (
     <ClaimProcess
       ActiveMainTab
-      claimProccess={claimProcessQuery.data}
-      claimform={(productBrochureQuery.data || [])[0]}
+      claimProccess={claimProcessQuery?.data}
+      claimform={(productBrochureQuery?.data || [])[0]}
     />
   );
 }
