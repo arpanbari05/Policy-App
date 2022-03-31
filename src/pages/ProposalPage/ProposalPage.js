@@ -215,6 +215,7 @@ const ProposalPage = () => {
               >
                 {activeForm}
               </MainTitle>
+              {console.log("wefekbek",currentSchema)}
               <ProposerDetails
                 key={activeForm}
                 schema={

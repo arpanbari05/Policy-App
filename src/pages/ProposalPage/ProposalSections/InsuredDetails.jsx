@@ -64,6 +64,7 @@ const InsuredDetails = ({
   const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
     useMedicalQuestions(schema, values, setValues, name, proposalData);
 
+    console.log("wgvkjdba",canProceed)
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -203,14 +204,13 @@ const InsuredDetails = ({
             });
           }}
         />
-
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed()
             if (name === "Medical Details" && canProceed.canProceed) {
               // NSTP popup for RB
-             Object.values(yesSelected).includes(true) && frontBootData.settings.medical_nstp_declaration_messagetrue && dispatch(setShowErrorPopup({
+             Object.values(yesSelected).includes(true) && frontBootData.settings.medical_nstp_declaration_message && dispatch(setShowErrorPopup({
                 show: true,
                 head: "",
                 msg: frontBootData.settings.medical_nstp_declaration_message,
