@@ -113,6 +113,7 @@ const TextInput = ({
             if (
               checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&
+              e.target.value.split("").reduce((acc,char) => char==="."?acc++:acc,0) <= 1 &&
               (e.target.value === "" || !regForOnlyDigit.test(e.target.value)) &&
               e.target.value.length <= 60 
               && checkAllChar(

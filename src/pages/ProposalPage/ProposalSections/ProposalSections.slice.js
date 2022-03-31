@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import SecureLS from "secure-ls";
 import swal from "sweetalert";
 import { policyPdf } from "../../ThankYouPage/serviceApi";
-import { api } from "../../../api/api";
+import { api,useGetCartQuery } from "../../../api/api";
 import {
   getProposal,
   PaymentStatus,
@@ -118,6 +118,7 @@ const setSelfFieldsChange = ({
   dispatch,
   insuredDetails,
 }) => {
+  
   let updatedVal;
   if (updationFor === "Other Details") {
     let updatedParent = { ...checkFor };
@@ -185,7 +186,7 @@ const hasAnyChangeInObj = (newVal, oldVal) => {
 };
 
 export const saveProposalData = (proposalData, next, failure) => {
-  
+ 
   return async (dispatch, state) => {
     try {
       console.log("sbcccsfb", proposalData,failure,next);
@@ -194,17 +195,17 @@ export const saveProposalData = (proposalData, next, failure) => {
       let schema = state().schema;
       dispatch(setIsLoading(true));
       const response = await saveProposal(proposalData);
+      dispatch(
+        api.util.invalidateTags([
+          "Cart",
+        ],undefined,))
       dispatch(api.util.invalidateTags(["ProposalSummaryUpdate"]));
       dispatch(setProposalData(proposalData));
 
       console.log("dfbjdflb", state());
       //console.log("saveProposalData success", response);
       if (response.statusCode === 200) {
-        dispatch(
-          api.util.invalidateTags([
-            "Cart",
-          ],undefined,),
-        )
+   
 
         if (
           Object.keys(prevProposalData).length &&
@@ -240,6 +241,7 @@ export const saveProposalData = (proposalData, next, failure) => {
               prevProposalData["Insured Details"],
           });
         }
+
         next(response.data);
         
       } else if (!response.data) {

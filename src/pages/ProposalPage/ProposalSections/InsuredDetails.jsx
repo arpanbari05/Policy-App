@@ -15,6 +15,9 @@ import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 import { date } from "yup";
+import {
+  setShowErrorPopup
+} from "../ProposalSections/ProposalSections.slice";
 
 const InsuredDetails = ({
   schema,
@@ -26,7 +29,8 @@ const InsuredDetails = ({
 }) => {
   const [show, setShow] = useState(1);
   const { proposalData } = useSelector(state => state.proposalPage);
-  const { insuredMembers: membersDataFromGreetingPage } = useFrontendBoot();
+  const { insuredMembers: membersDataFromGreetingPage, data:frontBootData } = useFrontendBoot();
+  console.log("aefjbk",frontBootData)
   const { getGroupMembers, groups } = useMembers();
 
   const {
@@ -70,7 +74,7 @@ const InsuredDetails = ({
 
   const fullName = proposalData["Proposer Details"]?.name;
 
-  console.log("sfglknsflv",canProceed,noForAll)
+  console.log("sfglknsflv",yesSelected)
 
   return (
     <div>
@@ -205,6 +209,12 @@ const InsuredDetails = ({
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed()
             if (name === "Medical Details" && canProceed.canProceed) {
+              // NSTP popup for RB
+             Object.values(yesSelected).includes(true) && frontBootData.settings.medical_nstp_declaration_messagetrue && dispatch(setShowErrorPopup({
+                show: true,
+                head: "",
+                msg: frontBootData.settings.medical_nstp_declaration_message,
+              }));
               setSubmit("PARTIAL");
               continueSideEffects();
             } else if (name !== "Medical Details") {
