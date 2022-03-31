@@ -79,7 +79,7 @@ const config = {
           visible_on_sections: ["health", "top_up"],
         },
         {
-          code: "single_private_room",
+          code: "room_rent_charges",
           display_name: "Single Private Room",
           description:
             "Single Private Room means a basic (most economical of all accommodation) category of single room in a Hospital with or without air-conditioning facility where a single patient is accommodated and which has an attached toilet.\n                        ",
