@@ -35,7 +35,8 @@ export function useFiltersSlot({ initialFilters } = {}) {
     //MORE FILTERS UPDATION CHECK FUNCTIONALITY *MOBILE OR DESKTOP*
     if (availableMoreFilters[code]) {
       isChecked = filters[code]?.find(
-        singleSelectedOption => singleSelectedOption?.code === option.code,
+        singleSelectedOption =>
+          singleSelectedOption?.display_name === option.display_name,
       );
 
       updateFilters =
@@ -57,11 +58,11 @@ export function useFiltersSlot({ initialFilters } = {}) {
               ? undefined
               : filters[code]?.filter(
                   singleSelectedOption =>
-                    singleSelectedOption?.code !== option.code,
+                    singleSelectedOption?.display_name !== option.display_name,
                 ),
         }; // REMOVAL LOGIC
     } else {
-      isChecked = filters[code]?.code === option.code;
+      isChecked = filters[code]?.display_name === option.display_name;
       if (type === "check") {
         updateFilters = { ...filters };
         if (!isChecked) {
@@ -299,13 +300,15 @@ export function FilterOptions({
     selectedOption = currentOption ? [...currentOption] : [];
 
     isSelected = option =>
-      selectedOption.find(singleOption => singleOption?.code === option?.code)
+      selectedOption.find(
+        singleOption => singleOption?.display_name === option?.display_name,
+      )
         ? true
         : false;
   } else {
     selectedOption = currentOption;
 
-    isSelected = option => option.code === selectedOption?.code;
+    isSelected = option => option.display_name === selectedOption?.display_name;
   }
 
   const handleChange = option => {
@@ -319,7 +322,7 @@ export function FilterOptions({
         .map(option => (
           <FilterOption
             showTooltip={showTooltip}
-            key={option.code}
+            key={option.display_name}
             option={option}
             onChange={handleChange}
             checked={isSelected(option)}
@@ -622,9 +625,7 @@ function MobileModal({ onClose, children, show }) {
     //     {children}
     //   </div>
     // </Modal>
-    <CustomFilterModal
-      show={show}
-    >
+    <CustomFilterModal show={show}>
       <div
         css={`
           height: 100vh;

@@ -47,12 +47,13 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
       });
 
       key.forEach(item => {
-        console.log("wfkwbhdkf",{checkCanProceed,hasYes,item,isNotChecked})
+        console.log("wfkwbhdkf",{checkCanProceed,hasYes,item,isNotChecked,values})
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed.push(item);
         }
         Object.keys(values[item]).length && Object.keys(values[item]).forEach(el => {
-          values[item][el] && !values[item][el].isValid && checkCanProceed.push(el);
+          
+          values[item][el] && (!values[item][el][`is${el}`] || !values[item][el].isValid) && checkCanProceed.push(el);
         })
         // if (
           
