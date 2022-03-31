@@ -283,7 +283,7 @@ const ProposalSummary = () => {
                     <span class="font_weight_normal text-white">
                       {amount(
                         policyStatus.reduce(
-                          (acc, el) => (acc += el.total_premium),
+                          (acc, el) => (acc += parseInt(el.total_premium)),
                           0,
                         ),
                       )}

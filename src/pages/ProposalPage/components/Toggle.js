@@ -80,9 +80,10 @@ const Toggle = ({
     let isValid = true;
 
     if (
-      boolean === "Y" &&
+      (boolean === "Y" &&
       (showMembers !== false || customShowMembers) &&
-      !Object.values(membersStatus).includes(true)
+      !Object.values(membersStatus).includes(true)) ||
+      !boolean
     ) {
       isValid = false;
     }

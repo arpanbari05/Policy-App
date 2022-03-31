@@ -177,7 +177,7 @@ const dummy = {
         },
         {
             "type": "text",
-            "name": "address_line_1_10026554",
+            "name": "address_line_1_10026655",
             "section": "Address for self , spouse",
             "allow": "address",
             "validate": {
@@ -192,7 +192,7 @@ const dummy = {
         },
         {
             "type": "text",
-            "name": "address_line_2_10026554",
+            "name": "address_line_2_10026655",
             "section": "Address for self , spouse",
             "allow": "address",
             "validate": {
@@ -207,7 +207,7 @@ const dummy = {
         },
         {
             "type": "text",
-            "name": "address_line_3_10026554",
+            "name": "address_line_3_10026655",
             "section": "Address for self , spouse",
             "allow": "address",
             "validate": {
@@ -221,7 +221,7 @@ const dummy = {
         },
         {
             "type": "select",
-            "name": "pincode_10026554",
+            "name": "pincode_10026655",
             "section": "Address for self , spouse",
             "value": 110001,
             "allow": "onlyNumbers",
@@ -333,7 +333,7 @@ const dummy = {
         },
         {
             "type": "text",
-            "name": "city_10026554",
+            "name": "city_10026655",
             "section": "Address for self , spouse",
             "value": "Delhi",
             "validate": {
@@ -347,7 +347,7 @@ const dummy = {
         },
         {
             "type": "text",
-            "name": "state_10026554",
+            "name": "state_10026655",
             "section": "Address for self , spouse",
             "value": "Delhi",
             "additionalOptions": {
@@ -567,31 +567,26 @@ const dummy = {
         ]
     },
     "Medical Details": {
-        "10026554_self_spouse": [
+        "10026655_self_spouse": [
             {
-                "type": "members_text_group",
+                "type": "custom_medical",
                 "name": "complete_health_essential_medical_ques_Q1",
-                
                 "width": "100%",
-                
                 "additionalOptions": {
+                    "notAllowed": "N",
                     "label": "Blood Sugar Level [Normal Range  70mg to 99mg]",
                     "members": [
                         "self",
                         "spouse"
-                    ],
-                    "maxLength": 3,
-                        "notAllowed": "70/99",
-                        "child_name": "complete_health_essential_medical_ques_1",
+                    ]
                 },
-                "allow": "onlyNumbers",
                 "validate": {
                     "required": true
                 }
             },
             [
                 {
-                    "type": "text_group",
+                    "type": "text",
                     "name": "complete_health_essential_medical_ques_1",
                     "parent": "complete_health_essential_medical_ques_Q1",
                     "render": {
@@ -613,7 +608,7 @@ const dummy = {
                 }
             ],
             {
-                "type": "members_text_group",
+                "type": "custom_medical",
                 "name": "complete_health_essential_medical_ques_Q2",
                 "width": "100%",
                 "additionalOptions": {
@@ -652,7 +647,7 @@ const dummy = {
                 }
             ],
             {
-                "type": "members_text_group",
+                "type": "custom_medical",
                 "name": "complete_health_essential_medical_ques_Q3",
                 "width": "100%",
                 "additionalOptions": {
@@ -1211,7 +1206,7 @@ const dummy = {
         ]
     },
     "Other Details": {
-        "10026554_self_spouse": [
+        "10026655_self_spouse": [
             {
                 "type": "select",
                 "name": "nominee_relation",
