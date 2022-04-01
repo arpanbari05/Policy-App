@@ -23,19 +23,18 @@ import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import { small } from "../../utils/mediaQueries";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
-//import CardMobile from "./components/CardMobile";
 
 const ThankYouPage = () => {
   const ls = new SecureLS();
+
   const history = useHistory();
+
   const { pathname } = useLocation();
+
   const [payment, SetPayment] = useState(true);
+
   const [timer, SetTimer] = useState(6);
-  // const { theme } = useSelector(state => state.frontendBoot);
-  // const tenantDetail = useSelector(
-  //   state => state.frontendBoot.frontendData.tenant,
-  // );
-  // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   const {
     colors: {
       primary_color: PrimaryColor,
@@ -52,14 +51,18 @@ const ThankYouPage = () => {
 
   const shopMoreLink = settings.shop_more_link || "";
 
-  console.log("xfbjhxhnb", useFrontendBoot(), settings);
-
   const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
+
   const status = useSelector(state => state.proposalPage);
+
+  const isSSOJourney = localStorage.SSO_user;
+
   const { policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
   );
+
   const cart = {
     ...useSelector(state => state.cart),
     totalPremium: policyStatus.reduce(
@@ -68,20 +71,10 @@ const ThankYouPage = () => {
     ),
   };
 
-  // const callFetch = ()=>{
-  //   count!== 0 &&    setTimeout(()=>setCount(count-1), 30000)
-  // }()
-  console.log("hehehe2", loading, policyStatus);
   useEffect(() => {
     setLoading(true);
     dispatch(fetchPdf());
     setLoading(false);
-
-    // const getClear = setInterval(() => dispatch(fetchPdf()), 3000);
-    // setTimeout(() => {
-    //   clearInterval(getClear);
-    //   setLoading(false);
-    // }, 60000);
   }, []);
 
   useEffect(() => {
@@ -101,12 +94,34 @@ const ThankYouPage = () => {
     }
   }, [pathname]);
 
+  const htmlString = isSSOJourney
+    ? settings?.thank_you_banner_pos
+    : settings?.thank_you_banner;
+
   const currentGroup =
     localStorage.getItem("groups") &&
     JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
-  const Disclaimer = () => {
-    if (
+  const Disclaimer = ({ htmlStringDisclaimer }) => {
+    if (htmlString) {
+      return (
+        <div
+          css={`
+            margin-top: 20px;
+            margin-left: 52px;
+            font-size: 20px !important;
+            color: ${PrimaryColor};
+            & a {
+              font-weight: bold;
+              text-decoration: underline;
+            }
+          `}
+          dangerouslySetInnerHTML={{
+            __html: htmlString,
+          }}
+        />
+      );
+    } else if (
       policyStatus.every(
         item => item.underwriting_status === "underwriting_approval",
       )
@@ -121,6 +136,18 @@ const ThankYouPage = () => {
           >
             You can track your policy status on{" "}
             <a href={accountLoginLink}>My Account Page.</a> at anytime.
+          </div>
+          <div>
+            <a
+              href={shopMoreLink}
+              className="shopmore__button  btn-link"
+              css={`
+                color: ${PrimaryColor} !important;
+                border-color: ${PrimaryColor} !important;
+              `}
+            >
+              Shop More {">"}
+            </a>
           </div>
         </>
       );
@@ -138,6 +165,18 @@ const ThankYouPage = () => {
             <a href={accountLoginLink}>My Account Page.</a> You can visit the My
             Account page to retrieve your policy copy at any time.
           </div>
+          <div>
+            <a
+              href={shopMoreLink}
+              className="shopmore__button  btn-link"
+              css={`
+                color: ${PrimaryColor} !important;
+                border-color: ${PrimaryColor} !important;
+              `}
+            >
+              Shop More {">"}
+            </a>
+          </div>
         </>
       );
     else
@@ -151,6 +190,18 @@ const ThankYouPage = () => {
           >
             You can visit the <a href={accountLoginLink}>My Account Page.</a> to
             retrieve your policy copy or track your policy status at any time.
+          </div>
+          <div>
+            <a
+              href={shopMoreLink}
+              className="shopmore__button  btn-link"
+              css={`
+                color: ${PrimaryColor} !important;
+                border-color: ${PrimaryColor} !important;
+              `}
+            >
+              Shop More {">"}
+            </a>
           </div>
         </>
       );
@@ -207,19 +258,9 @@ const ThankYouPage = () => {
                     />
                   </div>
                   <div>
-                    <Disclaimer />
-                  </div>
-                  <div>
-                    <a
-                      href={shopMoreLink}
-                      className="shopmore__button  btn-link"
-                      css={`
-                        color: ${PrimaryColor} !important;
-                        border-color: ${PrimaryColor} !important;
-                      `}
-                    >
-                      Shop More {">"}
-                    </a>
+                    {settings && (
+                      <Disclaimer htmlStringDisclaimer={htmlString} />
+                    )}
                   </div>
                 </div>
                 <div className="col-lg-6">
@@ -230,7 +271,16 @@ const ThankYouPage = () => {
                       policyStatus.map((item, index) => {
                         if (item.product)
                           return (
-                            <Card values={item} isLoading={policyLoading} />
+                            <Card
+                              key={index}
+                              values={item}
+                              isLoading={policyLoading}
+                              showTrackStatus={
+                                isSSOJourney
+                                  ? !!+settings?.thank_you_keep_on_track_status_pos
+                                  : !!+settings?.thank_you_keep_on_track_status
+                              }
+                            />
                           );
                         else return <Card></Card>;
                       })
@@ -336,46 +386,79 @@ const ThankYouPage = () => {
                 ) : (
                   policyStatus.map((item, index) => {
                     if (item.product)
-                      return <Card values={item} isLoading={policyLoading} />;
+                      return (
+                        <Card
+                          values={item}
+                          key={index}
+                          isLoading={policyLoading}
+                          showTrackStatus={
+                            isSSOJourney
+                              ? !!+settings?.thank_you_keep_on_track_status_pos
+                              : !!+settings?.thank_you_keep_on_track_status
+                          }
+                        />
+                      );
                     else return <Card></Card>;
                   })
                 )}
               </div>
-              <div
-                style={{
-                  margin: "10px",
-                  textAlign: "center",
-                }}
-              >
-                <p style={{ fontSize: "14px", lineHeight: "1.3" }}>
-                  Your policy document has been successfully saved in{" "}
-                  <a
-                    href={accountLoginLink}
-                    style={{
-                      color: PrimaryColor,
-                      borderBottom: `1px dashed ${PrimaryColor}`,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    My Account Page.
-                  </a>{" "}
-                  You can visit the My Account page to retrieve your policy copy
-                  at any time.
-                </p>
 
-                <p style={{ fontSize: "14px", marginTop: "20px" }}>
-                  <a
-                    href={shopMoreLink}
-                    style={{
-                      color: PrimaryColor,
-                      borderBottom: `1px dashed ${PrimaryColor}`,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Shop More {">"}
-                  </a>
-                </p>
-              </div>
+              {htmlString && (
+                <div
+                  css={`
+                    text-align: center;
+                    margin-top: 20px;
+                    font-size: 14px;
+                    color: ${PrimaryColor};
+                    & a {
+                      font-weight: bold;
+                      text-decoration: underline;
+                    }
+                  `}
+                  dangerouslySetInnerHTML={{
+                    __html: isSSOJourney
+                      ? settings?.thank_you_banner_pos
+                      : settings?.thank_you_banner,
+                  }}
+                ></div>
+              )}
+              {!htmlString && (
+                <div
+                  style={{
+                    margin: "10px",
+                    textAlign: "center",
+                  }}
+                >
+                  <p style={{ fontSize: "14px", lineHeight: "1.3" }}>
+                    Your policy document has been successfully saved in{" "}
+                    <a
+                      href={accountLoginLink}
+                      style={{
+                        color: PrimaryColor,
+                        borderBottom: `1px dashed ${PrimaryColor}`,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      My Account Page.
+                    </a>{" "}
+                    You can visit the My Account page to retrieve your policy
+                    copy at any time.
+                  </p>
+
+                  <p style={{ fontSize: "14px", marginTop: "20px" }}>
+                    <a
+                      href={shopMoreLink}
+                      style={{
+                        color: PrimaryColor,
+                        borderBottom: `1px dashed ${PrimaryColor}`,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Shop More {">"}
+                    </a>
+                  </p>
+                </div>
+              )}
             </Outer>
           </div>
         </>

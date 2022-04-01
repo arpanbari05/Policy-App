@@ -10,7 +10,7 @@ import repolicy from "./../../../assets/svg/repolicy.svg";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import { useFrontendBoot, useTheme } from "../../../customHooks";
 
-const Card = ({ values, isLoading }) => {
+const Card = ({ values, isLoading, showTrackStatus }) => {
   const {
     colors: { primary_color: PrimaryColor, secondary_shade: SecondaryShade },
   } = useTheme();
@@ -19,57 +19,61 @@ const Card = ({ values, isLoading }) => {
 
   const frontendData = { data: frontendBoot.data };
 
-  // const { frontendData } = useSelector(state => state.frontendBoot);
+  console.log("The sahred data is", showTrackStatus);
   return values?.product ? (
     <CardWrapper>
-    <div className="d-flex align-items-center justify-content-between">
-    <div className="d-flex align-items-center">
-      <LogoWrapper>
-      
-        <img
-          src={
-            values?.product?.company.alias &&
-            frontendData.data.companies[values?.product?.company.alias].logo
-          }
-          alt="logo"
-          css={`
-            width: 50px;
-          `}
-        ></img>
-      </LogoWrapper>
-      
-      <CompanyName reducePadding>{values?.product?.name}</CompanyName>
-      </div>
-      <div style={{ float: "right" }}>
-        {values?.pdf_path ? (
-          values?.pdf_path && (
-            <DownloadPolicy
-              target="_blank"
-              href={values?.pdf_path}
-              download
-              PrimaryColor={PrimaryColor}
-            >
-              Download Policy{" "}
-              {isLoading || !values?.pdf_path ? (
-                <span class="thankyou lds-dual-ring"></span>
-              ) : (
-                <Download />
+      <div className="d-flex align-items-center justify-content-between">
+        <div className="d-flex align-items-center">
+          <LogoWrapper>
+            <img
+              src={
+                values?.product?.company.alias &&
+                frontendData.data.companies[values?.product?.company.alias].logo
+              }
+              alt="logo"
+              css={`
+                width: 50px;
+              `}
+            ></img>
+          </LogoWrapper>
+
+          <CompanyName reducePadding>{values?.product?.name}</CompanyName>
+        </div>
+
+        <div style={{ float: "right" }}>
+          {values?.pdf_path ? (
+            values?.pdf_path && (
+              <DownloadPolicy
+                target="_blank"
+                href={values?.pdf_path}
+                download
+                PrimaryColor={PrimaryColor}
+              >
+                Download Policy{" "}
+                {isLoading || !values?.pdf_path ? (
+                  <span class="thankyou lds-dual-ring"></span>
+                ) : (
+                  <Download />
+                )}
+              </DownloadPolicy>
+            )
+          ) : (
+            <>
+              {showTrackStatus && (
+                <DownloadPolicy
+                  track
+                  target="_blank"
+                  href={"http://fynixnew.benefitz.in/customer/login"}
+                  PrimaryColor={PrimaryColor}
+                >
+                  Track Status <img src={paper} alt="track"></img>
+                </DownloadPolicy>
               )}
-            </DownloadPolicy>
-          )
-        ) : (
-          <DownloadPolicy
-            track
-            target="_blank"
-            href={"http://fynixnew.benefitz.in/customer/login"}
-            PrimaryColor={PrimaryColor}
-          >
-            Track Status <img src={paper} alt="track"></img>
-          </DownloadPolicy>
-        )}
+            </>
+          )}
+        </div>
       </div>
-      </div>
-      
+
       <Wrap>
         {values?.policy_no ? (
           <PolicyWrapper>
@@ -274,9 +278,9 @@ const DownloadPolicy = styled.a`
   display: inline-block;
   /* height: 40px; */
   border-radius: 16px;
-  background-color: ${(props) => props.PrimaryColor};
+  background-color: ${props => props.PrimaryColor};
   padding: 5px 10px;
-  text-align: ${(props) => props.track && "center"};
+  text-align: ${props => props.track && "center"};
   /* font-family: pf_handbook_proregular; */
   font-weight: 600;
   font-size: 14px;
