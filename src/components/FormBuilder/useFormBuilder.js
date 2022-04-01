@@ -224,8 +224,8 @@ const useFormBuilder = (
   useEffect(() => {
     if (blockScrollEffect) {
       let filteredKey = Object.keys(errors).filter(key => errors[key]);
-    if (canProceed && !canProceed.canProceed)
-      filteredKey = canProceed.canProceedArray;
+    // if (canProceed && !canProceed.canProceed)
+    //   filteredKey = canProceed.canProceedArray;
     console.log("srgvshfvjkl", errors, filteredKey, yesSelected, canProceed);
     if (filteredKey.length) {
       let scrollPositions = filteredKey.map(key => {
@@ -243,8 +243,8 @@ const useFormBuilder = (
     }
     }
     
-  }, [errors, canProceed,blockScrollEffect]);
-
+  }, [errors]);
+// , canProceed,blockScrollEffect
   return {
     values,
     updateValue,
