@@ -119,11 +119,14 @@ function InputMembersForm({ posContent, ...props }) {
   return (
     <div className="py-3" {...props}>
       <div className="px-3">
-        <Title className="w-100">
-          {posContent.question
-            ? posContent.question
-            : "Who all would you like to insure?"}
-        </Title>
+        <Title
+          className="w-100"
+          dangerouslySetInnerHTML={{
+            __html: posContent.question
+              ? posContent.question
+              : "Who all would you like to insure?",
+          }}
+        ></Title>
         <CustomProgressBar now={2} total={4} />
       </div>
       <div className="px-3">

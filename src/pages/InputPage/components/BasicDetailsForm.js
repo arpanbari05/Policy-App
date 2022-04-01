@@ -113,11 +113,13 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
         >
           {tenant.alias === "fyntune" ? (
             <FlexSectionStyled>
-              <Title>
-                {posContent.question
-                  ? posContent.question
-                  : "Tell Us about yourself?"}
-              </Title>
+              <Title
+                dangerouslySetInnerHTML={{
+                  __html: posContent.question
+                    ? posContent.question
+                    : "Tell Us about yourself?",
+                }}
+              ></Title>
               <LinkButton
                 onClick={() => {
                   history.push({

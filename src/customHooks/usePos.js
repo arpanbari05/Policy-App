@@ -4,7 +4,7 @@ import { useFrontendBoot } from ".";
 export function usePos(isPos, currentForm) {
   const defaultValue = {
     banner: "",
-    question: "Nunnu is here",
+    question: "",
   };
   const {
     data: { settings },
@@ -72,7 +72,7 @@ export function usePos(isPos, currentForm) {
         default:
           setPosContent({
             banner: "",
-            question: "nunnu is here",
+            question: "",
           });
           break;
       }
