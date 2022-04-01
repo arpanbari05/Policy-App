@@ -23,17 +23,20 @@ const Toggle = ({
   customMembers,
   showMembersIf,
   notAllowedIf,
-  disable_Toggle,
-  restrictMaleMembers
+  disable_Toggle = false,
+  restrictMaleMembers,
 }) => {
-  console.log("Svsjbv",disable_Toggle)
+  console.log("Svsjbv", disable_Toggle);
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
-  const {getSelectedMembers,getMember,getAllMembers,genderOfSelf} = useMembers();
+  const { getSelectedMembers, getMember, getAllMembers, genderOfSelf } =
+    useMembers();
   const [customShowMembers, setCustomshowMembers] = useState(false);
-  const [membersToMap,setMembersToMap] = useState(customMembers instanceof Array ? customMembers : members);
+  const [membersToMap, setMembersToMap] = useState(
+    customMembers instanceof Array ? customMembers : members,
+  );
 
   useEffect(() => {
     if (showMembersIf) {
@@ -45,14 +48,10 @@ const Toggle = ({
     }
   }, [values]);
 
-
-
- 
-
-  const [boolean, setBoolean] = useState("");
+  const [boolean, setBoolean] = useState(disable_Toggle?"Y":"");
 
   const [membersStatus, setMembersStatus] = useState({});
-
+  console.log("Wvkwbf", disable_Toggle, membersStatus);
   const { mediUnderwritting } = useSelector(
     state => state.proposalPage.proposalData,
   );
@@ -60,8 +59,8 @@ const Toggle = ({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    const allMaleMembers = ['son','grand_father','father','father_in_law']
-    if (value && notAllowed && value[`is${name}`] === "Y") {
+    const allMaleMembers = ["son", "grand_father", "father", "father_in_law"];
+    if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
     } else if (value instanceof Object && Object.keys(value).length) {
@@ -69,23 +68,28 @@ const Toggle = ({
       setMembersStatus(value.members);
     }
 
-    if(restrictMaleMembers){
-      
-      if(genderOfSelf === "M")  setMembersToMap(membersToMap.filter(member => member !== "self"))
-      else setMembersToMap(membersToMap = membersToMap.filter(member => member !== "self"));
+    if (restrictMaleMembers) {
+      if (genderOfSelf === "M")
+        setMembersToMap(membersToMap.filter(member => member !== "self"));
+      else
+        setMembersToMap(
+          (membersToMap = membersToMap.filter(member => member !== "self")),
+        );
       setMembersToMap(prev => prev.filter(el => !allMaleMembers.includes(el)));
-    
-    
-console.log("evekfnmv",membersToMap,getAllMembers())
-  }
+
+      console.log("evekfnmv", membersToMap, getAllMembers());
+    }
+    if(disable_Toggle){
+      setMembersStatus(membersToMap.reduce((acc,member) => ({...acc,[member]:true}),{}))
+    }
   }, [value]);
 
   useEffect(() => {
-    if (!value) {
+    if (!value && !disable_Toggle) {
       setBoolean("");
       setMembersStatus({});
     }
-    if (value && notAllowed && value[`is${name}`] === "Y") {
+    if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
     }
@@ -99,9 +103,9 @@ console.log("evekfnmv",membersToMap,getAllMembers())
 
     if (
       (boolean === "Y" &&
-      (showMembers !== false || customShowMembers) &&
-      !Object.values(membersStatus).includes(true)) ||
-      !boolean
+        (showMembers !== false || customShowMembers) &&
+        !Object.values(membersStatus).includes(true)) ||
+      !boolean 
     ) {
       isValid = false;
     }
@@ -114,8 +118,7 @@ console.log("evekfnmv",membersToMap,getAllMembers())
     });
   }, [boolean, membersStatus, customShowMembers]);
 
-console.log("sgjsg",value,label,boolean)
-
+  console.log("sgjsg", value, label, boolean);
 
   return (
     <>
@@ -124,7 +127,7 @@ console.log("sgjsg",value,label,boolean)
           <div className="row">
             <div className="col-lg-8 col-md-12">
               <Question
-              id={name}
+                id={name}
                 className="mb-10 p_propsal_form_r_q_m toggle_question"
                 SecondaryColor={SecondaryColor}
               >
@@ -140,7 +143,7 @@ console.log("sgjsg",value,label,boolean)
                 & .box {
                   background-color: ${PrimaryShade};
                 }
-                display:${disable_Toggle?"none":"block"};
+                display: ${disable_Toggle ? "none" : "block"};
                 text-align: end !important;
                 @media (max-width: 767px) {
                   text-align: start !important;
@@ -183,12 +186,12 @@ console.log("sgjsg",value,label,boolean)
                   name={`is${name}`}
                   value="N"
                   onChange={e => {
-                    if(notAllowedIf === "N") dispatch(setShowPlanNotAvail(true)); 
+                    if (notAllowedIf === "N")
+                      dispatch(setShowPlanNotAvail(true));
                     else {
                       setBoolean(e.target.value);
                       !showMembersIf && setMembersStatus({});
                     }
-                    
                   }}
                   checked={boolean === "N"}
                 />
@@ -207,7 +210,7 @@ console.log("sgjsg",value,label,boolean)
             </div>
           </div>
         </div>
-        {membersToMap.length && showMembers !== false ? (
+        {membersToMap.length && showMembers !== false && !disable_Toggle ? (
           (customShowMembers || boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (
@@ -237,7 +240,7 @@ console.log("sgjsg",value,label,boolean)
                   </Fragment>
                 </>
               ))}
-              
+
               {!Object.keys(membersStatus).some(i => membersStatus[i]) && (
                 <p
                   className="formbuilder__error position-absolute"

@@ -11,8 +11,9 @@ const useFormBuilder = (
   insuredDetails,
   canProceed,
   yesSelected,
-  proposalDetails
+  proposalDetails,
 ) => {
+  const [blockScrollEffect, setBlockScrollEffect] = useState(true);
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState();
@@ -32,32 +33,31 @@ const useFormBuilder = (
     }
   };
 
-  const updateValidateObjSchema = (item) => {
-    return item.visibleOn && renderField(item,values) ?{...item.validate,required:true}:item.validate
-  }
+  const updateValidateObjSchema = item => {
+    return item.visibleOn && renderField(item, values)
+      ? { ...item.validate, required: true }
+      : item.validate;
+  };
 
-  const checkReadOnly = (name) => {
+  const checkReadOnly = name => {
     let nomineeRelation = values.nominee_relation;
-    let nameWithOutNominee = name.slice(
-            name.indexOf("_") + 1,
-            name.length,
-          ) === "contact"?"mobile":name.slice(
-            name.indexOf("_") + 1,
-            name.length,
-          );
-    let dataTocheck = {}
-    if(insuredDetails){
+    let nameWithOutNominee =
+      name.slice(name.indexOf("_") + 1, name.length) === "contact"
+        ? "mobile"
+        : name.slice(name.indexOf("_") + 1, name.length);
+    let dataTocheck = {};
+    if (insuredDetails) {
       if (insuredDetails[nomineeRelation] && nomineeRelation === "self") {
         dataTocheck = {
           ...proposalDetails,
-          ...(insuredDetails["self"]),
+          ...insuredDetails["self"],
         };
       } else if (insuredDetails[nomineeRelation]) {
-        dataTocheck = insuredDetails[nomineeRelation]
+        dataTocheck = insuredDetails[nomineeRelation];
       }
     }
-    return  dataTocheck[nameWithOutNominee]?true:false
-  }
+    return dataTocheck[nameWithOutNominee] ? true : false;
+  };
 
   const updateValues = (multipleValues = {}) => {
     setValues({ ...values, ...multipleValues });
@@ -222,10 +222,11 @@ const useFormBuilder = (
 
   // to scroll page as per error
   useEffect(() => {
-    let filteredKey = Object.keys(errors).filter(key => errors[key]);
+    if (blockScrollEffect) {
+      let filteredKey = Object.keys(errors).filter(key => errors[key]);
     if (canProceed && !canProceed.canProceed)
       filteredKey = canProceed.canProceedArray;
-    console.log("srgvshfvjkl", errors, filteredKey, yesSelected,canProceed);
+    console.log("srgvshfvjkl", errors, filteredKey, yesSelected, canProceed);
     if (filteredKey.length) {
       let scrollPositions = filteredKey.map(key => {
         let element = document.getElementById(key);
@@ -234,13 +235,15 @@ const useFormBuilder = (
           return y;
         }
       });
-console.log("svbkjsbnv",scrollPositions)
+      console.log("svbkjsbnv", scrollPositions);
       window.scroll({
         top: Math.min(...scrollPositions),
         behavior: "smooth",
       });
     }
-  }, [errors, canProceed]);
+    }
+    
+  }, [errors, canProceed,blockScrollEffect]);
 
   return {
     values,
@@ -256,6 +259,7 @@ console.log("svbkjsbnv",scrollPositions)
     updateValues,
     checkReadOnly,
     updateValidateObjSchema,
+    setBlockScrollEffect
   };
 };
 export default useFormBuilder;
