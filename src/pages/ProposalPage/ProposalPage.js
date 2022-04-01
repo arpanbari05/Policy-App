@@ -131,7 +131,7 @@ const ProposalPage = () => {
     if (
       Object.keys(proposalData).length &&
       activeIndex === false &&
-      continueBtnClick 
+      continueBtnClick
     ) {
       let unfilledInfoTabIndex;
 
@@ -215,7 +215,6 @@ const ProposalPage = () => {
               >
                 {activeForm}
               </MainTitle>
-              {console.log("wefekbek",currentSchema)}
               <ProposerDetails
                 key={activeForm}
                 schema={
@@ -519,7 +518,12 @@ const ProposalPage = () => {
               >
                 You are Just 5 minutes away from investing for your future
               </span>
-              <ShareQuoteModal stage="PROPOSAL" />
+              <ShareQuoteModal
+                insurersFor={cartEntries.map(
+                  cart => cart?.product?.company?.alias,
+                )}
+                stage="PROPOSAL"
+              />
             </div>
           </div>
           <div>
@@ -692,7 +696,7 @@ const ProposalPage = () => {
       <PlanUnavailable />
       <BMI />
       <NSTP />
-      
+
       {showErrorPopup.show && (
         <ErrorPopup
           show={showErrorPopup.show}

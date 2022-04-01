@@ -25,8 +25,9 @@ import CartSummaryModal from "./CartSummaryModal";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import FilterSkeletonLoader from "./Common/filter-skeleton-loader/FilterSkeletonLoader";
 import * as mq from "../utils/mediaQueries";
-import { useSelector } from "react-redux";
 import { GiCircle } from "react-icons/gi";
+import { images } from "../assets/logos/logo";
+import { defaultPrimaryColor } from "../config";
 
 export function ScreenTopLoader({ progress, show }) {
   const { colors } = useTheme();
@@ -60,7 +61,7 @@ export function LoadEnquiries({ children }) {
       </Page>
     );
 
-  if (isLoading || isFetching || isUninitialized) return <FullScreenLoader />;
+  if (isLoading || isFetching || isUninitialized) return <FullScreenLoaderSkeleton />;
 
   return children;
 }
@@ -91,7 +92,7 @@ export function Page({
   );
 }
 
-export function FullScreenLoader() {
+export function FullScreenLoaderSkeleton() {
   return (
     <div className="pb-3" aria-label="loading">
       {/* <Navbar /> */}
@@ -133,6 +134,59 @@ export function FullScreenLoader() {
     </div>
   );
 }
+export function FullScreenLoader() {
+  return (
+    <div className="pb-3" aria-label="loading">
+      {/* <Navbar /> */}
+      <div
+        css={`
+          width: 15rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          margin: 35vh auto;
+          align-items: center;
+          justify-content: center;
+        `}
+      >
+        {/* <div className="circle-loader" /> */}
+        <img
+          css={`
+            width: 100%;
+          `}
+          src={images.CompanyLogo}
+          alt={"company-logo"}
+        />
+
+        <div
+          css={`
+            height: 4px;
+            background-color: #eee;
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 100px;
+            position: relative;
+
+            // Fix the loading bar overflow
+            overflow-x: hidden;
+
+            &::after {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              height: 100%;
+              width: 50%;
+              background-color: ${defaultPrimaryColor};
+              // Animation
+              animation: loading 3s infinite;
+            }
+          `}
+        />
+      </div>
+    </div>
+  );
+}
 
 export function Button({
   children,
@@ -169,11 +223,11 @@ export function Button({
           );
         }
         &:disabled {
-          background-color: ${loaderPrimaryColor && loader
+          cursor: default;
+          // background-color: ${loaderPrimaryColor && loader
             ? colors.primary_color
             : colors.secondary_shade};
-          color: ${loaderPrimaryColor && loader ? "#fff" : "#666"};
-          cursor: default;
+          // color: ${loaderPrimaryColor && loader ? "#fff" : "#666"};
         }
 
         ${css};
@@ -207,7 +261,7 @@ export function MembersList({ members = [], ...props }) {
 export function LoadCart({ children }) {
   const { isLoading, isUninitialized } = useGetCartQuery();
 
-  if (isLoading || isUninitialized) return <FullScreenLoader />;
+  if (isLoading || isUninitialized) return <FullScreenLoaderSkeleton />;
   return children;
 }
 

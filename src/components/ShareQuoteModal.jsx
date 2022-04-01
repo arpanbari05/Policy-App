@@ -86,7 +86,7 @@ const ShareQuoteModal = ({
   hideBtn,
   label,
   shareQuotes,
-  cssProps = "",
+  insurersFor = [],
 }) => {
   const [show, setshow] = useState(showModal);
 
@@ -97,6 +97,8 @@ const ShareQuoteModal = ({
   const [step, setStep] = useState(shareQuotes ? 1 : 2);
 
   const [imageSend, setImageSend] = useState();
+
+  const [insurers, setInsurers] = useState();
 
   const {
     colors: { primary_color: PrimaryColor, secondary_shade: SecondaryShade },
@@ -214,6 +216,7 @@ const ShareQuoteModal = ({
               setImageSend={setImageSend}
               setStep={setStep}
               hide={step === 2}
+              setInsurers={setInsurers}
             />
             <ShareStep2
               hide={step === 1}
@@ -225,6 +228,7 @@ const ShareQuoteModal = ({
               setErrorMsg={setErrorMsg}
               isSending={isSending}
               errorMsg={errorMsg}
+              insurers={insurers?.length ? insurers : insurersFor}
             />
           </Modal.Body>
         </Modal>
@@ -383,7 +387,7 @@ const CanvasQuoteTemplate = ({ quote, colors }) => {
   );
 };
 
-function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
+function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
   const dispatch = useDispatch();
 
   const { quotesToShare } = useSelector(state => state.quotePage);
@@ -403,6 +407,9 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
   useEffect(() => {
     const checked = selectedQuote?.length === quotesToShare?.length;
     setAllChecked(checked);
+    setInsurers([
+      ...new Set([...selectedQuote.map(quote => quote[0]?.company_alias)]),
+    ]);
   }, [selectedQuote]);
 
   const handleRemoveQuote = quotes => {
@@ -506,12 +513,11 @@ function ShareStep2({
   isSending,
   errorMsg,
   hide,
+  insurers,
 }) {
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails,
   );
-
-  const { companies } = useCompanies();
 
   const {
     colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
@@ -532,8 +538,6 @@ function ShareStep2({
   const [emailStatus, setEmailStatus] = useState({ status: 0, message: null });
 
   const sendRef = useRef();
-
-  console.log(companies);
 
   // useEffect(() => {
   //   if(emailStatus.status){
@@ -665,7 +669,7 @@ function ShareStep2({
               whatsapp: "",
               sms: "",
               image_to_send: imageSend ? imageSend : undefined,
-              insureres: Object.keys(companies),
+              insurers,
             });
           }}
           // loader={isSending && !emailStatus?.message}
@@ -728,7 +732,7 @@ function ShareStep2({
                 email: "",
                 whatsapp: "",
                 sms: smsNo,
-                insurers: Object.keys(companies),
+                insurers,
               });
           }}
         />

@@ -277,3 +277,5 @@ const config = {
 };
 
 export default config;
+
+export const defaultPrimaryColor = "#0a87ff";
