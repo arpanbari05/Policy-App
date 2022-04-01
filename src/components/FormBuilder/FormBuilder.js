@@ -221,6 +221,8 @@ const FormBuilder = ({
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
+  console.log("svdsmb",values)
+
   return (
     <>
       {schema instanceof Array &&
@@ -230,13 +232,13 @@ const FormBuilder = ({
               <>
                 {item[0]?.additionalOptions?.members?.map(member => {
                   if (
-                    values[item[0]?.parent] &&
+                    (values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
                     values[item[0]?.parent]?.members instanceof Object &&
                     values[item[0]?.parent]?.members?.[member] &&
                     (item[0].render.when.includes("||")
                       ? renderField(item[0], values, member)
-                      : true)
+                      : true)) || schema.find(el => el.name === item[0]?.parent).additionalOptions.disable_Toggle
                   )
                     return (
                       <CustomWrapper>

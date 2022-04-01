@@ -6,6 +6,7 @@ import {
   setShowNSTP,
   setShowPlanNotAvail,
 } from "../ProposalSections/ProposalSections.slice";
+import { useMembers } from "../../../customHooks";
 import { noForAllCheckedFalse } from "../ProposalSections/ProposalSections.slice";
 import { useTheme } from "../../../customHooks";
 const Toggle = ({
@@ -22,13 +23,17 @@ const Toggle = ({
   customMembers,
   showMembersIf,
   notAllowedIf,
+  disable_Toggle,
+  restrictMaleMembers
 }) => {
+  console.log("Svsjbv",disable_Toggle)
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
-
+  const {getSelectedMembers,getMember,getAllMembers,genderOfSelf} = useMembers();
   const [customShowMembers, setCustomshowMembers] = useState(false);
+  const [membersToMap,setMembersToMap] = useState(customMembers instanceof Array ? customMembers : members);
 
   useEffect(() => {
     if (showMembersIf) {
@@ -40,7 +45,9 @@ const Toggle = ({
     }
   }, [values]);
 
-  const membersToMap = customMembers instanceof Array ? customMembers : members;
+
+
+ 
 
   const [boolean, setBoolean] = useState("");
 
@@ -53,6 +60,7 @@ const Toggle = ({
 
   const dispatch = useDispatch();
   useEffect(() => {
+    const allMaleMembers = ['son','grand_father','father','father_in_law']
     if (value && notAllowed && value[`is${name}`] === "Y") {
       setBoolean("N");
       setMembersStatus({});
@@ -60,6 +68,16 @@ const Toggle = ({
       setBoolean(value[`is${name}`]);
       setMembersStatus(value.members);
     }
+
+    if(restrictMaleMembers){
+      
+      if(genderOfSelf === "M")  setMembersToMap(membersToMap.filter(member => member !== "self"))
+      else setMembersToMap(membersToMap = membersToMap.filter(member => member !== "self"));
+      setMembersToMap(prev => prev.filter(el => !allMaleMembers.includes(el)));
+    
+    
+console.log("evekfnmv",membersToMap,getAllMembers())
+  }
   }, [value]);
 
   useEffect(() => {
@@ -114,7 +132,7 @@ console.log("sgjsg",value,label,boolean)
               </Question>
             </div>
             <div
-              className="col-lg-4 col-md-12 middle no-padding mobile-left"
+              className="col-lg-4 col-md-12 middle no-padding mobile-left "
               css={`
                 & input[type="radio"]:checked + .box {
                   background-color: ${PrimaryColor};
@@ -122,7 +140,7 @@ console.log("sgjsg",value,label,boolean)
                 & .box {
                   background-color: ${PrimaryShade};
                 }
-
+                display:${disable_Toggle?"none":"block"};
                 text-align: end !important;
                 @media (max-width: 767px) {
                   text-align: start !important;
