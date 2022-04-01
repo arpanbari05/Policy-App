@@ -25,6 +25,7 @@ const TextInput = ({
   innerMember,
   checkAge,
   defaultValue,
+  onFocus,
 }) => {
   const dispatch = useDispatch();
   const age =
@@ -78,8 +79,6 @@ const TextInput = ({
       e.preventDefault();
     }
   };
-
-  const onFocus = () => setIsFocused(true);
 
   // const [innerValue, setInnerValue] = useState(value);
   // useEffect(() => {
@@ -234,7 +233,10 @@ const TextInput = ({
             setFallbackValue(e.target.value);
           }
         }}
-        onFocus={onFocus}
+        onFocus={() => {
+          onFocus();
+          setIsFocused(true)
+        }}
         onBlur={e => {
           onBlur();
           if (

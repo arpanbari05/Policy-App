@@ -147,7 +147,7 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
           let tempGroupVal = {};
           schema[key].forEach(el => {
            if (!Array.isArray(el)) {
-            if(el.additionalOptions.notAllowedIf === "N" || el.additionalOptions.disable_toggle) {
+            if(el.additionalOptions.notAllowedIf === "N" || el.additionalOptions.disable_Toggle) {
               tempGroupVal[el.name] = {
                 [`is${el.name}`]: "Y",
                 members: {},
