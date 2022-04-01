@@ -371,7 +371,8 @@ const dummy = {
                     "options": {
                         "mr": "Mr"
                     },
-                    "readOnly": true
+                    "readOnly": true,
+                   
                 }
             },
             {
@@ -578,7 +579,8 @@ const dummy = {
                     "members": [
                         "self",
                         "spouse"
-                    ]
+                    ],
+                    "disable_Toggle":true
                 },
                 "validate": {
                     "required": true
@@ -589,17 +591,15 @@ const dummy = {
                     "type": "text",
                     "name": "complete_health_essential_medical_ques_1",
                     "parent": "complete_health_essential_medical_ques_Q1",
-                    "render": {
-                        "when": "",
-                        "is": true
-                    },
+                    "render": "noDependency",
                     "additionalOptions": {
                         "maxLength": 3,
                         "notAllowed": "70/99",
                         "members": [
                             "self",
                             "spouse"
-                        ]
+                        ],
+                        
                     },
                     "allow": "onlyNumbers",
                     "validate": {
