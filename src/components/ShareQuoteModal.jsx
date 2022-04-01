@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { useRef, useState } from "react";
 import { EmailSent } from "../pages/ComparePage/ComparePage.style";
 import { setEmail as setlEmaiStatus } from "../pages/ComparePage/compare.slice";
-import { useCompanies, useTheme } from "../customHooks/index";
+import { useCompanies, useFrontendBoot, useTheme } from "../customHooks/index";
 import ShareButton from "../components/Common/Button/ShareButton";
 import html2canvas from "html2canvas";
 import { Button } from "../components/index";
@@ -20,8 +20,8 @@ import { images } from "../assets/logos/logo";
 import { mobile } from "../utils/mediaQueries";
 import HttpClient from "../api/httpClient";
 
-const shareViaEmailApi = data =>
-  HttpClient("renewbuy/communications", {
+const shareViaEmailApi = (data, company_alias) =>
+  HttpClient(`${company_alias}/communications`, {
     method: "POST",
     data,
   });
@@ -523,6 +523,8 @@ function ShareStep2({
     colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
   } = useTheme();
 
+  const { tenantAlias } = useFrontendBoot();
+
   const [email, setEmail] = useState(
     details4autopopulate?.email ? details4autopopulate.email : "",
   );
@@ -616,7 +618,7 @@ function ShareStep2({
 
     if (!errorMsg) {
       setIsSending(data.mode[0]);
-      const response = await shareViaEmailApi(data);
+      const response = await shareViaEmailApi(data, tenantAlias);
       let successMsg;
       if (data.mode[0] === "EMAIL") successMsg = "Email sent successfully";
       if (data.mode[0] === "WHATSAPP")
