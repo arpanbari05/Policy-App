@@ -15,13 +15,17 @@ export const renderField = (item, value, member) => {
   // conditional rendering of medical questions uses item.render
   if (item.render) {
     const { when, is } = item.render;
-
-    if (item.parent && member && !when.includes("||")) {
+    if(  item.render === "noDependency") return true
+    if ((item.parent && member && !when.includes("||") )) {
       if (
-        value[item.parent] &&
+        (value[item.parent] &&
         value[item.parent].members instanceof Object &&
-        value[item.parent].members[member]
+        value[item.parent].members[member]) 
       ) {
+        console.log("weifhgif",value)
+        if(when !== ""){
+          return value[item.parent].members[member] && value[item.parent][member] && value[item.parent][member][when] && value[item.parent][member][when] === is 
+        }
         return true;
       } else return false;
     } else {

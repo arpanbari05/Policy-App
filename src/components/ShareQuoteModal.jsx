@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { useRef, useState } from "react";
 import { EmailSent } from "../pages/ComparePage/ComparePage.style";
 import { setEmail as setlEmaiStatus } from "../pages/ComparePage/compare.slice";
-import { useCompanies, useTheme } from "../customHooks/index";
+import { useCompanies, useFrontendBoot, useTheme } from "../customHooks/index";
 import ShareButton from "../components/Common/Button/ShareButton";
 import html2canvas from "html2canvas";
 import { Button } from "../components/index";
@@ -20,8 +20,8 @@ import { images } from "../assets/logos/logo";
 import { mobile } from "../utils/mediaQueries";
 import HttpClient from "../api/httpClient";
 
-const shareViaEmailApi = data =>
-  HttpClient("renewbuy/communications", {
+const shareViaEmailApi = (data, company_alias) =>
+  HttpClient(`${company_alias}/communications`, {
     method: "POST",
     data,
   });
@@ -86,7 +86,7 @@ const ShareQuoteModal = ({
   hideBtn,
   label,
   shareQuotes,
-  cssProps = "",
+  insurersFor = [],
 }) => {
   const [show, setshow] = useState(showModal);
 
@@ -97,6 +97,8 @@ const ShareQuoteModal = ({
   const [step, setStep] = useState(shareQuotes ? 1 : 2);
 
   const [imageSend, setImageSend] = useState();
+
+  const [insurers, setInsurers] = useState();
 
   const {
     colors: { primary_color: PrimaryColor, secondary_shade: SecondaryShade },
@@ -214,6 +216,7 @@ const ShareQuoteModal = ({
               setImageSend={setImageSend}
               setStep={setStep}
               hide={step === 2}
+              setInsurers={setInsurers}
             />
             <ShareStep2
               hide={step === 1}
@@ -225,6 +228,7 @@ const ShareQuoteModal = ({
               setErrorMsg={setErrorMsg}
               isSending={isSending}
               errorMsg={errorMsg}
+              insurers={insurers?.length ? insurers : insurersFor}
             />
           </Modal.Body>
         </Modal>
@@ -383,7 +387,7 @@ const CanvasQuoteTemplate = ({ quote, colors }) => {
   );
 };
 
-function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
+function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
   const dispatch = useDispatch();
 
   const { quotesToShare } = useSelector(state => state.quotePage);
@@ -403,6 +407,9 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
   useEffect(() => {
     const checked = selectedQuote?.length === quotesToShare?.length;
     setAllChecked(checked);
+    setInsurers([
+      ...new Set([...selectedQuote.map(quote => quote[0]?.company_alias)]),
+    ]);
   }, [selectedQuote]);
 
   const handleRemoveQuote = quotes => {
@@ -506,16 +513,17 @@ function ShareStep2({
   isSending,
   errorMsg,
   hide,
+  insurers,
 }) {
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails,
   );
 
-  const { companies } = useCompanies();
-
   const {
     colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
   } = useTheme();
+
+  const { tenantAlias } = useFrontendBoot();
 
   const [email, setEmail] = useState(
     details4autopopulate?.email ? details4autopopulate.email : "",
@@ -532,8 +540,6 @@ function ShareStep2({
   const [emailStatus, setEmailStatus] = useState({ status: 0, message: null });
 
   const sendRef = useRef();
-
-  console.log(companies);
 
   // useEffect(() => {
   //   if(emailStatus.status){
@@ -612,7 +618,7 @@ function ShareStep2({
 
     if (!errorMsg) {
       setIsSending(data.mode[0]);
-      const response = await shareViaEmailApi(data);
+      const response = await shareViaEmailApi(data, tenantAlias);
       let successMsg;
       if (data.mode[0] === "EMAIL") successMsg = "Email sent successfully";
       if (data.mode[0] === "WHATSAPP")
@@ -665,7 +671,7 @@ function ShareStep2({
               whatsapp: "",
               sms: "",
               image_to_send: imageSend ? imageSend : undefined,
-              insureres: Object.keys(companies),
+              insurers,
             });
           }}
           // loader={isSending && !emailStatus?.message}
@@ -728,7 +734,7 @@ function ShareStep2({
                 email: "",
                 whatsapp: "",
                 sms: smsNo,
-                insurers: Object.keys(companies),
+                insurers,
               });
           }}
         />

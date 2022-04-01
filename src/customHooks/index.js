@@ -286,9 +286,8 @@ export function useMembers() {
   } = useFrontendBoot();
 
   const { data } = useGetEnquiriesQuery();
-
+  const genderOfSelf = data?.data?.input?.gender;
   const { selectedGroup } = useSelector(state => state.quotePage);
-
   useEffect(() => {
     dispatch(refreshUserData(data?.data));
   }, []);
@@ -514,6 +513,7 @@ export function useMembers() {
     getFirstGroupLocation,
     getNextGroup,
     getPreviousGroup,
+    genderOfSelf,
     getLastGroup,
     getMembersText,
     checkGroupExist,

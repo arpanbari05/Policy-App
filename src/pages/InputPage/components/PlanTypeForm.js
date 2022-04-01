@@ -11,7 +11,7 @@ import "styled-components/macro";
 import { useHistory } from "react-router-dom";
 import { InputFormCta } from ".";
 
-function PlanTypeForm(props) {
+function PlanTypeForm({ posContent, ...props }) {
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
 
   let {
@@ -39,7 +39,14 @@ function PlanTypeForm(props) {
   return (
     <div className="p-3 pb-5" {...props}>
       <div>
-        <Title className="w-100">Which plan would you like to opt for?</Title>
+        <Title
+          className="w-100"
+          dangerouslySetInnerHTML={{
+            __html: posContent.question
+              ? posContent.question
+              : "Which plan would you like to opt for?",
+          }}
+        ></Title>
         <CustomProgressBar now={3} total={4} />
       </div>
 

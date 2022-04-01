@@ -138,10 +138,10 @@ const InsuredDetails = ({
                     </div>
                     <span>No For All Questions </span>{" "}
                   </div>
-
+{console.log("sfvskbk",initColor)}
                   {!noForAll[item] && !yesSelected[item] && (
                     <p
-                    id={item}
+                    id={initColor===PrimaryColor?"noID":item}
                       css={`
                         display: flex;
                         font-size: 12px;
@@ -208,6 +208,7 @@ const InsuredDetails = ({
           onClick={() => {
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed()
+            console.log("sfvkjsd",canProceed.canProceed)
             if (name === "Medical Details" && canProceed.canProceed) {
               // NSTP popup for RB
              Object.values(yesSelected).includes(true) && frontBootData.settings.medical_nstp_declaration_message && dispatch(setShowErrorPopup({

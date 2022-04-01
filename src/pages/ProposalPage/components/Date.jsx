@@ -94,7 +94,7 @@ const DateComp = ({
               ? new Date(
                   currentYear,
                   currentMonth - Number(age[0].toString().split(".")[1]),
-                  currentDate,
+                  currentDate - `${age[0]}`.includes(".")?1:0,
                 )
               : new Date(Date.now())
           }

@@ -70,7 +70,8 @@ const FormBuilder = ({
     setErrors,
     updateValues,
     checkReadOnly,
-    updateValidateObjSchema
+    updateValidateObjSchema,
+    setBlockScrollEffect
   } = useFormBuilder(
     schema,
     fetchValues,
@@ -221,6 +222,8 @@ const FormBuilder = ({
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
+  console.log("svdsmb",values)
+
   return (
     <>
       {schema instanceof Array &&
@@ -230,13 +233,11 @@ const FormBuilder = ({
               <>
                 {item[0]?.additionalOptions?.members?.map(member => {
                   if (
-                    values[item[0]?.parent] &&
+                    (values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
                     values[item[0]?.parent]?.members instanceof Object &&
                     values[item[0]?.parent]?.members?.[member] &&
-                    (item[0].render.when.includes("||")
-                      ? renderField(item[0], values, member)
-                      : true)
+                    renderField(item[0], values, member)) || item[0].render === "noDependency"
                   )
                     return (
                       <CustomWrapper>
@@ -347,10 +348,12 @@ const FormBuilder = ({
                                           );
                                         }
                                       }}
+                                      onFocus={() => setBlockScrollEffect(false)}
                                       onBlur={e => {
                                         if (options.validateOn === "blur") {
                                           setTrigger(innerItem.name);
                                         }
+                                        setBlockScrollEffect(true);
                                       }}
                                       onKeyDown={e => {
                                         if (innerItem.allow) {
@@ -539,6 +542,7 @@ const FormBuilder = ({
                         item.readOnly || checkReadOnly(item.name)
                       }
                       allValues={proposalData}
+                      onFocus={() => setBlockScrollEffect(false)}
                       customMembers={
                         item.render &&
                         item.render.when.includes(".") &&
@@ -559,6 +563,7 @@ const FormBuilder = ({
                         if (options.validateOn === "blur") {
                           setTrigger(item.name);
                         }
+                        setBlockScrollEffect(true);
                       }}
                       onKeyDown={e => {
                         if (item.allow) {
