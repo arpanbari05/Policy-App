@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "styled-components";
 
-const CustomCheckBox = ({ name, placeholder, value, onChange,innerMember }) => {
+const CustomCheckBox = ({ name, placeholder, value = "N", onChange,innerMember }) => {
+  console.log("svjsbkvk",value)
+  useEffect(() => {
+if(!value) onChange({target:{value:"N"}})
+  },[])
   return (
     <div style={{display:"flex", alignItems:"center"}}>
       {" "}

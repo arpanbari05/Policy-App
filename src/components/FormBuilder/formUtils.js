@@ -22,6 +22,10 @@ export const renderField = (item, value, member) => {
         value[item.parent].members instanceof Object &&
         value[item.parent].members[member]) 
       ) {
+        console.log("weifhgif",value)
+        if(when !== ""){
+          return value[item.parent].members[member] && value[item.parent][member] && value[item.parent][member][when] && value[item.parent][member][when] === is 
+        }
         return true;
       } else return false;
     } else {
