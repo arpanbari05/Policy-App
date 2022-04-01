@@ -14,6 +14,7 @@ import "styled-components/macro";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import { useTheme } from "../../../customHooks";
 import { tabletAndMobile } from "../../../utils/mediaQueries";
+
 const populateData = (data, colors) => {
   return [
     {
@@ -23,6 +24,36 @@ const populateData = (data, colors) => {
     },
     {
       header: "Drop Us An Email",
+      description: data?.email || "no data",
+      Image: <RiMailLine size={28} color={colors.primary_color} />,
+    },
+  ];
+};
+
+const dummyBrokerData = (data, colors) => {
+  return [
+    {
+      header: "Call us at",
+      description: data?.toll_free_number || "no data",
+      Image: <RiPhoneLine size={28} color={colors.primary_color} />,
+    },
+    {
+      header: "Drop Us An Email",
+      description: data?.email || "no data",
+      Image: <RiMailLine size={28} color={colors.primary_color} />,
+    },
+  ];
+};
+
+const dummyInsurerData = (data, colors) => {
+  return [
+    {
+      header: "Toll Free number",
+      description: data?.toll_free_number || "no data",
+      Image: <RiPhoneLine size={28} color={colors.primary_color} />,
+    },
+    {
+      header: "Drop An Email",
       description: data?.email || "no data",
       Image: <RiMailLine size={28} color={colors.primary_color} />,
     },
@@ -306,10 +337,45 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                         ) : (
                           <></>
                         )}
-
                         {claimProccess
                           ? dataSet(populateData(claimProccess, colors))
                           : null}
+                        {/*Insurer section*/}
+                        {/* 
+                        <div
+                          css={`
+                            margin: 10px 0px;
+                            
+                            box-sizing: border-box;
+                            padding: 10px 0px;
+                            border-radius: 10px;
+                          `}
+                        >
+                          <div
+                            css={`
+                              border: solid 1px #c9c9c9;
+                              border-radius: 9px;
+                              margin: 0 auto 10px auto;
+                              padding: 15px;
+                              width: 96%;
+                              background-color: #eef1f4;
+                            `}
+                          >
+                            <h2
+                              css={`
+                                font-size: 21px;
+                                font-weight: 900;
+                              `}
+                            >
+                              Contact Insurer
+                            </h2>
+                          </div>
+
+                          {claimProccess
+                            ? dataSet(dummyInsurerData(claimProccess, colors))
+                            : null}
+                        </div>
+                       */}
                       </div>
                     </Col>
                     {/* ============================================================ */}
