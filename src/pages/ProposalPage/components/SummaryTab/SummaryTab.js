@@ -11,15 +11,17 @@ import { setActiveIndex } from "../../ProposalSections/ProposalSections.slice";
 import Card from "../../../../components/Card";
 import { useTheme } from "../../../../customHooks";
 import { FaPen } from "react-icons/fa";
+
 const convertToFt = value => {
-  console.log(value);
   let feet = Math.floor(value / 12);
   let inches = value % 12;
   return `${feet} ft ${inches} in`;
 };
+
 const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
   const filterUnderscore = str =>
     str.includes("_") ? str.replaceAll("_", " ") : str;
+
   const modifyMembersName = name => {
     let EditedName = "";
 
@@ -40,18 +42,26 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
   };
 
   const url = useUrlQuery();
+
   const enquiryId = url.get("enquiryId");
+
   const dispatch = useDispatch();
+
   const history = useHistory();
+
   const { theme } = useSelector(state => state.frontendBoot);
+
   const { asyncOptions } = useSelector(({ formBuilder }) => formBuilder);
+
   const { colors } = useTheme();
+
   const PrimaryColor = colors.primary_color;
+
   const SecondaryColor = colors.secondary_color;
+
   const PrimaryShade = colors.primary_shade;
-  // const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+
   const getValueFromCode = useCallback((value, data) => {
-    console.log("vnxfjx",value, data)
     if (asyncOptions[data.name]) {
       return asyncOptions[data.name][value];
     }
@@ -79,13 +89,10 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
   };
 
   const normalRender = useCallback((data, i) => {
-  
-
-    if (data.type === "title"){
-      return <TitleWrapper>{filterUnderscore(data.name)}</TitleWrapper>;
-
+    if (data.type === "title") {
+      return <TitleWrapper>{filterUnderscore(data?.name)}</TitleWrapper>;
     }
-    if (data.type === "date" && values?.[data.name]) {
+    if (data.type === "date" && values?.[data?.name]) {
       return (
         <Col
           md={4}
@@ -95,22 +102,22 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          <p className="font_15_p_s">{data.additionalOptions.label}</p>
+          <p className="font_15_p_s">{data?.additionalOptions?.label}</p>
 
           <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
-            {dateFormatter(values?.[data.name])}
+            {dateFormatter(values?.[data?.name])}
           </p>
         </Col>
       );
     }
     if (
-      !values?.[data.name] &&
-      data.type !== "custom_toggle" &&
-      data.type !== "custom_medical"
+      !values?.[data?.name] &&
+      data?.type !== "custom_toggle" &&
+      data?.type !== "custom_medical"
     )
       return <></>;
 
-    if (data.type === "select")
+    if (data?.type === "select")
       return (
         <Col
           md={4}
@@ -120,17 +127,17 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
           style={{ display: "inline-block" }}
           key={i}
         >
-          
           <p className="font_15_p_s">{data.additionalOptions.label}</p>
           <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
             {data.name === "town" || data.name === "area"
               ? values[data.name + "__value"]
-              : getValueFromCode(values[data.name],data)}
+              : getValueFromCode(values[data.name], data)}
           </p>
         </Col>
       );
 
-    return (data.type === "text" || data.type === "checkbox") && values[data.name] ? (
+    return (data.type === "text" || data.type === "checkbox") &&
+      values[data?.name] ? (
       <Col
         md={4}
         sm={4}
@@ -186,6 +193,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
       )
     );
   }, []);
+
   const objectRender = useCallback((data, i, item, title, schema) => {
     if (
       (!values?.[item]?.[data.name] || title === "Medical Details") &&
@@ -238,58 +246,52 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
           <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
-         
-          {
-            // values?.[item]?.[data.name] instanceof Object &&
-            // values?.[item]?.[data.name]?.members &&
-            // values?.[item]?.[data.name]?.members.length
-            values?.[item]?.[data.name] instanceof Object &&
-            values?.[item]?.[data.name]?.members &&
-            Object.keys(values?.[item]?.[data.name]?.members).length ? (
-              Object.keys(values?.[item]?.[data.name]?.members).map(
-                (_item, _i) => {
-                  return values?.[item]?.[data.name]?.members[_item] ? (
-                    <>
-                      <CustomMedicalTitle>{_item}</CustomMedicalTitle>
-                      <InnerWrapper>
-                        {schema[i + 1].map(additionalQuestion => (
-                          <AdditionalWrapper2 className="text-dark">
-                            <AdditionalQuestion className="font_15_p_s">
-                              {additionalQuestion.additionalOptions.label ||
-                                additionalQuestion.additionalOptions
-                                  .placeholder}
-                            </AdditionalQuestion>
-                            <AdditionalAnswer
-                              className="font_sub_p_s"
-                              style={{ fontWeight: "900" }}
+
+          {values?.[item]?.[data.name] instanceof Object &&
+          values?.[item]?.[data.name]?.members &&
+          Object.keys(values?.[item]?.[data.name]?.members).length ? (
+            Object.keys(values?.[item]?.[data.name]?.members).map(
+              (_item, _i) => {
+                return values?.[item]?.[data.name]?.members[_item] ? (
+                  <>
+                    <CustomMedicalTitle>{_item}</CustomMedicalTitle>
+                    <InnerWrapper>
+                      {schema[i + 1].map(additionalQuestion => (
+                        <AdditionalWrapper2 className="text-dark">
+                          <AdditionalQuestion className="font_15_p_s">
+                            {additionalQuestion.additionalOptions.label ||
+                              additionalQuestion.additionalOptions.placeholder}
+                          </AdditionalQuestion>
+                          <AdditionalAnswer
+                            className="font_sub_p_s"
+                            style={{ fontWeight: "900" }}
+                          >
+                            <p
+                              style={{
+                                overflowWrap: "break-word",
+                              }}
                             >
-                              <p
-                                style={{
-                                  overflowWrap: "break-word",
-                                }}
-                              >
-                                {
-                                  values?.[item]?.[data.name]?.[_item]?.[
-                                    additionalQuestion?.name
-                                  ]
-                                }
-                              </p>
-                            </AdditionalAnswer>
-                          </AdditionalWrapper2>
-                        ))}
-                      </InnerWrapper>
-                    </>
-                  ) : (
-                    <></>
-                  );
-                },
-              )
-            ) : (
-              <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
-                <MedicalAnswer>No</MedicalAnswer>
-              </div>
+                              {
+                                values?.[item]?.[data.name]?.[_item]?.[
+                                  additionalQuestion?.name
+                                ]
+                              }
+                            </p>
+                          </AdditionalAnswer>
+                        </AdditionalWrapper2>
+                      ))}
+                    </InnerWrapper>
+                  </>
+                ) : (
+                  <></>
+                );
+              },
             )
-          }
+          ) : (
+            <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
+              <MedicalAnswer>No</MedicalAnswer>
+            </div>
+          )}
         </Col>
       );
     }
@@ -339,7 +341,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
           <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
             {data.additionalOptions.label}
           </MedicalQuestionWrapper>
-        
+
           {values?.[item]?.[data.name] instanceof Object &&
           values?.[item]?.[data.name]?.members &&
           Object.keys(values?.[item]?.[data.name]?.members).length ? (
@@ -378,114 +380,107 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
   }, []);
 
   return (
-    <Card
-      styledCss={`
-    margin-bottom: 20px;
-    
-    @media screen and (max-width:768px){
-      margin-bottom: 10px;
-      padding:5px 2px;
-  }
-    `}
-    >
-      <div className="card_proposal_summary  box-shadow_plan_box_p_s_s_proposal_form_l">
-        <EditWrapper
-          PrimaryColor={PrimaryColor}
-          onClick={() => {
-            dispatch(setActiveIndex(index));
-            history.push("/proposal?enquiryId=" + enquiryId);
-          }}
-        >
-          {" "}
-          {/* <span>Edit</span> */}
-          {/* <img src={pencil} alt="edit"></img> */}
-          <PencilWrapper
-            className="d-flex justify-content-center align-items-center"
-            style={{ color: PrimaryColor }}
-          >
-            {/* <PencilIcon
-            style={{
-              color: "#0a87ff",
-
+    <>
+      <Card
+        styledCss={`
+  margin-bottom: 20px;
+  
+  @media screen and (max-width:768px){
+    margin-bottom: 10px;
+    padding:5px 2px;
+}
+  `}
+      >
+        <div className="card_proposal_summary  box-shadow_plan_box_p_s_s_proposal_form_l">
+          <EditWrapper
+            PrimaryColor={PrimaryColor}
+            onClick={() => {
+              dispatch(setActiveIndex(index));
+              history.push("/proposal?enquiryId=" + enquiryId);
             }}
-            width="15px"
-          /> */}
-            <FaPen />
-          </PencilWrapper>
-        </EditWrapper>
-        <Row>
-          <Col md={11} className="bor_right_m_p_s_title_main">
-            <MainTitle
-              PrimaryColor={PrimaryColor}
-              PrimaryShade={` linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
-              bg
+          >
+            {" "}
+            {/* <span>Edit</span> */}
+            {/* <img src={pencil} alt="edit"></img> */}
+            <PencilWrapper
+              className="d-flex justify-content-center align-items-center"
+              style={{ color: PrimaryColor }}
             >
-              {title}
-            </MainTitle>
-            {title === "Other Details" && (
-              <TitleWrapper
-                css={`
-                  padding-left: 20px !important;
-                  border-top: 0px !important;
-                `}
-              >
-                Nominee Details
-              </TitleWrapper>
-            )}
-          </Col>
-        </Row>
-        <br className="hide-on-mobile" />
-        <Row
-          css={`
-            margin-left: 10px;
-            margin-top: -28px;
-          `}
-        >
-   
+              {/* <PencilIcon
+          style={{
+            color: "#0a87ff",
 
-          {data instanceof Array
-            ? data.map(normalRender)
-            : Object.keys(data).map((item, index) => (
-                <>
-                  <Border>
-                    <TitleWrapper>
-                      <span style={{ textTransform: "capitalize" }}>
-                        {modifyMembersName(item)}
-                      </span>
-                    </TitleWrapper>
-                    {data[item].map((_data, index) => {
-                      return title === "Other Details"
-                        ? objectRender(
-                            {
-                              ..._data,
-                              additionalOptions: {
-                                ..._data.additionalOptions,
-                                label: _data.additionalOptions.label.includes(
-                                  "Nominee's",
-                                )
-                                  ? _data.additionalOptions.label.replace(
-                                      "Nominee's",
-                                      "",
-                                    )
-                                  : _data.additionalOptions.label.replace(
-                                      "Nominee",
-                                      "",
-                                    ),
+          }}
+          width="15px"
+        /> */}
+              <FaPen />
+            </PencilWrapper>
+          </EditWrapper>
+          <Row>
+            <Col md={11} className="bor_right_m_p_s_title_main">
+              <MainTitle
+                PrimaryColor={PrimaryColor}
+                PrimaryShade={` linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
+                bg
+              >
+                {title}
+              </MainTitle>
+              {title === "Other Details" && (
+               <></>
+              )}
+            </Col>
+          </Row>
+          <br className="hide-on-mobile" />
+          <Row
+            css={`
+              margin-left: 10px;
+              margin-top: -28px;
+            `}
+          >
+            {data instanceof Array
+              ? data.map(normalRender)
+              : Object.keys(data).map((item, index) => (
+                  <>
+                    <Border>
+                      <TitleWrapper>
+                        <span style={{ textTransform: "capitalize" }}>
+                          {modifyMembersName(item)}
+                        </span>
+                      </TitleWrapper>
+                      {data[item].map((_data, index) => {
+                        return title === "Other Details"
+                          ? objectRender(
+                              {
+                                ..._data,
+                                additionalOptions: {
+                                  ..._data.additionalOptions,
+                                  label: _data.additionalOptions.label.includes(
+                                    "Nominee's",
+                                  )
+                                    ? _data.additionalOptions.label.replace(
+                                        "Nominee's",
+                                        "",
+                                      )
+                                    : _data.additionalOptions.label.replace(
+                                        "Nominee",
+                                        "",
+                                      ),
+                                },
                               },
-                            },
-                            index,
-                            item,
-                            title,
-                            data[item],
-                          )
-                        : objectRender(_data, index, item, title, data[item]);
-                    })}
-                  </Border>
-                </>
-              ))}
-        </Row>
-      </div>
-    </Card>
+                              index,
+                              item,
+                              title,
+                              data[item],
+                            )
+                          : objectRender(_data, index, item, title, data[item]);
+                      })}
+                    </Border>
+                  </>
+                ))}
+          </Row>
+        </div>
+      </Card>
+    </>
   );
 };
 

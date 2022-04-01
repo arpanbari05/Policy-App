@@ -15,49 +15,40 @@ import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import { useTheme } from "../../../customHooks";
 import { tabletAndMobile } from "../../../utils/mediaQueries";
 
-const populateData = (data, colors) => {
-  return [
-    {
-      header: "Toll Free number",
-      description: data?.toll_free_number || "no data",
-      Image: <RiPhoneLine size={28} color={colors.primary_color} />,
-    },
-    {
-      header: "Drop Us An Email",
-      description: data?.email || "no data",
-      Image: <RiMailLine size={28} color={colors.primary_color} />,
-    },
-  ];
+const brokerData = (data, colors) => {
+  if (data?.claim_identity === "both" || "broker_contact") {
+    return [
+      {
+        header: "Call us at",
+        description: data?.toll_free_number_insurance_broker || "no data",
+        Image: <RiPhoneLine size={28} color={colors.primary_color} />,
+      },
+      {
+        header: "Drop Us An Email",
+        description: data?.email_insurance_broker || "no data",
+        Image: <RiMailLine size={28} color={colors.primary_color} />,
+      },
+    ];
+  }
+  return [];
 };
 
-const dummyBrokerData = (data, colors) => {
-  return [
-    {
-      header: "Call us at",
-      description: data?.toll_free_number || "no data",
-      Image: <RiPhoneLine size={28} color={colors.primary_color} />,
-    },
-    {
-      header: "Drop Us An Email",
-      description: data?.email || "no data",
-      Image: <RiMailLine size={28} color={colors.primary_color} />,
-    },
-  ];
-};
-
-const dummyInsurerData = (data, colors) => {
-  return [
-    {
-      header: "Toll Free number",
-      description: data?.toll_free_number || "no data",
-      Image: <RiPhoneLine size={28} color={colors.primary_color} />,
-    },
-    {
-      header: "Drop An Email",
-      description: data?.email || "no data",
-      Image: <RiMailLine size={28} color={colors.primary_color} />,
-    },
-  ];
+const insurerData = (data, colors) => {
+  if (data?.claim_identity === "both" || "insurer_contact") {
+    return [
+      {
+        header: "Call us at",
+        description: data?.toll_free_number_insurance_comapny || "no data",
+        Image: <RiPhoneLine size={28} color={colors.primary_color} />,
+      },
+      {
+        header: "Drop Us An Email",
+        description: data?.email_insurance_comapny || "no data",
+        Image: <RiMailLine size={28} color={colors.primary_color} />,
+      },
+    ];
+  }
+  return [];
 };
 
 const dataSet = dataArray => {
@@ -73,6 +64,7 @@ const dataSet = dataArray => {
           padding: 15px;
           width: 96%;
         `}
+        key={i}
       >
         <div
           css={`
@@ -93,7 +85,7 @@ const dataSet = dataArray => {
                 font-size: 19px;
               `}
             >
-              {data.header}
+              {data?.header}
             </h4>
             <p
               css={`
@@ -103,7 +95,7 @@ const dataSet = dataArray => {
                 word-wrap: break-word;
               `}
             >
-              {data.description}{" "}
+              {data?.description}{" "}
             </p>
           </div>
           <div
@@ -121,7 +113,7 @@ const dataSet = dataArray => {
               }
             `}
           >
-            {data.Image}
+            {data?.Image}
           </div>
         </div>
       </div>,
@@ -338,44 +330,44 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                           <></>
                         )}
                         {claimProccess
-                          ? dataSet(populateData(claimProccess, colors))
+                          ? dataSet(brokerData(claimProccess, colors))
                           : null}
-                        {/*Insurer section*/}
-                        {/* 
-                        <div
-                          css={`
-                            margin: 10px 0px;
-                            
-                            box-sizing: border-box;
-                            padding: 10px 0px;
-                            border-radius: 10px;
-                          `}
-                        >
+
+                        {(claimProccess?.claim_identity === "both" ||
+                          "insurer_contact") && (
                           <div
                             css={`
-                              border: solid 1px #c9c9c9;
-                              border-radius: 9px;
-                              margin: 0 auto 10px auto;
-                              padding: 15px;
-                              width: 96%;
-                              background-color: #eef1f4;
+                              margin: 10px 0px;
+                              box-sizing: border-box;
+                              padding: 10px 0px;
+                              border-radius: 10px;
                             `}
                           >
-                            <h2
+                            <div
                               css={`
-                                font-size: 21px;
-                                font-weight: 900;
+                                border: solid 1px #c9c9c9;
+                                border-radius: 9px;
+                                margin: 0 auto 10px auto;
+                                padding: 15px;
+                                width: 96%;
+                                background-color: #eef1f4;
                               `}
                             >
-                              Contact Insurer
-                            </h2>
-                          </div>
+                              <h2
+                                css={`
+                                  font-size: 21px;
+                                  font-weight: 900;
+                                `}
+                              >
+                                Contact Insurer
+                              </h2>
+                            </div>
 
-                          {claimProccess
-                            ? dataSet(dummyInsurerData(claimProccess, colors))
-                            : null}
-                        </div>
-                       */}
+                            {claimProccess
+                              ? dataSet(insurerData(claimProccess, colors))
+                              : null}
+                          </div>
+                        )}
                       </div>
                     </Col>
                     {/* ============================================================ */}
