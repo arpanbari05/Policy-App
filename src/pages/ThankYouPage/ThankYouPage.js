@@ -169,12 +169,12 @@ const ThankYouPage = () => {
               justify-content: flex-end;
             `}
           >
-            <ShareQuoteModal
+            {/* <ShareQuoteModal
               insurersFor={cartEntries?.map(
                 cart => cart?.product?.company?.alias,
               )}
               stage="THANK_YOU"
-            />
+            /> */}
           </div>
           <div className="hideOnMobile">
             <div className="thankheading__wrapper">

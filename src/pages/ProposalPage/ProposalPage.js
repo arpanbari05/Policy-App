@@ -166,7 +166,6 @@ const ProposalPage = () => {
     }
   }, [showErrorPopup]);
 
-
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
 
@@ -196,7 +195,7 @@ const ProposalPage = () => {
           & .formbuilder__error {
             color: #c7222a;
             font-size: 12px;
-            position: absolute;
+            // position: absolute;
           }
         `}
       >

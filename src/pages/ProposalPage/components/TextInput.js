@@ -113,10 +113,16 @@ const TextInput = ({
             if (
               checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&
-              e.target.value.split("").reduce((acc,char) => acc = char==="."?acc+1:acc,0) <= 1 &&
-              (e.target.value === "" || !regForOnlyDigit.test(e.target.value)) &&
-              e.target.value.length <= 60 
-              && checkAllChar(
+              e.target.value
+                .split("")
+                .reduce(
+                  (acc, char) => (acc = char === "." ? acc + 1 : acc),
+                  0,
+                ) <= 1 &&
+              (e.target.value === "" ||
+                !regForOnlyDigit.test(e.target.value)) &&
+              e.target.value.length <= 60 &&
+              checkAllChar(
                 e.target.value,
                 forbiddedSymbols.filter(
                   el => !acceptedSpecialChar.includes(el),
@@ -243,7 +249,6 @@ const TextInput = ({
             dispatch(setShowPlanNotAvail(true));
             onChange(e);
             setFallbackValue(e.target.value);
-            
           }
           setIsFocused(false);
         }}
@@ -321,7 +326,7 @@ const Input = styled.input`
     color: black;
   }
   @media (max-width: 767px) {
-    height: 42px;
+    height: 52px;
     padding: 0 16px;
     // border-radius: 6px;
     font-size: 14px;
@@ -341,12 +346,14 @@ const Label = styled.label`
   line-height: 14px;
   position: absolute;
   left: 20px;
-  top: -8px;
+  top: 0;
   margin: 0;
+  width: 95%;
   background: #fff;
   transition: all 0.3s ease-in-out;
   font-weight: 900;
   padding: 0 5px;
+  transform: translateY(-60%);
 
   @media (max-width: 1200px) {
     font-size: 13px !important;
@@ -360,5 +367,6 @@ const Label = styled.label`
   @media (max-width: 767px) {
     left: 10px;
     font-size: 14px;
+    // top: -15px;
   }
 `;
