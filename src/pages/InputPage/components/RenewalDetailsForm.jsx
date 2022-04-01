@@ -18,7 +18,7 @@ import { useUpdateRenewalQueryMutation } from "../../../api/api";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-const RenewalDetailsForm = ({ ...props }) => {
+const RenewalDetailsForm = ({ posContent, ...props }) => {
   const { companies } = useCompanies();
 
   const history = useHistory();
@@ -91,7 +91,13 @@ const RenewalDetailsForm = ({ ...props }) => {
           `}
         >
           <FlexSectionStyled>
-            <Title>Your Renewal Details?</Title>
+            <Title
+              dangerouslySetInnerHTML={{
+                __html: posContent.question
+                  ? posContent.question
+                  : "Your Renewal Details?",
+              }}
+            ></Title>
             <LinkButton
               onClick={() => {
                 history.push("/input/basic-details");
