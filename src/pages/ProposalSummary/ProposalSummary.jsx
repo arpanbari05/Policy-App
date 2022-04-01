@@ -234,12 +234,24 @@ const ProposalSummary = () => {
                             <ItemName>{item?.product?.name}</ItemName>
                             <PayButton
                               PrimaryColor={PrimaryColor}
-                              style={{ cursor: "pointer" }}
+                              style={{
+                                cursor: "pointer",
+                                backgroundColor:
+                                  item.payment_status === "success"
+                                    ? "#ffbf66"
+                                    : PrimaryColor,
+                              }}
                               onClick={() => {
-                                singlePay(item?.proposal_id);
+                                item.payment_status !== "success" &&
+                                  singlePay(item.proposal_id);
                               }}
                             >
-                              <span>Pay Now </span>
+                              <span>
+                                {" "}
+                                {item.payment_status === "success"
+                                  ? "Paid!"
+                                  : "Pay Now"}
+                              </span>
 
                               <div>
                                 ₹{" "}

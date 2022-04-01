@@ -70,7 +70,8 @@ const FormBuilder = ({
     setErrors,
     updateValues,
     checkReadOnly,
-    updateValidateObjSchema
+    updateValidateObjSchema,
+    setBlockScrollEffect
   } = useFormBuilder(
     schema,
     fetchValues,
@@ -236,9 +237,7 @@ const FormBuilder = ({
                     values[item[0]?.parent]?.members &&
                     values[item[0]?.parent]?.members instanceof Object &&
                     values[item[0]?.parent]?.members?.[member] &&
-                    (item[0].render.when.includes("||")
-                      ? renderField(item[0], values, member)
-                      : true)) || schema.find(el => el.name === item[0]?.parent).additionalOptions.disable_Toggle
+                    renderField(item[0], values, member)) || item[0].render === "noDependency"
                   )
                     return (
                       <CustomWrapper>
@@ -349,10 +348,12 @@ const FormBuilder = ({
                                           );
                                         }
                                       }}
+                                      onFocus={() => setBlockScrollEffect(false)}
                                       onBlur={e => {
                                         if (options.validateOn === "blur") {
                                           setTrigger(innerItem.name);
                                         }
+                                        setBlockScrollEffect(true);
                                       }}
                                       onKeyDown={e => {
                                         if (innerItem.allow) {
@@ -541,6 +542,7 @@ const FormBuilder = ({
                         item.readOnly || checkReadOnly(item.name)
                       }
                       allValues={proposalData}
+                      onFocus={() => setBlockScrollEffect(false)}
                       customMembers={
                         item.render &&
                         item.render.when.includes(".") &&
@@ -561,6 +563,7 @@ const FormBuilder = ({
                         if (options.validateOn === "blur") {
                           setTrigger(item.name);
                         }
+                        setBlockScrollEffect(true);
                       }}
                       onKeyDown={e => {
                         if (item.allow) {
