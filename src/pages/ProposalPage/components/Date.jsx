@@ -42,7 +42,7 @@ const DateComp = ({
 
   const getMoment = val => {
     
-    return val.length === 4
+    return val?.length === 4
       ? moment(val, "yyyy")?.toDate()
       : moment(val, "DD-MM-YYYY")?.toDate();
   };
@@ -57,7 +57,10 @@ const DateComp = ({
     onKeyDown();
   };
   
+  let oldVal = value;
 
+  if(value?.length === 4) value = "";
+  
   const openDatepicker = () => startRef.current.setOpen(true);
   return (
     <InputContainer error={!isFocused ? error : null}>
@@ -98,7 +101,9 @@ const DateComp = ({
                 )
               : new Date(Date.now())
           }
-          placeholderText={placeholder}
+          popperPlacement="bottom"
+          placeholderText={oldVal}
+          openToDate={getMoment(oldVal)}
           onChange={date => {
             onChange({ target: { value: moment(date).format("DD-MM-YYYY") } });
           }}
