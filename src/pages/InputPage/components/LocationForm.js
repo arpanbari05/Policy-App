@@ -18,7 +18,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { setEditStep, setShowEditMembers } from "../../quotePage/quote.slice";
 
-function LocationForm({ edit = false, close = () => {} }) {
+function LocationForm({ edit = false, close = () => {}, posContent }) {
   const { colors } = useTheme();
   const {
     data: { popularcities },
@@ -227,10 +227,14 @@ function LocationForm({ edit = false, close = () => {} }) {
       )}
 
       {!edit && (
-        <Title>
-          Tell Us Where {isSelf ? "You" : `Your ${membersText}`}{" "}
-          {isSelf ? "Live" : "Lives"}?
-        </Title>
+        <Title
+          dangerouslySetInnerHTML={{
+            __html: posContent.question
+              ? posContent.question
+              : `Tell Us Where ${isSelf ? "You" : "Your" + membersText}
+            ${isSelf ? "Live" : "Lives"}?`,
+          }}
+        ></Title>
       )}
       {!edit && <CustomProgressBar now={4} total={5} />}
       <div

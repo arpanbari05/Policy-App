@@ -14,7 +14,7 @@ import "styled-components/macro";
 import Dropdown from "../../../components/Dropdown";
 import { getReactSelectOption } from "../../../utils/helper";
 
-function DeductibleForm({ ...props }) {
+function DeductibleForm({ posContent, ...props }) {
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
 
   const history = useHistory();
@@ -60,7 +60,13 @@ function DeductibleForm({ ...props }) {
 
   return (
     <div className="p-3" {...props}>
-      <Title>Select your deductible</Title>
+      <Title
+        dangerouslySetInnerHTML={{
+          __html: posContent.question
+            ? posContent.question
+            : "Select your deductible?",
+        }}
+      ></Title>
       <CustomProgressBar now={4} total={5} />
       <div>
         <Dropdown

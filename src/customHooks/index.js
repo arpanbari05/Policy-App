@@ -288,7 +288,6 @@ export function useMembers() {
   const { data } = useGetEnquiriesQuery();
   const genderOfSelf = data?.data?.input?.gender;
   const { selectedGroup } = useSelector(state => state.quotePage);
-  console.log("srgjsbkd", selectedGroup, data, members);
   useEffect(() => {
     dispatch(refreshUserData(data?.data));
   }, []);
