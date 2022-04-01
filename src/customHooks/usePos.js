@@ -22,7 +22,7 @@ export function usePos(isPos, currentForm) {
               })
             : setPosContent({
                 banner: settings.basic_detail_banner,
-                question: settings.basic_details_question,
+                question: settings.basic_detail_question,
               });
           break;
         case "members":

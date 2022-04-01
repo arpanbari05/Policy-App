@@ -135,10 +135,12 @@ const InputPage = () => {
                 )}
 
                 {currentForm.startsWith("location") && (
-                  <LocationForm key={currentForm} />
+                  <LocationForm key={currentForm} posContent={posContent} />
                 )}
 
-                {currentForm === "deductible" && <DeductibleForm />}
+                {currentForm === "deductible" && (
+                  <DeductibleForm posContent={posContent} />
+                )}
                 {currentForm === "medicalHistory" && (
                   <MedicalHistoryForm posContent={posContent} />
                 )}
