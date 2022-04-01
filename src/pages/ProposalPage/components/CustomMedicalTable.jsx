@@ -23,6 +23,8 @@ const CustomMedicalTable = ({
   values,
   customMembers,
   showMembersIf,
+  disable_Toggle,
+  restrictMaleMembers
 }) => {
   {console.log("cvodhac",label,showMembersIf)}
 
@@ -88,6 +90,8 @@ const CustomMedicalTable = ({
         customOptions={customOptions}
         showMembersIf={showMembersIf}
         values={ values}
+        disable_Toggle={disable_Toggle}
+        restrictMaleMembers={restrictMaleMembers}
       />
     </>
   );
