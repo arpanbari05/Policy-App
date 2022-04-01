@@ -58,6 +58,7 @@ import {
 } from "../pages/ComparePage/compare.slice";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { setIsPopupOn } from "../pages/ProposalPage/ProposalSections/ProposalSections.slice";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -1898,12 +1899,12 @@ export const useRevisedPremiumModal = () => {
     );
     next();
   }; /* Performs refetch from the server */
-  console.log(
-    "wrgfbkjwrf",
-    revisedPremiumPopupToggle,
-    updatedTotalPremium,
-    prevTotalPremium,
-  );
+  // console.log(
+  //   "wrgfbkjwrf",
+  //   revisedPremiumPopupToggle,
+  //   updatedTotalPremium,
+  //   prevTotalPremium,
+  // );
   useEffect(() => {
     if (+prevTotalPremium === +updatedTotalPremium) {
       revisedPremiumPopupToggle.off();
@@ -1912,6 +1913,7 @@ export const useRevisedPremiumModal = () => {
     // if (+prevTotalPremium !== +updatedTotalPremium) {
     if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
       revisedPremiumPopupToggle.on();
+      dispatch(setIsPopupOn(true));
     }
   }, [
     prevTotalPremium,

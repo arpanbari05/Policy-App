@@ -60,6 +60,10 @@ import {
 } from "../../../api/api";
 import _ from "lodash";
 import { setShowEditMembers } from "../../quotePage/quote.slice";
+import {
+  setActiveIndex,
+  setIsPopupOn,
+} from "../../ProposalPage/ProposalSections/ProposalSections.slice";
 
 const plantypes = {
   M: "Multi Individual",
@@ -708,7 +712,7 @@ export const RevisedPremiumPopup = ({
   } = useGetEnquiriesQuery();
 
   //const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
+  const dispatch = useDispatch();
   const firstName = name.split(" ")[0];
 
   return (
@@ -835,7 +839,10 @@ export const RevisedPremiumPopup = ({
             css={`
               border-radius: 9px;
             `}
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+              dispatch(setIsPopupOn(false));
+            }}
           >
             Continue
           </Button>
