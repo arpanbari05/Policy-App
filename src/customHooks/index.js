@@ -286,9 +286,9 @@ export function useMembers() {
   } = useFrontendBoot();
 
   const { data } = useGetEnquiriesQuery();
-  const genderOfSelf = data.data.input.gender;
+  const genderOfSelf = data?.data?.input?.gender;
   const { selectedGroup } = useSelector(state => state.quotePage);
-console.log("srgjsbkd",selectedGroup,data,members)
+  console.log("srgjsbkd", selectedGroup, data, members);
   useEffect(() => {
     dispatch(refreshUserData(data?.data));
   }, []);
@@ -388,8 +388,6 @@ console.log("srgjsbkd",selectedGroup,data,members)
 
   const getSelectedMembers = () =>
     selectedMembers.map(selectedMember => getMember(selectedMember.code));
-
-
 
   const getAllMembers = () => {
     const allMembers = [];
