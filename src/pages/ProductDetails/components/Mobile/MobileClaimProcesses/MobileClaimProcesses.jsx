@@ -15,6 +15,90 @@ import { useTheme } from "../../../../../customHooks";
 import { mobile, tabletAndMobile } from "../../../../../utils/mediaQueries";
 // import "../ClaimProcessMobile/ClaimProcessMobile.css"
 
+const brokerData = (data, colors) => {
+  if (data?.claim_identity === "both" || "broker_contact") {
+    return [
+      {
+        header: "Call us at",
+        description: data?.toll_free_number_insurance_broker || "no data",
+        Image: <RiPhoneLine size={26} color={colors.primary_color} />,
+      },
+      {
+        header: "Drop Us An Email",
+        description: data?.email_insurance_broker || "no data",
+        Image: <RiMailLine size={26} color={colors.primary_color} />,
+      },
+    ];
+  }
+  return [];
+};
+
+const insurerData = (data, colors) => {
+  if (data?.claim_identity === "both" || "insurer_contact") {
+    return [
+      {
+        header: "Call us at",
+        description: data?.toll_free_number_insurance_comapny || "no data",
+        Image: <RiPhoneLine size={26} color={colors.primary_color} />,
+      },
+      {
+        header: "Drop Us An Email",
+        description: data?.email_insurance_comapny || "no data",
+        Image: <RiMailLine size={26} color={colors.primary_color} />,
+      },
+    ];
+  }
+  return [];
+};
+
+const dataSet = dataArray => {
+  const array = [];
+
+  dataArray.map((data, index) =>
+    array.push(
+      <div key={index} style={{ display: "flex", marginBottom: "20px" }}>
+        <div>
+          <div
+            className="col-md-2"
+            css={`
+              justify-content: center;
+              align-items: center;
+              background-color: #fff;
+              display: flex;
+              border-radius: 100%;
+              width: 40px;
+              height: 40px;
+              margin-right: 10px;
+            `}
+          >
+            {data?.Image}
+          </div>
+        </div>
+        <div style={{ marginTop: "10px" }}>
+          <h4
+            style={{
+              lineHeight: "0px",
+              padding: " 0px ",
+              whiteSpace: "nowrap",
+              fontSize: "14px",
+              fontWeight: "bold",
+            }}
+          >
+            {data?.header}
+          </h4>
+          <p
+            className="feature-offer-box__p break-on-overflow "
+            style={{ marginTop: "10px", fontSize: "12px" }}
+          >
+            {data?.description}
+          </p>
+        </div>
+      </div>,
+    ),
+  );
+  return array;
+};
+
 function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
   const [activebtn, setActivebtn] = useState(1);
 
@@ -281,113 +365,26 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                 ) : (
                   <></>
                 )}
-                {claimProccess.toll_free_number ? (
-                  <>
-                    <div style={{ display: "flex", marginBottom: "20px" }}>
-                      <div>
-                        <div
-                          className="col-md-2"
-                          css={`
-                            justify-content: center;
-                            align-items: center;
-                            background-color: #fff;
-                            display: flex;
-                            border-radius: 100%;
-                            width: 40px;
-                            height: 40px;
-                            margin-right: 10px;
-                          `}
-                        >
-                          <a
-                            href={`tel:${claimProccess?.toll_free_number}`}
-                            target={"_blank"}
-                            rel="noreferrer"
-                          >
-                            <RiPhoneLine
-                              size="26px"
-                              color={colors.primary_color}
-                            />
-                          </a>
-                        </div>
-                      </div>
-                      <div style={{ marginTop: "10px" }}>
-                        <h4
-                          style={{
-                            lineHeight: "0px",
-                            padding: " 0px ",
-                            whiteSpace: "nowrap",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Toll Free No.
-                        </h4>
-                        <p
-                          className="feature-offer-box__p break-on-overflow "
-                          style={{ marginTop: "10px", fontSize: "12px" }}
-                        >
-                          {claimProccess.toll_free_number}
-                        </p>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <></>
-                )}
-                {claimProccess?.email ? (
-                  <>
-                    <div style={{ display: "flex" }}>
-                      <div>
-                        <div
-                          className="col-md-2"
-                          css={`
-                            justify-content: center;
-                            align-items: center;
-                            background-color: #fff;
-                            display: flex;
-                            border-radius: 100%;
-                            width: 40px;
-                            height: 40px;
-                            margin-right: 10px;
-                          `}
-                        >
-                          <a
-                            href={`mailto:${claimProccess?.email}`}
-                            target={"_blank"}
-                            rel="noreferrer"
-                          >
-                            <RiMailLine
-                              size="26px"
-                              color={colors.primary_color}
-                            />
-                          </a>
-                        </div>
-                      </div>
-                      <div style={{ marginTop: "10px" }}>
-                        <h4
-                          style={{
-                            lineHeight: "0px",
-                            padding: " 0px ",
-                            whiteSpace: "nowrap",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Drop Us An Email
-                        </h4>
-                        <p
-                          className="feature-offer-box__p break-on-overflow "
-                          style={{ marginTop: "10px", fontSize: "12px" }}
-                        >
-                          {claimProccess?.email}
-                        </p>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <></>
-                )}
+                {dataSet(brokerData(claimProccess, colors))}
               </div>
+              {(claimProccess?.claim_identity === "both" ||
+                "insurer_contact") && (
+                <div>
+                  <h4
+                    style={{
+                      lineHeight: "0px",
+                      padding: " 0px ",
+                      whiteSpace: "nowrap",
+                      fontSize: "21px",
+                      fontWeight: "500",
+                      marginBottom: "30px",
+                    }}
+                  >
+                    Insurer Contact
+                  </h4>
+                  {dataSet(insurerData(claimProccess, colors))}
+                </div>
+              )}
             </Info>
           </>
         )}
