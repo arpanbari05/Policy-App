@@ -44,6 +44,8 @@ const ThankYouPage = () => {
     },
   } = useTheme();
 
+  const { cartEntries } = useCart();
+
   const {
     data: { tenant: tenantDetail, settings },
   } = useFrontendBoot();
@@ -167,7 +169,12 @@ const ThankYouPage = () => {
               justify-content: flex-end;
             `}
           >
-            <ShareQuoteModal cssProps={"margin-top: 30px;"} stage="THANK_YOU" />
+            {/* <ShareQuoteModal
+              insurersFor={cartEntries?.map(
+                cart => cart?.product?.company?.alias,
+              )}
+              stage="THANK_YOU"
+            /> */}
           </div>
           <div className="hideOnMobile">
             <div className="thankheading__wrapper">

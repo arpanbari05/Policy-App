@@ -24,6 +24,7 @@ import universal_sompo from "./universal_sompo.png";
 import fyntune from "./fyntune.png";
 import renew_buy from "./renew_buy.png";
 import Pinc from "./Pinc3.png";
+import CompanyLogo from "./companyLogo.png";
 
 const images = {
   go_digit: digit,
@@ -52,6 +53,7 @@ const images = {
   fyntune,
   renew_buy,
   Pinc,
+  CompanyLogo,
 };
 
 export { images };

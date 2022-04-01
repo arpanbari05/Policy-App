@@ -150,7 +150,7 @@ const Select = styled.select`
 
   @media (max-width: 767px) {
     font-size: 14px;
-    height: ${props => (!props.height ? "42px" : "24px")};
+    height: ${props => (!props.height ? "52px" : "24px")};
     padding: 0 16px;
     border-radius: 6px;
   }

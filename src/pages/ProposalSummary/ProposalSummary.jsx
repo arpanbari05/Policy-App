@@ -438,7 +438,7 @@ const ProposalSummary = () => {
                   justify-content: center;
                 `}
               >
-                <ShareQuoteModal stage="PROPOSAL_SUMMARY" />
+                <ShareQuoteModal insurersFor={cart.map(cart => cart?.product?.company?.alias)} stage="PROPOSAL_SUMMARY" />
               </div>
             </div>
             <Col
