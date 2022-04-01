@@ -17,6 +17,7 @@ import { Spinner } from "react-bootstrap";
 import MedicalHistoryForm from "./components/MedicalHistoryForm";
 import JourneyTypeForm from "./components/JourneyTypeForm";
 import { renderDisclaimer } from "../../utils/helper";
+import { usePos } from "../../customHooks/usePos";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -32,6 +33,8 @@ const InputPage = () => {
   const { colors } = useTheme();
 
   const { currentForm } = useParams();
+
+  const { posContent } = usePos(localStorage.SSO_user, currentForm);
 
   return (
     <Page>
@@ -81,7 +84,7 @@ const InputPage = () => {
         </div>
         <Wrapper currentForm={currentForm}>
           <InnerWrapper className="hide_on_mobile">
-            <HeaderCard />
+            <HeaderCard content={posContent} />
           </InnerWrapper>
           <InnerWrapper>
             <Card
@@ -119,18 +122,26 @@ const InputPage = () => {
                   }
                 `}
               >
-                {currentForm === "basic-details" && <BasicDetailsForm />}
+                {currentForm === "basic-details" && (
+                  <BasicDetailsForm posContent={posContent} />
+                )}
 
-                {currentForm === "members" && <InputMembersForm />}
+                {currentForm === "members" && (
+                  <InputMembersForm posContent={posContent} />
+                )}
 
-                {currentForm === "plantype" && <PlanTypeForm />}
+                {currentForm === "plantype" && (
+                  <PlanTypeForm posContent={posContent} />
+                )}
 
                 {currentForm.startsWith("location") && (
                   <LocationForm key={currentForm} />
                 )}
 
                 {currentForm === "deductible" && <DeductibleForm />}
-                {currentForm === "medicalHistory" && <MedicalHistoryForm />}
+                {currentForm === "medicalHistory" && (
+                  <MedicalHistoryForm posContent={posContent} />
+                )}
                 {currentForm === "renewal-details" && <RenewalDetailsForm />}
                 {currentForm === "journey-type" && <JourneyTypeForm />}
               </div>
@@ -224,7 +235,7 @@ const InnerWrapper = styled.div`
   } */
 `;
 
-function HeaderCard() {
+function HeaderCard({ content }) {
   const { colors } = useTheme();
   const { journeyType, data, isLoading, isUninitialized } = useFrontendBoot();
 
@@ -272,7 +283,7 @@ function HeaderCard() {
             <h3>{journeyTitle[journeyType]}</h3>
           )}
         </div>
-        {data?.settings?.input_banner_info ? (
+        {content.banner && content.banner !== "" ? (
           <div
             css={`
               p {
@@ -299,7 +310,7 @@ function HeaderCard() {
               }
             `}
             dangerouslySetInnerHTML={{
-              __html: data?.settings?.input_banner_info,
+              __html: content.banner,
             }}
           ></div>
         ) : (

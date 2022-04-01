@@ -24,7 +24,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setShowEditMembers } from "../../../pages/quotePage/quote.slice";
 
-function InputMembersForm(props) {
+function InputMembersForm({ posContent, ...props }) {
   const [serverError, setServerError] = useState("");
   const { colors } = useTheme();
 
@@ -119,7 +119,11 @@ function InputMembersForm(props) {
   return (
     <div className="py-3" {...props}>
       <div className="px-3">
-        <Title className="w-100">Who all would you like to insure?</Title>
+        <Title className="w-100">
+          {posContent.question
+            ? posContent.question
+            : "Who all would you like to insure?"}
+        </Title>
         <CustomProgressBar now={2} total={4} />
       </div>
       <div className="px-3">

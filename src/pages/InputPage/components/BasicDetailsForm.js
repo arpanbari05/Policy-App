@@ -24,7 +24,7 @@ import validateInput, {
 } from "../../../utils/inputPageUtils";
 import styled from "styled-components";
 
-const BasicDetailsForm = ({ ...props }) => {
+const BasicDetailsForm = ({ posContent, ...props }) => {
   const { colors } = useTheme();
   const {
     data: { tenant, settings },
@@ -55,18 +55,6 @@ const BasicDetailsForm = ({ ...props }) => {
   const urlSearchParams = useUrlQueries();
 
   const history = useHistory();
-
-  // useEffect(() => {
-  //   const validation = validateInput(
-  //     fullNameInput,
-  //     emailInput,
-  //     mobileInput,
-  //     setFullNameErrors,
-  //     setEmailErrors,
-  //     setMobileErrors,
-  //   );
-  //   setShouldProceed(validation);
-  // }, [fullNameInput.value, emailInput.value, mobileInput.value]);
 
   const handleFormSubmit = async event => {
     event.preventDefault();
@@ -125,7 +113,11 @@ const BasicDetailsForm = ({ ...props }) => {
         >
           {tenant.alias === "fyntune" ? (
             <FlexSectionStyled>
-              <Title>Tell Us about yourself?</Title>
+              <Title>
+                {posContent.question
+                  ? posContent.question
+                  : "Tell Us about yourself?"}
+              </Title>
               <LinkButton
                 onClick={() => {
                   history.push({
