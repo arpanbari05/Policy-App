@@ -348,7 +348,7 @@ const Label = styled.label`
   left: 20px;
   top: 0;
   margin: 0;
-  width: 95%;
+  max-width: 95%;
   background: #fff;
   transition: all 0.3s ease-in-out;
   font-weight: 900;
