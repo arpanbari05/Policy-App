@@ -35,6 +35,7 @@ const InputPage = () => {
   const { currentForm } = useParams();
 
   const { posContent } = usePos(localStorage.SSO_user, currentForm);
+  console.log("posContent", posContent);
 
   return (
     <Page>
@@ -144,7 +145,9 @@ const InputPage = () => {
                 {currentForm === "medicalHistory" && (
                   <MedicalHistoryForm posContent={posContent} />
                 )}
-                {currentForm === "renewal-details" && <RenewalDetailsForm />}
+                {currentForm === "renewal-details" && (
+                  <RenewalDetailsForm posContent={posContent} />
+                )}
                 {currentForm === "journey-type" && <JourneyTypeForm />}
               </div>
             </Card>
@@ -285,6 +288,7 @@ function HeaderCard({ content }) {
             <h3>{journeyTitle[journeyType]}</h3>
           )}
         </div>
+
         {content.banner && content.banner !== "" ? (
           <div
             css={`

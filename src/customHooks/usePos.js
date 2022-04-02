@@ -12,6 +12,7 @@ export function usePos(isPos, currentForm) {
   const [posContent, setPosContent] = useState(defaultValue);
 
   useEffect(() => {
+    console.log("currentForm", currentForm);
     if (settings) {
       switch (currentForm) {
         case "basic-details":
