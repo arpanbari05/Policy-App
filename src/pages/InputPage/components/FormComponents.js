@@ -11,7 +11,7 @@ export const Title = styled.h1`
   color: ${styles.colors.font.one};
   text-decoration: capitalize;
 
-  p:last-child {
+  p:nth-child(2) {
     font-size: 14px;
     color: #898989;
     font-weight: 400;
