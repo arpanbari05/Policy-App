@@ -26,6 +26,8 @@ const DateComp = ({
   endDate,
   age = [0, 0],
 }) => {
+  const [isHovering, setIsHovering] = useState(false);
+
 const [isFocused, setIsFocused] = useState(false);
   const onFocus = () => setIsFocused(true);
   let newDate = new Date();
@@ -79,7 +81,7 @@ const [isFocused, setIsFocused] = useState(false);
 
   const openDatepicker = () => startRef.current.setOpen(true);
   return (
-    <InputContainer error={!isFocused ? error : null}>
+    <InputContainer error={!isFocused ? error : null} readOnly={readOnly}>
       <DatePickerWrapper>
         <DatePicker
           id="date-picker"
@@ -128,6 +130,7 @@ const [isFocused, setIsFocused] = useState(false);
           onFocus={onFocus}
           onBlur={() => setIsFocused(false)}
           wrapperClassName="date-picker"
+         
           // onCalendarOpen={handleCalendarOpen}
         />
       </DatePickerWrapper>
@@ -149,6 +152,8 @@ const [isFocused, setIsFocused] = useState(false);
 export default DateComp;
 
 const DatePickerWrapper = styled.div`
+
+
   .react-datepicker__month-container {
     height: 300px;
   }
@@ -164,6 +169,8 @@ const Calendar = styled.img`
     props.error ? "translateY(calc(-50% - 8px))" : "translateY(-50%)"};
 `;
 const InputContainer = styled.div`
+cursor:${props => (props.readOnly ? "not-allowed" : "pointer")} !important;
+
   & .react-datepicker__navigation--years-upcoming {
     width: 0;
     height: 0;
