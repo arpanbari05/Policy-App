@@ -21,6 +21,7 @@ import {
   setIsLoading,
   submitProposalData,
   setSelectedIcs,
+  setActiveIndex,
 } from "./ProposalSections/ProposalSections.slice";
 import { setShowErrorPopup } from "./ProposalSections/ProposalSections.slice";
 import ReviewCart from "../ProductDetails/components/ReviewCart";
@@ -45,6 +46,7 @@ import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import useComparePage from "../ComparePage/useComparePage";
 import { mobile } from "../../utils/mediaQueries";
+import { useGetCartQuery } from "../../api/api";
 // import dummy from "./dumySchema";
 /* ===============================test================================= */
 
@@ -82,8 +84,14 @@ const ProposalPage = () => {
       setListOfForms(Object.keys(currentSchema));
   }, [currentSchema]);
   const dispatch = useDispatch();
-  const { activeIndex, proposalData, showErrorPopup, showBMI, failedBmiData } =
-    useSelector(state => state.proposalPage);
+  const {
+    activeIndex,
+    proposalData,
+    showErrorPopup,
+    showBMI,
+    failedBmiData,
+    isPopupOn,
+  } = useSelector(state => state.proposalPage);
 
   const {
     colors: { primary_color, primary_shade },
@@ -127,11 +135,13 @@ const ProposalPage = () => {
   }, [activeIndex]);
   const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
   // to get unfilled form
+
   useEffect(() => {
+    console.log(continueBtnClick, activeIndex, "test");
     if (
       Object.keys(proposalData).length &&
-      activeIndex === false &&
-      continueBtnClick
+      continueBtnClick &&
+      activeIndex === false
     ) {
       let unfilledInfoTabIndex;
 
@@ -142,7 +152,8 @@ const ProposalPage = () => {
           // setActive((prev) => prev + 1)
         }
       });
-      if (!unfilledInfoTabIndex && !revisedPremiumPopupUtilityObject.isOn) {
+
+      if (!unfilledInfoTabIndex && !isPopupOn) {
         setActivateLoader(true);
         dispatch(
           submitProposalData(() => {
@@ -154,10 +165,11 @@ const ProposalPage = () => {
       } else {
         setActive(unfilledInfoTabIndex);
       }
+      dispatch(setActiveIndex(unfilledInfoTabIndex || activeIndex));
     } else {
       setActive(activeIndex);
     }
-  }, [activeIndex, proposalData]);
+  }, [activeIndex, proposalData, isPopupOn]);
 
   // to stop loader on cancle cta error popup
   useEffect(() => {

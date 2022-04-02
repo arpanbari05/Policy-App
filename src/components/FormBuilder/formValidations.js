@@ -68,7 +68,7 @@ function contains(target, pattern) {
 
 export const validationIndex = {
   required: (param, values, name) => {
-    console.log(name, values, param, "heheheh3");
+    // console.log(name, values, param, "heheheh3");
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
 
@@ -175,7 +175,7 @@ export const validationIndex = {
         : parent && member && values
         ? values?.[parent]?.[member]
         : values?.[name];
-    console.log("wojvnno", value, checkParam);
+    // console.log("wojvnno", value, checkParam);
 
     if (checkParam === "alt") {
       compareTo =
@@ -195,7 +195,7 @@ export const validationIndex = {
             (value.trim().match(/\ /g) || []).length > 5 ||
             value.split("").length > 90
           ) {
-            console.log("wqefvbhcks", value.split("").length);
+            // console.log("wqefvbhcks", value.split("").length);
             return { status: false, message: "Please enter valid name." };
           } else break;
         case "mobile":
@@ -232,10 +232,10 @@ export const validationIndex = {
           } else break;
         case "validYear":
           if (typeof value === "string" || value instanceof String) {
-            console.log("sknslkfn", value);
+            // console.log("sknslkfn", value);
             let month = value?.split("-")[0];
             let year = value?.split("-")[1];
-            console.log("qcbib", param, value);
+            // console.log("qcbib", param, value);
             if (
               !(
                 month > 0 &&
@@ -267,7 +267,7 @@ export const validationIndex = {
           let maxDateNum = maxDate.getDate();
           let maxMonth = maxDate.getMonth();
           let maxYear = maxDate.getUTCFullYear();
-          console.log("qjhegcjheqf", maxYear);
+          // console.log("qjhegcjheqf", maxYear);
           if (
             value.split("-")[2] &&
             (currentDate.getUTCFullYear() > parseInt(value.split("-")[2]) ||
@@ -309,7 +309,7 @@ export const validationIndex = {
                 currentDate.getUTCMonth() + 1,
                 currentDate.getUTCFullYear() - name.age,
               ];
-          console.log("dfnlsvv", input, userDOB);
+          // console.log("dfnlsvv", input, userDOB);
 
           if (
             (parseInt(input[1]) === currentDate.getUTCFullYear() &&
@@ -333,11 +333,11 @@ export const validationIndex = {
               values[name.parent][name.member][name.variableName],
             );
             if (name.dob && name.dob.split("-")[2]) {
-              console.log(
-                "ibndfji",
-                name.dob.split("-")[2],
-                inputNumberOfYears,
-              );
+              // console.log(
+              //   "ibndfji",
+              //   name.dob.split("-")[2],
+              //   inputNumberOfYears,
+              // );
               if (
                 currentDate.getUTCFullYear() - inputNumberOfYears <
                   parseInt(name.dob.split("-")[2]) ||
@@ -373,7 +373,7 @@ export const validationIndex = {
 
         case "date":
           // values[name.parent][name.member][name.variableName]
-          console.log("cjhgvjvhjc", param, values, name);
+          // console.log("cjhgvjvhjc", param, values, name);
           {
             let currentDate = new Date();
 
@@ -465,7 +465,7 @@ export const validationIndex = {
               }
             });
           }
-          console.log("bgwefhweg", pass);
+          // console.log("bgwefhweg", pass);
           if (
             !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
               value,
@@ -479,24 +479,22 @@ export const validationIndex = {
             };
           } else break;
         case "pan": {
-
-          if (
-            !/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(value.toUpperCase())
-          ) {
+          if (!/([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(value.toUpperCase())) {
             return {
               status: false,
               message: "Please enter a valid pan number.",
             };
-          }else if((value[4] &&
+          } else if (
+            value[4] &&
             // pancard number's 5th char must be equal to the first char of last name of the user
 
-            values.name[values.name.lastIndexOf(" ") + 1] !== value[4])){
-              return {
-                status: false,
-                message: "5th char must be equal to your last name's 1st char.",
-              };
-            }
-           else break;
+            values.name[values.name.lastIndexOf(" ") + 1] !== value[4]
+          ) {
+            return {
+              status: false,
+              message: "5th char must be equal to your last name's 1st char.",
+            };
+          } else break;
         }
         case "aadhar":
           if (!/^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/.test(value)) {
@@ -524,19 +522,19 @@ export const validationIndex = {
             };
           } else break;
         case "onlyDigits":
-          if (!/^[0-9]*$/.test(value) ) {
+          if (!/^[0-9]*$/.test(value)) {
             return {
               status: false,
               message: "Please enter only digits",
             };
-          } else if(parseInt(value) ===  0){
+          } else if (parseInt(value) === 0) {
             return {
               status: false,
               message: "Please enter valid value",
             };
           } else break;
         case "annIncome":
-          if (!/^[0-9]*$/.test(value) && parseInt(value) ===  0) {
+          if (!/^[0-9]*$/.test(value) && parseInt(value) === 0) {
             return {
               status: false,
               message: "Please enter valid value",
