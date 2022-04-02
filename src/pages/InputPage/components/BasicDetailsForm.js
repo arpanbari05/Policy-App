@@ -131,7 +131,13 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
               </LinkButton>
             </FlexSectionStyled>
           ) : (
-            <Title>Tell Us about yourself?</Title>
+            <Title
+              dangerouslySetInnerHTML={{
+                __html: posContent.question
+                  ? posContent.question
+                  : "Tell Us about yourself?",
+              }}
+            ></Title>
           )}
           <CustomProgressBar now={1} total={5} />
           <div

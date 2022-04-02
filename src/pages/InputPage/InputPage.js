@@ -35,6 +35,7 @@ const InputPage = () => {
   const { currentForm } = useParams();
 
   const { posContent } = usePos(localStorage.SSO_user, currentForm);
+  console.log("posContent", posContent);
 
   return (
     <Page>
@@ -144,7 +145,9 @@ const InputPage = () => {
                 {currentForm === "medicalHistory" && (
                   <MedicalHistoryForm posContent={posContent} />
                 )}
-                {currentForm === "renewal-details" && <RenewalDetailsForm />}
+                {currentForm === "renewal-details" && (
+                  <RenewalDetailsForm posContent={posContent} />
+                )}
                 {currentForm === "journey-type" && <JourneyTypeForm />}
               </div>
             </Card>
@@ -285,12 +288,13 @@ function HeaderCard({ content }) {
             <h3>{journeyTitle[journeyType]}</h3>
           )}
         </div>
+
         {content.banner && content.banner !== "" ? (
           <div
             css={`
               p {
                 font-size: 1.4rem;
-                margin-bottom: 2.3rem;
+                margin-bottom: 2rem;
               }
 
               li {
@@ -327,7 +331,10 @@ function HeaderCard({ content }) {
 }
 
 function TermsAndConditions(props) {
-  const { tenantName } = useFrontendBoot();
+  const {
+    tenantName,
+    data: { settings },
+  } = useFrontendBoot();
 
   return (
     <div
@@ -344,7 +351,7 @@ function TermsAndConditions(props) {
           margin: 0 auto;
         `}
       >
-        {renderDisclaimer({ tenantName })}
+        {renderDisclaimer({ tenantName, settings })}
       </label>
     </div>
   );

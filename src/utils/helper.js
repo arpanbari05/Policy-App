@@ -740,27 +740,44 @@ export function months2years(months) {
 }
 
 // disclaimer text
-export function renderDisclaimer({ tenantName }) {
-  if (tenantName === "Renew Buy") {
-    return `D2C INSURANCE BROKING PVT. LTD (CIN U66030DL2013PTC249265), 
-    Principal Place of Business: 1st Floor, Plot no 94, Sector- 32, Gurugram -122001, Haryana; 
-    Registered Office: Second Floor, C-67, DDA Shed, Okhla Phase – 1, Delhi -110020, IRDAI Broking 
-    License Code No. DB 571/14, Certificate No. 505, License category- Direct Broker (Life & General), 
-    valid till 26/11/2023. Product information is solely based on the information received from the insurers.
-     For more details on risk factors, associated terms and conditions and exclusions, please read the sales 
-     brochure carefully of respective insurer before concluding a sale. The Point of Sales Person (POSP) is 
-     appointed by D2C Insurance Broking Private Limited as per the Guidelines on Point of Sales Person issued 
-     by the IRDAI and amended from time to time.`;
+export function renderDisclaimer({ tenantName, settings }) {
+  console.log(settings);
+  if (localStorage.SSO_user) {
+    if (
+      settings?.disclaimer_pos &&
+      settings?.disclaimer_pos !== "" &&
+      settings?.disclaimer_pos !== "<p><br></p>"
+    ) {
+      return settings.disclaimer_pos;
+    } else {
+      return `By clicking on Get Started, I hereby authorise ${tenantName}. and all of
+      its affiliates, subsidiaries, group companies and related parties to
+      access the details such as my name, address, telephone number, e-mail
+      address, birth date and / or anniversary date shared by me, and contact
+      me to provide information on the various products and services offered.
+      I understand that this consent will override my NDNC registration, if
+      any. I also understand that at any point of time, I wish to stop
+      receiving such communications from ${tenantName}, I can withdraw such
+      consent anytime on "("to provide a contact number or email id or both")"`;
+    }
   } else {
-    return `By clicking on Get Started, I hereby authorise ${tenantName}. and all of
-    its affiliates, subsidiaries, group companies and related parties to
-    access the details such as my name, address, telephone number, e-mail
-    address, birth date and / or anniversary date shared by me, and contact
-    me to provide information on the various products and services offered.
-    I understand that this consent will override my NDNC registration, if
-    any. I also understand that at any point of time, I wish to stop
-    receiving such communications from ${tenantName}, I can withdraw such
-    consent anytime on "("to provide a contact number or email id or both")"`;
+    if (
+      settings?.disclaimer &&
+      settings?.disclaimer !== "" &&
+      settings?.disclaimer !== "<p><br></p>"
+    ) {
+      return settings.disclaimer;
+    } else {
+      return `By clicking on Get Started, I hereby authorise ${tenantName}. and all of
+        its affiliates, subsidiaries, group companies and related parties to
+        access the details such as my name, address, telephone number, e-mail
+        address, birth date and / or anniversary date shared by me, and contact
+        me to provide information on the various products and services offered.
+        I understand that this consent will override my NDNC registration, if
+        any. I also understand that at any point of time, I wish to stop
+        receiving such communications from ${tenantName}, I can withdraw such
+        consent anytime on "("to provide a contact number or email id or both")"`;
+    }
   }
 }
 
