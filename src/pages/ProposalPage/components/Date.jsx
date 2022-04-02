@@ -26,7 +26,6 @@ const DateComp = ({
   endDate,
   age = [0, 0],
 }) => {
-  
   const [isFocused, setIsFocused] = useState(false);
   const onFocus = () => setIsFocused(true);
   let newDate = new Date();
@@ -41,14 +40,10 @@ const DateComp = ({
   };
 
   const getMoment = val => {
-    
     return val?.length === 4
       ? moment(val, "yyyy")?.toDate()
       : moment(val, "DD-MM-YYYY")?.toDate();
   };
-
- 
-
 
   const onKeyDownHandler = e => {
     if (e.keyCode === 9 || e.which === 9) {
@@ -56,11 +51,7 @@ const DateComp = ({
     }
     onKeyDown();
   };
-  
-  let oldVal = value;
 
-  if(value?.length === 4) value = "";
-  
   const openDatepicker = () => startRef.current.setOpen(true);
   return (
     <InputContainer error={!isFocused ? error : null}>
@@ -79,15 +70,10 @@ const DateComp = ({
                 ? ""
                 : getMoment(value)
               : ""
-
           }
           minDate={
             age.length && age[1] >= 1
-              ? new Date(
-                  currentYear - (age[1]),
-                  currentMonth,
-                  currentDate,
-                )
+              ? new Date(currentYear - age[1], currentMonth, currentDate)
               : ""
           }
           maxDate={
@@ -97,13 +83,10 @@ const DateComp = ({
               ? new Date(
                   currentYear,
                   currentMonth - Number(age[0].toString().split(".")[1]),
-                  currentDate - `${age[0]}`.includes(".")?1:0,
+                  currentDate - `${age[0]}`.includes(".") ? 1 : 0,
                 )
               : new Date(Date.now())
           }
-          popperPlacement="bottom"
-          placeholderText={oldVal}
-          openToDate={getMoment(oldVal)}
           onChange={date => {
             onChange({ target: { value: moment(date).format("DD-MM-YYYY") } });
           }}

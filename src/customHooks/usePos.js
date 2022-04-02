@@ -6,68 +6,89 @@ export function usePos(isPos, currentForm) {
     banner: "",
     question: "",
   };
+
+  function returnDefaultString(value) {
+    if (value === "<p><br></p>") {
+      return "";
+    } else {
+      return value;
+    }
+  }
   const {
     data: { settings },
   } = useFrontendBoot();
   const [posContent, setPosContent] = useState(defaultValue);
 
   useEffect(() => {
-    console.log("currentForm", currentForm);
+    let place = currentForm;
+    if (currentForm.startsWith("location")) {
+      place = "location";
+    }
     if (settings) {
-      switch (currentForm) {
+      switch (place) {
         case "basic-details":
           isPos
             ? setPosContent({
-                banner: settings.basic_detail_banner_pos,
-                question: settings.basic_detail_question_pos,
+                banner: returnDefaultString(settings.basic_detail_banner_pos),
+                question: returnDefaultString(
+                  settings.basic_detail_question_pos,
+                ),
               })
             : setPosContent({
-                banner: settings.basic_detail_banner,
-                question: settings.basic_detail_question,
+                banner: returnDefaultString(settings.basic_detail_banner),
+                question: returnDefaultString(settings.basic_detail_question),
               });
           break;
         case "members":
           isPos
             ? setPosContent({
-                banner: settings.input_members_banner_pos,
-                question: settings.input_members_question_pos,
+                banner: returnDefaultString(settings.input_members_banner_pos),
+                question: returnDefaultString(
+                  settings.input_members_question_pos,
+                ),
               })
             : setPosContent({
-                banner: settings.input_members_banner,
-                question: settings.input_members_question,
+                banner: returnDefaultString(settings.input_members_banner),
+                question: returnDefaultString(settings.input_members_question),
               });
           break;
         case "plantype":
           isPos
             ? setPosContent({
-                banner: settings.plan_type_banner_pos,
-                question: settings.plan_type_question_pos,
+                banner: returnDefaultString(settings.plan_type_banner_pos),
+                question: returnDefaultString(settings.plan_type_question_pos),
               })
             : setPosContent({
-                banner: settings.plan_type_banner,
-                question: settings.plan_type_question,
+                banner: returnDefaultString(settings.plan_type_banner),
+                question: returnDefaultString(settings.plan_type_question),
               });
           break;
         case "location":
           isPos
             ? setPosContent({
-                banner: settings.location_banner_pos,
-                question: settings.location_question_pos,
+                banner: returnDefaultString(settings.location_banner_pos),
+                question: returnDefaultString(settings.location_question_pos),
               })
             : setPosContent({
-                banner: settings.location_banner,
-                question: settings.location_question,
+                banner: returnDefaultString(settings.location_banner),
+                question: returnDefaultString(settings.location_question),
               });
           break;
         case "medicalHistory":
           isPos
             ? setPosContent({
-                banner: settings.medical_history_banner_pos,
-                question: settings.medical_history_question_pos,
+                banner: returnDefaultString(
+                  settings.medical_history_banner_pos,
+                ),
+                question: returnDefaultString(
+                  settings.medical_history_question_pos,
+                ),
               })
             : setPosContent({
-                banner: settings.medical_history_banner,
-                question: settings.medical_history_question,
+                banner: returnDefaultString(settings.medical_history_banner),
+                question: returnDefaultString(
+                  settings.medical_history_question,
+                ),
               });
           break;
         default:
@@ -78,7 +99,7 @@ export function usePos(isPos, currentForm) {
           break;
       }
     }
-  }, [settings, currentForm]);
+  }, [settings, currentForm, isPos]);
 
   return { posContent };
 }

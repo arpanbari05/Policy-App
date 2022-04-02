@@ -116,7 +116,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
               <Title
                 dangerouslySetInnerHTML={{
                   __html: posContent.question
-                    ? posContent.question
+                    ? `<span>${posContent.question}</span>`
                     : "Tell Us about yourself?",
                 }}
               ></Title>
