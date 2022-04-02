@@ -105,7 +105,7 @@ const ThankYouPage = () => {
     JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   const Disclaimer = ({ htmlStringDisclaimer }) => {
-    if (htmlString) {
+    if (htmlStringDisclaimer !== "") {
       return (
         <div
           css={`
@@ -119,7 +119,7 @@ const ThankYouPage = () => {
             }
           `}
           dangerouslySetInnerHTML={{
-            __html: htmlString,
+            __html: htmlStringDisclaimer,
           }}
         />
       );
