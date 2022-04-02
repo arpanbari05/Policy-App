@@ -204,7 +204,9 @@ const ProposalSummary = () => {
               extraPadding
               onChange={() => setChecked(!checked)}
             />
-            <span className="Iaccept">I Accept the&nbsp;</span>
+            <span className="Iaccept">
+              {"I have read & accepted the Insurance Company's"}&nbsp;
+            </span>
             <span
               className="TermsAndConditions"
               css={`
@@ -214,7 +216,7 @@ const ProposalSummary = () => {
               onClick={() => setTermShow(true)}
             >
               {" "}
-              Terms &amp; Conditions{" "}
+              {"Terms & Conditions"}{" "}
             </span>
             {termShow && (
               <TermModal
