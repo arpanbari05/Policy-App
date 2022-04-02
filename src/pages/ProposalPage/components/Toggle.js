@@ -69,12 +69,12 @@ const Toggle = ({
     }
 
     if (restrictMaleMembers) {
-      if (genderOfSelf === "M")
+      if (genderOfSelf === "M"){
         setMembersToMap(membersToMap.filter(member => member !== "self"));
-      else
-        setMembersToMap(
-          (membersToMap = membersToMap.filter(member => member !== "self")),
-        );
+      }else{
+        setMembersToMap(membersToMap.filter(member => member !== "spouse"));
+      }
+
       setMembersToMap(prev => prev.filter(el => !allMaleMembers.includes(el)));
 
       console.log("evekfnmv", membersToMap, getAllMembers());

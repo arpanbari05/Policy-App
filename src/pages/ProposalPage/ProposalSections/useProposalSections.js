@@ -94,6 +94,7 @@ const useProposalSections = (
   // }, [submit]);
 
   useEffect(() => {
+    console.log("wkvnwjlv",isValid,submit)
     if (typeof isValid === "object") {
       if (
         !isValid.some(item => item === undefined || item === false) &&
