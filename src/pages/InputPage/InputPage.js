@@ -331,7 +331,10 @@ function HeaderCard({ content }) {
 }
 
 function TermsAndConditions(props) {
-  const { tenantName } = useFrontendBoot();
+  const {
+    tenantName,
+    data: { settings },
+  } = useFrontendBoot();
 
   return (
     <div
@@ -348,7 +351,7 @@ function TermsAndConditions(props) {
           margin: 0 auto;
         `}
       >
-        {renderDisclaimer({ tenantName })}
+        {renderDisclaimer({ tenantName, settings })}
       </label>
     </div>
   );
