@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import SecureLS from "secure-ls";
 import swal from "sweetalert";
 import { policyPdf } from "../../ThankYouPage/serviceApi";
-import { api,useGetCartQuery } from "../../../api/api";
+import { api, useGetCartQuery } from "../../../api/api";
 import {
   getProposal,
   PaymentStatus,
@@ -37,6 +37,8 @@ const proposal = createSlice({
       isRenewed: false,
     },
     selectedIcs: [],
+    loadingStack: [],
+    isPopupOn: false,
   },
   reducers: {
     setProposalData: (state, action) => {
@@ -89,6 +91,15 @@ const proposal = createSlice({
     setPlanDetails: (state, { payload }) => {
       state.planDetails = payload;
     },
+    pushLoadingStack: (state, { payload }) => {
+      state.loadingStack.push(true);
+    },
+    popLoadingStack: (state, { payload }) => {
+      state.loadingStack.pop();
+    },
+    setIsPopupOn: (state, { payload }) => {
+      state.isPopupOn = payload;
+    },
   },
 });
 export const {
@@ -108,6 +119,9 @@ export const {
   noForAllCheckedTrue,
   setShowErrorPopup,
   setFailedBmiData,
+  popLoadingStack,
+  pushLoadingStack,
+  setIsPopupOn,
 } = proposal.actions;
 const ls = new SecureLS();
 
@@ -117,8 +131,8 @@ const setSelfFieldsChange = ({
   updationFor,
   dispatch,
   insuredDetails,
+  callback,
 }) => {
-  
   let updatedVal;
   if (updationFor === "Other Details") {
     let updatedParent = { ...checkFor };
@@ -158,16 +172,17 @@ const setSelfFieldsChange = ({
         updatedObj[key] = checkFrom[key];
     });
     updatedVal = { ...checkFor, self: updatedObj };
-    
   }
 
   dispatch(
-    saveProposalData({
-      [updationFor]: updatedVal,
-    }),
-   
+    saveProposalData(
+      {
+        [updationFor]: updatedVal,
+      },
+      callback,
+    ),
   );
-  
+
   // return updatedObj;
 };
 
@@ -186,27 +201,24 @@ const hasAnyChangeInObj = (newVal, oldVal) => {
 };
 
 export const saveProposalData = (proposalData, next, failure) => {
- 
   return async (dispatch, state) => {
     try {
-      console.log("sbcccsfb", proposalData,failure,next);
-
       let prevProposalData = state().proposalPage.proposalData;
       let schema = state().schema;
       dispatch(setIsLoading(true));
+      dispatch(pushLoadingStack());
       const response = await saveProposal(proposalData);
-      dispatch(
-        api.util.invalidateTags([
-          "Cart",
-        ],undefined,))
+      // dispatch(
+      //   api.util.invalidateTags([
+      //     "Cart",
+      //   ],undefined,))
+
       dispatch(api.util.invalidateTags(["ProposalSummaryUpdate"]));
       dispatch(setProposalData(proposalData));
 
       console.log("dfbjdflb", state());
       //console.log("saveProposalData success", response);
       if (response.statusCode === 200) {
-   
-
         if (
           Object.keys(prevProposalData).length &&
           prevProposalData["Insured Details"].self &&
@@ -222,13 +234,16 @@ export const saveProposalData = (proposalData, next, failure) => {
             checkFrom: proposalData["Proposer Details"],
             updationFor: "Insured Details",
             dispatch: dispatch,
+            callback: () => {
+              dispatch(api.util.invalidateTags(["Cart"]));
+            },
           });
-          
-        }else if (
+        } else if (
           Object.keys(prevProposalData).length &&
           prevProposalData["Other Details"] &&
           proposalData["Insured Details"]
         ) {
+          // dispatch(api.util.invalidateTags(["Cart"], undefined));
           setSelfFieldsChange({
             checkFor: prevProposalData["Other Details"],
             checkFrom:
@@ -242,8 +257,8 @@ export const saveProposalData = (proposalData, next, failure) => {
           });
         }
 
-        next(response.data);
-        
+        next && next(response.data);
+        dispatch(popLoadingStack());
       } else if (!response.data) {
         if (typeof response.errors === "object") {
           Object.keys(response.errors).map(i => {
@@ -266,7 +281,6 @@ export const saveProposalData = (proposalData, next, failure) => {
         }
       }
       console.log("bchkadvbchav", response);
-      
     } catch (err) {
       //console.error("saveProposalData error", err);
       dispatch(setIsLoading(false));

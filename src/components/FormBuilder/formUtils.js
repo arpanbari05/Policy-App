@@ -1,7 +1,7 @@
 import { schemaIndex } from "../../pages/ProposalPage/schemaIndex";
 import { validationIndex } from "./formValidations";
 export const renderField = (item, value, member) => {
-  console.log("lvlhvcsc", item, value);
+  // console.log("lvlhvcsc", item, value);
   // conditional rendering of fields other than medical questions uses item.visibleOn
   if (item.visibleOn) {
     let show = false;
@@ -33,7 +33,7 @@ export const renderField = (item, value, member) => {
         const { minAge, maxAge } = is;
         const today = new Date();
         const age = today.getFullYear() - value?.[when]?.split("-")[2];
-        console.log("heheh", age, today.getFullYear());
+        // console.log("heheh", age, today.getFullYear());
         if (minAge && age < minAge && minAge !== -1) return true;
         if (maxAge && age > maxAge && maxAge !== -1) return true;
       }
@@ -49,13 +49,13 @@ export const renderField = (item, value, member) => {
         check = temp.some(
           data => value[data] && value[data][`is${data}`] === is,
         );
-        console.log(item);
+        // console.log(item);
         if (check) return true;
         else return false;
       } else if (when.includes(".")) {
         let temp = when.split(".");
         if (temp?.[2] && value[temp[0]]?.[temp[1]]?.[temp[2]] === is) {
-          console.log("asda312", is, value[temp[0]]?.[temp[1]]?.[temp[2]]);
+          // console.log("asda312", is, value[temp[0]]?.[temp[1]]?.[temp[2]]);
           return true;
         } else if (value && value[temp[0]] && value[temp[0]][temp[1]] === is) {
           return true;
@@ -69,7 +69,7 @@ export const renderField = (item, value, member) => {
         check = temp.some(
           data => value[data] && value[data][`is${data}`] === is,
         );
-        console.log("wvhsrjvh", item);
+        // console.log("wvhsrjvh", item);
         return check;
       }
       if (value[when] === is) return true;
@@ -113,7 +113,7 @@ export const fetchMembers = (when, values) => {
 };
 export const performValidations = (validate, values, name) => {
   const validationArray = Object.keys(validate);
-  console.log("sgvnnv", validate, values, name);
+  // console.log("sgvnnv", validate, values, name);
   for (let i = 0; i < validationArray.length; ++i) {
     let result = validationIndex[validationArray[i]](
       validate[validationArray[i]],
@@ -151,7 +151,7 @@ const checkValue = (str, max) => {
   return str;
 };
 export const checkAllow = (type, event, eventType) => {
-  console.log("sgbsjkk", event);
+  // console.log("sgbsjkk", event);
 
   // if (type === "address" && eventType === "down") {
   //   let key = event.keyCode;
