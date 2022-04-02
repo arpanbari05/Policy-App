@@ -61,7 +61,8 @@ export function LoadEnquiries({ children }) {
       </Page>
     );
 
-  if (isLoading || isFetching || isUninitialized) return <FullScreenLoaderSkeleton />;
+  if (isLoading || isFetching || isUninitialized)
+    return <FullScreenLoaderSkeleton />;
 
   return children;
 }
@@ -184,7 +185,6 @@ export function FullScreenLoader() {
     //   </div>
     // </div>
 
-
     <div className="pb-3" aria-label="loading">
       {/* <Navbar /> */}
       <div
@@ -262,10 +262,10 @@ export function Button({
         }
         &:disabled {
           cursor: default;
-          // background-color: ${loaderPrimaryColor && loader
+          background-color: ${loaderPrimaryColor && loader
             ? colors.primary_color
             : colors.secondary_shade};
-          // color: ${loaderPrimaryColor && loader ? "#fff" : "#666"};
+          color: ${loaderPrimaryColor && loader ? "#fff" : "#666"};
         }
 
         ${css};
