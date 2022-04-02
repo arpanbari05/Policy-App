@@ -7,6 +7,8 @@ import ErrorBoundary from "./components/Common/ErrorPage/errorPage500";
 import CacheBuster from "react-cache-buster";
 import { version } from "../package.json";
 
+
+
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyles />
