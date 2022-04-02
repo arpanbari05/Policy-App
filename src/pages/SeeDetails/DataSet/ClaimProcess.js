@@ -16,7 +16,10 @@ import { useTheme } from "../../../customHooks";
 import { tabletAndMobile } from "../../../utils/mediaQueries";
 
 const brokerData = (data, colors) => {
-  if (data?.claim_identity === "both" || "broker_contact") {
+  if (
+    data?.claim_identity === "both" ||
+    data?.claim_identity === "broker_contact"
+  ) {
     return [
       {
         header: "Call us at",
@@ -34,7 +37,10 @@ const brokerData = (data, colors) => {
 };
 
 const insurerData = (data, colors) => {
-  if (data?.claim_identity === "both" || "insurer_contact") {
+  if (
+    data?.claim_identity === "both" ||
+    data?.claim_identity === "insurer_contact"
+  ) {
     return [
       {
         header: "Call us at",
@@ -334,7 +340,8 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                           : null}
 
                         {(claimProccess?.claim_identity === "both" ||
-                          "insurer_contact") && (
+                          claimProccess?.claim_identity ===
+                            "insurer_contact") && (
                           <div
                             css={`
                               margin: 10px 0px;

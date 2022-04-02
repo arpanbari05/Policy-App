@@ -16,7 +16,10 @@ import { mobile, tabletAndMobile } from "../../../../../utils/mediaQueries";
 // import "../ClaimProcessMobile/ClaimProcessMobile.css"
 
 const brokerData = (data, colors) => {
-  if (data?.claim_identity === "both" || "broker_contact") {
+  if (
+    data?.claim_identity === "both" ||
+    data?.claim_identity === "broker_contact"
+  ) {
     return [
       {
         header: "Call us at",
@@ -34,7 +37,10 @@ const brokerData = (data, colors) => {
 };
 
 const insurerData = (data, colors) => {
-  if (data?.claim_identity === "both" || "insurer_contact") {
+  if (
+    data?.claim_identity === "both" ||
+    data?.claim_identity === "insurer_contact"
+  ) {
     return [
       {
         header: "Call us at",
@@ -368,7 +374,7 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                 {dataSet(brokerData(claimProccess, colors))}
               </div>
               {(claimProccess?.claim_identity === "both" ||
-                "insurer_contact") && (
+                claimProccess?.claim_identity === "insurer_contact") && (
                 <div>
                   <h4
                     style={{
