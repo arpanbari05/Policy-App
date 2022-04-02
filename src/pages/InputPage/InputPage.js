@@ -294,7 +294,7 @@ function HeaderCard({ content }) {
             css={`
               p {
                 font-size: 1.4rem;
-                margin-bottom: 2.3rem;
+                margin-bottom: 2rem;
               }
 
               li {
