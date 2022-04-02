@@ -11,10 +11,10 @@ export const Title = styled.h1`
   color: ${styles.colors.font.one};
   text-decoration: capitalize;
 
-  span {
-    font-size: 13px;
+  p:last-child {
+    font-size: 14px;
     color: #898989;
-    font-weight: 600;
+    font-weight: 400;
   }
   @media (max-width: 480px) {
     font-size: 18px;
