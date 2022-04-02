@@ -280,23 +280,14 @@ const InputContainer = styled.div`
 const Input = styled.input`
   list-style: none;
   list-style-type: none;
-  user-select: none;
+  -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
   -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
   margin: 0;
-  /* ::-webkit-input-placeholder:after {
-   content: '*';
-   color: red;
-   font-size: 1.5rem;
-} */
-  /* ::-webkit-input-placeholder {
-  background:${props =>
-    props.showStarRed
-      ? "-webkit-linear-gradient(right, #AAA 0%, #AAA 80%,red 80%, red 100%)"
-      : "#939393"} ;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-} */
   text-transform: ${props => props.textTransform};
   font-family: inherit;
   line-height: inherit;
@@ -318,6 +309,22 @@ const Input = styled.input`
     border-color: ${props => (props.error ? "#c7222a" : "solid 1px  #393939")};
     color: black;
   }
+  &:before {
+    -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+  }
+  &:after {
+    -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+  }
+
   @media (max-width: 767px) {
     height: 42px;
     padding: 0 16px;
