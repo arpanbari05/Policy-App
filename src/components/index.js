@@ -144,6 +144,57 @@ export function FullScreenLoader() {
   const tenantColor = defaultColors[tenantAlias];
   const tenantLogo = images[tenantAlias];
   return (
+<<<<<<< HEAD
+=======
+    // <div className="pb-3" aria-label="loading">
+    //   <div
+    //     css={`
+    //       width: 15rem;
+    //       display: flex;
+    //       flex-direction: column;
+    //       gap: 1rem;
+    //       margin: 35vh auto;
+    //       align-items: center;
+    //       justify-content: center;
+    //     `}
+    //   >
+    //     <img
+    //       css={`
+    //         width: 100%;
+    //       `}
+    //       src={images.CompanyLogo}
+    //       alt={"company-logo"}
+    //     />
+
+    //     <div
+    //       css={`
+    //         height: 4px;
+    //         background-color: #eee;
+    //         width: 100%;
+    //         margin-top: 10px;
+    //         border-radius: 100px;
+    //         position: relative;
+
+    //         // Fix the loading bar overflow
+    //         overflow-x: hidden;
+
+    //         &::after {
+    //           content: "";
+    //           position: absolute;
+    //           top: 0;
+    //           left: 0;
+    //           height: 100%;
+    //           width: 50%;
+    //           background-color: ${defaultPrimaryColor};
+    //           // Animation
+    //           animation: loading 3s infinite;
+    //         }
+    //       `}
+    //     />
+    //   </div>
+    // </div>
+
+>>>>>>> 4eaa66ddd50c9109db3c585efb53cde96db988f5
     <div className="pb-3" aria-label="loading">
       <div
         css={`
@@ -269,10 +320,10 @@ export function Button({
         }
         &:disabled {
           cursor: default;
-          // background-color: ${loaderPrimaryColor && loader
+          background-color: ${loaderPrimaryColor && loader
             ? colors.primary_color
             : colors.secondary_shade};
-          // color: ${loaderPrimaryColor && loader ? "#fff" : "#666"};
+          color: ${loaderPrimaryColor && loader ? "#fff" : "#666"};
         }
 
         ${css};

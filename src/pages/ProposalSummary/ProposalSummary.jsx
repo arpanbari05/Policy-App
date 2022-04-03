@@ -83,6 +83,12 @@ const ProposalSummary = () => {
 
   const frontendData = { data: frontendBoot.data };
 
+  const isSSOJourney = localStorage.SSO_user;
+
+  const tCSectionData = isSSOJourney
+    ? frontendData?.data?.settings?.summary_banner_pos
+    : frontendData?.data?.settings?.summary_banner;
+
   const [allFields, setAllFields] = useState([]);
 
   const [term, setTerm] = useState({});
@@ -198,7 +204,9 @@ const ProposalSummary = () => {
               extraPadding
               onChange={() => setChecked(!checked)}
             />
-            <span className="Iaccept">I Accept the&nbsp;</span>
+            <span className="Iaccept">
+              {"I have read & accepted the Insurance Company's"}&nbsp;
+            </span>
             <span
               className="TermsAndConditions"
               css={`
@@ -208,7 +216,7 @@ const ProposalSummary = () => {
               onClick={() => setTermShow(true)}
             >
               {" "}
-              Terms &amp; Conditions{" "}
+              {"Terms & Conditions"}{" "}
             </span>
             {termShow && (
               <TermModal
@@ -362,7 +370,10 @@ const ProposalSummary = () => {
                   justify-content: center;
                 `}
               >
-                <ShareQuoteModal insurersFor={cart.map(cart => cart?.product?.company?.alias)} stage="PROPOSAL_SUMMARY" />
+                <ShareQuoteModal
+                  insurersFor={cart.map(cart => cart?.product?.company?.alias)}
+                  stage="PROPOSAL_SUMMARY"
+                />
               </div>
             </div>
             <Col
@@ -428,10 +439,10 @@ const ProposalSummary = () => {
                       ) : (
                         <></>
                       )}
-                      {frontendData?.data?.settings?.summary_banner && (
+                      {tCSectionData && (
                         <TermsAndConditionsSection
                           setAllTcChecked={setAllTcChecked}
-                          frontendData={frontendData}
+                          tCSectionData={tCSectionData}
                         />
                       )}
                     </div>
@@ -505,16 +516,14 @@ const PayButton = styled.div`
   }
 `;
 
-const TermsAndConditionsSection = ({ setAllTcChecked, frontendData }) => {
+const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
 
   const PrimaryShade = colors.primary_shade;
 
-  const checkBoxContentArray = JSON.parse(
-    frontendData?.data?.settings?.summary_banner?.checkbox,
-  );
+  const checkBoxContentArray = JSON.parse(tCSectionData?.checkbox);
 
   const [checkBoxTracker, setCheckBoxTracker] = useState([]);
 
@@ -565,10 +574,12 @@ const TermsAndConditionsSection = ({ setAllTcChecked, frontendData }) => {
               <span
                 css={`
                   margin-left: 10px;
+                  & a {
+                    color: ${PrimaryColor};
+                  }
                 `}
-              >
-                {item}
-              </span>
+                dangerouslySetInnerHTML={{ __html: item }}
+              ></span>
             </p>
           </div>
         ))}

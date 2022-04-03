@@ -40,6 +40,7 @@ const TextInput = ({
   const [fallbackValue, setFallbackValue] = useState("");
   const [isChanged, setChanged] = useState(false);
   const regForOnlyDigit = new RegExp("^[0-9]*$");
+  const [isHovering, setIsHovering] = useState(false);
   const fullName = value || "";
   const forbiddedSymbols = "`~!@#$%^&*()_-+={[}]|:.;',<>?/\"\\".split("");
   const checkPreviousChar = (value, checkValue) => {
@@ -84,12 +85,15 @@ const TextInput = ({
   // useEffect(() => {
   //   setInnerValue(value);
   // }, [value]);
-  console.log({ fallbackValue, isChanged });
+  // console.log(isHovering, "isHovering");
   return (
     <InputContainer>
       <Input
         type={type || "text"}
         placeholder={placeholder}
+        isHovering={isHovering}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
         showStarRed={checkValidation?.required}
         required={required || undefined}
         onChange={e => {
@@ -320,6 +324,7 @@ const Input = styled.input`
   // background: ${props => (props.error ? "#fff6f7" : "transparent")};
   height: 55px;
   font-size: 14px;
+  cursor:${props => (props.isHovering && props.readOnly ? "not-allowed" : "pointer")};
   color: #939393;
   position: relative;
   padding: 0 25px;
