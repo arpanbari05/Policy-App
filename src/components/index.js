@@ -61,7 +61,7 @@ export function LoadEnquiries({ children }) {
       </Page>
     );
 
-  if (isLoading || isFetching || isUninitialized) return <FullScreenLoaderSkeleton />;
+  if (isLoading || isFetching || isUninitialized) return <FullScreenLoader />;
 
   return children;
 }
@@ -135,94 +135,101 @@ export function FullScreenLoaderSkeleton() {
   );
 }
 export function FullScreenLoader() {
+  const defaultColors = {
+    renew_buy: "#ff6600",
+    fts: "#0a87ff",
+    pinc: "#e1056d",
+  };
+  const tenantAlias = process.env.REACT_APP_TENANT;
+  const tenantColor = defaultColors[tenantAlias];
+  const tenantLogo = images[tenantAlias];
   return (
-    // <div className="pb-3" aria-label="loading">
-    //   <div
-    //     css={`
-    //       width: 15rem;
-    //       display: flex;
-    //       flex-direction: column;
-    //       gap: 1rem;
-    //       margin: 35vh auto;
-    //       align-items: center;
-    //       justify-content: center;
-    //     `}
-    //   >
-    //     <img
-    //       css={`
-    //         width: 100%;
-    //       `}
-    //       src={images.CompanyLogo}
-    //       alt={"company-logo"}
-    //     />
-
-    //     <div
-    //       css={`
-    //         height: 4px;
-    //         background-color: #eee;
-    //         width: 100%;
-    //         margin-top: 10px;
-    //         border-radius: 100px;
-    //         position: relative;
-
-    //         // Fix the loading bar overflow
-    //         overflow-x: hidden;
-
-    //         &::after {
-    //           content: "";
-    //           position: absolute;
-    //           top: 0;
-    //           left: 0;
-    //           height: 100%;
-    //           width: 50%;
-    //           background-color: ${defaultPrimaryColor};
-    //           // Animation
-    //           animation: loading 3s infinite;
-    //         }
-    //       `}
-    //     />
-    //   </div>
-    // </div>
-
-
     <div className="pb-3" aria-label="loading">
-      {/* <Navbar /> */}
       <div
-        style={{
-          width: "80%",
-          margin: "20px auto",
-        }}
+        css={`
+          width: 15rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          margin: 35vh auto;
+          align-items: center;
+          justify-content: center;
+        `}
       >
-        <FilterSkeletonLoader />
+        <img
+          css={`
+            width: 100%;
+          `}
+          src={tenantLogo}
+          alt={"company-logo"}
+        />
 
-        <div className="d-flex justify-content-between">
-          <div
-            style={{
-              width: "60%",
-              margin: "20px",
-            }}
-          >
-            <CardSkeletonLoader noOfCards={3} />
-          </div>
-          <div
-            style={{
-              width: "32%",
-              margin: "20px",
-            }}
-          >
-            <CardSkeletonLoader noOfCards={1} />
-          </div>
-        </div>
         <div
-          style={{
-            width: "60%",
-            margin: "20px",
-          }}
-        >
-          <CardSkeletonLoader noOfCards={3} />
-        </div>
+          css={`
+            height: 4px;
+            background-color: #eee;
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 100px;
+            position: relative;
+
+            // Fix the loading bar overflow
+            overflow-x: hidden;
+
+            &::after {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              height: 100%;
+              width: 50%;
+              background-color: ${tenantColor || defaultColors.fts};
+              // Animation
+              animation: loading 3s infinite;
+            }
+          `}
+        />
       </div>
     </div>
+
+    // <div className="pb-3" aria-label="loading">
+    //   {/* <Navbar /> */}
+    //   <div
+    //     style={{
+    //       width: "80%",
+    //       margin: "20px auto",
+    //     }}
+    //   >
+    //     <FilterSkeletonLoader />
+
+    //     <div className="d-flex justify-content-between">
+    //       <div
+    //         style={{
+    //           width: "60%",
+    //           margin: "20px",
+    //         }}
+    //       >
+    //         <CardSkeletonLoader noOfCards={3} />
+    //       </div>
+    //       <div
+    //         style={{
+    //           width: "32%",
+    //           margin: "20px",
+    //         }}
+    //       >
+    //         <CardSkeletonLoader noOfCards={1} />
+    //       </div>
+    //     </div>
+    //     <div
+    //       style={{
+    //         width: "60%",
+    //         margin: "20px",
+    //       }}
+    //     >
+    //       <CardSkeletonLoader noOfCards={3} />
+    //     </div>
+    //   </div>
+    // </div>
   );
 }
 
@@ -299,7 +306,7 @@ export function MembersList({ members = [], ...props }) {
 export function LoadCart({ children }) {
   const { isLoading, isUninitialized } = useGetCartQuery();
 
-  if (isLoading || isUninitialized) return <FullScreenLoaderSkeleton />;
+  if (isLoading || isUninitialized) return <FullScreenLoader />;
   return children;
 }
 
