@@ -144,8 +144,6 @@ export function FullScreenLoader() {
   const tenantColor = defaultColors[tenantAlias];
   const tenantLogo = images[tenantAlias];
   return (
-<<<<<<< HEAD
-=======
     // <div className="pb-3" aria-label="loading">
     //   <div
     //     css={`
@@ -194,7 +192,6 @@ export function FullScreenLoader() {
     //   </div>
     // </div>
 
->>>>>>> 4eaa66ddd50c9109db3c585efb53cde96db988f5
     <div className="pb-3" aria-label="loading">
       <div
         css={`
