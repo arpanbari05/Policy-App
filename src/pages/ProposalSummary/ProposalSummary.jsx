@@ -44,7 +44,7 @@ import { useGetProposalDataQuery } from "../../api/api";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import GoBackButton from "../../components/GoBackButton";
 import { mobile } from "../../utils/mediaQueries";
-import { amount, getTotalPremium } from "../../utils/helper";
+import { amount, getTotalPremium, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
 import { FaPen } from "react-icons/fa";
 
@@ -83,9 +83,9 @@ const ProposalSummary = () => {
 
   const frontendData = { data: frontendBoot.data };
 
-  const isSSOJourney = localStorage.SSO_user;
+  
 
-  const tCSectionData = isSSOJourney
+  const tCSectionData = isSSOJourney()
     ? frontendData?.data?.settings?.summary_banner_pos
     : frontendData?.data?.settings?.summary_banner;
 

@@ -794,3 +794,7 @@ export function isThemeApp() {
     return false;
   }
 }
+
+export const isSSOJourney = () => {
+  return localStorage.SSO_user ? true : false;
+};

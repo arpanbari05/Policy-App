@@ -23,6 +23,7 @@ import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import { small } from "../../utils/mediaQueries";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
+import { isSSOJourney } from "../../utils/helper";
 
 const ThankYouPage = () => {
   const ls = new SecureLS();
@@ -59,8 +60,6 @@ const ThankYouPage = () => {
 
   const status = useSelector(state => state.proposalPage);
 
-  const isSSOJourney = localStorage.SSO_user;
-
   const { policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
   );
@@ -96,7 +95,7 @@ const ThankYouPage = () => {
     }
   }, [pathname]);
 
-  const htmlString = isSSOJourney
+  const htmlString = isSSOJourney()
     ? settings?.thank_you_banner_pos
     : settings?.thank_you_banner;
 
@@ -105,7 +104,7 @@ const ThankYouPage = () => {
     JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   const Disclaimer = ({ htmlStringDisclaimer }) => {
-    if (htmlStringDisclaimer !== "") {
+    if (htmlStringDisclaimer !== "<p><br></p>") {
       return (
         <div
           css={`
@@ -283,7 +282,7 @@ const ThankYouPage = () => {
                               values={item}
                               isLoading={policyLoading}
                               showTrackStatus={
-                                isSSOJourney
+                                isSSOJourney()
                                   ? !!+settings?.thank_you_keep_on_track_status_pos
                                   : !!+settings?.thank_you_keep_on_track_status
                               }
@@ -399,7 +398,7 @@ const ThankYouPage = () => {
                           key={index}
                           isLoading={policyLoading}
                           showTrackStatus={
-                            isSSOJourney
+                            isSSOJourney()
                               ? !!+settings?.thank_you_keep_on_track_status_pos
                               : !!+settings?.thank_you_keep_on_track_status
                           }
@@ -423,7 +422,7 @@ const ThankYouPage = () => {
                     }
                   `}
                   dangerouslySetInnerHTML={{
-                    __html: isSSOJourney
+                    __html: isSSOJourney()
                       ? settings?.thank_you_banner_pos
                       : settings?.thank_you_banner,
                   }}
