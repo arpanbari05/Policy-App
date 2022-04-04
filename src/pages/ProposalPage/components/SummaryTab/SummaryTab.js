@@ -256,7 +256,9 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
                   <>
                     <CustomMedicalTitle>{_item}</CustomMedicalTitle>
                     <InnerWrapper>
-                      {schema[i + 1].map(additionalQuestion => (
+                      {schema[i + 1].map(additionalQuestion => values?.[item]?.[data.name]?.[_item]?.[
+                        additionalQuestion?.name
+                      ] && (
                         <AdditionalWrapper2 className="text-dark">
                           <AdditionalQuestion className="font_15_p_s">
                             {additionalQuestion.additionalOptions.label ||
