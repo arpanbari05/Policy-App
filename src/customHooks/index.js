@@ -970,7 +970,7 @@ export function useGetQuotes(queryConfig = {}) {
     },
   });
 
-  let { data, ...getCustomQuotesQuery } = useGetCustomQuotesQuery(
+  let { data, refetch, ...getCustomQuotesQuery } = useGetCustomQuotesQuery(
     {
       insurers: insurersToFetch,
       deductible: getSelectedFilter("deductible").code,
@@ -1017,6 +1017,7 @@ export function useGetQuotes(queryConfig = {}) {
     loadingPercentage,
     isNoQuotes,
     quotesWithoutMoreFilters,
+    refetch,
   };
 }
 
