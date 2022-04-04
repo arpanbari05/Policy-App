@@ -355,6 +355,7 @@ export function LoadCart({ children }) {
   const { isLoading, isUninitialized } = useGetCartQuery();
 
   if (isLoading || isUninitialized) return <FullScreenLoader />;
+
   return children;
 }
 

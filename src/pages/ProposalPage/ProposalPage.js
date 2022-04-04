@@ -47,6 +47,7 @@ import ShareQuoteModal from "../../components/ShareQuoteModal";
 import useComparePage from "../ComparePage/useComparePage";
 import { mobile } from "../../utils/mediaQueries";
 import { useGetCartQuery } from "../../api/api";
+import { RevisedPremiumPopup } from "../ProductDetails/components/ReviewCart";
 // import dummy from "./dumySchema";
 /* ===============================test================================= */
 
@@ -133,11 +134,11 @@ const ProposalPage = () => {
   useEffect(() => {
     setActive(activeIndex);
   }, [activeIndex]);
+
   const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
   // to get unfilled form
 
   useEffect(() => {
-    console.log(continueBtnClick, activeIndex, "test");
     if (
       Object.keys(proposalData).length &&
       continueBtnClick &&
@@ -448,112 +449,113 @@ const ProposalPage = () => {
     );
   };
   return (
-    <Page
-      noNavbarForMobile={true}
-      id="proposalPage"
-      backButton={backButtonForNav}
-    >
-      <MobileHeader
-        css={`
-          background: ${PrimaryColor};
-        `}
+    <>
+      <Page
+        noNavbarForMobile={true}
+        id="proposalPage"
+        backButton={backButtonForNav}
       >
-        <Link
-          to={getUrlWithEnquirySearch(
-            `/productdetails/${Math.max(...memberGroups)}`,
-          )}
-          // onClick={() => {
-          //   history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
-          // }}
-        >
-          <MobileHeaderText>
-            <i
-              class="fa fa-arrow-circle-left"
-              style={{ marginRight: "10px", cursor: "pointer" }}
-            ></i>{" "}
-            Proposal Form
-          </MobileHeaderText>
-        </Link>
-      </MobileHeader>
-
-      <div
-        className="container-fluid mt-20 pb-100"
-        css={`
-          padding-bottom: 41px;
-          @media (max-width: 1024px) {
-            margin: 0;
-            padding: 0 !important;
-          }
-        `}
-      >
-        <div
-          className="element-section mb-30 "
+        <MobileHeader
           css={`
-            // margin: 30px auto;
-            // max-width: 1300px;
-            margin: 30px 30px 30px 30px;
+            background: ${PrimaryColor};
+          `}
+        >
+          <Link
+            to={getUrlWithEnquirySearch(
+              `/productdetails/${Math.max(...memberGroups)}`,
+            )}
+            // onClick={() => {
+            //   history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
+            // }}
+          >
+            <MobileHeaderText>
+              <i
+                class="fa fa-arrow-circle-left"
+                style={{ marginRight: "10px", cursor: "pointer" }}
+              ></i>{" "}
+              Proposal Form
+            </MobileHeaderText>
+          </Link>
+        </MobileHeader>
+
+        <div
+          className="container-fluid mt-20 pb-100"
+          css={`
+            padding-bottom: 41px;
             @media (max-width: 1024px) {
               margin: 0;
-              padding: 0;
+              padding: 0 !important;
             }
           `}
         >
           <div
-            className="container-fluid"
+            className="element-section mb-30 "
             css={`
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              ${mobile} {
-                display: none;
+              // margin: 30px auto;
+              // max-width: 1300px;
+              margin: 30px 30px 30px 30px;
+              @media (max-width: 1024px) {
+                margin: 0;
+                padding: 0;
               }
             `}
           >
-            <GoBackButton
-              backPath={getUrlWithEnquirySearch(
-                `/productdetails/${Math.max(...memberGroups)}`,
-              )}
-            />
             <div
+              className="container-fluid"
               css={`
                 display: flex;
                 align-items: center;
-                justify-content: center;
-              `}
-            >
-              <span
-                css={`
-                  font-weight: 900;
-                  color: rgb(80, 95, 121);
-                `}
-              >
-                You are Just 5 minutes away from investing for your future
-              </span>
-              <ShareQuoteModal
-                insurersFor={cartEntries.map(
-                  cart => cart?.product?.company?.alias,
-                )}
-                stage="PROPOSAL"
-              />
-            </div>
-          </div>
-          <div>
-            <Row
-              css={`
-                justify-content: center;
-                @media (max-width: 1024px) {
-                  margin: 0;
-                  padding: 0;
-                  & > div {
-                    margin-right: 0;
-                    margin-left: 0;
-                    padding-right: 0;
-                    padding-left: 0;
-                  }
+                justify-content: space-between;
+                ${mobile} {
+                  display: none;
                 }
               `}
             >
-              {/* <div
+              <GoBackButton
+                backPath={getUrlWithEnquirySearch(
+                  `/productdetails/${Math.max(...memberGroups)}`,
+                )}
+              />
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                `}
+              >
+                <span
+                  css={`
+                    font-weight: 900;
+                    color: rgb(80, 95, 121);
+                  `}
+                >
+                  You are Just 5 minutes away from investing for your future
+                </span>
+                <ShareQuoteModal
+                  insurersFor={cartEntries.map(
+                    cart => cart?.product?.company?.alias,
+                  )}
+                  stage="PROPOSAL"
+                />
+              </div>
+            </div>
+            <div>
+              <Row
+                css={`
+                  justify-content: center;
+                  @media (max-width: 1024px) {
+                    margin: 0;
+                    padding: 0;
+                    & > div {
+                      margin-right: 0;
+                      margin-left: 0;
+                      padding-right: 0;
+                      padding-left: 0;
+                    }
+                  }
+                `}
+              >
+                {/* <div
                 css={`
                   display: flex;
                   align-items: center;
@@ -614,50 +616,50 @@ const ProposalPage = () => {
                   You are Just 5 minutes away from investing for your future
                 </span>
               </div> */}
-              <div
-                css={`
-                  @media (min-width: 1025px) {
-                    display: flex;
-                    flex-direction: row;
-                  }
-                `}
-              >
                 <div
-                  // lg={4}
-                  // md={12}
                   css={`
                     @media (min-width: 1025px) {
-                      max-width: 330px;
-                      min-width: 330px;
-                      margin-right: 26px;
-                    }
-
-                    margin-bottom: 20px;
-
-                    @media (max-width: 1024px) {
-                      width: 100%;
+                      display: flex;
+                      flex-direction: row;
                     }
                   `}
                 >
-                  <ProductSummary setActive={setActive} />
-                </div>
-                <div
-                  // lg={8}
-                  // md={12}
-                  css={`
-                    width: 100%;
-                    @media (max-width: 1024px) {
-                      width: 100%;
-                    }
-                  `}
-                >
-                  {form(active, proposalData[listOfForms[active]])}
-                </div>
-              </div>
-            </Row>
-          </div>
+                  <div
+                    // lg={4}
+                    // md={12}
+                    css={`
+                      @media (min-width: 1025px) {
+                        max-width: 330px;
+                        min-width: 330px;
+                        margin-right: 26px;
+                      }
 
-          {/* <div
+                      margin-bottom: 20px;
+
+                      @media (max-width: 1024px) {
+                        width: 100%;
+                      }
+                    `}
+                  >
+                    <ProductSummary setActive={setActive} />
+                  </div>
+                  <div
+                    // lg={8}
+                    // md={12}
+                    css={`
+                      width: 100%;
+                      @media (max-width: 1024px) {
+                        width: 100%;
+                      }
+                    `}
+                  >
+                    {form(active, proposalData[listOfForms[active]])}
+                  </div>
+                </div>
+              </Row>
+            </div>
+
+            {/* <div
             className="element-tile-two"
             style={{ width: "100%" }}
             css={`
@@ -680,7 +682,7 @@ const ProposalPage = () => {
             </div>
           </div>
           {form(active, proposalData[listOfForms[active]])} */}
-          {/* <div
+            {/* <div
             style={{
               display: "flex",
               justifyContent: "center",
@@ -689,10 +691,10 @@ const ProposalPage = () => {
           >
             <ProductSummaryTab cart={cart} />
           </div> */}
+          </div>
         </div>
-      </div>
 
-      {/* <div
+        {/* <div
         css={`
           @media (max-width: 1199px) {
             display: block;
@@ -704,27 +706,34 @@ const ProposalPage = () => {
       >
         <ProductSummaryMobile cart={cart} />
       </div> */}
-      <PlanUnavailable />
-      <BMI />
-      <NSTP />
+        <PlanUnavailable />
+        <BMI />
+        <NSTP />
 
-      {showErrorPopup.show && (
-        <ErrorPopup
-          show={showErrorPopup.show}
-          head={showErrorPopup.head}
-          msg={showErrorPopup.msg}
-          handleClose={() =>
-            dispatch(
-              setShowErrorPopup({
-                show: false,
-                head: "",
-                msg: "",
-              }),
-            )
-          }
+        {showErrorPopup.show && (
+          <ErrorPopup
+            show={showErrorPopup.show}
+            head={showErrorPopup.head}
+            msg={showErrorPopup.msg}
+            handleClose={() =>
+              dispatch(
+                setShowErrorPopup({
+                  show: false,
+                  head: "",
+                  msg: "",
+                }),
+              )
+            }
+          />
+        )}
+      </Page>
+      {revisedPremiumPopupUtilityObject.isOn && (
+        <RevisedPremiumPopup
+          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+          onClose={revisedPremiumPopupUtilityObject.off}
         />
       )}
-    </Page>
+    </>
   );
 };
 

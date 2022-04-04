@@ -13,7 +13,7 @@ import { useHistory, Link } from "react-router-dom";
 import Card from "../../../../components/Card";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { RiArrowRightSLine } from "react-icons/ri";
-import { BackgroundBorderTitle,RevisedPremiumPopup } from "../../../ProductDetails/components/ReviewCart";
+import { BackgroundBorderTitle } from "../../../ProductDetails/components/ReviewCart";
 import { useGetAdditionalDiscountsQuery } from "../../../../api/api";
 import {
   useCart,
@@ -22,7 +22,7 @@ import {
   useTheme,
   useAdditionalDiscount,
   useRider,
-  useRevisedPremiumModal
+  useRevisedPremiumModal,
 } from "../../../../customHooks";
 import {
   amount,
@@ -30,7 +30,6 @@ import {
   getTotalPremium,
   getDiscountAmount,
   premiumWithAddons,
-
 } from "../../../../utils/helper";
 import { useGetCartQuery } from "../../../../api/api";
 
@@ -54,7 +53,7 @@ const numToString = value => value.toLocaleString("en-IN");
 
 const ProductSummary = ({ setActive = () => {} }) => {
   const [show, setShow] = useState(false);
-  const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
+
   const history = useHistory();
 
   const { data: cartData } = useGetCartQuery();
@@ -496,12 +495,6 @@ const ProductSummary = ({ setActive = () => {} }) => {
         customClass="customClassModalDialog"
         revised={true}
       />
-     {revisedPremiumPopupUtilityObject.isOn && (
-        <RevisedPremiumPopup
-          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
-          onClose={revisedPremiumPopupUtilityObject.off}
-        />
-      )}
     </>
   );
 };

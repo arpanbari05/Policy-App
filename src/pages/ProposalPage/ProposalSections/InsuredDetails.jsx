@@ -13,11 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "styled-components/macro";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
-import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
-import { date } from "yup";
-import {
-  setShowErrorPopup
-} from "../ProposalSections/ProposalSections.slice";
+import { setShowErrorPopup } from "../ProposalSections/ProposalSections.slice";
 
 const InsuredDetails = ({
   schema,
@@ -29,8 +25,9 @@ const InsuredDetails = ({
 }) => {
   const [show, setShow] = useState(1);
   const { proposalData } = useSelector(state => state.proposalPage);
-  const { insuredMembers: membersDataFromGreetingPage, data:frontBootData } = useFrontendBoot();
-  console.log("aefjbk",frontBootData)
+  const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
+    useFrontendBoot();
+  console.log("aefjbk", frontBootData);
   const { getGroupMembers, groups } = useMembers();
 
   const {
@@ -64,7 +61,7 @@ const InsuredDetails = ({
   const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
     useMedicalQuestions(schema, values, setValues, name, proposalData);
 
-    console.log("wgvkjdba",canProceed)
+  console.log("wgvkjdba", canProceed);
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -75,7 +72,7 @@ const InsuredDetails = ({
 
   const fullName = proposalData["Proposer Details"]?.name;
 
-  console.log("sfglknsflv",yesSelected)
+  console.log("sfglknsflv", yesSelected);
 
   return (
     <div>
@@ -125,7 +122,6 @@ const InsuredDetails = ({
                       <Checkbox2
                         showTitle={false}
                         title={"No" + item}
-                        
                         //value={noForAll[item]}
                         checked={noForAll[item]}
                         onChange={e => {
@@ -138,10 +134,10 @@ const InsuredDetails = ({
                     </div>
                     <span>No For All Questions </span>{" "}
                   </div>
-{console.log("sfvskbk",initColor)}
+
                   {!noForAll[item] && !yesSelected[item] && (
                     <p
-                    id={initColor===PrimaryColor?"noID":item}
+                      id={initColor === PrimaryColor ? "noID" : item}
                       css={`
                         display: flex;
                         font-size: 12px;
@@ -165,7 +161,6 @@ const InsuredDetails = ({
                   lastName={fullName?.split(" ").slice(-1)}
                   schema={schema[item]}
                   components={components}
-                  
                   fetchValues={res => {
                     setValues({ ...values, [item]: res });
                   }}
@@ -184,7 +179,7 @@ const InsuredDetails = ({
                   submitTrigger={submit}
                   noForAll={noForAll[item]}
                   proposalData={proposalData}
-                  canProceed={!yesSelected[item]?canProceed:""}
+                  canProceed={!yesSelected[item] ? canProceed : ""}
                   yesSelected={yesSelected}
                   setNoForAll={value => {
                     setNoForAll({ ...noForAll, [item]: value });
@@ -207,15 +202,20 @@ const InsuredDetails = ({
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
-            name === "Medical Details" && checkCanProceed()
-            console.log("sfvkjsd",canProceed.canProceed)
+            name === "Medical Details" && checkCanProceed();
+
             if (name === "Medical Details" && canProceed.canProceed) {
               // NSTP popup for RB
-             Object.values(yesSelected).includes(true) && frontBootData.settings.medical_nstp_declaration_message && dispatch(setShowErrorPopup({
-                show: true,
-                head: "",
-                msg: frontBootData.settings.medical_nstp_declaration_message,
-              }));
+              Object.values(yesSelected).includes(true) &&
+                frontBootData.settings.medical_nstp_declaration_message &&
+                dispatch(
+                  setShowErrorPopup({
+                    show: true,
+                    head: "",
+                    msg: frontBootData.settings
+                      .medical_nstp_declaration_message,
+                  }),
+                );
               setSubmit("PARTIAL");
               continueSideEffects();
             } else if (name !== "Medical Details") {
@@ -225,13 +225,6 @@ const InsuredDetails = ({
           }}
         />
       </div>
-
-      {revisedPremiumPopupUtilityObject.isOn && (
-        <RevisedPremiumPopup
-          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
-          onClose={revisedPremiumPopupUtilityObject.off}
-        />
-      )}
     </div>
   );
 };
