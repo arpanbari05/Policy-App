@@ -17,7 +17,7 @@ import { FaTimes } from "react-icons/fa";
 import * as mq from "../../../../utils/mediaQueries";
 import { setEditStep } from "../../quote.slice";
 import { useDispatch, useSelector } from "react-redux";
-import LocationForm from "../../../InputPage/components/LocationForm";
+import LocationEditForm from "../../../InputPage/components/LocationEditForm";
 import { setShowEditMembers } from "../../quote.slice";
 import { useGetEnquiriesQuery } from "../../../../api/api";
 
@@ -283,7 +283,7 @@ export function EditMembers({ ...props }) {
               }
             `}
           >
-            <LocationForm edit={true} />
+            <LocationEditForm edit={true} />
           </div>
         )}
       </EditMembersModal>

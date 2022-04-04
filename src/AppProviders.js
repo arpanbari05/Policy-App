@@ -58,12 +58,7 @@ function AppLoaders({ children, ...props }) {
     refetch,
   } = useGetEnquiriesQuery();
 
-  const { isLoading: isLoadingCart, isUninitialized: isUninitializedCart } =
-    useGetCartQuery();
-
   if (isLoading || isUninitialized) return <FullScreenLoader />;
-
-  if (isLoadingCart || isUninitializedCart) return <FullScreenLoader />;
 
   if (isError)
     return (
