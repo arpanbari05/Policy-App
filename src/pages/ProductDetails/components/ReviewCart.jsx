@@ -489,7 +489,7 @@ function EditMembers({}) {
 
   const revisedPremiumModalToggle = useToggle(false);
 
-  const firstName = name.split(" ")[0];
+  const firstName = name?.split(" ")[0];
 
   const { getCartEntry } = useCart();
 
@@ -521,7 +521,7 @@ function EditMembers({}) {
         ]),
       );
       const updatedCartEntry = getCartEntryFromUpdateResult(
-        res.data,
+        res?.data,
         groupCode,
       );
       if (updatedCartEntry.total_premium === currentCartEntry.total_premium)

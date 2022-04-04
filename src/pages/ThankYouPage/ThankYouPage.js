@@ -104,7 +104,7 @@ const ThankYouPage = () => {
     JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   const Disclaimer = ({ htmlStringDisclaimer }) => {
-    if (htmlStringDisclaimer !== "<p><br></p>") {
+    if (htmlStringDisclaimer) {
       return (
         <div
           css={`

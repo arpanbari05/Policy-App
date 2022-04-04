@@ -275,19 +275,20 @@ export function useFilter() {
 
 export function useMembers() {
   const dispatch = useDispatch();
-  // const { groups: reduxGroup } = useSelector(
-  //   ({ greetingPage }) => greetingPage,
-  // );
+  
 
   const reduxGroup =
     localStorage.getItem("groups") &&
     JSON.parse(localStorage.getItem("groups"));
+
   let {
     data: { members },
   } = useFrontendBoot();
 
   const { data } = useGetEnquiriesQuery();
+
   const genderOfSelf = data?.data?.input?.gender;
+  
   const { selectedGroup } = useSelector(state => state.quotePage);
   useEffect(() => {
     dispatch(refreshUserData(data?.data));
@@ -339,8 +340,8 @@ export function useMembers() {
       groups = updatedGroup;
       localStorage.setItem("groups", JSON.stringify(updatedGroup));
     } else {
-      groups = data.data.groups;
-      localStorage.setItem("groups", JSON.stringify(data.data.groups));
+      groups = data?.data?.groups;
+      localStorage.setItem("groups", JSON.stringify(data?.data?.groups));
     }
   }
 

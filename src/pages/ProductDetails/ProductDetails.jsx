@@ -64,8 +64,6 @@ const ProductDetails = () => {
 
   const cartEntry = getCartEntry(parseInt(groupCode));
 
-  const quotesRedirectUrl = useUrlEnquiry();
-
   useEffect(() => {
     function scrollListener() {
       if (window.scrollY >= 80) setShowNav(true);
@@ -104,20 +102,15 @@ const ProductDetails = () => {
   if (!enquiryId) return <PageNotFound />;
 
   if (!cartEntry) {
-    return (
-      <Redirect
-        to={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
-      />
-    );
+    return <Redirect to={`/quotes/${groupCode}?enquiryId=${enquiryId}`} />;
   }
 
   return (
     <Page noNavbarForMobile={true}>
-      {/* <Toploader loaderRef={loaderRef} /> */}
       <MobileHeader primary_color={colors?.primary_color}>
         <MobileHeaderText
           onClick={() => {
-            history.goBack();
+            history.push(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
           }}
         >
           <FaArrowCircleLeft />
@@ -165,7 +158,7 @@ const ProductDetails = () => {
               `}
             >
               <GoBackButton
-                backPath={`/quotes/${groupCode}?enquiryId=${quotesRedirectUrl.enquiryId}`}
+                backPath={`/quotes/${groupCode}?enquiryId=${enquiryId}`}
               />
             </div>
           )}
