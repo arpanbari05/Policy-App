@@ -293,13 +293,25 @@ const Input = styled.input`
   list-style: none;
   -webkit-user-select: text;
   list-style-type: none;
-  user-select: none;
+  -webkit-user-select: initial;
+  -khtml-user-select: initial;
+  -moz-user-select: initial;
+  -ms-user-select: initial;
+  user-select: initial;
+  &:before, &:after {
+    -webkit-user-select: initial;
+  -khtml-user-select: initial;
+  -moz-user-select: initial;
+  -ms-user-select: initial;
+  user-select: initial;
+  }
   -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
   margin: 0;
   /* ::-webkit-input-placeholder:after {
    content: '*';
    color: red;
+   
    font-size: 1.5rem;
 } */
   /* ::-webkit-input-placeholder {
