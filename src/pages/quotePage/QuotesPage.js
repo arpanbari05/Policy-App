@@ -112,10 +112,7 @@ export default QuotesPage;
 function ShowingPlanType() {
   const dispatch = useDispatch();
   const { colors } = useTheme();
-  const { journeyType } = useFrontendBoot();
   const { shareType } = useSelector(state => state.quotePage);
-  const { data } = useGetEnquiriesQuery();
-  const { groupCode } = useParams();
   const { data: unmergedQuotes } = useGetQuotes();
   const mergedQuotes = unmergedQuotes
     ?.map(quote => mergeQuotes(quote.data.data))
@@ -139,12 +136,6 @@ function ShowingPlanType() {
 
   const displayPolicyTypeFitler = selectedPolicyTypeFilter.display_name;
 
-  const planTypes = {
-    I: "Individual",
-    F: "Family Floater",
-    M: "Multi Individual",
-  };
-
   return (
     <h1
       className="m-0"
@@ -155,15 +146,6 @@ function ShowingPlanType() {
         font-weight: 900;
       `}
     >
-      {/* {`Showing ${mergedQuotes?.length} ${
-        journeyType === "top_up"
-          ? "Top Up "
-          : planTypes[
-              data?.data?.groups?.find(
-                singleGroup => singleGroup.id === +groupCode,
-              )?.plan_type
-            ] + " "
-      }plans`} */}
       {`Showing ${displayPlansLength} ${displayPolicyTypeFitler} plans`}
     </h1>
   );
