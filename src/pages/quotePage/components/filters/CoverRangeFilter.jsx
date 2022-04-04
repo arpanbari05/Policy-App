@@ -22,10 +22,10 @@ function validateCustomCover(customCover) {
 }
 
 function CoverFilterModal({ onClose, ...props }) {
-  const {
+  let {
     data: {
       covers,
-      settings: { pos_nonpos_switch_message },
+      settings: { pos_nonpos_switch_message, restrict_posp_quotes_after_limit },
     },
   } = useFrontendBoot();
 
@@ -104,6 +104,13 @@ function CoverFilterModal({ onClose, ...props }) {
       : dispatch(setPosPopup(false));
     onClose && onClose();
   };
+
+  if (
+    localStorage.getItem("SSO_user") &&
+    restrict_posp_quotes_after_limit === `${1}`
+  ) {
+    covers = covers.slice(0, 2);
+  }
 
   return (
     <CustomModal1
