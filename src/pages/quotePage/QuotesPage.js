@@ -121,6 +121,10 @@ function ShowingPlanType() {
     ?.map(quote => mergeQuotes(quote.data.data))
     ?.flat();
 
+  const displayPlansLength = unmergedQuotes?.filter(
+    quoteData => quoteData.data.data.length !== 0,
+  ).length;
+
   useEffect(() => {
     if (shareType.value === "quotation_list") {
       dispatch(replaceShareQuotes(mergedQuotes));
@@ -160,7 +164,7 @@ function ShowingPlanType() {
               )?.plan_type
             ] + " "
       }plans`} */}
-      {`Showing ${mergedQuotes?.length} ${displayPolicyTypeFitler} plans`}
+      {`Showing ${displayPlansLength} ${displayPolicyTypeFitler} plans`}
     </h1>
   );
 }
