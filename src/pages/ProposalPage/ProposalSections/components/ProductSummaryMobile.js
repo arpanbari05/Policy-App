@@ -241,7 +241,7 @@ function ProductSummaryMobile({ cart, payNow }) {
   const [checked, setChecked] = useState(false);
   return (
     <>
-    {/* <div css={`
+      {/* <div css={`
           bottom: 0;
           position: fixed;
           background-color: red;
@@ -270,17 +270,18 @@ sggs
               padding-left: 20px;
               position: absolute;
               top: 20px;
-               @media (max-width: 400px) {
+              @media (max-width: 400px) {
                 padding-left: 10px !important;
-
-              } 
+              }
             `}
           >
-            <div css={`
-            @media screen and (max-width:440px){
-              font-size:13px !important;  
-            }
-            `}>
+            <div
+              css={`
+                @media screen and (max-width: 440px) {
+                  font-size: 13px !important;
+                }
+              `}
+            >
               <ProposalCheckBox
                 title={"check2"}
                 type={"checkbox"}
@@ -288,11 +289,16 @@ sggs
                 extraPadding
                 onChange={() => setChecked(!checked)}
               />{" "}
-              <span className="Iaccept" css={`
-            @media screen and (max-width:440px){
-              font-size:12px !important;  
-            }
-            `}>I Accept the&nbsp;</span>
+              <span
+                className="Iaccept"
+                css={`
+                  @media screen and (max-width: 440px) {
+                    font-size: 12px !important;
+                  }
+                `}
+              >
+                {"I have read & accepted the Insurance Company's"}&nbsp;
+              </span>
               <span
                 class="TermsAndConditions"
                 css={`
@@ -301,7 +307,7 @@ sggs
                 style={{ cursor: "pointer" }}
                 onClick={() => setTermShow(true)}
               >
-                Terms &amp; Conditions
+                {"Terms & Conditions"}
               </span>
               {termShow && (
                 <TermModal
@@ -397,18 +403,17 @@ sggs
           )}
         </Outer>
       </div>
-{
-  show &&  <CardModalM
-        show={show}
-        title={`Your Plan Details`}
-        showButton={false}
-        content={content}
-        handleClose={() => {
-          setShow(false);
-        }}
-      />
-}
-     
+      {show && (
+        <CardModalM
+          show={show}
+          title={`Your Plan Details`}
+          showButton={false}
+          content={content}
+          handleClose={() => {
+            setShow(false);
+          }}
+        />
+      )}
     </>
   );
 }
@@ -419,8 +424,8 @@ const Outer = styled.div`
 
   display: flex;
   justify-content: flex-end;
-  @media screen and (max-width:440px){
-    padding: 21px 20px !important;  
+  @media screen and (max-width: 440px) {
+    padding: 21px 20px !important;
   }
 `;
 const Premium = styled.button`

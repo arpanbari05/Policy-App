@@ -3,9 +3,11 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
-import { useGetFrontendBootQuery } from "./api/api";
+import { useGetFrontendBootQuery, useGetCartQuery } from "./api/api";
 import { ErrorFallback, FullScreenLoader } from "./components";
+import { useGetEnquiriesQuery } from "./api/api";
 import { LoadEnquiries } from "./components";
+import { Page } from "./components/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./app.css";
 import { some } from "lodash";
@@ -48,7 +50,20 @@ function AppLoaders({ children, ...props }) {
     },
   );
 
+  const {
+    isLoading: isLoadingEnq,
+    isFetching: isFetchingEnq,
+    isUninitialized: isUninitializedEnq,
+    isError: isErrorEnq,
+    refetch,
+  } = useGetEnquiriesQuery();
+
+  const { isLoading: isLoadingCart, isUninitialized: isUninitializedCart } =
+    useGetCartQuery();
+
   if (isLoading || isUninitialized) return <FullScreenLoader />;
+
+  if (isLoadingCart || isUninitializedCart) return <FullScreenLoader />;
 
   if (isError)
     return (
@@ -75,6 +90,17 @@ function AppLoaders({ children, ...props }) {
     ])
   )
     return children;
+
+  if (isLoadingEnq || isUninitializedEnq || isFetchingEnq)
+    return <FullScreenLoader />;
+
+  if (isErrorEnq)
+    return (
+      <Page>
+        <p>Something went wrong while fetching enquiry details!</p>
+        <button onClick={refetch}>Retry</button>
+      </Page>
+    );
 
   return <LoadEnquiries {...props}>{children}</LoadEnquiries>;
 }
