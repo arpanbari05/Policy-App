@@ -77,7 +77,9 @@ const MedicalHistoryForm = ({ posContent }) => {
             return;
           }
           setAppLoading(false);
-          history.push(getUrlWithEnquirySearch(`/quotes/${groups[0].id}`));
+          history.push(
+            getUrlWithEnquirySearch(`/quotes/${res?.data?.groups[0].id}`),
+          );
         });
       } else {
         setCustomErrors("Select a disease!");
