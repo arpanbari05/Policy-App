@@ -4,8 +4,10 @@ import styled from "styled-components";
 import FeatureSection from "./FeatureSection/FeatureSection";
 import { setFeatureOptions } from "../../Cart/cart.slice";
 import { RiCheckFill } from "react-icons/ri";
-import { useTheme } from "../../../customHooks";
+import { useTheme, useCart } from "../../../customHooks";
 import HttpClient from "../../../api/httpClient";
+import { useParams } from "react-router-dom";
+import { isRelianceInfinityPlan } from "../../../utils/helper";
 
 const useRoomRent = (productId, sumInsured) => {
   const [loading, setLoading] = useState(false);
@@ -108,12 +110,18 @@ const ContentSection = ({
   selectedBenefit,
   setSelectedBenefit,
 }) => {
-  const [checked, setChecked] = useState(false);
+  const { groupCode } = useParams();
+
+  const { getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const [checked, setChecked] = useState(isRelianceInfinityPlan(cartEntry));
 
   return (
     <StyledContentSection
       theme={theme}
-      key={data.name}
+      key={data?.name}
       onClick={e => {
         setChecked(prev => !prev);
       }}
@@ -127,17 +135,17 @@ const ContentSection = ({
         }}
       >
         <section className="cardHead">
-          <h2>{data.name}</h2>
-          <p>{data.description}</p>
+          <h2>{data?.name}</h2>
+          <p>{data?.description}</p>
         </section>
         <section className="cardOptions">
-          {data.options && (
+          {data?.options && (
             <Options
               checked={checked}
               setChecked={setChecked}
               selectedBenefit={selectedBenefit}
               setSelectedBenefit={setSelectedBenefit}
-              options={data.options}
+              options={data?.options}
             ></Options>
           )}
         </section>
@@ -174,8 +182,8 @@ const Benefit = ({ cartEntry: cart }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (response.length) {
-      if (!cart.feature_options) {
+    if (response?.length) {
+      if (!cart?.feature_options) {
         dispatch(
           setFeatureOptions({
             ...selectedBenefit,

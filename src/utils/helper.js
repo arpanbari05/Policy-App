@@ -798,3 +798,6 @@ export function isThemeApp() {
 export const isSSOJourney = () => {
   return localStorage.SSO_user ? true : false;
 };
+
+export const isRelianceInfinityPlan = cartEntry =>
+  cartEntry?.product?.name === "Health Infinity Individual";
