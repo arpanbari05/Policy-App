@@ -211,12 +211,10 @@ export function GroupLink({ group, ...props }) {
 
 const ToggleGroupTypeBtn = styled.button`
   display: inline-block;
-  // background-color: ${props => props.color};
   border-radius: 2em;
   font-weight: 900;
   font-size: 0.79rem;
   line-height: 1;
-  // padding: 1em;
   color: ${props => props.color};
   pointer: cursor;
   &:hover {
