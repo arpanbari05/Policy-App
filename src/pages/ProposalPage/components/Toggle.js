@@ -20,11 +20,11 @@ const Toggle = ({
   notAllowed,
   values,
   showMembers,
-  customMembers,
+  customMembers = [],
   showMembersIf,
   notAllowedIf,
   disable_Toggle = false,
-  restrictMaleMembers,
+  restrictMaleMembers = false,
 }) => {
   console.log("Svsjbv", disable_Toggle);
   const { colors } = useTheme();
@@ -34,8 +34,9 @@ const Toggle = ({
   const { getSelectedMembers, getMember, getAllMembers, genderOfSelf } =
     useMembers();
   const [customShowMembers, setCustomshowMembers] = useState(false);
+  console.log("wgkwrjsd",customMembers,members)
   const [membersToMap, setMembersToMap] = useState(
-    customMembers instanceof Array ? customMembers : members,
+    customMembers instanceof Array && customMembers.length ? customMembers : members,
   );
 
   useEffect(() => {
@@ -118,7 +119,7 @@ const Toggle = ({
     });
   }, [boolean, membersStatus, customShowMembers]);
 
-  console.log("sgjsg", value, label, boolean);
+  console.log("sgjsgsrgr", {value, label, boolean,membersToMap,showMembers, customShowMembers, membersStatus,restrictMaleMembers,customMembers, members});
 
   return (
     <>

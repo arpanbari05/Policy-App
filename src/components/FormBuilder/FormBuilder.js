@@ -236,11 +236,12 @@ const FormBuilder = ({
                     (values[item[0]?.parent] &&
                     values[item[0]?.parent]?.members &&
                     values[item[0]?.parent]?.members instanceof Object &&
-                    values[item[0]?.parent]?.members?.[member] &&
-                    renderField(item[0], values, member)) || item[0].render === "noDependency"
+                    values[item[0]?.parent]?.members?.[member] ) || item[0].render === "noDependency"
                   )
                     return (
                       <CustomWrapper>
+                      
+
                         <div className="col-md-12">
                           <Title>{member}</Title>
                           {item.map(innerItem => {

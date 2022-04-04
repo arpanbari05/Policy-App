@@ -168,9 +168,7 @@ const useProposalSections = (
                 );
               } else {
                 dispatch(setFailedBmiData(false));
-                revisedPremiumPopupUtilityObject.getUpdatedCart(() => {
-                  // dispatch(setActiveIndex(false)),
-                });
+                revisedPremiumPopupUtilityObject.getUpdatedCart(() => dispatch(setActiveIndex(false)));
               }
             } else if (
               name === "Medical Details" &&
