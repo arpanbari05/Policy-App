@@ -352,9 +352,9 @@ export function MembersList({ members = [], ...props }) {
 }
 
 export function LoadCart({ children }) {
-  const { isLoading, isUninitialized, isFetching } = useGetCartQuery();
+  const { isLoading, isUninitialized } = useGetCartQuery();
 
-  if (isLoading || isUninitialized || isFetching) return <FullScreenLoader />;
+  if (isLoading || isUninitialized) return <FullScreenLoader />;
 
   return children;
 }
