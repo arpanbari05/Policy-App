@@ -6,7 +6,7 @@ import BackBtn from "../components/Buttons/BackBtn";
 import ContinueBtn from "../components/Buttons/ContinueBtn";
 import useProposalSections from "./useProposalSections";
 import { useDispatch, useSelector } from "react-redux";
-import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
+
 import "styled-components/macro";
 import BMI from "./components/BMI";
 import { callApi } from "../../../components/FormBuilder/FormBuilder.slice";
@@ -31,7 +31,6 @@ const ProposerDetails = ({
     submit,
     setSubmit,
     setCustomValid,
-    revisedPremiumPopupUtilityObject,
   } = useProposalSections(setActive, name, defaultValue);
   const proposelSelectedDOBRedux = useSelector(
     ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob,
@@ -56,8 +55,6 @@ const ProposerDetails = ({
         members?.filter(i => i.type === "self")[0]?.age,
       );
       let currentYear = new Date().getFullYear();
-      let currentMonth = new Date().getMonth();
-      let currentDate = new Date().getDate();
 
       let estimatedProposerDOB = `${currentYear - proposerAge}`;
       let prefilledValues = {
@@ -66,9 +63,6 @@ const ProposerDetails = ({
         mobile,
         email,
         dob: proposelSelectedDOBRedux || estimatedProposerDOB,
-        // pincode: proposerDetails.pincode.includes("-")
-        //   ? proposerDetails.pincode.split("-")[1]
-        //   : proposerDetails.pincode,
       };
       schema.forEach(item => {
         if (item.value)
@@ -122,12 +116,6 @@ const ProposerDetails = ({
           }}
         />
       </div>
-      {revisedPremiumPopupUtilityObject.isOn && (
-        <RevisedPremiumPopup
-          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
-          onClose={revisedPremiumPopupUtilityObject.off}
-        />
-      )}
     </>
   );
 };
