@@ -23,7 +23,7 @@ import new_india_assurance from "./new_india_assurance.png";
 import universal_sompo from "./universal_sompo.png";
 import fyntune from "./fyntune.png";
 import renew_buy from "./renew_buy.png";
-import Pinc from "./Pinc3.png";
+import pinc from "./pinc.png";
 import CompanyLogo from "./companyLogo.png";
 
 const images = {
@@ -52,7 +52,7 @@ const images = {
   icici_lombard,
   fyntune,
   renew_buy,
-  Pinc,
+  pinc,
   CompanyLogo,
 };
 
