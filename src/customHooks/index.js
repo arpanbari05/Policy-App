@@ -38,6 +38,7 @@ import {
   getQuoteKey,
   getRiderCartData,
   getTotalPremium,
+  isRelianceInfinityPlan,
   isRiderPresent,
   isTopUpQuote,
   matchQuotes,
@@ -774,6 +775,9 @@ export function useRider(groupCode) {
     const cartEntry = getCartEntry(groupCode);
 
     const { health_riders, top_up_riders } = cartEntry;
+
+    if (isRelianceInfinityPlan(cartEntry))
+      return health_riders?.length ? health_riders : top_up_riders;
 
     return health_riders?.length
       ? health_riders.filter(rider => rider.total_premium > 0)
