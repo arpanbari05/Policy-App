@@ -55,6 +55,7 @@ function useUpdateFilters() {
         return {
           ...group,
           extras: null,
+          plan_type: group?.plan_type === "M" ? "F" : group?.plan_type,
         };
       }
     });

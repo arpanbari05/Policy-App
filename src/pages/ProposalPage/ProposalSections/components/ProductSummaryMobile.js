@@ -54,7 +54,11 @@ function ProductSummaryMobile({ cart, payNow }) {
       frontendData?.data?.settings?.journey_type === "single" &&
       (checked || mobile)
     ) {
-      setShowP(prev => !prev);
+      if (policyStatus?.length > 1) {
+        setShow(prev => !prev);
+      } else {
+        singlePay(policyStatus[0]?.proposal_id);
+      }
     } else if (checked || mobile) {
       const form = document.createElement("form");
       form.method = "POST";
@@ -260,7 +264,7 @@ sggs
           left: 0;
           right: 0;
           z-index: 9999;
-          border-top: 1px solid #f3f4f9;
+          border-top: 1px solid #ddd;
         `}
       >
         {location.pathname === "/proposal_summary" && (
@@ -270,6 +274,9 @@ sggs
               padding-left: 20px;
               position: absolute;
               top: 20px;
+              @media (max-width: 768px) {
+                padding-top: 0;
+              }
               @media (max-width: 400px) {
                 padding-left: 10px !important;
               }
@@ -279,6 +286,7 @@ sggs
               css={`
                 @media screen and (max-width: 440px) {
                   font-size: 13px !important;
+                  max-width: 70%;
                 }
               `}
             >
@@ -287,7 +295,7 @@ sggs
                 type={"checkbox"}
                 value={checked}
                 extraPadding
-                onChange={() => setChecked(!checked)}
+                onChange={e => setChecked(e.target.checked)}
               />{" "}
               <span
                 className="Iaccept"
@@ -372,8 +380,11 @@ sggs
             <View
               css={`
                 background: ${PrimaryColor};
+                z-index: 10000;
               `}
-              onClick={() => checked && onClick()}
+              onClick={() => {
+                checked && onClick();
+              }}
               // style={{ color: checked ? "white" : "lightgray" }}
             >
               Pay Now
