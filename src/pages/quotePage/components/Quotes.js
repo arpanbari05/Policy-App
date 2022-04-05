@@ -42,6 +42,13 @@ function Quotes({ sortBy = "relevence", ...props }) {
     }
   }
 
+  // removing duplicate quotes
+  const companies = mergedQuotes?.map(quote => quote?.company_alias);
+  mergedQuotes = mergedQuotes?.filter(
+    ({ company_alias }, index) =>
+      !companies?.includes(company_alias, index + 1),
+  );
+
   const quotesCompare = useQuotesCompare();
 
   const { isQuotesOnCompare } = quotesCompare;

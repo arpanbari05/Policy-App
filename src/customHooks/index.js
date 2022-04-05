@@ -947,10 +947,18 @@ export function useUrlEnquiry() {
 
   const { groups } = useMembers();
 
-  const currentGroup = groups.find(group => group.id === +groupCode);
-
   function getUrlWithEnquirySearch(path = "") {
-    return `${path}?enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`;
+    const currentGroup =
+      localStorage.getItem("groups") &&
+      JSON.parse(localStorage.getItem("groups")).find(
+        group => group.id === groupCode,
+      );
+    const locationQuery =
+      currentGroup?.pincode && currentGroup?.city
+        ? `&pincode=${currentGroup.pincode}&city=${currentGroup?.city}`
+        : "";
+
+    return `${path}?enquiryId=${enquiryId}${locationQuery}`;
   }
 
   return { enquiryId, getUrlWithEnquirySearch };
@@ -988,7 +996,10 @@ export function useGetQuotes(queryConfig = {}) {
     queryConfig,
   );
 
-  const isLoading = data?.length < insurersToFetch?.length - 2;
+  const isLoading =
+    insurersToFetch?.length <= 2
+      ? data?.length < insurersToFetch?.length
+      : data?.length < insurersToFetch?.length - 2;
 
   const quotesWithoutMoreFilters = data;
 
@@ -997,6 +1008,7 @@ export function useGetQuotes(queryConfig = {}) {
     data = data.map(insurerQuotes => {
       return {
         ...insurerQuotes.data,
+        company_alias: insurerQuotes?.company_alias,
         data: { ...insurerQuotes, data: filterQuotes(insurerQuotes.data.data) },
       };
     });

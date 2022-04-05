@@ -288,7 +288,7 @@ export function Button({
   arrow = false,
   css,
   onClick,
-  loaderPrimaryColor = false,
+  loaderPrimaryColor = true,
   ...props
 }) {
   const { colors } = useTheme();
