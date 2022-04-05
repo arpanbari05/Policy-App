@@ -18,6 +18,7 @@ import MedicalHistoryForm from "./components/MedicalHistoryForm";
 import JourneyTypeForm from "./components/JourneyTypeForm";
 import { renderDisclaimer } from "../../utils/helper";
 import { usePos } from "../../customHooks/usePos";
+import { usePosPinc } from "../../customHooks/usePosPinc";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -29,13 +30,10 @@ const InputPage = () => {
   const isBasicDetailsRoute = useRouteMatch("/input/basic-details");
   const isRenewalDetailsRoute = useRouteMatch("/input/renewal-details");
   const [showmore, setShowmore] = useState(false);
-
   const { colors } = useTheme();
-
   const { currentForm } = useParams();
-
+  usePosPinc();
   const { posContent } = usePos(localStorage.SSO_user, currentForm);
-  console.log("posContent", posContent);
 
   return (
     <Page>
