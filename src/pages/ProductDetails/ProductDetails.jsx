@@ -127,6 +127,10 @@ const ProductDetails = () => {
         `
             : `
 
+
+          @media (min-width : 1200px){
+            max-width: 95% !important;
+          }
           ${mobile} {
             background-color: #fff;
           }
