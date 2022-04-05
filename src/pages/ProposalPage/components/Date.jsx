@@ -26,7 +26,9 @@ const DateComp = ({
   endDate,
   age = [0, 0],
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+
+const [isFocused, setIsFocused] = useState(false);
   const onFocus = () => setIsFocused(true);
   let newDate = new Date();
   let currentYear = newDate.getFullYear();
@@ -40,9 +42,28 @@ const DateComp = ({
   };
 
   const getMoment = val => {
-    return val.length === 4
-      ? moment(val, "YYYY")?.year()
+    return val?.length === 4
+      ? moment(val, "yyyy")?.toDate()
       : moment(val, "DD-MM-YYYY")?.toDate();
+  };
+
+  const getOpentoDate = val => {
+    if (val && val.length === 4)
+      return getMoment(`${currentDate}-${currentMonth + 1}-${val}`);
+    if (val && val.length === 10) return getMoment(val);
+    if (age.length && age[0] >= 1)
+      return getMoment(
+        new Date(currentYear - age[0], currentMonth, currentDate),
+      );
+    if (age.length && age[0])
+      return getMoment(
+        new Date(
+          currentYear,
+          currentMonth - Number(age[0].toString().split(".")[1]),
+          currentDate - `${age[0]}`.includes(".") ? 1 : 0,
+        ),
+      );
+    return getMoment(`${currentDate}-${currentMonth + 1}-${currentYear}`);
   };
 
   const onKeyDownHandler = e => {
@@ -52,20 +73,25 @@ const DateComp = ({
     onKeyDown();
   };
 
+  let oldVal = value;
+
+  if (value?.length === 4) {
+    value = "";
+  }
+
   const openDatepicker = () => startRef.current.setOpen(true);
   return (
-    <InputContainer error={!isFocused ? error : null}>
+    <InputContainer error={!isFocused ? error : null} readOnly={readOnly}>
       <DatePickerWrapper>
         <DatePicker
           id="date-picker"
           ref={startRef}
           onKeyDown={onKeyDownHandler}
-          
           showYearDropdown
+          popperPlacement="bottom-end"
           yearDropdownItemNumber={100}
           scrollableYearDropdown={true}
-          dateFormat={formatFordatePicker(value)}
-          onClick={(e) => console.log("sfbhsfkjv",e)}
+          dateFormat="dd-MM-yyyy"
           selected={
             value && value !== "Invalid date" && value !== "value"
               ? value.includes("NaN")
@@ -75,11 +101,7 @@ const DateComp = ({
           }
           minDate={
             age.length && age[1] >= 1
-              ? new Date(
-                  currentYear - (age[1]),
-                  currentMonth,
-                  currentDate,
-                )
+              ? new Date(currentYear - age[1], currentMonth, currentDate)
               : ""
           }
           maxDate={
@@ -89,11 +111,12 @@ const DateComp = ({
               ? new Date(
                   currentYear,
                   currentMonth - Number(age[0].toString().split(".")[1]),
-                  currentDate,
+                  currentDate - `${age[0]}`.includes(".") ? 1 : 0,
                 )
               : new Date(Date.now())
           }
-          placeholderText={placeholder}
+          placeholderText={oldVal || placeholder}
+          openToDate={getOpentoDate(oldVal)}
           onChange={date => {
             onChange({ target: { value: moment(date).format("DD-MM-YYYY") } });
           }}
@@ -107,6 +130,7 @@ const DateComp = ({
           onFocus={onFocus}
           onBlur={() => setIsFocused(false)}
           wrapperClassName="date-picker"
+         
           // onCalendarOpen={handleCalendarOpen}
         />
       </DatePickerWrapper>
@@ -128,6 +152,8 @@ const DateComp = ({
 export default DateComp;
 
 const DatePickerWrapper = styled.div`
+
+
   .react-datepicker__month-container {
     height: 300px;
   }
@@ -143,6 +169,8 @@ const Calendar = styled.img`
     props.error ? "translateY(calc(-50% - 8px))" : "translateY(-50%)"};
 `;
 const InputContainer = styled.div`
+cursor:${props => (props.readOnly ? "not-allowed" : "pointer")} !important;
+
   & .react-datepicker__navigation--years-upcoming {
     width: 0;
     height: 0;

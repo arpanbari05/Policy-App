@@ -157,6 +157,14 @@ export function GroupLink({ group, ...props }) {
 
   const membersText = getMembersText(group);
 
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(grp => grp.id === group.id);
+  const locationQuery =
+    currentGroup?.pincode && currentGroup?.city
+      ? `&pincode=${currentGroup.pincode}&city=${currentGroup?.city}`
+      : "";
+
   return (
     <div
       className="d-flex align-items-center position-relative h-100 m-auto"
@@ -165,7 +173,7 @@ export function GroupLink({ group, ...props }) {
       <Link
         to={{
           pathname: `/quotes/${group.id}`,
-          search: `enquiryId=${enquiryId}`,
+          search: `enquiryId=${enquiryId}${locationQuery}`,
         }}
         title={membersText}
         className="text-center"
@@ -211,12 +219,10 @@ export function GroupLink({ group, ...props }) {
 
 const ToggleGroupTypeBtn = styled.button`
   display: inline-block;
-  // background-color: ${props => props.color};
   border-radius: 2em;
   font-weight: 900;
   font-size: 0.79rem;
   line-height: 1;
-  // padding: 1em;
   color: ${props => props.color};
   pointer: cursor;
   &:hover {

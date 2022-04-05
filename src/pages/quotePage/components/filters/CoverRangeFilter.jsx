@@ -7,6 +7,8 @@ import useFilters from "./useFilters";
 import { useFrontendBoot, useTheme } from "../../../../customHooks";
 import useUpdateFilters from "./useUpdateFilters";
 import { Filter, FilterHead } from ".";
+import { setPosPopup } from "../../quote.slice";
+import { useDispatch } from "react-redux";
 
 function validateCustomCover(customCover) {
   if (customCover < 200000) {
@@ -20,11 +22,16 @@ function validateCustomCover(customCover) {
 }
 
 function CoverFilterModal({ onClose, ...props }) {
-  const {
-    data: { covers },
+  let {
+    data: {
+      covers,
+      settings: { pos_nonpos_switch_message, restrict_posp_quotes_after_limit },
+    },
   } = useFrontendBoot();
 
   const { colors } = useTheme();
+
+  const dispatch = useDispatch();
 
   const { getSelectedFilter } = useFilters();
 
@@ -92,8 +99,18 @@ function CoverFilterModal({ onClose, ...props }) {
     updateFilters({
       cover: updatedCoverFilter,
     });
+    !selectedCover?.applicable_on_pos && pos_nonpos_switch_message
+      ? dispatch(setPosPopup(true))
+      : dispatch(setPosPopup(false));
     onClose && onClose();
   };
+
+  if (
+    localStorage.getItem("SSO_user") &&
+    restrict_posp_quotes_after_limit === `${1}`
+  ) {
+    covers = covers.slice(0, 2);
+  }
 
   return (
     <CustomModal1
@@ -152,7 +169,6 @@ function CoverFilterModal({ onClose, ...props }) {
 }
 
 function CoverOption({ cover, checked, onChange, ...props }) {
-
   const inputRef = useRef();
 
   const handleChange = evt => {
@@ -167,7 +183,7 @@ function CoverOption({ cover, checked, onChange, ...props }) {
       className="option d-flex align-items-center justify-content-between"
       {...props}
       onClick={() => {
-        inputRef.current.click()
+        inputRef.current.click();
       }}
     >
       <label htmlFor={cover.code}>{cover.display_name}</label>
@@ -499,15 +515,7 @@ const CoverRangeFilter = () => {
 
   const { getSelectedFilter } = useFilters();
 
-  // const {
-  //   data: { covers },
-  // } = useGetFrontendBootQuery();
-
   const selectedCover = getSelectedFilter("cover");
-
-  // const displayCover = covers.find(
-  //   (cover) => cover.code === selectedCover
-  // ).display_name;
 
   const displayCover = selectedCover.display_name;
 

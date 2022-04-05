@@ -34,7 +34,7 @@ export const medicalHistoryRadioArr = [
   },
 ];
 
-const MedicalHistoryForm = () => {
+const MedicalHistoryForm = ({ posContent }) => {
   const [selected, setSelected] = useState(false);
   const [diseaseArray, setDiseaseArray] = useState([]);
   const [appLoading, setAppLoading] = useState(false);
@@ -77,7 +77,9 @@ const MedicalHistoryForm = () => {
             return;
           }
           setAppLoading(false);
-          history.push(getUrlWithEnquirySearch(`/quotes/${groups[0].id}`));
+          history.push(
+            getUrlWithEnquirySearch(`/quotes/${res?.data?.groups[0].id}`),
+          );
         });
       } else {
         setCustomErrors("Select a disease!");
@@ -103,9 +105,12 @@ const MedicalHistoryForm = () => {
             font-size: 16px;
           }
         `}
-      >
-        Any of the Insured Member have a Medical History?
-      </Title>
+        dangerouslySetInnerHTML={{
+          __html: posContent.question
+            ? posContent.question
+            : "Any of the Insured Member have a Medical History?",
+        }}
+      ></Title>
       <CustomProgressBar now={5} total={5} />
       <div
         css={`

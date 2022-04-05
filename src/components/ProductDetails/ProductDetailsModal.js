@@ -265,17 +265,18 @@ function RenderPlanDetails({ quote, ...props }) {
       </DetailsSectionWrap>
     );
 
-  if (productBrochureQuery.isError)
+  /* if (productBrochureQuery.isError)
     return (
       <DetailsSectionWrap>
         {productBrochureQuery.error.data.message}
       </DetailsSectionWrap>
-    );
+    ); */
 
   const planDetails = getPlanFeatures(data, sum_insured);
 
-  const { brochure_url, policy_wording_url } = (productBrochureQuery.data ||
-    [])[0];
+  const brochure_url = (productBrochureQuery.data || [])[0]?.brochure_url;
+  const policy_wording_url = (productBrochureQuery.data || [])[0]
+    ?.policy_wording_url;
 
   return (
     <PlanDetails
@@ -319,8 +320,8 @@ function RenderClaimProcess({ quote, ...props }) {
   return (
     <ClaimProcess
       ActiveMainTab
-      claimProccess={claimProcessQuery.data}
-      claimform={(productBrochureQuery.data || [])[0]}
+      claimProccess={claimProcessQuery?.data}
+      claimform={(productBrochureQuery?.data || [])[0]}
     />
   );
 }

@@ -4,6 +4,7 @@ import CustomProgressBar from "../../../components/ProgressBar";
 import TextInput from "../../../components/TextInput";
 import {
   useFrontendBoot,
+  useGetQuotes,
   useMembers,
   useTheme,
   useUpdateEnquiry,
@@ -38,7 +39,6 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
   const currentGroup = getGroup(groupCode);
   const groups = allGroups.filter(group => group.type === currentGroup.type);
   const groupWithoutLocation = groups.find(group => !group.pincode);
-  console.log(groupWithoutLocation);
   const [currentGroupCode, setCurrentGroupCode] = useState(
     currentGroup?.type === "all"
       ? groups[0].id
@@ -46,6 +46,8 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
   );
 
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
+
+  const { refetch } = useGetQuotes();
 
   const [error, setError] = useState(null);
 
@@ -108,6 +110,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           ) {
             setCurrentGroupCode(groupWithoutLocation.id);
           } else {
+            refetch();
             return dispatch(setShowEditMembers(false));
           }
         }

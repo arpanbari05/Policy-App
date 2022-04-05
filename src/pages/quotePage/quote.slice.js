@@ -32,6 +32,7 @@ const quotePageSlice = createSlice({
     quotes: [],
     quotesToShare: [],
     quotesToCanvas: [],
+    pos_popup: false,
     shareType: {},
     quotesOnCompare: false,
     showEditMembers: false,
@@ -81,6 +82,9 @@ const quotePageSlice = createSlice({
       state.quotesToShare = state.quotesToShare.filter(
         data => data[0]?.product?.id !== action.payload[0]?.product?.id,
       );
+    },
+    setPosPopup: (state, action) => {
+      state.pos_popup = action.payload;
     },
     setShowEditMembers: (state, action) => {
       state.showEditMembers = action.payload;
@@ -316,6 +320,7 @@ export const {
   setEditStep,
   setQuotesToCanvas,
   replaceShareQuotes,
+  setPosPopup,
   saveSelectedPlan,
   setShouldFetchQuotes,
   saveCartData,

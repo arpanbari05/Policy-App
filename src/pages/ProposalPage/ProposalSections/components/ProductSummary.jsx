@@ -22,6 +22,7 @@ import {
   useTheme,
   useAdditionalDiscount,
   useRider,
+  useRevisedPremiumModal,
 } from "../../../../customHooks";
 import {
   amount,

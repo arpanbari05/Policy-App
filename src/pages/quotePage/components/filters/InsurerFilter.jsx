@@ -73,14 +73,16 @@ function FilterModal({ onClose, ...props }) {
       tooltipDesc="Select a choice of Insurance Company to view specific plans provided by that company"
       {...props}
     >
-      {companies.map(company => (
-        <Insurer
-          company={company}
-          onChange={handleChange}
-          key={company.alias}
-          checked={isInsurerSelected(company)}
-        />
-      ))}
+      {companies
+        .sort((a, b) => a?.short_name.localeCompare(b?.short_name))
+        .map(company => (
+          <Insurer
+            company={company}
+            onChange={handleChange}
+            key={company.alias}
+            checked={isInsurerSelected(company)}
+          />
+        ))}
     </CustomModal1>
   );
 }

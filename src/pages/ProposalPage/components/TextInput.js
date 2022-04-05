@@ -25,6 +25,7 @@ const TextInput = ({
   innerMember,
   checkAge,
   defaultValue,
+  onFocus,
 }) => {
   const dispatch = useDispatch();
   const age =
@@ -39,6 +40,7 @@ const TextInput = ({
   const [fallbackValue, setFallbackValue] = useState("");
   const [isChanged, setChanged] = useState(false);
   const regForOnlyDigit = new RegExp("^[0-9]*$");
+  const [isHovering, setIsHovering] = useState(false);
   const fullName = value || "";
   const forbiddedSymbols = "`~!@#$%^&*()_-+={[}]|:.;',<>?/\"\\".split("");
   const checkPreviousChar = (value, checkValue) => {
@@ -79,18 +81,19 @@ const TextInput = ({
     }
   };
 
-  const onFocus = () => setIsFocused(true);
-
   // const [innerValue, setInnerValue] = useState(value);
   // useEffect(() => {
   //   setInnerValue(value);
   // }, [value]);
-  console.log({ fallbackValue, isChanged });
+  // console.log(isHovering, "isHovering");
   return (
     <InputContainer>
       <Input
         type={type || "text"}
         placeholder={placeholder}
+        isHovering={isHovering}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
         showStarRed={checkValidation?.required}
         required={required || undefined}
         onChange={e => {
@@ -113,7 +116,14 @@ const TextInput = ({
             if (
               checkPreviousChar(e.target.value, " ") &&
               checkPreviousChar(e.target.value, ".") &&
-              !regForOnlyDigit.test(e.target.value) &&
+              e.target.value
+                .split("")
+                .reduce(
+                  (acc, char) => (acc = char === "." ? acc + 1 : acc),
+                  0,
+                ) <= 1 &&
+              (e.target.value === "" ||
+                !regForOnlyDigit.test(e.target.value)) &&
               e.target.value.length <= 60 &&
               checkAllChar(
                 e.target.value,
@@ -227,7 +237,10 @@ const TextInput = ({
             setFallbackValue(e.target.value);
           }
         }}
-        onFocus={onFocus}
+        onFocus={() => {
+          onFocus();
+          setIsFocused(true)
+        }}
         onBlur={e => {
           onBlur();
           if (
@@ -242,7 +255,6 @@ const TextInput = ({
             dispatch(setShowPlanNotAvail(true));
             onChange(e);
             setFallbackValue(e.target.value);
-            
           }
           setIsFocused(false);
         }}
@@ -279,15 +291,37 @@ const InputContainer = styled.div`
 `;
 const Input = styled.input`
   list-style: none;
+  -webkit-user-select: text;
   list-style-type: none;
-  -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+  -webkit-user-select: initial;
+  -khtml-user-select: initial;
+  -moz-user-select: initial;
+  -ms-user-select: initial;
+  user-select: initial;
+  &:before, &:after {
+    -webkit-user-select: initial;
+  -khtml-user-select: initial;
+  -moz-user-select: initial;
+  -ms-user-select: initial;
+  user-select: initial;
+  }
   -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
   margin: 0;
+  /* ::-webkit-input-placeholder:after {
+   content: '*';
+   color: red;
+   
+   font-size: 1.5rem;
+} */
+  /* ::-webkit-input-placeholder {
+  background:${props =>
+    props.showStarRed
+      ? "-webkit-linear-gradient(right, #AAA 0%, #AAA 80%,red 80%, red 100%)"
+      : "#939393"} ;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+} */
   text-transform: ${props => props.textTransform};
   font-family: inherit;
   line-height: inherit;
@@ -302,6 +336,7 @@ const Input = styled.input`
   // background: ${props => (props.error ? "#fff6f7" : "transparent")};
   height: 55px;
   font-size: 14px;
+  cursor:${props => (props.isHovering && props.readOnly ? "not-allowed" : "pointer")};
   color: #939393;
   position: relative;
   padding: 0 25px;
@@ -326,7 +361,7 @@ const Input = styled.input`
   }
 
   @media (max-width: 767px) {
-    height: 42px;
+    height: 52px;
     padding: 0 16px;
     // border-radius: 6px;
     font-size: 14px;
@@ -346,12 +381,14 @@ const Label = styled.label`
   line-height: 14px;
   position: absolute;
   left: 20px;
-  top: -8px;
+  top: 0;
   margin: 0;
+  max-width: 95%;
   background: #fff;
   transition: all 0.3s ease-in-out;
   font-weight: 900;
   padding: 0 5px;
+  transform: translateY(-60%);
 
   @media (max-width: 1200px) {
     font-size: 13px !important;
@@ -365,5 +402,6 @@ const Label = styled.label`
   @media (max-width: 767px) {
     left: 10px;
     font-size: 14px;
+    // top: -15px;
   }
 `;

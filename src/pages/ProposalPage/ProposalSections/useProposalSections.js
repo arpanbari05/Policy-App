@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import swal from "sweetalert";
 import { getCart } from "../../Cart/cart.slice";
@@ -14,6 +14,7 @@ import {
 } from "./ProposalSections.slice";
 
 import { useRevisedPremiumModal } from "../../../customHooks";
+import { useGetCartQuery } from "../../../api/api";
 
 const useProposalSections = (
   setActive,
@@ -28,7 +29,7 @@ const useProposalSections = (
     partialLength ? Array(partialLength) : undefined,
   );
 
-  const schema = useSelector(({schema}) => schema.currentSchema)
+  const schema = useSelector(({ schema }) => schema.currentSchema);
 
   const [customValid, setCustomValid] = useState();
 
@@ -44,31 +45,30 @@ const useProposalSections = (
 
   const cart = useSelector(state => state.cart);
 
-  const { activeIndex, proposalData } = useSelector(
+  const { activeIndex, proposalDatam, loadingStack, isPopupOn } = useSelector(
     ({ proposalPage }) => proposalPage,
   );
 
   const [previousCart] = useState(cart);
+
   // to update self details without opening form
   // const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
 
-  
-
   // useEffect(() => {
-    
+
   //   if (
   //     submit === "SUBMIT" &&
   //     proposalData["Insured Details"] &&
   //     proposalData["Insured Details"].self
   //   ) {
-      
+
   //     dispatch(getProposalData(() => {
   //       const hasAnyChangeInObj = (newVal,oldVal) => {
   //         let newValKeys = Object.keys(newVal);
   //         let oldValKeys = Object.keys(oldVal);
-  //         // if(newValKeys.length !== oldValKeys.length) return true  
+  //         // if(newValKeys.length !== oldValKeys.length) return true
   //         console.log("wfgbkjwb",newVal,oldVal,newValKeys.some(newValKey => newVal[newValKey]!==oldVal[newValKey]))
-      
+
   //         return newValKeys.some(newValKey => newVal[newValKey]!==oldVal[newValKey])
   //       }
   //       let tempObj = {...proposalData["Insured Details"].self};
@@ -77,9 +77,9 @@ const useProposalSections = (
   //         if(proposalData["Proposer Details"][key]) tempObj[key] = proposalData["Proposer Details"][key]
   //       });
   //       console.log("fhfsjsfssf", tempObj,keysOfInsuredSelf,proposalData["Insured Details"].self,proposalData["Proposer Details"]);
-  
+
   //       if(hasAnyChangeInObj(tempObj,proposalData["Insured Details"].self)){
-  
+
   //         dispatch(
   //           saveProposalData({ "Insured Details": {...proposalData["Insured Details"],self:tempObj} }, () =>
   //             dispatch(setActiveIndex(false)),
@@ -88,11 +88,27 @@ const useProposalSections = (
   //         console.log("vbksdvbkjd",tempObj,proposalData)
   //       }
   //     }));
-     
 
   //   }
   // }, [submit]);
+  const [canProceed, setCanProceed] = useState(false);
+  const { isFetching } = useGetCartQuery();
+  const skipRef = useRef();
+  const shouldCheckAgain = useRef();
+  useEffect(() => {
+    if (!isFetching && canProceed && !isPopupOn && !loadingStack.length) {
+      setCanProceed(false);
+      shouldCheckAgain.current = true;
+      dispatch(setActiveIndex(false));
+    }
+  }, [isFetching, canProceed, loadingStack, isPopupOn]);
 
+  useEffect(() => {
+    if (!isPopupOn && skipRef.current && shouldCheckAgain.current) {
+      setCanProceed(true);
+    }
+    skipRef.current = true;
+  }, [isPopupOn]);
   useEffect(() => {
     if (typeof isValid === "object") {
       if (
@@ -108,7 +124,11 @@ const useProposalSections = (
         saveProposalData({ [name]: values }, () => {
           name === "Proposer Details" &&
             window.scrollTo({ top: 0, behavior: "smooth" }); //? scrolls to the top
-          dispatch(setActiveIndex(false));
+          // revisedPremiumPopupUtilityObject.getUpdatedCart(() =>
+          //       dispatch(setActiveIndex(false)),
+          //     );
+          // dispatch(setActiveIndex(false));
+          setCanProceed(true);
         }),
       );
 
@@ -148,16 +168,7 @@ const useProposalSections = (
                 );
               } else {
                 dispatch(setFailedBmiData(false));
-                revisedPremiumPopupUtilityObject.getUpdatedCart(() =>
-                  dispatch(setActiveIndex(false)),
-                );
-                /* dispatch(
-                  getCart(true, () => {
-                    // setActive(prev => prev + 1);
-                    revisedPremiumPopup.on();
-                    
-                  }),
-                ); */
+                revisedPremiumPopupUtilityObject.getUpdatedCart(() => dispatch(setActiveIndex(false)));
               }
             } else if (
               name === "Medical Details" &&

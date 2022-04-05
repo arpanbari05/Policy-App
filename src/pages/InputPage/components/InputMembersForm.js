@@ -21,12 +21,12 @@ import { EditMembersModal } from "../../quotePage/components/filters/EditMemberF
 import { Button } from "../../../components";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setShowEditMembers } from "../../../pages/quotePage/quote.slice";
 
-function InputMembersForm(props) {
+function InputMembersForm({ posContent, ...props }) {
   const [serverError, setServerError] = useState("");
   const { colors } = useTheme();
-
-  const editMembersToggle = useToggle(false);
 
   const { journeyType } = useFrontendBoot();
 
@@ -64,6 +64,8 @@ function InputMembersForm(props) {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
   const history = useHistory();
+
+  const dispatch = useDispatch();
 
   const handleSubmit = () => {
     const isValid = validate();
@@ -117,7 +119,14 @@ function InputMembersForm(props) {
   return (
     <div className="py-3" {...props}>
       <div className="px-3">
-        <Title className="w-100">Who all would you like to insure?</Title>
+        <Title
+          className="w-100"
+          dangerouslySetInnerHTML={{
+            __html: posContent.question
+              ? posContent.question
+              : "Who all would you like to insure?",
+          }}
+        ></Title>
         <CustomProgressBar now={2} total={4} />
       </div>
       <div className="px-3">
@@ -158,22 +167,24 @@ function InputMembersForm(props) {
               margin-top: 10px;
             }
           `}
-          onClick={editMembersToggle.on}
+          onClick={() => {
+            dispatch(setShowEditMembers(true));
+          }}
           {...props}
         >
           <RiAddCircleFill size={25} color={colors.primary_color} /> Other
           Members
         </button>
-        {editMembersToggle.isOn ? (
-          <EditMembers
-            onClose={editMembersToggle.off}
-            onSubmit={updateMembersList}
-            initialMembersList={membersList}
-            serverError={serverError}
-            gender={data?.data?.input?.gender}
-            setServerError={setServerError}
-          />
-        ) : null}
+        <EditMembers
+          onSubmit={membersList => {
+            dispatch(setShowEditMembers(false));
+            updateMembersList(membersList);
+          }}
+          initialMembersList={membersList}
+          serverError={serverError}
+          gender={data?.data?.input?.gender}
+          setServerError={setServerError}
+        />
       </div>
       <InputFormCta
         disabled={!noOfSelectedMembers || isError || error}

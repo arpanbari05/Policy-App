@@ -112,14 +112,15 @@ export default QuotesPage;
 function ShowingPlanType() {
   const dispatch = useDispatch();
   const { colors } = useTheme();
-  const { journeyType } = useFrontendBoot();
   const { shareType } = useSelector(state => state.quotePage);
-  const { data } = useGetEnquiriesQuery();
-  const { groupCode } = useParams();
   const { data: unmergedQuotes } = useGetQuotes();
   const mergedQuotes = unmergedQuotes
     ?.map(quote => mergeQuotes(quote.data.data))
     ?.flat();
+
+  const displayPlansLength = unmergedQuotes?.filter(
+    quoteData => quoteData.data.data.length !== 0,
+  ).length;
 
   useEffect(() => {
     if (shareType.value === "quotation_list") {
@@ -129,11 +130,11 @@ function ShowingPlanType() {
     }
   }, [shareType]);
 
-  const planTypes = {
-    I: "Individual",
-    F: "Family Floater",
-    M: "Multi Individual",
-  };
+  const { getSelectedFilter } = useFilters();
+
+  const selectedPolicyTypeFilter = getSelectedFilter("plantype");
+
+  const displayPolicyTypeFitler = selectedPolicyTypeFilter.display_name;
 
   return (
     <h1
@@ -145,15 +146,7 @@ function ShowingPlanType() {
         font-weight: 900;
       `}
     >
-      {`Showing ${mergedQuotes?.length} ${
-        journeyType === "top_up"
-          ? "Top Up "
-          : planTypes[
-              data?.data?.groups?.find(
-                singleGroup => singleGroup.id === +groupCode,
-              )?.plan_type
-            ] + " "
-      }plans`}
+      {`Showing ${displayPlansLength} ${displayPolicyTypeFitler} plans`}
     </h1>
   );
 }
@@ -207,6 +200,26 @@ function AssistanceCard(props) {
       <div
         css={`
           margin-bottom: 15px;
+
+          & > p,
+          & > *,
+          & > p > font,
+          & > p > span,
+          & > p > font > span {
+            font-size: 0.89rem !important;
+            color: ${colors.font.one} !important;
+            line-height: 1.5 !important;
+            font-family: inherit !important;
+          }
+
+          & > p:first-child > *,
+          & > p:first-child > font,
+          & > p:first-child > span,
+          & > p:first-child > font > span {
+            font-size: 1rem !important;
+            font-weight: 900 !important;
+            font-family: inherit !important;
+          }
         `}
         dangerouslySetInnerHTML={{ __html: talk_to_us_info }}
       ></div>

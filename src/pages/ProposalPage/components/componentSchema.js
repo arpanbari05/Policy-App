@@ -11,6 +11,7 @@ import CustomCheckBox from "./customCheckBox";
 import RadioButtons from "./RadioButtons";
 import CheckBoxGroup from "./CheckBoxGroup";
 import BtnGroup from "./BtnGroup";
+import TextGroup from "./TextGroup";
 
 export const components = {
   text: TextInput,
@@ -25,5 +26,6 @@ export const components = {
   custom_height: Height,
   date: DateComp,
   checkboxGroup:CheckBoxGroup,
-  btn_group:BtnGroup
+  btn_group:BtnGroup,
+  members_text_group:TextGroup,
 };

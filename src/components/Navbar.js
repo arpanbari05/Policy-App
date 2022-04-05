@@ -14,6 +14,7 @@ import { useShareFunctionality } from "../customHooks";
 import { images } from "../assets/logos/logo";
 import EditPincode from "./EditPincode";
 import useUrlQuery, { useUrlQueries } from "../customHooks/useUrlQuery";
+import { isThemeApp } from "../utils/helper";
 
 function LogoLink() {
   const {
@@ -132,13 +133,13 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
                   stage="PROPOSAL_SUMMARY"
                 />
               )} */}
-              {location.pathname === `/compare/${groupCode}` && (
+              {/* {location.pathname === `/compare/${groupCode}` && (
                 <ShareQuoteModal
                   imageSend={imageSend}
                   emailStatus={emailStatus}
                   stage={"COMPARE"}
                 />
-              )}
+              )} */}
 
               <div
                 css={`
@@ -152,21 +153,23 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
             </div>
           )}
 
-          <span
-            onClick={() => {
-              process.env.REACT_APP_PHASE === "DEV" && setShow(true);
-            }}
-            css={`
-              position: absolute;
-              right: 14px;
-              bottom: 2px;
-              font-size: 12px;
-              opacity: 0.1;
-              cursor: pointer;
-            `}
-          >
-            Theme
-          </span>
+          {isThemeApp() && (
+            <span
+              onClick={() => {
+                setShow(true);
+              }}
+              css={`
+                position: absolute;
+                right: 14px;
+                bottom: 2px;
+                font-size: 12px;
+                opacity: 0.1;
+                cursor: pointer;
+              `}
+            >
+              Theme
+            </span>
+          )}
         </div>
       </Card>
       <ThemeModal show={show} setShow={setShow} />
@@ -252,8 +255,6 @@ export function Members() {
   const urlQueryStrings = new URLSearchParams(window.location.search);
   const city = urlQueryStrings.get("city");
   const pincode = urlQueryStrings.get("pincode");
-
-  console.log(useUrlQuery());
 
   const { colors } = useTheme();
 

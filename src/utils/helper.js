@@ -535,8 +535,9 @@ export function getDisplayPremium({ total_premium, tenure }) {
   }`;
 }
 
-export function mergeQuotes(quotes, { sortBy = "relevance" } = {}) {
+export function mergeQuotes(quotes = [], { sortBy = "relevance" } = {}) {
   const mergedQuotes = {};
+  console.log(quotes);
 
   for (let quote of quotes) {
     const {
@@ -737,3 +738,66 @@ export function months2years(months) {
   var dur1 = parseInt(months) / 12;
   return dur1.toFixed(2);
 }
+
+// disclaimer text
+export function renderDisclaimer({ tenantName, settings }) {
+  console.log(settings);
+  if (localStorage.SSO_user) {
+    if (
+      settings?.disclaimer_pos &&
+      settings?.disclaimer_pos !== "" &&
+      settings?.disclaimer_pos !== "<p><br></p>"
+    ) {
+      return settings.disclaimer_pos;
+    } else {
+      return `By clicking on Get Started, I hereby authorise ${tenantName}. and all of
+      its affiliates, subsidiaries, group companies and related parties to
+      access the details such as my name, address, telephone number, e-mail
+      address, birth date and / or anniversary date shared by me, and contact
+      me to provide information on the various products and services offered.
+      I understand that this consent will override my NDNC registration, if
+      any. I also understand that at any point of time, I wish to stop
+      receiving such communications from ${tenantName}, I can withdraw such
+      consent anytime on "("to provide a contact number or email id or both")"`;
+    }
+  } else {
+    if (
+      settings?.disclaimer &&
+      settings?.disclaimer !== "" &&
+      settings?.disclaimer !== "<p><br></p>"
+    ) {
+      return settings.disclaimer;
+    } else {
+      return `By clicking on Get Started, I hereby authorise ${tenantName}. and all of
+        its affiliates, subsidiaries, group companies and related parties to
+        access the details such as my name, address, telephone number, e-mail
+        address, birth date and / or anniversary date shared by me, and contact
+        me to provide information on the various products and services offered.
+        I understand that this consent will override my NDNC registration, if
+        any. I also understand that at any point of time, I wish to stop
+        receiving such communications from ${tenantName}, I can withdraw such
+        consent anytime on "("to provide a contact number or email id or both")"`;
+    }
+  }
+}
+
+export function isThemeApp() {
+  const domain = window.location.host;
+  if (
+    domain.includes("localhost:") ||
+    domain === "renewbuy-health.fynity.in" ||
+    domain === "topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in" ||
+    domain === "uat-health.pincinsurance.com"
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export const isSSOJourney = () => {
+  return localStorage.SSO_user ? true : false;
+};
+
+export const isRelianceInfinityPlan = cartEntry =>
+  cartEntry?.product?.name === "Health Infinity Individual";

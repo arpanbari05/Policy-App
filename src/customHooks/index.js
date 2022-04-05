@@ -38,6 +38,7 @@ import {
   getQuoteKey,
   getRiderCartData,
   getTotalPremium,
+  isRelianceInfinityPlan,
   isRiderPresent,
   isTopUpQuote,
   matchQuotes,
@@ -58,6 +59,7 @@ import {
 } from "../pages/ComparePage/compare.slice";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { setIsPopupOn } from "../pages/ProposalPage/ProposalSections/ProposalSections.slice";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -274,21 +276,20 @@ export function useFilter() {
 
 export function useMembers() {
   const dispatch = useDispatch();
-  // const { groups: reduxGroup } = useSelector(
-  //   ({ greetingPage }) => greetingPage,
-  // );
 
   const reduxGroup =
     localStorage.getItem("groups") &&
     JSON.parse(localStorage.getItem("groups"));
+
   let {
     data: { members },
   } = useFrontendBoot();
 
   const { data } = useGetEnquiriesQuery();
 
-  const { selectedGroup } = useSelector(state => state.quotePage);
+  const genderOfSelf = data?.data?.input?.gender;
 
+  const { selectedGroup } = useSelector(state => state.quotePage);
   useEffect(() => {
     dispatch(refreshUserData(data?.data));
   }, []);
@@ -329,14 +330,18 @@ export function useMembers() {
           ...group,
           city: group?.city || reduxGroupMatch?.city,
           pincode: group?.pincode || reduxGroupMatch?.pincode,
+          extras: {
+            ...group?.extras,
+            ...reduxGroupMatch?.extras,
+          },
         };
       });
 
       groups = updatedGroup;
       localStorage.setItem("groups", JSON.stringify(updatedGroup));
     } else {
-      groups = data.data.groups;
-      localStorage.setItem("groups", JSON.stringify(data.data.groups));
+      groups = data?.data?.groups;
+      localStorage.setItem("groups", JSON.stringify(data?.data?.groups));
     }
   }
 
@@ -510,6 +515,7 @@ export function useMembers() {
     getFirstGroupLocation,
     getNextGroup,
     getPreviousGroup,
+    genderOfSelf,
     getLastGroup,
     getMembersText,
     checkGroupExist,
@@ -770,6 +776,9 @@ export function useRider(groupCode) {
 
     const { health_riders, top_up_riders } = cartEntry;
 
+    if (isRelianceInfinityPlan(cartEntry))
+      return health_riders?.length ? health_riders : top_up_riders;
+
     return health_riders?.length
       ? health_riders.filter(rider => rider.total_premium > 0)
       : top_up_riders.filter(rider => rider.total_premium > 0);
@@ -938,10 +947,18 @@ export function useUrlEnquiry() {
 
   const { groups } = useMembers();
 
-  const currentGroup = groups.find(group => group.id === +groupCode);
-
   function getUrlWithEnquirySearch(path = "") {
-    return `${path}?enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`;
+    const currentGroup =
+      localStorage.getItem("groups") &&
+      JSON.parse(localStorage.getItem("groups")).find(
+        group => group.id === groupCode,
+      );
+    const locationQuery =
+      currentGroup?.pincode && currentGroup?.city
+        ? `&pincode=${currentGroup.pincode}&city=${currentGroup?.city}`
+        : "";
+
+    return `${path}?enquiryId=${enquiryId}${locationQuery}`;
   }
 
   return { enquiryId, getUrlWithEnquirySearch };
@@ -965,7 +982,7 @@ export function useGetQuotes(queryConfig = {}) {
     },
   });
 
-  let { data, ...getCustomQuotesQuery } = useGetCustomQuotesQuery(
+  let { data, refetch, ...getCustomQuotesQuery } = useGetCustomQuotesQuery(
     {
       insurers: insurersToFetch,
       deductible: getSelectedFilter("deductible").code,
@@ -979,7 +996,10 @@ export function useGetQuotes(queryConfig = {}) {
     queryConfig,
   );
 
-  const isLoading = data?.length < insurersToFetch.length - 2;
+  const isLoading =
+    insurersToFetch?.length <= 2
+      ? data?.length < insurersToFetch?.length
+      : data?.length < insurersToFetch?.length - 2;
 
   const quotesWithoutMoreFilters = data;
 
@@ -988,6 +1008,7 @@ export function useGetQuotes(queryConfig = {}) {
     data = data.map(insurerQuotes => {
       return {
         ...insurerQuotes.data,
+        company_alias: insurerQuotes?.company_alias,
         data: { ...insurerQuotes, data: filterQuotes(insurerQuotes.data.data) },
       };
     });
@@ -996,14 +1017,14 @@ export function useGetQuotes(queryConfig = {}) {
   // const isLoading = data?.length < insurersToFetch.length;
 
   const loadingPercentage =
-    !data || data.length === 0
+    !data || data?.length === 0
       ? 6
-      : (data.length / (insurersToFetch.length - 1)) * 100;
+      : (data?.length / (insurersToFetch?.length - 1)) * 100;
 
   const isNoQuotes =
     data &&
     !isLoading &&
-    data.every(insurerQuotes => insurerQuotes.data.data.length === 0);
+    data.every(insurerQuotes => insurerQuotes?.data?.data?.length === 0);
 
   return {
     ...getCustomQuotesQuery,
@@ -1012,6 +1033,7 @@ export function useGetQuotes(queryConfig = {}) {
     loadingPercentage,
     isNoQuotes,
     quotesWithoutMoreFilters,
+    refetch,
   };
 }
 
@@ -1560,9 +1582,7 @@ export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
     productId: quote?.product.id,
     group: parseInt(groupCode),
     journeyType,
-    additionalUrlQueries:
-      queryOptions?.getRidersQueryParams?.additionalUrlQueries,
-    selected_riders: queryOptions?.getRidersQueryParams?.selected_riders,
+
     ...queryOptions,
   };
 
@@ -1574,7 +1594,7 @@ export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
 }
 
 function isAffectsOtherRiders(rider) {
-  return !!rider.affects_other_riders;
+  return rider?.affects_other_riders;
 }
 
 function isMandatoryRider(rider) {
@@ -1645,10 +1665,14 @@ export function useRiders({
   const findLocalRider = riderToFind =>
     riders.find(rider => rider?.id === riderToFind?.id);
 
+  const additionalUrlQueries = getRiderOptionsQueryString(riders);
+
   const isRiderSelected = riderToCheck => {
-    if (riderToCheck.is_mandatory) return true;
+    if (riderToCheck?.is_mandatory) return true;
+
     const localRider = findLocalRider(riderToCheck);
-    return localRider && localRider.isSelected;
+
+    return localRider && localRider?.isSelected;
   };
 
   const affectsOtherRiders = riders
@@ -1656,15 +1680,15 @@ export function useRiders({
     .filter(isAffectsOtherRiders)
     .map(rider => rider.alias);
 
-  const getRidersQueryParams = {
-    additionalUrlQueries: getRiderOptionsQueryString(riders),
-  };
+  /*if (affectsOtherRiders.length)
+    getRidersQueryParams.selected_riders = affectsOtherRiders; */
 
-  if (affectsOtherRiders.length)
-    getRidersQueryParams.selected_riders = affectsOtherRiders;
+  let selected_riders = [];
 
-  const selected_riders = getSelectedRiders(riders).map(rider => rider.alias);
+  if (affectsOtherRiders.length) selected_riders = affectsOtherRiders;
+
   let optionsSelected = {};
+
   riders.forEach(rider => {
     if (rider.options_selected) {
       optionsSelected = {
@@ -1673,35 +1697,45 @@ export function useRiders({
       };
     }
   });
+
   const options_query = Object.keys(optionsSelected)
     .map(opt => `${opt}=${optionsSelected[opt]}`)
     .join("&");
+
   const query = useGetRiders(quote, groupCode, {
     queryOptions: {
-      getRidersQueryParams,
+      additionalUrlQueries,
       feature_options,
       selected_riders,
       options_query,
     },
   });
 
+  //? RELIANCE FUNCTIONALITY
+  const reliance_general_feature_option_value =
+    quote?.product?.company?.alias === "reliance_general" &&
+    feature_options[Object.keys(feature_options)[0]]; //? free rider name to be selected by default
+
   const { data } = query;
 
   useEffect(() => {
     if (data) {
       const { data: ridersData } = data;
+
       setRiders(riders => {
         return ridersData.map(rider => {
           const localRider = riders.find(
             localRider => localRider.id === rider.id,
           );
+
           return {
             ...rider,
             isSelected:
-              rider.is_mandatory || (localRider && localRider.isSelected),
-            options_selected: localRider
-              ? localRider.options_selected
-              : rider.options_selected,
+              rider.is_mandatory ||
+              (localRider && localRider.isSelected) ||
+              reliance_general_feature_option_value ===
+                rider?.name?.toLowerCase()?.split(" ")?.join("_"),
+            options_selected: rider?.options_selected,
           };
         });
       });
@@ -1882,7 +1916,12 @@ export const useRevisedPremiumModal = () => {
     );
     next();
   }; /* Performs refetch from the server */
-
+  // console.log(
+  //   "wrgfbkjwrf",
+  //   revisedPremiumPopupToggle,
+  //   updatedTotalPremium,
+  //   prevTotalPremium,
+  // );
   useEffect(() => {
     if (+prevTotalPremium === +updatedTotalPremium) {
       revisedPremiumPopupToggle.off();
@@ -1891,6 +1930,7 @@ export const useRevisedPremiumModal = () => {
     // if (+prevTotalPremium !== +updatedTotalPremium) {
     if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
       revisedPremiumPopupToggle.on();
+      dispatch(setIsPopupOn(true));
     }
   }, [
     prevTotalPremium,

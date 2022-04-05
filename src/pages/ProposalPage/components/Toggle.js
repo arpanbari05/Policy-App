@@ -6,6 +6,7 @@ import {
   setShowNSTP,
   setShowPlanNotAvail,
 } from "../ProposalSections/ProposalSections.slice";
+import { useMembers } from "../../../customHooks";
 import { noForAllCheckedFalse } from "../ProposalSections/ProposalSections.slice";
 import { useTheme } from "../../../customHooks";
 const Toggle = ({
@@ -19,16 +20,24 @@ const Toggle = ({
   notAllowed,
   values,
   showMembers,
-  customMembers,
+  customMembers = [],
   showMembersIf,
   notAllowedIf,
+  disable_Toggle = false,
+  restrictMaleMembers = false,
 }) => {
+  console.log("Svsjbv", disable_Toggle);
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
-
+  const { getSelectedMembers, getMember, getAllMembers, genderOfSelf } =
+    useMembers();
   const [customShowMembers, setCustomshowMembers] = useState(false);
+  console.log("wgkwrjsd",customMembers,members)
+  const [membersToMap, setMembersToMap] = useState(
+    customMembers instanceof Array && customMembers.length ? customMembers : members,
+  );
 
   useEffect(() => {
     if (showMembersIf) {
@@ -40,12 +49,10 @@ const Toggle = ({
     }
   }, [values]);
 
-  const membersToMap = customMembers instanceof Array ? customMembers : members;
-
-  const [boolean, setBoolean] = useState("");
+  const [boolean, setBoolean] = useState(disable_Toggle?"Y":"");
 
   const [membersStatus, setMembersStatus] = useState({});
-
+  console.log("Wvkwbf", disable_Toggle, membersStatus);
   const { mediUnderwritting } = useSelector(
     state => state.proposalPage.proposalData,
   );
@@ -53,21 +60,37 @@ const Toggle = ({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (value && notAllowed && value[`is${name}`] === "Y") {
+    const allMaleMembers = ["son", "grand_father", "father", "father_in_law"];
+    if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
     } else if (value instanceof Object && Object.keys(value).length) {
       setBoolean(value[`is${name}`]);
       setMembersStatus(value.members);
     }
+
+    if (restrictMaleMembers) {
+      if (genderOfSelf === "M"){
+        setMembersToMap(membersToMap.filter(member => member !== "self"));
+      }else{
+        setMembersToMap(membersToMap.filter(member => member !== "spouse"));
+      }
+
+      setMembersToMap(prev => prev.filter(el => !allMaleMembers.includes(el)));
+
+      console.log("evekfnmv", membersToMap, getAllMembers());
+    }
+    if(disable_Toggle){
+      setMembersStatus(membersToMap.reduce((acc,member) => ({...acc,[member]:true}),{}))
+    }
   }, [value]);
 
   useEffect(() => {
-    if (!value) {
+    if (!value && !disable_Toggle) {
       setBoolean("");
       setMembersStatus({});
     }
-    if (value && notAllowed && value[`is${name}`] === "Y") {
+    if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
     }
@@ -80,9 +103,10 @@ const Toggle = ({
     let isValid = true;
 
     if (
-      boolean === "Y" &&
-      (showMembers !== false || customShowMembers) &&
-      !Object.values(membersStatus).includes(true)
+      (boolean === "Y" &&
+        (showMembers !== false || customShowMembers) &&
+        !Object.values(membersStatus).includes(true)) ||
+      !boolean 
     ) {
       isValid = false;
     }
@@ -95,8 +119,7 @@ const Toggle = ({
     });
   }, [boolean, membersStatus, customShowMembers]);
 
-console.log("sgjsg",value,label,boolean)
-
+  console.log("sgjsgsrgr", {value, label, boolean,membersToMap,showMembers, customShowMembers, membersStatus,restrictMaleMembers,customMembers, members});
 
   return (
     <>
@@ -105,7 +128,7 @@ console.log("sgjsg",value,label,boolean)
           <div className="row">
             <div className="col-lg-8 col-md-12">
               <Question
-              id={name}
+                id={name}
                 className="mb-10 p_propsal_form_r_q_m toggle_question"
                 SecondaryColor={SecondaryColor}
               >
@@ -113,7 +136,7 @@ console.log("sgjsg",value,label,boolean)
               </Question>
             </div>
             <div
-              className="col-lg-4 col-md-12 middle no-padding mobile-left"
+              className="col-lg-4 col-md-12 middle no-padding mobile-left "
               css={`
                 & input[type="radio"]:checked + .box {
                   background-color: ${PrimaryColor};
@@ -121,7 +144,7 @@ console.log("sgjsg",value,label,boolean)
                 & .box {
                   background-color: ${PrimaryShade};
                 }
-
+                display: ${disable_Toggle ? "none" : "block"};
                 text-align: end !important;
                 @media (max-width: 767px) {
                   text-align: start !important;
@@ -164,12 +187,12 @@ console.log("sgjsg",value,label,boolean)
                   name={`is${name}`}
                   value="N"
                   onChange={e => {
-                    if(notAllowedIf === "N") dispatch(setShowPlanNotAvail(true)); 
+                    if (notAllowedIf === "N")
+                      dispatch(setShowPlanNotAvail(true));
                     else {
                       setBoolean(e.target.value);
                       !showMembersIf && setMembersStatus({});
                     }
-                    
                   }}
                   checked={boolean === "N"}
                 />
@@ -188,7 +211,7 @@ console.log("sgjsg",value,label,boolean)
             </div>
           </div>
         </div>
-        {membersToMap.length && showMembers !== false ? (
+        {membersToMap.length && showMembers !== false && !disable_Toggle ? (
           (customShowMembers || boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (
@@ -218,7 +241,7 @@ console.log("sgjsg",value,label,boolean)
                   </Fragment>
                 </>
               ))}
-              
+
               {!Object.keys(membersStatus).some(i => membersStatus[i]) && (
                 <p
                   className="formbuilder__error position-absolute"

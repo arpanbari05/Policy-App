@@ -55,8 +55,6 @@ const ProposerDetails = ({
         members?.filter(i => i.type === "self")[0]?.age,
       );
       let currentYear = new Date().getFullYear();
-      let currentMonth = new Date().getMonth();
-      let currentDate = new Date().getDate();
 
       let estimatedProposerDOB = `${currentYear - proposerAge}`;
       let prefilledValues = {
@@ -65,9 +63,6 @@ const ProposerDetails = ({
         mobile,
         email,
         dob: proposelSelectedDOBRedux || estimatedProposerDOB,
-        // pincode: proposerDetails.pincode.includes("-")
-        //   ? proposerDetails.pincode.split("-")[1]
-        //   : proposerDetails.pincode,
       };
       schema.forEach(item => {
         if (item.value)

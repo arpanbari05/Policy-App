@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CustomProgressBar from "../../../components/ProgressBar";
 import { Title, ErrorMessage } from "./FormComponents";
 import { boy, girl } from "../../../assets/images";
@@ -18,13 +18,16 @@ import { useHistory } from "react-router-dom";
 import { useGetEnquiriesQuery } from "../../../api/api";
 import { capitalize } from "../../../utils/helper";
 import * as mq from "../../../utils/mediaQueries";
-import validateInput from "../../../utils/inputPageUtils";
+import validateInput, {
+  isEnquiryOptional,
+  settings,
+} from "../../../utils/inputPageUtils";
 import styled from "styled-components";
 
-const BasicDetailsForm = ({ ...props }) => {
+const BasicDetailsForm = ({ posContent, ...props }) => {
   const { colors } = useTheme();
   const {
-    data: { tenant },
+    data: { tenant, settings },
   } = useFrontendBoot();
 
   let inputData = {};
@@ -53,28 +56,18 @@ const BasicDetailsForm = ({ ...props }) => {
 
   const history = useHistory();
 
-  useEffect(() => {
-    const validation = validateInput(
-      fullNameInput,
-      emailInput,
-      mobileInput,
-      setFullNameErrors,
-      setEmailErrors,
-      setMobileErrors,
-    );
-    setShouldProceed(validation);
-  }, [fullNameInput.value, emailInput.value, mobileInput.value]);
-
   const handleFormSubmit = async event => {
     event.preventDefault();
-    const validation = validateInput(
+    const validation = validateInput({
+      settings,
       fullNameInput,
       emailInput,
       mobileInput,
       setFullNameErrors,
       setEmailErrors,
       setMobileErrors,
-    );
+    });
+
     const currentGroup =
       localStorage.getItem("groups") &&
       JSON.parse(localStorage.getItem("groups")).find(group => group.id);
@@ -109,7 +102,7 @@ const BasicDetailsForm = ({ ...props }) => {
 
   return (
     <div {...props}>
-      <form noValidate onSubmit={handleFormSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <div
           css={`
             padding: 17px;
@@ -120,7 +113,13 @@ const BasicDetailsForm = ({ ...props }) => {
         >
           {tenant.alias === "fyntune" ? (
             <FlexSectionStyled>
-              <Title>Tell Us about yourself?</Title>
+              <Title
+                dangerouslySetInnerHTML={{
+                  __html: posContent.question
+                    ? posContent.question
+                    : "Tell Us about yourself?",
+                }}
+              ></Title>
               <LinkButton
                 onClick={() => {
                   history.push({
@@ -132,7 +131,13 @@ const BasicDetailsForm = ({ ...props }) => {
               </LinkButton>
             </FlexSectionStyled>
           ) : (
-            <Title>Tell Us about yourself?</Title>
+            <Title
+              dangerouslySetInnerHTML={{
+                __html: posContent.question
+                  ? posContent.question
+                  : "Tell Us about yourself?",
+              }}
+            ></Title>
           )}
           <CustomProgressBar now={1} total={5} />
           <div
@@ -220,6 +225,7 @@ const BasicDetailsForm = ({ ...props }) => {
             >
               <div
                 css={`
+                  height: 100%;
                   @media (max-width: 770px) {
                     width: 100%;
                   }
@@ -238,6 +244,7 @@ const BasicDetailsForm = ({ ...props }) => {
 
               <div
                 css={`
+                  height: 100%;
                   @media (max-width: 770px) {
                     width: 100%;
                   }
@@ -300,7 +307,12 @@ const BasicDetailsForm = ({ ...props }) => {
         <Button
           type="submit"
           className="w-100"
-          disabled={createEnquiryQuery.isLoading || !shouldProceed || !gender}
+          disabled={
+            createEnquiryQuery.isLoading ||
+            isEnquiryOptional("gender", settings)
+              ? null
+              : !gender
+          }
           loader={createEnquiryQuery.isLoading}
           css={`
             height: 58px;

@@ -33,6 +33,8 @@ import { premiumWithAddons } from "../../../../src/utils/helper";
 import { skipToken } from "@reduxjs/toolkit/query";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import { useRider } from "../../../customHooks/index";
+import { Button } from "../../../components";
+import { useEffect } from "react";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -764,6 +766,8 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
     colors: { primary_color: PrimaryColor },
   } = useTheme();
 
+  const history = useHistory();
+
   const {
     data: {
       data: { name },
@@ -789,6 +793,16 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
 
   const allAddons = cart?.map(singleCartEntry => singleCartEntry.addons).flat();
 
+  const getCartEntry = groupId => {
+    if (data?.data) {
+      return data?.data?.find(cartEntry => cartEntry?.group?.id === groupId);
+    }
+  };
+
+  const disableButton = groups
+    ?.map(group => getCartEntry(group?.id))
+    ?.includes(undefined);
+
   if (isLoading || isUninitialized || isFetching)
     return (
       <PopUpWithCloseButton
@@ -812,11 +826,6 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
         <CardSkeletonLoader />
       </PopUpWithCloseButton>
     );
-  const getCartEntry = groupId => {
-    if (data.data) {
-      return data.data.find(cartEntry => cartEntry.group.id === groupId);
-    }
-  };
 
   const handleCloseClick = PrimaryColor => {
     onClose();
@@ -915,7 +924,16 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
               </div>
             </div>
           }
-          <Link
+
+          <Button
+            disabled={disableButton}
+            onClick={() => {
+              history.push(propsoalPageLink);
+            }}
+          >
+            Proceed to Proposal
+          </Button>
+          {/* <Link
             to={propsoalPageLink}
             css={`
               ${mobile} {
@@ -943,9 +961,9 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
               `}
             >
               Proceed to Proposal
-              {/* <i className="flaticon-next" /> */}
+             
             </div>
-          </Link>
+          </Link> */}
         </div>
       </div>
       {/* <div
@@ -1046,19 +1064,25 @@ function ProductCard({ groupCode, onClose, cartEntry, group, link }) {
 }
 
 function ProceedWithoutPlan({ group, link, handleClose = () => {} }) {
-  const history = useHistory();
   const {
     colors: { primary_color: PrimaryColor },
   } = useTheme();
+
+  const history = useHistory();
+
   const [groupId, setGroupId] = useState(skipToken);
-  const { isLoading, error, isUninitialized } = useDeleteGroupQuery(groupId);
+
+  const { isLoading, isSuccess } = useDeleteGroupQuery(groupId);
+
   const handleContinue = () => {
     setGroupId(group.id);
   };
 
-  if (!error && !isLoading && !isUninitialized) {
-    history.push(link);
-  }
+  useEffect(() => {
+    if (isSuccess) {
+      history.push(link);
+    }
+  }, [isSuccess]);
 
   return (
     <div className="d-flex align-items-center justify-content-between mb-3 mx-1">

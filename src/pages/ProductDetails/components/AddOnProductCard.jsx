@@ -44,8 +44,6 @@ function ProductCard() {
     tenure,
   } = cartEntry;
 
-  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
-
   if (!cartEntry) return <p>Empty Cart</p>;
 
   const sumInsured = amount(sum_insured);

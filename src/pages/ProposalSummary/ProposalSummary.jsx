@@ -44,7 +44,9 @@ import { useGetProposalDataQuery } from "../../api/api";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import GoBackButton from "../../components/GoBackButton";
 import { mobile } from "../../utils/mediaQueries";
-import { amount, getTotalPremium } from "../../utils/helper";
+import { amount, getTotalPremium, isSSOJourney } from "../../utils/helper";
+import Card from "../../components/Card";
+import { FaPen } from "react-icons/fa";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
@@ -80,6 +82,12 @@ const ProposalSummary = () => {
   const frontendBoot = useFrontendBoot();
 
   const frontendData = { data: frontendBoot.data };
+
+  
+
+  const tCSectionData = isSSOJourney()
+    ? frontendData?.data?.settings?.summary_banner_pos
+    : frontendData?.data?.settings?.summary_banner;
 
   const [allFields, setAllFields] = useState([]);
 
@@ -118,6 +126,8 @@ const ProposalSummary = () => {
 
   const [checked, setChecked] = useState(false);
 
+  const [allTcChecked, setAllTcChecked] = useState(true);
+
   const onClick = mobile => {
     if (
       frontendData?.data?.settings?.journey_type === "single" &&
@@ -144,7 +154,7 @@ const ProposalSummary = () => {
   };
 
   const singlePay = id => {
-    if (checked) {
+    if (checked && allTcChecked) {
       const form = document.createElement("form");
       form.method = "POST";
       form.action = process.env.REACT_APP_API_BASE_URL + "payments";
@@ -193,8 +203,10 @@ const ProposalSummary = () => {
               value={checked}
               extraPadding
               onChange={() => setChecked(!checked)}
-            />{" "}
-            <span className="Iaccept">I Accept the&nbsp;</span>
+            />
+            <span className="Iaccept">
+              {"I have read & accepted the Insurance Company's"}&nbsp;
+            </span>
             <span
               className="TermsAndConditions"
               css={`
@@ -204,7 +216,7 @@ const ProposalSummary = () => {
               onClick={() => setTermShow(true)}
             >
               {" "}
-              Terms &amp; Conditions{" "}
+              {"Terms & Conditions"}{" "}
             </span>
             {termShow && (
               <TermModal
@@ -234,12 +246,24 @@ const ProposalSummary = () => {
                             <ItemName>{item?.product?.name}</ItemName>
                             <PayButton
                               PrimaryColor={PrimaryColor}
-                              style={{ cursor: "pointer" }}
+                              style={{
+                                cursor: "pointer",
+                                backgroundColor:
+                                  item.payment_status === "success"
+                                    ? "#ffbf66"
+                                    : PrimaryColor,
+                              }}
                               onClick={() => {
-                                singlePay(item?.proposal_id);
+                                item.payment_status !== "success" &&
+                                  singlePay(item.proposal_id);
                               }}
                             >
-                              <span>Pay Now </span>
+                              <span>
+                                {" "}
+                                {item.payment_status === "success"
+                                  ? "Paid!"
+                                  : "Pay Now"}
+                              </span>
 
                               <div>
                                 ₹{" "}
@@ -257,7 +281,7 @@ const ProposalSummary = () => {
                   css={`
                     background: ${PrimaryColor} !important;
                   `}
-                  disabled={!checked && true}
+                  disabled={!(checked && allTcChecked)}
                   className="btn btn_p_s_pay_now"
                   style={{
                     fontSize: "16px",
@@ -270,7 +294,7 @@ const ProposalSummary = () => {
               </div>
               <div class="col-md-8">
                 <div
-                  disabled={!checked && true}
+                  disabled={!(checked && allTcChecked)}
                   css={`
                     color: #fff;
                     display: flex;
@@ -281,12 +305,7 @@ const ProposalSummary = () => {
                   <span>Total Premium</span>
                   <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
                     <span class="font_weight_normal text-white">
-                      {amount(
-                        policyStatus.reduce(
-                          (acc, el) => (acc += el.total_premium),
-                          0,
-                        ),
-                      )}
+                      {amount(totalPremium)}
                     </span>
                   </p>
                 </div>
@@ -324,86 +343,6 @@ const ProposalSummary = () => {
             }
           `}
         >
-          {/* <div
-            style={{ display: "flex", justifyContent: "space-between" }}
-            css={`
-              @media (max-width: 768px) {
-                display: none !important;
-              }
-            `}
-          >
-            <div className="col-lg-2">
-              <p
-                class="go_back_prposal_p summary_proposal_bquoteack"
-                style={{ zIndex: 100 }}
-                onClick={() => history.goBack()}
-              >
-                <i class="icon flaticon-back" style={{ width: "27px" }}></i> Go
-                Back
-              </p>
-              <button
-                className="btn"
-                type="button"
-                onClick={() => {
-                  history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
-                }}
-                css={`
-                  width: max-content;
-                  margin-left: -9px;
-
-                  color: var(--abc-red);
-                  font-size: 17px;
-                  display: flex;
-                  align-items: center;
-                `}
-              >
-                <div
-                  className="d-flex justify-content-center align-items-center"
-                  css={`
-                    background: #f1f4f8;
-                    width: 35px;
-                    margin-right: 20px;
-                    border-radius: 100%;
-                    height: 35px;
-                    color: #707b8b;
-                  `}
-                >
-                  <FaChevronLeft />
-                </div>
-                <span
-                  css={`
-                    color: #3b4c69;
-                    font-weight: 600;
-                  `}
-                >
-                  Go Back
-                </span>
-              </button>
-            </div> 
-
-            <div class="col-lg-10 element-tile-two">
-              <p
-                css={`
-                 
-                  @media (min-width: 1024px) and (max-width: 1200px) {
-                    font-size: 18px;
-                    text-align: center;
-                    position: absolute;
-                    left: 28%;
-                  }
-                  @media (max-width: 1023px) {
-                    display: none;
-                  }
-                `}
-              >
-                {" "}
-                Hi{" "}
-                {proposerDetails?.name && proposerDetails?.name?.split(" ")[0]},
-                please review your proposal details before you proceed
-              </p>
-            </div>
-          </div>*/}
-
           <br className="hide-on-mobile" />
           <Row
             css={`
@@ -431,7 +370,10 @@ const ProposalSummary = () => {
                   justify-content: center;
                 `}
               >
-                <ShareQuoteModal />
+                <ShareQuoteModal
+                  insurersFor={cart.map(cart => cart?.product?.company?.alias)}
+                  stage="PROPOSAL_SUMMARY"
+                />
               </div>
             </div>
             <Col
@@ -481,12 +423,11 @@ const ProposalSummary = () => {
                     <div className="-wrapper pad_proposal_s mt-2">
                       {proposalData.data && allFields ? (
                         allFields.map((item, index) => {
-                          console.log("gbsjd", proposalData.data[item]);
                           return (
                             <SummaryTab
                               PrimaryColor={PrimaryColor}
                               PrimaryShade={PrimaryShade}
-                              key={item}
+                              key={index}
                               title={item}
                               getGroupMembers={getGroupMembers}
                               data={currentSchema[item]}
@@ -498,23 +439,15 @@ const ProposalSummary = () => {
                       ) : (
                         <></>
                       )}
+                      {tCSectionData && (
+                        <TermsAndConditionsSection
+                          setAllTcChecked={setAllTcChecked}
+                          tCSectionData={tCSectionData}
+                        />
+                      )}
                     </div>
                   </div>
-                  {/* <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <ProductSummaryTab cart={cart} />
-              </div> */}
                 </div>
-                {/* <ProposalSummaryTab
-                checked={checked}
-                onChange={() => setChecked(!checked)}
-                setTotalPremium={() => {}}
-                onPayment={onClick}
-              /> */}
               </div>
             </Col>
           </Row>
@@ -581,4 +514,96 @@ const PayButton = styled.div`
   & span {
     display: inline-block;
   }
+`;
+
+const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
+  const { colors } = useTheme();
+
+  const PrimaryColor = colors.primary_color;
+
+  const PrimaryShade = colors.primary_shade;
+
+  const checkBoxContentArray = JSON.parse(tCSectionData?.checkbox);
+
+  const [checkBoxTracker, setCheckBoxTracker] = useState([]);
+
+  useEffect(() => {
+    checkBoxContentArray?.length === checkBoxTracker?.length
+      ? setAllTcChecked(true)
+      : setAllTcChecked(false);
+  }, [checkBoxTracker?.length, checkBoxContentArray?.length]); //? sets setAllTcChecked(false) on initial render of component
+
+  return (
+    <Card>
+      <MainTitle
+        PrimaryColor={PrimaryColor}
+        PrimaryShade={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
+        bg
+      >
+        {"Terms and Conditions"}
+      </MainTitle>
+      <ContentSection>
+        {checkBoxContentArray?.map((item, index) => (
+          <div>
+            <p key={index}>
+              <span
+                css={`
+                  position: relative;
+                  top: -5px;
+                `}
+              >
+                <ProposalCheckBox
+                  title={item}
+                  type={"checkbox"}
+                  value={checkBoxTracker?.includes(item)}
+                  onChange={e => {
+                    e.target.checked &&
+                      setCheckBoxTracker(currentState => [
+                        ...currentState,
+                        item,
+                      ]);
+
+                    !e.target.checked &&
+                      setCheckBoxTracker(currentState =>
+                        currentState?.filter(singleItem => singleItem !== item),
+                      );
+                  }}
+                />
+              </span>
+
+              <span
+                css={`
+                  margin-left: 10px;
+                  & a {
+                    color: ${PrimaryColor};
+                  }
+                `}
+                dangerouslySetInnerHTML={{ __html: item }}
+              ></span>
+            </p>
+          </div>
+        ))}
+      </ContentSection>
+    </Card>
+  );
+};
+
+const MainTitle = styled.h2`
+  margin-left: 3px;
+  margin-bottom: ${props => (props.bg ? "15px" : "10")};
+  margin-top: ${props => (props.bg ? "15px" : "10")};
+  font-weight: 900;
+
+  background: ${props => props.bg && props.PrimaryShade};
+  color: ${props => props.bg && props.PrimaryColor};
+  font-size: 21px;
+  padding: 10px;
+  @media screen and (max-width: 768px) {
+    margin-top: 0px;
+  }
+`;
+
+const ContentSection = styled.div`
+  box-sizing: border-box;
+  padding: 10px 10px;
 `;

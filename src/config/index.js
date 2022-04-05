@@ -46,14 +46,14 @@ const config = {
     { code: "15000-20000", display_name: "\u20b915,000 - \u20b920,000" },
     { code: ">20000", display_name: "> \u20b920,000" },
   ],
-  covers: [
-    { code: "100000-300000", display_name: "Upto 3 Lakhs" },
-    { code: "300000-500000", display_name: "More than 3 to 5 Lakhs" },
-    { code: "500001-1000000", display_name: "More than 5 to 10 Lakhs" },
-    { code: "1000001-1500000", display_name: "More than 10 to 15 Lakhs" },
-    { code: "1500001-2500000", display_name: "More than 15 to 25 Lakhs" },
-    { code: "2500001-100000000", display_name: "More than 25 Lakhs" },
-  ],
+  // covers: [
+  //   { code: "100000-300000", display_name: "Upto 3 Lakhs" },
+  //   { code: "300001-500000", display_name: "More than 3 to 5 Lakhs" },
+  //   { code: "500001-1000000", display_name: "More than 5 to 10 Lakhs" },
+  //   { code: "1000001-1500000", display_name: "More than 10 to 15 Lakhs" },
+  //   { code: "1500001-2500000", display_name: "More than 15 to 25 Lakhs" },
+  //   { code: "2500001-100000000", display_name: "More than 25 Lakhs" },
+  // ],
   morefilters: [
     {
       group_name: "Popular Filters",
@@ -79,7 +79,7 @@ const config = {
           visible_on_sections: ["health", "top_up"],
         },
         {
-          code: "single_private_room",
+          code: "room_rent_charges",
           display_name: "Single Private Room",
           description:
             "Single Private Room means a basic (most economical of all accommodation) category of single room in a Hospital with or without air-conditioning facility where a single patient is accommodated and which has an attached toilet.\n                        ",
@@ -246,7 +246,7 @@ const config = {
     { code: "base_health", display_name: "Base health" },
     { code: "1_crore_plan", display_name: "1 crore plan" },
   ],
-  // defaultfilters: { cover: "300000-500000", tenure: "1", plan_type: "F" },
+  // defaultfilters: { cover: "300001-500000", tenure: "1", plan_type: "F" },
   // settings: {
   //   journey_type: "cross_sell",
   //   mobile: "",

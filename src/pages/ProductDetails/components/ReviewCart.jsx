@@ -60,6 +60,10 @@ import {
 } from "../../../api/api";
 import _ from "lodash";
 import { setShowEditMembers } from "../../quotePage/quote.slice";
+import {
+  setActiveIndex,
+  setIsPopupOn,
+} from "../../ProposalPage/ProposalSections/ProposalSections.slice";
 
 const plantypes = {
   M: "Multi Individual",
@@ -447,8 +451,6 @@ function getCartEntryFromUpdateResult(updateResultData, groupCode) {
 function EditMembersButton({ groupCode, ...props }) {
   const { colors } = useTheme();
 
-  const modalToggle = useToggle(false);
-
   const dispatch = useDispatch();
 
   return (
@@ -463,7 +465,6 @@ function EditMembersButton({ groupCode, ...props }) {
           color: ${colors.primary_color};
           padding: 0;
         `}
-        // onClick={modalToggle.on}
         onClick={() => dispatch(setShowEditMembers(true))}
       >
         <FaPen />
@@ -473,7 +474,7 @@ function EditMembersButton({ groupCode, ...props }) {
   );
 }
 
-function EditMembers({ onClose }) {
+function EditMembers({}) {
   const { colors } = useTheme();
 
   const { groupCode } = useParams();
@@ -486,7 +487,9 @@ function EditMembers({ onClose }) {
 
   //const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
-  const firstName = name.split(" ")[0];
+  const revisedPremiumModalToggle = useToggle(false);
+
+  const firstName = name?.split(" ")[0];
 
   const { getCartEntry } = useCart();
 
@@ -508,7 +511,7 @@ function EditMembers({ onClose }) {
   const handleSubmit = () => {
     const members = getSelectedMembers();
     updateGroupMembers(members).then(res => {
-      if (res.error) return;
+      if (res?.error) return;
       dispatch(
         api.util.invalidateTags([
           "Cart",
@@ -518,11 +521,14 @@ function EditMembers({ onClose }) {
         ]),
       );
       const updatedCartEntry = getCartEntryFromUpdateResult(
-        res.data,
+        res?.data,
         groupCode,
       );
       if (updatedCartEntry.total_premium === currentCartEntry.total_premium)
-        onClose && onClose();
+        revisedPremiumModalToggle.off();
+
+      if (updatedCartEntry.total_premium !== currentCartEntry.total_premium)
+        revisedPremiumModalToggle.on();
     });
   };
 
@@ -534,13 +540,13 @@ function EditMembers({ onClose }) {
     const { unavailable_message, ...updatedCartEntry } =
       getCartEntryFromUpdateResult(data, groupCode);
     const handleCloseClick = () => {
-      onClose && onClose();
+      revisedPremiumModalToggle.off();
     };
 
     return (
       <Modal
-        show
-        onHide={onClose}
+        show={revisedPremiumModalToggle.isOn}
+        onHide={handleCloseClick}
         css={`
           & .modal-dialog {
             max-width: 600px;
@@ -675,7 +681,7 @@ function EditMembers({ onClose }) {
   }
 
   return (
-    <EditMembersModal onClose={onClose}>
+    <EditMembersModal>
       <div className="p-3">
         <MemberOptions showCounter={false} {...memberForm} selectable={false} />
         {serverErrors
@@ -706,7 +712,7 @@ export const RevisedPremiumPopup = ({
   } = useGetEnquiriesQuery();
 
   //const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
+  const dispatch = useDispatch();
   const firstName = name.split(" ")[0];
 
   return (
@@ -833,7 +839,10 @@ export const RevisedPremiumPopup = ({
             css={`
               border-radius: 9px;
             `}
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+              dispatch(setIsPopupOn(false));
+            }}
           >
             Continue
           </Button>
@@ -1100,7 +1109,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
           <div className="d-flex justify-content-between align-items-center">
             <div
               css={`
-                font-size: 0.79rem;
+                font-size: 0.65rem;
                 text-align: left;
               `}
             >
@@ -1121,18 +1130,12 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
           propsoalPageLink={`/proposal?enquiryId=${enquiryId}`}
           onClose={reviewCartModalNew.off}
         />
-
-        // <NewReviewCartPopup
-        //   onContine={handleContinueClick}
-        //   onClose={reviewCartModalNew.off}
-        // />
       )}
     </div>
   );
 }
 
 function CartDetailRow({ title, value, titleCss }) {
-  console.log(titleCss);
   return (
     <div
       css={`

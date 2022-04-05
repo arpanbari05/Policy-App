@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { useRef, useState } from "react";
 import { EmailSent } from "../pages/ComparePage/ComparePage.style";
 import { setEmail as setlEmaiStatus } from "../pages/ComparePage/compare.slice";
-import { useCompanies, useTheme } from "../customHooks/index";
+import { useCompanies, useFrontendBoot, useTheme } from "../customHooks/index";
 import ShareButton from "../components/Common/Button/ShareButton";
 import html2canvas from "html2canvas";
 import { Button } from "../components/index";
@@ -18,6 +18,24 @@ import { setQuotesToCanvas } from "../pages/quotePage/quote.slice";
 import Sharequotespopup from "../pages/quotePage/components/ShareQuotesPopUp";
 import { images } from "../assets/logos/logo";
 import { mobile } from "../utils/mediaQueries";
+import HttpClient from "../api/httpClient";
+
+const shareViaEmailApi = (data, company_alias) =>
+  HttpClient(`${company_alias}/communications`, {
+    method: "POST",
+    data,
+  });
+
+const printImageById = async id => {
+  const input = document.getElementById(id);
+
+  const canvas = await html2canvas(input, {
+    scrollX: 0,
+    scrollY: -window.scrollY,
+  });
+  const imgData = canvas.toDataURL("image/jpeg");
+  return imgData.split(",")[1];
+};
 
 const ShareCTA = ({ onClick, loader }) => {
   return (
@@ -68,6 +86,7 @@ const ShareQuoteModal = ({
   hideBtn,
   label,
   shareQuotes,
+  insurersFor = [],
 }) => {
   const [show, setshow] = useState(showModal);
 
@@ -77,13 +96,24 @@ const ShareQuoteModal = ({
 
   const [step, setStep] = useState(shareQuotes ? 1 : 2);
 
-  const [imageSend, setImageSend] = useState(imageToSend);
+  const [imageSend, setImageSend] = useState();
+
+  const [insurers, setInsurers] = useState();
 
   const {
     colors: { primary_color: PrimaryColor, secondary_shade: SecondaryShade },
   } = useTheme();
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getImage = async () => {
+      const id = stage === "COMPARE" && "printCompare";
+      const image = id && (await printImageById(id));
+      setImageSend(image);
+    };
+    getImage();
+  }, []);
 
   useEffect(() => {
     dispatch(setlEmaiStatus(""));
@@ -185,16 +215,19 @@ const ShareQuoteModal = ({
               setImageSend={setImageSend}
               setStep={setStep}
               hide={step === 2}
+              setInsurers={setInsurers}
             />
             <ShareStep2
               hide={step === 1}
               imageSend={imageSend}
               emailStatus={emailStatus}
+              setEmailStatus={setlEmaiStatus}
               stage={stage}
               setIsSending={setIsSending}
               setErrorMsg={setErrorMsg}
               isSending={isSending}
               errorMsg={errorMsg}
+              insurers={insurers?.length ? insurers : insurersFor}
             />
           </Modal.Body>
         </Modal>
@@ -353,7 +386,7 @@ const CanvasQuoteTemplate = ({ quote, colors }) => {
   );
 };
 
-function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
+function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
   const dispatch = useDispatch();
 
   const { quotesToShare } = useSelector(state => state.quotePage);
@@ -373,6 +406,9 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
   useEffect(() => {
     const checked = selectedQuote?.length === quotesToShare?.length;
     setAllChecked(checked);
+    setInsurers([
+      ...new Set([...selectedQuote.map(quote => quote[0]?.company_alias)]),
+    ]);
   }, [selectedQuote]);
 
   const handleRemoveQuote = quotes => {
@@ -412,9 +448,8 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
       useCORS: true,
       scale: 0.9,
     }).then(canvas => {
-      const imgData = canvas.toDataURL("image/png");
-      console.log(imgData);
-      setImageSend(imgData);
+      const imgData = canvas.toDataURL("image/jpeg");
+      setImageSend(imgData.split(",")[1]);
       setLoader(false);
       setStep(2);
     });
@@ -470,13 +505,13 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend }) {
 
 function ShareStep2({
   imageSend,
-  emailStatus,
   stage,
   setIsSending,
   setErrorMsg,
   isSending,
   errorMsg,
   hide,
+  insurers,
 }) {
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails,
@@ -485,6 +520,8 @@ function ShareStep2({
   const {
     colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
   } = useTheme();
+
+  const { tenantAlias } = useFrontendBoot();
 
   const [email, setEmail] = useState(
     details4autopopulate?.email ? details4autopopulate.email : "",
@@ -497,6 +534,8 @@ function ShareStep2({
   const [smsNo, setSmsNo] = useState(
     details4autopopulate?.mobile ? details4autopopulate.mobile : "",
   );
+
+  const [emailStatus, setEmailStatus] = useState({ status: 0, message: null });
 
   const sendRef = useRef();
 
@@ -556,15 +595,42 @@ function ShareStep2({
 
     if (!errorMsg && email) {
       setIsSending(true);
-      // setTimeout(() => {
-      //   handleRotation();
-      // }, 2000);
       return imageSend(email, stage);
     }
   };
 
   const handleRotation = () => {
     setIsSending(false);
+  };
+
+  const handleShare = async (e, data) => {
+    e.preventDefault();
+    console.log(imageSend);
+    const validator =
+      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
+    if (data.mode[0] === "EMAIL" && data.email === "") {
+      return setErrorMsg("Enter email to send.");
+    } else if (data.mode[0] === "EMAIL" && !validator.test(data.email)) {
+      return setErrorMsg("Enter valid email.");
+    } else setErrorMsg("");
+
+    if (!errorMsg) {
+      setIsSending(data.mode[0]);
+      const response = await shareViaEmailApi(data, tenantAlias);
+      let successMsg;
+      if (data.mode[0] === "EMAIL") successMsg = "Email sent successfully";
+      if (data.mode[0] === "WHATSAPP")
+        successMsg = "Whatsapp message sent successfully";
+      if (data.mode[0] === "SMS") successMsg = "SMS sent successfully";
+      setEmailStatus({
+        status: response.statusCode,
+        message:
+          `${response.statusCode}`.startsWith("2") && successMsg
+            ? successMsg
+            : "Not sent!",
+      });
+      setIsSending(false);
+    }
   };
 
   return (
@@ -594,8 +660,19 @@ function ShareStep2({
           />
         </div>
         <ShareCTA
-          onClick={e => handleSendViaEmail(e)}
-          loader={isSending && !emailStatus?.message}
+          // onClick={e => handleSendViaEmail(e)}
+          onClick={e => {
+            handleShare(e, {
+              mode: ["EMAIL"],
+              stage,
+              email,
+              whatsapp: "",
+              sms: "",
+              image_to_send: imageSend ? imageSend : undefined,
+              insurers,
+            });
+          }}
+          // loader={isSending && !emailStatus?.message}
         />
       </ShareOption>
 
@@ -640,12 +717,25 @@ function ShareStep2({
           <input
             type="number"
             placeholder="Mobile no."
-            onChange={e => handleNumberCheck(e, setSmsNo)}
             value={smsNo}
+            onChange={e => handleNumberCheck(e, setSmsNo)}
           />
         </div>
 
-        <ShareCTA />
+        <ShareCTA
+          onClick={e => {
+            setEmailStatus({ status: 0, message: null });
+            Number(smsNo.length) === 10 &&
+              handleShare(e, {
+                mode: ["SMS"],
+                stage,
+                email: "",
+                whatsapp: "",
+                sms: smsNo,
+                insurers,
+              });
+          }}
+        />
       </ShareOption>
 
       <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>

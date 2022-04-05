@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Card from "../../components/Card";
 import styled from "styled-components/macro";
-import { bg } from "../../assets/images";
+import { bg, checkRB } from "../../assets/images";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { Page } from "../../components";
 import { useFrontendBoot, useTheme } from "../../customHooks";
@@ -16,6 +16,8 @@ import "styled-components/macro";
 import { Spinner } from "react-bootstrap";
 import MedicalHistoryForm from "./components/MedicalHistoryForm";
 import JourneyTypeForm from "./components/JourneyTypeForm";
+import { renderDisclaimer } from "../../utils/helper";
+import { usePos } from "../../customHooks/usePos";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -31,6 +33,9 @@ const InputPage = () => {
   const { colors } = useTheme();
 
   const { currentForm } = useParams();
+
+  const { posContent } = usePos(localStorage.SSO_user, currentForm);
+  console.log("posContent", posContent);
 
   return (
     <Page>
@@ -80,7 +85,7 @@ const InputPage = () => {
         </div>
         <Wrapper currentForm={currentForm}>
           <InnerWrapper className="hide_on_mobile">
-            <HeaderCard />
+            <HeaderCard content={posContent} />
           </InnerWrapper>
           <InnerWrapper>
             <Card
@@ -118,19 +123,31 @@ const InputPage = () => {
                   }
                 `}
               >
-                {currentForm === "basic-details" && <BasicDetailsForm />}
-
-                {currentForm === "members" && <InputMembersForm />}
-
-                {currentForm === "plantype" && <PlanTypeForm />}
-
-                {currentForm.startsWith("location") && (
-                  <LocationForm key={currentForm} />
+                {currentForm === "basic-details" && (
+                  <BasicDetailsForm posContent={posContent} />
                 )}
 
-                {currentForm === "deductible" && <DeductibleForm />}
-                {currentForm === "medicalHistory" && <MedicalHistoryForm />}
-                {currentForm === "renewal-details" && <RenewalDetailsForm />}
+                {currentForm === "members" && (
+                  <InputMembersForm posContent={posContent} />
+                )}
+
+                {currentForm === "plantype" && (
+                  <PlanTypeForm posContent={posContent} />
+                )}
+
+                {currentForm.startsWith("location") && (
+                  <LocationForm key={currentForm} posContent={posContent} />
+                )}
+
+                {currentForm === "deductible" && (
+                  <DeductibleForm posContent={posContent} />
+                )}
+                {currentForm === "medicalHistory" && (
+                  <MedicalHistoryForm posContent={posContent} />
+                )}
+                {currentForm === "renewal-details" && (
+                  <RenewalDetailsForm posContent={posContent} />
+                )}
                 {currentForm === "journey-type" && <JourneyTypeForm />}
               </div>
             </Card>
@@ -223,7 +240,7 @@ const InnerWrapper = styled.div`
   } */
 `;
 
-function HeaderCard() {
+function HeaderCard({ content }) {
   const { colors } = useTheme();
   const { journeyType, data, isLoading, isUninitialized } = useFrontendBoot();
 
@@ -271,10 +288,35 @@ function HeaderCard() {
             <h3>{journeyTitle[journeyType]}</h3>
           )}
         </div>
-        {data?.settings?.input_banner_info ? (
+
+        {content.banner && content.banner !== "" ? (
           <div
+            css={`
+              p {
+                font-size: 1.4rem;
+                margin-bottom: 2rem;
+              }
+
+              li {
+                position: relative;
+                margin-top: 10px;
+                margin-left: 50px;
+                font-size: 14px;
+                &::before {
+                  content: "";
+                  position: absolute;
+                  height: 20px;
+                  width: 20px;
+                  left: -30px;
+                  top: 0px;
+                  border-radius: 100%;
+                  background-image: url(${checkRB});
+                  background-size: cover;
+                }
+              }
+            `}
             dangerouslySetInnerHTML={{
-              __html: data?.settings?.input_banner_info,
+              __html: content.banner,
             }}
           ></div>
         ) : (
@@ -289,7 +331,10 @@ function HeaderCard() {
 }
 
 function TermsAndConditions(props) {
-  const { tenantName } = useFrontendBoot();
+  const {
+    tenantName,
+    data: { settings },
+  } = useFrontendBoot();
 
   return (
     <div
@@ -306,16 +351,7 @@ function TermsAndConditions(props) {
           margin: 0 auto;
         `}
       >
-        <i className="termchk"></i>By clicking on Get Started, I hereby
-        authorise {tenantName}. and all of its affiliates, subsidiaries, group
-        companies and related parties to access the details such as my name,
-        address, telephone number, e-mail address, birth date and / or
-        anniversary date shared by me, and contact me to provide information on
-        the various products and services offered. I understand that this
-        consent will override my NDNC registration, if any. I also understand
-        that at any point of time, I wish to stop receiving such communications
-        from {tenantName}, I can withdraw such consent anytime on (to provide a
-        contact number or email id or both){" "}
+        {renderDisclaimer({ tenantName, settings })}
       </label>
     </div>
   );

@@ -21,7 +21,9 @@ function Quotes({ sortBy = "relevence", ...props }) {
 
   if (data) {
     mergedQuotes = data.filter(
-      icQuotes => !!icQuotes?.data?.data[0]?.total_premium,
+      icQuotes =>
+        icQuotes?.data?.data?.length &&
+        !!icQuotes?.data?.data[0]?.total_premium,
     ); // filter non-zero premium quotes.
     mergedQuotes = data.map(icQuotes => ({
       ...icQuotes,
@@ -39,6 +41,13 @@ function Quotes({ sortBy = "relevence", ...props }) {
       ); // main sorting logic
     }
   }
+
+  // removing duplicate quotes
+  const companies = mergedQuotes?.map(quote => quote?.company_alias);
+  mergedQuotes = mergedQuotes?.filter(
+    ({ company_alias }, index) =>
+      !companies?.includes(company_alias, index + 1),
+  );
 
   const quotesCompare = useQuotesCompare();
 

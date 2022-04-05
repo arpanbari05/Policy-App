@@ -25,7 +25,6 @@ const DropDown = ({
   excludeOptions,
   directUpdateValue,
 }) => {
-  
   const { selectOption } = useAppropriateOptions({
     values,
     allValues,
@@ -48,12 +47,17 @@ const DropDown = ({
   label = checkValidation?.required ? `${label}*` : label;
 
   return (
-    <SelectContainer height={height}>
+    <SelectContainer
+      height={height}
+     
+    
+    >
       <Select
+      value={value}
         onChange={e => {
           onChange(e, selectOption[e.target.value]);
         }}
-        value={value}
+       
         disabled={
           (Object.keys(selectOption).length === 1 && !asyncOptions) || readOnly
         }
@@ -99,6 +103,7 @@ const DropDown = ({
 
 export default DropDown;
 const SelectContainer = styled.div`
+  
   margin-top: ${props =>
     !props.height ? "0.3rem !important" : "9px !important"};
   position: relative;
@@ -114,7 +119,13 @@ const SelectContainer = styled.div`
 const Select = styled.select`
   appearance: none;
   background: ${props => (props.disabled ? "" : `url(${down}) no-repeat 98%`)};
+
+    
   list-style: none;
+  &:disabled{
+    cursor: not-allowed !important;
+    pointer-events: all !important;
+  }
   list-style-type: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -150,7 +161,7 @@ const Select = styled.select`
 
   @media (max-width: 767px) {
     font-size: 14px;
-    height: ${props => (!props.height ? "42px" : "24px")};
+    height: ${props => (!props.height ? "52px" : "24px")};
     padding: 0 16px;
     border-radius: 6px;
   }
