@@ -38,6 +38,7 @@ import {
   getQuoteKey,
   getRiderCartData,
   getTotalPremium,
+  isRelianceInfinityPlan,
   isRiderPresent,
   isTopUpQuote,
   matchQuotes,
@@ -275,7 +276,6 @@ export function useFilter() {
 
 export function useMembers() {
   const dispatch = useDispatch();
-  
 
   const reduxGroup =
     localStorage.getItem("groups") &&
@@ -288,7 +288,7 @@ export function useMembers() {
   const { data } = useGetEnquiriesQuery();
 
   const genderOfSelf = data?.data?.input?.gender;
-  
+
   const { selectedGroup } = useSelector(state => state.quotePage);
   useEffect(() => {
     dispatch(refreshUserData(data?.data));
@@ -775,6 +775,9 @@ export function useRider(groupCode) {
     const cartEntry = getCartEntry(groupCode);
 
     const { health_riders, top_up_riders } = cartEntry;
+
+    if (isRelianceInfinityPlan(cartEntry))
+      return health_riders?.length ? health_riders : top_up_riders;
 
     return health_riders?.length
       ? health_riders.filter(rider => rider.total_premium > 0)
