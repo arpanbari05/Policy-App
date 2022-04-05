@@ -33,8 +33,8 @@ const printImageById = async id => {
     scrollX: 0,
     scrollY: -window.scrollY,
   });
-  const imgData = canvas.toDataURL("image/png");
-  return imgData;
+  const imgData = canvas.toDataURL("image/jpeg");
+  return imgData.split(",")[1];
 };
 
 const ShareCTA = ({ onClick, loader }) => {
@@ -110,7 +110,6 @@ const ShareQuoteModal = ({
     const getImage = async () => {
       const id = stage === "COMPARE" && "printCompare";
       const image = id && (await printImageById(id));
-      console.log(image);
       setImageSend(image);
     };
     getImage();
@@ -449,9 +448,8 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
       useCORS: true,
       scale: 0.9,
     }).then(canvas => {
-      const imgData = canvas.toDataURL("image/png");
-      console.log(imgData);
-      setImageSend(imgData);
+      const imgData = canvas.toDataURL("image/jpeg");
+      setImageSend(imgData.split(",")[1]);
       setLoader(false);
       setStep(2);
     });
