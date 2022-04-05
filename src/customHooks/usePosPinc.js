@@ -10,7 +10,7 @@ export function usePosPinc() {
   const values = useUrlQueries();
 
   useEffect(() => {
-    if (tenant.toLowerCase() === "pinc") {
+    if (tenant?.alias === "pinc") {
       if (values.token) {
         localStorage.setItem("SSO_user", JSON.stringify(values));
         setStatus(true);
