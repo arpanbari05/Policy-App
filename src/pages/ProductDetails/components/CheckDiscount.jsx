@@ -3,7 +3,7 @@ import FeatureSection from "./FeatureSection/FeatureSection";
 
 import "styled-components/macro";
 import { mobile, small } from "../../../utils/mediaQueries";
-import { amount } from "../../../utils/helper";
+import { amount, isUsgiLifestyleDiscount } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
   useTenureDiscount,
@@ -285,10 +285,15 @@ function AdditionalDiscounts({ groupCode, ...props }) {
     toggleAdditionalDiscount(additionalDiscount);
   };
 
+  const additionalDiscountsUpdated = additionalDiscounts?.filter(
+    additionalDiscount =>
+      !isUsgiLifestyleDiscount({ discount: additionalDiscount }),
+  ); //? USGI DISCOUNT VALIDATIONS
+
   return (
     <>
       <WrapWithTitle title="Additional Discount" {...props}>
-        {additionalDiscounts.map(additionalDiscount => (
+        {additionalDiscountsUpdated.map(additionalDiscount => (
           <AdditionalDiscount
             onApplyClick={handleApplyClick}
             additionalDiscount={additionalDiscount}

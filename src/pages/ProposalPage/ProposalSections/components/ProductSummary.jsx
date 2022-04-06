@@ -23,6 +23,7 @@ import {
   useAdditionalDiscount,
   useRider,
   useRevisedPremiumModal,
+  useUSGILifeStyleDiscount,
 } from "../../../../customHooks";
 import {
   amount,
@@ -32,6 +33,7 @@ import {
   premiumWithAddons,
 } from "../../../../utils/helper";
 import { useGetCartQuery } from "../../../../api/api";
+import { current } from "@reduxjs/toolkit";
 
 const removeTotalPremium = cart => {
   let { totalPremium, ...y } = cart;
@@ -51,7 +53,7 @@ const availCart = cart => {
 
 const numToString = value => value.toLocaleString("en-IN");
 
-const ProductSummary = ({ setActive = () => {} }) => {
+const ProductSummary = ({ setActive = () => {} , totalPremium = 0 }) => {
   const [show, setShow] = useState(false);
 
   const history = useHistory();
@@ -68,12 +70,12 @@ const ProductSummary = ({ setActive = () => {} }) => {
 
   const { groups } = useMembers();
 
-  const { getCartEntry, cartEntries, discounted_total_premium } = useCart();
+  const { getCartEntry, cartEntries } = useCart();
 
   const tenure = getCartEntry(+groups[0].id)?.tenure;
 
-  const revisedNetPremium = getTotalPremium(cartEntries);
-
+  const revisedNetPremium = totalPremium;
+ 
   const allAddons = cartEntries
     ?.map(singleCartEntry => singleCartEntry.addons)
     .flat();
