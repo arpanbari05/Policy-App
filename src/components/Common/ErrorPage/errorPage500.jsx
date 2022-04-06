@@ -12,8 +12,6 @@ function ErrorBoundary({ children }) {
 
   const { data, isError } = useGetFrontendBootQuery();
 
-  console.log("The data recived", data);
-
   const reportError = e => {
     e.preventDefault();
     try {
@@ -169,8 +167,7 @@ const Success = styled.span`
 //     });
 
 //     // You can also log error messages to an error reporting service here
-//     console.log(error, errorInfo);
-//     console.log("1heheh", this.props.frontendError, this.props.enquiryError);
+
 //   }
 
 //   copyToClipboard = e => {
