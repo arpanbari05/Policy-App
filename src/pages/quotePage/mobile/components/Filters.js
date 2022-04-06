@@ -19,6 +19,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { RiCheckboxBlankCircleLine, RiCheckboxFill } from "react-icons/ri";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 import useWindowSize from "../../../../customHooks/useWindowSize";
+import { useGetEnquiriesQuery } from "../../../../api/api";
 
 const availableMoreFilters = {
   popular_filters: true,
@@ -295,6 +296,12 @@ export function FilterOptions({
 }) {
   let selectedOption, isSelected;
 
+  const {
+    data: {
+      data: { section },
+    },
+  } = useGetEnquiriesQuery();
+
   //MORE FILTERS CHECK FUNCTIONALITY *MOBILE OR DESKTOP*
   if (availableMoreFilters[code]) {
     selectedOption = currentOption ? [...currentOption] : [];
@@ -318,7 +325,7 @@ export function FilterOptions({
   return (
     <OptionsWrap {...props}>
       {options
-        .filter(opt => opt.code !== "no_claim_bonus_2")
+        .filter(opt => opt?.visible_on_sections?.includes(section))
         .map(option => (
           <FilterOption
             showTooltip={showTooltip}
