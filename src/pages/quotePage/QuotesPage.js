@@ -188,7 +188,7 @@ function AssistanceCard(props) {
     },
     tenantAlias,
   } = useFrontendBoot();
-  console.log({ talk_to_us_info });
+
   return (
     <div
       {...props}

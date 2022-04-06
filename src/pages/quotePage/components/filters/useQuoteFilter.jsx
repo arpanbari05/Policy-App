@@ -59,8 +59,6 @@ const checkFeature = quote => featureObject => {
 
     const [min, max] = noClaimBonusRange[valueToCompare];
 
-    console.log({ upto, min, max });
-
     return upto ? upto >= min && upto <= max : false;
   }
 
@@ -220,7 +218,6 @@ function useQuoteFilter({ givenMoreFilters } = {}) {
     const isNoClaimsMatch = filterMatch(selectedNoClaimFilterObject);
     const isPreExistingMatch = filterMatch(selectedPreExistingFilterObject);
 
-    console.log({ isNoClaimsMatch });
     const isNoPreMedicalMatch = isNoPreMedicalSelected
       ? minAge < quote.ppmc_age_limit
       : true;

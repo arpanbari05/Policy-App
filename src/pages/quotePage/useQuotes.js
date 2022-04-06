@@ -23,12 +23,6 @@ import { updateGroups } from "./serviceApi";
 import { useFrontendBoot } from "../../customHooks/index";
 
 function useQuotesPage() {
-  // const filtersForTest = useSelector((state) => state.quotePage.filters);
-  // console.log(
-  //   "Filters PlanType applied to the quotes page",
-  //   filtersForTest.planType
-  // );
-
   const { cover, tenure, plan_type, companies } = useFrontendBoot().data;
   const { data } = useFrontendBoot();
 
@@ -40,7 +34,7 @@ function useQuotesPage() {
       scrollY: -window.scrollY,
     }).then(canvas => {
       const imgData = canvas.toDataURL("image/png");
-      console.log(imgData);
+
       dispatch(
         sendEmailAction({
           email,
@@ -141,18 +135,7 @@ function useQuotesPage() {
                 : "Family Floater",
           }),
         );
-      console.log(
-        "company",
-        companies,
-        "cover",
-        cover,
-        "tenure",
-        tenure,
-        "pro",
-        proposerDetails,
-        "ses",
-        selectedGroup,
-      );
+
       //   dispatch(
       //     fetchQuotes(companies?.companies, {
       //       sum_insured:
@@ -280,7 +263,6 @@ function useQuotesPage() {
   // }, [memberGroups]);
 
   useEffect(() => {
-    console.log("hehehehhe", memberGroups?.[groupCode]);
     if (memberGroups?.[groupCode]?.length === 1) {
       dispatch(
         setFilters({
@@ -340,7 +322,6 @@ function useQuotesPage() {
 
   useEffect(() => {
     if (filters.premium) {
-      console.log("Executed Premium filter");
       dispatch(premiumFilterCards(filters.premium));
     }
   }, [
@@ -456,5 +437,5 @@ function useQuotesPage() {
     recFilterdQuotes,
   };
 }
- 
+
 export default useQuotesPage;

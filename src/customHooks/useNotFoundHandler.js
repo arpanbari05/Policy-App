@@ -9,7 +9,6 @@ export default function useNotFoundHandler(filterPath) {
 
   useEffect(() => {
     const localStorageSavedGroupCode = JSON.parse(localStorage.groups)[0].id;
-    console.log(groupCode, localStorageSavedGroupCode);
     if (parseInt(groupCode) !== localStorageSavedGroupCode) {
       history.push(
         getUrlWithEnquirySearch(`/${filterPath}/${localStorageSavedGroupCode}`),

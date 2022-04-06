@@ -537,7 +537,6 @@ export function getDisplayPremium({ total_premium, tenure }) {
 
 export function mergeQuotes(quotes = [], { sortBy = "relevance" } = {}) {
   const mergedQuotes = {};
-  console.log(quotes);
 
   for (let quote of quotes) {
     const {
@@ -686,7 +685,6 @@ export function getAddOnsTotalPremium(addOns = []) {
 }
 
 export function getQuoteKey(quote) {
-  console.log(quote);
   // const { product, sum_insured } = quote;
 
   return `${quote?.product.id}+${quote?.sum_insured}`;
@@ -741,7 +739,6 @@ export function months2years(months) {
 
 // disclaimer text
 export function renderDisclaimer({ tenantName, settings }) {
-  console.log(settings);
   if (localStorage.SSO_user) {
     if (
       settings?.disclaimer_pos &&
