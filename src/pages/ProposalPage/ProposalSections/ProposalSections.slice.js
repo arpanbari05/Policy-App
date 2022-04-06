@@ -125,86 +125,26 @@ export const {
 } = proposal.actions;
 const ls = new SecureLS();
 
-const setSelfFieldsChange = ({
-  checkFor,
-  checkFrom,
-  updationFor,
-  dispatch,
-  insuredDetails,
-  callback,
-}) => {
-  let updatedVal;
-  if (updationFor === "Other Details") {
-    let updatedParent = { ...checkFor };
-    Object.keys(checkFor).forEach(key => {
-      if (
-        Object.keys(insuredDetails).includes(checkFor[key].nominee_relation)
-      ) {
-        let checkFrom2 =
-          checkFor[key].nominee_relation.toLowerCase() === "self"
-            ? { ...checkFrom, ...insuredDetails.self }
-            : insuredDetails[checkFor[key].nominee_relation.toLowerCase()];
-        console.log("sjgslfg", checkFrom, checkFrom2);
+// const hasAnyChangeInObj = (newVal, oldVal) => {
+//   let newValKeys = Object.keys(newVal);
+//   let oldValKeys = Object.keys(oldVal);
+//   // if(newValKeys.length !== oldValKeys.length) return true
+//   console.log(
+//     "wfgbkjwsdfgsfb",
+//     newVal,
+//     oldVal,
+//     newValKeys.some(newValKey => newVal[newValKey] !== oldVal[newValKey]),
+//   );
 
-        let updatedOtherDetail = { ...checkFor[key] };
-        Object.keys(checkFor[key]).forEach(key2 => {
-          let nameWithoutNominee = key2.slice(
-            key2.indexOf("_") + 1,
-            key2.length,
-          );
-          if (nameWithoutNominee === "contact") nameWithoutNominee = "mobile";
-          if (
-            checkFrom2[nameWithoutNominee] &&
-            checkFor[key][key2] !== checkFrom2[nameWithoutNominee]
-          )
-            updatedOtherDetail[key2] = checkFrom2[nameWithoutNominee];
-        });
-        updatedParent[key] = updatedOtherDetail;
-        console.log("snvksbvkjfv", checkFor, checkFrom, insuredDetails);
-      }
-    });
-    updatedVal = updatedParent;
-  } else if (updationFor === "Insured Details") {
-    let updatedObj = { ...checkFor.self };
-    let checkForKeys = Object.keys(checkFor.self);
-    checkForKeys.forEach(key => {
-      if (checkFrom[key] && checkFrom[key] !== checkFor.self[key])
-        updatedObj[key] = checkFrom[key];
-    });
-    updatedVal = { ...checkFor, self: updatedObj };
-  }
-
-  dispatch(
-    saveProposalData(
-      {
-        [updationFor]: updatedVal,
-      },
-      callback,
-    ),
-  );
-
-  // return updatedObj;
-};
-
-const hasAnyChangeInObj = (newVal, oldVal) => {
-  let newValKeys = Object.keys(newVal);
-  let oldValKeys = Object.keys(oldVal);
-  // if(newValKeys.length !== oldValKeys.length) return true
-  console.log(
-    "wfgbkjwsdfgsfb",
-    newVal,
-    oldVal,
-    newValKeys.some(newValKey => newVal[newValKey] !== oldVal[newValKey]),
-  );
-
-  return newValKeys.some(newValKey => newVal[newValKey] !== oldVal[newValKey]);
-};
+//   return newValKeys.some(newValKey => newVal[newValKey] !== oldVal[newValKey]);
+// };
 
 export const saveProposalData = (proposalData, next, failure) => {
   return async (dispatch, state) => {
     try {
+      console.log("wvnljsdvb", proposalData);
       let prevProposalData = state().proposalPage.proposalData;
-      let schema = state().schema;
+   
       dispatch(setIsLoading(true));
       dispatch(pushLoadingStack());
       const response = await saveProposal(proposalData);
@@ -216,48 +156,15 @@ export const saveProposalData = (proposalData, next, failure) => {
       dispatch(api.util.invalidateTags(["ProposalSummaryUpdate"]));
       dispatch(setProposalData(proposalData));
 
-      console.log("dfbjdflb", state());
+      // console.log("dfbjdflb", state());
       //console.log("saveProposalData success", response);
       if (response.statusCode === 200) {
-        if (
-          Object.keys(prevProposalData).length &&
-          prevProposalData["Insured Details"].self &&
-          prevProposalData["Insured Details"] &&
-          proposalData["Proposer Details"] &&
-          hasAnyChangeInObj(
-            proposalData["Proposer Details"],
-            prevProposalData["Proposer Details"],
-          )
-        ) {
-          setSelfFieldsChange({
-            checkFor: prevProposalData["Insured Details"],
-            checkFrom: proposalData["Proposer Details"],
-            updationFor: "Insured Details",
-            dispatch: dispatch,
-            callback: () => {
-              dispatch(api.util.invalidateTags(["Cart"]));
-            },
-          });
-        } else if (
-          Object.keys(prevProposalData).length &&
-          prevProposalData["Other Details"] &&
-          proposalData["Insured Details"]
-        ) {
-          // dispatch(api.util.invalidateTags(["Cart"], undefined));
-          setSelfFieldsChange({
-            checkFor: prevProposalData["Other Details"],
-            checkFrom:
-              proposalData["Proposer Details"] ||
-              prevProposalData["Proposer Details"],
-            updationFor: "Other Details",
-            dispatch: dispatch,
-            insuredDetails:
-              proposalData["Insured Details"] ||
-              prevProposalData["Insured Details"],
-          });
-        }
 
-        next && next(response.data);
+          next({
+            responseData: response.data,
+            prevProposalData,
+            updatedProposalData: state().proposalPage.proposalData,
+          });
         dispatch(popLoadingStack());
       } else if (!response.data) {
         if (typeof response.errors === "object") {
