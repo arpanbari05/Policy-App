@@ -411,23 +411,37 @@ function QuoteCard({
                     onChange={handleDeductibleChange}
                   />
                 </QuoteCardOption>
-                <QuoteCardOption info label={"Cover:"}>
-                  <QuoteCardSelect
-                    options={sumInsureds.map(sumInsured => ({
-                      value: sumInsured,
-                      label: numberToDigitWord(sumInsured)
-                        .replace("₹", "")
-                        .replace("Lakh", "L"),
-                    }))}
-                    value={{
-                      value: selectedSumInsured,
-                      label: numberToDigitWord(selectedSumInsured)
-                        .replace("₹", "")
-                        .replace("Lakh", "L"),
-                    }}
-                    onChange={handleSumInsuredChange}
-                  />
-                </QuoteCardOption>
+                {sumInsureds?.length > 1 ? (
+                  <QuoteCardOption info label={"Cover:"}>
+                    <QuoteCardSelect
+                      options={sumInsureds.map(sumInsured => ({
+                        value: sumInsured,
+                        label: numberToDigitWord(sumInsured)
+                          .replace("₹", "")
+                          .replace("Lakh", "L"),
+                      }))}
+                      value={{
+                        value: selectedSumInsured,
+                        label: numberToDigitWord(selectedSumInsured)
+                          .replace("₹", "")
+                          .replace("Lakh", "L"),
+                      }}
+                      onChange={handleSumInsuredChange}
+                    />
+                  </QuoteCardOption>
+                ) : (
+                  <div
+                    css={`
+                      font-weight: bold;
+                      font-size: 12px;
+                    `}
+                  >
+                    Cover:{" "}
+                    {numberToDigitWord(selectedSumInsured)
+                      .replace("₹", "")
+                      .replace("Lakh", "L")}
+                  </div>
+                )}
               </div>
             )}
             {!isDeductibleJourney && (
@@ -439,25 +453,43 @@ function QuoteCard({
                   }
                 `}
               >
-                <span
-                  style={{ minWidth: "auto", fontWeight: "bold", fontSize: 13 }}
-                >
-                  Cover:
-                </span>
-                <QuoteCardSelect
-                  options={sumInsureds.map(sumInsured => ({
-                    value: sumInsured,
-                    label: numberToDigitWord(sumInsured).replace("₹", ""),
-                  }))}
-                  value={{
-                    value: selectedSumInsured,
-                    label: numberToDigitWord(selectedSumInsured).replace(
-                      "₹",
-                      "",
-                    ),
-                  }}
-                  onChange={handleSumInsuredChange}
-                />
+                {sumInsureds?.length > 1 ? (
+                  <>
+                    <span
+                      style={{
+                        minWidth: "auto",
+                        fontWeight: "bold",
+                        fontSize: 13,
+                      }}
+                    >
+                      Cover:
+                    </span>
+                    <QuoteCardSelect
+                      options={sumInsureds.map(sumInsured => ({
+                        value: sumInsured,
+                        label: numberToDigitWord(sumInsured).replace("₹", ""),
+                      }))}
+                      value={{
+                        value: selectedSumInsured,
+                        label: numberToDigitWord(selectedSumInsured).replace(
+                          "₹",
+                          "",
+                        ),
+                      }}
+                      onChange={handleSumInsuredChange}
+                    />
+                  </>
+                ) : (
+                  <div
+                    css={`
+                      font-weight: bold;
+                      font-size: 12px;
+                    `}
+                  >
+                    Cover:{" "}
+                    {numberToDigitWord(selectedSumInsured).replace("₹", "")}
+                  </div>
+                )}
               </div>
             )}
             {shareType.value === "quotation_list" ||

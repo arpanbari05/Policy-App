@@ -33,12 +33,23 @@ function Quotes({ sortBy = "relevence", ...props }) {
       mergedQuotes = mergedQuotes.filter(
         icQuotes => !!icQuotes?.data?.data[0]?.length,
       ); // filter zero array.
-      mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) =>
-        icQuotesA.data.data[0][0].total_premium >
-        icQuotesB.data.data[0][0].total_premium
+      mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) => {
+        // calculating riders Premium
+        let ridersPremiumA = 0;
+        icQuotesA.data.data[0][0]?.mandatory_riders?.forEach(
+          rider => (ridersPremiumA += rider?.total_premium),
+        );
+        let ridersPremiumB = 0;
+        icQuotesB.data.data[0][0]?.mandatory_riders?.forEach(
+          rider => (ridersPremiumB += rider?.total_premium),
+        );
+
+        // sort logic based on ridersPremium
+        return icQuotesA.data.data[0][0].total_premium + ridersPremiumA >
+          icQuotesB.data.data[0][0].total_premium + ridersPremiumB
           ? 1
-          : -1,
-      ); // main sorting logic
+          : -1;
+      }); // main sorting logic
     }
   }
 
