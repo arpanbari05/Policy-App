@@ -850,10 +850,10 @@ export function useAdditionalDiscount(groupCode) {
     discounts = [],
     total_premium,
     netPremiumWithoutDiscount,
-  } = getCartEntry(groupCode);
+  } = getCartEntry(groupCode) || {};
 
   const { data, ...queryState } = useGetAdditionalDiscountsQuery({
-    productId: product.id,
+    productId: product?.id,
     groupCode,
     sum_insured,
     tenure,
@@ -861,21 +861,21 @@ export function useAdditionalDiscount(groupCode) {
 
   function addAdditionalDiscount(additionalDiscount) {
     updateCartEntry(groupCode, {
-      discounts: [...discounts, additionalDiscount.alias],
+      discounts: [...discounts, additionalDiscount?.alias],
     });
   }
 
   function removeAdditionalDiscount(additionalDiscount) {
     updateCartEntry(groupCode, {
-      discounts: discounts.filter(
+      discounts: discounts?.filter(
         selectedAdditionalDiscount =>
-          selectedAdditionalDiscount !== additionalDiscount.alias,
+          selectedAdditionalDiscount !== additionalDiscount?.alias,
       ),
     });
   }
 
   function isAdditionalDiscountSelected(additionalDiscount) {
-    return discounts.includes(additionalDiscount.alias);
+    return discounts?.includes(additionalDiscount?.alias);
   }
 
   function toggleAdditionalDiscount(additionalDiscount) {
@@ -898,10 +898,10 @@ export function useAdditionalDiscount(groupCode) {
   }
 
   function getSelectedAdditionalDiscounts() {
-    if (queryState.isLoading || queryState.isError) return [];
+    if (queryState?.isLoading || queryState?.isError) return [];
 
-    const selectedAdditionalDiscounts = data.data.filter(additionalDiscount =>
-      discounts?.includes(additionalDiscount.alias),
+    const selectedAdditionalDiscounts = data?.data?.filter(additionalDiscount =>
+      discounts?.includes(additionalDiscount?.alias),
     );
 
     return selectedAdditionalDiscounts;
@@ -2002,9 +2002,9 @@ export const useDD = ({ initialValue = {}, required, errorLabel }) => {
 
 export const useUSGILifeStyleDiscount = () => {
   const location = useLocation();
-  const { cartEntries , updateCartEntry } = useCart();
+  const { cartEntries, updateCartEntry } = useCart();
 
-  const universalSompoPlanInCart = cartEntries.find(
+  const universalSompoPlanInCart = cartEntries?.find(
     singlePlan => singlePlan?.product?.company?.alias === "universal_sompo",
   );
 
