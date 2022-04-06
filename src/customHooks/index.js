@@ -2004,9 +2004,11 @@ export const useUSGILifeStyleDiscount = () => {
   const location = useLocation();
   const { cartEntries, updateCartEntry } = useCart();
 
-  const universalSompoPlanInCart = cartEntries?.find(
-    singlePlan => singlePlan?.product?.company?.alias === "universal_sompo",
-  );
+  const universalSompoPlanInCart = cartEntries
+    ? cartEntries?.find(
+        singlePlan => singlePlan?.product?.company?.alias === "universal_sompo",
+      )
+    : [];
 
   const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(
     universalSompoPlanInCart?.group?.id,
@@ -2014,21 +2016,22 @@ export const useUSGILifeStyleDiscount = () => {
 
   const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
 
-  const lifeStyleDiscount = selectedAdditionalDiscounts.find(
+  const lifeStyleDiscount = selectedAdditionalDiscounts?.find(
     singleAd => singleAd?.alias === "usgilifestyle",
   );
 
   useEffect(() => {
-    cartEntries &&
+    if (cartEntries && universalSompoPlanInCart?.group?.id) {
       updateCartEntry(universalSompoPlanInCart?.group?.id, {
         ...universalSompoPlanInCart,
         discounts:
           location?.pathname === "/proposal_summary"
             ? [...universalSompoPlanInCart?.discounts, "usgilifestyle"]
-            : universalSompoPlanInCart?.discounts.filter(
+            : universalSompoPlanInCart?.discounts?.filter(
                 singleDiscount => singleDiscount !== "usgilifestyle",
               ),
       });
+    }
   }, []);
 
   const totalPremiumToDisplay = () => {

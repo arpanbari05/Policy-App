@@ -72,7 +72,7 @@ const ProposalSummary = () => {
     </Link>
   );
 
-  let { cartEntries} = useCart();
+  let { cartEntries } = useCart();
 
   const { currentSchema } = useSelector(state => state.schema);
 
@@ -88,8 +88,6 @@ const ProposalSummary = () => {
 
   const totalPremium = useUSGILifeStyleDiscount();
 
-
-  
   const tCSectionData = isSSOJourney()
     ? frontendData?.data?.settings?.summary_banner_pos
     : frontendData?.data?.settings?.summary_banner;
@@ -365,7 +363,7 @@ const ProposalSummary = () => {
                 }
               `}
             >
-              {/* <GoBackButton backPath={getUrlWithEnquirySearch("/proposal")} /> */}
+              {<GoBackButton backPath={getUrlWithEnquirySearch("/proposal")} />}
               <div></div>
               <div
                 css={`

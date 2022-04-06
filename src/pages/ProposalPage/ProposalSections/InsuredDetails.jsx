@@ -220,16 +220,16 @@ const InsuredDetails = ({
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
 
-            if (name === "Medical Details" && canProceed.canProceed) {
+            if (name === "Medical Details" && canProceed?.canProceed) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
-                frontBootData.settings.medical_nstp_declaration_message &&
+                frontBootData?.settings?.medical_nstp_declaration_message &&
                 dispatch(
                   setShowErrorPopup({
                     show: true,
                     head: "",
-                    msg: frontBootData.settings
-                      .medical_nstp_declaration_message,
+                    msg: frontBootData?.settings
+                      ?.medical_nstp_declaration_message,
                   }),
                 );
               setSubmit("PARTIAL");
