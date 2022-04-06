@@ -17,6 +17,7 @@ import "styled-components/macro";
 import useUpdateFilters from "./useUpdateFilters";
 import useFilters from "./useFilters";
 import useQuoteFilter from "./useQuoteFilter";
+import { useGetEnquiriesQuery } from "../../../../api/api";
 
 const getDescription = name => {
   switch (name) {
@@ -50,6 +51,12 @@ function FilterModal({ onClose }) {
     data: { morefilters },
   } = useFrontendBoot();
 
+  const {
+    data: {
+      data: { section },
+    },
+  } = useGetEnquiriesQuery();
+
   const { getSelectedFilter } = useFilters();
 
   const { filters, updateFilter, clearFilters } = useFiltersSlot({
@@ -71,9 +78,12 @@ function FilterModal({ onClose }) {
 
   const { filterQuotes } = useQuoteFilter({ givenMoreFilters: filters });
 
-  const filteredQuotes = quotesWithoutMoreFilters ? filterQuotes(getFlatQuotes(quotesWithoutMoreFilters)) : [];
+  const filteredQuotes = quotesWithoutMoreFilters
+    ? filterQuotes(getFlatQuotes(quotesWithoutMoreFilters))
+    : [];
 
-  const length = [...new Set(filteredQuotes.map(quote => quote?.product?.name))]?.length;
+  const length = [...new Set(filteredQuotes.map(quote => quote?.product?.name))]
+    ?.length;
 
   // HAVE TO RENDER THESE QUOTES
 
@@ -107,34 +117,69 @@ function FilterModal({ onClose }) {
         className="p-3 pb-0 d-flex flex-column"
         css={`
           gap: 1em;
-          min-height: 67vh;
+          min-height: ${section === "top_up" ? "63vh" : "67vh"};
+          // min-height: 60vh;
           overflow: auto;
         `}
       >
-        {morefilters.map((filter, idx) => (
-          <>
-            <FilterGroup
-              filter={filter}
-              key={filter.code + idx}
-              currentOption={filters[filter.code]}
-              onChange={updateFilter}
-            />
-          </>
-        ))}
+        {morefilters
+          ?.filter(filter => {
+            if (section === "top_up") {
+              return filter.code !== "no_claim_bonus";
+            } else return true;
+          })
+          .map((filter, idx) => (
+            <>
+              <FilterGroup
+                filter={filter}
+                key={filter.code + idx}
+                currentOption={filters[filter.code]}
+                onChange={updateFilter}
+              />
+            </>
+          ))}
       </div>
-      <div className="pb-2 px-2 d-flex justify-content-between" css={`padding-top: 7px;`}>
-        <button css={`width: 50% !important`} onClick={clearFilters}>
-          <span css={`border-bottom: 3px dotted #777;`}>
+      <div
+        className="pb-2 px-2 d-flex justify-content-between"
+        css={`
+          padding-top: 7px;
+        `}
+      >
+        <button
+          css={`
+            width: 50% !important;
+          `}
+          onClick={clearFilters}
+        >
+          <span
+            css={`
+              border-bottom: 3px dotted #777;
+            `}
+          >
             Clear filters
           </span>
         </button>
-        {
-          length ? (
-            <Button css={`width: 50% !important`} onClick={handleShowPlansClick}>Show {length} plans</Button>
-          ) : (
-            <button css={`width: 50% !important; height: 2.8em;`} disabled onClick={clearFilters}>No plan available</button>
-          )
-        }
+        {length ? (
+          <Button
+            css={`
+              width: 50% !important;
+            `}
+            onClick={handleShowPlansClick}
+          >
+            Show {length} plans
+          </Button>
+        ) : (
+          <button
+            css={`
+              width: 50% !important;
+              height: 2.8em;
+            `}
+            disabled
+            onClick={clearFilters}
+          >
+            No plan available
+          </button>
+        )}
       </div>
     </Modal>
   );

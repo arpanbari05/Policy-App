@@ -23,7 +23,7 @@ import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import { small } from "../../utils/mediaQueries";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
-import { isSSOJourney } from "../../utils/helper";
+import { amount, getTotalPremium, isSSOJourney } from "../../utils/helper";
 
 const ThankYouPage = () => {
   const ls = new SecureLS();
@@ -45,6 +45,8 @@ const ThankYouPage = () => {
   } = useTheme();
 
   const { cartEntries } = useCart();
+
+  const total_premium = amount(getTotalPremium(cartEntries))
 
   const {
     data: { tenant: tenantDetail, settings },
@@ -251,8 +253,7 @@ const ThankYouPage = () => {
                       <CheckMark />
                     </div>
                     <span>
-                      Your Payment for ₹{" "}
-                      {cart.totalPremium.toLocaleString("en-In")} was successful
+                      Your Payment for {total_premium} was successful
                     </span>
                   </div>
                   <div>
@@ -371,7 +372,7 @@ const ThankYouPage = () => {
                   </div>
                   Your Payment for{" "}
                   <i className="fa fa-inr" style={{ margin: "0px 2px" }} />
-                  {cart.totalPremium.toLocaleString("en-In")} was successful
+                  {total_premium} was successful
                 </div>
                 <div>
                   <div

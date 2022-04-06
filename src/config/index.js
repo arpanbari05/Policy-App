@@ -199,7 +199,7 @@ const config = {
             "No specific amount of claim amount is to be paid by the insured person for specific diseases/treatments/procedures.\n                        ",
           operator: "equals",
           value_to_compare: "No sub-limit",
-          visible_on_sections: ["health"],
+          visible_on_sections: ["health", "top_up"],
         },
         {
           code: "worldwide_coverage",
@@ -208,7 +208,7 @@ const config = {
             "Worldwide coverage is a benefit that offers coverage all over the world.\n                        ",
           operator: "not_equals",
           value_to_compare: "Not Covered",
-          visible_on_sections: ["health"],
+          visible_on_sections: ["health", "top_up"],
         },
         {
           code: "free_health_check_up",
@@ -217,7 +217,7 @@ const config = {
             "If You Renew Your Policy without a break, then at every Policy renewal Insurer will pay the expenses incurred towards cost of health check-up up to the Limits Per Policy (excluding any cumulative bonus) .\n                        ",
           operator: "equals",
           value_to_compare: "Yes",
-          visible_on_sections: ["health"],
+          visible_on_sections: ["health", "top_up"],
         },
         {
           code: "maternity_cover",
@@ -235,7 +235,7 @@ const config = {
             "No Claim Bonus means any increase or addition in the Sum Insured granted by the Insurer without any associated increase in premium in a claim free year.",
           operator: "equals",
           value_to_compare: "Not Covered",
-          visible_on_sections: ["health", "top_up"],
+          visible_on_sections: ["top_up"],
         },
       ],
     },

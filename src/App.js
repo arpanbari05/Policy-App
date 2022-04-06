@@ -4,7 +4,7 @@ import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import QuotesPage from "./pages/quotePage/";
 import { lazy } from "react";
 import { Suspense } from "react";
-import { FullScreenLoader, LoadCart, LoadEnquiries } from "./components";
+import { FullScreenLoader, LoadCart } from "./components";
 import ComparePage from "./pages/ComparePage";
 import ErrorPage from "./components/Common/ErrorPage/ErrorPage";
 import { useFrontendBoot } from "../src/customHooks";
