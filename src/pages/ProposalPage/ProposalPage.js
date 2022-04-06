@@ -56,7 +56,7 @@ import { RevisedPremiumPopup } from "../ProductDetails/components/ReviewCart";
 const ProposalPage = () => {
   const history = useHistory();
 
-  const [continueBtnClick, setContinueBtnClick] = useState(false);
+  
 
   const [memberGroups, setMemberGroups] = useState([]);
 
@@ -139,41 +139,7 @@ const ProposalPage = () => {
   }, [activeIndex]);
 
   const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
-  // to get unfilled form
-
-  useEffect(() => {
-    if (
-      Object.keys(proposalData).length &&
-      continueBtnClick &&
-      activeIndex === false
-    ) {
-      let unfilledInfoTabIndex;
-
-      listOfForms.find(e => {
-        if (!proposalData[e] || !Object.keys(proposalData[e]).length) {
-          return (unfilledInfoTabIndex = listOfForms.indexOf(e));
-
-          // setActive((prev) => prev + 1)
-        }
-      });
-
-      if (!unfilledInfoTabIndex && !isPopupOn) {
-        setActivateLoader(true);
-        dispatch(
-          submitProposalData(() => {
-            history.replace("/proposal_summary?enquiryId=" + enquiryId);
-            setContinueBtnClick(false);
-            setActivateLoader(false);
-          }),
-        );
-      } else {
-        setActive(unfilledInfoTabIndex);
-      }
-      dispatch(setActiveIndex(unfilledInfoTabIndex || activeIndex));
-    } else {
-      setActive(activeIndex);
-    }
-  }, [activeIndex, proposalData, isPopupOn]);
+  
 
   // to stop loader on cancle cta error popup
   useEffect(() => {
@@ -238,9 +204,7 @@ const ProposalPage = () => {
                 active={active}
                 setActive={setActive}
                 name={activeForm}
-                continueSideEffects={() => {
-                  setContinueBtnClick(true);
-                }}
+                setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
                 setProposerDactive={setProposerDactive}
               />
@@ -296,9 +260,7 @@ const ProposalPage = () => {
                 schema={currentSchema ? currentSchema[activeForm] : {}}
                 setActive={setActive}
                 name={activeForm}
-                continueSideEffects={() => {
-                  setContinueBtnClick(true);
-                }}
+                setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
               />
             </>
@@ -350,9 +312,7 @@ const ProposalPage = () => {
                 schema={currentSchema ? currentSchema[activeForm] : {}}
                 setActive={setActive}
                 name={activeForm}
-                continueSideEffects={() => {
-                  setContinueBtnClick(true);
-                }}
+                setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
               />
             </>
@@ -408,9 +368,7 @@ const ProposalPage = () => {
                 schema={currentSchema ? currentSchema[activeForm] : {}}
                 setActive={setActive}
                 name={activeForm}
-                continueSideEffects={() => {
-                  setContinueBtnClick(true);
-                }}
+                setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
               />
             </>
@@ -730,12 +688,7 @@ const ProposalPage = () => {
           />
         )}
       </Page>
-      {revisedPremiumPopupUtilityObject.isOn && (
-        <RevisedPremiumPopup
-          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
-          onClose={revisedPremiumPopupUtilityObject.off}
-        />
-      )}
+     
     </>
   );
 };

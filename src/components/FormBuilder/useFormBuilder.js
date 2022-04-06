@@ -12,6 +12,7 @@ const useFormBuilder = (
   canProceed,
   yesSelected,
   proposalDetails,
+  setErrorInField
 ) => {
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
   const [values, setValues] = useState(defaultValues || {});
@@ -222,6 +223,9 @@ const useFormBuilder = (
 
   // to scroll page as per error
   useEffect(() => {
+    console.log("dhbjhklb",errors)
+    if(Object.values(errors).length && Object.values(errors).some(val => val)) setErrorInField(true)
+    else setErrorInField(false)
     if (blockScrollEffect) {
       let filteredKey = Object.keys(errors).filter(key => errors[key]);
     // if (canProceed && !canProceed.canProceed)

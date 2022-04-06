@@ -12,6 +12,7 @@ import BMI from "./components/BMI";
 import { callApi } from "../../../components/FormBuilder/FormBuilder.slice";
 import { setActiveIndex } from "./ProposalSections.slice";
 import { useGetEnquiriesQuery } from "../../../api/api";
+import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 
 const ProposerDetails = ({
   schema = {},
@@ -21,21 +22,15 @@ const ProposerDetails = ({
   defaultValue = {},
   activeForm,
   setProposerDactive,
-  continueSideEffects,
+  setActivateLoader
 }) => {
-  const {
-    values,
-    setValues,
-    setValid,
-    isValid,
-    submit,
-    setSubmit,
-    setCustomValid,
-  } = useProposalSections(setActive, name, defaultValue);
+  const [continueBtnClick, setContinueBtnClick] = useState(false);
+  const { values, setValues, setValid,isValid, submit, setSubmit,triggerSaveForm,revisedPremiumPopupUtilityObject,setErrorInField,errorInField} =
+    useProposalSections({setActive, name, defaultValue,setActivateLoader});
   const proposelSelectedDOBRedux = useSelector(
-    ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob,
+    ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob
   );
-
+  
   const {
     data: {
       data: {
@@ -47,22 +42,27 @@ const ProposerDetails = ({
     },
   } = useGetEnquiriesQuery();
 
+  
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (name === "Proposer Details") {
       let proposerAge = parseInt(
-        members?.filter(i => i.type === "self")[0]?.age,
+        members?.filter((i) => i.type === "self")[0]?.age
       );
       let currentYear = new Date().getFullYear();
-
-      let estimatedProposerDOB = `${currentYear - proposerAge}`;
+      let currentMonth = new Date().getMonth();
+      let currentDate = new Date().getDate();
+    
+      let estimatedProposerDOB = `${currentYear - proposerAge}`
       let prefilledValues = {
         name: proposerName,
         gender,
         mobile,
         email,
         dob: proposelSelectedDOBRedux || estimatedProposerDOB,
+        // pincode: proposerDetails.pincode.includes("-")
+        //   ? proposerDetails.pincode.split("-")[1]
+        //   : proposerDetails.pincode,
       };
       schema.forEach(item => {
         if (item.value)
@@ -77,10 +77,18 @@ const ProposerDetails = ({
           );
         }
       });
-
-      setValues({ ...prefilledValues, ...values });
+  
+      setValues({  ...prefilledValues,...values });
     }
   }, []);
+
+// useEffect(() => {
+//   if(continueBtnClick && errorInField){
+    
+//     setContinueBtnClick(false);  
+//   }
+// },[submit,continueBtnClick,errorInField])
+
 
   return (
     <>
@@ -93,8 +101,8 @@ const ProposerDetails = ({
             fetchValid={setValid}
             submitTrigger={submit}
             setSubmit={setSubmit}
-            setCustomValid={setCustomValid}
             options={{ defaultValues: values, validateOn: "change" }}
+            setErrorInField={setErrorInField}
           />
         </Form>
       </div>
@@ -111,10 +119,18 @@ const ProposerDetails = ({
         />
         <ContinueBtn
           onClick={() => {
-            setSubmit(true);
-            continueSideEffects();
+              setSubmit(true);
+              // setContinueBtnClick(true);  
+              console.log("efglehfl",errorInField) 
+            triggerSaveForm({sendedVal:values,formName:"Proposer Details"})         
           }}
         />
+        {revisedPremiumPopupUtilityObject.isOn && (
+          <RevisedPremiumPopup
+            revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+            onClose={revisedPremiumPopupUtilityObject.off}
+          />
+        )}
       </div>
     </>
   );

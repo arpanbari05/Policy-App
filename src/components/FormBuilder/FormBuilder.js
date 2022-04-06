@@ -37,6 +37,7 @@ const FormBuilder = ({
   proposalData,
   canProceed,
   yesSelected,
+  setErrorInField
 }) => {
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -56,6 +57,7 @@ const FormBuilder = ({
       {},
     ),
   );
+
 
 
 
@@ -82,7 +84,8 @@ const FormBuilder = ({
     insuredDetails,
     canProceed,
     yesSelected,
-    proposalDetails
+    proposalDetails,
+    setErrorInField
   );
 
   const [trigger, setTrigger] = useState(false);

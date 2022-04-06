@@ -14,6 +14,7 @@ import "styled-components/macro";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
 import { setShowErrorPopup } from "../ProposalSections/ProposalSections.slice";
+import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 
 const InsuredDetails = ({
   schema,
@@ -21,8 +22,9 @@ const InsuredDetails = ({
   name,
   defaultValue,
   setBack,
-  continueSideEffects,
+  setActivateLoader
 }) => {
+  const [continueBtnClick, setContinueBtnClick] = useState(false);
   const [show, setShow] = useState(1);
   const { proposalData } = useSelector(state => state.proposalPage);
   const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
@@ -40,19 +42,24 @@ const InsuredDetails = ({
     setFinalSubmit,
     additionalErrors,
     revisedPremiumPopupUtilityObject,
-  } = useProposalSections(
+    errorInField,
+    setErrorInField,
+    triggerSaveForm
+  } = useProposalSections({
     setActive,
     name,
     defaultValue,
-    Object.keys(schema).length,
+    partialLength: Object.keys(schema).length,
     setShow,
-  );
+    setActivateLoader
+  });
 
   const { getPanelDescContent } = useInsuredDetails(
     name,
     schema,
     proposalData,
     values,
+
     membersDataFromGreetingPage,
     groups,
     setValues,
@@ -72,7 +79,15 @@ const InsuredDetails = ({
 
   const fullName = proposalData["Proposer Details"]?.name;
 
-  console.log("sfglknsflv", yesSelected);
+  // useEffect(() => {
+  //   if(continueBtnClick && errorInField){
+     
+  //     setContinueBtnClick(false);
+  //   }
+  // },[submit,continueBtnClick])
+
+
+
 
   return (
     <div>
@@ -164,6 +179,7 @@ const InsuredDetails = ({
                   fetchValues={res => {
                     setValues({ ...values, [item]: res });
                   }}
+                  setErrorInField={setErrorInField}
                   fetchValid={res => {
                     let valid = isValid;
                     valid[index] = res;
@@ -217,13 +233,21 @@ const InsuredDetails = ({
                   }),
                 );
               setSubmit("PARTIAL");
-              continueSideEffects();
+              triggerSaveForm({sendedVal:values,formName:name})
+              // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
-              continueSideEffects();
+              triggerSaveForm({sendedVal:values,formName:name})
+              // setContinueBtnClick(true);
             }
           }}
         />
+        {revisedPremiumPopupUtilityObject.isOn && (
+          <RevisedPremiumPopup
+            revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+            onClose={revisedPremiumPopupUtilityObject.off}
+          />
+        )}
       </div>
     </div>
   );
