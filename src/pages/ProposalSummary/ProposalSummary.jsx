@@ -36,6 +36,7 @@ import {
   useUrlEnquiry,
   useCart,
   useMembers,
+  useUSGILifeStyleDiscount,
 } from "../../customHooks";
 import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
@@ -50,14 +51,16 @@ import { FaPen } from "react-icons/fa";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
   const { getGroupMembers, groups } = useMembers();
+
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
 
   const PrimaryShade = colors.primary_shade;
 
-  const { data: proposalData = {}, isLoading } = useGetProposalDataQuery();
+  const { data: proposalData = {} } = useGetProposalDataQuery();
 
   const backButtonForNav = (
     <Link
@@ -69,7 +72,7 @@ const ProposalSummary = () => {
     </Link>
   );
 
-  let { cartEntries } = useCart();
+  let { cartEntries} = useCart();
 
   const { currentSchema } = useSelector(state => state.schema);
 
@@ -83,8 +86,10 @@ const ProposalSummary = () => {
 
   const frontendData = { data: frontendBoot.data };
 
-  
+  const totalPremium = useUSGILifeStyleDiscount();
 
+
+  
   const tCSectionData = isSSOJourney()
     ? frontendData?.data?.settings?.summary_banner_pos
     : frontendData?.data?.settings?.summary_banner;
@@ -170,8 +175,6 @@ const ProposalSummary = () => {
   };
 
   const cart = cartEntries;
-
-  const totalPremium = getTotalPremium(cartEntries);
 
   const prod_id = Object.keys(cart)[0];
 
@@ -362,7 +365,8 @@ const ProposalSummary = () => {
                 }
               `}
             >
-              <GoBackButton backPath={getUrlWithEnquirySearch("/proposal")} />
+              {/* <GoBackButton backPath={getUrlWithEnquirySearch("/proposal")} /> */}
+              <div></div>
               <div
                 css={`
                   display: flex;
@@ -386,7 +390,7 @@ const ProposalSummary = () => {
               `}
             >
               <SummaryWrapper>
-                <ProductSummary cart={cart} />
+                <ProductSummary totalPremium={totalPremium} cart={cart} />
                 {/* {
                 groupCode?<ReviewCart groupCode={groupCode} unEditable={true} />:""
               }  */}
