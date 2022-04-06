@@ -698,7 +698,7 @@ export function useCart() {
     return {
       ...cartEntry,
       plantype: group.plan_type,
-      netPremium:  calculateTotalPremium(cartEntry, { additionalDiscounts }) ,
+      netPremium: calculateTotalPremium(cartEntry, { additionalDiscounts }),
       netPremiumWithoutDiscount: calculateTotalPremium(cartEntry),
       icLogoSrc,
     };
