@@ -344,6 +344,22 @@ const Input = styled.input`
     border-color: ${props => (props.error ? "#c7222a" : "solid 1px  #393939")};
     color: black;
   }
+  &:before {
+    -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+  }
+  &:after {
+    -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+  }
+
   @media (max-width: 767px) {
     height: 52px;
     padding: 0 16px;
