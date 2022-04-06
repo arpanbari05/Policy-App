@@ -40,6 +40,7 @@ import {
   useCart,
   useShareFunctionality,
   useRevisedPremiumModal,
+  useUSGILifeStyleDiscount,
 } from "../../customHooks";
 import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
@@ -79,6 +80,8 @@ const ProposalPage = () => {
   let { cartEntries } = useCart();
 
   const [listOfForms, setListOfForms] = useState([]);
+
+  const totalPremium = useUSGILifeStyleDiscount()
 
   useEffect(() => {
     if (currentSchema instanceof Object)
@@ -599,7 +602,7 @@ const ProposalPage = () => {
                       }
                     `}
                   >
-                    <ProductSummary setActive={setActive} />
+                    <ProductSummary totalPremium={totalPremium} setActive={setActive} />
                   </div>
                   <div
                     // lg={8}

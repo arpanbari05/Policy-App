@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import {
   api,
   useCreateCartMutation,
@@ -33,6 +33,7 @@ import styles from "../styles";
 import {
   capitalize,
   getAddOnSendData,
+  getDiscountAmount,
   getInsuranceType,
   getMonthsForYear,
   getQuoteKey,
@@ -698,7 +699,7 @@ export function useCart() {
     return {
       ...cartEntry,
       plantype: group.plan_type,
-      netPremium:  calculateTotalPremium(cartEntry, { additionalDiscounts }) ,
+      netPremium: calculateTotalPremium(cartEntry, { additionalDiscounts }),
       netPremiumWithoutDiscount: calculateTotalPremium(cartEntry),
       icLogoSrc,
     };
@@ -1997,4 +1998,45 @@ export const useDD = ({ initialValue = {}, required, errorLabel }) => {
     shouldShowError: valueInputTouchedHandler,
     onChange: valueChangeHandler,
   };
+};
+
+export const useUSGILifeStyleDiscount = () => {
+  const location = useLocation();
+  const { cartEntries , updateCartEntry } = useCart();
+
+  const universalSompoPlanInCart = cartEntries.find(
+    singlePlan => singlePlan?.product?.company?.alias === "universal_sompo",
+  );
+
+  const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(
+    universalSompoPlanInCart?.group?.id,
+  );
+
+  const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
+
+  const lifeStyleDiscount = selectedAdditionalDiscounts.find(
+    singleAd => singleAd?.alias === "usgilifestyle",
+  );
+
+  useEffect(() => {
+    cartEntries &&
+      updateCartEntry(universalSompoPlanInCart?.group?.id, {
+        ...universalSompoPlanInCart,
+        discounts:
+          location?.pathname === "/proposal_summary"
+            ? [...universalSompoPlanInCart?.discounts, "usgilifestyle"]
+            : universalSompoPlanInCart?.discounts.filter(
+                singleDiscount => singleDiscount !== "usgilifestyle",
+              ),
+      });
+  }, []);
+
+  const totalPremiumToDisplay = () => {
+    return lifeStyleDiscount
+      ? getTotalPremium(cartEntries) -
+          getDiscountAmount(lifeStyleDiscount, universalSompoPlanInCart)
+      : getTotalPremium(cartEntries); //? returns same total-premium if lifeStyle discount is not present
+  };
+
+  return totalPremiumToDisplay();
 };
