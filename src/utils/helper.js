@@ -801,3 +801,6 @@ export const isSSOJourney = () => {
 
 export const isRelianceInfinityPlan = cartEntry =>
   cartEntry?.product?.name === "Health Infinity Individual";
+
+export const isUsgiLifestyleDiscount = ({ discount = {} }) =>
+  discount?.alias === "usgilifestyle";
