@@ -30,7 +30,7 @@ const useProposalSections = ({
   setActivateLoader,
 }) => {
   const [values, setValues] = useState(defaultValue);
-  const [errorInField,setErrorInField] = useState(false);
+  const [errorInField, setErrorInField] = useState(true);
   const history = useHistory();
   const queryStrings = useUrlQuery();
   const enquiryId = queryStrings.get("enquiryId");
@@ -44,8 +44,28 @@ const useProposalSections = ({
   const schema = useSelector(({ schema }) => schema.currentSchema);
   const [canProceedToSummary, setCanProceedToSummary] = useState(false);
   const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
-console.log("Sbsfbnflbf",errorInField)
+  console.log("Sbsfbnflbf", errorInField);
   const dispatch = useDispatch();
+
+  const everyRequiredFilled = (schema, values) => {
+    console.log("vbksdv",schema, values);
+    if (Array.isArray(schema))
+      return schema
+        .filter(el => el.validate && el.validate.required)
+        .every(el => values[el.name]);
+    else
+      return Object.keys(schema)
+        .map(key =>
+          schema[key]
+            .filter(el => el.validate && el.validate.required)
+            .every(el => values[key][el.name]),
+        )
+        .includes(false)
+        ? false
+        : true;
+
+    return false;
+  };
 
   const [additionalErrors, setAdditionalErrors] = useState({});
 
@@ -150,8 +170,16 @@ console.log("Sbsfbnflbf",errorInField)
   };
 
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
-    console.log("sfjlbajcvjhs", isValid);
-    if (formName === "Proposer Details" && !errorInField) {
+    console.log(
+      "sfjlbajcvjhs",
+      isValid,
+      everyRequiredFilled(schema[formName], sendedVal),
+    );
+    if (
+      formName === "Proposer Details" &&
+      !errorInField &&
+      everyRequiredFilled(schema[formName], sendedVal)
+    ) {
       setSubmit(true);
       dispatch(
         saveProposalData(
@@ -184,7 +212,11 @@ console.log("Sbsfbnflbf",errorInField)
           },
         ),
       );
-    } else if (formName === "Insured Details" && !errorInField) {
+    } else if (
+      formName === "Insured Details" &&
+      !errorInField &&
+      everyRequiredFilled(schema[formName], sendedVal)
+    ) {
       // console.log("dnmkdgb", sendedVal);
 
       dispatch(
@@ -216,7 +248,10 @@ console.log("Sbsfbnflbf",errorInField)
           },
         ),
       );
-    } else if (formName === "Medical Details" && !errorInField) {
+    } else if (
+      formName === "Medical Details" &&
+      !errorInField 
+    ) {
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
@@ -237,7 +272,7 @@ console.log("Sbsfbnflbf",errorInField)
           },
         ),
       );
-    } else if (formName === "Other Details" && !errorInField) {
+    } else if (formName === "Other Details" && !errorInField && everyRequiredFilled(schema[formName], sendedVal)) {
       console.log("fblkfblfn", sendedVal);
       dispatch(
         saveProposalData(
@@ -256,7 +291,11 @@ console.log("Sbsfbnflbf",errorInField)
   // =================================================================================================================
 
   useEffect(() => {
-            console.log("dhdgnfdjg", revisedPremiumPopupUtilityObject.isOn,allDataSubmitted);
+    console.log(
+      "dhdgnfdjg",
+      revisedPremiumPopupUtilityObject.isOn,
+      allDataSubmitted,
+    );
 
     if (!revisedPremiumPopupUtilityObject.isOn && allDataSubmitted) {
       setCanProceedToSummary(true);
@@ -287,7 +326,7 @@ console.log("Sbsfbnflbf",errorInField)
     triggerSaveForm,
     setErrorInField,
     errorInField,
-    additionalErrors
+    additionalErrors,
   };
 };
 
