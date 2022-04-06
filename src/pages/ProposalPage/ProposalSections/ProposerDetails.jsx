@@ -65,13 +65,13 @@ const ProposerDetails = ({
         //   : proposerDetails.pincode,
       };
       schema.forEach(item => {
-        if (item.value)
-          prefilledValues = { ...prefilledValues, [item.name]: item.value };
+        if (item?.value)
+          prefilledValues = { ...prefilledValues, [item?.name]: item?.value };
         if (item.fill && item.name === "pincode") {
           dispatch(
-            callApi(item.fill.using, {
-              [item.name]: item.value,
-              [item.fill.alsoUse]: values[item.fill.alsoUse],
+            callApi(item?.fill?.using, {
+              [item.name]: item?.value,
+              [item.fill.alsoUse]: values[item?.fill?.alsoUse],
             }),
             item.fill,
           );
