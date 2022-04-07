@@ -95,7 +95,7 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
               dangerouslySetInnerHTML={{
                 __html: posContent.question
                   ? posContent.question
-                  : "Your Renewal Details?",
+                  : "Your renewal details?",
               }}
             ></Title>
             <LinkButton

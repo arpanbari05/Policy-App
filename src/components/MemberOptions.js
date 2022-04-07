@@ -217,8 +217,6 @@ function MemberOption({
 
   const handleChange = evt => {
     const { checked } = evt.target;
-
-    console.log(member.age);
     onChange &&
       onChange({
         ...member,
@@ -259,9 +257,8 @@ function MemberOption({
   const validateSelf = (selectedMembers, member) => {
     if (member.code === "self" && gender === "M") {
       return (
-        (selectedMembers[0]?.code === "spouse" ||
-          selectedMembers[1]?.code === "spouse") &&
-        (selectedMembers[0]?.age || selectedMembers[1]?.age)
+        selectedMembers[0]?.code === "spouse" ||
+        selectedMembers[1]?.code === "spouse"
       );
     } else {
       return false;
@@ -378,6 +375,8 @@ function MemberOption({
           selected={selectedAge}
           handleChange={handleAgeChange}
           redBorder={member.error}
+          member={member}
+          selectedMembers={selectedMembers}
         />
       </div>
     </div>

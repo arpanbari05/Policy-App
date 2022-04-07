@@ -231,8 +231,10 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           dangerouslySetInnerHTML={{
             __html: posContent.question
               ? posContent.question
-              : `Tell Us Where ${isSelf ? "You" : "Your" + membersText}
-            ${isSelf ? "Live" : "Lives"}?`,
+              : `Tell us where ${
+                  isSelf ? "you" : "your" + membersText.toLowerCase()
+                }
+            ${isSelf ? "live" : "lives"}?`,
           }}
         ></Title>
       )}
