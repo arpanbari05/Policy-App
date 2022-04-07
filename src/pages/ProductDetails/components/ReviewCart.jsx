@@ -193,10 +193,10 @@ const QuickPayAndRenewButton = ({ groupCode }) => {
       onClick={handleClick}
       loader={isLoading}
       disabled={
-        cartEntry.unavailable_message ||
+        cartEntry?.unavailable_message ||
         isLoading ||
-        additionalDiscountsQuery.isLoading ||
-        additionalDiscountsQuery.isFetching ||
+        additionalDiscountsQuery?.isLoading ||
+        additionalDiscountsQuery?.isFetching ||
         isTotalPremiumLoading
       }
     >
@@ -255,7 +255,7 @@ function AddOnDetailRow({ addOn }) {
   return (
     <CartDetailRow
       title={<AddOnTitle addOn={addOn} />}
-      value={amount(addOn.total_premium)}
+      value={amount(addOn?.total_premium)}
     />
   );
 }
@@ -263,7 +263,7 @@ function AddOnDetailRow({ addOn }) {
 function AddOnTitle({ addOn }) {
   const { members, product } = addOn;
   const { getCompanyLogo } = useCompanies();
-  const logo = getCompanyLogo(product.company.alias);
+  const logo = getCompanyLogo(product?.company?.alias);
   return (
     <div
       css={`
@@ -285,7 +285,7 @@ function AddOnTitle({ addOn }) {
             width: 100%;
           `}
           src={logo}
-          alt={product.company.alias}
+          alt={product?.company?.alias}
         />
       </div>
       <span
@@ -298,7 +298,7 @@ function AddOnTitle({ addOn }) {
           align-items: center; */
         `}
       >
-        {product.name} <MemberText>({members.join(", ")})</MemberText>
+        {product?.name} <MemberText>({members.join(", ")})</MemberText>
       </span>
     </div>
   );
@@ -388,7 +388,7 @@ function RidersList({ groupCode, ...props }) {
       {!isRidersSelected ? (
         <CartDetailRow title={"No Riders Selected"} />
       ) : (
-        riders.map(rider => <RiderDetails rider={rider} key={rider.id} />)
+        riders.map(rider => <RiderDetails rider={rider} key={rider?.id} />)
       )}
     </CartSection>
   );
@@ -441,8 +441,8 @@ function Members({ groupCode, editable = true, ...props }) {
 }
 
 function getCartEntryFromUpdateResult(updateResultData, groupCode) {
-  const cartEntry = updateResultData.getCartResult.data.find(
-    cartEntry => +cartEntry.group.id === +groupCode,
+  const cartEntry = updateResultData?.getCartResult?.data?.find(
+    cartEntry => +cartEntry?.group?.id === +groupCode,
   );
 
   return cartEntry;
@@ -524,10 +524,10 @@ function EditMembers({}) {
         res?.data,
         groupCode,
       );
-      if (updatedCartEntry.total_premium === currentCartEntry.total_premium)
+      if (updatedCartEntry?.total_premium === currentCartEntry?.total_premium)
         revisedPremiumModalToggle.off();
 
-      if (updatedCartEntry.total_premium !== currentCartEntry.total_premium)
+      if (updatedCartEntry?.total_premium !== currentCartEntry?.total_premium)
         revisedPremiumModalToggle.on();
     });
   };
@@ -610,7 +610,7 @@ function EditMembers({}) {
                     Revised Premium
                   </span>
                 }
-                value={amount(updatedCartEntry.total_premium)}
+                value={amount(updatedCartEntry?.total_premium)}
               />
             </div>
           ) : null}
@@ -714,7 +714,7 @@ export const RevisedPremiumPopup = ({
 
   //const { getUrlWithEnquirySearch } = useUrlEnquiry();
   const dispatch = useDispatch();
-  const firstName = name.split(" ")[0];
+  const firstName = name?.split(" ")[0];
 
   return (
     <Modal
@@ -1031,12 +1031,12 @@ function isQueryLoading(query) {
 
 function useTotalPremiumLoader(cartEntry) {
   const { group } = cartEntry;
-  const tenureDiscount = useTenureDiscount(group.id);
-  const riders = useRiders({ quote: cartEntry, groupCode: group.id });
+  const tenureDiscount = useTenureDiscount(group?.id);
+  const riders = useRiders({ quote: cartEntry, groupCode: group?.id });
 
   const isTotalPremiumLoading = _.some([
-    isQueryLoading(tenureDiscount.query),
-    isQueryLoading(riders.query),
+    isQueryLoading(tenureDiscount?.query),
+    isQueryLoading(riders?.query),
   ]);
 
   return isTotalPremiumLoading;
@@ -1076,14 +1076,14 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   const handleClick = () => {
     updateCartMutation({ additionalDiscounts }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
-          pathname: `/productdetails/${nextGroupProduct.group.id}`,
+          pathname: `/productdetails/${nextGroupProduct?.group?.id}`,
           search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
         });
         return;
@@ -1102,12 +1102,12 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
       <Button
         onClick={handleClick}
         className="w-100"
-        loader={!nextGroupProduct && query.isLoading}
+        loader={!nextGroupProduct && query?.isLoading}
         disabled={
-          cartEntry.unavailable_message ||
-          query.isLoading ||
-          additionalDiscountsQuery.isLoading ||
-          additionalDiscountsQuery.isFetching ||
+          cartEntry?.unavailable_message ||
+          query?.isLoading ||
+          additionalDiscountsQuery?.isLoading ||
+          additionalDiscountsQuery?.isFetching ||
           isTotalPremiumLoading
         }
         {...props}
@@ -1121,11 +1121,11 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
               `}
             >
               <div>Next Step:</div>
-              <div>Plan for {getMembersText(nextGroupProduct.group)}</div>
+              <div>Plan for {getMembersText(nextGroupProduct?.group)}</div>
             </div>
             <div>
               Proceed{" "}
-              {query.isLoading ? <CircleLoader animation="border" /> : null}
+              {query?.isLoading ? <CircleLoader animation="border" /> : null}
             </div>
           </div>
         ) : (
@@ -1203,7 +1203,7 @@ function AddOnDetailsRow({ addOn }) {
   const companies = useSelector(
     state => state.frontendBoot.frontendData.data.companies,
   );
-  const { logo } = companies[product.company.alias];
+  const { logo } = companies[product?.company?.alias];
   const totalPremium = amount(total_premium);
   const { groupCode } = useParams();
   const { product: cartProduct, updateProductRedux } =
@@ -1211,11 +1211,13 @@ function AddOnDetailsRow({ addOn }) {
   const removeAddOn = addOnId => {
     updateProductRedux({
       ...cartProduct,
-      addons: cartProduct.addons.filter(addon => addon.product.id !== addOnId),
+      addons: cartProduct?.addons?.filter(
+        addon => addon?.product?.id !== addOnId,
+      ),
     });
   };
   const handleRemoveAddOnClick = () => {
-    removeAddOn(product.id);
+    removeAddOn(product?.id);
   };
   const logoTitle = (
     <div
@@ -1238,8 +1240,8 @@ function AddOnDetailsRow({ addOn }) {
             width: 100%;
             /* margin-bottom: 5px; */
           `}
-          src={product.company.alias === "care_health" ? care_health : logo}
-          alt={product.company.alias}
+          src={product?.company?.alias === "care_health" ? care_health : logo}
+          alt={product?.company?.alias}
         />
       </div>
       <span
@@ -1252,7 +1254,7 @@ function AddOnDetailsRow({ addOn }) {
           align-items: center;
         `}
       >
-        {`${product.name} ${
+        {`${product?.name} ${
           members.filter(member => member !== "all").length
             ? `(${members})`
             : ""
@@ -1408,7 +1410,7 @@ function useReviewCartButton({ groupCode }) {
 function Discounts({ discounts = [], premium }) {
   const additionalDiscounts = useSelector(selectAdditionalDiscounts);
   const findAdditionalDiscount = discountAlias =>
-    additionalDiscounts.find(discount => discount.alias === discountAlias);
+    additionalDiscounts.find(discount => discount?.alias === discountAlias);
   return discounts.length > 0 ? (
     <>
       <div
@@ -1520,7 +1522,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
     },
   } = product;
 
-  const logoSrc = companies[companyAlias].logo;
+  const logoSrc = companies[companyAlias]?.logo;
 
   const {
     sum_insured,
@@ -1647,7 +1649,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
     const companies = useSelector(
       state => state.frontendBoot.frontendData.data.companies,
     );
-    const logoSrc = companies[addOn.product.company.alias].logo;
+    const logoSrc = companies[addOn?.product?.company?.alias]?.logo;
     return (
       <div
         css={`
@@ -1670,7 +1672,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                 margin-bottom: 5px;
               `}
               src={logoSrc}
-              alt={addOn.product.company.alias}
+              alt={addOn?.product?.company?.alias}
             />
           </div>
           <span
@@ -1685,14 +1687,14 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               }
             `}
           >
-            {addOn.product.name}
+            {addOn?.product?.name}
           </span>
         </div>
         <AddOnInfoMobile
           title="Cover Amount"
-          value={amount(addOn.sum_insured)}
+          value={amount(addOn?.sum_insured)}
         />
-        <AddOnInfoMobile title="Premium" value={amount(addOn.total_premium)} />
+        <AddOnInfoMobile title="Premium" value={amount(addOn?.total_premium)} />
       </div>
     );
   };
@@ -1787,7 +1789,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
   const DiscountsMobile = ({ discounts, premium }) => {
     const additionalDiscounts = useSelector(selectAdditionalDiscounts);
     const findAdditionalDiscount = discountAlias =>
-      additionalDiscounts.find(discount => discount.alias === discountAlias);
+      additionalDiscounts.find(discount => discount?.alias === discountAlias);
 
     return (
       <>
@@ -2007,9 +2009,9 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                 }
               `}
             >
-              {membersList.join(", ").legth > 10
-                ? `${membersList.join(", ").slice(0, 10)} ...}`
-                : membersList.join(", ")}
+              {membersList?.join(", ").legth > 10
+                ? `${membersList?.join(", ")?.slice(0, 10)} ...}`
+                : membersList?.join(", ")}
             </div>
             <div
               css={`
@@ -2065,8 +2067,8 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               <DiscountsMobile discounts={discounts} premium={premium} />
             ) : null}
 
-            {health_riders.length > 0 ? <RidersListMobile /> : null}
-            {addons.length > 0 ? <AddOnsCoversListMobile /> : null}
+            {health_riders?.length > 0 ? <RidersListMobile /> : null}
+            {addons?.length > 0 ? <AddOnsCoversListMobile /> : null}
           </div>
 
           <div
@@ -2117,8 +2119,8 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               >
                 Plan for:{" "}
                 {memberGroups[nextGroup]
-                  ?.map(item => item.replace("_", " "))
-                  .join(", ")}
+                  ?.map(item => item?.replace("_", " "))
+                  ?.join(", ")}
               </div>
             </div>
             <div
@@ -2256,15 +2258,15 @@ const ReviewCart = ({ groupCode, unEditable }) => {
               </div>
 
               {/* IT SHOULD BE COLLAPSIBLE */}
-              {health_riders.length > 0 ? (
+              {health_riders?.length > 0 ? (
                 <div
                   css={`
                     width: 100%;
                     margin-top: 5px;
                   `}
                 >
-                  {health_riders.length &&
-                    health_riders.map(({ name, total_premium }) => (
+                  {health_riders?.length &&
+                    health_riders?.map(({ name, total_premium }) => (
                       <CartDetailRow
                         key={name + total_premium}
                         title={name}
@@ -2324,7 +2326,7 @@ const ReviewCart = ({ groupCode, unEditable }) => {
                   {addons.length &&
                     addons.map((addOn, idx) => (
                       <AddOnDetailsRow
-                        key={addOn.product.name + addOn.premium + idx}
+                        key={addOn?.product?.name + addOn?.premium + idx}
                         addOn={addOn}
                       />
                     ))}
@@ -2391,8 +2393,8 @@ const ReviewCart = ({ groupCode, unEditable }) => {
             {hasNextGroupProduct ? (
               <ProceedButton
                 members={memberGroups[nextGroup]
-                  ?.map(item => item.replace("_", " "))
-                  .join(", ")}
+                  ?.map(item => item?.replace("_", " "))
+                  ?.join(", ")}
                 loading={isCartProductLoading}
                 onProceedClick={handleProceedClick}
               />
@@ -2497,8 +2499,8 @@ export function ReviewCartButton() {
         >
           <ProceedButton
             members={memberGroups[nextGroup]
-              ?.map(item => item.replace("_", " "))
-              .join(", ")}
+              ?.map(item => item?.replace("_", " "))
+              ?.join(", ")}
             loading={isCartProductLoading}
             onProceedClick={handleProceedClick}
           />
