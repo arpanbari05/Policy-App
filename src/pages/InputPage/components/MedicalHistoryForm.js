@@ -78,7 +78,7 @@ const MedicalHistoryForm = ({ posContent }) => {
           }
           setAppLoading(false);
           history.push(
-            getUrlWithEnquirySearch(`/quotes/${res?.data?.groups[0].id}`),
+            getUrlWithEnquirySearch(`/quotes/${res?.data?.data?.groups[0].id}`),
           );
         });
       } else {
