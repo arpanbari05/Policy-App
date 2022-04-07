@@ -1,7 +1,19 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { saveProposalData, submitProposalData } from "./ProposalSections.slice";
+import { useHistory, useParams, Link } from "react-router-dom";
+import { renderField } from "../../../components/FormBuilder/formUtils";
+
+import {
+  saveProposalData,
+  submitProposalData,
+  setMedUnderwritting,
+  setProposalData,
+  setShowBMI,
+  setShowNSTP,
+  setActiveIndex,
+  getProposalData,
+  setFailedBmiData,
+} from "./ProposalSections.slice";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useRevisedPremiumModal } from "../../../customHooks";
 import { useGetEnquiriesQuery } from "../../../api/api";
@@ -11,9 +23,11 @@ const useProposalSections = ({
   defaultValue,
   partialLength,
   setActivateLoader,
+  setShow,
 }) => {
   const [values, setValues] = useState(defaultValue);
-
+  const [errors, setErrors] = useState({});
+  console.log("dbdgbgbndgbd 2", errors, values);
   const [errorInField, setErrorInField] = useState(true);
 
   const history = useHistory();
@@ -40,16 +54,40 @@ const useProposalSections = ({
 
   const dispatch = useDispatch();
 
+  const havingAnyError = (errors, key) => {
+    console.log("fvbdkvsv", errors, key);
+    if (key) {
+      return Object.values(errors[key]).some(el => Boolean(el));
+    } else {
+      return Object.keys(errors).map(key => {
+        if (errors[key] instanceof Object) {
+          return havingAnyError(errors, key);
+        } else return Boolean(errors[key]);
+      });
+    }
+    // return true
+  };
+
+  console.log("dfbnfdb", havingAnyError(errors), errors);
+
   const everyRequiredFilled = (schema, values) => {
+    console.log("vbksdv", schema, values);
     if (Array.isArray(schema))
       return schema
-        .filter(el => el.validate && el.validate.required)
+        .filter(
+          el => el.validate && el.validate.required && renderField(el, values),
+        )
         .every(el => values[el.name]);
     else
       return Object.keys(schema)
         .map(key =>
           schema[key]
-            .filter(el => el.validate && el.validate.required)
+            .filter(
+              el =>
+                el.validate &&
+                el.validate.required &&
+                renderField(el, values, key),
+            )
             .every(el => values[key][el.name]),
         )
         .includes(false)
@@ -147,9 +185,12 @@ const useProposalSections = ({
   };
 
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
+    if (havingAnyError(errors).includes(true)) {
+      setShow(havingAnyError(errors).indexOf(true));
+    }
     if (
       formName === "Proposer Details" &&
-      !errorInField &&
+      !havingAnyError(errors).includes(true) &&
       everyRequiredFilled(schema[formName], sendedVal)
     ) {
       setSubmit(true);
@@ -178,13 +219,13 @@ const useProposalSections = ({
       );
     } else if (
       formName === "Insured Details" &&
-      !errorInField &&
+      !havingAnyError(errors).includes(true) &&
       everyRequiredFilled(schema[formName], sendedVal)
     ) {
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
-          ({ prevProposalData, updatedProposalData }) => {
+          ({ prevProposalData, updatedProposalData,responseData }) => {
             callback();
 
             revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
@@ -198,6 +239,20 @@ const useProposalSections = ({
                 callback: () => {},
               });
             } else {
+              if (
+                responseData.failed_bmi.health &&
+                !groups.some(
+                  group => group.plan_type === "I" || group.plan_type === "F",
+                )
+              ) {
+                dispatch(setFailedBmiData(responseData.failed_bmi.health));
+                dispatch(
+                  setShowBMI(
+                    Object.keys(responseData.failed_bmi.health).join(", "),
+                  ),
+                );
+              }
+              console.log("sblsdwgsd", updatedProposalData);
               setActive(getUnfilledForm(updatedProposalData));
             }
           },
@@ -226,9 +281,10 @@ const useProposalSections = ({
       );
     } else if (
       formName === "Other Details" &&
-      !errorInField &&
+      !havingAnyError(errors).includes(true) &&
       everyRequiredFilled(schema[formName], sendedVal)
     ) {
+
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
@@ -275,6 +331,8 @@ const useProposalSections = ({
     setErrorInField,
     errorInField,
     additionalErrors,
+    setErrors,
+    errors,
   };
 };
 

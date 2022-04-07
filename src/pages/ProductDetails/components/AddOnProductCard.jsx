@@ -366,7 +366,7 @@ function Detail({ label, children }) {
     >
       <div
         css={`
-          color: ${colors.font.one};
+          color: ${colors?.font?.one};
         `}
       >
         {label}
@@ -388,12 +388,12 @@ function isQueryLoading(query) {
 
 function useTotalPremiumLoader(cartEntry) {
   const { group } = cartEntry;
-  const tenureDiscount = useTenureDiscount(group.id);
-  const riders = useRiders({ quote: cartEntry, groupCode: group.id });
+  const tenureDiscount = useTenureDiscount(group?.id);
+  const riders = useRiders({ quote: cartEntry, groupCode: group?.id });
 
   const isTotalPremiumLoading = _.some([
-    isQueryLoading(tenureDiscount.query),
-    isQueryLoading(riders.query),
+    isQueryLoading(tenureDiscount?.query),
+    isQueryLoading(riders?.query),
   ]);
 
   return isTotalPremiumLoading;

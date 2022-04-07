@@ -115,7 +115,7 @@ const DateComp = ({
                 )
               : new Date(Date.now())
           }
-          placeholderText={oldVal || placeholder}
+          placeholderText={!oldVal || isNaN(oldVal)?placeholder:oldVal}
           openToDate={getOpentoDate(oldVal)}
           onChange={date => {
             onChange({ target: { value: moment(date).format("DD-MM-YYYY") } });

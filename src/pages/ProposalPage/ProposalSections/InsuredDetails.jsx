@@ -24,8 +24,8 @@ const InsuredDetails = ({
   setBack,
   setActivateLoader,
 }) => {
-  const [show, setShow] = useState(1);
-
+  const [continueBtnClick, setContinueBtnClick] = useState(false);
+  const [show, setShow] = useState(0);
   const { proposalData } = useSelector(state => state.proposalPage);
 
   const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
@@ -44,6 +44,8 @@ const InsuredDetails = ({
     revisedPremiumPopupUtilityObject,
     setErrorInField,
     triggerSaveForm,
+    setErrors,
+    errors,
   } = useProposalSections({
     setActive,
     name,
@@ -52,6 +54,18 @@ const InsuredDetails = ({
     setShow,
     setActivateLoader,
   });
+
+console.log("fsvbksvbs",errors)
+useEffect(() => {
+console.log("fvbkxfkjh",isValid)
+  if (isValid.includes(false)) {
+    setShow(isValid.indexOf(false));
+  }
+  if (isValid.includes(undefined)) {
+    setShow(isValid.indexOf(undefined));
+  }
+
+},[isValid])
 
   const { getPanelDescContent } = useInsuredDetails(
     name,
@@ -96,9 +110,9 @@ const InsuredDetails = ({
             values={getPanelDescContent(item)}
             key={index}
             title={`${item}`}
-            show={show === "all" ? true : show === index + 1 ? true : false}
+            show={show === index}
             onClick={() =>
-              setShow(prev => (prev === index + 1 ? 0 : index + 1))
+              setShow(index)
             }
           >
             <div>
@@ -171,7 +185,10 @@ const InsuredDetails = ({
                   schema={schema[item]}
                   components={components}
                   fetchValues={res => {
-                    setValues({ ...values, [item]: res });
+                    setValues(prev => ({ ...prev, [item]: res }));
+                  }}
+                  fetchErrors={res => {
+                    setErrors(prev => ({ ...prev, [item]: res }));
                   }}
                   setErrorInField={setErrorInField}
                   fetchValid={res => {
@@ -213,7 +230,7 @@ const InsuredDetails = ({
           onClick={() => {
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
-
+            setSubmit("Medical");
             if (name === "Medical Details" && canProceed?.canProceed) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
@@ -226,8 +243,8 @@ const InsuredDetails = ({
                       ?.medical_nstp_declaration_message,
                   }),
                 );
-              setSubmit("PARTIAL");
-              triggerSaveForm({ sendedVal: values, formName: name });
+              
+              triggerSaveForm({sendedVal:values,formName:name})
               // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");

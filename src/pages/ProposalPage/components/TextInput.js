@@ -260,7 +260,8 @@ const TextInput = ({
         }}
         onInput={onInput}
         onKeyDown={onKeyDown}
-        value={isChanged ? fallbackValue : value ? value : ""}
+        // value={isChanged ? fallbackValue : value ? value : ""}
+        value={value ? value : ""}
         onKeyPress={onKeyPress}
         maxLength={name === "name" ? 60 : maxLength}
         textTransform={textTransform}
