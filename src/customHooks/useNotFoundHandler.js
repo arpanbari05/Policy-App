@@ -4,7 +4,9 @@ import { useUrlEnquiry } from ".";
 
 export default function useNotFoundHandler(filterPath) {
   const { groupCode } = useParams();
+  
   const history = useHistory();
+
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
   useEffect(() => {

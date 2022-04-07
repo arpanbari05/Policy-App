@@ -90,8 +90,8 @@ function TopUpAddOns({ cartEntry, insurance_type }) {
     isFetching,
     data: topUpQuotes,
   } = useGetTopUpAddOnsQuery({
-    sum_insured: cartEntry.sum_insured,
-    groupCode: cartEntry.group.id,
+    sum_insured: cartEntry?.sum_insured,
+    groupCode: cartEntry?.group?.id,
     tenure: 1,
     companies: topUpCompanies,
     insurance_type,
@@ -133,30 +133,30 @@ function getInitialMembers(addOn, cartEntry) {
   if (!addOn) return [];
   const insurance_type = getInsuranceType(addOn);
   if (insurance_type === "top_up") {
-    return cartEntry.group.members;
+    return cartEntry?.group?.members;
   }
 
-  const addOnAdded = cartEntry.addons.find(
-    addOnAdded => addOnAdded.product.id === addOn.product.id,
+  const addOnAdded = cartEntry?.addons?.find(
+    addOnAdded => addOnAdded?.product?.id === addOn?.product?.id,
   );
 
   if (addOnAdded) {
-    return addOnAdded.members;
+    return addOnAdded?.members;
   }
 
-  return [addOn.member];
+  return [addOn?.member];
 }
 
 function getInitialSumInsured(quotesList, cartEntry) {
   const firstQuote = quotesList[0];
   if (!firstQuote) return;
 
-  const addOnAdded = cartEntry.addons.find(
-    addOnAdded => addOnAdded.product.id === firstQuote.product.id,
+  const addOnAdded = cartEntry?.addons?.find(
+    addOnAdded => addOnAdded?.product.id === firstQuote?.product?.id,
   );
 
   if (addOnAdded) {
-    return addOnAdded.sum_insured;
+    return addOnAdded?.sum_insured;
   }
   return;
 }
@@ -165,12 +165,12 @@ function getInitialDeductible(quotesList, cartEntry) {
   const firstQuote = quotesList[0];
   if (!firstQuote) return;
 
-  const addOnAdded = cartEntry.addons.find(
-    addOnAdded => addOnAdded.product.id === firstQuote.product.id,
+  const addOnAdded = cartEntry?.addons?.find(
+    addOnAdded => addOnAdded?.product?.id === firstQuote?.product?.id,
   );
 
   if (addOnAdded) {
-    return addOnAdded.deductible;
+    return addOnAdded?.deductible;
   }
   return;
 }
@@ -189,7 +189,7 @@ function AddOnCard({ quotesList = [], cartEntry }) {
     },
   });
 
-  const { addAddOns, removeAddOns } = useAddOns(cartEntry.group.id);
+  const { addAddOns, removeAddOns } = useAddOns(cartEntry?.group?.id);
 
   const { getCompanyLogo } = useCompanies();
 
@@ -198,27 +198,29 @@ function AddOnCard({ quotesList = [], cartEntry }) {
   );
 
   const handleUpdate = data => {
-    handleSumInsuredChange({ value: data.sumInsured });
-    handleDeductibleChange({ value: data.deductible });
-    setMembers(data.member === "all" ? cartEntry.group.members : [data.member]);
+    handleSumInsuredChange({ value: data?.sumInsured });
+    handleDeductibleChange({ value: data?.deductible });
+    setMembers(
+      data?.member === "all" ? cartEntry?.group?.members : [data?.member],
+    );
   };
 
-  if (quote && members.length === 1) {
+  if (quote && members?.length === 1) {
     quote = quotesList.find(
-      addOn => matchQuotes(addOn, quote) && addOn.member === members[0],
+      addOn => matchQuotes(addOn, quote) && addOn?.member === members[0],
     );
   }
 
   if (!quote) return null;
 
   const currentQuotes =
-    members.length > 1
+    members?.length > 1
       ? quotesList.filter(addOn => matchQuotes(addOn, quote))
       : [quote];
 
   let totalPremium = getAddOnsTotalPremium(currentQuotes);
 
-  const logo = getCompanyLogo(quote.company_alias);
+  const logo = getCompanyLogo(quote?.company_alias);
 
   const handleChange = (quote, checked) => {
     if (checked) {
@@ -229,14 +231,14 @@ function AddOnCard({ quotesList = [], cartEntry }) {
   };
 
   const checked = currentQuotes.every(quote =>
-    cartEntry.addons.some(addOn => addOn.product.id === quote.product.id),
+    cartEntry?.addons?.some(addOn => addOn?.product?.id === quote?.product?.id),
   );
 
   return (
     <div
       className="p-3"
       css={`
-        box-shadow: ${boxShadows.one};
+        box-shadow: ${boxShadows?.one};
         border-radius: 1em;
         background: #fff;
       `}
@@ -249,7 +251,7 @@ function AddOnCard({ quotesList = [], cartEntry }) {
       >
         <img
           src={logo}
-          alt={quote.company_alias}
+          alt={quote?.company_alias}
           css={`
             width: 65px;
             height: 35px;
@@ -265,9 +267,9 @@ function AddOnCard({ quotesList = [], cartEntry }) {
             css={`
               color: #253858;
             `}
-            title={quote.product.name}
+            title={quote?.product?.name}
           >
-            {quote.product.name}
+            {quote?.product?.name}
           </div>
           <div>
             <button
@@ -287,18 +289,18 @@ function AddOnCard({ quotesList = [], cartEntry }) {
         </div>
       </div>
       <div className="mt-3">
-        {quote.deductible ? (
+        {quote?.deductible ? (
           <Detail label={"Deductible"} onClick={editToggle.on}>
-            {amount(quote.deductible)}
+            {amount(quote?.deductible)}
           </Detail>
         ) : null}
         <Detail label={"Cover Amount"} onClick={editToggle.on}>
-          {amount(quote.sum_insured)}
+          {amount(quote?.sum_insured)}
         </Detail>
         <Detail
           label={"Insured"}
           onClick={editToggle.on}
-          editable={!quote.deductible}
+          editable={!quote?.deductible}
         >
           <MemberText>{members.join(", ")}</MemberText>
         </Detail>
