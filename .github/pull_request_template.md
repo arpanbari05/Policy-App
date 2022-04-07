@@ -1,7 +1,12 @@
 ### 🚀 Pull Request Verification
 
-**Please validate all the checks so we can merge your pull request.**
 
+**Please add Description**<br>
+Fixes a bug where '...' happened when '...'
+
+
+
+**Please validate all the checks so we can merge your pull request.**
 **Checklist**
 
 - [ ] Have you tested assigned bugs on your local environment.
