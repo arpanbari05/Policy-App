@@ -105,7 +105,7 @@ const ProductDetails = () => {
   if (!enquiryId) return <PageNotFound />;
 
   if (!cartEntry) {
-    return <Redirect to={`/quotes/${groupCode}?enquiryId=${enquiryId}`} />;
+    return history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
   }
 
   return (
