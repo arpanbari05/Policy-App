@@ -108,7 +108,7 @@ const MedicalHistoryForm = ({ posContent }) => {
         dangerouslySetInnerHTML={{
           __html: posContent.question
             ? posContent.question
-            : "Any of the Insured Member have a Medical History?",
+            : "Any of the insured member have a medical history?",
         }}
       ></Title>
       <CustomProgressBar now={5} total={5} />
