@@ -340,7 +340,7 @@ function MemberOption({
               margin-right: 0.3em;
             `}
           >
-            {member.isSelected ? (
+            {!validateSpouse(selectedMembers, member) && member.isSelected ? (
               <IoCheckmarkCircleSharp
                 css={`
                   color: ${primary_color};
