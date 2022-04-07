@@ -60,7 +60,7 @@ const Toggle = ({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    const allMaleMembers = ["son", "grand_father", "father", "father_in_law"];
+    const allMaleMembers = ["son", "grand_father", "father", "father_in_law", ...[1,2,3].map(i => `son${i}`)];
     if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
@@ -68,7 +68,7 @@ const Toggle = ({
       setBoolean(value[`is${name}`]);
       setMembersStatus(value.members);
     }
-
+console.log("bfxfjkl",membersToMap)
     if (restrictMaleMembers) {
       if (genderOfSelf === "M"){
         setMembersToMap(membersToMap.filter(member => member !== "self"));
@@ -76,7 +76,7 @@ const Toggle = ({
         setMembersToMap(membersToMap.filter(member => member !== "spouse"));
       }
 
-      setMembersToMap(prev => prev.filter(el => !allMaleMembers.includes(el)));
+      setMembersToMap(prev => prev.filter(el => !allMaleMembers.includes(el) ));
 
       console.log("evekfnmv", membersToMap, getAllMembers());
     }

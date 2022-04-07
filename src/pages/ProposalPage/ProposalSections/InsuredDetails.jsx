@@ -236,7 +236,7 @@ console.log("fvbkxfkjh",isValid)
           onClick={() => {
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
-
+            setSubmit("Medical");
             if (name === "Medical Details" && canProceed?.canProceed) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
@@ -249,7 +249,7 @@ console.log("fvbkxfkjh",isValid)
                       ?.medical_nstp_declaration_message,
                   }),
                 );
-              setSubmit("PARTIAL");
+              
               triggerSaveForm({sendedVal:values,formName:name})
               // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {

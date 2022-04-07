@@ -31,8 +31,8 @@ const useProposalSections = ({
   setActivateLoader,
 }) => {
   const [values, setValues] = useState(defaultValue);
-  const [errors,setErrors] = useState({});
-  console.log("dbdgbgbndgbd 2",errors,values)
+  const [errors, setErrors] = useState({});
+  console.log("dbdgbgbndgbd 2", errors, values);
   const [errorInField, setErrorInField] = useState(true);
   const history = useHistory();
   const queryStrings = useUrlQuery();
@@ -50,33 +50,40 @@ const useProposalSections = ({
   console.log("Sbsfbnflbf", errorInField);
   const dispatch = useDispatch();
 
-const havingAnyError = (errors,key) => {
-console.log("fvbdkvsv",errors,key)
-if(key){
-  return Object.values(errors[key]).some(el => Boolean(el))
-}else{
-  return Object.keys(errors).map((key) => {
-    if(errors[key] instanceof Object){
-      return havingAnyError(errors,key)
-    }else return Boolean(errors[key])
-  })
-}
-// return true
-}
+  const havingAnyError = (errors, key) => {
+    console.log("fvbdkvsv", errors, key);
+    if (key) {
+      return Object.values(errors[key]).some(el => Boolean(el));
+    } else {
+      return Object.keys(errors).map(key => {
+        if (errors[key] instanceof Object) {
+          return havingAnyError(errors, key);
+        } else return Boolean(errors[key]);
+      });
+    }
+    // return true
+  };
 
-console.log("dfbnfdb",havingAnyError(errors),errors)
+  console.log("dfbnfdb", havingAnyError(errors), errors);
 
   const everyRequiredFilled = (schema, values) => {
-    console.log("vbksdv",schema, values);
+    console.log("vbksdv", schema, values);
     if (Array.isArray(schema))
       return schema
-        .filter(el => el.validate && el.validate.required && renderField(el, values))
+        .filter(
+          el => el.validate && el.validate.required && renderField(el, values),
+        )
         .every(el => values[el.name]);
     else
       return Object.keys(schema)
         .map(key =>
           schema[key]
-            .filter(el => el.validate && el.validate.required && renderField(el, values, key))
+            .filter(
+              el =>
+                el.validate &&
+                el.validate.required &&
+                renderField(el, values, key),
+            )
             .every(el => values[key][el.name]),
         )
         .includes(false)
@@ -194,7 +201,7 @@ console.log("dfbnfdb",havingAnyError(errors),errors)
       isValid,
       everyRequiredFilled(schema[formName], sendedVal),
     );
-    if(havingAnyError(errors).includes(true)){
+    if (havingAnyError(errors).includes(true)) {
       setShow(havingAnyError(errors).indexOf(true));
     }
     if (
@@ -256,7 +263,12 @@ console.log("dfbnfdb",havingAnyError(errors),errors)
                 callback: () => {},
               });
             } else {
-              if (responseData.failed_bmi.health) {
+              if (
+                responseData.failed_bmi.health &&
+                !groups.some(
+                  group => group.plan_type === "I" || group.plan_type === "F",
+                )
+              ) {
                 dispatch(setFailedBmiData(responseData.failed_bmi.health));
                 dispatch(
                   setShowBMI(
@@ -270,10 +282,7 @@ console.log("dfbnfdb",havingAnyError(errors),errors)
           },
         ),
       );
-    } else if (
-      formName === "Medical Details" &&
-      !errorInField 
-    ) {
+    } else if (formName === "Medical Details" && !errorInField) {
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
@@ -294,7 +303,11 @@ console.log("dfbnfdb",havingAnyError(errors),errors)
           },
         ),
       );
-    } else if (formName === "Other Details" && !havingAnyError(errors).includes(true) && everyRequiredFilled(schema[formName], sendedVal)) {
+    } else if (
+      formName === "Other Details" &&
+      !havingAnyError(errors).includes(true) &&
+      everyRequiredFilled(schema[formName], sendedVal)
+    ) {
       console.log("fblkfblfn", sendedVal);
       dispatch(
         saveProposalData(
@@ -350,7 +363,7 @@ console.log("dfbnfdb",havingAnyError(errors),errors)
     errorInField,
     additionalErrors,
     setErrors,
-    errors
+    errors,
   };
 };
 
