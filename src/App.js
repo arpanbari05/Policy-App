@@ -6,7 +6,7 @@ import { lazy } from "react";
 import { Suspense } from "react";
 import { FullScreenLoader, LoadCart } from "./components";
 import ComparePage from "./pages/ComparePage";
-import ErrorPage from "./components/Common/ErrorPage/ErrorPage";
+import NotFoundPage from "./components/Common/NotFoundPage/NotFoundPage";
 import { useFrontendBoot } from "../src/customHooks";
 import { BaseComponent } from "./components/BaseComponent";
 const ProposalPage = lazy(() => import("./pages/ProposalPage/ProposalPage"));
@@ -56,7 +56,7 @@ function App() {
         <Route exact path="/thankyou/">
           <ThankYouPage />
         </Route>
-        <Route path="*" component={ErrorPage} />
+        <Route path="*" component={NotFoundPage} />
         {process.env.NODE_ENV === "development" && (
           <Route path={"/test"} exact>
             Hi

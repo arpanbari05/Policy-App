@@ -3,17 +3,15 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import AppProviders from "./AppProviders";
 import { GlobalStyles } from "./styles";
-import ErrorBoundary from "./components/Common/ErrorPage/errorPage500";
 import CacheBuster from "react-cache-buster";
 import { version } from "../package.json";
-
-
+import ErrorBoundary from "./ErrorBoundary";
 
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyles />
-    <AppProviders>
-      <ErrorBoundary>
+    <ErrorBoundary>
+      <AppProviders>
         {process.env.NODE_ENV === "production" ? (
           <CacheBuster
             currentVersion={version}
@@ -25,8 +23,8 @@ ReactDOM.render(
         ) : (
           <App />
         )}
-      </ErrorBoundary>
-    </AppProviders>
+      </AppProviders>
+    </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById("root"),
 );
