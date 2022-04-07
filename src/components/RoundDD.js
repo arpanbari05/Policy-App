@@ -17,6 +17,8 @@ const RoundDD = ({
   selected,
   redBorder,
   code,
+  member,
+  selectedMembers,
 
   ...props
 }) => {

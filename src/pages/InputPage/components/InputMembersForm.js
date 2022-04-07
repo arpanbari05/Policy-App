@@ -72,6 +72,7 @@ function InputMembersForm({ posContent, ...props }) {
     if (!isValid) return;
 
     const selectedMembers = getSelectedMembers();
+    console.log("selectedMembers", selectedMembers);
 
     const sendData = {
       members: selectedMembers.map(member => ({
