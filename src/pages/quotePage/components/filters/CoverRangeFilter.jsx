@@ -9,6 +9,7 @@ import useUpdateFilters from "./useUpdateFilters";
 import { Filter, FilterHead } from ".";
 import { setPosPopup } from "../../quote.slice";
 import { useDispatch } from "react-redux";
+import { isSSOJourney } from "../../../../utils/helper";
 
 function validateCustomCover(customCover) {
   if (customCover < 200000) {
@@ -99,7 +100,9 @@ function CoverFilterModal({ onClose, ...props }) {
     updateFilters({
       cover: updatedCoverFilter,
     });
-    !selectedCover?.applicable_on_pos && pos_nonpos_switch_message
+    !selectedCover?.applicable_on_pos &&
+    isSSOJourney() &&
+    pos_nonpos_switch_message
       ? dispatch(setPosPopup(true))
       : dispatch(setPosPopup(false));
     onClose && onClose();
