@@ -56,8 +56,6 @@ import { RevisedPremiumPopup } from "../ProductDetails/components/ReviewCart";
 const ProposalPage = () => {
   const history = useHistory();
 
-  
-
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -81,7 +79,7 @@ const ProposalPage = () => {
 
   const [listOfForms, setListOfForms] = useState([]);
 
-  const totalPremium = useUSGILifeStyleDiscount()
+  const totalPremium = useUSGILifeStyleDiscount();
 
   useEffect(() => {
     if (currentSchema instanceof Object)
@@ -139,7 +137,6 @@ const ProposalPage = () => {
   }, [activeIndex]);
 
   const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
-  
 
   // to stop loader on cancle cta error popup
   useEffect(() => {
@@ -602,7 +599,10 @@ const ProposalPage = () => {
                       }
                     `}
                   >
-                    <ProductSummary totalPremium={totalPremium} setActive={setActive} />
+                    <ProductSummary
+                      totalPremium={totalPremium}
+                      setActive={setActive}
+                    />
                   </div>
                   <div
                     // lg={8}
@@ -688,7 +688,6 @@ const ProposalPage = () => {
           />
         )}
       </Page>
-     
     </>
   );
 };

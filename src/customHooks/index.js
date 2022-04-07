@@ -1906,7 +1906,7 @@ export const useRevisedPremiumModal = () => {
   const updatedTotalPremium =
     getTotalPremium(cartEntries); /* Gets the updated value each time */
 
-  const getUpdatedCart = next => {
+  const getUpdatedCart = (next = () => {}) => {
     dispatch(
       api.util.invalidateTags([
         "Cart",
@@ -1917,12 +1917,7 @@ export const useRevisedPremiumModal = () => {
     );
     next();
   }; /* Performs refetch from the server */
-  // console.log(
-  //   "wrgfbkjwrf",
-  //   revisedPremiumPopupToggle,
-  //   updatedTotalPremium,
-  //   prevTotalPremium,
-  // );
+
   useEffect(() => {
     if (+prevTotalPremium === +updatedTotalPremium) {
       revisedPremiumPopupToggle.off();
