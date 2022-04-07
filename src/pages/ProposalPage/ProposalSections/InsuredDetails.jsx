@@ -25,7 +25,7 @@ const InsuredDetails = ({
   setActivateLoader
 }) => {
   const [continueBtnClick, setContinueBtnClick] = useState(false);
-  const [show, setShow] = useState(1);
+  const [show, setShow] = useState(0);
   const { proposalData } = useSelector(state => state.proposalPage);
   const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
     useFrontendBoot();
@@ -44,7 +44,9 @@ const InsuredDetails = ({
     revisedPremiumPopupUtilityObject,
     errorInField,
     setErrorInField,
-    triggerSaveForm
+    triggerSaveForm,
+    setErrors,
+    errors,
   } = useProposalSections({
     setActive,
     name,
@@ -53,6 +55,18 @@ const InsuredDetails = ({
     setShow,
     setActivateLoader
   });
+
+console.log("fsvbksvbs",errors)
+useEffect(() => {
+console.log("fvbkxfkjh",isValid)
+  if (isValid.includes(false)) {
+    setShow(isValid.indexOf(false));
+  }
+  if (isValid.includes(undefined)) {
+    setShow(isValid.indexOf(undefined));
+  }
+
+},[isValid])
 
   const { getPanelDescContent } = useInsuredDetails(
     name,
@@ -102,9 +116,9 @@ const InsuredDetails = ({
             values={getPanelDescContent(item)}
             key={index}
             title={`${item}`}
-            show={show === "all" ? true : show === index + 1 ? true : false}
+            show={show === index}
             onClick={() =>
-              setShow(prev => (prev === index + 1 ? 0 : index + 1))
+              setShow(index)
             }
           >
             <div>
@@ -177,7 +191,10 @@ const InsuredDetails = ({
                   schema={schema[item]}
                   components={components}
                   fetchValues={res => {
-                    setValues({ ...values, [item]: res });
+                    setValues(prev => ({ ...prev, [item]: res }));
+                  }}
+                  fetchErrors={res => {
+                    setErrors(prev => ({ ...prev, [item]: res }));
                   }}
                   setErrorInField={setErrorInField}
                   fetchValid={res => {

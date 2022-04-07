@@ -12,14 +12,18 @@ const useFormBuilder = (
   canProceed,
   yesSelected,
   proposalDetails,
-  setErrorInField
+  setErrorInField,
+  fetchErrors
 ) => {
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
+  console.log("dbdgbgbndgbd",errors,values)
   const [isValid, setIsValid] = useState();
   const updateValue = (name, value, removeOtherValues = false) => {
+    console.log("dhdfjklb 1",name, value)
     if (removeOtherValues) {
+
       setValues({ [name]: value });
       fetchValues({ [name]: value });
     } else {
@@ -61,6 +65,7 @@ const useFormBuilder = (
   };
 
   const updateValues = (multipleValues = {}) => {
+    console.log("dhdfjklb 2",multipleValues)
     setValues({ ...values, ...multipleValues });
     fetchValues({ ...values, ...multipleValues });
   };
@@ -213,12 +218,15 @@ const useFormBuilder = (
         setIsValid(tempIsValid);
       });
     }
+    console.log("fvjbasdvk", errorsTemp);
 
     setErrors({ ...errors, ...errorsTemp });
+    fetchErrors({ ...errors, ...errorsTemp });
   };
 
   const clearField = name => {
     setValues({ ...values, [name]: null });
+    
   };
 
   // to scroll page as per error

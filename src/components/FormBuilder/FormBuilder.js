@@ -37,7 +37,8 @@ const FormBuilder = ({
   proposalData,
   canProceed,
   yesSelected,
-  setErrorInField
+  setErrorInField,
+  fetchErrors
 }) => {
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -48,6 +49,7 @@ const FormBuilder = ({
   );
   const [nomineeRelationAutopopulated, setNomineeRelationAutopopulated] =
     useState(false);
+
   let memberGroupsAsPerMembers = useSelector(({ greetingPage }) =>
     greetingPage.proposerDetails.groups.reduce(
       (acc, { id, members }) => ({
@@ -57,9 +59,6 @@ const FormBuilder = ({
       {},
     ),
   );
-
-
-
 
   const {
     updateValue,
@@ -85,8 +84,11 @@ const FormBuilder = ({
     canProceed,
     yesSelected,
     proposalDetails,
-    setErrorInField
+    setErrorInField,
+    fetchErrors,
   );
+
+    console.log("sfghljsf",values)
 
   const [trigger, setTrigger] = useState(false);
 
@@ -155,9 +157,11 @@ const FormBuilder = ({
         if (dataForAutopopulate[nameWithoutNominee])
           acc[name] = dataForAutopopulate[nameWithoutNominee];
       });
-
-      setValues({ ...acc, nominee_relation: nomineeRelation });
+console.log("sgvsfjvhsfkv",acc)
+updateValues({ ...acc, nominee_relation: nomineeRelation });
       setNomineeRelationAutopopulated(true);
+    }else{
+      setValues({ nominee_relation: values.nominee_relation });
     }
   }, [values.nominee_relation]);
 

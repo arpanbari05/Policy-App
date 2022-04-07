@@ -11,6 +11,7 @@ import Correct from "../../assets/images/correct.png";
 import Unsuccess from "../../assets/images/unsuccess.png";
 import CurR from "../../assets/images/img_cut_r.png";
 import CutL from "../../assets/images/img_cut.png";
+import { policyPdf } from "./serviceApi";
 import SecureLS from "secure-ls";
 import {
   fetchPdf,
@@ -45,8 +46,11 @@ const ThankYouPage = () => {
   } = useTheme();
 
   const { cartEntries } = useCart();
+  const { policyStatus, policyLoading } = useSelector(
+    state => state.proposalPage,
+  );
 
-  const total_premium = amount(getTotalPremium(cartEntries))
+  const total_premium = amount(policyStatus.length?policyStatus.reduce((acc,el) => acc += parseInt(el.total_premium), 0):0);
 
   const {
     data: { tenant: tenantDetail, settings },
@@ -62,9 +66,7 @@ const ThankYouPage = () => {
 
   const status = useSelector(state => state.proposalPage);
 
-  const { policyStatus, policyLoading } = useSelector(
-    state => state.proposalPage,
-  );
+
 
   const cart = {
     ...useSelector(state => state.cart),

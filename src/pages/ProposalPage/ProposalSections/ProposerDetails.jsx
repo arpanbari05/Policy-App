@@ -22,10 +22,10 @@ const ProposerDetails = ({
   defaultValue = {},
   activeForm,
   setProposerDactive,
-  setActivateLoader
+  setActivateLoader,
 }) => {
   const [continueBtnClick, setContinueBtnClick] = useState(false);
-  const { values, setValues, setValid,isValid, submit, setSubmit,triggerSaveForm,revisedPremiumPopupUtilityObject,setErrorInField,errorInField} =
+  const { values, setValues, setValid,isValid, submit, setSubmit,triggerSaveForm,revisedPremiumPopupUtilityObject,setErrorInField,errorInField,errors,setErrors} =
     useProposalSections({setActive, name, defaultValue,setActivateLoader});
   const proposelSelectedDOBRedux = useSelector(
     ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob
@@ -98,6 +98,7 @@ const ProposerDetails = ({
             schema={schema}
             components={components}
             fetchValues={setValues}
+            fetchErrors={setErrors}
             fetchValid={setValid}
             submitTrigger={submit}
             setSubmit={setSubmit}

@@ -111,12 +111,22 @@ const Toggle = ({
       isValid = false;
     }
 
-    onChange({
-      ...value,
-      [`is${name}`]: boolean,
-      members: membersStatus,
-      isValid,
-    });
+    if(boolean === "N"){
+      onChange({
+        [`is${name}`]: boolean,
+        members: {},
+        isValid,
+      });
+    }else{
+      onChange({
+        ...value,
+        [`is${name}`]: boolean,
+        members: membersStatus,
+        isValid,
+      });
+    }
+
+    
   }, [boolean, membersStatus, customShowMembers]);
 
   console.log("sgjsgsrgr", {value, label, boolean,membersToMap,showMembers, customShowMembers, membersStatus,restrictMaleMembers,customMembers, members});
