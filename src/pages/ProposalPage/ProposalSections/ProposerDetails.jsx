@@ -28,9 +28,9 @@ const ProposerDetails = ({
   const { values, setValues, setValid,isValid, submit, setSubmit,triggerSaveForm,revisedPremiumPopupUtilityObject,setErrorInField,errorInField,errors,setErrors} =
     useProposalSections({setActive, name, defaultValue,setActivateLoader});
   const proposelSelectedDOBRedux = useSelector(
-    ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob
+    ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob,
   );
-  
+
   const {
     data: {
       data: {
@@ -42,27 +42,21 @@ const ProposerDetails = ({
     },
   } = useGetEnquiriesQuery();
 
-  
   const dispatch = useDispatch();
   useEffect(() => {
     if (name === "Proposer Details") {
       let proposerAge = parseInt(
-        members?.filter((i) => i.type === "self")[0]?.age
+        members?.filter(i => i.type === "self")[0]?.age,
       );
       let currentYear = new Date().getFullYear();
-      let currentMonth = new Date().getMonth();
-      let currentDate = new Date().getDate();
-    
-      let estimatedProposerDOB = `${currentYear - proposerAge}`
+
+      let estimatedProposerDOB = `${currentYear - proposerAge}`;
       let prefilledValues = {
         name: proposerName,
         gender,
         mobile,
         email,
         dob: proposelSelectedDOBRedux || estimatedProposerDOB,
-        // pincode: proposerDetails.pincode.includes("-")
-        //   ? proposerDetails.pincode.split("-")[1]
-        //   : proposerDetails.pincode,
       };
       schema.forEach(item => {
         if (item?.value)
@@ -77,18 +71,10 @@ const ProposerDetails = ({
           );
         }
       });
-  
-      setValues({  ...prefilledValues,...values });
+
+      setValues({ ...prefilledValues, ...values });
     }
   }, []);
-
-// useEffect(() => {
-//   if(continueBtnClick && errorInField){
-    
-//     setContinueBtnClick(false);  
-//   }
-// },[submit,continueBtnClick,errorInField])
-
 
   return (
     <>
@@ -120,10 +106,11 @@ const ProposerDetails = ({
         />
         <ContinueBtn
           onClick={() => {
-              setSubmit(true);
-              // setContinueBtnClick(true);  
-              console.log("efglehfl",errorInField) 
-            triggerSaveForm({sendedVal:values,formName:"Proposer Details"})         
+            setSubmit(true);
+            triggerSaveForm({
+              sendedVal: values,
+              formName: "Proposer Details",
+            });
           }}
         />
         {revisedPremiumPopupUtilityObject.isOn && (

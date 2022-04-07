@@ -701,6 +701,7 @@ function EditMembers({}) {
 export const RevisedPremiumPopup = ({
   revisedPremiumPopupUtilityObject,
   onClose,
+  title,
   ...props
 }) => {
   const { colors } = useTheme();
@@ -744,8 +745,14 @@ export const RevisedPremiumPopup = ({
             font-size: 1.27rem;
           `}
         >
-          Hi <span className="text-capitalize">{firstName}, </span>
-          Revised Premium due to change in date of birth
+          {title ? (
+            title
+          ) : (
+            <>
+              Hi <span className="text-capitalize">{firstName}, </span>
+              Revised Premium due to change in date of birth
+            </>
+          )}
         </h1>
       </div>
 

@@ -1,9 +1,5 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import swal from "sweetalert";
-import { getCart } from "../../Cart/cart.slice";
-import { api } from "../../../api/api";
-import { useMembers } from "../../../customHooks";
 import { useHistory, useParams, Link } from "react-router-dom";
 import { renderField } from "../../../components/FormBuilder/formUtils";
 
@@ -24,30 +20,38 @@ import { useGetEnquiriesQuery } from "../../../api/api";
 
 const useProposalSections = ({
   setActive,
-  name,
   defaultValue,
   partialLength,
-  setShow,
   setActivateLoader,
+  setShow,
 }) => {
   const [values, setValues] = useState(defaultValue);
   const [errors, setErrors] = useState({});
   console.log("dbdgbgbndgbd 2", errors, values);
   const [errorInField, setErrorInField] = useState(true);
+
   const history = useHistory();
+
   const queryStrings = useUrlQuery();
+
   const enquiryId = queryStrings.get("enquiryId");
+
   const [isValid, setValid] = useState(
     partialLength ? Array(partialLength) : undefined,
   );
+
   const { data: equriesData } = useGetEnquiriesQuery();
-  console.log("sgsfnkls", equriesData);
+
   const groups = equriesData.data ? equriesData.data.groups : [];
+
   const [allDataSubmitted, setAllDataSubmitted] = useState(false);
+
   const schema = useSelector(({ schema }) => schema.currentSchema);
+
   const [canProceedToSummary, setCanProceedToSummary] = useState(false);
+
   const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
-  console.log("Sbsfbnflbf", errorInField);
+
   const dispatch = useDispatch();
 
   const havingAnyError = (errors, key) => {
@@ -106,14 +110,6 @@ const useProposalSections = ({
     insuredDetails,
     callback,
   }) => {
-    console.log("sgjksfgf", {
-      checkFor,
-      checkFrom,
-      updationFor,
-      dispatch,
-      insuredDetails,
-      callback,
-    });
     if (updationFor === "Other Details") {
       let updatedParent = { ...checkFor };
 
@@ -128,7 +124,6 @@ const useProposalSections = ({
             checkFor[key].nominee_relation.toLowerCase() === "self"
               ? { ...checkFrom, ...insuredDetails.self }
               : insuredDetails[checkFor[key].nominee_relation.toLowerCase()];
-          console.log("sjgslfg", checkFrom, checkFrom2);
 
           let updatedOtherDetail = { ...checkFor[key] };
 
@@ -144,11 +139,7 @@ const useProposalSections = ({
               nameWithoutNominee.includes("pincode")
             )
               nameWithoutNominee += "_" + groupCodeOfmember;
-            console.log("sbjxfsbjxf", {
-              nameWithoutNominee,
-              checkFrom2,
-              groups,
-            });
+
             if (
               checkFrom2[nameWithoutNominee] &&
               checkFor[key][key2] !== checkFrom2[nameWithoutNominee]
@@ -156,7 +147,6 @@ const useProposalSections = ({
               updatedOtherDetail[key2] = checkFrom2[nameWithoutNominee];
           });
           updatedParent[key] = updatedOtherDetail;
-          console.log("snvksbvkjfv", checkFor, checkFrom, insuredDetails);
         }
       });
       triggerSaveForm({
@@ -172,7 +162,6 @@ const useProposalSections = ({
           updatedObj[key] = checkFrom[key];
       });
       // updatedVal = { ...checkFor, self: updatedObj };
-      console.log("updatedVal", { ...checkFor, self: updatedObj });
       triggerSaveForm({
         sendedVal: { ...checkFor, self: updatedObj },
         formName: updationFor,
@@ -196,11 +185,6 @@ const useProposalSections = ({
   };
 
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
-    console.log(
-      "sfjlbajcvjhs",
-      isValid,
-      everyRequiredFilled(schema[formName], sendedVal),
-    );
     if (havingAnyError(errors).includes(true)) {
       setShow(havingAnyError(errors).indexOf(true));
     }
@@ -224,18 +208,10 @@ const useProposalSections = ({
                 updationFor: "Insured Details",
                 dispatch: dispatch,
                 callback: () => {
-                  dispatch(
-                    api.util.invalidateTags([
-                      "Cart",
-                      "Rider",
-                      "AdditionalDiscount",
-                      "TenureDiscount",
-                    ]),
-                  );
+                  revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
                 },
               });
             } else {
-              console.log("sblsdwgsd", getUnfilledForm(updatedProposalData));
               setActive(getUnfilledForm(updatedProposalData));
             }
           },
@@ -246,13 +222,13 @@ const useProposalSections = ({
       !havingAnyError(errors).includes(true) &&
       everyRequiredFilled(schema[formName], sendedVal)
     ) {
-      // console.log("dnmkdgb", sendedVal);
-
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
-          ({ prevProposalData, updatedProposalData, responseData }) => {
+          ({ prevProposalData, updatedProposalData,responseData }) => {
             callback();
+
+            revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
 
             if (prevProposalData["Medical Details"]) {
               setSelfFieldsChange({
@@ -308,7 +284,7 @@ const useProposalSections = ({
       !havingAnyError(errors).includes(true) &&
       everyRequiredFilled(schema[formName], sendedVal)
     ) {
-      console.log("fblkfblfn", sendedVal);
+
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
@@ -326,24 +302,17 @@ const useProposalSections = ({
   // =================================================================================================================
 
   useEffect(() => {
-    console.log(
-      "dhdgnfdjg",
-      revisedPremiumPopupUtilityObject.isOn,
-      allDataSubmitted,
-    );
-
     if (!revisedPremiumPopupUtilityObject.isOn && allDataSubmitted) {
       setCanProceedToSummary(true);
     } else setCanProceedToSummary(false);
   }, [revisedPremiumPopupUtilityObject.isOn, allDataSubmitted]);
 
   useEffect(() => {
-    console.log("rgrsomgorg", canProceedToSummary);
     if (canProceedToSummary) {
       setActivateLoader(true);
       dispatch(
         submitProposalData(() => {
-          history.replace("/proposal_summary?enquiryId=" + enquiryId);
+          history.push("/proposal_summary?enquiryId=" + enquiryId);
           setActivateLoader(false);
         }),
       );

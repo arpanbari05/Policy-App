@@ -22,14 +22,15 @@ const InsuredDetails = ({
   name,
   defaultValue,
   setBack,
-  setActivateLoader
+  setActivateLoader,
 }) => {
   const [continueBtnClick, setContinueBtnClick] = useState(false);
   const [show, setShow] = useState(0);
   const { proposalData } = useSelector(state => state.proposalPage);
+
   const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
     useFrontendBoot();
-  console.log("aefjbk", frontBootData);
+
   const { getGroupMembers, groups } = useMembers();
 
   const {
@@ -39,10 +40,8 @@ const InsuredDetails = ({
     setValid,
     submit,
     setSubmit,
-    setFinalSubmit,
     additionalErrors,
     revisedPremiumPopupUtilityObject,
-    errorInField,
     setErrorInField,
     triggerSaveForm,
     setErrors,
@@ -53,7 +52,7 @@ const InsuredDetails = ({
     defaultValue,
     partialLength: Object.keys(schema).length,
     setShow,
-    setActivateLoader
+    setActivateLoader,
   });
 
 console.log("fsvbksvbs",errors)
@@ -73,7 +72,6 @@ console.log("fvbkxfkjh",isValid)
     schema,
     proposalData,
     values,
-
     membersDataFromGreetingPage,
     groups,
     setValues,
@@ -82,7 +80,6 @@ console.log("fvbkxfkjh",isValid)
   const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
     useMedicalQuestions(schema, values, setValues, name, proposalData);
 
-  console.log("wgvkjdba", canProceed);
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -95,13 +92,10 @@ console.log("fvbkxfkjh",isValid)
 
   // useEffect(() => {
   //   if(continueBtnClick && errorInField){
-     
+
   //     setContinueBtnClick(false);
   //   }
   // },[submit,continueBtnClick])
-
-
-
 
   return (
     <div>
@@ -254,7 +248,7 @@ console.log("fvbkxfkjh",isValid)
               // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
-              triggerSaveForm({sendedVal:values,formName:name})
+              triggerSaveForm({ sendedVal: values, formName: name });
               // setContinueBtnClick(true);
             }
           }}

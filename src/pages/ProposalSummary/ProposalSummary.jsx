@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+
 import "./ProposalSummary.scss";
 import ProposalCheckBox from "../../components/Common/ProposalSummary/summaryCheckBox";
 import SummaryTab from "../ProposalPage/components/SummaryTab/SummaryTab";
@@ -27,7 +27,9 @@ import ProductSummaryTab from "../ProposalPage/ProposalSections/components/Produ
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { Col, Row } from "react-bootstrap";
 import TermModal from "./TermsModal";
-import ReviewCart from "../ProductDetails/components/ReviewCart";
+import ReviewCart, {
+  RevisedPremiumPopup,
+} from "../ProductDetails/components/ReviewCart";
 import { getAboutCompany } from "../SeeDetails/serviceApi";
 import { getTermConditions } from "../ProposalPage/serviceApi";
 import {
@@ -41,18 +43,28 @@ import {
 import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useGetProposalDataQuery } from "../../api/api";
+import {
+  useGetEnquiriesQuery,
+  useGetProductBrochureQuery,
+  useGetProposalDataQuery,
+} from "../../api/api";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import GoBackButton from "../../components/GoBackButton";
 import { mobile } from "../../utils/mediaQueries";
-import { amount, getTotalPremium, isSSOJourney } from "../../utils/helper";
+import { amount, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
-import { FaPen } from "react-icons/fa";
+import { useRevisedPremiumModal } from "../../../src/customHooks";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
-  const { getGroupMembers, groups } = useMembers();
+  const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
+
+  useEffect(() => {
+    revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
+  }, []);
+
+  const { getGroupMembers } = useMembers();
 
   const { colors } = useTheme();
 
@@ -174,6 +186,14 @@ const ProposalSummary = () => {
 
   const cart = cartEntries;
 
+  const {
+    data: {
+      data: { name },
+    },
+  } = useGetEnquiriesQuery();
+
+  const firstName = name.split(" ")[0];
+
   const prod_id = Object.keys(cart)[0];
 
   useEffect(() => {
@@ -183,292 +203,287 @@ const ProposalSummary = () => {
   }, []);
 
   return (
-    <Page
-      noNavbarForMobile={true}
-      id={"proposalSummaryPage"}
-      backButton={backButtonForNav}
-    >
-      <div
-        className="container-fluid terms__wrapper"
-        css={`
-          @media (min-width: 768px) and (max-width: 1200px) {
-            display: none !important;
-          }
-        `}
+    <>
+      <Page
+        noNavbarForMobile={true}
+        id={"proposalSummaryPage"}
+        backButton={backButtonForNav}
       >
-        <div className="termsInner__wrapper">
-          <div className="quotes_compare_div summary_footer_width">
-            <ProposalCheckBox
-              title={"checked"}
-              type={"checkbox"}
-              value={checked}
-              extraPadding
-              onChange={() => setChecked(!checked)}
-            />
-            <span className="Iaccept">
-              {"I have read & accepted the Insurance Company's"}&nbsp;
-            </span>
-            <span
-              className="TermsAndConditions"
-              css={`
-                color: ${PrimaryColor};
-              `}
-              style={{ cursor: "pointer" }}
-              onClick={() => setTermShow(true)}
-            >
-              {" "}
-              {"Terms & Conditions"}{" "}
-            </span>
-            {termShow && (
-              <TermModal
-                show={termShow}
-                handleClose={() => {
-                  setTermShow(false);
-                }}
+        <div
+          className="container-fluid terms__wrapper"
+          css={`
+            @media (min-width: 768px) and (max-width: 1200px) {
+              display: none !important;
+            }
+          `}
+        >
+          <div className="termsInner__wrapper">
+            <div className="quotes_compare_div summary_footer_width">
+              <ProposalCheckBox
+                title={"checked"}
+                type={"checkbox"}
+                value={checked}
+                extraPadding
+                onChange={() => setChecked(!checked)}
               />
-            )}
-          </div>
-
-          <div class="quotes_compare_buttons_div">
-            <div
-              className="row btn_p_summary_pay_now d-flex align-items-center"
-              onClick={() => checked && onClick()}
-              css={`
-                background: ${PrimaryColor} !important;
-              `}
-            >
-              <div class="col-md-4 position-relative">
-                {show && (
-                  <MultipleWrapper>
-                    <PayList>
-                      {policyStatus &&
-                        policyStatus.map(item => (
-                          <PayItem>
-                            <ItemName>{item?.product?.name}</ItemName>
-                            <PayButton
-                              PrimaryColor={PrimaryColor}
-                              style={{
-                                cursor: "pointer",
-                                backgroundColor:
-                                  item.payment_status === "success"
-                                    ? "#ffbf66"
-                                    : PrimaryColor,
-                              }}
-                              onClick={() => {
-                                item.payment_status !== "success" &&
-                                  singlePay(item.proposal_id);
-                              }}
-                            >
-                              <span>
-                                {" "}
-                                {item.payment_status === "success"
-                                  ? "Paid!"
-                                  : "Pay Now"}
-                              </span>
-
-                              <div>
-                                ₹{" "}
-                                {parseInt(item?.total_premium).toLocaleString(
-                                  "en-In",
-                                )}
-                              </div>
-                            </PayButton>
-                          </PayItem>
-                        ))}
-                    </PayList>
-                  </MultipleWrapper>
-                )}
-                <button
-                  css={`
-                    background: ${PrimaryColor} !important;
-                  `}
-                  disabled={!(checked && allTcChecked)}
-                  className="btn btn_p_s_pay_now"
-                  style={{
-                    fontSize: "16px",
-                    width: "max-content",
-                    paddingTop: "8px",
+              <span className="Iaccept">
+                {"I have read & accepted the Insurance Company's"}&nbsp;
+              </span>
+              <span
+                className="TermsAndConditions"
+                css={`
+                  color: ${PrimaryColor};
+                `}
+                style={{ cursor: "pointer" }}
+                onClick={() => setTermShow(true)}
+              >
+                {" "}
+                {"Terms & Conditions"}{" "}
+              </span>
+              {termShow && (
+                <TermModal
+                  show={termShow}
+                  handleClose={() => {
+                    setTermShow(false);
                   }}
-                >
-                  Pay Now{" "}
-                </button>
-              </div>
-              <div class="col-md-8">
-                <div
-                  disabled={!(checked && allTcChecked)}
-                  css={`
-                    color: #fff;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                  `}
-                >
-                  <span>Total Premium</span>
-                  <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
-                    <span class="font_weight_normal text-white">
-                      {amount(totalPremium)}
-                    </span>
-                  </p>
+                />
+              )}
+            </div>
+
+            <div class="quotes_compare_buttons_div">
+              <div
+                className="row btn_p_summary_pay_now d-flex align-items-center"
+                onClick={() => checked && onClick()}
+                css={`
+                  background: ${PrimaryColor} !important;
+                `}
+              >
+                <div class="col-md-4 position-relative">
+                  {show && (
+                    <MultipleWrapper>
+                      <PayList>
+                        {policyStatus &&
+                          policyStatus.map(item => (
+                            <PayItem>
+                              <ItemName>{item?.product?.name}</ItemName>
+                              <PayButton
+                                PrimaryColor={PrimaryColor}
+                                style={{
+                                  cursor: "pointer",
+                                  backgroundColor:
+                                    item.payment_status === "success"
+                                      ? "#ffbf66"
+                                      : PrimaryColor,
+                                }}
+                                onClick={() => {
+                                  item.payment_status !== "success" &&
+                                    singlePay(item.proposal_id);
+                                }}
+                              >
+                                <span>
+                                  {" "}
+                                  {item.payment_status === "success"
+                                    ? "Paid!"
+                                    : "Pay Now"}
+                                </span>
+
+                                <div>
+                                  ₹{" "}
+                                  {parseInt(item?.total_premium).toLocaleString(
+                                    "en-In",
+                                  )}
+                                </div>
+                              </PayButton>
+                            </PayItem>
+                          ))}
+                      </PayList>
+                    </MultipleWrapper>
+                  )}
+                  <button
+                    css={`
+                      background: ${PrimaryColor} !important;
+                    `}
+                    disabled={!(checked && allTcChecked)}
+                    className="btn btn_p_s_pay_now"
+                    style={{
+                      fontSize: "16px",
+                      width: "max-content",
+                      paddingTop: "8px",
+                    }}
+                  >
+                    Pay Now{" "}
+                  </button>
+                </div>
+                <div class="col-md-8">
+                  <div
+                    disabled={!(checked && allTcChecked)}
+                    css={`
+                      color: #fff;
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                    `}
+                  >
+                    <span>Total Premium</span>
+                    <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
+                      <span class="font_weight_normal text-white">
+                        {amount(totalPremium)}
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <MobileHeader
-        css={`
-          background: ${PrimaryColor};
-        `}
-      >
-        <Link to={getUrlWithEnquirySearch("/proposal")}>
-          <MobileHeaderText>
-            <i
-              class="fa fa-arrow-circle-left"
-              style={{ marginRight: "10px", cursor: "pointer" }}
-            ></i>{" "}
-            Review
-          </MobileHeaderText>
-        </Link>
-      </MobileHeader>
-
-      <div className="container-fluid mt-20 ">
-        <div
-          className="element-section "
+        <MobileHeader
           css={`
-            margin: 0px 30px;
-            padding-bottom: 150px;
-
-            @media (max-width: 768px) {
-              margin: 0px !important;
-              margin-top: 10px !important;
-            }
+            background: ${PrimaryColor};
           `}
         >
-          <br className="hide-on-mobile" />
-          <Row
+          <Link to={getUrlWithEnquirySearch("/proposal")}>
+            <MobileHeaderText>
+              <i
+                class="fa fa-arrow-circle-left"
+                style={{ marginRight: "10px", cursor: "pointer" }}
+              ></i>{" "}
+              Review
+            </MobileHeaderText>
+          </Link>
+        </MobileHeader>
+
+        <div className="container-fluid mt-20 ">
+          <div
+            className="element-section "
             css={`
-              @media (max-width: 1023px) {
-                flex-direction: column;
+              margin: 0px 30px;
+              padding-bottom: 150px;
+
+              @media (max-width: 768px) {
+                margin: 0px !important;
+                margin-top: 10px !important;
               }
             `}
           >
-            <div
-              className="container-fluid"
+            <br className="hide-on-mobile" />
+            <Row
               css={`
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                ${mobile} {
+                @media (max-width: 1023px) {
+                  flex-direction: column;
+                }
+              `}
+            >
+              <div
+                className="container-fluid"
+                css={`
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  ${mobile} {
+                    display: none;
+                  }
+                `}
+              >
+                {
+                  <GoBackButton
+                    backPath={getUrlWithEnquirySearch("/proposal")}
+                  />
+                }
+                <div></div>
+                <div
+                  css={`
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  `}
+                >
+                  <ShareQuoteModal
+                    insurersFor={cart.map(
+                      cart => cart?.product?.company?.alias,
+                    )}
+                    stage="PROPOSAL_SUMMARY"
+                  />
+                </div>
+              </div>
+              <Col
+                md={3}
+                css={`
+                  padding: 0px;
+                  @media (max-width: 1023px) {
+                    width: 100%;
+                  }
+                `}
+              >
+                <SummaryWrapper>
+                  <ProductSummary totalPremium={totalPremium} cart={cart} />
+                </SummaryWrapper>
+              </Col>
+              <Col
+                md={9}
+                css={`
+                  @media (max-width: 1023px) {
+                    width: 100%;
+                  }
+                `}
+              >
+                <div className="row margin_top_tab_proposal">
+                  <div class="col-lg-12 col-md-12 no-padding-mobile">
+                    <div className="signUp-page signUp-minimal pb-70">
+                      <div className="-wrapper pad_proposal_s mt-2">
+                        {proposalData.data && allFields ? (
+                          allFields.map((item, index) => {
+                            return (
+                              <SummaryTab
+                                PrimaryColor={PrimaryColor}
+                                PrimaryShade={PrimaryShade}
+                                key={index}
+                                title={item}
+                                getGroupMembers={getGroupMembers}
+                                data={currentSchema[item]}
+                                values={proposalData.data[item]}
+                                index={index}
+                              ></SummaryTab>
+                            );
+                          })
+                        ) : (
+                          <></>
+                        )}
+                        {tCSectionData && (
+                          <TermsAndConditionsSection
+                            setAllTcChecked={setAllTcChecked}
+                            tCSectionData={tCSectionData}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+
+            <div
+              css={`
+                @media (max-width: 1199px) {
+                  display: inline-block;
+                }
+                @media (min-width: 1200px) {
                   display: none;
                 }
               `}
             >
-              {<GoBackButton backPath={getUrlWithEnquirySearch("/proposal")} />}
-              <div></div>
-              <div
-                css={`
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                `}
-              >
-                <ShareQuoteModal
-                  insurersFor={cart.map(cart => cart?.product?.company?.alias)}
-                  stage="PROPOSAL_SUMMARY"
-                />
-              </div>
+              <ProductSummaryMobile cart={cart} payNow={onClick} />
             </div>
-            <Col
-              md={3}
-              css={`
-                padding: 0px;
-                @media (max-width: 1023px) {
-                  width: 100%;
-                }
-              `}
-            >
-              <SummaryWrapper>
-                <ProductSummary totalPremium={totalPremium} cart={cart} />
-                {/* {
-                groupCode?<ReviewCart groupCode={groupCode} unEditable={true} />:""
-              }  */}
-              </SummaryWrapper>
-            </Col>
-            <Col
-              md={9}
-              css={`
-                @media (max-width: 1023px) {
-                  width: 100%;
-                }
-              `}
-            >
-              <div className="row margin_top_tab_proposal">
-                <div class="col-lg-12 col-md-12 no-padding-mobile">
-                  <div className="signUp-page signUp-minimal pb-70">
-                    {/* <p
-                      css={`
-                        display: none;
-                        @media (max-width: 1023px) {
-                          display: flex;
-                          justify-content: center;
-                          margin-top: 20px;
-                          font-size: 14px;
-                          line-height: 1.2;
-                          text-align: center;
-                          padding: 0px 20px;
-                        }
-                      `}
-                    >
-                      Hi <span style={{textTransorm:"capitalize"}}>{proposerDetails?.name?.split(" ")[0]}</span>, please review
-                      your proposal details before you proceed
-                    </p> */}
-                    <div className="-wrapper pad_proposal_s mt-2">
-                      {proposalData.data && allFields ? (
-                        allFields.map((item, index) => {
-                          return (
-                            <SummaryTab
-                              PrimaryColor={PrimaryColor}
-                              PrimaryShade={PrimaryShade}
-                              key={index}
-                              title={item}
-                              getGroupMembers={getGroupMembers}
-                              data={currentSchema[item]}
-                              values={proposalData.data[item]}
-                              index={index}
-                            ></SummaryTab>
-                          );
-                        })
-                      ) : (
-                        <></>
-                      )}
-                      {tCSectionData && (
-                        <TermsAndConditionsSection
-                          setAllTcChecked={setAllTcChecked}
-                          tCSectionData={tCSectionData}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Col>
-          </Row>
-
-          <div
-            css={`
-              @media (max-width: 1199px) {
-                display: inline-block;
-              }
-              @media (min-width: 1200px) {
-                display: none;
-              }
-            `}
-          >
-            <ProductSummaryMobile cart={cart} payNow={onClick} />
           </div>
         </div>
-      </div>
-    </Page>
+      </Page>
+      {revisedPremiumPopupUtilityObject?.isOn && (
+        <RevisedPremiumPopup
+          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+          onClose={revisedPremiumPopupUtilityObject?.off}
+          title={`Hi ${firstName}, Revised Premium due to Medical Conditions.`}
+        />
+      )}
+    </>
   );
 };
 
@@ -524,6 +539,8 @@ const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
   const PrimaryColor = colors.primary_color;
 
   const PrimaryShade = colors.primary_shade;
+
+  const { cartEntries } = useCart();
 
   const checkBoxContentArray = JSON.parse(tCSectionData?.checkbox);
 
@@ -585,6 +602,9 @@ const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
             </p>
           </div>
         ))}
+        {cartEntries.map((singleItem, index) => (
+          <PolicyWordingsRenderer key={index} singleItem={singleItem} />
+        ))}
       </ContentSection>
     </Card>
   );
@@ -604,6 +624,37 @@ const MainTitle = styled.h2`
     margin-top: 0px;
   }
 `;
+
+const PolicyWordingsRenderer = ({ singleItem }) => {
+  const { colors } = useTheme();
+
+  const PrimaryColor = colors.primary_color;
+
+  const productBrochureQuery = useGetProductBrochureQuery(
+    singleItem?.product?.id,
+  );
+
+  const brochure_url = (productBrochureQuery.data || [])[0]?.brochure_url;
+
+  return (
+    <p
+      css={`
+        padding-left: 35px;
+      `}
+    >
+      {`- ${singleItem?.product?.name} `}
+      <a
+        css={`
+          color: ${PrimaryColor} !important;
+        `}
+        href={brochure_url}
+        target="_blank"
+      >
+        Policy wordings.
+      </a>
+    </p>
+  );
+};
 
 const ContentSection = styled.div`
   box-sizing: border-box;
