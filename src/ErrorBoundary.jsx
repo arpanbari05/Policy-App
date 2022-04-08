@@ -16,7 +16,7 @@ class ErrorBoundary extends Component {
   }
 
   render() {
-    if (process.env.REACT_APP_TENANT === "fyntune" && this?.state?.hasError)
+    if (this?.state?.hasError)
       return <ErrorComponent errorMessage={this.state.errorMessage} />;
     return this?.props?.children;
   }

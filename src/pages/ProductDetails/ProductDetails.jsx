@@ -105,6 +105,7 @@ const ProductDetails = () => {
   if (!enquiryId) return <PageNotFound />;
 
   if (!cartEntry) {
+    alert(`Product not found against group code ${groupCode}.`);
     return history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
   }
 
@@ -236,7 +237,7 @@ const ProductDetails = () => {
             >
               {journeyType === "renewal" ? (
                 <SumInsuredSection cartEntry={cartEntry} />
-              ) : tenant.alias === "fyntune" ? (
+              ) : tenant?.alias === "fyntune" ? (
                 <SumInsuredOptionsSection cartEntry={cartEntry} />
               ) : null}
               <CheckDiscount
@@ -246,7 +247,7 @@ const ProductDetails = () => {
               />
               <Benefit cartEntry={cartEntry} groupCode={parseInt(groupCode)} />
               <RidersSection isProductDetailsPage={true} />
-              {+settings.addons_visibilty === 1 && journeyType === "health" ? (
+              {+settings?.addons_visibilty === 1 && journeyType === "health" ? (
                 <AddOnSection cartEntry={cartEntry} />
               ) : null}
             </Col>
@@ -261,7 +262,7 @@ const ProductDetails = () => {
 export default ProductDetails;
 
 function getSumInsuredOptions(arr = []) {
-  return arr.map(item => ({ value: item, label: numberToDigitWord(item) }));
+  return arr?.map(item => ({ value: item, label: numberToDigitWord(item) }));
 }
 
 function SumInsuredOptionsSection({ cartEntry }) {
@@ -272,7 +273,7 @@ function SumInsuredOptionsSection({ cartEntry }) {
   if (!available_sum_insureds) return null;
 
   const handleChange = option => {
-    updateCartEntry(group.id, { sum_insured: option.value });
+    updateCartEntry(group?.id, { sum_insured: option?.value });
   };
 
   const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);

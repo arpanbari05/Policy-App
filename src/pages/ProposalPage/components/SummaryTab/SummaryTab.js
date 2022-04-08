@@ -256,32 +256,36 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
                   <>
                     <CustomMedicalTitle>{_item}</CustomMedicalTitle>
                     <InnerWrapper>
-                      {schema[i + 1].map(additionalQuestion => values?.[item]?.[data.name]?.[_item]?.[
-                        additionalQuestion?.name
-                      ] && (
-                        <AdditionalWrapper2 className="text-dark">
-                          <AdditionalQuestion className="font_15_p_s">
-                            {additionalQuestion.additionalOptions.label ||
-                              additionalQuestion.additionalOptions.placeholder}
-                          </AdditionalQuestion>
-                          <AdditionalAnswer
-                            className="font_sub_p_s"
-                            style={{ fontWeight: "900" }}
-                          >
-                            <p
-                              style={{
-                                overflowWrap: "break-word",
-                              }}
-                            >
-                              {
-                                values?.[item]?.[data.name]?.[_item]?.[
-                                  additionalQuestion?.name
-                                ]
-                              }
-                            </p>
-                          </AdditionalAnswer>
-                        </AdditionalWrapper2>
-                      ))}
+                      {schema[i + 1].map(
+                        additionalQuestion =>
+                          values?.[item]?.[data.name]?.[_item]?.[
+                            additionalQuestion?.name
+                          ] && (
+                            <AdditionalWrapper2 className="text-dark">
+                              <AdditionalQuestion className="font_15_p_s">
+                                {additionalQuestion.additionalOptions.label ||
+                                  additionalQuestion.additionalOptions
+                                    .placeholder}
+                              </AdditionalQuestion>
+                              <AdditionalAnswer
+                                className="font_sub_p_s"
+                                style={{ fontWeight: "900" }}
+                              >
+                                <p
+                                  style={{
+                                    overflowWrap: "break-word",
+                                  }}
+                                >
+                                  {
+                                    values?.[item]?.[data.name]?.[_item]?.[
+                                      additionalQuestion?.name
+                                    ]
+                                  }
+                                </p>
+                              </AdditionalAnswer>
+                            </AdditionalWrapper2>
+                          ),
+                      )}
                     </InnerWrapper>
                   </>
                 ) : (
@@ -427,9 +431,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
               >
                 {title}
               </MainTitle>
-              {title === "Other Details" && (
-               <></>
-              )}
+              {title === "Other Details" && <></>}
             </Col>
           </Row>
           <br className="hide-on-mobile" />

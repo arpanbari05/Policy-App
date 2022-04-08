@@ -50,7 +50,7 @@ function TenureDiscounts({ groupCode, cartEntry, ...props }) {
   useEffect(() => {
     if (discounts) {
       const tenureDiscount = discounts.find(
-        discount => +discount.tenure === tenure,
+        discount => +discount?.tenure === tenure,
       );
       if (tenureDiscount) {
         applyTenureDiscount(tenureDiscount);
@@ -61,10 +61,10 @@ function TenureDiscounts({ groupCode, cartEntry, ...props }) {
 
   if (isLoading || isUninitialized || isFetching) return <CardSkeletonLoader />;
 
-  if (!discounts || !discounts.length) return <p>No discounts found!</p>;
+  if (!discounts || !discounts?.length) return <p>No discounts found!</p>;
 
   const handleChange = discount => {
-    if (discount.isSelected) {
+    if (discount?.isSelected) {
       applyTenureDiscount(discount);
     }
   };
@@ -87,7 +87,7 @@ function TenureDiscounts({ groupCode, cartEntry, ...props }) {
             discount={discount}
             checked={isTenureDiscountSelected(discount)}
             onChange={handleChange}
-            key={discount.total_premium}
+            key={discount?.total_premium}
           />
         ))}
       </div>
@@ -113,15 +113,15 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
     >
       <input
         type="radio"
-        id={discount.total_premium + discount.tenure}
+        id={discount?.total_premium + discount?.tenure}
         checked={checked}
         onChange={handleChange}
         name="discount"
-        value={discount.total_premium}
+        value={discount?.total_premium}
         className="visually-hidden"
       />
       <label
-        htmlFor={discount.total_premium + discount.tenure}
+        htmlFor={discount?.total_premium + discount?.tenure}
         css={`
           cursor: pointer;
           display: flex;
@@ -192,7 +192,7 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
           </span>
         )}
 
-        {discount.yearly_discount !== "0" ? (
+        {discount?.yearly_discount !== "0" ? (
           <div
             css={`
               width: 100px;
@@ -211,7 +211,7 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
               right: -2px;
             `}
           >
-            {`${discount.yearly_discount}% off`}
+            {`${discount?.yearly_discount}% off`}
           </div>
         ) : (
           <></>
@@ -231,9 +231,9 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
             }
           `}
         >
-          {discount.tenure >= 2
-            ? `${discount.tenure} Years`
-            : `${discount.tenure} Year`}
+          {discount?.tenure >= 2
+            ? `${discount?.tenure} Years`
+            : `${discount?.tenure} Year`}
         </span>
         <span
           className="addon_p_g_r"
@@ -253,7 +253,7 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
               }
             `}
           >
-            ₹ {parseInt(discount.total_premium).toLocaleString("en-IN")}
+            ₹ {parseInt(discount?.total_premium).toLocaleString("en-IN")}
           </b>
           <span
             css={`
@@ -277,7 +277,7 @@ function AdditionalDiscounts({ groupCode, ...props }) {
 
   if (isLoading || isUninitialized) return <CardSkeletonLoader />;
 
-  const additionalDiscounts = data.data;
+  const additionalDiscounts = data?.data;
 
   if (!additionalDiscounts?.length) return null;
 
@@ -288,7 +288,7 @@ function AdditionalDiscounts({ groupCode, ...props }) {
   const additionalDiscountsUpdated = additionalDiscounts?.filter(
     additionalDiscount =>
       !isUsgiLifestyleDiscount({ discount: additionalDiscount }),
-  ); //? USGI DISCOUNT VALIDATIONS
+  ); //? Removes USGI life style discount on product details page.
 
   return (
     <>
@@ -299,7 +299,7 @@ function AdditionalDiscounts({ groupCode, ...props }) {
             additionalDiscount={additionalDiscount}
             isSelected={isAdditionalDiscountSelected(additionalDiscount)}
             groupCode={groupCode}
-            key={additionalDiscount.alias}
+            key={additionalDiscount?.alias}
           />
         ))}
       </WrapWithTitle>

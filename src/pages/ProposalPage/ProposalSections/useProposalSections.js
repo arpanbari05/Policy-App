@@ -41,6 +41,8 @@ const useProposalSections = ({
 
   const { data: equriesData } = useGetEnquiriesQuery();
 
+  const firstName = equriesData?.data?.name?.split(" ")[0];
+
   const groups = equriesData.data ? equriesData.data.groups : [];
 
   const [allDataSubmitted, setAllDataSubmitted] = useState(false);
@@ -270,19 +272,19 @@ const useProposalSections = ({
               });
             } else {
               if (
-                responseData.failed_bmi.health &&
+                responseData?.failed_bmi?.health &&
                 !groups.some(
-                  group => group.plan_type === "I" || group.plan_type === "F",
+                  group => group?.plan_type === "I" || group?.plan_type === "F",
                 )
               ) {
-                dispatch(setFailedBmiData(responseData.failed_bmi.health));
+                dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
                 dispatch(
                   setShowBMI(
-                    Object.keys(responseData.failed_bmi.health).join(", "),
+                    Object.keys(responseData?.failed_bmi.health).join(", "),
                   ),
                 );
               }
-              console.log("sblsdwgsd", updatedProposalData);
+
               setActive(getUnfilledForm(updatedProposalData));
             }
           },
@@ -297,7 +299,10 @@ const useProposalSections = ({
         saveProposalData(
           { [formName]: sendedVal },
           ({ prevProposalData, updatedProposalData }) => {
+            revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
+
             callback();
+
             if (prevProposalData["Other Details"]) {
               setSelfFieldsChange({
                 checkFor: prevProposalData["Other Details"],

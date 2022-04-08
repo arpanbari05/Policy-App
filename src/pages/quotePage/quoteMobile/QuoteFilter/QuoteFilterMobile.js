@@ -117,7 +117,7 @@ const QuoteFilterMobile = ({
       dispatch(replaceFilterQuotes([]));
       dispatch(
         fetchQuotes(companies, {
-          plan_type: plantypes.find(filter => filter.display_name === planType)
+          plan_type: plantypes.find(filter => filter?.display_name === planType)
             ?.code,
           tenure: parseInt(multiYear),
           sum_insured: ownCover
@@ -163,8 +163,8 @@ const QuoteFilterMobile = ({
     planType:
       memberGroups[selectedGroup].length === 1
         ? "Individual"
-        : proposerDetails.plan_type
-        ? proposerDetails.plan_type === "M"
+        : proposerDetails?.plan_type
+        ? proposerDetails?.plan_type === "M"
           ? "Multi Individual"
           : "Family Floater"
         : "Family Floater",

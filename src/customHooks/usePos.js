@@ -29,65 +29,65 @@ export function usePos(isPos, currentForm) {
         case "basic-details":
           isPos
             ? setPosContent({
-                banner: returnDefaultString(settings.basic_detail_banner_pos),
+                banner: returnDefaultString(settings?.basic_detail_banner_pos),
                 question: returnDefaultString(
-                  settings.basic_detail_question_pos,
+                  settings?.basic_detail_question_pos,
                 ),
               })
             : setPosContent({
-                banner: returnDefaultString(settings.basic_detail_banner),
-                question: returnDefaultString(settings.basic_detail_question),
+                banner: returnDefaultString(settings?.basic_detail_banner),
+                question: returnDefaultString(settings?.basic_detail_question),
               });
           break;
         case "members":
           isPos
             ? setPosContent({
-                banner: returnDefaultString(settings.input_members_banner_pos),
+                banner: returnDefaultString(settings?.input_members_banner_pos),
                 question: returnDefaultString(
-                  settings.input_members_question_pos,
+                  settings?.input_members_question_pos,
                 ),
               })
             : setPosContent({
-                banner: returnDefaultString(settings.input_members_banner),
-                question: returnDefaultString(settings.input_members_question),
+                banner: returnDefaultString(settings?.input_members_banner),
+                question: returnDefaultString(settings?.input_members_question),
               });
           break;
         case "plantype":
           isPos
             ? setPosContent({
-                banner: returnDefaultString(settings.plan_type_banner_pos),
-                question: returnDefaultString(settings.plan_type_question_pos),
+                banner: returnDefaultString(settings?.plan_type_banner_pos),
+                question: returnDefaultString(settings?.plan_type_question_pos),
               })
             : setPosContent({
-                banner: returnDefaultString(settings.plan_type_banner),
-                question: returnDefaultString(settings.plan_type_question),
+                banner: returnDefaultString(settings?.plan_type_banner),
+                question: returnDefaultString(settings?.plan_type_question),
               });
           break;
         case "location":
           isPos
             ? setPosContent({
-                banner: returnDefaultString(settings.location_banner_pos),
-                question: returnDefaultString(settings.location_question_pos),
+                banner: returnDefaultString(settings?.location_banner_pos),
+                question: returnDefaultString(settings?.location_question_pos),
               })
             : setPosContent({
-                banner: returnDefaultString(settings.location_banner),
-                question: returnDefaultString(settings.location_question),
+                banner: returnDefaultString(settings?.location_banner),
+                question: returnDefaultString(settings?.location_question),
               });
           break;
         case "medicalHistory":
           isPos
             ? setPosContent({
                 banner: returnDefaultString(
-                  settings.medical_history_banner_pos,
+                  settings?.medical_history_banner_pos,
                 ),
                 question: returnDefaultString(
-                  settings.medical_history_question_pos,
+                  settings?.medical_history_question_pos,
                 ),
               })
             : setPosContent({
-                banner: returnDefaultString(settings.medical_history_banner),
+                banner: returnDefaultString(settings?.medical_history_banner),
                 question: returnDefaultString(
-                  settings.medical_history_question,
+                  settings?.medical_history_question,
                 ),
               });
           break;

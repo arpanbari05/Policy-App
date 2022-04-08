@@ -22,10 +22,8 @@ const InsuredDetails = ({
   setActive,
   name,
   defaultValue,
-  setBack,
   setActivateLoader,
 }) => {
-  const [continueBtnClick, setContinueBtnClick] = useState(false);
   const [show, setShow] = useState(0);
   const { proposalData } = useSelector(state => state.proposalPage);
   const insuredDetails = useSelector(
@@ -61,9 +59,9 @@ console.log("bxfbkfxjb",defaultValue)
     setActivateLoader,
   });
 
-console.log("fsvbksvbs",errors,values)
+
 useEffect(() => {
-console.log("fvbkxfkjh",isValid)
+
   if (isValid.includes(false)) {
     setShow(isValid.indexOf(false));
   }
@@ -114,12 +112,7 @@ console.log("bldjbdfkl",canProceed)
 
   const fullName = proposalData["Proposer Details"]?.name;
 
-  // useEffect(() => {
-  //   if(continueBtnClick && errorInField){
-
-  //     setContinueBtnClick(false);
-  //   }
-  // },[submit,continueBtnClick])
+  const firstName = fullName?.split(" ")[0];
 
   return (
     <div>
@@ -135,9 +128,7 @@ console.log("bldjbdfkl",canProceed)
             key={index}
             title={`${item}`}
             show={show === index}
-            onClick={() =>
-              setShow(index)
-            }
+            onClick={() => setShow(index)}
           >
             <div>
               {name === "Medical Details" && (
@@ -279,8 +270,8 @@ console.log("bldjbdfkl",canProceed)
                       ?.medical_nstp_declaration_message,
                   }),
                 );
-              
-              triggerSaveForm({sendedVal:values,formName:name})
+
+              triggerSaveForm({ sendedVal: values, formName: name });
               // setContinueBtnClick(true);
             }else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
@@ -297,6 +288,11 @@ console.log("bldjbdfkl",canProceed)
           <RevisedPremiumPopup
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}
+            title={
+              name === "Medical Details"
+                ? `Hi ${firstName}, Revised Premium due to change in date of birth.`
+                : `Hi ${firstName}, Revised Premium due to change in medical conditions.`
+            }
           />
         )}
       </div>

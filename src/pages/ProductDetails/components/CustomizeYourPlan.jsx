@@ -56,7 +56,7 @@ export function Riders({
     riders,
   } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
 
-  const featureOptions = useSelector(({ cart }) => cart.feature_options);
+  const featureOptions = useSelector(({ cart }) => cart?.feature_options);
 
   const selectedFeatureOption = Object.keys(featureOptions).length
     ? featureOptions[Object.keys(featureOptions)[0]]
@@ -134,7 +134,7 @@ export function Riders({
             <RiderCardNew
               rider={rider}
               onChange={handleChange}
-              key={rider.id}
+              key={rider?.id}
               riders={riders}
               isFetching={isFetching}
               company={quote?.product?.company?.name}
@@ -209,7 +209,7 @@ export function RiderCardNew({
         isSelected,
         options_selected: {
           ...rider.options_selected,
-          [riderOption.key]: riderOption.selected,
+          [riderOption?.key]: riderOption?.selected,
         },
       });
   };
@@ -241,7 +241,7 @@ export function RiderCardNew({
         }`}
       >
         <div>
-          <RiderName className="w-100">{rider.name}</RiderName>
+          <RiderName className="w-100">{rider?.name}</RiderName>
           <RiderDescription
             rider={rider}
             isProductDetailsPage={isProductDetailsPage}
@@ -252,13 +252,13 @@ export function RiderCardNew({
               gap: 0.6em;
             `}
           >
-            {rider.options &&
-              Object.keys(rider.options).map(riderOptionKey => (
+            {rider?.options &&
+              Object.keys(rider?.options).map(riderOptionKey => (
                 <RiderOption
                   option={{
-                    options: rider.options[riderOptionKey],
+                    options: rider?.options[riderOptionKey],
                     key: riderOptionKey,
-                    selected: rider.options_selected?.[riderOptionKey],
+                    selected: rider?.options_selected?.[riderOptionKey],
                   }}
                   onChange={handleRiderOptionChange}
                   key={riderOptionKey}
@@ -281,7 +281,7 @@ export function RiderPremium({ rider, isLoading = false, onChange }) {
   const { isSelected } = rider;
 
   const handleChange = evt => {
-    if (rider.is_mandatory) return;
+    if (rider?.is_mandatory) return;
 
     onChange && onChange({ ...rider, isSelected: evt.target.checked });
   };
@@ -289,7 +289,7 @@ export function RiderPremium({ rider, isLoading = false, onChange }) {
   return (
     <RiderPremiumWrap
       className="py-2 rounded"
-      htmlFor={rider.id}
+      htmlFor={rider?.id}
       css={`
         cursor: pointer;
         background-color: ${isSelected ? colors.primary_shade : "#f3f3f3"};
@@ -311,7 +311,7 @@ export function RiderPremium({ rider, isLoading = false, onChange }) {
             `}
             className="d-flex align-items-center justify-content-center"
           >
-            <div>{amount(rider.total_premium)}</div>
+            <div>{amount(rider?.total_premium)}</div>
 
             {isSelected ? (
               <BsCheckCircleFill
@@ -334,8 +334,8 @@ export function RiderPremium({ rider, isLoading = false, onChange }) {
       <input
         className="visually-hidden"
         type="checkbox"
-        name={rider.id}
-        id={rider.id}
+        name={rider?.id}
+        id={rider?.id}
         checked={!!isSelected}
         onChange={handleChange}
         disabled={isLoading}
@@ -367,14 +367,14 @@ function RiderOption({
   let optionsList = [];
 
   if (typeof options[0] === "string") {
-    optionsList = options.map(optionString => ({
+    optionsList = options?.map(optionString => ({
       code: optionString,
       display_name: optionString,
     }));
   }
 
   if (typeof options[0] === "object") {
-    optionsList = options.map(opitonObject => ({
+    optionsList = options?.map(opitonObject => ({
       code: Object.keys(opitonObject)[0],
       display_name: Object.values(opitonObject)[0],
     }));
@@ -395,7 +395,7 @@ function RiderOption({
         onChange={handleChange}
       >
         {optionsList.map(option => (
-          <option key={option.code} value={option?.code}>
+          <option key={option?.code} value={option?.code}>
             {option?.display_name}
           </option>
         ))}
@@ -460,7 +460,7 @@ function RiderDescription({ rider, isProductDetailsPage, ...props }) {
     <RiderDescriptionWrap className="m-0" {...props}>
       {showMore ? description : description.slice(0, 40)}
 
-      {isProductDetailsPage && description.length > 40 ? (
+      {isProductDetailsPage && description?.length > 40 ? (
         <ShowMoreButton
           className="btn p-0 mx-1"
           css={`

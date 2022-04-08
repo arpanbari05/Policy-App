@@ -799,5 +799,7 @@ export const isSSOJourney = () => {
 export const isRelianceInfinityPlan = cartEntry =>
   cartEntry?.product?.name === "Health Infinity Individual";
 
-export const isUsgiLifestyleDiscount = ({ discount = {} }) =>
-  discount?.alias === "usgilifestyle";
+export const isUsgiLifestyleDiscount = ({ discount = {} }) => {
+  console.log("The discount is", discount, "usgilifestyle");
+  return discount?.alias === "usgilifestyle";
+};

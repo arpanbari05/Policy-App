@@ -325,7 +325,11 @@ export function FilterOptions({
   return (
     <OptionsWrap {...props}>
       {options
-        .filter(opt => opt?.visible_on_sections?.includes(section))
+        .filter(opt =>
+          opt?.visible_on_sections
+            ? opt?.visible_on_sections?.includes(section)
+            : true,
+        )
         .map(option => (
           <FilterOption
             showTooltip={showTooltip}

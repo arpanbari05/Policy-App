@@ -9,13 +9,17 @@ function useUpdateFilters() {
 
   const { groupCode } = useParams();
 
-  let {
+  const {
     data: {
-      data: { groups },
+      data: { groups: enqGroups },
     },
   } = useGetEnquiriesQuery();
 
-  const currentGroup = groups.find(group => group.id === parseInt(groupCode));
+  let groups = localStorage.getItem("groups")
+    ? JSON.parse(localStorage.getItem("groups"))
+    : enqGroups;
+
+  const currentGroup = groups?.find(group => group.id === parseInt(groupCode));
 
   const previousFilters = currentGroup.extras;
 
