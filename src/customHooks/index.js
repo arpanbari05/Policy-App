@@ -1681,9 +1681,6 @@ export function useRiders({
     .filter(isAffectsOtherRiders)
     .map(rider => rider.alias);
 
-  /*if (affectsOtherRiders.length)
-    getRidersQueryParams.selected_riders = affectsOtherRiders; */
-
   let selected_riders = [];
 
   if (affectsOtherRiders.length) selected_riders = affectsOtherRiders;

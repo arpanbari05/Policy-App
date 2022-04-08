@@ -712,8 +712,8 @@ export const RevisedPremiumPopup = ({
     },
   } = useGetEnquiriesQuery();
 
-  //const { getUrlWithEnquirySearch } = useUrlEnquiry();
   const dispatch = useDispatch();
+
   const firstName = name?.split(" ")[0];
 
   return (
@@ -745,14 +745,7 @@ export const RevisedPremiumPopup = ({
             font-size: 1.27rem;
           `}
         >
-          {title ? (
-            title
-          ) : (
-            <>
-              Hi <span className="text-capitalize">{firstName}, </span>
-              Revised Premium due to change in date of birth
-            </>
-          )}
+          {title}
         </h1>
       </div>
 

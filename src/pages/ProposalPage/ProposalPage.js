@@ -54,8 +54,6 @@ import { RevisedPremiumPopup } from "../ProductDetails/components/ReviewCart";
 
 /* ===============================test================================= */
 const ProposalPage = () => {
-  const history = useHistory();
-
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -67,11 +65,6 @@ const ProposalPage = () => {
   const [proposerDactive, setProposerDactive] = useState(true);
 
   const { currentSchema } = useSelector(state => state.schema);
-  // const currentSchema = dummy;
-
-  const queryStrings = useUrlQuery();
-
-  const enquiryId = queryStrings.get("enquiryId");
 
   const [activateLoader, setActivateLoader] = useState(false);
 
@@ -85,7 +78,9 @@ const ProposalPage = () => {
     if (currentSchema instanceof Object)
       setListOfForms(Object.keys(currentSchema));
   }, [currentSchema]);
+
   const dispatch = useDispatch();
+
   const {
     activeIndex,
     proposalData,
@@ -128,7 +123,7 @@ const ProposalPage = () => {
   useEffect(() => {
     dispatch(getProposalFields());
     dispatch(getProposalData());
-    dispatch(getCart());
+    //dispatch(getCart());
     setMemberGroups(cartEntries.map(cartItem => cartItem.group.id));
   }, []);
 
@@ -136,9 +131,7 @@ const ProposalPage = () => {
     setActive(activeIndex);
   }, [activeIndex]);
 
-  const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
-
-  // to stop loader on cancle cta error popup
+  // to stop loader on cancel cta error popup
   useEffect(() => {
     if (!showErrorPopup.show) {
       setActivateLoader(false);

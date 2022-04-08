@@ -42,6 +42,8 @@ const useProposalSections = ({
 
   const { data: equriesData } = useGetEnquiriesQuery();
 
+  const firstName = equriesData?.data?.name?.split(" ")[0];
+
   const groups = equriesData.data ? equriesData.data.groups : [];
 
   const [allDataSubmitted, setAllDataSubmitted] = useState(false);
@@ -225,7 +227,7 @@ const useProposalSections = ({
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
-          ({ prevProposalData, updatedProposalData,responseData }) => {
+          ({ prevProposalData, updatedProposalData, responseData }) => {
             callback();
 
             revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
@@ -252,7 +254,7 @@ const useProposalSections = ({
                   ),
                 );
               }
-              console.log("sblsdwgsd", updatedProposalData);
+
               setActive(getUnfilledForm(updatedProposalData));
             }
           },
@@ -263,7 +265,10 @@ const useProposalSections = ({
         saveProposalData(
           { [formName]: sendedVal },
           ({ prevProposalData, updatedProposalData }) => {
+            revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
+
             callback();
+
             if (prevProposalData["Other Details"]) {
               setSelfFieldsChange({
                 checkFor: prevProposalData["Other Details"],
@@ -284,7 +289,6 @@ const useProposalSections = ({
       !havingAnyError(errors).includes(true) &&
       everyRequiredFilled(schema[formName], sendedVal)
     ) {
-
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
