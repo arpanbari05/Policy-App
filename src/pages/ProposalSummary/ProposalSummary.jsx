@@ -27,9 +27,7 @@ import ProductSummaryTab from "../ProposalPage/ProposalSections/components/Produ
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { Col, Row } from "react-bootstrap";
 import TermModal from "./TermsModal";
-import ReviewCart, {
-  RevisedPremiumPopup,
-} from "../ProductDetails/components/ReviewCart";
+import { RevisedPremiumPopup } from "../ProductDetails/components/ReviewCart";
 import { getAboutCompany } from "../SeeDetails/serviceApi";
 import { getTermConditions } from "../ProposalPage/serviceApi";
 import {
@@ -433,7 +431,7 @@ const ProposalSummary = () => {
                         ) : (
                           <></>
                         )}
-                        {tCSectionData && (
+                        {tCSectionData && proposalData.data && allFields && (
                           <TermsAndConditionsSection
                             setAllTcChecked={setAllTcChecked}
                             tCSectionData={tCSectionData}

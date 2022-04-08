@@ -25,6 +25,7 @@ const DropDown = ({
   excludeOptions,
   directUpdateValue,
 }) => {
+  console.log("dfbhjdfkb",value)
   const { selectOption } = useAppropriateOptions({
     values,
     allValues,
@@ -49,8 +50,6 @@ const DropDown = ({
   return (
     <SelectContainer
       height={height}
-     
-    
     >
       <Select
       value={value}

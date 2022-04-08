@@ -5,7 +5,7 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
   const [yesSelected, setYesSelected] = useState({});
   const [canProceed, setCanProceed] = useState({
     canProceed: false,
-    canProceedArray: [],
+    canProceedArray: {},
   });
 
   const checkCanProceed = () => {
@@ -22,7 +22,7 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
     } else {
       let isNotChecked = {};
       let hasYes = {};
-      let checkCanProceed = [];
+      let checkCanProceed = {};
       
       key2.forEach(item => {
         console.log("wkfbwkd",typeof values[item] )
@@ -49,35 +49,31 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
       key.forEach(item => {
         console.log("wfkwbhdkf",{checkCanProceed,hasYes,item,isNotChecked,values})
         if (hasYes[item] === isNotChecked[item]) {
-          checkCanProceed.push(item);
+          checkCanProceed[item] = checkCanProceed[item]?checkCanProceed[item]:[];
         }
         Object.keys(values[item]).length && Object.keys(values[item]).forEach(el => {
           
-          values[item][el] && (!values[item][el][`is${el}`] || !values[item][el].isValid) && checkCanProceed.push(el);
+          if(values[item][el] && (!values[item][el][`is${el}`] || !values[item][el].isValid)) checkCanProceed[item] = Array.isArray(checkCanProceed[item])?[...checkCanProceed[item],el]:[el];
         })
-        // if (
-          
-        //   !Object.keys(values[item]).every(el =>
-        //     values[item][el] ? values[item][el].isValid : true,
-        //   )
-        // ) {
-          
-        // }
       });
+      console.log("wfkwbhdkf",{checkCanProceed,hasYes,isNotChecked,values})
       if (key2.length < 1) {
         isNotChecked = true;
       }
 
-      if (checkCanProceed.length < 1) {
-        setCanProceed({ canProceed: true, canProceedArray: [] });
+      if (!Object.values(checkCanProceed).some(el => el.length)) {
+        setCanProceed({ canProceed: true, canProceedArray: {} });
       } else {
         setCanProceed({
           canProceed: false,
-          canProceedArray: [...checkCanProceed],
+          checkCanProceed,
         });
       }
     }
   };
+
+
+
 
 
 

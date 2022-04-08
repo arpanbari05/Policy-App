@@ -8,6 +8,7 @@ const useInsuredDetails = (
   membersDataFromGreetingPage,
   groups,
   setValues,
+  defaultValue
 ) => {
   function formatter(number) {
     if (!isNaN(number)) number = parseInt(number);
@@ -141,11 +142,11 @@ const useInsuredDetails = (
               };
           }
         });
-        console.log("sbnlfkb", prefilledValues, membersDataFromGreetingPage);
+        console.log("sbnlfkb", prefilledValues, defaultValue);
 
         setValues({
-          ...values,
           ...prefilledValues,
+           ...defaultValue,
         });
       }
     }

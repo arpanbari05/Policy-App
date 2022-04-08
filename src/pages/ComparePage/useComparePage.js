@@ -144,8 +144,8 @@ const useComparePage = () => {
             plan_type:
               memberGroups?.[groupCode]?.length === 1
                 ? "I"
-                : proposerDetails.plan_type
-                ? proposerDetails.plan_type === "M"
+                : proposerDetails?.plan_type
+                ? proposerDetails?.plan_type === "M"
                   ? "M"
                   : "F"
                 : "F",
@@ -247,7 +247,7 @@ const useComparePage = () => {
             return {
               product_id: id,
               group_id: groupCode,
-              plan_type: filters.planType,
+              plan_type: filters?.planType,
             };
           }
         });

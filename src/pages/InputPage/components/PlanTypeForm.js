@@ -18,7 +18,7 @@ function PlanTypeForm({ posContent, ...props }) {
     data: { plantypes },
   } = useFrontendBoot();
 
-  plantypes = plantypes?.filter(plantype => plantype.code !== "I");
+  plantypes = plantypes?.filter(plantype => plantype?.code !== "I");
 
   const [selectedPlanType, setSelectedPlanType] = useState(plantypes[0]);
   const [onHoverPlanType, setOnHoverPlanType] = useState(plantypes[0]);
@@ -28,10 +28,10 @@ function PlanTypeForm({ posContent, ...props }) {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
   const handleSubmit = () => {
-    updateEnquiry({ plan_type: selectedPlanType.code }).then(res => {
+    updateEnquiry({ plan_type: selectedPlanType?.code }).then(res => {
       if (res?.error || !res?.data) return;
       const { groups } = res?.data?.data;
-      const firstGroup = Math.min(...groups.map(group => group.id));
+      const firstGroup = Math.min(...groups?.map(group => group.id));
       history.push(getUrlWithEnquirySearch(`/input/location-${firstGroup}`));
     });
   };

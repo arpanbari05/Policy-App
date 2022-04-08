@@ -489,7 +489,7 @@ export const saveForm4UserDetails = data => {
       const response = await updateUser({
         plan_type: planType,
       });
-      const newMemberGroups = response.data.data.groups.reduce(
+      const newMemberGroups = response?.data?.data?.groups.reduce(
         (groups, member) => ({
           ...groups,
           [member.id]: member.members,
@@ -646,7 +646,7 @@ export const getProposerDetails = data => {
         //   })
         // );
         dispatch(updateFetchedFilters(response?.data?.data?.groups));
-        const newMemberGroups = response.data.data.groups.reduce(
+        const newMemberGroups = response?.data?.data?.groups?.reduce(
           (groups, member) => ({
             ...groups,
             [member.id]: member.members,

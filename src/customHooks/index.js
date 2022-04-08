@@ -305,18 +305,18 @@ export function useMembers() {
   useEffect(() => {
     const groupPolicyTypes = {};
     if (data) {
-      const group = data.data.groups.find(el => {
-        // only "==" for avoiding type casting, do not modify to "==="
+      const group = data?.data?.groups?.find(el => {
+        //* only "==" for avoiding type casting, do not modify to "==="
         return el.id == selectedGroup;
       });
       if (group) {
-        dispatch(setPolicyType(group.plan_type));
+        dispatch(setPolicyType(group?.plan_type));
       }
-      data.data.groups.forEach(group => {
-        groupPolicyTypes[group.id] =
-          group.plan_type && group.plan_type.startsWith("F")
+      data?.data?.groups.forEach(group => {
+        groupPolicyTypes[group?.id] =
+          group?.plan_type && group?.plan_type?.startsWith("F")
             ? "Family Floater"
-            : group.plan_type.startsWith("M")
+            : group?.plan_type?.startsWith("M")
             ? "Multi Individual"
             : "Individual";
       });
@@ -563,7 +563,7 @@ export function useUpdateGroupMembers(groupCode) {
     return updateGroupMembersMutation({
       members,
       filters: {
-        sum_insured_range: cover.code || cover,
+        sum_insured_range: cover?.code || cover,
         tenure: tenure,
         base_plan_type: base_plan_type,
         plan_type: plantype,
@@ -571,8 +571,8 @@ export function useUpdateGroupMembers(groupCode) {
       },
       quote: { product, sum_insured },
     }).then(res => {
-      if (res.error) return res;
-      const { updateEnquiriesResult } = res.data;
+      if (res?.error) return res;
+      const { updateEnquiriesResult } = res?.data;
 
       dispatch(
         api.util.updateQueryData("getEnquiries", undefined, enquiriesDraft => {
@@ -595,12 +595,12 @@ export function useUpdateEnquiry() {
   const [updateGroups, updateGroupsQueryState] = useUpdateGroupsMutation();
 
   async function updateEnquiry(data) {
-    if (data.pincode) {
+    if (data?.pincode) {
       const { groupCode, ...sendData } = data;
 
       const updateGroupsResponse = await updateGroups({
         groupCode,
-        pincode: data.pincode,
+        pincode: data?.pincode,
       });
       const updateEnquiryResponse = await updateEnquiryMutation(sendData);
 
@@ -699,15 +699,15 @@ export function useCart() {
 
     if (!cartEntry) return;
 
-    const group = groups.find(
-      group => parseInt(group.id) === parseInt(groupCode),
+    const group = groups?.find(
+      group => parseInt(group?.id) === parseInt(groupCode),
     );
 
-    const { logo: icLogoSrc } = getCompany(cartEntry.product.company.alias);
+    const { logo: icLogoSrc } = getCompany(cartEntry?.product?.company?.alias);
 
     return {
       ...cartEntry,
-      plantype: group.plan_type,
+      plantype: group?.plan_type,
       netPremium: calculateTotalPremium(cartEntry, { additionalDiscounts }),
       netPremiumWithoutDiscount: calculateTotalPremium(cartEntry),
       icLogoSrc,
@@ -719,8 +719,8 @@ export function useCart() {
       api.util.updateQueryData("getCart", undefined, cartDraft => {
         Object.assign(cartDraft, {
           ...cartDraft,
-          data: cartDraft.data.map(cartEntry =>
-            cartEntry.group.id === groupCode
+          data: cartDraft?.data?.map(cartEntry =>
+            cartEntry?.group?.id === groupCode
               ? {
                   ...cartEntry,
                   ...updatedCartEntry,
@@ -761,8 +761,8 @@ export function useCart() {
 
   function getNextGroupProduct(currentGroupCode) {
     const nextGroup = currentGroupCode + 1;
-    const nextGroupProduct = data?.data.find(
-      cartEntry => parseInt(cartEntry.group.id) === nextGroup,
+    const nextGroupProduct = data?.data?.find(
+      cartEntry => parseInt(cartEntry?.group?.id) === nextGroup,
     );
 
     return nextGroupProduct;
@@ -1015,11 +1015,14 @@ export function useGetQuotes(queryConfig = {}) {
 
   //? SUPPLIES FILTERED QUOTE [PREMIUM + MORE FILTERS]
   if (data) {
-    data = data.map(insurerQuotes => {
+    data = data?.map(insurerQuotes => {
       return {
-        ...insurerQuotes.data,
+        ...insurerQuotes?.data,
         company_alias: insurerQuotes?.company_alias,
-        data: { ...insurerQuotes, data: filterQuotes(insurerQuotes.data.data) },
+        data: {
+          ...insurerQuotes,
+          data: filterQuotes(insurerQuotes?.data?.data),
+        },
       };
     });
   }
@@ -1914,14 +1917,7 @@ export const useRevisedPremiumModal = () => {
     getTotalPremium(cartEntries); /* Gets the updated value each time */
 
   const getUpdatedCart = (next = () => {}) => {
-    dispatch(
-      api.util.invalidateTags([
-        "Cart",
-        "Rider",
-        "AdditionalDiscount",
-        "TenureDiscount",
-      ]),
-    );
+    dispatch(api.util.invalidateTags(["Cart"]));
     next();
   }; /* Performs refetch from the server */
 

@@ -38,26 +38,18 @@ const FormBuilder = ({
   canProceed,
   yesSelected,
   setErrorInField,
-  fetchErrors
+  fetchErrors,
+  setNomineeRelationAutopopulated,
+  nomineeRelationAutopopulated,
+  autoPopulateSelfOtherDetails,
+  preFilledDataBase
 }) => {
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
   );
-  // if nominee relation selected as "self"
-  let proposalDetails = useSelector(
-    ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
-  );
-  const [nomineeRelationAutopopulated, setNomineeRelationAutopopulated] =
-    useState(false);
 
-  let memberGroupsAsPerMembers = useSelector(({ greetingPage }) =>
-    greetingPage.proposerDetails.groups.reduce(
-      (acc, { id, members }) => ({
-        ...acc,
-        [members.reduce((acc, el) => acc + el, "")]: id,
-      }),
-      {},
-    ),
+  const proposalDetails = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
 
   const {
@@ -72,7 +64,7 @@ const FormBuilder = ({
     updateValues,
     checkReadOnly,
     updateValidateObjSchema,
-    setBlockScrollEffect
+    setBlockScrollEffect,
   } = useFormBuilder(
     schema,
     fetchValues,
@@ -88,7 +80,22 @@ const FormBuilder = ({
     fetchErrors,
   );
 
-    console.log("sfghljsf",values)
+  
+  useEffect(() => {
+    
+    if (values.nominee_relation && insuredDetails[values.nominee_relation]){
+      autoPopulateSelfOtherDetails({updateValues,selectedNomineeRelation : values.nominee_relation})
+      console.log("sdvsbnvjfv",values,options.defaultValues)
+    }else if(
+      preFilledDataBase && Object.keys(preFilledDataBase).length && 
+      preFilledDataBase.nominee_relation && 
+    preFilledDataBase.nominee_relation === values.nominee_relation
+    ){
+      setValues(preFilledDataBase);
+    }else setValues({ nominee_relation: values.nominee_relation });
+  }, [values.nominee_relation]);
+
+  console.log("sfghljsf", values);
 
   const [trigger, setTrigger] = useState(false);
 
@@ -110,60 +117,7 @@ const FormBuilder = ({
     "grand_mother",
   ];
 
-  
-
-  // for auto populate self data when nominee relation is self
-  useEffect(() => {
-    if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
-      let nomineeRelation = values.nominee_relation;
-
-      let dataForAutopopulate;
-      if (nomineeRelation === "self") {
-        dataForAutopopulate = {
-          ...proposalDetails,
-          ...(insuredDetails ? insuredDetails["self"] : {}),
-        };
-
-      } else if (insuredDetails[nomineeRelation]) {
-        dataForAutopopulate = insuredDetails[nomineeRelation];
-        let groupIdOfmember =
-          memberGroupsAsPerMembers[
-            Object.keys(memberGroupsAsPerMembers).find(key =>
-              key.includes(nomineeRelation),
-            )
-          ];
-        let memberDetailsInProposerD = Object.keys(proposalDetails)
-          .filter(key => key.includes(groupIdOfmember))
-          .reduce((acc, key) => ({ ...acc, [key]: proposalDetails[key] }), {});
-
-        dataForAutopopulate = {
-          ...memberDetailsInProposerD,
-          ...insuredDetails[nomineeRelation],
-        };
-      }
-
-      let acc = {};
-      schema.forEach(({ name }) => {
-        let nameWithoutNominee = name.slice(name.indexOf("_") + 1, name.length);
-        if (nameWithoutNominee === "contact") nameWithoutNominee = "mobile";
-        if (nameWithoutNominee.includes("address"))
-          nameWithoutNominee = Object.keys(dataForAutopopulate).find(key =>
-            key.includes(nameWithoutNominee),
-          );
-        if (name.includes("pincode"))
-          nameWithoutNominee = Object.keys(dataForAutopopulate).find(key =>
-            key.includes("pincode"),
-          );
-        if (dataForAutopopulate[nameWithoutNominee])
-          acc[name] = dataForAutopopulate[nameWithoutNominee];
-      });
-console.log("sgvsfjvhsfkv",acc)
-updateValues({ ...acc, nominee_relation: nomineeRelation });
-      setNomineeRelationAutopopulated(true);
-    }else{
-      setValues({ nominee_relation: values.nominee_relation });
-    }
-  }, [values.nominee_relation]);
+ 
 
   useEffect(() => {
     if (trigger) {
@@ -229,7 +183,7 @@ updateValues({ ...acc, nominee_relation: nomineeRelation });
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
-  console.log("svdsmb",values)
+  console.log("svdsmb", values);
 
   return (
     <>
@@ -241,14 +195,13 @@ updateValues({ ...acc, nominee_relation: nomineeRelation });
                 {item[0]?.additionalOptions?.members?.map(member => {
                   if (
                     (values[item[0]?.parent] &&
-                    values[item[0]?.parent]?.members &&
-                    values[item[0]?.parent]?.members instanceof Object &&
-                    values[item[0]?.parent]?.members?.[member] ) || item[0].render === "noDependency"
+                      values[item[0]?.parent]?.members &&
+                      values[item[0]?.parent]?.members instanceof Object &&
+                      values[item[0]?.parent]?.members?.[member]) ||
+                    item[0].render === "noDependency"
                   )
                     return (
                       <CustomWrapper>
-                      
-
                         <div className="col-md-12">
                           <Title>{member}</Title>
                           {item.map(innerItem => {
@@ -307,7 +260,12 @@ updateValues({ ...acc, nominee_relation: nomineeRelation });
                                               innerItem.name,
                                               e.target.value,
                                             );
-                                          } else e.target.value && updateValue(innerItem.name, e.target.value);
+                                          } else
+                                            e.target.value &&
+                                              updateValue(
+                                                innerItem.name,
+                                                e.target.value,
+                                              );
                                         }
                                         if (
                                           innerItem.fill &&
@@ -356,7 +314,9 @@ updateValues({ ...acc, nominee_relation: nomineeRelation });
                                           );
                                         }
                                       }}
-                                      onFocus={() => setBlockScrollEffect(false)}
+                                      onFocus={() =>
+                                        setBlockScrollEffect(false)
+                                      }
                                       onBlur={e => {
                                         if (options.validateOn === "blur") {
                                           setTrigger(innerItem.name);
@@ -543,12 +503,10 @@ updateValues({ ...acc, nominee_relation: nomineeRelation });
                         }
                       }}
                       age={item?.validate?.age}
-                      directUpdateValue={(name, value) =>
-                        updateValue(name, value)
-                      }
-                      readOnly={
-                        item.readOnly || checkReadOnly(item.name)
-                      }
+                      directUpdateValue={(name, value) => {
+                        updateValue(name, value);
+                      }}
+                      readOnly={item.readOnly || checkReadOnly(item.name)}
                       allValues={proposalData}
                       onFocus={() => setBlockScrollEffect(false)}
                       customMembers={

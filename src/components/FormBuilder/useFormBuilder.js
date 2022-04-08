@@ -13,22 +13,25 @@ const useFormBuilder = (
   yesSelected,
   proposalDetails,
   setErrorInField,
-  fetchErrors
+  fetchErrors,
 ) => {
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
-  console.log("dbdgbgbndgbd",errors,values)
+  console.log("dbdgbgbndgbd", errors, values);
   const [isValid, setIsValid] = useState();
   const updateValue = (name, value, removeOtherValues = false) => {
-    console.log("dhdfjklb 1",name, value)
+    console.log("dhdfjklb 1", name, value);
     if (removeOtherValues) {
-
       setValues({ [name]: value });
       fetchValues({ [name]: value });
     } else {
-      setValues(prev => ({ ...prev, [name]: value }));
-      fetchValues(prev => ({ ...prev, [name]: value }));
+      setValues(
+        prev => ({ ...prev, [name]: value }),
+        updatedState => {
+          fetchValues(updatedState);
+        },
+      );
     }
 
     if (value instanceof Object) {
@@ -65,7 +68,7 @@ const useFormBuilder = (
   };
 
   const updateValues = (multipleValues = {}) => {
-    console.log("dhdfjklb 2",multipleValues)
+    console.log("dhdfjklb 2", multipleValues);
     setValues({ ...values, ...multipleValues });
     fetchValues({ ...values, ...multipleValues });
   };
@@ -226,37 +229,36 @@ const useFormBuilder = (
 
   const clearField = name => {
     setValues({ ...values, [name]: null });
-    
   };
 
   // to scroll page as per error
   useEffect(() => {
-    console.log("dhbjhklb",errors)
-    if(Object.values(errors).length && Object.values(errors).some(val => val)) setErrorInField(true)
-    else setErrorInField(false)
+    console.log("dhbjhklb", errors);
+    if (Object.values(errors).length && Object.values(errors).some(val => val))
+      setErrorInField(true);
+    else setErrorInField(false);
     if (blockScrollEffect) {
       let filteredKey = Object.keys(errors).filter(key => errors[key]);
-    // if (canProceed && !canProceed.canProceed)
-    //   filteredKey = canProceed.canProceedArray;
-    console.log("srgvshfvjkl", errors, filteredKey, yesSelected, canProceed);
-    if (filteredKey.length) {
-      let scrollPositions = filteredKey.map(key => {
-        let element = document.getElementById(key);
-        if (element) {
-          let y = element.getBoundingClientRect().top - 100 + window.scrollY;
-          return y;
-        }
-      });
-      console.log("svbkjsbnv", scrollPositions);
-      window.scroll({
-        top: Math.min(...scrollPositions),
-        behavior: "smooth",
-      });
+      // if (canProceed && !canProceed.canProceed)
+      //   filteredKey = canProceed.canProceedArray;
+      console.log("srgvshfvjkl", errors, filteredKey, yesSelected, canProceed);
+      if (filteredKey.length) {
+        let scrollPositions = filteredKey.map(key => {
+          let element = document.getElementById(key);
+          if (element) {
+            let y = element.getBoundingClientRect().top - 100 + window.scrollY;
+            return y;
+          }
+        });
+        console.log("svbkjsbnv", scrollPositions);
+        window.scroll({
+          top: Math.min(...scrollPositions),
+          behavior: "smooth",
+        });
+      }
     }
-    }
-    
   }, [errors]);
-// , canProceed,blockScrollEffect
+  // , canProceed,blockScrollEffect
   return {
     values,
     updateValue,
@@ -271,7 +273,7 @@ const useFormBuilder = (
     updateValues,
     checkReadOnly,
     updateValidateObjSchema,
-    setBlockScrollEffect
+    setBlockScrollEffect,
   };
 };
 export default useFormBuilder;
