@@ -154,11 +154,11 @@ function useFilters() {
   const selectedDeductible = getSelectedFilter("deductible");
 
   const isFiltersDefault =
-    selectedCover.code === cover &&
-    (selectedPlanType.code === plantype || selectedPlanType.code === "I") &&
-    selectedBasePlanType.code === baseplantype &&
-    selectedTenure.code === tenure &&
-    selectedInsurers.length < 1 &&
+    selectedCover?.code === cover &&
+    (selectedPlanType?.code === plantype || selectedPlanType?.code === "I") &&
+    selectedBasePlanType?.code === baseplantype &&
+    selectedTenure?.code === tenure &&
+    selectedInsurers?.length < 1 &&
     (selectedDeductible.code
       ? selectedDeductible?.code === deductible
       : true) &&

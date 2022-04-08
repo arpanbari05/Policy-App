@@ -335,6 +335,7 @@ export function useMembers() {
             ...group?.extras,
             ...reduxGroupMatch?.extras,
           },
+          // plan_type: reduxGroupMatch?.extras?.plantype?.code
         };
       });
 
