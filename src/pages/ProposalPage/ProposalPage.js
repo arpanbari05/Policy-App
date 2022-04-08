@@ -55,7 +55,7 @@ import { RevisedPremiumPopup } from "../ProductDetails/components/ReviewCart";
 /* ===============================test================================= */
 const ProposalPage = () => {
   const history = useHistory();
-
+const [prepairingPtoposal,setPrepairingProposal] = useState(false)
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -126,10 +126,12 @@ const ProposalPage = () => {
   }, [failedBmiData]);
 
   useEffect(() => {
+    setPrepairingProposal(true)
     dispatch(getProposalFields());
-    dispatch(getProposalData());
     dispatch(getCart());
     setMemberGroups(cartEntries.map(cartItem => cartItem.group.id));
+    dispatch(getProposalData(( ) => {setPrepairingProposal(false)}));
+
   }, []);
 
   useEffect(() => {
@@ -147,12 +149,21 @@ const ProposalPage = () => {
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-
+console.log("dbdjfkl",defaultData)
     if (activateLoader) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
           {/* <span className="lds-dual-ring colored--loader"></span> */}
           <p>Submitting Proposal, Please Wait</p>
+          <SpinLoader proposalpage={true} />
+        </div>
+      );
+    }
+    if(prepairingPtoposal){
+      return (
+        <div style={{ textAlign: "center", marginTop: "100px" }}>
+          {/* <span className="lds-dual-ring colored--loader"></span> */}
+          <p>Preparing Proposal, Please Wait</p>
           <SpinLoader proposalpage={true} />
         </div>
       );
@@ -614,6 +625,7 @@ const ProposalPage = () => {
                       }
                     `}
                   >
+                  {console.log("qdbkhaffaf",proposalData,listOfForms[active])}
                     {form(active, proposalData[listOfForms[active]])}
                   </div>
                 </div>
@@ -642,6 +654,7 @@ const ProposalPage = () => {
               <ProductSummary cart={cart} setActive={setActive} />
             </div>
           </div>
+
           {form(active, proposalData[listOfForms[active]])} */}
             {/* <div
             style={{

@@ -24,9 +24,13 @@ const ProposerDetails = ({
   setProposerDactive,
   setActivateLoader,
 }) => {
+  console.log("Dbbjhfbfd",defaultValue)
+
+
+
   const [continueBtnClick, setContinueBtnClick] = useState(false);
   const { values, setValues, setValid,isValid, submit, setSubmit,triggerSaveForm,revisedPremiumPopupUtilityObject,setErrorInField,errorInField,errors,setErrors} =
-    useProposalSections({setActive, name, defaultValue,setActivateLoader});
+    useProposalSections({setActive, name,setActivateLoader});
   const proposelSelectedDOBRedux = useSelector(
     ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob,
   );
@@ -71,8 +75,8 @@ const ProposerDetails = ({
           );
         }
       });
-
-      setValues({ ...prefilledValues, ...values });
+      console.log("gkjsfgbkf",{ prefilledValues,defaultValue })
+      setValues({ ...prefilledValues, ...defaultValue });
     }
   }, []);
 

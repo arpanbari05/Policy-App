@@ -15,6 +15,7 @@ import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
 import { setShowErrorPopup } from "../ProposalSections/ProposalSections.slice";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
+import useOtherDetails from "./useOtherDetails";
 
 const InsuredDetails = ({
   schema,
@@ -27,12 +28,17 @@ const InsuredDetails = ({
   const [continueBtnClick, setContinueBtnClick] = useState(false);
   const [show, setShow] = useState(0);
   const { proposalData } = useSelector(state => state.proposalPage);
-
+  const insuredDetails = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
+  );
+  const proposalDetails = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
+  );
   const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
     useFrontendBoot();
 
   const { getGroupMembers, groups } = useMembers();
-
+console.log("bxfbkfxjb",defaultValue)
   const {
     values,
     setValues,
@@ -55,7 +61,7 @@ const InsuredDetails = ({
     setActivateLoader,
   });
 
-console.log("fsvbksvbs",errors)
+console.log("fsvbksvbs",errors,values)
 useEffect(() => {
 console.log("fvbkxfkjh",isValid)
   if (isValid.includes(false)) {
@@ -75,11 +81,29 @@ console.log("fvbkxfkjh",isValid)
     membersDataFromGreetingPage,
     groups,
     setValues,
+    defaultValue
   );
+
+  const {
+    nomineeRelationAutopopulated,
+    setNomineeRelationAutopopulated,
+    autoPopulateSelfOtherDetails
+  } = useOtherDetails({  
+    name,
+    schema,
+    proposalData,
+    values,
+    membersDataFromGreetingPage,
+    groups,
+    setValues,
+    defaultValue,
+    insuredDetails,
+    proposalDetails,
+  });
 
   const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
     useMedicalQuestions(schema, values, setValues, name, proposalData);
-
+console.log("bldjbdfkl",canProceed)
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -185,7 +209,8 @@ console.log("fvbkxfkjh",isValid)
                   schema={schema[item]}
                   components={components}
                   fetchValues={res => {
-                    setValues(prev => ({ ...prev, [item]: res }));
+                    console.log("ckdjccda",res)
+                    setValues(prev => ({ ...prev, [item]:res }));
                   }}
                   fetchErrors={res => {
                     setErrors(prev => ({ ...prev, [item]: res }));
@@ -211,6 +236,15 @@ console.log("fvbkxfkjh",isValid)
                   setNoForAll={value => {
                     setNoForAll({ ...noForAll, [item]: value });
                   }}
+                  setNomineeRelationAutopopulated={setNomineeRelationAutopopulated}
+                  preFilledDataBase={defaultValue?defaultValue[item]:{}}
+                  nomineeRelationAutopopulated={nomineeRelationAutopopulated}
+                  autoPopulateSelfOtherDetails={({updateValues,selectedNomineeRelation}) => autoPopulateSelfOtherDetails({
+                    schema: schema[item],
+                    values: values? values[item] : {},
+                    setValues:updateValues,
+                    selectedNomineeRelation
+                  })}
                 />
               </Form>{" "}
             </div>
@@ -230,6 +264,8 @@ console.log("fvbkxfkjh",isValid)
           onClick={() => {
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
+
+            // setShow();
             setSubmit("Medical");
             if (name === "Medical Details" && canProceed?.canProceed) {
               // NSTP popup for RB
@@ -246,10 +282,14 @@ console.log("fvbkxfkjh",isValid)
               
               triggerSaveForm({sendedVal:values,formName:name})
               // setContinueBtnClick(true);
-            } else if (name !== "Medical Details") {
+            }else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
               triggerSaveForm({ sendedVal: values, formName: name });
               // setContinueBtnClick(true);
+            }else if(name === "Medical Details" && !canProceed.canProceed){
+              // const {canProceedArray} = canProceed;
+              // console.log("wfvhjskv",)
+              setShow(Object.keys(schema).indexOf(Object.keys(canProceed.checkCanProceed).find(key => canProceed.checkCanProceed[key] && canProceed.checkCanProceed[key].length)))
             }
           }}
         />

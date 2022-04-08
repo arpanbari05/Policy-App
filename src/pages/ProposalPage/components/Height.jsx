@@ -30,6 +30,13 @@ const Height = ({ onChange, value, error }) => {
     feet: Math.floor(value / 12) * 12,
     inches: value % 12,
   });
+  useEffect(() => {
+    value && setValue({
+      feet: Math.floor(value / 12) * 12,
+      inches: value % 12,
+    })
+  },[value])
+  console.log("sgbjklf",combinedValue,typeof value)
   const [first, setFirst] = useState(true);
   useEffect(() => {
     if (!first) {
