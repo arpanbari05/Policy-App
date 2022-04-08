@@ -272,10 +272,7 @@ const useProposalSections = ({
               });
             } else {
               if (
-                responseData?.failed_bmi?.health &&
-                !groups.some(
-                  group => group?.plan_type === "I" || group?.plan_type === "F",
-                )
+                responseData?.failed_bmi?.health
               ) {
                 dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
                 dispatch(
