@@ -6,9 +6,9 @@ import { useHistory, useParams, Link } from "react-router-dom";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
-import { FaChevronLeft, FaPen, FaRegEdit } from "react-icons/fa";
+import {  FaPen } from "react-icons/fa";
 import { MdOutlineArrowBackIos } from "react-icons/md";
-import { starSchema } from "./ProposalDetailsSchema";
+
 import { InsuredDetails, ProposerDetails } from "./ProposalSections";
 import BMI from "./ProposalSections/components/BMI";
 import NSTP from "./ProposalSections/components/NSTP";
@@ -16,46 +16,37 @@ import ProductSummary from "./ProposalSections/components/ProductSummary";
 import { MobileHeader, MobileHeaderText } from "./ProposalPage.style";
 import ErrorPopup from "./ProposalSections/components/ErrorPopup";
 import {
-  clearProposalData,
+  
   getProposalData,
-  setIsLoading,
-  submitProposalData,
-  setSelectedIcs,
-  setActiveIndex,
+  
 } from "./ProposalSections/ProposalSections.slice";
 import { setShowErrorPopup } from "./ProposalSections/ProposalSections.slice";
-import ReviewCart from "../ProductDetails/components/ReviewCart";
-import PencilIcon from "../../assets/svg-icons/PencilIcon";
+
 import { getProposalFields } from "./schema.slice";
-import useUrlQuery from "../../customHooks/useUrlQuery";
-import ProductSummaryMobile from "./ProposalSections/components/ProductSummaryMobile";
-import ProductSummaryTab from "./ProposalSections/components/ProductSummaryTab";
+
 import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
 import Card from "../../components/Card";
-import { Col, Container, Row } from "react-bootstrap";
+import {Row } from "react-bootstrap";
 import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
 import {
   useTheme,
   useUrlEnquiry,
   useCart,
-  useShareFunctionality,
-  useRevisedPremiumModal,
   useUSGILifeStyleDiscount,
 } from "../../customHooks";
 import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
-import useComparePage from "../ComparePage/useComparePage";
+
 import { mobile } from "../../utils/mediaQueries";
-import { useGetCartQuery } from "../../api/api";
-import { RevisedPremiumPopup } from "../ProductDetails/components/ReviewCart";
+
 // import dummy from "./dumySchema";
 /* ===============================test================================= */
 
 /* ===============================test================================= */
 const ProposalPage = () => {
   const history = useHistory();
-
+const [prepairingPtoposal,setPrepairingProposal] = useState(false)
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -67,11 +58,6 @@ const ProposalPage = () => {
   const [proposerDactive, setProposerDactive] = useState(true);
 
   const { currentSchema } = useSelector(state => state.schema);
-  // const currentSchema = dummy;
-
-  const queryStrings = useUrlQuery();
-
-  const enquiryId = queryStrings.get("enquiryId");
 
   const [activateLoader, setActivateLoader] = useState(false);
 
@@ -85,7 +71,9 @@ const ProposalPage = () => {
     if (currentSchema instanceof Object)
       setListOfForms(Object.keys(currentSchema));
   }, [currentSchema]);
+
   const dispatch = useDispatch();
+
   const {
     activeIndex,
     proposalData,
@@ -126,19 +114,19 @@ const ProposalPage = () => {
   }, [failedBmiData]);
 
   useEffect(() => {
+    setPrepairingProposal(true)
     dispatch(getProposalFields());
-    dispatch(getProposalData());
     dispatch(getCart());
     setMemberGroups(cartEntries.map(cartItem => cartItem.group.id));
+    dispatch(getProposalData(( ) => {setPrepairingProposal(false)}));
+
   }, []);
 
   useEffect(() => {
     setActive(activeIndex);
   }, [activeIndex]);
 
-  const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
-
-  // to stop loader on cancle cta error popup
+  // to stop loader on cancel cta error popup
   useEffect(() => {
     if (!showErrorPopup.show) {
       setActivateLoader(false);
@@ -147,12 +135,21 @@ const ProposalPage = () => {
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-
+console.log("dbdjfkl",defaultData)
     if (activateLoader) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
           {/* <span className="lds-dual-ring colored--loader"></span> */}
           <p>Submitting Proposal, Please Wait</p>
+          <SpinLoader proposalpage={true} />
+        </div>
+      );
+    }
+    if(prepairingPtoposal){
+      return (
+        <div style={{ textAlign: "center", marginTop: "100px" }}>
+          {/* <span className="lds-dual-ring colored--loader"></span> */}
+          <p>Preparing Proposal, Please Wait</p>
           <SpinLoader proposalpage={true} />
         </div>
       );
@@ -614,6 +611,7 @@ const ProposalPage = () => {
                       }
                     `}
                   >
+                  {console.log("qdbkhaffaf",proposalData,listOfForms[active])}
                     {form(active, proposalData[listOfForms[active]])}
                   </div>
                 </div>
@@ -642,6 +640,7 @@ const ProposalPage = () => {
               <ProductSummary cart={cart} setActive={setActive} />
             </div>
           </div>
+
           {form(active, proposalData[listOfForms[active]])} */}
             {/* <div
             style={{

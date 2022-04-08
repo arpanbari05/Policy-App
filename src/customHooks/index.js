@@ -47,7 +47,7 @@ import {
   parseJson,
 } from "../utils/helper";
 import { calculateTotalPremium } from "../utils/helper";
-import useUrlQuery from "./useUrlQuery";
+import useUrlQuery, { useUrlQueries } from "./useUrlQuery";
 import { every, uniq } from "lodash";
 import config from "../config";
 import { useCallback } from "react";
@@ -197,6 +197,7 @@ export function useTheme() {
 }
 
 export function useFrontendBoot() {
+  const searchQueries = useUrlQueries();
   const {
     data: frontendData,
     isLoading,
@@ -204,7 +205,9 @@ export function useFrontendBoot() {
     ...query
   } = useGetFrontendBootQuery();
 
-  const { data: enquiryData } = useGetEnquiriesQuery();
+  const { data: enquiryData } = useGetEnquiriesQuery(undefined, {
+    skip: !searchQueries.enquiryId,
+  });
 
   const data = { ...frontendData, ...config };
 
@@ -236,6 +239,7 @@ export function useFrontendBoot() {
 }
 
 export function useFilter() {
+  const searchQueries = useUrlQueries();
   const {
     data: {
       defaultfilters: { cover, tenure, plan_type },
@@ -246,7 +250,7 @@ export function useFilter() {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   function getFilters(groupCode) {
     let currentGroup = groups.find(group => group.id === parseInt(groupCode));
@@ -277,6 +281,7 @@ export function useFilter() {
 
 export function useMembers() {
   const dispatch = useDispatch();
+  const searchQueries = useUrlQueries();
 
   const reduxGroup =
     localStorage.getItem("groups") &&
@@ -286,7 +291,9 @@ export function useMembers() {
     data: { members },
   } = useFrontendBoot();
 
-  const { data } = useGetEnquiriesQuery();
+  const { data } = useGetEnquiriesQuery(undefined, {
+    skip: !searchQueries.enquiryId,
+  });
 
   const genderOfSelf = data?.data?.input?.gender;
 
@@ -298,18 +305,18 @@ export function useMembers() {
   useEffect(() => {
     const groupPolicyTypes = {};
     if (data) {
-      const group = data.data.groups.find(el => {
-        // only "==" for avoiding type casting, do not modify to "==="
+      const group = data?.data?.groups?.find(el => {
+        //* only "==" for avoiding type casting, do not modify to "==="
         return el.id == selectedGroup;
       });
       if (group) {
-        dispatch(setPolicyType(group.plan_type));
+        dispatch(setPolicyType(group?.plan_type));
       }
-      data.data.groups.forEach(group => {
-        groupPolicyTypes[group.id] =
-          group.plan_type && group.plan_type.startsWith("F")
+      data?.data?.groups.forEach(group => {
+        groupPolicyTypes[group?.id] =
+          group?.plan_type && group?.plan_type?.startsWith("F")
             ? "Family Floater"
-            : group.plan_type.startsWith("M")
+            : group?.plan_type?.startsWith("M")
             ? "Multi Individual"
             : "Individual";
       });
@@ -557,7 +564,7 @@ export function useUpdateGroupMembers(groupCode) {
     return updateGroupMembersMutation({
       members,
       filters: {
-        sum_insured_range: cover.code || cover,
+        sum_insured_range: cover?.code || cover,
         tenure: tenure,
         base_plan_type: base_plan_type,
         plan_type: plantype,
@@ -565,8 +572,8 @@ export function useUpdateGroupMembers(groupCode) {
       },
       quote: { product, sum_insured },
     }).then(res => {
-      if (res.error) return res;
-      const { updateEnquiriesResult } = res.data;
+      if (res?.error) return res;
+      const { updateEnquiriesResult } = res?.data;
 
       dispatch(
         api.util.updateQueryData("getEnquiries", undefined, enquiriesDraft => {
@@ -589,12 +596,12 @@ export function useUpdateEnquiry() {
   const [updateGroups, updateGroupsQueryState] = useUpdateGroupsMutation();
 
   async function updateEnquiry(data) {
-    if (data.pincode) {
+    if (data?.pincode) {
       const { groupCode, ...sendData } = data;
 
       const updateGroupsResponse = await updateGroups({
         groupCode,
-        pincode: data.pincode,
+        pincode: data?.pincode,
       });
       const updateEnquiryResponse = await updateEnquiryMutation(sendData);
 
@@ -612,9 +619,10 @@ export function useUpdateEnquiry() {
 
 export function useUpdateMembers() {
   const { journeyType } = useFrontendBoot();
+  const searchQueries = useUrlQueries();
   const {
     data: { data: enquiryData },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
   const [createEnquiry, queryState] = useCreateEnquiry();
 
   const history = useHistory();
@@ -673,6 +681,7 @@ export function useUpdateMembers() {
 
 export function useCart() {
   const dispatch = useDispatch();
+  const searchQueries = useUrlQueries();
 
   const { data } = useGetCartQuery();
 
@@ -680,7 +689,7 @@ export function useCart() {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   const { getCompany } = useCompanies();
 
@@ -691,15 +700,15 @@ export function useCart() {
 
     if (!cartEntry) return;
 
-    const group = groups.find(
-      group => parseInt(group.id) === parseInt(groupCode),
+    const group = groups?.find(
+      group => parseInt(group?.id) === parseInt(groupCode),
     );
 
-    const { logo: icLogoSrc } = getCompany(cartEntry.product.company.alias);
+    const { logo: icLogoSrc } = getCompany(cartEntry?.product?.company?.alias);
 
     return {
       ...cartEntry,
-      plantype: group.plan_type,
+      plantype: group?.plan_type,
       netPremium: calculateTotalPremium(cartEntry, { additionalDiscounts }),
       netPremiumWithoutDiscount: calculateTotalPremium(cartEntry),
       icLogoSrc,
@@ -711,8 +720,8 @@ export function useCart() {
       api.util.updateQueryData("getCart", undefined, cartDraft => {
         Object.assign(cartDraft, {
           ...cartDraft,
-          data: cartDraft.data.map(cartEntry =>
-            cartEntry.group.id === groupCode
+          data: cartDraft?.data?.map(cartEntry =>
+            cartEntry?.group?.id === groupCode
               ? {
                   ...cartEntry,
                   ...updatedCartEntry,
@@ -753,8 +762,8 @@ export function useCart() {
 
   function getNextGroupProduct(currentGroupCode) {
     const nextGroup = currentGroupCode + 1;
-    const nextGroupProduct = data?.data.find(
-      cartEntry => parseInt(cartEntry.group.id) === nextGroup,
+    const nextGroupProduct = data?.data?.find(
+      cartEntry => parseInt(cartEntry?.group?.id) === nextGroup,
     );
 
     return nextGroupProduct;
@@ -987,12 +996,12 @@ export function useGetQuotes(queryConfig = {}) {
   let { data, refetch, ...getCustomQuotesQuery } = useGetCustomQuotesQuery(
     {
       insurers: insurersToFetch,
-      deductible: getSelectedFilter("deductible").code,
-      sum_insured_range: getSelectedFilter("cover").code,
+      deductible: getSelectedFilter("deductible")?.code,
+      sum_insured_range: getSelectedFilter("cover")?.code,
       group: groupCode,
-      base_plan_type: getSelectedFilter("baseplantype").code,
-      tenure: getSelectedFilter("tenure").code,
-      plan_type: getSelectedFilter("plantype").code,
+      base_plan_type: getSelectedFilter("baseplantype")?.code,
+      tenure: getSelectedFilter("tenure")?.code,
+      plan_type: getSelectedFilter("plantype")?.code,
       journeyType,
     },
     queryConfig,
@@ -1007,11 +1016,14 @@ export function useGetQuotes(queryConfig = {}) {
 
   //? SUPPLIES FILTERED QUOTE [PREMIUM + MORE FILTERS]
   if (data) {
-    data = data.map(insurerQuotes => {
+    data = data?.map(insurerQuotes => {
       return {
-        ...insurerQuotes.data,
+        ...insurerQuotes?.data,
         company_alias: insurerQuotes?.company_alias,
-        data: { ...insurerQuotes, data: filterQuotes(insurerQuotes.data.data) },
+        data: {
+          ...insurerQuotes,
+          data: filterQuotes(insurerQuotes?.data?.data),
+        },
       };
     });
   }
@@ -1040,11 +1052,12 @@ export function useGetQuotes(queryConfig = {}) {
 }
 
 function useInsurersToFetch() {
+  const searchQueries = useUrlQueries();
   const {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   const { groupCode } = useParams();
 
@@ -1682,9 +1695,6 @@ export function useRiders({
     .filter(isAffectsOtherRiders)
     .map(rider => rider.alias);
 
-  /*if (affectsOtherRiders.length)
-    getRidersQueryParams.selected_riders = affectsOtherRiders; */
-
   let selected_riders = [];
 
   if (affectsOtherRiders.length) selected_riders = affectsOtherRiders;
@@ -1908,14 +1918,7 @@ export const useRevisedPremiumModal = () => {
     getTotalPremium(cartEntries); /* Gets the updated value each time */
 
   const getUpdatedCart = (next = () => {}) => {
-    dispatch(
-      api.util.invalidateTags([
-        "Cart",
-        "Rider",
-        "AdditionalDiscount",
-        "TenureDiscount",
-      ]),
-    );
+    dispatch(api.util.invalidateTags(["Cart"]));
     next();
   }; /* Performs refetch from the server */
 

@@ -27,9 +27,7 @@ import ProductSummaryTab from "../ProposalPage/ProposalSections/components/Produ
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { Col, Row } from "react-bootstrap";
 import TermModal from "./TermsModal";
-import ReviewCart, {
-  RevisedPremiumPopup,
-} from "../ProductDetails/components/ReviewCart";
+import { RevisedPremiumPopup } from "../ProductDetails/components/ReviewCart";
 import { getAboutCompany } from "../SeeDetails/serviceApi";
 import { getTermConditions } from "../ProposalPage/serviceApi";
 import {
@@ -53,16 +51,9 @@ import GoBackButton from "../../components/GoBackButton";
 import { mobile } from "../../utils/mediaQueries";
 import { amount, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
-import { useRevisedPremiumModal } from "../../../src/customHooks";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
-  const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
-
-  useEffect(() => {
-    revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
-  }, []);
 
   const { getGroupMembers } = useMembers();
 
@@ -185,14 +176,6 @@ const ProposalSummary = () => {
   };
 
   const cart = cartEntries;
-
-  const {
-    data: {
-      data: { name },
-    },
-  } = useGetEnquiriesQuery();
-
-  const firstName = name.split(" ")[0];
 
   const prod_id = Object.keys(cart)[0];
 
@@ -448,7 +431,7 @@ const ProposalSummary = () => {
                         ) : (
                           <></>
                         )}
-                        {tCSectionData && (
+                        {tCSectionData && proposalData.data && allFields && (
                           <TermsAndConditionsSection
                             setAllTcChecked={setAllTcChecked}
                             tCSectionData={tCSectionData}
@@ -476,13 +459,6 @@ const ProposalSummary = () => {
           </div>
         </div>
       </Page>
-      {revisedPremiumPopupUtilityObject?.isOn && (
-        <RevisedPremiumPopup
-          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
-          onClose={revisedPremiumPopupUtilityObject?.off}
-          title={`Hi ${firstName}, Revised Premium due to Medical Conditions.`}
-        />
-      )}
     </>
   );
 };
@@ -553,7 +529,15 @@ const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
   }, [checkBoxTracker?.length, checkBoxContentArray?.length]); //? sets setAllTcChecked(false) on initial render of component
 
   return (
-    <Card>
+    <Card
+      styledCss={`
+        margin-bottom: 20px;
+        @media (max-width: 768px) {
+          margin-bottom: 10px;
+          padding: 5px 2px;
+        }
+      `}
+    >
       <MainTitle
         PrimaryColor={PrimaryColor}
         PrimaryShade={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
@@ -569,6 +553,9 @@ const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
                 css={`
                   position: relative;
                   top: -5px;
+                  ${mobile} {
+                    position: static;
+                  }
                 `}
               >
                 <ProposalCheckBox
@@ -592,7 +579,9 @@ const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
 
               <span
                 css={`
-                  margin-left: 10px;
+                  ${mobile} {
+                    font-size: 12px !important;
+                  }
                   & a {
                     color: ${PrimaryColor};
                   }
@@ -640,9 +629,12 @@ const PolicyWordingsRenderer = ({ singleItem }) => {
     <p
       css={`
         padding-left: 35px;
+        ${mobile} {
+          font-size: 12px !important;
+        }
       `}
     >
-      {`- ${singleItem?.product?.name} `}
+      {"- "}
       <a
         css={`
           color: ${PrimaryColor} !important;
@@ -650,13 +642,14 @@ const PolicyWordingsRenderer = ({ singleItem }) => {
         href={brochure_url}
         target="_blank"
       >
-        Policy wordings.
+        Policy wordings
       </a>
+      {` of ${singleItem?.product?.name}. `}
     </p>
   );
 };
 
 const ContentSection = styled.div`
   box-sizing: border-box;
-  padding: 10px 10px;
+  padding: 10px 20px;
 `;

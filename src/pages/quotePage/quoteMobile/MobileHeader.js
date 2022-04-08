@@ -49,8 +49,7 @@ const MobileHeader = ({ groupCode }) => {
   const handleClick = evt => {
     if (basePlanType !== evt.target.value) {
       dispatch(setFilters({ basePlanType: evt.target.value }));
-      //console.log("fetchquotes mobileHeader")
-      console.log("I executed");
+
       dispatch(
         fetchQuotes(companies, {
           sum_insured: sendCover,

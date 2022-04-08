@@ -78,12 +78,12 @@ const Form1 = ({
   const [isIndividualPlan, setIsIndividualPlan] = useState(false);
   useEffect(() => {
     console.log("useEffect 1 executed");
-    if (proposerDetails.plan_type && proposerDetails.plan_type === "I") {
+    if (proposerDetails?.plan_type && proposerDetails?.plan_type === "I") {
       setIsIndividualPlan(true);
     } else {
       setIsIndividualPlan(false);
     }
-  }, [proposerDetails.plan_type]);
+  }, [proposerDetails?.plan_type]);
   const [pinCode, setPinCode] = useState("");
   const [customErrors, setCustomErrors] = useState(false);
 

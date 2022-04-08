@@ -18,18 +18,22 @@ const ProposerDetails = ({
   schema = {},
   setActive,
   name,
-  active,
   defaultValue = {},
-  activeForm,
   setProposerDactive,
   setActivateLoader,
 }) => {
+  console.log("Dbbjhfbfd",defaultValue)
+
+
+
   const [continueBtnClick, setContinueBtnClick] = useState(false);
   const { values, setValues, setValid,isValid, submit, setSubmit,triggerSaveForm,revisedPremiumPopupUtilityObject,setErrorInField,errorInField,errors,setErrors} =
-    useProposalSections({setActive, name, defaultValue,setActivateLoader});
+    useProposalSections({setActive, name,setActivateLoader});
   const proposelSelectedDOBRedux = useSelector(
     ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob,
   );
+
+  const dispatch = useDispatch();
 
   const {
     data: {
@@ -42,7 +46,8 @@ const ProposerDetails = ({
     },
   } = useGetEnquiriesQuery();
 
-  const dispatch = useDispatch();
+  const firstName = proposerName?.split(" ")[0];
+
   useEffect(() => {
     if (name === "Proposer Details") {
       let proposerAge = parseInt(
@@ -51,6 +56,7 @@ const ProposerDetails = ({
       let currentYear = new Date().getFullYear();
 
       let estimatedProposerDOB = `${currentYear - proposerAge}`;
+
       let prefilledValues = {
         name: proposerName,
         gender,
@@ -58,6 +64,7 @@ const ProposerDetails = ({
         email,
         dob: proposelSelectedDOBRedux || estimatedProposerDOB,
       };
+
       schema.forEach(item => {
         if (item?.value)
           prefilledValues = { ...prefilledValues, [item?.name]: item?.value };
@@ -71,8 +78,8 @@ const ProposerDetails = ({
           );
         }
       });
-
-      setValues({ ...prefilledValues, ...values });
+      console.log("gkjsfgbkf",{ prefilledValues,defaultValue })
+      setValues({ ...prefilledValues, ...defaultValue });
     }
   }, []);
 
@@ -117,6 +124,7 @@ const ProposerDetails = ({
           <RevisedPremiumPopup
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}
+            title={`Hi ${firstName}, Revised Premium due to change in date of birth.`}
           />
         )}
       </div>

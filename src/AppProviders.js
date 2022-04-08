@@ -12,6 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./app.css";
 import { some } from "lodash";
 import "styled-components/macro";
+import { useUrlQueries } from "./customHooks/useUrlQuery";
 
 function AppProviders({ children }) {
   return (
@@ -27,6 +28,7 @@ export default AppProviders;
 
 function AppLoaders({ children, ...props }) {
   const isRootRoute = useRouteMatch({ path: "/", exact: true });
+  const searchQueries = useUrlQueries();
 
   const isBasicDetailsRoute = useRouteMatch({
     path: "/input/basic-details",
@@ -62,7 +64,7 @@ function AppLoaders({ children, ...props }) {
     isUninitialized: isUninitializedEnq,
     isError: isErrorEnq,
     refetch,
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   const { isLoading: isLoadingCart, isUninitialized: isUninitializedCart } =
     useGetCartQuery(undefined, {

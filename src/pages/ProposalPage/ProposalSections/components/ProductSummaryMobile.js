@@ -24,6 +24,7 @@ const removeTotalPremium = cart => {
 };
 
 const numToString = value => value.toLocaleString("en-IN");
+
 function ProductSummaryMobile({ cart, payNow }) {
   const location = useLocation();
 
@@ -284,39 +285,47 @@ sggs
           >
             <div
               css={`
+                display: flex;
+                align-items: baseline;
+                justify-content: flex-start;
                 @media screen and (max-width: 440px) {
                   font-size: 13px !important;
                   max-width: 70%;
                 }
               `}
             >
-              <ProposalCheckBox
-                title={"check2"}
-                type={"checkbox"}
-                value={checked}
-                extraPadding
-                onChange={e => setChecked(e.target.checked)}
-              />{" "}
-              <span
-                className="Iaccept"
-                css={`
-                  @media screen and (max-width: 440px) {
-                    font-size: 12px !important;
-                  }
-                `}
-              >
-                {"I have read & accepted the Insurance Company's"}&nbsp;
+              <span>
+                <ProposalCheckBox
+                  title={"check2"}
+                  type={"checkbox"}
+                  value={checked}
+                  extraPadding
+                  onChange={e => setChecked(e.target.checked)}
+                />
               </span>
-              <span
-                class="TermsAndConditions"
-                css={`
-                  color: ${PrimaryColor};
-                `}
-                style={{ cursor: "pointer" }}
-                onClick={() => setTermShow(true)}
-              >
-                {"Terms & Conditions"}
-              </span>
+
+              <p>
+                <span
+                  className="Iaccept"
+                  css={`
+                    @media screen and (max-width: 440px) {
+                      font-size: 12px !important;
+                    }
+                  `}
+                >
+                  {"I have read & accepted the Insurance Company's"}&nbsp;
+                </span>
+                <span
+                  class="TermsAndConditions"
+                  css={`
+                    color: ${PrimaryColor};
+                  `}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setTermShow(true)}
+                >
+                  {"Terms & Conditions"}
+                </span>
+              </p>
               {termShow && (
                 <TermModal
                   show={termShow}

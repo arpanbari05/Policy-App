@@ -33,6 +33,8 @@ function ProductCard() {
     additionalDiscounts,
   });
 
+  if (!cartEntry) return <p>Empty Cart</p>;
+
   const {
     product: {
       name: productName,
@@ -43,8 +45,6 @@ function ProductCard() {
     netPremium,
     tenure,
   } = cartEntry;
-
-  if (!cartEntry) return <p>Empty Cart</p>;
 
   const sumInsured = amount(sum_insured);
 

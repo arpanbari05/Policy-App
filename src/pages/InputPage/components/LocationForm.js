@@ -333,27 +333,6 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           </div>
         </div>
       )}
-
-      {/* {false ? (
-        <div
-          css={`
-            text-align: center;
-          `}
-        >
-          <Button
-            css={`
-              width: 40%;
-              height: 3em;
-              margin: 1em auto 0 auto;
-            `}
-            onClick={() => submit(selectedCity)}
-            disabled={!selectedCity?.pincode}
-            loader={updateEnquiryQuery?.isLoading}
-          >
-            Update
-          </Button>
-        </div>
-      ) : ( */}
       <div
         css={`
           margin-top: 2.5rem;
@@ -373,7 +352,6 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           edit={edit}
         />
       </div>
-      {/* )} */}
     </div>
   );
 }

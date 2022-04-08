@@ -214,30 +214,34 @@ export const fetchPdf = options => {
     }
   };
 };
-export const getProposalData = callBackFunc => {
+export const getProposalData = successCallBack => {
   return async (dispatch, state) => {
     try {
-      const { data } = await getProposal();
+      const { data ,statusCode,...otherData} = await getProposal();
 
-      const responseData = {};
+      if(statusCode === 200){
+        const responseData = {};
 
-      const { activeIndex } = state().proposalPage;
-      Object.keys(data.data).forEach(item => {
-        if (!(data.data[item] instanceof Array)) {
-          responseData[item] = data.data[item];
-        }
-      });
-      console.log(Object.keys(responseData).length);
-      dispatch(setProposalData(responseData));
-      activeIndex !== 0 &&
-        !activeIndex &&
-        dispatch(
-          setActiveIndex(
-            Object.keys(responseData).length >= 4
-              ? 3
-              : Object.keys(responseData).length,
-          ),
-        );
+        const { activeIndex } = state().proposalPage;
+        Object.keys(data.data).forEach(item => {
+          if (!(data.data[item] instanceof Array)) {
+            responseData[item] = data.data[item];
+          }
+        });
+        console.log("sfvbjksfb",otherData);
+        dispatch(setProposalData(responseData));
+        activeIndex !== 0 &&
+          !activeIndex &&
+          dispatch(
+            setActiveIndex(
+              Object.keys(responseData).length >= 4
+                ? 3
+                : Object.keys(responseData).length,
+            ),
+          );
+          successCallBack();
+      }
+     
       // callBackFunc();
     } catch (err) {
       console.error(err);
