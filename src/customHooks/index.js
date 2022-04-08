@@ -47,7 +47,7 @@ import {
   parseJson,
 } from "../utils/helper";
 import { calculateTotalPremium } from "../utils/helper";
-import useUrlQuery from "./useUrlQuery";
+import useUrlQuery, { useUrlQueries } from "./useUrlQuery";
 import { every, uniq } from "lodash";
 import config from "../config";
 import { useCallback } from "react";
@@ -197,6 +197,7 @@ export function useTheme() {
 }
 
 export function useFrontendBoot() {
+  const searchQueries = useUrlQueries();
   const {
     data: frontendData,
     isLoading,
@@ -204,7 +205,9 @@ export function useFrontendBoot() {
     ...query
   } = useGetFrontendBootQuery();
 
-  const { data: enquiryData } = useGetEnquiriesQuery();
+  const { data: enquiryData } = useGetEnquiriesQuery(undefined, {
+    skip: !searchQueries.enquiryId,
+  });
 
   const data = { ...frontendData, ...config };
 
@@ -236,6 +239,7 @@ export function useFrontendBoot() {
 }
 
 export function useFilter() {
+  const searchQueries = useUrlQueries();
   const {
     data: {
       defaultfilters: { cover, tenure, plan_type },
@@ -246,7 +250,7 @@ export function useFilter() {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   function getFilters(groupCode) {
     let currentGroup = groups.find(group => group.id === parseInt(groupCode));
@@ -277,6 +281,7 @@ export function useFilter() {
 
 export function useMembers() {
   const dispatch = useDispatch();
+  const searchQueries = useUrlQueries();
 
   const reduxGroup =
     localStorage.getItem("groups") &&
@@ -286,7 +291,9 @@ export function useMembers() {
     data: { members },
   } = useFrontendBoot();
 
-  const { data } = useGetEnquiriesQuery();
+  const { data } = useGetEnquiriesQuery(undefined, {
+    skip: !searchQueries.enquiryId,
+  });
 
   const genderOfSelf = data?.data?.input?.gender;
 
@@ -611,9 +618,10 @@ export function useUpdateEnquiry() {
 
 export function useUpdateMembers() {
   const { journeyType } = useFrontendBoot();
+  const searchQueries = useUrlQueries();
   const {
     data: { data: enquiryData },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
   const [createEnquiry, queryState] = useCreateEnquiry();
 
   const history = useHistory();
@@ -672,6 +680,7 @@ export function useUpdateMembers() {
 
 export function useCart() {
   const dispatch = useDispatch();
+  const searchQueries = useUrlQueries();
 
   const { data } = useGetCartQuery();
 
@@ -679,7 +688,7 @@ export function useCart() {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   const { getCompany } = useCompanies();
 
@@ -1039,11 +1048,12 @@ export function useGetQuotes(queryConfig = {}) {
 }
 
 function useInsurersToFetch() {
+  const searchQueries = useUrlQueries();
   const {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   const { groupCode } = useParams();
 

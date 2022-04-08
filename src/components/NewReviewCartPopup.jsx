@@ -7,9 +7,8 @@ import styled from "styled-components/macro";
 import { Button } from ".";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
 import { useCart, useCompanies, useQuote } from "../customHooks";
-import useUrlQuery from "../customHooks/useUrlQuery";
+import useUrlQuery, { useUrlQueries } from "../customHooks/useUrlQuery";
 import { removeQuoteFromCart } from "../pages/Cart/cart.slice";
-import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import CardModal from "./Common/Modal/CardModal";
 import { useTheme } from "../customHooks";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
@@ -17,7 +16,10 @@ import { amount } from "../../src/utils/helper";
 import { mobile, small } from "../utils/mediaQueries";
 
 export function NewReviewCartPopup({ onClose, onContine }) {
-  const { data } = useGetEnquiriesQuery();
+  const searchQueries = useUrlQueries();
+  const { data } = useGetEnquiriesQuery(undefined, {
+    skip: !searchQueries.enquiryId,
+  });
 
   return (
     <CardModal
@@ -38,11 +40,12 @@ export function NewReviewCartPopup({ onClose, onContine }) {
 
 function CartSummaryContent({ closeModal, onContine, ...props }) {
   const { getCartEntry } = useCart();
+  const searchQueries = useUrlQueries();
   const {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
   const { data } = useGetCartQuery();
 
   const revisedNetPremiumArray = groups.map(
@@ -83,11 +86,12 @@ function CartSummaryContent({ closeModal, onContine, ...props }) {
 }
 
 function Footer({ closeModal, onContine, total_premium, ...props }) {
+  const searchQueries = useUrlQueries();
   const {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   const [isConfirmed, setIsConfirmed] = useState(false);
 
