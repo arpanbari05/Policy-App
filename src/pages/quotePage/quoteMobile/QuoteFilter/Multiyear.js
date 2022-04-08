@@ -73,7 +73,7 @@ const Multiyear = ({
       dispatch(
         fetchQuotes(companies, {
           plan_type: plantypes.find(
-            filter => filter.display_name === filters.planType,
+            filter => filter.display_name === filters?.planType,
           )?.code,
           tenure: thisSelectedYear[0].code,
           sum_insured:
@@ -84,33 +84,6 @@ const Multiyear = ({
           member: selectedGroup,
         }),
       );
-
-      // Object.keys(companies).forEach((companyAlias) =>
-      //   getQutoes({
-      //     member: member.filter((m) => m.group === selectedGroup),
-      //     plan_type:
-      //       plantypes.filter(
-      //         (item) =>
-      //           item.display_name.toLowerCase() ===
-      //           filters.planType.toLowerCase()
-      //       )?.[0]?.code || plan_type,
-      //     alias: companyAlias,
-      //     sum_insured:
-      //       covers.filter(
-      //         (item) =>
-      //           item.display_name.toLowerCase() === filters.cover.toLowerCase()
-      //       )?.[0]?.code || sum_insured,
-      //     tenure: thisSelectedYear[0].code,
-      //   }).then((response) => {
-      //     const newData = response?.data?.data.map((data) => {
-      //       return { ...data, logo: companies[data.company_alias].logo };
-      //     });
-
-      //     if (response?.data) {
-      //       dispatch(saveQuotes(newData));
-      //     }
-      //   })
-      // );
     }
   };
 
@@ -186,9 +159,12 @@ const Multiyear = ({
                 </Col>
 
                 {yearPlan.map(d => (
-                  <Col md={12} onClick={() => {
-                    setYear(d.year);
-                  }}>
+                  <Col
+                    md={12}
+                    onClick={() => {
+                      setYear(d.year);
+                    }}
+                  >
                     {/* <div
                       onClick={() => {
                         setYear(d.year);

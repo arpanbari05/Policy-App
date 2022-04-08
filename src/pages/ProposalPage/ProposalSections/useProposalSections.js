@@ -242,15 +242,15 @@ const useProposalSections = ({
               });
             } else {
               if (
-                responseData.failed_bmi.health &&
+                responseData?.failed_bmi?.health &&
                 !groups.some(
-                  group => group.plan_type === "I" || group.plan_type === "F",
+                  group => group?.plan_type === "I" || group?.plan_type === "F",
                 )
               ) {
-                dispatch(setFailedBmiData(responseData.failed_bmi.health));
+                dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
                 dispatch(
                   setShowBMI(
-                    Object.keys(responseData.failed_bmi.health).join(", "),
+                    Object.keys(responseData?.failed_bmi.health).join(", "),
                   ),
                 );
               }

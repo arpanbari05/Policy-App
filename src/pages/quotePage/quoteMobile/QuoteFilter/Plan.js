@@ -74,29 +74,6 @@ const Plan = ({
           member: selectedGroup,
         }),
       );
-
-      // Object.keys(companies).forEach((companyAlias) =>
-      //   getQutoes({
-      //     planTypeCode: planTypeTenure[floater],
-      //     plan_type: planTypeTenure[floater],
-      //     alias: companyAlias,
-      //     member: member.filter((m) => m.group === selectedGroup),
-      //     sum_insured:
-      //       covers.filter(
-      //         (item) =>
-      //           item.display_name.toLowerCase() === filters.cover.toLowerCase()
-      //       )?.[0]?.code || sum_insured,
-      //     tenure: filters?.tenure?.slice(0, 1) || tenure,
-      //   }).then((response) => {
-      //     const newData = response?.data?.data.map((data) => {
-      //       return { ...data, logo: companies[data.company_alias].logo };
-      //     });
-
-      //     if (response?.data) {
-      //       dispatch(saveQuotes(newData));
-      //     }
-      //   })
-      // );
     }
   };
 
@@ -189,10 +166,12 @@ const Plan = ({
                   <hr className="hr_width_pop" />
                 </Col>
                 {displayPlanTypes?.map(item => (
-                  <Col md={12}
+                  <Col
+                    md={12}
                     onClick={() => {
                       setFloater(item?.display_name);
-                    }}>
+                    }}
+                  >
                     {/* <div
                       onClick={() => {
                         setFloater(item?.display_name);
