@@ -39,9 +39,13 @@ import {
   useGetEnquiriesQuery,
   useUpdateEnquiryMutation,
 } from "../../api/api";
+import useNotFoundHandler from "../../customHooks/useNotFoundHandler";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
+  const { pathname } = window.location;
+  const filterdPath = pathname.split("/")[1];
+  useNotFoundHandler(filterdPath);
 
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
 
