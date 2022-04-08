@@ -995,12 +995,12 @@ export function useGetQuotes(queryConfig = {}) {
   let { data, refetch, ...getCustomQuotesQuery } = useGetCustomQuotesQuery(
     {
       insurers: insurersToFetch,
-      deductible: getSelectedFilter("deductible").code,
-      sum_insured_range: getSelectedFilter("cover").code,
+      deductible: getSelectedFilter("deductible")?.code,
+      sum_insured_range: getSelectedFilter("cover")?.code,
       group: groupCode,
-      base_plan_type: getSelectedFilter("baseplantype").code,
-      tenure: getSelectedFilter("tenure").code,
-      plan_type: getSelectedFilter("plantype").code,
+      base_plan_type: getSelectedFilter("baseplantype")?.code,
+      tenure: getSelectedFilter("tenure")?.code,
+      plan_type: getSelectedFilter("plantype")?.code,
       journeyType,
     },
     queryConfig,
