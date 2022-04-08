@@ -21,10 +21,8 @@ const InsuredDetails = ({
   setActive,
   name,
   defaultValue,
-  setBack,
   setActivateLoader,
 }) => {
-  const [continueBtnClick, setContinueBtnClick] = useState(false);
   const [show, setShow] = useState(0);
   const { proposalData } = useSelector(state => state.proposalPage);
 
@@ -55,17 +53,14 @@ const InsuredDetails = ({
     setActivateLoader,
   });
 
-console.log("fsvbksvbs",errors)
-useEffect(() => {
-console.log("fvbkxfkjh",isValid)
-  if (isValid.includes(false)) {
-    setShow(isValid.indexOf(false));
-  }
-  if (isValid.includes(undefined)) {
-    setShow(isValid.indexOf(undefined));
-  }
-
-},[isValid])
+  useEffect(() => {
+    if (isValid.includes(false)) {
+      setShow(isValid.indexOf(false));
+    }
+    if (isValid.includes(undefined)) {
+      setShow(isValid.indexOf(undefined));
+    }
+  }, [isValid]);
 
   const { getPanelDescContent } = useInsuredDetails(
     name,
@@ -90,12 +85,7 @@ console.log("fvbkxfkjh",isValid)
 
   const fullName = proposalData["Proposer Details"]?.name;
 
-  // useEffect(() => {
-  //   if(continueBtnClick && errorInField){
-
-  //     setContinueBtnClick(false);
-  //   }
-  // },[submit,continueBtnClick])
+  const firstName = fullName?.split(" ")[0];
 
   return (
     <div>
@@ -111,9 +101,7 @@ console.log("fvbkxfkjh",isValid)
             key={index}
             title={`${item}`}
             show={show === index}
-            onClick={() =>
-              setShow(index)
-            }
+            onClick={() => setShow(index)}
           >
             <div>
               {name === "Medical Details" && (
@@ -243,8 +231,8 @@ console.log("fvbkxfkjh",isValid)
                       ?.medical_nstp_declaration_message,
                   }),
                 );
-              
-              triggerSaveForm({sendedVal:values,formName:name})
+
+              triggerSaveForm({ sendedVal: values, formName: name });
               // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
@@ -257,6 +245,11 @@ console.log("fvbkxfkjh",isValid)
           <RevisedPremiumPopup
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}
+            title={
+              name === "Medical Details"
+                ? `Hi ${firstName}, Revised Premium due to change in date of birth.`
+                : `Hi ${firstName}, Revised Premium due to change in medical conditions.`
+            }
           />
         )}
       </div>

@@ -61,7 +61,7 @@ const ProductDetails = () => {
 
   const [showNav, setShowNav] = useState(false);
 
-  const { getCartEntry, cartEntries } = useCart();
+  const { getCartEntry } = useCart();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
 
@@ -105,6 +105,7 @@ const ProductDetails = () => {
   if (!enquiryId) return <PageNotFound />;
 
   if (!cartEntry) {
+    alert(`Product not found against group code ${groupCode}.`);
     return history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
   }
 
