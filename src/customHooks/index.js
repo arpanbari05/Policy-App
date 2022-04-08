@@ -1010,7 +1010,10 @@ export function useGetQuotes(queryConfig = {}) {
       return {
         ...insurerQuotes?.data,
         company_alias: insurerQuotes?.company_alias,
-        data: { ...insurerQuotes, data: filterQuotes(insurerQuotes?.data?.data) },
+        data: {
+          ...insurerQuotes,
+          data: filterQuotes(insurerQuotes?.data?.data),
+        },
       };
     });
   }
@@ -1904,14 +1907,7 @@ export const useRevisedPremiumModal = () => {
     getTotalPremium(cartEntries); /* Gets the updated value each time */
 
   const getUpdatedCart = (next = () => {}) => {
-    dispatch(
-      api.util.invalidateTags([
-        "Cart",
-        "Rider",
-        "AdditionalDiscount",
-        "TenureDiscount",
-      ]),
-    );
+    dispatch(api.util.invalidateTags(["Cart"]));
     next();
   }; /* Performs refetch from the server */
 
