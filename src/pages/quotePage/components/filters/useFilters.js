@@ -38,7 +38,9 @@ const defaultFilters = {
 
 function useFilters() {
   const { groupCode } = useParams();
+
   const { data } = useGetEnquiriesQuery();
+
   let {
     data: { defaultfilters, morefilters, ...filters },
   } = useFrontendBoot();

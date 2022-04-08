@@ -94,8 +94,8 @@ function InputMembersForm({ posContent, ...props }) {
     updateEnquiry(sendData)
       .then(res => {
         if (res.error) {
-          Object.keys(res.error.data.errors).forEach(value => {
-            setServerError(res.error.data.errors[`${value}`][0]);
+          Object.keys(res?.error?.data?.errors).forEach(value => {
+            setServerError(res?.error?.data?.errors[`${value}`][0]);
           });
           return;
         }

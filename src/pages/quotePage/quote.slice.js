@@ -275,9 +275,7 @@ const quotePageSlice = createSlice({
     },
 
     premiumFilterQuotes: (state, action) => {
-      console.log("hehe3325premiumFilterQuotes");
       state.filterQuotes = state.quotes.map(item => {
-        //console.log("Andddd here we go");
         if (action.payload?.code.includes("<")) {
           return item.filter(quote => quote.premium < 5000);
         } else {

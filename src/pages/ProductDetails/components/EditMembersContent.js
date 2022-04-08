@@ -27,17 +27,15 @@ function useFetchQuotes({ groupCode }) {
   );
 
   const getCode = (display_name, list) =>
-    list.find(item => item.display_name === display_name)?.code;
+    list.find(item => item?.display_name === display_name)?.code;
 
-  const plan_type = getCode(quoteFilters.planType, plantypes);
-  const sum_insured = getCode(quoteFilters.cover, covers);
-  const basePlanType = getCode(quoteFilters.basePlanType, baseplantypes);
+  const plan_type = getCode(quoteFilters?.planType, plantypes);
+  const sum_insured = getCode(quoteFilters?.cover, covers);
+  const basePlanType = getCode(quoteFilters?.basePlanType, baseplantypes);
   const tenure = parseInt(multiYear);
   const member = groupCode;
 
   const callFetchQuotes = () => {
-    console.log("fetchquotes EditMembersCOntent");
-    console.log("I executed");
     dispatch(
       fetchQuotes(companies, {
         sum_insured,
@@ -120,11 +118,7 @@ function EditMembersContent({ closePopup = () => {} }) {
         selectedmember => selectedmember.type === member.type,
       );
     setLoading(true);
-    console.log("hvbhdvbhufb", {
-      members: allMembersWithAge
-        .filter(member => !selectedMembersIncludes(member))
-        .concat(selectedMembers),
-    });
+
     updateUser({
       members: allMembersWithAge
         .filter(member => !selectedMembersIncludes(member))
@@ -132,12 +126,12 @@ function EditMembersContent({ closePopup = () => {} }) {
     }).then(response => {
       getQutoes({
         ...filtersData,
-        plan_type: group.plan_type,
+        plan_type: group?.plan_type,
         alias,
-        base_plan_type: filtersData.basePlanType,
+        base_plan_type: filtersData?.basePlanType,
       }).then(res => {
-        const newProduct = res.data.data.find(
-          quote => quote.product.id === id && quote.sum_insured === sum_insured,
+        const newProduct = res?.data?.data?.find(
+          quote => quote?.product?.id === id && quote?.sum_insured === sum_insured,
         );
         if (newProduct)
           updateProductRedux({

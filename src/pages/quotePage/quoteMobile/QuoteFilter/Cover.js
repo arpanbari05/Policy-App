@@ -77,30 +77,7 @@ const Cover = ({
         }),
       );
 
-      // Object.keys(companies).forEach((companyAlias) =>
-      //   getQutoes({
-      //     sum_insured: ownCover
-      //       ? `${ownCover}-${ownCover}`
-      //       : thisSelectedCover[0].code,
-      //     alias: companyAlias,
-      //     member: member.filter((m) => m.group === selectedGroup),
-      //     tenure: filters["multiYear"].slice(0, 1) || tenure,
-      //     plan_type:
-      //       plantypes.filter(
-      //         (item) =>
-      //           item.display_name.toLowerCase() ===
-      //           filters.planType.toLowerCase()
-      //       )?.[0]?.code || plan_type,
-      //   }).then((response) => {
-      //     const newData = response?.data?.data.map((data) => {
-      //       return { ...data, logo: companies[data.company_alias].logo };
-      //     });
-
-      //     if (response?.data) {
-      //       dispatch(saveQuotes(newData));
-      //     }
-      //   })
-      // );
+      
     }
   };
   //cover Validation
