@@ -28,6 +28,7 @@ import * as mq from "../utils/mediaQueries";
 import { GiCircle } from "react-icons/gi";
 import { images } from "../assets/logos/logo";
 import { defaultPrimaryColor } from "../config";
+import { useUrlQueries } from "../customHooks/useUrlQuery";
 
 export function ScreenTopLoader({ progress, show }) {
   const { colors } = useTheme();
@@ -50,8 +51,9 @@ export function ScreenTopLoader({ progress, show }) {
 }
 
 export function LoadEnquiries({ children }) {
+  const searchQueries = useUrlQueries();
   const { isLoading, isFetching, isUninitialized, isError, refetch } =
-    useGetEnquiriesQuery();
+    useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   if (isError)
     return (

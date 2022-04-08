@@ -23,20 +23,17 @@ function DeductibleForm({ posContent, ...props }) {
     data: { deductibles },
   } = useFrontendBoot();
 
-  const {
-    data: {
-      data: {
-        input: { deductible },
-      },
-    },
-  } = useGetEnquiriesQuery();
+  const { data } = useGetEnquiriesQuery();
 
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
-  const { groups, getLastGroup } = useMembers();
+  const { getLastGroup } = useMembers();
 
   const getInitialDeductible = () =>
-    deductibles.find(deductibleOption => deductibleOption.code === deductible);
+    deductibles.find(
+      deductibleOption =>
+        deductibleOption.code === data?.data?.input?.deductible,
+    );
 
   const [selectedDeductible, setSelectedDeductible] =
     useState(getInitialDeductible);

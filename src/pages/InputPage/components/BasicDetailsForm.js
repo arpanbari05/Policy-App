@@ -15,35 +15,32 @@ import { useUrlQueries } from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
 import "styled-components/macro";
 import { useHistory } from "react-router-dom";
-import { useGetEnquiriesQuery } from "../../../api/api";
 import { capitalize } from "../../../utils/helper";
 import * as mq from "../../../utils/mediaQueries";
 import validateInput, {
   isEnquiryOptional,
-  settings,
 } from "../../../utils/inputPageUtils";
 import styled from "styled-components";
 
 const BasicDetailsForm = ({ posContent, ...props }) => {
+  let inputData = {};
   const { colors } = useTheme();
+  const urlSearchParams = useUrlQueries();
+  const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
+  const history = useHistory();
   const {
     data: { tenant, settings },
   } = useFrontendBoot();
 
-  let inputData = {};
-
-  const { data } = useGetEnquiriesQuery();
-
-  if (data?.data?.input)
+  if (sessionStorage.userData)
     inputData = {
-      ...data.data,
-      gender: data.data.input.gender,
+      ...JSON.parse(sessionStorage.userData),
     };
 
+  //===== page states======
   const [emailError, setEmailErrors] = useState({});
   const [mobileError, setMobileErrors] = useState({});
   const [fullNameError, setFullNameErrors] = useState({});
-  const [shouldProceed, setShouldProceed] = useState(false);
   const fullNameInput = useNameInput(inputData.name || "", setFullNameErrors);
   const mobileInput = useNumberInput(inputData.mobile || "", setMobileErrors, {
     maxLength: 10,
@@ -51,10 +48,6 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
   const emailInput = useEmailInput(inputData.email || "", setEmailErrors);
   const [gender, setGender] = useState(inputData.gender || "");
   const [journeyType, setJourneyType] = useState("health");
-  const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
-  const urlSearchParams = useUrlQueries();
-
-  const history = useHistory();
 
   const handleFormSubmit = async event => {
     event.preventDefault();
