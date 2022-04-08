@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -45,6 +45,12 @@ function AppLoaders({ children, ...props }) {
   });
   const isTestRoute = useRouteMatch({ path: "/test" });
 
+  const isQuoteRoute = useRouteMatch({ path: "/quotes" });
+  const isProductDetailsRoute = useRouteMatch({ path: "/productdetails" });
+  const isProposalRoute = useRouteMatch({ path: "/proposal" });
+  const isProposalSummaryRoute = useRouteMatch({ path: "/proposal_summary" });
+  const isThankyouRoute = useRouteMatch({ path: "/thankyou" });
+
   const { isLoading, isUninitialized, isError } = useGetFrontendBootQuery(
     undefined,
     {
@@ -59,6 +65,16 @@ function AppLoaders({ children, ...props }) {
     isError: isErrorEnq,
     refetch,
   } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
+
+  const { isLoading: isLoadingCart, isUninitialized: isUninitializedCart } =
+    useGetCartQuery(undefined, {
+      skip: !(
+        isQuoteRoute ||
+        isProductDetailsRoute ||
+        isProposalRoute ||
+        isProposalSummaryRoute
+      ),
+    });
 
   if (isLoading || isUninitialized) return <FullScreenLoader />;
 
@@ -90,6 +106,8 @@ function AppLoaders({ children, ...props }) {
 
   if (isLoadingEnq || isUninitializedEnq || isFetchingEnq)
     return <FullScreenLoader />;
+
+  if (isLoadingCart) return <FullScreenLoader />;
 
   if (isErrorEnq)
     return (
