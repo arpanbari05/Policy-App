@@ -45,7 +45,7 @@ const ProductDetails = () => {
 
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
 
-  const location = useLocation();
+  //const location = useLocation();
 
   const { colors } = useTheme();
 
@@ -77,7 +77,8 @@ const ProductDetails = () => {
     return () => document.removeEventListener("scroll", scrollListener);
   }, []);
 
-  useEffect(() => {
+  // TODO : READ WHAT location.hash DO BEFORE UN-COMMENTING.
+  /*useEffect(() => {
     if (location.hash) {
       const scrollToRef = document.querySelector(location.hash);
       if (scrollToRef) {
@@ -91,7 +92,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     window.location.hash = "";
-  }, [groupCode]);
+  }, [groupCode]); */
 
   useEffect(() => {
     updateEnquiry(data?.data);

@@ -631,7 +631,7 @@ export function getTotalPremium(cartEntries = []) {
 }
 
 export function getFirstName(name = "") {
-  return name.split(" ")[0];
+  return name?.split(" ")[0];
 }
 
 export const autoCapitalizationHandler = value => {
@@ -800,6 +800,26 @@ export const isRelianceInfinityPlan = cartEntry =>
   cartEntry?.product?.name === "Health Infinity Individual";
 
 export const isUsgiLifestyleDiscount = ({ discount = {} }) => {
-  console.log("The discount is", discount, "usgilifestyle");
   return discount?.alias === "usgilifestyle";
+};
+
+export const featureOptionsValidValue = featureOptions => {
+  if (
+    featureOptions === null ||
+    featureOptions === undefined ||
+    featureOptions === "[]" ||
+    Array.isArray(featureOptions)
+  ) {
+    return {};
+  }
+  return featureOptions;
+};
+
+export const getPolicyPremium = (policyStatus = []) => {
+  if (policyStatus.length) {
+    return policyStatus
+      ?.map(singlePolicy => +singlePolicy?.total_premium)
+      ?.reduce((acc = 0, curr) => (acc += curr));
+  }
+  return 0;
 };

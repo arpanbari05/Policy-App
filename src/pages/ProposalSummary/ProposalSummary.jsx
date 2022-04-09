@@ -49,7 +49,7 @@ import {
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import GoBackButton from "../../components/GoBackButton";
 import { mobile } from "../../utils/mediaQueries";
-import { amount, isSSOJourney } from "../../utils/helper";
+import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
 
 const ProposalSummary = () => {
@@ -89,7 +89,9 @@ const ProposalSummary = () => {
 
   const frontendData = { data: frontendBoot.data };
 
-  const totalPremium = useUSGILifeStyleDiscount();
+  const totalPremium = useUSGILifeStyleDiscount(); //? CALCULATED BY US.
+
+  const totalPremiumPolicies = getPolicyPremium(policyStatus);
 
   const tCSectionData = isSSOJourney()
     ? frontendData?.data?.settings?.summary_banner_pos
@@ -310,7 +312,7 @@ const ProposalSummary = () => {
                     <span>Total Premium</span>
                     <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
                       <span class="font_weight_normal text-white">
-                        {amount(totalPremium)}
+                        {amount(totalPremiumPolicies)}
                       </span>
                     </p>
                   </div>

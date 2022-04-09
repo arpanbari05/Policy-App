@@ -1,44 +1,44 @@
-import { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import FeatureSection from "./FeatureSection/FeatureSection";
-import { setFeatureOptions } from "../../Cart/cart.slice";
 import { RiCheckFill } from "react-icons/ri";
-import { useTheme, useCart } from "../../../customHooks";
-import HttpClient from "../../../api/httpClient";
+import { useTheme, useCart, useAdditionalDiscount } from "../../../customHooks";
 import { useParams } from "react-router-dom";
-import { isRelianceInfinityPlan } from "../../../utils/helper";
+import {
+  featureOptionsValidValue,
+  isRelianceInfinityPlan,
+} from "../../../utils/helper";
+import { useGetFeatureOptionsQuery } from "../../../api/api";
+import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
+import { tabletAndMobile } from "../../../utils/mediaQueries";
+import "styled-components/macro";
 
-const useRoomRent = (productId, sumInsured) => {
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState([]);
-  const [status, setStatus] = useState("");
+const useFeatureOptions = (productId, sumInsured) => {
+  const featureOptionsQuery = useGetFeatureOptionsQuery({
+    productId,
+    sumInsured,
+  });
 
-  useEffect(() => {
-    setLoading(true);
-    HttpClient(`product/${productId}/options?sum_insured=${sumInsured}`).then(
-      response => {
-        if (response.statusCode === 200) {
-          if (response.data.data.length !== 0) {
-            setStatus("success");
-            setResponse(response.data.data);
-          } else {
-            setStatus("fail");
-          }
-          setLoading(false);
-        } else {
-          setStatus("fail");
-          setLoading(false);
-        }
-      },
-    );
-  }, [productId, sumInsured]);
+  const { groupCode } = useParams();
 
-  return {
-    loading,
-    response,
-    status,
+  const { updateCart } = useCart();
+
+  const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
+
+  const [updateCartMutation] = updateCart(groupCode);
+
+  const updateFeatureOptions = ({ feature_options = {} }) => {
+    const additionalDiscounts = getSelectedAdditionalDiscounts();
+
+    //? Only runs the query if there is some feature option selected.
+    Object.keys(feature_options)?.length &&
+      updateCartMutation({
+        additionalDiscounts,
+        feature_options: feature_options,
+      });
   };
+
+  return { ...featureOptionsQuery, updateFeatureOptions };
 };
 
 const Options = ({
@@ -169,41 +169,67 @@ const ContentSection = ({
   );
 };
 
-const Benefit = ({ cartEntry: cart }) => {
+const Benefit = ({}) => {
+  const { groupCode } = useParams();
+
   const { colors: theme } = useTheme();
 
-  const { loading, status, response } = useRoomRent(
-    cart?.product.id,
-    cart?.sum_insured,
+  const { getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const {
+    isLoading,
+    isError,
+    data,
+    isUninitialized,
+    refetch,
+    updateFeatureOptions,
+  } = useFeatureOptions(cartEntry?.product.id, cartEntry?.sum_insured);
+
+  const {
+    colors: { primary_color },
+  } = useTheme();
+
+  const [selectedBenefit, setSelectedBenefit] = useState(
+    featureOptionsValidValue(cartEntry?.feature_options),
   );
 
-  const [selectedBenefit, setSelectedBenefit] = useState({});
-
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    if (response?.length) {
-      if (!cart?.feature_options) {
-        dispatch(
-          setFeatureOptions({
-            ...selectedBenefit,
-          }),
-        );
-      }
-    }
-  }, [status, loading]);
-
-  useEffect(() => {
-    dispatch(
-      setFeatureOptions({
-        ...selectedBenefit,
-      }),
-    );
+    console.log("The selected benefit is", selectedBenefit);
+    updateFeatureOptions({ feature_options: selectedBenefit });
   }, [selectedBenefit]);
 
-  return (
-    !loading &&
-    status === "success" && (
+  if (isLoading || isUninitialized)
+    return (
+      <DetailsSectionWrap isProductDetailsPage={true}>
+        <CardSkeletonLoader />
+      </DetailsSectionWrap>
+    );
+
+  if (isError)
+    return (
+      <DetailsSectionWrap isProductDetailsPage={true}>
+        <div className="d-flex gap-3 align-items-center">
+          <p className="m-0">Something went wrong while getting benefits!</p>
+          {/* <p>{error.data?.message}</p> */}
+          <button
+            className="py-1 px-3 text-[#fff]"
+            style={{
+              background: primary_color,
+              color: "#fff",
+              borderRadius: 9999,
+            }}
+            onClick={refetch}
+          >
+            Retry
+          </button>
+        </div>
+      </DetailsSectionWrap>
+    );
+
+  if (data?.data?.length) {
+    return (
       <div
         css={`
           margin-top: 10px;
@@ -216,8 +242,8 @@ const Benefit = ({ cartEntry: cart }) => {
           id="Plan-Feature-Options"
         >
           <BenefitCardWrapper>
-            {response &&
-              response?.map(data => (
+            {data &&
+              data?.data?.map(data => (
                 <ContentSection
                   selectedBenefit={selectedBenefit}
                   setSelectedBenefit={setSelectedBenefit}
@@ -228,8 +254,10 @@ const Benefit = ({ cartEntry: cart }) => {
           </BenefitCardWrapper>
         </FeatureSection>
       </div>
-    )
-  );
+    );
+  }
+
+  return <></>;
 };
 
 const StyledContentSection = styled.div`
@@ -312,6 +340,17 @@ const BenefitCardWrapper = styled.div`
 
   @media (max-width: 800px) {
     grid-template-columns: repeat(1, 1fr);
+  }
+`;
+
+export const DetailsSectionWrap = styled.section`
+  padding: 0;
+  margin: auto;
+  margin-top: 40px;
+  ${tabletAndMobile} {
+    padding: 0;
+    margin: auto;
+    padding-top: 20px;
   }
 `;
 

@@ -13,17 +13,18 @@ const useFormBuilder = (
   yesSelected,
   proposalDetails,
   setErrorInField,
-  fetchErrors
+  fetchErrors,
 ) => {
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
-  const [values, setValues] = useState(defaultValues || {});
-  const [errors, setErrors] = useState({});
-  console.log("dbdgbgbndgbd",errors,values)
-  const [isValid, setIsValid] = useState();
-  const updateValue = (name, value, removeOtherValues = false) => {
-    console.log("dhdfjklb 1",name, value)
-    if (removeOtherValues) {
 
+  const [values, setValues] = useState(defaultValues || {});
+
+  const [errors, setErrors] = useState({});
+
+  const [isValid, setIsValid] = useState();
+
+  const updateValue = (name, value, removeOtherValues = false) => {
+    if (removeOtherValues) {
       setValues({ [name]: value });
       fetchValues({ [name]: value });
     } else {
@@ -65,12 +66,10 @@ const useFormBuilder = (
   };
 
   const updateValues = (multipleValues = {}) => {
-    console.log("dhdfjklb 2",multipleValues)
     setValues({ ...values, ...multipleValues });
     fetchValues({ ...values, ...multipleValues });
   };
   const insertValue = (parent, member, name, value) => {
-    console.log("qdjbjics", parent, member, name, value);
     setValues({
       ...values,
       [parent]: {
@@ -102,7 +101,6 @@ const useFormBuilder = (
   }, [defaultValues]);
 
   const triggerValidation = name => {
-    console.log("sgbmkfbmk", name, values);
     let errorsTemp = {};
     let tempIsValid = true;
     if (typeof name === "object") {
@@ -133,26 +131,15 @@ const useFormBuilder = (
           if (errorMsg) tempIsValid = false;
         }
       }
-      // setIsValid(tempIsValid);
     } else if (name) {
       let [filteredItem] = schema.filter(item => item.name === name);
-      // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
 
       if (filteredItem) {
         let errorMsg;
-        // if(filteredItem.additionalOptions.showMembersIf){
-        //   let parents = filteredItem.additionalOptions.showMembersIf.split("||");
-        //   let isChildSelected = parents.some(el => values[el] && values[el][`is${el}`] === "Y")
-        //   if(isChildSelected && !Object.values(values[name].members).includes(true)){
-        //     errorMsg = "Select parent";
-        //   }
-
-        // }else{
 
         errorMsg =
           filteredItem.validate &&
           performValidations(filteredItem.validate, values, name);
-        // }
 
         if (renderField(filteredItem, values)) {
           errorsTemp[filteredItem.name] = errorMsg;
@@ -160,19 +147,11 @@ const useFormBuilder = (
           if (errorMsg) tempIsValid = false;
         }
       }
-
-      // setIsValid(tempIsValid);
     } else {
       schema.forEach(item => {
         if (item instanceof Array) {
           item[0].additionalOptions.members.forEach(member => {
             item.forEach(innerItem => {
-              console.log(
-                "wrgvhwrjv",
-                values,
-                innerItem.parent,
-                values[innerItem.parent],
-              );
               let errorMsg =
                 innerItem.validate &&
                 values[innerItem.parent] &&
@@ -212,13 +191,11 @@ const useFormBuilder = (
           if (renderField(item, values)) {
             errorsTemp[item.name] = errorMsg;
             if (errorMsg) tempIsValid = false;
-            console.log("bfsfnbjkls", tempIsValid);
           }
         }
         setIsValid(tempIsValid);
       });
     }
-    console.log("fvjbasdvk", errorsTemp);
 
     setErrors({ ...errors, ...errorsTemp });
     fetchErrors({ ...errors, ...errorsTemp });
@@ -226,37 +203,32 @@ const useFormBuilder = (
 
   const clearField = name => {
     setValues({ ...values, [name]: null });
-    
   };
 
-  // to scroll page as per error
   useEffect(() => {
-    console.log("dhbjhklb",errors)
-    if(Object.values(errors).length && Object.values(errors).some(val => val)) setErrorInField(true)
-    else setErrorInField(false)
+    if (Object.values(errors).length && Object.values(errors).some(val => val))
+      setErrorInField(true);
+    else setErrorInField(false);
+    
     if (blockScrollEffect) {
       let filteredKey = Object.keys(errors).filter(key => errors[key]);
-    // if (canProceed && !canProceed.canProceed)
-    //   filteredKey = canProceed.canProceedArray;
-    console.log("srgvshfvjkl", errors, filteredKey, yesSelected, canProceed);
-    if (filteredKey.length) {
-      let scrollPositions = filteredKey.map(key => {
-        let element = document.getElementById(key);
-        if (element) {
-          let y = element.getBoundingClientRect().top - 100 + window.scrollY;
-          return y;
-        }
-      });
-      console.log("svbkjsbnv", scrollPositions);
-      window.scroll({
-        top: Math.min(...scrollPositions),
-        behavior: "smooth",
-      });
+
+      if (filteredKey.length) {
+        let scrollPositions = filteredKey.map(key => {
+          let element = document.getElementById(key);
+          if (element) {
+            let y = element.getBoundingClientRect().top - 100 + window.scrollY;
+            return y;
+          }
+        });
+        window.scroll({
+          top: Math.min(...scrollPositions),
+          behavior: "smooth",
+        });
+      }
     }
-    }
-    
-  }, [errors]);
-// , canProceed,blockScrollEffect
+  }, [Object.keys(errors).length]);
+
   return {
     values,
     updateValue,
@@ -271,7 +243,7 @@ const useFormBuilder = (
     updateValues,
     checkReadOnly,
     updateValidateObjSchema,
-    setBlockScrollEffect
+    setBlockScrollEffect,
   };
 };
 export default useFormBuilder;

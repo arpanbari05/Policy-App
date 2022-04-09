@@ -32,6 +32,7 @@ import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter
 import styles from "../styles";
 import {
   capitalize,
+  featureOptionsValidValue,
   getAddOnSendData,
   getDiscountAmount,
   getInsuranceType,
@@ -323,7 +324,7 @@ export function useMembers() {
   if (data) {
     input = data.data.input;
     if (reduxGroup?.length) {
-      const updatedGroup = data.data?.groups?.map(group => {
+      const updatedGroup = data?.data?.groups?.map(group => {
         const reduxGroupMatch = reduxGroup?.find(reGrp => {
           return reGrp?.members?.some(mem => group?.members?.includes(mem));
         });
@@ -688,6 +689,12 @@ export function useCart() {
       cartEntry => cartEntry?.group?.id === parseInt(groupCode),
     );
 
+    console.log(
+      "The groups received from enquiryApi and our groupCode here",
+      groups,
+      groupCode,
+    );
+
     if (!cartEntry) return;
 
     const group = groups?.find(
@@ -731,7 +738,11 @@ export function useCart() {
     const { id, health_riders, ...cartEntry } = getCartEntry(groupCode);
 
     return [
-      ({ additionalDiscounts = [], generate_proposal = false }) => {
+      ({
+        additionalDiscounts = [],
+        generate_proposal = false,
+        feature_options = {},
+      }) => {
         const discounted_total_premium = calculateTotalPremium(
           { health_riders, ...cartEntry },
           { additionalDiscounts },
@@ -743,6 +754,7 @@ export function useCart() {
             health_riders.map(getRiderSendData),
           addons: cartEntry.addons.map(getAddOnSendData),
           discounted_total_premium,
+          feature_options,
           generate_proposal,
         });
       },
@@ -795,20 +807,24 @@ export function useRider(groupCode) {
 }
 
 export function useTenureDiscount(groupCode) {
-  const { feature_options } = useSelector(state => state.cart);
   const { journeyType } = useFrontendBoot();
 
   const { updateCartEntry, getCartEntry } = useCart();
 
-  const { product, sum_insured, tenure, deductible } = getCartEntry(groupCode);
+  const { product, sum_insured, tenure, deductible, feature_options } =
+    getCartEntry(groupCode);
+
+  const updatedFeatureOptions = featureOptionsValidValue(feature_options);
+
+  const featureOptionsToSend = Object.keys(updatedFeatureOptions)
+    .map(key => `${key}=${updatedFeatureOptions[key]}`)
+    .join("&");
 
   const { data, ...queryState } = useGetDiscountsQuery({
     sum_insured: +sum_insured,
     product_id: product.id,
     group: groupCode,
-    feature_options: Object.keys(feature_options)
-      .map(key => `${key}=${feature_options[key]}`)
-      .join("&"),
+    feature_options: featureOptionsToSend,
     journeyType,
     deductible,
   });
@@ -1664,7 +1680,9 @@ export function useRiders({
 
   useEffect(() => setRiders(getInitialRiders), [getInitialRiders]); //? a fallback to assign initial-riders
 
-  const { feature_options } = useSelector(({ cart }) => cart);
+  const { feature_options } = useCart().getCartEntry(groupCode);
+
+  const updatedFeatureOptions = featureOptionsValidValue(feature_options);
 
   const findLocalRider = riderToFind =>
     riders.find(rider => rider?.id === riderToFind?.id);
@@ -1706,7 +1724,7 @@ export function useRiders({
   const query = useGetRiders(quote, groupCode, {
     queryOptions: {
       additionalUrlQueries,
-      feature_options,
+      updatedFeatureOptions,
       selected_riders,
       options_query,
     },
@@ -1715,7 +1733,7 @@ export function useRiders({
   //? RELIANCE FUNCTIONALITY
   const reliance_general_feature_option_value =
     quote?.product?.company?.alias === "reliance_general" &&
-    feature_options[Object.keys(feature_options)[0]]; //? free rider name to be selected by default
+    updatedFeatureOptions[Object.keys(updatedFeatureOptions)[0]]; //? free rider name to be selected by default
 
   const { data } = query;
 

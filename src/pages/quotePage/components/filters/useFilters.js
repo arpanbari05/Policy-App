@@ -143,7 +143,7 @@ function useFilters() {
     }
 
     return filters[CODE_FILTERS[code]].find(
-      filter => filter.code === defaultfilters[code],
+      filter => filter?.code === defaultfilters[code],
     );
   }
 
@@ -156,12 +156,12 @@ function useFilters() {
   const selectedDeductible = getSelectedFilter("deductible");
 
   const isFiltersDefault =
-    selectedCover.code === cover &&
-    (selectedPlanType.code === plantype || selectedPlanType.code === "I") &&
-    selectedBasePlanType.code === baseplantype &&
-    selectedTenure.code === tenure &&
-    selectedInsurers.length < 1 &&
-    (selectedDeductible.code
+    selectedCover?.code === cover &&
+    (selectedPlanType?.code === plantype || selectedPlanType?.code === "I") &&
+    selectedBasePlanType?.code === baseplantype &&
+    selectedTenure?.code === tenure &&
+    selectedInsurers?.length < 1 &&
+    (selectedDeductible?.code
       ? selectedDeductible?.code === deductible
       : true) &&
     !extras?.others?.length &&

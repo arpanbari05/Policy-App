@@ -1,27 +1,16 @@
 import { useState } from "react";
-import { Modal, Col, Row } from "react-bootstrap";
-import { Link, useHistory, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Modal, Row } from "react-bootstrap";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components/macro";
-import { BackgroundBorderTitle } from "./ReviewCart";
-import CorrectIcon from "../../../assets/images/correct_icon.png";
-import EditIcon from "../../../assets/images/edit.png";
-import DeleteIcon from "../../../assets/images/remove.png";
-import useUrlQuery from "../../../customHooks/useUrlQuery";
+
 import {
   useCompanies,
   useFrontendBoot,
   useMembers,
   useTheme,
 } from "../../../customHooks";
-import { useCartProduct } from "../../Cart";
 import { mobile } from "../../../utils/mediaQueries";
-import {
-  amount,
-  displayFormattedMembers,
-  getFirstName,
-  getTotalPremium,
-} from "../../../utils/helper";
+import { amount, getFirstName, getTotalPremium } from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
 import {
@@ -35,6 +24,7 @@ import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/
 import { useRider } from "../../../customHooks/index";
 import { Button } from "../../../components";
 import { useEffect } from "react";
+import "./ReviewCardPopup.scss";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -600,130 +590,41 @@ function ProductDetailsCard({ cartItem }) {
 
   return (
     <div
-      className="rider-box_product_pro"
+      className="product_outer"
       css={`
-        border: 1px solid #d5dce5;
-        padding: 10px 20px;
-        border-radius: 10px;
         ${mobile} {
           display: none;
         }
       `}
     >
-      <div
-        class="row_display_pro_review d-flex"
-        style={{ justifyContent: "space-between" }}
-      >
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-          `}
-        >
-          <div className="logo_style_common" style={{ marginBottom: "0px" }}>
-            <img
-              css={`
-                width: 100%;
-              `}
-              src={logoSrc}
-              alt={alias}
-            />
+      <div className="product_outer_1">
+        <div className="name_image_outer">
+          <div className="logo_style">
+            <img src={logoSrc} alt={alias} />
           </div>
 
           <div>
-            <span
-              css={`
-                margin-top: "0";
-                font-weight: 900;
-              `}
-            >
-              {name}
-            </span>
+            <span className="prod_name">{name}</span>
           </div>
         </div>
 
-        <div
-          css={`
-            width: 60%;
-            display: flex;
-          `}
-        >
-          <div
-            className="float_product_cover_pro"
-            css={`
-              display: flex;
-              align-items: center;
-              flex: 1;
-              justify-content: center;
-            `}
-          >
-            <span class="label-add_product_pro">
+        <div className="width60_flex">
+          <div className="float_product_cover">
+            <span className="label-add_product">
               Cover
               <br />
-              <span
-                class="blk edit_css_product addon_plan_d_inter_1_product_pro"
-                css={`
-                  font-size: 15px;
-                  font-weight: 900;
-                  color: #505f79;
-                `}
-              >
+              <span className="edit_css_prod si_text">
                 {amount(sum_insured)}
               </span>
             </span>
           </div>
 
-          {/* <div
-            className="float_product_premium_pro"
-            css={`
-              border-left: 1px solid #ddd;
-              display: flex;
-              flex: 1;
-              align-items: center;
-              justify-content: center;
-            `}
-          >
-            <div class="si_add si_add2">
-              <span class="label-add_product_pro">
+          <div className="float_product_premium">
+            <div>
+              <span className="label-add_product">
                 Premium
                 <br />
-                <span
-                  class="blk edit_css_product"
-                  css={`
-                    font-size: 15px;
-                    font-weight: 900;
-                    color: #505f79;
-                  `}
-                >
-                  {amount(total_premium)} /{" "}
-                  {tenure === 1 ? "year" : `${tenure} years`}
-                </span>
-              </span>
-            </div>
-          </div> */}
-
-          <div
-            className="float_product_premium_pro"
-            css={`
-              border-left: 1px solid #ddd;
-              display: flex;
-              flex: 1;
-              align-items: center;
-              justify-content: center;
-            `}
-          >
-            <div class="si_add si_add2">
-              <span class="label-add_product_pro">
-                Premium
-                <br />
-                <span
-                  class="blk edit_css_product"
-                  css={`
-                    font-size: 15px;
-                    font-weight: 900;
-                    color: #505f79;
-                  `}
-                >
+                <span className="edit_css_prod si_text">
                   {amount(total_premium)} /{" "}
                   {tenure === 1 ? "year" : `${tenure} years`}
                 </span>
@@ -731,21 +632,13 @@ function ProductDetailsCard({ cartItem }) {
             </div>
           </div>
         </div>
-        <div class="rider-box1"></div>
+        <div></div>
       </div>
 
       {displayRiders.length > 0 ? <hr /> : null}
       <div class="row w-100 flex-row">
         {displayRiders.map(rider => (
-          <div
-            css={`
-              margin: 2px;
-              width: fit-content;
-              font-size: 14px;
-              width: 48%;
-            `}
-          >
-            {/* <img src={CorrectIcon} class="display_in_m" alt="" /> */}
+          <div className="rider_review_outer">
             <span
               css={`
                 color: ${PrimaryColor};
@@ -753,7 +646,7 @@ function ProductDetailsCard({ cartItem }) {
             >
               <AiOutlineCheckCircle />
             </span>{" "}
-            <span class="font_weight_normal">{rider.name}</span>
+            <span className="weight_normal">{rider?.name}</span>
           </div>
         ))}
       </div>
@@ -933,47 +826,8 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           >
             Proceed to Proposal
           </Button>
-          {/* <Link
-            to={propsoalPageLink}
-            css={`
-              ${mobile} {
-                width: 100%;
-              }
-            `}
-          >
-            <div
-              css={`
-                width: 216px;
-                background: ${PrimaryColor};
-                color: #fff;
-                border-radius: 2px;
-                height: 49px;
-                font-size: 15px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                ${mobile} {
-                  margin-top: 10px;
-                  width: 100%;
-                  border-radius: 2px;
-                }
-              `}
-            >
-              Proceed to Proposal
-             
-            </div>
-          </Link> */}
         </div>
       </div>
-      {/* <div
-        css={`
-          display: none;
-          ${mobile} {
-            display: block;
-          }
-        `}
-      ></div> */}
     </PopUpWithCloseButton>
   );
 }
@@ -1012,13 +866,7 @@ function ProductCard({ groupCode, onClose, cartEntry, group, link }) {
 
   return (
     <>
-      <div
-        css={`
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        `}
-      >
+      <div className="product_card_outer">
         <GradientTitle title={getMembersText({ id: groupCode })} />
       </div>
       {product ? (
@@ -1185,310 +1033,3 @@ const ModalTitle = styled.h5`
   font-weight: 900;
   width: 80%;
 `;
-
-// /* eslint-disable jsx-a11y/alt-text */
-// import React, { useEffect } from "react";
-// import { Col, Row } from "react-bootstrap";
-// import { useDispatch } from "react-redux";
-// import { useSelector } from "react-redux";
-// import { createCartItem } from "./../../QuotesPage/quotePage.slice";
-// import editReview from "../../../assets/images/edit.png";
-// import correctIcon from "../../../assets/images/correct_icon.png";
-// import editPencil from "../../../assets/images/edit_pencil.png";
-// import { useHistory } from "react-router";
-// import SecureLS from "secure-ls";
-// import "./ReviewCardPopup.scss";
-
-// const ReviewCardPopup = ({
-//   reviewModalOpen,
-//   setReviewModalOpen,
-//   totalPremium,
-// }) => {
-//   const ls = new SecureLS();
-//   const history = useHistory();
-//   const dispatch = useDispatch();
-//   const plan = useSelector(({ quotePage }) => quotePage.selectedPlan);
-//   const { first_name } =
-//     useSelector(({ greetingPage }) => greetingPage?.proposerDetails) || {};
-//   const cartArr = useSelector(({ quotePage }) => quotePage.cartItems);
-//   const { selectedRiders, selectedGroup } = useSelector(
-//     ({ quotePage }) => quotePage,
-//   );
-//   const companies = useSelector(
-//     state => state.frontendBoot.frontendData.data.companies,
-//   );
-
-//   const { memberGroups } = useSelector(state => state.greetingPage);
-
-//   return (
-//     <div
-//       id="m-md-review"
-//       className="modal modal-open"
-//       data-backdrop="true"
-//       style={
-//         reviewModalOpen
-//           ? {
-//               display: "block",
-//               backgroundColor: "rgba(0,0,0,0.3)",
-//               overflowY: "auto",
-//               overflowX: "hidden",
-//             }
-//           : { display: "none" }
-//       }
-//       aria-hidden="true"
-//     >
-//       <div className="modal-dialog modal-md" style={{ maxWidth: 800 }}>
-//         <div className="modal-content">
-//           <div className="modal-header bg_more_header_filters">
-//             <div className="product_title_p_bor_modal_filters">
-//               <h5 className="modal-title modal_title_margin">
-//                 Hey {first_name || "Dev"}, Take a minute and review your cart
-//                 before
-//                 <br />
-//                 you proceed
-//               </h5>
-//             </div>
-//             <button
-//               type="button"
-//               className="btn btn-white border_radius_modal"
-//               data-dismiss="modal"
-//               onClick={() => {
-//                 setReviewModalOpen(false);
-//               }}
-//             >
-//               <i className="fa fa-close"></i>
-//             </button>
-//           </div>
-//           <div className="modal-body p-lg modal_body_padding_filters_product_page modal_scroll_filter_product">
-//             <Row>
-//               <Col md={12}>
-//                 <div className="section_review_popup">
-//                   {cartArr.map(item => (
-//                     <>
-//                       <Row>
-//                         <Col md={8}>
-//                           <h5 className="text_title_filter p_modal_title_bg_filters_product">
-//                             {JSON.parse(item.members).join(", ")}
-//                           </h5>
-//                         </Col>
-//                         <Col md={4} className="text-right">
-//                           <img
-//                             onClick={() => {
-//                               history.push(
-//                                 `/productdetails/${selectedGroup}?enquiry_id=${ls.get(
-//                                   "enquiryId",
-//                                 )}
-// 																}`,
-//                               );
-//                               setReviewModalOpen(false);
-//                             }}
-//                             src={editReview}
-//                             style={{ float: "right" }}
-//                           />
-//                         </Col>
-//                       </Row>
-
-//                       <div className="rider-box_product_pro">
-//                         <div className="row_display_pro_review">
-//                           <div className="logo_add float_left_addon_c">
-//                             <img
-//                               className="contain"
-//                               src={
-//                                 companies[item?.product?.company?.alias]?.logo
-//                               }
-//                             />
-//                           </div>
-
-//                           <div className="float_left_addon_c ">
-//                             <p className="paln_name_t_product_pro">
-//                               {item.product.name}
-//                             </p>
-//                           </div>
-//                           <div className="float_product_cover_pro">
-//                             <p className="label-add_product_pro">
-//                               Cover
-//                               <br />
-//                               <span
-//                                 className="blk edit_css_product addon_plan_d_inter_1_product_pro"
-//                                 data-toggle="modal"
-//                                 data-target="#mb-3-w_c"
-//                               >
-//                                 ₹{" "}
-//                                 {parseInt(item.sum_insured).toLocaleString(
-//                                   "en-IN",
-//                                 )}
-//                                 / per year
-//                               </span>
-//                             </p>
-//                           </div>
-
-//                           <div className="float_product_premium_pro">
-//                             <div className="si_add si_add2">
-//                               <p className="label-add_product_pro">
-//                                 Premium
-//                                 <br />
-//                                 <span
-//                                   className="blk edit_css_product"
-//                                   data-toggle="modal"
-//                                   data-target="#mb-3-w_c"
-//                                 >
-//                                   ₹{" "}
-//                                   {parseInt(item.premium).toLocaleString(
-//                                     "en-IN",
-//                                   )}
-//                                   / per year
-//                                 </span>
-//                               </p>
-//                             </div>
-//                           </div>
-
-//                           <div className="rider-box1"></div>
-//                         </div>
-//                         <hr />
-//                         <Row>
-//                           {selectedRiders[selectedGroup]?.map(item => (
-//                             <Col md={4}>
-//                               <img src={correctIcon} className="display_in_m" />{" "}
-//                               <span className="font_weight_normal">
-//                                 {/* Unlimited Recharge */}
-
-//                                 {item.name}
-//                               </span>
-//                               <p></p>
-//                             </Col>
-//                           ))}
-//                         </Row>
-//                       </div>
-//                     </>
-//                   ))}
-//                   <br />
-//                   <br />
-//                   {/* <Row>
-// 										<Col md={12}>
-// 											<p className="bottom_addon_cover">Add-ons Coverages</p>
-// 											<hr />
-// 										</Col>
-// 									</Row>
-// 									<br />
-// 									<div className="rider-box_product_pro">
-// 										<div className="row_display_pro_review">
-// 											<div className="logo_add float_left_addon_c">
-// 												<img
-// 													className="contain"
-// 													src={companies["care_health"].logo}
-// 												/>
-// 											</div>
-
-// 											<div className="float_left_addon_c ">
-// 												<p className="paln_name_t_product_pro">
-// 													Supera Super Topup (I)
-// 												</p>
-// 												<img src={editPencil} className="margin_add_edit_ic" />
-// 											</div>
-// 										</div>
-// 										<hr />
-// 										<Row>
-// 											<Col md={4}>
-// 												<div className="float_product_cover_pro">
-// 													<p className="label-add_product_pro_c">
-// 														Cover
-// 														<br />
-// 														<span
-// 															className="blk edit_css_product addon_plan_d_inter_1_product_pro_add"
-// 															data-toggle="modal"
-// 															data-target="#mb-3-w_c"
-// 														>
-// 															₹ 5.5L / per year
-// 															<i></i>
-// 														</span>
-// 													</p>
-// 												</div>
-// 											</Col>
-// 											<Col md={4}>
-// 												<div className="float_product_premium_pro">
-// 													<div className="si_add si_add2">
-// 														<p className="label-add_product_pro_c">
-// 															Premium
-// 															<br />
-// 															<span
-// 																className="blk edit_css_product addon_plan_d_inter_1_product_pro_add"
-// 																data-toggle="modal"
-// 																data-target="#mb-3-w_c"
-// 															>
-// 																₹ 15,225 / per year <i></i>
-// 															</span>
-// 														</p>
-// 													</div>
-// 												</div>
-// 											</Col>
-// 											<Col md={4}>
-// 												<div className="float_product_premium_pro">
-// 													<div className="si_add si_add2">
-// 														<p className="label-add_product_pro_c">
-// 															Insured
-// 															<br />
-// 															<span
-// 																className="blk edit_css_product"
-// 																data-toggle="modal"
-// 																data-target="#mb-3-w_c"
-// 															>
-// 																Self, Spouse..<i></i>
-// 															</span>
-// 														</p>
-// 													</div>
-// 												</div>
-// 											</Col>
-// 										</Row>
-// 									</div> */}
-
-//                   <br />
-//                   <Row>
-//                     <Col md={6} className="text-left">
-//                       <button
-//                         type="button"
-//                         name="Continue"
-//                         className="next"
-//                         value="Continue"
-//                         style={{ height: 62 }}
-//                       >
-//                         <span className="color_span_total">Total Premium</span>
-//                         <br />{" "}
-//                         <span className="color_span_total_red">
-//                           <i className="fa fa-inr"></i>{" "}
-//                           {parseInt(totalPremium).toLocaleString("en-In")}
-//                         </span>
-//                       </button>
-//                     </Col>
-//                     <Col md={6} className="text-right">
-//                       <a>
-//                         <button
-//                           type="button"
-//                           name="Continue"
-//                           className="next action-button proceed_to_action"
-//                           value="Continue"
-//                           style={{ height: 62 }}
-//                           onClick={() => {
-//                             history.push({
-//                               pathname: "/proposal",
-//                               search: `enquiryId=${ls.get("enquiryId")}`,
-//                             });
-//                           }}
-//                         >
-//                           Proceed to Proposal <i className="flaticon-next"></i>
-//                         </button>
-//                       </a>
-//                     </Col>
-//                   </Row>
-//                   <br />
-//                   <br />
-//                 </div>
-//               </Col>
-//             </Row>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ReviewCardPopup;
