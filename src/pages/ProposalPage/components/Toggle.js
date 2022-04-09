@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setShowNSTP,
   setShowPlanNotAvail,
+  setShowErrorPopup
 } from "../ProposalSections/ProposalSections.slice";
 import { useMembers } from "../../../customHooks";
 import { noForAllCheckedFalse } from "../ProposalSections/ProposalSections.slice";
@@ -25,6 +26,7 @@ const Toggle = ({
   notAllowedIf,
   disable_Toggle = false,
   restrictMaleMembers = false,
+  message
 }) => {
   console.log("Svsjbv", disable_Toggle,value);
   const { colors } = useTheme();
@@ -170,7 +172,16 @@ console.log("bfxfjkl",membersToMap)
                   type="radio"
                   name={`is${name}`}
                   onChange={e => {
-                    if (notAllowed) {
+                    if(message && message.npos_switch_medical_selection_message){
+                      dispatch(
+                        setShowErrorPopup({
+                          show: true,
+                          head: "",
+                          msg: message.npos_switch_medical_selection_message,
+                        }),
+                      );
+                      setBoolean(e.target.value);
+                    }else if (notAllowed) {
                       dispatch(setShowPlanNotAvail(true));
                     } else {
                       setBoolean(e.target.value);
