@@ -8,8 +8,8 @@ const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       thunk: true,
-      serializableCheck: true,
-      immutableCheck: true,
+      serializableCheck: false,
+      immutableCheck: false,
     }).concat(api.middleware),
 });
 
