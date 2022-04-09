@@ -28,8 +28,6 @@ import {
 import {
   amount,
   getDisplayPremium,
-  getTotalPremium,
-  getDiscountAmount,
   premiumWithAddons,
 } from "../../../../utils/helper";
 import { useGetCartQuery } from "../../../../api/api";
@@ -40,20 +38,9 @@ const removeTotalPremium = cart => {
   return y;
 };
 
-const availCart = cart => {
-  let {
-    totalPremium,
-    discounted_total_premium,
-    feature_options,
-    ...groupsCart
-  } = cart;
-
-  return groupsCart;
-};
-
 const numToString = value => value.toLocaleString("en-IN");
 
-const ProductSummary = ({ setActive = () => {} , totalPremium = 0 }) => {
+const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
   const [show, setShow] = useState(false);
 
   const history = useHistory();
@@ -75,7 +62,7 @@ const ProductSummary = ({ setActive = () => {} , totalPremium = 0 }) => {
   const tenure = getCartEntry(+groups[0].id)?.tenure;
 
   const revisedNetPremium = totalPremium;
- 
+
   const allAddons = cartEntries
     ?.map(singleCartEntry => singleCartEntry.addons)
     .flat();
@@ -1188,11 +1175,9 @@ const DiscountDetail = ({
   additionalDiscount,
   ...props
 }) => {
-  const { getCartEntry } = useCart();
+  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
 
-  const cartEntry = getCartEntry(groupCode);
-
-  const discountAmount = getDiscountAmount(additionalDiscount, cartEntry);
+  const discountAmount = getDiscountAmount(additionalDiscount);
   return (
     <div
       css={`

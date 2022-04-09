@@ -17,12 +17,13 @@ const useFormBuilder = (
   fetchValid,
 ) => {
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
+
   const [values, setValues] = useState(defaultValues || {});
+
   const [errors, setErrors] = useState({});
-  console.log("dbdgbgbndgbd", errors, values,defaultValues);
   const [isValid, setIsValid] = useState();
+
   const updateValue = (name, value, removeOtherValues = false) => {
-    console.log("dhdfjklb 1", { name, value });
     if (removeOtherValues) {
       setValues({ [name]: value });
       fetchValues({ [name]: value });
@@ -36,7 +37,6 @@ const useFormBuilder = (
         setNoForAll(false);
       }
     }
-
   };
 
   const updateValidateObjSchema = item => {
@@ -47,7 +47,7 @@ const useFormBuilder = (
 
   const checkReadOnly = name => {
     let nomineeRelation = values.nominee_relation;
-  
+
     let dataTocheck = {};
     if (insuredDetails) {
       if (insuredDetails[nomineeRelation] && nomineeRelation === "self") {
@@ -60,22 +60,21 @@ const useFormBuilder = (
       }
     }
     let nameWithoutNominee =
-    name.slice(name.indexOf("_") + 1, name.length) === "contact"
-      ? "mobile"
-      : name.slice(name.indexOf("_") + 1, name.length);
+      name.slice(name.indexOf("_") + 1, name.length) === "contact"
+        ? "mobile"
+        : name.slice(name.indexOf("_") + 1, name.length);
     if (nameWithoutNominee.includes("address"))
-    nameWithoutNominee = Object.keys(dataTocheck).find(key =>
-      key.includes(nameWithoutNominee),
-    );
-  if (name.includes("pincode"))
-    nameWithoutNominee = Object.keys(dataTocheck).find(key =>
-      key.includes("pincode"),
-    );
+      nameWithoutNominee = Object.keys(dataTocheck).find(key =>
+        key.includes(nameWithoutNominee),
+      );
+    if (name.includes("pincode"))
+      nameWithoutNominee = Object.keys(dataTocheck).find(key =>
+        key.includes("pincode"),
+      );
     return dataTocheck[nameWithoutNominee] ? true : false;
   };
 
   const updateValues = (multipleValues = {}, action) => {
-    console.log("dhdfjklb 2", multipleValues);
     if (action === "SAVE_AS_IT_IS") {
       setValues(multipleValues);
       fetchValues(multipleValues);
@@ -85,7 +84,6 @@ const useFormBuilder = (
     }
   };
   const insertValue = (parent, member, name, value) => {
-    console.log("qdjbjics", parent, member, name, value);
     setValues({
       ...values,
       [parent]: {
@@ -117,7 +115,6 @@ const useFormBuilder = (
   }, [defaultValues]);
 
   const triggerValidation = name => {
-    console.log("sgbmkfbmk", name, values);
     let errorsTemp = {};
     let tempIsValid = true;
     if (typeof name === "object") {
@@ -148,26 +145,15 @@ const useFormBuilder = (
           if (errorMsg) tempIsValid = false;
         }
       }
-      // setIsValid(tempIsValid);
     } else if (name) {
       let [filteredItem] = schema.filter(item => item.name === name);
-      // console.log("wfvwfdghr",name,filteredItem.additionalOptions.showMembersIf)
 
       if (filteredItem) {
         let errorMsg;
-        // if(filteredItem.additionalOptions.showMembersIf){
-        //   let parents = filteredItem.additionalOptions.showMembersIf.split("||");
-        //   let isChildSelected = parents.some(el => values[el] && values[el][`is${el}`] === "Y")
-        //   if(isChildSelected && !Object.values(values[name].members).includes(true)){
-        //     errorMsg = "Select parent";
-        //   }
-
-        // }else{
 
         errorMsg =
           filteredItem.validate &&
           performValidations(filteredItem.validate, values, name);
-        // }
 
         if (renderField(filteredItem, values)) {
           errorsTemp[filteredItem.name] = errorMsg;
@@ -175,19 +161,11 @@ const useFormBuilder = (
           if (errorMsg) tempIsValid = false;
         }
       }
-
-      // setIsValid(tempIsValid);
     } else {
       schema.forEach(item => {
         if (item instanceof Array) {
           item[0].additionalOptions.members.forEach(member => {
             item.forEach(innerItem => {
-              console.log(
-                "wrgvhwrjv",
-                values,
-                innerItem.parent,
-                values[innerItem.parent],
-              );
               let errorMsg =
                 innerItem.validate &&
                 values[innerItem.parent] &&
@@ -227,14 +205,12 @@ const useFormBuilder = (
           if (renderField(item, values)) {
             errorsTemp[item.name] = errorMsg;
             if (errorMsg) tempIsValid = false;
-            console.log("bfsfnbjkls", tempIsValid);
           }
         }
         setIsValid(tempIsValid);
         fetchValid(tempIsValid);
       });
     }
-    console.log("fvjbasdvk", errorsTemp);
 
     setErrors({ ...errors, ...errorsTemp });
     fetchErrors({ ...errors, ...errorsTemp });
@@ -277,11 +253,10 @@ const useFormBuilder = (
     if (Object.values(errors).length && Object.values(errors).some(val => val))
       setErrorInField(true);
     else setErrorInField(false);
+
     if (blockScrollEffect) {
       let filteredKey = Object.keys(errors).filter(key => errors[key]);
-      // if (canProceed && !canProceed.canProceed)
-      //   filteredKey = canProceed.canProceedArray;
-      console.log("srgvshfvjkl", errors, filteredKey, yesSelected, canProceed);
+
       if (filteredKey.length) {
         let scrollPositions = filteredKey.map(key => {
           let element = document.getElementById(key);
@@ -290,7 +265,6 @@ const useFormBuilder = (
             return y;
           }
         });
-        console.log("svbkjsbnv", scrollPositions);
         window.scroll({
           top: Math.min(...scrollPositions),
           behavior: "smooth",

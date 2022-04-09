@@ -18,7 +18,6 @@ import { EditMembersModal } from "../../quotePage/components/filters/EditMemberF
 import {
   amount,
   figureToWords,
-  getDiscountAmount,
   getDisplayPremium,
   premiumWithAddons,
 } from "../../../utils/helper";
@@ -36,6 +35,7 @@ import {
   useUpdateGroupMembers,
   useAddOns,
   useUrlEnquiry,
+  useRevisedPremiumModal,
 } from "../../../customHooks";
 import {
   Button,
@@ -365,11 +365,9 @@ function DiscountsList({ groupCode, ...props }) {
 function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
   const { name } = additionalDiscount;
 
-  const { getCartEntry } = useCart();
+  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
 
-  const cartEntry = getCartEntry(groupCode);
-
-  const discountAmount = getDiscountAmount(additionalDiscount, cartEntry);
+  const discountAmount = getDiscountAmount(additionalDiscount);
 
   return (
     <CartDetailRow title={name} value={amount(discountAmount)} {...props} />
@@ -440,14 +438,6 @@ function Members({ groupCode, editable = true, ...props }) {
   );
 }
 
-function getCartEntryFromUpdateResult(updateResultData, groupCode) {
-  const cartEntry = updateResultData?.getCartResult?.data?.find(
-    cartEntry => +cartEntry?.group?.id === +groupCode,
-  );
-
-  return cartEntry;
-}
-
 function EditMembersButton({ groupCode, ...props }) {
   const { colors } = useTheme();
 
@@ -475,25 +465,9 @@ function EditMembersButton({ groupCode, ...props }) {
 }
 
 function EditMembers({}) {
-  const { colors } = useTheme();
-
   const { groupCode } = useParams();
 
-  const {
-    data: {
-      data: { name },
-    },
-  } = useGetEnquiriesQuery();
-
-  //const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
-  const revisedPremiumModalToggle = useToggle(false);
-
-  const firstName = name?.split(" ")[0];
-
-  const { getCartEntry } = useCart();
-
-  const currentCartEntry = useMemo(() => getCartEntry(groupCode), []);
+  const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
 
   const dispatch = useDispatch();
 
@@ -510,14 +484,20 @@ function EditMembers({}) {
 
   const handleSubmit = () => {
     const members = getSelectedMembers();
+
     updateGroupMembers(members).then(res => {
       if (res?.error) return;
-      dispatch(
+
+      dispatch(setShowEditMembers(false));
+
+      revisedPremiumPopupUtilityObject.getUpdatedCart();
+      /* dispatch(
         api.util.invalidateTags([
           "Cart",
           "Rider",
           "AdditionalDiscount",
           "TenureDiscount",
+          "featureOption",
         ]),
       );
       const updatedCartEntry = getCartEntryFromUpdateResult(
@@ -528,7 +508,7 @@ function EditMembers({}) {
         revisedPremiumModalToggle.off();
 
       if (updatedCartEntry?.total_premium !== currentCartEntry?.total_premium)
-        revisedPremiumModalToggle.on();
+        revisedPremiumModalToggle.on(); */
     });
   };
 
@@ -536,7 +516,7 @@ function EditMembers({}) {
 
   if (isError) serverErrors = Object.values(error?.data?.errors);
 
-  if (data) {
+  /* if (data) {
     const { unavailable_message, ...updatedCartEntry } =
       getCartEntryFromUpdateResult(data, groupCode);
     const handleCloseClick = () => {
@@ -588,7 +568,7 @@ function EditMembers({}) {
           />
           {!unavailable_message ? (
             <div>
-              {/* <CartDetailRow
+              { <CartDetailRow
                 title="Premium"
                 value={
                   <span
@@ -599,7 +579,7 @@ function EditMembers({}) {
                     {amount(currentCartEntry.total_premium)}
                   </span>
                 }
-              /> */}
+              /> }
               <CartDetailRow
                 title={
                   <span
@@ -627,7 +607,7 @@ function EditMembers({}) {
         <div
           className="p-3 pt-0 d-flex justify-content-between align-items-center"
           css={`
-            /* gap: 1em;*/
+            gap: 1em;
           `}
         >
           <DetailsWrap>
@@ -661,43 +641,47 @@ function EditMembers({}) {
               Continue
             </Button>
           </DetailsWrap>
-
-          {/* <Link
-            to={getUrlWithEnquirySearch(`/quotes/${groupCode}`)}
-            className="w-50 d-flex align-items-center justify-content-center"
-            css={`
-              background-color: ${colors.primary_color};
-              &,
-              &:hover {
-                color: #fff;
-              }
-            `}
-          >
-            View Quotes <FaChevronRight />
-          </Link> */}
         </div>
       </Modal>
     );
-  }
+  } */
 
   return (
-    <EditMembersModal>
-      <div className="p-3">
-        <MemberOptions showCounter={false} {...memberForm} selectable={false} />
-        {serverErrors
-          ? serverErrors.map(error => (
-              <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
-            ))
-          : null}
-      </div>
-      <Button className="w-100" onClick={handleSubmit} loader={isLoading}>
-        Update
-      </Button>
-    </EditMembersModal>
+    <>
+      <EditMembersModal>
+        <div className="p-3">
+          <MemberOptions
+            showCounter={false}
+            {...memberForm}
+            selectable={false}
+          />
+          {serverErrors
+            ? serverErrors.map(error => (
+                <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
+              ))
+            : null}
+        </div>
+        <Button className="w-100" onClick={handleSubmit} loader={isLoading}>
+          Update
+        </Button>
+      </EditMembersModal>
+
+      {revisedPremiumPopupUtilityObject?.isOnProductDetails && (
+        <RevisedPremiumPopup
+          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+          onClose={revisedPremiumPopupUtilityObject.off}
+          title={
+            revisedPremiumPopupUtilityObject.getUpdatedCartEntry(groupCode)
+              ?.unavailable_message
+              ? "Plan Unavailable due to change in date of birth"
+              : "Revised Premium due to change in date of birth"
+          }
+        />
+      )}
+    </>
   );
 }
 
-// USED IN PROPOSAL PAGE(InsuredDetails.jsx)
 export const RevisedPremiumPopup = ({
   revisedPremiumPopupUtilityObject,
   onClose,
@@ -706,15 +690,12 @@ export const RevisedPremiumPopup = ({
 }) => {
   const { colors } = useTheme();
 
-  const {
-    data: {
-      data: { name },
-    },
-  } = useGetEnquiriesQuery();
-
   const dispatch = useDispatch();
 
-  const firstName = name?.split(" ")[0];
+  const { groupCode: urlGeneratedGroupCode } = useParams(); //? groupCode changes on product details page.
+
+  const isProductDetailsPage =
+    window.location.pathname.startsWith("/productdetails");
 
   return (
     <Modal
@@ -750,14 +731,7 @@ export const RevisedPremiumPopup = ({
       </div>
 
       {revisedPremiumPopupUtilityObject?.updatedCartEntries?.map(
-        (
-          {
-            group: { id: groupCode },
-            unavailable_message,
-            discounted_total_premium,
-          },
-          index,
-        ) => (
+        ({ group: { id: groupCode }, unavailable_message, premium }, index) => (
           <>
             <div key={index} className="p-3 pt-0 pb-0">
               <Members groupCode={groupCode} editable={false} />
@@ -768,18 +742,6 @@ export const RevisedPremiumPopup = ({
               />
               {!unavailable_message ? (
                 <div>
-                  {
-                    // <CartDetailRow
-                    // title="Premium"
-                    //value={
-                    //<span
-                    //css={`
-                    //text-decoration: line-through;
-                    //`}
-                    //>
-                    //</div>{amount(currentCartEntry.total_premium)}
-                    //</span>
-                  }
                   <CartDetailRow
                     title={
                       <span
@@ -790,7 +752,7 @@ export const RevisedPremiumPopup = ({
                         Revised Premium
                       </span>
                     }
-                    value={amount(+discounted_total_premium)}
+                    value={amount(+premium)}
                   />
                 </div>
               ) : null}
@@ -811,26 +773,44 @@ export const RevisedPremiumPopup = ({
       <div className="p-3 pt-0 d-flex justify-content-between align-items-center">
         <DetailsWrap>
           <DetailsWrap.Title style={{ fontWeight: "600" }}>
-            Previous Total Premium
+            {isProductDetailsPage
+              ? "Previous Premium"
+              : "Previous Total Premium"}
           </DetailsWrap.Title>
           <DetailsWrap.Value>
-            {getDisplayPremium({
-              total_premium:
-                +revisedPremiumPopupUtilityObject?.prevTotalPremium,
-              tenure: 1,
-            })}
+            {isProductDetailsPage
+              ? getDisplayPremium({
+                  total_premium:
+                    +revisedPremiumPopupUtilityObject.getPreviousCartEntryPremium(
+                      urlGeneratedGroupCode,
+                    ),
+                  tenure: 1,
+                })
+              : getDisplayPremium({
+                  total_premium:
+                    +revisedPremiumPopupUtilityObject.prevTotalPremium,
+                  tenure: 1,
+                })}
           </DetailsWrap.Value>
         </DetailsWrap>
         <DetailsWrap>
           <DetailsWrap.Title style={{ color: colors.secondary_color }}>
-            Revised Total Premium
+            {isProductDetailsPage ? "Revised Premium" : "Revised Total Premium"}
           </DetailsWrap.Title>
           <DetailsWrap.Value>
-            {getDisplayPremium({
-              total_premium:
-                +revisedPremiumPopupUtilityObject?.updatedTotalPremium,
-              tenure: 1,
-            })}
+            {isProductDetailsPage
+              ? getDisplayPremium({
+                  total_premium:
+                    +revisedPremiumPopupUtilityObject.getUpdatedCartEntryPremium(
+                      urlGeneratedGroupCode,
+                    ),
+                  tenure: 1,
+                })
+              : getDisplayPremium({
+                  total_premium:
+                    +revisedPremiumPopupUtilityObject.updatedTotalPremium,
+                  tenure: 1,
+                })}
           </DetailsWrap.Value>
         </DetailsWrap>
         <DetailsWrap>
@@ -1084,10 +1064,6 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
       reviewCartModalNew.on();
     });
-  };
-
-  const handleContinueClick = () => {
-    history.push(getUrlWithEnquirySearch("/proposal"));
   };
 
   return (
@@ -1606,340 +1582,3 @@ function ProceedButton({
     </div>
   );
 }
-
-// const ls = new SecureLS();
-//   const history = useHistory();
-//   const [openEditSidebar, setOpenEditSidebar] = useState(false);
-//   const [reviewModalOpen, setReviewModalOpen] = useState(false);
-//   const [showSubMenu, setShowSubMenu] = useState(false);
-//   const quotes = useSelector(({ quotePage }) => quotePage.selectedQuotes);
-//   const { selectedRiders, selectedGroup, selectedAddOns } = useSelector(
-//     ({ quotePage }) => quotePage,
-//   );
-
-//   const filters = useSelector(({ quotePage }) => quotePage.filters);
-//   const { memberGroups } = useSelector(state => state.greetingPage);
-
-//   const {
-//     totalPremium,
-//     totalRidersPremium,
-//     product: { sum_insured, tenure, ...product },
-//   } = useCartProduct(groupCode);
-
-//   const plan = quotes[groupCode];
-
-//   const totalRiderTax = selectedRiders[groupCode]
-//     ? selectedRiders[groupCode].reduce(
-//         (sum, rider) => parseInt(sum + rider.tax_amount),
-//         0,
-//       )
-//     : 0;
-
-//   const { premium, tax_amount } = quotes
-//     ? quotes[groupCode]
-//       ? quotes[groupCode]
-//       : {}
-//     : {};
-
-//   const basePlanPremium = premium;
-
-//   const gst = tax_amount + totalRiderTax;
-
-//   const cart = useSelector(state => state.cart);
-
-//   const cartGroups = Object.keys(cart);
-
-//   const nextGroup = cartGroups[cartGroups.indexOf(groupCode) + 1];
-
-//   const urlParams = new URLSearchParams(window.location.search);
-
-//   const enquiryId = urlParams.get("enquiryId") || ls.get("enquiryId");
-
-//   return (
-//     <>
-//       <div>
-//         <Row>
-//           <Col md={5} lg={12}>
-//             <div className="addon_plan_a_t_addon_cover_r_cart">
-//               <p className="text-left plan_ic_name_y">Your Cart</p>
-//             </div>
-//           </Col>
-//           <Col md={7}>
-//             <p
-//               className="plan_right_member_e_c adjust-self-spouse-1024"
-//               style={{
-//                 display: "flex",
-//                 justifyContent: "center",
-//                 alignItems: "center",
-//                 marginBottom: "10px",
-//               }}
-//             >
-//               <span style={{ textTransform: "capitalize" }}>
-//                 {memberGroups[selectedGroup]?.join(", ").replaceAll("_", "-")}
-//               </span>
-//               <span
-//                 onClick={() => setOpenEditSidebar(true)}
-//                 className="plan_ic_name badge clr_blue_bold menu-button sidebar-menu-open"
-//                 style={{ marginLeft: "10px" }}
-//               >
-//                 <i className="fa fa-pencil font_size_pencil_icon_addon_right"></i>
-//               </span>
-//               <div
-//                 id="sidebar-menu"
-//                 className={`eCommerce-side-menu ${
-//                   openEditSidebar ? "show-menu" : ""
-//                 }`}
-//               >
-//                 <EditMembers setOpenEditSidebar={setOpenEditSidebar} />
-//               </div>
-//             </p>
-//           </Col>
-//         </Row>
-//         <hr className="hr_product_d" />
-//         <div className="theme-sidebar-widget">
-//           <div className="single-block mb-80 main-menu-list">
-//             <ul className="list-item">
-//               <li>
-//                 <a>
-//                   Plan Type{" "}
-//                   <span className="font_bold adjust-plan-1024">
-//                     {" "}
-//                     {filters.planType ? filters.planType : "Family Floater"}
-//                   </span>
-//                 </a>
-//               </li>
-
-//               <li>
-//                 <a>
-//                   Cover
-//                   <span className="font_bold adjust-plan-1024">
-//                     {/* {numberToDigitWord(plan?.sum_insured?.toString())} */}
-//                     {numberToDigitWord(sum_insured)}
-//                   </span>
-//                 </a>
-//               </li>
-//               <li>
-//                 <a>
-//                   Policy Term
-//                   <span className="font_bold adjust-plan-1024">
-//                     {" "}
-//                     {tenure} years
-//                   </span>
-//                 </a>
-//               </li>
-//               <li>
-//                 <a>
-//                   Premium
-//                   <span className="font_bold adjust-plan-1024">
-//                     ₹ {parseInt(product.premium).toLocaleString("en-IN")}
-//                   </span>
-//                 </a>
-//               </li>
-//               <li className="dropdown-holder">
-//                 <a>
-//                   Rider Premium{" "}
-//                   <span
-//                     className="font_bold adjust-plan-1024"
-//                     style={{ right: 16 }}
-//                     onClick={() => setShowSubMenu(!showSubMenu)}
-//                   >
-//                     ₹ {parseInt(totalRidersPremium).toLocaleString("en-IN")}
-//                   </span>
-//                   <button
-//                     type="button"
-//                     class="expander"
-//                     onClick={() => setShowSubMenu(!showSubMenu)}
-//                   >
-//                     <i class="fa fa-chevron-down" aria-hidden="true"></i>
-//                   </button>
-//                 </a>
-//                 <ul
-//                   className="sub-menu"
-//                   style={{ display: `${showSubMenu ? "block" : "none"}` }}
-//                 >
-//                   <li>
-//                     <a>
-//                       Base Plan Premium{" "}
-//                       <span className="margin_top__10">
-//                         <i className="fa fa-inr"></i>
-//                         {basePlanPremium}
-//                       </span>
-//                     </a>
-//                   </li>
-//                   {/* <li>
-// 										<a>
-// 											Additional Coverages{" "}
-// 											<span className="margin_top__10">
-// 												<i className="fa fa-inr"></i>
-// 												1000
-// 											</span>
-// 										</a>
-// 									</li> */}
-//                   {/* <li>
-// 										<a>
-// 											19 Critical illness{" "}
-// 											<span className="margin_top__10">
-// 												<i className="fa fa-inr"></i>
-// 												1000
-// 											</span>
-// 										</a>
-// 									</li> */}
-//                   <li>
-//                     <a>
-//                       Additional Riders{" "}
-//                       <span className="margin_top__10">
-//                         <i className="fa fa-inr"></i>
-//                         {/* {additionalRiders} */}
-//                       </span>
-//                     </a>
-//                   </li>
-//                   <li>
-//                     <a>
-//                       GST{" "}
-//                       <span className="margin_top__10">
-//                         <i className="fa fa-inr"></i> {gst}
-//                       </span>
-//                     </a>
-//                   </li>
-//                 </ul>
-//               </li>
-//               <br />
-//               <hr className="hr_product_d" />
-//               <p className="addon_cover_btn adjust-addon-1024">Addon Covers</p>
-//               {!selectedAddOns[selectedGroup] ||
-//               Object.keys(selectedAddOns[selectedGroup]).length === 0 ? (
-//                 <p style={{ textAlign: "center" }}>No Add-Ons Selected</p>
-//               ) : (
-//                 Object.values(selectedAddOns).map(addOns =>
-//                   addOns.map(({ gross_premium, product }) => (
-//                     <li>
-//                       <a className="btn_addon_c_right_bg_w adjust-1024 review-addons adjust-1024-flex">
-//                         <img
-//                           className="contain img_right_panel_addon_add adjust-1024-img"
-//                           src={companies?.companies[plan?.company_alias]?.logo}
-//                           alt="care_image"
-//                         />
-//                         <p className="adjust-1024-p">{product.name}</p>
-//                         <span className="font_bold btn_addon_cover_r adjust-1024-span">
-//                           {/* ₹{parseInt(addOn.gross_premium).toLocaleString("en-IN")} */}
-//                           ₹ {gross_premium}
-//                         </span>
-//                       </a>
-//                     </li>
-//                   )),
-//                 )
-//               )}
-//               <hr />
-//               <li>
-//                 <a
-//                   className="total-prem-head"
-//                   style={{
-//                     color: "#000",
-//                     fontSize: "20px !important",
-//                     marginTop: "10px",
-//                   }}
-//                 >
-//                   Total Premium
-//                   <span className="font_bold total_premium_btn_addon_r ">
-//                     ₹{" "}
-//                     {/* {parseInt(
-//                       plan?.gross_premium + Number(2344)
-//                     ).toLocaleString("en-IN")} */}
-//                     {parseInt(totalPremium).toLocaleString("en-In")}
-//                   </span>
-//                 </a>
-//               </li>
-//               <br />
-//               {/* {multiplePlan && (
-//                 <li
-//                   style={{
-//                     display: "block",
-//                     fontSize: "14px",
-//                     marginBottom: "20px",
-//                     fontfamily: "PFEncoreSansPromed",
-//                   }}
-//                   className="proceed_proposal_right_next_step"
-//                 >
-//                   <div
-//                     style={{
-//                       fontSize: "15px",
-//                       marginBottom: "10px",
-//                     }}
-//                   >
-//                     Next Step:
-//                     <br />
-//                     Other Plans selected
-//                   </div>
-//                   <a
-//                     style={{
-//                       color: "#000",
-//                       fontSize: "12px !important",
-//                       bottom: "45px",
-//                     }}
-//                   >
-//                     <button
-//                       className="font_bold total_premium_btn_addon_r_product_pro"
-//                       style={{
-//                         position: "absolute",
-//                         right: "0",
-//                       }}
-//                       onClick={() => {
-//                         dispatch(setSteps(steps + 1));
-//                         // history.push({
-//                         // 	pathname: "/productdetails",
-//                         // 	search: `enquiryId=${ls.get("enquiryId")}`,
-//                         // });
-//                         history.push(
-//                           `productdetails/${
-//                             quotes[index + 1]
-//                           }?enquiry_id=${ls.get("enquiryId")}
-// 													}`,
-//                         );
-//                       }}
-//                     >
-//                       Proceed{" "}
-//                       <i className="flaticon-next" aria-hidden="true"></i>
-//                     </button>
-//                   </a>
-//                 </li>
-//               )} */}
-//             </ul>
-//             {/* {!multiplePlan && ( */}
-//             <Row className="review-your-cart-btn-div">
-//               <div
-//                 data-toggle="modal"
-//                 data-target="#m-md-review"
-//                 onClick={() => {
-//                   !nextGroup && setReviewModalOpen(true);
-//                   nextGroup &&
-//                     history.push({
-//                       pathname: `/productdetails/${nextGroup}`,
-//                       search: `enquiryId=${enquiryId}`,
-//                     });
-
-//                   // history.push({
-//                   // 	pathname: "/proposal",
-//                   // 	search: `enquiryId=${ls.get("enquiryId")}`,
-//                   // });
-//                 }}
-//               >
-//                 <button
-//                   className="solid-button-one_plan text-center adjust-add-to-cart-1024"
-//                   type="button"
-//                 >
-//                   {nextGroup ? "Proceed to next" : "Review You Cart"}
-//                   <i className="flaticon-next"></i>
-//                 </button>
-//               </div>
-//             </Row>
-//             {/* )} */}
-//           </div>
-//         </div>
-//       </div>
-//       <ReviewCardPopup
-//         totalPremium={totalPremium}
-//         reviewModalOpen={reviewModalOpen}
-//         setReviewModalOpen={setReviewModalOpen}
-//       />
-//     </>
-//   );

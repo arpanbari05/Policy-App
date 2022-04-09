@@ -8,7 +8,6 @@ const cartSlice = createSlice({
   initialState: {
     totalPremium: 0,
     discounted_total_premium: 0,
-    feature_options: {},
   },
   reducers: {
     addQuoteToCart: (state, action) => {
@@ -38,9 +37,6 @@ const cartSlice = createSlice({
         discounted_total_premium: 0,
       };
     },
-    setFeatureOptions: (state, action) => {
-      state.feature_options = { ...action.payload };
-    },
   },
 });
 
@@ -51,7 +47,6 @@ export const {
   restoreInitialCart,
   setdiscounted_total_premium,
   setCart,
-  setFeatureOptions,
 } = cartSlice.actions;
 
 export const getCart = (checkRenewal, next) => async (dispatch, getState) => {

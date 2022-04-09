@@ -5,7 +5,6 @@ import { useState } from "react";
 import {
   amount,
   figureToWords,
-  getDiscountAmount,
   premiumWithAddons,
 } from "../../../../../utils/helper";
 import {
@@ -13,6 +12,7 @@ import {
   useCart,
   useFrontendBoot,
   useMembers,
+  useRevisedPremiumModal,
   useRider,
   useRiders,
   useTenureDiscount,
@@ -26,10 +26,17 @@ import { mobile, small } from "../../../../../utils/mediaQueries";
 import { FaPen } from "react-icons/fa";
 import { EditMembersModal } from "../../../../quotePage/components/filters/EditMemberFilter";
 import { ErrorMessage } from "../../../../InputPage/components/FormComponents";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import useUrlQuery from "../../../../../customHooks/useUrlQuery";
 import ReviewCartPopup from "../../ReviewCardPopup";
 import _ from "lodash";
+import { RevisedPremiumPopup } from "../../ReviewCart";
+import { useDispatch } from "react-redux";
+import {
+  MemberOptions,
+  useMembersForm,
+} from "../../../../../components/MemberOptions";
+import { setShowEditMembers } from "../../../../quotePage/quote.slice";
 
 const plantypes = {
   M: "Multi Individual",
@@ -393,7 +400,7 @@ const MemberAndEdit = ({ groupCode, ...props }) => {
       {...props}
     >
       <MembersList members={currentGroupMembers} />
-      {/* <EditMembersButton groupCode={groupCode} /> */}
+      <EditMembersButton groupCode={groupCode} />
     </div>
   );
 };
@@ -401,29 +408,7 @@ const MemberAndEdit = ({ groupCode, ...props }) => {
 function EditMembersButton({ groupCode, ...props }) {
   const { colors } = useTheme();
 
-  const [showEditMembersModal, setShowEditMembersModal] = useState(false);
-
-  const handleClick = () => {
-    setShowEditMembersModal(true);
-  };
-
-  const closeEditMembersModal = () => setShowEditMembersModal(false);
-
-  const {
-    updateGroupMembers,
-    query: { isLoading, error, isError },
-  } = useUpdateGroupMembers(groupCode);
-
-  const handleSubmit = data => {
-    updateGroupMembers(data.members).then(res => {
-      if (res.error) return;
-      closeEditMembersModal();
-    });
-  };
-
-  let serverErrors;
-
-  if (isError) serverErrors = Object.values(error.data.errors);
+  const dispatch = useDispatch();
 
   return (
     <div {...props}>
@@ -437,23 +422,11 @@ function EditMembersButton({ groupCode, ...props }) {
           color: ${colors.primary_color};
           padding: 0;
         `}
-        onClick={handleClick}
+        onClick={() => dispatch(setShowEditMembers(true))}
       >
         <FaPen />
       </Button>
-      {showEditMembersModal && (
-        <EditMembersModal
-          onClose={closeEditMembersModal}
-          onSubmit={handleSubmit}
-          groupCode={groupCode}
-        >
-          {serverErrors
-            ? serverErrors.map(error => (
-                <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
-              ))
-            : null}
-        </EditMembersModal>
-      )}
+      <EditMembers />
     </div>
   );
 }
@@ -463,7 +436,75 @@ const StyledErrorMessage = styled(ErrorMessage)`
   text-align: center;
 `;
 
-function EditMembers({ groupCode, ...props }) {}
+function EditMembers({}) {
+  const { groupCode } = useParams();
+
+  const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
+
+  const dispatch = useDispatch();
+
+  const { getGroupMembers } = useMembers();
+
+  const groupMembers = getGroupMembers(groupCode);
+
+  const { getSelectedMembers, ...memberForm } = useMembersForm(groupMembers);
+
+  const {
+    updateGroupMembers,
+    query: { isLoading, error, isError, data },
+  } = useUpdateGroupMembers(groupCode);
+
+  const handleSubmit = () => {
+    const members = getSelectedMembers();
+
+    updateGroupMembers(members).then(res => {
+      if (res?.error) return;
+
+      dispatch(setShowEditMembers(false));
+
+      revisedPremiumPopupUtilityObject.getUpdatedCart();
+    });
+  };
+
+  let serverErrors;
+
+  if (isError) serverErrors = Object.values(error?.data?.errors);
+
+  return (
+    <>
+      <EditMembersModal>
+        <div className="p-3">
+          <MemberOptions
+            showCounter={false}
+            {...memberForm}
+            selectable={false}
+          />
+          {serverErrors
+            ? serverErrors.map(error => (
+                <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
+              ))
+            : null}
+        </div>
+        <Button className="w-100" onClick={handleSubmit} loader={isLoading}>
+          Update
+        </Button>
+      </EditMembersModal>
+
+      {revisedPremiumPopupUtilityObject?.isOnProductDetails && (
+        <RevisedPremiumPopup
+          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+          onClose={revisedPremiumPopupUtilityObject.off}
+          title={
+            revisedPremiumPopupUtilityObject.getUpdatedCartEntry(groupCode)
+              ?.unavailable_message
+              ? "Plan Unavailable due to change in date of birth"
+              : "Revised Premium due to change in date of birth"
+          }
+        />
+      )}
+    </>
+  );
+}
 
 const PlanCard = ({ groupCode, ...props }) => {
   const { getCartEntry } = useCart();
@@ -592,11 +633,9 @@ const Discounts = ({ groupCode, ...props }) => {
 function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
   const { name } = additionalDiscount;
 
-  const { getCartEntry } = useCart();
+  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
 
-  const cartEntry = getCartEntry(groupCode);
-
-  const discountAmount = getDiscountAmount(additionalDiscount, cartEntry);
+  const discountAmount = getDiscountAmount(additionalDiscount);
 
   return (
     <HorizontalCard

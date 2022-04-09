@@ -24,7 +24,11 @@ import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import { small } from "../../utils/mediaQueries";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
-import { amount, getTotalPremium, isSSOJourney } from "../../utils/helper";
+import {
+  amount,
+  getPolicyPremium,
+  isSSOJourney,
+} from "../../utils/helper";
 
 const ThankYouPage = () => {
   const ls = new SecureLS();
@@ -45,12 +49,11 @@ const ThankYouPage = () => {
     },
   } = useTheme();
 
-  const { cartEntries } = useCart();
   const { policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
   );
 
-  const total_premium = amount(policyStatus.length?policyStatus.reduce((acc,el) => acc += parseInt(el.total_premium), 0):0);
+  const total_premium = amount(getPolicyPremium(policyStatus));
 
   const {
     data: { tenant: tenantDetail, settings },
@@ -63,18 +66,6 @@ const ThankYouPage = () => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
-
-  const status = useSelector(state => state.proposalPage);
-
-
-
-  const cart = {
-    ...useSelector(state => state.cart),
-    totalPremium: policyStatus.reduce(
-      (acc, el) => acc + parseInt(el.total_premium),
-      0,
-    ),
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -254,9 +245,7 @@ const ThankYouPage = () => {
                     <div className="thankmain__check">
                       <CheckMark />
                     </div>
-                    <span>
-                      Your Payment for {total_premium} was successful
-                    </span>
+                    <span>Your Payment for {total_premium} was successful</span>
                   </div>
                   <div>
                     <div
@@ -372,9 +361,7 @@ const ThankYouPage = () => {
                       ></img>
                     }
                   </div>
-                  Your Payment for{" "}
-                  <i className="fa fa-inr" style={{ margin: "0px 2px" }} />
-                  {total_premium} was successful
+                  Your Payment for {total_premium} was successful
                 </div>
                 <div>
                   <div

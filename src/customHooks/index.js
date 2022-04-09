@@ -32,13 +32,12 @@ import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter
 import styles from "../styles";
 import {
   capitalize,
+  featureOptionsValidValue,
   getAddOnSendData,
-  getDiscountAmount,
   getInsuranceType,
   getMonthsForYear,
   getQuoteKey,
   getRiderCartData,
-  getTotalPremium,
   isRelianceInfinityPlan,
   isRiderPresent,
   isTopUpQuote,
@@ -330,7 +329,7 @@ export function useMembers() {
   if (data) {
     input = data.data.input;
     if (reduxGroup?.length) {
-      const updatedGroup = data.data?.groups?.map(group => {
+      const updatedGroup = data?.data?.groups?.map(group => {
         const reduxGroupMatch = reduxGroup?.find(reGrp => {
           return reGrp?.members?.some(mem => group?.members?.includes(mem));
         });
@@ -693,9 +692,19 @@ export function useCart() {
 
   const { getCompany } = useCompanies();
 
+  const getCartTotalPremium = () => {
+    return data?.discounted_total_premium;
+  };
+
   function getCartEntry(groupCode, { additionalDiscounts = [] } = {}) {
     const cartEntry = data?.data?.find(
-      cartEntry => cartEntry?.group?.id === parseInt(groupCode),
+      cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
+    );
+
+    console.log(
+      "The groups received from update enquiry and groupCode",
+      groups,
+      groupCode,
     );
 
     if (!cartEntry) return;
@@ -741,11 +750,24 @@ export function useCart() {
     const { id, health_riders, ...cartEntry } = getCartEntry(groupCode);
 
     return [
-      ({ additionalDiscounts = [], generate_proposal = false }) => {
+      ({
+        additionalDiscounts = [],
+        generate_proposal = false,
+        feature_options = {},
+      }) => {
         const discounted_total_premium = calculateTotalPremium(
           { health_riders, ...cartEntry },
           { additionalDiscounts },
         );
+
+        console.log(
+          "The discounted_total_premium, netPremium, total_premium, netPremiumWithoutDiscount",
+          discounted_total_premium,
+          cartEntry?.netPremium,
+          cartEntry?.total_premium,
+          cartEntry?.netPremiumWithoutDiscount,
+        );
+
         return updateCartMutation({
           ...cartEntry,
           cartId: id,
@@ -753,7 +775,9 @@ export function useCart() {
             health_riders.map(getRiderSendData),
           addons: cartEntry.addons.map(getAddOnSendData),
           discounted_total_premium,
+          feature_options,
           generate_proposal,
+          //!total_premium: cartEntry.netPremium,
         });
       },
       updateCartMutationQuery,
@@ -771,9 +795,11 @@ export function useCart() {
 
   return {
     cartEntries: data?.data,
+    cartData: data,
     getCartEntry,
     updateCartEntry,
     updateCart,
+    getCartTotalPremium,
     getNextGroupProduct,
     discounted_total_premium: data?.discounted_total_premium,
   };
@@ -805,20 +831,24 @@ export function useRider(groupCode) {
 }
 
 export function useTenureDiscount(groupCode) {
-  const { feature_options } = useSelector(state => state.cart);
   const { journeyType } = useFrontendBoot();
 
   const { updateCartEntry, getCartEntry } = useCart();
 
-  const { product, sum_insured, tenure, deductible } = getCartEntry(groupCode);
+  const { product, sum_insured, tenure, deductible, feature_options } =
+    getCartEntry(groupCode);
+
+  const updatedFeatureOptions = featureOptionsValidValue(feature_options);
+
+  const featureOptionsToSend = Object.keys(updatedFeatureOptions)
+    .map(key => `${key}=${updatedFeatureOptions[key]}`)
+    .join("&");
 
   const { data, ...queryState } = useGetDiscountsQuery({
     sum_insured: +sum_insured,
     product_id: product.id,
     group: groupCode,
-    feature_options: Object.keys(feature_options)
-      .map(key => `${key}=${feature_options[key]}`)
-      .join("&"),
+    feature_options: featureOptionsToSend,
     journeyType,
     deductible,
   });
@@ -859,8 +889,11 @@ export function useAdditionalDiscount(groupCode) {
     tenure,
     discounts = [],
     total_premium,
+    premium,
     netPremiumWithoutDiscount,
   } = getCartEntry(groupCode) || {};
+
+  const cartEntry = getCartEntry(groupCode);
 
   const { data, ...queryState } = useGetAdditionalDiscountsQuery({
     productId: product?.id,
@@ -899,12 +932,52 @@ export function useAdditionalDiscount(groupCode) {
   }
 
   function getDiscountAmount(additionalDiscount) {
-    const { percent, applied_on_total_premium } = additionalDiscount;
+    const {
+      percent,
+      applied_on_total_premium,
+      applied_on_riders,
+      fixed_discount_value,
+      applied_on_discounts,
+    } = additionalDiscount;
 
-    if (applied_on_total_premium)
+    if (applied_on_total_premium) {
       return (parseInt(total_premium) * parseInt(percent)) / 100;
+    }
 
-    return (parseInt(netPremiumWithoutDiscount) * parseInt(percent)) / 100;
+    if (applied_on_riders) {
+      const filtered_applied_on_riders = cartEntry.health_riders.filter(
+        singleHealthRider =>
+          applied_on_riders.includes(singleHealthRider?.alias),
+      );
+
+      const filtered_applied_on_riders_amount =
+        filtered_applied_on_riders.length
+          ? filtered_applied_on_riders
+              .map(rider => rider.total_premium)
+              ?.reduce((acc = 0, curr) => (acc += +curr))
+          : 0;
+
+      return (
+        ((+cartEntry?.total_premium + +filtered_applied_on_riders_amount) *
+          parseInt(percent)) /
+        100
+      );
+    }
+
+    if (fixed_discount_value) {
+      return +fixed_discount_value;
+    }
+
+    if (
+      !applied_on_discounts &&
+      !applied_on_riders &&
+      !applied_on_total_premium &&
+      !fixed_discount_value
+    ) {
+      return (parseInt(premium) * parseInt(percent)) / 100;
+    }
+
+    return 0;
   }
 
   function getSelectedAdditionalDiscounts() {
@@ -1675,7 +1748,9 @@ export function useRiders({
 
   useEffect(() => setRiders(getInitialRiders), [getInitialRiders]); //? a fallback to assign initial-riders
 
-  const { feature_options } = useSelector(({ cart }) => cart);
+  const { feature_options } = useCart().getCartEntry(groupCode);
+
+  const updatedFeatureOptions = featureOptionsValidValue(feature_options);
 
   const findLocalRider = riderToFind =>
     riders.find(rider => rider?.id === riderToFind?.id);
@@ -1717,7 +1792,7 @@ export function useRiders({
   const query = useGetRiders(quote, groupCode, {
     queryOptions: {
       additionalUrlQueries,
-      feature_options,
+      feature_options: updatedFeatureOptions,
       selected_riders,
       options_query,
     },
@@ -1726,7 +1801,7 @@ export function useRiders({
   //? RELIANCE FUNCTIONALITY
   const reliance_general_feature_option_value =
     quote?.product?.company?.alias === "reliance_general" &&
-    feature_options[Object.keys(feature_options)[0]]; //? free rider name to be selected by default
+    updatedFeatureOptions[Object.keys(updatedFeatureOptions)[0]]; //? free rider name to be selected by default
 
   const { data } = query;
 
@@ -1904,21 +1979,44 @@ export const useShareFunctionality = (desktopPageId, mobilePageId) => {
 };
 
 export const useRevisedPremiumModal = () => {
-  const { cartEntries } = useCart();
+  const { cartEntries, getCartTotalPremium } = useCart();
 
   const revisedPremiumPopupToggle = useToggle();
+
+  const [revisedPremiumCheckHitByUs, setRevisedPremiumCheckHitByUs] =
+    useState(false);
+
+  const isProductDetailsPage =
+    window.location.pathname.startsWith("/productdetails");
 
   const dispatch = useDispatch();
 
   const prevTotalPremium = useMemo(() => {
-    return getTotalPremium(cartEntries);
+    return getCartTotalPremium();
+  }, []); /* memorizes the first value it gets */
+
+  const previousCartEntries = useMemo(() => {
+    return cartEntries;
   }, []); /* memorizes the first value it gets */
 
   const updatedTotalPremium =
-    getTotalPremium(cartEntries); /* Gets the updated value each time */
+    getCartTotalPremium(); /* Gets the updated value each time */
 
   const getUpdatedCart = (next = () => {}) => {
-    dispatch(api.util.invalidateTags(["Cart"]));
+    dispatch(
+      api.util.invalidateTags(
+        isProductDetailsPage
+          ? [
+              "Cart",
+              "Rider",
+              "AdditionalDiscount",
+              "TenureDiscount",
+              "featureOption",
+            ]
+          : ["Cart"],
+      ),
+    );
+    setRevisedPremiumCheckHitByUs(true);
     next();
   }; /* Performs refetch from the server */
 
@@ -1937,19 +2035,53 @@ export const useRevisedPremiumModal = () => {
     updatedTotalPremium,
   ]); /* CONTROLS DISPLAY OF REVISED PREMIUM POPUP AUTOMATICALLY */
 
+  const getUpdatedCartEntry = groupCode => {
+    const cartEntry = cartEntries.find(
+      cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
+    );
+
+    return cartEntry;
+  };
+
+  const onOpenModal = () => {
+    revisedPremiumPopupToggle.on();
+  };
+
+  const onCloseModal = () => {
+    setRevisedPremiumCheckHitByUs(false);
+    revisedPremiumPopupToggle.off();
+  };
+
+  const getPreviousCartEntryPremium = groupCode => {
+    const cartEntry = previousCartEntries.find(
+      cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
+    );
+
+    return cartEntry?.premium;
+  };
+
+  const getUpdatedCartEntryPremium = groupCode => {
+    const cartEntry = cartEntries.find(
+      cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
+    );
+
+    return cartEntry?.premium;
+  };
+
   return {
     getUpdatedCart,
     revisedPremiumPopupToggle,
     prevTotalPremium,
     updatedTotalPremium,
     updatedCartEntries: cartEntries,
-    on: () => {
-      revisedPremiumPopupToggle.on();
-    },
-    off: () => {
-      revisedPremiumPopupToggle.off();
-    },
-    isOn: revisedPremiumPopupToggle.isOn,
+    on: onOpenModal,
+    off: onCloseModal,
+    isOnProductDetails:
+      revisedPremiumCheckHitByUs && revisedPremiumPopupToggle.isOn,
+    isOnProposal: revisedPremiumPopupToggle.isOn,
+    getUpdatedCartEntry,
+    getPreviousCartEntryPremium,
+    getUpdatedCartEntryPremium,
   };
 };
 
@@ -2001,7 +2133,11 @@ export const useDD = ({ initialValue = {}, required, errorLabel }) => {
 
 export const useUSGILifeStyleDiscount = () => {
   const location = useLocation();
-  const { cartEntries, updateCartEntry } = useCart();
+  const { cartEntries, updateCartEntry, getCartTotalPremium } = useCart();
+
+  const { groupCode } = useParams();
+
+  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
 
   const universalSompoPlanInCart = cartEntries
     ? cartEntries?.find(
@@ -2035,9 +2171,9 @@ export const useUSGILifeStyleDiscount = () => {
 
   const totalPremiumToDisplay = () => {
     return lifeStyleDiscount
-      ? getTotalPremium(cartEntries) -
+      ? getCartTotalPremium() -
           getDiscountAmount(lifeStyleDiscount, universalSompoPlanInCart)
-      : getTotalPremium(cartEntries); //? returns same total-premium if lifeStyle discount is not present
+      : getCartTotalPremium(); //? returns same total-premium if lifeStyle discount is not present
   };
 
   return totalPremiumToDisplay();

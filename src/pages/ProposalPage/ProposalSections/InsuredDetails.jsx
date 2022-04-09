@@ -25,18 +25,22 @@ const InsuredDetails = ({
   setActivateLoader,
 }) => {
   const [show, setShow] = useState(0);
+
   const { proposalData } = useSelector(state => state.proposalPage);
+
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
   );
+
   const proposalDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
+
   const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
     useFrontendBoot();
-// const [checking]
+  // const [checking]
   const { getGroupMembers, groups } = useMembers();
-console.log("bxfbkfxjb",defaultValue)
+
   const {
     values,
     setValues,
@@ -50,7 +54,7 @@ console.log("bxfbkfxjb",defaultValue)
     triggerSaveForm,
     setErrors,
     errors,
-    equriesData
+    equriesData,
   } = useProposalSections({
     setActive,
     name,
@@ -58,9 +62,8 @@ console.log("bxfbkfxjb",defaultValue)
     partialLength: Object.keys(schema).length,
     setShow,
     setActivateLoader,
-    schema
+    schema,
   });
-
 
   const { getPanelDescContent } = useInsuredDetails(
     name,
@@ -71,14 +74,14 @@ console.log("bxfbkfxjb",defaultValue)
     groups,
     setValues,
     defaultValue,
-    equriesData
+    equriesData,
   );
 
   const {
     nomineeRelationAutopopulated,
     setNomineeRelationAutopopulated,
-    autoPopulateSelfOtherDetails
-  } = useOtherDetails({  
+    autoPopulateSelfOtherDetails,
+  } = useOtherDetails({
     name,
     schema,
     proposalData,
@@ -92,8 +95,15 @@ console.log("bxfbkfxjb",defaultValue)
   });
 
   const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
-    useMedicalQuestions(schema, values, setValues, name, proposalData,defaultValue);
-console.log("bldjbdfkl",canProceed)
+    useMedicalQuestions(
+      schema,
+      values,
+      setValues,
+      name,
+      proposalData,
+      defaultValue,
+    );
+
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -120,7 +130,7 @@ console.log("bldjbdfkl",canProceed)
             key={index}
             title={`${item}`}
             show={show === index}
-            onClick={() => setShow(prev => prev === index? false : index)}
+            onClick={() => setShow(prev => (prev === index ? false : index))}
           >
             <div>
               {name === "Medical Details" && (
@@ -192,8 +202,7 @@ console.log("bldjbdfkl",canProceed)
                   schema={schema[item]}
                   components={components}
                   fetchValues={res => {
-                    console.log("ckdjccda",res)
-                    setValues(prev => ({ ...prev, [item]:res }));
+                    setValues(prev => ({ ...prev, [item]: res }));
                   }}
                   fetchErrors={res => {
                     setErrors(prev => ({ ...prev, [item]: res }));
@@ -219,22 +228,29 @@ console.log("bldjbdfkl",canProceed)
                   setNoForAll={value => {
                     setNoForAll({ ...noForAll, [item]: value });
                   }}
-                  setNomineeRelationAutopopulated={setNomineeRelationAutopopulated}
-                  preFilledDataBase={defaultValue?defaultValue[item]:{}}
+                  setNomineeRelationAutopopulated={
+                    setNomineeRelationAutopopulated
+                  }
+                  preFilledDataBase={defaultValue ? defaultValue[item] : {}}
                   nomineeRelationAutopopulated={nomineeRelationAutopopulated}
-                  autoPopulateSelfOtherDetails={({updateValues,selectedNomineeRelation}) => autoPopulateSelfOtherDetails({
-                    schema: schema[item],
-                    values: values? values[item] : {},
-                    setValues:updateValues,
-                    selectedNomineeRelation
-                  })}
+                  autoPopulateSelfOtherDetails={({
+                    updateValues,
+                    selectedNomineeRelation,
+                  }) =>
+                    autoPopulateSelfOtherDetails({
+                      schema: schema[item],
+                      values: values ? values[item] : {},
+                      setValues: updateValues,
+                      selectedNomineeRelation,
+                    })
+                  }
                 />
               </Form>{" "}
             </div>
           </Panel>
         );
       })}
-      {console.log("dfbdfkjbfksb",isValid)}
+
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
@@ -250,7 +266,12 @@ console.log("bldjbdfkl",canProceed)
             name === "Medical Details" && checkCanProceed();
             // setShow();
             setSubmit("Medical");
-            if (name === "Medical Details" && canProceed?.canProceed && !isValid.includes(undefined) && !isValid.includes(false)) {
+            if (
+              name === "Medical Details" &&
+              canProceed?.canProceed &&
+              !isValid.includes(undefined) &&
+              !isValid.includes(false)
+            ) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
                 frontBootData?.settings?.medical_nstp_declaration_message &&
@@ -265,18 +286,23 @@ console.log("bldjbdfkl",canProceed)
 
               triggerSaveForm({ sendedVal: values, formName: name });
               // setContinueBtnClick(true);
-            }else if (name !== "Medical Details") {
+            } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
               triggerSaveForm({ sendedVal: values, formName: name });
-              // setContinueBtnClick(true);
-            }else if(name === "Medical Details" && !canProceed.canProceed){
-              // const {canProceedArray} = canProceed;
-              // console.log("wfvhjskv",)
-              setShow(Object.keys(schema).indexOf(Object.keys(canProceed.checkCanProceed).find(key => canProceed.checkCanProceed[key] && canProceed.checkCanProceed[key].length)))
+            } else if (name === "Medical Details" && !canProceed.canProceed) {
+              setShow(
+                Object.keys(schema).indexOf(
+                  Object.keys(canProceed.checkCanProceed).find(
+                    key =>
+                      canProceed.checkCanProceed[key] &&
+                      canProceed.checkCanProceed[key].length,
+                  ),
+                ),
+              );
             }
           }}
         />
-        {revisedPremiumPopupUtilityObject.isOn && (
+        {revisedPremiumPopupUtilityObject.isOnProposal && (
           <RevisedPremiumPopup
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}
@@ -293,12 +319,3 @@ console.log("bldjbdfkl",canProceed)
 };
 
 export default InsuredDetails;
-const NoCheckBox = styled.div`
-  text-align: right;
-  font-size: 18px;
-  position: relative;
-  right: 12px;
-  @media (max-width: 768px) {
-    text-align: left;
-  }
-`;
