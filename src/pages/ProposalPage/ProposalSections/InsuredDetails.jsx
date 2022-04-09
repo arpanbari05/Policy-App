@@ -34,7 +34,7 @@ const InsuredDetails = ({
   );
   const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
     useFrontendBoot();
-
+// const [checking]
   const { getGroupMembers, groups } = useMembers();
 console.log("bxfbkfxjb",defaultValue)
   const {
@@ -50,6 +50,7 @@ console.log("bxfbkfxjb",defaultValue)
     triggerSaveForm,
     setErrors,
     errors,
+    equriesData
   } = useProposalSections({
     setActive,
     name,
@@ -57,19 +58,9 @@ console.log("bxfbkfxjb",defaultValue)
     partialLength: Object.keys(schema).length,
     setShow,
     setActivateLoader,
+    schema
   });
 
-
-useEffect(() => {
-
-  if (isValid.includes(false)) {
-    setShow(isValid.indexOf(false));
-  }
-  if (isValid.includes(undefined)) {
-    setShow(isValid.indexOf(undefined));
-  }
-
-},[isValid])
 
   const { getPanelDescContent } = useInsuredDetails(
     name,
@@ -79,7 +70,8 @@ useEffect(() => {
     membersDataFromGreetingPage,
     groups,
     setValues,
-    defaultValue
+    defaultValue,
+    equriesData
   );
 
   const {
@@ -100,7 +92,7 @@ useEffect(() => {
   });
 
   const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
-    useMedicalQuestions(schema, values, setValues, name, proposalData);
+    useMedicalQuestions(schema, values, setValues, name, proposalData,defaultValue);
 console.log("bldjbdfkl",canProceed)
   const { colors } = useTheme();
 
@@ -128,7 +120,7 @@ console.log("bldjbdfkl",canProceed)
             key={index}
             title={`${item}`}
             show={show === index}
-            onClick={() => setShow(index)}
+            onClick={() => setShow(prev => prev === index? false : index)}
           >
             <div>
               {name === "Medical Details" && (
@@ -242,6 +234,7 @@ console.log("bldjbdfkl",canProceed)
           </Panel>
         );
       })}
+      {console.log("dfbdfkjbfksb",isValid)}
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
@@ -255,10 +248,9 @@ console.log("bldjbdfkl",canProceed)
           onClick={() => {
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
-
             // setShow();
             setSubmit("Medical");
-            if (name === "Medical Details" && canProceed?.canProceed) {
+            if (name === "Medical Details" && canProceed?.canProceed && !isValid.includes(undefined) && !isValid.includes(false)) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
                 frontBootData?.settings?.medical_nstp_declaration_message &&

@@ -26,7 +26,7 @@ const Toggle = ({
   disable_Toggle = false,
   restrictMaleMembers = false,
 }) => {
-  console.log("Svsjbv", disable_Toggle);
+  console.log("Svsjbv", disable_Toggle,value);
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
@@ -111,8 +111,7 @@ console.log("bfxfjkl",membersToMap)
     ) {
       isValid = false;
     }
-
-    if(boolean === "N"){
+ if(boolean === "N"){
       onChange({
         [`is${name}`]: boolean,
         members: {},
