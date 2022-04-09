@@ -583,9 +583,9 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
     JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   function gotoProductPage() {
-    const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
+    // const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
     // const groupCodes = Object.keys(policyTypes).map(key => parseInt(key));
-    const firstGroupWithQuote = Math.min(...groupCodes);
+    const firstGroupWithQuote = JSON.parse(localStorage.groups)[0].id;
 
     history.push({
       pathname: `/productdetails/${firstGroupWithQuote}`,
