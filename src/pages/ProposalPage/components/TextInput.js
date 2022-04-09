@@ -111,7 +111,7 @@ const TextInput = ({
               onChange(e);
               setFallbackValue(e.target.value);
             }
-          } else if (checkValidation["matches"] === "name") {
+          } else if (checkValidation["matches"] === "name" || name === "nominee_name") {
             let acceptedSpecialChar = ["."];
             if (
               checkPreviousChar(e.target.value, " ") &&
@@ -127,9 +127,9 @@ const TextInput = ({
               e.target.value.length <= 60 &&
               checkAllChar(
                 e.target.value,
-                forbiddedSymbols.filter(
-                  el => !acceptedSpecialChar.includes(el),
-                ),
+                forbiddedSymbols
+                  .filter(el => !acceptedSpecialChar.includes(el))
+                  .concat("0123456789".split("")),
               )
             ) {
               onChange(e);
@@ -239,7 +239,7 @@ const TextInput = ({
         }}
         onFocus={() => {
           onFocus();
-          setIsFocused(true)
+          setIsFocused(true);
         }}
         onBlur={e => {
           onBlur();
@@ -299,12 +299,13 @@ const Input = styled.input`
   -moz-user-select: initial;
   -ms-user-select: initial;
   user-select: initial;
-  &:before, &:after {
+  &:before,
+  &:after {
     -webkit-user-select: initial;
-  -khtml-user-select: initial;
-  -moz-user-select: initial;
-  -ms-user-select: initial;
-  user-select: initial;
+    -khtml-user-select: initial;
+    -moz-user-select: initial;
+    -ms-user-select: initial;
+    user-select: initial;
   }
   -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
@@ -337,7 +338,8 @@ const Input = styled.input`
   // background: ${props => (props.error ? "#fff6f7" : "transparent")};
   height: 55px;
   font-size: 14px;
-  cursor:${props => (props.isHovering && props.readOnly ? "not-allowed" : "pointer")};
+  cursor: ${props =>
+    props.isHovering && props.readOnly ? "not-allowed" : "pointer"};
   color: #939393;
   position: relative;
   padding: 0 25px;
@@ -347,18 +349,17 @@ const Input = styled.input`
   }
   &:before {
     -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
   &:after {
     -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 
   @media (max-width: 767px) {

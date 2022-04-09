@@ -132,6 +132,19 @@ const ProposalPage = () => {
     }
   }, [showErrorPopup]);
 
+  useEffect(() => {
+    const activeForm = listOfForms[active];
+    const element = document.getElementById(
+      activeForm?.toLowerCase()?.split(" ")?.join("_"),
+    );
+    const offset = element?.getBoundingClientRect()?.top - 100 + window.scrollY;
+    console.log({ element, activeForm, offset });
+    window.scroll({
+      top: offset,
+      behavior: "smooth",
+    });
+  }, [active]);
+
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
     console.log("dbdjfkl", defaultData);
@@ -179,6 +192,7 @@ const ProposalPage = () => {
           margin-bottom: 20px; 
           cursor:pointer;
         `}
+          id={"proposer_details"}
         >
           {activeForm === "Proposer Details" && proposerDactive ? (
             <>
@@ -238,7 +252,7 @@ const ProposalPage = () => {
           )}
         </Card>
 
-        <Card styledCss={`margin-bottom: 20px;`}>
+        <Card id={"insured_details"} styledCss={`margin-bottom: 20px;`}>
           {activeForm === "Insured Details" ? (
             <>
               {" "}
@@ -290,7 +304,7 @@ const ProposalPage = () => {
             </span>
           )}
         </Card>
-        <Card styledCss={`margin-bottom: 20px;`}>
+        <Card id={"medical_details"} styledCss={`margin-bottom: 20px;`}>
           {activeForm === "Medical Details" && !bmiFailBlock ? (
             <>
               {" "}
@@ -346,7 +360,7 @@ const ProposalPage = () => {
             </span>
           )}
         </Card>
-        <Card styledCss={`margin-bottom: 20px;`}>
+        <Card id={"other_details"} styledCss={`margin-bottom: 20px;`}>
           {activeForm === "Other Details" ? (
             <>
               {" "}

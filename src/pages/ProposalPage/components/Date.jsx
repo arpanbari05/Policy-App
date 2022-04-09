@@ -101,11 +101,7 @@ const DateComp = ({
           }
           minDate={
             age && age[1] >= 1
-              ? new Date(
-                  currentYear - (age[1] + 1),
-                  currentMonth,
-                  currentDate - 1,
-                )
+              ? new Date(currentYear - age[1], currentMonth, currentDate - 1)
               : ""
           }
           maxDate={
