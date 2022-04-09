@@ -32,7 +32,7 @@ const ProposerDetails = ({
     revisedPremiumPopupUtilityObject,
     setErrorInField,
     setErrors,
-  } = useProposalSections({ setActive, name, defaultValue, setActivateLoader });
+  } = useProposalSections({ setActive, name, setActivateLoader });
 
   const proposelSelectedDOBRedux = useSelector(
     ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob,
@@ -84,7 +84,7 @@ const ProposerDetails = ({
         }
       });
 
-      setValues({ ...prefilledValues, ...values });
+      setValues({ ...prefilledValues, ...defaultValue });
     }
   }, []);
 
@@ -125,7 +125,7 @@ const ProposerDetails = ({
             });
           }}
         />
-        {revisedPremiumPopupUtilityObject.isOn && (
+        {revisedPremiumPopupUtilityObject.isOnProposal && (
           <RevisedPremiumPopup
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}

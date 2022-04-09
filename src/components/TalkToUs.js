@@ -8,8 +8,10 @@ import { Modal } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
 import { useFrontendBoot } from "../customHooks/index";
 import { useGetEnquiriesQuery } from "../api/api";
+import { useUrlQueries } from "../customHooks/useUrlQuery";
 
 const TalkToUsContent = () => {
+  const searchQueries = useUrlQueries();
   const [proposerData, setProposerData] = useState({
     name: "",
     email: "",
@@ -17,7 +19,9 @@ const TalkToUsContent = () => {
   });
   const { register, handleSubmit } = useForm();
   const { data } = useFrontendBoot();
-  const { data: enquiryData } = useGetEnquiriesQuery();
+  const { data: enquiryData } = useGetEnquiriesQuery(undefined, {
+    skip: !searchQueries.enquiryId,
+  });
   console.log(enquiryData);
   useEffect(() => {
     setProposerData({

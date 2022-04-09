@@ -28,8 +28,6 @@ import {
 import {
   amount,
   getDisplayPremium,
-  getTotalPremium,
-  getDiscountAmount,
   premiumWithAddons,
 } from "../../../../utils/helper";
 import { useGetCartQuery } from "../../../../api/api";
@@ -1177,11 +1175,9 @@ const DiscountDetail = ({
   additionalDiscount,
   ...props
 }) => {
-  const { getCartEntry } = useCart();
+  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
 
-  const cartEntry = getCartEntry(groupCode);
-
-  const discountAmount = getDiscountAmount(additionalDiscount, cartEntry);
+  const discountAmount = getDiscountAmount(additionalDiscount);
   return (
     <div
       css={`

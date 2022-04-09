@@ -96,6 +96,7 @@ console.log("bfxfjkl",membersToMap)
     }
     if (customShowMembers && label.toLowerCase().includes("mandatory")) {
       setBoolean("Y");
+      setMembersStatus(membersToMap.reduce((acc,member) => ({...acc, [member]:true}),{}));
     }
   }, [value, customShowMembers]);
 

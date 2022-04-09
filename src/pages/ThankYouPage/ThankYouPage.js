@@ -27,7 +27,6 @@ import ShareQuoteModal from "../../components/ShareQuoteModal";
 import {
   amount,
   getPolicyPremium,
-  getTotalPremium,
   isSSOJourney,
 } from "../../utils/helper";
 

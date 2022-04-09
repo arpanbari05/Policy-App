@@ -18,7 +18,6 @@ import { EditMembersModal } from "../../quotePage/components/filters/EditMemberF
 import {
   amount,
   figureToWords,
-  getDiscountAmount,
   getDisplayPremium,
   premiumWithAddons,
 } from "../../../utils/helper";
@@ -36,6 +35,7 @@ import {
   useUpdateGroupMembers,
   useAddOns,
   useUrlEnquiry,
+  useRevisedPremiumModal,
 } from "../../../customHooks";
 import {
   Button,
@@ -365,11 +365,9 @@ function DiscountsList({ groupCode, ...props }) {
 function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
   const { name } = additionalDiscount;
 
-  const { getCartEntry } = useCart();
+  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
 
-  const cartEntry = getCartEntry(groupCode);
-
-  const discountAmount = getDiscountAmount(additionalDiscount, cartEntry);
+  const discountAmount = getDiscountAmount(additionalDiscount);
 
   return (
     <CartDetailRow title={name} value={amount(discountAmount)} {...props} />
@@ -440,14 +438,6 @@ function Members({ groupCode, editable = true, ...props }) {
   );
 }
 
-function getCartEntryFromUpdateResult(updateResultData, groupCode) {
-  const cartEntry = updateResultData?.getCartResult?.data?.find(
-    cartEntry => +cartEntry?.group?.id === +groupCode,
-  );
-
-  return cartEntry;
-}
-
 function EditMembersButton({ groupCode, ...props }) {
   const { colors } = useTheme();
 
@@ -475,25 +465,9 @@ function EditMembersButton({ groupCode, ...props }) {
 }
 
 function EditMembers({}) {
-  const { colors } = useTheme();
-
   const { groupCode } = useParams();
 
-  const {
-    data: {
-      data: { name },
-    },
-  } = useGetEnquiriesQuery();
-
-  //const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
-  const revisedPremiumModalToggle = useToggle(false);
-
-  const firstName = name?.split(" ")[0];
-
-  const { getCartEntry } = useCart();
-
-  const currentCartEntry = useMemo(() => getCartEntry(groupCode), []);
+  const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
 
   const dispatch = useDispatch();
 
@@ -510,9 +484,14 @@ function EditMembers({}) {
 
   const handleSubmit = () => {
     const members = getSelectedMembers();
+
     updateGroupMembers(members).then(res => {
       if (res?.error) return;
-      dispatch(
+
+      dispatch(setShowEditMembers(false));
+
+      revisedPremiumPopupUtilityObject.getUpdatedCart();
+      /* dispatch(
         api.util.invalidateTags([
           "Cart",
           "Rider",
@@ -529,7 +508,7 @@ function EditMembers({}) {
         revisedPremiumModalToggle.off();
 
       if (updatedCartEntry?.total_premium !== currentCartEntry?.total_premium)
-        revisedPremiumModalToggle.on();
+        revisedPremiumModalToggle.on(); */
     });
   };
 
@@ -537,7 +516,7 @@ function EditMembers({}) {
 
   if (isError) serverErrors = Object.values(error?.data?.errors);
 
-  if (data) {
+  /* if (data) {
     const { unavailable_message, ...updatedCartEntry } =
       getCartEntryFromUpdateResult(data, groupCode);
     const handleCloseClick = () => {
@@ -589,7 +568,7 @@ function EditMembers({}) {
           />
           {!unavailable_message ? (
             <div>
-              {/* <CartDetailRow
+              { <CartDetailRow
                 title="Premium"
                 value={
                   <span
@@ -600,7 +579,7 @@ function EditMembers({}) {
                     {amount(currentCartEntry.total_premium)}
                   </span>
                 }
-              /> */}
+              /> }
               <CartDetailRow
                 title={
                   <span
@@ -628,7 +607,7 @@ function EditMembers({}) {
         <div
           className="p-3 pt-0 d-flex justify-content-between align-items-center"
           css={`
-            /* gap: 1em;*/
+            gap: 1em;
           `}
         >
           <DetailsWrap>
@@ -665,26 +644,44 @@ function EditMembers({}) {
         </div>
       </Modal>
     );
-  }
+  } */
 
   return (
-    <EditMembersModal>
-      <div className="p-3">
-        <MemberOptions showCounter={false} {...memberForm} selectable={false} />
-        {serverErrors
-          ? serverErrors.map(error => (
-              <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
-            ))
-          : null}
-      </div>
-      <Button className="w-100" onClick={handleSubmit} loader={isLoading}>
-        Update
-      </Button>
-    </EditMembersModal>
+    <>
+      <EditMembersModal>
+        <div className="p-3">
+          <MemberOptions
+            showCounter={false}
+            {...memberForm}
+            selectable={false}
+          />
+          {serverErrors
+            ? serverErrors.map(error => (
+                <StyledErrorMessage key={error}>{error}</StyledErrorMessage>
+              ))
+            : null}
+        </div>
+        <Button className="w-100" onClick={handleSubmit} loader={isLoading}>
+          Update
+        </Button>
+      </EditMembersModal>
+
+      {revisedPremiumPopupUtilityObject?.isOnProductDetails && (
+        <RevisedPremiumPopup
+          revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+          onClose={revisedPremiumPopupUtilityObject.off}
+          title={
+            revisedPremiumPopupUtilityObject.getUpdatedCartEntry(groupCode)
+              ?.unavailable_message
+              ? "Plan Unavailable due to change in date of birth"
+              : "Revised Premium due to change in date of birth"
+          }
+        />
+      )}
+    </>
   );
 }
 
-// USED IN PROPOSAL PAGE(InsuredDetails.jsx)
 export const RevisedPremiumPopup = ({
   revisedPremiumPopupUtilityObject,
   onClose,
@@ -693,15 +690,12 @@ export const RevisedPremiumPopup = ({
 }) => {
   const { colors } = useTheme();
 
-  const {
-    data: {
-      data: { name },
-    },
-  } = useGetEnquiriesQuery();
-
   const dispatch = useDispatch();
 
-  const firstName = name?.split(" ")[0];
+  const { groupCode: urlGeneratedGroupCode } = useParams(); //? groupCode changes on product details page.
+
+  const isProductDetailsPage =
+    window.location.pathname.startsWith("/productdetails");
 
   return (
     <Modal
@@ -737,14 +731,7 @@ export const RevisedPremiumPopup = ({
       </div>
 
       {revisedPremiumPopupUtilityObject?.updatedCartEntries?.map(
-        (
-          {
-            group: { id: groupCode },
-            unavailable_message,
-            discounted_total_premium,
-          },
-          index,
-        ) => (
+        ({ group: { id: groupCode }, unavailable_message, premium }, index) => (
           <>
             <div key={index} className="p-3 pt-0 pb-0">
               <Members groupCode={groupCode} editable={false} />
@@ -765,7 +752,7 @@ export const RevisedPremiumPopup = ({
                         Revised Premium
                       </span>
                     }
-                    value={amount(+discounted_total_premium)}
+                    value={amount(+premium)}
                   />
                 </div>
               ) : null}
@@ -786,26 +773,44 @@ export const RevisedPremiumPopup = ({
       <div className="p-3 pt-0 d-flex justify-content-between align-items-center">
         <DetailsWrap>
           <DetailsWrap.Title style={{ fontWeight: "600" }}>
-            Previous Total Premium
+            {isProductDetailsPage
+              ? "Previous Premium"
+              : "Previous Total Premium"}
           </DetailsWrap.Title>
           <DetailsWrap.Value>
-            {getDisplayPremium({
-              total_premium:
-                +revisedPremiumPopupUtilityObject?.prevTotalPremium,
-              tenure: 1,
-            })}
+            {isProductDetailsPage
+              ? getDisplayPremium({
+                  total_premium:
+                    +revisedPremiumPopupUtilityObject.getPreviousCartEntryPremium(
+                      urlGeneratedGroupCode,
+                    ),
+                  tenure: 1,
+                })
+              : getDisplayPremium({
+                  total_premium:
+                    +revisedPremiumPopupUtilityObject.prevTotalPremium,
+                  tenure: 1,
+                })}
           </DetailsWrap.Value>
         </DetailsWrap>
         <DetailsWrap>
           <DetailsWrap.Title style={{ color: colors.secondary_color }}>
-            Revised Total Premium
+            {isProductDetailsPage ? "Revised Premium" : "Revised Total Premium"}
           </DetailsWrap.Title>
           <DetailsWrap.Value>
-            {getDisplayPremium({
-              total_premium:
-                +revisedPremiumPopupUtilityObject?.updatedTotalPremium,
-              tenure: 1,
-            })}
+            {isProductDetailsPage
+              ? getDisplayPremium({
+                  total_premium:
+                    +revisedPremiumPopupUtilityObject.getUpdatedCartEntryPremium(
+                      urlGeneratedGroupCode,
+                    ),
+                  tenure: 1,
+                })
+              : getDisplayPremium({
+                  total_premium:
+                    +revisedPremiumPopupUtilityObject.updatedTotalPremium,
+                  tenure: 1,
+                })}
           </DetailsWrap.Value>
         </DetailsWrap>
         <DetailsWrap>

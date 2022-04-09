@@ -28,8 +28,12 @@ const useFormBuilder = (
       setValues({ [name]: value });
       fetchValues({ [name]: value });
     } else {
-      setValues(prev => ({ ...prev, [name]: value }));
-      fetchValues(prev => ({ ...prev, [name]: value }));
+      setValues(
+        prev => ({ ...prev, [name]: value }),
+        updatedState => {
+          fetchValues(updatedState);
+        },
+      );
     }
 
     if (value instanceof Object) {
@@ -209,7 +213,7 @@ const useFormBuilder = (
     if (Object.values(errors).length && Object.values(errors).some(val => val))
       setErrorInField(true);
     else setErrorInField(false);
-    
+
     if (blockScrollEffect) {
       let filteredKey = Object.keys(errors).filter(key => errors[key]);
 

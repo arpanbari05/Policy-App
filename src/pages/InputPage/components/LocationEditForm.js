@@ -51,6 +51,8 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
 
   const [error, setError] = useState(null);
 
+  const [input, setInput] = useState({});
+
   const dispatch = useDispatch();
 
   const getInitialSelectedCity = () => {
@@ -159,12 +161,14 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
 
   const clearCity = () => {
     setSelectedCity(null);
+    setInput(prev => ({ ...prev, [currentGroupCode]: "" }));
     reset();
   };
 
   const handleSearchQueryChange = evt => {
     locationInput.onChange(evt);
     setSelectedCity(null);
+    setInput(prev => ({ ...prev, [currentGroupCode]: evt.target.value }));
   };
 
   const membersText = getMembersText({ id: parseInt(currentGroupCode) });
@@ -251,7 +255,12 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           label={"Enter Pincode or City"}
           name="location"
           id="location"
-          value={selectedCity?.city || locationSearchQuery || ""}
+          value={
+            selectedCity?.city ||
+            locationSearchQuery ||
+            input[currentGroupCode] ||
+            ""
+          }
           onChange={handleSearchQueryChange}
           maxLength={35}
           styledCss={
@@ -259,9 +268,9 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
             `width: 70%; margin-left: auto; margin-right: auto; @media(max-width: 768px) {width: 100%;}`
           }
         />
-        {error && (
+        {error?.groupCode === currentGroupCode && (
           <div css={edit && `width: 70%; margin: 3px auto;`}>
-            <ErrorMessage>{error}</ErrorMessage>
+            <ErrorMessage>{error?.error}</ErrorMessage>
           </div>
         )}
         {!selectedCity && (
@@ -276,6 +285,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
               searchQuery={locationSearchQuery}
               showError={!error}
               setError={setError}
+              groupCode={currentGroupCode}
               css={
                 edit &&
                 `width: 70%; margin-left: auto; margin-right: auto; @media(max-width: 768px) {width: 100%;}`
@@ -504,6 +514,7 @@ function LocationOptions({
   selected,
   onChange,
   showError = true,
+  groupCode,
   setError = () => {},
   css = "",
   ...props
@@ -531,7 +542,7 @@ function LocationOptions({
 
   if (showError && data && !data.length) {
     const errorMsg = "Please enter a valid Pincode or City";
-    setError(errorMsg);
+    setError({ error: errorMsg, groupCode });
     return <ErrorMessage>{errorMsg}</ErrorMessage>;
   }
 

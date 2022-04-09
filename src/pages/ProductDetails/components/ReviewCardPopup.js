@@ -21,7 +21,7 @@ import {
 import { premiumWithAddons } from "../../../../src/utils/helper";
 import { skipToken } from "@reduxjs/toolkit/query";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
-import { useRider } from "../../../customHooks/index";
+import { useRider, useCart } from "../../../customHooks/index";
 import { Button } from "../../../components";
 import { useEffect } from "react";
 import "./ReviewCardPopup.scss";
@@ -226,6 +226,7 @@ function ProductDetailsCardMobile({ cartItem }) {
       company: { alias },
     },
     total_premium,
+    premium,
     sum_insured,
     top_up_riders,
     addons,
@@ -338,7 +339,7 @@ function ProductDetailsCardMobile({ cartItem }) {
                   `}
                 >
                   <div>Premium:</div>
-                  <div>{amount(total_premium)}</div>
+                  <div>{amount(premium)}</div>
                 </div>
               ) : null}
             </div>
@@ -366,7 +367,7 @@ function ProductDetailsCardMobile({ cartItem }) {
                     font-size: 10px;
                   `}
                 >
-                  {amount(total_premium)}
+                  {amount(premium)}
                 </div>
               </div>
             </div>
@@ -575,6 +576,7 @@ function ProductDetailsCard({ cartItem }) {
       company: { alias },
     },
     total_premium,
+    premium,
     tenure,
     sum_insured,
     top_up_riders,
@@ -625,7 +627,7 @@ function ProductDetailsCard({ cartItem }) {
                 Premium
                 <br />
                 <span className="edit_css_prod si_text">
-                  {amount(total_premium)} /{" "}
+                  {amount(premium)} /{" "}
                   {tenure === 1 ? "year" : `${tenure} years`}
                 </span>
               </span>
@@ -684,6 +686,8 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
 
   const cart = data?.data;
 
+  const { getCartTotalPremium } = useCart();
+
   const allAddons = cart?.map(singleCartEntry => singleCartEntry.addons).flat();
 
   const getCartEntry = groupId => {
@@ -724,7 +728,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
     onClose();
   };
 
-  const totalPremium = getTotalPremium(cart);
+  const totalPremium = getCartTotalPremium();
 
   return (
     <PopUpWithCloseButton

@@ -28,6 +28,7 @@ import * as mq from "../utils/mediaQueries";
 import { GiCircle } from "react-icons/gi";
 import { images } from "../assets/logos/logo";
 import { defaultPrimaryColor } from "../config";
+import { useUrlQueries } from "../customHooks/useUrlQuery";
 
 export function ScreenTopLoader({ progress, show }) {
   const { colors } = useTheme();
@@ -50,8 +51,9 @@ export function ScreenTopLoader({ progress, show }) {
 }
 
 export function LoadEnquiries({ children }) {
+  const searchQueries = useUrlQueries();
   const { isLoading, isFetching, isUninitialized, isError, refetch } =
-    useGetEnquiriesQuery();
+    useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   if (isError)
     return (
@@ -581,9 +583,9 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
     JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   function gotoProductPage() {
-    const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
+    // const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
     // const groupCodes = Object.keys(policyTypes).map(key => parseInt(key));
-    const firstGroupWithQuote = Math.min(...groupCodes);
+    const firstGroupWithQuote = JSON.parse(localStorage.groups)[0].id;
 
     history.push({
       pathname: `/productdetails/${firstGroupWithQuote}`,

@@ -6,7 +6,7 @@ import { useHistory, useParams, Link } from "react-router-dom";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
-import {  FaPen } from "react-icons/fa";
+import { FaPen } from "react-icons/fa";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
 import { InsuredDetails, ProposerDetails } from "./ProposalSections";
@@ -15,18 +15,14 @@ import NSTP from "./ProposalSections/components/NSTP";
 import ProductSummary from "./ProposalSections/components/ProductSummary";
 import { MobileHeader, MobileHeaderText } from "./ProposalPage.style";
 import ErrorPopup from "./ProposalSections/components/ErrorPopup";
-import {
-  
-  getProposalData,
-  
-} from "./ProposalSections/ProposalSections.slice";
+import { getProposalData } from "./ProposalSections/ProposalSections.slice";
 import { setShowErrorPopup } from "./ProposalSections/ProposalSections.slice";
 
 import { getProposalFields } from "./schema.slice";
 
 import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
 import Card from "../../components/Card";
-import {Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
 import {
   useTheme,
@@ -45,6 +41,10 @@ import { mobile } from "../../utils/mediaQueries";
 
 /* ===============================test================================= */
 const ProposalPage = () => {
+  const history = useHistory();
+
+  const [prepairingPtoposal, setPrepairingProposal] = useState(false);
+
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -112,10 +112,15 @@ const ProposalPage = () => {
   }, [failedBmiData]);
 
   useEffect(() => {
+    setPrepairingProposal(true);
     dispatch(getProposalFields());
-    dispatch(getProposalData());
-    //dispatch(getCart());
+    dispatch(getCart());
     setMemberGroups(cartEntries.map(cartItem => cartItem.group.id));
+    dispatch(
+      getProposalData(() => {
+        setPrepairingProposal(false);
+      }),
+    );
   }, []);
 
   useEffect(() => {
@@ -131,12 +136,20 @@ const ProposalPage = () => {
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-
     if (activateLoader) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
           {/* <span className="lds-dual-ring colored--loader"></span> */}
           <p>Submitting Proposal, Please Wait</p>
+          <SpinLoader proposalpage={true} />
+        </div>
+      );
+    }
+    if (prepairingPtoposal) {
+      return (
+        <div style={{ textAlign: "center", marginTop: "100px" }}>
+          {/* <span className="lds-dual-ring colored--loader"></span> */}
+          <p>Preparing Proposal, Please Wait</p>
           <SpinLoader proposalpage={true} />
         </div>
       );
@@ -598,6 +611,11 @@ const ProposalPage = () => {
                       }
                     `}
                   >
+                    {console.log(
+                      "qdbkhaffaf",
+                      proposalData,
+                      listOfForms[active],
+                    )}
                     {form(active, proposalData[listOfForms[active]])}
                   </div>
                 </div>
@@ -626,6 +644,7 @@ const ProposalPage = () => {
               <ProductSummary cart={cart} setActive={setActive} />
             </div>
           </div>
+
           {form(active, proposalData[listOfForms[active]])} */}
             {/* <div
             style={{

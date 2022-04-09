@@ -93,8 +93,8 @@ function InputMembersForm({ posContent, ...props }) {
 
     updateEnquiry(sendData)
       .then(res => {
-        if (res.error) {
-          Object.keys(res?.error?.data?.errors).forEach(value => {
+        if (res?.error) {
+          Object.keys(res.error?.data?.errors).forEach(value => {
             setServerError(res?.error?.data?.errors[`${value}`][0]);
           });
           return;
@@ -106,7 +106,7 @@ function InputMembersForm({ posContent, ...props }) {
           return;
         }
 
-        const { groups } = res.data.data;
+        const { groups } = res?.data?.data;
         const firstGroup = Math.min(...groups.map(group => group.id));
 
         nextPagePath = `/input/location-${firstGroup}`;

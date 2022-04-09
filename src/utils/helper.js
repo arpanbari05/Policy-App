@@ -624,7 +624,7 @@ export function getTotalPremium(cartEntries = []) {
   let totalPremium = 0;
 
   for (let cartEntry of cartEntries) {
-    totalPremium += +cartEntry.discounted_total_premium;
+    totalPremium += +cartEntry?.total_premium;
   }
 
   return totalPremium;
@@ -812,7 +812,7 @@ export const featureOptionsValidValue = featureOptions => {
   ) {
     return {};
   }
-  return featureOptions;
+  return JSON.parse(featureOptions);
 };
 
 export const getPolicyPremium = (policyStatus = []) => {

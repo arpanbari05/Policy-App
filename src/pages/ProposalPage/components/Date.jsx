@@ -100,12 +100,16 @@ const DateComp = ({
               : ""
           }
           minDate={
-            age.length && age[1] >= 1
-              ? new Date(currentYear - age[1], 0, 1)
+            age && age[1] >= 1
+              ? new Date(
+                  currentYear - (age[1] + 1),
+                  currentMonth,
+                  currentDate - 1,
+                )
               : ""
           }
           maxDate={
-            age.length && age[0] >= 1
+            age?.length && age[0] >= 1
               ? new Date(currentYear - age[0], currentMonth, currentDate)
               : age[0]
               ? new Date(
@@ -115,7 +119,7 @@ const DateComp = ({
                 )
               : new Date(Date.now())
           }
-          placeholderText={!oldVal || isNaN(oldVal)?placeholder:oldVal}
+          placeholderText={!oldVal || isNaN(oldVal) ? placeholder : oldVal}
           openToDate={getOpentoDate(oldVal)}
           onChange={date => {
             onChange({ target: { value: moment(date).format("DD-MM-YYYY") } });

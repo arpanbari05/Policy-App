@@ -28,7 +28,7 @@ import {
 import CartMobile from "./components/Mobile/CartMobile/CartMobile";
 import FeatureSection from "./components/FeatureSection/FeatureSection";
 import Select from "react-select";
-import { getTotalPremium, numberToDigitWord } from "../../utils/helper";
+import { numberToDigitWord } from "../../utils/helper";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import SumInsuredSection from "./components/SumInsuredSection";
 import AddOnSection from "./components/AddOnsSection/AddOnsSection";
@@ -39,9 +39,13 @@ import {
   useGetEnquiriesQuery,
   useUpdateEnquiryMutation,
 } from "../../api/api";
+import useNotFoundHandler from "../../customHooks/useNotFoundHandler";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
+  const { pathname } = window.location;
+  const filterdPath = pathname.split("/")[1];
+  useNotFoundHandler(filterdPath);
 
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
 

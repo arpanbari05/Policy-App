@@ -34,12 +34,10 @@ import {
   capitalize,
   featureOptionsValidValue,
   getAddOnSendData,
-  getDiscountAmount,
   getInsuranceType,
   getMonthsForYear,
   getQuoteKey,
   getRiderCartData,
-  getTotalPremium,
   isRelianceInfinityPlan,
   isRiderPresent,
   isTopUpQuote,
@@ -48,7 +46,7 @@ import {
   parseJson,
 } from "../utils/helper";
 import { calculateTotalPremium } from "../utils/helper";
-import useUrlQuery from "./useUrlQuery";
+import useUrlQuery, { useUrlQueries } from "./useUrlQuery";
 import { every, uniq } from "lodash";
 import config from "../config";
 import { useCallback } from "react";
@@ -198,6 +196,7 @@ export function useTheme() {
 }
 
 export function useFrontendBoot() {
+  const searchQueries = useUrlQueries();
   const {
     data: frontendData,
     isLoading,
@@ -205,7 +204,9 @@ export function useFrontendBoot() {
     ...query
   } = useGetFrontendBootQuery();
 
-  const { data: enquiryData } = useGetEnquiriesQuery();
+  const { data: enquiryData } = useGetEnquiriesQuery(undefined, {
+    skip: !searchQueries.enquiryId,
+  });
 
   const data = { ...frontendData, ...config };
 
@@ -237,6 +238,7 @@ export function useFrontendBoot() {
 }
 
 export function useFilter() {
+  const searchQueries = useUrlQueries();
   const {
     data: {
       defaultfilters: { cover, tenure, plan_type },
@@ -247,7 +249,7 @@ export function useFilter() {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   function getFilters(groupCode) {
     let currentGroup = groups.find(group => group.id === parseInt(groupCode));
@@ -278,6 +280,7 @@ export function useFilter() {
 
 export function useMembers() {
   const dispatch = useDispatch();
+  const searchQueries = useUrlQueries();
 
   const reduxGroup =
     localStorage.getItem("groups") &&
@@ -287,7 +290,9 @@ export function useMembers() {
     data: { members },
   } = useFrontendBoot();
 
-  const { data } = useGetEnquiriesQuery();
+  const { data } = useGetEnquiriesQuery(undefined, {
+    skip: !searchQueries.enquiryId,
+  });
 
   const genderOfSelf = data?.data?.input?.gender;
 
@@ -336,6 +341,7 @@ export function useMembers() {
             ...group?.extras,
             ...reduxGroupMatch?.extras,
           },
+          // plan_type: reduxGroupMatch?.extras?.plantype?.code
         };
       });
 
@@ -612,9 +618,10 @@ export function useUpdateEnquiry() {
 
 export function useUpdateMembers() {
   const { journeyType } = useFrontendBoot();
+  const searchQueries = useUrlQueries();
   const {
     data: { data: enquiryData },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
   const [createEnquiry, queryState] = useCreateEnquiry();
 
   const history = useHistory();
@@ -673,6 +680,7 @@ export function useUpdateMembers() {
 
 export function useCart() {
   const dispatch = useDispatch();
+  const searchQueries = useUrlQueries();
 
   const { data } = useGetCartQuery();
 
@@ -680,17 +688,21 @@ export function useCart() {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   const { getCompany } = useCompanies();
 
+  const getCartTotalPremium = () => {
+    return data?.discounted_total_premium;
+  };
+
   function getCartEntry(groupCode, { additionalDiscounts = [] } = {}) {
     const cartEntry = data?.data?.find(
-      cartEntry => cartEntry?.group?.id === parseInt(groupCode),
+      cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
     );
 
     console.log(
-      "The groups received from enquiryApi and our groupCode here",
+      "The groups received from update enquiry and groupCode",
       groups,
       groupCode,
     );
@@ -747,6 +759,15 @@ export function useCart() {
           { health_riders, ...cartEntry },
           { additionalDiscounts },
         );
+
+        console.log(
+          "The discounted_total_premium, netPremium, total_premium, netPremiumWithoutDiscount",
+          discounted_total_premium,
+          cartEntry?.netPremium,
+          cartEntry?.total_premium,
+          cartEntry?.netPremiumWithoutDiscount,
+        );
+
         return updateCartMutation({
           ...cartEntry,
           cartId: id,
@@ -756,6 +777,7 @@ export function useCart() {
           discounted_total_premium,
           feature_options,
           generate_proposal,
+          //!total_premium: cartEntry.netPremium,
         });
       },
       updateCartMutationQuery,
@@ -773,9 +795,11 @@ export function useCart() {
 
   return {
     cartEntries: data?.data,
+    cartData: data,
     getCartEntry,
     updateCartEntry,
     updateCart,
+    getCartTotalPremium,
     getNextGroupProduct,
     discounted_total_premium: data?.discounted_total_premium,
   };
@@ -865,8 +889,11 @@ export function useAdditionalDiscount(groupCode) {
     tenure,
     discounts = [],
     total_premium,
+    premium,
     netPremiumWithoutDiscount,
   } = getCartEntry(groupCode) || {};
+
+  const cartEntry = getCartEntry(groupCode);
 
   const { data, ...queryState } = useGetAdditionalDiscountsQuery({
     productId: product?.id,
@@ -905,12 +932,52 @@ export function useAdditionalDiscount(groupCode) {
   }
 
   function getDiscountAmount(additionalDiscount) {
-    const { percent, applied_on_total_premium } = additionalDiscount;
+    const {
+      percent,
+      applied_on_total_premium,
+      applied_on_riders,
+      fixed_discount_value,
+      applied_on_discounts,
+    } = additionalDiscount;
 
-    if (applied_on_total_premium)
+    if (applied_on_total_premium) {
       return (parseInt(total_premium) * parseInt(percent)) / 100;
+    }
 
-    return (parseInt(netPremiumWithoutDiscount) * parseInt(percent)) / 100;
+    if (applied_on_riders) {
+      const filtered_applied_on_riders = cartEntry.health_riders.filter(
+        singleHealthRider =>
+          applied_on_riders.includes(singleHealthRider?.alias),
+      );
+
+      const filtered_applied_on_riders_amount =
+        filtered_applied_on_riders.length
+          ? filtered_applied_on_riders
+              .map(rider => rider.total_premium)
+              ?.reduce((acc = 0, curr) => (acc += +curr))
+          : 0;
+
+      return (
+        ((+cartEntry?.total_premium + +filtered_applied_on_riders_amount) *
+          parseInt(percent)) /
+        100
+      );
+    }
+
+    if (fixed_discount_value) {
+      return +fixed_discount_value;
+    }
+
+    if (
+      !applied_on_discounts &&
+      !applied_on_riders &&
+      !applied_on_total_premium &&
+      !fixed_discount_value
+    ) {
+      return (parseInt(premium) * parseInt(percent)) / 100;
+    }
+
+    return 0;
   }
 
   function getSelectedAdditionalDiscounts() {
@@ -1058,11 +1125,12 @@ export function useGetQuotes(queryConfig = {}) {
 }
 
 function useInsurersToFetch() {
+  const searchQueries = useUrlQueries();
   const {
     data: {
       data: { groups },
     },
-  } = useGetEnquiriesQuery();
+  } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   const { groupCode } = useParams();
 
@@ -1724,7 +1792,7 @@ export function useRiders({
   const query = useGetRiders(quote, groupCode, {
     queryOptions: {
       additionalUrlQueries,
-      updatedFeatureOptions,
+      feature_options: updatedFeatureOptions,
       selected_riders,
       options_query,
     },
@@ -1911,21 +1979,44 @@ export const useShareFunctionality = (desktopPageId, mobilePageId) => {
 };
 
 export const useRevisedPremiumModal = () => {
-  const { cartEntries } = useCart();
+  const { cartEntries, getCartTotalPremium } = useCart();
 
   const revisedPremiumPopupToggle = useToggle();
+
+  const [revisedPremiumCheckHitByUs, setRevisedPremiumCheckHitByUs] =
+    useState(false);
+
+  const isProductDetailsPage =
+    window.location.pathname.startsWith("/productdetails");
 
   const dispatch = useDispatch();
 
   const prevTotalPremium = useMemo(() => {
-    return getTotalPremium(cartEntries);
+    return getCartTotalPremium();
+  }, []); /* memorizes the first value it gets */
+
+  const previousCartEntries = useMemo(() => {
+    return cartEntries;
   }, []); /* memorizes the first value it gets */
 
   const updatedTotalPremium =
-    getTotalPremium(cartEntries); /* Gets the updated value each time */
+    getCartTotalPremium(); /* Gets the updated value each time */
 
   const getUpdatedCart = (next = () => {}) => {
-    dispatch(api.util.invalidateTags(["Cart"]));
+    dispatch(
+      api.util.invalidateTags(
+        isProductDetailsPage
+          ? [
+              "Cart",
+              "Rider",
+              "AdditionalDiscount",
+              "TenureDiscount",
+              "featureOption",
+            ]
+          : ["Cart"],
+      ),
+    );
+    setRevisedPremiumCheckHitByUs(true);
     next();
   }; /* Performs refetch from the server */
 
@@ -1944,19 +2035,53 @@ export const useRevisedPremiumModal = () => {
     updatedTotalPremium,
   ]); /* CONTROLS DISPLAY OF REVISED PREMIUM POPUP AUTOMATICALLY */
 
+  const getUpdatedCartEntry = groupCode => {
+    const cartEntry = cartEntries.find(
+      cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
+    );
+
+    return cartEntry;
+  };
+
+  const onOpenModal = () => {
+    revisedPremiumPopupToggle.on();
+  };
+
+  const onCloseModal = () => {
+    setRevisedPremiumCheckHitByUs(false);
+    revisedPremiumPopupToggle.off();
+  };
+
+  const getPreviousCartEntryPremium = groupCode => {
+    const cartEntry = previousCartEntries.find(
+      cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
+    );
+
+    return cartEntry?.premium;
+  };
+
+  const getUpdatedCartEntryPremium = groupCode => {
+    const cartEntry = cartEntries.find(
+      cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
+    );
+
+    return cartEntry?.premium;
+  };
+
   return {
     getUpdatedCart,
     revisedPremiumPopupToggle,
     prevTotalPremium,
     updatedTotalPremium,
     updatedCartEntries: cartEntries,
-    on: () => {
-      revisedPremiumPopupToggle.on();
-    },
-    off: () => {
-      revisedPremiumPopupToggle.off();
-    },
-    isOn: revisedPremiumPopupToggle.isOn,
+    on: onOpenModal,
+    off: onCloseModal,
+    isOnProductDetails:
+      revisedPremiumCheckHitByUs && revisedPremiumPopupToggle.isOn,
+    isOnProposal: revisedPremiumPopupToggle.isOn,
+    getUpdatedCartEntry,
+    getPreviousCartEntryPremium,
+    getUpdatedCartEntryPremium,
   };
 };
 
@@ -2008,7 +2133,11 @@ export const useDD = ({ initialValue = {}, required, errorLabel }) => {
 
 export const useUSGILifeStyleDiscount = () => {
   const location = useLocation();
-  const { cartEntries, updateCartEntry } = useCart();
+  const { cartEntries, updateCartEntry, getCartTotalPremium } = useCart();
+
+  const { groupCode } = useParams();
+
+  const { getDiscountAmount } = useAdditionalDiscount(groupCode);
 
   const universalSompoPlanInCart = cartEntries
     ? cartEntries?.find(
@@ -2042,9 +2171,9 @@ export const useUSGILifeStyleDiscount = () => {
 
   const totalPremiumToDisplay = () => {
     return lifeStyleDiscount
-      ? getTotalPremium(cartEntries) -
+      ? getCartTotalPremium() -
           getDiscountAmount(lifeStyleDiscount, universalSompoPlanInCart)
-      : getTotalPremium(cartEntries); //? returns same total-premium if lifeStyle discount is not present
+      : getCartTotalPremium(); //? returns same total-premium if lifeStyle discount is not present
   };
 
   return totalPremiumToDisplay();

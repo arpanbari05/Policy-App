@@ -238,9 +238,9 @@ function QuoteCard({
 
   const { deductibles, sumInsureds } = useQuoteCard({ quotes: currentQuotes });
 
-  const [deductible, setDeductible] = useState(deductibles[0]);
+  const [deductible, setDeductible] = useState(deductibles && deductibles[0]);
 
-  const [sumInsured, setSumInsured] = useState(sumInsureds[0]);
+  const [sumInsured, setSumInsured] = useState(sumInsureds && sumInsureds[0]);
 
   const quote = currentQuotes.find(quote =>
     _.every([
@@ -251,7 +251,7 @@ function QuoteCard({
 
   useEffect(() => {
     if (!quote) {
-      setSumInsured(sumInsureds[0]);
+      setSumInsured(sumInsureds && sumInsureds[0]);
     }
   }, [sumInsureds, quote]);
 

@@ -37,11 +37,12 @@ const printImageById = async id => {
   return imgData.split(",")[1];
 };
 
-const ShareCTA = ({ onClick, loader }) => {
+const ShareCTA = ({ onClick, loader, disabled }) => {
   return (
     <Button
       loader={loader}
       onClick={onClick}
+      disabled={disabled}
       css={`
         border-radius: 5px;
         height: 55px;
@@ -537,13 +538,11 @@ function ShareStep2({
 
   const [emailStatus, setEmailStatus] = useState({ status: 0, message: null });
 
-  const sendRef = useRef();
+  const [disableEmail, setDisableEmail] = useState(false);
+  const [disableSMS, setDisableSMS] = useState(false);
+  const [disableWhatsapp, setDisableWhatsapp] = useState(false);
 
-  // useEffect(() => {
-  //   if(emailStatus.status){
-  //     setIsSending(false);
-  //   }
-  // },[emailStatus])
+  const sendRef = useRef();
 
   const handleNumberCheck = (e, setAction) => {
     e.preventDefault();
@@ -560,47 +559,24 @@ function ShareStep2({
     }
   };
 
-  const handleSendViaEmail = e => {
-    e.preventDefault();
-
-    const validator =
-      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
-
-    if (!email) {
-      return setErrorMsg("Enter email to send.");
-    } else if (!validator.test(email)) {
-      return setErrorMsg("Enter valid email.");
-    } else setErrorMsg("");
-
-    if (!errorMsg && email) {
-      setIsSending(true);
-      // setTimeout(() => {
-      //   handleRotation();
-      // }, 2000);
-      return imageSend(email, stage);
+  const disableButton = mode => {
+    if (mode === "EMAIL") {
+      setDisableEmail(true);
+    } else if (mode === "WHATSAPP") {
+      setDisableWhatsapp(true);
+    } else if (mode === "SMS") {
+      setDisableSMS(true);
     }
-  };
 
-  const handleSendViaSms = e => {
-    e.preventDefault();
-
-    const validator =
-      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
-
-    if (!email) {
-      return setErrorMsg("Enter Number to send.");
-    } else if (!validator.test(email)) {
-      return setErrorMsg("Enter valid number.");
-    } else setErrorMsg("");
-
-    if (!errorMsg && email) {
-      setIsSending(true);
-      return imageSend(email, stage);
-    }
-  };
-
-  const handleRotation = () => {
-    setIsSending(false);
+    setTimeout(() => {
+      if (mode === "EMAIL") {
+        setDisableEmail(false);
+      } else if (mode === "WHATSAPP") {
+        setDisableWhatsapp(false);
+      } else if (mode === "SMS") {
+        setDisableSMS(false);
+      }
+    }, 30000);
   };
 
   const handleShare = async (e, data) => {
@@ -618,7 +594,9 @@ function ShareStep2({
       setIsSending(data.mode[0]);
       const response = await shareViaEmailApi(data, tenantAlias);
       let successMsg;
-      if (data.mode[0] === "EMAIL") successMsg = "Email sent successfully";
+      if (data.mode[0] === "EMAIL") {
+        successMsg = "Email sent successfully";
+      }
       if (data.mode[0] === "WHATSAPP")
         successMsg = "Whatsapp message sent successfully";
       if (data.mode[0] === "SMS") successMsg = "SMS sent successfully";
@@ -630,6 +608,11 @@ function ShareStep2({
             : "Not sent!",
       });
       setIsSending(false);
+      return disableButton(
+        `${response?.statusCode}`.startsWith("2") && successMsg
+          ? data?.mode[0]
+          : undefined,
+      );
     }
   };
 
@@ -660,6 +643,8 @@ function ShareStep2({
           />
         </div>
         <ShareCTA
+          disabled={disableEmail}
+          loader={isSending === "EMAIL"}
           // onClick={e => handleSendViaEmail(e)}
           onClick={e => {
             handleShare(e, {
@@ -698,8 +683,11 @@ function ShareStep2({
             ref={sendRef}
             rel="noreferrer"
             href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
+            onClick={() => {
+              return disableButton("WHATSAPP");
+            }}
           >
-            <ShareCTA />
+            <ShareCTA disabled={disableWhatsapp} />
           </a>
         ) : (
           <ShareCTA />
@@ -723,6 +711,8 @@ function ShareStep2({
         </div>
 
         <ShareCTA
+          disabled={disableSMS}
+          loader={isSending === "SMS"}
           onClick={e => {
             setEmailStatus({ status: 0, message: null });
             Number(smsNo.length) === 10 &&

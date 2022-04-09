@@ -44,16 +44,12 @@ function useUpdateFilters() {
     updateGroup({
       groupCode,
       extras: {},
-      plan_type:
-        groups?.find(grp => grp?.id === groupCode)?.plan_type === "M"
-          ? "F"
-          : groups?.find(grp => grp?.id === groupCode)?.plan_type,
+      plan_type: filters?.plantype?.code,
     });
     localStorage.setItem("groups", JSON.stringify(groups));
   }
 
   function resetFilters() {
-    updateGroup({ groupCode, extras: null });
     groups = reduxGroup.map(group => {
       const reduxGroupMatch = reduxGroup?.find(reGrp => {
         return reGrp?.members?.some(mem => group?.members?.includes(mem));
@@ -67,6 +63,14 @@ function useUpdateFilters() {
       }
     });
     localStorage.setItem("groups", JSON.stringify(groups));
+    updateGroup({
+      groupCode,
+      extras: null,
+      plan_type:
+        groups?.find(grp => grp?.id === +groupCode)?.plan_type === "M"
+          ? "F"
+          : groups?.find(grp => grp?.id === +groupCode)?.plan_type,
+    });
   }
 
   return { updateFilters, resetFilters, query };

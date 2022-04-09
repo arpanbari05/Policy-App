@@ -15,6 +15,7 @@ import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
 import { setShowErrorPopup } from "../ProposalSections/ProposalSections.slice";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
+import useOtherDetails from "./useOtherDetails";
 
 const InsuredDetails = ({
   schema,
@@ -24,7 +25,16 @@ const InsuredDetails = ({
   setActivateLoader,
 }) => {
   const [show, setShow] = useState(0);
+
   const { proposalData } = useSelector(state => state.proposalPage);
+
+  const insuredDetails = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
+  );
+
+  const proposalDetails = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
+  );
 
   const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
     useFrontendBoot();
@@ -70,7 +80,25 @@ const InsuredDetails = ({
     membersDataFromGreetingPage,
     groups,
     setValues,
+    defaultValue,
   );
+
+  const {
+    nomineeRelationAutopopulated,
+    setNomineeRelationAutopopulated,
+    autoPopulateSelfOtherDetails,
+  } = useOtherDetails({
+    name,
+    schema,
+    proposalData,
+    values,
+    membersDataFromGreetingPage,
+    groups,
+    setValues,
+    defaultValue,
+    insuredDetails,
+    proposalDetails,
+  });
 
   const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
     useMedicalQuestions(schema, values, setValues, name, proposalData);
@@ -199,6 +227,22 @@ const InsuredDetails = ({
                   setNoForAll={value => {
                     setNoForAll({ ...noForAll, [item]: value });
                   }}
+                  setNomineeRelationAutopopulated={
+                    setNomineeRelationAutopopulated
+                  }
+                  preFilledDataBase={defaultValue ? defaultValue[item] : {}}
+                  nomineeRelationAutopopulated={nomineeRelationAutopopulated}
+                  autoPopulateSelfOtherDetails={({
+                    updateValues,
+                    selectedNomineeRelation,
+                  }) =>
+                    autoPopulateSelfOtherDetails({
+                      schema: schema[item],
+                      values: values ? values[item] : {},
+                      setValues: updateValues,
+                      selectedNomineeRelation,
+                    })
+                  }
                 />
               </Form>{" "}
             </div>
@@ -218,6 +262,8 @@ const InsuredDetails = ({
           onClick={() => {
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
+
+            // setShow();
             setSubmit("Medical");
             if (name === "Medical Details" && canProceed?.canProceed) {
               // NSTP popup for RB
@@ -237,11 +283,20 @@ const InsuredDetails = ({
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
               triggerSaveForm({ sendedVal: values, formName: name });
-              // setContinueBtnClick(true);
+            } else if (name === "Medical Details" && !canProceed.canProceed) {
+              setShow(
+                Object.keys(schema).indexOf(
+                  Object.keys(canProceed.checkCanProceed).find(
+                    key =>
+                      canProceed.checkCanProceed[key] &&
+                      canProceed.checkCanProceed[key].length,
+                  ),
+                ),
+              );
             }
           }}
         />
-        {revisedPremiumPopupUtilityObject.isOn && (
+        {revisedPremiumPopupUtilityObject.isOnProposal && (
           <RevisedPremiumPopup
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}
@@ -258,12 +313,3 @@ const InsuredDetails = ({
 };
 
 export default InsuredDetails;
-const NoCheckBox = styled.div`
-  text-align: right;
-  font-size: 18px;
-  position: relative;
-  right: 12px;
-  @media (max-width: 768px) {
-    text-align: left;
-  }
-`;
