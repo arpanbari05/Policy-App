@@ -291,7 +291,7 @@ export function Members() {
         }
       `}
     >
-      <div
+      {/* <div
         css={`
           max-width: 80%;
           display: flex;
@@ -302,11 +302,11 @@ export function Members() {
             display: none;
           }
         `}
-      >
-        {members.map(member => (
-          <Member member={member} key={member.code} />
-        ))}
-      </div>
+      > */}
+      {members.map(member => (
+        <Member member={member} key={member.code} />
+      ))}
+      {/* </div> */}
       <Info
         label={groupLocation?.city || city || firstGroupLocation?.city}
         value={groupLocation?.pincode || pincode || firstGroupLocation?.pincode}

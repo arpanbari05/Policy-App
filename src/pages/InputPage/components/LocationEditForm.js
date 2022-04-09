@@ -161,6 +161,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
 
   const clearCity = () => {
     setSelectedCity(null);
+    setInput(prev => ({ ...prev, [currentGroupCode]: "" }));
     reset();
   };
 
