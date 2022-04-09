@@ -1,6 +1,6 @@
 import { schemaIndex } from "../../pages/ProposalPage/schemaIndex";
 import { validationIndex } from "./formValidations";
-export const renderField = (item, value, member) => {
+export const renderField = (item, value, member,callBack = () => {}) => {
   // console.log("lvlhvcsc", item, value);
   // conditional rendering of fields other than medical questions uses item.visibleOn
   if (item.visibleOn) {
@@ -9,6 +9,7 @@ export const renderField = (item, value, member) => {
     checkKeys.forEach(key => {
       if (item.visibleOn[key].includes(value[key])) show = true;
     });
+    callBack(show);
     return show;
   }
 
