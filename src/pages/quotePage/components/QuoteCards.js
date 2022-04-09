@@ -433,13 +433,17 @@ function QuoteCard({
                   <div
                     css={`
                       font-weight: bold;
-                      font-size: 12px;
+                      font-size: 13px;
+                      display: flex;
+                      gap: 7px;
                     `}
                   >
-                    Cover:{" "}
-                    {numberToDigitWord(selectedSumInsured)
-                      .replace("₹", "")
-                      .replace("Lakh", "L")}
+                    <span>Cover:</span>
+                    <span>
+                      {numberToDigitWord(selectedSumInsured)
+                        .replace("₹", "")
+                        .replace("Lakh", "L")}
+                    </span>
                   </div>
                 )}
               </div>
@@ -483,11 +487,15 @@ function QuoteCard({
                   <div
                     css={`
                       font-weight: bold;
-                      font-size: 12px;
+                      font-size: 13px;
+                      display: flex;
+                      gap: 7px;
                     `}
                   >
-                    Cover:{" "}
-                    {numberToDigitWord(selectedSumInsured).replace("₹", "")}
+                    <span>Cover:</span>
+                    <span>
+                      {numberToDigitWord(selectedSumInsured).replace("₹", "")}
+                    </span>
                   </div>
                 )}
               </div>

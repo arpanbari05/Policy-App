@@ -291,9 +291,22 @@ export function Members() {
         }
       `}
     >
+      {/* <div
+        css={`
+          max-width: 80%;
+          display: flex;
+          overflow: auto;
+          scrollbar-width: 2px !important;
+          // margin-top: 9px;
+          &::-webkit-scrollbar {
+            display: none;
+          }
+        `}
+      > */}
       {members.map(member => (
         <Member member={member} key={member.code} />
       ))}
+      {/* </div> */}
       <Info
         label={groupLocation?.city || city || firstGroupLocation?.city}
         value={groupLocation?.pincode || pincode || firstGroupLocation?.pincode}
@@ -333,6 +346,7 @@ function Info({ label, value, onlyDesktop = false, children, ...props }) {
         padding: 0 0.79em;
         font-size: 0.7rem;
         gap: 0.67em;
+        min-width: max-content;
         &:not(:last-child) {
           border-right: 1px solid ${colors.secondary_shade};
         }
