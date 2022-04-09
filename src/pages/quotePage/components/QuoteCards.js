@@ -500,8 +500,7 @@ function QuoteCard({
                 )}
               </div>
             )}
-            {shareType.value === "quotation_list" ||
-            shareType.value === "specific_quotes" ? (
+            {shareType.value === "specific_quotes" ? (
               // true ? (
               <div
                 css={`

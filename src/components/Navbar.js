@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Card from "./Card";
 import "styled-components/macro";
 import { Link, useLocation, useParams, useRouteMatch } from "react-router-dom";
@@ -15,6 +15,7 @@ import { images } from "../assets/logos/logo";
 import EditPincode from "./EditPincode";
 import useUrlQuery, { useUrlQueries } from "../customHooks/useUrlQuery";
 import { isThemeApp } from "../utils/helper";
+import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 
 function LogoLink() {
   const {
@@ -253,6 +254,11 @@ export const None = () => <></>;
 export function Members() {
   const { groupCode } = useParams();
 
+  const scrollRef = useRef(null);
+
+  const [scrollX, setscrollX] = useState(0); // For detecting start scroll postion
+  const [scrolEnd, setscrolEnd] = useState(false); // For detecting end of scrolling
+
   const urlQueryStrings = new URLSearchParams(window.location.search);
   const city = urlQueryStrings.get("city");
   const pincode = urlQueryStrings.get("pincode");
@@ -267,6 +273,33 @@ export function Members() {
     isUninitialized,
   } = useMembers();
 
+  const scrollCheck = () => {
+    setscrollX(scrollRef.current.scrollLeft);
+    if (
+      Math.floor(
+        scrollRef.current.scrollWidth - scrollRef.current.scrollLeft,
+      ) <= scrollRef.current.offsetWidth
+    ) {
+      setscrolEnd(true);
+    } else {
+      setscrolEnd(false);
+    }
+  };
+
+  useEffect(() => {
+    //Check width of the scollings
+    if (
+      scrollRef.current &&
+      scrollRef?.current?.scrollWidth === scrollRef?.current?.offsetWidth
+    ) {
+      setscrolEnd(true);
+    } else {
+      setscrolEnd(false);
+    }
+
+    return () => {};
+  }, [scrollRef?.current?.scrollWidth, scrollRef?.current?.offsetWidth]);
+
   if (!groupCode) return null;
 
   if (isLoading || isUninitialized) return <p>Loading...</p>;
@@ -276,6 +309,22 @@ export function Members() {
 
   // Group location for all members group
   const firstGroupLocation = getFirstGroupLocation();
+
+  const scroll = scrollOffset => {
+    scrollRef.current.scrollLeft += scrollOffset;
+    setscrollX(prev => prev + scrollOffset);
+
+    //For checking if the scroll has ended
+    if (
+      Math.floor(
+        scrollRef.current.scrollWidth - scrollRef.current.scrollLeft,
+      ) <= scrollRef.current.offsetWidth
+    ) {
+      setscrolEnd(true);
+    } else {
+      setscrolEnd(false);
+    }
+  };
 
   if (!members || !groupLocation) return null;
 
@@ -291,22 +340,75 @@ export function Members() {
         }
       `}
     >
-      {/* <div
+      <div
         css={`
-          max-width: 80%;
-          display: flex;
-          overflow: auto;
-          scrollbar-width: 2px !important;
-          // margin-top: 9px;
-          &::-webkit-scrollbar {
-            display: none;
+          position: relative;
+          @media (min-width: 1024px) {
+            max-width: 43vw;
           }
         `}
-      > */}
-      {members.map(member => (
-        <Member member={member} key={member.code} />
-      ))}
-      {/* </div> */}
+      >
+        {scrollX !== 0 && (
+          <button
+            css={`
+              display: none;
+              position: absolute;
+              top: -1px;
+              left: -15px;
+              height: 100%;
+              width: 10px;
+              background: #ffffff;
+              @media (min-width: 768px) {
+                display: inline-block;
+              }
+            `}
+            onClick={() => scroll(-90)}
+          >
+            <BiChevronLeft size={20} color={colors.primary_color} />
+          </button>
+        )}
+        <div
+          css={`
+            position: relative;
+            max-width: 100%;
+            display: flex;
+            overflow: auto;
+            scroll-behaviour: smooth;
+            &::-webkit-scrollbar {
+              display: none;
+            }
+
+            @media (max-width: 768px) {
+              flex-wrap: wrap;
+            }
+          `}
+          ref={scrollRef}
+          onScroll={scrollCheck}
+        >
+          {members.map(member => (
+            <Member member={member} key={member.code} />
+          ))}
+        </div>
+        {!scrolEnd && (
+          <button
+            css={`
+              display: none;
+              position: absolute;
+              top: -1px;
+              right: 0;
+              height: 100%;
+              width: 20px;
+              background: #ffffff;
+              @media (min-width: 768px) {
+                display: inline-block;
+              }
+            `}
+            onClick={() => scroll(90)}
+          >
+            <BiChevronRight size={20} color={colors.primary_color} />
+          </button>
+        )}
+      </div>
       <Info
         label={groupLocation?.city || city || firstGroupLocation?.city}
         value={groupLocation?.pincode || pincode || firstGroupLocation?.pincode}

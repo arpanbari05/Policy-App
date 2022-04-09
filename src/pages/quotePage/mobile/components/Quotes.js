@@ -283,8 +283,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
           font-size: 0.73rem;
         `}
       >
-        {shareType.value === "quotation_list" ||
-        shareType.value === "specific_quotes" ? (
+        {shareType.value === "specific_quotes" ? (
           <label
             className="d-flex align-items-center"
             css={`
@@ -367,7 +366,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
           css={`
             background: ${colors.secondary_color};
             padding: 3px 12px;
-            border-radius: .6rem .6rem 0 0;
+            border-radius: 0.6rem 0.6rem 0 0;
             color: white;
             font-size: 10px;
             text-align: center;
