@@ -51,6 +51,7 @@ export function Quotes({ sortBy }) {
             key={icQuotes.company_alias}
             quotesData={icQuotes.data}
             compare={compareSlot}
+            cashlessHospitalsCount={icQuotes?.cashless_hospitals_count}
           />
         ))}
         {isLoading ? <CardSkeletonLoader /> : null}
@@ -128,7 +129,7 @@ function CompareTray({ quotes = [], onRemove, onClose }) {
   );
 }
 
-function QuoteCards({ quotesData, compare, ...props }) {
+function QuoteCards({ quotesData, cashlessHospitalsCount, compare, ...props }) {
   const morePlansToggle = useToggle(false);
 
   const { boxShadows } = useTheme();
@@ -171,12 +172,19 @@ function QuoteCards({ quotesData, compare, ...props }) {
           border-radius: 0.6em;
         `}
       >
-        <QuoteCard {...getQuoteCardProps(firstQuote)} isFirstQuote />
+        <QuoteCard
+          cashlessHospitalsCount={cashlessHospitalsCount}
+          {...getQuoteCardProps(firstQuote)}
+          isFirstQuote
+        />
         <Collapse in={morePlansToggle.isOn}>
           <div>
             {collapsedQuotes.map(quotes => (
               <div className="mt-3" key={Object.values(quotes)[0].product.id}>
-                <QuoteCard {...getQuoteCardProps(quotes)} />
+                <QuoteCard
+                  cashlessHospitalsCount={cashlessHospitalsCount}
+                  {...getQuoteCardProps(quotes)}
+                />
               </div>
             ))}
           </div>
@@ -213,7 +221,13 @@ function QuoteCards({ quotesData, compare, ...props }) {
   );
 }
 
-function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
+function QuoteCard({
+  quotes,
+  cashlessHospitalsCount,
+  compare = {},
+  isFirstQuote = false,
+  ...props
+}) {
   const [defaultActiveKey, setdefaultActiveKey] = useState(
     "mobile-plan-details",
   );
@@ -483,6 +497,7 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
       <QuoteFeatures
         handleNavigate={() => handleProductDetailsModal("mobile-plan-details")}
         features={quote.features}
+        cashlessHospitalsCount={cashlessHospitalsCount}
       />
       {productDetailsToggle.isOn && (
         <ProductDetailsModal quote={quote} onClose={productDetailsToggle.off} />
@@ -491,7 +506,11 @@ function QuoteCard({ quotes, compare = {}, isFirstQuote = false, ...props }) {
   );
 }
 
-function QuoteFeatures({ features = [], handleNavigate = () => {} }) {
+function QuoteFeatures({
+  features = [],
+  cashlessHospitalsCount,
+  handleNavigate = () => {},
+}) {
   const { colors } = useTheme();
   features = features.filter((feature, index) =>
     featuresDisplayedOnQuoteCard.includes(feature.code),
@@ -511,6 +530,7 @@ function QuoteFeatures({ features = [], handleNavigate = () => {} }) {
         <QuoteFeature
           feature={feature}
           key={feature.name}
+          value={cashlessHospitalsCount}
           index={index}
           onNavigate={handleNavigate}
         />
@@ -522,7 +542,7 @@ function QuoteFeatures({ features = [], handleNavigate = () => {} }) {
   );
 }
 
-function QuoteFeature({ feature, index, onNavigate }) {
+function QuoteFeature({ feature, value, index, onNavigate }) {
   const { colors } = useTheme();
   return (
     <div
@@ -546,7 +566,7 @@ function QuoteFeature({ feature, index, onNavigate }) {
         `}
         // onClick={onNavigate}
       >
-        {feature.value}
+        {value || feature.value}
       </span>
       {QuoteCardDataset(feature.description, index, colors.primary_color)}
     </div>
