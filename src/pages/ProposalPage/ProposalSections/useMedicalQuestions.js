@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
+const useMedicalQuestions = (schema, values, setValues, name,proposalData,defaultValue) => {
   const [noForAll, setNoForAll] = useState({});
   const [yesSelected, setYesSelected] = useState({});
   const [canProceed, setCanProceed] = useState({
     canProceed: false,
     canProceedArray: {},
   });
-
+console.log("sgvksdgv",defaultValue)
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
     const key2 = Object.keys(noForAll || {});
@@ -54,8 +54,10 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
         Object.keys(values[item]).length && Object.keys(values[item]).forEach(el => {
           
           if(values[item][el] && (!values[item][el][`is${el}`] || !values[item][el].isValid)) checkCanProceed[item] = Array.isArray(checkCanProceed[item])?[...checkCanProceed[item],el]:[el];
+
         })
       });
+
       console.log("wfkwbhdkf",{checkCanProceed,hasYes,isNotChecked,values})
       if (key2.length < 1) {
         isNotChecked = true;
@@ -74,14 +76,15 @@ const useMedicalQuestions = (schema, values, setValues, name,proposalData) => {
 
 
 
-
-
-
-
 // -----------------------------------------------------------------------------------------------------------------
 //   -----------------------------  SIDE EFFECTS FOR MEDICAL QUESTIONS---------------------------------------------
 // ----------------------------------------------------------------------------------------------------------------
 
+useEffect(() => {
+if(defaultValue){
+  setValues(defaultValue)
+}
+},[])
 
 
   useEffect(() => {

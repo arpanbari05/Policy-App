@@ -28,7 +28,7 @@ function LogoLink() {
   const { settings, tenant } = frontendBoot.data;
 
   return (
-    <Link to="/">
+    <a href={window.location.origin}>
       <img
         src={images[tenant.alias] || settings.logo}
         alt={`companylogo`}
@@ -46,7 +46,7 @@ function LogoLink() {
           }
         `}
       />
-    </Link>
+    </a>
   );
 }
 

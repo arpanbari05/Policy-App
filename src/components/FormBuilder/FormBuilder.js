@@ -79,23 +79,22 @@ const FormBuilder = ({
     proposalDetails,
     setErrorInField,
     fetchErrors,
+    fetchValid
   );
 
   useEffect(() => {
-    if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
-      autoPopulateSelfOtherDetails({
-        updateValues,
-        selectedNomineeRelation: values.nominee_relation,
-      });
-      console.log("sdvsbnvjfv", values, options.defaultValues);
-    } else if (
-      preFilledDataBase &&
-      Object.keys(preFilledDataBase).length &&
-      preFilledDataBase.nominee_relation &&
-      preFilledDataBase.nominee_relation === values.nominee_relation
-    ) {
-      setValues(preFilledDataBase);
-    } else setValues({ nominee_relation: values.nominee_relation });
+    
+    if (values.nominee_relation && insuredDetails[values.nominee_relation]){
+      autoPopulateSelfOtherDetails({updateValues,selectedNomineeRelation : values.nominee_relation})
+      console.log("sdvsbnvjfv",values,options.defaultValues)
+      triggerValidation();
+    }else if(
+      preFilledDataBase && Object.keys(preFilledDataBase).length && 
+      preFilledDataBase.nominee_relation && 
+    preFilledDataBase.nominee_relation === values.nominee_relation
+    ){
+      updateValues(preFilledDataBase,"SAVE_AS_IT_IS");
+    }else updateValues({ nominee_relation: values.nominee_relation },"SAVE_AS_IT_IS");
   }, [values.nominee_relation]);
 
   console.log("sfghljsf", values);
@@ -126,9 +125,6 @@ const FormBuilder = ({
       setTrigger(false);
     }
   }, [trigger, triggerValidation]);
-  useEffect(() => {
-    fetchValid(isValid);
-  }, [isValid]);
 
   useEffect(() => {
     if (submitTrigger) {
@@ -183,6 +179,7 @@ const FormBuilder = ({
     }
   }, []);
   useEffect(() => {
+    console.log("sgfsjkk",asyncValues)
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
@@ -514,7 +511,13 @@ const FormBuilder = ({
                       }}
                       age={item?.validate?.age}
                       directUpdateValue={(name, value) => {
-                        updateValue(name, value);
+                        updateValue(name, value,false,() => {
+                          setTrigger(name);
+                        });
+
+                      }}
+                      deleteValue={() => {
+                        updateValues(Object.keys(values).filter(key => key !== item.name).reduce((acc, key) => ({...acc,[key]:values[key]}),{}),"SAVE_AS_IT_IS")
                       }}
                       readOnly={item.readOnly || checkReadOnly(item.name)}
                       allValues={proposalData}

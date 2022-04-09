@@ -46,8 +46,11 @@ function useAppropriateOptions({
   }, [values]);
 
   useEffect(() => {
-    if (Object.keys(selectOption).length === 1 && !values[name])
+    if (Object.keys(selectOption).length === 1 && !values[name]){
       directUpdateValue(name, Object.keys(selectOption)[0]);
+
+    }
+      
   }, [selectOption]);
 
   useEffect(() => {
@@ -66,7 +69,7 @@ function useAppropriateOptions({
           allValues["Proposer Details"].marital_status &&
           allValues["Proposer Details"].marital_status === "single"
         ) {
-          const { wife, husband, spouse, ...validOptions } = options;
+          const { wife, husband, spouse,brother_in_law,father_in_law, mother_in_law, ...validOptions } = options;
           setSelectOption(validOptions);
         }
       }

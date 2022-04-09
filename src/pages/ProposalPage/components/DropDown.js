@@ -23,9 +23,10 @@ const DropDown = ({
   readOnly,
   checkValidation,
   excludeOptions,
-  directUpdateValue,
+  deleteValue = () => {},
+  directUpdateValue = () => {},
 }) => {
-  console.log("dfbhjdfkb",value)
+
   const { selectOption } = useAppropriateOptions({
     values,
     allValues,
@@ -36,6 +37,17 @@ const DropDown = ({
     directUpdateValue,
     value,
   });
+
+
+  useEffect(() => {
+    console.log("sfsvbjksf",value,selectOption,values)
+    if(value && name !== "gender" && name !== "title" && name !== "marital_status"){
+      if(selectOption[value] && values && values[name] !== selectOption[value]){
+        directUpdateValue(name,selectOption[value]);
+      }else if(!selectOption[value]) deleteValue()
+
+    }
+  },[value])
 
   const [dataValue, setDataValue] = useState();
 

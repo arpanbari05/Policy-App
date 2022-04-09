@@ -1,16 +1,16 @@
-import React, { useMemo, useRef } from "react";
+import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { RidersSection } from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
 import { CartDetails } from "./components/ReviewCart";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory, useLocation, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import ProductCard from "./components/AddOnProductCard";
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { useEffect } from "react";
 import { useState } from "react";
 import ProductDetailsNavbar from "./components/ProductDetailsNavbar";
-import { mobile, small } from "../../utils/mediaQueries";
+import { mobile } from "../../utils/mediaQueries";
 import {
   MobileHeader,
   MobileHeaderText,
