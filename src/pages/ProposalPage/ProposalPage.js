@@ -411,7 +411,6 @@ const ProposalPage = () => {
       >
         <MobileHeader
           css={`
-            display: flex;
             justify-content: space-between;
             background: ${PrimaryColor};
           `}

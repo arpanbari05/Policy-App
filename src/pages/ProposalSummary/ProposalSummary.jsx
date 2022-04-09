@@ -322,7 +322,6 @@ const ProposalSummary = () => {
         <MobileHeader
           css={`
             background: ${PrimaryColor};
-            display: flex;
             justify-content: space-between;
           `}
         >
