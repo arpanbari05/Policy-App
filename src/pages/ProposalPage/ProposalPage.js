@@ -6,7 +6,7 @@ import { useHistory, useParams, Link } from "react-router-dom";
 import FormGrid from "../../components/Common/FormGrid/FormGrid";
 import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
 import { getCart } from "../Cart/cart.slice";
-import {  FaPen } from "react-icons/fa";
+import { FaPen } from "react-icons/fa";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
 import { InsuredDetails, ProposerDetails } from "./ProposalSections";
@@ -15,18 +15,14 @@ import NSTP from "./ProposalSections/components/NSTP";
 import ProductSummary from "./ProposalSections/components/ProductSummary";
 import { MobileHeader, MobileHeaderText } from "./ProposalPage.style";
 import ErrorPopup from "./ProposalSections/components/ErrorPopup";
-import {
-  
-  getProposalData,
-  
-} from "./ProposalSections/ProposalSections.slice";
+import { getProposalData } from "./ProposalSections/ProposalSections.slice";
 import { setShowErrorPopup } from "./ProposalSections/ProposalSections.slice";
 
 import { getProposalFields } from "./schema.slice";
 
 import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
 import Card from "../../components/Card";
-import {Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
 import {
   useTheme,
@@ -46,7 +42,7 @@ import { mobile } from "../../utils/mediaQueries";
 /* ===============================test================================= */
 const ProposalPage = () => {
   const history = useHistory();
-const [prepairingPtoposal,setPrepairingProposal] = useState(false)
+  const [prepairingPtoposal, setPrepairingProposal] = useState(false);
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -114,12 +110,15 @@ const [prepairingPtoposal,setPrepairingProposal] = useState(false)
   }, [failedBmiData]);
 
   useEffect(() => {
-    setPrepairingProposal(true)
+    setPrepairingProposal(true);
     dispatch(getProposalFields());
     dispatch(getCart());
     setMemberGroups(cartEntries.map(cartItem => cartItem.group.id));
-    dispatch(getProposalData(( ) => {setPrepairingProposal(false)}));
-
+    dispatch(
+      getProposalData(() => {
+        setPrepairingProposal(false);
+      }),
+    );
   }, []);
 
   useEffect(() => {
@@ -135,7 +134,7 @@ const [prepairingPtoposal,setPrepairingProposal] = useState(false)
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-console.log("dbdjfkl",defaultData)
+    console.log("dbdjfkl", defaultData);
     if (activateLoader) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
@@ -145,7 +144,7 @@ console.log("dbdjfkl",defaultData)
         </div>
       );
     }
-    if(prepairingPtoposal){
+    if (prepairingPtoposal) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
           {/* <span className="lds-dual-ring colored--loader"></span> */}
@@ -412,6 +411,8 @@ console.log("dbdjfkl",defaultData)
       >
         <MobileHeader
           css={`
+            display: flex;
+            justify-content: space-between;
             background: ${PrimaryColor};
           `}
         >
@@ -431,6 +432,11 @@ console.log("dbdjfkl",defaultData)
               Proposal Form
             </MobileHeaderText>
           </Link>
+          <ShareQuoteModal
+            mobile
+            insurersFor={cartEntries.map(cart => cart?.product?.company?.alias)}
+            stage="PROPOSAL"
+          />
         </MobileHeader>
 
         <div
@@ -611,7 +617,11 @@ console.log("dbdjfkl",defaultData)
                       }
                     `}
                   >
-                  {console.log("qdbkhaffaf",proposalData,listOfForms[active])}
+                    {console.log(
+                      "qdbkhaffaf",
+                      proposalData,
+                      listOfForms[active],
+                    )}
                     {form(active, proposalData[listOfForms[active]])}
                   </div>
                 </div>

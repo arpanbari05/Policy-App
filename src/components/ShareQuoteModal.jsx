@@ -69,7 +69,7 @@ const ShareCTA = ({ onClick, loader, disabled }) => {
           color: #fff;
           display: none;
           ${mobile} {
-            display: block;
+            display: ${loader ? "none" : "block"};
           }
         `}
       >
@@ -80,13 +80,14 @@ const ShareCTA = ({ onClick, loader, disabled }) => {
 };
 
 const ShareQuoteModal = ({
+  mobile = false,
   showModal,
   imageSend: imageToSend,
   emailStatus,
   stage = "",
   hideBtn,
   label,
-  shareQuotes,
+  shareQuotes = false,
   insurersFor = [],
 }) => {
   const { shareType } = useSelector(({ quotePage }) => quotePage);
@@ -115,6 +116,7 @@ const ShareQuoteModal = ({
       const image = id && (await printImageById(id));
       setImageSend(image);
     };
+    if (["PROPOSAL", "PROPOSAL_SUMMARY", "COMPARE"].includes(stage)) setStep(2);
     getImage();
   }, []);
 
@@ -125,18 +127,19 @@ const ShareQuoteModal = ({
   }, [show]);
 
   useEffect(() => {
-    if (shareType.value === "quotation_list") {
-      handleShow();
-      setStep(2);
-    } else if (shareType.value === "specific_quotes") {
-      setStep(1);
+    if (shareQuotes) {
+      if (shareType.value === "quotation_list") {
+        handleShow();
+        setStep(2);
+      } else if (shareType.value === "specific_quotes") {
+        setStep(1);
+      }
     }
   }, [shareType]);
 
   const handleClose = () => {
     setshow(false);
     setIsSending(false);
-    setStep(1);
   };
 
   const handleShow = () => setshow(true);
@@ -145,6 +148,7 @@ const ShareQuoteModal = ({
     <>
       {!hideBtn && (
         <ShareButton
+          mobile={mobile}
           shareQuotes={shareQuotes}
           onClick={handleShow}
           label={label}

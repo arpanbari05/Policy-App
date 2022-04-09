@@ -207,183 +207,192 @@ const FormBuilder = ({
                       <CustomWrapper>
                         <div className="col-md-12">
                           <Title>{member}</Title>
-                          {item.map(innerItem => {
-                            const Comp = components[innerItem.type];
-                            if (!Comp) {
-                              alert("Type :" + innerItem.type + "Not found");
-                              return <></>;
-                            } else
-                              return (
-                                renderField(innerItem, values, member) && (
-                                  <Wrapper
-                                    key={index + member + innerItem.name}
-                                    width={innerItem.width}
-                                    id={
-                                      innerItem.parent + member + innerItem.name
-                                    }
-                                    medical
-                                  >
-                                    <Comp
-                                      name={innerItem.name}
-                                      checkValidation={innerItem.validate}
-                                      innerMember={member}
-                                      onChange={(e, value) => {
-                                        if (
-                                          innerItem.parent &&
-                                          innerItem.type === "checkboxGroup"
-                                        ) {
-                                          insertValue(
-                                            innerItem.parent,
-                                            member,
-                                            innerItem.name,
-                                            value,
-                                          );
-                                        } else if (
-                                          innerItem.parent &&
-                                          innerItem.type === "checkBox2"
-                                        ) {
-                                          insertValue(
-                                            innerItem.parent,
-                                            member,
-                                            innerItem.name,
-                                            e.target.checked ? "Y" : "N",
-                                          );
-                                        } else if (innerItem.parent) {
-                                          insertValue(
-                                            innerItem.parent,
-                                            member,
-                                            innerItem.name,
-                                            e.target.value,
-                                          );
-                                        } else {
+                          <div
+                            css={`
+                              display: flex;
+                              flex-wrap: wrap;
+                            `}
+                          >
+                            {item.map(innerItem => {
+                              const Comp = components[innerItem.type];
+                              if (!Comp) {
+                                alert("Type :" + innerItem.type + "Not found");
+                                return <></>;
+                              } else
+                                return (
+                                  renderField(innerItem, values, member) && (
+                                    <Wrapper
+                                      key={index + member + innerItem.name}
+                                      width={innerItem.width}
+                                      id={
+                                        innerItem.parent +
+                                        member +
+                                        innerItem.name
+                                      }
+                                      medical
+                                    >
+                                      <Comp
+                                        name={innerItem.name}
+                                        checkValidation={innerItem.validate}
+                                        innerMember={member}
+                                        onChange={(e, value) => {
                                           if (
-                                            !innerItem.type.includes("custom")
+                                            innerItem.parent &&
+                                            innerItem.type === "checkboxGroup"
                                           ) {
-                                            updateValue(
+                                            insertValue(
+                                              innerItem.parent,
+                                              member,
+                                              innerItem.name,
+                                              value,
+                                            );
+                                          } else if (
+                                            innerItem.parent &&
+                                            innerItem.type === "checkBox2"
+                                          ) {
+                                            insertValue(
+                                              innerItem.parent,
+                                              member,
+                                              innerItem.name,
+                                              e.target.checked ? "Y" : "N",
+                                            );
+                                          } else if (innerItem.parent) {
+                                            insertValue(
+                                              innerItem.parent,
+                                              member,
                                               innerItem.name,
                                               e.target.value,
                                             );
-                                          } else
-                                            e.target.value &&
+                                          } else {
+                                            if (
+                                              !innerItem.type.includes("custom")
+                                            ) {
                                               updateValue(
                                                 innerItem.name,
                                                 e.target.value,
                                               );
-                                        }
-                                        if (
-                                          innerItem.fill &&
-                                          (e.target.value.length === 6 ||
-                                            innerItem.type === "select")
-                                        ) {
-                                          dispatch(
-                                            callApi(
-                                              fillBus[innerItem.name].using,
-                                              {
-                                                [innerItem.name]:
+                                            } else
+                                              e.target.value &&
+                                                updateValue(
+                                                  innerItem.name,
                                                   e.target.value,
-                                                [fillBus[innerItem.name]
-                                                  .alsoUse]:
-                                                  values[
-                                                    fillBus[innerItem.name]
-                                                      .alsoUse
-                                                  ],
-                                              },
-                                            ),
-                                            fillBus[innerItem.name],
-                                          );
+                                                );
+                                          }
+                                          if (
+                                            innerItem.fill &&
+                                            (e.target.value.length === 6 ||
+                                              innerItem.type === "select")
+                                          ) {
+                                            dispatch(
+                                              callApi(
+                                                fillBus[innerItem.name].using,
+                                                {
+                                                  [innerItem.name]:
+                                                    e.target.value,
+                                                  [fillBus[innerItem.name]
+                                                    .alsoUse]:
+                                                    values[
+                                                      fillBus[innerItem.name]
+                                                        .alsoUse
+                                                    ],
+                                                },
+                                              ),
+                                              fillBus[innerItem.name],
+                                            );
+                                          }
+                                          if (options.validateOn === "change") {
+                                            setTrigger({
+                                              variableName: innerItem.name,
+                                              parent: innerItem.parent,
+                                              member,
+                                            });
+                                          }
+                                          if (innerItem.allow) {
+                                            checkAllow(
+                                              innerItem.allow,
+                                              e,
+                                              "change",
+                                            );
+                                          }
+                                        }}
+                                        readOnly={innerItem.readOnly}
+                                        onInput={e => {
+                                          if (innerItem.allow) {
+                                            checkAllow(
+                                              innerItem.allow,
+                                              e,
+                                              "input",
+                                            );
+                                          }
+                                        }}
+                                        onFocus={() =>
+                                          setBlockScrollEffect(false)
                                         }
-                                        if (options.validateOn === "change") {
-                                          setTrigger({
-                                            variableName: innerItem.name,
-                                            parent: innerItem.parent,
-                                            member,
-                                          });
-                                        }
-                                        if (innerItem.allow) {
-                                          checkAllow(
-                                            innerItem.allow,
-                                            e,
-                                            "change",
-                                          );
-                                        }
-                                      }}
-                                      readOnly={innerItem.readOnly}
-                                      onInput={e => {
-                                        if (innerItem.allow) {
-                                          checkAllow(
-                                            innerItem.allow,
-                                            e,
-                                            "input",
-                                          );
-                                        }
-                                      }}
-                                      onFocus={() =>
-                                        setBlockScrollEffect(false)
-                                      }
-                                      onBlur={e => {
-                                        if (options.validateOn === "blur") {
-                                          setTrigger(innerItem.name);
-                                        }
-                                        setBlockScrollEffect(true);
-                                      }}
-                                      onKeyDown={e => {
-                                        if (innerItem.allow) {
-                                          checkAllow(
-                                            innerItem.allow,
-                                            e,
-                                            "down",
-                                          );
-                                        }
-                                      }}
-                                      onKeyPress={e => {
-                                        if (innerItem.allow) {
-                                          checkAllow(
-                                            innerItem.allow,
-                                            e,
-                                            "press",
-                                          );
-                                        }
-                                      }}
-                                      options={
-                                        innerItem.additionalOptions &&
-                                        innerItem.additionalOptions
-                                          .customOptions &&
-                                        generateRange(
+                                        onBlur={e => {
+                                          if (options.validateOn === "blur") {
+                                            setTrigger(innerItem.name);
+                                          }
+                                          setBlockScrollEffect(true);
+                                        }}
+                                        onKeyDown={e => {
+                                          if (innerItem.allow) {
+                                            checkAllow(
+                                              innerItem.allow,
+                                              e,
+                                              "down",
+                                            );
+                                          }
+                                        }}
+                                        onKeyPress={e => {
+                                          if (innerItem.allow) {
+                                            checkAllow(
+                                              innerItem.allow,
+                                              e,
+                                              "press",
+                                            );
+                                          }
+                                        }}
+                                        options={
+                                          innerItem.additionalOptions &&
                                           innerItem.additionalOptions
-                                            .customOptions,
-                                          values,
-                                        )
-                                      }
-                                      asyncOptions={
-                                        asyncOptions[innerItem.name]
-                                      }
-                                      allValues={proposalData}
-                                      value={
-                                        values[innerItem.parent]
-                                          ? values[innerItem.parent][member]
-                                            ? values[innerItem.parent][member][
-                                                innerItem.name
-                                              ]
-                                            : ""
-                                          : "" || innerItem.value
-                                      }
-                                      error={
-                                        errors[
-                                          innerItem.parent +
-                                            member +
-                                            innerItem.name
-                                        ]
-                                      }
-                                      submitTrigger={submitTrigger}
-                                      setCustomValid={setCustomValid}
-                                      values={values}
-                                      item={innerItem}
-                                      {...innerItem.additionalOptions}
-                                    />
-                                  </Wrapper>
-                                )
-                              );
-                          })}
+                                            .customOptions &&
+                                          generateRange(
+                                            innerItem.additionalOptions
+                                              .customOptions,
+                                            values,
+                                          )
+                                        }
+                                        asyncOptions={
+                                          asyncOptions[innerItem.name]
+                                        }
+                                        allValues={proposalData}
+                                        value={
+                                          values[innerItem.parent]
+                                            ? values[innerItem.parent][member]
+                                              ? values[innerItem.parent][
+                                                  member
+                                                ][innerItem.name]
+                                              : ""
+                                            : "" || innerItem.value
+                                        }
+                                        error={
+                                          errors[
+                                            innerItem.parent +
+                                              member +
+                                              innerItem.name
+                                          ]
+                                        }
+                                        submitTrigger={submitTrigger}
+                                        setCustomValid={setCustomValid}
+                                        values={values}
+                                        item={innerItem}
+                                        {...innerItem.additionalOptions}
+                                      />
+                                    </Wrapper>
+                                  )
+                                );
+                            })}
+                          </div>
                         </div>
                         {/* {
                           schema[index-1].additionalOptions.showMembersIf &&
