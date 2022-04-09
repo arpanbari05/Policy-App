@@ -1,3 +1,32 @@
+const acceptedEmailExtensions = [
+  ".com",
+  ".org",
+  ".in",
+  ".outlook",
+  ".co.in",
+  ".rediff",
+  ".net",
+  ".co",
+  ".co.jp",
+  ".info",
+  ".local",
+  ".bike",
+  ".jll.com",
+];
+
+const verifyDomain = emailString => {
+  let pass = false;
+  acceptedEmailExtensions.map(ext => {
+    if (
+      ext ===
+      emailString.slice(emailString.lastIndexOf("."), emailString.length)
+    ) {
+      pass = true;
+    }
+  });
+  return pass;
+};
+
 export function isEnquiryOptional(value, setting) {
   return (
     localStorage.getItem("SSO_user") !== null &&
@@ -6,7 +35,11 @@ export function isEnquiryOptional(value, setting) {
 }
 const validateEmail = str => {
   var pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return str.match(pattern);
+  if (str.match(pattern)) {
+    return verifyDomain(str);
+  } else {
+    return false;
+  }
 };
 
 export default function validateInput({
@@ -49,7 +82,7 @@ export default function validateInput({
   }
 
   //  ==================== email validations ==================
-  if (emailInput.value.length > 0 && validateEmail(emailInput.value) === null) {
+  if (emailInput.value.length > 0 && !validateEmail(emailInput.value)) {
     setEmailErrors({ message: "Please enter a valid Email id." });
     isValidate = false;
   }

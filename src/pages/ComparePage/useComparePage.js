@@ -126,7 +126,7 @@ const useComparePage = () => {
     if (shoutGetCompare) {
       let tempfilter;
       fetchFilters.forEach(data => {
-        if (`${data.id}` === groupCode) {
+        if (`${data.id}` === +groupCode) {
           tempfilter = data.extras;
         }
       });

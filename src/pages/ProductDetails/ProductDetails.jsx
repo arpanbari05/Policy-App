@@ -1,16 +1,16 @@
-import React, { useMemo, useRef } from "react";
+import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { RidersSection } from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
 import { CartDetails } from "./components/ReviewCart";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory, useLocation, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import ProductCard from "./components/AddOnProductCard";
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { useEffect } from "react";
 import { useState } from "react";
 import ProductDetailsNavbar from "./components/ProductDetailsNavbar";
-import { mobile, small } from "../../utils/mediaQueries";
+import { mobile } from "../../utils/mediaQueries";
 import {
   MobileHeader,
   MobileHeaderText,
@@ -22,7 +22,6 @@ import {
   useCart,
   useFrontendBoot,
   useTheme,
-  useUrlEnquiry,
   useUSGILifeStyleDiscount,
 } from "../../customHooks";
 import CartMobile from "./components/Mobile/CartMobile/CartMobile";
@@ -34,18 +33,10 @@ import SumInsuredSection from "./components/SumInsuredSection";
 import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 import Benefit from "./components/Benefit";
 import GoBackButton from "../../components/GoBackButton";
-import {
-  api,
-  useGetEnquiriesQuery,
-  useUpdateEnquiryMutation,
-} from "../../api/api";
-import useNotFoundHandler from "../../customHooks/useNotFoundHandler";
+import { useGetEnquiriesQuery, useUpdateEnquiryMutation } from "../../api/api";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
-  const { pathname } = window.location;
-  const filterdPath = pathname.split("/")[1];
-  useNotFoundHandler(filterdPath);
 
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
 

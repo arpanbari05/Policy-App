@@ -38,7 +38,7 @@ const InsuredDetails = ({
 
   const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
     useFrontendBoot();
-
+  // const [checking]
   const { getGroupMembers, groups } = useMembers();
 
   const {
@@ -54,6 +54,7 @@ const InsuredDetails = ({
     triggerSaveForm,
     setErrors,
     errors,
+    equriesData,
   } = useProposalSections({
     setActive,
     name,
@@ -61,16 +62,8 @@ const InsuredDetails = ({
     partialLength: Object.keys(schema).length,
     setShow,
     setActivateLoader,
+    schema,
   });
-
-  useEffect(() => {
-    if (isValid.includes(false)) {
-      setShow(isValid.indexOf(false));
-    }
-    if (isValid.includes(undefined)) {
-      setShow(isValid.indexOf(undefined));
-    }
-  }, [isValid]);
 
   const { getPanelDescContent } = useInsuredDetails(
     name,
@@ -81,6 +74,7 @@ const InsuredDetails = ({
     groups,
     setValues,
     defaultValue,
+    equriesData,
   );
 
   const {
@@ -101,7 +95,14 @@ const InsuredDetails = ({
   });
 
   const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
-    useMedicalQuestions(schema, values, setValues, name, proposalData);
+    useMedicalQuestions(
+      schema,
+      values,
+      setValues,
+      name,
+      proposalData,
+      defaultValue,
+    );
 
   const { colors } = useTheme();
 
@@ -129,7 +130,7 @@ const InsuredDetails = ({
             key={index}
             title={`${item}`}
             show={show === index}
-            onClick={() => setShow(index)}
+            onClick={() => setShow(prev => (prev === index ? false : index))}
           >
             <div>
               {name === "Medical Details" && (
@@ -249,6 +250,7 @@ const InsuredDetails = ({
           </Panel>
         );
       })}
+
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
@@ -262,10 +264,14 @@ const InsuredDetails = ({
           onClick={() => {
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
-
             // setShow();
             setSubmit("Medical");
-            if (name === "Medical Details" && canProceed?.canProceed) {
+            if (
+              name === "Medical Details" &&
+              canProceed?.canProceed &&
+              !isValid.includes(undefined) &&
+              !isValid.includes(false)
+            ) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
                 frontBootData?.settings?.medical_nstp_declaration_message &&

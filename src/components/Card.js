@@ -14,9 +14,11 @@ const Card = ({
   boxShadow,
   styledCss,
   onClick,
+  id,
 }) => {
   return (
     <Container
+      id={id}
       height={height}
       width={width}
       borderRadius={borderRadius}

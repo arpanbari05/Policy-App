@@ -232,7 +232,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
             __html: posContent.question
               ? posContent.question
               : `Tell us where ${
-                  isSelf ? "you" : "your" + membersText.toLowerCase()
+                  isSelf ? " you" : "your " + membersText.toLowerCase()
                 }
             ${isSelf ? "live" : "lives"}?`,
           }}

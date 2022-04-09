@@ -14,13 +14,13 @@ const useFormBuilder = (
   proposalDetails,
   setErrorInField,
   fetchErrors,
+  fetchValid,
 ) => {
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
 
   const [values, setValues] = useState(defaultValues || {});
 
   const [errors, setErrors] = useState({});
-
   const [isValid, setIsValid] = useState();
 
   const updateValue = (name, value, removeOtherValues = false) => {
@@ -28,12 +28,8 @@ const useFormBuilder = (
       setValues({ [name]: value });
       fetchValues({ [name]: value });
     } else {
-      setValues(
-        prev => ({ ...prev, [name]: value }),
-        updatedState => {
-          fetchValues(updatedState);
-        },
-      );
+      setValues(prev => ({ ...prev, [name]: value }));
+      fetchValues({ ...values, [name]: value });
     }
 
     if (value instanceof Object) {
@@ -51,10 +47,7 @@ const useFormBuilder = (
 
   const checkReadOnly = name => {
     let nomineeRelation = values.nominee_relation;
-    let nameWithOutNominee =
-      name.slice(name.indexOf("_") + 1, name.length) === "contact"
-        ? "mobile"
-        : name.slice(name.indexOf("_") + 1, name.length);
+
     let dataTocheck = {};
     if (insuredDetails) {
       if (insuredDetails[nomineeRelation] && nomineeRelation === "self") {
@@ -66,12 +59,29 @@ const useFormBuilder = (
         dataTocheck = insuredDetails[nomineeRelation];
       }
     }
-    return dataTocheck[nameWithOutNominee] ? true : false;
+    let nameWithoutNominee =
+      name.slice(name.indexOf("_") + 1, name.length) === "contact"
+        ? "mobile"
+        : name.slice(name.indexOf("_") + 1, name.length);
+    if (nameWithoutNominee.includes("address"))
+      nameWithoutNominee = Object.keys(dataTocheck).find(key =>
+        key.includes(nameWithoutNominee),
+      );
+    if (name.includes("pincode"))
+      nameWithoutNominee = Object.keys(dataTocheck).find(key =>
+        key.includes("pincode"),
+      );
+    return dataTocheck[nameWithoutNominee] ? true : false;
   };
 
-  const updateValues = (multipleValues = {}) => {
-    setValues({ ...values, ...multipleValues });
-    fetchValues({ ...values, ...multipleValues });
+  const updateValues = (multipleValues = {}, action) => {
+    if (action === "SAVE_AS_IT_IS") {
+      setValues(multipleValues);
+      fetchValues(multipleValues);
+    } else {
+      setValues({ ...values, ...multipleValues });
+      fetchValues({ ...values, ...multipleValues });
+    }
   };
   const insertValue = (parent, member, name, value) => {
     setValues({
@@ -198,6 +208,7 @@ const useFormBuilder = (
           }
         }
         setIsValid(tempIsValid);
+        fetchValid(tempIsValid);
       });
     }
 
@@ -209,7 +220,36 @@ const useFormBuilder = (
     setValues({ ...values, [name]: null });
   };
 
-  useEffect(() => {
+  // to scroll page as per error
+  // useEffect(() => {
+  //   console.log("toggle", errors);
+  //   if (Object.values(errors).length && Object.values(errors).some(val => val))
+  //     setErrorInField(true);
+  //   else setErrorInField(false);
+  //   if (blockScrollEffect) {
+  //     let filteredKey = Object.keys(errors).filter(key => errors[key]);
+  //     // if (canProceed && !canProceed.canProceed)
+  //     //   filteredKey = canProceed.canProceedArray;
+  //     console.log("srgvshfvjkl", errors, filteredKey, yesSelected, canProceed);
+  //     if (filteredKey.length) {
+  //       let scrollPositions = filteredKey.map(key => {
+  //         let element = document.getElementById(key);
+  //         if (element) {
+  //           let y = element.getBoundingClientRect().top - 100 + window.scrollY;
+  //           return y;
+  //         }
+  //       });
+  //       console.log("svbkjsbnv", scrollPositions);
+  //       window.scroll({
+  //         top: Math.min(...scrollPositions),
+  //         behavior: "smooth",
+  //       });
+  //     }
+  //   }
+  // }, [errors]);
+  // , canProceed,blockScrollEffect
+
+  const scrollToErrors = () => {
     if (Object.values(errors).length && Object.values(errors).some(val => val))
       setErrorInField(true);
     else setErrorInField(false);
@@ -231,8 +271,7 @@ const useFormBuilder = (
         });
       }
     }
-  }, [Object.keys(errors).length]);
-
+  };
   return {
     values,
     updateValue,
@@ -248,6 +287,7 @@ const useFormBuilder = (
     checkReadOnly,
     updateValidateObjSchema,
     setBlockScrollEffect,
+    scrollToErrors,
   };
 };
 export default useFormBuilder;

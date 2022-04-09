@@ -69,7 +69,7 @@ const ShareCTA = ({ onClick, loader, disabled }) => {
           color: #fff;
           display: none;
           ${mobile} {
-            display: block;
+            display: ${loader ? "none" : "block"};
           }
         `}
       >
@@ -80,15 +80,18 @@ const ShareCTA = ({ onClick, loader, disabled }) => {
 };
 
 const ShareQuoteModal = ({
+  mobile = false,
   showModal,
   imageSend: imageToSend,
   emailStatus,
   stage = "",
   hideBtn,
   label,
-  shareQuotes,
+  shareQuotes = false,
   insurersFor = [],
 }) => {
+  const { shareType } = useSelector(({ quotePage }) => quotePage);
+
   const [show, setshow] = useState(showModal);
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -113,6 +116,7 @@ const ShareQuoteModal = ({
       const image = id && (await printImageById(id));
       setImageSend(image);
     };
+    if (["PROPOSAL", "PROPOSAL_SUMMARY", "COMPARE"].includes(stage)) setStep(2);
     getImage();
   }, []);
 
@@ -122,9 +126,16 @@ const ShareQuoteModal = ({
     //  setyShowMsgs(false)
   }, [show]);
 
-  // if(emailStatus){
-  //   setIsSending(false);
-  //
+  useEffect(() => {
+    if (shareQuotes) {
+      if (shareType.value === "quotation_list") {
+        handleShow();
+        setStep(2);
+      } else if (shareType.value === "specific_quotes") {
+        setStep(1);
+      }
+    }
+  }, [shareType]);
 
   const handleClose = () => {
     setshow(false);
@@ -137,6 +148,7 @@ const ShareQuoteModal = ({
     <>
       {!hideBtn && (
         <ShareButton
+          mobile={mobile}
           shareQuotes={shareQuotes}
           onClick={handleShow}
           label={label}
@@ -198,16 +210,10 @@ const ShareQuoteModal = ({
                   active={step === 1}
                   color={PrimaryColor}
                 >
-                  {/* <Step active={step === 1} color={PrimaryColor}>
-                    1
-                  </Step> */}
                   <span>1. Select plans</span>
                 </StepWrapper>
 
                 <StepWrapper active={step === 2} color={PrimaryColor}>
-                  {/* <Step active={step === 2} color={PrimaryColor}>
-                    2
-                  </Step> */}
                   <span>2. Share via</span>
                 </StepWrapper>
               </Flex>
@@ -221,6 +227,7 @@ const ShareQuoteModal = ({
             <ShareStep2
               hide={step === 1}
               imageSend={imageSend}
+              setImageSend={setImageSend}
               emailStatus={emailStatus}
               setEmailStatus={setlEmaiStatus}
               stage={stage}
@@ -234,7 +241,10 @@ const ShareQuoteModal = ({
         </Modal>
       )}
       <CanvasQuotes />
-      <Sharequotespopup onClick={handleShow} show={!show} />
+      <Sharequotespopup
+        onClick={handleShow}
+        show={!show && shareType.value !== "quotation_list"}
+      />
     </>
   );
 };
@@ -506,6 +516,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
 
 function ShareStep2({
   imageSend,
+  setImageSend,
   stage,
   setIsSending,
   setErrorMsg,
@@ -517,6 +528,8 @@ function ShareStep2({
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails,
   );
+
+  const { shareType } = useSelector(({ quotePage }) => quotePage);
 
   const {
     colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
@@ -581,7 +594,7 @@ function ShareStep2({
 
   const handleShare = async (e, data) => {
     e.preventDefault();
-    console.log(imageSend);
+
     const validator =
       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
     if (data.mode[0] === "EMAIL" && data.email === "") {
@@ -592,6 +605,18 @@ function ShareStep2({
 
     if (!errorMsg) {
       setIsSending(data.mode[0]);
+      if (shareType.value === "quotation_list") {
+        const input = document.getElementById("share-quotes");
+        const canvas = await html2canvas(input, {
+          scrollX: 0,
+          scrollY: -window.scrollY,
+          allowTaint: true,
+          useCORS: true,
+          scale: 0.9,
+        });
+        const imgData = canvas.toDataURL("image/jpeg");
+        data = { ...data, image_to_send: imgData.split(",")[1] };
+      }
       const response = await shareViaEmailApi(data, tenantAlias);
       let successMsg;
       if (data.mode[0] === "EMAIL") {

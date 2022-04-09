@@ -22,13 +22,14 @@ const SHARE_OPTIONS = [
   },
 ];
 
-const Sharebutton = ({ onClick = () => {}, label, shareQuotes }) => {
+const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
   const { colors } = useTheme();
   const dispatch = useDispatch();
   const { shareType } = useSelector(state => state.quotePage);
   const selectRef = useRef(null);
   const [showMenu, setShowMenu] = useState(false);
   useOutsiteClick(selectRef, () => setShowMenu(false));
+  const primary_color = mobile ? "#fff" : colors?.primary_color;
 
   const selectStyles = {
     control: provided => ({
@@ -39,10 +40,10 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes }) => {
       fontWeight: "bold",
       minHeight: "initial",
       borderRadius: "1000px",
-      border: `2px solid ${colors.primary_color}`,
+      border: `2px solid ${primary_color}`,
       boxShadow: "0 !important",
       "&:hover": {
-        border: `2px solid ${colors.primary_color}`,
+        border: `2px solid ${primary_color}`,
       },
     }),
     indicatorSeparator: () => ({ display: "none" }),
@@ -65,8 +66,8 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes }) => {
   };
 
   return !shareQuotes ? (
-    <ShareButton onClick={onClick} color={colors.primary_color}>
-      <RiShareForwardFill color={colors.primary_color} />
+    <ShareButton onClick={onClick} color={primary_color}>
+      <RiShareForwardFill color={primary_color} />
       <span style={{ marginLeft: 5 }}>{label ? label : "Share"}</span>
     </ShareButton>
   ) : (
@@ -74,9 +75,9 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes }) => {
       <ShareButton
         ref={selectRef}
         onClick={() => setShowMenu(true)}
-        color={colors.primary_color}
+        color={primary_color}
       >
-        <RiShareForwardFill color={colors.primary_color} />
+        <RiShareForwardFill color={primary_color} />
         <span style={{ marginLeft: 5 }}>{"Share quotes"}</span>
       </ShareButton>
       <Select
@@ -103,6 +104,11 @@ const ShareButton = styled.button`
   color: ${props => props.color};
   padding: 0.7em;
   font-size: 0.79rem;
-  margin: 0 15px;
+  // margin: 0 15px;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    background: transparent;
+    height: 30px;
+  }
 `;

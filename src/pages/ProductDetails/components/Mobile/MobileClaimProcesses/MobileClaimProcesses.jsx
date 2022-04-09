@@ -314,7 +314,7 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                   flexDirection: "column",
                 }}
               >
-                {claimform.claim_url ? (
+                {claimform?.claim_url ? (
                   <div style={{ display: "flex", marginBottom: "20px" }}>
                     <div>
                       <div

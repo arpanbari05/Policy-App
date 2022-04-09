@@ -118,7 +118,9 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
       return <></>;
 
     if (data?.type === "select")
-      return (
+    return Boolean(data.name === "town" || data.name === "area"
+    ? values[data.name + "__value"]
+    : getValueFromCode(values[data.name], data))?(
         <Col
           md={4}
           sm={4}
@@ -134,7 +136,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
               : getValueFromCode(values[data.name], data)}
           </p>
         </Col>
-      );
+      ):(<></>)
 
     return (data.type === "text" || data.type === "checkbox") &&
       values[data?.name] ? (
@@ -302,7 +304,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
       );
     }
     if (data.type === "select")
-      return (
+    return Boolean(getValueFromCode(values?.[item]?.[data.name], data))?(
         <Col
           md={4}
           sm={4}
@@ -317,7 +319,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
             {getValueFromCode(values?.[item]?.[data.name], data)}
           </p>
         </Col>
-      );
+      ):(<></>)
     return data.type === "text" || data.type === "checkbox" ? (
       <>
         {values?.[item]?.[data.name] && (
