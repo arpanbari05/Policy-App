@@ -322,6 +322,7 @@ const ProposalSummary = () => {
         <MobileHeader
           css={`
             background: ${PrimaryColor};
+            justify-content: space-between;
           `}
         >
           <Link to={getUrlWithEnquirySearch("/proposal")}>
@@ -333,6 +334,12 @@ const ProposalSummary = () => {
               Review
             </MobileHeaderText>
           </Link>
+
+          <ShareQuoteModal
+            mobile
+            insurersFor={cart.map(cart => cart?.product?.company?.alias)}
+            stage="PROPOSAL_SUMMARY"
+          />
         </MobileHeader>
 
         <div className="container-fluid mt-20 ">
