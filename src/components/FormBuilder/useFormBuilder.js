@@ -232,8 +232,35 @@ const useFormBuilder = (
   };
 
   // to scroll page as per error
-  useEffect(() => {
-    console.log("dhbjhklb", errors);
+  // useEffect(() => {
+  //   console.log("dhbjhklb", errors);
+  //   if (Object.values(errors).length && Object.values(errors).some(val => val))
+  //     setErrorInField(true);
+  //   else setErrorInField(false);
+  //   if (blockScrollEffect) {
+  //     let filteredKey = Object.keys(errors).filter(key => errors[key]);
+  //     // if (canProceed && !canProceed.canProceed)
+  //     //   filteredKey = canProceed.canProceedArray;
+  //     console.log("srgvshfvjkl", errors, filteredKey, yesSelected, canProceed);
+  //     if (filteredKey.length) {
+  //       let scrollPositions = filteredKey.map(key => {
+  //         let element = document.getElementById(key);
+  //         if (element) {
+  //           let y = element.getBoundingClientRect().top - 100 + window.scrollY;
+  //           return y;
+  //         }
+  //       });
+  //       console.log("svbkjsbnv", scrollPositions);
+  //       window.scroll({
+  //         top: Math.min(...scrollPositions),
+  //         behavior: "smooth",
+  //       });
+  //     }
+  //   }
+  // }, [errors]);
+  // , canProceed,blockScrollEffect
+
+  const scrollToErrors = () => {
     if (Object.values(errors).length && Object.values(errors).some(val => val))
       setErrorInField(true);
     else setErrorInField(false);
@@ -257,8 +284,7 @@ const useFormBuilder = (
         });
       }
     }
-  }, [errors]);
-  // , canProceed,blockScrollEffect
+  };
   return {
     values,
     updateValue,
@@ -274,6 +300,7 @@ const useFormBuilder = (
     checkReadOnly,
     updateValidateObjSchema,
     setBlockScrollEffect,
+    scrollToErrors,
   };
 };
 export default useFormBuilder;

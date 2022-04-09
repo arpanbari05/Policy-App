@@ -152,7 +152,7 @@ export function useQuote() {
       tenure: quote.tenure,
       product_id: quote.product.id,
       premium: quote.premium,
-      group_id: groupCode,
+      group_id: +groupCode,
       service_tax: quote.tax_amount,
       deductible: quote.deductible,
       [journeyType === "health" ? "riders" : "top_up_riders"]:
@@ -721,7 +721,7 @@ export function useCart() {
         Object.assign(cartDraft, {
           ...cartDraft,
           data: cartDraft?.data?.map(cartEntry =>
-            cartEntry?.group?.id === groupCode
+            cartEntry?.group?.id === +groupCode
               ? {
                   ...cartEntry,
                   ...updatedCartEntry,
@@ -962,7 +962,7 @@ export function useUrlEnquiry() {
     const currentGroup =
       localStorage.getItem("groups") &&
       JSON.parse(localStorage.getItem("groups")).find(
-        group => group.id === groupCode,
+        group => group.id === +groupCode,
       );
     const locationQuery =
       currentGroup?.pincode && currentGroup?.city
@@ -998,7 +998,7 @@ export function useGetQuotes(queryConfig = {}) {
       insurers: insurersToFetch,
       deductible: getSelectedFilter("deductible")?.code,
       sum_insured_range: getSelectedFilter("cover")?.code,
-      group: groupCode,
+      group: +groupCode,
       base_plan_type: getSelectedFilter("baseplantype")?.code,
       tenure: getSelectedFilter("tenure")?.code,
       plan_type: getSelectedFilter("plantype")?.code,

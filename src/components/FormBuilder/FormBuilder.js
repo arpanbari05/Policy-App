@@ -42,7 +42,7 @@ const FormBuilder = ({
   setNomineeRelationAutopopulated,
   nomineeRelationAutopopulated,
   autoPopulateSelfOtherDetails,
-  preFilledDataBase
+  preFilledDataBase,
 }) => {
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -65,6 +65,7 @@ const FormBuilder = ({
     checkReadOnly,
     updateValidateObjSchema,
     setBlockScrollEffect,
+    scrollToErrors,
   } = useFormBuilder(
     schema,
     fetchValues,
@@ -80,19 +81,21 @@ const FormBuilder = ({
     fetchErrors,
   );
 
-  
   useEffect(() => {
-    
-    if (values.nominee_relation && insuredDetails[values.nominee_relation]){
-      autoPopulateSelfOtherDetails({updateValues,selectedNomineeRelation : values.nominee_relation})
-      console.log("sdvsbnvjfv",values,options.defaultValues)
-    }else if(
-      preFilledDataBase && Object.keys(preFilledDataBase).length && 
-      preFilledDataBase.nominee_relation && 
-    preFilledDataBase.nominee_relation === values.nominee_relation
-    ){
+    if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
+      autoPopulateSelfOtherDetails({
+        updateValues,
+        selectedNomineeRelation: values.nominee_relation,
+      });
+      console.log("sdvsbnvjfv", values, options.defaultValues);
+    } else if (
+      preFilledDataBase &&
+      Object.keys(preFilledDataBase).length &&
+      preFilledDataBase.nominee_relation &&
+      preFilledDataBase.nominee_relation === values.nominee_relation
+    ) {
       setValues(preFilledDataBase);
-    }else setValues({ nominee_relation: values.nominee_relation });
+    } else setValues({ nominee_relation: values.nominee_relation });
   }, [values.nominee_relation]);
 
   console.log("sfghljsf", values);
@@ -117,8 +120,6 @@ const FormBuilder = ({
     "grand_mother",
   ];
 
- 
-
   useEffect(() => {
     if (trigger) {
       triggerValidation(trigger);
@@ -132,6 +133,8 @@ const FormBuilder = ({
   useEffect(() => {
     if (submitTrigger) {
       triggerValidation();
+      // scrolltoTop if errors
+      scrollToErrors();
       setSubmit("SUBMIT");
     }
   }, [submitTrigger]);
@@ -476,8 +479,6 @@ const FormBuilder = ({
                               setNomineeRelationAutopopulated(false);
                             } else updateValue(item.name, e.target.value);
                           } else {
-                            // if()
-
                             updateValue(item.name, e);
                           }
                         }
