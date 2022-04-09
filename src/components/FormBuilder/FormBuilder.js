@@ -79,22 +79,29 @@ const FormBuilder = ({
     proposalDetails,
     setErrorInField,
     fetchErrors,
-    fetchValid
+    fetchValid,
   );
 
   useEffect(() => {
-    
-    if (values.nominee_relation && insuredDetails[values.nominee_relation]){
-      autoPopulateSelfOtherDetails({updateValues,selectedNomineeRelation : values.nominee_relation})
-      console.log("sdvsbnvjfv",values,options.defaultValues)
+    if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
+      autoPopulateSelfOtherDetails({
+        updateValues,
+        selectedNomineeRelation: values.nominee_relation,
+      });
+      console.log("sdvsbnvjfv", values, options.defaultValues);
       triggerValidation();
-    }else if(
-      preFilledDataBase && Object.keys(preFilledDataBase).length && 
-      preFilledDataBase.nominee_relation && 
-    preFilledDataBase.nominee_relation === values.nominee_relation
-    ){
-      updateValues(preFilledDataBase,"SAVE_AS_IT_IS");
-    }else updateValues({ nominee_relation: values.nominee_relation },"SAVE_AS_IT_IS");
+    } else if (
+      preFilledDataBase &&
+      Object.keys(preFilledDataBase).length &&
+      preFilledDataBase.nominee_relation &&
+      preFilledDataBase.nominee_relation === values.nominee_relation
+    ) {
+      updateValues(preFilledDataBase, "SAVE_AS_IT_IS");
+    } else
+      updateValues(
+        { nominee_relation: values.nominee_relation },
+        "SAVE_AS_IT_IS",
+      );
   }, [values.nominee_relation]);
 
   console.log("sfghljsf", values);
@@ -179,7 +186,7 @@ const FormBuilder = ({
     }
   }, []);
   useEffect(() => {
-    console.log("sgfsjkk",asyncValues)
+    console.log("sgfsjkk", asyncValues);
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
@@ -382,17 +389,6 @@ const FormBuilder = ({
                               );
                           })}
                         </div>
-                        {/* {
-                          schema[index-1].additionalOptions.showMembersIf &&
-                          schema[index-1].additionalOptions.showMembersIf.split("||").some(key => values[key][`is${key}`]) &&
-                          values[schema[index-1].name].members[member] &&
-                          !values[schema[index-1].name][member] ||
-                          (!Object.keys(values[schema[index-1].name][member]).length ||
-                          !Object.keys(values[schema[index-1].name][member]).some(key => values[schema[index-1].name][member][key] === "Y")) 
-                        ?(<p className="formbuilder__error">Select atleast one!</p>):(<></>)
-                        } */}
-
-                        {/* .some(key => Object.keys(values[schema[index-1].name][key]).some(key2 => values[schema[index-1].name][key][key2] === "Y")) */}
                       </CustomWrapper>
                     );
                 })}
@@ -436,7 +432,23 @@ const FormBuilder = ({
             }
             return (
               <>
-                {renderField(item, values) && (
+                {renderField(
+                  item,
+                  values,
+                  undefined,
+                  show =>
+                    !show &&
+                    Boolean(values[item.name]) &&
+                    updateValues(
+                      Object.keys(values)
+                        .filter(key => key !== item.name)
+                        .reduce(
+                          (acc, key) => ({ ...acc, [key]: values[key] }),
+                          {},
+                        ),
+                      "SAVE_AS_IT_IS",
+                    ),
+                ) && (
                   <Wrapper
                     key={index + item.name}
                     id={item.name}
@@ -502,13 +514,20 @@ const FormBuilder = ({
                       }}
                       age={item?.validate?.age}
                       directUpdateValue={(name, value) => {
-                        updateValue(name, value,false,() => {
+                        updateValue(name, value, false, () => {
                           setTrigger(name);
                         });
-
                       }}
                       deleteValue={() => {
-                        updateValues(Object.keys(values).filter(key => key !== item.name).reduce((acc, key) => ({...acc,[key]:values[key]}),{}),"SAVE_AS_IT_IS")
+                        updateValues(
+                          Object.keys(values)
+                            .filter(key => key !== item.name)
+                            .reduce(
+                              (acc, key) => ({ ...acc, [key]: values[key] }),
+                              {},
+                            ),
+                          "SAVE_AS_IT_IS",
+                        );
                       }}
                       readOnly={item.readOnly || checkReadOnly(item.name)}
                       allValues={proposalData}
