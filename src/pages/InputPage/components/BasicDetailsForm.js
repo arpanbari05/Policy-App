@@ -27,6 +27,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
   const { colors } = useTheme();
   const urlSearchParams = useUrlQueries();
   const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
+
   const history = useHistory();
   const {
     data: { tenant, settings },
