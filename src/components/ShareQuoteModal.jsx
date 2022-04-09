@@ -37,11 +37,12 @@ const printImageById = async id => {
   return imgData.split(",")[1];
 };
 
-const ShareCTA = ({ onClick, loader }) => {
+const ShareCTA = ({ onClick, loader, disabled }) => {
   return (
     <Button
       loader={loader}
       onClick={onClick}
+      disabled={disabled}
       css={`
         border-radius: 5px;
         height: 55px;
@@ -88,6 +89,8 @@ const ShareQuoteModal = ({
   shareQuotes,
   insurersFor = [],
 }) => {
+  const { shareType } = useSelector(({ quotePage }) => quotePage);
+
   const [show, setshow] = useState(showModal);
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -121,13 +124,19 @@ const ShareQuoteModal = ({
     //  setyShowMsgs(false)
   }, [show]);
 
-  // if(emailStatus){
-  //   setIsSending(false);
-  //
+  useEffect(() => {
+    if (shareType.value === "quotation_list") {
+      handleShow();
+      setStep(2);
+    } else if (shareType.value === "specific_quotes") {
+      setStep(1);
+    }
+  }, [shareType]);
 
   const handleClose = () => {
     setshow(false);
     setIsSending(false);
+    setStep(1);
   };
 
   const handleShow = () => setshow(true);
@@ -197,16 +206,10 @@ const ShareQuoteModal = ({
                   active={step === 1}
                   color={PrimaryColor}
                 >
-                  {/* <Step active={step === 1} color={PrimaryColor}>
-                    1
-                  </Step> */}
                   <span>1. Select plans</span>
                 </StepWrapper>
 
                 <StepWrapper active={step === 2} color={PrimaryColor}>
-                  {/* <Step active={step === 2} color={PrimaryColor}>
-                    2
-                  </Step> */}
                   <span>2. Share via</span>
                 </StepWrapper>
               </Flex>
@@ -220,6 +223,7 @@ const ShareQuoteModal = ({
             <ShareStep2
               hide={step === 1}
               imageSend={imageSend}
+              setImageSend={setImageSend}
               emailStatus={emailStatus}
               setEmailStatus={setlEmaiStatus}
               stage={stage}
@@ -233,7 +237,10 @@ const ShareQuoteModal = ({
         </Modal>
       )}
       <CanvasQuotes />
-      <Sharequotespopup onClick={handleShow} show={!show} />
+      <Sharequotespopup
+        onClick={handleShow}
+        show={!show && shareType.value !== "quotation_list"}
+      />
     </>
   );
 };
@@ -505,6 +512,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
 
 function ShareStep2({
   imageSend,
+  setImageSend,
   stage,
   setIsSending,
   setErrorMsg,
@@ -516,6 +524,8 @@ function ShareStep2({
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails,
   );
+
+  const { shareType } = useSelector(({ quotePage }) => quotePage);
 
   const {
     colors: { primary_color: PrimaryColor, primary_shade: PrimaryShade },
@@ -537,13 +547,11 @@ function ShareStep2({
 
   const [emailStatus, setEmailStatus] = useState({ status: 0, message: null });
 
-  const sendRef = useRef();
+  const [disableEmail, setDisableEmail] = useState(false);
+  const [disableSMS, setDisableSMS] = useState(false);
+  const [disableWhatsapp, setDisableWhatsapp] = useState(false);
 
-  // useEffect(() => {
-  //   if(emailStatus.status){
-  //     setIsSending(false);
-  //   }
-  // },[emailStatus])
+  const sendRef = useRef();
 
   const handleNumberCheck = (e, setAction) => {
     e.preventDefault();
@@ -560,52 +568,29 @@ function ShareStep2({
     }
   };
 
-  const handleSendViaEmail = e => {
-    e.preventDefault();
-
-    const validator =
-      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
-
-    if (!email) {
-      return setErrorMsg("Enter email to send.");
-    } else if (!validator.test(email)) {
-      return setErrorMsg("Enter valid email.");
-    } else setErrorMsg("");
-
-    if (!errorMsg && email) {
-      setIsSending(true);
-      // setTimeout(() => {
-      //   handleRotation();
-      // }, 2000);
-      return imageSend(email, stage);
+  const disableButton = mode => {
+    if (mode === "EMAIL") {
+      setDisableEmail(true);
+    } else if (mode === "WHATSAPP") {
+      setDisableWhatsapp(true);
+    } else if (mode === "SMS") {
+      setDisableSMS(true);
     }
-  };
 
-  const handleSendViaSms = e => {
-    e.preventDefault();
-
-    const validator =
-      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
-
-    if (!email) {
-      return setErrorMsg("Enter Number to send.");
-    } else if (!validator.test(email)) {
-      return setErrorMsg("Enter valid number.");
-    } else setErrorMsg("");
-
-    if (!errorMsg && email) {
-      setIsSending(true);
-      return imageSend(email, stage);
-    }
-  };
-
-  const handleRotation = () => {
-    setIsSending(false);
+    setTimeout(() => {
+      if (mode === "EMAIL") {
+        setDisableEmail(false);
+      } else if (mode === "WHATSAPP") {
+        setDisableWhatsapp(false);
+      } else if (mode === "SMS") {
+        setDisableSMS(false);
+      }
+    }, 30000);
   };
 
   const handleShare = async (e, data) => {
     e.preventDefault();
-    console.log(imageSend);
+
     const validator =
       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
     if (data.mode[0] === "EMAIL" && data.email === "") {
@@ -616,9 +601,23 @@ function ShareStep2({
 
     if (!errorMsg) {
       setIsSending(data.mode[0]);
+      if (shareType.value === "quotation_list") {
+        const input = document.getElementById("share-quotes");
+        const canvas = await html2canvas(input, {
+          scrollX: 0,
+          scrollY: -window.scrollY,
+          allowTaint: true,
+          useCORS: true,
+          scale: 0.9,
+        });
+        const imgData = canvas.toDataURL("image/jpeg");
+        data = { ...data, image_to_send: imgData.split(",")[1] };
+      }
       const response = await shareViaEmailApi(data, tenantAlias);
       let successMsg;
-      if (data.mode[0] === "EMAIL") successMsg = "Email sent successfully";
+      if (data.mode[0] === "EMAIL") {
+        successMsg = "Email sent successfully";
+      }
       if (data.mode[0] === "WHATSAPP")
         successMsg = "Whatsapp message sent successfully";
       if (data.mode[0] === "SMS") successMsg = "SMS sent successfully";
@@ -630,6 +629,11 @@ function ShareStep2({
             : "Not sent!",
       });
       setIsSending(false);
+      return disableButton(
+        `${response?.statusCode}`.startsWith("2") && successMsg
+          ? data?.mode[0]
+          : undefined,
+      );
     }
   };
 
@@ -660,6 +664,8 @@ function ShareStep2({
           />
         </div>
         <ShareCTA
+          disabled={disableEmail}
+          loader={isSending === "EMAIL"}
           // onClick={e => handleSendViaEmail(e)}
           onClick={e => {
             handleShare(e, {
@@ -698,8 +704,11 @@ function ShareStep2({
             ref={sendRef}
             rel="noreferrer"
             href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
+            onClick={() => {
+              return disableButton("WHATSAPP");
+            }}
           >
-            <ShareCTA />
+            <ShareCTA disabled={disableWhatsapp} />
           </a>
         ) : (
           <ShareCTA />
@@ -723,6 +732,8 @@ function ShareStep2({
         </div>
 
         <ShareCTA
+          disabled={disableSMS}
+          loader={isSending === "SMS"}
           onClick={e => {
             setEmailStatus({ status: 0, message: null });
             Number(smsNo.length) === 10 &&

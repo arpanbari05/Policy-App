@@ -107,7 +107,7 @@ function useQuotesPage() {
     if (shouldFetchQuotes) {
       let tempfilter;
       fetchFilters.forEach(data => {
-        if (`${data.id}` === groupCode) {
+        if (`${data.id}` === +groupCode) {
           tempfilter = data.extras;
         }
       });

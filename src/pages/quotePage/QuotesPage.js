@@ -184,10 +184,12 @@ function AssistanceCard(props) {
   const { colors } = useTheme();
   const {
     data: {
-      settings: { talk_to_us_info },
+      settings: { talk_to_us_info, talk_to_us_info_pos },
     },
     tenantAlias,
   } = useFrontendBoot();
+
+  const isPosUser = localStorage.getItem("SSO_user");
 
   return (
     <div
@@ -221,9 +223,11 @@ function AssistanceCard(props) {
             font-family: inherit !important;
           }
         `}
-        dangerouslySetInnerHTML={{ __html: talk_to_us_info }}
+        dangerouslySetInnerHTML={{
+          __html: isPosUser ? talk_to_us_info_pos : talk_to_us_info,
+        }}
       ></div>
-      {!talk_to_us_info && (
+      {!talk_to_us_info && !(isPosUser && talk_to_us_info_pos) && (
         <>
           {" "}
           <h1

@@ -42,7 +42,7 @@ const FormBuilder = ({
   setNomineeRelationAutopopulated,
   nomineeRelationAutopopulated,
   autoPopulateSelfOtherDetails,
-  preFilledDataBase
+  preFilledDataBase,
 }) => {
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -65,6 +65,7 @@ const FormBuilder = ({
     checkReadOnly,
     updateValidateObjSchema,
     setBlockScrollEffect,
+    scrollToErrors,
   } = useFormBuilder(
     schema,
     fetchValues,
@@ -81,7 +82,6 @@ const FormBuilder = ({
     fetchValid
   );
 
-  
   useEffect(() => {
     
     if (values.nominee_relation && insuredDetails[values.nominee_relation]){
@@ -119,8 +119,6 @@ const FormBuilder = ({
     "grand_mother",
   ];
 
- 
-
   useEffect(() => {
     if (trigger) {
       triggerValidation(trigger);
@@ -131,6 +129,8 @@ const FormBuilder = ({
   useEffect(() => {
     if (submitTrigger) {
       triggerValidation();
+      // scrolltoTop if errors
+      scrollToErrors();
       setSubmit("SUBMIT");
     }
   }, [submitTrigger]);
@@ -476,8 +476,6 @@ const FormBuilder = ({
                               setNomineeRelationAutopopulated(false);
                             } else updateValue(item.name, e.target.value);
                           } else {
-                            // if()
-
                             updateValue(item.name, e);
                           }
                         }

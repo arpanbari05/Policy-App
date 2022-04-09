@@ -25,7 +25,9 @@ function App() {
   } = useFrontendBoot();
 
   const { data } = useGetEnquiriesQuery(undefined, {
-    skip: !urlSearchQueries.enquiryId,
+    skip:
+      !urlSearchQueries.enquiryId &&
+      !window.location.pathname.includes("members"),
   });
 
   useEffect(() => {

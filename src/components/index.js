@@ -585,6 +585,7 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
   function gotoProductPage() {
     const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
     // const groupCodes = Object.keys(policyTypes).map(key => parseInt(key));
+
     const firstGroupWithQuote = Math.min(...groupCodes);
 
     history.push({
