@@ -14,24 +14,21 @@ const useFormBuilder = (
   proposalDetails,
   setErrorInField,
   fetchErrors,
+  fetchValid,
 ) => {
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
   const [values, setValues] = useState(defaultValues || {});
   const [errors, setErrors] = useState({});
-  console.log("dbdgbgbndgbd", errors, values);
+  console.log("dbdgbgbndgbd", errors, values,defaultValues);
   const [isValid, setIsValid] = useState();
   const updateValue = (name, value, removeOtherValues = false) => {
-    console.log("dhdfjklb 1", name, value);
+    console.log("dhdfjklb 1", { name, value });
     if (removeOtherValues) {
       setValues({ [name]: value });
       fetchValues({ [name]: value });
     } else {
-      setValues(
-        prev => ({ ...prev, [name]: value }),
-        updatedState => {
-          fetchValues(updatedState);
-        },
-      );
+      setValues(prev => ({ ...prev, [name]: value }));
+      fetchValues({ ...values, [name]: value });
     }
 
     if (value instanceof Object) {
@@ -39,6 +36,7 @@ const useFormBuilder = (
         setNoForAll(false);
       }
     }
+
   };
 
   const updateValidateObjSchema = item => {
@@ -49,10 +47,7 @@ const useFormBuilder = (
 
   const checkReadOnly = name => {
     let nomineeRelation = values.nominee_relation;
-    let nameWithOutNominee =
-      name.slice(name.indexOf("_") + 1, name.length) === "contact"
-        ? "mobile"
-        : name.slice(name.indexOf("_") + 1, name.length);
+  
     let dataTocheck = {};
     if (insuredDetails) {
       if (insuredDetails[nomineeRelation] && nomineeRelation === "self") {
@@ -64,13 +59,30 @@ const useFormBuilder = (
         dataTocheck = insuredDetails[nomineeRelation];
       }
     }
-    return dataTocheck[nameWithOutNominee] ? true : false;
+    let nameWithoutNominee =
+    name.slice(name.indexOf("_") + 1, name.length) === "contact"
+      ? "mobile"
+      : name.slice(name.indexOf("_") + 1, name.length);
+    if (nameWithoutNominee.includes("address"))
+    nameWithoutNominee = Object.keys(dataTocheck).find(key =>
+      key.includes(nameWithoutNominee),
+    );
+  if (name.includes("pincode"))
+    nameWithoutNominee = Object.keys(dataTocheck).find(key =>
+      key.includes("pincode"),
+    );
+    return dataTocheck[nameWithoutNominee] ? true : false;
   };
 
-  const updateValues = (multipleValues = {}) => {
+  const updateValues = (multipleValues = {}, action) => {
     console.log("dhdfjklb 2", multipleValues);
-    setValues({ ...values, ...multipleValues });
-    fetchValues({ ...values, ...multipleValues });
+    if (action === "SAVE_AS_IT_IS") {
+      setValues(multipleValues);
+      fetchValues(multipleValues);
+    } else {
+      setValues({ ...values, ...multipleValues });
+      fetchValues({ ...values, ...multipleValues });
+    }
   };
   const insertValue = (parent, member, name, value) => {
     console.log("qdjbjics", parent, member, name, value);
@@ -219,6 +231,7 @@ const useFormBuilder = (
           }
         }
         setIsValid(tempIsValid);
+        fetchValid(tempIsValid);
       });
     }
     console.log("fvjbasdvk", errorsTemp);
@@ -233,7 +246,7 @@ const useFormBuilder = (
 
   // to scroll page as per error
   // useEffect(() => {
-  //   console.log("dhbjhklb", errors);
+  //   console.log("toggle", errors);
   //   if (Object.values(errors).length && Object.values(errors).some(val => val))
   //     setErrorInField(true);
   //   else setErrorInField(false);

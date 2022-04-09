@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams, Link } from "react-router-dom";
-import { renderField } from "../../../components/FormBuilder/formUtils";
+import { renderField, performValidations } from "../../../components/FormBuilder/formUtils";
 
 import {
   saveProposalData,
@@ -22,32 +22,27 @@ const useProposalSections = ({
   setActive,
   partialLength,
   setActivateLoader,
-  setShow,
+  setShow = () => {},
 }) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   console.log("dbdgbgbndgbd 2", errors, values);
   const [errorInField, setErrorInField] = useState(true);
-
+  const schema = useSelector(({ schema }) => schema.currentSchema);
   const history = useHistory();
 
   const queryStrings = useUrlQuery();
 
   const enquiryId = queryStrings.get("enquiryId");
 
-  const [isValid, setValid] = useState(
-    partialLength ? Array(partialLength) : undefined,
-  );
+  const [isValid, setValid] = useState( partialLength ? Array(partialLength) : undefined,);
 
   const { data: equriesData } = useGetEnquiriesQuery();
 
   const firstName = equriesData?.data?.name?.split(" ")[0];
-
   const groups = equriesData.data ? equriesData.data.groups : [];
 
   const [allDataSubmitted, setAllDataSubmitted] = useState(false);
-
-  const schema = useSelector(({ schema }) => schema.currentSchema);
 
   const [canProceedToSummary, setCanProceedToSummary] = useState(false);
 
@@ -82,13 +77,13 @@ const useProposalSections = ({
   console.log("dfbnfdb", havingAnyError(errors), errors);
 
   const everyRequiredFilled = (schema, values = {}) => {
-    console.log("vbksdv", schema, values);
+
     if (Array.isArray(schema))
       return schema
         .filter(
           el => el.validate && el.validate.required && renderField(el, values),
         )
-        .every(el => values[el.name]);
+        .every(el => values[el.name] && !performValidations(el.validate,values,el.name));
     else
       return Object.keys(schema)
         .map(key =>
@@ -104,8 +99,6 @@ const useProposalSections = ({
         .includes(false)
         ? false
         : true;
-
-    return false;
   };
 
   const [additionalErrors, setAdditionalErrors] = useState({});
@@ -121,6 +114,7 @@ const useProposalSections = ({
     insuredDetails,
     callback,
   }) => {
+    
     if (updationFor === "Other Details") {
       let updatedParent = { ...checkFor };
 
@@ -203,7 +197,7 @@ const useProposalSections = ({
   };
 
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
-  
+
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
         setActive(schemaKeys.indexOf(formName));
@@ -212,6 +206,7 @@ const useProposalSections = ({
       }
       if (!everyRequiredFilled(schema[formName], sendedVal)) {
         setActive(schemaKeys.indexOf(formName));
+
         // setShow(havingAnyError(errors).indexOf(false));
         return;
       }
@@ -273,6 +268,7 @@ const useProposalSections = ({
             } else {
               if (
                 responseData?.failed_bmi?.health
+
               ) {
                 dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
                 dispatch(
@@ -369,6 +365,7 @@ const useProposalSections = ({
     additionalErrors,
     setErrors,
     errors,
+    equriesData
   };
 };
 

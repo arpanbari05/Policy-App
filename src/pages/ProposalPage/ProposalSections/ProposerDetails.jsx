@@ -63,6 +63,7 @@ const ProposerDetails = ({
         mobile,
         email,
         dob: proposelSelectedDOBRedux || estimatedProposerDOB,
+        title:gender === "M"?"mr":""
       };
 
       schema.forEach(item => {

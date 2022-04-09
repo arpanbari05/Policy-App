@@ -8,8 +8,10 @@ const useInsuredDetails = (
   membersDataFromGreetingPage,
   groups,
   setValues,
-  defaultValue
+  defaultValue,
+  equriesData
 ) => {
+  console.log("sgsfkvbjkfv",equriesData)
   function formatter(number) {
     if (!isNaN(number)) number = parseInt(number);
     const updatedNumber = number.toLocaleString("en-US", {
@@ -119,11 +121,13 @@ const useInsuredDetails = (
               estimatedMemberDOB = `${currentYear - parseInt(memberAge)}`;
             }
 
+            let title = memberType === "spouse" || memberType === "mother" || memberType === "mother_in_law" ? "mrs":""
             prefilledValues[memberType] = {
               ...(values && values.hasOwnProperty(memberType)
                 ? values[memberType]
                 : {}),
               dob: estimatedMemberDOB,
+              title
             };
           }
           if (
