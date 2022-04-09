@@ -18,6 +18,7 @@ import { InputFormCta } from ".";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { setEditStep, setShowEditMembers } from "../../quotePage/quote.slice";
+import { Button } from "../../../components";
 
 function LocationForm({ edit = false, close = () => {}, posContent }) {
   const { colors } = useTheme();
@@ -373,16 +374,72 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
             : ""}
         `}
       >
-        <InputFormCta
-          disabled={!selectedCity?.pincode}
-          loaderPrimaryColor
-          backLink={!edit && getBackLink()}
-          goBack={edit && goBack}
-          onContinueClick={handleSubmit}
-          loader={updateEnquiryQuery.isLoading}
-          name="location"
-          edit={edit}
-        />
+        <div
+          className="d-flex justify-content-between align-items-center"
+          css={`
+            padding: ${edit ? "0" : "0px 28px"};
+            @media (max-width: 480px) {
+              padding: "0 17px";
+            }
+          `}
+        >
+          <button
+            onClick={goBack}
+            css={`
+              color: #000;
+              height: 58px;
+              width: 172px;
+              background: unset;
+              padding: 10px 11px;
+              color: rgb(37, 56, 88);
+              font-weight: 900;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 20px;
+              font-weight: 600;
+              gap: 3px;
+              cursor: pointer;
+
+              @media (max-width: 480px) {
+                background: rgb(239, 243, 245);
+                color: rgb(70, 86, 113);
+                font-size: 13px;
+                height: 40px;
+                max-width: 120px;
+                width: 100%;
+                padding: 0;
+              }
+            `}
+          >
+            <span>Back</span>
+          </button>
+          <Button
+            loaderPrimaryColor
+            disabled={!selectedCity?.pincode}
+            onClick={handleSubmit}
+            arrow
+            loader={updateEnquiryQuery.isLoading}
+            css={`
+              height: 58px;
+              width: 100%;
+              max-width: 172px;
+              font-size: 20px;
+              font-weight: 400;
+
+              @media (max-width: 480px) {
+                font-size: 13px;
+                height: 40px;
+                width: 100%;
+                max-width: 120px;
+                padding: 5px 11px;
+                font-weight: normal;
+              }
+            `}
+          >
+            Continue
+          </Button>
+        </div>
       </div>
       {/* )} */}
     </div>

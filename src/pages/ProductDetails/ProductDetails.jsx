@@ -72,17 +72,17 @@ const ProductDetails = () => {
     return () => document.removeEventListener("scroll", scrollListener);
   }, []);
 
-  useEffect(() => {
-    if (location.hash) {
-      const scrollToRef = document.querySelector(location.hash);
-      if (scrollToRef) {
-        window.scrollTo({
-          top: scrollToRef.offsetTop + 110,
-          left: 0,
-        });
-      }
-    }
-  }, [location.hash]);
+  // useEffect(() => {
+  //   if (location.hash) {
+  //     const scrollToRef = document.querySelector(location.hash);
+  //     if (scrollToRef) {
+  //       window.scrollTo({
+  //         top: scrollToRef.offsetTop + 110,
+  //         left: 0,
+  //       });
+  //     }
+  //   }
+  // }, [location.hash]);
 
   useEffect(() => {
     window.location.hash = "";
