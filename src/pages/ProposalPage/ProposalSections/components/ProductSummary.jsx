@@ -445,26 +445,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
           </Price>
         </div>
       </Card>
-      {/* <ViewPlanDetailModal
-        show={true}
-        title={planDetails.title}
-        showButton={false}
-        content={content}
-        handleClose={() => {
-          setShow(false);
-          dispatch(
-            setPlanDetails({
-              title: "Your Plan Details",
-              show: false,
-              prevCart: {},
-              isRenewed: false,
-            }),
-          );
-        }}
-        customClass="customClassModalDialog"
-        revised={true}
 
-      /> */}
       <ViewPlanDetailModal
         show={planDetails.show}
         title={planDetails.title}
@@ -854,17 +835,6 @@ function CartSummary({ item, index, groupCode }) {
                 top: -5px;
               `}
             >
-              {/*<p
-            className="p_cover_medical_pop"
-            css={`
-              width: 100%;
-              color: #0a87ff;
-              font-weight: 900;
-              margin-bottom: 5px;
-            `}
-          >
-            Riders:{" "}
-          </p>*/}
               <BackgroundBorderTitle title="Discounts:" />
 
               {!showDiscounts && (
@@ -926,17 +896,6 @@ function CartSummary({ item, index, groupCode }) {
               justify-content: center;
             `}
           >
-            {/*<p
-          className="p_cover_medical_pop"
-          css={`
-            width: 100%;
-            color: #0a87ff;
-            font-weight: 900;
-            margin-bottom: 8px;
-          `}
-        >
-          Add-ons Coverages:
-        </p>*/}
             <BackgroundBorderTitle title="Add-ons Coverages:" />
             {!showAddOns && (
               <AiOutlineDown
@@ -1061,38 +1020,6 @@ function CartSummary({ item, index, groupCode }) {
                 </span>
               </div>
 
-              {/* <div
-          className="col-md-6"
-          css={`
-            display: flex;
-            flex-direction: column;
-          `}
-          css={`
-            padding-left: 10px;
-          `}
-        >
-          <p className="p_cover_medical_pop">Premium: </p>
-          <span
-            css={`
-              padding-left: 10px;
-            `}
-            className={`p_cover_medical_pop_span text_decoration_line_through ${
-              planDetails.isRenewed &&
-              prevCart[index]?.addons[addOnIndex]
-                .total_premium !== addOns.total_premium
-                ? "revised-premium"
-                : ""
-            }`}
-          >
-            ₹{" "}
-            {numToString(
-              prevCart[index]
-                ? prevCart[index].addons[addOnIndex].total_premium
-                : addOns.premium
-            )}{" "}
-            / year
-          </span>
-        </div> */}
               {prevCart[index]?.addons[addOnIndex]?.total_premium !==
                 addOns.total_premium && planDetails.isRenewed ? (
                 <>
