@@ -2,33 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import "./ThankYouPage.scss";
 import Success from "../../assets/images/success.png";
 import { Page } from "../../components/index";
-import { useCart } from "../../customHooks/index";
 import Correct from "../../assets/images/correct.png";
 import Unsuccess from "../../assets/images/unsuccess.png";
-import CurR from "../../assets/images/img_cut_r.png";
-import CutL from "../../assets/images/img_cut.png";
-import { policyPdf } from "./serviceApi";
 import SecureLS from "secure-ls";
-import {
-  fetchPdf,
-  getPaymentStatus,
-} from "../ProposalPage/ProposalSections/ProposalSections.slice";
+import { fetchPdf } from "../ProposalPage/ProposalSections/ProposalSections.slice";
 import CheckMark from "./components/CheckMark";
 import Card from "./components/Card";
 import styled from "styled-components";
 import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import { small } from "../../utils/mediaQueries";
-import ShareQuoteModal from "../../components/ShareQuoteModal";
-import {
-  amount,
-  getPolicyPremium,
-  isSSOJourney,
-} from "../../utils/helper";
+import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
 
 const ThankYouPage = () => {
   const ls = new SecureLS();
@@ -38,8 +26,6 @@ const ThankYouPage = () => {
   const { pathname } = useLocation();
 
   const [payment, SetPayment] = useState(true);
-
-  const [timer, SetTimer] = useState(6);
 
   const {
     colors: {
