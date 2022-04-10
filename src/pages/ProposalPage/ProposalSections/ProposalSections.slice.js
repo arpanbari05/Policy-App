@@ -144,7 +144,7 @@ export const saveProposalData = (proposalData, next, failure) => {
     try {
       console.log("wvnljsdvb", proposalData);
       let prevProposalData = state().proposalPage.proposalData;
-   
+
       dispatch(setIsLoading(true));
       dispatch(pushLoadingStack());
       const response = await saveProposal(proposalData);
@@ -159,12 +159,11 @@ export const saveProposalData = (proposalData, next, failure) => {
       // console.log("dfbjdflb", state());
       //console.log("saveProposalData success", response);
       if (response.statusCode === 200) {
-
-          next({
-            responseData: response.data,
-            prevProposalData,
-            updatedProposalData: state().proposalPage.proposalData,
-          });
+        next({
+          responseData: response.data,
+          prevProposalData,
+          updatedProposalData: state().proposalPage.proposalData,
+        });
         dispatch(popLoadingStack());
       } else if (!response.data) {
         if (typeof response.errors === "object") {
@@ -194,32 +193,24 @@ export const saveProposalData = (proposalData, next, failure) => {
     }
   };
 };
+
 export const fetchPdf = options => {
   return async dispatch => {
     try {
-      console.log("triggered");
       const { data } = await policyPdf();
       dispatch(setPolicyStatus(data.data));
-      // console.log(data.data.every(item => item.status === "policy_issued"));
-      // if (
-      //   !options?.noRepeat &&
-      //   !data.data.every(item => item.status === "policy_issued")
-      // ) {
-      //   setTimeout(() => {
-      //     dispatch(fetchPdf());
-      //   }, 10000);
-      // }
     } catch (err) {
       console.error(err);
     }
   };
 };
+
 export const getProposalData = successCallBack => {
   return async (dispatch, state) => {
     try {
-      const { data ,statusCode,...otherData} = await getProposal();
+      const { data, statusCode, ...otherData } = await getProposal();
 
-      if(statusCode === 200){
+      if (statusCode === 200) {
         const responseData = {};
 
         const { activeIndex } = state().proposalPage;
@@ -228,7 +219,7 @@ export const getProposalData = successCallBack => {
             responseData[item] = data.data[item];
           }
         });
-        console.log("sfvbjksfb",otherData);
+        console.log("sfvbjksfb", otherData);
         dispatch(setProposalData(responseData));
         activeIndex !== 0 &&
           !activeIndex &&
@@ -239,9 +230,9 @@ export const getProposalData = successCallBack => {
                 : Object.keys(responseData).length,
             ),
           );
-          successCallBack();
+        successCallBack();
       }
-     
+
       // callBackFunc();
     } catch (err) {
       console.error(err);

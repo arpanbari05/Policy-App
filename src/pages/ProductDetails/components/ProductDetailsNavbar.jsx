@@ -160,13 +160,16 @@ function ClickToScroll({ label, scrollToElementId }) {
   const { colors } = useTheme();
 
   const dispatch = useDispatch();
+  
   const handleClick = () => {
     window.location.hash = scrollToElementId;
     const scrollToElement = document.getElementById(scrollToElementId);
     scrollToElement.scrollIntoView();
     dispatch(setCurrentSection(scrollToElementId));
   };
+  
   const currentSection = useSelector(state => state.productPage.currentSection);
+  
   const isSelected = currentSection === scrollToElementId;
   return (
     <button

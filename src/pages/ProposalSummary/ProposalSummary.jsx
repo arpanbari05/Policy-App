@@ -89,6 +89,7 @@ const ProposalSummary = () => {
 
   const frontendData = { data: frontendBoot.data };
 
+  // TODO: Here groupCode cant be fetched from the url to make additional discount request.
   const totalPremium = useUSGILifeStyleDiscount(); //? CALCULATED BY US.
 
   const totalPremiumPolicies = getPolicyPremium(policyStatus);
@@ -98,8 +99,6 @@ const ProposalSummary = () => {
     : frontendData?.data?.settings?.summary_banner;
 
   const [allFields, setAllFields] = useState([]);
-
-  const [term, setTerm] = useState({});
 
   const url = useUrlQuery();
 
@@ -183,7 +182,7 @@ const ProposalSummary = () => {
 
   useEffect(() => {
     if (cart[prod_id]?.product?.company?.id) {
-      getTermConditionData(cart[prod_id].product.company.id, setTerm);
+      getTermConditionData(cart[prod_id].product.company.id, () => {});
     }
   }, []);
 
