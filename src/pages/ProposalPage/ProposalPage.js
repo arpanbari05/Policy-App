@@ -41,8 +41,8 @@ import { mobile } from "../../utils/mediaQueries";
 
 /* ===============================test================================= */
 const ProposalPage = () => {
-  const history = useHistory();
   const [prepairingPtoposal, setPrepairingProposal] = useState(false);
+
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -147,7 +147,7 @@ const ProposalPage = () => {
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-    console.log("dbdjfkl", defaultData);
+
     if (activateLoader) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>

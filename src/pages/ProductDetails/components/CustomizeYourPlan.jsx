@@ -9,8 +9,11 @@ import { useParams } from "react-router-dom";
 import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { mobile } from "../../../utils/mediaQueries";
-import { amount, careRidersConditionChecker } from "../../../utils/helper";
-import { useSelector } from "react-redux";
+import {
+  amount,
+  careRidersConditionChecker,
+  featureOptionsValidValue,
+} from "../../../utils/helper";
 
 export function RidersSection({ loaderStop, isProductDetailsPage = false }) {
   let { groupCode } = useParams();
@@ -51,15 +54,17 @@ export function Riders({
   ...props
 }) {
   const {
-    query: { isLoading, isUninitialized, isError, error, isFetching, refetch },
+    query: { isLoading, isUninitialized, isError, isFetching, refetch },
     handleChange,
     riders,
   } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
 
-  const featureOptions = useSelector(({ cart }) => cart?.feature_options);
+  const { feature_options } = useCart().getCartEntry(groupCode);
 
-  const selectedFeatureOption = Object.keys(featureOptions).length
-    ? featureOptions[Object.keys(featureOptions)[0]]
+  const updatedFeatureOptions = featureOptionsValidValue(feature_options);
+
+  const selectedFeatureOption = Object.keys(updatedFeatureOptions).length
+    ? updatedFeatureOptions[Object.keys(updatedFeatureOptions)[0]]
     : "more_cover";
 
   const {

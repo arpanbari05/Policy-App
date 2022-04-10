@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { RiSearchLine } from "react-icons/ri";
 import { useTheme } from "../../../../../customHooks";
@@ -9,7 +8,7 @@ const SearchBarWithCityDD = ({ searchText, setSearchText }) => {
   const { colors } = useTheme();
 
   const searchInputChangeHandler = e => {
-    setSearchText(e);
+    setSearchText(window.innerWidth < 1025 ? e.target.value : e);
   };
 
   return (

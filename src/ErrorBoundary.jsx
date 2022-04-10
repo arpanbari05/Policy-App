@@ -1,6 +1,20 @@
 import { Component } from "react";
 import "styled-components/macro";
 
+const tenantColors = {
+  fyntune: {
+    primary_color: "rgb(10, 135, 255)",
+    secondary_color: "rgb(45 212 75)",
+  },
+  renew_buy: {
+    primary_color: "rgb(255, 102, 0)",
+    secondary_color: "rgb(25, 102, 255)",
+  },
+  pinc: {
+    primary_color: "rgb(225, 5, 109)",
+    secondary_color: "rgb(39, 188, 169)",
+  },
+};
 class ErrorBoundary extends Component {
   constructor() {
     super();
@@ -25,6 +39,12 @@ class ErrorBoundary extends Component {
 export default ErrorBoundary;
 
 const ErrorComponent = ({ errorMessage }) => {
+  const tenantAlias = process.env.REACT_APP_TENANT;
+
+  const primary_color = tenantColors[tenantAlias]?.primary_color;
+
+  const secondary_color = tenantColors[tenantAlias]?.secondary_color;
+
   return (
     <div
       css={`
@@ -43,8 +63,8 @@ const ErrorComponent = ({ errorMessage }) => {
           font-weight: bold;
           background: -webkit-linear-gradient(
             left,
-            rgb(10, 135, 255),
-            rgb(45 212 75)
+            ${primary_color},
+            ${secondary_color}
           );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -58,19 +78,91 @@ const ErrorComponent = ({ errorMessage }) => {
         `}
       >
         See logs for more information.
-        <br /> or <br /> Contact dev team for support.
+        <br /> or <br /> Contact dev team for support. <br /> or
       </p>
-      <code
+
+      <div
         css={`
-          padding: 10px;
-          box-sizing: border-box;
-          background: #fffafa;
-          border: 1px solid #d63384;
-          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          margin-bottom: 16px;
         `}
       >
-        {errorMessage}
-      </code>
+        <button
+          css={`
+            display: inline-block;
+            background: ${primary_color};
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            min-width: 150px;
+            margin: 0px 10px;
+            color: #ffff;
+            & span {
+              color: #ffff;
+            }
+          `}
+          onClick={() => {
+            window.location.reload();
+          }}
+        >
+          Try Reload
+        </button>
+        <button
+          css={`
+            display: inline-block;
+            background: ${secondary_color};
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            min-width: 150px;
+            margin: 0px 10px;
+            color: #ffff;
+            & span {
+              color: #ffff;
+            }
+          `}
+          onClick={() => {
+            window.location.assign("/");
+          }}
+        >
+          Home Page
+        </button>
+        <button
+          css={`
+            display: inline-block;
+            background: ${primary_color};
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            min-width: 150px;
+            margin: 0px 10px;
+            color: #ffff;
+            & span {
+              color: #ffff;
+            }
+          `}
+          onClick={() => {
+            window.open(window.location.href);
+          }}
+        >
+          New Tab
+        </button>
+      </div>
+
+      {tenantAlias === "fyntune" && (
+        <code
+          css={`
+            padding: 10px;
+            box-sizing: border-box;
+            background: #fffafa;
+            border: 1px solid #d63384;
+            border-radius: 10px;
+          `}
+        >
+          {errorMessage}
+        </code>
+      )}
     </div>
   );
 };

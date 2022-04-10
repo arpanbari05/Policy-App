@@ -40,7 +40,7 @@ const ProductDetails = () => {
 
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
 
-  const location = useLocation();
+  //const location = useLocation();
 
   const { colors } = useTheme();
 
@@ -72,21 +72,22 @@ const ProductDetails = () => {
     return () => document.removeEventListener("scroll", scrollListener);
   }, []);
 
-  // useEffect(() => {
-  //   if (location.hash) {
-  //     const scrollToRef = document.querySelector(location.hash);
-  //     if (scrollToRef) {
-  //       window.scrollTo({
-  //         top: scrollToRef.offsetTop + 110,
-  //         left: 0,
-  //       });
-  //     }
-  //   }
-  // }, [location.hash]);
+  // TODO : READ WHAT location.hash DO BEFORE UN-COMMENTING.
+  /*useEffect(() => {
+    if (location.hash) {
+      const scrollToRef = document.querySelector(location.hash);
+      if (scrollToRef) {
+        window.scrollTo({
+          top: scrollToRef.offsetTop + 110,
+          left: 0,
+        });
+      }
+    }
+  }, [location.hash]);
 
   useEffect(() => {
     window.location.hash = "";
-  }, [groupCode]);
+  }, [groupCode]); */
 
   useEffect(() => {
     updateEnquiry(data?.data);

@@ -25,6 +25,7 @@ export const api = createApi({
     "AdditionalDiscount",
     "TenureDiscount",
     "ProposalSummaryUpdate",
+    "featureOption",
   ],
   endpoints: builder => ({
     getCities: builder.mutation({
@@ -421,6 +422,12 @@ export const api = createApi({
       query: ({ product_id, groupCode, tenure }) =>
         `products/${product_id}/renewal-suminsureds?group=${groupCode}&tenure=${tenure}`,
     }),
+    getFeatureOptions: builder.query({
+      query: ({ productId, sumInsured }) => ({
+        url: `product/${productId}/options?sum_insured=${sumInsured}`,
+      }),
+      providesTags: ["featureOption"],
+    }),
   }),
 });
 
@@ -498,6 +505,7 @@ export const {
   useGetTopUpAddOnsQuery,
   useUpdateRenewalQueryMutation,
   useGetRenewalSumInsuredsQuery,
+  useGetFeatureOptionsQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {

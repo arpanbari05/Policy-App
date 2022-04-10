@@ -22,13 +22,18 @@ const ProposerDetails = ({
   setProposerDactive,
   setActivateLoader,
 }) => {
-  console.log("Dbbjhfbfd",defaultValue)
+  const {
+    values,
+    setValues,
+    setValid,
+    submit,
+    setSubmit,
+    triggerSaveForm,
+    revisedPremiumPopupUtilityObject,
+    setErrorInField,
+    setErrors,
+  } = useProposalSections({ setActive, name, setActivateLoader });
 
-
-
-  const [continueBtnClick, setContinueBtnClick] = useState(false);
-  const { values, setValues, setValid,isValid, submit, setSubmit,triggerSaveForm,revisedPremiumPopupUtilityObject,setErrorInField,errorInField,errors,setErrors} =
-    useProposalSections({setActive, name,setActivateLoader});
   const proposelSelectedDOBRedux = useSelector(
     ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob,
   );
@@ -79,7 +84,7 @@ const ProposerDetails = ({
           );
         }
       });
-      console.log("gkjsfgbkf",{ prefilledValues,defaultValue })
+
       setValues({ ...prefilledValues, ...defaultValue });
     }
   }, []);
@@ -121,7 +126,7 @@ const ProposerDetails = ({
             });
           }}
         />
-        {revisedPremiumPopupUtilityObject.isOn && (
+        {revisedPremiumPopupUtilityObject.isOnProposal && (
           <RevisedPremiumPopup
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}
