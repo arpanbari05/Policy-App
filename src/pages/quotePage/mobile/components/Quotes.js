@@ -14,7 +14,7 @@ import {
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 import "styled-components/macro";
 import { Button, PremiumButton } from "../../../../components";
-import { numberToDigitWord } from "../../../../utils/helper";
+import { mergeQuotes, numberToDigitWord } from "../../../../utils/helper";
 import ProductDetailsModal from "../../../../components/ProductDetails/ProductDetailsModal";
 import { FaChevronDown, FaChevronRight, FaChevronUp } from "react-icons/fa";
 import { Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -24,14 +24,37 @@ import { CompareQuoteTrayItem, CompareTrayAdd } from "../../components";
 import _ from "lodash";
 import { useHistory, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setQuotesToShare, removeQuoteFromShare } from "../../quote.slice";
+import {
+  setQuotesToShare,
+  removeQuoteFromShare,
+  replaceShareQuotes,
+} from "../../quote.slice";
+import ShareQuoteModal from "../../../../components/ShareQuoteModal";
 
 export function Quotes({ sortBy }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
 
   const { mergedQuotes } = useQuotes({ quotesData: data, sortBy });
 
+  const { shareType } = useSelector(state => state.quotePage);
+
+  const dispatch = useDispatch();
+
   const compareSlot = useCompareSlot({ maxLength: 2 });
+
+  const { data: unmergedQuotes } = useGetQuotes();
+
+  const allMergedQuotes = unmergedQuotes
+    ?.map(quote => mergeQuotes(quote.data.data))
+    ?.flat();
+
+  useEffect(() => {
+    if (shareType.value === "quotation_list") {
+      dispatch(replaceShareQuotes(allMergedQuotes));
+    } else if (shareType.value === "specific_quotes") {
+      dispatch(replaceShareQuotes([]));
+    }
+  }, [shareType]);
 
   if (isNoQuotes) return <p>No quotes found!</p>;
 
@@ -287,6 +310,7 @@ function QuoteCard({
 
   return (
     <div {...props}>
+      <ShareQuoteModal shareQuotes stage="QUOTES" hideBtn />
       <div
         className={`d-flex justify-content-between w-100 ${
           isFirstQuote ? "position-absolute" : "px-2"

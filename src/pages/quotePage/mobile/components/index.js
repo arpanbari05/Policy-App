@@ -14,6 +14,7 @@ import Talktouspopup from "../../../../components/TalkToUs";
 import ShareQuoteModal from "../../../../components/ShareQuoteModal";
 import { setEditStep, setShowEditMembers } from "../../quote.slice";
 import { useDispatch } from "react-redux";
+import ShareTypeModal from "./ShareType";
 
 export function BottomNavigation({ sortBy = <></>, ...props }) {
   const { boxShadows } = useTheme();
@@ -50,7 +51,8 @@ export function BottomNavigation({ sortBy = <></>, ...props }) {
         <FilterModal />
       </NavItemToggle>
       <NavItemToggle icon={<RiShareLine />} label="Share">
-        <ShareQuoteModal hideBtn={true} showModal />
+        {/* <ShareQuoteModal hideBtn={true} showModal /> */}
+        <ShareTypeModal />
       </NavItemToggle>
       <NavItemToggle icon={<RiChatSmile3Line />} label="Talk to us">
         <Talktouspopup show />

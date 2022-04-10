@@ -33,7 +33,8 @@ const quotePageSlice = createSlice({
     quotesToShare: [],
     quotesToCanvas: [],
     pos_popup: false,
-    shareType: {},
+    shareType: { value: "share", label: "Share quotes" },
+    showSharePopup: true,
     quotesOnCompare: false,
     showEditMembers: false,
     editStep: 1,
@@ -88,6 +89,9 @@ const quotePageSlice = createSlice({
     },
     setShowEditMembers: (state, action) => {
       state.showEditMembers = action.payload;
+    },
+    setShowSharePopup: (state, action) => {
+      state.showSharePopup = action.payload;
     },
     setEditStep: (state, action) => {
       console.log(action.payload);
@@ -316,6 +320,7 @@ export const {
   setShareType,
   setShowEditMembers,
   setEditStep,
+  setShowSharePopup,
   setQuotesToCanvas,
   replaceShareQuotes,
   setPosPopup,

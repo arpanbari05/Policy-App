@@ -14,7 +14,10 @@ import ShareButton from "../components/Common/Button/ShareButton";
 import html2canvas from "html2canvas";
 import { Button } from "../components/index";
 import { figureToWords } from "../utils/helper";
-import { setQuotesToCanvas } from "../pages/quotePage/quote.slice";
+import {
+  setQuotesToCanvas,
+  setShowSharePopup,
+} from "../pages/quotePage/quote.slice";
 import Sharequotespopup from "../pages/quotePage/components/ShareQuotesPopUp";
 import { images } from "../assets/logos/logo";
 import { mobile } from "../utils/mediaQueries";
@@ -140,6 +143,7 @@ const ShareQuoteModal = ({
   const handleClose = () => {
     setshow(false);
     setIsSending(false);
+    dispatch(setShowSharePopup(true));
   };
 
   const handleShow = () => setshow(true);
@@ -203,7 +207,7 @@ const ShareQuoteModal = ({
             ></i>
           </Modal.Header>
           <Modal.Body>
-            {shareQuotes && (
+            {shareQuotes && shareType.value === "specific_quotes" && (
               <Flex color={SecondaryShade} gap={"5rem"}>
                 <StepWrapper
                   onClick={() => setStep(1)}
@@ -241,10 +245,7 @@ const ShareQuoteModal = ({
         </Modal>
       )}
       <CanvasQuotes />
-      <Sharequotespopup
-        onClick={handleShow}
-        show={!show && shareType.value !== "quotation_list"}
-      />
+      <Sharequotespopup onClick={handleShow} />
     </>
   );
 };
@@ -355,7 +356,7 @@ const CanvasQuotes = () => {
   return (
     <Canvas>
       <div id="share-quotes" className="canvas">
-        <ShareQuotesHeader color={colors.primary_color} cols="3fr 1fr 1fr 1fr">
+        <ShareQuotesHeader color={colors.primary_color}>
           <ShareQuotesHeaderItem>Insurer</ShareQuotesHeaderItem>
           <ShareQuotesHeaderItem>Premium</ShareQuotesHeaderItem>
           <ShareQuotesHeaderItem>Cover</ShareQuotesHeaderItem>
@@ -687,7 +688,7 @@ function ShareStep2({
       </ShareOption>
 
       <ShareOption
-        className="d-flex mb-3 align-items-center justify-content-between"
+        className="d-flex mb-3 align-items-center justify-content-between w-100"
         PrimaryColor={PrimaryColor}
       >
         <div className="d-flex align-items-center">
@@ -720,7 +721,7 @@ function ShareStep2({
       </ShareOption>
 
       <ShareOption
-        className="d-flex mb-3 align-items-center justify-content-between"
+        className="d-flex mb-3 align-items-center justify-content-between w-100"
         PrimaryColor={PrimaryColor}
       >
         <div className="d-flex align-items-center">
@@ -829,7 +830,7 @@ const ShareOption = styled.div`
   }
   @media (max-width: 768px) {
     input {
-      max-width: 150px;
+      max-width: 200px;
     }
   }
 
@@ -894,6 +895,11 @@ const ShareQuotesHeader = styled.div`
   & > * {
     text-align: left;
   }
+
+  @media (max-width: 768px) {
+    gap: 10px;
+    grid-template-columns: 2.7fr 1fr 1fr 1fr;
+  }
 `;
 
 const ShareQuotesHeaderItem = styled.div`
@@ -904,6 +910,10 @@ const ShareQuotesHeaderItem = styled.div`
   width: 100%;
   font-weight: bold;
   font-size: 14px;
+
+  @media (max-width: 768px) {
+    font-size: 11px;
+  }
 `;
 
 const ShareQuoteItem = styled.div`
@@ -920,12 +930,20 @@ const ShareQuoteItem = styled.div`
 
   & .plan {
     font-size: 12px;
+
+    @media (max-width: 768px) {
+      font-size: 11px;
+    }
   }
 
   & .cover {
     font-size: 14px;
     color: ${props => props.color};
     font-weight: bold;
+
+    @media (max-width: 768px) {
+      font-size: 11px;
+    }
   }
 
   & .insurer {
@@ -961,6 +979,10 @@ const Premium = styled.div`
   color: ${props => props.color};
   font-weight: bold;
   font-size: 14px;
+
+  @media (max-width: 768px) {
+    font-size: 11px;
+  }
 `;
 
 const Checkbox = styled.div`
