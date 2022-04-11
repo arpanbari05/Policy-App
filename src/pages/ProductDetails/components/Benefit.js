@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import {
   featureOptionsValidValue,
   isRelianceInfinityPlan,
+  getTotalPremiumWithDiscount,
 } from "../../../utils/helper";
 import { useGetFeatureOptionsQuery } from "../../../api/api";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
@@ -21,19 +22,26 @@ const useFeatureOptions = (productId, sumInsured) => {
 
   const { groupCode } = useParams();
 
-  const { updateCart } = useCart();
+  const { updateCart, getCartEntry } = useCart();
 
-  const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
+  const { getTotalDiscountAmount } = useAdditionalDiscount(groupCode);
 
   const [updateCartMutation] = updateCart(groupCode);
 
+  const cartEntry = getCartEntry(groupCode);
+
+  const { netPremiumWithoutDiscount } = cartEntry;
+
   const updateFeatureOptions = ({ feature_options = {} }) => {
-    const additionalDiscounts = getSelectedAdditionalDiscounts();
+    const discounted_total_premium = getTotalPremiumWithDiscount({
+      netPremiumWithoutDiscount,
+      totalDiscountAmount: getTotalDiscountAmount(),
+    });
 
     //? Only runs the query if there is some feature option selected.
     Object.keys(feature_options)?.length &&
       updateCartMutation({
-        additionalDiscounts,
+        discounted_total_premium,
         feature_options: feature_options,
       });
   };
