@@ -25,8 +25,9 @@ const CustomMedicalTable = ({
   showMembersIf,
   disable_Toggle,
   restrictMaleMembers,
+  additionalQuestionsToggle
 }) => {
-  {console.log("cvodhac",label,showMembersIf)}
+  {console.log("cvodhac",additionalQuestionsToggle)}
 
   const defaultToggleValue = value => {
     let x = {};
@@ -92,7 +93,7 @@ const CustomMedicalTable = ({
         values={ values}
         disable_Toggle={disable_Toggle}
         restrictMaleMembers={restrictMaleMembers}
-    
+        // additionalQuestionsToggle={additionalQuestionsToggle}
       />
     </>
   );

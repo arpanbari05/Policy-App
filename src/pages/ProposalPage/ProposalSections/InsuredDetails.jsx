@@ -25,7 +25,7 @@ const InsuredDetails = ({
   setActivateLoader,
 }) => {
   const [show, setShow] = useState(0);
-
+const [medicalContinueClick,setMedicalContinueClick] = useState(false)
   const { proposalData } = useSelector(state => state.proposalPage);
 
   const insuredDetails = useSelector(
@@ -115,6 +115,16 @@ const InsuredDetails = ({
   const fullName = proposalData["Proposer Details"]?.name;
 
   const firstName = fullName?.split(" ")[0];
+
+  useEffect(() => {
+    if( 
+      medicalContinueClick &&
+      !isValid.includes(undefined) &&
+    !isValid.includes(false)){
+      triggerSaveForm({ sendedVal: values, formName: name });
+      setMedicalContinueClick(false);
+    }
+  },[isValid,medicalContinueClick])
 
   return (
     <div>
@@ -260,6 +270,8 @@ const InsuredDetails = ({
             });
           }}
         />
+        {console.log("Svsfods",values)}
+        
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
@@ -268,9 +280,8 @@ const InsuredDetails = ({
             setSubmit("Medical");
             if (
               name === "Medical Details" &&
-              canProceed?.canProceed &&
-              !isValid.includes(undefined) &&
-              !isValid.includes(false)
+              canProceed?.canProceed 
+             
             ) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
@@ -283,8 +294,8 @@ const InsuredDetails = ({
                       ?.medical_nstp_declaration_message,
                   }),
                 );
-
-              triggerSaveForm({ sendedVal: values, formName: name });
+                setMedicalContinueClick(true);
+             
               // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");

@@ -127,7 +127,7 @@ const DateComp = ({
               ? new Date(
                   currentYear - (age[1] + additionalYear),
                   currentMonth,
-                  currentDate - 1,
+                  currentDate - additionalYear,
                 )
               : ""
           }

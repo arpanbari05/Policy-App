@@ -1,3 +1,4 @@
+import { configureScope } from "@sentry/react";
 import { useEffect, useRef, useState } from "react";
 import { performValidations, renderField } from "./formUtils";
 

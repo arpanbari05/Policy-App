@@ -745,15 +745,10 @@ export function useCart() {
 
     return [
       ({
-        additionalDiscounts = [],
+        discounted_total_premium,
         generate_proposal = false,
         feature_options = {},
       }) => {
-        const discounted_total_premium = calculateTotalPremium(
-          { health_riders, ...cartEntry },
-          { additionalDiscounts },
-        );
-
         return updateCartMutation({
           ...cartEntry,
           cartId: id,
@@ -981,6 +976,20 @@ export function useAdditionalDiscount(groupCode) {
     addAdditionalDiscount(additionalDiscount);
   }
 
+  const getTotalDiscountAmount = () => {
+    const selectedAdditionalDiscount = getSelectedAdditionalDiscounts();
+
+    const totalDiscountAmount = selectedAdditionalDiscount?.length
+      ? selectedAdditionalDiscount
+          ?.map(discount => getDiscountAmount(discount))
+          ?.reduce((acc = 0, curr) => {
+            return (acc += +curr);
+          })
+      : 0;
+
+    return totalDiscountAmount;
+  };
+
   function getDiscountAmount(additionalDiscount) {
     const {
       percent,
@@ -1070,6 +1079,7 @@ export function useAdditionalDiscount(groupCode) {
     getSelectedAdditionalDiscounts,
     toggleAdditionalDiscount,
     getDiscountAmount,
+    getTotalDiscountAmount,
     isAdditionalDiscountSelected,
   };
 }

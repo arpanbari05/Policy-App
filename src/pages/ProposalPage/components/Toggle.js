@@ -113,6 +113,8 @@ console.log("bfxfjkl",membersToMap)
     ) {
       isValid = false;
     }
+
+
  if(boolean === "N"){
       onChange({
         [`is${name}`]: boolean,
@@ -172,7 +174,15 @@ console.log("bfxfjkl",membersToMap)
                   type="radio"
                   name={`is${name}`}
                   onChange={e => {
-                    if(message && message.npos_switch_medical_selection_message){
+                    if(restrictMaleMembers && membersToMap.length === 0){
+                      dispatch(
+                        setShowErrorPopup({
+                          show: true,
+                          head: "",
+                          msg: "Male members are not eligible for this question.",
+                        }),
+                      );
+                    }else if(message && message.npos_switch_medical_selection_message){
                       dispatch(
                         setShowErrorPopup({
                           show: true,
@@ -180,6 +190,7 @@ console.log("bfxfjkl",membersToMap)
                           msg: message.npos_switch_medical_selection_message,
                         }),
                       );
+                     
                       setBoolean(e.target.value);
                     }else if (notAllowed) {
                       dispatch(setShowPlanNotAvail(true));

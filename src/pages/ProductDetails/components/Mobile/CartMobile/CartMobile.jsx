@@ -6,6 +6,7 @@ import {
   amount,
   figureToWords,
   premiumWithAddons,
+  getTotalPremiumWithDiscount,
 } from "../../../../../utils/helper";
 import {
   useAdditionalDiscount,
@@ -63,19 +64,11 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const { colors } = useTheme();
 
-  const history = useHistory();
-
   const { getCartEntry } = useCart();
 
   const reviewCartModalNew = useToggle();
 
-  const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
   const url = useUrlQuery();
-
-  const { updateCart } = useCart();
-
-  const [updateCartMutation, query] = updateCart(groupCode);
 
   const { getNextGroupProduct } = useCart();
 
@@ -85,7 +78,7 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const enquiryId = url.get("enquiryId");
 
-  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+  const { getSelectedAdditionalDiscounts, getTotalDiscountAmount } =
     useAdditionalDiscount(groupCode);
 
   const additionalDiscounts = getSelectedAdditionalDiscounts();
@@ -94,7 +87,12 @@ const CartMobile = ({ groupCode, ...props }) => {
     additionalDiscounts,
   });
 
-  const { netPremium, addons } = cartEntry;
+  const { addons, netPremiumWithoutDiscount } = cartEntry;
+
+  const total_premium = getTotalPremiumWithDiscount({
+    netPremiumWithoutDiscount,
+    totalDiscountAmount: getTotalDiscountAmount(),
+  });
 
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
@@ -173,7 +171,7 @@ const CartMobile = ({ groupCode, ...props }) => {
             {isTotalPremiumLoading ? (
               <CircleLoader animation="border" />
             ) : (
-              amount(premiumWithAddons(netPremium, addons))
+              amount(total_premium)
             )}
           </span>
         </section>
@@ -242,10 +240,8 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
 
   const { updateCart, getCartEntry } = useCart();
 
-  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+  const { query: additionalDiscountsQuery, getTotalDiscountAmount } =
     useAdditionalDiscount(groupCode);
-
-  const additionalDiscounts = getSelectedAdditionalDiscounts();
 
   const [updateCartMutation, query] = updateCart(groupCode);
 
@@ -268,7 +264,12 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
     JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
   const handleClick = () => {
-    updateCartMutation({ additionalDiscounts }).then(() => {
+    const discounted_total_premium = getTotalPremiumWithDiscount({
+      netPremiumWithoutDiscount: cartEntry?.netPremiumWithoutDiscount,
+      totalDiscountAmount: getTotalDiscountAmount(),
+    });
+
+    updateCartMutation({ discounted_total_premium }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
@@ -310,7 +311,7 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
 }
 
 const QuickPayAndRenewButtonMobile = ({ groupCode }) => {
-  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+  const { getTotalDiscountAmount, query: additionalDiscountsQuery } =
     useAdditionalDiscount(groupCode);
 
   const { getCartEntry } = useCart();
@@ -321,16 +322,19 @@ const QuickPayAndRenewButtonMobile = ({ groupCode }) => {
 
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
-  const additionalDiscounts = getSelectedAdditionalDiscounts();
-
   const [updateCartMutation, { isLoading }] = updateCart(groupCode);
 
   const handleClick = () => {
-    updateCartMutation({ additionalDiscounts, generate_proposal: true }).then(
-      resObj => {
-        singlePay(resObj?.data?.data?.proposal_id);
-      },
-    );
+    const discounted_total_premium = getTotalPremiumWithDiscount({
+      netPremiumWithoutDiscount: cartEntry?.netPremiumWithoutDiscount,
+      totalDiscountAmount: getTotalDiscountAmount(),
+    });
+    updateCartMutation({
+      discounted_total_premium,
+      generate_proposal: true,
+    }).then(resObj => {
+      singlePay(resObj?.data?.data?.proposal_id);
+    });
   };
 
   return (
@@ -519,15 +523,8 @@ const PlanCard = ({ groupCode, ...props }) => {
     additionalDiscounts,
   });
 
-  const {
-    plantype,
-    sum_insured,
-    deductible,
-    tenure,
-    netPremium,
-    premium,
-    service_tax,
-  } = cartEntry;
+  const { plantype, sum_insured, deductible, tenure, premium, service_tax } =
+    cartEntry;
 
   const displayPolicyTerm = `${
     tenure + " " + (tenure >= 2 ? "Years" : "Year")
@@ -604,8 +601,6 @@ const Discounts = ({ groupCode, ...props }) => {
   const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
 
   if (!selectedAdditionalDiscounts.length) return null;
-
-  console.log("the selectedAdditionalDiscounts", selectedAdditionalDiscounts);
 
   return (
     <>
