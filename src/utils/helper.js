@@ -826,3 +826,10 @@ export const getPolicyPremium = (policyStatus = []) => {
   }
   return 0;
 };
+
+export const getTotalPremiumWithDiscount = ({
+  netPremiumWithoutDiscount,
+  totalDiscountAmount,
+}) => {
+  return +netPremiumWithoutDiscount - +totalDiscountAmount;
+};
