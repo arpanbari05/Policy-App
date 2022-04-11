@@ -376,17 +376,11 @@ export function MobileRenderPlanDetails({ quote, ...props }) {
       </MobileDetailsSectionWrap>
     );
 
-  if (productBrochureQuery.isError)
-    return (
-      <MobileDetailsSectionWrap>
-        {productBrochureQuery.error.data?.message}
-      </MobileDetailsSectionWrap>
-    );
-
   const planDetails = getPlanFeatures(data, sum_insured);
 
-  const { brochure_url, policy_wording_url } = (productBrochureQuery.data ||
-    [])[0];
+  const brochure_url = (productBrochureQuery.data || [])[0]?.brochure_url;
+  const policy_wording_url = (productBrochureQuery.data || [])[0]
+    ?.policy_wording_url;
 
   return (
     <MobilePlanDetails

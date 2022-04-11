@@ -1829,7 +1829,7 @@ export function useRiders({
 
   useEffect(() => setRiders(getInitialRiders), [getInitialRiders]); //? a fallback to assign initial-riders
 
-  const { feature_options } = useCart().getCartEntry(groupCode);
+  const feature_options = useCart().getCartEntry(+groupCode)?.feature_options;
 
   const updatedFeatureOptions = featureOptionsValidValue(feature_options);
 

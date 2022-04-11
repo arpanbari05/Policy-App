@@ -5,7 +5,7 @@ import { useTheme } from "../../../../customHooks";
 import "styled-components/macro";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setShareType } from "../../quote.slice";
+import { setShareType, setShowSharePopup } from "../../quote.slice";
 
 const SHARE_OPTIONS = [
   {
@@ -38,6 +38,9 @@ export default function ShareTypeModal({ onClose }) {
   const handleSubmit = evt => {
     evt.preventDefault();
     dispatch(setShareType(share));
+    if (share.value === "quotation_list") {
+      dispatch(setShowSharePopup(false));
+    }
     onClose && onClose();
   };
 
