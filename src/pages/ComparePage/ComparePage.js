@@ -42,13 +42,12 @@ import { useState } from "react";
 import TenureFeatureValue from "./components/tenure/Tenure";
 import useComparePage from "./useComparePage";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
-import useWindowSize from "../../customHooks/useWindowSize";
 
 function ComparePage() {
   const { groupCode } = useParams();
   const [selectedSectionView, setSelectedSectionView] = useState({});
   const [isSelectedSectionView, setIsSelectedSectionView] = useState(false);
-  const { imageSend, imageSendM } = useComparePage();
+  const { imageSend } = useComparePage();
 
   useEffect(() => {
     const value = Object.keys(selectedSectionView).find(
