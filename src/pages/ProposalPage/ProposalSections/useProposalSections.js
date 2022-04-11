@@ -51,9 +51,10 @@ const useProposalSections = ({
   const dispatch = useDispatch();
 
   const checkAllValid = values => {
+    console.log("gsfdvskv",values)
     if (values instanceof Object && Object.keys(values).length)
       return Object.keys(values).map(group =>
-        Object.values(values[group]).every(val => val.isValid),
+        Object.values(values[group]).every(val => val?.isValid),
       );
     else return false;
   };
@@ -277,8 +278,6 @@ const useProposalSections = ({
               });
             } else {
              
-             
-
               setActive(getUnfilledForm(updatedProposalData));
             }
           },

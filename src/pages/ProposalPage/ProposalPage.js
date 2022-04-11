@@ -99,15 +99,15 @@ const ProposalPage = () => {
     </Link>
   );
 
-  useEffect(() => {
-    if (
-      failedBmiData &&
-      Object.keys(proposalData["Insured Details"]).length === 1
-    ) {
-      setBmiFailBlock(true);
-      setActive(1);
-    } else setBmiFailBlock(false);
-  }, [failedBmiData]);
+  // useEffect(() => {
+  //   if (
+  //     failedBmiData &&
+  //     Object.keys(proposalData["Insured Details"]).length === 1
+  //   ) {
+  //     setBmiFailBlock(true);
+  //     setActive(1);
+  //   } else setBmiFailBlock(false);
+  // }, [failedBmiData]);
 
   useEffect(() => {
     setPrepairingProposal(true);
@@ -147,7 +147,7 @@ const ProposalPage = () => {
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-
+console.log("Sgbsfnjl",active)
     if (activateLoader) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
