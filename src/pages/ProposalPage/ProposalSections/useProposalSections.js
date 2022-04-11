@@ -256,7 +256,17 @@ const useProposalSections = ({
             callback();
 
             revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
-
+            console.log("Svskjfvsf",responseData)
+            if (
+              responseData?.failed_bmi?.health
+            ) {
+              dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
+              dispatch(
+                setShowBMI(
+                  Object.keys(responseData?.failed_bmi.health).join(", "),
+                ),
+              );
+            }
             if (prevProposalData["Medical Details"]) {
               setSelfFieldsChange({
                 checkFor: prevProposalData["Medical Details"],
@@ -266,17 +276,8 @@ const useProposalSections = ({
                 callback: () => {},
               });
             } else {
-              if (
-                responseData?.failed_bmi?.health
-
-              ) {
-                dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
-                dispatch(
-                  setShowBMI(
-                    Object.keys(responseData?.failed_bmi.health).join(", "),
-                  ),
-                );
-              }
+             
+             
 
               setActive(getUnfilledForm(updatedProposalData));
             }

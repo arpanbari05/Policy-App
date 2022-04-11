@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
 import ViewPlanDetailModal from "./ViewPlanDetailModal";
-import { setActiveIndex, setPlanDetails } from "../ProposalSections.slice";
+import { setActiveIndex, setPlanDetails,setCanSendSummaryPdf } from "../ProposalSections.slice";
 import arrow from "./../../../../assets/images/arrow.png";
 import care from "./../../../../assets/images/Care_Health.png";
 import correct from "./../../../../assets/images/correct_icon.png";
@@ -531,8 +531,8 @@ const ViewPlanDetails = styled.span`
 `;
 
 function CartSummary({ item, index, groupCode }) {
-  const { data: frontendData, journeyType } = useFrontendBoot();
-
+  const { data: frontendData, journeyType, } = useFrontendBoot();
+  const dispatch = useDispatch();
   const { colors } = useTheme();
 
   const { planDetails } = useSelector(state => state.proposalPage);
@@ -559,6 +559,11 @@ function CartSummary({ item, index, groupCode }) {
   } = useAdditionalDiscount(groupCode);
 
   const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
+
+  // checks all cart items renders and can pdf is ready to send
+  useEffect(() => {
+    if (!isLoading) dispatch(setCanSendSummaryPdf(true));
+  }, [isLoading]);
 
   if (isLoading || isUninitialized) return <p>Loading cart summary...</p>;
   if (!item) return <></>;

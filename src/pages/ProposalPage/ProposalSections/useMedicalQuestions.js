@@ -81,7 +81,7 @@ console.log("sgvksdgv",defaultValue)
 // ----------------------------------------------------------------------------------------------------------------
 
 useEffect(() => {
-if(defaultValue){
+if(defaultValue && name === "Medical Details"){
   setValues(defaultValue)
 }
 },[])

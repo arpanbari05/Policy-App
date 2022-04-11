@@ -45,33 +45,36 @@ const useFormBuilder = (
       : item.validate;
   };
 
-  const checkReadOnly = name => {
-    let nomineeRelation = values.nominee_relation;
+  const checkReadOnly = (name,formName) => {
+    if(formName === "Other Details"){
+      let nomineeRelation = values.nominee_relation;
 
-    let dataTocheck = {};
-    if (insuredDetails) {
-      if (insuredDetails[nomineeRelation] && nomineeRelation === "self") {
-        dataTocheck = {
-          ...proposalDetails,
-          ...insuredDetails["self"],
-        };
-      } else if (insuredDetails[nomineeRelation]) {
-        dataTocheck = insuredDetails[nomineeRelation];
+      let dataTocheck = {};
+      if (insuredDetails) {
+        if (insuredDetails[nomineeRelation] && nomineeRelation === "self") {
+          dataTocheck = {
+            ...proposalDetails,
+            ...insuredDetails["self"],
+          };
+        } else if (insuredDetails[nomineeRelation]) {
+          dataTocheck = insuredDetails[nomineeRelation];
+        }
       }
+      let nameWithoutNominee =
+        name.slice(name.indexOf("_") + 1, name.length) === "contact"
+          ? "mobile"
+          : name.slice(name.indexOf("_") + 1, name.length);
+      if (nameWithoutNominee.includes("address"))
+        nameWithoutNominee = Object.keys(dataTocheck).find(key =>
+          key.includes(nameWithoutNominee),
+        );
+      if (name.includes("pincode"))
+        nameWithoutNominee = Object.keys(dataTocheck).find(key =>
+          key.includes("pincode"),
+        );
+      return dataTocheck[nameWithoutNominee] ? true : false;
     }
-    let nameWithoutNominee =
-      name.slice(name.indexOf("_") + 1, name.length) === "contact"
-        ? "mobile"
-        : name.slice(name.indexOf("_") + 1, name.length);
-    if (nameWithoutNominee.includes("address"))
-      nameWithoutNominee = Object.keys(dataTocheck).find(key =>
-        key.includes(nameWithoutNominee),
-      );
-    if (name.includes("pincode"))
-      nameWithoutNominee = Object.keys(dataTocheck).find(key =>
-        key.includes("pincode"),
-      );
-    return dataTocheck[nameWithoutNominee] ? true : false;
+    return false;
   };
 
   const updateValues = (multipleValues = {}, action) => {

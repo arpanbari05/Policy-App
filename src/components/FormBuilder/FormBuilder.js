@@ -538,7 +538,7 @@ const FormBuilder = ({
                           "SAVE_AS_IT_IS",
                         );
                       }}
-                      readOnly={item.readOnly || checkReadOnly(item.name)}
+                      readOnly={item.readOnly || checkReadOnly(item.name,formName)}
                       allValues={proposalData}
                       onFocus={() => setBlockScrollEffect(false)}
                       customMembers={

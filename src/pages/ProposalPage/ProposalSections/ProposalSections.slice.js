@@ -20,6 +20,7 @@ const proposal = createSlice({
     mediUnderwritting: false,
     showPlanNotAvail: false,
     showNSTP: false,
+    canSendSummaryPdf:false,
     activeIndex: 0,
     policyStatus: [],
     noForAllChecked: false,
@@ -100,6 +101,9 @@ const proposal = createSlice({
     setIsPopupOn: (state, { payload }) => {
       state.isPopupOn = payload;
     },
+    setCanSendSummaryPdf:(state, { payload }) => {
+      state.canSendSummaryPdf = payload;
+    },
   },
 });
 export const {
@@ -121,9 +125,13 @@ export const {
   setFailedBmiData,
   popLoadingStack,
   pushLoadingStack,
+  setCanSendSummaryPdf,
   setIsPopupOn,
 } = proposal.actions;
 const ls = new SecureLS();
+
+
+
 
 // const hasAnyChangeInObj = (newVal, oldVal) => {
 //   let newValKeys = Object.keys(newVal);

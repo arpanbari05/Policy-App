@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { RiShareFill, RiDownload2Line } from "react-icons/ri";
 import "./ProposalSummary.scss";
 import ProposalCheckBox from "../../components/Common/ProposalSummary/summaryCheckBox";
 import SummaryTab from "../ProposalPage/components/SummaryTab/SummaryTab";
-import { starSchema } from "../ProposalPage/ProposalDetailsSchema";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import oneInsureLogo from "../../assets/logos/fyntune.png";
 import { getProposalFields } from "../ProposalPage/schema.slice";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import ProposalSummaryTab from "./../../components/Common/ProposalSummary/ProposalSummary";
@@ -51,10 +53,11 @@ import GoBackButton from "../../components/GoBackButton";
 import { mobile } from "../../utils/mediaQueries";
 import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
+import httpClient from "../../api/httpClient";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
+  const [loader, setLoader] = useState(false);
   const { getGroupMembers } = useMembers();
 
   const { colors } = useTheme();
@@ -79,7 +82,9 @@ const ProposalSummary = () => {
 
   const { currentSchema } = useSelector(state => state.schema);
 
-  const { policyStatus } = useSelector(state => state.proposalPage);
+  const { policyStatus, canSendSummaryPdf } = useSelector(
+    state => state.proposalPage,
+  );
 
   const [show, setShow] = useState(false);
 
@@ -88,11 +93,66 @@ const ProposalSummary = () => {
   const frontendBoot = useFrontendBoot();
 
   const frontendData = { data: frontendBoot.data };
-
+  const cart = cartEntries;
   // TODO: Here groupCode cant be fetched from the url to make additional discount request.
   const totalPremium = useUSGILifeStyleDiscount(); //? CALCULATED BY US.
 
   const totalPremiumPolicies = getPolicyPremium(policyStatus);
+
+  // TO SEND PDF SUMMARY TO BACKEND
+  const [pdfDoc, setPdfDoc] = useState(null);
+  useEffect(() => {
+    console.log("fbxfjkfb", proposalData, cart, canSendSummaryPdf);
+    let logoImgData;
+
+    if (proposalData?.data && Object.keys(cart).length && canSendSummaryPdf) {
+      const divToPrint = document.querySelector("#printSummaryPage");
+      html2canvas(divToPrint, {
+        scale: 2,
+      }).then(canvas => {
+        const imgData = canvas.toDataURL("image/jpeg", 0.3);
+        console.log("bsdjbklfdb", canvas);
+
+        const imgWidth = 190;
+        // const pageHeight = 290;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        // let heightLeft = imgHeight;
+        const doc = new jsPDF("pt", "mm", [imgWidth, imgHeight + 50]);
+        // let position = 0;
+        doc.text(10, 10, "Proposal Summary");
+        // doc.text(10, 12, "Proposal Summary");
+        // doc.addImage(oneInsureLogo, "PNG", 70, 4,25,10);
+        console.log("dsvbjks", canvas);
+        doc.addImage(
+          imgData,
+          "JPEG",
+          10,
+          20,
+          imgWidth,
+          imgHeight,
+          undefined,
+          "FAST",
+        );
+        console.log("asvkjdf", proposalData, cart);
+        setPdfDoc(doc);
+
+        // doc.save("download.pdf");
+        setLoader(false);
+      });
+    }
+  }, [proposalData, cart, canSendSummaryPdf]);
+
+  useEffect(() => {
+    if (pdfDoc) {
+      let pdfDocInBytes = btoa(pdfDoc.output());
+      console.log("wkfbvhbvck", pdfDocInBytes);
+
+      httpClient("proposals/pdf", {
+        method: "POST",
+        data: { summary_pdf: pdfDocInBytes },
+      });
+    }
+  }, [pdfDoc]);
 
   const tCSectionData = isSSOJourney()
     ? frontendData?.data?.settings?.summary_banner_pos
@@ -176,7 +236,16 @@ const ProposalSummary = () => {
     }
   };
 
-  const cart = cartEntries;
+  const imageSendQuote = id => {
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      // setTimeout(() => {
+      //   setLoader(true);
+      // }, 100);
+
+      pdfDoc.save("Proposal_Summary.pdf");
+    }, 1000);
+  };
 
   const prod_id = Object.keys(cart)[0];
 
@@ -193,6 +262,28 @@ const ProposalSummary = () => {
         id={"proposalSummaryPage"}
         backButton={backButtonForNav}
       >
+        <button
+          css={`
+            position: fixed;
+            bottom: 100px;
+            right: 25px;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            z-index: 9999;
+            background-color: ${PrimaryColor};
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 100%;
+          `}
+          className="btn share_Quote_btn"
+          onClick={() => imageSendQuote("#printSummaryPage")}
+        >
+          {!loader ? (
+            <RiDownload2Line size={25} />
+          ) : (
+            <i className="fa fa-circle-notch rotate" />
+          )}
+        </button>
         <div
           className="container-fluid terms__wrapper"
           css={`
@@ -357,7 +448,9 @@ const ProposalSummary = () => {
             `}
           >
             <br className="hide-on-mobile" />
+            
             <Row
+              id="printSummaryPage"
               css={`
                 @media (max-width: 1023px) {
                   flex-direction: column;
@@ -377,6 +470,7 @@ const ProposalSummary = () => {
               >
                 {
                   <GoBackButton
+                    data-html2canvas-ignore
                     backPath={getUrlWithEnquirySearch("/proposal")}
                   />
                 }
