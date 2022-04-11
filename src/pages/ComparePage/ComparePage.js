@@ -68,9 +68,7 @@ function ComparePage() {
 
   if (isLoading || isUninitialized) return <FullScreenLoader />;
 
-  const { quotes: compareQuotes } = getCompareQuotes(groupCode);
-
-  console.log(imageSend);
+  const compareQuotes = getCompareQuotes(groupCode)?.quotes;
 
   return (
     <Page id="printCompare">
