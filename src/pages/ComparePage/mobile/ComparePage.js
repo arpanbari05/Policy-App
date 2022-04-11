@@ -18,7 +18,6 @@ import {
   matchGroupCodes,
   matchQuotes,
   numberToDigitWord,
-  tenureInWords,
 } from "../../../utils/helper";
 import {
   AddPlanCard,
@@ -137,7 +136,6 @@ function ComparePage() {
           }
         `}
       >
-        {console.log("QUOTES", quotes)}
         {quotes.map((quote, idx) => (
           <ProductCard
             quote={quote}
@@ -302,7 +300,7 @@ function CompareFeatureSection({
   features = [],
   quotes,
   select,
-  difference = true,
+  difference = false,
 }) {
   const [sameFeatures, setSameFeatures] = useState({});
 
@@ -355,12 +353,18 @@ function CompareFeatureSection({
 
 function CompareFeatureRow({ quotes, sectionTitle, feature, onFeaturesLoad }) {
   const { features, onLoad } = useFeatureLoadHandler();
-
   useEffect(() => {
+    const valuesArray = Object.keys(features);
+    const firstValue = features[`${valuesArray[0]}`];
+    const secondValue = features[`${valuesArray[1]}`];
+
     if (
-      features &&
-      features[feature.title] &&
-      features[feature.title].every(val => val === features[feature.title][0])
+      firstValue &&
+      secondValue &&
+      firstValue[`${feature.title}`]?.feature_value &&
+      secondValue[`${feature.title}`]?.feature_value &&
+      firstValue[`${feature.title}`]?.feature_value ===
+        secondValue[`${feature.title}`]?.feature_value
     ) {
       onFeaturesLoad && onFeaturesLoad({ [feature.title]: true });
       return;
@@ -394,7 +398,7 @@ function CompareFeatureValue({ quote, sectionTitle, featureTitle, onLoad }) {
   const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
-    if (feature) onLoad && onLoad({ featureTitle, feature });
+    if (feature) onLoad && onLoad({ featureTitle, feature }, quote);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feature]);
 

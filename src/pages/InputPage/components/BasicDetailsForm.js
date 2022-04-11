@@ -33,21 +33,16 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
     data: { tenant, settings },
   } = useFrontendBoot();
 
-  if (sessionStorage.userData)
-    inputData = {
-      ...JSON.parse(sessionStorage.userData),
-    };
-
   //===== page states======
   const [emailError, setEmailErrors] = useState({});
   const [mobileError, setMobileErrors] = useState({});
   const [fullNameError, setFullNameErrors] = useState({});
-  const fullNameInput = useNameInput(inputData.name || "", setFullNameErrors);
-  const mobileInput = useNumberInput(inputData.mobile || "", setMobileErrors, {
+  const fullNameInput = useNameInput(inputData?.name || "", setFullNameErrors);
+  const mobileInput = useNumberInput(inputData?.mobile || "", setMobileErrors, {
     maxLength: 10,
   });
-  const emailInput = useEmailInput(inputData.email || "", setEmailErrors);
-  const [gender, setGender] = useState(inputData.gender || "");
+  const emailInput = useEmailInput(inputData?.email || "", setEmailErrors);
+  const [gender, setGender] = useState(inputData?.gender || "");
   const [journeyType, setJourneyType] = useState("health");
 
   const handleFormSubmit = async event => {

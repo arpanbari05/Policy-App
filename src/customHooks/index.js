@@ -701,12 +701,6 @@ export function useCart() {
       cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
     );
 
-    console.log(
-      "The groups received from update enquiry and groupCode",
-      groups,
-      groupCode,
-    );
-
     if (!cartEntry) return;
 
     const group = groups?.find(
@@ -751,15 +745,10 @@ export function useCart() {
 
     return [
       ({
-        additionalDiscounts = [],
+        discounted_total_premium,
         generate_proposal = false,
         feature_options = {},
       }) => {
-        const discounted_total_premium = calculateTotalPremium(
-          { health_riders, ...cartEntry },
-          { additionalDiscounts },
-        );
-
         return updateCartMutation({
           ...cartEntry,
           cartId: id,
@@ -987,6 +976,20 @@ export function useAdditionalDiscount(groupCode) {
     addAdditionalDiscount(additionalDiscount);
   }
 
+  const getTotalDiscountAmount = () => {
+    const selectedAdditionalDiscount = getSelectedAdditionalDiscounts();
+
+    const totalDiscountAmount = selectedAdditionalDiscount?.length
+      ? selectedAdditionalDiscount
+          ?.map(discount => getDiscountAmount(discount))
+          ?.reduce((acc = 0, curr) => {
+            return (acc += +curr);
+          })
+      : 0;
+
+    return totalDiscountAmount;
+  };
+
   function getDiscountAmount(additionalDiscount) {
     const {
       percent,
@@ -1076,6 +1079,7 @@ export function useAdditionalDiscount(groupCode) {
     getSelectedAdditionalDiscounts,
     toggleAdditionalDiscount,
     getDiscountAmount,
+    getTotalDiscountAmount,
     isAdditionalDiscountSelected,
   };
 }
@@ -1690,21 +1694,6 @@ export function useFeatureLoadHandler() {
       };
 
       return updatedFeatures;
-
-      // if (!features) {
-      //   return { [featureTitle]: [feature?.feature_value] };
-      // }
-
-      // if (!features[featureTitle])
-      //   return {
-      //     ...features,
-      //     [featureTitle]: [feature?.feature_value],
-      //   };
-
-      // return {
-      //   ...features,
-      //   [featureTitle]: [...features[featureTitle], feature?.feature_value],
-      // };
     });
   };
 

@@ -1,12 +1,11 @@
 import { useState, useRef } from "react";
-import { Modal, Nav, OverlayTrigger, Tab, Tooltip } from "react-bootstrap";
+import { Nav, OverlayTrigger, Tab, Tooltip } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
-import { IoRadioButtonOff, IoRadioButtonOn } from "react-icons/io5";
+import { IoRadioButtonOn } from "react-icons/io5";
 import { Button } from "../../../../components";
 import {
   useCompanies,
   useFrontendBoot,
-  useGetQuotes,
   useTheme,
 } from "../../../../customHooks";
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
@@ -574,68 +573,7 @@ function CustomFilterModal({ show, children }) {
 
 function MobileModal({ onClose, children, show }) {
   const { colors } = useTheme();
-  console.log(show);
   return (
-    // <Modal
-    //   show={true}
-    //   // onHide={onClose}
-    //   css={`
-    //     .modal-backdrop .show {
-    //       display: ${show ? "block" : "none"};
-    //     }
-    //     & .modal-dialog {
-    //       margin: 0;
-    //       display: ${show ? "block" : "none"};
-    //     }
-
-    //     & .modal-content {
-    //       border-radius: 0;
-    //     }
-    //   `}
-    // >
-    //   <div
-    //     css={`
-    //       height: 100vh;
-    //       width: 100vw;
-    //       overflow: auto;
-    //     `}
-    //   >
-    //     <div
-    //       className="p-3"
-    //       css={`
-    //         background-color: ${colors.primary_color};
-    //         color: #fff;
-    //       `}
-    //     >
-    //       <div
-    //         className="d-flex align-items-center"
-    //         css={`
-    //           gap: 1em;
-    //         `}
-    //       >
-    //         <button
-    //           onClick={onClose}
-    //           css={`
-    //             color: #fff;
-    //             line-height: 1;
-    //           `}
-    //         >
-    //           <FaArrowLeft />
-    //         </button>
-    //         <h1
-    //           className="m-0"
-    //           css={`
-    //             font-size: 1rem;
-    //             font-weight: 900;
-    //           `}
-    //         >
-    //           Filters
-    //         </h1>
-    //       </div>
-    //     </div>
-    //     {children}
-    //   </div>
-    // </Modal>
     <CustomFilterModal show={show}>
       <div
         css={`
@@ -686,10 +624,8 @@ function MobileModal({ onClose, children, show }) {
 function FilterDataSet({ name, description, tooltip, ...props }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const target = useRef(null);
-  const [innerHeight, innerWidth] = useWindowSize();
+  const [innerWidth] = useWindowSize();
   useOutsiteClick(target, () => setShowTooltip(false));
-
-  console.log(innerWidth);
 
   const toggleTooltip = () => {
     setShowTooltip(prev => !prev);

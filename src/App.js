@@ -19,28 +19,9 @@ const ProposalSummary = lazy(() =>
 const ThankYouPage = lazy(() => import("./pages/ThankYouPage/ThankYouPage"));
 
 function App() {
-  const urlSearchQueries = useUrlQueries();
   const {
     data: { tenant },
   } = useFrontendBoot();
-
-  const { data } = useGetEnquiriesQuery(undefined, {
-    skip:
-      !urlSearchQueries.enquiryId &&
-      !window.location.pathname.includes("members"),
-  });
-
-  useEffect(() => {
-    if (data) {
-      const userData = {
-        name: data.data?.name,
-        email: data.data?.email,
-        mobile: data.data?.mobile,
-        gender: data.data?.input?.gender,
-      };
-      sessionStorage.setItem("userData", JSON.stringify(userData));
-    }
-  }, [data]);
 
   return (
     <Suspense fallback={<FullScreenLoader />}>

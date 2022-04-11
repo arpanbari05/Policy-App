@@ -19,6 +19,7 @@ import {
   amount,
   figureToWords,
   getDisplayPremium,
+  getTotalPremiumWithDiscount,
   premiumWithAddons,
 } from "../../../utils/helper";
 import {
@@ -165,7 +166,7 @@ export function CartDetails({ groupCode, ...props }) {
 }
 
 const QuickPayAndRenewButton = ({ groupCode }) => {
-  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+  const { getTotalDiscountAmount, query: additionalDiscountsQuery } =
     useAdditionalDiscount(groupCode);
 
   const { getCartEntry } = useCart();
@@ -176,16 +177,20 @@ const QuickPayAndRenewButton = ({ groupCode }) => {
 
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
-  const additionalDiscounts = getSelectedAdditionalDiscounts();
-
   const [updateCartMutation, { isLoading }] = updateCart(groupCode);
 
   const handleClick = () => {
-    updateCartMutation({ additionalDiscounts, generate_proposal: true }).then(
-      resObj => {
-        singlePay(resObj?.data?.data?.proposal_id);
-      },
-    );
+    const discounted_total_premium = getTotalPremiumWithDiscount({
+      netPremiumWithoutDiscount: cartEntry?.netPremiumWithoutDiscount,
+      totalDiscountAmount: getTotalDiscountAmount(),
+    });
+
+    updateCartMutation({
+      discounted_total_premium,
+      generate_proposal: true,
+    }).then(resObj => {
+      singlePay(resObj?.data?.data?.proposal_id);
+    });
   };
 
   return (
@@ -948,7 +953,8 @@ function BasePlanDetails({
 function TotalPremium({ groupCode, ...props }) {
   const { getCartEntry } = useCart();
 
-  const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
+  const { getSelectedAdditionalDiscounts, getTotalDiscountAmount } =
+    useAdditionalDiscount(groupCode);
 
   const additionalDiscounts = getSelectedAdditionalDiscounts();
 
@@ -956,13 +962,18 @@ function TotalPremium({ groupCode, ...props }) {
     additionalDiscounts,
   });
 
-  const { netPremium, tenure, addons } = cartEntry;
+  const { tenure, netPremiumWithoutDiscount } = cartEntry;
+
+  const total_Premium = getTotalPremiumWithDiscount({
+    netPremiumWithoutDiscount,
+    totalDiscountAmount: getTotalDiscountAmount(),
+  });
 
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
-  const displayNetPremium = `${amount(
-    premiumWithAddons(netPremium, addons),
-  )} / ${tenure === 1 ? "Year" : `${tenure} Years`}`;
+  const displayNetPremium = `${amount(total_Premium)} / ${
+    tenure === 1 ? "Year" : `${tenure} Years`
+  }`;
 
   return (
     <div
@@ -1022,10 +1033,8 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const { updateCart, getCartEntry } = useCart();
 
-  const { getSelectedAdditionalDiscounts, query: additionalDiscountsQuery } =
+  const { getTotalDiscountAmount, query: additionalDiscountsQuery } =
     useAdditionalDiscount(groupCode);
-
-  const additionalDiscounts = getSelectedAdditionalDiscounts();
 
   const [updateCartMutation, query] = updateCart(groupCode);
 
@@ -1041,8 +1050,6 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const { getMembersText } = useMembers();
 
-  const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
   const urlQueryStrings = new URLSearchParams(window.location.search);
 
   const enquiryId = urlQueryStrings.get("enquiryId");
@@ -1052,7 +1059,12 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
     JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   const handleClick = () => {
-    updateCartMutation({ additionalDiscounts }).then(() => {
+    const discounted_total_premium = getTotalPremiumWithDiscount({
+      netPremiumWithoutDiscount: cartEntry?.netPremiumWithoutDiscount,
+      totalDiscountAmount: getTotalDiscountAmount(),
+    });
+
+    updateCartMutation({ discounted_total_premium }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({

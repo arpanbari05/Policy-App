@@ -312,7 +312,7 @@ export function OptionalCoversValue({ quote, onChange }) {
     query: { isLoading, isFetching, isUninitialized },
     riders,
     handleChange,
-  } = useRiders({ quote, onChange: handleRidersChange, groupCode });
+  } = useRiders({ quote, onChangeFunc: handleRidersChange, groupCode });
 
   return (
     <FeatureValue isLoading={isLoading || isFetching || isUninitialized}>
@@ -324,7 +324,12 @@ export function OptionalCoversValue({ quote, onChange }) {
       >
         {riders.length ? (
           riders.map(rider => (
-            <Rider rider={rider} key={rider.name} onChange={handleChange} />
+            <Rider
+              currentQuote={quote}
+              rider={rider}
+              key={rider.name}
+              onChange={handleChange}
+            />
           ))
         ) : (
           <div
@@ -352,7 +357,7 @@ export function OptionalCoversValue({ quote, onChange }) {
   );
 }
 
-function Rider({ rider, onChange, ...props }) {
+function Rider({ currentQuote, rider, onChange, ...props }) {
   const {
     colors: { primary_shade },
   } = useTheme();
@@ -375,7 +380,7 @@ function Rider({ rider, onChange, ...props }) {
         <InfoPopupToggle title={rider.name} description={rider.description} />
       </div>
 
-      <RiderPremium rider={rider} onChange={onChange} />
+      <RiderPremium quote={currentQuote} rider={rider} onChange={onChange} />
     </div>
   );
 }

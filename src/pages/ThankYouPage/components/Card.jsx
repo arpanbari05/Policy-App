@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
@@ -14,12 +14,22 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
   const {
     colors: { primary_color: PrimaryColor, secondary_shade: SecondaryShade },
   } = useTheme();
+  const [downloadPolicyLoader, setDownloadPolicyLoader] = useState(true);
 
   const frontendBoot = useFrontendBoot();
 
   const frontendData = { data: frontendBoot.data };
 
-  console.log("The sahred data is", showTrackStatus);
+  useEffect(() => {
+    if (!values?.underwriting_status) {
+      setTimeout(() => {
+        setDownloadPolicyLoader(false);
+      }, 50000);
+    } else {
+      setDownloadPolicyLoader(false);
+    }
+  }, [values]);
+
   return values?.product ? (
     <CardWrapper>
       <div className="d-flex align-items-center justify-content-between">
@@ -42,7 +52,8 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
 
         <div style={{ float: "right" }}>
           {values?.pdf_path ? (
-            values?.pdf_path && (
+            values?.pdf_path &&
+            (!downloadPolicyLoader ? (
               <DownloadPolicy
                 target="_blank"
                 href={values?.pdf_path}
@@ -56,7 +67,19 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
                   <Download />
                 )}
               </DownloadPolicy>
-            )
+            ) : (
+              <div
+                css={`
+                  display: inline-block;
+                  border-radius: 999px;
+                  background-color: #ddd;
+                  padding: 5px 10px;
+                  min-width: 160px;
+                  color: #fff !important;
+                  height: 35px;
+                `}
+              ></div>
+            ))
           ) : (
             <>
               {showTrackStatus && (

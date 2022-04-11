@@ -590,8 +590,6 @@ export function matchQuotes(
   quote2,
   { sum_insured = true, deductible = true } = {},
 ) {
-  console.log("quote1", quote1);
-  console.log("quote2", quote2);
   return _.every([
     quote1.product.id === quote2.product.id,
     sum_insured
@@ -689,7 +687,6 @@ export function getAddOnsTotalPremium(addOns = []) {
 
 export function getQuoteKey(quote) {
   // const { product, sum_insured } = quote;
-
   return `${quote?.product.id}+${quote?.sum_insured}`;
 }
 
@@ -825,4 +822,11 @@ export const getPolicyPremium = (policyStatus = []) => {
       ?.reduce((acc = 0, curr) => (acc += curr));
   }
   return 0;
+};
+
+export const getTotalPremiumWithDiscount = ({
+  netPremiumWithoutDiscount,
+  totalDiscountAmount,
+}) => {
+  return +netPremiumWithoutDiscount - +totalDiscountAmount;
 };
