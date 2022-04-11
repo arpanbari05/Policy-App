@@ -592,27 +592,106 @@ function ProductDetailsCard({ cartItem }) {
 
   return (
     <div
-      className="product_outer"
       css={`
+        border: 1px solid #d5dce5;
+        padding: 10px 20px;
+        border-radius: 10px;
         ${mobile} {
           display: none;
         }
       `}
     >
-      <div className="product_outer_1">
-        <div className="name_image_outer">
-          <div className="logo_style">
+      <div
+        css={`
+          display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+          display: -ms-flexbox; /* TWEENER - IE 10 */
+          display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+          display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
+          justify-content: space-between !important;
+        `}
+      >
+        <div
+          css={`
+            display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+            display: -ms-flexbox; /* TWEENER - IE 10 */
+            display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+            display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
+            align-items: center;
+          `}
+        >
+          <div
+            css={`
+              height: 45px !important;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-right: 10px;
+              margin-bottom: 0px;
+
+              & img {
+                object-fit: contain;
+                width: 100%;
+                height: 100%;
+              }
+            `}
+          >
             <img src={logoSrc} alt={alias} />
           </div>
 
           <div>
-            <span className="prod_name">{name}</span>
+            <span
+              css={`
+                margin-top: 0px;
+                font-weight: 900;
+              `}
+            >
+              {name}
+            </span>
           </div>
         </div>
 
-        <div className="width60_flex">
-          <div className="float_product_cover">
-            <span className="label-add_product">
+        <div
+          css={`
+            width: 60%;
+            display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+            display: -ms-flexbox; /* TWEENER - IE 10 */
+            display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+            display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
+          `}
+        >
+          <div
+            css={`
+              display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+              display: -ms-flexbox; /* TWEENER - IE 10 */
+              display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+              display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
+              align-items: center;
+              flex: 1;
+              -webkit-flex: 1;
+              justify-content: center;
+            `}
+          >
+            <span
+              css={`
+                color: #000;
+                font-size: 11px;
+                line-height: 21px;
+                @media (max-width: 900px) {
+                  font-size: 13px;
+                }
+                .edit_css_prod {
+                  @media (max-width: 900px) {
+                    font-size: 13px !important;
+                  }
+                }
+
+                .si_text {
+                  font-size: 15px;
+                  font-weight: 900;
+                  color: #505f79;
+                }
+              `}
+            >
               Cover
               <br />
               <span className="edit_css_prod si_text">
@@ -621,9 +700,41 @@ function ProductDetailsCard({ cartItem }) {
             </span>
           </div>
 
-          <div className="float_product_premium">
+          <div
+            css={`
+              border-left: 1px solid #ddd;
+              display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+              display: -ms-flexbox; /* TWEENER - IE 10 */
+              display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+              display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
+              flex: 1;
+              -webkit-flex: 1;
+              align-items: center;
+              justify-content: center;
+            `}
+          >
             <div>
-              <span className="label-add_product">
+              <span
+                css={`
+                  color: #000;
+                  font-size: 11px;
+                  line-height: 21px;
+                  @media (max-width: 900px) {
+                    font-size: 13px;
+                  }
+                  .edit_css_prod {
+                    @media (max-width: 900px) {
+                      font-size: 13px !important;
+                    }
+                  }
+
+                  .si_text {
+                    font-size: 15px;
+                    font-weight: 900;
+                    color: #505f79;
+                  }
+                `}
+              >
                 Premium
                 <br />
                 <span className="edit_css_prod si_text">
@@ -640,7 +751,14 @@ function ProductDetailsCard({ cartItem }) {
       {displayRiders.length > 0 ? <hr /> : null}
       <div class="row w-100 flex-row">
         {displayRiders.map(rider => (
-          <div className="rider_review_outer">
+          <div
+            css={`
+              margin: 2px;
+              width: fit-content;
+              font-size: 14px;
+              width: 48% !important;
+            `}
+          >
             <span
               css={`
                 color: ${PrimaryColor};
@@ -648,7 +766,16 @@ function ProductDetailsCard({ cartItem }) {
             >
               <AiOutlineCheckCircle />
             </span>{" "}
-            <span className="weight_normal">{rider?.name}</span>
+            <span
+              css={`
+                font-weight: normal !important;
+                color: #000;
+                font-size: 11px;
+                margin-left: 3px;
+              `}
+            >
+              {rider?.name}
+            </span>
           </div>
         ))}
       </div>
@@ -870,7 +997,13 @@ function ProductCard({ groupCode, onClose, cartEntry, group, link }) {
 
   return (
     <>
-      <div className="product_card_outer">
+      <div
+        css={`
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        `}
+      >
         <GradientTitle title={getMembersText({ id: groupCode })} />
       </div>
       {product ? (
