@@ -381,6 +381,7 @@ export function calculateTotalPremium(
 
   const total_premium = basePlanPremium;
 
+  //? different function is used to calculate discountedAmount
   const discountedAmount = getTotalDiscount(additionalDiscounts, cartEntry);
 
   let totalPremiumAfterDiscount = total_premium - discountedAmount;
