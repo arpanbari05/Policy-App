@@ -59,7 +59,7 @@ export function Riders({
     riders,
   } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
 
-  const { feature_options } = useCart().getCartEntry(groupCode);
+  const feature_options = useCart().getCartEntry(groupCode)?.feature_options;
 
   const updatedFeatureOptions = featureOptionsValidValue(feature_options);
 

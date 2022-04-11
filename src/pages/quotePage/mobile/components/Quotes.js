@@ -62,6 +62,7 @@ export function Quotes({ sortBy }) {
 
   return (
     <div className="p-2 mt-4">
+      <ShareQuoteModal shareQuotes stage="QUOTE" hideBtn />
       <div
         className="d-flex flex-column"
         css={`
@@ -310,7 +311,6 @@ function QuoteCard({
 
   return (
     <div {...props}>
-      <ShareQuoteModal shareQuotes stage="QUOTES" hideBtn />
       <div
         className={`d-flex justify-content-between w-100 ${
           isFirstQuote ? "position-absolute" : "px-2"
