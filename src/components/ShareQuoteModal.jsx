@@ -143,7 +143,8 @@ const ShareQuoteModal = ({
   const handleClose = () => {
     setshow(false);
     setIsSending(false);
-    dispatch(setShowSharePopup(true));
+    if (shareType.value === "specific_quotes")
+      dispatch(setShowSharePopup(true));
   };
 
   const handleShow = () => setshow(true);

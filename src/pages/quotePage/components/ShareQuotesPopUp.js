@@ -30,8 +30,7 @@ const Sharequotespopup = ({ onClick = () => {} }) => {
         `}
         onClick={() => {
           onClick();
-          if (shareType.value === "specific_quotes")
-            dispatch(setShowSharePopup(false));
+          dispatch(setShowSharePopup(false));
         }}
       >
         <span>Share</span>

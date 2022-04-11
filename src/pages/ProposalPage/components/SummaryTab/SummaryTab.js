@@ -118,9 +118,11 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
       return <></>;
 
     if (data?.type === "select")
-    return Boolean(data.name === "town" || data.name === "area"
-    ? values[data.name + "__value"]
-    : getValueFromCode(values[data.name], data))?(
+      return Boolean(
+        data.name === "town" || data.name === "area"
+          ? values[data.name + "__value"]
+          : getValueFromCode(values[data.name], data),
+      ) ? (
         <Col
           md={4}
           sm={4}
@@ -136,7 +138,9 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
               : getValueFromCode(values[data.name], data)}
           </p>
         </Col>
-      ):(<></>)
+      ) : (
+        <></>
+      );
 
     return (data.type === "text" || data.type === "checkbox") &&
       values[data?.name] ? (
@@ -304,7 +308,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
       );
     }
     if (data.type === "select")
-    return Boolean(getValueFromCode(values?.[item]?.[data.name], data))?(
+      return Boolean(getValueFromCode(values?.[item]?.[data.name], data)) ? (
         <Col
           md={4}
           sm={4}
@@ -319,7 +323,9 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
             {getValueFromCode(values?.[item]?.[data.name], data)}
           </p>
         </Col>
-      ):(<></>)
+      ) : (
+        <></>
+      );
     return data.type === "text" || data.type === "checkbox" ? (
       <>
         {values?.[item]?.[data.name] && (
@@ -453,33 +459,48 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
                           {modifyMembersName(item)}
                         </span>
                       </TitleWrapper>
-                      {data[item].map((_data, index) => {
-                        return title === "Other Details"
-                          ? objectRender(
-                              {
-                                ..._data,
-                                additionalOptions: {
-                                  ..._data.additionalOptions,
-                                  label: _data.additionalOptions.label.includes(
-                                    "Nominee's",
-                                  )
-                                    ? _data.additionalOptions.label.replace(
+                      <div
+                        css={`
+                          display: flex;
+                          flex-wrap: wrap;
+                          align-items: flex-start;
+                        `}
+                      >
+                        {data[item].map((_data, index) => {
+                          return title === "Other Details"
+                            ? objectRender(
+                                {
+                                  ..._data,
+                                  additionalOptions: {
+                                    ..._data.additionalOptions,
+                                    label:
+                                      _data.additionalOptions.label.includes(
                                         "Nominee's",
-                                        "",
                                       )
-                                    : _data.additionalOptions.label.replace(
-                                        "Nominee",
-                                        "",
-                                      ),
+                                        ? _data.additionalOptions.label.replace(
+                                            "Nominee's",
+                                            "",
+                                          )
+                                        : _data.additionalOptions.label.replace(
+                                            "Nominee",
+                                            "",
+                                          ),
+                                  },
                                 },
-                              },
-                              index,
-                              item,
-                              title,
-                              data[item],
-                            )
-                          : objectRender(_data, index, item, title, data[item]);
-                      })}
+                                index,
+                                item,
+                                title,
+                                data[item],
+                              )
+                            : objectRender(
+                                _data,
+                                index,
+                                item,
+                                title,
+                                data[item],
+                              );
+                        })}
+                      </div>
                     </Border>
                   </>
                 ))}

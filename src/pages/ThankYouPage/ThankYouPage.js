@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +27,10 @@ const ThankYouPage = () => {
 
   const [payment, SetPayment] = useState(true);
 
+  const firstInterval = useRef(null);
+
+  const secondInterval = useRef(null);
+
   const {
     colors: {
       primary_color: PrimaryColor,
@@ -54,9 +58,28 @@ const ThankYouPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setLoading(true);
-    dispatch(fetchPdf());
-    setLoading(false);
+    const init = async () => {
+      setLoading(true);
+      dispatch(fetchPdf());
+      let firstCounter = 11;
+      let secondCounter = 23;
+      firstInterval.current = setInterval(() => {
+        firstCounter -= 1;
+        if (firstCounter === 0) {
+          clearInterval(firstInterval.current);
+          secondInterval.current = setInterval(() => {
+            secondCounter -= 1;
+            if (secondCounter === 0) {
+              clearInterval(secondInterval.current);
+            }
+            dispatch(fetchPdf());
+          }, 10000);
+        }
+        dispatch(fetchPdf());
+      }, 5000);
+      setLoading(false);
+    };
+    init();
   }, []);
 
   useEffect(() => {
@@ -65,6 +88,10 @@ const ThankYouPage = () => {
       policyStatus[0]?.pdf_path !== undefined
     ) {
       setLoading(false);
+    }
+    if (policyStatus[0]?.underwriting_status === "underwriting_approval") {
+      clearInterval(firstInterval.current);
+      clearInterval(secondInterval.current);
     }
   }, [policyStatus]);
 

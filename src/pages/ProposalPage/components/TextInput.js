@@ -111,7 +111,10 @@ const TextInput = ({
               onChange(e);
               setFallbackValue(e.target.value);
             }
-          } else if (checkValidation["matches"] === "name" || name === "nominee_name") {
+          } else if (
+            checkValidation["matches"] === "name" ||
+            name === "nominee_name"
+          ) {
             let acceptedSpecialChar = ["."];
             if (
               checkPreviousChar(e.target.value, " ") &&
@@ -181,6 +184,18 @@ const TextInput = ({
                 e.target.value = e.target.value.toLocaleUpperCase();
               }
               if (maxLength && e.target.value.length > maxLength) return;
+              if (checkValidation.matches === "pincode") {
+                if (
+                  checkAllChar(
+                    e.target.value,
+                    forbiddedSymbols.concat("qwertyuiopasdfghjklzxcvbnm"),
+                  )
+                ) {
+                  onChange(e);
+                  setFallbackValue(e.target.value);
+                  return;
+                }
+              }
               onChange(e);
               setFallbackValue(e.target.value);
             }
