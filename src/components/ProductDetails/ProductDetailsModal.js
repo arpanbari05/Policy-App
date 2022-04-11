@@ -265,13 +265,6 @@ function RenderPlanDetails({ quote, ...props }) {
       </DetailsSectionWrap>
     );
 
-  /* if (productBrochureQuery.isError)
-    return (
-      <DetailsSectionWrap>
-        {productBrochureQuery.error.data.message}
-      </DetailsSectionWrap>
-    ); */
-
   const planDetails = getPlanFeatures(data, sum_insured);
 
   const brochure_url = (productBrochureQuery.data || [])[0]?.brochure_url;

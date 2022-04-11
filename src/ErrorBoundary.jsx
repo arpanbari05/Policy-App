@@ -1,5 +1,6 @@
 import { Component } from "react";
 import "styled-components/macro";
+import { mobile } from "./utils/mediaQueries";
 
 const tenantColors = {
   fyntune: {
@@ -38,7 +39,7 @@ class ErrorBoundary extends Component {
 
 export default ErrorBoundary;
 
-const ErrorComponent = ({ errorMessage }) => {
+export const ErrorComponent = ({ errorMessage }) => {
   const tenantAlias = process.env.REACT_APP_TENANT;
 
   const primary_color = tenantColors[tenantAlias]?.primary_color;
@@ -68,6 +69,11 @@ const ErrorComponent = ({ errorMessage }) => {
           );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
+
+          ${mobile} {
+            font-size: 20px;
+            text-align: center;
+          }
         `}
       >
         UNRECOVERABLE ERROR OCCURRED
@@ -75,6 +81,9 @@ const ErrorComponent = ({ errorMessage }) => {
       <p
         css={`
           text-align: center;
+          ${mobile} {
+            font-size: 12px;
+          }
         `}
       >
         See logs for more information.
@@ -86,12 +95,9 @@ const ErrorComponent = ({ errorMessage }) => {
           display: flex;
           align-items: center;
           margin-bottom: 16px;
-        `}
-      >
-        <button
-          css={`
+
+          & button {
             display: inline-block;
-            background: ${primary_color};
             padding: 10px;
             box-sizing: border-box;
             border-radius: 10px;
@@ -101,6 +107,18 @@ const ErrorComponent = ({ errorMessage }) => {
             & span {
               color: #ffff;
             }
+            ${mobile} {
+              font-size: 10px;
+              min-width: 80px;
+              padding: 7px;
+              border-radius: 5px;
+            }
+          }
+        `}
+      >
+        <button
+          css={`
+            background: ${primary_color};
           `}
           onClick={() => {
             window.location.reload();
@@ -110,17 +128,7 @@ const ErrorComponent = ({ errorMessage }) => {
         </button>
         <button
           css={`
-            display: inline-block;
             background: ${secondary_color};
-            padding: 10px;
-            box-sizing: border-box;
-            border-radius: 10px;
-            min-width: 150px;
-            margin: 0px 10px;
-            color: #ffff;
-            & span {
-              color: #ffff;
-            }
           `}
           onClick={() => {
             window.location.assign("/");
@@ -130,17 +138,7 @@ const ErrorComponent = ({ errorMessage }) => {
         </button>
         <button
           css={`
-            display: inline-block;
             background: ${primary_color};
-            padding: 10px;
-            box-sizing: border-box;
-            border-radius: 10px;
-            min-width: 150px;
-            margin: 0px 10px;
-            color: #ffff;
-            & span {
-              color: #ffff;
-            }
           `}
           onClick={() => {
             window.open(window.location.href);
@@ -158,6 +156,10 @@ const ErrorComponent = ({ errorMessage }) => {
             background: #fffafa;
             border: 1px solid #d63384;
             border-radius: 10px;
+            ${mobile} {
+              font-size: 10px;
+              padding: 7px;
+            }
           `}
         >
           {errorMessage}
