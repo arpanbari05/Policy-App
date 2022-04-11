@@ -62,6 +62,7 @@ const TextInput = ({
     state => state.proposalPage.proposalData,
   );
   const checkAllChar = (value, checkValue) => {
+    console.log(checkValue);
     let check = true;
     for (let i in value) {
       if (checkValue.includes(value[i])) {
@@ -188,7 +189,9 @@ const TextInput = ({
                 if (
                   checkAllChar(
                     e.target.value,
-                    forbiddedSymbols.concat("qwertyuiopasdfghjklzxcvbnm"),
+                    forbiddedSymbols.concat(
+                      "qwertyuiopasdfghjklzxcvbnm".split(""),
+                    ),
                   )
                 ) {
                   onChange(e);
