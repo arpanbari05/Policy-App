@@ -37,15 +37,15 @@ const DropDown = ({
     directUpdateValue,
     value,
   });
-
+console.log("fbfnlsdvd",value,selectOption)
+  // value = selectOption[value]
 
   useEffect(() => {
     console.log("sfsvbjksf",value,selectOption,values)
     if(value && name !== "gender" && name !== "title" && name !== "marital_status"){
       if(selectOption[value] && values && values[name] !== selectOption[value]){
-        directUpdateValue(name,selectOption[value]);
+        directUpdateValue(name,value);
       }else if(!selectOption[value]) deleteValue()
-
     }
   },[value])
 
@@ -66,7 +66,7 @@ const DropDown = ({
       <Select
       value={value}
         onChange={e => {
-          onChange(e, selectOption[e.target.value]);
+          onChange(e, e.target.value);
         }}
        
         disabled={
