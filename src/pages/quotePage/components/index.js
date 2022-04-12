@@ -23,7 +23,7 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
       css={`
         background-color: ${colors.secondary_shade};
         width: 18rem;
-        gap: 0.6rem;
+        // gap: 0.6rem;
         padding: 10px;
         height: 65px;
         font-size: 14px;
@@ -31,6 +31,10 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
 
         @media (max-width: 1390px) {
           width: 17rem;
+        }
+
+        &:not(:last-child) {
+          margin-right: 1em;
         }
       `}
     >
@@ -50,6 +54,7 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
           ${mq.mobile} {
             height: auto;
             width: 2em;
+            margin-right: 0.6rem;
           }
         `}
       />
@@ -62,7 +67,7 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
             ${quote.product.name.length > 30 && "font-size: 0.72rem;"}
 
             @media (max-width: 480px) {
-              font-size: .69rem;
+              font-size: 0.69rem;
               width: 75px;
               white-space: nowrap;
               overflow: hidden !important;
@@ -107,6 +112,10 @@ export function CompareTrayAdd(props) {
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+
+        &:not(:last-child) {
+          margin-right: 1em;
         }
       `}
       {...props}

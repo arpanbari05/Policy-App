@@ -14,7 +14,7 @@ const WideCustomDD = ({
 
   return (
     <>
-      <FloatingTitle PrimaryColor={colors.primary_color}>
+      <FloatingTitle primaryColor={colors.primary_color}>
         Deductible
       </FloatingTitle>
       <DDOuter
@@ -41,7 +41,7 @@ const WideCustomDD = ({
                 setShowDD(false);
                 setShowError(false);
               }}
-              PrimaryColor={colors.primary_color}
+              primaryColor={colors.primary_color}
               key={index}
             >
               {item.display}
@@ -56,7 +56,7 @@ export default WideCustomDD;
 
 const FloatingTitle = styled.span`
   padding: 0px 5px;
-  color: ${({ PrimaryColor }) => PrimaryColor};
+  color: ${({ primaryColor }) => primaryColor};
   font-size: 13px;
   font-weight: 700;
   position: absolute;
@@ -122,7 +122,7 @@ const DDItem = styled.section`
   font-weight: 700;
   border-radius: 5px;
   &:hover {
-    background: ${({ PrimaryColor }) => PrimaryColor};
+    background: ${({ primaryColor }) => primaryColor};
     color: #fff;
   }
 `;

@@ -47,7 +47,7 @@ function RiderCard({
     <>
       {(!parent_rider || parent_selected) && (
         <RiderCardWrap
-          PrimaryColor={PrimaryColor}
+          primaryColor={PrimaryColor}
           isMandatory={isMandatory}
           {...props}
           isRiderSelected={isRiderSelectedCorrected}
@@ -326,9 +326,9 @@ const RiderCardWrap = styled.div`
     padding: 5px 3px;
   }
   &:hover {
-    border-color: ${props => props.PrimaryColor};
+    border-color: ${props => props.primaryColor};
     .riderName_productDetail_custmizePlan {
-      color: ${props => props.PrimaryColor};
+      color: ${props => props.primaryColor};
     }
     box-shadow: 0 8px 12px 0 rgb(16 24 48 / 12%);
 

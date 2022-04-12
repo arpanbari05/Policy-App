@@ -17,7 +17,7 @@ const Sharequotespopup = ({ onClick = () => {} }) => {
 
   const clearHandler = () => {
     dispatch(replaceShareQuotes([]));
-    dispatch(setShareType({}));
+    dispatch(setShareType({ value: "share", label: "Share quotes" }));
   };
   return quotesToShare.length &&
     showSharePopup &&

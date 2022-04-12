@@ -211,9 +211,9 @@ const Wrapper = styled.div`
 `;
 const PlanCard = styled.div`
   & h3 {
-    color: ${props => props.PrimaryColor};
-    background-color: ${props => props.PrimaryShade};
-    border: 1px solid ${props => props.PrimaryColor};
+    color: ${props => props.primaryColor};
+    background-color: ${props => props.primaryShade};
+    border: 1px solid ${props => props.primaryColor};
     border-radius: 15px;
     width: max-content;
     font-size: 24px;
@@ -225,7 +225,7 @@ const PlanCard = styled.div`
     margin-bottom: 37px;
   }
   & svg {
-    color: ${props => props.PrimaryColor};
+    color: ${props => props.primaryColor};
     width: 23px;
     height: 22px;
   }
@@ -276,8 +276,8 @@ function HeaderCard({ content }) {
       height={`400px`}
     >
       <PlanCard
-        PrimaryColor={colors.primary_color}
-        PrimaryShade={colors.primary_shade}
+        primaryColor={colors.primary_color}
+        primaryShade={colors.primary_shade}
       >
         <div className="mb-3">
           {isLoading || isUninitialized ? (

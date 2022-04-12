@@ -28,15 +28,11 @@ export function Header() {
         color: #fff;
       `}
     >
-      <div
-        className="d-flex align-items-center"
-        css={`
-          gap: 1em;
-        `}
-      >
+      <div className="d-flex align-items-center">
         <BackButtonMobile
           css={`
             color: #fff;
+            margin-right: 10px;
           `}
           path={getUrlWithEnquirySearch(`/quotes/${groupCode}`)}
         />
@@ -258,6 +254,9 @@ export function AddPlanCard({ compareQuotes, children, ...props }) {
         ${mq.mobile} {
           padding: 1em;
           background-color: ${colors.primary_shade};
+          &:not(:last-child) {
+            margin-right: 1em;
+          }
         }
       `}
       {...props}

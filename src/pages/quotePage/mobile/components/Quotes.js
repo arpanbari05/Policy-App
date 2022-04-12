@@ -132,7 +132,7 @@ function CompareTray({ quotes = [], onRemove, onClose }) {
       <div
         className="mt-2 d-flex justify-content-around"
         css={`
-          gap: 1em;
+          // gap: 1em;
         `}
       >
         {quotes.map((quote, idx) => (
@@ -184,9 +184,10 @@ function QuoteCards({ quotesData, cashlessHospitalsCount, compare, ...props }) {
 
   return (
     <div
-      className={`position-relative mt-3 ${
-        collapsedQuotes.length ? "mb-4" : ""
-      }`}
+      css={`
+        margin-bottom: 1.8em;
+      `}
+      className={`position-relative mt-3`}
       {...props}
     >
       <div
@@ -415,18 +416,15 @@ function QuoteCard({
         </div>
       )}
       <div className="p-2 d-flex align-items-center justify-content-between">
-        <div
-          className="d-flex"
-          css={`
-            gap: 1em;
-          `}
-        >
+        <div className="d-flex align-items-center">
           <img
             src={logoSrc}
             alt={quote.company_alias}
             css={`
               width: 2.73em;
+              height: 2em;
               object-fit: contain;
+              margin-right: 6px;
             `}
           />
           <div>

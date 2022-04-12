@@ -306,7 +306,6 @@ const Tab = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4em;
   background: ${props => props.color};
   position: sticky;
   border-bottom: 1px solid #dcdcdc;
@@ -334,5 +333,8 @@ const TabItem = styled.div`
     left: 0;
     border-radius: 20px 20px 0 0;
   }
-`}
+  `}
+  &:not(:last-child) {
+    margin-right: 40px;
+  }
 `;

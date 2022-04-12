@@ -127,7 +127,6 @@ function ComparePage() {
       <section
         className="p-3 d-flex position-sticky"
         css={`
-          gap: 1em;
           top: 0;
           background-color: #fff;
           z-index: 999;
@@ -411,6 +410,9 @@ function CompareFeatureValue({ quote, sectionTitle, featureTitle, onLoad }) {
       css={`
         display: flex;
         flex-direction: column;
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
       `}
     >
       {sectionTitle === "What's not covered?" ? (

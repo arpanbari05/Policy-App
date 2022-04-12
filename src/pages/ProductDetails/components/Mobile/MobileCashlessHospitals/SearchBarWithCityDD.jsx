@@ -14,8 +14,8 @@ const SearchBarWithCityDD = ({ searchText, setSearchText }) => {
   return (
     <SearchBarWithCityDDOuter>
       <CityDD
-        PrimaryColor={colors.primary_color}
-        PrimaryShade={colors.primary_shade}
+        primaryColor={colors.primary_color}
+        primaryShade={colors.primary_shade}
       />
       <SearchBar onChange={searchInputChangeHandler} value={searchText} />
     </SearchBarWithCityDDOuter>
@@ -34,7 +34,7 @@ const CityDD = ({ PrimaryColor, PrimaryShade }) => {
   const { groupCode } = useParams();
 
   return (
-    <CityDDOuter PrimaryColor={PrimaryColor} PrimaryShade={PrimaryShade}>
+    <CityDDOuter primaryColor={PrimaryColor} PrimaryShade={PrimaryShade}>
       {
         data?.data?.data?.groups.find(
           singleGroup => singleGroup.id === +groupCode,
@@ -48,13 +48,13 @@ const CityDDOuter = styled.div`
   height: 60px;
   font-size: 19px;
   font-weight: 600;
-  border: 1px solid ${({ PrimaryColor }) => PrimaryColor};
-  background-color: ${({ PrimaryShade }) => PrimaryShade};
+  border: 1px solid ${({ primaryColor }) => primaryColor};
+  background-color: ${({ primaryShade }) => primaryShade};
   border-radius: 10px 0 0 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ PrimaryColor }) => PrimaryColor};
+  color: ${({ primaryColor }) => primaryColor};
   @media (max-width: 1017px) {
     height: 45px;
     font-size: 15px;

@@ -20,23 +20,23 @@ function Quotes({ sortBy = "relevence", ...props }) {
   let mergedQuotes = data;
 
   if (data) {
-    mergedQuotes = data.filter(
+    mergedQuotes = data?.filter(
       icQuotes =>
         icQuotes?.data?.data?.length &&
         !!icQuotes?.data?.data[0]?.total_premium,
     ); // filter non-zero premium quotes.
-    mergedQuotes = data.map(icQuotes => ({
+    mergedQuotes = data?.map(icQuotes => ({
       ...icQuotes,
       data: { data: mergeQuotes(icQuotes?.data?.data, { sortBy }) },
     })); // filter particular-ic quotes .
     if (sortBy === "premium-low-to-high") {
-      mergedQuotes = mergedQuotes.filter(
+      mergedQuotes = mergedQuotes?.filter(
         icQuotes => !!icQuotes?.data?.data[0]?.length,
       ); // filter zero array.
-      mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) => {
+      mergedQuotes = mergedQuotes?.sort((icQuotesA, icQuotesB) => {
         // calculating riders Premium
         let ridersPremiumA = 0;
-        icQuotesA.data.data[0][0]?.mandatory_riders?.forEach(
+        icQuotesA?.data.data[0][0]?.mandatory_riders?.forEach(
           rider => (ridersPremiumA += rider?.total_premium),
         );
         let ridersPremiumB = 0;
@@ -45,7 +45,7 @@ function Quotes({ sortBy = "relevence", ...props }) {
         );
 
         // sort logic based on ridersPremium
-        return icQuotesA.data.data[0][0].total_premium + ridersPremiumA >
+        return icQuotesA?.data?.data[0][0].total_premium + ridersPremiumA >
           icQuotesB.data.data[0][0].total_premium + ridersPremiumB
           ? 1
           : -1;
@@ -77,18 +77,18 @@ function Quotes({ sortBy = "relevence", ...props }) {
     >
       {mergedQuotes?.map(insurersQuotes => (
         <QuoteCards
-          key={insurersQuotes.company_alias}
-          quotesData={insurersQuotes.data}
-          cashlessHospitalsCount={insurersQuotes.cashless_hospitals_count}
+          key={insurersQuotes?.company_alias}
+          quotesData={insurersQuotes?.data}
+          cashlessHospitalsCount={insurersQuotes?.cashless_hospitals_count}
           compare={quotesCompare}
           sortBy={sortBy}
         />
       ))}
       {isLoading ? <CardSkeletonLoader /> : null}
-      {quotesCompare.isQuotesOnCompare ? (
+      {quotesCompare?.isQuotesOnCompare ? (
         <CompareQuotesTray
           compare={quotesCompare}
-          onClose={quotesCompare.reset}
+          onClose={quotesCompare?.reset}
         />
       ) : null}
     </div>
@@ -111,7 +111,7 @@ function CompareQuotesTray({ compare, onClose }) {
   );
 
   const handleCompareClick = () => {
-    updateCompareQuotes(compare.quotes);
+    updateCompareQuotes(compare?.quotes);
     history.push(getUrlWithEnquirySearch(`/compare/${groupCode}`));
   };
 
@@ -151,14 +151,14 @@ function CompareQuotesTray({ compare, onClose }) {
             }
           `}
         >
-          {compare.quotes.map(quote => (
+          {compare?.quotes?.map(quote => (
             <CompareQuoteTrayItem
               quote={quote}
-              key={quote.company_alias + quote.sum_insured}
+              key={quote?.company_alias + quote?.sum_insured}
               onRemove={compare.removeQuote}
             />
           ))}
-          {Array.from({ length: 3 - compare.quotes.length }).map((_, idx) => (
+          {Array.from({ length: 3 - compare?.quotes.length }).map((_, idx) => (
             <CompareTrayAdd key={idx} />
           ))}
         </div>

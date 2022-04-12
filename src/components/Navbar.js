@@ -447,22 +447,21 @@ function Info({ label, value, onlyDesktop = false, children, ...props }) {
       css={`
         padding: 0 0.79em;
         font-size: 0.7rem;
-        gap: 0.67em;
+        // gap: 0.67em;
         min-width: max-content;
         &:not(:last-child) {
           border-right: 1px solid ${colors.secondary_shade};
         }
 
         @media (max-width: 767px) {
-          gap: 0;
           padding: 0 7px;
           font-size: 10.5px;
-          gap: 3px;
+          // gap: 3px;
           display: ${onlyDesktop ? "none" : "flex"} !important;
         }
         @media (max-width: 406px) {
           // font-size: 10px;
-          gap: 2px;
+          // gap: 2px;
           padding: 0 5px;
         }
       `}
@@ -472,6 +471,11 @@ function Info({ label, value, onlyDesktop = false, children, ...props }) {
         css={`
           text-transform: capitalize;
           color: ${colors.primary_color};
+          margin-right: 0.67em;
+
+          @media (max-width: 768px) {
+            margin-right: 2px;
+          }
         `}
       >
         {label}

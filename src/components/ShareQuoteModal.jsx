@@ -663,7 +663,7 @@ function ShareStep2({
     >
       <ShareOption
         className="d-flex align-items-center justify-content-between  mb-3"
-        PrimaryColor={PrimaryColor}
+        primaryColor={PrimaryColor}
       >
         <div className="d-flex align-items-center position-relative w-100">
           <div className="icon_wrapper">
@@ -698,7 +698,7 @@ function ShareStep2({
 
       <ShareOption
         className="d-flex mb-3 align-items-center justify-content-between w-100"
-        PrimaryColor={PrimaryColor}
+        primaryColor={PrimaryColor}
       >
         <div className="d-flex align-items-center">
           <div className="icon_wrapper">
@@ -731,7 +731,7 @@ function ShareStep2({
 
       <ShareOption
         className="d-flex mb-3 align-items-center justify-content-between w-100"
-        PrimaryColor={PrimaryColor}
+        primaryColor={PrimaryColor}
       >
         <div className="d-flex align-items-center">
           <div className="icon_wrapper">
@@ -816,8 +816,8 @@ const ShareOption = styled.div`
   .share_btn {
     border-radius: 4px;
     padding: 15px 40px !important;
-    background-color: ${props => props.PrimaryColor};
-    border: solid 2px ${props => props.PrimaryColor};
+    background-color: ${props => props.primaryColor};
+    border: solid 2px ${props => props.primaryColor};
     color: #fff;
     font-weight: 600;
     font-size: 14px;
@@ -1030,6 +1030,10 @@ const StepWrapper = styled.div`
       left: 0;
       border-radius: 20px 20px 0 0;
     }
+
+    &:not(:last-child) {
+      margin-right: 2em;
+    }
   `}
 `;
 
@@ -1051,7 +1055,6 @@ const Flex = styled.div`
   display: flex;
   align-items center;
   justify-content: center;
-  gap: ${props => props.gap || "10px"};
   margin-bottom: 15px;
   width: calc(100% + 2rem);
   margin-left: -1rem;

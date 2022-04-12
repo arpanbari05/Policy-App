@@ -106,9 +106,12 @@ const ShareButton = styled.button`
   font-size: 0.79rem;
   // margin: 0 15px;
   font-weight: bold;
+  justify-content: center;
 
   @media (max-width: 768px) {
     background: transparent;
     height: 30px;
+    padding: 0;
+    width: 65px;
   }
 `;
