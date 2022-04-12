@@ -48,11 +48,12 @@ const DateComp = ({
   };
 
   const getOpentoDate = val => {
-    console.log("fvbdwedfewdwk",val)
-    if (val && val.length === 4 && Number(age[0]) > 1) {
+    if (val && val.length === 4 && (Number(age[0]) > 1 || parseInt(val) !== parseInt(currentYear))) {
       return getMoment(`${currentDate}-${currentMonth + 1}-${val}`);
     }
-    if (val && val.length === 4 && Number(age[0]) < 1) {
+    if (val && val.length === 4 && Number(age[0]) < 1 && parseInt(val) === parseInt(currentYear)) {
+    console.log("fvbdwedfewdwk",val)
+
       return getMoment(`${currentDate}-${currentMonth - (Number(age[0])+1)}-${val}`);
     }
     if (val && val.length === 10) return getMoment(val);
@@ -119,7 +120,7 @@ const DateComp = ({
               :new Date(
                 currentYear,
                 currentMonth - Number(age[0].toString().split(".")[1]),
-                currentDate,
+                currentDate - (`${age[0]}`.includes(".") ? 1 : 0),
               )
           }
           // - `${age[0]}`.includes(".") ? 1 : 0

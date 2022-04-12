@@ -31,7 +31,7 @@ const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
           {htmlProps && <div dangerouslySetInnerHTML={{ __html: htmlProps }} />}
           {/* Based on your medical declaration, this plan is not valid for you,
               Please choose a different plan/insurer */}
-          {msg && <p>{msg}</p>}
+          {msg && <p style={{wordBreak: "break-all"}}>{msg}</p>}
           <ButtonWrapper>
             <button className="btn" onClick={handleClose}>
               OK

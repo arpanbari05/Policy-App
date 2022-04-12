@@ -6,7 +6,10 @@ import ProposalCheckBox from "../../components/Common/ProposalSummary/summaryChe
 import SummaryTab from "../ProposalPage/components/SummaryTab/SummaryTab";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import oneInsureLogo from "../../assets/logos/fyntune.png";
+import oneInsurepdf from "../../assets/logos/oneinsure_pdf.png";
+import renewBuyPDF from "../../assets/logos/renewbuy_pdf.png";
+import pincPDF from "../../assets/logos/pinc_pdf.png";
+import fyntunePDF from "../../assets/logos/fyntune_pdf.png";
 import { getProposalFields } from "../ProposalPage/schema.slice";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import ProposalSummaryTab from "./../../components/Common/ProposalSummary/ProposalSummary";
@@ -59,7 +62,12 @@ const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
   const [loader, setLoader] = useState(false);
   const { getGroupMembers } = useMembers();
-
+const pdfLogoSelector = {
+  "fyntune": fyntunePDF,
+  "oneinsure": oneInsurepdf,
+  "renewbuy": renewBuyPDF,
+  "pinc": pincPDF,
+}
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -96,7 +104,8 @@ const ProposalSummary = () => {
   const cart = cartEntries;
   // TODO: Here groupCode cant be fetched from the url to make additional discount request.
   const totalPremium = useUSGILifeStyleDiscount(); //? CALCULATED BY US.
-
+    const tenantName = frontendBoot?.data?.tenant?.alias;
+    // console.log("Sgvskfjgvfsdv",frontendBoot.data.tenant.alias)
   const totalPremiumPolicies = getPolicyPremium(policyStatus);
 
   // TO SEND PDF SUMMARY TO BACKEND
@@ -121,7 +130,7 @@ const ProposalSummary = () => {
         // let position = 0;
         doc.text(10, 10, "Proposal Summary");
         // doc.text(10, 12, "Proposal Summary");
-        // doc.addImage(oneInsureLogo, "PNG", 70, 4,25,10);
+        pdfLogoSelector[tenantName] && doc.addImage(pdfLogoSelector[tenantName], "PNG", 150, 2,30,15);
         console.log("dsvbjks", canvas);
         doc.addImage(
           imgData,
