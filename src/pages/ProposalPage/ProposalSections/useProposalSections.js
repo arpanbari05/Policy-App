@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams, Link } from "react-router-dom";
-import { renderField, performValidations } from "../../../components/FormBuilder/formUtils";
+import {
+  renderField,
+  performValidations,
+} from "../../../components/FormBuilder/formUtils";
 
 import {
   saveProposalData,
@@ -26,7 +29,6 @@ const useProposalSections = ({
 }) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
-  console.log("dbdgbgbndgbd 2", errors, values);
   const [errorInField, setErrorInField] = useState(true);
   const schema = useSelector(({ schema }) => schema.currentSchema);
   const history = useHistory();
@@ -35,7 +37,9 @@ const useProposalSections = ({
 
   const enquiryId = queryStrings.get("enquiryId");
 
-  const [isValid, setValid] = useState( partialLength ? Array(partialLength) : undefined,);
+  const [isValid, setValid] = useState(
+    partialLength ? Array(partialLength) : undefined,
+  );
 
   const { data: equriesData } = useGetEnquiriesQuery();
 
@@ -51,18 +55,14 @@ const useProposalSections = ({
   const dispatch = useDispatch();
 
   const checkAllValid = values => {
-    console.log("gsfdvskv",values)
-    if (values instanceof Object && Object.keys(values).length)
-      return Object.keys(values).map(group =>
-        Object.values(values[group]).every(val => val?.isValid),
+    if (values instanceof Object && Object.keys(values)?.length)
+      return Object.keys(values)?.map(group =>
+        Object.values(values[group])?.every(val => val?.isValid),
       );
     else return false;
   };
 
-  console.log("dgjkbdfb", checkAllValid(values));
-
   const havingAnyError = (errors, key) => {
-    console.log("fvbdkvsv", errors, key);
     if (key) {
       return Object.values(errors[key]).some(el => Boolean(el));
     } else {
@@ -75,16 +75,17 @@ const useProposalSections = ({
     // return true
   };
 
-  console.log("dfbnfdb", havingAnyError(errors), errors);
-
   const everyRequiredFilled = (schema, values = {}) => {
-
     if (Array.isArray(schema))
       return schema
         .filter(
           el => el.validate && el.validate.required && renderField(el, values),
         )
-        .every(el => values[el.name] && !performValidations(el.validate,values,el.name));
+        .every(
+          el =>
+            values[el.name] &&
+            !performValidations(el.validate, values, el.name),
+        );
     else
       return Object.keys(schema)
         .map(key =>
@@ -115,7 +116,6 @@ const useProposalSections = ({
     insuredDetails,
     callback,
   }) => {
-    
     if (updationFor === "Other Details") {
       let updatedParent = { ...checkFor };
 
@@ -161,7 +161,6 @@ const useProposalSections = ({
         callback,
       });
     } else if (updationFor === "Insured Details") {
-      console.log("svdsbvsjvbsk INSURED CALLED");
       let updatedObj = { ...checkFor.self };
       let checkForKeys = Object.keys(checkFor.self);
       checkForKeys.forEach(key => {
@@ -186,19 +185,12 @@ const useProposalSections = ({
 
   const schemaKeys = Object.keys(schema);
   const getUnfilledForm = updatedProposalData => {
-    console.log(
-      "skvjnsdjklvb",
-      schemaKeys.indexOf(
-        schemaKeys.find((key, index) => !updatedProposalData[key]),
-      ),
-    );
     return schemaKeys.indexOf(
       schemaKeys.find((key, index) => !updatedProposalData[key]),
     );
   };
 
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
-
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
         setActive(schemaKeys.indexOf(formName));
@@ -211,7 +203,7 @@ const useProposalSections = ({
         // setShow(havingAnyError(errors).indexOf(false));
         return;
       }
-    }else if(!checkAllValid(values).every(el => el === true)){
+    } else if (!checkAllValid(values).every(el => el === true)) {
       setActive(schemaKeys.indexOf(formName));
     }
 
@@ -257,10 +249,8 @@ const useProposalSections = ({
             callback();
 
             revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
-            console.log("Svskjfvsf",responseData)
-            if (
-              responseData?.failed_bmi?.health
-            ) {
+
+            if (responseData?.failed_bmi?.health) {
               dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
               dispatch(
                 setShowBMI(
@@ -277,7 +267,6 @@ const useProposalSections = ({
                 callback: () => {},
               });
             } else {
-             
               setActive(getUnfilledForm(updatedProposalData));
             }
           },
@@ -365,7 +354,7 @@ const useProposalSections = ({
     additionalErrors,
     setErrors,
     errors,
-    equriesData
+    equriesData,
   };
 };
 
