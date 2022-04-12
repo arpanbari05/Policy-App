@@ -40,6 +40,8 @@ export default function ShareTypeModal({ onClose }) {
     dispatch(setShareType({ ...share }));
     if (share.value === "quotation_list") {
       dispatch(setShowSharePopup(false));
+    } else if (share.value === "specific_quotes") {
+      dispatch(setShowSharePopup(true));
     }
     onClose && onClose();
   };
