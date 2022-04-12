@@ -113,7 +113,7 @@ const RoundDD = ({
             {ageList.map(data => {
               return (
                 <ListItem
-                  PrimaryColor={colors.primary_color}
+                  primaryColor={colors.primary_color}
                   className={`GreetingDD__ListItem`}
                   onClick={() => handleSelect(data.title, data)}
                   key={uuidv4()}
@@ -273,7 +273,7 @@ export const ListItem = styled.div`
 
   &:hover,
   &.active {
-    background-color: ${props => props.PrimaryColor};
+    background-color: ${props => props.primaryColor};
     color: #fff;
   }
 `;

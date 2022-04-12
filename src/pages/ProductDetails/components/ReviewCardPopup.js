@@ -750,8 +750,9 @@ function ProductDetailsCard({ cartItem }) {
 
       {displayRiders.length > 0 ? <hr /> : null}
       <div class="row w-100 flex-row">
-        {displayRiders.map(rider => (
+        {displayRiders.map((rider, index) => (
           <div
+            key={index}
             css={`
               margin: 2px;
               width: fit-content;
@@ -887,7 +888,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
       >
         {groups.map(groupCode => (
           <ProductCard
-            key={groupCode.id}
+            key={groupCode?.id}
             groupCode={groupCode.id}
             group={groupCode}
             onClose={onClose}

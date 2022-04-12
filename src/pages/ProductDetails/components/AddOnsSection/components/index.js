@@ -273,7 +273,7 @@ export const AddOnsNav = styled(Tabs)`
     }
     .nav-link.active {
       border-color: #0a87ff;
-      background: ${props => props.PrimaryColor};
+      background: ${props => props.primaryColor};
       color: white !important;
       border-radius: 50px;
       &::after {

@@ -17,6 +17,7 @@ import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import { small } from "../../utils/mediaQueries";
 import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
+import checkImg from "../../assets/images/check_green.png";
 
 const ThankYouPage = () => {
   const ls = new SecureLS();
@@ -31,13 +32,9 @@ const ThankYouPage = () => {
 
   const secondInterval = useRef(null);
 
-  const {
-    colors: {
-      primary_color: PrimaryColor,
-      secondary_color: SecondaryColor,
-      primary_shade: PrimaryShade,
-    },
-  } = useTheme();
+  const { colors } = useTheme();
+
+  const SecondaryColor = colors.secondary_color;
 
   const { policyStatus, policyLoading } = useSelector(
     state => state.proposalPage,
@@ -48,10 +45,6 @@ const ThankYouPage = () => {
   const {
     data: { tenant: tenantDetail, settings },
   } = useFrontendBoot();
-
-  const accountLoginLink = settings.account_login_link || "";
-
-  const shopMoreLink = settings.shop_more_link || "";
 
   const [loading, setLoading] = useState(false);
 
@@ -103,7 +96,7 @@ const ThankYouPage = () => {
     }
   }, [pathname]);
 
-  const htmlString = isSSOJourney()
+  const thankYouBanner = isSSOJourney()
     ? settings?.thank_you_banner_pos
     : settings?.thank_you_banner;
 
@@ -111,110 +104,6 @@ const ThankYouPage = () => {
     localStorage.getItem("groups") &&
     JSON.parse(localStorage.getItem("groups")).find(group => group.id);
 
-  const Disclaimer = ({ htmlStringDisclaimer }) => {
-    if (htmlStringDisclaimer) {
-      return (
-        <div
-          css={`
-            margin-top: 20px;
-            margin-left: 52px;
-            font-size: 20px !important;
-            color: ${PrimaryColor};
-            & a {
-              font-weight: bold;
-              text-decoration: underline;
-            }
-          `}
-          dangerouslySetInnerHTML={{
-            __html: htmlStringDisclaimer,
-          }}
-        />
-      );
-    } else if (
-      policyStatus.every(
-        item => item.underwriting_status === "underwriting_approval",
-      )
-    ) {
-      return (
-        <>
-          <div
-            className="policy__disclaimer"
-            css={`
-              color: ${PrimaryColor} !important;
-            `}
-          >
-            You can track your policy status on{" "}
-            <a href={accountLoginLink}>My Account Page.</a> at anytime.
-          </div>
-          <div>
-            <a
-              href={shopMoreLink}
-              className="shopmore__button  btn-link"
-              css={`
-                color: ${PrimaryColor} !important;
-                border-color: ${PrimaryColor} !important;
-              `}
-            >
-              Shop More {">"}
-            </a>
-          </div>
-        </>
-      );
-    } else if (policyStatus.every(item => item.status === "policy_issued"))
-      return (
-        <>
-          {" "}
-          <div
-            className="policy__disclaimer"
-            css={`
-              color: ${PrimaryColor} !important;
-            `}
-          >
-            Your policy document has been successfully saved in{" "}
-            <a href={accountLoginLink}>My Account Page.</a> You can visit the My
-            Account page to retrieve your policy copy at any time.
-          </div>
-          <div>
-            <a
-              href={shopMoreLink}
-              className="shopmore__button  btn-link"
-              css={`
-                color: ${PrimaryColor} !important;
-                border-color: ${PrimaryColor} !important;
-              `}
-            >
-              Shop More {">"}
-            </a>
-          </div>
-        </>
-      );
-    else
-      return (
-        <>
-          <div
-            className="policy__disclaimer"
-            css={`
-              color: ${PrimaryColor} !important;
-            `}
-          >
-            You can visit the <a href={accountLoginLink}>My Account Page.</a> to
-            retrieve your policy copy or track your policy status at any time.
-          </div>
-          <div>
-            <a
-              href={shopMoreLink}
-              className="shopmore__button  btn-link"
-              css={`
-                color: ${PrimaryColor} !important;
-                border-color: ${PrimaryColor} !important;
-              `}
-            >
-              Shop More {">"}
-            </a>
-          </div>
-        </>
-      );
-  };
   if (payment)
     return (
       <Page>
@@ -226,54 +115,29 @@ const ThankYouPage = () => {
               display: flex;
               justify-content: flex-end;
             `}
-          >
-            {/* <ShareQuoteModal
-              insurersFor={cartEntries?.map(
-                cart => cart?.product?.company?.alias,
-              )}
-              stage="THANK_YOU"
-            /> */}
-          </div>
+          ></div>
           <div className="hideOnMobile">
             <div className="thankheading__wrapper">
-              <div className="thankheading__message">
-                Thank you for choosing{" "}
-                {tenantDetail && tenantDetail.name
-                  ? tenantDetail.name
-                  : "Fyntune"}
-                !
-              </div>
+              {!thankYouBanner && (
+                <div className="thankheading__message">
+                  Thank you for choosing{" "}
+                  {tenantDetail && tenantDetail.name
+                    ? tenantDetail.name
+                    : "Fyntune"}
+                  !
+                </div>
+              )}
               <div className="thankheading__right">Your Purchase</div>
             </div>
             <div className="thankmain__wrapper">
               <div className="row">
-                <div className="col-lg-6">
-                  <div
-                    className="thankmain__message"
-                    css={`
-                      color: ${PrimaryColor} !important;
-                      background: ${PrimaryShade};
-                    `}
-                  >
-                    <div className="thankmain__check">
-                      <CheckMark />
-                    </div>
-                    <span>Your Payment for {total_premium} was successful</span>
-                  </div>
-                  <div>
-                    <div
-                      className="yellow__line"
-                      css={`
-                        background-color: ${SecondaryColor} !important;
-                      `}
-                    />
-                  </div>
-                  <div>
-                    {settings && (
-                      <Disclaimer htmlStringDisclaimer={htmlString} />
-                    )}
-                  </div>
-                </div>
+                <BannerArea
+                  thankYouBanner={thankYouBanner}
+                  settings={settings}
+                  total_premium={total_premium}
+                  colors={colors}
+                />
+
                 <div className="col-lg-6">
                   <div className="thankcard__wrapper">
                     {loading ? (
@@ -315,80 +179,16 @@ const ThankYouPage = () => {
                 <div style={{ padding: "20px 0px 30px" }}>
                   <img src={Success} alt="" className="img_success" />
                 </div>
-                <div
-                  style={{
-                    padding: "20px 0px",
-                    marginTop: "20px",
-                    fontWeight: "bold",
-                    fontSize: "21px",
-                  }}
-                >
-                  <span>Thankyou for choosing</span>
-                  <br />
-                  <span>
-                    {" "}
-                    {tenantDetail && tenantDetail.name
-                      ? tenantDetail.name
-                      : "Fyntune"}{" "}
-                    !
-                  </span>
-                </div>
-                <div
-                  style={{
-                    backgroundColor: `linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%) `,
-                    display: "flex",
-                    alignItems: "center",
-                    color: PrimaryColor,
-                    padding: "8px 10px",
-                    fontSize: "15px",
-                    whiteSpace: "nowrap",
-                    fontWeight: "bold",
-                    backgroundColor: PrimaryShade,
-                    borderRadius: "55px",
-                    // letterSpacing: "1px"
-                  }}
-                  css={`
-                    ${small} {
-                      font-size: 11px !important;
-                    }
-                  `}
-                >
-                  <div
-                    style={{
-                      backgroundColor: "#fff",
-                      color: "#e4fff0",
-                      borderRadius: "50%",
-                      height: "40px",
-                      width: "40px",
-                      marginRight: "5px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {
-                      <img
-                        src={Correct}
-                        alt=""
-                        css={`
-                          width: 40px;
-                        `}
-                      ></img>
-                    }
-                  </div>
-                  Your Payment for {total_premium} was successful
-                </div>
-                <div>
-                  <div
-                    className="yellow__line"
-                    style={{
-                      backgroundColor: SecondaryColor,
-                      marginLeft: "0px",
-                      width: "50px",
-                      height: "9px",
-                      marginTop: "20px",
-                    }}
-                  />
-                </div>
               </div>
+
+              <MobileBanner
+                colors={colors}
+                settings={settings}
+                tenantDetail={tenantDetail}
+                thankYouBanner={thankYouBanner}
+                total_premium={total_premium}
+              />
+
               <div>
                 {loading ? (
                   <Card />
@@ -411,63 +211,6 @@ const ThankYouPage = () => {
                   })
                 )}
               </div>
-
-              {htmlString && (
-                <div
-                  css={`
-                    text-align: center;
-                    margin-top: 20px;
-                    font-size: 14px;
-                    color: ${PrimaryColor};
-                    & a {
-                      font-weight: bold;
-                      text-decoration: underline;
-                    }
-                  `}
-                  dangerouslySetInnerHTML={{
-                    __html: isSSOJourney()
-                      ? settings?.thank_you_banner_pos
-                      : settings?.thank_you_banner,
-                  }}
-                ></div>
-              )}
-              {!htmlString && (
-                <div
-                  style={{
-                    margin: "10px",
-                    textAlign: "center",
-                  }}
-                >
-                  <p style={{ fontSize: "14px", lineHeight: "1.3" }}>
-                    Your policy document has been successfully saved in{" "}
-                    <a
-                      href={accountLoginLink}
-                      style={{
-                        color: PrimaryColor,
-                        borderBottom: `1px dashed ${PrimaryColor}`,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      My Account Page.
-                    </a>{" "}
-                    You can visit the My Account page to retrieve your policy
-                    copy at any time.
-                  </p>
-
-                  <p style={{ fontSize: "14px", marginTop: "20px" }}>
-                    <a
-                      href={shopMoreLink}
-                      style={{
-                        color: PrimaryColor,
-                        borderBottom: `1px dashed ${PrimaryColor}`,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Shop More {">"}
-                    </a>
-                  </p>
-                </div>
-              )}
             </Outer>
           </div>
         </>
@@ -483,34 +226,6 @@ const ThankYouPage = () => {
               <Container className="">
                 <Row>
                   <div className="bottom-banner" style={{ margin: "unset" }}>
-                    {/* <div className="text"
-                
-                  >
-                    
-                    <img src={Unsuccess}  className="img_unsuccess"
-                    alt="Unsuccess" 
-                  
-                    ></img>
-                   
-
-                
-                    
-                      <h3 className="title text-center unsuccess-text">
-                        Uh-oh! We were unable to <br></br>
-                        Process Your Payment{" "}
-                      </h3>
-                    
-                    
-                      <>
-                        {" "}
-                        <p className="text-p">
-                          It is a long established fact that a reader will be
-                          distracted by the readable content of a page when
-                          looking at its layout.
-                        </p>
-                      </>
-                    
-                  </div> */}
                     <div
                       css={`
                         display: flex;
@@ -536,9 +251,6 @@ const ThankYouPage = () => {
                         Uh OH! Payment Faiiled.
                       </h3>
                       <p className="text-p" style={{ textAlign: "center" }}>
-                        {/* It is a long established fact that a reader will be
-                          distracted by the readable content of a page when
-                          looking at its layout. */}
                         Don't worry. Please try again.
                       </p>
                       <div>
@@ -709,8 +421,424 @@ const ThankYouPage = () => {
 
 const Outer = styled.div`
   margin: 10px;
-
   height: fit-content;
 `;
+
+const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
+  return (
+    <div className="col-lg-6">
+      {!thankYouBanner && (
+        <>
+          <div
+            className="thankmain__message"
+            css={`
+              color: ${colors?.primary_color} !important;
+              background: ${colors?.primary_shade};
+            `}
+          >
+            <div className="thankmain__check">
+              <CheckMark />
+            </div>
+            <span>Your Payment for {total_premium} was successful</span>
+          </div>
+          <div>
+            <div
+              className="yellow__line"
+              css={`
+                background-color: ${colors?.secondary_color} !important;
+              `}
+            />
+          </div>
+          <div>
+            {settings && (
+              <Disclaimer
+                shopMoreLink={settings.shop_more_link || ""}
+                accountLoginLink={settings.account_login_link || ""}
+                colors={colors}
+              />
+            )}
+          </div>
+        </>
+      )}
+      {thankYouBanner && (
+        <div
+          className="col-mg-6"
+          css={`
+            box-sizing: border-box;
+            padding: 0px 30px;
+            padding-top: 20px;
+
+            & p:first-child {
+              font-size: 28px;
+              line-height: 1.21;
+              text-align: left;
+              color: #000000;
+              font-weight: bold;
+            }
+
+            & p:nth-child(2) {
+              width: fit-content;
+              color: ${colors?.primary_color};
+              background: ${colors?.primary_shade};
+              border-radius: 22px;
+              font-weight: 700;
+              padding: 14px 20px 14px 60px;
+              font-size: 22px;
+              min-height: 56px;
+              position: relative;
+
+              &::before {
+                content: "";
+                height: 40px;
+                width: 40px;
+                position: absolute;
+                margin-left: -45px;
+                margin-top: -5px;
+                border-radius: 100%;
+                background-image: url(${checkImg});
+                background-size: cover;
+              }
+            }
+
+            & p:nth-child(3) {
+              color: ${colors?.primary_color};
+              font-size: 20px !important;
+              a {
+                font-weight: 700;
+                text-decoration: underline;
+              }
+            }
+
+            & p:last-child {
+              color: ${colors?.primary_color};
+              font-size: 20px !important;
+              a {
+                font-weight: 700;
+                text-decoration: underline;
+              }
+            }
+          `}
+          dangerouslySetInnerHTML={{
+            __html: thankYouBanner?.replaceAll("₹X", total_premium),
+          }}
+        ></div>
+      )}
+    </div>
+  );
+};
+
+const Disclaimer = ({ colors, accountLoginLink, shopMoreLink }) => {
+  const { policyStatus } = useSelector(state => state.proposalPage);
+
+  if (
+    policyStatus.every(
+      item => item.underwriting_status === "underwriting_approval",
+    )
+  ) {
+    return (
+      <>
+        <div
+          className="policy__disclaimer"
+          css={`
+            color: ${colors?.primary_color} !important;
+          `}
+        >
+          You can track your policy status on{" "}
+          <a
+            css={`
+              color: ${colors?.primary_color} !important;
+              border-color: ${colors?.primary_color} !important;
+            `}
+            href={accountLoginLink}
+          >
+            My Account Page.
+          </a>{" "}
+          at anytime.
+        </div>
+        <div>
+          <a
+            href={shopMoreLink}
+            className="shopmore__button  btn-link"
+            css={`
+              color: ${colors?.primary_color} !important;
+              border-color: ${colors?.primary_color} !important;
+            `}
+          >
+            Shop More {">"}
+          </a>
+        </div>
+      </>
+    );
+  } else if (policyStatus.every(item => item.status === "policy_issued"))
+    return (
+      <>
+        {" "}
+        <div
+          className="policy__disclaimer"
+          css={`
+            color: ${colors?.primary_color} !important;
+          `}
+        >
+          Your policy document has been successfully saved in{" "}
+          <a
+            href={accountLoginLink}
+            css={`
+              color: ${colors?.primary_color} !important;
+              border-color: ${colors?.primary_color} !important;
+            `}
+          >
+            My Account Page.
+          </a>{" "}
+          You can visit the My Account page to retrieve your policy copy at any
+          time.
+        </div>
+        <div>
+          <a
+            href={shopMoreLink}
+            className="shopmore__button  btn-link"
+            css={`
+              color: ${colors?.primary_color} !important;
+              border-color: ${colors?.primary_color} !important;
+            `}
+          >
+            Shop More {">"}
+          </a>
+        </div>
+      </>
+    );
+  else
+    return (
+      <>
+        <div
+          className="policy__disclaimer"
+          css={`
+            color: ${colors?.primary_color} !important;
+          `}
+        >
+          You can visit the{" "}
+          <a
+            href={accountLoginLink}
+            css={`
+              color: ${colors?.primary_color} !important;
+              border-color: ${colors?.primary_color} !important;
+            `}
+          >
+            My Account Page.
+          </a>{" "}
+          to retrieve your policy copy or track your policy status at any time.
+        </div>
+        <div>
+          <a
+            href={shopMoreLink}
+            className="shopmore__button  btn-link"
+            css={`
+              color: ${colors?.primary_color} !important;
+              border-color: ${colors?.primary_color} !important;
+            `}
+          >
+            Shop More {">"}
+          </a>
+        </div>
+      </>
+    );
+};
+
+const MobileBanner = ({
+  thankYouBanner,
+  total_premium,
+  colors,
+  settings,
+  tenantDetail,
+}) => {
+  const shopMoreLink = settings.shop_more_link || "";
+  const accountLoginLink = settings.account_login_link || "";
+
+  if (!thankYouBanner)
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              padding: "20px 0px",
+              marginTop: "20px",
+              fontWeight: "bold",
+              fontSize: "21px",
+            }}
+          >
+            <span>Thankyou for choosing</span>
+            <br />
+            <span>
+              {" "}
+              {tenantDetail && tenantDetail.name
+                ? tenantDetail.name
+                : "Fyntune"}{" "}
+              !
+            </span>
+          </div>
+
+          <div
+            style={{
+              backgroundColor: `linear-gradient(90deg, ${colors?.primary_shade} 0%,rgb(255 255 255) 100%) `,
+              display: "flex",
+              alignItems: "center",
+              color: colors?.primary_color,
+              padding: "8px 10px",
+              fontSize: "15px",
+              whiteSpace: "nowrap",
+              fontWeight: "bold",
+              backgroundColor: colors?.primary_shade,
+              borderRadius: "55px",
+              // letterSpacing: "1px"
+            }}
+            css={`
+              ${small} {
+                font-size: 11px !important;
+              }
+            `}
+          >
+            <div
+              style={{
+                backgroundColor: "#fff",
+                color: "#e4fff0",
+                borderRadius: "50%",
+                height: "40px",
+                width: "40px",
+                marginRight: "5px",
+                fontWeight: "bold",
+              }}
+            >
+              {
+                <img
+                  src={Correct}
+                  alt=""
+                  css={`
+                    width: 40px;
+                  `}
+                ></img>
+              }
+            </div>
+            Your Payment for {total_premium} was successful
+          </div>
+          <div>
+            <div
+              className="yellow__line"
+              style={{
+                backgroundColor: colors?.secondary_color,
+                marginLeft: "0px",
+                width: "50px",
+                height: "9px",
+                marginTop: "20px",
+              }}
+            />
+          </div>
+        </div>
+        <div
+          style={{
+            margin: "10px",
+            textAlign: "center",
+          }}
+        >
+          <p style={{ fontSize: "14px", lineHeight: "1.3" }}>
+            Your policy document has been successfully saved in{" "}
+            <a
+              href={accountLoginLink}
+              style={{
+                color: colors?.primary_color,
+                borderBottom: `1px dashed ${colors?.primary_color}`,
+                fontWeight: "bold",
+              }}
+            >
+              My Account Page.
+            </a>{" "}
+            You can visit the My Account page to retrieve your policy copy at
+            any time.
+          </p>
+
+          <p style={{ fontSize: "14px", marginTop: "20px" }}>
+            <a
+              href={shopMoreLink}
+              style={{
+                color: colors?.primary_color,
+                borderBottom: `1px dashed ${colors?.primary_color}`,
+                fontWeight: "bold",
+              }}
+            >
+              Shop More {">"}
+            </a>
+          </p>
+        </div>
+      </>
+    );
+  if (thankYouBanner)
+    return (
+      <div
+        css={`
+          & p:first-child {
+            font-size: 21px;
+            line-height: 1.21;
+            text-align: center;
+            color: #000000;
+            font-weight: bold;
+          }
+
+          & p:nth-child(2) {
+            width: fit-content;
+            color: ${colors?.primary_color};
+            background: ${colors?.primary_shade};
+            border-radius: 22px;
+            font-weight: 700;
+            padding: 10px 10px 10px 28px;
+            font-size: 11px !important;
+            position: relative;
+            margin: 0 auto;
+
+            &::before {
+              content: "";
+              height: 20px;
+              width: 20px;
+              position: absolute;
+              margin-left: -20px;
+              margin-top: -2px;
+              border-radius: 100%;
+              background-image: url(${checkImg});
+              background-size: cover;
+            }
+          }
+
+          & p:nth-child(3) {
+            margin-top: 10px;
+            text-align: center;
+
+            font-size: 11px !important;
+            a {
+              font-weight: 700;
+              text-decoration: underline;
+              color: ${colors?.primary_color};
+            }
+          }
+
+          & p:last-child {
+            text-align: center;
+            color: ${colors?.primary_color};
+            font-size: 11px !important;
+            a {
+              font-weight: 700;
+              text-decoration: underline;
+            }
+          }
+        `}
+        dangerouslySetInnerHTML={{
+          __html: thankYouBanner?.replaceAll("₹X", total_premium),
+        }}
+      ></div>
+    );
+};
 
 export default ThankYouPage;
