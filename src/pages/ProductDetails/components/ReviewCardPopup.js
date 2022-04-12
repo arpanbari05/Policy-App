@@ -953,7 +953,9 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           <Button
             disabled={disableButton}
             onClick={() => {
-              history.push(propsoalPageLink);
+              window.location.href = `${
+                window.location.origin + propsoalPageLink
+              }`;
             }}
           >
             Proceed to Proposal
