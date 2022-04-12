@@ -143,7 +143,7 @@ const TextInput = ({
             if (
               checkAllChar(
                 e.target.value,
-                forbiddedSymbols.concat("qwertyuiopasdfghjklzxcvbnm".split("")),
+                forbiddedSymbols.concat("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".split("")),
               )
             ) {
               onChange(e);
