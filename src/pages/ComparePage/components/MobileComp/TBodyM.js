@@ -531,7 +531,7 @@ const TBodyM = ({
         plans={plans}
         index={index}
         title={title}
-        PrimaryColor={PrimaryColor}
+        primaryColor={PrimaryColor}
       />
     );
   } else {
@@ -665,7 +665,7 @@ const PermanentExclusion = ({
                     ]?.features[0]?.feature_value
                   }
                   index={index}
-                  PrimaryColor={PrimaryColor}
+                  primaryColor={PrimaryColor}
                 />
               );
             }

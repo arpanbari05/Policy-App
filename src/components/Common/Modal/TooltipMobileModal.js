@@ -20,7 +20,7 @@ const ToolTipMobileModal = ({ title, show, content, handleClose }) => {
       className={`showOnMobile hideOnDesktop`}
       onHide={handleClose}
     >
-      <ModalTitle PrimaryColor={PrimaryColor}>{title}</ModalTitle>
+      <ModalTitle primaryColor={PrimaryColor}>{title}</ModalTitle>
       <ModalContent>{content}</ModalContent>
     </MobileModal>
   );
@@ -56,7 +56,7 @@ const ModalTitle = styled.h5`
   font-size: 13px;
   font-family: "Inter-Regular";
   font-weight: bold;
-  color: ${props => props.tPrimaryColor};
+  color: ${props => props.primaryColor};
   font-size: 15px;
   font-weight: 900;
   text-align: center;

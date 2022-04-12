@@ -19,8 +19,8 @@ const RadioButton = ({
   return (
     <div>
       <RadioInput
-        PrimaryColor={colors.primary_color}
-        PrimaryShade={colors.primary_shade}
+        primaryColor={colors.primary_color}
+        primaryShade={colors.primary_shade}
         type="radio"
         name={label}
         id={id}
@@ -67,8 +67,8 @@ export const RadioInput = styled.input`
     margin-bottom: 10px;
     color: #000;
     opacity: 1;
-    border: solid 1px ${props => props.PrimaryColor};
-    background-color: ${props => props.PrimaryShade};
+    border: solid 1px ${props => props.primaryColor};
+    background-color: ${props => props.primaryShade};
     font-size: 15px;
     font-weight: 900;
   }

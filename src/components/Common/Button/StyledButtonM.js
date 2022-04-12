@@ -14,7 +14,7 @@ const StyledButtonM = ({
 
   return (
     <Button
-      PrimaryColor={colors.primary_color}
+      primaryColor={colors.primary_color}
       type={type}
       data-page="1"
       name="next"
@@ -43,7 +43,7 @@ const Button = styled.button.attrs(props => ({
   outline: none;
   box-shadow: none;
   width: 95% !important;
-  background: ${props => props.PrimaryColor};
+  background: ${props => props.primaryColor};
   color: white;
   border: 0 none;
   cursor: pointer;

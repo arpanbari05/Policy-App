@@ -30,27 +30,27 @@ export const AddOnBuyButton = ({
   selected,
   onClick = () => {},
   children,
-  PrimaryColor,
-  PrimaryShade,
+  primaryColor,
+  primaryShade,
 }) => (
   <button
     css={`
       width: 100%;
       text-align: left;
-      background-color: ${PrimaryShade};
+      background-color: ${primaryShade};
       /* height: 39px; */
       position: relative;
       /* border-radius: 12px; */
       border-radius: 6px;
       font-size: 20px;
-      color: ${selected ? PrimaryColor : "unset"};
+      color: ${selected ? primaryColor : "unset"};
       font-weight: 900;
       text-align: center;
       padding: 10px;
 
       :hover {
         .premium {
-          color: ${PrimaryColor} !important;
+          color: ${primaryColor} !important;
         }
       }
 
@@ -828,8 +828,8 @@ function AddOnCard({
         <AddOnBuyButton
           onClick={handleBuy}
           selected={selected.length}
-          PrimaryColor={PrimaryColor}
-          PrimaryShade={PrimaryShade}
+          primaryColor={PrimaryColor}
+          primaryShade={PrimaryShade}
         >
           {displayPremium}
         </AddOnBuyButton>
@@ -963,8 +963,8 @@ function AddOnCard({
           <AddOnBuyButton
             onClick={handleBuy}
             selected={selected.length}
-            PrimaryColor={PrimaryColor}
-            PrimaryShade={PrimaryShade}
+            primaryColor={PrimaryColor}
+            primaryShade={PrimaryShade}
           >
             <div className="d-flex align-items-center w-100 justify-content-center">
               <span className="premium">{displayPremium}</span>{" "}
@@ -1179,7 +1179,7 @@ const AddOnsNav = styled(Tabs)`
     }
     .nav-link.active {
       border-color: #0a87ff;
-      background: ${props => props.PrimaryColor};
+      background: ${props => props.primaryColor};
       color: white !important;
       border-radius: 50px;
       &::after {
@@ -1288,7 +1288,7 @@ function AddOnCoveragesSection() {
         <AddOnsNav
           id="addon-coverages-tabs"
           transition={false}
-          PrimaryColor={PrimaryColor}
+          primaryColor={PrimaryColor}
         >
           {hasKeys(topUps) ? (
             <Tab eventKey="top-up" title="Super Top-up">

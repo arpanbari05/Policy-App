@@ -19,8 +19,8 @@ const RadioCapsule = ({
   return (
     <>
       <RadioInput
-        PrimaryColor={primary_color}
-        SecondaryShade={secondary_shade}
+        primaryColor={primary_color}
+        secondaryShade={secondary_shade}
         className="checkbox-tools"
         type={"radio"}
         id={id}
@@ -40,7 +40,7 @@ export default RadioCapsule;
 
 const RadioInput = styled.input`
   &:not(:checked) + label {
-    background-color: ${props => props.SecondaryShade};
+    background-color: ${props => props.secondaryShade};
     /* box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%); */
     color: #000;
     text-align: center;
@@ -55,9 +55,9 @@ const RadioInput = styled.input`
   &:checked + label,
   &:not(:checked) + label:hover {
     background-color: #fff;
-    color: ${props => props.PrimaryColor};
+    color: ${props => props.primaryColor};
     text-align: center !important;
-    border: 1px solid ${props => props.PrimaryColor};
+    border: 1px solid ${props => props.primaryColor};
     border-radius: 50px;
     line-height: 12px;
   }

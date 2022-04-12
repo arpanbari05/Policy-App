@@ -81,7 +81,6 @@ const FormBuilder = ({
     fetchErrors,
     fetchValid,
   );
-
   useEffect(() => {
     if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
       autoPopulateSelfOtherDetails({
@@ -190,7 +189,8 @@ const FormBuilder = ({
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
-  console.log("svdsmb", values);
+      
+      console.log("dfjklsgvb 2", values);
 
   return (
     <>
@@ -469,7 +469,10 @@ const FormBuilder = ({
                       selectedValues={values}
                       data={item.data}
                       onChange={(e, value) => {
+                        console.log("dgbfkjsdlb",e, value,item)
+
                         if (item.parent && item.members) {
+
                           insertValue(
                             item.parent,
                             item.members,
