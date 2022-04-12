@@ -81,7 +81,6 @@ const FormBuilder = ({
     fetchErrors,
     fetchValid,
   );
-
   useEffect(() => {
     if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
       autoPopulateSelfOtherDetails({
@@ -137,7 +136,7 @@ const FormBuilder = ({
     if (submitTrigger) {
       triggerValidation();
       // scrolltoTop if errors
-      scrollToErrors();
+      scrollToErrors && scrollToErrors();
       setSubmit("SUBMIT");
     }
   }, [submitTrigger]);
@@ -190,7 +189,8 @@ const FormBuilder = ({
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
-  console.log("svdsmb", values);
+      
+      console.log("dfjklsgvb 2", values);
 
   return (
     <>
@@ -469,7 +469,10 @@ const FormBuilder = ({
                       selectedValues={values}
                       data={item.data}
                       onChange={(e, value) => {
+                        console.log("dgbfkjsdlb",e, value,item)
+
                         if (item.parent && item.members) {
+
                           insertValue(
                             item.parent,
                             item.members,
@@ -538,8 +541,15 @@ const FormBuilder = ({
                           "SAVE_AS_IT_IS",
                         );
                       }}
-                      additionalQuestionsToggle= {formName === "Medical Details" && Array.isArray(schema[index+1])? schema[index+1] : []}
-                      readOnly={item.readOnly || checkReadOnly(item.name,formName)}
+                      additionalQuestionsToggle={
+                        formName === "Medical Details" &&
+                        Array.isArray(schema[index + 1])
+                          ? schema[index + 1]
+                          : []
+                      }
+                      readOnly={
+                        item.readOnly || checkReadOnly(item.name, formName)
+                      }
                       allValues={proposalData}
                       onFocus={() => setBlockScrollEffect(false)}
                       customMembers={

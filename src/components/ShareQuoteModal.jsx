@@ -114,6 +114,14 @@ const ShareQuoteModal = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (shareQuotes) {
+      if (shareType.value === "quotation_list") {
+        handleShow();
+        setStep(2);
+      } else if (shareType.value === "specific_quotes") {
+        setStep(1);
+      }
+    }
     const getImage = async () => {
       const id = stage === "COMPARE" && "printCompare";
       const image = id && (await printImageById(id));
