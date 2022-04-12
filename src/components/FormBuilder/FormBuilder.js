@@ -137,7 +137,7 @@ const FormBuilder = ({
     if (submitTrigger) {
       triggerValidation();
       // scrolltoTop if errors
-      scrollToErrors();
+      scrollToErrors && scrollToErrors();
       setSubmit("SUBMIT");
     }
   }, [submitTrigger]);
@@ -538,8 +538,15 @@ const FormBuilder = ({
                           "SAVE_AS_IT_IS",
                         );
                       }}
-                      additionalQuestionsToggle= {formName === "Medical Details" && Array.isArray(schema[index+1])? schema[index+1] : []}
-                      readOnly={item.readOnly || checkReadOnly(item.name,formName)}
+                      additionalQuestionsToggle={
+                        formName === "Medical Details" &&
+                        Array.isArray(schema[index + 1])
+                          ? schema[index + 1]
+                          : []
+                      }
+                      readOnly={
+                        item.readOnly || checkReadOnly(item.name, formName)
+                      }
                       allValues={proposalData}
                       onFocus={() => setBlockScrollEffect(false)}
                       customMembers={
