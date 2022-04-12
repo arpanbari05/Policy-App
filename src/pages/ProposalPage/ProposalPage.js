@@ -198,7 +198,7 @@ console.log("Sgbsfnjl",active)
             <>
               {" "}
               <MainTitle
-                PrimaryColor={PrimaryColor}
+                primaryColor={PrimaryColor}
                 bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
               >
                 {activeForm}
@@ -228,7 +228,7 @@ console.log("Sgbsfnjl",active)
                 setProposerDactive(true);
               }}
             >
-              <MainTitle PrimaryColor={PrimaryColor}>
+              <MainTitle primaryColor={PrimaryColor}>
                 Proposer Details
               </MainTitle>
 
@@ -257,7 +257,7 @@ console.log("Sgbsfnjl",active)
             <>
               {" "}
               <MainTitle
-                PrimaryColor={PrimaryColor}
+                primaryColor={PrimaryColor}
                 bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
               >
                 {activeForm}
@@ -282,7 +282,7 @@ console.log("Sgbsfnjl",active)
                 proposalData["Proposer Details"] && setActive(1);
               }}
             >
-              <MainTitle PrimaryColor={PrimaryColor}>Insured Details</MainTitle>
+              <MainTitle primaryColor={PrimaryColor}>Insured Details</MainTitle>
               {proposalData[listOfForms[0]] && (
                 <div
                   css={`
@@ -309,7 +309,7 @@ console.log("Sgbsfnjl",active)
             <>
               {" "}
               <MainTitle
-                PrimaryColor={PrimaryColor}
+                primaryColor={PrimaryColor}
                 bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
               >
                 {activeForm}
@@ -337,7 +337,7 @@ console.log("Sgbsfnjl",active)
                   setActive(2);
               }}
             >
-              <MainTitle PrimaryColor={PrimaryColor}>Medical Details</MainTitle>
+              <MainTitle primaryColor={PrimaryColor}>Medical Details</MainTitle>
               {proposalData[listOfForms[1]] && !bmiFailBlock && (
                 <div
                   css={`
@@ -365,7 +365,7 @@ console.log("Sgbsfnjl",active)
             <>
               {" "}
               <MainTitle
-                PrimaryColor={PrimaryColor}
+                primaryColor={PrimaryColor}
                 bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
               >
                 Nominee Details
@@ -390,7 +390,7 @@ console.log("Sgbsfnjl",active)
                 proposalData["Medical Details"] && setActive(3);
               }}
             >
-              <MainTitle PrimaryColor={PrimaryColor}>Nominee Details</MainTitle>
+              <MainTitle primaryColor={PrimaryColor}>Nominee Details</MainTitle>
               {proposalData[listOfForms[2]] && (
                 <div
                   css={`
@@ -723,7 +723,7 @@ const MainTitle = styled.h2`
   font-weight: 900;
 
   background: ${props => props.bg};
-  color: ${props => props.bg && props.PrimaryColor};
+  color: ${props => props.bg && props.primaryColor};
   font-size: 21px;
   padding: 10px;
 `;

@@ -152,7 +152,7 @@ const PlanContainerM = ({
         </Row>
       ) : (
         <EmptyContainer
-          PrimaryColor={PrimaryColor}
+          primaryColor={PrimaryColor}
           className="IC_product_compare_card blank"
           style={{
             width: "42% !important",
@@ -190,7 +190,7 @@ export default PlanContainerM;
 
 const EmptyContainer = styled.div`
   border: 2px dashed #e2a6a9;
-  color: ${props => props.PrimaryColor} !important;
+  color: ${props => props.primaryColor} !important;
   background: #f3f4f9;
   border-radius: 12px;
   height: 157px;

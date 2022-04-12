@@ -59,7 +59,7 @@ const MobileHeader = ({
     });
   };
   return (
-    <StyledHeader PrimaryColor={PrimaryColor}>
+    <StyledHeader primaryColor={PrimaryColor}>
       <a
         style={{ color: "white" }}
         className="first-container"
@@ -206,7 +206,7 @@ const Styledul = styled.ul`
 const StyledHeader = styled.div`
   display: none;
   height: 57px;
-  background: ${props => props.PrimaryColor};
+  background: ${props => props.primaryColor};
   align-items: center;
   justify-content: space-between;
   & a {

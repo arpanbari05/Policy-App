@@ -37,7 +37,7 @@ function AddOnSection({ cartEntry }) {
         heading="Add-Ons Coverages"
         subHeading="Boost your selected Health plan by adding below Add-on Coverages"
       >
-        <AddOnsNav PrimaryColor={colors.primary_color}>
+        <AddOnsNav primaryColor={colors.primary_color}>
           <Tab eventKey="top-up" title="Super Top-up">
             <AddOnTabContentWrap>
               <AddOnDesc>
