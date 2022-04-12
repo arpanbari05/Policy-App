@@ -37,7 +37,7 @@ export default function ShareTypeModal({ onClose }) {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    dispatch(setShareType(share));
+    dispatch(setShareType({ ...share }));
     if (share.value === "quotation_list") {
       dispatch(setShowSharePopup(false));
     }

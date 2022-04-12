@@ -139,6 +139,16 @@ const TextInput = ({
               onChange(e);
               setFallbackValue(e.target.value);
             }
+          } else if (checkValidation?.matches === "pincode") {
+            if (
+              checkAllChar(
+                e.target.value,
+                forbiddedSymbols.concat("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".split("")),
+              )
+            ) {
+              onChange(e);
+              setFallbackValue(e.target.value);
+            }
           } else if (checkAllChar(e.target.value, forbiddedSymbols)) {
             if (checkValidation?.matches === "onlyDigits") {
               if (regForOnlyDigit.test(e.target.value)) {
@@ -185,7 +195,7 @@ const TextInput = ({
                 e.target.value = e.target.value.toLocaleUpperCase();
               }
               if (maxLength && e.target.value.length > maxLength) return;
-              if (checkValidation.matches === "pincode") {
+              if (checkValidation?.matches === "pincode") {
                 if (
                   checkAllChar(
                     e.target.value,
