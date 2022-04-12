@@ -79,29 +79,6 @@ const DateComp = ({
     value = "";
   }
 
-  let additionalYear = 0;
-  const values = value?.split("-");
-  const selectedDate = values
-    ? new Date(`${values[1]}-${values[0]}-${values[2]}`)
-    : null;
-  if (selectedDate) {
-    if (
-      selectedDate?.getMonth() > currentMonth ||
-      (selectedDate?.getMonth() >= currentMonth &&
-        selectedDate?.getDate() > currentDate)
-    ) {
-      additionalYear += 1;
-    }
-  }
-
-  console.log({
-    additionalYear,
-    month: selectedDate?.getMonth(),
-    selDate: selectedDate?.getDate(),
-    currentMonth,
-    currentDate,
-  });
-
   const openDatepicker = () => startRef.current.setOpen(true);
   return (
     <InputContainer error={!isFocused ? error : null} readOnly={readOnly}>
@@ -125,9 +102,9 @@ const DateComp = ({
           minDate={
             age && age[1] >= 1
               ? new Date(
-                  currentYear - (age[1] + additionalYear),
+                  currentYear - (age[1] + 1),
                   currentMonth,
-                  currentDate - additionalYear,
+                  currentDate + 1,
                 )
               : ""
           }
