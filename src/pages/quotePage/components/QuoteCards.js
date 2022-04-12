@@ -37,13 +37,13 @@ function QuoteCards({
 
   const [show, setShow] = useState(false);
 
-  const mergedQuotes = quotesData.data;
+  const mergedQuotes = quotesData?.data;
 
   if (!mergedQuotes.length) return null;
 
   const firstQuote = mergedQuotes[0];
 
-  const collapsedQuotes = mergedQuotes.slice(1);
+  const collapsedQuotes = mergedQuotes?.slice(1);
 
   const handleCompareChange = ({ checked, quote }) => {
     if (checked) {
@@ -92,7 +92,7 @@ function QuoteCards({
               {collapsedQuotes.map(quote => (
                 <QuoteCard
                   {...getQuoteCardProps(quote)}
-                  key={Object.values(quote)[0].product.id}
+                  key={Object.values(quote)[0]?.product.id}
                   sortBy={sortBy}
                   cashlessHospitalsCount={cashlessHospitalsCount}
                 />
@@ -101,7 +101,7 @@ function QuoteCards({
           </div>
         </div>
       </Collapse>
-      {!!collapsedQuotes.length && (
+      {!!collapsedQuotes?.length && (
         <div
           className="px-3"
           css={`
@@ -124,7 +124,7 @@ function QuoteCards({
               setShow(!show);
             }}
           >
-            {!show ? `${collapsedQuotes.length} More Plans ` : "Hide Plans "}
+            {!show ? `${collapsedQuotes?.length} More Plans ` : "Hide Plans "}
             {show ? <FaChevronUp /> : <FaChevronDown />}
           </SeeText>
         </div>
@@ -164,20 +164,20 @@ function QuoteCard({
   const sumInsureds = isDeductibleJourney
     ? quotes
         .filter(
-          quote => parseInt(quote.deductible) === parseInt(selectedDeductible),
+          quote => parseInt(quote?.deductible) === parseInt(selectedDeductible),
         )
-        .map(quote => parseInt(quote.sum_insured))
+        .map(quote => parseInt(quote?.sum_insured))
         .sort((a, b) => a - b)
-    : quotes.map(quote => parseInt(quote.sum_insured)).sort((a, b) => a - b);
+    : quotes.map(quote => parseInt(quote?.sum_insured)).sort((a, b) => a - b);
 
   const [selectedSumInsured, setSelectedSumInsured] = useState();
   const [defaultActiveKey, setdefaultActiveKey] = useState("plan-details");
 
   const quote = quotes.find(quote =>
     isDeductibleJourney
-      ? parseInt(quote.deductible) === parseInt(selectedDeductible) &&
-        parseInt(quote.sum_insured) === parseInt(selectedSumInsured)
-      : parseInt(quote.sum_insured) === parseInt(selectedSumInsured),
+      ? parseInt(quote?.deductible) === parseInt(selectedDeductible) &&
+        parseInt(quote?.sum_insured) === parseInt(selectedSumInsured)
+      : parseInt(quote?.sum_insured) === parseInt(selectedSumInsured),
   );
 
   useEffect(() => {
@@ -207,7 +207,7 @@ function QuoteCard({
 
   const isCompareQuote = checkFn(quote);
 
-  const { logo: logoSrc } = getCompany(quote.company_alias);
+  const { logo: logoSrc } = getCompany(quote?.company_alias);
 
   const handleSumInsuredChange = evt => {
     const { value } = evt;
@@ -235,9 +235,9 @@ function QuoteCard({
     }
   };
 
-  let features = isDeductibleJourney ? quoteFeatures : quote.features;
-  features = features.filter(feature =>
-    featuresDisplayedOnQuoteCard.includes(feature.code),
+  let features = isDeductibleJourney ? quoteFeatures : quote?.features;
+  features = features?.filter(feature =>
+    featuresDisplayedOnQuoteCard.includes(feature?.code),
   );
 
   // const handleSeeDetailsClick = (clickedFrom) => {
@@ -268,7 +268,7 @@ function QuoteCard({
   // };
 
   return (
-    <div id={quote.company_alias} {...props}>
+    <div id={quote?.company_alias} {...props}>
       {quote?.usp_message?.length > 0 && (
         <div
           css={`
@@ -303,7 +303,7 @@ function QuoteCard({
         >
           <img
             src={logoSrc}
-            alt={quote.company_alias}
+            alt={quote?.company_alias}
             css={`
               height: 2.4rem;
             `}
@@ -315,7 +315,7 @@ function QuoteCard({
               font-size: 0.8rem;
             `}
           >
-            {quote.product.name}
+            {quote?.product?.name}
           </span>
           <button
             onClick={() => {
@@ -347,16 +347,16 @@ function QuoteCard({
             margin-bottom: 10px;
           `}
         >
-          {features.slice(1, 3).map(feature => (
+          {features?.slice(1, 3)?.map(feature => (
             <QuoteFeature
-              key={feature.code}
+              key={feature?.code}
               feature={feature}
-              value={feature.value}
+              value={feature?.value}
             />
           ))}
-          {features.slice(0, 1).map(feature => (
+          {features?.slice(0, 1)?.map(feature => (
             <QuoteFeature
-              key={feature.code}
+              key={feature?.code}
               feature={feature}
               icon={<IoIosArrowForward />}
               onNavigate={() => {
@@ -368,9 +368,9 @@ function QuoteCard({
           ))}
           {features.slice(3).map(feature => (
             <QuoteFeature
-              key={feature.code}
+              key={feature?.code}
               feature={feature}
-              value={feature.value}
+              value={feature?.value}
             />
           ))}
         </div>
@@ -500,7 +500,7 @@ function QuoteCard({
                 )}
               </div>
             )}
-            {shareType.value === "specific_quotes" ? (
+            {shareType?.value === "specific_quotes" ? (
               // true ? (
               <div
                 css={`
@@ -565,7 +565,7 @@ function QuoteCard({
               >
                 <label
                   className="d-flex align-items-center rounded"
-                  htmlFor={quote.product.id + quote.total_premium}
+                  htmlFor={quote?.product?.id + quote?.total_premium}
                   css={`
                     color: ${colors.font.one};
                     font-weight: 900;
@@ -614,7 +614,7 @@ function QuoteCard({
                 <input
                   className="visually-hidden"
                   type={"checkbox"}
-                  id={quote.product.id + quote.total_premium}
+                  id={quote?.product?.id + quote?.total_premium}
                   name="compare-quote"
                   checked={isCompareQuote}
                   onChange={handleCompareChange}
@@ -734,10 +734,10 @@ const shortDescriptionFeatures = [
 ];
 
 function QuoteFeature({ feature, icon, onNavigate, value }) {
-  const showShortDescription = shortDescriptionFeatures.includes(feature.code);
+  const showShortDescription = shortDescriptionFeatures.includes(feature?.code);
   const description = showShortDescription
-    ? feature.short_description
-    : feature.description;
+    ? feature?.short_description
+    : feature?.description;
 
   const { colors } = useTheme();
 

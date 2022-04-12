@@ -89,6 +89,9 @@ export function ProductCard({
       css={`
         box-shadow: ${boxShadows.five};
         gap: 20px;
+        &:not(:last-child) {
+          margin-right: 1em;
+        }
         ${mq.mobile} {
           box-shadow: none;
           border: 1px solid ${colors.border.two};

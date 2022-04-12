@@ -67,6 +67,10 @@ function AddPlansModal({ onClose, compareQuotes = [], ...props }) {
           css={`
             font-weight: 900;
             font-size: 1.37rem;
+
+            @media (max-width: 768px) {
+              font-size: 1rem;
+            }
           `}
         >
           Add upto 3 plans to compare
@@ -427,12 +431,13 @@ function CompareQuoteCard({ quote, onRemove, ...props }) {
     >
       <CircleCloseButton placeOnCorner onClick={handleCloseClick} />
       <div className="d-flex align-items-center">
-        <img src={logo} height={"37"} alt={quote.company_alias} />
+        <img src={logo} height={"32"} alt={quote.company_alias} />
         <h2
           className="mx-3"
           css={`
-            font-size: 1rem;
+            font-size: 0.85rem;
             font-weight: 900;
+            word-break: break-all;
           `}
         >
           {quote.product.name}
