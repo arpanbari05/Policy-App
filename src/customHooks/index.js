@@ -40,6 +40,7 @@ import {
   getRiderCartData,
   isRelianceInfinityPlan,
   isRiderPresent,
+  isSSOJourney,
   isTopUpQuote,
   matchQuotes,
   mergeQuotes,
@@ -232,6 +233,7 @@ export function useFrontendBoot() {
     tenantName,
     tenantAlias,
     data,
+    settings: data?.settings,
     insuredMembers: enquiryData?.data?.input?.members,
     groups: enquiryData?.data?.groups,
   };
@@ -2247,4 +2249,17 @@ export const useUSGILifeStyleDiscount = () => {
   };
 
   return totalPremiumToDisplay();
+};
+
+export const useClaimBanner = () => {
+  const { settings } = useFrontendBoot();
+
+  const claimBannerArray = isSSOJourney()
+    ? settings?.claim_process_pos
+    : settings?.claim_process;
+
+  return {
+    claimBannerArray,
+    shouldShowClaimBanner: claimBannerArray ? true : false,
+  };
 };
