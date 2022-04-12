@@ -101,26 +101,29 @@ const useInsuredDetails = (
             let memberAge = membersDataFromGreetingPage.find(
               member => member.type === memberType,
             )?.age;
-            console.log("cghdhd", Number(memberAge));
+            console.log("dfbkvd",memberAge)
             let estimatedMemberDOB;
             if (
               `${memberAge}`.includes("Month") ||
-              `${`${memberAge}`}`.includes(".")
+              `${memberAge}`.includes(".")
             ) {
+            console.log("cghdhdadfd", Number(memberAge));
+
               let current = new Date();
-              current.setMonth(
-                current.getMonth() -
-                  (`${memberAge}`.includes(".")
-                    ? parseInt(`${memberAge}`.split(".")[1])
-                    : parseInt(memberAge)) -
-                  1,
-              );
+              // current.setMonth(
+              //   current.getMonth() -
+              //     (`${memberAge}`.includes(".")
+              //       ? parseInt(`${memberAge}`.split(".")[1])
+              //       : parseInt(memberAge)) -
+              //     1,
+              // );
 
               estimatedMemberDOB = `${current.getUTCFullYear()}`;
-            } else {
+            }
+             else {
               estimatedMemberDOB = `${currentYear - parseInt(memberAge)}`;
             }
-
+            console.log("fbjklbdxb",estimatedMemberDOB)
             let title = memberType === "spouse" || memberType === "mother" || memberType === "mother_in_law" ? "mrs":""
             prefilledValues[memberType] = {
               ...(values && values.hasOwnProperty(memberType)
