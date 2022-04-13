@@ -139,15 +139,32 @@ const TextInput = ({
               onChange(e);
               setFallbackValue(e.target.value);
             }
-          } else if (checkValidation?.matches === "pincode") {
+          } else if (
+            checkValidation?.matches === "pincode" ||
+            checkValidation?.matches === "aadhar" ||
+            checkValidation?.matches === "mobile"
+          ) {
             if (
               checkAllChar(
                 e.target.value,
-                forbiddedSymbols.concat("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".split("")),
+                forbiddedSymbols.concat(
+                  "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".split(
+                    "",
+                  ),
+                ),
               )
             ) {
-              onChange(e);
-              setFallbackValue(e.target.value);
+              if (checkValidation?.matches === "mobile") {
+                if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0]))) {
+                  onChange(e);
+                  setFallbackValue(e.target.value);
+                } else {
+                  return;
+                }
+              } else {
+                onChange(e);
+                setFallbackValue(e.target.value);
+              }
             }
           } else if (checkAllChar(e.target.value, forbiddedSymbols)) {
             if (checkValidation?.matches === "onlyDigits") {
@@ -195,20 +212,6 @@ const TextInput = ({
                 e.target.value = e.target.value.toLocaleUpperCase();
               }
               if (maxLength && e.target.value.length > maxLength) return;
-              if (checkValidation?.matches === "pincode") {
-                if (
-                  checkAllChar(
-                    e.target.value,
-                    forbiddedSymbols.concat(
-                      "qwertyuiopasdfghjklzxcvbnm".split(""),
-                    ),
-                  )
-                ) {
-                  onChange(e);
-                  setFallbackValue(e.target.value);
-                  return;
-                }
-              }
               onChange(e);
               setFallbackValue(e.target.value);
             }

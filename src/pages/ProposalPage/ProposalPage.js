@@ -28,7 +28,7 @@ import {
   useTheme,
   useUrlEnquiry,
   useCart,
-  useUSGILifeStyleDiscount,
+  useUSGIDiscounts,
 } from "../../customHooks";
 import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
@@ -62,7 +62,7 @@ const setBlockTabSwitch = (val) => blockTabSwitch = val
 
   const [listOfForms, setListOfForms] = useState([]);
 
-  const totalPremium = useUSGILifeStyleDiscount();
+  const totalPremium = useUSGIDiscounts();
 
   useEffect(() => {
     if (currentSchema instanceof Object)

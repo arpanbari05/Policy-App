@@ -14,16 +14,13 @@ import Card from "../../../../components/Card";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { BackgroundBorderTitle } from "../../../ProductDetails/components/ReviewCart";
-import { useGetAdditionalDiscountsQuery } from "../../../../api/api";
 import {
   useCart,
   useFrontendBoot,
   useMembers,
   useTheme,
   useAdditionalDiscount,
-  useRider,
-  useRevisedPremiumModal,
-  useUSGILifeStyleDiscount,
+  useRider
 } from "../../../../customHooks";
 import {
   amount,
