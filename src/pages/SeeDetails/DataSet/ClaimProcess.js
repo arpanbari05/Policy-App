@@ -12,8 +12,9 @@ import ClaimMain from "../components/ClaimProcess/ClaimProcessMain/ClaimMain";
 import { useSelector } from "react-redux";
 import "styled-components/macro";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
-import { useTheme } from "../../../customHooks";
+import { useClaimBanner, useTheme } from "../../../customHooks";
 import { tabletAndMobile } from "../../../utils/mediaQueries";
+import ClaimBanner from "../components/ClaimProcess/ClaimProcessBanner/ClaimBanner";
 
 const brokerData = (data, colors) => {
   if (
@@ -184,6 +185,8 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
   const { loading } = useSelector(state => state.seeDetails);
 
   const { colors } = useTheme();
+
+  const { claimBannerArray, shouldShowClaimBanner } = useClaimBanner();
 
   return (
     <>
@@ -384,7 +387,12 @@ const ClaimProcess = ({ ActiveMainTab, claimProccess, claimform }) => {
                         marginTop: "27px",
                       }}
                     >
-                      <ClaimMain claimProccess={claimProccess} />
+                      {!shouldShowClaimBanner && (
+                        <ClaimMain claimProccess={claimProccess} />
+                      )}
+                      {shouldShowClaimBanner && (
+                        <ClaimBanner claimBannerArray={claimBannerArray} />
+                      )}
                     </Col>
                   </Row>
                 </div>

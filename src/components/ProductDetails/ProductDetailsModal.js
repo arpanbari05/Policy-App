@@ -12,6 +12,7 @@ import {
   useGetProductFeaturesQuery,
 } from "../../api/api";
 import {
+  useClaimBanner,
   useCompanies,
   useFrontendBoot,
   useQuote,
@@ -25,6 +26,7 @@ import {
   figureToWords,
   getDisplayPremium,
   getPlanFeatures,
+  isSSOJourney,
 } from "../../utils/helper";
 import CardSkeletonLoader from "../Common/card-skeleton-loader/CardSkeletonLoader";
 import { some } from "lodash";
@@ -297,11 +299,6 @@ function RenderClaimProcess({ quote, ...props }) {
     productBrochureQuery.isLoading,
     productBrochureQuery.isUninitialized,
   ]);
-
-  // const isError = some([
-  //   claimProcessQuery.isError,
-  //   productBrochureQuery.isError,
-  // ]);
 
   if (isLoading)
     return (

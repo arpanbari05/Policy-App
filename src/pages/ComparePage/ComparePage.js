@@ -350,7 +350,7 @@ function OptionalCoversSection({ compareQuotes, select }) {
           select={select}
           description={DESCRIPTIONS["unique_features"]}
         >
-          {compareQuotes.map((quote, idx) => (
+          {compareQuotes?.map((quote, idx) => (
             <OptionalCoversValue
               quote={quote}
               onChange={handleRidersChange}
@@ -361,7 +361,7 @@ function OptionalCoversSection({ compareQuotes, select }) {
       ) : (
         select.selectedSectionView["Optional Covers"] && (
           <FeatureRow title="Optional Covers" select={select}>
-            {compareQuotes.map((quote, idx) => (
+            {compareQuotes?.map((quote, idx) => (
               <OptionalCoversValue
                 quote={quote}
                 onChange={handleRidersChange}

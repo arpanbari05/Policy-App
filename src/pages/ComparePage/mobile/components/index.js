@@ -311,7 +311,7 @@ export function OptionalCoversValue({ quote, onChange }) {
     query: { isLoading, isFetching, isUninitialized },
     riders,
     handleChange,
-  } = useRiders({ quote, onChangeFunc: handleRidersChange, groupCode });
+  } = useRiders({ quote, onChange: handleRidersChange, groupCode });
 
   return (
     <FeatureValue isLoading={isLoading || isFetching || isUninitialized}>
