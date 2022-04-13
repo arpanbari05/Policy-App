@@ -60,7 +60,10 @@ import {
 } from "../pages/ComparePage/compare.slice";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { setIsPopupOn } from "../pages/ProposalPage/ProposalSections/ProposalSections.slice";
+import {
+  setIsPopupOn,
+  setShowErrorPopup,
+} from "../pages/ProposalPage/ProposalSections/ProposalSections.slice";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -2098,7 +2101,7 @@ export const useRevisedPremiumModal = () => {
       ),
     );
     setRevisedPremiumCheckHitByUs(true);
-    next();
+ next();
   }; /* Performs refetch from the server */
 
   useEffect(() => {
@@ -2108,8 +2111,44 @@ export const useRevisedPremiumModal = () => {
 
     // if (+prevTotalPremium !== +updatedTotalPremium) {
     if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
-      revisedPremiumPopupToggle.on();
-      dispatch(setIsPopupOn(true));
+      let stringedRidersName = "";
+      for (let i = 0; i < previousCartEntries.length; i++) {
+        const previousEntry = previousCartEntries[i];
+        const currentEntry = cartEntries.find(
+          entry => entry.id === previousEntry.id,
+        );
+        let ridersInPreviousCart = previousEntry.health_riders.map(
+          rider => rider.name,
+        );
+        let ridersInCurrentCart = currentEntry.health_riders.map(
+          rider => rider.name,
+        );
+
+        if (ridersInPreviousCart.length !== ridersInCurrentCart.length) {
+          let removedRiderName = ridersInPreviousCart.find(
+            rider => ridersInCurrentCart.indexOf(rider) < 0,
+          );
+          stringedRidersName += !stringedRidersName
+            ? removedRiderName
+            : ` and ${removedRiderName}`;
+        }
+      }
+      if (stringedRidersName) {
+        dispatch(
+          setShowErrorPopup({
+            show: true,
+            head: "",
+            msg: `Based on changes in Insured Date of Birth ${stringedRidersName} is unavailable. Please click OK & proceed.`,
+            onCloseCallBack: () => {
+              revisedPremiumPopupToggle.on();
+              dispatch(setIsPopupOn(true));
+            },
+          }),
+        );
+      } else {
+        revisedPremiumPopupToggle.on();
+        dispatch(setIsPopupOn(true));
+      }
     }
   }, [
     prevTotalPremium,
