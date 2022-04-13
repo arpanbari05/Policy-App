@@ -103,7 +103,6 @@ const ProposalSummary = () => {
   const frontendData = { data: frontendBoot.data };
   const cart = cartEntries;
 
-  // TODO: Here groupCode cant be fetched from the url to make additional discount request.
   const totalPremium = useUSGIDiscounts();
 
   const tenantName = frontendBoot?.data?.tenant?.alias;
@@ -271,28 +270,6 @@ const ProposalSummary = () => {
         id={"proposalSummaryPage"}
         backButton={backButtonForNav}
       >
-        {/*<button
-          css={`
-            position: fixed;
-            bottom: 100px;
-            right: 25px;
-            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-            z-index: 9999;
-            background-color: ${PrimaryColor};
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 100%;
-          `}
-          className="btn share_Quote_btn"
-          onClick={() => imageSendQuote("#printSummaryPage")}
-        >
-          {!loader ? (
-            <RiDownload2Line size={25} />
-          ) : (
-            <i className="fa fa-circle-notch rotate" />
-          )}
-          </button>*/}
         <div
           className="container-fluid terms__wrapper"
           css={`
@@ -734,7 +711,8 @@ const PolicyWordingsRenderer = ({ singleItem }) => {
     singleItem?.product?.id,
   );
 
-  const brochure_url = (productBrochureQuery.data || [])[0]?.brochure_url;
+  const policy_wording_url = (productBrochureQuery.data || [])[0]
+    ?.policy_wording_url;
 
   return (
     <p
@@ -750,7 +728,7 @@ const PolicyWordingsRenderer = ({ singleItem }) => {
         css={`
           color: ${PrimaryColor} !important;
         `}
-        href={brochure_url}
+        href={policy_wording_url}
         target="_blank"
       >
         Policy wordings
