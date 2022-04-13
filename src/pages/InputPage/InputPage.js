@@ -19,6 +19,7 @@ import JourneyTypeForm from "./components/JourneyTypeForm";
 import { renderDisclaimer } from "../../utils/helper";
 import { usePos } from "../../customHooks/usePos";
 import { usePosPinc } from "../../customHooks/usePosPinc";
+import Footer from "../../components/Common/Footer/SriyahFooter";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -157,6 +158,15 @@ const InputPage = () => {
             )}
           </InnerWrapper>
         </Wrapper>
+        <div
+          css={`
+            @media screen and (max-width: 831px) {
+              /* margin-top:340px; */
+            }
+          `}
+        >
+          <Footer />
+        </div>
       </Container>
     </Page>
   );
