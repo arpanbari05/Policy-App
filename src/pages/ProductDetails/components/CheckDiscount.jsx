@@ -8,6 +8,7 @@ import {
   useAdditionalDiscount,
   useTenureDiscount,
   useTheme,
+  useCart,
 } from "../../../customHooks";
 import { FaCheck } from "react-icons/fa";
 import { useEffect } from "react";
@@ -19,7 +20,6 @@ const CheckDiscountSection = ({
   cartEntry,
   ...props
 }) => {
-  // useEffect(() => loaderStart(), []);
   return (
     <FeatureSection
       heading="Check Discounts"
@@ -288,7 +288,7 @@ function AdditionalDiscounts({ groupCode, ...props }) {
   const additionalDiscountsUpdated = additionalDiscounts?.filter(
     additionalDiscount =>
       !isUsgiLifestyleDiscount({ discount: additionalDiscount }),
-  ); //? Removes USGI life style discount on product details page.
+  ); //? removal of life style discount from product details page(usgi)
 
   return (
     <>
@@ -315,7 +315,7 @@ function AdditionalDiscount({
   onApplyClick,
   ...props
 }) {
-  const { name, description } = additionalDiscount;
+  const { name, description, alias } = additionalDiscount;
 
   const { colors } = useTheme();
 
@@ -326,12 +326,6 @@ function AdditionalDiscount({
   const handleApplyClick = () => {
     onApplyClick && onApplyClick(additionalDiscount);
   };
-
-  const { fixed_discount_value } = additionalDiscount;
-
-  useEffect(() => {
-    fixed_discount_value && handleApplyClick();
-  }, [fixed_discount_value]); //TODO : a flag wanted from backend that mention the discount to be auto-applied.
 
   return (
     <div
