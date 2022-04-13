@@ -32,7 +32,7 @@ const useProposalSections = ({
   const [errorInField, setErrorInField] = useState(true);
   const schema = useSelector(({ schema }) => schema.currentSchema);
   const history = useHistory();
-
+ 
   const queryStrings = useUrlQuery();
 
   const enquiryId = queryStrings.get("enquiryId");
