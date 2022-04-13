@@ -65,8 +65,8 @@ function useFilters() {
         city: group?.city || reduxGroupMatch?.city,
         pincode: group?.pincode || reduxGroupMatch?.pincode,
         extras: {
-          ...reduxGroupMatch?.extras,
           ...group?.extras,
+          ...reduxGroupMatch?.extras,
         },
       };
     });
