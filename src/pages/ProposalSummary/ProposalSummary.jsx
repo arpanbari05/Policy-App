@@ -41,7 +41,7 @@ import {
   useUrlEnquiry,
   useCart,
   useMembers,
-  useUSGILifeStyleDiscount,
+  useUSGIDiscounts,
 } from "../../customHooks";
 import { Page } from "../../components";
 import { FaChevronLeft } from "react-icons/fa";
@@ -62,12 +62,12 @@ const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
   const [loader, setLoader] = useState(false);
   const { getGroupMembers } = useMembers();
-const pdfLogoSelector = {
-  "fyntune": fyntunePDF,
-  "oneinsure": oneInsurepdf,
-  "renewbuy": renewBuyPDF,
-  "pinc": pincPDF,
-}
+  const pdfLogoSelector = {
+    fyntune: fyntunePDF,
+    oneinsure: oneInsurepdf,
+    renewbuy: renewBuyPDF,
+    pinc: pincPDF,
+  };
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -102,16 +102,17 @@ const pdfLogoSelector = {
 
   const frontendData = { data: frontendBoot.data };
   const cart = cartEntries;
+
   // TODO: Here groupCode cant be fetched from the url to make additional discount request.
-  const totalPremium = useUSGILifeStyleDiscount(); //? CALCULATED BY US.
-    const tenantName = frontendBoot?.data?.tenant?.alias;
-    // console.log("Sgvskfjgvfsdv",frontendBoot.data.tenant.alias)
+  const totalPremium = useUSGIDiscounts();
+
+  const tenantName = frontendBoot?.data?.tenant?.alias;
+
   const totalPremiumPolicies = getPolicyPremium(policyStatus);
 
   // TO SEND PDF SUMMARY TO BACKEND
   const [pdfDoc, setPdfDoc] = useState(null);
   useEffect(() => {
-    console.log("fbxfjkfb", proposalData, cart, canSendSummaryPdf);
     let logoImgData;
 
     if (proposalData?.data && Object.keys(cart).length && canSendSummaryPdf) {
@@ -120,18 +121,18 @@ const pdfLogoSelector = {
         scale: 2,
       }).then(canvas => {
         const imgData = canvas.toDataURL("image/jpeg", 0.3);
-        console.log("bsdjbklfdb", canvas);
 
         const imgWidth = 190;
-        // const pageHeight = 290;
+
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        // let heightLeft = imgHeight;
+
         const doc = new jsPDF("pt", "mm", [imgWidth, imgHeight + 50]);
-        // let position = 0;
+
         doc.text(10, 10, "Proposal Summary");
-        // doc.text(10, 12, "Proposal Summary");
-        pdfLogoSelector[tenantName] && doc.addImage(pdfLogoSelector[tenantName], "PNG", 150, 2,30,15);
-        console.log("dsvbjks", canvas);
+
+        pdfLogoSelector[tenantName] &&
+          doc.addImage(pdfLogoSelector[tenantName], "PNG", 150, 2, 30, 15);
+
         doc.addImage(
           imgData,
           "JPEG",
@@ -142,10 +143,9 @@ const pdfLogoSelector = {
           undefined,
           "FAST",
         );
-        console.log("asvkjdf", proposalData, cart);
+
         setPdfDoc(doc);
 
-        // doc.save("download.pdf");
         setLoader(false);
       });
     }
@@ -457,7 +457,7 @@ const pdfLogoSelector = {
             `}
           >
             <br className="hide-on-mobile" />
-            
+
             <Row
               id="printSummaryPage"
               css={`

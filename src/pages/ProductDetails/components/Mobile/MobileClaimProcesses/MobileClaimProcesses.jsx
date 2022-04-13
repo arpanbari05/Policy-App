@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import styled from "styled-components";
 import "styled-components/macro";
 import { useSelector } from "react-redux";
@@ -11,9 +10,7 @@ import {
   RiPhoneLine,
 } from "react-icons/ri";
 import { useTheme, useClaimBanner } from "../../../../../customHooks";
-
-import { tabletAndMobile } from "../../../../../utils/mediaQueries";
-// import "../ClaimProcessMobile/ClaimProcessMobile.css"
+import { tabletAndMobile, small } from "../../../../../utils/mediaQueries";
 
 const brokerData = (data, colors) => {
   if (
@@ -460,6 +457,9 @@ const ClaimBannerMobile = ({ claimBannerArray }) => {
               border: none;
               font-weight: bold;
               padding: 0px 10px;
+              ${small} {
+                font-size: 10px;
+              }
               background: ${singleClaimOPtion?.id === activeTabOption?.id
                 ? colors?.primary_color
                 : "#fff"};

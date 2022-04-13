@@ -22,7 +22,7 @@ import {
   useCart,
   useFrontendBoot,
   useTheme,
-  useUSGILifeStyleDiscount,
+  useUSGIDiscounts,
 } from "../../customHooks";
 import CartMobile from "./components/Mobile/CartMobile/CartMobile";
 import FeatureSection from "./components/FeatureSection/FeatureSection";
@@ -60,7 +60,7 @@ const ProductDetails = () => {
 
   const cartEntry = getCartEntry(parseInt(groupCode));
 
-  useUSGILifeStyleDiscount(); //? removal of lifestyle discount
+  useUSGIDiscounts(); //? removal of lifestyle discount if present.
 
   useEffect(() => {
     function scrollListener() {
