@@ -23,7 +23,9 @@ import validateInput, {
 import styled from "styled-components";
 
 const BasicDetailsForm = ({ posContent, ...props }) => {
-  let inputData = {};
+  let inputData = {
+    gender: "M",
+  };
   const { colors } = useTheme();
   const urlSearchParams = useUrlQueries();
   const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
