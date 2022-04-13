@@ -1,5 +1,5 @@
 import _, { range } from "lodash";
-import { sendEmailAction } from "../pages/ComparePage/compare.slice";
+import clickSound from "../assets/audio/button-click.wav";
 
 export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
@@ -853,4 +853,9 @@ export const getTotalPremiumWithDiscount = ({
   totalDiscountAmount,
 }) => {
   return +netPremiumWithoutDiscount - +totalDiscountAmount;
+};
+
+export const ClickSound = () => {
+  const audio = new Audio(clickSound);
+  audio.play();
 };
