@@ -10,9 +10,9 @@ import {
   RiMailLine,
   RiPhoneLine,
 } from "react-icons/ri";
-import { useTheme } from "../../../../../customHooks";
+import { useTheme, useClaimBanner } from "../../../../../customHooks";
 
-import { mobile, tabletAndMobile } from "../../../../../utils/mediaQueries";
+import { tabletAndMobile } from "../../../../../utils/mediaQueries";
 // import "../ClaimProcessMobile/ClaimProcessMobile.css"
 
 const brokerData = (data, colors) => {
@@ -112,6 +112,8 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
 
   const { colors } = useTheme();
 
+  const { claimBannerArray, shouldShowClaimBanner } = useClaimBanner();
+
   return (
     <div
       className={`z-content ${ActiveMainTab && "z-active"}`}
@@ -156,136 +158,17 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
           <SpinLoader />
         ) : (
           <>
-            <FeatureSection secondary_color={colors.secondary_color}>
-              <div>
-                <h6
-                  style={{
-                    fontWeight: "600",
-                    marginTop: "10px",
-                    fontSize: "17px",
-                  }}
-                >
-                  How do I file a claim?
-                </h6>
-              </div>
-            </FeatureSection>
-            <ActiveBar>
-              <TabButton
-                primary_color={colors.primary_color}
-                onClick={() => setActivebtn(1)}
-                style={{
-                  textAlign: "center",
-                  backgroundColor: activebtn === 1 && colors.primary_color,
-                  color: activebtn === 1 && "#fff",
-                }}
-                className={`tab ${activebtn === 1 && "tab__active"} `}
-              >
-                <span
-                  css={`
-                    @media (max-width: 350px) {
-                      white-space: pre-line !important;
-                    }
-                  `}
-                >
-                  {" "}
-                  Cashless Claim
-                </span>
-              </TabButton>
-              <TabButton
-                primary_color={colors.primary_color}
-                onClick={() => setActivebtn(2)}
-                style={{
-                  backgroundColor: activebtn === 2 && colors.primary_color,
-                  color: activebtn === 2 && "#fff",
-                }}
-                className={`tab ${activebtn === 2 && "tab__active"} `}
-              >
-                <span
-                  css={`
-                    @media (max-width: 350px) {
-                      white-space: pre-line !important;
-                    }
-                  `}
-                >
-                  {" "}
-                  Document Required
-                </span>
-              </TabButton>
-              <TabButton
-                primary_color={colors.primary_color}
-                onClick={() => setActivebtn(3)}
-                style={{
-                  backgroundColor: activebtn === 3 && colors.primary_color,
-                  color: activebtn === 3 && "#fff",
-                }}
-                className={`tab ${activebtn === 3 && "tab__active"} `}
-              >
-                <span
-                  css={`
-                    @media (max-width: 350px) {
-                      white-space: pre-line !important;
-                    }
-                  `}
-                >
-                  Reimbursement Claim
-                </span>
-              </TabButton>
-            </ActiveBar>
-            {activebtn === 1 && (
-              <Inner>
-                {/* <img src={cashlessImg} style={{ width: "110px" }} alt="" /> */}
-                <h3
-                  className="text-left cashless_t_r_t_main"
-                  style={{ marginBottom: "0px", fontFamily: "unset" }}
-                >
-                  Cashless Claim
-                </h3>
-                <Paragraph
-                  className="leade_p"
-                  dangerouslySetInnerHTML={{
-                    __html: claimProccess.cashless_claim,
-                  }}
-                ></Paragraph>
-              </Inner>
+            {!shouldShowClaimBanner && (
+              <ClaimMainMobile
+                colors={colors}
+                activebtn={activebtn}
+                setActivebtn={setActivebtn}
+                claimProccess={claimProccess}
+              />
             )}
-            {activebtn === 2 && (
-              <Inner>
-                {/* <img src={cashlessImg} style={{ width: "110px" }} alt="" /> */}
-                <h3
-                  className="text-left cashless_t_r_t_main"
-                  style={{ marginBottom: "0px", fontFamily: "unset" }}
-                >
-                  Document Required
-                </h3>
-                <Paragraph
-                  className="leade_p"
-                  dangerouslySetInnerHTML={{
-                    __html: claimProccess.document_required,
-                  }}
-                ></Paragraph>
-              </Inner>
+            {shouldShowClaimBanner && (
+              <ClaimBannerMobile claimBannerArray={claimBannerArray} />
             )}
-            {activebtn === 3 && (
-              <Inner>
-                {/* <img src={cashlessImg} style={{ width: "110px" }} alt="" /> */}
-                <h3
-                  className="text-left cashless_t_r_t_main"
-                  style={{ marginBottom: "0px", fontFamily: "unset" }}
-                >
-                  Reimbursement Claim
-                </h3>
-                <Paragraph
-                  className="leade_p"
-                  style={{
-                    fontSize: "14px",
-                  }}
-                  dangerouslySetInnerHTML={{
-                    __html: claimProccess.reimbursement_claim,
-                  }}
-                ></Paragraph>
-              </Inner>
-            )}
-
             <Info>
               <div>
                 <h4
@@ -300,13 +183,7 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
                   Please reach out on details below for further queries.
                 </h4>
               </div>
-              {/* <p className="p_important_sub" 
-                            css={`
-                            margin-top:0px !important;
-                            `}
-                            >
-                                Don't Hesitate to contact us for any information.
-                            </p>{" "} */}
+
               <div
                 style={{
                   padding: "18px 0px",
@@ -399,6 +276,245 @@ function MobileClaimProcess({ ActiveMainTab, claimProccess, claimform }) {
   );
 }
 
+const ClaimMainMobile = ({
+  colors,
+  setActivebtn,
+  activebtn,
+  claimProccess,
+}) => {
+  return (
+    <>
+      <FeatureSection secondary_color={colors.secondary_color}>
+        <div>
+          <h6
+            style={{
+              fontWeight: "600",
+              marginTop: "10px",
+              fontSize: "17px",
+            }}
+          >
+            How do I file a claim?
+          </h6>
+        </div>
+      </FeatureSection>
+      <ActiveBar>
+        <TabButton
+          primary_color={colors.primary_color}
+          onClick={() => setActivebtn(1)}
+          style={{
+            textAlign: "center",
+            backgroundColor: activebtn === 1 && colors.primary_color,
+            color: activebtn === 1 && "#fff",
+          }}
+          className={`tab ${activebtn === 1 && "tab__active"} `}
+        >
+          <span
+            css={`
+              @media (max-width: 350px) {
+                white-space: pre-line !important;
+              }
+            `}
+          >
+            {" "}
+            Cashless Claim
+          </span>
+        </TabButton>
+        <TabButton
+          primary_color={colors.primary_color}
+          onClick={() => setActivebtn(2)}
+          style={{
+            backgroundColor: activebtn === 2 && colors.primary_color,
+            color: activebtn === 2 && "#fff",
+          }}
+          className={`tab ${activebtn === 2 && "tab__active"} `}
+        >
+          <span
+            css={`
+              @media (max-width: 350px) {
+                white-space: pre-line !important;
+              }
+            `}
+          >
+            {" "}
+            Document Required
+          </span>
+        </TabButton>
+        <TabButton
+          primary_color={colors.primary_color}
+          onClick={() => setActivebtn(3)}
+          style={{
+            backgroundColor: activebtn === 3 && colors.primary_color,
+            color: activebtn === 3 && "#fff",
+          }}
+          className={`tab ${activebtn === 3 && "tab__active"} `}
+        >
+          <span
+            css={`
+              @media (max-width: 350px) {
+                white-space: pre-line !important;
+              }
+            `}
+          >
+            Reimbursement Claim
+          </span>
+        </TabButton>
+      </ActiveBar>
+      {activebtn === 1 && (
+        <Inner>
+          {/* <img src={cashlessImg} style={{ width: "110px" }} alt="" /> */}
+          <h3
+            className="text-left cashless_t_r_t_main"
+            style={{ marginBottom: "0px", fontFamily: "unset" }}
+          >
+            Cashless Claim
+          </h3>
+          <Paragraph
+            className="leade_p"
+            dangerouslySetInnerHTML={{
+              __html: claimProccess.cashless_claim,
+            }}
+          ></Paragraph>
+        </Inner>
+      )}
+      {activebtn === 2 && (
+        <Inner>
+          {/* <img src={cashlessImg} style={{ width: "110px" }} alt="" /> */}
+          <h3
+            className="text-left cashless_t_r_t_main"
+            style={{ marginBottom: "0px", fontFamily: "unset" }}
+          >
+            Document Required
+          </h3>
+          <Paragraph
+            className="leade_p"
+            dangerouslySetInnerHTML={{
+              __html: claimProccess.document_required,
+            }}
+          ></Paragraph>
+        </Inner>
+      )}
+      {activebtn === 3 && (
+        <Inner>
+          {/* <img src={cashlessImg} style={{ width: "110px" }} alt="" /> */}
+          <h3
+            className="text-left cashless_t_r_t_main"
+            style={{ marginBottom: "0px", fontFamily: "unset" }}
+          >
+            Reimbursement Claim
+          </h3>
+          <Paragraph
+            className="leade_p"
+            style={{
+              fontSize: "14px",
+            }}
+            dangerouslySetInnerHTML={{
+              __html: claimProccess.reimbursement_claim,
+            }}
+          ></Paragraph>
+        </Inner>
+      )}
+    </>
+  );
+};
+
+const ClaimBannerMobile = ({ claimBannerArray }) => {
+  const claimBannerArrayWithIds = claimBannerArray.map((item, index) => ({
+    ...item,
+    id: index,
+  }));
+
+  const [activeTabOption, setActiveTabOption] = useState(
+    claimBannerArrayWithIds[0],
+  );
+
+  const handleClick = id => {
+    setActiveTabOption(claimBannerArrayWithIds[id]);
+  };
+
+  const { colors } = useTheme();
+
+  return (
+    <>
+      <FeatureSection secondary_color={colors.secondary_color}>
+        <div>
+          <h6
+            style={{
+              fontWeight: "600",
+              marginTop: "10px",
+              fontSize: "17px",
+            }}
+          >
+            How do I file a claim?
+          </h6>
+        </div>
+      </FeatureSection>
+
+      <ActiveBar>
+        {claimBannerArrayWithIds.map((singleClaimOPtion, index) => (
+          <button
+            key={index}
+            css={`
+              height: 40px;
+              min-width: 100px;
+              font-size: 12px;
+              border: none;
+              font-weight: bold;
+              padding: 0px 10px;
+              background: ${singleClaimOPtion?.id === activeTabOption?.id
+                ? colors?.primary_color
+                : "#fff"};
+              color: ${singleClaimOPtion?.id === activeTabOption?.id
+                ? "#fff"
+                : "#000"};
+            `}
+            onClick={handleClick.bind(null, singleClaimOPtion?.id)}
+          >
+            {singleClaimOPtion?.title}
+          </button>
+        ))}
+      </ActiveBar>
+
+      <div
+        className="tab-content"
+        css={`
+          margin-left: 10px;
+          font-family: "Inter-Regular" !important;
+          & p {
+            margin: 0px;
+          }
+        `}
+      >
+        {claimContent(
+          activeTabOption?.title,
+          activeTabOption?.data || "No data available",
+        )}
+      </div>
+    </>
+  );
+};
+
+const claimContent = (title, description) => {
+  return (
+    <Inner>
+      <h3
+        className="text-left cashless_t_r_t_main"
+        style={{ marginBottom: "0px", fontFamily: "unset" }}
+      >
+        {title}
+      </h3>
+      <Paragraph
+        className="leade_p"
+        style={{
+          fontSize: "14px",
+        }}
+        dangerouslySetInnerHTML={{
+          __html: description,
+        }}
+      ></Paragraph>
+    </Inner>
+  );
+};
+
 const Outer = styled.div`
   background-color: #fff;
 `;
@@ -458,18 +574,6 @@ const TabButton = styled.button`
   }
   white-space: nowrap;
   padding: 10px;
-  /* &:after{
-    content: "";
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 11px solid#0d6efd;
-  position: relative;
-  bottom: -36px;
-  left: -40%;
-  transform: translateX(-50%);
-}
-  */
-  /* border-right: 1px solid black; */
 `;
 
 const Inner = styled.div`

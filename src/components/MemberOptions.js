@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GiCircle } from "react-icons/gi";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { useTheme } from "../customHooks";

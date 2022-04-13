@@ -472,11 +472,6 @@ export function MobileRenderClaimProcess({ quote, ...props }) {
     productBrochureQuery.isUninitialized,
   ]);
 
-  const isError = some([
-    claimProcessQuery.isError,
-    productBrochureQuery.isError,
-  ]);
-
   if (isLoading)
     return (
       <MobileDetailsSectionWrap>

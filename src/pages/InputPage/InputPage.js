@@ -355,15 +355,23 @@ function TermsAndConditions(props) {
   );
 }
 
-const planArray = [
-  `Compare Health Insurance plans`,
-  `Instant policy Insurance`,
-  `Free claims assistance`,
-  `Get plan recommendation in seconds`,
-];
+const planArray = () =>
+  process.env.REACT_APP_TENANT === "sriyah"
+    ? [
+        `Get plan recommendation in seconds`,
+        `Compare Health Insurance plans`,
+        `Instant policy purchase`,
+        `Free claims assistance`,
+      ]
+    : [
+        `Compare Health Insurance plans`,
+        `Instant policy Insurance`,
+        `Free claims assistance`,
+        `Get plan recommendation in seconds`,
+      ];
 
 function PlanList() {
-  return planArray.map(data => (
+  return planArray().map(data => (
     <span
       key={data}
       css={`

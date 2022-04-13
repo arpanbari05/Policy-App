@@ -26,7 +26,7 @@ const InsuredDetails = ({
 }) => {
   const [show, setShow] = useState(0);
 const [medicalContinueClick,setMedicalContinueClick] = useState(false)
-  const { proposalData } = useSelector(state => state.proposalPage);
+  const { proposalData,showErrorPopup } = useSelector(state => state.proposalPage);
 
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -35,7 +35,6 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
   const proposalDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
-
   const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
     useFrontendBoot();
   // const [checking]
@@ -120,11 +119,11 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
     if( 
       medicalContinueClick &&
       !isValid.includes(undefined) &&
-    !isValid.includes(false)){
+    !isValid.includes(false) && !showErrorPopup?.show){
       triggerSaveForm({ sendedVal: values, formName: name });
       setMedicalContinueClick(false);
     }
-  },[isValid,medicalContinueClick])
+  },[isValid,medicalContinueClick,showErrorPopup])
 
   return (
     <div>

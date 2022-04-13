@@ -4,8 +4,6 @@ import BottomFooter from "./BottomFooter/BottomFooter";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import "./Footer.scss";
-import TopFooter from "./TopFooter/TopFooter";
-import shape67 from "../../../assets/svg/shape67.svg";
 
 const Footer = ({ displayFooter }) => {
   useEffect(() => {

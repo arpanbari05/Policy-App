@@ -1,19 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import Card from "./Card";
 import "styled-components/macro";
-import { Link, useLocation, useParams, useRouteMatch } from "react-router-dom";
+import { useLocation, useParams, useRouteMatch } from "react-router-dom";
 import ThemeModal from "./ThemeModal";
 import { useGetEnquiriesQuery } from "../api/api";
 import { useFrontendBoot, useMembers, useTheme } from "../customHooks";
 import { FaRegCopy } from "react-icons/fa";
-import { RiPencilFill } from "react-icons/ri";
-import useComparePage from "../pages/ComparePage/useComparePage";
 import { CircleLoader } from ".";
-import ShareQuoteModal from "./ShareQuoteModal";
-import { useShareFunctionality } from "../customHooks";
 import { images } from "../assets/logos/logo";
-import EditPincode from "./EditPincode";
-import useUrlQuery, { useUrlQueries } from "../customHooks/useUrlQuery";
+import { useUrlQueries } from "../customHooks/useUrlQuery";
 import { isThemeApp } from "../utils/helper";
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 
@@ -34,7 +29,8 @@ function LogoLink() {
         alt={`companylogo`}
         css={`
           cursor: pointer;
-          max-width: ${tenant.alias.toLowerCase() === "pinc"
+          max-width: ${tenant.alias.toLowerCase() === "pinc" ||
+          tenant.alias.toLowerCase() === "sriyah"
             ? "90px"
             : "187px"};
           object-fit: contain;
@@ -68,20 +64,6 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
   const { colors } = useTheme();
 
   const trace_id = data?.data?.trace_id;
-
-  const { groupCode } = useParams();
-
-  /* const { imageSend: proposalImageSend } = useShareFunctionality(
-    "proposalPage",
-    "proposalPage",
-  );
-
-  const { imageSend: proposalSummaryImageSend } = useShareFunctionality(
-    "proposalSummaryPage",
-    "proposalSummaryPage",
-  ); */
-
-  const { emailStatus, imageSend } = useComparePage();
 
   return (
     <div

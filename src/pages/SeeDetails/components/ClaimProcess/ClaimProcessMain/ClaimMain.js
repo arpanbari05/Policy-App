@@ -2,25 +2,22 @@ import React, { useState } from "react";
 
 import cashlessImg from "../../../../../assets/images/cashless_m.png";
 import styled from "styled-components/macro";
-import { useSelector } from "react-redux";
 import { useTheme } from "../../../../../customHooks";
-const claimBtn = (
+
+export const claimBtn = (
   title,
   id,
   handleClick,
   activeBtn,
-  PrimaryColor,
-  SecondaryShade,
+  primaryColor,
+  secondaryShade,
 ) => {
   return (
     <a
       onClick={() => handleClick(id)}
-      // className={`nav-link claim  font-weight-bold rounded-0 border ${
-      //   activeBtn === id && "active"
-      // }`}
       css={`
         padding: 10px 20px;
-        background-color: ${activeBtn === id ? PrimaryColor : SecondaryShade}};
+        background-color: ${activeBtn === id ? primaryColor : secondaryShade}};
         color: ${activeBtn === id ? "white" : "#000;"};
         margin-right: 12px;
         border-radius: 37px;
@@ -41,7 +38,7 @@ const claimBtn = (
           height: 0;
           border-left: 9px solid transparent;
           border-right: 9px solid transparent;
-          border-top: 15px solid ${PrimaryColor};
+          border-top: 15px solid ${primaryColor};
         }
       `}
     >
@@ -49,11 +46,11 @@ const claimBtn = (
     </a>
   );
 };
-const claimContent = (
+
+export const claimContent = (
   title,
   description,
   id,
-  image,
   activeBtn,
   activeDelayedBtn,
 ) => {
@@ -66,7 +63,6 @@ const claimContent = (
         padding-top: 25px !important;
       `}
     >
-      {/* <img src={image} style={{ width: "110px" }} /> */}
       <h2
         className="text-left cashless_t_r_t_main"
         css={`
@@ -91,21 +87,18 @@ const claimContent = (
   );
 };
 
-const description =
-  "Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.";
-
 const ClaimMain = ({ claimProccess }) => {
   const { colors } = useTheme();
 
   const [activeBtn, setActiveBtn] = useState(1);
-  const [activeDelayedBtn, setActiveDelayedBtn] = useState(1);
 
-  console.log("claim", claimProccess);
+  const [activeDelayedBtn, setActiveDelayedBtn] = useState(1);
 
   const handleClick = id => {
     setActiveBtn(id);
     setTimeout(() => setActiveDelayedBtn(id), 500);
   };
+
   return (
     <>
       <div>
@@ -120,9 +113,7 @@ const ClaimMain = ({ claimProccess }) => {
           How do I file a claim?
         </h2>
       </div>
-      {/* <p className="color_gray_sub mb-15 title_h4_title_claim claimProcessMain__p">
-				Loreum ipsum site visit
-			</p> */}
+
       <div css={``}>
         {/* ============================================================ */}
         <ul
@@ -177,7 +168,6 @@ const ClaimMain = ({ claimProccess }) => {
             "Cashless Claim",
             claimProccess?.cashless_claim || "No data available",
             1,
-            cashlessImg,
             activeBtn,
             activeDelayedBtn,
           )}
@@ -185,7 +175,6 @@ const ClaimMain = ({ claimProccess }) => {
             "Document Required",
             claimProccess?.document_required || "No data available",
             2,
-            cashlessImg,
             activeBtn,
             activeDelayedBtn,
           )}
@@ -193,7 +182,6 @@ const ClaimMain = ({ claimProccess }) => {
             "Reimbursement Claim",
             claimProccess?.reimbursement_claim || "No data available",
             3,
-            cashlessImg,
             activeBtn,
             activeDelayedBtn,
           )}
