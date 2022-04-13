@@ -15,10 +15,11 @@ import {
   setShowNSTP,
   setActiveIndex,
   getProposalData,
+  setShowErrorPopup,
   setFailedBmiData,
 } from "./ProposalSections.slice";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
-import { useRevisedPremiumModal } from "../../../customHooks";
+import { useRevisedPremiumModal,useCart } from "../../../customHooks";
 import { useGetEnquiriesQuery } from "../../../api/api";
 
 const useProposalSections = ({
@@ -34,7 +35,6 @@ const useProposalSections = ({
   const [errorInField, setErrorInField] = useState(true);
   const schema = useSelector(({ schema }) => schema.currentSchema);
   const history = useHistory();
- 
   const queryStrings = useUrlQuery();
 
   const enquiryId = queryStrings.get("enquiryId");
@@ -247,11 +247,10 @@ const useProposalSections = ({
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
-          ({ prevProposalData, updatedProposalData, responseData }) => {
+          ({ prevProposalData, updatedProposalData, responseData}) => {
             callback();
-
-            revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
-
+            revisedPremiumPopupUtilityObject?.getUpdatedCart();
+            
             if (responseData?.failed_bmi?.health) {
               dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
               dispatch(
