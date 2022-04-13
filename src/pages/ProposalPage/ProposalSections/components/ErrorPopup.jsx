@@ -4,6 +4,7 @@ import { setShowBMI } from "../ProposalSections.slice";
 import { setShowPlanNotAvail } from "../ProposalSections.slice";
 import { useHistory } from "react-router";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
+
 import {
   ButtonWrapper,
   CloseButton,
@@ -14,6 +15,7 @@ import {
 } from "./BMI";
 
 const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
+  const {showErrorPopup} = useSelector(({proposalPage}) => proposalPage);
   return (
     <PopupWrapper>
       <Popup>
@@ -33,7 +35,10 @@ const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
               Please choose a different plan/insurer */}
           {msg && <p>{msg}</p>}
           <ButtonWrapper>
-            <button className="btn" onClick={handleClose}>
+            <button className="btn" onClick={() => {
+              handleClose();
+              showErrorPopup.onCloseCallBack();
+            }}>
               OK
             </button>
           </ButtonWrapper>
