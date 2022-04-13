@@ -399,13 +399,15 @@ export const validationIndex = {
             } else {
               minDateLimit = ["00", "00", "0000"];
             }
+            minDateLimit = minDateLimit.map(el => parseInt(el));
             let inputDate =
               typeof name === "object"
                 ? `${
                     values[name.parent][name.member][name.variableName]
                   }`?.split("-")
                 : values[name].split("-");
-            // console.log("sdvbnsdjvb",minDateLimit);
+            inputDate = inputDate.map(el => parseInt(el));
+            // console.log("sdvbnsdjvb",{minDateLimit,maxDateLimit,inputDate});
             if (
               (inputDate[2] &&
                 inputDate[0] > maxDateLimit[0] &&

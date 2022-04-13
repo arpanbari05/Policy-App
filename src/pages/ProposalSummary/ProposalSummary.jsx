@@ -271,7 +271,7 @@ const pdfLogoSelector = {
         id={"proposalSummaryPage"}
         backButton={backButtonForNav}
       >
-        <button
+        {/*<button
           css={`
             position: fixed;
             bottom: 100px;
@@ -292,7 +292,7 @@ const pdfLogoSelector = {
           ) : (
             <i className="fa fa-circle-notch rotate" />
           )}
-        </button>
+          </button>*/}
         <div
           className="container-fluid terms__wrapper"
           css={`

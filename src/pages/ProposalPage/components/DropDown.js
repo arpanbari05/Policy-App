@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
 import { setAsyncOptions } from "../../../components/FormBuilder/FormBuilder.slice";
 import down from "./../../../assets/images/down-arrow.svg";
 import up from "./../../../assets/images/up-arrow.svg";
 import useAppropriateOptions from "./useAppropriateOptions";
+import {
+  setShowErrorPopup
+} from "../ProposalSections/ProposalSections.slice";
 
 const DropDown = ({
   name,
@@ -25,8 +29,9 @@ const DropDown = ({
   excludeOptions,
   deleteValue = () => {},
   directUpdateValue = () => {},
+  invalidateOption,
 }) => {
-
+  const dispatch = useDispatch();
   const { selectOption } = useAppropriateOptions({
     values,
     allValues,
@@ -39,7 +44,7 @@ const DropDown = ({
   });
 console.log("fbfnlsdvd",value,selectOption)
   // value = selectOption[value]
-
+const [selectedNone, setSelectedNoneState] = useState(false)
   useEffect(() => {
     console.log("sfsvbjksf",value,selectOption,values)
     if(value && name !== "gender" && name !== "title" && name !== "marital_status"){
@@ -66,7 +71,19 @@ console.log("fbfnlsdvd",value,selectOption)
       <Select
       value={value}
         onChange={e => {
-          onChange(e, e.target.value);
+          setSelectedNoneState(false)
+// console.log("wrgrjkbd",invalidateOption.option,e.target.value)
+
+          if(invalidateOption && invalidateOption?.option && invalidateOption.option === e.target.value){
+
+            dispatch(setShowErrorPopup({
+              show: true,
+              head: "",
+              msg:  invalidateOption.message,
+            }));
+            setSelectedNoneState(true);
+       
+          }else onChange(e, e.target.value);
         }}
        
         disabled={
@@ -95,7 +112,7 @@ console.log("fbfnlsdvd",value,selectOption)
               .filter(item => item !== "single")
               .map(item => (
                 <>
-                  <option key={item + selectOption[item]} value={item}>
+                  <option key={item + selectOption[item]} value={item} selected={selectedNone}>
                     {selectOption[item]}
                   </option>
                 </>
