@@ -48,12 +48,14 @@ const DateComp = ({
   };
 
   const getOpentoDate = val => {
-    console.log("fvbdwedfewdwk",val)
+    console.log("fvbdwedfewdwk", val);
     if (val && val.length === 4 && Number(age[0]) > 1) {
       return getMoment(`${currentDate}-${currentMonth + 1}-${val}`);
     }
     if (val && val.length === 4 && Number(age[0]) < 1) {
-      return getMoment(`${currentDate}-${currentMonth - (Number(age[0])+1)}-${val}`);
+      return getMoment(
+        `${currentDate}-${currentMonth - (Number(age[0]) + 1)}-${val}`,
+      );
     }
     if (val && val.length === 10) return getMoment(val);
     if (age.length && age[0] >= 1)
@@ -115,12 +117,12 @@ const DateComp = ({
           }
           maxDate={
             age?.length && parseFloat(age[0]) >= 1
-              ? new Date(currentYear - age[0], currentMonth, currentDate)
-              :new Date(
-                currentYear,
-                currentMonth - Number(age[0].toString().split(".")[1]),
-                currentDate,
-              )
+              ? new Date(currentYear - age[0], currentMonth, currentDate - 2)
+              : new Date(
+                  currentYear,
+                  currentMonth - Number(age[0].toString().split(".")[1]),
+                  currentDate - 2,
+                )
           }
           // - `${age[0]}`.includes(".") ? 1 : 0
           placeholderText={!oldVal || isNaN(oldVal) ? placeholder : oldVal}

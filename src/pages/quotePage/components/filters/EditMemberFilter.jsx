@@ -183,8 +183,8 @@ export function EditMembers({ ...props }) {
 
   let serverErrors = [];
 
-  if (error) {
-    serverErrors = Object.values(error.data.errors);
+  if (error?.data?.errors) {
+    serverErrors = Object.values(error?.data?.errors);
   }
 
   const handleSubmit = evt => {
@@ -198,7 +198,7 @@ export function EditMembers({ ...props }) {
     if (!selectedMembers.length) return;
 
     updateMembers({ members: selectedMembers }).then(res => {
-      if (!res.error) {
+      if (!res?.error) {
         dispatch(setEditStep(2));
       }
     });
