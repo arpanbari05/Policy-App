@@ -182,6 +182,16 @@ console.log("bfxfjkl",membersToMap)
                           msg: "Male members are not eligible for this question.",
                         }),
                       );
+                    }else if(message && message.stp_block_message){
+                      dispatch(
+                        setShowErrorPopup({
+                          show: true,
+                          head: "",
+                          msg: message.stp_block_message ,
+                        }),
+                      );
+                     
+                      // setBoolean(e.target.value);
                     }else if(message && message.npos_switch_medical_selection_message){
                       dispatch(
                         setShowErrorPopup({

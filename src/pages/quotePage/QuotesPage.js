@@ -115,12 +115,12 @@ function ShowingPlanType() {
   const { shareType } = useSelector(state => state.quotePage);
   const { data: unmergedQuotes } = useGetQuotes();
   const mergedQuotes = unmergedQuotes
-    ?.map(quote => mergeQuotes(quote.data.data))
+    ?.map(quote => mergeQuotes(quote?.data?.data))
     ?.flat();
 
-  const displayPlansLength = unmergedQuotes?.filter(
-    quoteData => quoteData.data.data.length !== 0,
-  ).length;
+  const displayPlansLength = mergedQuotes?.filter(
+    quoteData => quoteData?.length !== 0,
+  )?.length;
 
   useEffect(() => {
     if (shareType.value === "quotation_list") {
