@@ -25,6 +25,7 @@ import fyntune from "./fyntune.png";
 import renew_buy from "./renew_buy.png";
 import pinc from "./pinc.png";
 import CompanyLogo from "./companyLogo.png";
+import SriyahLogo from "./sriyah_broker_logo.png";
 
 const images = {
   go_digit: digit,
@@ -43,6 +44,7 @@ const images = {
   edelweiss_general: edilwiese,
   cholmandalam_ms: chola_ms_logo,
   royal_sundaram: royalSunderLogo,
+  sriyah: SriyahLogo,
   aegon_life,
   bajaj_allianz,
   liberty_general,
