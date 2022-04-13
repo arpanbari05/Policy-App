@@ -564,18 +564,22 @@ export function Import({ mobile, desktop, children }) {
 
 export function BackButtonMobile({ path, css = "", ...props }) {
   const { colors } = useTheme();
+  const history = useHistory();
+
   return (
-    <Link
+    <span
       {...props}
       css={`
         color: ${colors.primary_color};
         font-size: 1.29em;
         ${css};
       `}
-      to={path}
+      onClick={() => {
+        history.goBack();
+      }}
     >
       <FaArrowCircleLeft />
-    </Link>
+    </span>
   );
 }
 
