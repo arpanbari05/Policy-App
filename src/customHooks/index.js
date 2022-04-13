@@ -2062,6 +2062,8 @@ export const useRevisedPremiumModal = () => {
 
   const revisedPremiumPopupToggle = useToggle();
 
+  const { groupCode } = useParams();
+
   const [revisedPremiumCheckHitByUs, setRevisedPremiumCheckHitByUs] =
     useState(false);
 
@@ -2072,7 +2074,7 @@ export const useRevisedPremiumModal = () => {
 
   const prevTotalPremium = useMemo(() => {
     return getCartTotalPremium();
-  }, []); /* memorizes the first value it gets */
+  }, [groupCode]); /* memorizes the first value it gets */
 
   const previousCartEntries = useMemo(() => {
     return cartEntries;
