@@ -26,6 +26,8 @@ const useProposalSections = ({
   partialLength,
   setActivateLoader,
   setShow = () => {},
+  setBlockTabSwitch,
+  name
 }) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
@@ -339,6 +341,17 @@ const useProposalSections = ({
       );
     }
   }, [canProceedToSummary]);
+
+  useEffect(() => {
+console.log("djfgddd",Object.values(errors))
+if(name === "Proposer Details"){
+  Object.values(errors).some(el => el !== undefined)?setBlockTabSwitch(true):setBlockTabSwitch(false);
+}else {
+  console.log("srvsjkbv",Object.keys(errors).some(el => Object.values(errors[el]).some(val => val !== undefined)))
+  Object.keys(errors).some(el => Object.values(errors[el]).some(val => val !== undefined))?setBlockTabSwitch(true):setBlockTabSwitch(false);
+}
+
+  },[errors])
 
   return {
     values,

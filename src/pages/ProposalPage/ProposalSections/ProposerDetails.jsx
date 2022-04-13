@@ -21,6 +21,7 @@ const ProposerDetails = ({
   defaultValue = {},
   setProposerDactive,
   setActivateLoader,
+  setBlockTabSwitch
 }) => {
   const {
     values,
@@ -32,8 +33,11 @@ const ProposerDetails = ({
     revisedPremiumPopupUtilityObject,
     setErrorInField,
     setErrors,
-  } = useProposalSections({ setActive, name, setActivateLoader });
+  } = useProposalSections({ setActive, name, setActivateLoader,setBlockTabSwitch });
 
+
+
+  
   const proposelSelectedDOBRedux = useSelector(
     ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob,
   );

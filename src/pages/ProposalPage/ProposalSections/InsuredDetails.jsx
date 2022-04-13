@@ -23,6 +23,7 @@ const InsuredDetails = ({
   name,
   defaultValue,
   setActivateLoader,
+  setBlockTabSwitch
 }) => {
   const [show, setShow] = useState(0);
 const [medicalContinueClick,setMedicalContinueClick] = useState(false)
@@ -62,6 +63,7 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
     setShow,
     setActivateLoader,
     schema,
+    setBlockTabSwitch
   });
 
   const { getPanelDescContent } = useInsuredDetails(

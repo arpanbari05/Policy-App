@@ -42,7 +42,8 @@ import { mobile } from "../../utils/mediaQueries";
 /* ===============================test================================= */
 const ProposalPage = () => {
   const [prepairingPtoposal, setPrepairingProposal] = useState(false);
-
+let blockTabSwitch = false;
+const setBlockTabSwitch = (val) => blockTabSwitch = val
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -214,6 +215,7 @@ console.log("Sgbsfnjl",active)
                 setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
                 setProposerDactive={setProposerDactive}
+                setBlockTabSwitch={setBlockTabSwitch}
               />
             </>
           ) : (
@@ -224,7 +226,7 @@ console.log("Sgbsfnjl",active)
                 align-items: center;
               `}
               onClick={() => {
-                setActive(0);
+                !blockTabSwitch && setActive(0);
                 setProposerDactive(true);
               }}
             >
@@ -269,6 +271,7 @@ console.log("Sgbsfnjl",active)
                 name={activeForm}
                 setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
+                setBlockTabSwitch={setBlockTabSwitch}
               />
             </>
           ) : (
@@ -279,7 +282,7 @@ console.log("Sgbsfnjl",active)
                 align-items: center;
               `}
               onClick={() => {
-                proposalData["Proposer Details"] && setActive(1);
+                !blockTabSwitch && proposalData["Proposer Details"] && setActive(1);
               }}
             >
               <MainTitle primaryColor={PrimaryColor}>Insured Details</MainTitle>
@@ -321,6 +324,7 @@ console.log("Sgbsfnjl",active)
                 name={activeForm}
                 setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
+                setBlockTabSwitch={setBlockTabSwitch}
               />
             </>
           ) : (
@@ -333,7 +337,7 @@ console.log("Sgbsfnjl",active)
               `}
               onClick={() => {
                 proposalData["Insured Details"] &&
-                  !bmiFailBlock &&
+                !blockTabSwitch && !bmiFailBlock &&
                   setActive(2);
               }}
             >
@@ -377,6 +381,7 @@ console.log("Sgbsfnjl",active)
                 name={activeForm}
                 setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
+                setBlockTabSwitch={setBlockTabSwitch}
               />
             </>
           ) : (
@@ -387,7 +392,7 @@ console.log("Sgbsfnjl",active)
                 align-items: center;
               `}
               onClick={() => {
-                proposalData["Medical Details"] && setActive(3);
+                !blockTabSwitch && proposalData["Medical Details"] && setActive(3);
               }}
             >
               <MainTitle primaryColor={PrimaryColor}>Nominee Details</MainTitle>
