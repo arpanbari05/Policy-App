@@ -62,6 +62,7 @@ function useUpdateFilters() {
         };
       }
     });
+    localStorage.setItem("groups", JSON.stringify(groups));
     updateGroup({
       groupCode,
       extras: null,
@@ -70,7 +71,6 @@ function useUpdateFilters() {
           ? "F"
           : groups?.find(grp => grp?.id === +groupCode)?.plan_type,
     });
-    localStorage.setItem("groups", JSON.stringify(groups));
   }
 
   return { updateFilters, resetFilters, query };
