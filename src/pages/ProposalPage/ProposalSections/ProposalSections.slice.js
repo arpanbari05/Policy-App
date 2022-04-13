@@ -30,6 +30,7 @@ const proposal = createSlice({
       show: false,
       head: "",
       msg: "",
+      onCloseCallBack:() => {}
     },
     planDetails: {
       title: "Your Plan Details",
@@ -151,8 +152,9 @@ export const saveProposalData = (proposalData, next, failure) => {
   return async (dispatch, state) => {
     try {
       console.log("wvnljsdvb", proposalData);
-      let prevProposalData = state().proposalPage.proposalData;
-
+      let prevState = state()
+      let prevProposalData = prevState.proposalPage.proposalData;
+      let prevCart = prevState.cart;
       dispatch(setIsLoading(true));
       dispatch(pushLoadingStack());
       const response = await saveProposal(proposalData);
@@ -170,6 +172,7 @@ export const saveProposalData = (proposalData, next, failure) => {
         next({
           responseData: response.data,
           prevProposalData,
+          prevCart,
           updatedProposalData: state().proposalPage.proposalData,
         });
         dispatch(popLoadingStack());
