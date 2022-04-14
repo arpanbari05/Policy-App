@@ -102,29 +102,6 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
                 display: flex;
               `}
             >
-              {/*
-              {location.pathname === "/proposal" && (
-                <ShareQuoteModal
-                  imageSend={proposalImageSend}
-                  emailStatus={emailStatus}
-                  stage="PROPOSAL"
-                />
-              )}
-              {location.pathname === "/proposal_summary" && (
-                <ShareQuoteModal
-                  imageSend={proposalSummaryImageSend}
-                  emailStatus={emailStatus}
-                  stage="PROPOSAL_SUMMARY"
-                />
-              )} */}
-              {/* {location.pathname === `/compare/${groupCode}` && (
-                <ShareQuoteModal
-                  imageSend={imageSend}
-                  emailStatus={emailStatus}
-                  stage={"COMPARE"}
-                />
-              )} */}
-
               <div
                 css={`
                   background-color: ${colors.secondary_shade};
