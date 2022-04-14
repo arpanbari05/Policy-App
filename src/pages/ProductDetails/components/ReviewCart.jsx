@@ -230,9 +230,6 @@ const ModifyDetailsButton = () => {
 
   const [updateCartMutation, { isLoading }] = updateCart(groupCode);
 
-  const loading =
-    isLoading || additionalDiscountsQuery?.isLoading || isTotalPremiumLoading;
-
   const handleClick = () => {
     const discounted_total_premium = getTotalPremiumWithDiscount({
       netPremiumWithoutDiscount: cartEntry?.netPremiumWithoutDiscount,
@@ -248,7 +245,17 @@ const ModifyDetailsButton = () => {
   };
 
   return (
-    <Button loader={loading} onClick={handleClick}>
+    <Button
+      disabled={
+        cartEntry?.unavailable_message ||
+        isLoading ||
+        additionalDiscountsQuery?.isLoading ||
+        additionalDiscountsQuery?.isFetching ||
+        isTotalPremiumLoading
+      }
+      loader={isLoading}
+      onClick={handleClick}
+    >
       Modify Details
     </Button>
   );
