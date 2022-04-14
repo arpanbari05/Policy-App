@@ -221,21 +221,18 @@ export function useFrontendBoot() {
   const tenantAlias = data?.tenant?.alias;
 
   let journeyType = "health";
+  let subJourneyType = "";
 
   if (enquiryData?.data) {
-    journeyType =
-      enquiryData?.data?.type === "new"
-        ? enquiryData?.data?.section
-        : "renewal";
+    journeyType = enquiryData?.data?.section;
+    subJourneyType = enquiryData?.data?.type === "renew" ? "renewal" : "";
   }
-
-  //!TODO: Uncomment this to switch to renewal journey type (no longer needed)
-  //journeyType = "renewal";
 
   return {
     query,
     journeyType,
     tenantName,
+    subJourneyType,
     tenantAlias,
     data,
     settings: data?.settings,
@@ -687,6 +684,7 @@ export function useUpdateMembers() {
 
 export function useCart() {
   const dispatch = useDispatch();
+
   const searchQueries = useUrlQueries();
 
   const { data } = useGetCartQuery();
@@ -822,7 +820,7 @@ export function useRider(groupCode) {
 }
 
 export function useTenureDiscount(groupCode) {
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const { updateCartEntry, getCartEntry } = useCart();
 
@@ -841,6 +839,7 @@ export function useTenureDiscount(groupCode) {
     group: groupCode,
     feature_options: featureOptionsToSend,
     journeyType,
+    subJourneyType,
     deductible,
   });
 
@@ -1746,7 +1745,7 @@ export function useCompareFeature(compareQuote) {
 }
 
 export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const getRidersQueryParams = {
     sum_insured: quote?.sum_insured,
@@ -1754,7 +1753,7 @@ export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
     productId: quote?.product.id,
     group: parseInt(groupCode),
     journeyType,
-
+    subJourneyType,
     ...queryOptions,
   };
 
@@ -2145,7 +2144,6 @@ export const useRevisedPremiumModal = () => {
               revisedPremiumPopupToggle.on();
               dispatch(setIsPopupOn(true));
             },
-            
           }),
         );
       } else {

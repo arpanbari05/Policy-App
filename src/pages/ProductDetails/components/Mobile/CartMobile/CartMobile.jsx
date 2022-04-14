@@ -72,7 +72,7 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const { getNextGroupProduct } = useCart();
 
-  const { journeyType } = useFrontendBoot();
+  const { journeyType , subJourneyType} = useFrontendBoot();
 
   const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
@@ -175,7 +175,7 @@ const CartMobile = ({ groupCode, ...props }) => {
             )}
           </span>
         </section>
-        {journeyType === "renewal" ? (
+        {subJourneyType === "renewal" ? (
           <div
             className="d-flex mt-1"
             css={`

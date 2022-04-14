@@ -95,6 +95,7 @@ const ProductDetails = () => {
 
   const {
     journeyType,
+    subJourneyType,
     data: { settings, tenant },
   } = useFrontendBoot();
 
@@ -147,7 +148,7 @@ const ProductDetails = () => {
             }
           `}
         >
-          {journeyType !== "renewal" && (
+          {subJourneyType !== "renewal" && (
             <div
               css={`
                 @media (max-width: 1200px) {
@@ -231,7 +232,7 @@ const ProductDetails = () => {
                 }
               `}
             >
-              {journeyType === "renewal" ? (
+              {subJourneyType === "renewal" ? (
                 <SumInsuredSection cartEntry={cartEntry} />
               ) : tenant?.alias === "fyntune" ? (
                 <SumInsuredOptionsSection cartEntry={cartEntry} />
