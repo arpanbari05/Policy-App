@@ -101,6 +101,9 @@ export const api = createApi({
       query: () => ({ url: `enquiries` }),
       providesTags: ["Filter", "Enquiry"],
     }),
+    getPolicies: builder.query({
+      query: () => ({ url: `/policies` }),
+    }),
     getQuotes: builder.query({
       query: ({
         alias,
@@ -506,6 +509,7 @@ export const {
   useUpdateRenewalQueryMutation,
   useGetRenewalSumInsuredsQuery,
   useGetFeatureOptionsQuery,
+  useGetPoliciesQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {

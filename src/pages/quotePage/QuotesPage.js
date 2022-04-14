@@ -16,7 +16,6 @@ import assistant from "../../assets/images/call-center-service.png";
 import { QuotesLoader } from "./components";
 import TalkToUsModal from "../../components/TalkToUs";
 import { useFrontendBoot } from "../../customHooks/index";
-import useNotFoundHandler from "../../customHooks/useNotFoundHandler";
 import { mergeQuotes } from "../../utils/helper";
 import "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
@@ -134,7 +133,7 @@ function ShowingPlanType() {
 
   const selectedPolicyTypeFilter = getSelectedFilter("plantype");
 
-  const displayPolicyTypeFitler = selectedPolicyTypeFilter.display_name;
+  const displayPolicyTypeFitler = selectedPolicyTypeFilter?.display_name;
 
   return (
     <h1

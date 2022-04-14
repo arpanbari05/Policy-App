@@ -32,6 +32,10 @@ function PlanTypeForm({ posContent, ...props }) {
       if (res?.error || !res?.data) return;
       const { groups } = res?.data?.data;
       const firstGroup = Math.min(...groups?.map(group => group.id));
+      localStorage.setItem(
+        "default_filters",
+        JSON.stringify({ plan_type: selectedPlanType?.code }),
+      );
       history.push(getUrlWithEnquirySearch(`/input/location-${firstGroup}`));
     });
   };
