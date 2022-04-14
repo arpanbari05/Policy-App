@@ -55,6 +55,10 @@ function useFilters() {
     localStorage.getItem("groups") &&
     JSON.parse(localStorage.getItem("groups"));
 
+  const defaultPolicyTypeFilter = localStorage.getItem("default_filters")
+    ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+    : "F";
+
   if (reduxGroup?.length) {
     const updatedGroup = data.data?.groups?.map(group => {
       const reduxGroupMatch = reduxGroup?.find(reGrp => {
@@ -68,7 +72,15 @@ function useFilters() {
           ...group?.extras,
           ...reduxGroupMatch?.extras,
         },
-        plan_type: reduxGroupMatch?.plan_type,
+        plan_type:
+          group?.members?.length === 1
+            ? "I"
+            : reduxGroupMatch?.plan_type !== "I"
+            ? reduxGroupMatch?.plan_type || defaultPolicyTypeFilter
+            : defaultPolicyTypeFilter,
+        // reduxGroupMatch?.plan_type || group?.members?.length === 1
+        //   ? group?.plan_type
+        //   : defaultPolicyTypeFilter,
       };
     });
 
@@ -140,9 +152,7 @@ function useFilters() {
       );
       return filters[CODE_FILTERS[code]].find(
         filter => filter.code === currGroup?.plan_type,
-      ) || currGroup?.members?.length > 1
-        ? { code: "F", display_name: "Family Floater" }
-        : { code: "I", display_name: "Individual" };
+      );
     }
 
     return filters[CODE_FILTERS[code]].find(
@@ -157,10 +167,6 @@ function useFilters() {
   const selectedBasePlanType = getSelectedFilter("baseplantype");
   const selectedInsurers = getSelectedFilter("insurers");
   const selectedDeductible = getSelectedFilter("deductible");
-
-  const defaultPolicyTypeFilter = localStorage.getItem("default_filters")
-    ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
-    : "F";
 
   const isFiltersDefault =
     selectedCover?.code === cover &&

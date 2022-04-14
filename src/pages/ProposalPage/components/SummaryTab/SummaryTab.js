@@ -154,7 +154,13 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
       >
         <p className="font_15_p_s">{data.additionalOptions.label}</p>
 
-        <p className="font_sub_p_s" style={{ fontWeight: "900" }}>
+        <p
+          css={`
+            word-break: break-all;
+          `}
+          className="font_sub_p_s"
+          style={{ fontWeight: "900" }}
+        >
           {values[data.name]}
         </p>
       </Col>
@@ -455,7 +461,12 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
                   <>
                     <Border>
                       <TitleWrapper>
-                        <span style={{ textTransform: "capitalize" }}>
+                        <span
+                          style={{
+                            textTransform: "capitalize",
+                            wordBreak: "break-all",
+                          }}
+                        >
                           {modifyMembersName(item)}
                         </span>
                       </TitleWrapper>
@@ -541,7 +552,7 @@ const EditWrapper = styled.div`
   /* padding-left: 10px; */
   z-index: 50;
   @media (max-width: 767px) {
-    top: 52px;
+    top: 24px;
   }
   & span {
     text-align: left;
@@ -637,7 +648,7 @@ const TitleWrapper = styled.p`
   font-weight: 600 !important;
 
   font-size: 18px !important;
-  width: 100%;
+  width: 95%;
   &:not(:first-child) {
     border-top: 1px dashed #c1c9d5;
   }
