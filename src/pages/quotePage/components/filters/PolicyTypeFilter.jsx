@@ -27,15 +27,15 @@ const FilterModal = ({ show, onClose }) => {
     filters.planType === "Individual"
       ? "I"
       : filters.planType === "Family Floater"
-        ? "F"
-        : "M";
+      ? "F"
+      : "M";
   const existingPlanTypeDisplayname = filters.planType;
   const [selectedPlanType, setselectedPlanType] = useState(
     filters.planType
       ? {
-        code: existingPlanTypeCode,
-        displayName: existingPlanTypeDisplayname,
-      }
+          code: existingPlanTypeCode,
+          displayName: existingPlanTypeDisplayname,
+        }
       : { ...selectedPolicyTypeFilter },
   );
 
@@ -56,8 +56,6 @@ const FilterModal = ({ show, onClose }) => {
 
     onClose && onClose();
   };
-
-  console.log({ selectedPlanType, selectedPolicyTypeFilter })
 
   return (
     <>
@@ -84,43 +82,40 @@ const FilterModal = ({ show, onClose }) => {
             <OptionWrapper PrimaryColor={colors.primary_color}>
               {plantypeOptions
                 ? plantypeOptions.map((option, i) => {
-                  return option.code !== "I" ? (
-                    <li
-                      css={`
+                    return option.code !== "I" ? (
+                      <li
+                        css={`
                           margin: 5px 0;
                         `}
-                      className="option d-flex align-items-center justify-content-between"
-                      key={i}
-                      onClick={() =>
-                        handleChange(option.code, option.display_name)
-                      }
-                    >
-                      <label htmlFor={option.code}>
-                        <OverlayTrigger
-                          placement={"right"}
-                          overlay={renderTooltipDesc({
-                            desc: option.description
-                          })}
-                        >
-                          <span>
-                            {option.display_name} {tooltipImg()}
-                          </span>
-                        </OverlayTrigger>
-                      </label>
-                      <input
-                        type="radio"
-                        id={option.code}
-                        name="policyType"
-                        checked={
-                          selectedPlanType.code ===
-                          option.code
+                        className="option d-flex align-items-center justify-content-between"
+                        key={i}
+                        onClick={() =>
+                          handleChange(option.code, option.display_name)
                         }
-                      />
-                    </li>
-                  ) : (
-                    <></>
-                  );
-                })
+                      >
+                        <label htmlFor={option.code}>
+                          <OverlayTrigger
+                            placement={"right"}
+                            overlay={renderTooltipDesc({
+                              desc: option.description,
+                            })}
+                          >
+                            <span>
+                              {option.display_name} {tooltipImg()}
+                            </span>
+                          </OverlayTrigger>
+                        </label>
+                        <input
+                          type="radio"
+                          id={option.code}
+                          name="policyType"
+                          checked={selectedPlanType.code === option.code}
+                        />
+                      </li>
+                    ) : (
+                      <></>
+                    );
+                  })
                 : ""}
             </OptionWrapper>
           </div>
@@ -135,7 +130,7 @@ const PolicyTypeFilter = () => {
 
   const selectedPolicyTypeFilter = getSelectedFilter("plantype");
 
-  const displayPolicyTypeFitler = selectedPolicyTypeFilter.display_name;
+  const displayPolicyTypeFitler = selectedPolicyTypeFilter?.display_name;
 
   return (
     <Filter>

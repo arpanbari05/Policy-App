@@ -58,19 +58,20 @@ function useUpdateFilters() {
         return {
           ...group,
           extras: null,
-          plan_type: group?.plan_type === "M" ? "F" : group?.plan_type,
+          plan_type: localStorage.getItem("default_filters")
+            ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+            : "F",
         };
       }
     });
-    localStorage.setItem("groups", JSON.stringify(groups));
     updateGroup({
       groupCode,
       extras: null,
-      plan_type:
-        groups?.find(grp => grp?.id === +groupCode)?.plan_type === "M"
-          ? "F"
-          : groups?.find(grp => grp?.id === +groupCode)?.plan_type,
+      plan_type: localStorage.getItem("default_filters")
+        ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+        : "F",
     });
+    localStorage.setItem("groups", JSON.stringify(groups));
   }
 
   return { updateFilters, resetFilters, query };
