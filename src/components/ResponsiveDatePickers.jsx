@@ -5,12 +5,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Stack from "@mui/material/Stack";
 
-export default function ResponsiveDatePickers({ dateValue, setDateValue }) {
+export default function ResponsiveDatePickers({ dateValue, setDateValue , title }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack spacing={3}>
         <DatePicker
-          label="Expiry Date"
+          label={title}
           openTo="year"
           disablePast
           minDate={new Date()}
