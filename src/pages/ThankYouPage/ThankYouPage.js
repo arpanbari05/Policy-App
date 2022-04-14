@@ -487,6 +487,12 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
               min-height: 56px;
               position: relative;
 
+              & span {
+                font-weight: 700 !important;
+                font-size: 22px !important;
+                color: ${colors?.primary_color} !important;
+              }
+
               &::before {
                 content: "";
                 height: 40px;
@@ -501,9 +507,9 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
             }
 
             & p:nth-child(3) {
-              color: ${colors?.primary_color};
               font-size: 20px !important;
               a {
+                color: ${colors?.primary_color};
                 font-weight: 700;
                 text-decoration: underline;
               }
@@ -799,6 +805,12 @@ const MobileBanner = ({
             position: relative;
             margin: 0 auto;
 
+            & span {
+              font-weight: 700 !important;
+              font-size: 11px !important;
+              color: ${colors?.primary_color} !important;
+            }
+
             &::before {
               content: "";
               height: 20px;
@@ -815,7 +827,6 @@ const MobileBanner = ({
           & p:nth-child(3) {
             margin-top: 10px;
             text-align: center;
-
             font-size: 11px !important;
             a {
               font-weight: 700;

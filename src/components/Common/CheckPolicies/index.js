@@ -32,7 +32,7 @@ export default function CheckPolicies({ children, ...props }) {
     } else {
       <Redirect
         to={{
-          pathname: "/proposal_summary",
+          pathname: "/proposal",
           search: `enquiryId=${enquiryId}`,
         }}
       />;
