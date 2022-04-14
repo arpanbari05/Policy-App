@@ -1,5 +1,6 @@
 import moment from "moment";
 import { date } from "yup";
+import { age } from "../../pages/InputPage/components/data";
 
 import { checkAllChar } from "../../utils/formUtils";
 function test_same_digit(num) {
@@ -68,7 +69,8 @@ function contains(target, pattern) {
 
 export const validationIndex = {
   required: (param, values, name) => {
-    // console.log(name, values, param, "heheheh3");
+    console.log(name, values, param, "heheheh3");
+
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
 
@@ -84,7 +86,16 @@ export const validationIndex = {
           message: `This field is required.`,
         };
     } else if ((!values || !values[name]) && param !== false)
-      return {
+    if(typeof param === "string" && param.includes("above")){
+      const date = new Date();
+      const {dob} = values;
+      let ageLimit = parseInt(param.split("/")[1]);
+      let inputAge = age.length === 4?date.getUTCFullYear() - parseInt(dob) : date.getUTCFullYear() - dob.split("-")[2]
+     if(inputAge >= ageLimit) return {
+      status: false,
+      message: `This field is required.`,
+    };
+    }else return {
         status: false,
         message: `This field is required.`,
       };
@@ -490,7 +501,7 @@ export const validationIndex = {
             value[4] &&
             // pancard number's 5th char must be equal to the first char of last name of the user
 
-            values.name[values.name.lastIndexOf(" ") + 1] !== value[4]
+            values.name[values.name.lastIndexOf(" ") + 1].toUpperCase() !== value[4]
           ) {
             return {
               status: false,
