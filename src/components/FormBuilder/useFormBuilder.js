@@ -123,6 +123,7 @@ const useFormBuilder = (
   const triggerValidation = name => {
     let errorsTemp = {};
     let tempIsValid = true;
+   
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
       let findGroup = schema.findIndex(el => el.name === parent);
