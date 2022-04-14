@@ -201,12 +201,13 @@ export const Header = styled.a`
   @media (max-width: 767px) {
     margin: unset;
     width: 130px;
-    padding: ${props => (props.sortByDD ? "auto" : "10px 15px !important")};
+    padding: ${props => (props.sortByDD ? "auto" : "10px 10px !important")};
   }
   @media (max-width: 480px) {
     background-color: #fff !important;
+    width: 108px;
     border: 1px solid #b0bed0;
-    padding: ${props => (props.sortByDD ? "auto" : "7px 15px !important")};
+    padding: ${props => (props.sortByDD ? "auto" : "7px 10px !important")};
   }
 `;
 

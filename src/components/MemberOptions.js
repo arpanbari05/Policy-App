@@ -323,7 +323,7 @@ function MemberOption({
           font-weight: 900;
 
           @media (max-width: 420px) {
-            font-size: 13px;
+            font-size: 11px;
           }
         `}
       >
