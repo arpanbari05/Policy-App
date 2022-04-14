@@ -401,6 +401,7 @@ export const api = createApi({
         company_alias,
         policy_no,
         expiry_date,
+        date_of_birth,
         section = "renewal",
       }) => {
         return {
@@ -409,6 +410,7 @@ export const api = createApi({
             company_alias,
             policy_no,
             expiry_date,
+            date_of_birth,
             section,
           },
           method: "POST",

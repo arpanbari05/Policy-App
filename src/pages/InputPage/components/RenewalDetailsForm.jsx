@@ -38,8 +38,12 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
 
   const history = useHistory();
 
+  const [createEnquiryQuery] = useCreateEnquiry();
+
   const [updateRenewalMutation, { isLoading, data, isSuccess }] =
     useUpdateRenewalQueryMutation();
+
+  const renewalEnquiriesLoading = isLoading;
 
   useEffect(() => {
     isSuccess &&
@@ -47,10 +51,6 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
         `/productdetails/${data?.data?.groups[0]?.id}?enquiryId=${data?.data?.enquiry_id}`,
       );
   }, [isSuccess]);
-
-  const renewalEnquiriesLoading = isLoading;
-
-  const [createEnquiryQuery] = useCreateEnquiry();
 
   //-----------------------------------------------------------------------------//
 
@@ -77,23 +77,37 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
     providedRegex: regexStringToRegex(icDdUtils?.value?.policyNumberRegex),
   });
 
+  /*--------------------------------------------------------------------------------*/
+
   const showExpiryInput = !!icDdUtils?.value?.expiryDateRequire;
+
+  const showDobInput = !!icDdUtils?.value?.dobRequire;
 
   const [expiryDateValue, setExpiryDateValue] = useState(new Date());
 
-  const submit = async (renewalIC, policyNumber, expiryDate) => {
+  const [dobDateValue, setDobDateValue] = useState(new Date());
+
+  /*--------------------------------------------------------------------------------*/
+
+  const submit = (renewalIC, policyNumber, expiryDate, dobDateValue) => {
     if (!isSelectedIcValid || !isPolicyNumberValid) return;
 
     updateRenewalMutation({
       company_alias: renewalIC?.code,
       policy_no: policyNumber,
       expiry_date: dateObjectToLocaleString(expiryDate),
+      date_of_birth: dateObjectToLocaleString(dobDateValue),
     });
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    submit(icDdUtils?.value, policyNumberUtils?.value, expiryDateValue);
+    submit(
+      icDdUtils?.value,
+      policyNumberUtils?.value,
+      expiryDateValue,
+      dobDateValue,
+    );
   };
 
   return (
@@ -180,11 +194,28 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
               `}
             >
               <ResponsiveDatePickers
+                title="Expiry Date"
                 dateValue={expiryDateValue}
                 setDateValue={setExpiryDateValue}
               />
             </div>
           )}
+
+          {showDobInput && (
+            <div
+              css={`
+                box-sizing: border-box;
+                padding: 1rem 0rem;
+              `}
+            >
+              <ResponsiveDatePickers
+                title="Date of Birth"
+                dateValue={dobDateValue}
+                setDateValue={setDobDateValue}
+              />
+            </div>
+          )}
+
           <Button
             type="submit"
             className="w-100"
