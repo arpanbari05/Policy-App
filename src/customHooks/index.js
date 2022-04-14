@@ -2145,6 +2145,7 @@ export const useRevisedPremiumModal = () => {
               revisedPremiumPopupToggle.on();
               dispatch(setIsPopupOn(true));
             },
+            
           }),
         );
       } else {

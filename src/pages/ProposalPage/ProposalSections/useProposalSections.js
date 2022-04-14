@@ -78,7 +78,8 @@ const useProposalSections = ({
   };
 
   const everyRequiredFilled = (schema, values = {}) => {
-    if (Array.isArray(schema))
+    console.log("sjksfgfs",schema, values)
+    if (Array.isArray(schema)){
       return schema
         .filter(
           el => el.validate && el.validate.required && renderField(el, values),
@@ -88,17 +89,10 @@ const useProposalSections = ({
             values[el.name] &&
             !performValidations(el.validate, values, el.name),
         );
-    else
+         } else
       return Object.keys(schema)
         .map(key =>
-          schema[key]
-            .filter(
-              el =>
-                el.validate &&
-                el.validate.required &&
-                renderField(el, values, key),
-            )
-            .every(el => values && values[key] && values[key][el.name]),
+          everyRequiredFilled(schema[key], values[key] ? values[key] : {}),
         )
         .includes(false)
         ? false
@@ -196,7 +190,8 @@ const useProposalSections = ({
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
         setActive(schemaKeys.indexOf(formName));
-        setShow(havingAnyError(errors).indexOf(true));
+        console.log("sgvjbskv",havingAnyError(errors));
+        name !== "Insured Details" && setShow(havingAnyError(errors).indexOf(true));
         return;
       }
       if (!everyRequiredFilled(schema[formName], sendedVal)) {

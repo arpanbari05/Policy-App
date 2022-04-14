@@ -51,8 +51,7 @@ const useOtherDetails = ({defaultValue,setValues,name,values,insuredDetails,prop
             ...memberDetailsInProposerD,
             ...insuredDetails[nomineeRelation],
           };
-        }
-  
+        }  
 
 
         let acc = {};
@@ -71,7 +70,7 @@ const useOtherDetails = ({defaultValue,setValues,name,values,insuredDetails,prop
             acc[name] = dataForAutopopulate[nameWithoutNominee];
         });
         console.log("sgvsfjvhsfkv", dataForAutopopulate);
-        setValues({ ...acc, nominee_relation: nomineeRelation });
+        setValues({ ...acc, nominee_relation: nomineeRelation },"SAVE_AS_IT_IS");
         setNomineeRelationAutopopulated(true);
       
    };

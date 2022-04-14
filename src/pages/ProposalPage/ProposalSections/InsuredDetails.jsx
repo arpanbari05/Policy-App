@@ -66,6 +66,12 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
     setBlockTabSwitch
   });
 
+  console.log("sdgvsjvkd",isValid,name,name === "Insured Details" && isValid.includes(false),isValid.indexOf(false))
+  useEffect(() => {
+    console.log("wvwbhw",isValid)
+    if(name === "Insured Details" && isValid.includes(false)) setShow(isValid.indexOf(false))
+      },[...isValid])
+
   const { getPanelDescContent } = useInsuredDetails(
     name,
     schema,

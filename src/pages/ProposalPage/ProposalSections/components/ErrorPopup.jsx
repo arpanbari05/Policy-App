@@ -37,7 +37,7 @@ const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
           <ButtonWrapper>
             <button className="btn" onClick={() => {
               handleClose();
-              showErrorPopup.onCloseCallBack();
+              showErrorPopup?.onCloseCallBack && showErrorPopup.onCloseCallBack();
             }}>
               OK
             </button>

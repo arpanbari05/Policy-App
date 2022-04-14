@@ -61,7 +61,7 @@ const FilterModal = ({ show, onClose }) => {
     <>
       {show && (
         <CustomModal1
-          header="Chose Your Policy Type"
+          header="Choose Your Policy Type"
           footerJSX={
             <ApplyBtn
               PrimaryColor={colors.primary_color}
