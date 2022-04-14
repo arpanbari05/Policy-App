@@ -307,7 +307,7 @@ export function Members() {
           }
         `}
       >
-        {scrollX !== 0 && members?.length >= 4 && (
+        {scrollX !== 0 && members?.length >= 6 && (
           <button
             css={`
               display: none;
@@ -331,7 +331,7 @@ export function Members() {
             position: relative;
             max-width: 100%;
             display: flex;
-            overflow: ${members?.length >= 4 ? "auto" : "hidden"};
+            overflow: ${members?.length >= 6 ? "auto" : "hidden"};
             scroll-behaviour: smooth;
             &::-webkit-scrollbar {
               display: none;
@@ -348,7 +348,7 @@ export function Members() {
             <Member member={member} key={member.code} />
           ))}
         </div>
-        {!scrolEnd && members?.length >= 4 && (
+        {!scrolEnd && members?.length >= 6 && (
           <button
             css={`
               display: none;

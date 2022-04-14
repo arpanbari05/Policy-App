@@ -135,11 +135,14 @@ function useFilters() {
     }
 
     if (code === "plantype") {
-      return filters[CODE_FILTERS[code]].find(
-        filter =>
-          filter.code ===
-          groups?.find(singleGroup => singleGroup.id === +groupCode)?.plan_type,
+      const currGroup = groups?.find(
+        singleGroup => singleGroup.id === +groupCode,
       );
+      return filters[CODE_FILTERS[code]].find(
+        filter => filter.code === currGroup?.plan_type,
+      ) || currGroup?.members?.length > 1
+        ? { code: "F", display_name: "Family Floater" }
+        : { code: "I", display_name: "Individual" };
     }
 
     return filters[CODE_FILTERS[code]].find(
