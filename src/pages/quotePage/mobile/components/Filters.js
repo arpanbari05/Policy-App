@@ -19,6 +19,9 @@ import { RiCheckboxBlankCircleLine, RiCheckboxFill } from "react-icons/ri";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 import useWindowSize from "../../../../customHooks/useWindowSize";
 import { useGetEnquiriesQuery } from "../../../../api/api";
+import { isSSOJourney } from "../../../../utils/helper";
+import { useDispatch } from "react-redux";
+import { setPosPopup } from "../../quote.slice";
 
 const availableMoreFilters = {
   popular_filters: true,
@@ -110,13 +113,32 @@ export function getAllSelectedFilters(filters, filterSelector) {
 export function FilterModal({ onClose, show }) {
   const { boxShadows } = useTheme();
 
+  const dispatch = useDispatch();
+
   const { getSelectedFilter } = useFilters();
   const selectedPolicyTypeFilter = getSelectedFilter("plantype");
 
   const {
-    data: { premiums, covers, plantypes, morefilters, deductibles },
+    data: {
+      premiums,
+      plantypes,
+      morefilters,
+      deductibles,
+      settings: { pos_nonpos_switch_message, restrict_posp_quotes_after_limit },
+    },
     journeyType,
   } = useFrontendBoot();
+
+  let {
+    data: { covers },
+  } = useFrontendBoot();
+
+  if (
+    localStorage.getItem("SSO_user") &&
+    restrict_posp_quotes_after_limit === `${1}`
+  ) {
+    covers = covers.slice(0, 2);
+  }
 
   const {
     updateFilters,
@@ -148,6 +170,12 @@ export function FilterModal({ onClose, show }) {
 
   const handleShowPlansClick = () => {
     updateFilters(filters);
+    console.log({ filters });
+    !filters?.cover?.applicable_on_pos &&
+    isSSOJourney() &&
+    pos_nonpos_switch_message
+      ? dispatch(setPosPopup(true))
+      : dispatch(setPosPopup(false));
     onClose && onClose();
   };
 
