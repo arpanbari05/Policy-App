@@ -196,7 +196,8 @@ const useProposalSections = ({
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
         setActive(schemaKeys.indexOf(formName));
-        setShow(havingAnyError(errors).indexOf(true));
+        console.log("sgvjbskv",havingAnyError(errors));
+        name !== "Insured Details" && setShow(havingAnyError(errors).indexOf(true));
         return;
       }
       if (!everyRequiredFilled(schema[formName], sendedVal)) {
