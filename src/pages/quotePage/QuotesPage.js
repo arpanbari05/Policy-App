@@ -134,7 +134,7 @@ function ShowingPlanType() {
 
   const selectedPolicyTypeFilter = getSelectedFilter("plantype");
 
-  const displayPolicyTypeFitler = selectedPolicyTypeFilter.display_name;
+  const displayPolicyTypeFitler = selectedPolicyTypeFilter?.display_name;
 
   return (
     <h1

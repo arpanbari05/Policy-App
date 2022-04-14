@@ -68,6 +68,7 @@ function useFilters() {
           ...group?.extras,
           ...reduxGroupMatch?.extras,
         },
+        plan_type: reduxGroupMatch?.plan_type,
       };
     });
 
@@ -105,7 +106,7 @@ function useFilters() {
           }
         }
         if (code === "deductible") return extras[code];
-        const moreFilter = morefilters.find(filter => filter.code === code);
+        const moreFilter = morefilters?.find(filter => filter.code === code);
 
         if (moreFilter) {
           return extras ? extras[code] : undefined;
@@ -137,8 +138,7 @@ function useFilters() {
       return filters[CODE_FILTERS[code]].find(
         filter =>
           filter.code ===
-          data?.data?.groups?.find(singleGroup => singleGroup.id === +groupCode)
-            ?.plan_type,
+          groups?.find(singleGroup => singleGroup.id === +groupCode)?.plan_type,
       );
     }
 
@@ -155,9 +155,14 @@ function useFilters() {
   const selectedInsurers = getSelectedFilter("insurers");
   const selectedDeductible = getSelectedFilter("deductible");
 
+  const defaultPolicyTypeFilter = localStorage.getItem("default_filters")
+    ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+    : "F";
+
   const isFiltersDefault =
     selectedCover?.code === cover &&
-    (selectedPlanType?.code === plantype || selectedPlanType?.code === "I") &&
+    (selectedPlanType?.code === defaultPolicyTypeFilter ||
+      selectedPlanType?.code === "I") &&
     selectedBasePlanType?.code === baseplantype &&
     selectedTenure?.code === tenure &&
     selectedInsurers?.length < 1 &&

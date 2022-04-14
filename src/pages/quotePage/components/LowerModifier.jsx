@@ -39,7 +39,7 @@ const LowerModifier = ({ sortBy = <></> }) => {
         {sortBy}
         <PremiumFilter />
         {journeyType === "health" ? <CoverRangeFilter /> : <DeductibleFilter />}
-        {selectedPolicyTypeFilter.display_name !== "Individual" &&
+        {selectedPolicyTypeFilter?.display_name !== "Individual" &&
         journeyType !== "top_up" ? (
           <PolicyTypeFilter />
         ) : null}
