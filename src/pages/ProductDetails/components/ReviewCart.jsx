@@ -213,14 +213,42 @@ const QuickPayAndRenewButton = ({ groupCode }) => {
 const ModifyDetailsButton = () => {
   const history = useHistory();
 
+  const { groupCode } = useParams();
+
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
+  const { getTotalDiscountAmount, query: additionalDiscountsQuery } =
+    useAdditionalDiscount(groupCode);
+
+  const { getCartEntry } = useCart();
+
+  const { updateCart } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
+
+  const [updateCartMutation, { isLoading }] = updateCart(groupCode);
+
+  const loading =
+    isLoading || additionalDiscountsQuery?.isLoading || isTotalPremiumLoading;
+
+  const handleClick = () => {
+    const discounted_total_premium = getTotalPremiumWithDiscount({
+      netPremiumWithoutDiscount: cartEntry?.netPremiumWithoutDiscount,
+      totalDiscountAmount: getTotalDiscountAmount(),
+    });
+
+    updateCartMutation({
+      discounted_total_premium,
+      generate_proposal: true,
+    }).then(resObj => {
+      history.push(getUrlWithEnquirySearch(`/proposal`));
+    });
+  };
+
   return (
-    <Button
-      onClick={() => {
-        history.push(getUrlWithEnquirySearch(`/proposal`));
-      }}
-    >
+    <Button loader={loading} onClick={handleClick}>
       Modify Details
     </Button>
   );
