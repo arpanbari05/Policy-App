@@ -19,13 +19,14 @@ function DropDown2({ label, value, onChange, options, onBlur }) {
 
   const searchInputChangeHandler = e => {
     if (!/^[a-zA-Z\s]*$/.test(e.target.value)) return;
-    
+
     const filterArray = options.filter(singleOption =>
       singleOption?.label.includes(autoCapitalizationHandler(e.target.value)),
     );
     setSearchInput(autoCapitalizationHandler(e.target.value));
     setFilteredOptions(filterArray);
   };
+
   return (
     <>
       {displayDD && (
@@ -148,7 +149,7 @@ const DropDown = ({ options, onChange, setDisplayDD, ...props }) => {
             <DDItem
               onClick={() => {
                 setDisplayDD(false);
-                onChange(singleOption.label, singleOption.value);
+                onChange(singleOption);
               }}
               shadow={colors.primary_shade}
               key={index}

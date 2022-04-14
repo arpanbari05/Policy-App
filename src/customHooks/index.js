@@ -45,6 +45,7 @@ import {
   matchQuotes,
   mergeQuotes,
   parseJson,
+  regexStringToRegex,
 } from "../utils/helper";
 import { calculateTotalPremium } from "../utils/helper";
 import useUrlQuery, { useUrlQueries } from "./useUrlQuery";
@@ -64,6 +65,7 @@ import {
   setIsPopupOn,
   setShowErrorPopup,
 } from "../pages/ProposalPage/ProposalSections/ProposalSections.slice";
+import RandExp from "randexp";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -2101,7 +2103,7 @@ export const useRevisedPremiumModal = () => {
       ),
     );
     setRevisedPremiumCheckHitByUs(true);
- next();
+    next();
   }; /* Performs refetch from the server */
 
   useEffect(() => {
@@ -2143,6 +2145,7 @@ export const useRevisedPremiumModal = () => {
               revisedPremiumPopupToggle.on();
               dispatch(setIsPopupOn(true));
             },
+            
           }),
         );
       } else {
@@ -2236,8 +2239,12 @@ export const useDD = ({ initialValue = {}, required, errorLabel }) => {
 
   const valueInputTouchedHandler = () => setIsValueInputTouched(true);
 
-  const valueChangeHandler = (label, value) => {
-    const updatedValue = { code: value, display_name: label };
+  const valueChangeHandler = singleOption => {
+    const updatedValue = {
+      code: singleOption?.value,
+      display_name: singleOption?.label,
+      ...singleOption,
+    };
     setValue(updatedValue);
   };
 
@@ -2246,6 +2253,66 @@ export const useDD = ({ initialValue = {}, required, errorLabel }) => {
     error,
     showError,
     isValueValid,
+    shouldShowError: valueInputTouchedHandler,
+    onChange: valueChangeHandler,
+  };
+};
+
+export const usePolicyNumberValidations = ({
+  initialValue = "",
+  required,
+  errorLabel,
+  providedRegex = /^[\S]*$/,
+}) => {
+  const [value, setValue] = useState(initialValue);
+
+  const [isValueInputTouched, setIsValueInputTouched] = useState(false);
+
+  const [error, setError] = useState({});
+
+  const isValueValid = !error?.message;
+
+  const showError = isValueInputTouched && !isValueValid;
+
+  const placeHolder =
+    providedRegex &&
+    `E.G. ${new RandExp(regexStringToRegex(providedRegex)).gen()}`;
+
+  const ddErrorThrowingValidations = useCallback(
+    (value, setError) => {
+      //? Only validates if required.
+      if (required) {
+        if (value === "") {
+          return setError({ message: `Please select a ${errorLabel}.` });
+        }
+        if (!providedRegex.test(value)) {
+          return setError({ message: `Please enter a valid ${errorLabel}.` });
+        }
+        return setError({});
+      }
+      return setError({});
+    },
+    [value],
+  );
+
+  useEffect(() => {
+    ddErrorThrowingValidations(value, setError);
+  }, [value, setError, ddErrorThrowingValidations]);
+
+  const valueInputTouchedHandler = () => setIsValueInputTouched(true);
+
+  const valueChangeHandler = e => {
+    setValue(e.target.value);
+  };
+
+  console.log("The placeHolder", placeHolder);
+
+  return {
+    value,
+    error,
+    showError,
+    isValueValid,
+    placeHolder,
     shouldShowError: valueInputTouchedHandler,
     onChange: valueChangeHandler,
   };
