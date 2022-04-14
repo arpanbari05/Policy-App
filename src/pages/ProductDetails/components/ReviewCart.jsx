@@ -89,7 +89,7 @@ const singlePay = id => {
 export function CartDetails({ groupCode, ...props }) {
   const { colors } = useTheme();
 
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const { getCartEntry } = useCart();
 
@@ -143,7 +143,7 @@ export function CartDetails({ groupCode, ...props }) {
             <TotalPremium groupCode={groupCode} />
           </div>
         )}
-        {journeyType === "renewal" ? (
+        {subJourneyType === "renewal" ? (
           <div
             className="d-flex mt-1"
             css={`
