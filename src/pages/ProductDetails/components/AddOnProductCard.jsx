@@ -21,7 +21,7 @@ import { useGetEnquiriesQuery } from "../../../api/api";
 function ProductCard() {
   const { groupCode } = useParams();
 
-  const { journeyType } = useFrontendBoot();
+  const { journeyType , subJourneyType} = useFrontendBoot();
 
   const { getCartEntry } = useCart();
 
@@ -155,7 +155,7 @@ function ProductCard() {
         </div>
       </div>
 
-      {journeyType === "renewal" ? (
+      {subJourneyType === "renewal" ? (
         <PolicyDetails cartEntry={cartEntry} />
       ) : (
         <PlanDetails cartEntry={cartEntry} />

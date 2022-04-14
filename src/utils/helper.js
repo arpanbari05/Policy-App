@@ -882,5 +882,16 @@ export const regexStringToRegex = (regexString = "/^[S]*") => {
 };
 
 export const dateObjectToLocaleString = (dateObject = new Date()) => {
-  return dateObject.toLocaleString().split(",")[0];
+  let date = dateObject?.getDate();
+  let month = dateObject?.getMonth() + 1;
+  const year = dateObject?.getFullYear();
+
+  if (date < 10) {
+    date = "0" + date;
+  }
+  if (month < 10) {
+    month = "0" + month;
+  }
+
+  return `${date}/${month}/${year}`;
 };

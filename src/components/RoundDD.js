@@ -187,26 +187,22 @@ export const Header = styled.a`
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  // -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
-  // box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
-  // -webkit-border-radius: 3px;
-  // -moz-border-radius: 3px;
+
   border-radius: 50px;
-  // box-shadow: 0 12px 12px -11px #004b8347;
 
   &.active {
     border-radius: 3px 3px 0 0;
-    // box-shadow: inset 0 1px 2px rgb(0 0 0 / 15%);
   }
   @media (max-width: 767px) {
     margin: unset;
     width: 130px;
-    padding: ${props => (props.sortByDD ? "auto" : "10px 15px !important")};
+    padding: ${props => (props.sortByDD ? "auto" : "10px 10px !important")};
   }
   @media (max-width: 480px) {
     background-color: #fff !important;
+    width: 108px;
     border: 1px solid #b0bed0;
-    padding: ${props => (props.sortByDD ? "auto" : "7px 15px !important")};
+    padding: ${props => (props.sortByDD ? "auto" : "7px 10px !important")};
   }
 `;
 
