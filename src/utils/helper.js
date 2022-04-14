@@ -530,6 +530,23 @@ export function getPlanFeatures(features, sum_insured) {
 export function getReactSelectOption({ display_name, code }) {
   return { label: display_name, value: code };
 }
+
+export const getCustomIcOptions = ({
+  display_name,
+  code,
+  dobRequire,
+  expiryDateRequire,
+  policyNumberRegex,
+}) => {
+  return {
+    label: display_name,
+    value: code,
+    dobRequire,
+    expiryDateRequire,
+    policyNumberRegex,
+  };
+};
+
 export function getDisplayPremium({ total_premium, tenure }) {
   return `${amount(total_premium)} / ${
     parseInt(tenure) > 1 ? `${tenure} years` : "year"
@@ -858,4 +875,12 @@ export const getTotalPremiumWithDiscount = ({
 export const ClickSound = () => {
   const audio = new Audio(clickSound);
   audio.play();
+};
+
+export const regexStringToRegex = (regexString = "/^[S]*") => {
+  return new RegExp(regexString);
+};
+
+export const dateObjectToLocaleString = (dateObject = new Date()) => {
+  return dateObject.toLocaleString().split(",")[0];
 };
