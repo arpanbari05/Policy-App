@@ -873,36 +873,36 @@ export function useTenureDiscount(groupCode) {
 const discountOnAnotherDiscount = ({
   discounts_on_which_discount_to_be_applied,
   total_premium,
-  premium,
   cartEntry,
 }) => {
   return discounts_on_which_discount_to_be_applied
     .map(
       ({
-        applied_on_total_premium,
+        applied_on_total_premium: applied_on_total_cart_premium,
         applied_on_riders,
         percent: percent_of_discount_on_which_discount_to_be_applied,
         fixed_discount_value,
       }) => {
+        let discountValue = 0;
+
         if (fixed_discount_value) {
           //? return the amount directly if it is fixed.
           return +fixed_discount_value;
         }
 
-        let discountValue = 0;
-
-        if (applied_on_total_premium) {
+        if (applied_on_total_cart_premium) {
+          //? Means applied on cart total premium.
           const discount =
-            (parseInt(total_premium) *
+            (parseInt(cartEntry?.netPremiumWithoutDiscount) *
               parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
             100;
-          discountValue = discountValue + discount;
+
+          return (discountValue = discountValue + discount);
         }
 
-        if (!applied_on_total_premium) {
-          //? means applied on premium
+        if (!applied_on_total_cart_premium) {
           const discount =
-            (parseInt(premium) *
+            (parseInt(total_premium) *
               parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
             100;
           discountValue = discountValue + discount;
@@ -1005,27 +1005,32 @@ export function useAdditionalDiscount(groupCode, skip = false) {
   function getDiscountAmount(additionalDiscount) {
     const {
       percent,
-      applied_on_total_premium,
+      applied_on_total_premium: applied_on_total_cart_premium,
       applied_on_riders,
       fixed_discount_value,
       applied_on_discounts,
     } = additionalDiscount;
+
+    let discountAmount = 0;
 
     if (fixed_discount_value) {
       //? return the amount directly if it is fixed.
       return +fixed_discount_value;
     }
 
-    let discountAmount = 0;
+    if (applied_on_total_cart_premium) {
+      //? Means applied on cart total premium.
+      //? Return discount amount applied on total_cart_premium.
+      const discount =
+        (parseInt(cartEntry?.netPremiumWithoutDiscount) * parseInt(percent)) /
+        100;
 
-    if (applied_on_total_premium) {
-      const discount = (parseInt(total_premium) * parseInt(percent)) / 100;
-      discountAmount = discountAmount + discount;
+      return (discountAmount = discountAmount + discount);
     }
 
-    if (!applied_on_total_premium) {
+    if (!applied_on_total_cart_premium) {
       //? means applied on premium
-      const discount = (parseInt(premium) * parseInt(percent)) / 100;
+      const discount = (parseInt(total_premium) * parseInt(percent)) / 100;
       discountAmount = discountAmount + discount;
     }
 
@@ -2106,12 +2111,13 @@ export const useRevisedPremiumModal = () => {
   }; /* Performs refetch from the server */
 
   useEffect(() => {
+    
     if (+prevTotalPremium === +updatedTotalPremium) {
       revisedPremiumPopupToggle.off();
     }
 
     // if (+prevTotalPremium !== +updatedTotalPremium) {
-    if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
+    if (Math.abs(prevTotalPremium - updatedTotalPremium) > 10) {
       let stringedRidersName = "";
       for (let i = 0; i < previousCartEntries.length; i++) {
         const previousEntry = previousCartEntries[i];
