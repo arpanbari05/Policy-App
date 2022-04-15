@@ -103,7 +103,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
             }
           `}
         >
-          {allowOnWebsites(["topup"]) ? (
+          {allowOnWebsites(["topup", "renewBuyUat"]) ? (
             <FlexSectionStyled>
               <Title
                 dangerouslySetInnerHTML={{
