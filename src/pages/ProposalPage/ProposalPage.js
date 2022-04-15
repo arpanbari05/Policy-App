@@ -216,6 +216,7 @@ console.log("Sgbsfnjl",active)
                 defaultValue={defaultData}
                 setProposerDactive={setProposerDactive}
                 setBlockTabSwitch={setBlockTabSwitch}
+                listOfForms={listOfForms}
               />
             </>
           ) : (
@@ -272,6 +273,7 @@ console.log("Sgbsfnjl",active)
                 setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
                 setBlockTabSwitch={setBlockTabSwitch}
+                listOfForms={listOfForms}
               />
             </>
           ) : (
@@ -325,6 +327,7 @@ console.log("Sgbsfnjl",active)
                 setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
                 setBlockTabSwitch={setBlockTabSwitch}
+                listOfForms={listOfForms}
               />
             </>
           ) : (
@@ -382,6 +385,7 @@ console.log("Sgbsfnjl",active)
                 setActivateLoader={setActivateLoader}
                 defaultValue={defaultData}
                 setBlockTabSwitch={setBlockTabSwitch}
+                listOfForms={listOfForms}
               />
             </>
           ) : (
