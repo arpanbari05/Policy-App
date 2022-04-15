@@ -103,12 +103,17 @@ function useFilters() {
         return [];
       }
       if (code === "tenure") {
-        if (extras["tenure"]) return extras["tenure"];
+        // if (extras["tenure"]) return extras["tenure"];
+        if (extras["tenure"])
+          return (
+            tenures.find(tenure => tenure.code === extras["tenure"]) ||
+            extras["tenure"]
+          );
         return tenures.find(tenure => tenure.code === defaultfilters["tenure"]);
       }
       if (extras[code]) {
         if (code === "cover") {
-          const selectedFilterCode = extras[code].code;
+          const selectedFilterCode = extras[code].code || extras[code];
           if (extras[code].custom) {
             return {
               code: selectedFilterCode,

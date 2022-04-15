@@ -5,17 +5,23 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Stack from "@mui/material/Stack";
 
-export default function ResponsiveDatePickers({ dateValue, setDateValue , title }) {
+export default function ResponsiveDatePickers({
+  dateValue,
+  setDateValue,
+  title,
+}) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack spacing={3}>
         <DatePicker
+          clearable
           label={title}
           openTo="year"
           disablePast
           minDate={new Date()}
           views={["year", "month", "day"]}
           value={dateValue}
+          inputFormat="dd/MM/yyyy"
           onChange={newValue => {
             setDateValue(newValue);
           }}

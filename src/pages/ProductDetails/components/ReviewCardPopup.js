@@ -10,7 +10,12 @@ import {
   useTheme,
 } from "../../../customHooks";
 import { mobile } from "../../../utils/mediaQueries";
-import { amount, getFirstName, getTotalPremium } from "../../../utils/helper";
+import {
+  amount,
+  getFirstName,
+  getTotalPremium,
+  numberToDigitWord,
+} from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
 import {
@@ -697,7 +702,7 @@ function ProductDetailsCard({ cartItem }) {
               Cover
               <br />
               <span className="edit_css_prod si_text">
-                {amount(sum_insured)}
+                {numberToDigitWord(sum_insured)}
               </span>
             </span>
           </div>

@@ -117,9 +117,9 @@ function FilterModal({ onClose }) {
         className="p-3 pb-0 d-flex flex-column"
         css={`
           gap: 1em;
-          min-height: ${section === "top_up" ? "63vh" : "67vh"};
+          // max-height: ${section === "top_up" ? "63vh" : "67vh"};
           // min-height: 60vh;
-          overflow: auto;
+          // overflow: auto;
         `}
       >
         {morefilters
