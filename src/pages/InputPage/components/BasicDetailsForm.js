@@ -113,6 +113,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
                 }}
               ></Title>
               <LinkButton
+                type="button"
                 onClick={() => {
                   history.push({
                     pathname: "/input/renewal-details",
