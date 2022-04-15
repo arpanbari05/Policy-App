@@ -121,7 +121,7 @@ function AppLoaders({ children, ...props }) {
 
   if (isLoadingCart) return <FullScreenLoader />;
 
-  if (isLoadingPolicy || isUninitializedPolicy) return <FullScreenLoader />;
+  if (isLoadingPolicy) return <FullScreenLoader />;
 
   if (isErrorEnq)
     return (
