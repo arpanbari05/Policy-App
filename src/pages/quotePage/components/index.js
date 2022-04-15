@@ -2,6 +2,7 @@ import { CircleCloseButton, ScreenTopLoader } from "../../../components";
 import { useCompanies, useGetQuotes, useTheme } from "../../../customHooks";
 import "styled-components/macro";
 import * as mq from "../../../utils/mediaQueries";
+import { numberToDigitWord } from "../../../utils/helper";
 
 export function QuotesLoader() {
   const { isLoading, loadingPercentage } = useGetQuotes();
@@ -51,10 +52,10 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
         css={`
           height: 2em;
           object-fit: contain;
+          margin-right: 1rem;
           ${mq.mobile} {
             height: auto;
             width: 2em;
-            margin-right: 0.6rem;
           }
         `}
       />
@@ -83,7 +84,10 @@ export function CompareQuoteTrayItem({ quote, onRemove }) {
             color: ${colors.font.three};
           `}
         >
-          Cover: {quote.sum_insured}
+          Cover:{" "}
+          {numberToDigitWord(quote.sum_insured)
+            .replace("₹", "")
+            .replace("Lakh", "L")}
         </div>
       </div>
     </div>

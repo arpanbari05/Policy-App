@@ -45,6 +45,7 @@ import {
   matchQuotes,
   mergeQuotes,
   parseJson,
+  regexStringToRegex,
 } from "../utils/helper";
 import { calculateTotalPremium } from "../utils/helper";
 import useUrlQuery, { useUrlQueries } from "./useUrlQuery";
@@ -64,6 +65,7 @@ import {
   setIsPopupOn,
   setShowErrorPopup,
 } from "../pages/ProposalPage/ProposalSections/ProposalSections.slice";
+import RandExp from "randexp";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -219,21 +221,18 @@ export function useFrontendBoot() {
   const tenantAlias = data?.tenant?.alias;
 
   let journeyType = "health";
+  let subJourneyType = "";
 
   if (enquiryData?.data) {
-    journeyType =
-      enquiryData?.data?.type === "new"
-        ? enquiryData?.data?.section
-        : "renewal";
+    journeyType = enquiryData?.data?.section;
+    subJourneyType = enquiryData?.data?.type === "renew" ? "renewal" : "";
   }
-
-  //!TODO: Uncomment this to switch to renewal journey type (no longer needed)
-  //journeyType = "renewal";
 
   return {
     query,
     journeyType,
     tenantName,
+    subJourneyType,
     tenantAlias,
     data,
     settings: data?.settings,
@@ -685,6 +684,7 @@ export function useUpdateMembers() {
 
 export function useCart() {
   const dispatch = useDispatch();
+
   const searchQueries = useUrlQueries();
 
   const { data } = useGetCartQuery();
@@ -820,7 +820,7 @@ export function useRider(groupCode) {
 }
 
 export function useTenureDiscount(groupCode) {
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const { updateCartEntry, getCartEntry } = useCart();
 
@@ -839,6 +839,7 @@ export function useTenureDiscount(groupCode) {
     group: groupCode,
     feature_options: featureOptionsToSend,
     journeyType,
+    subJourneyType,
     deductible,
   });
 
@@ -872,36 +873,36 @@ export function useTenureDiscount(groupCode) {
 const discountOnAnotherDiscount = ({
   discounts_on_which_discount_to_be_applied,
   total_premium,
-  premium,
   cartEntry,
 }) => {
   return discounts_on_which_discount_to_be_applied
     .map(
       ({
-        applied_on_total_premium,
+        applied_on_total_premium: applied_on_total_cart_premium,
         applied_on_riders,
         percent: percent_of_discount_on_which_discount_to_be_applied,
         fixed_discount_value,
       }) => {
+        let discountValue = 0;
+
         if (fixed_discount_value) {
           //? return the amount directly if it is fixed.
           return +fixed_discount_value;
         }
 
-        let discountValue = 0;
-
-        if (applied_on_total_premium) {
+        if (applied_on_total_cart_premium) {
+          //? Means applied on cart total premium.
           const discount =
-            (parseInt(total_premium) *
+            (parseInt(cartEntry?.netPremiumWithoutDiscount) *
               parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
             100;
-          discountValue = discountValue + discount;
+
+          return (discountValue = discountValue + discount);
         }
 
-        if (!applied_on_total_premium) {
-          //? means applied on premium
+        if (!applied_on_total_cart_premium) {
           const discount =
-            (parseInt(premium) *
+            (parseInt(total_premium) *
               parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
             100;
           discountValue = discountValue + discount;
@@ -1004,27 +1005,32 @@ export function useAdditionalDiscount(groupCode, skip = false) {
   function getDiscountAmount(additionalDiscount) {
     const {
       percent,
-      applied_on_total_premium,
+      applied_on_total_premium: applied_on_total_cart_premium,
       applied_on_riders,
       fixed_discount_value,
       applied_on_discounts,
     } = additionalDiscount;
+
+    let discountAmount = 0;
 
     if (fixed_discount_value) {
       //? return the amount directly if it is fixed.
       return +fixed_discount_value;
     }
 
-    let discountAmount = 0;
+    if (applied_on_total_cart_premium) {
+      //? Means applied on cart total premium.
+      //? Return discount amount applied on total_cart_premium.
+      const discount =
+        (parseInt(cartEntry?.netPremiumWithoutDiscount) * parseInt(percent)) /
+        100;
 
-    if (applied_on_total_premium) {
-      const discount = (parseInt(total_premium) * parseInt(percent)) / 100;
-      discountAmount = discountAmount + discount;
+      return (discountAmount = discountAmount + discount);
     }
 
-    if (!applied_on_total_premium) {
+    if (!applied_on_total_cart_premium) {
       //? means applied on premium
-      const discount = (parseInt(premium) * parseInt(percent)) / 100;
+      const discount = (parseInt(total_premium) * parseInt(percent)) / 100;
       discountAmount = discountAmount + discount;
     }
 
@@ -1744,7 +1750,7 @@ export function useCompareFeature(compareQuote) {
 }
 
 export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const getRidersQueryParams = {
     sum_insured: quote?.sum_insured,
@@ -1752,7 +1758,7 @@ export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
     productId: quote?.product.id,
     group: parseInt(groupCode),
     journeyType,
-
+    subJourneyType,
     ...queryOptions,
   };
 
@@ -2101,16 +2107,17 @@ export const useRevisedPremiumModal = () => {
       ),
     );
     setRevisedPremiumCheckHitByUs(true);
- next();
+    next();
   }; /* Performs refetch from the server */
 
   useEffect(() => {
+    
     if (+prevTotalPremium === +updatedTotalPremium) {
       revisedPremiumPopupToggle.off();
     }
 
     // if (+prevTotalPremium !== +updatedTotalPremium) {
-    if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
+    if (Math.abs(prevTotalPremium - updatedTotalPremium) > 10) {
       let stringedRidersName = "";
       for (let i = 0; i < previousCartEntries.length; i++) {
         const previousEntry = previousCartEntries[i];
@@ -2143,7 +2150,6 @@ export const useRevisedPremiumModal = () => {
               revisedPremiumPopupToggle.on();
               dispatch(setIsPopupOn(true));
             },
-            
           }),
         );
       } else {
@@ -2237,8 +2243,12 @@ export const useDD = ({ initialValue = {}, required, errorLabel }) => {
 
   const valueInputTouchedHandler = () => setIsValueInputTouched(true);
 
-  const valueChangeHandler = (label, value) => {
-    const updatedValue = { code: value, display_name: label };
+  const valueChangeHandler = singleOption => {
+    const updatedValue = {
+      code: singleOption?.value,
+      display_name: singleOption?.label,
+      ...singleOption,
+    };
     setValue(updatedValue);
   };
 
@@ -2247,6 +2257,66 @@ export const useDD = ({ initialValue = {}, required, errorLabel }) => {
     error,
     showError,
     isValueValid,
+    shouldShowError: valueInputTouchedHandler,
+    onChange: valueChangeHandler,
+  };
+};
+
+export const usePolicyNumberValidations = ({
+  initialValue = "",
+  required,
+  errorLabel,
+  providedRegex = /^[\S]*$/,
+}) => {
+  const [value, setValue] = useState(initialValue);
+
+  const [isValueInputTouched, setIsValueInputTouched] = useState(false);
+
+  const [error, setError] = useState({});
+
+  const isValueValid = !error?.message;
+
+  const showError = isValueInputTouched && !isValueValid;
+
+  const placeHolder =
+    providedRegex &&
+    `E.G. ${new RandExp(regexStringToRegex(providedRegex)).gen()}`;
+
+  const ddErrorThrowingValidations = useCallback(
+    (value, setError) => {
+      //? Only validates if required.
+      if (required) {
+        if (value === "") {
+          return setError({ message: `Please select a ${errorLabel}.` });
+        }
+        if (!providedRegex.test(value)) {
+          return setError({ message: `Please enter a valid ${errorLabel}.` });
+        }
+        return setError({});
+      }
+      return setError({});
+    },
+    [value],
+  );
+
+  useEffect(() => {
+    ddErrorThrowingValidations(value, setError);
+  }, [value, setError, ddErrorThrowingValidations]);
+
+  const valueInputTouchedHandler = () => setIsValueInputTouched(true);
+
+  const valueChangeHandler = e => {
+    setValue(e.target.value);
+  };
+
+  console.log("The placeHolder", placeHolder);
+
+  return {
+    value,
+    error,
+    showError,
+    isValueValid,
+    placeHolder,
     shouldShowError: valueInputTouchedHandler,
     onChange: valueChangeHandler,
   };
