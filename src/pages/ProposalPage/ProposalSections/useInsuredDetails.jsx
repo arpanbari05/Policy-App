@@ -73,7 +73,7 @@ const useInsuredDetails = (
         let currentDate = new Date().getDate();
         Object.keys(schema).forEach(memberType => {
           if (memberType === "self") {
-            let tempObj = {};
+            let tempObj = {...defaultValue?.[memberType]};
             schema["self"].forEach(item => {
               if (
                 (proposalData["Proposer Details"][item.name] &&
@@ -93,11 +93,13 @@ const useInsuredDetails = (
               values && values[memberType]
                 ? { ...values[memberType], ...tempObj }
                 : tempObj;
-          } else if (
-            // for autopopulate Estimated DOB
-            !proposalData["Insured Details"] ||
-            !proposalData["Insured Details"][memberType].dob
-          ) {
+          } else {
+            // if (
+            //   // for autopopulate Estimated DOB
+            //   !proposalData["Insured Details"] ||
+            //   !proposalData["Insured Details"][memberType].dob
+            // )
+             
             let memberAge = membersDataFromGreetingPage.find(
               member => member.type === memberType,
             )?.age;
@@ -130,7 +132,8 @@ const useInsuredDetails = (
                 ? values[memberType]
                 : {}),
               dob: estimatedMemberDOB,
-              title
+              title,
+              ...defaultValue?.[memberType]
             };
           }
           if (
@@ -153,7 +156,7 @@ const useInsuredDetails = (
 
         setValues({
           ...prefilledValues,
-           ...defaultValue,
+          //  ...defaultValue,
         });
       }
     }

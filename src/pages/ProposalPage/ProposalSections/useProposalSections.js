@@ -26,12 +26,13 @@ const useProposalSections = ({
   setActive,
   partialLength,
   setActivateLoader,
-  setShow = () => {},
   setBlockTabSwitch,
-  name
+  name,
+  listOfForms
 }) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
+  const [show, setShow] = useState(0);
   const [errorInField, setErrorInField] = useState(true);
   const schema = useSelector(({ schema }) => schema.currentSchema);
   const history = useHistory();
@@ -63,6 +64,17 @@ const useProposalSections = ({
       );
     else return false;
   };
+
+  // checks dropDown selected value exist in schema options or not
+  const isOptionsValuesValidated = (schema,values) => {
+    console.log("sgvjsjvlskfvs",schema,values)
+    if(Array.isArray(schema)){
+      return schema.filter(el => renderField(el, values) && el.type === "select").every(el => Boolean( el.additionalOptions.options[values[el.name]]))
+    }else{
+      return Object.keys(schema).map(key => isOptionsValuesValidated(schema[key],values[key]))
+    }
+   
+  }
 
   const havingAnyError = (errors, key) => {
     if (key) {
@@ -157,6 +169,7 @@ const useProposalSections = ({
         callback,
       });
     } else if (updationFor === "Insured Details") {
+
       let updatedObj = { ...checkFor.self };
       let checkForKeys = Object.keys(checkFor.self);
       checkForKeys.forEach(key => {
@@ -186,6 +199,7 @@ const useProposalSections = ({
     );
   };
 
+
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
@@ -196,12 +210,22 @@ const useProposalSections = ({
       }
       if (!everyRequiredFilled(schema[formName], sendedVal)) {
         setActive(schemaKeys.indexOf(formName));
-
-        // setShow(havingAnyError(errors).indexOf(false));
+        return;
+      }
+      let valueIsValidatedOption = isOptionsValuesValidated(schema[formName],sendedVal);
+      console.log("wsgvskdbvs",isOptionsValuesValidated(schema[formName],sendedVal))
+      // if(formName === "Proposer Details" && valueIsValidatedOption === false){
+      //   setActive(schemaKeys.indexOf(formName));
+      //   return;
+      // }
+      if(formName !== "Proposer Details" && valueIsValidatedOption.includes(false)){
+        setActive(schemaKeys.indexOf(formName));
+        setShow(valueIsValidatedOption.indexOf(false));
         return;
       }
     } else if (!checkAllValid(values).every(el => el === true)) {
       setActive(schemaKeys.indexOf(formName));
+      return;
     }
 
     if (
@@ -362,6 +386,8 @@ if(name === "Proposer Details"){
     setErrors,
     errors,
     equriesData,
+    show, 
+    setShow,
   };
 };
 

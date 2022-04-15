@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "./FormBuilder.slice";
 import { render } from "@testing-library/react";
 import "styled-components/macro";
+import { useTheme } from "../../customHooks";
 
 const FormBuilder = ({
   components = {},
@@ -44,6 +45,11 @@ const FormBuilder = ({
   autoPopulateSelfOtherDetails,
   preFilledDataBase,
 }) => {
+  const { colors } = useTheme();
+  const PrimaryColor = colors.primary_color,
+    SecondaryColor = colors.secondary_color,
+    PrimaryShade = colors.primary_shade;
+
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
   );
@@ -148,7 +154,7 @@ const FormBuilder = ({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if(formName !== "Medical Details"){
+    // if(formName !== "Medical Details"){
     const tempValues = { ...values };
     schema.forEach(item => {
       if (
@@ -165,7 +171,7 @@ const FormBuilder = ({
       }
     });
     updateValues(tempValues);
-  }
+  // }
   }, [schema, errors]);
   useEffect(() => {
     let temp = {};
@@ -214,7 +220,7 @@ const FormBuilder = ({
                     return (
                       <CustomWrapper>
                         <div className="col-md-12">
-                          <Title>{member}</Title>
+                          <Title style={{backgroundImage: `linear-gradient(to right, ${PrimaryShade}, white)`}}>{member}</Title>
                           <div
                             css={`
                               display: flex;

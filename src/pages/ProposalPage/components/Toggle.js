@@ -147,7 +147,7 @@ console.log("bfxfjkl",membersToMap)
  
 
     
-  }, [boolean, Object.values(membersStatus).length, customShowMembers]);
+  }, [boolean, membersStatus, customShowMembers]);
 
   // useEffect(() => {
   //   if(label.toLowerCase().includes("mandatory")){

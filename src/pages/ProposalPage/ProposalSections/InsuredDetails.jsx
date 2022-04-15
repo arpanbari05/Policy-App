@@ -25,7 +25,7 @@ const InsuredDetails = ({
   setActivateLoader,
   setBlockTabSwitch
 }) => {
-  const [show, setShow] = useState(0);
+  
 const [medicalContinueClick,setMedicalContinueClick] = useState(false)
   const { proposalData,showErrorPopup } = useSelector(state => state.proposalPage);
 
@@ -55,12 +55,13 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
     setErrors,
     errors,
     equriesData,
+    show, 
+    setShow,
   } = useProposalSections({
     setActive,
     name,
     defaultValue,
     partialLength: Object.keys(schema).length,
-    setShow,
     setActivateLoader,
     schema,
     setBlockTabSwitch
@@ -288,7 +289,6 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
             if (
               name === "Medical Details" &&
               canProceed?.canProceed 
-             
             ) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
