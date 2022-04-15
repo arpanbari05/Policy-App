@@ -1,6 +1,54 @@
 import _, { range } from "lodash";
 import clickSound from "../assets/audio/button-click.wav";
 
+// all on specific urls
+export const allowOnWebsites = (sites = []) => {
+  const renewBuyUat = [
+    "https://uathealth.rbstaging.in",
+    "https://renewbuy-health.fynity.in",
+  ];
+  const renewBuyProd = "https://health.renewbuy.com";
+  const topup = [
+    "https://topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in",
+    "http://localhost:3000",
+  ];
+  const sriyahUat = "https://health-uat.nammacover.com";
+  const pincUat = "https://uat-health.pincinsurance.com";
+  const origin = window.location.origin;
+
+  let isPass = false;
+  sites.map(site => {
+    if (site === "topup") {
+      if (topup.includes(origin)) {
+        isPass = true;
+      }
+    }
+    if (site === "renewBuyProd") {
+      if (renewBuyProd === origin) {
+        isPass = true;
+      }
+    }
+
+    if (site === "renewBuyUat") {
+      if (renewBuyUat.includes(origin)) {
+        isPass = true;
+      }
+    }
+
+    if (site === "sriyahUat") {
+      if (sriyahUat === origin) {
+        isPass = true;
+      }
+    }
+    if (site === "pincUat") {
+      if (pincUat === origin) {
+        isPass = true;
+      }
+    }
+  });
+  return isPass;
+};
+
 export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
   const noOfLakhs = number / 100000;
@@ -819,19 +867,19 @@ export function renderDisclaimer({ tenantName, settings }) {
   }
 }
 
-export function isThemeApp() {
-  const domain = window.location.host;
-  if (
-    domain.includes("localhost:") ||
-    domain === "renewbuy-health.fynity.in" ||
-    domain === "topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in" ||
-    domain === "uat-health.pincinsurance.com"
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
+// export function isThemeApp() {
+//   const domain = window.location.host;
+//   if (
+//     domain.includes("localhost:") ||
+//     domain === "renewbuy-health.fynity.in" ||
+//     domain === "topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in" ||
+//     domain === "uat-health.pincinsurance.com"
+//   ) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
 
 export const isSSOJourney = () => {
   return localStorage.SSO_user ? true : false;

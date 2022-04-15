@@ -1,7 +1,7 @@
 import { useHistory, useLocation, Redirect } from "react-router-dom";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useGetPoliciesQuery } from "../../../api/api";
-import { FullScreenLoaderSkeleton } from "../../index";
+import { FullScreenLoader, FullScreenLoaderSkeleton } from "../../index";
 
 const dontCheckPoliciesUrl = ["/", "/input/basic-details", "/thankyou"];
 
@@ -19,7 +19,7 @@ export default function CheckPolicies({ children, ...props }) {
 
   if (dontCheckPolicies) return children;
 
-  if (isLoading || isUninitialized) return <FullScreenLoaderSkeleton />;
+  if (isLoading || isUninitialized) return <FullScreenLoader />;
 
   if (data && data.data?.length > 0) {
     const policies = data.data;

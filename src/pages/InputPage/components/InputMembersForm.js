@@ -185,6 +185,12 @@ function InputMembersForm({ posContent, ...props }) {
           serverError={serverError}
           gender={data?.data?.input?.gender}
           setServerError={setServerError}
+          getSelectedMembers={getSelectedMembers}
+          membersForm={membersForm}
+          membersList={membersList}
+          isError={isError}
+          error={error}
+          validate={validate}
         />
       </div>
       <InputFormCta
@@ -198,6 +204,12 @@ function InputMembersForm({ posContent, ...props }) {
 }
 
 function EditMembers({
+  isError,
+  error,
+  getSelectedMembers,
+  membersForm,
+  validate,
+  membersList,
   onClose,
   serverError,
   onSubmit,
@@ -206,14 +218,14 @@ function EditMembers({
   gender,
   ...props
 }) {
-  const {
-    isError,
-    error,
-    validate,
-    getSelectedMembers,
-    membersList,
-    ...membersForm
-  } = useMembersForm(initialMembersList);
+  // const {
+  //   isError,
+  //   error,
+  //   validate,
+  //   getSelectedMembers,
+  //   membersList,
+  //   ...membersForm
+  // } = useMembersForm(initialMembersList);
 
   const handleSubmit = evt => {
     evt.preventDefault();
