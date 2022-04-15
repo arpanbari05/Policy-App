@@ -3,9 +3,11 @@ import {
   useGetEnquiriesQuery,
   useUpdateGroupsMutation,
 } from "../../../../api/api";
+import useFilters from "./useFilters";
 
 function useUpdateFilters() {
   const [updateGroup, query] = useUpdateGroupsMutation();
+  const { getSelectedFilter } = useFilters();
 
   const { groupCode } = useParams();
 
@@ -43,7 +45,16 @@ function useUpdateFilters() {
     });
     updateGroup({
       groupCode,
-      extras: {},
+      extras: {
+        sum_insured:
+          filters?.cover?.code ||
+          previousFilters?.cover?.code ||
+          getSelectedFilter("cover")?.code,
+        tenure:
+          filters?.tenure?.code ||
+          previousFilters?.tenure?.code ||
+          getSelectedFilter("tenure")?.code,
+      },
       plan_type: filters?.plantype?.code,
     });
     localStorage.setItem("groups", JSON.stringify(groups));

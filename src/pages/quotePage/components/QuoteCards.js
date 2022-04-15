@@ -753,7 +753,7 @@ function QuoteFeature({ feature, icon, onNavigate, value }) {
       >
         <div
           css={`
-            font-size: 10px;
+            font-size: 11px;
             color: ${colors.font.three};
           `}
         >
@@ -762,7 +762,7 @@ function QuoteFeature({ feature, icon, onNavigate, value }) {
         <div
           css={`
             width: auto;
-            font-size: 11px;
+            font-size: 12px;
             display: flex;
             align-items: center;
             cursor: pointer;

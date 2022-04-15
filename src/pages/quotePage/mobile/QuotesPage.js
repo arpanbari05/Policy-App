@@ -1,15 +1,25 @@
 import { BackButtonMobile, Page } from "../../../components";
 import { GroupLinks } from "../components/UpperModifier";
-import { useTheme } from "../../../customHooks";
+import { useFrontendBoot, useTheme } from "../../../customHooks";
 import { BottomNavigation } from "./components";
 import { Quotes } from "./components/Quotes";
 import { QuotesLoader } from "../components";
 import "styled-components/macro";
 import { SortByDialog } from "./components/SortBy";
 import { useState } from "react";
+import ErrorPopup from "../../ProposalPage/ProposalSections/components/ErrorPopup";
+import { useSelector, useDispatch } from "react-redux";
+import { setPosPopup } from "../quote.slice";
 
 function QuotesPage() {
   const { boxShadows } = useTheme();
+  const dispatch = useDispatch();
+  const { pos_popup } = useSelector(({ quotePage }) => quotePage);
+  const {
+    data: {
+      settings: { pos_nonpos_switch_message },
+    },
+  } = useFrontendBoot();
 
   return (
     <Page backButton={<BackButtonMobile path="/" />} loader={<QuotesLoader />}>
@@ -22,6 +32,12 @@ function QuotesPage() {
         <GroupLinks />
       </div>
       <Main />
+      {pos_popup && (
+        <ErrorPopup
+          handleClose={() => dispatch(setPosPopup(false))}
+          htmlProps={pos_nonpos_switch_message}
+        />
+      )}
     </Page>
   );
 }
