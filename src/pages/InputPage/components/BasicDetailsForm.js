@@ -15,7 +15,7 @@ import { useUrlQueries } from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
 import "styled-components/macro";
 import { useHistory } from "react-router-dom";
-import { capitalize } from "../../../utils/helper";
+import { allowOnWebsites, capitalize } from "../../../utils/helper";
 import * as mq from "../../../utils/mediaQueries";
 import validateInput, {
   isEnquiryOptional,
@@ -23,6 +23,7 @@ import validateInput, {
 import styled from "styled-components";
 
 const BasicDetailsForm = ({ posContent, ...props }) => {
+  const originURl = window.location.origin;
   let inputData = {
     gender: "M",
   };
@@ -102,7 +103,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
             }
           `}
         >
-          {tenant.alias === "fyntune" ? (
+          {allowOnWebsites(["topup"]) ? (
             <FlexSectionStyled>
               <Title
                 dangerouslySetInnerHTML={{
