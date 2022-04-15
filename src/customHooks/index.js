@@ -1075,7 +1075,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
       const discount =
         (+filtered_applied_on_discounts_amount * parseInt(percent)) / 100;
 
-      discountAmount = discountAmount + discount;
+      discountAmount = discountAmount - discount;
     }
 
     return discountAmount;

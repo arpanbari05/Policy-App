@@ -12,6 +12,8 @@ export const allowOnWebsites = (sites = []) => {
     "https://topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in",
     "http://localhost:3000",
   ];
+  const sriyahUat = "https://health-uat.nammacover.com";
+  const pincUat = "https://uat-health.pincinsurance.com";
   const origin = window.location.origin;
 
   let isPass = false;
@@ -29,6 +31,17 @@ export const allowOnWebsites = (sites = []) => {
 
     if (site === "renewBuyUat") {
       if (renewBuyUat.includes(origin)) {
+        isPass = true;
+      }
+    }
+
+    if (site === "sriyahUat") {
+      if (sriyahUat === origin) {
+        isPass = true;
+      }
+    }
+    if (site === "pincUat") {
+      if (pincUat === origin) {
         isPass = true;
       }
     }
@@ -854,19 +867,19 @@ export function renderDisclaimer({ tenantName, settings }) {
   }
 }
 
-export function isThemeApp() {
-  const domain = window.location.host;
-  if (
-    domain.includes("localhost:") ||
-    domain === "renewbuy-health.fynity.in" ||
-    domain === "topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in" ||
-    domain === "uat-health.pincinsurance.com"
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
+// export function isThemeApp() {
+//   const domain = window.location.host;
+//   if (
+//     domain.includes("localhost:") ||
+//     domain === "renewbuy-health.fynity.in" ||
+//     domain === "topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in" ||
+//     domain === "uat-health.pincinsurance.com"
+//   ) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
 
 export const isSSOJourney = () => {
   return localStorage.SSO_user ? true : false;

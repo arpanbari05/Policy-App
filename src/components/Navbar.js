@@ -9,7 +9,7 @@ import { FaRegCopy } from "react-icons/fa";
 import { CircleLoader } from ".";
 import { images } from "../assets/logos/logo";
 import { useUrlQueries } from "../customHooks/useUrlQuery";
-import { isThemeApp } from "../utils/helper";
+import { allowOnWebsites, isThemeApp } from "../utils/helper";
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 
 function LogoLink() {
@@ -114,7 +114,12 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
             </div>
           )}
 
-          {isThemeApp() && (
+          {allowOnWebsites([
+            "topup",
+            "renewBuyUat",
+            "sriyahUat",
+            "pincUat",
+          ]) && (
             <span
               onClick={() => {
                 setShow(true);
