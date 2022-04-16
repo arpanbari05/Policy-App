@@ -397,9 +397,9 @@ export function Members() {
 }
 
 function Member({ member, ...props }) {
-  console.log("displayName", member?.display_name);
+  console.log("displayName", member);
   const memberType = member?.display_name
-    ? member?.display_name?.replaceAll("_", " ")
+    ? member?.display_name.toString()?.replaceAll("_", " ")
     : "";
   return (
     <Info
