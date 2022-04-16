@@ -154,7 +154,7 @@ const FormBuilder = ({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    // if(formName !== "Medical Details"){
+    if(formName !== "Medical Details"){
     const tempValues = { ...values };
     schema.forEach(item => {
       if (
@@ -171,7 +171,7 @@ const FormBuilder = ({
       }
     });
     updateValues(tempValues);
-  // }
+  }
   }, [schema, errors]);
   useEffect(() => {
     let temp = {};
