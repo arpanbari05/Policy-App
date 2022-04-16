@@ -2067,7 +2067,7 @@ export const useShareFunctionality = (desktopPageId, mobilePageId) => {
 };
 
 export const useRevisedPremiumModal = () => {
-  const { cartEntries, getCartTotalPremium } = useCart();
+  const { cartEntries, getCartTotalPremium, getCartEntry } = useCart();
 
   const revisedPremiumPopupToggle = useToggle();
 
@@ -2081,6 +2081,9 @@ export const useRevisedPremiumModal = () => {
 
   const dispatch = useDispatch();
 
+  /*-----------------------------------------------------------------------------------------------*/
+  //? Proposal page constants
+
   const prevTotalPremium = useMemo(() => {
     return getCartTotalPremium();
   }, [groupCode]); /* memorizes the first value it gets */
@@ -2091,6 +2094,17 @@ export const useRevisedPremiumModal = () => {
 
   const updatedTotalPremium =
     getCartTotalPremium(); /* Gets the updated value each time */
+
+  /*-----------------------------------------------------------------------------------------------*/
+  //? Product Details page constants
+
+  const prevPremium = useMemo(() => {
+    return getCartEntry(groupCode)?.premium;
+  }, [groupCode]); /* memorizes the first value it gets */
+
+  const updatedPremium = getCartEntry(groupCode)?.premium;
+
+  /*-----------------------------------------------------------------------------------------------*/
 
   const getUpdatedCart = (next = () => {}) => {
     dispatch(
@@ -2111,55 +2125,70 @@ export const useRevisedPremiumModal = () => {
   }; /* Performs refetch from the server */
 
   useEffect(() => {
-    
-    if (+prevTotalPremium === +updatedTotalPremium) {
-      revisedPremiumPopupToggle.off();
-    }
+    if (isProductDetailsPage) {
+      //? PRODUCT DETAILS PAGE LOGIC
 
-    // if (+prevTotalPremium !== +updatedTotalPremium) {
-    if (Math.abs(prevTotalPremium - updatedTotalPremium) > 10) {
-      let stringedRidersName = "";
-      for (let i = 0; i < previousCartEntries.length; i++) {
-        const previousEntry = previousCartEntries[i];
-        const currentEntry = cartEntries.find(
-          entry => entry.id === previousEntry.id,
-        );
-        let ridersInPreviousCart = previousEntry.health_riders.map(
-          rider => rider.name,
-        );
-        let ridersInCurrentCart = currentEntry.health_riders.map(
-          rider => rider.name,
-        );
-
-        if (ridersInPreviousCart.length !== ridersInCurrentCart.length) {
-          let removedRiderName = ridersInPreviousCart.find(
-            rider => ridersInCurrentCart.indexOf(rider) < 0,
-          );
-          stringedRidersName += !stringedRidersName
-            ? removedRiderName
-            : ` and ${removedRiderName}`;
-        }
+      if (+prevPremium === +updatedPremium) {
+        revisedPremiumPopupToggle.off();
       }
-      if (stringedRidersName) {
-        dispatch(
-          setShowErrorPopup({
-            show: true,
-            head: "",
-            msg: `Based on changes in Insured Date of Birth ${stringedRidersName} is unavailable. Please click OK & proceed.`,
-            onCloseCallBack: () => {
-              revisedPremiumPopupToggle.on();
-              dispatch(setIsPopupOn(true));
-            },
-          }),
-        );
-      } else {
+      if (Math.abs(prevPremium - updatedPremium) > 10) {
         revisedPremiumPopupToggle.on();
         dispatch(setIsPopupOn(true));
+      }
+    } else {
+      //? PROPOSAL PAGE LOGIC
+
+      if (+prevTotalPremium === +updatedTotalPremium) {
+        revisedPremiumPopupToggle.off();
+      }
+
+      // if (+prevTotalPremium !== +updatedTotalPremium) {
+      if (Math.abs(prevTotalPremium - updatedTotalPremium) > 10) {
+        let stringedRidersName = "";
+        for (let i = 0; i < previousCartEntries.length; i++) {
+          const previousEntry = previousCartEntries[i];
+          const currentEntry = cartEntries.find(
+            entry => entry.id === previousEntry.id,
+          );
+          let ridersInPreviousCart = previousEntry.health_riders.map(
+            rider => rider.name,
+          );
+          let ridersInCurrentCart = currentEntry.health_riders.map(
+            rider => rider.name,
+          );
+
+          if (ridersInPreviousCart.length !== ridersInCurrentCart.length) {
+            let removedRiderName = ridersInPreviousCart.find(
+              rider => ridersInCurrentCart.indexOf(rider) < 0,
+            );
+            stringedRidersName += !stringedRidersName
+              ? removedRiderName
+              : ` and ${removedRiderName}`;
+          }
+        }
+        if (stringedRidersName) {
+          dispatch(
+            setShowErrorPopup({
+              show: true,
+              head: "",
+              msg: `Based on changes in Insured Date of Birth ${stringedRidersName} is unavailable. Please click OK & proceed.`,
+              onCloseCallBack: () => {
+                revisedPremiumPopupToggle.on();
+                dispatch(setIsPopupOn(true));
+              },
+            }),
+          );
+        } else {
+          revisedPremiumPopupToggle.on();
+          dispatch(setIsPopupOn(true));
+        }
       }
     }
   }, [
     prevTotalPremium,
     updatedTotalPremium,
+    prevPremium,
+    updatedPremium,
   ]); /* CONTROLS DISPLAY OF REVISED PREMIUM POPUP AUTOMATICALLY */
 
   const getUpdatedCartEntry = groupCode => {
