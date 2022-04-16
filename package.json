@@ -15,8 +15,6 @@
     "@mui/material": "^5.6.1",
     "@mui/x-date-pickers": "^5.0.0-alpha.0",
     "@reduxjs/toolkit": "^1.5.0",
-    "@sentry/react": "^6.19.6",
-    "@sentry/tracing": "^6.19.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
