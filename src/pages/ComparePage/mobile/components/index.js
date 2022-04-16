@@ -322,12 +322,12 @@ export function OptionalCoversValue({ quote, onChange }) {
         `}
       >
         {riders.length ? (
-          riders.map(rider => (
+          riders.map((rider, idx) => (
             <Rider
               currentQuote={quote}
               rider={rider}
-              key={rider.name}
               onChange={handleChange}
+              key={idx + rider.total}
             />
           ))
         ) : (

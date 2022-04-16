@@ -281,20 +281,19 @@ export function RiderCardNew({
   );
 }
 
-export function RiderPremium({ rider, isLoading = false, onChange }) {
+export function RiderPremium({ quote, rider, isLoading = false, onChange }) {
   const { colors } = useTheme();
   const { isSelected } = rider;
 
   const handleChange = evt => {
     if (rider?.is_mandatory) return;
-
     onChange && onChange({ ...rider, isSelected: evt.target.checked });
   };
 
   return (
     <RiderPremiumWrap
       className="py-2 rounded"
-      htmlFor={rider?.id}
+      htmlFor={rider?.id + rider?.total_premium}
       css={`
         cursor: pointer;
         background-color: ${isSelected ? colors.primary_shade : "#f3f3f3"};
@@ -340,9 +339,11 @@ export function RiderPremium({ rider, isLoading = false, onChange }) {
         className="visually-hidden"
         type="checkbox"
         name={rider?.id}
-        id={rider?.id}
+        id={rider?.id + rider?.total_premium}
         checked={!!isSelected}
-        onChange={handleChange}
+        onChange={event => {
+          handleChange(event);
+        }}
         disabled={isLoading}
       />
     </RiderPremiumWrap>

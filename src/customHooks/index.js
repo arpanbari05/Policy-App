@@ -2111,7 +2111,6 @@ export const useRevisedPremiumModal = () => {
   }; /* Performs refetch from the server */
 
   useEffect(() => {
-    
     if (+prevTotalPremium === +updatedTotalPremium) {
       revisedPremiumPopupToggle.off();
     }
@@ -2308,8 +2307,6 @@ export const usePolicyNumberValidations = ({
   const valueChangeHandler = e => {
     setValue(e.target.value);
   };
-
-  console.log("The placeHolder", placeHolder);
 
   return {
     value,
