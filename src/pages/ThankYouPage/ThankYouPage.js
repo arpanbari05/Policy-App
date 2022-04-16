@@ -17,7 +17,7 @@ import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import { small } from "../../utils/mediaQueries";
 import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
-import checkImg from "../../assets/images/check_green.png";
+import checkImg from "../../assets/images/correct.png";
 
 const ThankYouPage = () => {
   const ls = new SecureLS();
@@ -467,6 +467,8 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
             box-sizing: border-box;
             padding: 0px 30px;
             padding-top: 20px;
+            position: relative;
+            top: -58px;
 
             & p:first-child {
               font-size: 28px;
@@ -482,7 +484,7 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
               background: ${colors?.primary_shade};
               border-radius: 22px;
               font-weight: 700;
-              padding: 14px 20px 14px 60px;
+              padding: 14px 20px 14px 70px;
               font-size: 22px;
               min-height: 56px;
               position: relative;
@@ -495,11 +497,11 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
 
               &::before {
                 content: "";
-                height: 40px;
-                width: 40px;
+                height: 50px;
+                width: 50px;
                 position: absolute;
-                margin-left: -45px;
-                margin-top: -5px;
+                margin-left: -57px;
+                margin-top: -10px;
                 border-radius: 100%;
                 background-image: url(${checkImg});
                 background-size: cover;
@@ -512,6 +514,15 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
                 color: ${colors?.primary_color};
                 font-weight: 700;
                 text-decoration: underline;
+              }
+              &::before {
+                content: "";
+                margin: 30px 0px;
+                display: block;
+                background: ${colors?.secondary_color};
+                width: 84px;
+                height: 14px;
+                border-radius: 90px;
               }
             }
 
@@ -800,7 +811,7 @@ const MobileBanner = ({
             background: ${colors?.primary_shade};
             border-radius: 22px;
             font-weight: 700;
-            padding: 10px 10px 10px 28px;
+            padding: 10px 10px 10px 35px;
             font-size: 11px !important;
             position: relative;
             margin: 0 auto;
@@ -816,7 +827,7 @@ const MobileBanner = ({
               height: 20px;
               width: 20px;
               position: absolute;
-              margin-left: -20px;
+              margin-left: -25px;
               margin-top: -2px;
               border-radius: 100%;
               background-image: url(${checkImg});
