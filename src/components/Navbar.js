@@ -397,6 +397,7 @@ export function Members() {
 }
 
 function Member({ member, ...props }) {
+  console.log("displayName", member?.display_name);
   const memberType = member?.display_name
     ? member?.display_name?.replaceAll("_", " ")
     : "";
