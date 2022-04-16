@@ -293,7 +293,7 @@ export function RiderPremium({ quote, rider, isLoading = false, onChange }) {
   return (
     <RiderPremiumWrap
       className="py-2 rounded"
-      htmlFor={rider?.id + rider?.total_premium}
+      htmlFor={rider?.id + rider?.total_premium + quote.sum_insured}
       css={`
         cursor: pointer;
         background-color: ${isSelected ? colors.primary_shade : "#f3f3f3"};
@@ -339,7 +339,7 @@ export function RiderPremium({ quote, rider, isLoading = false, onChange }) {
         className="visually-hidden"
         type="checkbox"
         name={rider?.id}
-        id={rider?.id + rider?.total_premium}
+        id={rider?.id + rider?.total_premium + quote.sum_insured}
         checked={!!isSelected}
         onChange={event => {
           handleChange(event);
