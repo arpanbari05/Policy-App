@@ -43,10 +43,11 @@ export function Quotes({ sortBy }) {
   const compareSlot = useCompareSlot({ maxLength: 2 });
 
   const { data: unmergedQuotes } = useGetQuotes();
+  const justArray = unmergedQuotes?.map(quote => mergeQuotes(quote.data.data));
 
-  const allMergedQuotes = unmergedQuotes
-    ?.map(quote => mergeQuotes(quote.data.data))
-    ?.flat();
+  const allMergedQuotes = justArray?.reduce((acc, val) => acc.concat(val), []);
+
+  // console.log("AllmergedQuotes", allMergedQuotes);
 
   useEffect(() => {
     if (shareType.value === "quotation_list") {

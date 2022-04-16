@@ -128,9 +128,12 @@ function ShowingPlanType() {
   const { colors } = useTheme();
   const { shareType } = useSelector(state => state.quotePage);
   const { data: unmergedQuotes } = useGetQuotes();
-  const mergedQuotes = unmergedQuotes
-    ?.map(quote => mergeQuotes(quote?.data?.data))
-    ?.flat();
+  const justArray = unmergedQuotes?.map(quote =>
+    mergeQuotes(quote?.data?.data),
+  );
+  const mergedQuotes = justArray?.reduce((acc, val) => acc.concat(val), []);
+
+  console.log(mergedQuotes, "mergedQuotes");
 
   const displayPlansLength = mergedQuotes?.filter(
     quoteData => quoteData?.length !== 0,
