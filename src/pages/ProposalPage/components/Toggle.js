@@ -29,6 +29,7 @@ const Toggle = ({
   message
 }) => {
   console.log("Svsjbv", disable_Toggle,value,values);
+  const isMandatoryMQ = label.toLowerCase().includes("mandatory");
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
@@ -41,6 +42,8 @@ const Toggle = ({
     customMembers instanceof Array && customMembers.length ? customMembers : members,
   );
 
+
+
   const [membersSelectedTillNow, setMembersSelectedTillNow] = useState({});
 
   useEffect(() => {
@@ -51,7 +54,7 @@ const Toggle = ({
         }),
       );
     }
-    if(label.toLowerCase().includes("mandatory")){
+    if(isMandatoryMQ){
        let questionsToCheck = showMembersIf.split("||");
        let membersSelectedTillNow = membersToMap.reduce((acc,member) => {
         let isMemberPresent = questionsToCheck.some(question => values?.[question] && values[question]?.members?.[member])
@@ -78,11 +81,10 @@ const Toggle = ({
     if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
+    }else if (value instanceof Object && Object.keys(value).length) {
+      setBoolean(value[`is${name}`]);
+      setMembersStatus(value.members);
     }
-    //  else if (value instanceof Object && Object.keys(value).length) {
-    //   setBoolean(value[`is${name}`]);
-    //   setMembersStatus(value.members);
-    // }
 console.log("bfxfjkl",membersToMap)
     if (restrictMaleMembers) {
       if (genderOfSelf === "M"){
@@ -109,10 +111,6 @@ console.log("bfxfjkl",membersToMap)
       setBoolean("N");
       setMembersStatus({});
     }
-    if (customShowMembers && label.toLowerCase().includes("mandatory")) {
-      setBoolean("Y");
-      // setMembersStatus(membersToMap.reduce((acc,member) => ({...acc, [member]:true}),{}));
-    }
     
   }, [value, customShowMembers]);
 
@@ -128,7 +126,7 @@ console.log("bfxfjkl",membersToMap)
       isValid = false;
     }
    
-if(!label.toLowerCase().includes("mandatory")){
+if(!isMandatoryMQ){
   console.log("qefeihjfbkf",customShowMembers,boolean,label)
   if(boolean === "N" && !customShowMembers){
 
@@ -152,10 +150,10 @@ if(!label.toLowerCase().includes("mandatory")){
  
 
     
-  }, [boolean,membersStatus, customShowMembers]);
+  }, [boolean,Object.keys(membersStatus).length, customShowMembers]);
 
   useEffect(() => {
-    if(label.toLowerCase().includes("mandatory")){
+    if(isMandatoryMQ){
     console.log("wvbkwdsbvjdce",membersSelectedTillNow)
    onChange({
         ...value,
@@ -209,35 +207,36 @@ if(!label.toLowerCase().includes("mandatory")){
                   type="radio"
                   name={`is${name}`}
                   onChange={e => {
-                    if(restrictMaleMembers && membersToMap.length === 0){
-                      dispatch(
-                        setShowErrorPopup({
-                          show: true,
-                          head: "",
-                          msg: "Male members are not eligible for this question.",
-                        }),
-                      );
-                    }else if(message && message.stp_block_message){
-                      dispatch(
-                        setShowErrorPopup({
-                          show: true,
-                          head: "",
-                          msg: message.stp_block_message ,
-                        }),
-                      );
+                    // if(restrictMaleMembers && membersToMap.length === 0){
+                    //   dispatch(
+                    //     setShowErrorPopup({
+                    //       show: true,
+                    //       head: "",
+                    //       msg: "Male members are not eligible for this question.",
+                    //     }),
+                    //   );
+                    // }else if(message && message.stp_block_message){
+                    //   dispatch(
+                    //     setShowErrorPopup({
+                    //       show: true,
+                    //       head: "",
+                    //       msg: message.stp_block_message ,
+                    //     }),
+                    //   );
                      
-                      // setBoolean(e.target.value);
-                    }else if(message && message.npos_switch_medical_selection_message){
-                      dispatch(
-                        setShowErrorPopup({
-                          show: true,
-                          head: "",
-                          msg: message.npos_switch_medical_selection_message,
-                        }),
-                      );
+                    //   // setBoolean(e.target.value);
+                    // }else if(message && message.npos_switch_medical_selection_message){
+                    //   dispatch(
+                    //     setShowErrorPopup({
+                    //       show: true,
+                    //       head: "",
+                    //       msg: message.npos_switch_medical_selection_message,
+                    //     }),
+                    //   );
                      
-                      setBoolean(e.target.value);
-                    }else if (notAllowed) {
+                    //   setBoolean(e.target.value);
+                    // }else
+                     if (notAllowed) {
                       dispatch(setShowPlanNotAvail(true));
                     } else {
                       setBoolean(e.target.value);
@@ -266,7 +265,7 @@ if(!label.toLowerCase().includes("mandatory")){
                   onChange={e => {
                     if (notAllowedIf === "N")
                       dispatch(setShowPlanNotAvail(true));
-                    else {
+                    else if(!isMandatoryMQ) {
                       setBoolean(e.target.value);
                       !showMembersIf && setMembersStatus({});
                     }
@@ -288,7 +287,7 @@ if(!label.toLowerCase().includes("mandatory")){
             </div>
           </div>
         </div>
-        {!label.toLowerCase().includes("mandatory") && membersToMap.length && showMembers !== false && !disable_Toggle ? (
+        {!isMandatoryMQ && membersToMap.length && showMembers !== false && !disable_Toggle ? (
           (customShowMembers || boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (

@@ -67,9 +67,8 @@ const useProposalSections = ({
 
   // checks dropDown selected value exist in schema options or not
   const isOptionsValuesValidated = (schema,values) => {
-    console.log("sgvjsjvlskfvs",schema,values)
     if(Array.isArray(schema)){
-      return schema.filter(el => renderField(el, values) && el.type === "select").every(el => Boolean( el.additionalOptions.options[values[el.name]]))
+      return schema.filter(el => renderField(el, values) && el?.validate?.required && el.type === "select").every(el => Boolean( el.additionalOptions.options[values[el.name]]))
     }else{
       return Object.keys(schema).map(key => isOptionsValuesValidated(schema[key],values[key]))
     }
@@ -90,11 +89,10 @@ const useProposalSections = ({
   };
 
   const everyRequiredFilled = (schema, values = {}) => {
-    console.log("sjksfgfs",schema, values)
     if (Array.isArray(schema)){
       return schema
         .filter(
-          el => el.validate && el.validate.required && renderField(el, values),
+          el => el.validate && el.validate.required === true && renderField(el, values),
         )
         .every(
           el =>
@@ -203,12 +201,14 @@ const useProposalSections = ({
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
+        console.log("egjksf 1")
         setActive(schemaKeys.indexOf(formName));
         console.log("sgvjbskv",havingAnyError(errors));
         name !== "Insured Details" && setShow(havingAnyError(errors).indexOf(true));
         return;
       }
       if (!everyRequiredFilled(schema[formName], sendedVal)) {
+        console.log("egjksf 2",everyRequiredFilled(schema[formName], sendedVal))
         setActive(schemaKeys.indexOf(formName));
         return;
       }
@@ -219,6 +219,7 @@ const useProposalSections = ({
       //   return;
       // }
       if(formName !== "Proposer Details" && valueIsValidatedOption.includes(false)){
+        console.log("egjksf 3")
         setActive(schemaKeys.indexOf(formName));
         setShow(valueIsValidatedOption.indexOf(false));
         return;
