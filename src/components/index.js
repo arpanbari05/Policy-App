@@ -575,7 +575,7 @@ export function BackButtonMobile({ path, css = "", ...props }) {
         ${css};
       `}
       onClick={() => {
-        history.goBack();
+        history.push(path);
       }}
     >
       <FaArrowCircleLeft />

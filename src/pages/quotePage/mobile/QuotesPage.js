@@ -10,11 +10,13 @@ import { useState } from "react";
 import ErrorPopup from "../../ProposalPage/ProposalSections/components/ErrorPopup";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosPopup } from "../quote.slice";
+import { useUrlQueries } from "../../../customHooks/useUrlQuery";
 
 function QuotesPage() {
   const { boxShadows } = useTheme();
   const dispatch = useDispatch();
   const { pos_popup } = useSelector(({ quotePage }) => quotePage);
+  const urlQueries = useUrlQueries();
   const {
     data: {
       settings: { pos_nonpos_switch_message },
@@ -22,7 +24,14 @@ function QuotesPage() {
   } = useFrontendBoot();
 
   return (
-    <Page backButton={<BackButtonMobile path="/" />} loader={<QuotesLoader />}>
+    <Page
+      backButton={
+        <BackButtonMobile
+          path={`/input/medicalHistory?enquiryId=${urlQueries?.enquiryId}`}
+        />
+      }
+      loader={<QuotesLoader />}
+    >
       <div
         css={`
           border-radius: 0 0 1em 1em;
