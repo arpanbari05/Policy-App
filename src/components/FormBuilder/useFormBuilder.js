@@ -1,4 +1,3 @@
-import { configureScope } from "@sentry/react";
 import { useEffect, useRef, useState } from "react";
 import { performValidations, renderField } from "./formUtils";
 
@@ -20,13 +19,11 @@ const useFormBuilder = (
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
 
   const [values, setValues] = useState(defaultValues || {});
-  console.log("bsfjkdgbd", values);
 
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState();
 
   const updateValue = (name, value, removeOtherValues = false) => {
-    console.log("sgjsfgskfd",name, value)
     if (removeOtherValues) {
       setValues({ [name]: value });
       fetchValues({ [name]: value });
@@ -48,8 +45,8 @@ const useFormBuilder = (
       : item.validate;
   };
 
-  const checkReadOnly = (name,formName) => {
-    if(formName === "Other Details"){
+  const checkReadOnly = (name, formName) => {
+    if (formName === "Other Details") {
       let nomineeRelation = values.nominee_relation;
 
       let dataTocheck = {};
@@ -123,7 +120,7 @@ const useFormBuilder = (
   const triggerValidation = name => {
     let errorsTemp = {};
     let tempIsValid = true;
-   console.log("sgbjhsfk",name)
+    console.log("sgbjhsfk", name);
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
       let findGroup = schema.findIndex(el => el.name === parent);

@@ -23,7 +23,7 @@ function useUpdateFilters() {
 
   const currentGroup = groups?.find(group => group.id === parseInt(groupCode));
 
-  const previousFilters = currentGroup.extras;
+  const previousFilters = currentGroup?.extras;
 
   const reduxGroup = JSON.parse(localStorage.getItem("groups"));
 
@@ -68,16 +68,25 @@ function useUpdateFilters() {
       if (reduxGroupMatch) {
         return {
           ...group,
-          extras: null,
-          plan_type: localStorage.getItem("default_filters")
-            ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
-            : "F",
+          extras: {
+            sum_insured: "300001-500000",
+            tenure: "1",
+          },
+          plan_type:
+            group?.members?.length === 1
+              ? "I"
+              : localStorage.getItem("default_filters")
+              ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+              : "F",
         };
       }
     });
     updateGroup({
       groupCode,
-      extras: null,
+      extras: {
+        sum_insured: "300001-500000",
+        tenure: "1",
+      },
       plan_type: localStorage.getItem("default_filters")
         ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
         : "F",

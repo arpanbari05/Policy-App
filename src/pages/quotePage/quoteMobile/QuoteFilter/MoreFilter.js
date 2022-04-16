@@ -177,7 +177,7 @@ const MoreFilter = ({ expandSelected, setExpandSelected, moreFilter }) => {
 
   const quotes = useSelector(state => state.quotePage.quotes);
 
-  const filteredQuotes = quotes.map(icQuotes => filterQuotes(icQuotes)).flat();
+  const filteredQuotes = quotes.map(icQuotes => filterQuotes(icQuotes))?.flat();
 
   const handleSubmit = () => {
     dispatch(

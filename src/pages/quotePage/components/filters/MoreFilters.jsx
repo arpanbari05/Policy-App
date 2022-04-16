@@ -43,7 +43,7 @@ const renderTooltipOverlay = description => <Tooltip>{description}</Tooltip>;
 const renderDescription = name => renderTooltipOverlay(getDescription(name));
 
 function getFlatQuotes(data) {
-  return data.map(icQuote => icQuote.data.data).flat(Infinity);
+  return data.map(icQuote => icQuote.data.data)?.flat(Infinity);
 }
 
 function FilterModal({ onClose }) {

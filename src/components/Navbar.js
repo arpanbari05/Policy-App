@@ -397,7 +397,9 @@ export function Members() {
 }
 
 function Member({ member, ...props }) {
-  const memberType = member?.display_name?.replaceAll("_", " ");
+  console.log("displayName", member);
+  const memberType = member?.display_name.toString()?.split("_").join(" ");
+
   return (
     <Info
       label={memberType}
