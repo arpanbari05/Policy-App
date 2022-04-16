@@ -90,7 +90,7 @@ export const validationIndex = {
       const date = new Date();
       const {dob} = values;
       let ageLimit = parseInt(param.split("/")[1]);
-      let inputAge = age.length === 4?date.getUTCFullYear() - parseInt(dob) : date.getUTCFullYear() - dob.split("-")[2]
+      let inputAge = dob.length === 4?date.getUTCFullYear() - parseInt(dob) : date.getUTCFullYear() - dob.split("-")[2]
      if(inputAge >= ageLimit) return {
       status: false,
       message: `This field is required.`,

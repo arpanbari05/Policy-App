@@ -83,7 +83,7 @@ const Toggle = ({
       setMembersStatus({});
     }else if (value instanceof Object && Object.keys(value).length) {
       setBoolean(value[`is${name}`]);
-      // setMembersStatus(value.members);
+      setMembersStatus(value.members);
     }
 console.log("bfxfjkl",membersToMap)
     if (restrictMaleMembers) {
@@ -110,10 +110,6 @@ console.log("bfxfjkl",membersToMap)
     if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
-    }
-    if (customShowMembers && isMandatoryMQ) {
-      setBoolean("Y");
-      // setMembersStatus(membersToMap.reduce((acc,member) => ({...acc, [member]:true}),{}));
     }
     
   }, [value, customShowMembers]);
@@ -154,7 +150,7 @@ if(!isMandatoryMQ){
  
 
     
-  }, [boolean,membersStatus, customShowMembers]);
+  }, [boolean,Object.keys(membersStatus).length, customShowMembers]);
 
   useEffect(() => {
     if(isMandatoryMQ){
