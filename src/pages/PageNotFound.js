@@ -1,14 +1,15 @@
-import { Page } from "../components";
+import { FullScreenLoader, Page } from "../components";
 import useNotFoundHandler from "../customHooks/useNotFoundHandler";
 
 function PageNotFound(props) {
-  // const { pathname } = window.location;
-  
-  // const filterdPath = pathname.split("/")[1];
-  
-  // useNotFoundHandler(filterdPath);
+  const { pathname } = window.location;
 
-  return <Page {...props}>Page not found!</Page>;
+  const filterdPath = pathname.split("/")[1];
+
+  useNotFoundHandler(filterdPath);
+
+  // return <Page {...props}>Page not found!</Page>;
+  return <></>;
 }
 
 export default PageNotFound;

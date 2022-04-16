@@ -20,15 +20,21 @@ import { mergeQuotes } from "../../utils/helper";
 import "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
 import { replaceShareQuotes } from "./quote.slice";
+import { HeadingTertiary, PrimaryFont } from "../../styles/typography";
 
 function QuotesPage() {
   const { colors } = useTheme();
 
   const { checkGroupExist } = useMembers();
 
+  const [isGroupExist, setGroupExist] = useState(true);
+
   const { groupCode } = useParams();
 
-  const isGroupExist = checkGroupExist(groupCode);
+  useEffect(() => {
+    const isGroupExist = checkGroupExist(groupCode);
+    setGroupExist(isGroupExist);
+  }, [groupCode]);
 
   const [selectedSortBy, setSelectedSoryBy] = useState({
     code: "relevance",
@@ -67,7 +73,7 @@ function QuotesPage() {
               <ClearFilters />
             </div>
           </div>
-          <p
+          {/* <p
             className="m-0 d-none d-xl-block"
             css={`
               font-size: 0.89rem;
@@ -77,7 +83,16 @@ function QuotesPage() {
             `}
           >
             All Premium Plans are GST Inclusive
-          </p>
+          </p> */}
+          <PrimaryFont
+            css={`
+              flex: 1;
+              text-align: left;
+            `}
+            color={colors.font.four}
+          >
+            All Premium Plans are GST Inclusive
+          </PrimaryFont>
         </div>
         <div
           className="mt-2 d-flex"
@@ -136,17 +151,20 @@ function ShowingPlanType() {
   const displayPolicyTypeFitler = selectedPolicyTypeFilter?.display_name;
 
   return (
-    <h1
-      className="m-0"
-      css={`
-        font-size: 1rem;
-        color: ${colors.font.four};
-        width: max-content;
-        font-weight: 900;
-      `}
-    >
+    // <h1
+    //   className="m-0"
+    //   css={`
+    //     font-size: 1rem;
+    //     color: ${colors.font.four};
+    //     width: max-content;
+    //     font-weight: 900;
+    //   `}
+    // >
+    //   {`Showing ${displayPlansLength} ${displayPolicyTypeFitler} plans`}
+    // </h1>
+    <HeadingTertiary color={colors.font.four}>
       {`Showing ${displayPlansLength} ${displayPolicyTypeFitler} plans`}
-    </h1>
+    </HeadingTertiary>
   );
 }
 
@@ -207,7 +225,7 @@ function AssistanceCard(props) {
           & > p > font,
           & > p > span,
           & > p > font > span {
-            font-size: 0.89rem !important;
+            font-size: 14px; !important;
             color: ${colors.font.one} !important;
             line-height: 1.5 !important;
             font-family: inherit !important;
@@ -217,7 +235,7 @@ function AssistanceCard(props) {
           & > p:first-child > font,
           & > p:first-child > span,
           & > p:first-child > font > span {
-            font-size: 1rem !important;
+            font-size: 16px; !important;
             font-weight: 900 !important;
             font-family: inherit !important;
           }
@@ -231,7 +249,7 @@ function AssistanceCard(props) {
           {" "}
           <h1
             css={`
-              font-size: 1rem;
+              font-size: 16px;
               font-weight: 900;
             `}
           >
@@ -242,7 +260,7 @@ function AssistanceCard(props) {
           <p
             className="mt-3"
             css={`
-              font-size: 0.89rem;
+              font-size: 14px;
               color: ${colors.font.one};
             `}
           >
