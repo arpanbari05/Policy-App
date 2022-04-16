@@ -19,13 +19,11 @@ const useFormBuilder = (
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
 
   const [values, setValues] = useState(defaultValues || {});
-  console.log("bsfjkdgbd", values);
 
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState();
 
   const updateValue = (name, value, removeOtherValues = false) => {
-    console.log("sgjsfgskfd", name, value);
     if (removeOtherValues) {
       setValues({ [name]: value });
       fetchValues({ [name]: value });

@@ -47,8 +47,6 @@ export function Quotes({ sortBy }) {
 
   const allMergedQuotes = justArray?.reduce((acc, val) => acc.concat(val), []);
 
-  // console.log("AllmergedQuotes", allMergedQuotes);
-
   useEffect(() => {
     if (shareType.value === "quotation_list") {
       dispatch(replaceShareQuotes(allMergedQuotes));

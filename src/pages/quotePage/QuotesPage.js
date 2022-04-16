@@ -133,8 +133,6 @@ function ShowingPlanType() {
   );
   const mergedQuotes = justArray?.reduce((acc, val) => acc.concat(val), []);
 
-  console.log(mergedQuotes, "mergedQuotes");
-
   const displayPlansLength = mergedQuotes?.filter(
     quoteData => quoteData?.length !== 0,
   )?.length;
