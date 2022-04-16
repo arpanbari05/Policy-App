@@ -41,7 +41,7 @@ const Toggle = ({
     customMembers instanceof Array && customMembers.length ? customMembers : members,
   );
 
-  // const [membersSelectedTillNow, setMembersSelectedTillNow] = useState({});
+  const [membersSelectedTillNow, setMembersSelectedTillNow] = useState({});
 
   useEffect(() => {
     if (showMembersIf) {
@@ -51,13 +51,16 @@ const Toggle = ({
         }),
       );
     }
-    // if(label.toLowerCase().includes("mandatory")){
-    //   let questionsToCheck = showMembersIf.split("||");
-    //   setMembersSelectedTillNow(membersToMap.reduce((acc,member) => {
-    //     let isMemberPresent = questionsToCheck.some(question => values?.[question] && values[question]?.members?.[member])
-    //      return isMemberPresent?{...acc,[member]:true}:acc
-    //   },{}));
-    // }
+    if(label.toLowerCase().includes("mandatory")){
+       let questionsToCheck = showMembersIf.split("||");
+       let membersSelectedTillNow = membersToMap.reduce((acc,member) => {
+        let isMemberPresent = questionsToCheck.some(question => values?.[question] && values[question]?.members?.[member])
+         return isMemberPresent?{...acc,[member]:true}:acc
+      },{})
+      console.log("khgjdtbhdt",membersSelectedTillNow)
+     
+      setMembersSelectedTillNow(membersSelectedTillNow);
+    }
   }, [values]);
 
   const [boolean, setBoolean] = useState(disable_Toggle?"Y":"");
@@ -75,10 +78,11 @@ const Toggle = ({
     if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
-    } else if (value instanceof Object && Object.keys(value).length) {
-      setBoolean(value[`is${name}`]);
-      setMembersStatus(value.members);
     }
+    //  else if (value instanceof Object && Object.keys(value).length) {
+    //   setBoolean(value[`is${name}`]);
+    //   setMembersStatus(value.members);
+    // }
 console.log("bfxfjkl",membersToMap)
     if (restrictMaleMembers) {
       if (genderOfSelf === "M"){
@@ -109,6 +113,7 @@ console.log("bfxfjkl",membersToMap)
       setBoolean("Y");
       // setMembersStatus(membersToMap.reduce((acc,member) => ({...acc, [member]:true}),{}));
     }
+    
   }, [value, customShowMembers]);
 
   useEffect(() => {
@@ -122,9 +127,9 @@ console.log("bfxfjkl",membersToMap)
     ) {
       isValid = false;
     }
-
-// if(!label.toLowerCase().includes("mandatory")){
-  console.log("qefeihjfbkf")
+   
+if(!label.toLowerCase().includes("mandatory")){
+  console.log("qefeihjfbkf",customShowMembers,boolean,label)
   if(boolean === "N" && !customShowMembers){
 
     onChange({
@@ -142,26 +147,26 @@ console.log("bfxfjkl",membersToMap)
       });
     
     
-  // }
+  }
 }
  
 
     
-  }, [boolean, membersStatus, customShowMembers]);
+  }, [boolean,membersStatus, customShowMembers]);
 
-  // useEffect(() => {
-  //   if(label.toLowerCase().includes("mandatory")){
-  //   console.log("wvbkwdsbvjdce",membersSelectedTillNow)
-
-  //     // console.log("adfvksadhbvvd",boolean, membersStatus, customShowMembers,label,membersSelectedTillNow)
-  //     onChange({
-  //       ...value,
-  //       [`is${name}`]: boolean,
-  //       members:membersSelectedTillNow,
-  //       isValid:true,
-  //     });
-  //   }
-  // },[membersSelectedTillNow])
+  useEffect(() => {
+    if(label.toLowerCase().includes("mandatory")){
+    console.log("wvbkwdsbvjdce",membersSelectedTillNow)
+   onChange({
+        ...value,
+        [`is${name}`]: boolean,
+        members:membersSelectedTillNow,
+        isValid:true,
+      });
+      // console.log("adfvksadhbvvd",boolean, membersStatus, customShowMembers,label,membersSelectedTillNow)
+      
+    }
+  },[Object.keys(membersSelectedTillNow).length])
 
   console.log("sgjsgsrgr", {value, label, boolean,membersToMap,showMembers, customShowMembers, membersStatus,restrictMaleMembers,customMembers, members});
 
@@ -283,7 +288,7 @@ console.log("bfxfjkl",membersToMap)
             </div>
           </div>
         </div>
-        {membersToMap.length && showMembers !== false && !disable_Toggle ? (
+        {!label.toLowerCase().includes("mandatory") && membersToMap.length && showMembers !== false && !disable_Toggle ? (
           (customShowMembers || boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (
