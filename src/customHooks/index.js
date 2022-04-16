@@ -2338,8 +2338,6 @@ export const usePolicyNumberValidations = ({
     setValue(e.target.value);
   };
 
-  console.log("The placeHolder", placeHolder);
-
   return {
     value,
     error,

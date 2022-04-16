@@ -115,7 +115,7 @@ const ProductDetails = () => {
           }}
         >
           <FaArrowCircleLeft />
-          <span className="mx-2"> Go Back</span>
+          <span className="mx-2"> Go Back nop</span>
         </MobileHeaderText>
       </MobileHeader>
       <main

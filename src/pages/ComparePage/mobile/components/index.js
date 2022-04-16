@@ -12,8 +12,9 @@ import { Modal } from "react-bootstrap";
 import { BsPlusLg } from "react-icons/bs";
 import React from "react";
 import * as mq from "../../../../utils/mediaQueries";
-import { RiderPremium } from "../../../ProductDetails/components/CustomizeYourPlan";
+import { CompareRiderPremium } from "../../../ProductDetails/components/CustomizeYourPlan";
 import { useState } from "react";
+// import { CompareRiderPremium } from "../../../ProductDetails/components/CompareRiderPremium";
 
 export function Header() {
   const { colors } = useTheme();
@@ -322,12 +323,12 @@ export function OptionalCoversValue({ quote, onChange }) {
         `}
       >
         {riders.length ? (
-          riders.map(rider => (
+          riders.map((rider, idx) => (
             <Rider
               currentQuote={quote}
               rider={rider}
-              key={rider.name}
               onChange={handleChange}
+              key={idx + rider.total}
             />
           ))
         ) : (
@@ -379,7 +380,11 @@ function Rider({ currentQuote, rider, onChange, ...props }) {
         <InfoPopupToggle title={rider.name} description={rider.description} />
       </div>
 
-      <RiderPremium quote={currentQuote} rider={rider} onChange={onChange} />
+      <CompareRiderPremium
+        quote={currentQuote}
+        rider={rider}
+        onChange={onChange}
+      />
     </div>
   );
 }
