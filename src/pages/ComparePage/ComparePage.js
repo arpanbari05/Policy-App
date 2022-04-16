@@ -350,24 +350,33 @@ function OptionalCoversSection({ compareQuotes, select }) {
           select={select}
           description={DESCRIPTIONS["unique_features"]}
         >
-          {compareQuotes?.map((quote, idx) => (
-            <OptionalCoversValue
-              quote={quote}
-              onChange={handleRidersChange}
-              key={idx}
-            />
-          ))}
-        </FeatureRow>
-      ) : (
-        select.selectedSectionView["Optional Covers"] && (
-          <FeatureRow title="Optional Covers" select={select}>
-            {compareQuotes?.map((quote, idx) => (
+          {compareQuotes?.map((quote, idx) => {
+            console.log(idx + quote.product.id);
+            return (
               <OptionalCoversValue
                 quote={quote}
                 onChange={handleRidersChange}
-                key={idx}
+                key={idx + quote.product.id}
               />
-            ))}
+            );
+          })}
+        </FeatureRow>
+      ) : (
+        select.selectedSectionView["Optional Covers"] && (
+          <FeatureRow
+            title="Optional Covers"
+            select={select}
+            description={DESCRIPTIONS["unique_features"]}
+          >
+            {compareQuotes?.map((quote, idx) => {
+              return (
+                <OptionalCoversValue
+                  quote={quote}
+                  onChange={handleRidersChange}
+                  key={idx + quote.product.id}
+                />
+              );
+            })}
           </FeatureRow>
         )
       )}
