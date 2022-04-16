@@ -510,10 +510,18 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
 
             & p:nth-child(3) {
               font-size: 20px !important;
+              color: ${colors?.primary_color};
               a {
-                color: ${colors?.primary_color};
-                font-weight: 700;
+                font-weight: bold;
                 text-decoration: underline;
+                border-bottom: ${colors?.primary_color} dashed 1px;
+                &:focus,
+                &:hover,
+                &:link,
+                &:visited {
+                  text-decoration: none;
+                  border-bottom: ${colors?.primary_color} dashed 1px;
+                }
               }
               &::before {
                 content: "";
@@ -530,8 +538,16 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
               color: ${colors?.primary_color};
               font-size: 20px !important;
               a {
-                font-weight: 700;
+                font-weight: bold;
                 text-decoration: underline;
+                border-bottom: ${colors?.primary_color} dashed 1px;
+                &:focus,
+                &:hover,
+                &:link,
+                &:visited {
+                  text-decoration: none;
+                  border-bottom: ${colors?.primary_color} dashed 1px;
+                }
               }
             }
           `}
