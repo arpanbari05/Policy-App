@@ -19,9 +19,7 @@ export const allowOnWebsites = (sites = []) => {
   let isPass = false;
   sites.map(site => {
     if (site === "topup") {
-      if (topup.includes(origin)) {
-        isPass = true;
-      }
+      isPass = true;
     }
     if (site === "renewBuyProd") {
       if (renewBuyProd === origin) {
