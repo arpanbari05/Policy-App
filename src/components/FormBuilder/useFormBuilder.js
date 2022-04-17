@@ -92,7 +92,7 @@ const useFormBuilder = (
       [parent]: {
         ...values[parent],
         [member]: {
-          ...(values[parent][member] ? values[parent][member] : {}),
+          ...(values[parent]?.[member] ? values[parent]?.[member] : {}),
           [name]: value,
         },
       },
@@ -102,7 +102,7 @@ const useFormBuilder = (
       [parent]: {
         ...values[parent],
         [member]: {
-          ...(values[parent][member] ? values[parent][member] : {}),
+          ...(values[parent]?.[member] ? values[parent]?.[member] : {}),
           [name]: value,
         },
       },
