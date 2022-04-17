@@ -632,6 +632,8 @@ export function useUpdateMembers() {
 
   const dispatch = useDispatch();
 
+  const { getSelectedFilter } = useFilters();
+
   function updateMembers({ members, ...data } = {}) {
     const updateData = {
       email: enquiryData.email,
@@ -647,7 +649,13 @@ export function useUpdateMembers() {
           }))
         : enquiryData.input.members,
       plan_type:
-        journeyType === "health" ? (members?.length > 1 ? "F" : "I") : "I",
+        journeyType === "health"
+          ? members?.length === 1
+            ? "I"
+            : getSelectedFilter("plantype")?.code === "I"
+            ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+            : getSelectedFilter("plantype")?.code
+          : "I",
       pincode: enquiryData?.input?.pincode,
       ...data,
     };
