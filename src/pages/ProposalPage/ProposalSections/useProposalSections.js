@@ -90,6 +90,7 @@ const useProposalSections = ({
 
   const everyRequiredFilled = (schema, values = {}) => {
     if (Array.isArray(schema)){
+
       return schema
         .filter(
           el => el.validate && el.validate.required === true && renderField(el, values),

@@ -71,6 +71,10 @@ function useFilters() {
         extras: {
           ...group?.extras,
           ...reduxGroupMatch?.extras,
+          plantype:
+            group?.members?.length === 1
+              ? group?.extras?.plantype
+              : reduxGroupMatch?.extras?.plantype,
         },
         plan_type:
           group?.members?.length === 1
