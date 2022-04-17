@@ -19,6 +19,9 @@ export const allowOnWebsites = (sites = []) => {
   let isPass = false;
   sites.map(site => {
     if (site === "topup") {
+      if (origin.includes("http://localhost")) {
+        isPass = true;
+      }
       if (topup.includes(origin)) {
         isPass = true;
       }
