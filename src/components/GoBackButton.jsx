@@ -18,7 +18,8 @@ const GoBackButton = ({ backPath, ...extras }) => {
         cursor: pointer;
       `}
       onClick={() => {
-        history.push(backPath);
+        // history.push(backPath);
+        history.goBack();
       }}
     >
       <span
