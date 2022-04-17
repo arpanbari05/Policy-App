@@ -47,7 +47,7 @@ console.log("fbfnlsdvd",value,selectOption)
 const [selectedNone, setSelectedNoneState] = useState(false)
   useEffect(() => {
     console.log("sfsvbjksf",value,selectOption,values)
-    if(value && name !== "gender" && name !== "title" && name !== "marital_status"){
+    if(value){
       if(selectOption[value] && values && values[name] !== selectOption[value]){
         directUpdateValue(name,value);
       }else if(!selectOption[value]) deleteValue()
