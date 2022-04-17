@@ -2224,6 +2224,14 @@ export const useRevisedPremiumModal = () => {
     return cartEntry?.premium;
   };
 
+  const isAnyPlanUnAvailableInCart = cartEntries?.some(
+    singleEntry => !!singleEntry?.unavailable_message,
+  );
+
+  const unAvailablePlanInTheCart = cartEntries?.find(
+    singleEntry => !!singleEntry?.unavailable_message,
+  );
+
   return {
     getUpdatedCart,
     revisedPremiumPopupToggle,
@@ -2238,6 +2246,8 @@ export const useRevisedPremiumModal = () => {
     getUpdatedCartEntry,
     getPreviousCartEntryPremium,
     getUpdatedCartEntryPremium,
+    isAnyPlanUnAvailableInCart,
+    unAvailablePlanInTheCart,
   };
 };
 
