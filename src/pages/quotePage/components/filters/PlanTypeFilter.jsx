@@ -103,7 +103,7 @@ function FilterModal({ onClose, ...props }) {
         </ApplyBtn>
       }
       handleClose={() => onClose && onClose()}
-      tooltipDesc="Select a plan type to view plans offering chosen type of plan."
+      tooltipDesc="Select a plan type to view plans offering choosen type of plan."
       leftAlignmnetMargin="-22"
       {...props}
     >

@@ -1,5 +1,56 @@
 import _, { range } from "lodash";
-import { sendEmailAction } from "../pages/ComparePage/compare.slice";
+import clickSound from "../assets/audio/button-click.wav";
+
+// all on specific urls
+export const allowOnWebsites = (sites = []) => {
+  const renewBuyUat = [
+    "https://uathealth.rbstaging.in",
+    "https://renewbuy-health.fynity.in",
+  ];
+  const renewBuyProd = "https://health.renewbuy.com";
+  const topup = [
+    "https://topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in",
+    "http://localhost:3000",
+  ];
+  const sriyahUat = "https://health-uat.nammacover.com";
+  const pincUat = "https://uat-health.pincinsurance.com";
+  const origin = window.location.origin;
+
+  let isPass = false;
+  sites.map(site => {
+    if (site === "topup") {
+      if (origin.includes("http://localhost")) {
+        isPass = true;
+      }
+      if (topup.includes(origin)) {
+        isPass = true;
+      }
+    }
+    if (site === "renewBuyProd") {
+      if (renewBuyProd === origin) {
+        isPass = true;
+      }
+    }
+
+    if (site === "renewBuyUat") {
+      if (renewBuyUat.includes(origin)) {
+        isPass = true;
+      }
+    }
+
+    if (site === "sriyahUat") {
+      if (sriyahUat === origin) {
+        isPass = true;
+      }
+    }
+    if (site === "pincUat") {
+      if (pincUat === origin) {
+        isPass = true;
+      }
+    }
+  });
+  return isPass;
+};
 
 export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
@@ -530,6 +581,23 @@ export function getPlanFeatures(features, sum_insured) {
 export function getReactSelectOption({ display_name, code }) {
   return { label: display_name, value: code };
 }
+
+export const getCustomIcOptions = ({
+  display_name,
+  code,
+  dobRequire,
+  expiryDateRequire,
+  policyNumberRegex,
+}) => {
+  return {
+    label: display_name,
+    value: code,
+    dobRequire,
+    expiryDateRequire,
+    policyNumberRegex,
+  };
+};
+
 export function getDisplayPremium({ total_premium, tenure }) {
   return `${amount(total_premium)} / ${
     parseInt(tenure) > 1 ? `${tenure} years` : "year"
@@ -802,19 +870,19 @@ export function renderDisclaimer({ tenantName, settings }) {
   }
 }
 
-export function isThemeApp() {
-  const domain = window.location.host;
-  if (
-    domain.includes("localhost:") ||
-    domain === "renewbuy-health.fynity.in" ||
-    domain === "topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in" ||
-    domain === "uat-health.pincinsurance.com"
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
+// export function isThemeApp() {
+//   const domain = window.location.host;
+//   if (
+//     domain.includes("localhost:") ||
+//     domain === "renewbuy-health.fynity.in" ||
+//     domain === "topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in" ||
+//     domain === "uat-health.pincinsurance.com"
+//   ) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
 
 export const isSSOJourney = () => {
   return localStorage.SSO_user ? true : false;
@@ -853,4 +921,28 @@ export const getTotalPremiumWithDiscount = ({
   totalDiscountAmount,
 }) => {
   return +netPremiumWithoutDiscount - +totalDiscountAmount;
+};
+
+export const ClickSound = () => {
+  const audio = new Audio(clickSound);
+  audio.play();
+};
+
+export const regexStringToRegex = (regexString = "/^[S]*") => {
+  return new RegExp(regexString);
+};
+
+export const dateObjectToLocaleString = (dateObject = new Date()) => {
+  let date = dateObject?.getDate();
+  let month = dateObject?.getMonth() + 1;
+  const year = dateObject?.getFullYear();
+
+  if (date < 10) {
+    date = "0" + date;
+  }
+  if (month < 10) {
+    month = "0" + month;
+  }
+
+  return `${date}/${month}/${year}`;
 };

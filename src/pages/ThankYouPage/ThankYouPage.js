@@ -17,7 +17,7 @@ import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import { small } from "../../utils/mediaQueries";
 import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
-import checkImg from "../../assets/images/check_green.png";
+import checkImg from "../../assets/images/correct.png";
 
 const ThankYouPage = () => {
   const ls = new SecureLS();
@@ -467,6 +467,8 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
             box-sizing: border-box;
             padding: 0px 30px;
             padding-top: 20px;
+            position: relative;
+            top: -58px;
 
             & p:first-child {
               font-size: 28px;
@@ -482,18 +484,24 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
               background: ${colors?.primary_shade};
               border-radius: 22px;
               font-weight: 700;
-              padding: 14px 20px 14px 60px;
+              padding: 14px 20px 14px 70px;
               font-size: 22px;
               min-height: 56px;
               position: relative;
 
+              & span {
+                font-weight: 700 !important;
+                font-size: 22px !important;
+                color: ${colors?.primary_color} !important;
+              }
+
               &::before {
                 content: "";
-                height: 40px;
-                width: 40px;
+                height: 50px;
+                width: 50px;
                 position: absolute;
-                margin-left: -45px;
-                margin-top: -5px;
+                margin-left: -57px;
+                margin-top: -10px;
                 border-radius: 100%;
                 background-image: url(${checkImg});
                 background-size: cover;
@@ -501,11 +509,28 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
             }
 
             & p:nth-child(3) {
-              color: ${colors?.primary_color};
               font-size: 20px !important;
+              color: ${colors?.primary_color};
               a {
-                font-weight: 700;
+                font-weight: bold;
                 text-decoration: underline;
+                border-bottom: ${colors?.primary_color} dashed 1px;
+                &:focus,
+                &:hover,
+                &:link,
+                &:visited {
+                  text-decoration: none;
+                  border-bottom: ${colors?.primary_color} dashed 1px;
+                }
+              }
+              &::before {
+                content: "";
+                margin: 30px 0px;
+                display: block;
+                background: ${colors?.secondary_color};
+                width: 84px;
+                height: 14px;
+                border-radius: 90px;
               }
             }
 
@@ -513,8 +538,16 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
               color: ${colors?.primary_color};
               font-size: 20px !important;
               a {
-                font-weight: 700;
+                font-weight: bold;
                 text-decoration: underline;
+                border-bottom: ${colors?.primary_color} dashed 1px;
+                &:focus,
+                &:hover,
+                &:link,
+                &:visited {
+                  text-decoration: none;
+                  border-bottom: ${colors?.primary_color} dashed 1px;
+                }
               }
             }
           `}
@@ -794,17 +827,23 @@ const MobileBanner = ({
             background: ${colors?.primary_shade};
             border-radius: 22px;
             font-weight: 700;
-            padding: 10px 10px 10px 28px;
+            padding: 10px 10px 10px 35px;
             font-size: 11px !important;
             position: relative;
             margin: 0 auto;
+
+            & span {
+              font-weight: 700 !important;
+              font-size: 11px !important;
+              color: ${colors?.primary_color} !important;
+            }
 
             &::before {
               content: "";
               height: 20px;
               width: 20px;
               position: absolute;
-              margin-left: -20px;
+              margin-left: -25px;
               margin-top: -2px;
               border-radius: 100%;
               background-image: url(${checkImg});
@@ -815,7 +854,6 @@ const MobileBanner = ({
           & p:nth-child(3) {
             margin-top: 10px;
             text-align: center;
-
             font-size: 11px !important;
             a {
               font-weight: 700;

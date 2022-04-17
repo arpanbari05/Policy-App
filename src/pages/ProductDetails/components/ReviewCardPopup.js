@@ -10,7 +10,12 @@ import {
   useTheme,
 } from "../../../customHooks";
 import { mobile } from "../../../utils/mediaQueries";
-import { amount, getFirstName, getTotalPremium } from "../../../utils/helper";
+import {
+  amount,
+  getFirstName,
+  getTotalPremium,
+  numberToDigitWord,
+} from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { selectAdditionalDiscounts } from "../productDetails.slice";
 import {
@@ -612,6 +617,7 @@ function ProductDetailsCard({ cartItem }) {
       >
         <div
           css={`
+            width: 40%;
             display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
             display: -ms-flexbox; /* TWEENER - IE 10 */
             display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
@@ -621,6 +627,7 @@ function ProductDetailsCard({ cartItem }) {
         >
           <div
             css={`
+              width: 80%;
               height: 45px !important;
               display: flex;
               align-items: center;
@@ -695,7 +702,7 @@ function ProductDetailsCard({ cartItem }) {
               Cover
               <br />
               <span className="edit_css_prod si_text">
-                {amount(sum_insured)}
+                {numberToDigitWord(sum_insured)}
               </span>
             </span>
           </div>

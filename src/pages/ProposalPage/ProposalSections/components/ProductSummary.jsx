@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
 import ViewPlanDetailModal from "./ViewPlanDetailModal";
-import { setActiveIndex, setPlanDetails,setCanSendSummaryPdf } from "../ProposalSections.slice";
+import {
+  setActiveIndex,
+  setPlanDetails,
+  setCanSendSummaryPdf,
+} from "../ProposalSections.slice";
 import arrow from "./../../../../assets/images/arrow.png";
 import care from "./../../../../assets/images/Care_Health.png";
 import correct from "./../../../../assets/images/correct_icon.png";
@@ -20,11 +24,12 @@ import {
   useMembers,
   useTheme,
   useAdditionalDiscount,
-  useRider
+  useRider,
 } from "../../../../customHooks";
 import {
   amount,
   getDisplayPremium,
+  numberToDigitWord,
   premiumWithAddons,
 } from "../../../../utils/helper";
 import { useGetCartQuery } from "../../../../api/api";
@@ -528,7 +533,7 @@ const ViewPlanDetails = styled.span`
 `;
 
 function CartSummary({ item, index, groupCode }) {
-  const { data: frontendData, journeyType, } = useFrontendBoot();
+  const { data: frontendData, journeyType } = useFrontendBoot();
   const dispatch = useDispatch();
   const { colors } = useTheme();
 
@@ -688,7 +693,7 @@ function CartSummary({ item, index, groupCode }) {
                 padding-left: 10px;
               `}
             >
-              ₹ {numToString(item.sum_insured)}
+              {numberToDigitWord(item.sum_insured)}
             </span>
           </div>
           <div

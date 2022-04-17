@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "./FormBuilder.slice";
 import { render } from "@testing-library/react";
 import "styled-components/macro";
+import { useTheme } from "../../customHooks";
 
 const FormBuilder = ({
   components = {},
@@ -44,6 +45,11 @@ const FormBuilder = ({
   autoPopulateSelfOtherDetails,
   preFilledDataBase,
 }) => {
+  const { colors } = useTheme();
+  const PrimaryColor = colors.primary_color,
+    SecondaryColor = colors.secondary_color,
+    PrimaryShade = colors.primary_shade;
+
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
   );
@@ -82,6 +88,7 @@ const FormBuilder = ({
     fetchValid,
   );
   useEffect(() => {
+    if(formName === "Other Details"){
     if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
       autoPopulateSelfOtherDetails({
         updateValues,
@@ -101,6 +108,7 @@ const FormBuilder = ({
         { nominee_relation: values.nominee_relation },
         "SAVE_AS_IT_IS",
       );
+    }
   }, [values.nominee_relation]);
 
   console.log("sfghljsf", values);
@@ -146,6 +154,7 @@ const FormBuilder = ({
 
   const dispatch = useDispatch();
   useEffect(() => {
+    if(formName !== "Medical Details"){
     const tempValues = { ...values };
     schema.forEach(item => {
       if (
@@ -162,6 +171,7 @@ const FormBuilder = ({
       }
     });
     updateValues(tempValues);
+  }
   }, [schema, errors]);
   useEffect(() => {
     let temp = {};
@@ -204,13 +214,13 @@ const FormBuilder = ({
                     (values[item[0]?.parent] &&
                       values[item[0]?.parent]?.members &&
                       values[item[0]?.parent]?.members instanceof Object &&
-                      values[item[0]?.parent]?.members?.[member]) ||
+                        values[item[0]?.parent]?.members?.[member]) ||
                     item[0].render === "noDependency"
                   )
                     return (
                       <CustomWrapper>
                         <div className="col-md-12">
-                          <Title>{member}</Title>
+                          <Title style={{backgroundImage: `linear-gradient(to right, ${PrimaryShade}, white)`}}>{member}</Title>
                           <div
                             css={`
                               display: flex;

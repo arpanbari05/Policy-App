@@ -45,6 +45,7 @@ import {
   matchQuotes,
   mergeQuotes,
   parseJson,
+  regexStringToRegex,
 } from "../utils/helper";
 import { calculateTotalPremium } from "../utils/helper";
 import useUrlQuery, { useUrlQueries } from "./useUrlQuery";
@@ -60,7 +61,11 @@ import {
 } from "../pages/ComparePage/compare.slice";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { setIsPopupOn } from "../pages/ProposalPage/ProposalSections/ProposalSections.slice";
+import {
+  setIsPopupOn,
+  setShowErrorPopup,
+} from "../pages/ProposalPage/ProposalSections/ProposalSections.slice";
+import RandExp from "randexp";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -216,21 +221,18 @@ export function useFrontendBoot() {
   const tenantAlias = data?.tenant?.alias;
 
   let journeyType = "health";
+  let subJourneyType = "";
 
   if (enquiryData?.data) {
-    journeyType =
-      enquiryData?.data?.type === "new"
-        ? enquiryData?.data?.section
-        : "renewal";
+    journeyType = enquiryData?.data?.section;
+    subJourneyType = enquiryData?.data?.type === "renew" ? "renewal" : "";
   }
-
-  //!TODO: Uncomment this to switch to renewal journey type (no longer needed)
-  //journeyType = "renewal";
 
   return {
     query,
     journeyType,
     tenantName,
+    subJourneyType,
     tenantAlias,
     data,
     settings: data?.settings,
@@ -343,7 +345,7 @@ export function useMembers() {
             ...group?.extras,
             ...reduxGroupMatch?.extras,
           },
-          // plan_type: reduxGroupMatch?.extras?.plantype?.code
+          plan_type: reduxGroupMatch?.plan_type,
         };
       });
 
@@ -630,6 +632,8 @@ export function useUpdateMembers() {
 
   const dispatch = useDispatch();
 
+  const { getSelectedFilter } = useFilters();
+
   function updateMembers({ members, ...data } = {}) {
     const updateData = {
       email: enquiryData.email,
@@ -645,7 +649,13 @@ export function useUpdateMembers() {
           }))
         : enquiryData.input.members,
       plan_type:
-        journeyType === "health" ? (members?.length > 1 ? "F" : "I") : "I",
+        journeyType === "health"
+          ? members?.length === 1
+            ? "I"
+            : getSelectedFilter("plantype")?.code === "I"
+            ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+            : getSelectedFilter("plantype")?.code
+          : "I",
       pincode: enquiryData?.input?.pincode,
       ...data,
     };
@@ -682,6 +692,7 @@ export function useUpdateMembers() {
 
 export function useCart() {
   const dispatch = useDispatch();
+
   const searchQueries = useUrlQueries();
 
   const { data } = useGetCartQuery();
@@ -817,7 +828,7 @@ export function useRider(groupCode) {
 }
 
 export function useTenureDiscount(groupCode) {
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const { updateCartEntry, getCartEntry } = useCart();
 
@@ -836,6 +847,7 @@ export function useTenureDiscount(groupCode) {
     group: groupCode,
     feature_options: featureOptionsToSend,
     journeyType,
+    subJourneyType,
     deductible,
   });
 
@@ -869,36 +881,36 @@ export function useTenureDiscount(groupCode) {
 const discountOnAnotherDiscount = ({
   discounts_on_which_discount_to_be_applied,
   total_premium,
-  premium,
   cartEntry,
 }) => {
   return discounts_on_which_discount_to_be_applied
     .map(
       ({
-        applied_on_total_premium,
+        applied_on_total_premium: applied_on_total_cart_premium,
         applied_on_riders,
         percent: percent_of_discount_on_which_discount_to_be_applied,
         fixed_discount_value,
       }) => {
+        let discountValue = 0;
+
         if (fixed_discount_value) {
           //? return the amount directly if it is fixed.
           return +fixed_discount_value;
         }
 
-        let discountValue = 0;
-
-        if (applied_on_total_premium) {
+        if (applied_on_total_cart_premium) {
+          //? Means applied on cart total premium.
           const discount =
-            (parseInt(total_premium) *
+            (parseInt(cartEntry?.netPremiumWithoutDiscount) *
               parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
             100;
-          discountValue = discountValue + discount;
+
+          return (discountValue = discountValue + discount);
         }
 
-        if (!applied_on_total_premium) {
-          //? means applied on premium
+        if (!applied_on_total_cart_premium) {
           const discount =
-            (parseInt(premium) *
+            (parseInt(total_premium) *
               parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
             100;
           discountValue = discountValue + discount;
@@ -1001,27 +1013,32 @@ export function useAdditionalDiscount(groupCode, skip = false) {
   function getDiscountAmount(additionalDiscount) {
     const {
       percent,
-      applied_on_total_premium,
+      applied_on_total_premium: applied_on_total_cart_premium,
       applied_on_riders,
       fixed_discount_value,
       applied_on_discounts,
     } = additionalDiscount;
+
+    let discountAmount = 0;
 
     if (fixed_discount_value) {
       //? return the amount directly if it is fixed.
       return +fixed_discount_value;
     }
 
-    let discountAmount = 0;
+    if (applied_on_total_cart_premium) {
+      //? Means applied on cart total premium.
+      //? Return discount amount applied on total_cart_premium.
+      const discount =
+        (parseInt(cartEntry?.netPremiumWithoutDiscount) * parseInt(percent)) /
+        100;
 
-    if (applied_on_total_premium) {
-      const discount = (parseInt(total_premium) * parseInt(percent)) / 100;
-      discountAmount = discountAmount + discount;
+      return (discountAmount = discountAmount + discount);
     }
 
-    if (!applied_on_total_premium) {
+    if (!applied_on_total_cart_premium) {
       //? means applied on premium
-      const discount = (parseInt(premium) * parseInt(percent)) / 100;
+      const discount = (parseInt(total_premium) * parseInt(percent)) / 100;
       discountAmount = discountAmount + discount;
     }
 
@@ -1066,7 +1083,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
       const discount =
         (+filtered_applied_on_discounts_amount * parseInt(percent)) / 100;
 
-      discountAmount = discountAmount + discount;
+      discountAmount = discountAmount - discount;
     }
 
     return discountAmount;
@@ -1741,7 +1758,7 @@ export function useCompareFeature(compareQuote) {
 }
 
 export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const getRidersQueryParams = {
     sum_insured: quote?.sum_insured,
@@ -1749,7 +1766,7 @@ export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
     productId: quote?.product.id,
     group: parseInt(groupCode),
     journeyType,
-
+    subJourneyType,
     ...queryOptions,
   };
 
@@ -2058,9 +2075,11 @@ export const useShareFunctionality = (desktopPageId, mobilePageId) => {
 };
 
 export const useRevisedPremiumModal = () => {
-  const { cartEntries, getCartTotalPremium } = useCart();
+  const { cartEntries, getCartTotalPremium, getCartEntry } = useCart();
 
   const revisedPremiumPopupToggle = useToggle();
+
+  const { groupCode } = useParams();
 
   const [revisedPremiumCheckHitByUs, setRevisedPremiumCheckHitByUs] =
     useState(false);
@@ -2070,9 +2089,12 @@ export const useRevisedPremiumModal = () => {
 
   const dispatch = useDispatch();
 
+  /*-----------------------------------------------------------------------------------------------*/
+  //? Proposal page constants
+
   const prevTotalPremium = useMemo(() => {
     return getCartTotalPremium();
-  }, []); /* memorizes the first value it gets */
+  }, [groupCode]); /* memorizes the first value it gets */
 
   const previousCartEntries = useMemo(() => {
     return cartEntries;
@@ -2080,6 +2102,17 @@ export const useRevisedPremiumModal = () => {
 
   const updatedTotalPremium =
     getCartTotalPremium(); /* Gets the updated value each time */
+
+  /*-----------------------------------------------------------------------------------------------*/
+  //? Product Details page constants
+
+  const prevPremium = useMemo(() => {
+    return getCartEntry(groupCode)?.premium;
+  }, [groupCode]); /* memorizes the first value it gets */
+
+  const updatedPremium = getCartEntry(groupCode)?.premium;
+
+  /*-----------------------------------------------------------------------------------------------*/
 
   const getUpdatedCart = (next = () => {}) => {
     dispatch(
@@ -2100,18 +2133,70 @@ export const useRevisedPremiumModal = () => {
   }; /* Performs refetch from the server */
 
   useEffect(() => {
-    if (+prevTotalPremium === +updatedTotalPremium) {
-      revisedPremiumPopupToggle.off();
-    }
+    if (isProductDetailsPage) {
+      //? PRODUCT DETAILS PAGE LOGIC
 
-    // if (+prevTotalPremium !== +updatedTotalPremium) {
-    if (Math.abs(prevTotalPremium - updatedTotalPremium) > 2) {
-      revisedPremiumPopupToggle.on();
-      dispatch(setIsPopupOn(true));
+      if (+prevPremium === +updatedPremium) {
+        revisedPremiumPopupToggle.off();
+      }
+      if (Math.abs(prevPremium - updatedPremium) > 10) {
+        revisedPremiumPopupToggle.on();
+        dispatch(setIsPopupOn(true));
+      }
+    } else {
+      //? PROPOSAL PAGE LOGIC
+
+      if (+prevTotalPremium === +updatedTotalPremium) {
+        revisedPremiumPopupToggle.off();
+      }
+
+      // if (+prevTotalPremium !== +updatedTotalPremium) {
+      if (Math.abs(prevTotalPremium - updatedTotalPremium) > 10) {
+        let stringedRidersName = "";
+        for (let i = 0; i < previousCartEntries.length; i++) {
+          const previousEntry = previousCartEntries[i];
+          const currentEntry = cartEntries.find(
+            entry => entry.id === previousEntry.id,
+          );
+          let ridersInPreviousCart = previousEntry.health_riders.map(
+            rider => rider.name,
+          );
+          let ridersInCurrentCart = currentEntry.health_riders.map(
+            rider => rider.name,
+          );
+
+          if (ridersInPreviousCart.length !== ridersInCurrentCart.length) {
+            let removedRiderName = ridersInPreviousCart.find(
+              rider => ridersInCurrentCart.indexOf(rider) < 0,
+            );
+            stringedRidersName += !stringedRidersName
+              ? removedRiderName
+              : ` and ${removedRiderName}`;
+          }
+        }
+        if (stringedRidersName) {
+          dispatch(
+            setShowErrorPopup({
+              show: true,
+              head: "",
+              msg: `Based on changes in Insured Date of Birth ${stringedRidersName} is unavailable. Please click OK & proceed.`,
+              onCloseCallBack: () => {
+                revisedPremiumPopupToggle.on();
+                dispatch(setIsPopupOn(true));
+              },
+            }),
+          );
+        } else {
+          revisedPremiumPopupToggle.on();
+          dispatch(setIsPopupOn(true));
+        }
+      }
     }
   }, [
     prevTotalPremium,
     updatedTotalPremium,
+    prevPremium,
+    updatedPremium,
   ]); /* CONTROLS DISPLAY OF REVISED PREMIUM POPUP AUTOMATICALLY */
 
   const getUpdatedCartEntry = groupCode => {
@@ -2195,8 +2280,12 @@ export const useDD = ({ initialValue = {}, required, errorLabel }) => {
 
   const valueInputTouchedHandler = () => setIsValueInputTouched(true);
 
-  const valueChangeHandler = (label, value) => {
-    const updatedValue = { code: value, display_name: label };
+  const valueChangeHandler = singleOption => {
+    const updatedValue = {
+      code: singleOption?.value,
+      display_name: singleOption?.label,
+      ...singleOption,
+    };
     setValue(updatedValue);
   };
 
@@ -2205,6 +2294,64 @@ export const useDD = ({ initialValue = {}, required, errorLabel }) => {
     error,
     showError,
     isValueValid,
+    shouldShowError: valueInputTouchedHandler,
+    onChange: valueChangeHandler,
+  };
+};
+
+export const usePolicyNumberValidations = ({
+  initialValue = "",
+  required,
+  errorLabel,
+  providedRegex = /^[\S]*$/,
+}) => {
+  const [value, setValue] = useState(initialValue);
+
+  const [isValueInputTouched, setIsValueInputTouched] = useState(false);
+
+  const [error, setError] = useState({});
+
+  const isValueValid = !error?.message;
+
+  const showError = isValueInputTouched && !isValueValid;
+
+  const placeHolder =
+    providedRegex &&
+    `E.G. ${new RandExp(regexStringToRegex(providedRegex)).gen()}`;
+
+  const ddErrorThrowingValidations = useCallback(
+    (value, setError) => {
+      //? Only validates if required.
+      if (required) {
+        if (value === "") {
+          return setError({ message: `Please select a ${errorLabel}.` });
+        }
+        if (!providedRegex.test(value)) {
+          return setError({ message: `Please enter a valid ${errorLabel}.` });
+        }
+        return setError({});
+      }
+      return setError({});
+    },
+    [value],
+  );
+
+  useEffect(() => {
+    ddErrorThrowingValidations(value, setError);
+  }, [value, setError, ddErrorThrowingValidations]);
+
+  const valueInputTouchedHandler = () => setIsValueInputTouched(true);
+
+  const valueChangeHandler = e => {
+    setValue(e.target.value);
+  };
+
+  return {
+    value,
+    error,
+    showError,
+    isValueValid,
+    placeHolder,
     shouldShowError: valueInputTouchedHandler,
     onChange: valueChangeHandler,
   };

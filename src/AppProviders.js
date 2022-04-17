@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useLocation } from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
-import { useGetFrontendBootQuery, useGetCartQuery } from "./api/api";
+import {
+  useGetFrontendBootQuery,
+  useGetCartQuery,
+  useGetPoliciesQuery,
+} from "./api/api";
 import { ErrorFallback, FullScreenLoader } from "./components";
 import { useGetEnquiriesQuery } from "./api/api";
 import { LoadEnquiries } from "./components";
@@ -25,10 +29,11 @@ function AppProviders({ children }) {
 }
 
 export default AppProviders;
-
+const dontCheckPoliciesUrl = ["/", "/input/basic-details", "/thankyou"];
 function AppLoaders({ children, ...props }) {
   const isRootRoute = useRouteMatch({ path: "/", exact: true });
   const searchQueries = useUrlQueries();
+  const { pathname } = useLocation();
 
   const isBasicDetailsRoute = useRouteMatch({
     path: "/input/basic-details",
@@ -50,6 +55,8 @@ function AppLoaders({ children, ...props }) {
   const isProposalRoute = useRouteMatch({ path: "/proposal" });
   const isProposalSummaryRoute = useRouteMatch({ path: "/proposal_summary" });
   const isThankyouRoute = useRouteMatch({ path: "/thankyou" });
+
+  const dontCheckPolicies = dontCheckPoliciesUrl.includes(pathname);
 
   const { isLoading, isUninitialized, isError } = useGetFrontendBootQuery(
     undefined,
@@ -74,6 +81,11 @@ function AppLoaders({ children, ...props }) {
         isProposalRoute ||
         isProposalSummaryRoute
       ),
+    });
+
+  const { isLoading: isLoadingPolicy, isUninitialized: isUninitializedPolicy } =
+    useGetPoliciesQuery(undefined, {
+      skip: dontCheckPolicies,
     });
 
   if (isLoading || isUninitialized) return <FullScreenLoader />;
@@ -108,6 +120,8 @@ function AppLoaders({ children, ...props }) {
     return <FullScreenLoader />;
 
   if (isLoadingCart) return <FullScreenLoader />;
+
+  if (isLoadingPolicy) return <FullScreenLoader />;
 
   if (isErrorEnq)
     return (

@@ -107,6 +107,7 @@ const DateComp = ({
           showYearDropdown
           popperPlacement="bottom-end"
           yearDropdownItemNumber={100}
+          autocomplete="off"
           scrollableYearDropdown={true}
           dateFormat="dd-MM-yyyy"
           selected={
@@ -121,7 +122,7 @@ const DateComp = ({
               ? new Date(
                   currentYear - (age[1] + 1),
                   currentMonth,
-                  currentDate + 1,
+                  currentDate + (`${age[0]}`.includes(".") ? 2 : 1),
                 )
               : ""
           }
@@ -132,7 +133,7 @@ const DateComp = ({
               ? new Date(
                   currentYear,
                   currentMonth - Number(age[0].toString().split(".")[1]),
-                  currentDate - (`${age[0]}`.includes(".") ? 2 : 0),
+                  currentDate - (`${age[0]}`.includes(".") ? 1 : 0),
                 )
               : new Date()
           }

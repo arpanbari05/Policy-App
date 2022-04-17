@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GiCircle } from "react-icons/gi";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { useTheme } from "../customHooks";
@@ -6,6 +6,7 @@ import { getAgeList } from "../utils/helper";
 import RoundDD from "./RoundDD";
 import { Counter } from ".";
 import "styled-components/macro";
+import { useParams } from "react-router-dom";
 
 const modifyMembersToCount = members => {
   let sonCount = 0;
@@ -61,6 +62,12 @@ export function useMembersForm(initialMembersList = []) {
   const [error, setError] = useState(null);
 
   const isError = members.some(member => !!member.error);
+
+  const { groupCode } = useParams();
+
+  useEffect(() => {
+    setMembers(initialMembersList);
+  }, [groupCode]); //? CHANGES MEMBERS ON GROUP-CODE CHANGE.
 
   const validate = () => {
     const { isValid, validatedMembers } = validateMembers(members);
@@ -315,8 +322,8 @@ function MemberOption({
           line-height: 1;
           font-weight: 900;
 
-          @media (max-width: 420px) {
-            font-size: 13px;
+          @media (max-width: 480px) {
+            font-size: 11px;
           }
         `}
       >

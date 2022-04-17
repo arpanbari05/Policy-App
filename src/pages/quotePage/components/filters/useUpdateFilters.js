@@ -3,9 +3,11 @@ import {
   useGetEnquiriesQuery,
   useUpdateGroupsMutation,
 } from "../../../../api/api";
+import useFilters from "./useFilters";
 
 function useUpdateFilters() {
   const [updateGroup, query] = useUpdateGroupsMutation();
+  const { getSelectedFilter } = useFilters();
 
   const { groupCode } = useParams();
 
@@ -21,7 +23,7 @@ function useUpdateFilters() {
 
   const currentGroup = groups?.find(group => group.id === parseInt(groupCode));
 
-  const previousFilters = currentGroup.extras;
+  const previousFilters = currentGroup?.extras;
 
   const reduxGroup = JSON.parse(localStorage.getItem("groups"));
 
@@ -43,7 +45,16 @@ function useUpdateFilters() {
     });
     updateGroup({
       groupCode,
-      extras: {},
+      extras: {
+        sum_insured:
+          filters?.cover?.code ||
+          previousFilters?.cover?.code ||
+          getSelectedFilter("cover")?.code,
+        tenure:
+          filters?.tenure?.code ||
+          previousFilters?.tenure?.code ||
+          getSelectedFilter("tenure")?.code,
+      },
       plan_type: filters?.plantype?.code,
     });
     localStorage.setItem("groups", JSON.stringify(groups));
@@ -57,20 +68,30 @@ function useUpdateFilters() {
       if (reduxGroupMatch) {
         return {
           ...group,
-          extras: null,
-          plan_type: group?.plan_type === "M" ? "F" : group?.plan_type,
+          extras: {
+            sum_insured: "300001-500000",
+            tenure: "1",
+          },
+          plan_type:
+            group?.members?.length === 1
+              ? "I"
+              : localStorage.getItem("default_filters")
+              ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+              : "F",
         };
       }
     });
-    localStorage.setItem("groups", JSON.stringify(groups));
     updateGroup({
       groupCode,
-      extras: null,
-      plan_type:
-        groups?.find(grp => grp?.id === +groupCode)?.plan_type === "M"
-          ? "F"
-          : groups?.find(grp => grp?.id === +groupCode)?.plan_type,
+      extras: {
+        sum_insured: "300001-500000",
+        tenure: "1",
+      },
+      plan_type: localStorage.getItem("default_filters")
+        ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+        : "F",
     });
+    localStorage.setItem("groups", JSON.stringify(groups));
   }
 
   return { updateFilters, resetFilters, query };

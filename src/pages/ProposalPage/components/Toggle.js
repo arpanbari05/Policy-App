@@ -28,7 +28,8 @@ const Toggle = ({
   restrictMaleMembers = false,
   message
 }) => {
-  console.log("Svsjbv", disable_Toggle,value);
+  console.log("Svsjbv", disable_Toggle,value,values);
+  const isMandatoryMQ = label.toLowerCase().includes("mandatory");
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
@@ -41,19 +42,33 @@ const Toggle = ({
     customMembers instanceof Array && customMembers.length ? customMembers : members,
   );
 
+
+
+  const [membersSelectedTillNow, setMembersSelectedTillNow] = useState({});
+
   useEffect(() => {
     if (showMembersIf) {
       setCustomshowMembers(
-        showMembersIf.split("||").some(name => {
+         showMembersIf.split("||").some(name => {
           return values && values[name] && values[name][`is${name}`] === "Y";
         }),
       );
+    }
+    if(isMandatoryMQ){
+       let questionsToCheck = showMembersIf.split("||");
+       let membersSelectedTillNow = membersToMap.reduce((acc,member) => {
+        let isMemberPresent = questionsToCheck.some(question => values?.[question] && values[question]?.members?.[member])
+         return isMemberPresent?{...acc,[member]:true}:acc
+      },{})
+      console.log("khgjdtbhdt",membersSelectedTillNow)
+     
+      setMembersSelectedTillNow(membersSelectedTillNow);
     }
   }, [values]);
 
   const [boolean, setBoolean] = useState(disable_Toggle?"Y":"");
 
-  const [membersStatus, setMembersStatus] = useState({});
+  const [membersStatus, setMembersStatus] = useState(value?.members || {});
   console.log("Wvkwbf", disable_Toggle, membersStatus);
   const { mediUnderwritting } = useSelector(
     state => state.proposalPage.proposalData,
@@ -66,7 +81,7 @@ const Toggle = ({
     if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
-    } else if (value instanceof Object && Object.keys(value).length) {
+    }else if (value instanceof Object && Object.keys(value).length) {
       setBoolean(value[`is${name}`]);
       setMembersStatus(value.members);
     }
@@ -96,10 +111,7 @@ console.log("bfxfjkl",membersToMap)
       setBoolean("N");
       setMembersStatus({});
     }
-    if (customShowMembers && label.toLowerCase().includes("mandatory")) {
-      setBoolean("Y");
-      setMembersStatus(membersToMap.reduce((acc,member) => ({...acc, [member]:true}),{}));
-    }
+    
   }, [value, customShowMembers]);
 
   useEffect(() => {
@@ -113,25 +125,46 @@ console.log("bfxfjkl",membersToMap)
     ) {
       isValid = false;
     }
+   
+if(!isMandatoryMQ){
+  console.log("qefeihjfbkf",customShowMembers,boolean,label)
+  if(boolean === "N" && !customShowMembers){
 
-
- if(boolean === "N"){
-      onChange({
-        [`is${name}`]: boolean,
-        members: {},
-        isValid,
-      });
-    }else{
+    onChange({
+      [`is${name}`]: boolean,
+      members: {},
+      isValid,
+    });
+  }else{
+    
       onChange({
         ...value,
         [`is${name}`]: boolean,
         members: membersStatus,
         isValid,
       });
-    }
+    
+    
+  }
+}
+ 
 
     
-  }, [boolean, membersStatus, customShowMembers]);
+  }, [boolean,Object.keys(membersStatus).length, customShowMembers]);
+
+  useEffect(() => {
+    if(isMandatoryMQ){
+    console.log("wvbkwdsbvjdce",membersSelectedTillNow)
+   onChange({
+        ...value,
+        [`is${name}`]: boolean,
+        members:membersSelectedTillNow,
+        isValid:true,
+      });
+      // console.log("adfvksadhbvvd",boolean, membersStatus, customShowMembers,label,membersSelectedTillNow)
+      
+    }
+  },[Object.keys(membersSelectedTillNow).length])
 
   console.log("sgjsgsrgr", {value, label, boolean,membersToMap,showMembers, customShowMembers, membersStatus,restrictMaleMembers,customMembers, members});
 
@@ -231,7 +264,7 @@ console.log("bfxfjkl",membersToMap)
                   onChange={e => {
                     if (notAllowedIf === "N")
                       dispatch(setShowPlanNotAvail(true));
-                    else {
+                    else if(!isMandatoryMQ) {
                       setBoolean(e.target.value);
                       !showMembersIf && setMembersStatus({});
                     }
@@ -253,7 +286,7 @@ console.log("bfxfjkl",membersToMap)
             </div>
           </div>
         </div>
-        {membersToMap.length && showMembers !== false && !disable_Toggle ? (
+        {!isMandatoryMQ && membersToMap.length && showMembers !== false && !disable_Toggle ? (
           (customShowMembers || boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (

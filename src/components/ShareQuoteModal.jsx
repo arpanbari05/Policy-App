@@ -1031,10 +1031,10 @@ const StepWrapper = styled.div`
       border-radius: 20px 20px 0 0;
     }
 
-    &:not(:last-child) {
-      margin-right: 2em;
-    }
-  `}
+    `}
+  &:not(:last-child) {
+    margin-right: 2em;
+  }
 `;
 
 const Step = styled.div`

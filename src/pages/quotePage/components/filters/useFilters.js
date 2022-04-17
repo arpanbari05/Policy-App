@@ -55,6 +55,10 @@ function useFilters() {
     localStorage.getItem("groups") &&
     JSON.parse(localStorage.getItem("groups"));
 
+  const defaultPolicyTypeFilter = localStorage.getItem("default_filters")
+    ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+    : "F";
+
   if (reduxGroup?.length) {
     const updatedGroup = data.data?.groups?.map(group => {
       const reduxGroupMatch = reduxGroup?.find(reGrp => {
@@ -67,7 +71,20 @@ function useFilters() {
         extras: {
           ...group?.extras,
           ...reduxGroupMatch?.extras,
+          plantype:
+            group?.members?.length === 1
+              ? group?.extras?.plantype
+              : reduxGroupMatch?.extras?.plantype,
         },
+        plan_type:
+          group?.members?.length === 1
+            ? "I"
+            : reduxGroupMatch?.plan_type !== "I"
+            ? reduxGroupMatch?.plan_type || defaultPolicyTypeFilter
+            : defaultPolicyTypeFilter,
+        // reduxGroupMatch?.plan_type || group?.members?.length === 1
+        //   ? group?.plan_type
+        //   : defaultPolicyTypeFilter,
       };
     });
 
@@ -90,12 +107,17 @@ function useFilters() {
         return [];
       }
       if (code === "tenure") {
-        if (extras["tenure"]) return extras["tenure"];
+        // if (extras["tenure"]) return extras["tenure"];
+        if (extras["tenure"])
+          return (
+            tenures.find(tenure => tenure.code === extras["tenure"]) ||
+            extras["tenure"]
+          );
         return tenures.find(tenure => tenure.code === defaultfilters["tenure"]);
       }
       if (extras[code]) {
         if (code === "cover") {
-          const selectedFilterCode = extras[code].code;
+          const selectedFilterCode = extras[code].code || extras[code];
           if (extras[code].custom) {
             return {
               code: selectedFilterCode,
@@ -105,7 +127,7 @@ function useFilters() {
           }
         }
         if (code === "deductible") return extras[code];
-        const moreFilter = morefilters.find(filter => filter.code === code);
+        const moreFilter = morefilters?.find(filter => filter.code === code);
 
         if (moreFilter) {
           return extras ? extras[code] : undefined;
@@ -134,11 +156,11 @@ function useFilters() {
     }
 
     if (code === "plantype") {
+      const currGroup = groups?.find(
+        singleGroup => singleGroup.id === +groupCode,
+      );
       return filters[CODE_FILTERS[code]].find(
-        filter =>
-          filter.code ===
-          data?.data?.groups?.find(singleGroup => singleGroup.id === +groupCode)
-            ?.plan_type,
+        filter => filter.code === currGroup?.plan_type,
       );
     }
 
@@ -157,7 +179,8 @@ function useFilters() {
 
   const isFiltersDefault =
     selectedCover?.code === cover &&
-    (selectedPlanType?.code === plantype || selectedPlanType?.code === "I") &&
+    (selectedPlanType?.code === defaultPolicyTypeFilter ||
+      selectedPlanType?.code === "I") &&
     selectedBasePlanType?.code === baseplantype &&
     selectedTenure?.code === tenure &&
     selectedInsurers?.length < 1 &&

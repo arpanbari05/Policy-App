@@ -9,7 +9,7 @@ import { FaRegCopy } from "react-icons/fa";
 import { CircleLoader } from ".";
 import { images } from "../assets/logos/logo";
 import { useUrlQueries } from "../customHooks/useUrlQuery";
-import { isThemeApp } from "../utils/helper";
+import { allowOnWebsites, isThemeApp } from "../utils/helper";
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 
 function LogoLink() {
@@ -102,29 +102,6 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
                 display: flex;
               `}
             >
-              {/*
-              {location.pathname === "/proposal" && (
-                <ShareQuoteModal
-                  imageSend={proposalImageSend}
-                  emailStatus={emailStatus}
-                  stage="PROPOSAL"
-                />
-              )}
-              {location.pathname === "/proposal_summary" && (
-                <ShareQuoteModal
-                  imageSend={proposalSummaryImageSend}
-                  emailStatus={emailStatus}
-                  stage="PROPOSAL_SUMMARY"
-                />
-              )} */}
-              {/* {location.pathname === `/compare/${groupCode}` && (
-                <ShareQuoteModal
-                  imageSend={imageSend}
-                  emailStatus={emailStatus}
-                  stage={"COMPARE"}
-                />
-              )} */}
-
               <div
                 css={`
                   background-color: ${colors.secondary_shade};
@@ -137,7 +114,12 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
             </div>
           )}
 
-          {isThemeApp() && (
+          {allowOnWebsites([
+            "topup",
+            "renewBuyUat",
+            "sriyahUat",
+            "pincUat",
+          ]) && (
             <span
               onClick={() => {
                 setShow(true);
@@ -326,11 +308,11 @@ export function Members() {
         css={`
           position: relative;
           @media (min-width: 1024px) {
-            max-width: 43vw;
+            max-width: 36vw;
           }
         `}
       >
-        {scrollX !== 0 && (
+        {scrollX !== 0 && members?.length >= 6 && (
           <button
             css={`
               display: none;
@@ -354,7 +336,7 @@ export function Members() {
             position: relative;
             max-width: 100%;
             display: flex;
-            overflow: auto;
+            overflow: ${members?.length >= 6 ? "auto" : "hidden"};
             scroll-behaviour: smooth;
             &::-webkit-scrollbar {
               display: none;
@@ -371,7 +353,7 @@ export function Members() {
             <Member member={member} key={member.code} />
           ))}
         </div>
-        {!scrolEnd && (
+        {!scrolEnd && members?.length >= 6 && (
           <button
             css={`
               display: none;
@@ -415,7 +397,9 @@ export function Members() {
 }
 
 function Member({ member, ...props }) {
-  const memberType = member?.display_name?.replaceAll("_", " ");
+  console.log("displayName", member);
+  const memberType = member?.display_name.toString()?.split("_").join(" ");
+
   return (
     <Info
       label={memberType}

@@ -433,7 +433,11 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
         <div>
           <img className="contain" src={logoSrc} alt={alias} />
         </div>
-        <div>
+        <div
+          css={`
+            max-width: 30%;
+          `}
+        >
           <ProductName flag={name.length > 20}>{name}</ProductName>
         </div>
         {deductible ? (

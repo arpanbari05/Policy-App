@@ -21,7 +21,8 @@ const ProposerDetails = ({
   defaultValue = {},
   setProposerDactive,
   setActivateLoader,
-  setBlockTabSwitch
+  setBlockTabSwitch,
+  listOfForms
 }) => {
   const {
     values,
@@ -33,7 +34,7 @@ const ProposerDetails = ({
     revisedPremiumPopupUtilityObject,
     setErrorInField,
     setErrors,
-  } = useProposalSections({ setActive, name, setActivateLoader,setBlockTabSwitch });
+  } = useProposalSections({ setActive, name, setActivateLoader,setBlockTabSwitch,listOfForms });
 
 
 

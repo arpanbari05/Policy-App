@@ -43,7 +43,7 @@ const renderTooltipOverlay = description => <Tooltip>{description}</Tooltip>;
 const renderDescription = name => renderTooltipOverlay(getDescription(name));
 
 function getFlatQuotes(data) {
-  return data.map(icQuote => icQuote.data.data).flat(Infinity);
+  return data.map(icQuote => icQuote.data.data)?.flat(Infinity);
 }
 
 function FilterModal({ onClose }) {
@@ -117,9 +117,9 @@ function FilterModal({ onClose }) {
         className="p-3 pb-0 d-flex flex-column"
         css={`
           gap: 1em;
-          min-height: ${section === "top_up" ? "63vh" : "67vh"};
+          // max-height: ${section === "top_up" ? "63vh" : "67vh"};
           // min-height: 60vh;
-          overflow: auto;
+          // overflow: auto;
         `}
       >
         {morefilters

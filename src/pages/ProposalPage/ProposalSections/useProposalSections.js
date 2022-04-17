@@ -15,26 +15,27 @@ import {
   setShowNSTP,
   setActiveIndex,
   getProposalData,
+  setShowErrorPopup,
   setFailedBmiData,
 } from "./ProposalSections.slice";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
-import { useRevisedPremiumModal } from "../../../customHooks";
+import { useRevisedPremiumModal,useCart } from "../../../customHooks";
 import { useGetEnquiriesQuery } from "../../../api/api";
 
 const useProposalSections = ({
   setActive,
   partialLength,
   setActivateLoader,
-  setShow = () => {},
   setBlockTabSwitch,
-  name
+  name,
+  listOfForms
 }) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
+  const [show, setShow] = useState(0);
   const [errorInField, setErrorInField] = useState(true);
   const schema = useSelector(({ schema }) => schema.currentSchema);
   const history = useHistory();
- 
   const queryStrings = useUrlQuery();
 
   const enquiryId = queryStrings.get("enquiryId");
@@ -64,6 +65,16 @@ const useProposalSections = ({
     else return false;
   };
 
+  // checks dropDown selected value exist in schema options or not
+  const isOptionsValuesValidated = (schema,values) => {
+    if(Array.isArray(schema)){
+      return schema.filter(el => renderField(el, values) && el?.validate?.required && el.type === "select").every(el => Boolean( el.additionalOptions.options[values[el.name]]))
+    }else{
+      return Object.keys(schema).map(key => isOptionsValuesValidated(schema[key],values[key]))
+    }
+   
+  }
+
   const havingAnyError = (errors, key) => {
     if (key) {
       return Object.values(errors[key]).some(el => Boolean(el));
@@ -78,27 +89,21 @@ const useProposalSections = ({
   };
 
   const everyRequiredFilled = (schema, values = {}) => {
-    if (Array.isArray(schema))
+    if (Array.isArray(schema)){
+
       return schema
         .filter(
-          el => el.validate && el.validate.required && renderField(el, values),
+          el => el.validate && el.validate.required === true && renderField(el, values),
         )
         .every(
           el =>
             values[el.name] &&
             !performValidations(el.validate, values, el.name),
         );
-    else
+         } else
       return Object.keys(schema)
         .map(key =>
-          schema[key]
-            .filter(
-              el =>
-                el.validate &&
-                el.validate.required &&
-                renderField(el, values, key),
-            )
-            .every(el => values && values[key] && values[key][el.name]),
+          everyRequiredFilled(schema[key], values[key] ? values[key] : {}),
         )
         .includes(false)
         ? false
@@ -163,6 +168,7 @@ const useProposalSections = ({
         callback,
       });
     } else if (updationFor === "Insured Details") {
+
       let updatedObj = { ...checkFor.self };
       let checkForKeys = Object.keys(checkFor.self);
       checkForKeys.forEach(key => {
@@ -192,21 +198,36 @@ const useProposalSections = ({
     );
   };
 
+
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
+        console.log("egjksf 1")
         setActive(schemaKeys.indexOf(formName));
-        setShow(havingAnyError(errors).indexOf(true));
+        console.log("sgvjbskv",havingAnyError(errors));
+        name !== "Insured Details" && setShow(havingAnyError(errors).indexOf(true));
         return;
       }
       if (!everyRequiredFilled(schema[formName], sendedVal)) {
+        console.log("egjksf 2",everyRequiredFilled(schema[formName], sendedVal))
         setActive(schemaKeys.indexOf(formName));
-
-        // setShow(havingAnyError(errors).indexOf(false));
+        return;
+      }
+      let valueIsValidatedOption = isOptionsValuesValidated(schema[formName],sendedVal);
+      console.log("wsgvskdbvs",isOptionsValuesValidated(schema[formName],sendedVal))
+      // if(formName === "Proposer Details" && valueIsValidatedOption === false){
+      //   setActive(schemaKeys.indexOf(formName));
+      //   return;
+      // }
+      if(formName !== "Proposer Details" && valueIsValidatedOption.includes(false)){
+        console.log("egjksf 3")
+        setActive(schemaKeys.indexOf(formName));
+        setShow(valueIsValidatedOption.indexOf(false));
         return;
       }
     } else if (!checkAllValid(values).every(el => el === true)) {
       setActive(schemaKeys.indexOf(formName));
+      return;
     }
 
     if (
@@ -247,11 +268,10 @@ const useProposalSections = ({
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
-          ({ prevProposalData, updatedProposalData, responseData }) => {
+          ({ prevProposalData, updatedProposalData, responseData}) => {
             callback();
-
-            revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
-
+            revisedPremiumPopupUtilityObject?.getUpdatedCart();
+            
             if (responseData?.failed_bmi?.health) {
               dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
               dispatch(
@@ -368,6 +388,8 @@ if(name === "Proposer Details"){
     setErrors,
     errors,
     equriesData,
+    show, 
+    setShow,
   };
 };
 

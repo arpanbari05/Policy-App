@@ -101,6 +101,9 @@ export const api = createApi({
       query: () => ({ url: `enquiries` }),
       providesTags: ["Filter", "Enquiry"],
     }),
+    getPolicies: builder.query({
+      query: () => ({ url: `/policies` }),
+    }),
     getQuotes: builder.query({
       query: ({
         alias,
@@ -193,6 +196,7 @@ export const api = createApi({
         additionalUrlQueries = "",
         feature_options,
         journeyType = "health",
+        subJourneyType = "",
       }) => {
         let endpoint = "riders";
 
@@ -200,7 +204,7 @@ export const api = createApi({
           endpoint = "top_up-riders";
         }
 
-        if (journeyType === "renewal") {
+        if (subJourneyType === "renewal") {
           endpoint = "renewal-riders";
         }
 
@@ -238,12 +242,13 @@ export const api = createApi({
         deductible,
         feature_options = "",
         journeyType = "health",
+        subJourneyType = "",
       }) => {
         let url = `products/${product_id}/discounts?sum_insured=${sum_insured}&group=${group}&${feature_options}`;
         if (journeyType === "top_up") {
           url = `products/${product_id}/topup-discounts?sum_insured=${sum_insured}&group=${group}&deductible=${deductible}`;
         }
-        if (journeyType === "renewal") {
+        if (subJourneyType === "renewal") {
           url = `products/${product_id}/renewal-discounts?sum_insured=${sum_insured}&group=${group}&deductible=${deductible}`;
         }
         return {
@@ -394,12 +399,20 @@ export const api = createApi({
       },
     }),
     updateRenewalQuery: builder.mutation({
-      query: ({ company_alias, policy_no, section = "renewal" }) => {
+      query: ({
+        company_alias,
+        policy_no,
+        expiry_date,
+        date_of_birth,
+        section = "renewal",
+      }) => {
         return {
           url: "renewal-enquiries",
           body: {
             company_alias,
             policy_no,
+            expiry_date,
+            date_of_birth,
             section,
           },
           method: "POST",
@@ -506,6 +519,7 @@ export const {
   useUpdateRenewalQueryMutation,
   useGetRenewalSumInsuredsQuery,
   useGetFeatureOptionsQuery,
+  useGetPoliciesQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {
