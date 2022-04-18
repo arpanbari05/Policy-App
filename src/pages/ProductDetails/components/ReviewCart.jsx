@@ -591,7 +591,6 @@ export const RevisedPremiumPopup = ({
   return (
     <Modal
       show
-      onHide={isProductDetailsPage ? () => {} : onClose}
       css={`
         & .modal-dialog {
           max-width: 600px;
