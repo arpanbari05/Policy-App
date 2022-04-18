@@ -270,11 +270,18 @@ function MemberOption({
     userGender,
     currentUserAgeList,
   ) => {
+    console.log(currentUserAgeList);
     if (!validateSelfFunc(currentSelectedMember, currentMember)) {
-      return userGender === "F" && currentMember.code === "spouse"
-        ? currentUserAgeList.slice(3, currentUserAgeList.length)
-        : currentUserAgeList;
+      if (currentMember.code === "spouse") {
+        return currentUserAgeList.slice(3, currentUserAgeList.length);
+      } else {
+        return currentUserAgeList;
+      }
     } else {
+      if (currentMember.code === "father" || currentMember.code === "mother") {
+        return currentUserAgeList.slice(1, currentUserAgeList.length);
+      }
+
       return currentUserAgeList.slice(3, currentUserAgeList.length);
     }
   };
