@@ -172,11 +172,14 @@ export function MemberOptions({
   return (
     <div
       css={`
-        gap: 0.66em;
         display: ${!showCounter ? "grid" : "flex"};
         grid-template-columns: ${!showCounter && "repeat(2, 1fr)"};
         flex-wrap: wrap;
         justify-content: space-between;
+
+        & > div {
+          margin-bottom: 0.6rem;
+        }
       `}
       {...props}
     >
