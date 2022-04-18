@@ -157,6 +157,7 @@ export function useMembersForm(initialMembersList = []) {
 }
 
 export function MemberOptions({
+  isPopup,
   membersList,
   handleMemberChange,
   handleCounterIncrement,
@@ -179,6 +180,12 @@ export function MemberOptions({
 
         & > div {
           margin-bottom: 0.6rem;
+        }
+
+        @media (min-width: 720px) {
+          & > div:nth-child(odd) {
+            margin-right: ${!isPopup ? "0.8rem" : "0"};
+          }
         }
       `}
       {...props}

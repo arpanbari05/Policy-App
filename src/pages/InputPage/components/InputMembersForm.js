@@ -138,6 +138,7 @@ function InputMembersForm({ posContent, ...props }) {
           updateMembersList={updateMembersList}
           gender={data?.data?.input?.gender}
           setServerError={setServerError}
+          isPopup={true}
         />
         {isError || error ? (
           <StyledErrorMessage className="m-0 mt-3 mb-2">
