@@ -29,6 +29,9 @@ const RoundDD = ({
   const dropdownRef = useRef(null);
   useOutsiteClick(isOpen && dropdownRef, () => setIsOpen(false));
 
+  member.code === "son1" && console.log("memberError", redBorder);
+  member.code === "son1" && console.log("member", member);
+
   useEffect(() => {
     const array = list.filter(data =>
       data?.title?.toLowerCase().includes(searchText?.toLowerCase()),
@@ -72,8 +75,12 @@ const RoundDD = ({
         <Header
           onClick={toggleList}
           css={`
-            border: ${redBorder && "1px solid red !important"};
-            box-shadow: ${redBorder ? "red 0px 0px 0.5px 0.9px" : null};
+            border: ${member?.isSelected &&
+            redBorder &&
+            "1px solid red !important"};
+            box-shadow: ${member?.isSelected && redBorder
+              ? "red 0px 0px 0.5px 0.9px"
+              : null};
           `}
           className={`${isOpen && "active"} GreetingDD__Header ${
             disabled && "disabled"

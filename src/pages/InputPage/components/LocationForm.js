@@ -319,7 +319,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
               margin: 10px 0;
               padding-right: 10px;
 
-              div {
+              & > div {
                 margin: 0 0.2rem 0.6rem 0.2rem;
               }
             `}
