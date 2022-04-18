@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LocationEditForm from "../../../InputPage/components/LocationEditForm";
 import { setShowEditMembers } from "../../quote.slice";
 import { useGetEnquiriesQuery } from "../../../../api/api";
+import { useUpdateEnquiry } from "../../../../customHooks/index";
 
 export function EditMembersModal({
   children,
@@ -28,9 +29,28 @@ export function EditMembersModal({
 }) {
   const dispatch = useDispatch();
 
+  const { groups } = useMembers();
+
+  const { updateEnquiry } = useUpdateEnquiry();
+
   const handleHide = () => {
     // onClose && onClose();
     dispatch(setShowEditMembers(false));
+    return replicatePincode();
+  };
+
+  const replicatePincode = () => {
+    const groupsWithoutLocation = groups?.filter(grp => !grp?.pincode);
+    const firstGroupPincode = groups[0]?.pincode;
+    Promise.all(
+      groupsWithoutLocation.map(grpWithoutLoc =>
+        updateEnquiry({
+          is_pincode_search: false,
+          pincode: firstGroupPincode,
+          groupCode: grpWithoutLoc?.id,
+        }),
+      ),
+    );
   };
 
   const { editStep: step, showEditMembers: show } = useSelector(
@@ -197,9 +217,30 @@ export function EditMembers({ ...props }) {
 
     if (!selectedMembers.length) return;
 
+    const isGroupWithPincode = updatedGroups => {
+      const reduxGroup =
+        localStorage.getItem("groups") &&
+        JSON.parse(localStorage.getItem("groups"));
+      if (reduxGroup?.length) {
+        const updatedGroup = updatedGroups?.map(group => {
+          const reduxGroupMatch = reduxGroup?.find(reGrp => {
+            return reGrp?.members?.some(mem => group?.members?.includes(mem));
+          });
+          return {
+            ...group,
+            city: group?.city || reduxGroupMatch?.city,
+            pincode: group?.pincode || reduxGroupMatch?.pincode,
+          };
+        });
+
+        return updatedGroup?.find(grp => !grp?.pincode);
+      }
+    };
     updateMembers({ members: selectedMembers }).then(res => {
       if (!res?.error) {
-        dispatch(setEditStep(2));
+        if (!isGroupWithPincode(res?.data?.data?.groups))
+          dispatch(setShowEditMembers(false));
+        else dispatch(setEditStep(2));
       }
     });
   };

@@ -134,7 +134,6 @@ const ShareQuoteModal = ({
   useEffect(() => {
     dispatch(setlEmaiStatus(""));
     setErrorMsg("");
-    //  setyShowMsgs(false)
   }, [show]);
 
   useEffect(() => {

@@ -1168,6 +1168,8 @@ export function useGetQuotes(queryConfig = {}) {
 
   const { groupCode } = useParams();
 
+  const { showEditMembers: skip } = useSelector(({ quotePage }) => quotePage);
+
   const { filterQuotes } = useQuoteFilter({
     givenMoreFilters: {
       no_claim_bonus: getSelectedFilter("no_claim_bonus"),
@@ -1188,7 +1190,7 @@ export function useGetQuotes(queryConfig = {}) {
       plan_type: getSelectedFilter("plantype")?.code,
       journeyType,
     },
-    queryConfig,
+    { skip, ...queryConfig },
   );
 
   const isLoading =
@@ -1693,7 +1695,8 @@ export function useCompareSlot({ initialState = [], maxLength = 3 } = {}) {
 }
 
 export function useGetQuote(company_alias) {
-  const { data } = useGetQuotes();
+  const { showEditMembers: skip } = useSelector(({ quotePage }) => quotePage);
+  const { data } = useGetQuotes({ skip });
 
   const icQuotes =
     data &&
