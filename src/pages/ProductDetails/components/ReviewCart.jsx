@@ -583,36 +583,10 @@ export const RevisedPremiumPopup = ({
 }) => {
   const { colors } = useTheme();
 
-  const dispatch = useDispatch();
-
-  const history = useHistory();
-
-  const { groupCode: urlGeneratedGroupCode } = useParams(); //? groupCode changes on product details page.
-
-  const { getUrlWithEnquirySearch } = useUrlEnquiry();
-
   const isProductDetailsPage =
     window.location.pathname.startsWith("/productdetails");
 
-  const popupCloseHandler = () => {
-    onClose();
-    dispatch(setIsPopupOn(false));
-    revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart &&
-      history.replace(
-        getUrlWithEnquirySearch(
-          `/quotes/${
-            urlGeneratedGroupCode ||
-            revisedPremiumPopupUtilityObject?.unAvailablePlanInTheCart?.group
-              ?.id
-          }`,
-        ),
-      );
-  };
-
-  const editAgeHandler = () => {
-    onClose();
-    dispatch(setShowEditMembers(true));
-  };
+  const { groupCode: urlGeneratedGroupCode } = useParams(); //? groupCode only available on product details page.
 
   return (
     <Modal
@@ -652,189 +626,206 @@ export const RevisedPremiumPopup = ({
             updatedCartEntry =>
               +updatedCartEntry?.group?.id === +urlGeneratedGroupCode,
           )
-          ?.map(
-            (
-              { group: { id: groupCode }, unavailable_message, premium },
-              index,
-            ) => (
-              <>
-                <div key={index} className="p-3 pt-0 pb-0">
-                  <Members groupCode={groupCode} editable={false} />
-                  <BasePlanDetails
-                    groupCode={groupCode}
-                    isUnavailable={unavailable_message}
-                    revisedPremium
-                  />
-                  {!unavailable_message ? (
-                    <div>
-                      <CartDetailRow
-                        title={
-                          <span
-                            css={`
-                              color: ${colors.secondary_color};
-                            `}
-                          >
-                            Revised Premium
-                          </span>
-                        }
-                        value={amount(+premium)}
-                      />
-                    </div>
-                  ) : null}
-                  {unavailable_message ? (
-                    <UnavailableMessage message={unavailable_message} />
-                  ) : (
-                    <div>
-                      <RidersList groupCode={groupCode} />
-                      <DiscountsList groupCode={groupCode} />
-                    </div>
-                  )}
-                </div>
-                <hr className="mt-0" />
-              </>
-            ),
-          )}
+          ?.map((singleCartEntry, index) => (
+            <RevisedPlanCard key={index} cartEntry={singleCartEntry} />
+          ))}
 
       {!isProductDetailsPage &&
         revisedPremiumPopupUtilityObject?.updatedCartEntries?.map(
-          (
-            { group: { id: groupCode }, unavailable_message, premium },
-            index,
-          ) => (
-            <>
-              <div key={index} className="p-3 pt-0 pb-0">
-                <Members groupCode={groupCode} editable={false} />
-                <BasePlanDetails
-                  groupCode={groupCode}
-                  isUnavailable={unavailable_message}
-                  revisedPremium
-                />
-                {!unavailable_message ? (
-                  <div>
-                    <CartDetailRow
-                      title={
-                        <span
-                          css={`
-                            color: ${colors.secondary_color};
-                          `}
-                        >
-                          Revised Premium
-                        </span>
-                      }
-                      value={amount(+premium)}
-                    />
-                  </div>
-                ) : null}
-                {unavailable_message ? (
-                  <UnavailableMessage message={unavailable_message} />
-                ) : (
-                  <div>
-                    <RidersList groupCode={groupCode} />
-                    <DiscountsList groupCode={groupCode} />
-                  </div>
-                )}
-              </div>
-              <hr className="mt-0" />
-            </>
+          (singleCartEntry, index) => (
+            <RevisedPlanCard key={index} cartEntry={singleCartEntry} />
           ),
         )}
 
-      <div
-        css={`
-          gap: 1rem;
-        `}
-        className="p-3 pt-0 d-flex justify-content-center align-items-center"
-      >
-        {!revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart && (
-          <>
-            <DetailsWrap>
-              <DetailsWrap.Title style={{ fontWeight: "600" }}>
-                {isProductDetailsPage
-                  ? "Previous Premium"
-                  : "Previous Total Premium"}
-              </DetailsWrap.Title>
-              <DetailsWrap.Value>
-                {isProductDetailsPage
-                  ? getDisplayPremium({
-                      total_premium:
-                        +revisedPremiumPopupUtilityObject.getPreviousCartEntryPremium(
-                          urlGeneratedGroupCode,
-                        ),
-                      tenure: 1,
-                    })
-                  : getDisplayPremium({
-                      total_premium:
-                        +revisedPremiumPopupUtilityObject.prevTotalPremium,
-                      tenure: 1,
-                    })}
-              </DetailsWrap.Value>
-            </DetailsWrap>
-            <DetailsWrap>
-              <DetailsWrap.Title style={{ color: colors.secondary_color }}>
-                {isProductDetailsPage
-                  ? "Revised Premium"
-                  : "Revised Total Premium"}
-              </DetailsWrap.Title>
-              <DetailsWrap.Value>
-                {isProductDetailsPage
-                  ? getDisplayPremium({
-                      total_premium:
-                        +revisedPremiumPopupUtilityObject.getUpdatedCartEntryPremium(
-                          urlGeneratedGroupCode,
-                        ),
-                      tenure: 1,
-                    })
-                  : getDisplayPremium({
-                      total_premium:
-                        +revisedPremiumPopupUtilityObject.updatedTotalPremium,
-                      tenure: 1,
-                    })}
-              </DetailsWrap.Value>
-            </DetailsWrap>
-            <DetailsWrap>
-              <Button
-                className="w-100"
-                css={`
-                  border-radius: 9px;
-                `}
-                onClick={popupCloseHandler}
-              >
-                Continue
-              </Button>
-            </DetailsWrap>
-          </>
-        )}
+      <RevisedPopupFooter
+        revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+        onClose={onClose}
+      />
+    </Modal>
+  );
+};
 
-        {revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart && (
-          <>
-            <DetailsWrap>
-              <Button
-                className="w-100"
-                css={`
-                  border-radius: 9px;
-                `}
-                onClick={popupCloseHandler}
-              >
-                View Quotes
-              </Button>
-            </DetailsWrap>
-            {isProductDetailsPage && (
-              <DetailsWrap>
-                <Button
-                  className="w-100"
+const RevisedPlanCard = ({ cartEntry }) => {
+  const groupCode = cartEntry?.group?.id;
+
+  const unavailable_message = cartEntry?.unavailable_message;
+
+  const premium = cartEntry?.premium;
+
+  const { colors } = useTheme();
+
+  return (
+    <>
+      <div className="p-3 pt-0 pb-0">
+        <Members groupCode={groupCode} editable={false} />
+        <BasePlanDetails
+          groupCode={groupCode}
+          isUnavailable={unavailable_message}
+          revisedPremium
+        />
+        {!unavailable_message ? (
+          <div>
+            <CartDetailRow
+              title={
+                <span
                   css={`
-                    border-radius: 9px;
+                    color: ${colors.secondary_color};
                   `}
-                  onClick={editAgeHandler}
                 >
-                  Edit Age
-                </Button>
-              </DetailsWrap>
-            )}
-          </>
+                  Revised Premium
+                </span>
+              }
+              value={amount(+premium)}
+            />
+          </div>
+        ) : null}
+        {unavailable_message ? (
+          <UnavailableMessage message={unavailable_message} />
+        ) : (
+          <div>
+            <RidersList groupCode={groupCode} />
+            <DiscountsList groupCode={groupCode} />
+          </div>
         )}
       </div>
-    </Modal>
+      <hr className="mt-0" />
+    </>
+  );
+};
+
+const RevisedPopupFooter = ({ revisedPremiumPopupUtilityObject, onClose }) => {
+  const { groupCode: urlGeneratedGroupCode } = useParams(); //? groupCode changes on product details page.
+
+  const dispatch = useDispatch();
+
+  const { colors } = useTheme();
+
+  const history = useHistory();
+
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  const isProductDetailsPage =
+    window.location.pathname.startsWith("/productdetails");
+
+  const popupCloseHandler = () => {
+    onClose();
+    dispatch(setIsPopupOn(false));
+  };
+
+  const editAgeHandler = () => {
+    onClose();
+    dispatch(setShowEditMembers(true));
+  };
+
+  const viewQuotesHandler = () => {
+    dispatch(setIsPopupOn(false));
+
+    history.replace(
+      getUrlWithEnquirySearch(
+        `/quotes/${
+          urlGeneratedGroupCode ||
+          revisedPremiumPopupUtilityObject?.unAvailablePlanInTheCart?.group?.id
+        }`,
+      ),
+    );
+  };
+
+  return (
+    <div
+      css={`
+        gap: 1rem;
+      `}
+      className="p-3 pt-0 d-flex justify-content-center align-items-center"
+    >
+      {!revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart && (
+        <>
+          <DetailsWrap>
+            <DetailsWrap.Title style={{ fontWeight: "600" }}>
+              {isProductDetailsPage
+                ? "Previous Premium"
+                : "Previous Total Premium"}
+            </DetailsWrap.Title>
+            <DetailsWrap.Value>
+              {isProductDetailsPage
+                ? getDisplayPremium({
+                    total_premium:
+                      +revisedPremiumPopupUtilityObject.getPreviousCartEntryPremium(
+                        urlGeneratedGroupCode,
+                      ),
+                    tenure: 1,
+                  })
+                : getDisplayPremium({
+                    total_premium:
+                      +revisedPremiumPopupUtilityObject.prevTotalPremium,
+                    tenure: 1,
+                  })}
+            </DetailsWrap.Value>
+          </DetailsWrap>
+          <DetailsWrap>
+            <DetailsWrap.Title style={{ color: colors.secondary_color }}>
+              {isProductDetailsPage
+                ? "Revised Premium"
+                : "Revised Total Premium"}
+            </DetailsWrap.Title>
+            <DetailsWrap.Value>
+              {isProductDetailsPage
+                ? getDisplayPremium({
+                    total_premium:
+                      +revisedPremiumPopupUtilityObject.getUpdatedCartEntryPremium(
+                        urlGeneratedGroupCode,
+                      ),
+                    tenure: 1,
+                  })
+                : getDisplayPremium({
+                    total_premium:
+                      +revisedPremiumPopupUtilityObject.updatedTotalPremium,
+                    tenure: 1,
+                  })}
+            </DetailsWrap.Value>
+          </DetailsWrap>
+          <DetailsWrap>
+            <Button
+              className="w-100"
+              css={`
+                border-radius: 9px;
+              `}
+              onClick={popupCloseHandler}
+            >
+              Continue
+            </Button>
+          </DetailsWrap>
+        </>
+      )}
+
+      {revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart && (
+        <>
+          <DetailsWrap>
+            <Button
+              className="w-100"
+              css={`
+                border-radius: 9px;
+              `}
+              onClick={viewQuotesHandler}
+            >
+              View Quotes
+            </Button>
+          </DetailsWrap>
+          {isProductDetailsPage && (
+            <DetailsWrap>
+              <Button
+                className="w-100"
+                css={`
+                  border-radius: 9px;
+                `}
+                onClick={editAgeHandler}
+              >
+                Edit Age
+              </Button>
+            </DetailsWrap>
+          )}
+        </>
+      )}
+    </div>
   );
 };
 
