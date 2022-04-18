@@ -823,6 +823,19 @@ const RevisedPopupFooter = ({ revisedPremiumPopupUtilityObject, onClose }) => {
               </Button>
             </DetailsWrap>
           )}
+          {!isProductDetailsPage && (
+            <DetailsWrap>
+              <Button
+                className="w-100"
+                css={`
+                  border-radius: 9px;
+                `}
+                onClick={onClose}
+              >
+                Continue
+              </Button>
+            </DetailsWrap>
+          )}
         </>
       )}
     </div>
