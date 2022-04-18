@@ -105,8 +105,17 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
       const errors = res.some(res => !!res.error);
       if (errors) return;
       if (edit) {
-        if (nextGroup) setCurrentGroupCode(prev => prev + 1);
-        else {
+        if (nextGroup) {
+          if (
+            !groupWithoutLocation ||
+            groupWithoutLocation?.id === currentGroupCode
+          ) {
+            refetch();
+            return dispatch(setShowEditMembers(false));
+          } else {
+            setCurrentGroupCode(prev => prev + 1);
+          }
+        } else {
           if (
             groupWithoutLocation &&
             groupWithoutLocation?.id !== currentGroupCode
