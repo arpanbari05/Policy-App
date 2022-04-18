@@ -174,6 +174,10 @@ const ProposalSummary = () => {
 
   const dispatch = useDispatch();
 
+  const sum_insured = cartEntries?.map(cart => ({
+    [cart?.product?.name]: cart?.sum_insured,
+  }));
+
   const getTermConditionData = async (company_id, callback = () => {}) => {
     try {
       const { data } = await getTermConditions(company_id);
@@ -417,6 +421,7 @@ const ProposalSummary = () => {
             mobile
             insurersFor={cart.map(cart => cart?.product?.company?.alias)}
             stage="PROPOSAL_SUMMARY"
+            sum_insured={sum_insured}
           />
         </MobileHeader>
 
@@ -473,6 +478,7 @@ const ProposalSummary = () => {
                       cart => cart?.product?.company?.alias,
                     )}
                     stage="PROPOSAL_SUMMARY"
+                    sum_insured={sum_insured}
                   />
                 </div>
               </div>

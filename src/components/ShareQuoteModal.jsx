@@ -90,6 +90,7 @@ const ShareQuoteModal = ({
   stage = "",
   hideBtn,
   label,
+  sum_insured,
   shareQuotes = false,
   insurersFor = [],
 }) => {
@@ -243,6 +244,7 @@ const ShareQuoteModal = ({
               emailStatus={emailStatus}
               setEmailStatus={setlEmaiStatus}
               stage={stage}
+              sum_insured={sum_insured}
               setIsSending={setIsSending}
               setErrorMsg={setErrorMsg}
               isSending={isSending}
@@ -533,6 +535,7 @@ function ShareStep2({
   errorMsg,
   hide,
   insurers,
+  sum_insured,
 }) {
   const details4autopopulate = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails,
@@ -689,6 +692,7 @@ function ShareStep2({
               sms: "",
               image_to_send: imageSend ? imageSend : undefined,
               insurers,
+              sum_insured,
             });
           }}
           // loader={isSending && !emailStatus?.message}
@@ -756,6 +760,7 @@ function ShareStep2({
                 email: "",
                 whatsapp: "",
                 sms: smsNo,
+                sum_insured,
                 insurers,
               });
           }}

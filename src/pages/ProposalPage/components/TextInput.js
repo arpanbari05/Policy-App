@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowPlanNotAvail } from "../ProposalSections/ProposalSections.slice";
+import { number2text } from "../../../utils/helper";
 const TextInput = ({
   name,
   label,
@@ -305,13 +306,21 @@ const TextInput = ({
         {checkValidation?.required && label ? `${label}*` : label || ""}
       </Label>
 
-      <p className="formbuilder__error">{error}</p>
+      {error && <p className="formbuilder__error">{error}</p>}
+      {name === "annIncome" && fallbackValue && (
+        <Income>{number2text(fallbackValue)?.toLowerCase()}</Income>
+      )}
     </InputContainer>
   );
 };
 
 export default TextInput;
 
+const Income = styled.div`
+  font-size: 12px;
+  margin-top: 2px;
+  text-transform: capitalize;
+`;
 const InputContainer = styled.div`
   margin-top: 0.3rem !important;
   position: relative;

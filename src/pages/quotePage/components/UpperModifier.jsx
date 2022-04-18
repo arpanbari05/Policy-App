@@ -10,11 +10,13 @@ import useComparePage from "../../../pages/ComparePage/useComparePage";
 import useQuotesPage from "../useQuotes";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import useFilters from "../components/filters/useFilters";
 
 function UpperModifier() {
   const { colors } = useTheme();
   const { emailStatus } = useComparePage();
   const { imageSendQuote: sendQuote } = useQuotesPage();
+  const { getSelectedFilter } = useFilters();
 
   return (
     <div
@@ -43,6 +45,7 @@ function UpperModifier() {
               emailStatus={emailStatus}
               stage="QUOTE"
               label="Share Quote"
+              sum_insured={getSelectedFilter("cover")?.code}
             />
           </div>
         </div>
