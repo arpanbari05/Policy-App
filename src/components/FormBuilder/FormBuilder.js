@@ -230,7 +230,7 @@ const FormBuilder = ({
                             {item.map(innerItem => {
                               const Comp = components[innerItem.type];
                               if (!Comp) {
-                                alert("Type :" + innerItem.type + "Not found");
+                                // alert("Type :" + innerItem.type + "Not found");
                                 return <></>;
                               } else
                                 return (
@@ -446,7 +446,7 @@ const FormBuilder = ({
               });
             }
             if (!Comp) {
-              alert("Type :" + item.type + "Not found");
+              // alert("Type :" + item.type + "Not found");
               return <></>;
             }
             return (

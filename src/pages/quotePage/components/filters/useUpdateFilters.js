@@ -32,7 +32,7 @@ function useUpdateFilters() {
       const reduxGroupMatch = reduxGroup?.find(reGrp => {
         return reGrp?.members?.some(mem => group?.members?.includes(mem));
       });
-      if (reduxGroupMatch) {
+      if (reduxGroupMatch && +groupCode === group?.id) {
         return {
           ...group,
           extras: previousFilters
@@ -41,7 +41,7 @@ function useUpdateFilters() {
           plan_type:
             filters?.plantype?.code || reduxGroupMatch?.extras?.plan_type,
         };
-      }
+      } else return { ...group };
     });
     updateGroup({
       groupCode,
@@ -55,7 +55,7 @@ function useUpdateFilters() {
           previousFilters?.tenure?.code ||
           getSelectedFilter("tenure")?.code,
       },
-      plan_type: filters?.plantype?.code,
+      plan_type: filters?.plantype?.code || getSelectedFilter("plantype")?.code,
     });
     localStorage.setItem("groups", JSON.stringify(groups));
   }
@@ -65,7 +65,7 @@ function useUpdateFilters() {
       const reduxGroupMatch = reduxGroup?.find(reGrp => {
         return reGrp?.members?.some(mem => group?.members?.includes(mem));
       });
-      if (reduxGroupMatch) {
+      if (reduxGroupMatch && +groupCode === group?.id) {
         return {
           ...group,
           extras: {
@@ -79,7 +79,7 @@ function useUpdateFilters() {
               ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
               : "F",
         };
-      }
+      } else return { ...group };
     });
     updateGroup({
       groupCode,
