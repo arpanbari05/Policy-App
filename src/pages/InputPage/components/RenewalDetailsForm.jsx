@@ -41,7 +41,7 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
 
   const [createEnquiryQuery] = useCreateEnquiry();
 
-  const [updateRenewalMutation, { isLoading, data, isSuccess }] =
+  const [updateRenewalMutation, { isLoading, data, isSuccess, error }] =
     useUpdateRenewalQueryMutation();
 
   const renewalEnquiriesLoading = isLoading;
@@ -214,6 +214,18 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
                 dateValue={dobDateValue}
                 setDateValue={setDobDateValue}
               />
+            </div>
+          )}
+
+          {error?.data?.message && (
+            <div>
+              <ErrorMessage
+                css={`
+                  margin-bottom: unset;
+                `}
+              >
+                {error?.data?.message}
+              </ErrorMessage>
             </div>
           )}
 
