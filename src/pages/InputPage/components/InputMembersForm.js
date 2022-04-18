@@ -194,6 +194,7 @@ function InputMembersForm({ posContent, ...props }) {
         />
       </div>
       <InputFormCta
+        disabled={!noOfSelectedMembers}
         backLink={`/input/basic-details`}
         onContinueClick={handleSubmit}
         loader={updateEnquiryQuery.isLoading}
