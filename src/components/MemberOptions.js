@@ -260,8 +260,32 @@ function MemberOption({
 
   const selectedAge = member.age ? member.age.display_name : "Select Age";
 
+  // console.log("memberData", member);
+
+  // dropDownAgeList validation
+  const validateAgeList = (
+    validateSelfFunc,
+    currentMember,
+    currentSelectedMember,
+    userGender,
+    currentUserAgeList,
+  ) => {
+    if (!validateSelfFunc(currentSelectedMember, currentMember)) {
+      return userGender === "F" && currentMember.code === "spouse"
+        ? currentUserAgeList.slice(3, currentUserAgeList.length)
+        : currentUserAgeList;
+    } else {
+      return currentUserAgeList.slice(3, currentUserAgeList.length);
+    }
+  };
+
   const validateSpouse = (selectedMembers, member) => {
-    if (member.code === "spouse" && gender === "M") {
+    if (
+      gender === "M" &&
+      (member.code === "spouse" ||
+        member.code === "mother_in_law" ||
+        member.code === "father_in_law")
+    ) {
       return (
         selectedMembers[0]?.code === "self" &&
         selectedMembers[0]?.age?.code < 21
@@ -381,13 +405,13 @@ function MemberOption({
       {children}
       <div>
         <RoundDD
-          list={
-            !validateSelf(selectedMembers, member)
-              ? gender === "F" && member.code === "spouse"
-                ? ageList.slice(3, ageList.length)
-                : ageList
-              : ageList.slice(3, ageList.length)
-          }
+          list={validateAgeList(
+            validateSelf,
+            member,
+            selectedMembers,
+            gender,
+            ageList,
+          )}
           type="dropdown"
           selected={selectedAge}
           handleChange={handleAgeChange}
