@@ -23,11 +23,12 @@ const InsuredDetails = ({
   name,
   defaultValue,
   setActivateLoader,
-  setBlockTabSwitch
+  setBlockTabSwitch,
 }) => {
-  
-const [medicalContinueClick,setMedicalContinueClick] = useState(false)
-  const { proposalData,showErrorPopup } = useSelector(state => state.proposalPage);
+  const [medicalContinueClick, setMedicalContinueClick] = useState(false);
+  const { proposalData, showErrorPopup } = useSelector(
+    state => state.proposalPage,
+  );
 
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -55,7 +56,7 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
     setErrors,
     errors,
     equriesData,
-    show, 
+    show,
     setShow,
   } = useProposalSections({
     setActive,
@@ -64,14 +65,13 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
     partialLength: Object.keys(schema).length,
     setActivateLoader,
     schema,
-    setBlockTabSwitch
+    setBlockTabSwitch,
   });
 
-  console.log("sdgvsjvkd",isValid,name,name === "Insured Details" && isValid.includes(false),isValid.indexOf(false))
   useEffect(() => {
-    console.log("wvwbhw",isValid)
-    if(name === "Insured Details" && isValid.includes(false)) setShow(isValid.indexOf(false))
-      },[...isValid])
+    if (name === "Insured Details" && isValid.includes(false))
+      setShow(isValid.indexOf(false));
+  }, [...isValid]);
 
   const { getPanelDescContent } = useInsuredDetails(
     name,
@@ -125,14 +125,16 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
   const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
-    if( 
+    if (
       medicalContinueClick &&
       !isValid.includes(undefined) &&
-    !isValid.includes(false) && !showErrorPopup?.show){
+      !isValid.includes(false) &&
+      !showErrorPopup?.show
+    ) {
       triggerSaveForm({ sendedVal: values, formName: name });
       setMedicalContinueClick(false);
     }
-  },[isValid,medicalContinueClick,showErrorPopup])
+  }, [isValid, medicalContinueClick, showErrorPopup]);
 
   return (
     <div>
@@ -278,18 +280,15 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
             });
           }}
         />
-        {console.log("Svsfods",values)}
-        
+        {console.log("Svsfods", values)}
+
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
             // setShow();
             setSubmit("Medical");
-            if (
-              name === "Medical Details" &&
-              canProceed?.canProceed 
-            ) {
+            if (name === "Medical Details" && canProceed?.canProceed) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
                 frontBootData?.settings?.medical_nstp_declaration_message &&
@@ -301,8 +300,8 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
                       ?.medical_nstp_declaration_message,
                   }),
                 );
-                setMedicalContinueClick(true);
-             
+              setMedicalContinueClick(true);
+
               // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
@@ -325,7 +324,9 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}
             title={
-              name === "Medical Details"
+              revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart
+                ? "Plan Unavailable due to change in date of birth"
+                : name === "Medical Details"
                 ? `Hi ${firstName}, Revised Premium due to change in date of birth.`
                 : `Hi ${firstName}, Revised Premium due to change in medical conditions.`
             }

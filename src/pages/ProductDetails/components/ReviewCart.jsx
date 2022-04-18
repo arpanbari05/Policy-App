@@ -591,6 +591,7 @@ export const RevisedPremiumPopup = ({
   return (
     <Modal
       show
+      onHide={isProductDetailsPage ? () => {} : onClose}
       css={`
         & .modal-dialog {
           max-width: 600px;
@@ -820,6 +821,19 @@ const RevisedPopupFooter = ({ revisedPremiumPopupUtilityObject, onClose }) => {
                 onClick={editAgeHandler}
               >
                 Edit Age
+              </Button>
+            </DetailsWrap>
+          )}
+          {!isProductDetailsPage && (
+            <DetailsWrap>
+              <Button
+                className="w-100"
+                css={`
+                  border-radius: 9px;
+                `}
+                onClick={onClose}
+              >
+                Continue
               </Button>
             </DetailsWrap>
           )}
