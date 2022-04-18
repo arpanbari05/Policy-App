@@ -22,7 +22,7 @@ const ProposerDetails = ({
   setProposerDactive,
   setActivateLoader,
   setBlockTabSwitch,
-  listOfForms
+  listOfForms,
 }) => {
   const {
     values,
@@ -34,11 +34,14 @@ const ProposerDetails = ({
     revisedPremiumPopupUtilityObject,
     setErrorInField,
     setErrors,
-  } = useProposalSections({ setActive, name, setActivateLoader,setBlockTabSwitch,listOfForms });
+  } = useProposalSections({
+    setActive,
+    name,
+    setActivateLoader,
+    setBlockTabSwitch,
+    listOfForms,
+  });
 
-
-
-  
   const proposelSelectedDOBRedux = useSelector(
     ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob,
   );
@@ -73,7 +76,7 @@ const ProposerDetails = ({
         mobile,
         email,
         dob: proposelSelectedDOBRedux || estimatedProposerDOB,
-        title:gender === "M"?"mr":""
+        title: gender === "M" ? "mr" : "",
       };
 
       schema.forEach(item => {
@@ -135,7 +138,11 @@ const ProposerDetails = ({
           <RevisedPremiumPopup
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}
-            title={`Hi ${firstName}, Revised Premium due to change in date of birth.`}
+            title={
+              revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart
+                ? "Plan Unavailable due to change in date of birth"
+                : `Hi ${firstName}, Revised Premium due to change in date of birth.`
+            }
           />
         )}
       </div>
