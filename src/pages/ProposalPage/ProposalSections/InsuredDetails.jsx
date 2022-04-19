@@ -125,6 +125,7 @@ const InsuredDetails = ({
   const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
+    console.log("sdbjhdkgb",medicalContinueClick)
     if (
       medicalContinueClick &&
       !isValid.includes(undefined) &&
@@ -298,6 +299,7 @@ const InsuredDetails = ({
             name === "Medical Details" && checkCanProceed();
             // setShow();
             setSubmit("Medical");
+            console.log("ewrgnjkrsv",canProceed)
             if (name === "Medical Details" && canProceed?.canProceed) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
