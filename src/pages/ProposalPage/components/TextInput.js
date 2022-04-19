@@ -309,18 +309,13 @@ const TextInput = ({
         error={!isFocused ? error : null}
         defaultValue={defaultValue}
       />
-      {value && label.toLowerCase().includes("income") && (
-        <IncomeScreen>{price_in_words(value)}</IncomeScreen>
-      )}
-
-
       <Label>
         {checkValidation?.required && label ? `${label}*` : label || ""}
       </Label>
 
       {error && <p className="formbuilder__error">{error}</p>}
-      {name === "annIncome" && fallbackValue && (
-        <Income>{number2text(fallbackValue)?.toLowerCase()}</Income>
+      {name === "annIncome" && value && (
+        <Income>{number2text(value)?.toLowerCase()}</Income>
       )}
     </InputContainer>
   );
