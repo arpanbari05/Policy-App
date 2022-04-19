@@ -107,7 +107,7 @@ const DateComp = ({
           showYearDropdown
           popperPlacement="bottom-end"
           yearDropdownItemNumber={100}
-          autocomplete="off"
+          autoComplete="off"
           scrollableYearDropdown={true}
           dateFormat="dd-MM-yyyy"
           selected={

@@ -17,6 +17,7 @@ import {
   getProposalData,
   setShowErrorPopup,
   setFailedBmiData,
+  setInsuredDetailsResponse
 } from "./ProposalSections.slice";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useRevisedPremiumModal,useCart } from "../../../customHooks";
@@ -271,7 +272,10 @@ const useProposalSections = ({
           ({ prevProposalData, updatedProposalData, responseData}) => {
             callback();
             revisedPremiumPopupUtilityObject?.getUpdatedCart();
-            
+            console.log("dbdhfbjksfvb",responseData.data)
+            if(responseData?.data){
+              dispatch(setInsuredDetailsResponse(responseData.data));
+            }
             if (responseData?.failed_bmi?.health) {
               dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
               dispatch(

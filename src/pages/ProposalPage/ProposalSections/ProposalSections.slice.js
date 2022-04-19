@@ -26,6 +26,7 @@ const proposal = createSlice({
     noForAllChecked: false,
     policyLoading: true,
     failedBmiData: false,
+    insuredDetailsResponse:{},
     showErrorPopup: {
       show: false,
       head: "",
@@ -61,6 +62,9 @@ const proposal = createSlice({
     },
     setIsLoading: (state, { payload }) => {
       state.isLoading = payload;
+    },
+    setInsuredDetailsResponse:(state,{payload}) => {
+      state.insuredDetailsResponse = payload;
     },
     setSelectedIcs: (state, { payload }) => {
       state.isLoading = payload;
@@ -128,6 +132,7 @@ export const {
   pushLoadingStack,
   setCanSendSummaryPdf,
   setIsPopupOn,
+  setInsuredDetailsResponse
 } = proposal.actions;
 const ls = new SecureLS();
 
