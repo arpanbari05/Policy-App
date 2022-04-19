@@ -2,6 +2,8 @@ import { FaChevronDown } from "react-icons/fa";
 import "styled-components/macro";
 import { useTheme, useToggle } from "../../../../customHooks";
 import React, { useRef } from "react";
+import { IoRadioButtonOn } from "react-icons/io5";
+import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 
 export function FilterHead({ label, children, onClick, ...props }) {
   const handleClick = () => onClick && onClick();
@@ -73,6 +75,7 @@ export function Filter({ label, children, ...props }) {
 
 export function FilterOption({ option, checked, onChange, ...props }) {
   const target = useRef(null);
+  const { colors } = useTheme();
   const handleChange = evt => {
     if (evt.target.checked) onChange && onChange(option);
   };
@@ -92,11 +95,17 @@ export function FilterOption({ option, checked, onChange, ...props }) {
       <input
         ref={target}
         type="radio"
+        className="visually-hidden"
         id={option.code}
         name="select_premium"
         checked={checked}
         onChange={handleChange}
       />
+      {checked ? (
+        <IoRadioButtonOn size={25} color={colors.primary_color} />
+      ) : (
+        <RiCheckboxBlankCircleLine size={25} color="#aaa" />
+      )}
     </li>
   );
 }

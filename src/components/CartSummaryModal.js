@@ -206,6 +206,10 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
   const dispatch = useDispatch();
   const { data, isLoading, isUninitialized } = useGetCartQuery();
 
+  const {
+    colors: { primary_color, primary_shade },
+  } = useTheme();
+
   const { deleteQuote } = useQuote();
 
   const history = useHistory();
@@ -267,8 +271,8 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
             justify-content: center;
             align-items: center;
             width: 120px;
-            background: rgb(235, 245, 255);
-            color: #0d6efd;
+            background: ${primary_shade};
+            color: ${primary_color};
             border: none;
             @media (max-width: 400px) {
               font-size: 10px;
@@ -301,8 +305,8 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
         justify-content: space-between;
         width: 1.67em;
         height: 1.67em;
-        color: #168cff;
-        background: #eff7ff;
+        color: ${primary_color};
+        background: ${primary_shade};
         display: flex;
         font-size: 22px;
         align-items: center;
