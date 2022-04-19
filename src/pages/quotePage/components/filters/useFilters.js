@@ -176,9 +176,11 @@ function useFilters() {
   const selectedBasePlanType = getSelectedFilter("baseplantype");
   const selectedInsurers = getSelectedFilter("insurers");
   const selectedDeductible = getSelectedFilter("deductible");
+  const selectedPremium = getSelectedFilter("premium");
 
   const isFiltersDefault =
     selectedCover?.code === cover &&
+    Boolean(!selectedPremium) &&
     (selectedPlanType?.code === defaultPolicyTypeFilter ||
       selectedPlanType?.code === "I") &&
     selectedBasePlanType?.code === baseplantype &&

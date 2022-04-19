@@ -111,7 +111,7 @@ export function getAllSelectedFilters(filters, filterSelector) {
 }
 
 export function FilterModal({ onClose, show }) {
-  const { boxShadows } = useTheme();
+  const { boxShadows, colors } = useTheme();
 
   const dispatch = useDispatch();
 
@@ -124,7 +124,11 @@ export function FilterModal({ onClose, show }) {
       plantypes,
       morefilters,
       deductibles,
-      settings: { pos_nonpos_switch_message, restrict_posp_quotes_after_limit },
+      settings: {
+        pos_nonpos_switch_message,
+        restrict_posp_quotes_after_limit,
+        multiindividual_visibilty,
+      },
     },
     journeyType,
   } = useFrontendBoot();
@@ -199,7 +203,7 @@ export function FilterModal({ onClose, show }) {
           className="d-flex min-vh-100"
           css={`
             & .nav-link.active {
-              background-image: linear-gradient(90deg, #0a87ff40, #fff);
+              background-image: linear-gradient(90deg, ${colors.primary_shade}, #fff);
             }
             margin-bottom: 3em;
             padding-bottom: 1.5rem;
@@ -221,7 +225,8 @@ export function FilterModal({ onClose, show }) {
             )}
             <FilterNavItem eventKey={"tenure"}>Multiyear Options</FilterNavItem>
             {selectedPolicyTypeFilter.display_name !== "Individual" &&
-            journeyType !== "top_up" ? (
+            journeyType !== "top_up" &&
+            +multiindividual_visibilty !== 0 ? (
               <FilterNavItem eventKey={"plantype"}>Policy type</FilterNavItem>
             ) : null}
             <FilterNavItem eventKey={"insurers"}>Insurers</FilterNavItem>
@@ -263,10 +268,12 @@ export function FilterModal({ onClose, show }) {
               code="tenure"
               options={tenures}
             />
-            <RenderFilterOptions
-              code="plantype"
-              options={plantypes.filter(plantype => plantype.code !== "I")}
-            />
+            {+multiindividual_visibilty !== 0 && (
+              <RenderFilterOptions
+                code="plantype"
+                options={plantypes.filter(plantype => plantype.code !== "I")}
+              />
+            )}
             <Tab.Pane eventKey="insurers">
               <InsurersFilter
                 code="insurers"

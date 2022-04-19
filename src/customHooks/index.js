@@ -1194,7 +1194,7 @@ export function useGetQuotes(queryConfig = {}) {
   );
 
   const isLoading =
-    insurersToFetch?.length <= 2
+    insurersToFetch?.length <= 4
       ? data?.length < insurersToFetch?.length
       : data?.length < insurersToFetch?.length - 2;
 
