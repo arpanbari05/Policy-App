@@ -51,10 +51,13 @@ console.log("sgvksdgv",defaultValue)
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed[item] = checkCanProceed[item]?checkCanProceed[item]:[];
         }
-        Object.keys(values[item]).length && Object.keys(values[item]).forEach(el => {
-          
-          if(values[item][el] && (!values[item][el][`is${el}`] || !values[item][el].isValid)) checkCanProceed[item] = Array.isArray(checkCanProceed[item])?[...checkCanProceed[item],el]:[el];
 
+        Object.keys(values[item]).length && Object.keys(values[item]).forEach(el => {
+          let schemaOfEl = schema[key].find(({name}) => name === el)
+          console.log("ehdhdkfgl",schemaOfEl)
+          if(schemaOfEl){
+            if(values[item][el] && ((!values[item][el][`is${el}`] && !schemaOfEl?.additionalOptions?.disable_Toggle) || !values[item][el].isValid)) checkCanProceed[item] = Array.isArray(checkCanProceed[item])?[...checkCanProceed[item],el]:[el];
+          }
         })
       });
 
@@ -146,13 +149,14 @@ if(defaultValue && name === "Medical Details"){
           let tempGroupVal = {};
           schema[key].forEach(el => {
            if (!Array.isArray(el)) {
-            if(el.additionalOptions.notAllowedIf === "N" || el.additionalOptions.disable_Toggle) {
+            if(el.additionalOptions.notAllowedIf === "N") {
+          
               tempGroupVal[el.name] = {
                 [`is${el.name}`]: "Y",
                 members: {},
                 isValid: true,
               };
-            }else{
+            }else if(!el.additionalOptions.disable_Toggle){
               tempGroupVal[el.name] = {
                 [`is${el.name}`]: "N",
                 members: {},
@@ -162,7 +166,10 @@ if(defaultValue && name === "Medical Details"){
               
             }
           });
-          customizedVal[key] = tempGroupVal;
+          customizedVal[key] = {
+            ...values?.[key],
+            ...tempGroupVal,
+          };
         });
 
       if (Object.keys(customizedVal).length)

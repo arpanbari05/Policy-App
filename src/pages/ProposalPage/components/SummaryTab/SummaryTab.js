@@ -20,7 +20,7 @@ const convertToFt = value => {
 
 const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
   const filterUnderscore = str =>
-    str.includes("_") ? str.replaceAll("_", " ") : str;
+    str?.includes("_") ? str?.split("_").join(" ") : str;
 
   const modifyMembersName = name => {
     let EditedName = "";
@@ -33,7 +33,8 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
         .map(member => member.code)
         .filter(member => name.includes(member))
         .join(", ")
-        .replaceAll("_", " ");
+        .split("_")
+        .join(" ");
     } else {
       EditedName = name;
     }

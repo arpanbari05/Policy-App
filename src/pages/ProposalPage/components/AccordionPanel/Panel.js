@@ -28,7 +28,12 @@ const Panel = ({
   if (formName === "Insured Details" && title.includes("_")) {
     EditedName = title.replace(/_/g, " ");
   } else if (formName !== "Insured Details" && title.includes("_")) {
-    EditedName = allMembers.map(member => member.code).filter(member => title.includes(member)).join(", ").replaceAll("_"," ");
+    EditedName = allMembers
+      .map(member => member.code)
+      .filter(member => title.includes(member))
+      .join(", ")
+      .split("_")
+      .join(" ");
   } else {
     EditedName = title;
   }

@@ -226,7 +226,7 @@ function BuyNowModalProduct({
               background: ${SecondaryColor};
             `}
           ></div>
-          {members.join(" + ")?.replaceAll("_", "-")}
+          {members.join(" + ")?.split("_").join("-")}
         </h5>
 
         {product ? (

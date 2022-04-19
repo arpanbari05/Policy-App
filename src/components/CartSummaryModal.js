@@ -188,7 +188,7 @@ function GroupCard({ group, closeModal, allClose, selectedRiders, ...props }) {
               background: ${colors.secondary_color};
             `}
           ></div>
-          {members.join(" + ")?.replaceAll("_", "-")}
+          {members.join(" + ")?.split("_").join("-")}
         </h5>
 
         <ToggleProductCTA

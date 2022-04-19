@@ -552,7 +552,7 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
             }
           `}
           dangerouslySetInnerHTML={{
-            __html: thankYouBanner?.replaceAll("₹X", total_premium),
+            __html: thankYouBanner?.split("₹X").join(total_premium),
           }}
         ></div>
       )}
@@ -873,7 +873,7 @@ const MobileBanner = ({
           }
         `}
         dangerouslySetInnerHTML={{
-          __html: thankYouBanner?.replaceAll("₹X", total_premium),
+          __html: thankYouBanner?.split("₹X").join(total_premium),
         }}
       ></div>
     );
