@@ -511,7 +511,7 @@ export const validationIndex = {
           }else if (
             value[4] &&
             // pancard number's 5th char must be equal to the first char of last name of the user
-            !values.name[values.name.lastIndexOf(" ") + 1] === "." &&
+            !values.name[values.name.lastIndexOf(" ") + 1] !== "." &&
             values.name[values.name.lastIndexOf(" ") + 1].toUpperCase() !== value[4]
           ) {
             return {
