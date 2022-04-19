@@ -635,41 +635,63 @@ function QuoteCard({
   );
 }
 
-function QuoteCardSelect({ ...props }) {
+export function QuoteCardSelect({ color, fontSize, ...props }) {
+  const { colors } = useTheme();
   return (
     <Select
       isSearchable={false}
+      theme={theme => ({
+        ...theme,
+        colors: {
+          ...theme.colors,
+          neutral80: color && color,
+          primary: colors.primary_color,
+          primary25: colors.primary_shade,
+        },
+      })}
       components={{ DropdownIndicator: FaChevronDown }}
       styles={{
         option: provided => ({
           ...provided,
-          fontSize: "12px",
+          fontSize: fontSize || "12px",
           fontWeight: "bold",
           padding: "7px 7px !important",
           textAlign: "center !important",
+          textAlign: "left",
+        }),
+        menuList: provided => ({
+          ...provided,
+          maxHeight: 200,
+          "::-webkit-scrollbar": {
+            width: "4px",
+            height: "0px",
+          },
         }),
         menu: provided => ({
           ...provided,
-          fontSize: "13px",
+          fontSize: fontSize || "13px",
           fontWeight: "bold",
+          textAlign: "left",
+          overflow: "auto",
         }),
         valueContainer: provided => ({
           ...provided,
           padding: 0,
-          fontSize: "13px",
+          fontSize: fontSize || "13px",
           fontWeight: "bold",
+          maxHeight: 200,
         }),
         indicatorSeparator: () => ({ display: "none" }),
         dropdownIndicator: provided => ({
           ...provided,
           padding: 0,
           color: "black",
-          fontSize: "13px",
+          fontSize: fontSize || "13px",
           fontWeight: "bold",
         }),
         control: provided => ({
           ...provided,
-          fontSize: "13px",
+          fontSize: fontSize || "13px",
           fontWeight: "bold",
           minHeight: "initial",
           outline: "none",

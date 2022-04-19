@@ -97,7 +97,6 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
       <Select
         styles={selectStyles}
         placeholder="Share Quotes"
-        ope
         value={(shareType.value && shareType) || SHARE_OPTIONS[0]}
         options={SHARE_OPTIONS}
         onChange={onChangeHandler}
