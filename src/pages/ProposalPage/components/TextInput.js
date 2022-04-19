@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+// import millify from "millify";
+import converter from 'number-to-words';
 import { setShowPlanNotAvail } from "../ProposalSections/ProposalSections.slice";
+import {price_in_words} from "../../../utils/amountToWords";
+
 const TextInput = ({
   name,
   label,
@@ -22,11 +26,17 @@ const TextInput = ({
   textTransform,
   onInput,
   readOnly,
+  triggerValidation = () => {},
   innerMember,
   checkAge,
   defaultValue,
   onFocus,
 }) => {
+  useEffect(() => {
+    if(name === "name" && value){
+      triggerValidation(name)
+    }
+  },[value])
   const dispatch = useDispatch();
   const age =
     checkAge &&
@@ -300,6 +310,10 @@ const TextInput = ({
         error={!isFocused ? error : null}
         defaultValue={defaultValue}
       />
+      {value && label.toLowerCase().includes("income") && (
+        <IncomeScreen>{price_in_words(value)}</IncomeScreen>
+      )}
+
 
       <Label>
         {checkValidation?.required && label ? `${label}*` : label || ""}
@@ -311,6 +325,23 @@ const TextInput = ({
 };
 
 export default TextInput;
+
+const IncomeScreen = styled.div`
+  // width: 100%;
+  // position: absolute;
+  // height: 100%;
+  // top: 0px;
+  // // background-color: red;
+  // display: flex;
+  // align-items: center;
+  // left: 0px;
+  // border: solid 1px #ced4da;
+  font-size: 14px;
+  // color: #939393;
+  // background-color: #fff;
+  text-transform: capitalize;
+  padding: 0 25px;
+`;
 
 const InputContainer = styled.div`
   margin-top: 0.3rem !important;

@@ -594,6 +594,7 @@ const FormBuilder = ({
                           checkAllow(item.allow, e, "press");
                         }
                       }}
+                      triggerValidation={triggerValidation}
                       options={
                         item.additionalOptions &&
                         item.additionalOptions.customOptions &&

@@ -150,7 +150,7 @@ if(!isMandatoryMQ){
  
 
     
-  }, [boolean,Object.keys(membersStatus).length, customShowMembers]);
+  }, [boolean,Object.keys(membersStatus).filter(m => membersStatus[m]).length, customShowMembers]);
 
   useEffect(() => {
     if(isMandatoryMQ){
