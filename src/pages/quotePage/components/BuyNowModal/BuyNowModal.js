@@ -180,7 +180,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               background: #2cd44a;
             `}
           ></div>
-          {members.join(" + ")?.replaceAll("_", "-")}
+          {members.join(" + ")?.split("_").join("-")}
         </h5>
 
         {product ? (
