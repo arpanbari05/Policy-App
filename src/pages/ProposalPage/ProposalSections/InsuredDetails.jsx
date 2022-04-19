@@ -37,7 +37,7 @@ const InsuredDetails = ({
   const proposalDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
-  const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
+  const { insuredMembers: membersDataFromGreetingPage, data: frontBootData, renewal_policy_status } =
     useFrontendBoot();
   // const [checking]
   const { getGroupMembers, groups } = useMembers();
@@ -152,7 +152,17 @@ const InsuredDetails = ({
             show={show === index}
             onClick={() => setShow(prev => (prev === index ? false : index))}
           >
+          
             <div>
+            {console.log("shvgdjf",renewal_policy_status?.medicalQuestionsReadOnly)}
+            {
+              renewal_policy_status?.medicalQuestionsReadOnly?(
+                <DisableScreen>
+          
+                </DisableScreen>
+              ):(<></>)
+            }
+            
               {name === "Medical Details" && (
                 <div
                   css={`
@@ -338,3 +348,28 @@ const InsuredDetails = ({
 };
 
 export default InsuredDetails;
+
+const DisableScreen = styled.div`
+position: absolute;
+width: 100%;
+height: 100%;
+background-color: white;
+top: -12px;
+left: 0px;
+z-index: 99;
+opacity: 0.5;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor: not-allowed;
+.display_onHover{
+  display: none;
+  font-size: 20px !important;
+  
+}
+:hover{
+ .display_onHover{
+  display: block;
+ }
+}
+`;

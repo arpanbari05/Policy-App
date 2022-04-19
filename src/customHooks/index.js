@@ -238,6 +238,7 @@ export function useFrontendBoot() {
     settings: data?.settings,
     insuredMembers: enquiryData?.data?.input?.members,
     groups: enquiryData?.data?.groups,
+    renewal_policy_status: enquiryData?.data?.renewal_policy,
   };
 }
 

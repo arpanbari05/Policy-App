@@ -146,13 +146,14 @@ if(defaultValue && name === "Medical Details"){
           let tempGroupVal = {};
           schema[key].forEach(el => {
            if (!Array.isArray(el)) {
-            if(el.additionalOptions.notAllowedIf === "N" || el.additionalOptions.disable_Toggle) {
+            if(el.additionalOptions.notAllowedIf === "N") {
+          
               tempGroupVal[el.name] = {
                 [`is${el.name}`]: "Y",
                 members: {},
                 isValid: true,
               };
-            }else{
+            }else if(!el.additionalOptions.disable_Toggle){
               tempGroupVal[el.name] = {
                 [`is${el.name}`]: "N",
                 members: {},
@@ -162,7 +163,10 @@ if(defaultValue && name === "Medical Details"){
               
             }
           });
-          customizedVal[key] = tempGroupVal;
+          customizedVal[key] = {
+            ...values?.[key],
+            ...tempGroupVal,
+          };
         });
 
       if (Object.keys(customizedVal).length)

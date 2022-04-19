@@ -243,6 +243,15 @@ export const checkAllow = (type, event, eventType) => {
     });
     event.target.value = output.join("").substr(0, 14);
   }
+  if(type === "month" && event.which === 8) {
+    var val = event.target.value;
+    console.log(val);
+    if(val.length == 3 || val.length == 6) {
+      event.target.value = val.slice(0, val.length-1);
+        console.log(val)
+        // this.setState({value: val})
+    }
+  }
   if (type === "month" && eventType === "input") {
     event.preventDefault();
     let input = event.target.value;
