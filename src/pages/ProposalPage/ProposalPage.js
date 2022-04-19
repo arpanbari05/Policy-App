@@ -42,8 +42,8 @@ import { mobile } from "../../utils/mediaQueries";
 /* ===============================test================================= */
 const ProposalPage = () => {
   const [prepairingPtoposal, setPrepairingProposal] = useState(false);
-let blockTabSwitch = false;
-const setBlockTabSwitch = (val) => blockTabSwitch = val
+  let blockTabSwitch = false;
+  const setBlockTabSwitch = val => (blockTabSwitch = val);
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -59,6 +59,10 @@ const setBlockTabSwitch = (val) => blockTabSwitch = val
   const [activateLoader, setActivateLoader] = useState(false);
 
   let { cartEntries } = useCart();
+
+  const sum_insured = cartEntries?.map(cart => ({
+    [cart?.product?.name]: cart?.sum_insured,
+  }));
 
   const [listOfForms, setListOfForms] = useState([]);
 
@@ -148,7 +152,7 @@ const setBlockTabSwitch = (val) => blockTabSwitch = val
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-console.log("Sgbsfnjl",active)
+    console.log("Sgbsfnjl", active);
     if (activateLoader) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
@@ -284,7 +288,9 @@ console.log("Sgbsfnjl",active)
                 align-items: center;
               `}
               onClick={() => {
-                !blockTabSwitch && proposalData["Proposer Details"] && setActive(1);
+                !blockTabSwitch &&
+                  proposalData["Proposer Details"] &&
+                  setActive(1);
               }}
             >
               <MainTitle primaryColor={PrimaryColor}>Insured Details</MainTitle>
@@ -340,7 +346,8 @@ console.log("Sgbsfnjl",active)
               `}
               onClick={() => {
                 proposalData["Insured Details"] &&
-                !blockTabSwitch && !bmiFailBlock &&
+                  !blockTabSwitch &&
+                  !bmiFailBlock &&
                   setActive(2);
               }}
             >
@@ -396,7 +403,9 @@ console.log("Sgbsfnjl",active)
                 align-items: center;
               `}
               onClick={() => {
-                !blockTabSwitch && proposalData["Medical Details"] && setActive(3);
+                !blockTabSwitch &&
+                  proposalData["Medical Details"] &&
+                  setActive(3);
               }}
             >
               <MainTitle primaryColor={PrimaryColor}>Nominee Details</MainTitle>
@@ -458,6 +467,7 @@ console.log("Sgbsfnjl",active)
             mobile
             insurersFor={cartEntries.map(cart => cart?.product?.company?.alias)}
             stage="PROPOSAL"
+            sum_insured={sum_insured}
           />
         </MobileHeader>
 
@@ -519,6 +529,7 @@ console.log("Sgbsfnjl",active)
                     cart => cart?.product?.company?.alias,
                   )}
                   stage="PROPOSAL"
+                  sum_insured={sum_insured}
                 />
               </div>
             </div>

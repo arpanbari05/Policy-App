@@ -41,10 +41,11 @@ const GoBack = ({ productDetails, path, groupCode }) => {
           </span>
         }
         onClick={() => {
-          history.replace({
-            pathname: `${path}/${groupCode}`,
-            search: `enquiryId=${enquiryID}`,
-          });
+          // history.replace({
+          //   pathname: `${path}/${groupCode}`,
+          //   search: `enquiryId=${enquiryID}`,
+          // });
+          history.goBack();
         }}
       ></BackButton>
     </div>

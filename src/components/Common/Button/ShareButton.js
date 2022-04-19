@@ -3,7 +3,10 @@ import { useTheme } from "../../../customHooks";
 import styled from "styled-components";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { setShareType } from "../../../pages/quotePage/quote.slice";
+import {
+  setShareType,
+  setShowSharePopup,
+} from "../../../pages/quotePage/quote.slice";
 import { RiShareForwardFill } from "react-icons/ri";
 import useOutsiteClick from "../../../customHooks/useOutsideClick";
 
@@ -63,6 +66,11 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
   const onChangeHandler = e => {
     dispatch(setShareType(e));
     setShowMenu(false);
+    if (e.value === "quotation_list") {
+      dispatch(setShowSharePopup(false));
+    } else if (e.value === "specific_quotes") {
+      dispatch(setShowSharePopup(true));
+    }
   };
 
   return !shareQuotes ? (

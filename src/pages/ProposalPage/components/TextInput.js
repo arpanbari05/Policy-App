@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import millify from "millify";
 import converter from 'number-to-words';
 import { setShowPlanNotAvail } from "../ProposalSections/ProposalSections.slice";
-import {price_in_words} from "../../../utils/amountToWords";
-
+import { number2text } from "../../../utils/helper";
 const TextInput = ({
   name,
   label,
@@ -319,30 +318,21 @@ const TextInput = ({
         {checkValidation?.required && label ? `${label}*` : label || ""}
       </Label>
 
-      <p className="formbuilder__error">{error}</p>
+      {error && <p className="formbuilder__error">{error}</p>}
+      {name === "annIncome" && fallbackValue && (
+        <Income>{number2text(fallbackValue)?.toLowerCase()}</Income>
+      )}
     </InputContainer>
   );
 };
 
 export default TextInput;
 
-const IncomeScreen = styled.div`
-  // width: 100%;
-  // position: absolute;
-  // height: 100%;
-  // top: 0px;
-  // // background-color: red;
-  // display: flex;
-  // align-items: center;
-  // left: 0px;
-  // border: solid 1px #ced4da;
-  font-size: 14px;
-  // color: #939393;
-  // background-color: #fff;
+const Income = styled.div`
+  font-size: 12px;
+  margin-top: 2px;
   text-transform: capitalize;
-  padding: 0 25px;
 `;
-
 const InputContainer = styled.div`
   margin-top: 0.3rem !important;
   position: relative;

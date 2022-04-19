@@ -270,6 +270,7 @@ function UnavailableMessage({ message = "" }) {
         background-color: ${colors.secondary_shade};
         color: #666;
         font-size: 0.79rem;
+        font-weight: bold;
       `}
     >
       {message}
@@ -582,17 +583,14 @@ export const RevisedPremiumPopup = ({
 }) => {
   const { colors } = useTheme();
 
-  const dispatch = useDispatch();
-
-  const { groupCode: urlGeneratedGroupCode } = useParams(); //? groupCode changes on product details page.
-
   const isProductDetailsPage =
     window.location.pathname.startsWith("/productdetails");
+
+  const { groupCode: urlGeneratedGroupCode } = useParams(); //? groupCode only available on product details page.
 
   return (
     <Modal
       show
-      onHide={onClose}
       css={`
         & .modal-dialog {
           max-width: 600px;
@@ -628,152 +626,219 @@ export const RevisedPremiumPopup = ({
             updatedCartEntry =>
               +updatedCartEntry?.group?.id === +urlGeneratedGroupCode,
           )
-          ?.map(
-            (
-              { group: { id: groupCode }, unavailable_message, premium },
-              index,
-            ) => (
-              <>
-                <div key={index} className="p-3 pt-0 pb-0">
-                  <Members groupCode={groupCode} editable={false} />
-                  <BasePlanDetails
-                    groupCode={groupCode}
-                    isUnavailable={unavailable_message}
-                    revisedPremium
-                  />
-                  {!unavailable_message ? (
-                    <div>
-                      <CartDetailRow
-                        title={
-                          <span
-                            css={`
-                              color: ${colors.secondary_color};
-                            `}
-                          >
-                            Revised Premium
-                          </span>
-                        }
-                        value={amount(+premium)}
-                      />
-                    </div>
-                  ) : null}
-                  {unavailable_message ? (
-                    <UnavailableMessage message={unavailable_message} />
-                  ) : (
-                    <div>
-                      <RidersList groupCode={groupCode} />
-                      <DiscountsList groupCode={groupCode} />
-                    </div>
-                  )}
-                </div>
-                <hr className="mt-0" />
-              </>
-            ),
-          )}
+          ?.map((singleCartEntry, index) => (
+            <RevisedPlanCard key={index} cartEntry={singleCartEntry} />
+          ))}
 
       {!isProductDetailsPage &&
         revisedPremiumPopupUtilityObject?.updatedCartEntries?.map(
-          (
-            { group: { id: groupCode }, unavailable_message, premium },
-            index,
-          ) => (
-            <>
-              <div key={index} className="p-3 pt-0 pb-0">
-                <Members groupCode={groupCode} editable={false} />
-                <BasePlanDetails
-                  groupCode={groupCode}
-                  isUnavailable={unavailable_message}
-                  revisedPremium
-                />
-                {!unavailable_message ? (
-                  <div>
-                    <CartDetailRow
-                      title={
-                        <span
-                          css={`
-                            color: ${colors.secondary_color};
-                          `}
-                        >
-                          Revised Premium
-                        </span>
-                      }
-                      value={amount(+premium)}
-                    />
-                  </div>
-                ) : null}
-                {unavailable_message ? (
-                  <UnavailableMessage message={unavailable_message} />
-                ) : (
-                  <div>
-                    <RidersList groupCode={groupCode} />
-                    <DiscountsList groupCode={groupCode} />
-                  </div>
-                )}
-              </div>
-              <hr className="mt-0" />
-            </>
+          (singleCartEntry, index) => (
+            <RevisedPlanCard key={index} cartEntry={singleCartEntry} />
           ),
         )}
 
-      <div className="p-3 pt-0 d-flex justify-content-between align-items-center">
-        <DetailsWrap>
-          <DetailsWrap.Title style={{ fontWeight: "600" }}>
-            {isProductDetailsPage
-              ? "Previous Premium"
-              : "Previous Total Premium"}
-          </DetailsWrap.Title>
-          <DetailsWrap.Value>
-            {isProductDetailsPage
-              ? getDisplayPremium({
-                  total_premium:
-                    +revisedPremiumPopupUtilityObject.getPreviousCartEntryPremium(
-                      urlGeneratedGroupCode,
-                    ),
-                  tenure: 1,
-                })
-              : getDisplayPremium({
-                  total_premium:
-                    +revisedPremiumPopupUtilityObject.prevTotalPremium,
-                  tenure: 1,
-                })}
-          </DetailsWrap.Value>
-        </DetailsWrap>
-        <DetailsWrap>
-          <DetailsWrap.Title style={{ color: colors.secondary_color }}>
-            {isProductDetailsPage ? "Revised Premium" : "Revised Total Premium"}
-          </DetailsWrap.Title>
-          <DetailsWrap.Value>
-            {isProductDetailsPage
-              ? getDisplayPremium({
-                  total_premium:
-                    +revisedPremiumPopupUtilityObject.getUpdatedCartEntryPremium(
-                      urlGeneratedGroupCode,
-                    ),
-                  tenure: 1,
-                })
-              : getDisplayPremium({
-                  total_premium:
-                    +revisedPremiumPopupUtilityObject.updatedTotalPremium,
-                  tenure: 1,
-                })}
-          </DetailsWrap.Value>
-        </DetailsWrap>
-        <DetailsWrap>
-          <Button
-            className="w-100"
-            css={`
-              border-radius: 9px;
-            `}
-            onClick={() => {
-              onClose();
-              dispatch(setIsPopupOn(false));
-            }}
-          >
-            Continue
-          </Button>
-        </DetailsWrap>
-      </div>
+      <RevisedPopupFooter
+        revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
+        onClose={onClose}
+      />
     </Modal>
+  );
+};
+
+const RevisedPlanCard = ({ cartEntry }) => {
+  const groupCode = cartEntry?.group?.id;
+
+  const unavailable_message = cartEntry?.unavailable_message;
+
+  const premium = cartEntry?.premium;
+
+  const { colors } = useTheme();
+
+  return (
+    <>
+      <div className="p-3 pt-0 pb-0">
+        <Members groupCode={groupCode} editable={false} />
+        <BasePlanDetails
+          groupCode={groupCode}
+          isUnavailable={unavailable_message}
+          revisedPremium
+        />
+        {!unavailable_message ? (
+          <div>
+            <CartDetailRow
+              title={
+                <span
+                  css={`
+                    color: ${colors.secondary_color};
+                  `}
+                >
+                  Revised Premium
+                </span>
+              }
+              value={amount(+premium)}
+            />
+          </div>
+        ) : null}
+        {unavailable_message ? (
+          <UnavailableMessage message={unavailable_message} />
+        ) : (
+          <div>
+            <RidersList groupCode={groupCode} />
+            <DiscountsList groupCode={groupCode} />
+          </div>
+        )}
+      </div>
+      <hr className="mt-0" />
+    </>
+  );
+};
+
+const RevisedPopupFooter = ({ revisedPremiumPopupUtilityObject, onClose }) => {
+  const { groupCode: urlGeneratedGroupCode } = useParams(); //? groupCode changes on product details page.
+
+  const dispatch = useDispatch();
+
+  const { colors } = useTheme();
+
+  const history = useHistory();
+
+  const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  const isProductDetailsPage =
+    window.location.pathname.startsWith("/productdetails");
+
+  const popupCloseHandler = () => {
+    onClose();
+    dispatch(setIsPopupOn(false));
+  };
+
+  const editAgeHandler = () => {
+    onClose();
+    dispatch(setShowEditMembers(true));
+  };
+
+  const viewQuotesHandler = () => {
+    dispatch(setIsPopupOn(false));
+
+    history.replace(
+      getUrlWithEnquirySearch(
+        `/quotes/${
+          urlGeneratedGroupCode ||
+          revisedPremiumPopupUtilityObject?.unAvailablePlanInTheCart?.group?.id
+        }`,
+      ),
+    );
+  };
+
+  return (
+    <div
+      css={`
+        gap: 1rem;
+      `}
+      className="p-3 pt-0 d-flex justify-content-center align-items-center"
+    >
+      {!revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart && (
+        <>
+          <DetailsWrap>
+            <DetailsWrap.Title style={{ fontWeight: "600" }}>
+              {isProductDetailsPage
+                ? "Previous Premium"
+                : "Previous Total Premium"}
+            </DetailsWrap.Title>
+            <DetailsWrap.Value>
+              {isProductDetailsPage
+                ? getDisplayPremium({
+                    total_premium:
+                      +revisedPremiumPopupUtilityObject.getPreviousCartEntryPremium(
+                        urlGeneratedGroupCode,
+                      ),
+                    tenure: 1,
+                  })
+                : getDisplayPremium({
+                    total_premium:
+                      +revisedPremiumPopupUtilityObject.prevTotalPremium,
+                    tenure: 1,
+                  })}
+            </DetailsWrap.Value>
+          </DetailsWrap>
+          <DetailsWrap>
+            <DetailsWrap.Title style={{ color: colors.secondary_color }}>
+              {isProductDetailsPage
+                ? "Revised Premium"
+                : "Revised Total Premium"}
+            </DetailsWrap.Title>
+            <DetailsWrap.Value>
+              {isProductDetailsPage
+                ? getDisplayPremium({
+                    total_premium:
+                      +revisedPremiumPopupUtilityObject.getUpdatedCartEntryPremium(
+                        urlGeneratedGroupCode,
+                      ),
+                    tenure: 1,
+                  })
+                : getDisplayPremium({
+                    total_premium:
+                      +revisedPremiumPopupUtilityObject.updatedTotalPremium,
+                    tenure: 1,
+                  })}
+            </DetailsWrap.Value>
+          </DetailsWrap>
+          <DetailsWrap>
+            <Button
+              className="w-100"
+              css={`
+                border-radius: 9px;
+              `}
+              onClick={popupCloseHandler}
+            >
+              Continue
+            </Button>
+          </DetailsWrap>
+        </>
+      )}
+
+      {revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart && (
+        <>
+          <DetailsWrap>
+            <Button
+              className="w-100"
+              css={`
+                border-radius: 9px;
+              `}
+              onClick={viewQuotesHandler}
+            >
+              View Quotes
+            </Button>
+          </DetailsWrap>
+          {isProductDetailsPage && (
+            <DetailsWrap>
+              <Button
+                className="w-100"
+                css={`
+                  border-radius: 9px;
+                `}
+                onClick={editAgeHandler}
+              >
+                Edit Age
+              </Button>
+            </DetailsWrap>
+          )}
+          {!isProductDetailsPage && (
+            <DetailsWrap>
+              <Button
+                className="w-100"
+                css={`
+                  border-radius: 9px;
+                `}
+                onClick={onClose}
+              >
+                Continue
+              </Button>
+            </DetailsWrap>
+          )}
+        </>
+      )}
+    </div>
   );
 };
 
@@ -1253,23 +1318,7 @@ function useReviewCartButton({ groupCode }) {
     isCartProductLoading,
   } = useCartProduct(groupCode);
 
-  const {
-    sum_insured,
-    tenure,
-    total_premium,
-    premium,
-    health_riders,
-    addons,
-    group,
-  } = product;
-
-  const membersList = group.members;
-
-  const coverAmount = amount(sum_insured);
-
-  const premiumAmount = amount(total_premium || premium);
-
-  const totalPremiumAmount = amount(totalPremium);
+  const { sum_insured, total_premium, premium, group } = product;
 
   const urlQueryStrings = new URLSearchParams(window.location.search);
 

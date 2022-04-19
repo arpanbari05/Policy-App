@@ -12,13 +12,14 @@ import {
   getCustomIcOptions,
   regexStringToRegex,
   dateObjectToLocaleString,
+  allowOnWebsites,
 } from "../../../utils/helper";
 import { useState, useEffect } from "react";
 import TextInput2 from "../../../components/TextInput2";
 import { Button } from "../../../components";
 import DropDown2 from "../../../components/DropDown2";
 import { useUpdateRenewalQueryMutation } from "../../../api/api";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import styled from "styled-components";
 import ResponsiveDatePickers from "../../../components/ResponsiveDatePickers";
 
@@ -40,7 +41,7 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
 
   const [createEnquiryQuery] = useCreateEnquiry();
 
-  const [updateRenewalMutation, { isLoading, data, isSuccess }] =
+  const [updateRenewalMutation, { isLoading, data, isSuccess, error }] =
     useUpdateRenewalQueryMutation();
 
   const renewalEnquiriesLoading = isLoading;
@@ -110,7 +111,7 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
     );
   };
 
-  return (
+  return allowOnWebsites(["topup", "renewBuyUat"]) ? (
     <div {...props}>
       <form onSubmit={handleSubmit}>
         <div
@@ -216,6 +217,18 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
             </div>
           )}
 
+          {error?.data?.message && (
+            <div>
+              <ErrorMessage
+                css={`
+                  margin-bottom: unset;
+                `}
+              >
+                {error?.data?.message}
+              </ErrorMessage>
+            </div>
+          )}
+
           <Button
             type="submit"
             className="w-100"
@@ -231,6 +244,8 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
         </div>
       </form>
     </div>
+  ) : (
+    <Redirect to="/input/basic-details" />
   );
 };
 

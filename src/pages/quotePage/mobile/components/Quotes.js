@@ -30,6 +30,7 @@ import {
   replaceShareQuotes,
 } from "../../quote.slice";
 import ShareQuoteModal from "../../../../components/ShareQuoteModal";
+import useFilters from "../../components/filters/useFilters";
 
 export function Quotes({ sortBy }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
@@ -41,6 +42,8 @@ export function Quotes({ sortBy }) {
   const dispatch = useDispatch();
 
   const compareSlot = useCompareSlot({ maxLength: 2 });
+
+  const { getSelectedFilter } = useFilters();
 
   const { data: unmergedQuotes } = useGetQuotes();
   const justArray = unmergedQuotes?.map(quote => mergeQuotes(quote.data.data));
@@ -61,7 +64,12 @@ export function Quotes({ sortBy }) {
 
   return (
     <div className="p-2 mt-4">
-      <ShareQuoteModal shareQuotes stage="QUOTE" hideBtn />
+      <ShareQuoteModal
+        sum_insured={getSelectedFilter("cover")?.code}
+        shareQuotes
+        stage="QUOTE"
+        hideBtn
+      />
       <div
         className="d-flex flex-column"
         css={`

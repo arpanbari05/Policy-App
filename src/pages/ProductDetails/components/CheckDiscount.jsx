@@ -285,7 +285,7 @@ function AdditionalDiscounts({ groupCode, ...props }) {
     toggleAdditionalDiscount(additionalDiscount);
   };
 
-  const additionalDiscountsUpdated = additionalDiscounts?.filter(
+  const updatedAdditionalDiscount = additionalDiscounts?.filter(
     additionalDiscount =>
       !isUsgiLifestyleDiscount({ discount: additionalDiscount }),
   ); //? removal of life style discount from product details page(usgi)
@@ -293,7 +293,7 @@ function AdditionalDiscounts({ groupCode, ...props }) {
   return (
     <>
       <WrapWithTitle title="Additional Discount" {...props}>
-        {additionalDiscountsUpdated.map(additionalDiscount => (
+        {updatedAdditionalDiscount.map(additionalDiscount => (
           <AdditionalDiscount
             onApplyClick={handleApplyClick}
             additionalDiscount={additionalDiscount}

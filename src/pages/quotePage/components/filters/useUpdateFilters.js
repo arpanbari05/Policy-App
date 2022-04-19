@@ -55,7 +55,7 @@ function useUpdateFilters() {
           previousFilters?.tenure?.code ||
           getSelectedFilter("tenure")?.code,
       },
-      plan_type: filters?.plantype?.code,
+      plan_type: filters?.plantype?.code || getSelectedFilter("plantype")?.code,
     });
     localStorage.setItem("groups", JSON.stringify(groups));
   }

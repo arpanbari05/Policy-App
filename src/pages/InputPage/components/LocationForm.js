@@ -316,9 +316,12 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
             css={`
               display: flex;
               flex-wrap: wrap;
-              gap: 0.49em;
               margin: 10px 0;
               padding-right: 10px;
+
+              & > div {
+                margin: 0 0.2rem 0.6rem 0.2rem;
+              }
             `}
           >
             {popularcities.map(city => (
