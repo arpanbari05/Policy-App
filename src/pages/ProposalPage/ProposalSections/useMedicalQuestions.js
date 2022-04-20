@@ -52,8 +52,8 @@ console.log("sgvksdgv",defaultValue)
           checkCanProceed[item] = checkCanProceed[item]?checkCanProceed[item]:[];
         }
 
-        Object.keys(values[item]).length && Object.keys(values[item]).forEach(el => {
-          let schemaOfEl = schema[key].find(({name}) => name === el)
+        Object.keys(values[item]).length && Object.keys(values[item])?.forEach(el => {
+          let schemaOfEl = schema[key]?.find(({name}) => name === el)
           console.log("ehdhdkfgl",schemaOfEl)
           if(schemaOfEl){
             if(values[item][el] && ((!values[item][el][`is${el}`] && !schemaOfEl?.additionalOptions?.disable_Toggle) || !values[item][el].isValid)) checkCanProceed[item] = Array.isArray(checkCanProceed[item])?[...checkCanProceed[item],el]:[el];

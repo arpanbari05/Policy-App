@@ -2139,6 +2139,14 @@ export const useRevisedPremiumModal = () => {
     next();
   }; /* Performs refetch from the server */
 
+  const isAnyPlanUnAvailableInCart = cartEntries?.some(
+    singleEntry => !!singleEntry?.unavailable_message,
+  );
+
+  const unAvailablePlanInTheCart = cartEntries?.find(
+    singleEntry => !!singleEntry?.unavailable_message,
+  );
+
   useEffect(() => {
     if (isProductDetailsPage) {
       //? PRODUCT DETAILS PAGE LOGIC
@@ -2204,7 +2212,17 @@ export const useRevisedPremiumModal = () => {
     updatedTotalPremium,
     prevPremium,
     updatedPremium,
-  ]); /* CONTROLS DISPLAY OF REVISED PREMIUM POPUP AUTOMATICALLY */
+  ]); //? CONTROLS DISPLAY OF REVISED PREMIUM POPUP DIFFERENCE IN AMOUNT 
+
+  useEffect(() => {
+    if (isAnyPlanUnAvailableInCart) {
+      setRevisedPremiumCheckHitByUs(true);
+      revisedPremiumPopupToggle.on();
+      dispatch(setIsPopupOn(true));
+    }
+  }, [
+    isAnyPlanUnAvailableInCart,
+  ]); //? CONTROLS DISPLAY OF REVISED PREMIUM POPUP IN CASE OF UNAVAILABILITY OF PLAN 
 
   const getUpdatedCartEntry = groupCode => {
     const cartEntry = cartEntries.find(
@@ -2238,14 +2256,6 @@ export const useRevisedPremiumModal = () => {
 
     return cartEntry?.premium;
   };
-
-  const isAnyPlanUnAvailableInCart = cartEntries?.some(
-    singleEntry => !!singleEntry?.unavailable_message,
-  );
-
-  const unAvailablePlanInTheCart = cartEntries?.find(
-    singleEntry => !!singleEntry?.unavailable_message,
-  );
 
   return {
     getUpdatedCart,
