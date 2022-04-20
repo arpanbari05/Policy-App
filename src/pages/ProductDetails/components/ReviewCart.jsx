@@ -956,7 +956,14 @@ function BasePlanDetails({
               value={`₹ ${figureToWords(deductible)}`}
             />
           ) : null}
-          <CartDetailRow title="Cover" value={coverList} />
+          <CartDetailRow
+            title="Cover"
+            value={
+              !options || !options?.length
+                ? `₹ ${figureToWords(sum_insured)}`
+                : coverList
+            }
+          />
           <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
           {!revisedPremium ? (
             <CartDetailRow

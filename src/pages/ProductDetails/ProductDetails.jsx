@@ -123,7 +123,7 @@ const ProductDetails = () => {
           }}
         >
           <FaArrowCircleLeft />
-          <span className="mx-2"> Go Back nop</span>
+          <span className="mx-2"> Go Back</span>
         </MobileHeaderText>
       </MobileHeader>
       <main
@@ -248,20 +248,21 @@ const ProductDetails = () => {
                 }
               `}
             >
-              <div
-                css={`
-                  display: none;
-                  @media (max-width: 768px) {
-                    display: block;
-                  }
-                `}
-              >
-                {subJourneyType === "renewal" ? (
-                  <SumInsuredSection cartEntry={cartEntry} />
-                ) : tenant?.alias === "fyntune" ? (
+              {subJourneyType === "renewal" ? (
+                <SumInsuredSection cartEntry={cartEntry} />
+              ) : tenant?.alias === "fyntune" ? (
+                <div
+                  css={`
+                    display: none;
+                    @media (max-width: 768px) {
+                      display: block;
+                    }
+                  `}
+                >
                   <SumInsuredOptionsSection cartEntry={cartEntry} />
-                ) : null}
-              </div>
+                </div>
+              ) : null}
+
               <CheckDiscount
                 groupCode={parseInt(groupCode)}
                 cartEntry={cartEntry}

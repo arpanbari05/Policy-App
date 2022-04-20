@@ -1160,6 +1160,33 @@ export function useUrlEnquiry() {
   return { enquiryId, getUrlWithEnquirySearch };
 }
 
+export function useGetSingleICQuote(filters, queryConfig = {}) {
+  const { sum_insured, insurersToFetch } = filters;
+
+  const { groupCode } = useParams();
+
+  const { journeyType } = useFrontendBoot();
+
+  const { getSelectedFilter } = useFilters();
+
+  let { data, refetch, isFetching, ...getCustomQuotesQuery } =
+    useGetCustomQuotesQuery(
+      {
+        insurers: insurersToFetch,
+        deductible: getSelectedFilter("deductible")?.code,
+        sum_insured_range: sum_insured,
+        group: +groupCode,
+        base_plan_type: getSelectedFilter("baseplantype")?.code,
+        tenure: getSelectedFilter("tenure")?.code,
+        plan_type: getSelectedFilter("plantype")?.code,
+        journeyType,
+      },
+      { ...queryConfig },
+    );
+
+  return { data, isFetching };
+}
+
 export function useGetQuotes(queryConfig = {}) {
   const insurersToFetch = useInsurersToFetch();
 
