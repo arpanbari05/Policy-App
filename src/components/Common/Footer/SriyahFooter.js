@@ -92,12 +92,7 @@ const Footer = () => {
                 </a>{" "}
                 <div className="widget-wrap">
                   {" "}
-                  <p
-                    className="color_grey_f"
-                    style={{
-                      fontSize: "17px",
-                    }}
-                  >
+                  <p className="color_grey_f">
                     Sriyah Insurance Brokers Pvt. Ltd. is an Insurance
                     Regulatory & Development Authority of India (IRDAI) approved
                     direct insurance brokers.
