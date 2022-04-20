@@ -956,6 +956,8 @@ export function useAdditionalDiscount(groupCode, skip = false) {
     premium,
   } = getCartEntry(groupCode) || {};
 
+  const { subJourneyType } = useFrontendBoot();
+
   const cartEntry = getCartEntry(groupCode);
 
   const { data, ...queryState } = useGetAdditionalDiscountsQuery(
@@ -964,6 +966,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
       groupCode,
       sum_insured,
       tenure,
+      subJourneyType,
     },
     { skip: skip },
   );
