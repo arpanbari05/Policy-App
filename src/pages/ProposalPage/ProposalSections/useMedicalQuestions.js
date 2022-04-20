@@ -84,6 +84,8 @@ console.log("sgvksdgv",defaultValue)
 // ----------------------------------------------------------------------------------------------------------------
 
 useEffect(() => {
+console.log("rsgsrjgk",defaultValue)
+
 if(defaultValue && name === "Medical Details"){
   setValues(defaultValue)
 }
@@ -114,6 +116,7 @@ if(defaultValue && name === "Medical Details"){
         });
       });
       if (JSON.stringify(values) !== JSON.stringify(tempObj)) {
+
         setValues({ ...tempObj });
       }
     }
@@ -139,43 +142,43 @@ if(defaultValue && name === "Medical Details"){
   }, [values, noForAll]);
 
   // when no for all click
-  useEffect(() => {
-    if (name === "Medical Details") {
-        console.log("sgsjghjskl",noForAll)
-      let customizedVal = {};
-      Object.keys(noForAll)
-        .filter(key => noForAll[key])
-        .forEach(key => {
-          let tempGroupVal = {};
-          schema[key].forEach(el => {
-           if (!Array.isArray(el)) {
-            if(el.additionalOptions.notAllowedIf === "N") {
+  // useEffect(() => {
+  //   if (name === "Medical Details") {
+  //       console.log("sgsjghjskl",noForAll)
+  //     let customizedVal = {};
+  //     Object.keys(noForAll)
+  //       .filter(key => noForAll[key])
+  //       .forEach(key => {
+  //         let tempGroupVal = {};
+  //         schema[key].forEach(el => {
+  //          if (!Array.isArray(el)) {
+  //           if(el.additionalOptions.notAllowedIf === "N") {
           
-              tempGroupVal[el.name] = {
-                [`is${el.name}`]: "Y",
-                members: {},
-                isValid: true,
-              };
-            }else if(!el.additionalOptions.disable_Toggle){
-              tempGroupVal[el.name] = {
-                [`is${el.name}`]: "N",
-                members: {},
-                isValid: true,
-              };
-            }
+  //             tempGroupVal[el.name] = {
+  //               [`is${el.name}`]: "Y",
+  //               members: {},
+  //               isValid: true,
+  //             };
+  //           }else if(!el.additionalOptions.disable_Toggle){
+  //             tempGroupVal[el.name] = {
+  //               [`is${el.name}`]: "N",
+  //               members: {},
+  //               isValid: true,
+  //             };
+  //           }
               
-            }
-          });
-          customizedVal[key] = {
-            ...values?.[key],
-            ...tempGroupVal,
-          };
-        });
+  //           }
+  //         });
+  //         customizedVal[key] = {
+  //           ...values?.[key],
+  //           ...tempGroupVal,
+  //         };
+  //       });
 
-      if (Object.keys(customizedVal).length)
-        setValues({ ...values, ...customizedVal });
-    }
-  }, [noForAll]);
+  //     if (Object.keys(customizedVal).length)
+  //       setValues({ ...values, ...customizedVal });
+  //   }
+  // }, [noForAll]);
 
   return {
     noForAll,
