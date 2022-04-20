@@ -22,6 +22,7 @@ import {
   figureToWords,
   getDisplayPremium,
   getPlanFeatures,
+  numberToDigitWord,
 } from "../../../utils/helper";
 import { mobile, small, tabletAndMobile } from "../../../utils/mediaQueries";
 import CardSkeletonLoader from "../../Common/card-skeleton-loader/CardSkeletonLoader";
@@ -38,11 +39,16 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 import MobileClaimProcess from "../../../pages/ProductDetails/components/Mobile/MobileClaimProcesses/MobileClaimProcesses";
 import MobileAboutCompany from "../../../pages/ProductDetails/components/Mobile/MobileAboutCompany/MobileAboutCompany";
 import MobileCashlessHospitals from "../../../pages/ProductDetails/components/Mobile/MobileCashlessHospitals/MobileCashlessHospitals";
+import { QuoteCardSelect } from "../../../pages/quotePage/components/QuoteCards";
+import { getSumInsuredOptions } from "../ProductDetailsModal";
+import { CircleLoader } from "../../../components/index";
 
 export function MobileProductHeader({
   quote,
   selectedRiders = [],
   onClose,
+  isLoading,
+  setCurSumInsured = () => {},
   ...props
 }) {
   const { journeyType } = useFrontendBoot();
@@ -54,8 +60,10 @@ export function MobileProductHeader({
     mandatory_riders,
     health_riders,
     tenure,
+    available_sum_insureds,
   } = quote;
 
+  const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
   const { getCompany } = useCompanies();
 
   const { logo, csr } = getCompany(company.alias);
@@ -64,6 +72,10 @@ export function MobileProductHeader({
     total_premium,
     health_riders: health_riders?.length ? health_riders : mandatory_riders,
   });
+
+  const suminsuredChangeHandler = option => {
+    setCurSumInsured(option?.value);
+  };
 
   return (
     <StickyTop>
@@ -80,21 +92,57 @@ export function MobileProductHeader({
             <span>Cover</span>
             <br />
             <span>
-              <b>₹ {figureToWords(sum_insured)}</b>
+              {!sumInsuredOptions || sumInsuredOptions?.length === 0 ? (
+                <b>₹ {figureToWords(sum_insured)}</b>
+              ) : (
+                <QuoteCardSelect
+                  fontSize={11}
+                  options={sumInsuredOptions}
+                  defaultValue={{
+                    value: sum_insured,
+                    label: numberToDigitWord(sum_insured),
+                  }}
+                  onChange={suminsuredChangeHandler}
+                />
+              )}
             </span>
           </CoverDiv>
           <PremiumDiv>
             <span>Premium</span>
             <br />
             <span>
-              <b>{getDisplayPremium({ total_premium: netPremium, tenure })}</b>
+              {isLoading ? (
+                <CircleLoader
+                  animation="border"
+                  className="m-0"
+                  css={`
+                    font-size: 0.73rem;
+                    font-weight: normal !important;
+                  `}
+                />
+              ) : (
+                <b>
+                  {getDisplayPremium({ total_premium: netPremium, tenure })}
+                </b>
+              )}
             </span>
           </PremiumDiv>
           <ClaimSettlementDiv>
             <span>Claim Settlement Ratio</span>
             <br />
             <span>
-              <b>{csr}%</b>
+              {isLoading ? (
+                <CircleLoader
+                  animation="border"
+                  className="m-0"
+                  css={`
+                    font-size: 0.73rem;
+                    font-weight: normal !important;
+                  `}
+                />
+              ) : (
+                <b>{csr}%</b>
+              )}
             </span>
           </ClaimSettlementDiv>
         </LowerDiv>
@@ -446,10 +494,17 @@ export const MobileSeeDetailsTopOuter = styled.div`
   }
 `;
 
-export function MobileRidersSection({ quote, ...props }) {
+export function MobileRidersSection({ quote, isLoading, ...props }) {
   let { groupCode } = useParams();
 
   groupCode = parseInt(groupCode);
+
+  if (isLoading)
+    return (
+      <MobileDetailsSectionWrap>
+        <CardSkeletonLoader />
+      </MobileDetailsSectionWrap>
+    );
 
   return (
     <MobileAddOnCoverages groupCode={groupCode} quote={quote} {...props} />

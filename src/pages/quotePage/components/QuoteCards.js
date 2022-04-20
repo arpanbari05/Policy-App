@@ -656,7 +656,6 @@ export function QuoteCardSelect({ color, fontSize, ...props }) {
           fontSize: fontSize || "12px",
           fontWeight: "bold",
           padding: "7px 7px !important",
-          textAlign: "center !important",
           textAlign: "left",
         }),
         menuList: provided => ({
@@ -694,6 +693,7 @@ export function QuoteCardSelect({ color, fontSize, ...props }) {
           fontSize: fontSize || "13px",
           fontWeight: "bold",
           minHeight: "initial",
+          width: "max-content",
           outline: "none",
           border: "0 !important",
           // This line disable the blue border

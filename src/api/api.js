@@ -299,6 +299,32 @@ export const api = createApi({
     getLocationDetails: builder.query({
       query: ({ search }) => `location-details?search=${search}`,
     }),
+    getQuote: builder.query({
+      query: args => {
+        const {
+          insurer,
+          sum_insured_range,
+          tenure,
+          plan_type,
+          group,
+          base_plan_type = "base_health",
+          journeyType = "health",
+          deductible = 0,
+        } = args;
+
+        const endpoint = journeyType === "top_up" ? "topup-quotes" : "quotes";
+
+        let url = `companies/${insurer}/${endpoint}?sum_insured_range=${sum_insured_range}&tenure=${tenure}&plan_type=${plan_type}&group=${group}&base_plan_type=${base_plan_type}`;
+
+        if (journeyType === "top_up") {
+          url = url.concat(`&deductible=${deductible}`);
+        }
+
+        return {
+          url,
+        };
+      },
+    }),
     getCustomQuotes: builder.query({
       queryFn: async (
         args,
@@ -520,6 +546,7 @@ export const {
   useGetRenewalSumInsuredsQuery,
   useGetFeatureOptionsQuery,
   useGetPoliciesQuery,
+  useGetQuoteQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {

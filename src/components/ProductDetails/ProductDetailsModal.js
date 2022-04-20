@@ -79,13 +79,13 @@ function ProductDetailsModal({
   const [currSumInsured, setCurSumInsured] = useState(sum_insured);
 
   const { isFetching, data } = useGetSingleICQuote({
-    insurersToFetch: [propQuote?.company_alias],
+    insurerToFetch: propQuote?.company_alias,
     sum_insured: currSumInsured,
   });
 
   const fetchedQuote =
     data &&
-    data[0]?.data?.data?.find(q => q?.product?.id === propQuote?.product?.id);
+    data?.data?.data?.find(q => q?.product?.id === propQuote?.product?.id);
   const quote = fetchedQuote || propQuote;
 
   return (
@@ -125,6 +125,8 @@ function ProductDetailsModal({
           <MobileProductHeader
             quote={quote}
             selectedRiders={selectedRiders}
+            setCurSumInsured={setCurSumInsured}
+            isLoading={isFetching}
             onClose={handleClose}
           />
           <ProductDetailsTabs defaultActiveKey={defaultActiveKey}>
@@ -156,7 +158,7 @@ function ProductDetailsModal({
               <MobileRenderPlanDetails quote={quote} />
             </Tab>
             <Tab eventKey="mobile-add-on-coverages" title="Add-on Coverages">
-              <MobileRidersSection quote={quote} {...ridersSlot} />
+              <MobileRidersSection isLoading={isFetching} quote={quote} {...ridersSlot} />
             </Tab>
             <Tab
               eventKey="mobile-cashless-hospitals"
@@ -529,9 +531,10 @@ export const DetailsSectionWrap = styled.section`
   }
 `;
 
-function getSumInsuredOptions(arr = []) {
+export function getSumInsuredOptions(arr = []) {
   return arr?.map(item => ({ value: item, label: numberToDigitWord(item) }));
 }
+
 function ProductHeader({
   quote,
   selectedRiders = [],
@@ -562,8 +565,6 @@ function ProductHeader({
     mandatory_riders,
     available_sum_insureds,
   } = quote;
-
-  console.log({ quote });
 
   const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
 
@@ -609,6 +610,7 @@ function ProductHeader({
           <div
             css={`
               display: flex;
+              align-items: center;
               /* flex-direction: column; */
               border-right: 1px solid grey;
               padding: 0 20px;
@@ -627,15 +629,18 @@ function ProductHeader({
                 margin-left: 5px;
               `}
             >
-              <QuoteCardSelect
-                options={sumInsuredOptions}
-                defaultValue={{
-                  value: sum_insured,
-                  label: numberToDigitWord(sum_insured),
-                }}
-                onChange={suminsuredChangeHandler}
-              />
-              {/* &nbsp;₹ {figureToWords(sum_insured)} */}
+              {!sumInsuredOptions || sumInsuredOptions?.length === 0 ? (
+                <>&nbsp;₹ {figureToWords(sum_insured)}</>
+              ) : (
+                <QuoteCardSelect
+                  options={sumInsuredOptions}
+                  defaultValue={{
+                    value: sum_insured,
+                    label: numberToDigitWord(sum_insured),
+                  }}
+                  onChange={suminsuredChangeHandler}
+                />
+              )}
             </span>
           </div>
           <div

@@ -14,6 +14,7 @@ import {
   useGetDiscountsQuery,
   useGetEnquiriesQuery,
   useGetFrontendBootQuery,
+  useGetQuoteQuery,
   useGetRidersQuery,
   useUpdateCartMutation,
   useUpdateCompareQuotesMutation,
@@ -1161,7 +1162,7 @@ export function useUrlEnquiry() {
 }
 
 export function useGetSingleICQuote(filters, queryConfig = {}) {
-  const { sum_insured, insurersToFetch } = filters;
+  const { sum_insured, insurerToFetch } = filters;
 
   const { groupCode } = useParams();
 
@@ -1169,22 +1170,21 @@ export function useGetSingleICQuote(filters, queryConfig = {}) {
 
   const { getSelectedFilter } = useFilters();
 
-  let { data, refetch, isFetching, ...getCustomQuotesQuery } =
-    useGetCustomQuotesQuery(
-      {
-        insurers: insurersToFetch,
-        deductible: getSelectedFilter("deductible")?.code,
-        sum_insured_range: sum_insured,
-        group: +groupCode,
-        base_plan_type: getSelectedFilter("baseplantype")?.code,
-        tenure: getSelectedFilter("tenure")?.code,
-        plan_type: getSelectedFilter("plantype")?.code,
-        journeyType,
-      },
-      { ...queryConfig },
-    );
+  let { data, isFetching } = useGetQuoteQuery(
+    {
+      insurer: insurerToFetch,
+      deductible: getSelectedFilter("deductible")?.code,
+      sum_insured_range: sum_insured,
+      group: +groupCode,
+      base_plan_type: getSelectedFilter("baseplantype")?.code,
+      tenure: getSelectedFilter("tenure")?.code,
+      plan_type: getSelectedFilter("plantype")?.code,
+      journeyType,
+    },
+    { ...queryConfig },
+  );
 
-  return { data, isFetching };
+  return { data: { company_alias: insurerToFetch, data }, isFetching };
 }
 
 export function useGetQuotes(queryConfig = {}) {
