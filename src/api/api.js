@@ -92,9 +92,21 @@ export const api = createApi({
       },
     }),
     getAdditionalDiscounts: builder.query({
-      query: ({ productId, groupCode, sum_insured, tenure }) => ({
-        url: `products/${productId}/additional-discounts?group=${groupCode}&sum_insured=${sum_insured}&tenure=${tenure}`,
-      }),
+      query: ({
+        productId,
+        groupCode,
+        sum_insured,
+        tenure,
+        subJourneyType,
+      }) => {
+        let endpoint = "additional-discounts";
+        if (subJourneyType === "renewal") {
+          endpoint = "renewal-additional_discounts";
+        }
+        return {
+          url: `products/${productId}/${endpoint}?group=${groupCode}&sum_insured=${sum_insured}&tenure=${tenure}`,
+        };
+      },
       providesTags: ["AdditionalDiscount"],
     }),
     getEnquiries: builder.query({

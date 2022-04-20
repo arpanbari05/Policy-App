@@ -312,8 +312,12 @@ export function Counter({
         gap: 0.3125em;
         transform: translateX(-50%);
 
-        @media (max-width: 480px) {
+        @media (max-width: 720px) {
           transform: translateX(0);
+          gap: 0;
+          & span {
+            margin: 0 6px;
+          }
         }
         & button {
           padding: 0;
