@@ -5,7 +5,7 @@ const useFormBuilder = (
   schema,
   fetchValues,
   defaultValues = {},
-  noForAll,
+  noForAll=false,
   setNoForAll,
   formName,
   insuredDetails,
@@ -16,6 +16,9 @@ const useFormBuilder = (
   fetchErrors,
   fetchValid,
 ) => {
+
+
+  console.log("edtbdbjhl",defaultValues)
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
 
   const [values, setValues] = useState(defaultValues || {});
@@ -24,13 +27,17 @@ const useFormBuilder = (
   const [isValid, setIsValid] = useState();
 
   const updateValue = (name, value, removeOtherValues = false) => {
-    if (removeOtherValues) {
-      setValues({ [name]: value });
-      fetchValues({ [name]: value });
-    } else {
-      setValues(prev => ({ ...prev, [name]: value }));
-      fetchValues({ ...values, [name]: value });
+    console.log("sdfgdzfgvdf",name, value,values)
+    if(value){
+      if (removeOtherValues) {
+        setValues({ [name]: value });
+        fetchValues(() => ({ [name]: value }));
+      } else {
+        setValues(prev => ({ ...prev, [name]: value }));
+        fetchValues(prev => ({ ...prev, [name]: value }));
+      }
     }
+    
 
     if (value instanceof Object) {
       if (value?.[`is${name}`] && value?.[`is${name}`] === "Y" && noForAll) {
@@ -80,10 +87,10 @@ const useFormBuilder = (
   const updateValues = (multipleValues = {}, action) => {
     if (action === "SAVE_AS_IT_IS") {
       setValues(multipleValues);
-      fetchValues(multipleValues);
+      fetchValues(() => multipleValues);
     } else {
       setValues({ ...values, ...multipleValues });
-      fetchValues({ ...values, ...multipleValues });
+      fetchValues(() => ({ ...values, ...multipleValues }));
     }
   };
   const insertValue = (parent, member, name, value) => {
@@ -97,7 +104,7 @@ const useFormBuilder = (
         },
       },
     });
-    fetchValues({
+    fetchValues(() => ({
       ...values,
       [parent]: {
         ...values[parent],
@@ -106,18 +113,20 @@ const useFormBuilder = (
           [name]: value,
         },
       },
-    });
+    }));
   };
   const collectRefs = useRef({});
 
-  useEffect(() => {
-    if (defaultValues && Object.keys(defaultValues).length) {
-      setValues(defaultValues);
-      fetchValues(defaultValues);
-    }
-  }, [defaultValues]);
+    useEffect(() => {
+      console.log("fgvsdjvnsdk",defaultValues,values)
+      if (defaultValues && Object.keys(defaultValues).length && !Object.keys(values).length ) {
+        setValues(defaultValues);
+        fetchValues(() => defaultValues);
+      }
+    }, [defaultValues]);
 
   const triggerValidation = name => {
+    console.log("bfkjf",name)
     let errorsTemp = {};
     let tempIsValid = true;
     console.log("sgbjhsfk", name);
@@ -224,6 +233,34 @@ const useFormBuilder = (
     setValues({ ...values, [name]: null });
   };
 
+  useEffect(() => {
+if(noForAll){
+  let tempGroupVal = {};
+  schema.forEach(el => {
+   if (!Array.isArray(el)) {
+    if(el.additionalOptions.notAllowedIf === "N") {
+  
+      tempGroupVal[el.name] = {
+        [`is${el.name}`]: "Y",
+        members: {},
+        isValid: true,
+      };
+    }else if(!el.additionalOptions.disable_Toggle){
+      tempGroupVal[el.name] = {
+        [`is${el.name}`]: "N",
+        members: {},
+        isValid: true,
+      };
+    }
+      
+    }
+  });
+  if (Object.keys(tempGroupVal).length){
+    updateValues({ ...values, ...tempGroupVal },"SAVE_AS_IT_IS");
+    }
+}
+  },[noForAll])
+
   // to scroll page as per error
   // useEffect(() => {
   //   console.log("toggle", errors);
@@ -252,6 +289,7 @@ const useFormBuilder = (
   //   }
   // }, [errors]);
   // , canProceed,blockScrollEffect
+  
 
   const scrollToErrors = () => {
     if (Object.values(errors).length && Object.values(errors).some(val => val))

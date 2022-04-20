@@ -28,7 +28,7 @@ const Toggle = ({
   restrictMaleMembers = false,
   message
 }) => {
-  console.log("Svsjbv", disable_Toggle,value,values);
+  console.log("Svsjbv", disable_Toggle,value,name);
   const isMandatoryMQ = label.toLowerCase().includes("mandatory");
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
@@ -38,11 +38,9 @@ const Toggle = ({
     useMembers();
   const [customShowMembers, setCustomshowMembers] = useState(false);
   console.log("wgkwrjsd",customMembers,members)
-  const [membersToMap, setMembersToMap] = useState(
+  const [ membersToMap, setMembersToMap] = useState(
     customMembers instanceof Array && customMembers.length ? customMembers : members,
   );
-
-
 
   const [membersSelectedTillNow, setMembersSelectedTillNow] = useState({});
 
@@ -66,14 +64,23 @@ const Toggle = ({
     }
   }, [values]);
 
-  const [boolean, setBoolean] = useState(disable_Toggle?"Y":"");
-
-  const [membersStatus, setMembersStatus] = useState(value?.members || {});
+  const [boolean, setBoolean] = useState(disable_Toggle?"Y":value?.[`is${name}`] ||"");
+  const innitialMemberStatus = () => {
+    if(disable_Toggle) return members.reduce((acc,member) => ({...acc,[member]:true}),{});
+    else return {}
+  }
+  const [membersStatus, setMembersStatus] = useState(value?.members || innitialMemberStatus());
   console.log("Wvkwbf", disable_Toggle, membersStatus);
   const { mediUnderwritting } = useSelector(
     state => state.proposalPage.proposalData,
   );
   // const membersToMap = members;
+
+useEffect(() => {
+  if(disable_Toggle){
+    setMembersStatus(membersToMap.reduce((acc,member) => ({...acc,[member]:true}),{}))
+  }
+},[])
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -81,7 +88,7 @@ const Toggle = ({
     if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
-    }else if (value instanceof Object && Object.keys(value).length) {
+    }else if (value instanceof Object && Object.keys(value).length && !disable_Toggle) {
       setBoolean(value[`is${name}`]);
       setMembersStatus(value.members);
     }
@@ -97,9 +104,7 @@ console.log("bfxfjkl",membersToMap)
 
       console.log("evekfnmv", membersToMap, getAllMembers());
     }
-    if(disable_Toggle){
-      setMembersStatus(membersToMap.reduce((acc,member) => ({...acc,[member]:true}),{}))
-    }
+    
   }, [value]);
 
   useEffect(() => {
