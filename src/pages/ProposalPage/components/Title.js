@@ -2,7 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 const Title = ({ name }) => {
-  return <TitleWrapper>{name.includes("_")?name.replaceAll("_"," "):name}</TitleWrapper>;
+  return (
+    <TitleWrapper>
+      {name?.includes("_") ? name?.split("_").join(" ") : name}
+    </TitleWrapper>
+  );
 };
 
 export default Title;

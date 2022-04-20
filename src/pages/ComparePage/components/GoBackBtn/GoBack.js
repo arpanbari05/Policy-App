@@ -6,6 +6,8 @@ import SecureLS from "secure-ls";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import BackButton from "../../../../components/BackButton";
 import { IoChevronBackCircleSharp } from "react-icons/io5";
+import { FaChevronLeft } from "react-icons/fa";
+
 import "styled-components/macro";
 const GoBack = ({ productDetails, path, groupCode }) => {
   const history = useHistory();
@@ -37,7 +39,7 @@ const GoBack = ({ productDetails, path, groupCode }) => {
               background: #f1f4f8;
             `}
           >
-            <i class="fas fa-chevron-left"></i>
+            <FaChevronLeft color="#777" />
           </span>
         }
         onClick={() => {

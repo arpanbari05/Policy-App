@@ -141,6 +141,7 @@ export function FullScreenLoader() {
     renew_buy: "#ff6600",
     fts: "#0a87ff",
     pinc: "#e1056d",
+    sriyah: "#626dc7",
   };
   const tenantAlias = process.env.REACT_APP_TENANT;
   const tenantColor = defaultColors[tenantAlias];

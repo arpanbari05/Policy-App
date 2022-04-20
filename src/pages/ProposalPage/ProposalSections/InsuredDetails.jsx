@@ -16,6 +16,7 @@ import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
 import { setShowErrorPopup } from "../ProposalSections/ProposalSections.slice";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 import useOtherDetails from "./useOtherDetails";
+import StyledButton from "../../../components/StyledButton";
 
 const InsuredDetails = ({
   schema,
@@ -26,7 +27,7 @@ const InsuredDetails = ({
   setBlockTabSwitch,
 }) => {
   const [medicalContinueClick, setMedicalContinueClick] = useState(false);
-  const { proposalData, showErrorPopup } = useSelector(
+  const { proposalData, showErrorPopup, insuredDetailsResponse } = useSelector(
     state => state.proposalPage,
   );
 
@@ -37,8 +38,11 @@ const InsuredDetails = ({
   const proposalDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
-  const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
-    useFrontendBoot();
+  const {
+    insuredMembers: membersDataFromGreetingPage,
+    data: frontBootData,
+    renewal_policy_status,
+  } = useFrontendBoot();
   // const [checking]
   const { getGroupMembers, groups } = useMembers();
 
@@ -125,6 +129,7 @@ const InsuredDetails = ({
   const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
+    console.log("sdbjhdkgb", medicalContinueClick);
     if (
       medicalContinueClick &&
       !isValid.includes(undefined) &&
@@ -153,6 +158,12 @@ const InsuredDetails = ({
             onClick={() => setShow(prev => (prev === index ? false : index))}
           >
             <div>
+              
+              {renewal_policy_status?.medicalQuestionsReadOnly ? (
+                <DisableScreen></DisableScreen>
+              ) : (
+                <></>
+              )}
               {name === "Medical Details" && (
                 <div
                   css={`
@@ -270,7 +281,31 @@ const InsuredDetails = ({
           </Panel>
         );
       })}
+      {/*  <UnderWritingDiscisionTable>
+        <div className="head_section section_row d-flex align-items-center justify-content-evenly">
+          <div className="section_column">Member</div>
+          <div className="section_column">Underwiting Discision</div>
+          <div className="section_column">Medical Questions</div>
+        </div>
+        {insuredDetailsResponse?.members &&
+          Object.keys(insuredDetailsResponse.members).map(member => {
+            return (
+              <>
+                <div className="section_row d-flex align-items-center">
+                  <div className="section_column">{member}</div>
+                  <div className="section_column">Underwiting Discision</div>
+                  <div className="section_column">
+                  <a href={insuredDetailsResponse.members[member].medical_question_url} className="click_btn" target="_blank">
+                  Click here
+                            </a>
+                  </div>
+                 
+                </div>
+              </>
+            )
+          })}
 
+        </UnderWritingDiscisionTable> */}
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
@@ -282,12 +317,20 @@ const InsuredDetails = ({
         />
         {console.log("Svsfods", values)}
 
+       {/* <div className="check_status_btn">
+        <StyledButton noIcon={true} styledCss={{    padding: "0px 10px", fontSize:"16px"}}>
+        Check Underwriting Status
+      </StyledButton>
+        </div> */}
+       
+
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
             // setShow();
             setSubmit("Medical");
+            console.log("ewrgnjkrsv", canProceed);
             if (name === "Medical Details" && canProceed?.canProceed) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
@@ -338,3 +381,61 @@ const InsuredDetails = ({
 };
 
 export default InsuredDetails;
+
+const DisableScreen = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  top: -12px;
+  left: 0px;
+  z-index: 99;
+  opacity: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: not-allowed;
+  .display_onHover {
+    display: none;
+    font-size: 20px !important;
+  }
+  :hover {
+    .display_onHover {
+      display: block;
+    }
+  }
+`;
+
+const UnderWritingDiscisionTable = styled.div`
+  width: 100%;
+  border: 1px dashed #ddd;
+  margin: 20px 0px;
+  .head_section{
+    border-bottom: 1px dashed #ddd;
+  }
+  .section_column{
+    padding:15px 0px 15px 40px;
+    width: 33.33%;
+  }
+  .check_status_btn{
+    width: 200px;
+    margin: 10px 0;
+    @media(max-width:400px){
+      width:150px;
+    }
+  }
+
+  .click_btn{
+    background-color: #ecf6ff;
+    font-family: "Dax", sans-serif;
+    font-weight: 400;
+    border-radius: 50px;
+    margin: 0 8px;
+    font-size: 14px;
+    padding: 11px;
+    :visited{
+      background: #0a87ff !important;
+      color:white;
+    }
+  }
+`;

@@ -38,7 +38,7 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
     control: provided => ({
       ...provided,
       display: "none !important",
-      width: "150px",
+      width: "max-content",
       fontSize: "13px",
       fontWeight: "bold",
       minHeight: "initial",
@@ -55,7 +55,13 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
       fontSize: "12px",
       fontWeight: "bold",
       padding: "7px 7px !important",
+      width: "150px",
       textAlign: "center !important",
+    }),
+    menu: provided => ({
+      ...provided,
+      width: "max-content",
+      marginLeft: -15,
     }),
   };
 
@@ -91,11 +97,18 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
       <Select
         styles={selectStyles}
         placeholder="Share Quotes"
-        ope
         value={(shareType.value && shareType) || SHARE_OPTIONS[0]}
         options={SHARE_OPTIONS}
         onChange={onChangeHandler}
         menuIsOpen={showMenu}
+        theme={theme => ({
+          ...theme,
+          colors: {
+            ...theme.colors,
+            primary: colors.primary_color,
+            primary25: colors.primary_shade,
+          },
+        })}
       />
     </>
   );

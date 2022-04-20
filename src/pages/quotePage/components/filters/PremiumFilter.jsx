@@ -6,6 +6,8 @@ import useFilters from "./useFilters";
 import useUpdateFilters from "./useUpdateFilters";
 import { useFrontendBoot, useTheme } from "../../../../customHooks";
 import { Filter, FilterHead } from ".";
+import { IoRadioButtonOn } from "react-icons/io5";
+import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 
 function PremiumFilterModal({ onClose, ...props }) {
   const {
@@ -71,6 +73,7 @@ function PremiumFilterModal({ onClose, ...props }) {
 
 function PremiumOption({ premium, checked, onChange, ...props }) {
   const target = useRef(null);
+  const { colors } = useTheme();
 
   const handleChange = evt => {
     if (evt.target.checked) onChange && onChange(premium);
@@ -84,18 +87,24 @@ function PremiumOption({ premium, checked, onChange, ...props }) {
       className="option d-flex align-items-center justify-content-between"
       {...props}
       onClick={() => {
-        target.current.click()
+        target.current.click();
       }}
     >
       <label htmlFor={premium.code}>{premium.display_name}</label>
       <input
         type="radio"
         id={premium.code}
+        className="visually-hidden"
         name="select_premium"
         checked={checked}
         onChange={handleChange}
         ref={target}
       />
+      {checked ? (
+        <IoRadioButtonOn size={25} color={colors.primary_color} />
+      ) : (
+        <RiCheckboxBlankCircleLine size={25} color="#aaa" />
+      )}
     </li>
   );
 }

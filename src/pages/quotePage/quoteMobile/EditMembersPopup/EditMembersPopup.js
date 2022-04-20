@@ -67,7 +67,7 @@ function EditMembersContent(params) {
         else return m.type;
       },
       // capitalize(m.type)
-      //   .replaceAll("_", "-")
+      //   .split("_").join("-")
       //   .replace("Grand-mother", "Grand Mother")
       //   .replace("Grand-father", "Grand Father"),
     ),

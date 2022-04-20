@@ -238,6 +238,7 @@ export function useFrontendBoot() {
     settings: data?.settings,
     insuredMembers: enquiryData?.data?.input?.members,
     groups: enquiryData?.data?.groups,
+    renewal_policy_status: enquiryData?.data?.renewal_policy,
   };
 }
 
@@ -1197,7 +1198,7 @@ export function useGetQuotes(queryConfig = {}) {
   );
 
   const isLoading =
-    insurersToFetch?.length <= 2
+    insurersToFetch?.length <= 4
       ? data?.length < insurersToFetch?.length
       : data?.length < insurersToFetch?.length - 2;
 

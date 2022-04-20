@@ -121,7 +121,7 @@ console.log("bfxfjkl",membersToMap)
       (boolean === "Y" &&
         (showMembers !== false || customShowMembers) &&
         !Object.values(membersStatus).includes(true)) ||
-      !boolean 
+      (!boolean  && !disable_Toggle)
     ) {
       isValid = false;
     }
@@ -150,14 +150,14 @@ if(!isMandatoryMQ){
  
 
     
-  }, [boolean,Object.keys(membersStatus).length, customShowMembers]);
+  }, [boolean,Object.keys(membersStatus).filter(m => membersStatus[m]).length, customShowMembers]);
 
   useEffect(() => {
     if(isMandatoryMQ){
     console.log("wvbkwdsbvjdce",membersSelectedTillNow)
    onChange({
         ...value,
-        [`is${name}`]: boolean,
+        [`is${name}`]: "Y",
         members:membersSelectedTillNow,
         isValid:true,
       });
@@ -215,6 +215,7 @@ if(!isMandatoryMQ){
                           msg: "Male members are not eligible for this question.",
                         }),
                       );
+                      setBoolean("N");
                     }else if(message && message.stp_block_message){
                       dispatch(
                         setShowErrorPopup({

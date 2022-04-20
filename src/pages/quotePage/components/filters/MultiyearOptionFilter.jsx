@@ -7,6 +7,8 @@ import useFilters from "./useFilters";
 import { useTheme } from "../../../../customHooks";
 import { Filter, FilterHead } from ".";
 import { tenures } from "../../data";
+import { IoRadioButtonOn } from "react-icons/io5";
+import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 
 function FilterModal({ onClose, ...props }) {
   const { colors } = useTheme();
@@ -65,6 +67,7 @@ function FilterModal({ onClose, ...props }) {
 
 function MultiYearOption({ tenure, onChange, checked, ...props }) {
   const target = useRef(null);
+  const { colors } = useTheme();
   const handleChange = evt => {
     if (evt.target.value) onChange && onChange(tenure);
   };
@@ -85,7 +88,7 @@ function MultiYearOption({ tenure, onChange, checked, ...props }) {
         {discount ? (
           <span
             style={{
-              color: "#0a87ff",
+              color: colors.primary_color,
             }}
           >
             {`(save upto ${discount}%)`}
@@ -96,10 +99,16 @@ function MultiYearOption({ tenure, onChange, checked, ...props }) {
         type="radio"
         id={"tenure-" + tenure.code}
         name="multiYear"
+        className="visually-hidden"
         checked={checked}
         onChange={handleChange}
         ref={target}
       />
+      {checked ? (
+        <IoRadioButtonOn size={25} color={colors.primary_color} />
+      ) : (
+        <RiCheckboxBlankCircleLine size={25} color="#aaa" />
+      )}
     </li>
   );
 }

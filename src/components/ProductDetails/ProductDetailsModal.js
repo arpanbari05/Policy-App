@@ -519,6 +519,8 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
     mandatory_riders,
   } = quote;
 
+  console.log({ quote });
+
   const { getCompany } = useCompanies();
 
   const { logo, csr } = getCompany(company.alias);

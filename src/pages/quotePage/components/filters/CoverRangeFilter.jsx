@@ -10,6 +10,8 @@ import { Filter, FilterHead } from ".";
 import { setPosPopup } from "../../quote.slice";
 import { useDispatch } from "react-redux";
 import { isSSOJourney } from "../../../../utils/helper";
+import { IoRadioButtonOn } from "react-icons/io5";
+import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 
 function validateCustomCover(customCover) {
   if (customCover < 200000) {
@@ -174,6 +176,8 @@ function CoverFilterModal({ onClose, ...props }) {
 function CoverOption({ cover, checked, onChange, ...props }) {
   const inputRef = useRef();
 
+  const { colors } = useTheme();
+
   const handleChange = evt => {
     if (evt.target.checked) onChange && onChange(cover);
   };
@@ -195,9 +199,16 @@ function CoverOption({ cover, checked, onChange, ...props }) {
         id={cover.code}
         ref={inputRef}
         checked={checked}
+        className="visually-hidden"
         name="selectCover"
         onChange={handleChange}
+        style={{ color: "black" }}
       />
+      {checked ? (
+        <IoRadioButtonOn size={25} color={colors.primary_color} />
+      ) : (
+        <RiCheckboxBlankCircleLine size={25} color="#aaa" />
+      )}
     </li>
   );
 }
