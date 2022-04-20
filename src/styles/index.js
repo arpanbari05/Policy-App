@@ -34,8 +34,9 @@ export const rootFontSize = "16px";
 const defaultFontFamily = "Inter-Regular";
 
 export const tenantFontFamily = {
-  Pinc: "Gothic720",
-  RB: "open-sans",
+  pinc: "Gothic720",
+  renew_buy: "open-sans",
+  sriyah: "sans-serif",
 };
 
 export function getFontFamily(tenant) {
@@ -48,7 +49,7 @@ export function getFontFamily(tenant) {
 
 export const GlobalStyles = createGlobalStyle({
   body: {
-    fontFamily: getFontFamily("fyntune"),
+    fontFamily: getFontFamily(process.env.REACT_APP_TENANT),
   },
   html: {
     fontSize: rootFontSize,

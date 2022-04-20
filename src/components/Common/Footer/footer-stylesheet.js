@@ -141,10 +141,6 @@ export const TopContainer = styled.div`
   }
 `;
 
-export const LeftContainer = styled.div``;
-
-export const RightContainer = styled.div``;
-
 export const BottomContainer = styled.div`
   font-size: 14px;
   font-weight: 300;
