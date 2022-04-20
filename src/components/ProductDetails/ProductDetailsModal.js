@@ -15,6 +15,7 @@ import {
   useClaimBanner,
   useCompanies,
   useFrontendBoot,
+  useGetSingleICQuote,
   useQuote,
   useTheme,
   useToggle,
@@ -27,6 +28,7 @@ import {
   getDisplayPremium,
   getPlanFeatures,
   isSSOJourney,
+  numberToDigitWord,
 } from "../../utils/helper";
 import CardSkeletonLoader from "../Common/card-skeleton-loader/CardSkeletonLoader";
 import { some } from "lodash";
@@ -48,6 +50,8 @@ import {
   MobileRenderCashlessHospitals,
 } from "./Mobile/MobileModalComponents";
 import SearchBarWithCityDD from "../../pages/ProductDetails/components/Mobile/MobileCashlessHospitals/SearchBarWithCityDD";
+import { QuoteCardSelect } from "../../pages/quotePage/components/QuoteCards";
+import { CircleLoader } from "../../components/index";
 
 function useRidersSlot() {
   const [selectedRiders, setSelectedRiders] = useState([]);
@@ -60,7 +64,7 @@ function useRidersSlot() {
 }
 
 function ProductDetailsModal({
-  quote,
+  quote: propQuote,
   onClose,
   defaultActiveKey = "plan-details",
   defaultActiveKeyMobile = "mobile-plan-details",
@@ -69,6 +73,20 @@ function ProductDetailsModal({
   const handleClose = () => onClose && onClose();
 
   const { selectedRiders, ...ridersSlot } = useRidersSlot();
+
+  const { sum_insured } = propQuote;
+
+  const [currSumInsured, setCurSumInsured] = useState(sum_insured);
+
+  const { isFetching, data } = useGetSingleICQuote({
+    insurerToFetch: propQuote?.company_alias,
+    sum_insured: currSumInsured,
+  });
+
+  const fetchedQuote =
+    data &&
+    data?.data?.data?.find(q => q?.product?.id === propQuote?.product?.id);
+  const quote = fetchedQuote || propQuote;
 
   return (
     <Modal
@@ -97,13 +115,18 @@ function ProductDetailsModal({
           <MobileSeeDetailsTop onClose={handleClose} />
 
           <ProductHeader
+            currSumInsured={currSumInsured}
+            setCurSumInsured={setCurSumInsured}
             quote={quote}
             selectedRiders={selectedRiders}
             onClose={handleClose}
+            isLoading={isFetching}
           />
           <MobileProductHeader
             quote={quote}
             selectedRiders={selectedRiders}
+            setCurSumInsured={setCurSumInsured}
+            isLoading={isFetching}
             onClose={handleClose}
           />
           <ProductDetailsTabs defaultActiveKey={defaultActiveKey}>
@@ -112,7 +135,11 @@ function ProductDetailsModal({
             </Tab>
             <Tab eventKey="add-on-coverages" title="Add-on Coverages">
               <DetailsSectionWrap>
-                <RidersSection quote={quote} {...ridersSlot} />
+                <RidersSection
+                  quote={quote}
+                  {...ridersSlot}
+                  isLoading={isFetching}
+                />
               </DetailsSectionWrap>
             </Tab>
             <Tab eventKey="cashless-hospitals" title="Cashless Hospitals">
@@ -131,7 +158,7 @@ function ProductDetailsModal({
               <MobileRenderPlanDetails quote={quote} />
             </Tab>
             <Tab eventKey="mobile-add-on-coverages" title="Add-on Coverages">
-              <MobileRidersSection quote={quote} {...ridersSlot} />
+              <MobileRidersSection isLoading={isFetching} quote={quote} {...ridersSlot} />
             </Tab>
             <Tab
               eventKey="mobile-cashless-hospitals"
@@ -236,10 +263,17 @@ const StyledTabs = styled(Tabs)`
   }
 `;
 
-function RidersSection({ quote, ...props }) {
+function RidersSection({ quote, isLoading, ...props }) {
   let { groupCode } = useParams();
 
   groupCode = parseInt(groupCode);
+
+  if (isLoading)
+    return (
+      <DetailsSectionWrap>
+        <CardSkeletonLoader />
+      </DetailsSectionWrap>
+    );
 
   return <Riders groupCode={groupCode} quote={quote} {...props} />;
 }
@@ -497,7 +531,19 @@ export const DetailsSectionWrap = styled.section`
   }
 `;
 
-function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
+export function getSumInsuredOptions(arr = []) {
+  return arr?.map(item => ({ value: item, label: numberToDigitWord(item) }));
+}
+
+function ProductHeader({
+  quote,
+  selectedRiders = [],
+  currSumInsured,
+  setCurSumInsured,
+  onClose,
+  isLoading: isQuoteLoading,
+  ...props
+}) {
   const {
     buyQuote,
     queryState: { isLoading },
@@ -517,7 +563,10 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
     total_premium,
     tenure,
     mandatory_riders,
+    available_sum_insureds,
   } = quote;
+
+  const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
 
   const { getCompany } = useCompanies();
 
@@ -533,6 +582,10 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
   };
 
   const { gotoProductPage } = useGotoProductDetailsPage();
+
+  const suminsuredChangeHandler = option => {
+    setCurSumInsured(option.value);
+  };
 
   return (
     <FixedTop>
@@ -557,6 +610,7 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
           <div
             css={`
               display: flex;
+              align-items: center;
               /* flex-direction: column; */
               border-right: 1px solid grey;
               padding: 0 20px;
@@ -575,7 +629,18 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 margin-left: 5px;
               `}
             >
-              &nbsp;₹ {figureToWords(sum_insured)}
+              {!sumInsuredOptions || sumInsuredOptions?.length === 0 ? (
+                <>&nbsp;₹ {figureToWords(sum_insured)}</>
+              ) : (
+                <QuoteCardSelect
+                  options={sumInsuredOptions}
+                  defaultValue={{
+                    value: sum_insured,
+                    label: numberToDigitWord(sum_insured),
+                  }}
+                  onChange={suminsuredChangeHandler}
+                />
+              )}
             </span>
           </div>
           <div
@@ -597,9 +662,22 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
             <span
               css={`
                 font-weight: bold;
+                min-width: 50px;
+                text-align: center;
               `}
             >
-              &nbsp; ₹ {parseInt(netPremium).toLocaleString("en-IN")}
+              {isQuoteLoading ? (
+                <CircleLoader
+                  animation="border"
+                  className="m-0"
+                  css={`
+                    font-size: 0.73rem;
+                    font-weight: normal !important;
+                  `}
+                />
+              ) : (
+                <>&nbsp; ₹ {parseInt(netPremium).toLocaleString("en-IN")}</>
+              )}
             </span>
           </div>
           <div
@@ -619,10 +697,24 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
               css={`
                 font-weight: bold;
                 margin-left: 5px;
+                min-width: 50px;
+                text-align: center;
               `}
             >
               &nbsp;
-              {csr}%
+              {isQuoteLoading ? (
+                <CircleLoader
+                  animation="border"
+                  className="m-0"
+                  css={`
+                    font-size: 0.73rem;
+                    font-weight: normal !important;
+                    margin: 0 auto;
+                  `}
+                />
+              ) : (
+                <>{csr}%</>
+              )}
             </span>
           </div>
         </QuoteInfoWrap>

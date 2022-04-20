@@ -9,6 +9,7 @@ import paper from "./../../../assets/svg/paperplicy.svg";
 import repolicy from "./../../../assets/svg/repolicy.svg";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import { useFrontendBoot, useTheme } from "../../../customHooks";
+import { FiDownload } from "react-icons/fi";
 
 const Card = ({ values, isLoading, showTrackStatus }) => {
   const {
@@ -51,7 +52,7 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
         </div>
 
         <div style={{ float: "right" }}>
-          {values?.pdf_path ? (
+        {values?.pdf_path ? (
             values?.pdf_path &&
             (!downloadPolicyLoader ? (
               <DownloadPolicy
@@ -64,7 +65,7 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
                 {isLoading || !values?.pdf_path ? (
                   <span class="thankyou lds-dual-ring"></span>
                 ) : (
-                  <Download />
+                  <FiDownload size={18} />
                 )}
               </DownloadPolicy>
             ) : (
@@ -101,21 +102,21 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
         {values?.policy_no ? (
           <PolicyWrapper>
             <Title>Your Policy No.</Title>
-            <Value center={!values?.policy_no}>
+            <Value break={true} center={!values?.policy_no}>
               {values?.policy_no || "-"}
             </Value>
           </PolicyWrapper>
         ) : values?.proposal_no ? (
           <PolicyWrapper>
             <Title>Application No</Title>
-            <Value center={!values?.policy_no}>
+            <Value break={true} center={!values?.policy_no}>
               {values?.proposal_no || "-"}
             </Value>
           </PolicyWrapper>
         ) : (
           <PolicyWrapper>
             <Title>Application No</Title>
-            <Value center={!values?.policy_no}>
+            <Value break={true} center={!values?.policy_no}>
               {values?.proposal_reference_id || "-"}
             </Value>
           </PolicyWrapper>
@@ -274,12 +275,16 @@ const Wrap = styled.div`
   position: relative;
   width: 100%;
   margin-top: 10px;
-  &::before,
-  &::after {
-    display: table;
-    content: "";
-    clear: both;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 20px;
+  // &::before,
+  // &::after {
+  //   display: table;
+  //   content: "";
+  //   clear: both;
+  // }
   @media (max-width: 1023px) {
     display: flex;
     justify-content: space-between;
@@ -298,7 +303,10 @@ const CompanyName = styled.div`
   }
 `;
 const DownloadPolicy = styled.a`
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   /* height: 40px; */
   border-radius: 16px;
   background-color: ${props => props.PrimaryColor};
@@ -312,9 +320,6 @@ const DownloadPolicy = styled.a`
   & img {
     display: inline-block;
     width: 12%;
-  }
-  & svg {
-    transform: translateY(4px);
   }
 
   @media (max-width: 768px) {
@@ -330,13 +335,13 @@ const DownloadPolicy = styled.a`
   }
 `;
 const PolicyWrapper = styled.div`
-  display: inline-block;
-  float: left;
-  max-width: 33.333%;
-  min-width: 20%;
-  &:not(:last-child) {
-    margin-right: 50px;
-  }
+  // display: inline-block;
+  // float: left;
+  // max-width: 33.333%;
+  // min-width: 20%;
+  // &:not(:last-child) {
+  //   margin-right: 50px;
+  // }
 `;
 const Title = styled.div`
   /* font-family: pf_handbook_proregular; */
@@ -354,7 +359,7 @@ const Value = styled.div`
   font-size: 16px;
   text-transform: capitalize;
   user-select: all;
-  word-break: break-all;
+  word-break: ${props => (props.break ? "break-all" : "break-word")};
   //text-align: ${props => props.center && "center"};
   // white-space: pre;
   @media (max-width: 1023px) {

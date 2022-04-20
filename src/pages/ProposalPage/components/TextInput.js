@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 // import millify from "millify";
-import converter from 'number-to-words';
+// import converter from "number-to-words";
 import { setShowPlanNotAvail } from "../ProposalSections/ProposalSections.slice";
 import { number2text } from "../../../utils/helper";
 const TextInput = ({
@@ -32,10 +32,10 @@ const TextInput = ({
   onFocus,
 }) => {
   useEffect(() => {
-    if(name === "name" && value){
-      triggerValidation(name)
+    if (name === "name" && value) {
+      triggerValidation(name);
     }
-  },[value])
+  }, [value]);
   const dispatch = useDispatch();
   const age =
     checkAge &&

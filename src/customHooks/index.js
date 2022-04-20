@@ -14,6 +14,7 @@ import {
   useGetDiscountsQuery,
   useGetEnquiriesQuery,
   useGetFrontendBootQuery,
+  useGetQuoteQuery,
   useGetRidersQuery,
   useUpdateCartMutation,
   useUpdateCompareQuotesMutation,
@@ -956,6 +957,8 @@ export function useAdditionalDiscount(groupCode, skip = false) {
     premium,
   } = getCartEntry(groupCode) || {};
 
+  const { subJourneyType } = useFrontendBoot();
+
   const cartEntry = getCartEntry(groupCode);
 
   const { data, ...queryState } = useGetAdditionalDiscountsQuery(
@@ -964,6 +967,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
       groupCode,
       sum_insured,
       tenure,
+      subJourneyType,
     },
     { skip: skip },
   );
@@ -1158,6 +1162,32 @@ export function useUrlEnquiry() {
   }
 
   return { enquiryId, getUrlWithEnquirySearch };
+}
+
+export function useGetSingleICQuote(filters, queryConfig = {}) {
+  const { sum_insured, insurerToFetch } = filters;
+
+  const { groupCode } = useParams();
+
+  const { journeyType } = useFrontendBoot();
+
+  const { getSelectedFilter } = useFilters();
+
+  let { data, isFetching } = useGetQuoteQuery(
+    {
+      insurer: insurerToFetch,
+      deductible: getSelectedFilter("deductible")?.code,
+      sum_insured_range: sum_insured,
+      group: +groupCode,
+      base_plan_type: getSelectedFilter("baseplantype")?.code,
+      tenure: getSelectedFilter("tenure")?.code,
+      plan_type: getSelectedFilter("plantype")?.code,
+      journeyType,
+    },
+    { ...queryConfig },
+  );
+
+  return { data: { company_alias: insurerToFetch, data }, isFetching };
 }
 
 export function useGetQuotes(queryConfig = {}) {
@@ -2136,6 +2166,14 @@ export const useRevisedPremiumModal = () => {
     next();
   }; /* Performs refetch from the server */
 
+  const isAnyPlanUnAvailableInCart = cartEntries?.some(
+    singleEntry => !!singleEntry?.unavailable_message,
+  );
+
+  const unAvailablePlanInTheCart = cartEntries?.find(
+    singleEntry => !!singleEntry?.unavailable_message,
+  );
+
   useEffect(() => {
     if (isProductDetailsPage) {
       //? PRODUCT DETAILS PAGE LOGIC
@@ -2201,7 +2239,17 @@ export const useRevisedPremiumModal = () => {
     updatedTotalPremium,
     prevPremium,
     updatedPremium,
-  ]); /* CONTROLS DISPLAY OF REVISED PREMIUM POPUP AUTOMATICALLY */
+  ]); //? CONTROLS DISPLAY OF REVISED PREMIUM POPUP DIFFERENCE IN AMOUNT 
+
+  useEffect(() => {
+    if (isAnyPlanUnAvailableInCart) {
+      setRevisedPremiumCheckHitByUs(true);
+      revisedPremiumPopupToggle.on();
+      dispatch(setIsPopupOn(true));
+    }
+  }, [
+    isAnyPlanUnAvailableInCart,
+  ]); //? CONTROLS DISPLAY OF REVISED PREMIUM POPUP IN CASE OF UNAVAILABILITY OF PLAN 
 
   const getUpdatedCartEntry = groupCode => {
     const cartEntry = cartEntries.find(
@@ -2235,14 +2283,6 @@ export const useRevisedPremiumModal = () => {
 
     return cartEntry?.premium;
   };
-
-  const isAnyPlanUnAvailableInCart = cartEntries?.some(
-    singleEntry => !!singleEntry?.unavailable_message,
-  );
-
-  const unAvailablePlanInTheCart = cartEntries?.find(
-    singleEntry => !!singleEntry?.unavailable_message,
-  );
 
   return {
     getUpdatedCart,

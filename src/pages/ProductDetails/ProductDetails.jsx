@@ -56,9 +56,17 @@ const ProductDetails = () => {
 
   const [showNav, setShowNav] = useState(false);
 
-  const { getCartEntry } = useCart();
+  const { getCartEntry, updateCartEntry } = useCart();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
+
+  const { sum_insured, available_sum_insureds, group } = cartEntry;
+
+  const handleChange = option => {
+    updateCartEntry(group?.id, { sum_insured: option?.value });
+  };
+
+  const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
 
   useUSGIDiscounts(); //? removal of lifestyle discount if present.
 
@@ -115,7 +123,7 @@ const ProductDetails = () => {
           }}
         >
           <FaArrowCircleLeft />
-          <span className="mx-2"> Go Back nop</span>
+          <span className="mx-2"> Go Back</span>
         </MobileHeaderText>
       </MobileHeader>
       <main
@@ -203,7 +211,15 @@ const ProductDetails = () => {
               }
             `}
           >
-            <CartDetails groupCode={parseInt(groupCode)} />
+            <CartDetails
+              defaultValue={{
+                value: sum_insured,
+                label: numberToDigitWord(sum_insured),
+              }}
+              options={sumInsuredOptions}
+              onChange={handleChange}
+              groupCode={parseInt(groupCode)}
+            />
           </div>
           <div
             css={`
@@ -235,12 +251,21 @@ const ProductDetails = () => {
               {subJourneyType === "renewal" ? (
                 <SumInsuredSection cartEntry={cartEntry} />
               ) : tenant?.alias === "fyntune" ? (
-                <SumInsuredOptionsSection cartEntry={cartEntry} />
+                <div
+                  css={`
+                    display: none;
+                    @media (max-width: 768px) {
+                      display: block;
+                    }
+                  `}
+                >
+                  <SumInsuredOptionsSection cartEntry={cartEntry} />
+                </div>
               ) : null}
+
               <CheckDiscount
                 groupCode={parseInt(groupCode)}
                 cartEntry={cartEntry}
-                // loaderStart={() => console.log(loaderRef?.current?.continuousStart())}
               />
               <Benefit cartEntry={cartEntry} groupCode={parseInt(groupCode)} />
               <RidersSection isProductDetailsPage={true} />

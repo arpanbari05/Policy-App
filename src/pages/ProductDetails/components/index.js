@@ -46,7 +46,7 @@ export function WrapWithTitle({ title, children }) {
             font-weight: 600;
             margin: auto;
             margin-top: 7px;
-            margin-bottom: 30px;
+            margin-bottom: 17px;
             text-align: center;
 
             ${mobile} {
