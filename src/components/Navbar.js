@@ -416,7 +416,7 @@ function Info({ label, value, onlyDesktop = false, children, ...props }) {
       className="d-flex align-items-center justify-content-center"
       css={`
         padding: 0 0.79em;
-        font-size: 0.7rem;
+        font-size: 11px;
         // gap: 0.67em;
         min-width: max-content;
         &:not(:last-child) {
@@ -491,7 +491,7 @@ export function TraceId() {
   return (
     <div
       css={`
-        font-size: 0.7rem !important;
+        font-size: 11px !important;
       `}
     >
       Trace Id: <span>{trace_id}</span>{" "}

@@ -124,7 +124,7 @@ const ShareButton = styled.button`
   border: 2px solid ${props => props.color};
   color: ${props => props.color};
   padding: 0.7em;
-  font-size: 0.79rem;
+  font-size: 12px;
   // margin: 0 15px;
   font-weight: bold;
   justify-content: center;

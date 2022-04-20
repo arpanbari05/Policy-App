@@ -190,7 +190,7 @@ export function GroupLink({ group, ...props }) {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          font-size: 0.79rem;
+          font-size: 12px;
           line-height: 1;
           padding: 1em;
           ${mq.mobile} {

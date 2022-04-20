@@ -12,6 +12,7 @@ import { removeQuoteFromCart } from "../pages/Cart/cart.slice";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import CardModal from "./Common/Modal/CardModal";
 import { calculateTotalPremium, figureToWords } from "../utils/helper";
+import { HeadingTertiary, PrimaryFontBold } from "../styles/typography";
 
 function CartSummaryModal({
   selectedRiders = [],
@@ -435,14 +436,22 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
       </div>
       <ProductContainer>
         <div>
-          <img className="contain" src={logoSrc} alt={alias} />
+          <img
+            css={`
+              max-height: 80px;
+            `}
+            className="contain"
+            src={logoSrc}
+            alt={alias}
+          />
         </div>
         <div
           css={`
             max-width: 30%;
           `}
         >
-          <ProductName flag={name.length > 20}>{name}</ProductName>
+          {/* <ProductName flag={name.length > 20}>{name}</ProductName> */}
+          <HeadingTertiary>{name}</HeadingTertiary>
         </div>
         {deductible ? (
           <ProductData>
@@ -483,7 +492,7 @@ const ProductData = styled.div`
   left: -16px;
   & .label-add_product {
     color: #000;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 21px;
     font-weight: 900;
   }
