@@ -71,7 +71,7 @@ const InsuredDetails = ({
     schema,
     setBlockTabSwitch,
   });
-
+  console.log("wrghrjksgv",values,defaultValue)
   useEffect(() => {
     if (name === "Insured Details" && isValid.includes(false))
       setShow(isValid.indexOf(false));
@@ -129,7 +129,7 @@ const InsuredDetails = ({
   const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
-    console.log("sdbjhdkgb", medicalContinueClick);
+    console.log("sdbjhdkgb", medicalContinueClick,isValid);
     if (
       medicalContinueClick &&
       !isValid.includes(undefined) &&
@@ -226,14 +226,17 @@ const InsuredDetails = ({
                 </div>
               )}
               <Form>
+        
                 <FormBuilder
                   isInsuredDetails
                   keyStr={item}
                   lastName={fullName?.split(" ").slice(-1)}
                   schema={schema[item]}
                   components={components}
-                  fetchValues={res => {
-                    setValues(prev => ({ ...prev, [item]: res }));
+                  fetchValues={(res = () => {}) => {
+        console.log("hjkgsr",res,values)
+
+                    setValues(prev => ({ ...prev, [item]: res(prev?.[item]) }));
                   }}
                   fetchErrors={res => {
                     setErrors(prev => ({ ...prev, [item]: res }));
@@ -245,7 +248,7 @@ const InsuredDetails = ({
                     setValid(valid);
                   }}
                   options={{
-                    defaultValues: values ? values[item] : {},
+                    defaultValues: defaultValue?defaultValue[item]:values?.[item] || {},
                     validateOn: "change",
                   }}
                   formName={name}
@@ -281,11 +284,11 @@ const InsuredDetails = ({
           </Panel>
         );
       })}
-      {/*  <UnderWritingDiscisionTable>
+  {/* <UnderWritingDiscisionTable>
         <div className="head_section section_row d-flex align-items-center justify-content-evenly">
           <div className="section_column">Member</div>
-          <div className="section_column">Underwiting Discision</div>
           <div className="section_column">Medical Questions</div>
+          <div className="section_column">Underwiting Discision</div>
         </div>
         {insuredDetailsResponse?.members &&
           Object.keys(insuredDetailsResponse.members).map(member => {
@@ -293,13 +296,12 @@ const InsuredDetails = ({
               <>
                 <div className="section_row d-flex align-items-center">
                   <div className="section_column">{member}</div>
-                  <div className="section_column">Underwiting Discision</div>
                   <div className="section_column">
                   <a href={insuredDetailsResponse.members[member].medical_question_url} className="click_btn" target="_blank">
                   Click here
                             </a>
                   </div>
-                 
+                  <div className="section_column">Underwiting Discision</div>
                 </div>
               </>
             )
@@ -411,6 +413,7 @@ const UnderWritingDiscisionTable = styled.div`
   border: 1px dashed #ddd;
   margin: 20px 0px;
   .head_section{
+   font-weight:900;
     border-bottom: 1px dashed #ddd;
   }
   .section_column{

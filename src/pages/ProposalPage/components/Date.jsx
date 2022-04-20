@@ -105,6 +105,7 @@ const DateComp = ({
           ref={startRef}
           onKeyDown={onKeyDownHandler}
           showYearDropdown
+          // showMonthDropdown
           popperPlacement="bottom-end"
           yearDropdownItemNumber={100}
           autoComplete="off"

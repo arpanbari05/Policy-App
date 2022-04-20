@@ -152,7 +152,6 @@ const ProposalPage = () => {
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-    console.log("Sgbsfnjl", active);
     if (activateLoader) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
