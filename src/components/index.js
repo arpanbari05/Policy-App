@@ -218,6 +218,7 @@ export function Button({
         background: ${colors.primary_color};
         border: none;
         color: #fff;
+        font-size: 14px;
         border-radius: 2px;
         height: 2.8em;
         min-width: max-content;
@@ -527,9 +528,6 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
         className="w-100 rounded"
         onClick={handleBuyClick}
         loader={isLoading}
-        css={`
-          font-size: 0.89rem;
-        `}
         {...props}
       >
         {displayTenure

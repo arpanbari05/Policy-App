@@ -31,6 +31,7 @@ import {
 } from "../../quote.slice";
 import ShareQuoteModal from "../../../../components/ShareQuoteModal";
 import useFilters from "../../components/filters/useFilters";
+import { PrimaryFontBold } from "../../../../styles/typography";
 
 export function Quotes({ sortBy }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
@@ -154,7 +155,7 @@ function CompareTray({ quotes = [], onRemove, onClose }) {
         disabled={quotes.length < 2}
         className="my-3 w-100"
       >
-        Compare Now
+        <PrimaryFontBold>Compare Now</PrimaryFontBold>
       </Button>
     </div>
   );
@@ -230,7 +231,7 @@ function QuoteCards({ quotesData, cashlessHospitalsCount, compare, ...props }) {
             top: 100%;
             left: 50%;
             transform: translate(-50%);
-            font-size: 0.79rem;
+            font-size: 11px;
             border: 1px solid #ddd;
             border-top: none;
             background-color: #fff;
@@ -326,7 +327,7 @@ function QuoteCard({
         css={`
           top: 0;
           transform: ${isFirstQuote ? "translateY(-100%)" : ""};
-          font-size: 0.73rem;
+          font-size: 11px;
         `}
       >
         {shareType.value === "specific_quotes" ? (
@@ -435,19 +436,19 @@ function QuoteCard({
             `}
           />
           <div>
-            <div
+            {/* <div
               css={`
-                font-size: 0.85rem;
                 font-weight: 900;
               `}
             >
               {quote.product.name}
-            </div>
+            </div> */}
+            <PrimaryFontBold>{quote?.product?.name}</PrimaryFontBold>
             {journeyType === "top_up" && (
               <>
                 <div
                   css={`
-                    font-size: 0.79rem;
+                    font-size: 12px;
                   `}
                 >
                   Deductible:
@@ -466,7 +467,7 @@ function QuoteCard({
                 </div>
                 <div
                   css={`
-                    font-size: 0.79rem;
+                    font-size: 12px;
                   `}
                 >
                   Cover:
@@ -577,7 +578,7 @@ function QuoteFeature({ feature, value, index, onNavigate }) {
     <div
       className="px-1 d-flex"
       css={`
-        font-size: 0.75rem;
+        font-size: 11px;
         :not(:last-child) {
           border-right: 1px solid ${colors.border.one};
         }

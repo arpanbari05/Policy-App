@@ -97,6 +97,7 @@ export function MobileProductHeader({
               ) : (
                 <QuoteCardSelect
                   fontSize={11}
+                  maxWidth
                   options={sumInsuredOptions}
                   defaultValue={{
                     value: sum_insured,

@@ -133,7 +133,6 @@ export function ProductCard({
       <PremiumButton
         quote={quote}
         css={`
-          font-size: 0.83rem;
           width: 100%;
         `}
       />

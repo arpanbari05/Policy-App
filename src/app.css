@@ -874,6 +874,7 @@ select {
   text-align: left !important;
   pointer-events: none;
   animation: none;
+  font-size: 11px;
 }
 
 @media (max-width: 400px) {
