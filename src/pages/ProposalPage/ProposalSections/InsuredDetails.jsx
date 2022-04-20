@@ -159,7 +159,7 @@ const InsuredDetails = ({
           >
             <div>
               
-              {renewal_policy_status?.medicalQuestionsReadOnly ? (
+              {name === "Medical Details" && renewal_policy_status?.medicalQuestionsReadOnly ? (
                 <DisableScreen></DisableScreen>
               ) : (
                 <></>
