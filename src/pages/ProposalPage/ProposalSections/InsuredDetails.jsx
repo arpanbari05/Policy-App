@@ -255,6 +255,7 @@ const InsuredDetails = ({
                   additionalErrors={additionalErrors[item]}
                   setSubmit={setSubmit}
                   submitTrigger={submit}
+                  isPanelVisible={show === index}
                   noForAll={noForAll[item]}
                   proposalData={proposalData}
                   canProceed={!yesSelected[item] ? canProceed : ""}

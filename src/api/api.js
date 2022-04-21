@@ -406,6 +406,25 @@ export const api = createApi({
       query: () => ({ url: "health/proposals" }),
       providesTags: ["ProposalSummaryUpdate"],
     }),
+    // getInsuredDetailsResponse: builder.query({
+      
+    // }),
+    saveProposal: builder.mutation({
+      query: body => ({
+        url: `/health/proposals`,
+        method: "POST",
+        body,
+      }),
+      onQueryStarted: async (_data, { dispatch, queryFulfilled }) => {
+        const { data } = await queryFulfilled;
+        console.log("rvbskf",data);
+        // dispatch(
+        //   api.util.updateQueryData("getEnquiries", undefined, draft => {
+        //     if (draft) Object.assign(draft, data);
+        //   }),
+        // );
+      },
+    }),
     getTopUpAddOns: builder.query({
       queryFn: async (
         { sum_insured, groupCode, tenure, companies = [], insurance_type },
@@ -533,6 +552,7 @@ export const {
   useGetFrontendBootQuery,
   useUpdateGroupsMutation,
   useCreateCartMutation,
+  useSaveProposalMutation,
   useDeleteCartMutation,
   useDeleteGroupQuery,
   useCreateEnquiryMutation,

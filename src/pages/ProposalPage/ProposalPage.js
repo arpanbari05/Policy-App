@@ -33,7 +33,6 @@ import {
 import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
-
 import { mobile } from "../../utils/mediaQueries";
 
 // import dummy from "./dumySchema";
@@ -82,6 +81,7 @@ const ProposalPage = () => {
     showBMI,
     failedBmiData,
     isPopupOn,
+    failedBmiBlockJourney
   } = useSelector(state => state.proposalPage);
 
   const {
@@ -104,15 +104,16 @@ const ProposalPage = () => {
     </Link>
   );
 
-  // useEffect(() => {
-  //   if (
-  //     failedBmiData &&
-  //     Object.keys(proposalData["Insured Details"]).length === 1
-  //   ) {
-  //     setBmiFailBlock(true);
-  //     setActive(1);
-  //   } else setBmiFailBlock(false);
-  // }, [failedBmiData]);
+  useEffect(() => {
+    if (
+      failedBmiBlockJourney
+    ) {
+      setBmiFailBlock(failedBmiBlockJourney);
+      setActive(1);
+    } else setBmiFailBlock(false);
+  }, [failedBmiData]);
+
+console.log("rvwvkv",active)
 
   useEffect(() => {
     setPrepairingProposal(true);
