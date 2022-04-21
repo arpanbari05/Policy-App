@@ -69,6 +69,9 @@ const Toggle = ({
     if(disable_Toggle) return members.reduce((acc,member) => ({...acc,[member]:true}),{});
     else return {}
   }
+
+
+  
   const [membersStatus, setMembersStatus] = useState(value?.members || innitialMemberStatus());
   console.log("Wvkwbf", disable_Toggle, membersStatus);
   const { mediUnderwritting } = useSelector(

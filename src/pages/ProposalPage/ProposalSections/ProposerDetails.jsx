@@ -111,6 +111,7 @@ const ProposerDetails = ({
             setSubmit={setSubmit}
             options={{ defaultValues: values, validateOn: "change" }}
             setErrorInField={setErrorInField}
+            isPanelVisible={true}
           />
         </Form>
       </div>

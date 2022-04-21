@@ -30,6 +30,9 @@ const useFormBuilder = (
 
   const updateValue = (name, value, removeOtherValues = false) => {
     console.log("sdfgdzfgvdf",name, value,values)
+    if(formName === "Medical Details" && !value){
+      return;
+    }
 
       if (removeOtherValues) {
         setValues({ [name]: value });
@@ -182,15 +185,15 @@ const useFormBuilder = (
           item[0].additionalOptions.members.forEach(member => {
             item.forEach(innerItem => {
               let errorMsg =
-                innerItem.validate &&
-                values[innerItem.parent] &&
-                values[innerItem.parent].members[member] &&
+                innerItem?.validate &&
+                values?.[innerItem.parent] &&
+                values?.[innerItem.parent]?.members?.[member] &&
                 performValidations(innerItem.validate, values, {
                   variableName: innerItem.name,
                   parent: innerItem.parent,
                   member,
                 });
-
+console.log("dbdfbfdbnl",innerItem,values)
               if (renderField(innerItem, values, member)) {
                 errorsTemp[innerItem.parent + member + innerItem.name] =
                   errorMsg;

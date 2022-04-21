@@ -7,6 +7,7 @@ import {
   getProposal,
   PaymentStatus,
   saveProposal,
+  fetchUnderWritingMQ,
   submitProposal,
 } from "./serviceApi";
 
@@ -28,6 +29,7 @@ const proposal = createSlice({
     failedBmiData: false,
     insuredDetailsResponse:{},
     failedBmiBlockJourney: false,
+    underWritingStatus:[],
     showErrorPopup: {
       show: false,
       head: "",
@@ -113,6 +115,9 @@ const proposal = createSlice({
     setFailedBmiBlockJourney:(state, { payload }) => {
       state.failedBmiBlockJourney = payload;
     },
+    setUnderWritingStatus:(state, { payload }) => {
+      state.underWritingStatus = payload;
+    },
   },
 });
 export const {
@@ -137,7 +142,8 @@ export const {
   setCanSendSummaryPdf,
   setIsPopupOn,
   setInsuredDetailsResponse,
-  setFailedBmiBlockJourney
+  setFailedBmiBlockJourney,
+  setUnderWritingStatus
 } = proposal.actions;
 const ls = new SecureLS();
 
@@ -157,7 +163,19 @@ const ls = new SecureLS();
 
 //   return newValKeys.some(newValKey => newVal[newValKey] !== oldVal[newValKey]);
 // };
+export const getMedicalUnderwritingStatus = () => {
+  return async (dispatch, state) => {
+    try{
+      const {data} = await fetchUnderWritingMQ();
+      dispatch(setUnderWritingStatus(data));
+    console.log("egbsrjkrr",data)
 
+    } catch (err) {
+      console.error(err);
+    }
+    
+  }
+}
 export const saveProposalData = (proposalData, next, failure) => {
   return async (dispatch, state) => {
     try {

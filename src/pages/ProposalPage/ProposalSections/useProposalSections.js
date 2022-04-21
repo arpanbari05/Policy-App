@@ -18,7 +18,8 @@ import {
   setShowErrorPopup,
   setFailedBmiData,
   setInsuredDetailsResponse,
-  setFailedBmiBlockJourney
+  setFailedBmiBlockJourney,
+  getMedicalUnderwritingStatus
 } from "./ProposalSections.slice";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useRevisedPremiumModal,useCart } from "../../../customHooks";
