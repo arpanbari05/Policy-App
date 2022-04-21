@@ -315,7 +315,7 @@ function AdditionalDiscount({
   onApplyClick,
   ...props
 }) {
-  const { name, description, alias } = additionalDiscount;
+  const { name, description, fixed_discount_value } = additionalDiscount;
 
   const { colors } = useTheme();
 
@@ -323,9 +323,14 @@ function AdditionalDiscount({
 
   const discountAmount = amount(getDiscountAmount(additionalDiscount));
 
+  const isMandatory = !!fixed_discount_value; //? key indication for mandatory discount
+
   const handleApplyClick = () => {
-    onApplyClick && onApplyClick(additionalDiscount);
+    !isMandatory && onApplyClick && onApplyClick(additionalDiscount);
   };
+
+  //* AUTO APPLY FACILITY FOR E-SALE AND LIFESTYLE DISCOUNT OF USGI IS ALREDAY DEFINED IN useUsgiDiscount();
+  //* AUTO APPLY FACILITY FOR MORE ADDITIONAL DISCOUNT IN FUTURE CAN BE PUT IN THE useUsgiDiscount() BY MAKING HOOK GENERIC;
 
   return (
     <div
@@ -336,6 +341,7 @@ function AdditionalDiscount({
         display: flex;
         justify-content: space-between;
         align-items: center;
+        opacity: ${isMandatory ? "0.7" : "1"};
         box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
       `}
       {...props}

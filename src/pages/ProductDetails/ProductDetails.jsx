@@ -17,6 +17,7 @@ import {
 } from "../ProposalPage/ProposalPage.style";
 import "styled-components/macro";
 import { Page } from "../../components";
+import ErrorPopup from "../ProposalPage/ProposalSections/components/ErrorPopup";
 import PageNotFound from "../PageNotFound";
 import {
   useCart,
@@ -27,20 +28,29 @@ import {
 import CartMobile from "./components/Mobile/CartMobile/CartMobile";
 import FeatureSection from "./components/FeatureSection/FeatureSection";
 import Select from "react-select";
-import { numberToDigitWord } from "../../utils/helper";
+import { isSSOJourney, numberToDigitWord } from "../../utils/helper";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import SumInsuredSection from "./components/SumInsuredSection";
 import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 import Benefit from "./components/Benefit";
 import GoBackButton from "../../components/GoBackButton";
 import { useGetEnquiriesQuery, useUpdateEnquiryMutation } from "../../api/api";
+import { useDispatch } from "react-redux";
+import { setPosPopup } from "../quotePage/quote.slice";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
 
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
+  const { pos_popup } = useSelector(({ quotePage }) => quotePage);
 
   //const location = useLocation();
+
+  const {
+    data: {
+      settings: { pos_nonpos_switch_message, restrict_posp_quotes_after_limit },
+    },
+  } = useFrontendBoot();
 
   const { colors } = useTheme();
 
@@ -56,6 +66,8 @@ const ProductDetails = () => {
 
   const [showNav, setShowNav] = useState(false);
 
+  const dispatch = useDispatch();
+
   const { getCartEntry, updateCartEntry } = useCart();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
@@ -63,10 +75,16 @@ const ProductDetails = () => {
   const { sum_insured, available_sum_insureds, group } = cartEntry;
 
   const handleChange = option => {
+    if (isSSOJourney() && pos_nonpos_switch_message && option.value > 500000)
+      dispatch(setPosPopup(true));
     updateCartEntry(group?.id, { sum_insured: option?.value });
   };
 
-  const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+  let sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+
+  if (isSSOJourney() && restrict_posp_quotes_after_limit === `${1}`) {
+    sumInsuredOptions = sumInsuredOptions.filter(si => si.value <= 500000);
+  }
 
   useUSGIDiscounts(); //? removal of lifestyle discount if present.
 
@@ -116,6 +134,12 @@ const ProductDetails = () => {
 
   return (
     <Page noNavbarForMobile={true}>
+      {pos_popup && (
+        <ErrorPopup
+          handleClose={() => dispatch(setPosPopup(false))}
+          htmlProps={pos_nonpos_switch_message}
+        />
+      )}
       <MobileHeader primary_color={colors?.primary_color}>
         <MobileHeaderText
           onClick={() => {
@@ -248,20 +272,19 @@ const ProductDetails = () => {
                 }
               `}
             >
-              {subJourneyType === "renewal" ? (
+              {subJourneyType === "renewal" && (
                 <SumInsuredSection cartEntry={cartEntry} />
-              ) : tenant?.alias === "fyntune" ? (
-                <div
-                  css={`
-                    display: none;
-                    @media (max-width: 768px) {
-                      display: block;
-                    }
-                  `}
-                >
-                  <SumInsuredOptionsSection cartEntry={cartEntry} />
-                </div>
-              ) : null}
+              )}
+              <div
+                css={`
+                  display: none;
+                  @media (max-width: 768px) {
+                    display: block;
+                  }
+                `}
+              >
+                <SumInsuredOptionsSection cartEntry={cartEntry} />
+              </div>
 
               <CheckDiscount
                 groupCode={parseInt(groupCode)}
@@ -289,16 +312,31 @@ function getSumInsuredOptions(arr = []) {
 
 function SumInsuredOptionsSection({ cartEntry }) {
   const { updateCartEntry } = useCart();
+  const {
+    data: {
+      settings: {
+        pos_nonpos_switch_message,
+        restrict_posp_quotes_after_limit,
+      },
+    },
+  } = useFrontendBoot();
+  const dispatch = useDispatch();
 
   const { available_sum_insureds, group, sum_insured } = cartEntry;
 
   if (!available_sum_insureds) return null;
 
   const handleChange = option => {
+    if (isSSOJourney() && pos_nonpos_switch_message && option.value > 500000)
+      dispatch(setPosPopup(true));
     updateCartEntry(group?.id, { sum_insured: option?.value });
   };
 
-  const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+  let sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+
+  if (isSSOJourney() && restrict_posp_quotes_after_limit === `${1}`) {
+    sumInsuredOptions = sumInsuredOptions.filter(si => si.value <= 500000);
+  }
 
   return (
     <FeatureSection heading="Sum Insured" subHeading="Modify sum insured">

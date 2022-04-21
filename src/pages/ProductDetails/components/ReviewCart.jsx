@@ -100,7 +100,7 @@ export function CartDetails({
 }) {
   const { colors } = useTheme();
 
-  const { journeyType, subJourneyType } = useFrontendBoot();
+  const { subJourneyType } = useFrontendBoot();
 
   const { getCartEntry } = useCart();
 
@@ -897,7 +897,7 @@ function BasePlanDetails({
 }) {
   const { getCartEntry } = useCart();
 
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
 
@@ -959,7 +959,7 @@ function BasePlanDetails({
           <CartDetailRow
             title="Cover"
             value={
-              !options || !options?.length
+              !options || !options?.length || subJourneyType === "renewal"
                 ? `₹ ${figureToWords(sum_insured)}`
                 : coverList
             }
@@ -1101,7 +1101,12 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
       totalDiscountAmount: getTotalDiscountAmount(),
     });
 
-    updateCartMutation({ discounted_total_premium }).then(() => {
+    const featureOptions = JSON.parse(cartEntry?.feature_options);
+
+    updateCartMutation({
+      discounted_total_premium,
+      feature_options: featureOptions,
+    }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({

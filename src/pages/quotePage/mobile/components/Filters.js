@@ -30,6 +30,16 @@ const availableMoreFilters = {
   others: true,
 };
 
+const DESCRIPTIONS = {
+  arogya_sanjeevani:
+    "Plan offering Arogya Sanjeevani Benefits; this policy is a standard health insurance policy introduced by the IRDA & offered by Health Insurance Companies in India",
+  global_plans:
+    "Plans offering Global coverage; this policy ensure you are civered for health expenses internationally",
+  base_health:
+    "Plans covering all your medical needs; this policy offer varied health benefits meeting your needs",
+  "1_crore_plan": "Plans offering cover amount 1 Crore",
+};
+
 export function useFiltersSlot({ initialFilters } = {}) {
   const [filters, setFilters] = useState(initialFilters);
 
@@ -122,6 +132,7 @@ export function FilterModal({ onClose, show }) {
     data: {
       premiums,
       plantypes,
+      baseplantypes,
       morefilters,
       deductibles,
       settings: {
@@ -160,6 +171,7 @@ export function FilterModal({ onClose, show }) {
           "plantype",
           "insurers",
           "deductible",
+          "baseplantype",
           ...morefilters.map(filter => filter.code),
         ],
         getSelectedFilter,
@@ -203,7 +215,11 @@ export function FilterModal({ onClose, show }) {
           className="d-flex min-vh-100"
           css={`
             & .nav-link.active {
-              background-image: linear-gradient(90deg, ${colors.primary_shade}, #fff);
+              background-image: linear-gradient(
+                90deg,
+                ${colors.primary_shade},
+                #fff
+              );
             }
             margin-bottom: 3em;
             padding-bottom: 1.5rem;
@@ -223,12 +239,13 @@ export function FilterModal({ onClose, show }) {
             ) : (
               <FilterNavItem eventKey={"deductible"}>Deductible</FilterNavItem>
             )}
-            <FilterNavItem eventKey={"tenure"}>Multiyear Options</FilterNavItem>
-            {selectedPolicyTypeFilter.display_name !== "Individual" &&
+            {selectedPolicyTypeFilter?.display_name !== "Individual" &&
             journeyType !== "top_up" &&
             +multiindividual_visibilty !== 0 ? (
               <FilterNavItem eventKey={"plantype"}>Policy type</FilterNavItem>
             ) : null}
+            <FilterNavItem eventKey={"tenure"}>Multiyear Options</FilterNavItem>
+            <FilterNavItem eventKey={"baseplantype"}>Plan type</FilterNavItem>
             <FilterNavItem eventKey={"insurers"}>Insurers</FilterNavItem>
             {morefilters.map(filter => (
               <FilterNavItem eventKey={filter.code} key={filter.code}>
@@ -263,17 +280,22 @@ export function FilterModal({ onClose, show }) {
                 options={deductibles}
               />
             )}
-            <RenderFilterOptions
-              showTooltip={false}
-              code="tenure"
-              options={tenures}
-            />
             {+multiindividual_visibilty !== 0 && (
               <RenderFilterOptions
                 code="plantype"
                 options={plantypes.filter(plantype => plantype.code !== "I")}
               />
             )}
+            <RenderFilterOptions
+              showTooltip={false}
+              code="tenure"
+              options={tenures}
+            />
+            <RenderFilterOptions
+              // showTooltip={false}
+              code="baseplantype"
+              options={baseplantypes}
+            />
             <Tab.Pane eventKey="insurers">
               <InsurersFilter
                 code="insurers"
@@ -584,7 +606,7 @@ function CustomFilterModal({ show, children }) {
   return (
     <div
       css={`
-        display: ${show ? "block" : "none"};
+        // display: ${show ? "block" : "none"};
         width: 100vw;
         height: 100vh;
         position: fixed;
@@ -609,50 +631,52 @@ function CustomFilterModal({ show, children }) {
 function MobileModal({ onClose, children, show }) {
   const { colors } = useTheme();
   return (
-    <CustomFilterModal show={show}>
-      <div
-        css={`
-          height: 100vh;
-          width: 100vw;
-          overflow: auto;
-        `}
-      >
+    show && (
+      <CustomFilterModal show={show}>
         <div
-          className="p-3"
           css={`
-            background-color: ${colors.primary_color};
-            color: #fff;
+            height: 100vh;
+            width: 100vw;
+            overflow: auto;
           `}
         >
           <div
-            className="d-flex align-items-center"
+            className="p-3"
             css={`
-              gap: 1em;
+              background-color: ${colors.primary_color};
+              color: #fff;
             `}
           >
-            <button
-              onClick={onClose}
+            <div
+              className="d-flex align-items-center"
               css={`
-                color: #fff;
-                line-height: 1;
+                gap: 1em;
               `}
             >
-              <FaArrowLeft />
-            </button>
-            <h1
-              className="m-0"
-              css={`
-                font-size: 1rem;
-                font-weight: 900;
-              `}
-            >
-              Filters
-            </h1>
+              <button
+                onClick={onClose}
+                css={`
+                  color: #fff;
+                  line-height: 1;
+                `}
+              >
+                <FaArrowLeft />
+              </button>
+              <h1
+                className="m-0"
+                css={`
+                  font-size: 1rem;
+                  font-weight: 900;
+                `}
+              >
+                Filters
+              </h1>
+            </div>
           </div>
+          {children}
         </div>
-        {children}
-      </div>
-    </CustomFilterModal>
+      </CustomFilterModal>
+    )
   );
 }
 
