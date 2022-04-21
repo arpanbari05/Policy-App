@@ -35,6 +35,7 @@ import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 import Benefit from "./components/Benefit";
 import GoBackButton from "../../components/GoBackButton";
 import { useGetEnquiriesQuery, useUpdateEnquiryMutation } from "../../api/api";
+import { TraceId } from "../../components/Navbar";
 import { useDispatch } from "react-redux";
 import { setPosPopup } from "../quotePage/quote.slice";
 
@@ -149,6 +150,7 @@ const ProductDetails = () => {
           <FaArrowCircleLeft />
           <span className="mx-2"> Go Back</span>
         </MobileHeaderText>
+        <TraceId />
       </MobileHeader>
       <main
         className="container noselect"
