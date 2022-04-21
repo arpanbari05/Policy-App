@@ -44,6 +44,7 @@ const FormBuilder = ({
   nomineeRelationAutopopulated,
   autoPopulateSelfOtherDetails,
   preFilledDataBase,
+  isPanelVisible
 }) => {
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
@@ -86,6 +87,8 @@ const FormBuilder = ({
     setErrorInField,
     fetchErrors,
     fetchValid,
+    isPanelVisible,
+    keyStr
   );
   useEffect(() => {
     if(formName === "Other Details"){
@@ -143,8 +146,9 @@ const FormBuilder = ({
   useEffect(() => {
     if (submitTrigger) {
       triggerValidation();
+      console.log("berbjkb10",errors)
       // scrolltoTop if errors
-      scrollToErrors && scrollToErrors();
+      scrollToErrors();
       setSubmit("SUBMIT");
     }
   }, [submitTrigger]);
