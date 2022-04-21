@@ -62,7 +62,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
 
     const currentGroup =
       localStorage.getItem("groups") &&
-      JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+      JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
     if (!validation) {
       return;

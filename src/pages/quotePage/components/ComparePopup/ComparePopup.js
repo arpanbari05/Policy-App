@@ -71,7 +71,7 @@ const ComparePopup = ({ groupCode }) => {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   return (
     <div

@@ -811,7 +811,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
     },
   } = useGetEnquiriesQuery();
 
-  const currentGroup = groups.find(group => group.id === +groupCode);
+  const currentGroup = groups.find(group => group?.id === +groupCode);
 
   groups = groups.filter(group => group.type === currentGroup.type);
 
@@ -1068,7 +1068,7 @@ function ProceedWithoutPlan({ group, link, handleClose = () => {} }) {
   const { isLoading, isSuccess } = useDeleteGroupQuery(groupId);
 
   const handleContinue = () => {
-    setGroupId(group.id);
+    setGroupId(group?.id);
   };
 
   useEffect(() => {

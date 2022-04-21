@@ -92,7 +92,7 @@ function useFilters() {
     localStorage.setItem("groups", JSON.stringify(updatedGroup));
   }
 
-  let currentGroup = groups.find(group => group.id === parseInt(groupCode));
+  let currentGroup = groups.find(group => group?.id === parseInt(groupCode));
 
   const extras = currentGroup?.extras || {};
 

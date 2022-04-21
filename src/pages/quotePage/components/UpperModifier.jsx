@@ -80,14 +80,14 @@ export function GroupLinks({ ...props }) {
   }, [groupCode]);
 
   if (partioned) {
-    groupsToShow = groups.filter(group => group.id !== allMembersGroup?.id);
+    groupsToShow = groups.filter(group => group?.id !== allMembersGroup?.id);
   } else {
     groupsToShow = [allMembersGroup];
   }
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   const onCombinedPlanHandler = () => {
     history.push({
@@ -121,7 +121,7 @@ export function GroupLinks({ ...props }) {
       {...props}
     >
       {groupsToShow.map(group => (
-        <GroupLink group={group} key={group.id} />
+        <GroupLink group={group} key={group?.id} />
       ))}
       {allMembersGroup &&
         (partioned ? (
@@ -162,7 +162,9 @@ export function GroupLink({ group, ...props }) {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(grp => grp.id === group.id);
+    JSON.parse(localStorage.getItem("groups")).find(
+      grp => grp?.id === group?.id,
+    );
   const locationQuery =
     currentGroup?.pincode && currentGroup?.city
       ? `&pincode=${currentGroup.pincode}&city=${currentGroup?.city}`
@@ -175,7 +177,7 @@ export function GroupLink({ group, ...props }) {
     >
       <Link
         to={{
-          pathname: `/quotes/${group.id}`,
+          pathname: `/quotes/${group?.id}`,
           search: `enquiryId=${enquiryId}${locationQuery}`,
         }}
         title={membersText}

@@ -108,7 +108,7 @@ function InputMembersForm({ posContent, ...props }) {
           const res = await updateEnquiry({ plan_type: "F" });
           if (res?.error || !res?.data) return;
           const { groups } = res?.data?.data;
-          const firstGroup = Math.min(...groups?.map(group => group.id));
+          const firstGroup = Math.min(...groups?.map(group => group?.id));
           localStorage.setItem(
             "default_filters",
             JSON.stringify({ plan_type: "F" }),
@@ -126,7 +126,7 @@ function InputMembersForm({ posContent, ...props }) {
         }
 
         const { groups } = res?.data?.data;
-        const firstGroup = Math.min(...groups.map(group => group.id));
+        const firstGroup = Math.min(...groups.map(group => group?.id));
 
         nextPagePath = `/input/location-${firstGroup}`;
         history.push(getUrlWithEnquirySearch(nextPagePath));

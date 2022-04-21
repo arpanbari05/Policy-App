@@ -140,7 +140,7 @@ export function useQuote() {
 
   const { groups } = useMembers();
 
-  const currentGroup = groups?.find(group => group.id === +groupCode);
+  const currentGroup = groups?.find(group => group?.id === +groupCode);
 
   const { data } = useGetCartQuery();
 
@@ -258,7 +258,7 @@ export function useFilter() {
   } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   function getFilters(groupCode) {
-    let currentGroup = groups.find(group => group.id === parseInt(groupCode));
+    let currentGroup = groups.find(group => group?.id === parseInt(groupCode));
 
     const { extras } = currentGroup;
 
@@ -470,7 +470,7 @@ export function useMembers() {
   };
 
   function getGroup(groupCode) {
-    return groups?.find(group => group.id === parseInt(groupCode));
+    return groups?.find(group => group?.id === parseInt(groupCode));
   }
 
   function getGroupLocation(groupCode) {
@@ -497,7 +497,7 @@ export function useMembers() {
   function getNextGroup(currentGroupCode) {
     return groups
       .filter(group => group.type !== "all")
-      .find(group => group.id === currentGroupCode + 1);
+      .find(group => group?.id === currentGroupCode + 1);
   }
 
   function getPreviousGroup(currentGroupCode) {
@@ -515,7 +515,7 @@ export function useMembers() {
   }
 
   function checkGroupExist(groupCode) {
-    return groups.some(group => group.id === parseInt(groupCode));
+    return groups.some(group => group?.id === parseInt(groupCode));
   }
 
   return {
@@ -664,7 +664,7 @@ export function useUpdateMembers() {
 
     const currentGroup =
       localStorage.getItem("groups") &&
-      JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+      JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
     return createEnquiry({ ...updateData, updateCache: false }).then(
       response => {
@@ -1151,7 +1151,7 @@ export function useUrlEnquiry() {
     const currentGroup =
       localStorage.getItem("groups") &&
       JSON.parse(localStorage.getItem("groups")).find(
-        group => group.id === +groupCode,
+        group => group?.id === +groupCode,
       );
     const locationQuery =
       currentGroup?.pincode && currentGroup?.city
@@ -1280,7 +1280,7 @@ function useInsurersToFetch() {
 
   let filteredInsurers = [];
 
-  let currentGroup = groups.find(group => group.id === parseInt(groupCode));
+  let currentGroup = groups.find(group => group?.id === parseInt(groupCode));
 
   if (currentGroup) {
     const { extras } = currentGroup;
@@ -2031,14 +2031,14 @@ export function useAddOns(groupCode) {
       addOnsToAdd.push(addOnToAdd);
     }
 
-    updateCartEntry(cartEntry.group.id, {
+    updateCartEntry(cartEntry.group?.id, {
       addons: [...filteredAddOns, ...addOnsToAdd],
     });
   }
 
   function removeAddOns(addOns = []) {
     if (!addons) return;
-    updateCartEntry(cartEntry.group.id, {
+    updateCartEntry(cartEntry.group?.id, {
       addons: addons.filter(addOnAdded =>
         addOns.some(
           addOnToRemove =>
@@ -2234,12 +2234,7 @@ export const useRevisedPremiumModal = () => {
         }
       }
     }
-  }, [
-    prevTotalPremium,
-    updatedTotalPremium,
-    prevPremium,
-    updatedPremium,
-  ]); //? CONTROLS DISPLAY OF REVISED PREMIUM POPUP DIFFERENCE IN AMOUNT 
+  }, [prevTotalPremium, updatedTotalPremium, prevPremium, updatedPremium]); //? CONTROLS DISPLAY OF REVISED PREMIUM POPUP DIFFERENCE IN AMOUNT
 
   useEffect(() => {
     if (isAnyPlanUnAvailableInCart) {
@@ -2247,9 +2242,7 @@ export const useRevisedPremiumModal = () => {
       revisedPremiumPopupToggle.on();
       dispatch(setIsPopupOn(true));
     }
-  }, [
-    isAnyPlanUnAvailableInCart,
-  ]); //? CONTROLS DISPLAY OF REVISED PREMIUM POPUP IN CASE OF UNAVAILABILITY OF PLAN 
+  }, [isAnyPlanUnAvailableInCart]); //? CONTROLS DISPLAY OF REVISED PREMIUM POPUP IN CASE OF UNAVAILABILITY OF PLAN
 
   const getUpdatedCartEntry = groupCode => {
     const cartEntry = cartEntries.find(

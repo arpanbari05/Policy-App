@@ -31,7 +31,7 @@ function PlanTypeForm({ posContent, ...props }) {
     updateEnquiry({ plan_type: selectedPlanType?.code }).then(res => {
       if (res?.error || !res?.data) return;
       const { groups } = res?.data?.data;
-      const firstGroup = Math.min(...groups?.map(group => group.id));
+      const firstGroup = Math.min(...groups?.map(group => group?.id));
       localStorage.setItem(
         "default_filters",
         JSON.stringify({ plan_type: selectedPlanType?.code }),

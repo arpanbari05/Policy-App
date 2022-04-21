@@ -72,7 +72,7 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const { getNextGroupProduct } = useCart();
 
-  const { journeyType , subJourneyType} = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
@@ -261,7 +261,7 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   const handleClick = () => {
     const discounted_total_premium = getTotalPremiumWithDiscount({
@@ -273,7 +273,7 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
-          pathname: `/productdetails/${nextGroupProduct.group.id}`,
+          pathname: `/productdetails/${nextGroupProduct.group?.id}`,
           search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
         });
         return;
@@ -726,8 +726,8 @@ function isQueryLoading(query) {
 
 function useTotalPremiumLoader(cartEntry) {
   const { group } = cartEntry;
-  const tenureDiscount = useTenureDiscount(group.id);
-  const riders = useRiders({ quote: cartEntry, groupCode: group.id });
+  const tenureDiscount = useTenureDiscount(group?.id);
+  const riders = useRiders({ quote: cartEntry, groupCode: group?.id });
 
   const isTotalPremiumLoading = _.some([
     isQueryLoading(tenureDiscount.query),

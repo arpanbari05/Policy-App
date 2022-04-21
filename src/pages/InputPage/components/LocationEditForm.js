@@ -42,7 +42,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
   const groupWithoutLocation = groups.find(group => !group.pincode);
   const [currentGroupCode, setCurrentGroupCode] = useState(
     currentGroup?.type === "all"
-      ? groups[0].id
+      ? groups[0]?.id
       : groupWithoutLocation?.id || groupCode,
   );
 
@@ -80,7 +80,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
     const isSingleMember = !groups.some(group => group.members.length > 1);
 
     if (previousGroup)
-      return getUrlWithEnquirySearch(`/input/location-${previousGroup.id}`);
+      return getUrlWithEnquirySearch(`/input/location-${previousGroup?.id}`);
 
     if (journeyType === "top_up" || isSingleMember)
       return getUrlWithEnquirySearch(`/input/members`);
@@ -120,7 +120,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
             groupWithoutLocation &&
             groupWithoutLocation?.id !== currentGroupCode
           ) {
-            setCurrentGroupCode(groupWithoutLocation.id);
+            setCurrentGroupCode(groupWithoutLocation?.id);
           } else {
             refetch();
             return dispatch(setShowEditMembers(false));
@@ -223,12 +223,12 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           >
             {groups.map(group => (
               <GroupWrapper
-                active={group.id === currentGroupCode}
+                active={group?.id === currentGroupCode}
                 color={colors.primary_color}
-                onClick={() => setCurrentGroupCode(group.id)}
+                onClick={() => setCurrentGroupCode(group?.id)}
               >
                 <Group
-                  active={group.id === currentGroupCode}
+                  active={group?.id === currentGroupCode}
                   color={colors.primary_color}
                   shade={colors.secondary_shade}
                 >

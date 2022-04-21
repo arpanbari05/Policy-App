@@ -21,7 +21,7 @@ function useUpdateFilters() {
     ? JSON.parse(localStorage.getItem("groups"))
     : enqGroups;
 
-  const currentGroup = groups?.find(group => group.id === parseInt(groupCode));
+  const currentGroup = groups?.find(group => group?.id === parseInt(groupCode));
 
   const previousFilters = currentGroup?.extras;
 
