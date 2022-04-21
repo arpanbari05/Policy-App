@@ -1,4 +1,5 @@
 import httpClient from "./../../../api/httpClient";
+export const fetchUnderWritingMQ = () => httpClient("health/proposals/underwriting-status", { method: "POST" }); 
 export const saveProposal = data =>
   httpClient("health/proposals", { method: "POST", data });
 export const submitProposal = data =>

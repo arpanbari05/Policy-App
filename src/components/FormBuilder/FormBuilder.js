@@ -148,7 +148,7 @@ const FormBuilder = ({
       triggerValidation();
       console.log("berbjkb10",errors)
       // scrolltoTop if errors
-      scrollToErrors();
+      scrollToErrors && scrollToErrors();
       setSubmit("SUBMIT");
     }
   }, [submitTrigger]);

@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "styled-components/macro";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
-import { setShowErrorPopup } from "../ProposalSections/ProposalSections.slice";
+import { setShowErrorPopup, getMedicalUnderwritingStatus } from "../ProposalSections/ProposalSections.slice";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 import useOtherDetails from "./useOtherDetails";
 import StyledButton from "../../../components/StyledButton";
@@ -27,7 +27,7 @@ const InsuredDetails = ({
   setBlockTabSwitch,
 }) => {
   const [medicalContinueClick, setMedicalContinueClick] = useState(false);
-  const { proposalData, showErrorPopup, insuredDetailsResponse } = useSelector(
+  const { proposalData, showErrorPopup, insuredDetailsResponse, underWritingStatus } = useSelector(
     state => state.proposalPage,
   );
 
@@ -285,6 +285,8 @@ const InsuredDetails = ({
           </Panel>
         );
       })}
+      {console.log("Svsfods", underWritingStatus,insuredDetailsResponse)}
+
   {/* <UnderWritingDiscisionTable>
         <div className="head_section section_row d-flex align-items-center justify-content-evenly">
           <div className="section_column">Member</div>
@@ -302,7 +304,7 @@ const InsuredDetails = ({
                   Click here
                             </a>
                   </div>
-                  <div className="section_column">Underwiting Discision</div>
+                  <div className="section_column">{underWritingStatus?.find(({member_id}) => member_id === insuredDetailsResponse.members[member].member_id)?.result || "Not Submitted"}</div>
                 </div>
               </>
             )
@@ -318,7 +320,6 @@ const InsuredDetails = ({
             });
           }}
         />
-        {console.log("Svsfods", values)}
 
        {/* <div className="check_status_btn">
         <StyledButton noIcon={true} styledCss={{    padding: "0px 10px", fontSize:"16px"}}>
@@ -329,12 +330,17 @@ const InsuredDetails = ({
 
         <ContinueBtn
           onClick={() => {
+            dispatch(getMedicalUnderwritingStatus());
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
             // setShow();
             setSubmit("Medical");
             console.log("ewrgnjkrsv", canProceed);
-            if (name === "Medical Details" && canProceed?.canProceed) {
+            if (
+              name === "Medical Details" && 
+            canProceed?.canProceed
+            //  && (Object.keys(insuredDetailsResponse).length?underWritingStatus.length:true)
+            ) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
                 frontBootData?.settings?.medical_nstp_declaration_message &&
