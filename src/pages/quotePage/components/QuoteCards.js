@@ -674,7 +674,7 @@ export function QuoteCardSelect({ color, fontSize, maxWidth, ...props }) {
       styles={{
         option: provided => ({
           ...provided,
-          fontSize: fontSize || "12px",
+          fontSize: "11px",
           fontWeight: "bold",
           padding: "7px 7px !important",
           textAlign: "left",
@@ -689,7 +689,6 @@ export function QuoteCardSelect({ color, fontSize, maxWidth, ...props }) {
         }),
         menu: provided => ({
           ...provided,
-          fontSize: fontSize || "13px",
           fontWeight: "bold",
           textAlign: "left",
           overflow: "auto",
@@ -697,7 +696,6 @@ export function QuoteCardSelect({ color, fontSize, maxWidth, ...props }) {
         valueContainer: provided => ({
           ...provided,
           padding: 0,
-          fontSize: fontSize || "13px",
           fontWeight: "bold",
         }),
         indicatorSeparator: () => ({ display: "none" }),
@@ -705,7 +703,6 @@ export function QuoteCardSelect({ color, fontSize, maxWidth, ...props }) {
           ...provided,
           padding: 0,
           color: "black",
-          fontSize: fontSize || "13px",
           fontWeight: "bold",
         }),
         control: provided => ({

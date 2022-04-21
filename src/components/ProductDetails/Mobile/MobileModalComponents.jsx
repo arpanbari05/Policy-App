@@ -22,6 +22,7 @@ import {
   figureToWords,
   getDisplayPremium,
   getPlanFeatures,
+  isSSOJourney,
   numberToDigitWord,
 } from "../../../utils/helper";
 import { mobile, small, tabletAndMobile } from "../../../utils/mediaQueries";
@@ -51,7 +52,12 @@ export function MobileProductHeader({
   setCurSumInsured = () => {},
   ...props
 }) {
-  const { journeyType } = useFrontendBoot();
+  const {
+    journeyType,
+    data: {
+      settings: { restrict_posp_quotes_after_limit },
+    },
+  } = useFrontendBoot();
 
   const {
     product: { company, name },
@@ -63,7 +69,12 @@ export function MobileProductHeader({
     available_sum_insureds,
   } = quote;
 
-  const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+  let sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+
+  if (isSSOJourney() && restrict_posp_quotes_after_limit === `${1}`) {
+    sumInsuredOptions = sumInsuredOptions.filter(si => si.value < 500001);
+  }
+
   const { getCompany } = useCompanies();
 
   const { logo, csr } = getCompany(company.alias);
@@ -96,7 +107,7 @@ export function MobileProductHeader({
                 <b>₹ {figureToWords(sum_insured)}</b>
               ) : (
                 <QuoteCardSelect
-                  fontSize={11}
+                  fontSize={"inherit"}
                   maxWidth
                   options={sumInsuredOptions}
                   defaultValue={{

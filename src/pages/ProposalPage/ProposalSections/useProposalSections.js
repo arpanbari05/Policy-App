@@ -17,11 +17,13 @@ import {
   getProposalData,
   setShowErrorPopup,
   setFailedBmiData,
-  setInsuredDetailsResponse
+  setInsuredDetailsResponse,
+  setFailedBmiBlockJourney
 } from "./ProposalSections.slice";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useRevisedPremiumModal,useCart } from "../../../customHooks";
-import { useGetEnquiriesQuery } from "../../../api/api";
+import { useGetEnquiriesQuery, useSaveProposalMutation } from "../../../api/api";
+
 
 const useProposalSections = ({
   setActive,
@@ -38,7 +40,7 @@ const useProposalSections = ({
   const schema = useSelector(({ schema }) => schema.currentSchema);
   const history = useHistory();
   const queryStrings = useUrlQuery();
-
+  // const [saveProposal, queryState] = useSaveProposalMutation()
   const enquiryId = queryStrings.get("enquiryId");
 
   const [isValid, setValid] = useState(
@@ -200,6 +202,7 @@ const useProposalSections = ({
   };
 
 
+
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
@@ -270,30 +273,35 @@ const useProposalSections = ({
         saveProposalData(
           { [formName]: sendedVal },
           ({ prevProposalData, updatedProposalData, responseData}) => {
+            const {data,failed_bmi,block_journey} = responseData;
             callback();
             revisedPremiumPopupUtilityObject?.getUpdatedCart();
-            console.log("dbdhfbjksfvb",responseData.data)
-            if(responseData?.data){
-              dispatch(setInsuredDetailsResponse(responseData.data));
+            console.log("dbdhfbjksfvb",data)
+            if(data){
+              dispatch(setInsuredDetailsResponse(data));
             }
-            if (responseData?.failed_bmi?.health) {
-              dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
+            if (failed_bmi?.health) {
+              if(block_journey) dispatch(setFailedBmiBlockJourney(block_journey));
+              else dispatch(setFailedBmiBlockJourney(false));
+              dispatch(setFailedBmiData(failed_bmi?.health));
               dispatch(
                 setShowBMI(
-                  Object.keys(responseData?.failed_bmi.health).join(", "),
+                  Object.keys(failed_bmi.health).join(", "),
                 ),
               );
             }
-            if (prevProposalData["Medical Details"]) {
-              setSelfFieldsChange({
-                checkFor: prevProposalData["Medical Details"],
-                checkFrom: sendedVal,
-                updationFor: "Medical Details",
-                dispatch: dispatch,
-                callback: () => {},
-              });
-            } else {
-              setActive(getUnfilledForm(updatedProposalData));
+            if(!block_journey){
+              if (prevProposalData["Medical Details"]) {
+                setSelfFieldsChange({
+                  checkFor: prevProposalData["Medical Details"],
+                  checkFrom: sendedVal,
+                  updationFor: "Medical Details",
+                  dispatch: dispatch,
+                  callback: () => {},
+                });
+              } else {
+                setActive(getUnfilledForm(updatedProposalData));
+              }
             }
           },
         ),
@@ -394,6 +402,7 @@ if(name === "Proposer Details"){
     equriesData,
     show, 
     setShow,
+    
   };
 };
 

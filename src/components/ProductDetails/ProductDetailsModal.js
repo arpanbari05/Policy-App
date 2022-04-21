@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Modal, Tab, Tabs } from "react-bootstrap";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import styled from "styled-components/macro";
@@ -52,6 +53,9 @@ import {
 import SearchBarWithCityDD from "../../pages/ProductDetails/components/Mobile/MobileCashlessHospitals/SearchBarWithCityDD";
 import { QuoteCardSelect } from "../../pages/quotePage/components/QuoteCards";
 import { CircleLoader } from "../../components/index";
+import { useSelector, useDispatch } from "react-redux";
+import { setPosPopup } from "../../pages/quotePage/quote.slice";
+import ErrorPopup from "../../pages/ProposalPage/ProposalSections/components/ErrorPopup";
 
 function useRidersSlot() {
   const [selectedRiders, setSelectedRiders] = useState([]);
@@ -74,9 +78,22 @@ function ProductDetailsModal({
 
   const { selectedRiders, ...ridersSlot } = useRidersSlot();
 
+  const { pos_popup } = useSelector(({ quotePage }) => quotePage);
+
+  const dispatch = useDispatch();
+
+  const {
+    data: { settings: pos_nonpos_switch_message },
+  } = useFrontendBoot();
+
   const { sum_insured } = propQuote;
 
   const [currSumInsured, setCurSumInsured] = useState(sum_insured);
+
+  useEffect(() => {
+    if (currSumInsured > 500000 && pos_nonpos_switch_message && isSSOJourney())
+      dispatch(setPosPopup(true));
+  }, [currSumInsured]);
 
   const { isFetching, data } = useGetSingleICQuote({
     insurerToFetch: propQuote?.company_alias,
@@ -102,6 +119,12 @@ function ProductDetailsModal({
           padding: unset;
         `}
       >
+        {pos_popup && (
+          <ErrorPopup
+            handleClose={() => dispatch(setPosPopup(false))}
+            htmlProps={pos_nonpos_switch_message}
+          />
+        )}
         <div
           css={`
             padding-top: 100px;
@@ -553,7 +576,12 @@ function ProductHeader({
     queryState: { isLoading },
   } = useQuote();
 
-  const { journeyType } = useFrontendBoot();
+  const {
+    journeyType,
+    data: {
+      settings: { restrict_posp_quotes_after_limit },
+    },
+  } = useFrontendBoot();
 
   const cartSummaryModal = useToggle();
 
@@ -570,7 +598,11 @@ function ProductHeader({
     available_sum_insureds,
   } = quote;
 
-  const sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+  let sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+
+  if (isSSOJourney() && restrict_posp_quotes_after_limit === `${1}`) {
+    sumInsuredOptions = sumInsuredOptions.filter(si => si.value < 500001);
+  }
 
   const { getCompany } = useCompanies();
 
