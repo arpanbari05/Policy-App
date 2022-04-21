@@ -34,6 +34,7 @@ import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 import Benefit from "./components/Benefit";
 import GoBackButton from "../../components/GoBackButton";
 import { useGetEnquiriesQuery, useUpdateEnquiryMutation } from "../../api/api";
+import { TraceId } from "../../components/Navbar";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
@@ -125,6 +126,7 @@ const ProductDetails = () => {
           <FaArrowCircleLeft />
           <span className="mx-2"> Go Back</span>
         </MobileHeaderText>
+        <TraceId />
       </MobileHeader>
       <main
         className="container noselect"
