@@ -897,7 +897,7 @@ function BasePlanDetails({
 }) {
   const { getCartEntry } = useCart();
 
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
 
@@ -959,7 +959,7 @@ function BasePlanDetails({
           <CartDetailRow
             title="Cover"
             value={
-              !options || !options?.length
+              !options || !options?.length || subJourneyType === "renewal"
                 ? `₹ ${figureToWords(sum_insured)}`
                 : coverList
             }

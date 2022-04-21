@@ -456,6 +456,31 @@ function Info({ label, value, onlyDesktop = false, children, ...props }) {
   );
 }
 
+function fallbackCopyTextToClipboard(text, fallback) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+
+  // Avoid scrolling to bottom
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.position = "fixed";
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    var successful = document.execCommand("copy");
+    var msg = successful ? "successful" : "unsuccessful";
+    console.log("Fallback: Copying text command was " + msg);
+  } catch (err) {
+    console.error("Fallback: Oops, unable to copy", err);
+    fallback();
+  }
+
+  document.body.removeChild(textArea);
+}
+
 export function TraceId() {
   const searchQueries = useUrlQueries();
   const isBasicDetailsRoute = useRouteMatch({
@@ -478,12 +503,27 @@ export function TraceId() {
   const { trace_id } = data.data;
 
   function copyTraceId() {
-    navigator.clipboard.writeText(trace_id).then(() => {
-      setCopiedIndication(true);
-      setTimeout(() => {
-        setCopiedIndication(false);
-      }, 1000);
+    // if (!navigator.clipboard) {
+    fallbackCopyTextToClipboard(trace_id, () => {
+      navigator.clipboard.writeText(trace_id).then(() => {
+        setCopiedIndication(true);
+        setTimeout(() => {
+          setCopiedIndication(false);
+        }, 1000);
+      });
     });
+    setCopiedIndication(true);
+    setTimeout(() => {
+      setCopiedIndication(false);
+    }, 1000);
+    // } else {
+    //   navigator.clipboard.writeText(trace_id).then(() => {
+    //     setCopiedIndication(true);
+    //     setTimeout(() => {
+    //       setCopiedIndication(false);
+    //     }, 1000);
+    //   });
+    // }
   }
 
   if (copiedIndication) return <div>Copied to clipboard!</div>;
