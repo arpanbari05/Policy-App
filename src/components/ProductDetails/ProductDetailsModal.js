@@ -158,7 +158,11 @@ function ProductDetailsModal({
               <MobileRenderPlanDetails quote={quote} />
             </Tab>
             <Tab eventKey="mobile-add-on-coverages" title="Add-on Coverages">
-              <MobileRidersSection isLoading={isFetching} quote={quote} {...ridersSlot} />
+              <MobileRidersSection
+                isLoading={isFetching}
+                quote={quote}
+                {...ridersSlot}
+              />
             </Tab>
             <Tab
               eventKey="mobile-cashless-hospitals"
@@ -614,6 +618,8 @@ function ProductHeader({
               /* flex-direction: column; */
               border-right: 1px solid grey;
               padding: 0 20px;
+              font-size: 16px;
+
               @media (max-width: 1485px) {
                 font-size: 14px;
               }
@@ -633,6 +639,7 @@ function ProductHeader({
                 <>&nbsp;₹ {figureToWords(sum_insured)}</>
               ) : (
                 <QuoteCardSelect
+                  fontSize={"inherit"}
                   options={sumInsuredOptions}
                   defaultValue={{
                     value: sum_insured,
