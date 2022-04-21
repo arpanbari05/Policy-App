@@ -1,6 +1,9 @@
 {
   "short_name": "React App",
   "name": "Create React App Sample",
+  "permissions": [
+    "clipboardRead","clipboardWrite"
+  ],
   "icons": [
     {
       "src": "favicon.ico",
