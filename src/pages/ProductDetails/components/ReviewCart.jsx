@@ -100,7 +100,7 @@ export function CartDetails({
 }) {
   const { colors } = useTheme();
 
-  const { journeyType, subJourneyType } = useFrontendBoot();
+  const { subJourneyType } = useFrontendBoot();
 
   const { getCartEntry } = useCart();
 
@@ -1101,7 +1101,12 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
       totalDiscountAmount: getTotalDiscountAmount(),
     });
 
-    updateCartMutation({ discounted_total_premium }).then(() => {
+    const featureOptions = JSON.parse(cartEntry?.feature_options);
+
+    updateCartMutation({
+      discounted_total_premium,
+      feature_options: featureOptions,
+    }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
