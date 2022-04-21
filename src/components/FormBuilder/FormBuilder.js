@@ -44,7 +44,7 @@ const FormBuilder = ({
   nomineeRelationAutopopulated,
   autoPopulateSelfOtherDetails,
   preFilledDataBase,
-  isPanelVisible
+  isPanelVisible,
 }) => {
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
@@ -88,29 +88,29 @@ const FormBuilder = ({
     fetchErrors,
     fetchValid,
     isPanelVisible,
-    keyStr
+    keyStr,
   );
   useEffect(() => {
-    if(formName === "Other Details"){
-    if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
-      autoPopulateSelfOtherDetails({
-        updateValues,
-        selectedNomineeRelation: values.nominee_relation,
-      });
-      console.log("sdvsbnvjfv", values, options.defaultValues);
-      triggerValidation();
-    } else if (
-      preFilledDataBase &&
-      Object.keys(preFilledDataBase).length &&
-      preFilledDataBase.nominee_relation &&
-      preFilledDataBase.nominee_relation === values.nominee_relation
-    ) {
-      updateValues(preFilledDataBase, "SAVE_AS_IT_IS");
-    } else
-      updateValues(
-        { nominee_relation: values.nominee_relation },
-        "SAVE_AS_IT_IS",
-      );
+    if (formName === "Other Details") {
+      if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
+        autoPopulateSelfOtherDetails({
+          updateValues,
+          selectedNomineeRelation: values.nominee_relation,
+        });
+        console.log("sdvsbnvjfv", values, options.defaultValues);
+        triggerValidation();
+      } else if (
+        preFilledDataBase &&
+        Object.keys(preFilledDataBase).length &&
+        preFilledDataBase.nominee_relation &&
+        preFilledDataBase.nominee_relation === values.nominee_relation
+      ) {
+        updateValues(preFilledDataBase, "SAVE_AS_IT_IS");
+      } else
+        updateValues(
+          { nominee_relation: values.nominee_relation },
+          "SAVE_AS_IT_IS",
+        );
     }
   }, [values.nominee_relation]);
 
@@ -145,11 +145,11 @@ const FormBuilder = ({
 
   useEffect(() => {
     if (submitTrigger) {
-      triggerValidation();
-      console.log("berbjkb10",errors)
+      triggerValidation && triggerValidation();
+      console.log("berbjkb10", errors);
       // scrolltoTop if errors
-      scrollToErrors();
-      setSubmit("SUBMIT");
+      scrollToErrors && scrollToErrors();
+      setSubmit && setSubmit("SUBMIT");
     }
   }, [submitTrigger]);
 
@@ -158,24 +158,24 @@ const FormBuilder = ({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if(formName !== "Medical Details"){
-    const tempValues = { ...values };
-    schema.forEach(item => {
-      if (
-        item.type === "select" &&
-        !values[item.name] &&
-        item?.validate?.required &&
-        !item.fill &&
-        !item?.additionalOptions?.options?.length &&
-        Object.keys(item.additionalOptions.options || {}).length === 1
-      ) {
-        const tempValue = Object.keys(item.additionalOptions.options)[0];
+    if (formName !== "Medical Details") {
+      const tempValues = { ...values };
+      schema.forEach(item => {
+        if (
+          item.type === "select" &&
+          !values[item.name] &&
+          item?.validate?.required &&
+          !item.fill &&
+          !item?.additionalOptions?.options?.length &&
+          Object.keys(item.additionalOptions.options || {}).length === 1
+        ) {
+          const tempValue = Object.keys(item.additionalOptions.options)[0];
 
-        tempValues[item.name] = tempValue;
-      }
-    });
-    updateValues(tempValues);
-  }
+          tempValues[item.name] = tempValue;
+        }
+      });
+      updateValues(tempValues);
+    }
   }, [schema, errors]);
   useEffect(() => {
     let temp = {};
@@ -203,8 +203,7 @@ const FormBuilder = ({
     setValues({ ...values, ...asyncValues });
   }, [asyncValues]);
 
-      
-      console.log("dfjklsgvb 2", values);
+  console.log("dfjklsgvb 2", values);
 
   return (
     <>
@@ -218,13 +217,19 @@ const FormBuilder = ({
                     (values[item[0]?.parent] &&
                       values[item[0]?.parent]?.members &&
                       values[item[0]?.parent]?.members instanceof Object &&
-                        values[item[0]?.parent]?.members?.[member]) ||
+                      values[item[0]?.parent]?.members?.[member]) ||
                     item[0].render === "noDependency"
                   )
                     return (
                       <CustomWrapper>
                         <div className="col-md-12">
-                          <Title style={{backgroundImage: `linear-gradient(to right, ${PrimaryShade}, white)`}}>{member}</Title>
+                          <Title
+                            style={{
+                              backgroundImage: `linear-gradient(to right, ${PrimaryShade}, white)`,
+                            }}
+                          >
+                            {member}
+                          </Title>
                           <div
                             css={`
                               display: flex;
@@ -483,10 +488,9 @@ const FormBuilder = ({
                       selectedValues={values}
                       data={item.data}
                       onChange={(e, value) => {
-                        console.log("dgbfkjsdlb",e, value,item)
+                        console.log("dgbfkjsdlb", e, value, item);
 
                         if (item.parent && item.members) {
-
                           insertValue(
                             item.parent,
                             item.members,
