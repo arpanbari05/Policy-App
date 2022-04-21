@@ -15,6 +15,8 @@ const useFormBuilder = (
   setErrorInField,
   fetchErrors,
   fetchValid,
+  isPanelVisible,
+  keyStr
 ) => {
 
 
@@ -28,7 +30,7 @@ const useFormBuilder = (
 
   const updateValue = (name, value, removeOtherValues = false) => {
     console.log("sdfgdzfgvdf",name, value,values)
-    if(value){
+
       if (removeOtherValues) {
         setValues({ [name]: value });
         fetchValues(() => ({ [name]: value }));
@@ -36,7 +38,7 @@ const useFormBuilder = (
         setValues(prev => ({ ...prev, [name]: value }));
         fetchValues(prev => ({ ...prev, [name]: value }));
       }
-    }
+    
     
 
     if (value instanceof Object) {
@@ -290,9 +292,9 @@ if(noForAll){
   // }, [errors]);
   // , canProceed,blockScrollEffect
   
-
   const scrollToErrors = () => {
-    if (Object.values(errors).length && Object.values(errors).some(val => val))
+    if(isPanelVisible){
+      if (Object.values(errors).length && Object.values(errors).some(val => val))
       setErrorInField(true);
     else setErrorInField(false);
 
@@ -313,7 +315,11 @@ if(noForAll){
         });
       }
     }
+
+    }
+   
   };
+  
   return {
     values,
     updateValue,

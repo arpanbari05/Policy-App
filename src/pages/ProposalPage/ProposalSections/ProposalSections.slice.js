@@ -27,6 +27,7 @@ const proposal = createSlice({
     policyLoading: true,
     failedBmiData: false,
     insuredDetailsResponse:{},
+    failedBmiBlockJourney: false,
     showErrorPopup: {
       show: false,
       head: "",
@@ -109,6 +110,9 @@ const proposal = createSlice({
     setCanSendSummaryPdf:(state, { payload }) => {
       state.canSendSummaryPdf = payload;
     },
+    setFailedBmiBlockJourney:(state, { payload }) => {
+      state.failedBmiBlockJourney = payload;
+    },
   },
 });
 export const {
@@ -132,7 +136,8 @@ export const {
   pushLoadingStack,
   setCanSendSummaryPdf,
   setIsPopupOn,
-  setInsuredDetailsResponse
+  setInsuredDetailsResponse,
+  setFailedBmiBlockJourney
 } = proposal.actions;
 const ls = new SecureLS();
 
