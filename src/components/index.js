@@ -458,13 +458,13 @@ export function useGotoProductDetailsPage() {
   const { enquiryId } = useUrlEnquiry();
 
   function gotoProductPage() {
-    const groupCodes = data.data.map(cartEntry => cartEntry.group.id);
+    const groupCodes = data.data.map(cartEntry => cartEntry.group?.id);
 
     const firstGroupWithQuote = Math.min(...groupCodes);
 
     const currentGroup =
       localStorage.getItem("groups") &&
-      JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+      JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
     history.push({
       pathname: `/productdetails/${firstGroupWithQuote}`,
@@ -499,10 +499,10 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   function gotoProductPage() {
-    const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
+    const groupCodes = cartEntries.map(cartEntry => cartEntry.group?.id);
     // const groupCodes = Object.keys(policyTypes).map(key => parseInt(key));
 
     const firstGroupWithQuote = Math.min(...groupCodes);

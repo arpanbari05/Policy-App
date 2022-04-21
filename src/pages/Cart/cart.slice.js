@@ -67,7 +67,7 @@ export const getCart = (checkRenewal, next) => async (dispatch, getState) => {
       };
 
       cartData.data.forEach(cartItem => {
-        const groupCode = cartItem.group.id;
+        const groupCode = cartItem.group?.id;
         fetchedCart[groupCode] = cartItem;
       });
 

@@ -685,7 +685,7 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
         // );
         const currentGroup =
           localStorage.getItem("groups") &&
-          JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+          JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
         dispatch(setAppLoading(true));
         ls.set("enquiryId", response?.data?.data?.enquiry_id);

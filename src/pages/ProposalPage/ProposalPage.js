@@ -119,7 +119,7 @@ console.log("rvwvkv",active)
     setPrepairingProposal(true);
     dispatch(getProposalFields());
     dispatch(getCart());
-    setMemberGroups(cartEntries.map(cartItem => cartItem.group.id));
+    setMemberGroups(cartEntries.map(cartItem => cartItem.group?.id));
     dispatch(
       getProposalData(() => {
         setPrepairingProposal(false);

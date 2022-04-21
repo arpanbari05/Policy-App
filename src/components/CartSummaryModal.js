@@ -56,7 +56,7 @@ function CartSummaryContent({
 
   const { groupCode } = useParams();
 
-  const currentGroup = groups.find(group => group.id === +groupCode);
+  const currentGroup = groups.find(group => group?.id === +groupCode);
 
   groups = groups.filter(group => group.type === currentGroup.type);
 
@@ -242,13 +242,13 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   function handleAddPlanClick() {
     closeModal && closeModal();
     allClose();
     history.push({
-      pathname: `/quotes/${group.id}`,
+      pathname: `/quotes/${group?.id}`,
       search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
     });
   }
@@ -297,7 +297,7 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
 
   function handleDeleteClick() {
     deleteQuote(cartEntry.id);
-    dispatch(removeQuoteFromCart(cartEntry.group.id));
+    dispatch(removeQuoteFromCart(cartEntry.group?.id));
   }
 
   return (

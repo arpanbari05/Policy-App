@@ -650,7 +650,7 @@ function CartSummary({ item, index, groupCode }) {
                 padding-left: 10px;
               `}
             >
-              {policyTypes[item.group.id]}
+              {policyTypes[item.group?.id]}
             </span>
           </div>
 

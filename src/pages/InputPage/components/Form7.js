@@ -27,7 +27,7 @@ const Form7 = ({ handleChange, currentForm }) => {
   });
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   const [showError, setShowError] = useState(false);
   const ls = new SecureLS();

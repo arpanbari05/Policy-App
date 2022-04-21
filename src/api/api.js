@@ -53,7 +53,7 @@ export const api = createApi({
             api.util.updateQueryData("getCart", undefined, cart => {
               const cartEntryExist = cart.data.some(
                 cachedCartEntry =>
-                  cachedCartEntry.group.id === cartEntry.group.id,
+                  cachedCartEntry.group?.id === cartEntry.group?.id,
               );
               const updatedCart = {
                 ...cart,
@@ -62,7 +62,7 @@ export const api = createApi({
                       const {
                         group: { id },
                       } = cachedCartEntry;
-                      if (id === cartEntry.group.id) return cartEntry;
+                      if (id === cartEntry.group?.id) return cartEntry;
                       return cachedCartEntry;
                     })
                   : [...cart.data, cartEntry],
@@ -172,7 +172,7 @@ export const api = createApi({
                 data: {
                   ...draftEnquiries.data,
                   groups: draftEnquiries.data.groups.map(group => {
-                    if (group.id !== parseInt(groupCode)) return group;
+                    if (group?.id !== parseInt(groupCode)) return group;
                     return { ...group, extras };
                   }),
                 },

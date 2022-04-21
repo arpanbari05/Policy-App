@@ -457,8 +457,8 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
             `}
           >
             {data instanceof Array
-              ? data.map(normalRender)
-              : Object.keys(data).map((item, index) => (
+              ? data?.map(normalRender)
+              : Object.keys(data)?.map((item, index) => (
                   <>
                     <Border>
                       <TitleWrapper>
@@ -478,22 +478,22 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
                           align-items: flex-start;
                         `}
                       >
-                        {data[item].map((_data, index) => {
+                        {data[item]?.map((_data, index) => {
                           return title === "Other Details"
                             ? objectRender(
                                 {
                                   ..._data,
                                   additionalOptions: {
-                                    ..._data.additionalOptions,
+                                    ..._data?.additionalOptions,
                                     label:
-                                      _data.additionalOptions.label.includes(
+                                      _data?.additionalOptions?.label?.includes(
                                         "Nominee's",
                                       )
-                                        ? _data.additionalOptions.label.replace(
+                                        ? _data?.additionalOptions?.label?.replace(
                                             "Nominee's",
                                             "",
                                           )
-                                        : _data.additionalOptions.label.replace(
+                                        : _data?.additionalOptions?.label?.replace(
                                             "Nominee",
                                             "",
                                           ),
