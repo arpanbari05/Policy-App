@@ -281,9 +281,9 @@ const useProposalSections = ({
             if(data){
               dispatch(setInsuredDetailsResponse(data));
             }
+            if(block_journey) dispatch(setFailedBmiBlockJourney(block_journey));
+            else dispatch(setFailedBmiBlockJourney(false));
             if (failed_bmi?.health) {
-              if(block_journey) dispatch(setFailedBmiBlockJourney(block_journey));
-              else dispatch(setFailedBmiBlockJourney(false));
               dispatch(setFailedBmiData(failed_bmi?.health));
               dispatch(
                 setShowBMI(

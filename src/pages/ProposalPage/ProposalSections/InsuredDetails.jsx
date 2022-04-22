@@ -138,6 +138,8 @@ const InsuredDetails = ({
     ) {
       triggerSaveForm({ sendedVal: values, formName: name });
       
+    }else if(isValid.includes(false)){
+      setShow(isValid.indexOf(false));
     }
     setMedicalContinueClick(false);
   }, [isValid, medicalContinueClick, showErrorPopup]);
@@ -331,7 +333,7 @@ const InsuredDetails = ({
 
         <ContinueBtn
           onClick={() => {
-            dispatch(getMedicalUnderwritingStatus());
+            // dispatch(getMedicalUnderwritingStatus());
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
             // setShow();

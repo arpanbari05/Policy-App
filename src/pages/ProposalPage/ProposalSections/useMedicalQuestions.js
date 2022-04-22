@@ -77,7 +77,9 @@ console.log("sgvksdgv",defaultValue)
     }
   };
 
-
+const getScheamaOfValue = (key,name) => {
+return schema[key].find(({name}) => name === name);
+}
 
 // -----------------------------------------------------------------------------------------------------------------
 //   -----------------------------  SIDE EFFECTS FOR MEDICAL QUESTIONS---------------------------------------------
@@ -126,12 +128,13 @@ if(defaultValue && name === "Medical Details"){
     if (name === "Medical Details") {
       checkCanProceed();
       const keys = Object.keys(values || {});
-
+      // getScheamaOfValue
+      console.log("svsfhjvs",schema)
       let temp = keys.reduce(
         (acc, key) => ({
           ...acc,
           [key]: Object.keys(values[key]).some(
-            el => values[key][el][`is${el}`] === "Y",
+            el => values[key][el][`is${el}`] === "Y" && getScheamaOfValue(key,el)?.additionalOptions?.disable_Toggle === false,
           ),
         }),
         {},
