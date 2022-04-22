@@ -762,6 +762,7 @@ export function useCart() {
       ({
         discounted_total_premium,
         generate_proposal = false,
+        with_modify = false,
         feature_options = {},
       }) => {
         return updateCartMutation({
@@ -773,6 +774,7 @@ export function useCart() {
           discounted_total_premium,
           feature_options,
           generate_proposal,
+          with_modify,
           discounts: cartEntry?.discounts?.filter(
             singleDiscount => singleDiscount,
           ),
