@@ -659,7 +659,6 @@ const TitleWrapper = styled.p`
   }
 `;
 const CustomMedicalTitle = styled.div`
-  font-family: "pf_handbook_probold";
   text-transform: capitalize;
   font-size: 20px;
   color: #616e87;
@@ -685,9 +684,7 @@ const AdditionalWrapper2 = styled.div`
   margin-right: 13px;
 `;
 const AdditionalQuestion = styled.div``;
-const AdditionalAnswer = styled.div`
-  font-family: "pf_handbook_probold";
-`;
+const AdditionalAnswer = styled.div``;
 
 const MainTitle = styled.h2`
   margin-left: 3px;
