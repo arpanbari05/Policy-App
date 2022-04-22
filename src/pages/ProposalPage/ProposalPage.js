@@ -81,7 +81,7 @@ const ProposalPage = () => {
     showBMI,
     failedBmiData,
     isPopupOn,
-    failedBmiBlockJourney
+    failedBmiBlockJourney,
   } = useSelector(state => state.proposalPage);
 
   const {
@@ -189,6 +189,7 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
           & .formbuilder__error {
             color: #c7222a;
             font-size: 12px;
+            margin-bottom: 0;
             // position: absolute;
           }
         `}

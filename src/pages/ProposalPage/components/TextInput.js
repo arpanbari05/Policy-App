@@ -332,10 +332,7 @@ const InputContainer = styled.div`
   margin-top: 0.3rem !important;
   position: relative;
 
-  margin-bottom: 12px !important;
-  @media (max-width: 768px) {
-    margin-bottom: 12px !important;
-  }
+  margin-bottom: 2px !important;
 `;
 const Input = styled.input`
   list-style: none;

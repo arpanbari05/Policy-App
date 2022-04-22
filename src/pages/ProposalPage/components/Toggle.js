@@ -184,7 +184,7 @@ if(!isMandatoryMQ){
             <div className="col-lg-8 col-md-12">
               <Question
                 id={name}
-                className="mb-10 p_propsal_form_r_q_m toggle_question"
+                className="mb-0 p_propsal_form_r_q_m toggle_question"
                 SecondaryColor={SecondaryColor}
               >
                 {label}
