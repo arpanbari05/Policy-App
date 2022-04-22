@@ -387,20 +387,20 @@ function AdditionalDiscount({
           }
           display: flex;
           align-items: center;
+          cursor: ${isMandatory ? "not-allowed" : "pointer"} !important;
           @media (max-width: 537px) {
             padding: 4px 8px;
             font-size: 13px;
           }
         `}
         onClick={handleApplyClick}
-        className="btn"
       >
         <span
           css={`
             margin-right: 5px;
           `}
         >
-          {isSelected ? "Applied" : "Apply"}
+          Apply
         </span>
         {isSelected ? (
           <i class="fas fa-check"></i>
