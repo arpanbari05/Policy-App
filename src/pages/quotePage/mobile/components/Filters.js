@@ -407,7 +407,9 @@ function OptionsWrap({ children, className, css = "", ...props }) {
       css={`
         flex-direction: column;
         ${mq.mobile} {
-          gap: 1em;
+          & > *:not(:last-child) {
+            margin-bottom: .8rem;
+          }
         }
         ${css};
       `}

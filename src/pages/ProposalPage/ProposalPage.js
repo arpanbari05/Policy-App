@@ -81,7 +81,7 @@ const ProposalPage = () => {
     showBMI,
     failedBmiData,
     isPopupOn,
-    failedBmiBlockJourney
+    failedBmiBlockJourney,
   } = useSelector(state => state.proposalPage);
 
   const {
@@ -105,15 +105,13 @@ const ProposalPage = () => {
   );
 
   useEffect(() => {
-    if (
-      failedBmiBlockJourney
-    ) {
+    if (failedBmiBlockJourney) {
       setBmiFailBlock(failedBmiBlockJourney);
       setActive(1);
     } else setBmiFailBlock(false);
   }, [failedBmiData]);
 
-console.log("rvwvkv",active)
+  console.log("rvwvkv", active);
 
   useEffect(() => {
     setPrepairingProposal(true);
@@ -188,6 +186,7 @@ console.log("rvwvkv",active)
           & .formbuilder__error {
             color: #c7222a;
             font-size: 12px;
+            margin-bottom: 0;
             // position: absolute;
           }
         `}

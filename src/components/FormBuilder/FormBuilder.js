@@ -650,7 +650,7 @@ const Wrapper = styled.div`
   display: inline-block;
   padding-left: ${props => (props.medical ? "0px" : "15px")};
   padding-right: 15px;
-  margin-bottom: 10px;
+  margin-bottom: ${props => props.mb || "7px"};
   @media (max-width: 1023px) {
     width: 100%;
     padding-left: 8px;
@@ -665,7 +665,7 @@ const CustomWrapper = styled.div`
   border-radius: 6px;
   margin-top: 0px;
   width: 100%;
-  margin-bottom: 59px;
+  margin-bottom: 18px;
   @media (max-width: 767px) {
     width: calc(100% - 17px);
     margin-left: 8px;
@@ -678,7 +678,7 @@ const CustomWrapper = styled.div`
   }
 `;
 const Title = styled.p`
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   font-size: 17px !important;
   color: #3b3838;
   font-weight: 900 !important;
