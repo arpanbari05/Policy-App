@@ -892,6 +892,7 @@ const discountOnAnotherDiscount = ({
         applied_on_riders,
         percent: percent_of_discount_on_which_discount_to_be_applied,
         fixed_discount_value,
+        applied_on_base_premium,
       }) => {
         let discountValue = 0;
 
@@ -900,11 +901,19 @@ const discountOnAnotherDiscount = ({
           return +fixed_discount_value;
         }
 
+        if (applied_on_base_premium) {
+          return (
+            (+cartEntry?.premium *
+              +percent_of_discount_on_which_discount_to_be_applied) /
+            100
+          );
+        }
+
         if (applied_on_total_cart_premium) {
           //? Means applied on cart total premium.
           const discount =
-            (parseInt(cartEntry?.netPremiumWithoutDiscount) *
-              parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
+            (+cartEntry?.netPremiumWithoutDiscount *
+              +percent_of_discount_on_which_discount_to_be_applied) /
             100;
 
           return (discountValue = discountValue + discount);
@@ -912,8 +921,8 @@ const discountOnAnotherDiscount = ({
 
         if (!applied_on_total_cart_premium) {
           const discount =
-            (parseInt(total_premium) *
-              parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
+            (+total_premium *
+              +percent_of_discount_on_which_discount_to_be_applied) /
             100;
           discountValue = discountValue + discount;
         }
@@ -933,7 +942,7 @@ const discountOnAnotherDiscount = ({
 
           const discount =
             (+filtered_applied_on_riders_amount *
-              parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
+              +percent_of_discount_on_which_discount_to_be_applied) /
             100;
 
           discountValue = discountValue + discount;
@@ -1022,6 +1031,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
       applied_on_riders,
       fixed_discount_value,
       applied_on_discounts,
+      applied_on_base_premium,
     } = additionalDiscount;
 
     let discountAmount = 0;
@@ -1031,19 +1041,21 @@ export function useAdditionalDiscount(groupCode, skip = false) {
       return +fixed_discount_value;
     }
 
+    if (applied_on_base_premium) {
+      return (+cartEntry?.premium * +percent) / 100;
+    }
+
     if (applied_on_total_cart_premium) {
       //? Means applied on cart total premium.
       //? Return discount amount applied on total_cart_premium.
-      const discount =
-        (parseInt(cartEntry?.netPremiumWithoutDiscount) * parseInt(percent)) /
-        100;
+      const discount = (+cartEntry?.netPremiumWithoutDiscount * +percent) / 100;
 
       return (discountAmount = discountAmount + discount);
     }
 
     if (!applied_on_total_cart_premium) {
       //? means applied on premium
-      const discount = (parseInt(total_premium) * parseInt(percent)) / 100;
+      const discount = (+total_premium * +percent) / 100;
       discountAmount = discountAmount + discount;
     }
 
@@ -1060,8 +1072,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
               ?.reduce((acc = 0, curr) => (acc += +curr))
           : 0;
 
-      const discount =
-        (+filtered_applied_on_riders_amount * parseInt(percent)) / 100;
+      const discount = (+filtered_applied_on_riders_amount * +percent) / 100;
 
       discountAmount = discountAmount + discount;
     }
@@ -1085,8 +1096,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
             })
           : 0;
 
-      const discount =
-        (+filtered_applied_on_discounts_amount * parseInt(percent)) / 100;
+      const discount = (+filtered_applied_on_discounts_amount * +percent) / 100;
 
       discountAmount = discountAmount - discount;
     }
@@ -1106,6 +1116,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
       applied_on_riders,
       fixed_discount_value,
       applied_on_discounts,
+      applied_on_base_premium,
     } = additionalDiscount;
 
     let discountAmount = 0;
@@ -1115,22 +1126,22 @@ export function useAdditionalDiscount(groupCode, skip = false) {
       return +fixed_discount_value;
     }
 
+    if (applied_on_base_premium) {
+      return (+particularCartEntry?.premium * +percent) / 100;
+    }
+
     if (applied_on_total_cart_premium) {
       //? Means applied on cart total premium.
       //? Return discount amount applied on total_cart_premium.
       const discount =
-        (parseInt(particularCartEntry?.netPremiumWithoutDiscount) *
-          parseInt(percent)) /
-        100;
+        (+particularCartEntry?.netPremiumWithoutDiscount * +percent) / 100;
 
       return (discountAmount = discountAmount + discount);
     }
 
     if (!applied_on_total_cart_premium) {
       //? means applied on premium
-      const discount =
-        (parseInt(particularCartEntry?.total_premium) * parseInt(percent)) /
-        100;
+      const discount = (+particularCartEntry?.total_premium * +percent) / 100;
       discountAmount = discountAmount + discount;
     }
 
@@ -1147,8 +1158,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
               ?.reduce((acc = 0, curr) => (acc += +curr))
           : 0;
 
-      const discount =
-        (+filtered_applied_on_riders_amount * parseInt(percent)) / 100;
+      const discount = (+filtered_applied_on_riders_amount * +percent) / 100;
 
       discountAmount = discountAmount + discount;
     }
@@ -1172,17 +1182,10 @@ export function useAdditionalDiscount(groupCode, skip = false) {
             })
           : 0;
 
-      const discount =
-        (+filtered_applied_on_discounts_amount * parseInt(percent)) / 100;
+      const discount = (+filtered_applied_on_discounts_amount * +percent) / 100;
 
       discountAmount = discountAmount - discount;
     }
-
-    console.log(
-      "the particular cart entry and discountAmount",
-      particularCartEntry,
-      discountAmount,
-    );
 
     return discountAmount;
   }
@@ -2499,7 +2502,7 @@ export const usePolicyNumberValidations = ({
 };
 
 export const useUSGIDiscounts = () => {
-  //* last change commit : "useUSGIDiscounts refactor"
+  //* last change commit : "useUSGIDiscounts refactor --save"
 
   //? Discounts info.
   //! Life Style Discount : To be applied only on proposal summary page.
