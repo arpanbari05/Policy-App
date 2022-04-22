@@ -137,8 +137,9 @@ const InsuredDetails = ({
       !showErrorPopup?.show
     ) {
       triggerSaveForm({ sendedVal: values, formName: name });
-      setMedicalContinueClick(false);
+      
     }
+    setMedicalContinueClick(false);
   }, [isValid, medicalContinueClick, showErrorPopup]);
 
   return (
