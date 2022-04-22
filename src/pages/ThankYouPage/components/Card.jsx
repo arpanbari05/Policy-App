@@ -52,7 +52,7 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
         </div>
 
         <div style={{ float: "right" }}>
-        {values?.pdf_path ? (
+          {values?.pdf_path ? (
             values?.pdf_path &&
             (!downloadPolicyLoader ? (
               <DownloadPolicy
@@ -73,12 +73,12 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
                 css={`
                   display: inline-block;
                   border-radius: 999px;
-                  background-color: #ddd;
                   padding: 5px 10px;
                   min-width: 160px;
                   color: #fff !important;
                   height: 35px;
                 `}
+                className="skeleton-loader"
               ></div>
             ))
           ) : (
