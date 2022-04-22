@@ -193,7 +193,6 @@ const useFormBuilder = (
                   parent: innerItem.parent,
                   member,
                 });
-console.log("dbdfbfdbnl",innerItem,values)
               if (renderField(innerItem, values, member)) {
                 errorsTemp[innerItem.parent + member + innerItem.name] =
                   errorMsg;
@@ -203,7 +202,7 @@ console.log("dbdfbfdbnl",innerItem,values)
           });
         } else {
           let errorMsg =
-            item.validate &&
+            item?.validate &&
             performValidations(item.validate, values, item.name);
 
           if (item.visibleOn) {
