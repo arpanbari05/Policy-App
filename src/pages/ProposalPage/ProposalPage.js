@@ -105,15 +105,16 @@ const ProposalPage = () => {
   );
 
   useEffect(() => {
+console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
+
     if (
       failedBmiBlockJourney
     ) {
       setBmiFailBlock(failedBmiBlockJourney);
       setActive(1);
     } else setBmiFailBlock(false);
-  }, [failedBmiData]);
+  }, [failedBmiBlockJourney]);
 
-console.log("rvwvkv",active)
 
   useEffect(() => {
     setPrepairingProposal(true);
@@ -404,12 +405,13 @@ console.log("rvwvkv",active)
               `}
               onClick={() => {
                 !blockTabSwitch &&
+                !bmiFailBlock &&
                   proposalData["Medical Details"] &&
                   setActive(3);
               }}
             >
               <MainTitle primaryColor={PrimaryColor}>Nominee Details</MainTitle>
-              {proposalData[listOfForms[2]] && (
+              {proposalData[listOfForms[2]] && !bmiFailBlock && (
                 <div
                   css={`
                     width: 30px;
