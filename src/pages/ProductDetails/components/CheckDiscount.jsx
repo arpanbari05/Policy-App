@@ -400,7 +400,7 @@ function AdditionalDiscount({
             margin-right: 5px;
           `}
         >
-          Apply
+          {isSelected ? "Applied" : "Apply"}
         </span>
         {isSelected ? (
           <i class="fas fa-check"></i>
