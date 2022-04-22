@@ -1094,6 +1094,99 @@ export function useAdditionalDiscount(groupCode, skip = false) {
     return discountAmount;
   }
 
+  function getDiscountAmountOnParticularCartEntry(
+    additionalDiscount,
+    groupCode,
+  ) {
+    const particularCartEntry = getCartEntry(groupCode);
+
+    const {
+      percent,
+      applied_on_total_premium: applied_on_total_cart_premium,
+      applied_on_riders,
+      fixed_discount_value,
+      applied_on_discounts,
+    } = additionalDiscount;
+
+    let discountAmount = 0;
+
+    if (fixed_discount_value) {
+      //? return the amount directly if it is fixed.
+      return +fixed_discount_value;
+    }
+
+    if (applied_on_total_cart_premium) {
+      //? Means applied on cart total premium.
+      //? Return discount amount applied on total_cart_premium.
+      const discount =
+        (parseInt(particularCartEntry?.netPremiumWithoutDiscount) *
+          parseInt(percent)) /
+        100;
+
+      return (discountAmount = discountAmount + discount);
+    }
+
+    if (!applied_on_total_cart_premium) {
+      //? means applied on premium
+      const discount =
+        (parseInt(particularCartEntry?.total_premium) * parseInt(percent)) /
+        100;
+      discountAmount = discountAmount + discount;
+    }
+
+    if (applied_on_riders) {
+      const filtered_applied_on_riders =
+        particularCartEntry.health_riders.filter(singleHealthRider =>
+          applied_on_riders.includes(singleHealthRider?.alias),
+        );
+
+      const filtered_applied_on_riders_amount =
+        filtered_applied_on_riders.length
+          ? filtered_applied_on_riders
+              .map(rider => rider.total_premium)
+              ?.reduce((acc = 0, curr) => (acc += +curr))
+          : 0;
+
+      const discount =
+        (+filtered_applied_on_riders_amount * parseInt(percent)) / 100;
+
+      discountAmount = discountAmount + discount;
+    }
+
+    if (applied_on_discounts) {
+      const selectedAdditionalDiscount = getSelectedAdditionalDiscounts();
+
+      const filtered_applied_on_discounts = selectedAdditionalDiscount.filter(
+        singleSelectedDiscount =>
+          applied_on_discounts.includes(singleSelectedDiscount?.alias),
+      );
+
+      const filtered_applied_on_discounts_amount =
+        filtered_applied_on_discounts?.length
+          ? discountOnAnotherDiscount({
+              discounts_on_which_discount_to_be_applied:
+                filtered_applied_on_discounts,
+              total_premium,
+              premium,
+              particularCartEntry,
+            })
+          : 0;
+
+      const discount =
+        (+filtered_applied_on_discounts_amount * parseInt(percent)) / 100;
+
+      discountAmount = discountAmount - discount;
+    }
+
+    console.log(
+      "the particular cart entry and discountAmount",
+      particularCartEntry,
+      discountAmount,
+    );
+
+    return discountAmount;
+  }
+
   function getSelectedAdditionalDiscounts() {
     if (queryState?.isLoading || queryState?.isError) return [];
 
@@ -1109,6 +1202,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
     getSelectedAdditionalDiscounts,
     toggleAdditionalDiscount,
     getDiscountAmount,
+    getDiscountAmountOnParticularCartEntry,
     addAdditionalDiscount,
     getTotalDiscountAmount,
     isAdditionalDiscountSelected,
@@ -2405,6 +2499,8 @@ export const usePolicyNumberValidations = ({
 };
 
 export const useUSGIDiscounts = () => {
+  //* last change commit : "useUSGIDiscounts refactor"
+
   //? Discounts info.
   //! Life Style Discount : To be applied only on proposal summary page.
   //! E-Sale Discount : Mandatory discount.
@@ -2413,24 +2509,30 @@ export const useUSGIDiscounts = () => {
   const lifeStyleDiscountAlias = "usgilifestyle";
   const eSaleDiscountAlias = "usgiesale";
 
-  const location = useLocation();
+  const isProductDetailsPage =
+    window.location.pathname.startsWith("/productdetails");
 
-  const { cartEntries, updateCartEntry, getCartTotalPremium } = useCart();
+  const isProposalPage = window.location.pathname === "/proposal";
 
-  const universalSompoPlanInCart = cartEntries
-    ? cartEntries?.find(
-        singlePlan => singlePlan?.product?.company?.alias === "universal_sompo",
-      )
-    : {}; //? CHECK WHETHER UNIVERSAL SOMPO PLAN IS IN THE CART.
+  const isProposalSummaryPage =
+    window.location.pathname === "/proposal_summary";
 
-  const skipRequest = !!!universalSompoPlanInCart?.group?.id; //? SKIP-TOKEN TO SKIP THE ADDITIONAL DISCOUNTS REQUEST IF UNIVERSAL SOMPO PLAN NOT PRESENT
+  const { groupCode } = useParams();
+
+  const { cartEntries, updateCartEntry, getCartTotalPremium, getCartEntry } =
+    useCart();
+
+  const usgiPlanGroupCode = cartEntries?.find(
+    singleCartEntry =>
+      singleCartEntry?.product?.company?.alias === "universal_sompo",
+  )?.group?.id;
 
   const {
-    query: { data },
-    getDiscountAmount,
+    query: { data, isSuccess },
+    getDiscountAmountOnParticularCartEntry,
     getSelectedAdditionalDiscounts,
     addAdditionalDiscount,
-  } = useAdditionalDiscount(universalSompoPlanInCart?.group?.id, skipRequest);
+  } = useAdditionalDiscount(groupCode || usgiPlanGroupCode);
 
   const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
 
@@ -2438,37 +2540,113 @@ export const useUSGIDiscounts = () => {
     singleAd => singleAd?.alias === lifeStyleDiscountAlias,
   ); //? FIND LIFESTYLE DISCOUNT IF PRESENT IN THE CART.
 
-  const eSaleDiscount = data?.data?.find(
-    singleAd => singleAd?.alias === eSaleDiscountAlias,
-  ); //? FIND E-Sale DISCOUNT IF PRESENT IN THE CART.
-
   useEffect(() => {
-    if (cartEntries && universalSompoPlanInCart?.group?.id) {
-      updateCartEntry(universalSompoPlanInCart?.group?.id, {
-        ...universalSompoPlanInCart,
-        discounts:
-          location?.pathname === "/proposal_summary"
-            ? [...universalSompoPlanInCart?.discounts, lifeStyleDiscountAlias]
-            : universalSompoPlanInCart?.discounts?.filter(
-                singleDiscount => singleDiscount !== lifeStyleDiscountAlias,
-              ),
-      }); //? Add/remove life style plan accordingly.
+    if (isProductDetailsPage) {
+      //? REMOVAL OF LIFE STYLE DISCOUNT IN CASE OF USGI PLAN
+      const cartEntry = getCartEntry(groupCode);
+
+      let universalSompoPlanActive =
+        cartEntry?.product?.company?.alias === "universal_sompo"
+          ? cartEntry
+          : {};
+
+      Object.keys(universalSompoPlanActive).length &&
+        updateCartEntry(universalSompoPlanActive?.group?.id, {
+          ...universalSompoPlanActive,
+          discounts: universalSompoPlanActive?.discounts?.filter(
+            singleDiscount => singleDiscount !== lifeStyleDiscountAlias,
+          ),
+        });
+    } else if (isProposalPage) {
+      //? REMOVAL OF LIFE STYLE DISCOUNT IN CASE OF USGI PLANS
+      const universalSompoPlansInTheCartArray = cartEntries?.filter(
+        singleCartEntry =>
+          singleCartEntry?.product?.company?.alias === "universal_sompo",
+      );
+
+      universalSompoPlansInTheCartArray?.forEach(singleUSGICartEntry => {
+        updateCartEntry(singleUSGICartEntry?.group?.id, {
+          ...singleUSGICartEntry,
+          discounts: singleUSGICartEntry?.discounts?.filter(
+            singleDiscount => singleDiscount !== lifeStyleDiscountAlias,
+          ),
+        });
+      });
+    } else if (isProposalSummaryPage) {
+      //? ADDITION OF LIFE STYLE DISCOUNT IN CASE OF USGI PLANS
+
+      const universalSompoPlansInTheCartArray = cartEntries?.filter(
+        singleCartEntry =>
+          singleCartEntry?.product?.company?.alias === "universal_sompo",
+      );
+
+      universalSompoPlansInTheCartArray?.forEach(singleUSGICartEntry => {
+        updateCartEntry(singleUSGICartEntry?.group?.id, {
+          ...singleUSGICartEntry,
+          discounts: [
+            ...singleUSGICartEntry?.discounts,
+            lifeStyleDiscountAlias,
+          ],
+        });
+      });
     }
-  }, []);
+  }, [groupCode]);
 
   useEffect(() => {
-    if (cartEntries && universalSompoPlanInCart?.group?.id) {
-      if (!universalSompoPlanInCart?.discounts?.includes(eSaleDiscountAlias)) {
-        addAdditionalDiscount(eSaleDiscount);
+    //! WORKS ONLY ON PRODUCT DETAILS PAGE.
+    if (isProductDetailsPage) {
+      const eSaleDiscount = data?.data?.find(
+        singleAd => singleAd?.alias === eSaleDiscountAlias,
+      ); //? FIND E-Sale DISCOUNT IF PRESENT IN THE ADDITIONAL DISCOUNTS RESPONSE.
+
+      const cartEntry = getCartEntry(groupCode);
+
+      let universalSompoPlanActive =
+        cartEntry?.product?.company?.alias === "universal_sompo"
+          ? cartEntry
+          : {};
+
+      if (
+        cartEntry &&
+        universalSompoPlanActive?.group?.id &&
+        +universalSompoPlanActive?.group?.id === +groupCode &&
+        eSaleDiscount
+      ) {
+        if (
+          !universalSompoPlanActive?.discounts?.includes(eSaleDiscountAlias)
+        ) {
+          addAdditionalDiscount(eSaleDiscount);
+        }
       }
     }
-  }, [data]); //? Add E-sale discount if not already present.
+  }, [data, isSuccess]); //? Add E-sale discount if not already present.
 
   const totalPremiumToDisplay = () => {
-    return lifeStyleDiscount
-      ? getCartTotalPremium() - getDiscountAmount(lifeStyleDiscount)
-      : getCartTotalPremium(); //? returns same total-premium if lifeStyle discount is not present
-  }; //? TOTAL PREMIUM IS ONLY RE-CALCULATED IF LIFESTYLE DISCOUNT IS PRESENT IN THE CART.
+    if (lifeStyleDiscount) {
+      const universalSompoPlansInTheCartArray = cartEntries?.filter(
+        singleCartEntry =>
+          singleCartEntry?.product?.company?.alias === "universal_sompo",
+      );
+
+      const lifeStyleDiscountAmountArray =
+        universalSompoPlansInTheCartArray?.map(singleCartEntry => {
+          return getDiscountAmountOnParticularCartEntry(
+            lifeStyleDiscount,
+            singleCartEntry?.group?.id,
+          );
+        });
+
+      const totalCheckoutDiscountAmount = lifeStyleDiscountAmountArray?.length
+        ? lifeStyleDiscountAmountArray?.reduce(
+            (acc = 0, curr) => (acc += +curr),
+          )
+        : 0;
+
+      return getCartTotalPremium() - totalCheckoutDiscountAmount;
+    } else {
+      return getCartTotalPremium();
+    }
+  }; //? Checkout discount implementation of usgi.
 
   return totalPremiumToDisplay();
 };
