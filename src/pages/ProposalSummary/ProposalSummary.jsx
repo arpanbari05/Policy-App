@@ -53,6 +53,7 @@ import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
 import httpClient from "../../api/httpClient";
 import { BackButtonMobile } from "../../components";
+import { TraceId } from "../../components/Navbar";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
@@ -404,11 +405,23 @@ const ProposalSummary = () => {
             </MobileHeaderText>
           </Link>
 
+          <div
+            css={`
+              color: #fff;
+            `}
+          >
+            <TraceId />
+          </div>
+        </MobileHeader>
+
+        <div className="container-fluid mt-20 ">
           <ShareQuoteModal
             mobile
             insurersFor={cart.map(cart => cart?.product?.company?.alias)}
             stage="PROPOSAL_SUMMARY"
             sum_insured={sum_insured}
+            float
+            floatCss={`bottom: 20vw;`}
           />
         </MobileHeader>
  */}

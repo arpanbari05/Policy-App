@@ -35,6 +35,7 @@ import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import { mobile } from "../../utils/mediaQueries";
 import { BackButtonMobile } from "../../components";
+import { TraceId } from "../../components/Navbar";
 
 // import dummy from "./dumySchema";
 /* ===============================test================================= */
@@ -506,6 +507,7 @@ const ProposalPage = () => {
                   display: flex;
                   align-items: center;
                   justify-content: center;
+                  gap: 10px;
                 `}
               >
                 <span
@@ -610,6 +612,15 @@ const ProposalPage = () => {
                     }
                   `}
                 >
+                  <ShareQuoteModal
+                    mobile
+                    insurersFor={cartEntries.map(
+                      cart => cart?.product?.company?.alias,
+                    )}
+                    stage="PROPOSAL"
+                    sum_insured={sum_insured}
+                    float
+                  />
                   <div
                     // lg={4}
                     // md={12}
