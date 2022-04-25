@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { mobile, small, tabletAndMobile } from "../../../utils/mediaQueries";
+import { mobile, small } from "../../../utils/mediaQueries";
 import styled from "styled-components/macro";
 import {
   useAdditionalDiscount,
@@ -13,6 +13,7 @@ import {
   amount,
   numberToDigitWord,
   tenureInWords,
+  getTotalPremiumWithDiscount,
 } from "../../../utils/helper";
 import "styled-components/macro";
 import _ from "lodash";
@@ -27,7 +28,8 @@ function ProductCard() {
 
   const { getCartEntry } = useCart();
 
-  const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
+  const { getSelectedAdditionalDiscounts, getTotalDiscountAmount } =
+    useAdditionalDiscount(groupCode);
 
   const additionalDiscounts = getSelectedAdditionalDiscounts();
 
@@ -44,13 +46,15 @@ function ProductCard() {
     },
     sum_insured,
     icLogoSrc,
-    netPremium,
-    tenure,
+    netPremiumWithoutDiscount,
   } = cartEntry;
 
   const sumInsured = numberToDigitWord(sum_insured);
 
-  const totalPremiumAmount = amount(netPremium);
+  const totalPremiumAmount = getTotalPremiumWithDiscount({
+    netPremiumWithoutDiscount,
+    totalDiscountAmount: getTotalDiscountAmount(),
+  });
 
   return (
     <div
@@ -211,7 +215,7 @@ function ProductCard() {
             }
           `}
         >
-          {totalPremiumAmount}
+          {amount(totalPremiumAmount)}
         </span>
       </div>
     </div>
@@ -226,13 +230,13 @@ function PlanDetails({ cartEntry }) {
       company: { csr: companyCSR },
     },
     sum_insured,
-    total_premium,
+    premium,
     tenure,
   } = cartEntry;
 
   const sumInsured = amount(sum_insured);
 
-  const displayPremium = `${amount(total_premium)} / ${
+  const displayPremium = `${amount(premium)} / ${
     tenure > 1 ? `${tenure} Years` : "Year"
   }`;
   return (
