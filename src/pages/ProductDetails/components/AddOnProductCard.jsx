@@ -21,7 +21,7 @@ import { useGetEnquiriesQuery } from "../../../api/api";
 function ProductCard() {
   const { groupCode } = useParams();
 
-  const { journeyType , subJourneyType} = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const { getCartEntry } = useCart();
 
@@ -46,7 +46,7 @@ function ProductCard() {
     tenure,
   } = cartEntry;
 
-  const sumInsured = amount(sum_insured);
+  const sumInsured = numberToDigitWord(sum_insured);
 
   const totalPremiumAmount = amount(netPremium);
 
@@ -145,7 +145,7 @@ function ProductCard() {
                 display: block;
               }
               @media (max-width: 536px) {
-                font-size: 10px;
+                font-size: 12px;
               }
             `}
           >
@@ -174,7 +174,6 @@ function ProductCard() {
             width: 125px !important;
           }
           ${small} {
-            height: 37px;
             border-radius: 7px;
             background-color: white;
           }
@@ -189,7 +188,7 @@ function ProductCard() {
             }
 
             ${small} {
-              font-size: 8px;
+              font-size: 11px;
               width: auto;
               line-height: normal;
             }
@@ -204,11 +203,11 @@ function ProductCard() {
             font-weight: 900;
 
             @media (max-width: 992px) {
-              font-size: 12px;
+              font-size: 14px;
             }
 
             ${small} {
-              font-size: 12px;
+              font-size: 14px;
               color: #0a87ff;
             }
           `}
