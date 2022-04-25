@@ -254,6 +254,7 @@ const ModifyDetailsButton = () => {
     updateCartMutation({
       discounted_total_premium,
       generate_proposal: true,
+      with_modify: true,
     }).then(resObj => {
       history.push(getUrlWithEnquirySearch(`/proposal`));
     });
