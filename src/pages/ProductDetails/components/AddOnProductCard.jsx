@@ -21,6 +21,8 @@ import { useGetEnquiriesQuery } from "../../../api/api";
 function ProductCard() {
   const { groupCode } = useParams();
 
+  const { colors } = useTheme();
+
   const { journeyType, subJourneyType } = useFrontendBoot();
 
   const { getCartEntry } = useCart();
@@ -69,8 +71,8 @@ function ProductCard() {
         ${small} {
           padding: 16px 6px;
           border-radius: 7px;
-          border: 1px solid #0a87ff;
-          background-color: #eff7ff;
+          border: 1px solid ${colors?.primary_color};
+          background-color: ${colors?.primary_shade};
         }
       `}
     >
@@ -131,9 +133,6 @@ function ProductCard() {
                 font-size: 14px;
                 font-weight: 600;
               }
-              ${small} {
-                font-size: 13px;
-              }
             `}
           >
             {productName}
@@ -188,7 +187,7 @@ function ProductCard() {
             }
 
             ${small} {
-              font-size: 11px;
+              font-size: 12px;
               width: auto;
               line-height: normal;
             }

@@ -89,7 +89,7 @@ const FeatureSectionHeading = styled("p")`
   margin-left: 2px;
 
   ${mobile} {
-    font-size: 17px;
+    font-size: 18px;
     margin-bottom: 5px;
     &::before {
       top: 0;
