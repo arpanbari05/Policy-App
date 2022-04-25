@@ -22,13 +22,11 @@ import "styled-components/macro";
 import {
   fetchPdf,
   getProposalData,
-  postPayment,
 } from "../ProposalPage/ProposalSections/ProposalSections.slice";
 import SecureLS from "secure-ls";
 import ProductSummary from "../ProposalPage/ProposalSections/components/ProductSummary";
 import styled from "styled-components";
 import ProductSummaryMobile from "../ProposalPage/ProposalSections/components/ProductSummaryMobile";
-import ProductSummaryTab from "../ProposalPage/ProposalSections/components/ProductSummaryTab";
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { Col, Row } from "react-bootstrap";
 import TermModal from "./TermsModal";
@@ -44,10 +42,7 @@ import {
   useUSGIDiscounts,
 } from "../../customHooks";
 import { Page } from "../../components";
-import { FaChevronLeft } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import {
-  useGetEnquiriesQuery,
   useGetProductBrochureQuery,
   useGetProposalDataQuery,
 } from "../../api/api";
@@ -57,6 +52,7 @@ import { mobile } from "../../utils/mediaQueries";
 import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
 import httpClient from "../../api/httpClient";
+import { BackButtonMobile } from "../../components";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
@@ -75,16 +71,6 @@ const ProposalSummary = () => {
   const PrimaryShade = colors.primary_shade;
 
   const { data: proposalData = {} } = useGetProposalDataQuery();
-
-  const backButtonForNav = (
-    <Link
-      className="back_btn_navbar"
-      style={{ color: PrimaryColor }}
-      to={getUrlWithEnquirySearch(`/proposal`)}
-    >
-      <MdOutlineArrowBackIos />
-    </Link>
-  );
 
   let { cartEntries } = useCart();
 
@@ -270,9 +256,10 @@ const ProposalSummary = () => {
   return (
     <>
       <Page
-        noNavbarForMobile={true}
         id={"proposalSummaryPage"}
-        backButton={backButtonForNav}
+        backButton={
+          <BackButtonMobile path={getUrlWithEnquirySearch(`/proposal`)} />
+        }
       >
         <div
           className="container-fluid terms__wrapper"
@@ -401,7 +388,7 @@ const ProposalSummary = () => {
             </div>
           </div>
         </div>
-        <MobileHeader
+        {/* <MobileHeader
           css={`
             background: ${PrimaryColor};
             justify-content: space-between;
@@ -424,7 +411,7 @@ const ProposalSummary = () => {
             sum_insured={sum_insured}
           />
         </MobileHeader>
-
+ */}
         <div className="container-fluid mt-20 ">
           <div
             className="element-section "
