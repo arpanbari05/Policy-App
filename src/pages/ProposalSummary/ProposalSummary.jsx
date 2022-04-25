@@ -426,6 +426,13 @@ const ProposalSummary = () => {
         </MobileHeader>
  */}
         <div className="container-fluid mt-20 ">
+          <ShareQuoteModal
+            insurersFor={cart.map(cart => cart?.product?.company?.alias)}
+            stage="PROPOSAL_SUMMARY"
+            sum_insured={sum_insured}
+            float
+            floatCss={"bottom: 20vw;"}
+          />
           <div
             className="element-section "
             css={`
