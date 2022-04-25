@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setShowNSTP,
   setShowPlanNotAvail,
-  setShowErrorPopup
+  setShowErrorPopup,
 } from "../ProposalSections/ProposalSections.slice";
 import { useMembers } from "../../../customHooks";
 import { noForAllCheckedFalse } from "../ProposalSections/ProposalSections.slice";
@@ -26,9 +26,9 @@ const Toggle = ({
   notAllowedIf,
   disable_Toggle = false,
   restrictMaleMembers = false,
-  message
+  message,
 }) => {
-  console.log("Svsjbv", disable_Toggle,value,name);
+  console.log("Svsjbv", disable_Toggle, value, name);
   const isMandatoryMQ = label.toLowerCase().includes("mandatory");
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
@@ -37,9 +37,11 @@ const Toggle = ({
   const { getSelectedMembers, getMember, getAllMembers, genderOfSelf } =
     useMembers();
   const [customShowMembers, setCustomshowMembers] = useState(false);
-  console.log("wgkwrjsd",customMembers,members)
-  const [ membersToMap, setMembersToMap] = useState(
-    customMembers instanceof Array && customMembers.length ? customMembers : members,
+  console.log("wgkwrjsd", customMembers, members);
+  const [membersToMap, setMembersToMap] = useState(
+    customMembers instanceof Array && customMembers.length
+      ? customMembers
+      : members,
   );
 
   const [membersSelectedTillNow, setMembersSelectedTillNow] = useState({});
@@ -47,67 +49,83 @@ const Toggle = ({
   useEffect(() => {
     if (showMembersIf) {
       setCustomshowMembers(
-         showMembersIf.split("||").some(name => {
+        showMembersIf.split("||").some(name => {
           return values && values[name] && values[name][`is${name}`] === "Y";
         }),
       );
     }
-    if(isMandatoryMQ){
-       let questionsToCheck = showMembersIf.split("||");
-       let membersSelectedTillNow = membersToMap.reduce((acc,member) => {
-        let isMemberPresent = questionsToCheck.some(question => values?.[question] && values[question]?.members?.[member])
-         return isMemberPresent?{...acc,[member]:true}:acc
-      },{})
-      console.log("khgjdtbhdt",membersSelectedTillNow)
-     
+    if (isMandatoryMQ) {
+      let questionsToCheck = showMembersIf.split("||");
+      let membersSelectedTillNow = membersToMap.reduce((acc, member) => {
+        let isMemberPresent = questionsToCheck.some(
+          question => values?.[question] && values[question]?.members?.[member],
+        );
+        return isMemberPresent ? { ...acc, [member]: true } : acc;
+      }, {});
+      console.log("khgjdtbhdt", membersSelectedTillNow);
+
       setMembersSelectedTillNow(membersSelectedTillNow);
     }
   }, [values]);
 
-  const [boolean, setBoolean] = useState(disable_Toggle?"Y":value?.[`is${name}`] ||"");
+  const [boolean, setBoolean] = useState(
+    disable_Toggle ? "Y" : value?.[`is${name}`] || "",
+  );
   const innitialMemberStatus = () => {
-    if(disable_Toggle) return members.reduce((acc,member) => ({...acc,[member]:true}),{});
-    else return {}
-  }
+    if (disable_Toggle)
+      return members.reduce((acc, member) => ({ ...acc, [member]: true }), {});
+    else return {};
+  };
 
-
-  
-  const [membersStatus, setMembersStatus] = useState(value?.members || innitialMemberStatus());
+  const [membersStatus, setMembersStatus] = useState(
+    value?.members || innitialMemberStatus(),
+  );
   console.log("Wvkwbf", disable_Toggle, membersStatus);
   const { mediUnderwritting } = useSelector(
     state => state.proposalPage.proposalData,
   );
   // const membersToMap = members;
 
-useEffect(() => {
-  if(disable_Toggle){
-    setMembersStatus(membersToMap.reduce((acc,member) => ({...acc,[member]:true}),{}))
-  }
-},[])
+  useEffect(() => {
+    if (disable_Toggle) {
+      setMembersStatus(
+        membersToMap.reduce((acc, member) => ({ ...acc, [member]: true }), {}),
+      );
+    }
+  }, []);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    const allMaleMembers = ["son", "grand_father", "father", "father_in_law", ...[1,2,3].map(i => `son${i}`)];
+    const allMaleMembers = [
+      "son",
+      "grand_father",
+      "father",
+      "father_in_law",
+      ...[1, 2, 3].map(i => `son${i}`),
+    ];
     if (value && notAllowed && value[`is${name}`] === "Y" && !disable_Toggle) {
       setBoolean("N");
       setMembersStatus({});
-    }else if (value instanceof Object && Object.keys(value).length && !disable_Toggle) {
+    } else if (
+      value instanceof Object &&
+      Object.keys(value).length &&
+      !disable_Toggle
+    ) {
       setBoolean(value[`is${name}`]);
       setMembersStatus(value.members);
     }
-console.log("bfxfjkl",membersToMap)
+    console.log("bfxfjkl", membersToMap);
     if (restrictMaleMembers) {
-      if (genderOfSelf === "M"){
+      if (genderOfSelf === "M") {
         setMembersToMap(membersToMap.filter(member => member !== "self"));
-      }else{
+      } else {
         setMembersToMap(membersToMap.filter(member => member !== "spouse"));
       }
 
-      setMembersToMap(prev => prev.filter(el => !allMaleMembers.includes(el) ));
+      setMembersToMap(prev => prev.filter(el => !allMaleMembers.includes(el)));
 
       console.log("evekfnmv", membersToMap, getAllMembers());
     }
-    
   }, [value]);
 
   useEffect(() => {
@@ -119,7 +137,6 @@ console.log("bfxfjkl",membersToMap)
       setBoolean("N");
       setMembersStatus({});
     }
-    
   }, [value, customShowMembers]);
 
   useEffect(() => {
@@ -129,52 +146,59 @@ console.log("bfxfjkl",membersToMap)
       (boolean === "Y" &&
         (showMembers !== false || customShowMembers) &&
         !Object.values(membersStatus).includes(true)) ||
-      (!boolean  && !disable_Toggle)
+      (!boolean && !disable_Toggle)
     ) {
       isValid = false;
     }
-   
-if(!isMandatoryMQ){
-  console.log("qefeihjfbkf",customShowMembers,boolean,label)
-  if(boolean === "N" && !customShowMembers){
 
-    onChange({
-      [`is${name}`]: boolean,
-      members: {},
-      isValid,
-    });
-  }else{
-    
-      onChange({
-        ...value,
-        [`is${name}`]: boolean,
-        members: membersStatus,
-        isValid,
-      });
-    
-    
-  }
-}
- 
-
-    
-  }, [boolean,Object.keys(membersStatus).filter(m => membersStatus[m]).length, customShowMembers]);
+    if (!isMandatoryMQ) {
+      console.log("qefeihjfbkf", customShowMembers, boolean, label);
+      if (boolean === "N" && !customShowMembers) {
+        onChange({
+          [`is${name}`]: boolean,
+          members: {},
+          isValid,
+        });
+      } else {
+        onChange({
+          ...value,
+          [`is${name}`]: boolean,
+          members: membersStatus,
+          isValid,
+        });
+      }
+    }
+  }, [
+    boolean,
+    Object.keys(membersStatus).filter(m => membersStatus[m]).length,
+    customShowMembers,
+  ]);
 
   useEffect(() => {
-    if(isMandatoryMQ){
-    console.log("wvbkwdsbvjdce",membersSelectedTillNow)
-   onChange({
+    if (isMandatoryMQ) {
+      console.log("wvbkwdsbvjdce", membersSelectedTillNow);
+      onChange({
         ...value,
         [`is${name}`]: "Y",
-        members:membersSelectedTillNow,
-        isValid:true,
+        members: membersSelectedTillNow,
+        isValid: true,
       });
       // console.log("adfvksadhbvvd",boolean, membersStatus, customShowMembers,label,membersSelectedTillNow)
-      
     }
-  },[Object.keys(membersSelectedTillNow).length])
+  }, [Object.keys(membersSelectedTillNow).length]);
 
-  console.log("sgjsgsrgr", {value, label, boolean,membersToMap,showMembers, customShowMembers, membersStatus,restrictMaleMembers,customMembers, members});
+  console.log("sgjsgsrgr", {
+    value,
+    label,
+    boolean,
+    membersToMap,
+    showMembers,
+    customShowMembers,
+    membersStatus,
+    restrictMaleMembers,
+    customMembers,
+    members,
+  });
 
   return (
     <>
@@ -215,7 +239,7 @@ if(!isMandatoryMQ){
                   type="radio"
                   name={`is${name}`}
                   onChange={e => {
-                    if(restrictMaleMembers && membersToMap.length === 0){
+                    if (restrictMaleMembers && membersToMap.length === 0) {
                       dispatch(
                         setShowErrorPopup({
                           show: true,
@@ -224,17 +248,20 @@ if(!isMandatoryMQ){
                         }),
                       );
                       setBoolean("N");
-                    }else if(message && message.stp_block_message){
+                    } else if (message && message.stp_block_message) {
                       dispatch(
                         setShowErrorPopup({
                           show: true,
                           head: "",
-                          msg: message.stp_block_message ,
+                          msg: message.stp_block_message,
                         }),
                       );
-                     
+
                       // setBoolean(e.target.value);
-                    }else if(message && message.npos_switch_medical_selection_message){
+                    } else if (
+                      message &&
+                      message.npos_switch_medical_selection_message
+                    ) {
                       dispatch(
                         setShowErrorPopup({
                           show: true,
@@ -242,9 +269,9 @@ if(!isMandatoryMQ){
                           msg: message.npos_switch_medical_selection_message,
                         }),
                       );
-                     
+
                       setBoolean(e.target.value);
-                    }else if (notAllowed) {
+                    } else if (notAllowed) {
                       dispatch(setShowPlanNotAvail(true));
                     } else {
                       setBoolean(e.target.value);
@@ -273,7 +300,7 @@ if(!isMandatoryMQ){
                   onChange={e => {
                     if (notAllowedIf === "N")
                       dispatch(setShowPlanNotAvail(true));
-                    else if(!isMandatoryMQ) {
+                    else if (!isMandatoryMQ) {
                       setBoolean(e.target.value);
                       !showMembersIf && setMembersStatus({});
                     }
@@ -295,7 +322,10 @@ if(!isMandatoryMQ){
             </div>
           </div>
         </div>
-        {!isMandatoryMQ && membersToMap.length && showMembers !== false && !disable_Toggle ? (
+        {!isMandatoryMQ &&
+        membersToMap.length &&
+        showMembers !== false &&
+        !disable_Toggle ? (
           (customShowMembers || boolean === "Y") && (
             <Group className="position-relative">
               {membersToMap.map((item, index) => (
@@ -330,7 +360,7 @@ if(!isMandatoryMQ){
                 <p
                   className="formbuilder__error position-absolute"
                   css={`
-                    bottom: -11px;
+                    bottom: 11px;
                     left: 21px;
                     /* right: 0; */
                     background: white;
