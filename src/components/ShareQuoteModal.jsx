@@ -85,9 +85,11 @@ const ShareCTA = ({ onClick, loader, disabled }) => {
 const ShareQuoteModal = ({
   mobile = false,
   showModal,
+  float = false,
   imageSend: imageToSend,
   emailStatus,
   stage = "",
+  floatCss = "",
   hideBtn,
   label,
   sum_insured,
@@ -161,10 +163,12 @@ const ShareQuoteModal = ({
     <>
       {!hideBtn && (
         <ShareButton
+          floatCss={floatCss}
           mobile={mobile}
           shareQuotes={shareQuotes}
           onClick={handleShow}
           label={label}
+          float={float}
         />
       )}
       {show && (

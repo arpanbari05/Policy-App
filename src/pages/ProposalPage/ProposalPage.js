@@ -34,6 +34,7 @@ import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import { mobile } from "../../utils/mediaQueries";
+import { TraceId } from "../../components/Navbar";
 
 // import dummy from "./dumySchema";
 /* ===============================test================================= */
@@ -105,16 +106,13 @@ const ProposalPage = () => {
   );
 
   useEffect(() => {
-console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
+    console.log("rvwvkv", active, bmiFailBlock, failedBmiBlockJourney);
 
-    if (
-      failedBmiBlockJourney
-    ) {
+    if (failedBmiBlockJourney) {
       setBmiFailBlock(failedBmiBlockJourney);
       setActive(1);
     } else setBmiFailBlock(false);
   }, [failedBmiBlockJourney]);
-
 
   useEffect(() => {
     setPrepairingProposal(true);
@@ -406,7 +404,7 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
               `}
               onClick={() => {
                 !blockTabSwitch &&
-                !bmiFailBlock &&
+                  !bmiFailBlock &&
                   proposalData["Medical Details"] &&
                   setActive(3);
               }}
@@ -466,12 +464,13 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
               Proposal Form
             </MobileHeaderText>
           </Link>
-          <ShareQuoteModal
-            mobile
-            insurersFor={cartEntries.map(cart => cart?.product?.company?.alias)}
-            stage="PROPOSAL"
-            sum_insured={sum_insured}
-          />
+          <div
+            css={`
+              color: #fff;
+            `}
+          >
+            <TraceId />
+          </div>
         </MobileHeader>
 
         <div
@@ -517,6 +516,7 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
                   display: flex;
                   align-items: center;
                   justify-content: center;
+                  gap: 10px;
                 `}
               >
                 <span
@@ -621,6 +621,15 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
                     }
                   `}
                 >
+                  <ShareQuoteModal
+                    mobile
+                    insurersFor={cartEntries.map(
+                      cart => cart?.product?.company?.alias,
+                    )}
+                    stage="PROPOSAL"
+                    sum_insured={sum_insured}
+                    float
+                  />
                   <div
                     // lg={4}
                     // md={12}
