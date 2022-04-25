@@ -41,7 +41,7 @@ export function WrapWithTitle({ title, children }) {
         />
         <h3
           css={`
-            font-size: 17px;
+            font-size: 16px;
             color: #68758b;
             font-weight: 600;
             margin: auto;
@@ -50,17 +50,13 @@ export function WrapWithTitle({ title, children }) {
             text-align: center;
 
             ${mobile} {
+              font-size: 14px;
               margin-bottom: 10px;
               position: relative;
-              font-size: 16px;
               width: max-content;
               padding: 0 10px;
               background-color: #fff;
               // z-index: 10;
-            }
-
-            ${small} {
-              font-size: 12px;
             }
           `}
         >

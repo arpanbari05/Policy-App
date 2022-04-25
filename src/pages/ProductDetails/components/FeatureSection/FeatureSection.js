@@ -89,7 +89,7 @@ const FeatureSectionHeading = styled("p")`
   margin-left: 2px;
 
   ${mobile} {
-    font-size: 17px;
+    font-size: 18px;
     margin-bottom: 5px;
     &::before {
       top: 0;
@@ -108,7 +108,7 @@ const FeatureSectionSubHeading = styled("p")`
   }
 
   ${mobile} {
-    font-size: 10px;
+    font-size: 12px;
     color: #7b7b7f;
   }
 `;

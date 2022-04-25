@@ -219,7 +219,7 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
 
         <span
           css={`
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #253858;
             margin-bottom: 8px;
@@ -240,7 +240,7 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
           css={`
             display: flex;
             align-items: center;
-            font-size: 19px;
+            font-size: 18px;
           `}
         >
           <b
@@ -351,7 +351,7 @@ function AdditionalDiscount({
             font-size: 18px;
 
             ${small} {
-              font-size: 12px;
+              font-size: 14px;
               line-height: 14px;
             }
           `}

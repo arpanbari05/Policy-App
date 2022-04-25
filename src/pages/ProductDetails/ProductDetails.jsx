@@ -150,7 +150,13 @@ const ProductDetails = () => {
           <FaArrowCircleLeft />
           <span className="mx-2"> Go Back</span>
         </MobileHeaderText>
-        <TraceId />
+        <div
+          css={`
+            color: #fff;
+          `}
+        >
+          <TraceId />
+        </div>
       </MobileHeader>
       <main
         className="container noselect"
@@ -316,10 +322,7 @@ function SumInsuredOptionsSection({ cartEntry }) {
   const { updateCartEntry } = useCart();
   const {
     data: {
-      settings: {
-        pos_nonpos_switch_message,
-        restrict_posp_quotes_after_limit,
-      },
+      settings: { pos_nonpos_switch_message, restrict_posp_quotes_after_limit },
     },
   } = useFrontendBoot();
   const dispatch = useDispatch();

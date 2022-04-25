@@ -526,7 +526,16 @@ export function TraceId() {
     // }
   }
 
-  if (copiedIndication) return <div>Copied to clipboard!</div>;
+  if (copiedIndication)
+    return (
+      <div
+        css={`
+          font-size: 11px;
+        `}
+      >
+        Copied to clipboard!
+      </div>
+    );
 
   return (
     <div
@@ -539,6 +548,7 @@ export function TraceId() {
         css={`
           background: none;
           border: none;
+          color: inherit !important;
         `}
         onClick={copyTraceId}
       >
