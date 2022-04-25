@@ -34,6 +34,7 @@ import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import { mobile } from "../../utils/mediaQueries";
+import { BackButtonMobile } from "../../components";
 import { TraceId } from "../../components/Navbar";
 
 // import dummy from "./dumySchema";
@@ -93,21 +94,7 @@ const ProposalPage = () => {
 
   const PrimaryShade = primary_shade;
 
-  const backButtonForNav = (
-    <Link
-      className="back_btn_navbar"
-      style={{ color: primary_color }}
-      to={getUrlWithEnquirySearch(
-        `/productdetails/${Math.max(...memberGroups)}`,
-      )}
-    >
-      <MdOutlineArrowBackIos />
-    </Link>
-  );
-
   useEffect(() => {
-    console.log("rvwvkv", active, bmiFailBlock, failedBmiBlockJourney);
-
     if (failedBmiBlockJourney) {
       setBmiFailBlock(failedBmiBlockJourney);
       setActive(1);
@@ -438,11 +425,16 @@ const ProposalPage = () => {
   return (
     <>
       <Page
-        noNavbarForMobile={true}
         id="proposalPage"
-        backButton={backButtonForNav}
+        backButton={
+          <BackButtonMobile
+            path={getUrlWithEnquirySearch(
+              `/productdetails/${Math.max(...memberGroups)}`,
+            )}
+          />
+        }
       >
-        <MobileHeader
+        {/* <MobileHeader
           css={`
             justify-content: space-between;
             background: ${PrimaryColor};
@@ -464,14 +456,13 @@ const ProposalPage = () => {
               Proposal Form
             </MobileHeaderText>
           </Link>
-          <div
-            css={`
-              color: #fff;
-            `}
-          >
-            <TraceId />
-          </div>
-        </MobileHeader>
+          <ShareQuoteModal
+            mobile
+            insurersFor={cartEntries.map(cart => cart?.product?.company?.alias)}
+            stage="PROPOSAL"
+            sum_insured={sum_insured}
+          />
+        </MobileHeader> */}
 
         <div
           className="container-fluid mt-20 pb-100"
