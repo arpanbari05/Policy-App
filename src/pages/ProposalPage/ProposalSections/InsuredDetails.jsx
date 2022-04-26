@@ -27,9 +27,10 @@ const InsuredDetails = ({
   setBlockTabSwitch,
 }) => {
   const [medicalContinueClick, setMedicalContinueClick] = useState(false);
-  const { proposalData, showErrorPopup, insuredDetailsResponse, underWritingStatus } = useSelector(
+  const { proposalData, showErrorPopup, insuredDetailsResponse, underWritingStatus,medicalUrlsRuleEngine } = useSelector(
     state => state.proposalPage,
   );
+  const dispatch = useDispatch();
 
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -114,6 +115,7 @@ const InsuredDetails = ({
       name,
       proposalData,
       defaultValue,
+      dispatch
     );
 
   const { colors } = useTheme();
@@ -122,19 +124,26 @@ const InsuredDetails = ({
 
   const [initColor, setInitColor] = useState(PrimaryColor);
 
-  const dispatch = useDispatch();
 
   const fullName = proposalData["Proposer Details"]?.name;
 
   const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
-    console.log("sdbjhdkgb", medicalContinueClick,isValid);
-    if (
+    console.log("sdbjhdkgb", medicalContinueClick,isValid,underWritingStatus,medicalUrlsRuleEngine);
+    if(
       medicalContinueClick &&
+      medicalUrlsRuleEngine &&
+      underWritingStatus.length &&
+    !underWritingStatus.map(({result}) => result)?.includes("NotSubmitted")
+    ){
+      triggerSaveForm({ sendedVal: values, formName: name });
+    }else if (
+      (medicalContinueClick &&
       !isValid.includes(undefined) &&
       !isValid.includes(false) &&
-      !showErrorPopup?.show
+      !showErrorPopup?.show) 
+    
     ) {
       triggerSaveForm({ sendedVal: values, formName: name });
       
@@ -142,7 +151,7 @@ const InsuredDetails = ({
       setShow(isValid.indexOf(false));
     }
     setMedicalContinueClick(false);
-  }, [isValid, medicalContinueClick, showErrorPopup]);
+  }, [isValid, medicalContinueClick, showErrorPopup,underWritingStatus]);
 
   return (
     <div>
@@ -160,7 +169,34 @@ const InsuredDetails = ({
             show={show === index}
             onClick={() => setShow(prev => (prev === index ? false : index))}
           >
-            <div>
+          {
+           false && medicalUrlsRuleEngine && name === "Medical Details"?(
+              <UnderWritingDiscisionTable>
+              <div className="head_section section_row d-flex align-items-center justify-content-evenly">
+                <div className="section_column">Member</div>
+                <div className="section_column">Medical Questions</div>
+                <div className="section_column">Underwiting Discision</div>
+              </div>
+              {medicalUrlsRuleEngine &&
+                Object.keys(medicalUrlsRuleEngine).map(member => {
+                  return (
+                    <>
+                      <div className="section_row d-flex align-items-center">
+                        <div className="section_column">{member}</div>
+                        <div className="section_column">
+                        <a href={medicalUrlsRuleEngine[member].medical_question_url} className="click_btn" target="_blank">
+                        Click here
+                                  </a>
+                        </div>
+                        <div className="section_column">{underWritingStatus?.find(({member_id}) => member_id === medicalUrlsRuleEngine[member].member_id)?.result || "Not Submitted"}</div>
+                      </div>
+                    </>
+                  )
+                })}
+      
+              </UnderWritingDiscisionTable> 
+            ):(
+              <div>
               
               {name === "Medical Details" && renewal_policy_status?.medicalQuestionsReadOnly ? (
                 <DisableScreen></DisableScreen>
@@ -285,35 +321,15 @@ const InsuredDetails = ({
                 />
               </Form>{" "}
             </div>
+            )
+          }
+          
           </Panel>
         );
       })}
       {console.log("Svsfods", underWritingStatus,insuredDetailsResponse)}
 
-  {/* <UnderWritingDiscisionTable>
-        <div className="head_section section_row d-flex align-items-center justify-content-evenly">
-          <div className="section_column">Member</div>
-          <div className="section_column">Medical Questions</div>
-          <div className="section_column">Underwiting Discision</div>
-        </div>
-        {insuredDetailsResponse?.members &&
-          Object.keys(insuredDetailsResponse.members).map(member => {
-            return (
-              <>
-                <div className="section_row d-flex align-items-center">
-                  <div className="section_column">{member}</div>
-                  <div className="section_column">
-                  <a href={insuredDetailsResponse.members[member].medical_question_url} className="click_btn" target="_blank">
-                  Click here
-                            </a>
-                  </div>
-                  <div className="section_column">{underWritingStatus?.find(({member_id}) => member_id === insuredDetailsResponse.members[member].member_id)?.result || "Not Submitted"}</div>
-                </div>
-              </>
-            )
-          })}
-
-        </UnderWritingDiscisionTable> */}
+ 
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
@@ -333,7 +349,7 @@ const InsuredDetails = ({
 
         <ContinueBtn
           onClick={() => {
-            // dispatch(getMedicalUnderwritingStatus());
+            dispatch(getMedicalUnderwritingStatus());
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
             // setShow();
