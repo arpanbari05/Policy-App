@@ -762,6 +762,7 @@ export function useCart() {
       ({
         discounted_total_premium,
         generate_proposal = false,
+        with_modify = false,
         feature_options = {},
       }) => {
         return updateCartMutation({
@@ -773,6 +774,7 @@ export function useCart() {
           discounted_total_premium,
           feature_options,
           generate_proposal,
+          with_modify,
           discounts: cartEntry?.discounts?.filter(
             singleDiscount => singleDiscount,
           ),
@@ -892,6 +894,7 @@ const discountOnAnotherDiscount = ({
         applied_on_riders,
         percent: percent_of_discount_on_which_discount_to_be_applied,
         fixed_discount_value,
+        applied_on_base_premium,
       }) => {
         let discountValue = 0;
 
@@ -900,11 +903,19 @@ const discountOnAnotherDiscount = ({
           return +fixed_discount_value;
         }
 
+        if (applied_on_base_premium) {
+          return (
+            (+cartEntry?.premium *
+              +percent_of_discount_on_which_discount_to_be_applied) /
+            100
+          );
+        }
+
         if (applied_on_total_cart_premium) {
           //? Means applied on cart total premium.
           const discount =
-            (parseInt(cartEntry?.netPremiumWithoutDiscount) *
-              parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
+            (+cartEntry?.netPremiumWithoutDiscount *
+              +percent_of_discount_on_which_discount_to_be_applied) /
             100;
 
           return (discountValue = discountValue + discount);
@@ -912,8 +923,8 @@ const discountOnAnotherDiscount = ({
 
         if (!applied_on_total_cart_premium) {
           const discount =
-            (parseInt(total_premium) *
-              parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
+            (+total_premium *
+              +percent_of_discount_on_which_discount_to_be_applied) /
             100;
           discountValue = discountValue + discount;
         }
@@ -933,7 +944,7 @@ const discountOnAnotherDiscount = ({
 
           const discount =
             (+filtered_applied_on_riders_amount *
-              parseInt(percent_of_discount_on_which_discount_to_be_applied)) /
+              +percent_of_discount_on_which_discount_to_be_applied) /
             100;
 
           discountValue = discountValue + discount;
@@ -1022,6 +1033,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
       applied_on_riders,
       fixed_discount_value,
       applied_on_discounts,
+      applied_on_base_premium,
     } = additionalDiscount;
 
     let discountAmount = 0;
@@ -1031,19 +1043,21 @@ export function useAdditionalDiscount(groupCode, skip = false) {
       return +fixed_discount_value;
     }
 
+    if (applied_on_base_premium) {
+      return (+cartEntry?.premium * +percent) / 100;
+    }
+
     if (applied_on_total_cart_premium) {
       //? Means applied on cart total premium.
       //? Return discount amount applied on total_cart_premium.
-      const discount =
-        (parseInt(cartEntry?.netPremiumWithoutDiscount) * parseInt(percent)) /
-        100;
+      const discount = (+cartEntry?.netPremiumWithoutDiscount * +percent) / 100;
 
       return (discountAmount = discountAmount + discount);
     }
 
     if (!applied_on_total_cart_premium) {
       //? means applied on premium
-      const discount = (parseInt(total_premium) * parseInt(percent)) / 100;
+      const discount = (+total_premium * +percent) / 100;
       discountAmount = discountAmount + discount;
     }
 
@@ -1060,8 +1074,7 @@ export function useAdditionalDiscount(groupCode, skip = false) {
               ?.reduce((acc = 0, curr) => (acc += +curr))
           : 0;
 
-      const discount =
-        (+filtered_applied_on_riders_amount * parseInt(percent)) / 100;
+      const discount = (+filtered_applied_on_riders_amount * +percent) / 100;
 
       discountAmount = discountAmount + discount;
     }
@@ -1085,8 +1098,93 @@ export function useAdditionalDiscount(groupCode, skip = false) {
             })
           : 0;
 
+      const discount = (+filtered_applied_on_discounts_amount * +percent) / 100;
+
+      discountAmount = discountAmount - discount;
+    }
+
+    return discountAmount;
+  }
+
+  function getDiscountAmountOnParticularCartEntry(
+    additionalDiscount,
+    groupCode,
+  ) {
+    const particularCartEntry = getCartEntry(groupCode);
+
+    const {
+      percent,
+      applied_on_total_premium: applied_on_total_cart_premium,
+      applied_on_riders,
+      fixed_discount_value,
+      applied_on_discounts,
+      applied_on_base_premium,
+    } = additionalDiscount;
+
+    let discountAmount = 0;
+
+    if (fixed_discount_value) {
+      //? return the amount directly if it is fixed.
+      return +fixed_discount_value;
+    }
+
+    if (applied_on_base_premium) {
+      return (+particularCartEntry?.premium * +percent) / 100;
+    }
+
+    if (applied_on_total_cart_premium) {
+      //? Means applied on cart total premium.
+      //? Return discount amount applied on total_cart_premium.
       const discount =
-        (+filtered_applied_on_discounts_amount * parseInt(percent)) / 100;
+        (+particularCartEntry?.netPremiumWithoutDiscount * +percent) / 100;
+
+      return (discountAmount = discountAmount + discount);
+    }
+
+    if (!applied_on_total_cart_premium) {
+      //? means applied on premium
+      const discount = (+particularCartEntry?.total_premium * +percent) / 100;
+      discountAmount = discountAmount + discount;
+    }
+
+    if (applied_on_riders) {
+      const filtered_applied_on_riders =
+        particularCartEntry.health_riders.filter(singleHealthRider =>
+          applied_on_riders.includes(singleHealthRider?.alias),
+        );
+
+      const filtered_applied_on_riders_amount =
+        filtered_applied_on_riders.length
+          ? filtered_applied_on_riders
+              .map(rider => rider.total_premium)
+              ?.reduce((acc = 0, curr) => (acc += +curr))
+          : 0;
+
+      const discount = (+filtered_applied_on_riders_amount * +percent) / 100;
+
+      discountAmount = discountAmount + discount;
+    }
+
+    if (applied_on_discounts) {
+      const selectedAdditionalDiscount = getSelectedAdditionalDiscounts();
+
+      const filtered_applied_on_discounts = selectedAdditionalDiscount.filter(
+        singleSelectedDiscount =>
+          applied_on_discounts.includes(singleSelectedDiscount?.alias),
+      );
+
+      const filtered_applied_on_discounts_amount =
+        filtered_applied_on_discounts?.length
+          ? discountOnAnotherDiscount({
+              discounts_on_which_discount_to_be_applied:
+                filtered_applied_on_discounts,
+              total_premium,
+              premium,
+              particularCartEntry,
+            })
+          : 0;
+
+      const discount = (+filtered_applied_on_discounts_amount * +percent) / 100;
 
       discountAmount = discountAmount - discount;
     }
@@ -1104,11 +1202,13 @@ export function useAdditionalDiscount(groupCode, skip = false) {
     return selectedAdditionalDiscounts;
   }
 
+
   return {
     query: { ...queryState, data },
     getSelectedAdditionalDiscounts,
     toggleAdditionalDiscount,
     getDiscountAmount,
+    getDiscountAmountOnParticularCartEntry,
     addAdditionalDiscount,
     getTotalDiscountAmount,
     isAdditionalDiscountSelected,
@@ -2405,72 +2505,78 @@ export const usePolicyNumberValidations = ({
 };
 
 export const useUSGIDiscounts = () => {
+  //* last change commit: "Life style discount made mandatory --save"
+
   //? Discounts info.
-  //! Life Style Discount : To be applied only on proposal summary page.
+  //! Life Style Discount :  Mandatory discount for STP.
   //! E-Sale Discount : Mandatory discount.
   //! Tired Hospital Discount : Optional discount.
 
   const lifeStyleDiscountAlias = "usgilifestyle";
   const eSaleDiscountAlias = "usgiesale";
 
-  const location = useLocation();
+  const isProductDetailsPage =
+    window.location.pathname.startsWith("/productdetails");
 
-  const { cartEntries, updateCartEntry, getCartTotalPremium } = useCart();
+  const isProposalPage = window.location.pathname === "/proposal";
 
-  const universalSompoPlanInCart = cartEntries
-    ? cartEntries?.find(
-        singlePlan => singlePlan?.product?.company?.alias === "universal_sompo",
-      )
-    : {}; //? CHECK WHETHER UNIVERSAL SOMPO PLAN IS IN THE CART.
+  const isProposalSummaryPage =
+    window.location.pathname === "/proposal_summary";
 
-  const skipRequest = !!!universalSompoPlanInCart?.group?.id; //? SKIP-TOKEN TO SKIP THE ADDITIONAL DISCOUNTS REQUEST IF UNIVERSAL SOMPO PLAN NOT PRESENT
+  const { groupCode } = useParams();
+
+  const { getCartTotalPremium, getCartEntry, updateCartEntry } = useCart();
+
+  const skipToken = isProposalPage || isProposalSummaryPage;
 
   const {
-    query: { data },
-    getDiscountAmount,
-    getSelectedAdditionalDiscounts,
+    query: { data, isSuccess },
     addAdditionalDiscount,
-  } = useAdditionalDiscount(universalSompoPlanInCart?.group?.id, skipRequest);
-
-  const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
-
-  const lifeStyleDiscount = selectedAdditionalDiscounts?.find(
-    singleAd => singleAd?.alias === lifeStyleDiscountAlias,
-  ); //? FIND LIFESTYLE DISCOUNT IF PRESENT IN THE CART.
-
-  const eSaleDiscount = data?.data?.find(
-    singleAd => singleAd?.alias === eSaleDiscountAlias,
-  ); //? FIND E-Sale DISCOUNT IF PRESENT IN THE CART.
+  } = useAdditionalDiscount(groupCode, skipToken);
 
   useEffect(() => {
-    if (cartEntries && universalSompoPlanInCart?.group?.id) {
-      updateCartEntry(universalSompoPlanInCart?.group?.id, {
-        ...universalSompoPlanInCart,
-        discounts:
-          location?.pathname === "/proposal_summary"
-            ? [...universalSompoPlanInCart?.discounts, lifeStyleDiscountAlias]
-            : universalSompoPlanInCart?.discounts?.filter(
-                singleDiscount => singleDiscount !== lifeStyleDiscountAlias,
-              ),
-      }); //? Add/remove life style plan accordingly.
-    }
-  }, []);
+    //! WORKS ONLY ON PRODUCT DETAILS PAGE.
+    if (isProductDetailsPage) {
+      const eSaleDiscount = data?.data?.find(
+        singleAd => singleAd?.alias === eSaleDiscountAlias,
+      ); //? FIND E-Sale DISCOUNT IF PRESENT IN THE ADDITIONAL DISCOUNTS RESPONSE.
 
-  useEffect(() => {
-    if (cartEntries && universalSompoPlanInCart?.group?.id) {
-      if (!universalSompoPlanInCart?.discounts?.includes(eSaleDiscountAlias)) {
-        addAdditionalDiscount(eSaleDiscount);
+      const lifeStyleDiscount = data?.data?.find(
+        singleAd => singleAd?.alias === lifeStyleDiscountAlias,
+      ); //? FIND E-Sale DISCOUNT IF PRESENT IN THE ADDITIONAL DISCOUNTS RESPONSE.
+
+      const cartEntry = getCartEntry(groupCode);
+
+      let universalSompoPlanActive =
+        cartEntry?.product?.company?.alias === "universal_sompo"
+          ? cartEntry
+          : {};
+
+      if (
+        cartEntry &&
+        universalSompoPlanActive?.group?.id &&
+        +universalSompoPlanActive?.group?.id === +groupCode &&
+        eSaleDiscount &&
+        lifeStyleDiscount
+      ) {
+        if (
+          !universalSompoPlanActive?.discounts?.includes(eSaleDiscountAlias) &&
+          !universalSompoPlanActive?.discounts?.includes(lifeStyleDiscountAlias)
+        ) {
+          updateCartEntry(universalSompoPlanActive?.group?.id, {
+            ...cartEntry,
+            discounts: [
+              ...cartEntry?.discounts,
+              eSaleDiscountAlias,
+              lifeStyleDiscountAlias,
+            ],
+          });
+        }
       }
     }
-  }, [data]); //? Add E-sale discount if not already present.
+  }, [data, isSuccess]); //? Add E-sale discount if not already present.
 
-  const totalPremiumToDisplay = () => {
-    return lifeStyleDiscount
-      ? getCartTotalPremium() - getDiscountAmount(lifeStyleDiscount)
-      : getCartTotalPremium(); //? returns same total-premium if lifeStyle discount is not present
-  }; //? TOTAL PREMIUM IS ONLY RE-CALCULATED IF LIFESTYLE DISCOUNT IS PRESENT IN THE CART.
-
-  return totalPremiumToDisplay();
+  return getCartTotalPremium();
 };
 
 export const useClaimBanner = () => {

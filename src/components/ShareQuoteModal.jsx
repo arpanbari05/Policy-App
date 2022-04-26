@@ -23,7 +23,7 @@ import { images } from "../assets/logos/logo";
 import { mobile } from "../utils/mediaQueries";
 import HttpClient from "../api/httpClient";
 
-const shareViaEmailApi = (data, company_alias) =>
+export const shareViaEmailApi = (data, company_alias) =>
   HttpClient(`${company_alias}/communications`, {
     method: "POST",
     data,
@@ -85,9 +85,11 @@ const ShareCTA = ({ onClick, loader, disabled }) => {
 const ShareQuoteModal = ({
   mobile = false,
   showModal,
+  float = false,
   imageSend: imageToSend,
   emailStatus,
   stage = "",
+  floatCss = "",
   hideBtn,
   label,
   sum_insured,
@@ -161,10 +163,12 @@ const ShareQuoteModal = ({
     <>
       {!hideBtn && (
         <ShareButton
+          floatCss={floatCss}
           mobile={mobile}
           shareQuotes={shareQuotes}
           onClick={handleShow}
           label={label}
+          float={float}
         />
       )}
       {show && (
@@ -699,38 +703,40 @@ function ShareStep2({
         />
       </ShareOption>
 
-      <ShareOption
-        className="d-flex mb-3 align-items-center justify-content-between w-100"
-        primaryColor={PrimaryColor}
-      >
-        <div className="d-flex align-items-center">
-          <div className="icon_wrapper">
-            <WhtsappIcon width="21" />
+      {tenantAlias !== "sriyah" && (
+        <ShareOption
+          className="d-flex mb-3 align-items-center justify-content-between w-100"
+          primaryColor={PrimaryColor}
+        >
+          <div className="d-flex align-items-center">
+            <div className="icon_wrapper">
+              <WhtsappIcon width="21" />
+            </div>
+            <input
+              type="number"
+              onChange={e => handleNumberCheck(e, setWtsappNo)}
+              placeholder="Mobile no."
+              value={wtsappNo}
+            />
           </div>
-          <input
-            type="number"
-            onChange={e => handleNumberCheck(e, setWtsappNo)}
-            placeholder="Mobile no."
-            value={wtsappNo}
-          />
-        </div>
 
-        {Number(wtsappNo.length) === 10 ? (
-          <a
-            target="_blank"
-            ref={sendRef}
-            rel="noreferrer"
-            href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
-            onClick={() => {
-              return disableButton("WHATSAPP");
-            }}
-          >
-            <ShareCTA disabled={disableWhatsapp} />
-          </a>
-        ) : (
-          <ShareCTA />
-        )}
-      </ShareOption>
+          {Number(wtsappNo.length) === 10 ? (
+            <a
+              target="_blank"
+              ref={sendRef}
+              rel="noreferrer"
+              href={`https://api.whatsapp.com/send?phone=91${wtsappNo}&text=${window.location.href}`}
+              onClick={() => {
+                return disableButton("WHATSAPP");
+              }}
+            >
+              <ShareCTA disabled={disableWhatsapp} />
+            </a>
+          ) : (
+            <ShareCTA />
+          )}
+        </ShareOption>
+      )}
 
       <ShareOption
         className="d-flex mb-3 align-items-center justify-content-between w-100"

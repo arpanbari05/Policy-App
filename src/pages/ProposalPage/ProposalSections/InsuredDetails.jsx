@@ -170,7 +170,7 @@ const InsuredDetails = ({
             onClick={() => setShow(prev => (prev === index ? false : index))}
           >
           {
-            medicalUrlsRuleEngine && name === "Medical Details"?(
+           false && medicalUrlsRuleEngine && name === "Medical Details"?(
               <UnderWritingDiscisionTable>
               <div className="head_section section_row d-flex align-items-center justify-content-evenly">
                 <div className="section_column">Member</div>

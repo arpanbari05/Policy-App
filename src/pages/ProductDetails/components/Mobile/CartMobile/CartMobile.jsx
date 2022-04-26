@@ -584,7 +584,7 @@ const TitleValueRenderer = ({ title, value }) => {
           line-height: 14px;
           margin-top: 7px;
           font-weight: 900;
-          font-size: 11px;
+          font-size: 12px;
         `}
       >
         {value}
@@ -656,7 +656,7 @@ const Riders = ({ groupCode, ...props }) => {
           color: ${colors.primary_color};
           font-size: 18px;
           font-weight: 900;
-          margin-top: 10px;
+          margin: 10px 0;
         `}
       >
         Riders
@@ -690,9 +690,9 @@ const HorizontalCard = ({ title, value, ...props }) => {
           color: #555555;
           ${mobile} {
             color: #5c5959;
+            font-size: 12px;
           }
           ${small} {
-            font-size: 10px;
             line-height: 12px;
           }
         `}
@@ -710,7 +710,7 @@ const HorizontalCard = ({ title, value, ...props }) => {
             margin-top: 7px;
           }
           @media (max-width: 400px) {
-            font-size: 10px;
+            font-size: 12px;
           }
         `}
       >

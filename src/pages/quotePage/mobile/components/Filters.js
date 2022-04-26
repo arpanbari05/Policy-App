@@ -77,8 +77,11 @@ export function useFiltersSlot({ initialFilters } = {}) {
     } else {
       isChecked = filters[code]?.display_name === option.display_name;
       if (type === "check") {
+        isChecked =
+          Array.isArray(filters[code]) &&
+          filters[code]?.find(insurer => insurer.alias === option.alias);
         updateFilters = { ...filters };
-        if (!isChecked) {
+        if (isChecked) {
           updateFilters = {
             ...filters,
             [code]: updateFilters[code]?.filter(
@@ -408,7 +411,7 @@ function OptionsWrap({ children, className, css = "", ...props }) {
         flex-direction: column;
         ${mq.mobile} {
           & > *:not(:last-child) {
-            margin-bottom: .8rem;
+            margin-bottom: 0.8rem;
           }
         }
         ${css};
@@ -516,9 +519,9 @@ function InsurersFilter({ onChange, currentOptions, code }) {
   const { companies } = useCompanies();
 
   const handleChange = (company, evt) => {
-    if (evt.target.checked) {
-      onChange && onChange(code, company, "check");
-    }
+    // if (evt.target.checked) {
+    onChange && onChange(code, company, "check");
+    // }
   };
 
   return (

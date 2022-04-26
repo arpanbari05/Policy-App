@@ -34,6 +34,8 @@ import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import { mobile } from "../../utils/mediaQueries";
+import { BackButtonMobile } from "../../components";
+import { TraceId } from "../../components/Navbar";
 
 import dummy from "./dumySchema";
 /* ===============================test================================= */
@@ -92,29 +94,12 @@ const ProposalPage = () => {
 
   const PrimaryShade = primary_shade;
 
-  const backButtonForNav = (
-    <Link
-      className="back_btn_navbar"
-      style={{ color: primary_color }}
-      to={getUrlWithEnquirySearch(
-        `/productdetails/${Math.max(...memberGroups)}`,
-      )}
-    >
-      <MdOutlineArrowBackIos />
-    </Link>
-  );
-
   useEffect(() => {
-console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
-
-    if (
-      failedBmiBlockJourney
-    ) {
+    if (failedBmiBlockJourney) {
       setBmiFailBlock(failedBmiBlockJourney);
       setActive(1);
     } else setBmiFailBlock(false);
   }, [failedBmiBlockJourney]);
-
 
   useEffect(() => {
     setPrepairingProposal(true);
@@ -407,7 +392,7 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
               `}
               onClick={() => {
                 !blockTabSwitch &&
-                !bmiFailBlock &&
+                  !bmiFailBlock &&
                   proposalData["Medical Details"] &&
                   setActive(3);
               }}
@@ -441,11 +426,16 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
   return (
     <>
       <Page
-        noNavbarForMobile={true}
         id="proposalPage"
-        backButton={backButtonForNav}
+        backButton={
+          <BackButtonMobile
+            path={getUrlWithEnquirySearch(
+              `/productdetails/${Math.max(...memberGroups)}`,
+            )}
+          />
+        }
       >
-        <MobileHeader
+        {/* <MobileHeader
           css={`
             justify-content: space-between;
             background: ${PrimaryColor};
@@ -473,7 +463,7 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
             stage="PROPOSAL"
             sum_insured={sum_insured}
           />
-        </MobileHeader>
+        </MobileHeader> */}
 
         <div
           className="container-fluid mt-20 pb-100"
@@ -518,6 +508,7 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
                   display: flex;
                   align-items: center;
                   justify-content: center;
+                  gap: 10px;
                 `}
               >
                 <span
@@ -622,6 +613,15 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
                     }
                   `}
                 >
+                  <ShareQuoteModal
+                    mobile
+                    insurersFor={cartEntries.map(
+                      cart => cart?.product?.company?.alias,
+                    )}
+                    stage="PROPOSAL"
+                    sum_insured={sum_insured}
+                    float
+                  />
                   <div
                     // lg={4}
                     // md={12}

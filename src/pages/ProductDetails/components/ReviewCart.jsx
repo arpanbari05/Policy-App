@@ -128,7 +128,7 @@ export function CartDetails({
         <h1
           className="m-0"
           css={`
-            font-size: 1.261rem;
+            font-size: 23px;
             font-weight: 900;
             color: #2d3f5e;
           `}
@@ -254,6 +254,7 @@ const ModifyDetailsButton = () => {
     updateCartMutation({
       discounted_total_premium,
       generate_proposal: true,
+      with_modify: true,
     }).then(resObj => {
       history.push(getUrlWithEnquirySearch(`/proposal`));
     });
@@ -1033,7 +1034,7 @@ function TotalPremium({ groupCode, ...props }) {
       <div
         css={`
           color: var(--abc-red);
-          font-size: 17px;
+          font-size: 18px;
         `}
       >
         {isTotalPremiumLoading ? (

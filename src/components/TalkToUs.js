@@ -6,72 +6,123 @@ import { mobile } from "../utils/mediaQueries";
 import { useForm } from "react-hook-form";
 import { Modal } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
-import { useFrontendBoot } from "../customHooks/index";
+import {
+  useFrontendBoot,
+  useNameInput,
+  useNumberInput,
+  useEmailInput,
+} from "../customHooks/index";
 import { useGetEnquiriesQuery } from "../api/api";
 import { useUrlQueries } from "../customHooks/useUrlQuery";
+import validateInput from "../utils/inputPageUtils";
+import { shareViaEmailApi } from "./ShareQuoteModal";
 
 const TalkToUsContent = () => {
   const searchQueries = useUrlQueries();
-  const [proposerData, setProposerData] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-  });
-  const { register, handleSubmit } = useForm();
   const { data } = useFrontendBoot();
   const { data: enquiryData } = useGetEnquiriesQuery(undefined, {
     skip: !searchQueries.enquiryId,
   });
-  console.log(enquiryData);
-  useEffect(() => {
-    setProposerData({
-      name: enquiryData.data.name,
-      email: enquiryData.data.email,
-      mobile: enquiryData.data.mobile,
-    });
-  }, [enquiryData]);
+  const {
+    data: { settings },
+    tenantAlias,
+  } = useFrontendBoot();
+  let inputData = {
+    name: enquiryData.data.name,
+    email: enquiryData.data.email,
+    mobile: enquiryData.data.mobile,
+  };
+  const [success, setSuccess] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [emailError, setEmailErrors] = useState({});
+  const [mobileError, setMobileErrors] = useState({});
+  const [fullNameError, setFullNameErrors] = useState({});
+  const fullNameInput = useNameInput(inputData?.name || "", setFullNameErrors);
+  const mobileInput = useNumberInput(inputData?.mobile || "", setMobileErrors, {
+    maxLength: 10,
+  });
+  const emailInput = useEmailInput(inputData?.email || "", setEmailErrors);
 
-  const onCallHandler = data => {};
+  const onCallHandler = async e => {
+    e.preventDefault();
+    const validation = validateInput({
+      settings,
+      fullNameInput,
+      emailInput,
+      mobileInput,
+      setEmailErrors,
+      setFullNameErrors,
+      setMobileErrors,
+    });
+
+    if (validation) {
+      setLoader(true);
+      const response = await shareViaEmailApi(
+        {
+          email: emailInput?.value,
+          mobile: mobileInput?.value,
+          name: fullNameInput?.value,
+          mode: ["EMAIL"],
+          stage: "TALK_TO_US",
+        },
+        tenantAlias,
+      );
+      setLoader(false);
+      setSuccess(`${response.statusCode}`.startsWith("2"));
+    }
+  };
 
   return (
     <Wrapper>
       <Heading>Need Help?</Heading>
       <Subtitle>Submit your details and we'll reach out supersoon!</Subtitle>
-      <FormWrapper onSubmit={handleSubmit(onCallHandler)}>
-        <TextInput
-          name="name"
-          value={proposerData.name}
-          label="Name"
-          placeholder="Name"
-          type="text"
-          onChange={e =>
-            setProposerData({ ...proposerData, name: e.target.value })
-          }
-          ref={() => register("name", { required: true })}
-        />
-        <TextInput
-          name="mobile"
-          label="Phone number"
-          placeholder="Phone number"
-          type="number"
-          minLength={10}
-          value={proposerData.mobile}
-          onChange={e =>
-            setProposerData({ ...proposerData, mobile: e.target.value })
-          }
-          ref={() => register("mobile", { minLength: 10 })}
-        />
-        <TextInput
-          name="email"
-          value={proposerData.email}
-          label="Email"
-          placeholder="Email"
-          type="email"
-          onChange={e =>
-            setProposerData({ ...proposerData, email: e.target.value })
-          }
-          ref={() => register("email", { required: true })}
-        />
+      <FormWrapper onSubmit={onCallHandler}>
+        <div className="w-100">
+          <TextInput
+            name="name"
+            label="Name"
+            placeholder="Name"
+            type="text"
+            {...fullNameInput}
+            style={
+              fullNameError?.message
+                ? { border: "1px solid red", textTransform: "capitalize" }
+                : { textTransform: "capitalize" }
+            }
+          />
+          {fullNameError?.message && (
+            <ErrorMessage>{fullNameError.message}</ErrorMessage>
+          )}
+        </div>
+
+        <div className="w-100">
+          <TextInput
+            name="mobile"
+            label="Phone number"
+            placeholder="Phone number"
+            type="number"
+            minLength={10}
+            style={mobileError?.message && { border: "1px solid red" }}
+            {...mobileInput}
+          />
+          {mobileError?.message && (
+            <ErrorMessage>{mobileError.message}</ErrorMessage>
+          )}
+        </div>
+
+        <div className="w-100">
+          <TextInput
+            name="email"
+            label="Email"
+            placeholder="Email"
+            type="email"
+            style={emailError?.message && { border: "1px solid red" }}
+            {...emailInput}
+          />
+          {emailError?.message && (
+            <ErrorMessage>{emailError.message}</ErrorMessage>
+          )}
+        </div>
         <Button
           type="submit"
           css={`
@@ -79,6 +130,7 @@ const TalkToUsContent = () => {
             width: 100px;
             margin: 0 auto;
           `}
+          loader={loader}
         >
           CALL ME
         </Button>
@@ -247,4 +299,12 @@ const FlexWrapper = styled.div`
   align-items: center;
   justify-content: center;
   color: #666;
+`;
+
+const ErrorMessage = styled.p`
+  font-size: 12px;
+  color: red;
+  width: 100%;
+  margin: 0;
+  text-align: left;
 `;
