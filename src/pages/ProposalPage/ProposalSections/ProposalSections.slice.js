@@ -21,20 +21,20 @@ const proposal = createSlice({
     mediUnderwritting: false,
     showPlanNotAvail: false,
     showNSTP: false,
-    canSendSummaryPdf:false,
+    canSendSummaryPdf: false,
     activeIndex: 0,
     policyStatus: [],
     noForAllChecked: false,
     policyLoading: true,
     failedBmiData: false,
-    insuredDetailsResponse:{},
+    insuredDetailsResponse: {},
     failedBmiBlockJourney: false,
-    underWritingStatus:[],
+    underWritingStatus: [],
     showErrorPopup: {
       show: false,
       head: "",
       msg: "",
-      onCloseCallBack:() => {}
+      onCloseCallBack: () => {},
     },
     planDetails: {
       title: "Your Plan Details",
@@ -66,7 +66,7 @@ const proposal = createSlice({
     setIsLoading: (state, { payload }) => {
       state.isLoading = payload;
     },
-    setInsuredDetailsResponse:(state,{payload}) => {
+    setInsuredDetailsResponse: (state, { payload }) => {
       state.insuredDetailsResponse = payload;
     },
     setSelectedIcs: (state, { payload }) => {
@@ -109,13 +109,13 @@ const proposal = createSlice({
     setIsPopupOn: (state, { payload }) => {
       state.isPopupOn = payload;
     },
-    setCanSendSummaryPdf:(state, { payload }) => {
+    setCanSendSummaryPdf: (state, { payload }) => {
       state.canSendSummaryPdf = payload;
     },
-    setFailedBmiBlockJourney:(state, { payload }) => {
+    setFailedBmiBlockJourney: (state, { payload }) => {
       state.failedBmiBlockJourney = payload;
     },
-    setUnderWritingStatus:(state, { payload }) => {
+    setUnderWritingStatus: (state, { payload }) => {
       state.underWritingStatus = payload;
     },
   },
@@ -143,12 +143,9 @@ export const {
   setIsPopupOn,
   setInsuredDetailsResponse,
   setFailedBmiBlockJourney,
-  setUnderWritingStatus
+  setUnderWritingStatus,
 } = proposal.actions;
 const ls = new SecureLS();
-
-
-
 
 // const hasAnyChangeInObj = (newVal, oldVal) => {
 //   let newValKeys = Object.keys(newVal);
@@ -165,22 +162,20 @@ const ls = new SecureLS();
 // };
 export const getMedicalUnderwritingStatus = () => {
   return async (dispatch, state) => {
-    try{
-      const {data} = await fetchUnderWritingMQ();
+    try {
+      const { data } = await fetchUnderWritingMQ();
       dispatch(setUnderWritingStatus(data));
-    console.log("egbsrjkrr",data)
-
+      console.log("egbsrjkrr", data);
     } catch (err) {
       console.error(err);
     }
-    
-  }
-}
+  };
+};
 export const saveProposalData = (proposalData, next, failure) => {
   return async (dispatch, state) => {
     try {
       console.log("wvnljsdvb", proposalData);
-      let prevState = state()
+      let prevState = state();
       let prevProposalData = prevState.proposalPage.proposalData;
       let prevCart = prevState.cart;
       dispatch(setIsLoading(true));
@@ -237,7 +232,7 @@ export const fetchPdf = options => {
   return async dispatch => {
     try {
       const { data } = await policyPdf();
-      dispatch(setPolicyStatus(data.data));
+      dispatch(setPolicyStatus(data?.data));
     } catch (err) {
       console.error(err);
     }
