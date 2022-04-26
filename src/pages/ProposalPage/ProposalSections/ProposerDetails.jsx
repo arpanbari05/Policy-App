@@ -97,12 +97,15 @@ const ProposerDetails = ({
     }
   }, []);
 
+console.log("ergnjkg",values)
+
   return (
     <>
       <div>
         <Form>
           <FormBuilder
             schema={schema}
+            formName={name}
             components={components}
             fetchValues={setValues}
             fetchErrors={setErrors}

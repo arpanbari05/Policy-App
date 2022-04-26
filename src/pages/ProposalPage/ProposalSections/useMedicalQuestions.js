@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import {getMedicalUrlsRuleEngine } from "./ProposalSections.slice";
 
-const useMedicalQuestions = (schema, values, setValues, name,proposalData,defaultValue) => {
+const useMedicalQuestions = (schema, values, setValues, name,proposalData,defaultValue,dispatch) => {
   const [noForAll, setNoForAll] = useState({});
   const [yesSelected, setYesSelected] = useState({});
   const [canProceed, setCanProceed] = useState({

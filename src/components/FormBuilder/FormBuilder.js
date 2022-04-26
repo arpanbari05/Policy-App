@@ -5,6 +5,8 @@ import {
   fillingUtility,
   generateRange,
   renderField,
+  labelPicker,
+  ValueExtractor
 } from "./formUtils";
 import styled from "styled-components";
 import axios from "axios";
@@ -146,7 +148,9 @@ const FormBuilder = ({
   useEffect(() => {
     if (submitTrigger) {
       triggerValidation && triggerValidation();
-      console.log("berbjkb10", errors);
+      console.log("evbvvkw",submitTrigger,triggerValidation)
+
+      // console.log("berbjkb10", errors);
       // scrolltoTop if errors
       scrollToErrors && scrollToErrors();
       setSubmit && setSubmit("SUBMIT");
@@ -157,26 +161,26 @@ const FormBuilder = ({
   const { asyncOptions, asyncValues } = useSelector(state => state.formBuilder);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (formName !== "Medical Details") {
-      const tempValues = { ...values };
-      schema.forEach(item => {
-        if (
-          item.type === "select" &&
-          !values[item.name] &&
-          item?.validate?.required &&
-          !item.fill &&
-          !item?.additionalOptions?.options?.length &&
-          Object.keys(item.additionalOptions.options || {}).length === 1
-        ) {
-          const tempValue = Object.keys(item.additionalOptions.options)[0];
+  // useEffect(() => {
+  //   if (formName !== "Medical Details") {
+  //     const tempValues = { ...values };
+  //     schema.forEach(item => {
+  //       if (
+  //         item.type === "select" &&
+  //         !values[item.name] &&
+  //         item?.validate?.required &&
+  //         !item.fill &&
+  //         !item?.additionalOptions?.options?.length &&
+  //         Object.keys(item.additionalOptions.options || {}).length === 1
+  //       ) {
+  //         const tempValue = Object.keys(item.additionalOptions.options)[0];
 
-          tempValues[item.name] = tempValue;
-        }
-      });
-      updateValues(tempValues);
-    }
-  }, [schema, errors]);
+  //         tempValues[item.name] = tempValue;
+  //       }
+  //     });
+  //     updateValues(tempValues);
+  //   }
+  // }, [schema, errors]);
   useEffect(() => {
     let temp = {};
     if (schema instanceof Array)
@@ -185,6 +189,7 @@ const FormBuilder = ({
       });
     setFillBus(temp);
   }, [schema]);
+
   useEffect(() => {
     let pincodeSchema = schema.filter(item =>
       item?.name?.includes("pincode"),
@@ -198,9 +203,12 @@ const FormBuilder = ({
       );
     }
   }, []);
+  
   useEffect(() => {
-    console.log("sgfsjkk", asyncValues);
+    console.log("sgfsjkk",formName, asyncValues,values);
+    // if(formName === "Proposer Details"){
     setValues({ ...values, ...asyncValues });
+    // }
   }, [asyncValues]);
 
   console.log("dfjklsgvb 2", values);
@@ -410,6 +418,10 @@ const FormBuilder = ({
                                         values={values}
                                         item={innerItem}
                                         {...innerItem.additionalOptions}
+                                        label={ValueExtractor(innerItem?.additionalOptions?.label,values,member)}
+                                        notAllowed={
+                                          ValueExtractor(innerItem?.additionalOptions?.notAllowed,values,member)
+                                        }
                                       />
                                     </Wrapper>
                                   )

@@ -11,7 +11,7 @@ const useInsuredDetails = (
   defaultValue,
   equriesData
 ) => {
-  console.log("sgsfkvbjkfv",equriesData)
+  console.log("sgsfkvbjkfv",values)
   function formatter(number) {
     if (!isNaN(number)) number = parseInt(number);
     const updatedNumber = number.toLocaleString("en-US", {

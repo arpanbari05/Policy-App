@@ -66,7 +66,7 @@ const useProposalSections = ({
       return Object.keys(values)?.map(group =>
         Object.values(values[group])?.every(val => val?.isValid),
       );
-    else return false;
+    else return [];
   };
 
   // checks dropDown selected value exist in schema options or not
@@ -205,6 +205,7 @@ const useProposalSections = ({
 
 
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
+    console.log("bcfhdjd",values,checkAllValid(values))
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
         console.log("egjksf 1")
@@ -230,7 +231,7 @@ const useProposalSections = ({
         setShow(valueIsValidatedOption.indexOf(false));
         return;
       }
-    } else if (!checkAllValid(values).every(el => el === true)) {
+    } else if (checkAllValid(values) && !checkAllValid(values).every(el => el === true)) {
       setActive(schemaKeys.indexOf(formName));
       return;
     }

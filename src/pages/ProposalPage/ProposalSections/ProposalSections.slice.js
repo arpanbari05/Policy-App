@@ -9,6 +9,7 @@ import {
   saveProposal,
   fetchUnderWritingMQ,
   submitProposal,
+  getMedicalUrls,
 } from "./serviceApi";
 
 const proposal = createSlice({
@@ -28,6 +29,7 @@ const proposal = createSlice({
     policyLoading: true,
     failedBmiData: false,
     insuredDetailsResponse:{},
+    medicalUrlsRuleEngine:false,
     failedBmiBlockJourney: false,
     underWritingStatus:[],
     showErrorPopup: {
@@ -100,6 +102,9 @@ const proposal = createSlice({
     setPlanDetails: (state, { payload }) => {
       state.planDetails = payload;
     },
+    setMedicalUrlsRuleEngine: (state, { payload }) => {
+      state.medicalUrlsRuleEngine = payload;
+    },
     pushLoadingStack: (state, { payload }) => {
       state.loadingStack.push(true);
     },
@@ -143,7 +148,8 @@ export const {
   setIsPopupOn,
   setInsuredDetailsResponse,
   setFailedBmiBlockJourney,
-  setUnderWritingStatus
+  setUnderWritingStatus,
+  setMedicalUrlsRuleEngine
 } = proposal.actions;
 const ls = new SecureLS();
 
@@ -167,9 +173,9 @@ export const getMedicalUnderwritingStatus = () => {
   return async (dispatch, state) => {
     try{
       const {data} = await fetchUnderWritingMQ();
-      dispatch(setUnderWritingStatus(data));
-    console.log("egbsrjkrr",data)
-
+      if(typeof data !== "string" && data?.final_result?.members){
+        dispatch(setUnderWritingStatus(data?.final_result?.members));
+      }
     } catch (err) {
       console.error(err);
     }
@@ -338,5 +344,26 @@ export const getPaymentStatus = data => {
     }
   };
 };
+
+export const getMedicalUrlsRuleEngine = () => {
+  return async dispatch => {
+    try {
+      const response = await getMedicalUrls();
+      if (response?.data?.data?.members) {
+        // let structuredData = Object.keys(response.data.data.members).reduce((acc,member) => {
+        //   return {
+        //     ...acc,
+        //     [member]: {
+
+        //     }
+        //   }
+        // },{})
+        dispatch(setMedicalUrlsRuleEngine(response?.data?.data?.members));
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
+}
 
 export default proposal.reducer;

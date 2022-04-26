@@ -16,7 +16,7 @@ import ProductSummary from "./ProposalSections/components/ProductSummary";
 import { MobileHeader, MobileHeaderText } from "./ProposalPage.style";
 import ErrorPopup from "./ProposalSections/components/ErrorPopup";
 import { getProposalData } from "./ProposalSections/ProposalSections.slice";
-import { setShowErrorPopup } from "./ProposalSections/ProposalSections.slice";
+import { setShowErrorPopup,getMedicalUrlsRuleEngine } from "./ProposalSections/ProposalSections.slice";
 
 import { getProposalFields } from "./schema.slice";
 
@@ -35,7 +35,7 @@ import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import { mobile } from "../../utils/mediaQueries";
 
-// import dummy from "./dumySchema";
+import dummy from "./dumySchema";
 /* ===============================test================================= */
 
 /* ===============================test================================= */
@@ -54,7 +54,7 @@ const ProposalPage = () => {
   const [proposerDactive, setProposerDactive] = useState(true);
 
   const { currentSchema } = useSelector(state => state.schema);
-
+// const currentSchema = dummy;
   const [activateLoader, setActivateLoader] = useState(false);
 
   let { cartEntries } = useCart();
@@ -121,6 +121,7 @@ console.log("rvwvkv",active,bmiFailBlock,failedBmiBlockJourney)
     dispatch(getProposalFields());
     dispatch(getCart());
     setMemberGroups(cartEntries.map(cartItem => cartItem.group?.id));
+    dispatch(getMedicalUrlsRuleEngine());
     dispatch(
       getProposalData(() => {
         setPrepairingProposal(false);
