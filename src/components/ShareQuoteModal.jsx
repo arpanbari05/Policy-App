@@ -23,7 +23,7 @@ import { images } from "../assets/logos/logo";
 import { mobile } from "../utils/mediaQueries";
 import HttpClient from "../api/httpClient";
 
-const shareViaEmailApi = (data, company_alias) =>
+export const shareViaEmailApi = (data, company_alias) =>
   HttpClient(`${company_alias}/communications`, {
     method: "POST",
     data,
