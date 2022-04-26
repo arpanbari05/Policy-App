@@ -11,15 +11,15 @@ import { useGetRenewalSumInsuredsQuery } from "../../../api/api";
 function SumInsuredSection({ cartEntry }) {
   const { available_sum_insureds, sum_insured } = cartEntry;
 
-  const currentSumInsuredIndex = available_sum_insureds.indexOf(+sum_insured);
+  const currentSumInsuredIndex = available_sum_insureds?.indexOf(+sum_insured);
 
   const nextTwoSumInsureds = React.useMemo(
-    () => available_sum_insureds.slice(currentSumInsuredIndex, 3),
+    () => available_sum_insureds?.slice(currentSumInsuredIndex, 3),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
-  if (!nextTwoSumInsureds.length) return null;
+  if (!nextTwoSumInsureds?.length) return null;
 
   return (
     <FeatureSection heading="Upgrade Sum Insured">
