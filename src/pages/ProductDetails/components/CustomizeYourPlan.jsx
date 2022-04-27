@@ -36,7 +36,6 @@ export function RidersSection({ loaderStop, isProductDetailsPage = false }) {
         loaderStop={loaderStop}
         quote={quote}
         groupCode={groupCode}
-        defaultSelectedRiders={quote?.health_riders}
         onChange={handleRidersChange}
         isProductDetailsPage={isProductDetailsPage}
       />
@@ -49,7 +48,6 @@ export function Riders({
   quote,
   groupCode,
   onChange,
-  defaultSelectedRiders = [],
   isProductDetailsPage,
   ...props
 }) {
@@ -57,7 +55,7 @@ export function Riders({
     query: { isLoading, isUninitialized, isError, isFetching, refetch },
     handleChange,
     riders,
-  } = useRiders({ quote, groupCode, onChange, defaultSelectedRiders });
+  } = useRiders({ quote, groupCode, onChange });
 
   const feature_options = useCart().getCartEntry(groupCode)?.feature_options;
 
@@ -436,9 +434,9 @@ function RiderOption({
 }) {
   const { colors } = useTheme();
 
-  useEffect(() => {
+  /* useEffect(() => {
     onChange && onChange({ key, options, selected: options[0] });
-  }, []);
+  }, []); */
 
   const handleChange = evt => {
     onChange && onChange({ key, options, selected: evt.target.value });
