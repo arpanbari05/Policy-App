@@ -2016,6 +2016,7 @@ export function useRiders({ quote, groupCode, onChange }) {
     }
   });
 
+
   const additionalUrlQueries = Object.keys(optionsSelected)
     .map(opt => `${opt}=${optionsSelected[opt]}`)
     .join("&");
@@ -2064,6 +2065,7 @@ export function useRiders({ quote, groupCode, onChange }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riders]);
 
+  
   const handleChange = changedRider => {
     if (changedRider.isSelected) {
       const isValid = validateDependentRider(
