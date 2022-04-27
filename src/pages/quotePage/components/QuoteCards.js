@@ -674,7 +674,7 @@ export function QuoteCardSelect({ color, fontSize, maxWidth, ...props }) {
       styles={{
         option: provided => ({
           ...provided,
-          fontSize: "11px",
+          fontSize: "10px",
           fontWeight: "bold",
           padding: "7px 7px !important",
           textAlign: "left",
