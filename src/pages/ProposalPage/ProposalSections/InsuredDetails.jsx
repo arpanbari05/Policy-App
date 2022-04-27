@@ -193,7 +193,7 @@ const InsuredDetails = ({
               </div>
               {medicalUrlsRuleEngine &&
                 Object.keys(medicalUrlsRuleEngine).map(member => {
-                  return (
+                  return item.toLowerCase().includes(member.toLowerCase())?(
                     <>
                       <div className="section_row d-flex align-items-center">
                         <div className="section_column">{member}</div>
@@ -205,6 +205,8 @@ const InsuredDetails = ({
                         <div className="section_column">{underWritingStatus?.find(({member_id}) => member_id === medicalUrlsRuleEngine[member].member_id)?.result || "Not Submitted"}</div>
                       </div>
                     </>
+                  ):(
+                    <></>
                   )
                 })}
       
