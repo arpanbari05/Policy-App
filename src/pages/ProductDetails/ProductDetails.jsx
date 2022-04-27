@@ -32,15 +32,13 @@ import GoBackButton from "../../components/GoBackButton";
 import { useGetEnquiriesQuery, useUpdateEnquiryMutation } from "../../api/api";
 import { useDispatch } from "react-redux";
 import { setPosPopup } from "../quotePage/quote.slice";
-import { MdOutlineArrowBackIos } from "react-icons/md";
+
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
 
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
   const { pos_popup } = useSelector(({ quotePage }) => quotePage);
-
-  //const location = useLocation();
 
   const {
     data: {
@@ -82,7 +80,7 @@ const ProductDetails = () => {
     sumInsuredOptions = sumInsuredOptions.filter(si => si.value <= 500000);
   }
 
-  useUSGIDiscounts(); //? removal of lifestyle discount if present.
+  useUSGIDiscounts(); //! to get the discounts logic of usgi.
 
   useEffect(() => {
     function scrollListener() {
@@ -115,16 +113,6 @@ const ProductDetails = () => {
     updateEnquiry(data?.data);
   }, []);
 
-  const backButtonForNav = (
-    <span
-      className="back_btn_navbar"
-      style={{ color: colors.primary_color }}
-      onClick={() => history.goBack()}
-    >
-      <MdOutlineArrowBackIos />
-    </span>
-  );
-
   const {
     journeyType,
     subJourneyType,
@@ -139,30 +127,20 @@ const ProductDetails = () => {
   }
 
   return (
-    <Page backButton={<BackButtonMobile />}>
+    <Page
+      backButton={
+        <BackButtonMobile
+          path={`/quotes/${groupCode}?enquiryId=${enquiryId}`}
+        />
+      }
+    >
       {pos_popup && (
         <ErrorPopup
           handleClose={() => dispatch(setPosPopup(false))}
           htmlProps={pos_nonpos_switch_message}
         />
       )}
-      {/* <MobileHeader primary_color={colors?.primary_color}>
-        <MobileHeaderText
-          onClick={() => {
-            history.push(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
-          }}
-        >
-          <FaArrowCircleLeft />
-          <span className="mx-2"> Go Back</span>
-        </MobileHeaderText>
-        <div
-          css={`
-            color: #fff;
-          `}
-        >
-          <TraceId />
-        </div>
-      </MobileHeader> */}
+
       <main
         className="container noselect"
         css={
