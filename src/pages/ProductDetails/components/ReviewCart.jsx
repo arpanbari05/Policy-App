@@ -135,7 +135,10 @@ export function CartDetails({
         >
           Your Cart
         </h1>
-        <Members groupCode={groupCode} />
+        <Members
+          groupCode={groupCode}
+          editable={subJourneyType !== "renewal"}
+        />
       </div>
 
       <div>
