@@ -63,6 +63,8 @@ const InsuredDetails = ({
     equriesData,
     show,
     setShow,
+    cartEntries,
+    isVersionRuleEngine
   } = useProposalSections({
     setActive,
     name,
@@ -72,7 +74,6 @@ const InsuredDetails = ({
     schema,
     setBlockTabSwitch,
   });
-  console.log("wrghrjksgv",values,defaultValue)
   useEffect(() => {
     if (name === "Insured Details" && isValid.includes(false))
       setShow(isValid.indexOf(false));
@@ -115,8 +116,10 @@ const InsuredDetails = ({
       name,
       proposalData,
       defaultValue,
-      dispatch
+      dispatch,
+      isVersionRuleEngine
     );
+    console.log("wrghrjksgv",values,cartEntries,schema,noForAll)
 
   const { colors } = useTheme();
 
@@ -131,12 +134,23 @@ const InsuredDetails = ({
 
   useEffect(() => {
     console.log("sdbjhdkgb", medicalContinueClick,isValid,underWritingStatus,medicalUrlsRuleEngine);
+    
     if(
       medicalContinueClick &&
       medicalUrlsRuleEngine &&
       underWritingStatus.length &&
     !underWritingStatus.map(({result}) => result)?.includes("NotSubmitted")
     ){
+      if(underWritingStatus.map(({result}) => result)?.includes("Manual_UV") ||
+      underWritingStatus.map(({result}) => result)?.includes("MER")){
+        dispatch(
+          setShowErrorPopup({
+            show: true,
+            head: "",
+            msg: "Your application will be reviewed by our Underwriting team.",
+          }),
+        );
+      }
       triggerSaveForm({ sendedVal: values, formName: name });
     }else if (
       (medicalContinueClick &&
@@ -170,7 +184,7 @@ const InsuredDetails = ({
             onClick={() => setShow(prev => (prev === index ? false : index))}
           >
           {
-           false && medicalUrlsRuleEngine && name === "Medical Details"?(
+            isVersionRuleEngine(parseInt(item)) && medicalUrlsRuleEngine && name === "Medical Details"?(
               <UnderWritingDiscisionTable>
               <div className="head_section section_row d-flex align-items-center justify-content-evenly">
                 <div className="section_column">Member</div>
@@ -349,10 +363,12 @@ const InsuredDetails = ({
 
         <ContinueBtn
           onClick={() => {
-            dispatch(getMedicalUnderwritingStatus());
             setInitColor("#c7222a");
-            name === "Medical Details" && checkCanProceed();
-            // setShow();
+            if(name === "Medical Details"){
+              checkCanProceed();
+              console.log("dbjfbjfd",)
+              dispatch(getMedicalUnderwritingStatus());
+            }
             setSubmit("Medical");
             console.log("ewrgnjkrsv", canProceed);
             if (

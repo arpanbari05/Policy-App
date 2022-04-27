@@ -206,9 +206,9 @@ const FormBuilder = ({
   
   useEffect(() => {
     console.log("sgfsjkk",formName, asyncValues,values);
-    // if(formName === "Proposer Details"){
+    if(formName !== "Medical Details"){
     setValues(prev => ({ ...prev, ...asyncValues }));
-    // }
+    }
   }, [asyncValues]);
 
   console.log("dfjklsgvb 2", values);
