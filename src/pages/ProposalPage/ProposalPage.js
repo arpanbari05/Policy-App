@@ -16,7 +16,7 @@ import ProductSummary from "./ProposalSections/components/ProductSummary";
 import { MobileHeader, MobileHeaderText } from "./ProposalPage.style";
 import ErrorPopup from "./ProposalSections/components/ErrorPopup";
 import { getProposalData } from "./ProposalSections/ProposalSections.slice";
-import { setShowErrorPopup } from "./ProposalSections/ProposalSections.slice";
+import { setShowErrorPopup,getMedicalUrlsRuleEngine } from "./ProposalSections/ProposalSections.slice";
 
 import { getProposalFields } from "./schema.slice";
 
@@ -33,17 +33,18 @@ import {
 import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
-
 import { mobile } from "../../utils/mediaQueries";
+import { BackButtonMobile } from "../../components";
+import { TraceId } from "../../components/Navbar";
 
-// import dummy from "./dumySchema";
+import dummy from "./dumySchema";
 /* ===============================test================================= */
 
 /* ===============================test================================= */
 const ProposalPage = () => {
   const [prepairingPtoposal, setPrepairingProposal] = useState(false);
-let blockTabSwitch = false;
-const setBlockTabSwitch = (val) => blockTabSwitch = val
+  let blockTabSwitch = false;
+  const setBlockTabSwitch = val => (blockTabSwitch = val);
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -55,10 +56,14 @@ const setBlockTabSwitch = (val) => blockTabSwitch = val
   const [proposerDactive, setProposerDactive] = useState(true);
 
   const { currentSchema } = useSelector(state => state.schema);
-
+// const currentSchema = dummy;
   const [activateLoader, setActivateLoader] = useState(false);
 
   let { cartEntries } = useCart();
+
+  const sum_insured = cartEntries?.map(cart => ({
+    [cart?.product?.name]: cart?.sum_insured,
+  }));
 
   const [listOfForms, setListOfForms] = useState([]);
 
@@ -78,6 +83,7 @@ const setBlockTabSwitch = (val) => blockTabSwitch = val
     showBMI,
     failedBmiData,
     isPopupOn,
+    failedBmiBlockJourney,
   } = useSelector(state => state.proposalPage);
 
   const {
@@ -88,33 +94,19 @@ const setBlockTabSwitch = (val) => blockTabSwitch = val
 
   const PrimaryShade = primary_shade;
 
-  const backButtonForNav = (
-    <Link
-      className="back_btn_navbar"
-      style={{ color: primary_color }}
-      to={getUrlWithEnquirySearch(
-        `/productdetails/${Math.max(...memberGroups)}`,
-      )}
-    >
-      <MdOutlineArrowBackIos />
-    </Link>
-  );
-
-  // useEffect(() => {
-  //   if (
-  //     failedBmiData &&
-  //     Object.keys(proposalData["Insured Details"]).length === 1
-  //   ) {
-  //     setBmiFailBlock(true);
-  //     setActive(1);
-  //   } else setBmiFailBlock(false);
-  // }, [failedBmiData]);
+  useEffect(() => {
+    if (failedBmiBlockJourney) {
+      setBmiFailBlock(failedBmiBlockJourney);
+      setActive(1);
+    } else setBmiFailBlock(false);
+  }, [failedBmiBlockJourney]);
 
   useEffect(() => {
     setPrepairingProposal(true);
     dispatch(getProposalFields());
     dispatch(getCart());
-    setMemberGroups(cartEntries.map(cartItem => cartItem.group.id));
+    setMemberGroups(cartEntries.map(cartItem => cartItem.group?.id));
+    dispatch(getMedicalUrlsRuleEngine());
     dispatch(
       getProposalData(() => {
         setPrepairingProposal(false);
@@ -148,7 +140,6 @@ const setBlockTabSwitch = (val) => blockTabSwitch = val
 
   const form = (active, defaultData) => {
     let activeForm = listOfForms[active];
-console.log("Sgbsfnjl",active)
     if (activateLoader) {
       return (
         <div style={{ textAlign: "center", marginTop: "100px" }}>
@@ -184,6 +175,7 @@ console.log("Sgbsfnjl",active)
           & .formbuilder__error {
             color: #c7222a;
             font-size: 12px;
+            margin-bottom: 0;
             // position: absolute;
           }
         `}
@@ -284,7 +276,9 @@ console.log("Sgbsfnjl",active)
                 align-items: center;
               `}
               onClick={() => {
-                !blockTabSwitch && proposalData["Proposer Details"] && setActive(1);
+                !blockTabSwitch &&
+                  proposalData["Proposer Details"] &&
+                  setActive(1);
               }}
             >
               <MainTitle primaryColor={PrimaryColor}>Insured Details</MainTitle>
@@ -340,7 +334,8 @@ console.log("Sgbsfnjl",active)
               `}
               onClick={() => {
                 proposalData["Insured Details"] &&
-                !blockTabSwitch && !bmiFailBlock &&
+                  !blockTabSwitch &&
+                  !bmiFailBlock &&
                   setActive(2);
               }}
             >
@@ -396,11 +391,14 @@ console.log("Sgbsfnjl",active)
                 align-items: center;
               `}
               onClick={() => {
-                !blockTabSwitch && proposalData["Medical Details"] && setActive(3);
+                !blockTabSwitch &&
+                  !bmiFailBlock &&
+                  proposalData["Medical Details"] &&
+                  setActive(3);
               }}
             >
               <MainTitle primaryColor={PrimaryColor}>Nominee Details</MainTitle>
-              {proposalData[listOfForms[2]] && (
+              {proposalData[listOfForms[2]] && !bmiFailBlock && (
                 <div
                   css={`
                     width: 30px;
@@ -428,11 +426,16 @@ console.log("Sgbsfnjl",active)
   return (
     <>
       <Page
-        noNavbarForMobile={true}
         id="proposalPage"
-        backButton={backButtonForNav}
+        backButton={
+          <BackButtonMobile
+            path={getUrlWithEnquirySearch(
+              `/productdetails/${Math.max(...memberGroups)}`,
+            )}
+          />
+        }
       >
-        <MobileHeader
+        {/* <MobileHeader
           css={`
             justify-content: space-between;
             background: ${PrimaryColor};
@@ -458,8 +461,9 @@ console.log("Sgbsfnjl",active)
             mobile
             insurersFor={cartEntries.map(cart => cart?.product?.company?.alias)}
             stage="PROPOSAL"
+            sum_insured={sum_insured}
           />
-        </MobileHeader>
+        </MobileHeader> */}
 
         <div
           className="container-fluid mt-20 pb-100"
@@ -504,6 +508,7 @@ console.log("Sgbsfnjl",active)
                   display: flex;
                   align-items: center;
                   justify-content: center;
+                  gap: 10px;
                 `}
               >
                 <span
@@ -519,6 +524,7 @@ console.log("Sgbsfnjl",active)
                     cart => cart?.product?.company?.alias,
                   )}
                   stage="PROPOSAL"
+                  sum_insured={sum_insured}
                 />
               </div>
             </div>
@@ -607,6 +613,15 @@ console.log("Sgbsfnjl",active)
                     }
                   `}
                 >
+                  <ShareQuoteModal
+                    mobile
+                    insurersFor={cartEntries.map(
+                      cart => cart?.product?.company?.alias,
+                    )}
+                    stage="PROPOSAL"
+                    sum_insured={sum_insured}
+                    float
+                  />
                   <div
                     // lg={4}
                     // md={12}

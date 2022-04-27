@@ -332,11 +332,15 @@ function MemberOption({
         padding: 2px 10px;
         border: solid 1px #b0bed0;
         flex: 1 1 21em;
-        gap: 0.7em;
+        gap: 0.7rem;
         position: relative;
 
         @media (max-width: 720px) {
           padding: 0px 10px;
+          gap: 0;
+          & > div:last-child {
+            margin-left: 12px;
+          }
         }
 
         ${validateSpouse(selectedMembers, member) &&

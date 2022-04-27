@@ -18,12 +18,26 @@ function LogoLink() {
     ...frontendBoot
   } = useFrontendBoot();
 
+  const isBasicDetailsRoute = useRouteMatch({
+    path: "/input/basic-details",
+    exact: true,
+  });
+
+  const {
+    settings,
+    tenant,
+    settings: { shop_more_link },
+  } = frontendBoot?.data;
+
+  const goto =
+    tenant?.alias === "sriyah" && isBasicDetailsRoute
+      ? shop_more_link
+      : window.location.origin;
+
   if (isLoading) return <CircleLoader animation="border" />;
 
-  const { settings, tenant } = frontendBoot.data;
-
   return (
-    <a href={window.location.origin}>
+    <a href={goto}>
       <img
         src={images[tenant.alias] || settings.logo}
         alt={`companylogo`}
@@ -416,7 +430,7 @@ function Info({ label, value, onlyDesktop = false, children, ...props }) {
       className="d-flex align-items-center justify-content-center"
       css={`
         padding: 0 0.79em;
-        font-size: 0.7rem;
+        font-size: 11px;
         // gap: 0.67em;
         min-width: max-content;
         &:not(:last-child) {
@@ -456,6 +470,31 @@ function Info({ label, value, onlyDesktop = false, children, ...props }) {
   );
 }
 
+function fallbackCopyTextToClipboard(text, fallback) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+
+  // Avoid scrolling to bottom
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.position = "fixed";
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    var successful = document.execCommand("copy");
+    var msg = successful ? "successful" : "unsuccessful";
+    console.log("Fallback: Copying text command was " + msg);
+  } catch (err) {
+    console.error("Fallback: Oops, unable to copy", err);
+    fallback();
+  }
+
+  document.body.removeChild(textArea);
+}
+
 export function TraceId() {
   const searchQueries = useUrlQueries();
   const isBasicDetailsRoute = useRouteMatch({
@@ -478,20 +517,44 @@ export function TraceId() {
   const { trace_id } = data.data;
 
   function copyTraceId() {
-    navigator.clipboard.writeText(trace_id).then(() => {
-      setCopiedIndication(true);
-      setTimeout(() => {
-        setCopiedIndication(false);
-      }, 1000);
+    // if (!navigator.clipboard) {
+    fallbackCopyTextToClipboard(trace_id, () => {
+      navigator.clipboard.writeText(trace_id).then(() => {
+        setCopiedIndication(true);
+        setTimeout(() => {
+          setCopiedIndication(false);
+        }, 1000);
+      });
     });
+    setCopiedIndication(true);
+    setTimeout(() => {
+      setCopiedIndication(false);
+    }, 1000);
+    // } else {
+    //   navigator.clipboard.writeText(trace_id).then(() => {
+    //     setCopiedIndication(true);
+    //     setTimeout(() => {
+    //       setCopiedIndication(false);
+    //     }, 1000);
+    //   });
+    // }
   }
 
-  if (copiedIndication) return <div>Copied to clipboard!</div>;
+  if (copiedIndication)
+    return (
+      <div
+        css={`
+          font-size: 11px;
+        `}
+      >
+        Copied to clipboard!
+      </div>
+    );
 
   return (
     <div
       css={`
-        font-size: 0.7rem !important;
+        font-size: 11px !important;
       `}
     >
       Trace Id: <span>{trace_id}</span>{" "}
@@ -499,6 +562,7 @@ export function TraceId() {
         css={`
           background: none;
           border: none;
+          color: inherit !important;
         `}
         onClick={copyTraceId}
       >

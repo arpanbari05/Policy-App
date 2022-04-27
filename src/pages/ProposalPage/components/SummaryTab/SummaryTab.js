@@ -20,7 +20,7 @@ const convertToFt = value => {
 
 const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
   const filterUnderscore = str =>
-    str.includes("_") ? str.replaceAll("_", " ") : str;
+    str?.includes("_") ? str?.split("_").join(" ") : str;
 
   const modifyMembersName = name => {
     let EditedName = "";
@@ -33,7 +33,8 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
         .map(member => member.code)
         .filter(member => name.includes(member))
         .join(", ")
-        .replaceAll("_", " ");
+        .split("_")
+        .join(" ");
     } else {
       EditedName = name;
     }
@@ -456,8 +457,8 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
             `}
           >
             {data instanceof Array
-              ? data.map(normalRender)
-              : Object.keys(data).map((item, index) => (
+              ? data?.map(normalRender)
+              : Object.keys(data)?.map((item, index) => (
                   <>
                     <Border>
                       <TitleWrapper>
@@ -477,22 +478,22 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
                           align-items: flex-start;
                         `}
                       >
-                        {data[item].map((_data, index) => {
+                        {data[item]?.map((_data, index) => {
                           return title === "Other Details"
                             ? objectRender(
                                 {
                                   ..._data,
                                   additionalOptions: {
-                                    ..._data.additionalOptions,
+                                    ..._data?.additionalOptions,
                                     label:
-                                      _data.additionalOptions.label.includes(
+                                      _data?.additionalOptions?.label?.includes(
                                         "Nominee's",
                                       )
-                                        ? _data.additionalOptions.label.replace(
+                                        ? _data?.additionalOptions?.label?.replace(
                                             "Nominee's",
                                             "",
                                           )
-                                        : _data.additionalOptions.label.replace(
+                                        : _data?.additionalOptions?.label?.replace(
                                             "Nominee",
                                             "",
                                           ),
@@ -658,7 +659,6 @@ const TitleWrapper = styled.p`
   }
 `;
 const CustomMedicalTitle = styled.div`
-  font-family: "pf_handbook_probold";
   text-transform: capitalize;
   font-size: 20px;
   color: #616e87;
@@ -684,9 +684,7 @@ const AdditionalWrapper2 = styled.div`
   margin-right: 13px;
 `;
 const AdditionalQuestion = styled.div``;
-const AdditionalAnswer = styled.div`
-  font-family: "pf_handbook_probold";
-`;
+const AdditionalAnswer = styled.div``;
 
 const MainTitle = styled.h2`
   margin-left: 3px;

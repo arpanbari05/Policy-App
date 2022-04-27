@@ -13,9 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 import "styled-components/macro";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
-import { setShowErrorPopup } from "../ProposalSections/ProposalSections.slice";
+import { setShowErrorPopup, getMedicalUnderwritingStatus } from "../ProposalSections/ProposalSections.slice";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 import useOtherDetails from "./useOtherDetails";
+import StyledButton from "../../../components/StyledButton";
 
 const InsuredDetails = ({
   schema,
@@ -23,11 +24,13 @@ const InsuredDetails = ({
   name,
   defaultValue,
   setActivateLoader,
-  setBlockTabSwitch
+  setBlockTabSwitch,
 }) => {
-  
-const [medicalContinueClick,setMedicalContinueClick] = useState(false)
-  const { proposalData,showErrorPopup } = useSelector(state => state.proposalPage);
+  const [medicalContinueClick, setMedicalContinueClick] = useState(false);
+  const { proposalData, showErrorPopup, insuredDetailsResponse, underWritingStatus,medicalUrlsRuleEngine } = useSelector(
+    state => state.proposalPage,
+  );
+  const dispatch = useDispatch();
 
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -36,8 +39,11 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
   const proposalDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
-  const { insuredMembers: membersDataFromGreetingPage, data: frontBootData } =
-    useFrontendBoot();
+  const {
+    insuredMembers: membersDataFromGreetingPage,
+    data: frontBootData,
+    renewal_policy_status,
+  } = useFrontendBoot();
   // const [checking]
   const { getGroupMembers, groups } = useMembers();
 
@@ -55,7 +61,7 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
     setErrors,
     errors,
     equriesData,
-    show, 
+    show,
     setShow,
   } = useProposalSections({
     setActive,
@@ -64,14 +70,13 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
     partialLength: Object.keys(schema).length,
     setActivateLoader,
     schema,
-    setBlockTabSwitch
+    setBlockTabSwitch,
   });
-
-  console.log("sdgvsjvkd",isValid,name,name === "Insured Details" && isValid.includes(false),isValid.indexOf(false))
+  console.log("wrghrjksgv",values,defaultValue)
   useEffect(() => {
-    console.log("wvwbhw",isValid)
-    if(name === "Insured Details" && isValid.includes(false)) setShow(isValid.indexOf(false))
-      },[...isValid])
+    if (name === "Insured Details" && isValid.includes(false))
+      setShow(isValid.indexOf(false));
+  }, [...isValid]);
 
   const { getPanelDescContent } = useInsuredDetails(
     name,
@@ -110,6 +115,7 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
       name,
       proposalData,
       defaultValue,
+      dispatch
     );
 
   const { colors } = useTheme();
@@ -118,21 +124,34 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
 
   const [initColor, setInitColor] = useState(PrimaryColor);
 
-  const dispatch = useDispatch();
 
   const fullName = proposalData["Proposer Details"]?.name;
 
   const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
-    if( 
+    console.log("sdbjhdkgb", medicalContinueClick,isValid,underWritingStatus,medicalUrlsRuleEngine);
+    if(
       medicalContinueClick &&
-      !isValid.includes(undefined) &&
-    !isValid.includes(false) && !showErrorPopup?.show){
+      medicalUrlsRuleEngine &&
+      underWritingStatus.length &&
+    !underWritingStatus.map(({result}) => result)?.includes("NotSubmitted")
+    ){
       triggerSaveForm({ sendedVal: values, formName: name });
-      setMedicalContinueClick(false);
+    }else if (
+      (medicalContinueClick &&
+      !isValid.includes(undefined) &&
+      !isValid.includes(false) &&
+      !showErrorPopup?.show) 
+    
+    ) {
+      triggerSaveForm({ sendedVal: values, formName: name });
+      
+    }else if(isValid.includes(false)){
+      setShow(isValid.indexOf(false));
     }
-  },[isValid,medicalContinueClick,showErrorPopup])
+    setMedicalContinueClick(false);
+  }, [isValid, medicalContinueClick, showErrorPopup,underWritingStatus]);
 
   return (
     <div>
@@ -150,7 +169,40 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
             show={show === index}
             onClick={() => setShow(prev => (prev === index ? false : index))}
           >
-            <div>
+          {
+           false && medicalUrlsRuleEngine && name === "Medical Details"?(
+              <UnderWritingDiscisionTable>
+              <div className="head_section section_row d-flex align-items-center justify-content-evenly">
+                <div className="section_column">Member</div>
+                <div className="section_column">Medical Questions</div>
+                <div className="section_column">Underwiting Discision</div>
+              </div>
+              {medicalUrlsRuleEngine &&
+                Object.keys(medicalUrlsRuleEngine).map(member => {
+                  return (
+                    <>
+                      <div className="section_row d-flex align-items-center">
+                        <div className="section_column">{member}</div>
+                        <div className="section_column">
+                        <a href={medicalUrlsRuleEngine[member].medical_question_url} className="click_btn" target="_blank">
+                        Click here
+                                  </a>
+                        </div>
+                        <div className="section_column">{underWritingStatus?.find(({member_id}) => member_id === medicalUrlsRuleEngine[member].member_id)?.result || "Not Submitted"}</div>
+                      </div>
+                    </>
+                  )
+                })}
+      
+              </UnderWritingDiscisionTable> 
+            ):(
+              <div>
+              
+              {name === "Medical Details" && renewal_policy_status?.medicalQuestionsReadOnly ? (
+                <DisableScreen></DisableScreen>
+              ) : (
+                <></>
+              )}
               {name === "Medical Details" && (
                 <div
                   css={`
@@ -213,14 +265,17 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
                 </div>
               )}
               <Form>
+        
                 <FormBuilder
                   isInsuredDetails
                   keyStr={item}
                   lastName={fullName?.split(" ").slice(-1)}
                   schema={schema[item]}
                   components={components}
-                  fetchValues={res => {
-                    setValues(prev => ({ ...prev, [item]: res }));
+                  fetchValues={(res = () => {}) => {
+        console.log("hjkgsr",res,values)
+
+                    setValues(prev => ({ ...prev, [item]: res(prev?.[item]) }));
                   }}
                   fetchErrors={res => {
                     setErrors(prev => ({ ...prev, [item]: res }));
@@ -232,13 +287,14 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
                     setValid(valid);
                   }}
                   options={{
-                    defaultValues: values ? values[item] : {},
+                    defaultValues: defaultValue?defaultValue[item]:values?.[item] || {},
                     validateOn: "change",
                   }}
                   formName={name}
                   additionalErrors={additionalErrors[item]}
                   setSubmit={setSubmit}
                   submitTrigger={submit}
+                  isPanelVisible={show === index}
                   noForAll={noForAll[item]}
                   proposalData={proposalData}
                   canProceed={!yesSelected[item] ? canProceed : ""}
@@ -265,10 +321,15 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
                 />
               </Form>{" "}
             </div>
+            )
+          }
+          
           </Panel>
         );
       })}
+      {console.log("Svsfods", underWritingStatus,insuredDetailsResponse)}
 
+ 
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
@@ -278,17 +339,26 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
             });
           }}
         />
-        {console.log("Svsfods",values)}
-        
+
+       {/* <div className="check_status_btn">
+        <StyledButton noIcon={true} styledCss={{    padding: "0px 10px", fontSize:"16px"}}>
+        Check Underwriting Status
+      </StyledButton>
+        </div> */}
+       
+
         <ContinueBtn
           onClick={() => {
+            dispatch(getMedicalUnderwritingStatus());
             setInitColor("#c7222a");
             name === "Medical Details" && checkCanProceed();
             // setShow();
             setSubmit("Medical");
+            console.log("ewrgnjkrsv", canProceed);
             if (
-              name === "Medical Details" &&
-              canProceed?.canProceed 
+              name === "Medical Details" && 
+            canProceed?.canProceed
+            //  && (Object.keys(insuredDetailsResponse).length?underWritingStatus.length:true)
             ) {
               // NSTP popup for RB
               Object.values(yesSelected).includes(true) &&
@@ -301,8 +371,8 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
                       ?.medical_nstp_declaration_message,
                   }),
                 );
-                setMedicalContinueClick(true);
-             
+              setMedicalContinueClick(true);
+
               // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {
               setSubmit("PARTIAL");
@@ -325,7 +395,9 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}
             title={
-              name === "Medical Details"
+              revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart
+                ? "Plan Unavailable due to change in date of birth"
+                : name === "Medical Details"
                 ? `Hi ${firstName}, Revised Premium due to change in date of birth.`
                 : `Hi ${firstName}, Revised Premium due to change in medical conditions.`
             }
@@ -337,3 +409,62 @@ const [medicalContinueClick,setMedicalContinueClick] = useState(false)
 };
 
 export default InsuredDetails;
+
+const DisableScreen = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  top: -12px;
+  left: 0px;
+  z-index: 99;
+  opacity: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: not-allowed;
+  .display_onHover {
+    display: none;
+    font-size: 20px !important;
+  }
+  :hover {
+    .display_onHover {
+      display: block;
+    }
+  }
+`;
+
+const UnderWritingDiscisionTable = styled.div`
+  width: 100%;
+  border: 1px dashed #ddd;
+  margin: 20px 0px;
+  .head_section{
+   font-weight:900;
+    border-bottom: 1px dashed #ddd;
+  }
+  .section_column{
+    padding:15px 0px 15px 40px;
+    width: 33.33%;
+  }
+  .check_status_btn{
+    width: 200px;
+    margin: 10px 0;
+    @media(max-width:400px){
+      width:150px;
+    }
+  }
+
+  .click_btn{
+    background-color: #ecf6ff;
+    font-family: "Dax", sans-serif;
+    font-weight: 400;
+    border-radius: 50px;
+    margin: 0 8px;
+    font-size: 14px;
+    padding: 11px;
+    :visited{
+      background: #0a87ff !important;
+      color:white;
+    }
+  }
+`;

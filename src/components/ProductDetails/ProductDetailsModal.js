@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Modal, Tab, Tabs } from "react-bootstrap";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import styled from "styled-components/macro";
@@ -15,6 +16,7 @@ import {
   useClaimBanner,
   useCompanies,
   useFrontendBoot,
+  useGetSingleICQuote,
   useQuote,
   useTheme,
   useToggle,
@@ -27,6 +29,7 @@ import {
   getDisplayPremium,
   getPlanFeatures,
   isSSOJourney,
+  numberToDigitWord,
 } from "../../utils/helper";
 import CardSkeletonLoader from "../Common/card-skeleton-loader/CardSkeletonLoader";
 import { some } from "lodash";
@@ -48,6 +51,11 @@ import {
   MobileRenderCashlessHospitals,
 } from "./Mobile/MobileModalComponents";
 import SearchBarWithCityDD from "../../pages/ProductDetails/components/Mobile/MobileCashlessHospitals/SearchBarWithCityDD";
+import { QuoteCardSelect } from "../../pages/quotePage/components/QuoteCards";
+import { CircleLoader } from "../../components/index";
+import { useSelector, useDispatch } from "react-redux";
+import { setPosPopup } from "../../pages/quotePage/quote.slice";
+import ErrorPopup from "../../pages/ProposalPage/ProposalSections/components/ErrorPopup";
 
 function useRidersSlot() {
   const [selectedRiders, setSelectedRiders] = useState([]);
@@ -60,7 +68,7 @@ function useRidersSlot() {
 }
 
 function ProductDetailsModal({
-  quote,
+  quote: propQuote,
   onClose,
   defaultActiveKey = "plan-details",
   defaultActiveKeyMobile = "mobile-plan-details",
@@ -69,6 +77,33 @@ function ProductDetailsModal({
   const handleClose = () => onClose && onClose();
 
   const { selectedRiders, ...ridersSlot } = useRidersSlot();
+
+  const { pos_popup } = useSelector(({ quotePage }) => quotePage);
+
+  const dispatch = useDispatch();
+
+  const {
+    data: { settings: pos_nonpos_switch_message },
+  } = useFrontendBoot();
+
+  const { sum_insured } = propQuote;
+
+  const [currSumInsured, setCurSumInsured] = useState(sum_insured);
+
+  useEffect(() => {
+    if (currSumInsured > 500000 && pos_nonpos_switch_message && isSSOJourney())
+      dispatch(setPosPopup(true));
+  }, [currSumInsured]);
+
+  const { isFetching, data } = useGetSingleICQuote({
+    insurerToFetch: propQuote?.company_alias,
+    sum_insured: currSumInsured,
+  });
+
+  const fetchedQuote =
+    data &&
+    data?.data?.data?.find(q => q?.product?.id === propQuote?.product?.id);
+  const quote = fetchedQuote || propQuote;
 
   return (
     <Modal
@@ -84,6 +119,12 @@ function ProductDetailsModal({
           padding: unset;
         `}
       >
+        {pos_popup && (
+          <ErrorPopup
+            handleClose={() => dispatch(setPosPopup(false))}
+            htmlProps={pos_nonpos_switch_message}
+          />
+        )}
         <div
           css={`
             padding-top: 100px;
@@ -97,13 +138,18 @@ function ProductDetailsModal({
           <MobileSeeDetailsTop onClose={handleClose} />
 
           <ProductHeader
+            currSumInsured={currSumInsured}
+            setCurSumInsured={setCurSumInsured}
             quote={quote}
             selectedRiders={selectedRiders}
             onClose={handleClose}
+            isLoading={isFetching}
           />
           <MobileProductHeader
             quote={quote}
             selectedRiders={selectedRiders}
+            setCurSumInsured={setCurSumInsured}
+            isLoading={isFetching}
             onClose={handleClose}
           />
           <ProductDetailsTabs defaultActiveKey={defaultActiveKey}>
@@ -112,7 +158,11 @@ function ProductDetailsModal({
             </Tab>
             <Tab eventKey="add-on-coverages" title="Add-on Coverages">
               <DetailsSectionWrap>
-                <RidersSection quote={quote} {...ridersSlot} />
+                <RidersSection
+                  quote={quote}
+                  {...ridersSlot}
+                  isLoading={isFetching}
+                />
               </DetailsSectionWrap>
             </Tab>
             <Tab eventKey="cashless-hospitals" title="Cashless Hospitals">
@@ -131,7 +181,11 @@ function ProductDetailsModal({
               <MobileRenderPlanDetails quote={quote} />
             </Tab>
             <Tab eventKey="mobile-add-on-coverages" title="Add-on Coverages">
-              <MobileRidersSection quote={quote} {...ridersSlot} />
+              <MobileRidersSection
+                isLoading={isFetching}
+                quote={quote}
+                {...ridersSlot}
+              />
             </Tab>
             <Tab
               eventKey="mobile-cashless-hospitals"
@@ -236,10 +290,17 @@ const StyledTabs = styled(Tabs)`
   }
 `;
 
-function RidersSection({ quote, ...props }) {
+function RidersSection({ quote, isLoading, ...props }) {
   let { groupCode } = useParams();
 
   groupCode = parseInt(groupCode);
+
+  if (isLoading)
+    return (
+      <DetailsSectionWrap>
+        <CardSkeletonLoader />
+      </DetailsSectionWrap>
+    );
 
   return <Riders groupCode={groupCode} quote={quote} {...props} />;
 }
@@ -497,13 +558,30 @@ export const DetailsSectionWrap = styled.section`
   }
 `;
 
-function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
+export function getSumInsuredOptions(arr = []) {
+  return arr?.map(item => ({ value: item, label: numberToDigitWord(item) }));
+}
+
+function ProductHeader({
+  quote,
+  selectedRiders = [],
+  currSumInsured,
+  setCurSumInsured,
+  onClose,
+  isLoading: isQuoteLoading,
+  ...props
+}) {
   const {
     buyQuote,
     queryState: { isLoading },
   } = useQuote();
 
-  const { journeyType } = useFrontendBoot();
+  const {
+    journeyType,
+    data: {
+      settings: { restrict_posp_quotes_after_limit },
+    },
+  } = useFrontendBoot();
 
   const cartSummaryModal = useToggle();
 
@@ -517,7 +595,14 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
     total_premium,
     tenure,
     mandatory_riders,
+    available_sum_insureds,
   } = quote;
+
+  let sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
+
+  if (isSSOJourney() && restrict_posp_quotes_after_limit === `${1}`) {
+    sumInsuredOptions = sumInsuredOptions.filter(si => si.value < 500001);
+  }
 
   const { getCompany } = useCompanies();
 
@@ -533,6 +618,10 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
   };
 
   const { gotoProductPage } = useGotoProductDetailsPage();
+
+  const suminsuredChangeHandler = option => {
+    setCurSumInsured(option.value);
+  };
 
   return (
     <FixedTop>
@@ -557,9 +646,12 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
           <div
             css={`
               display: flex;
+              align-items: center;
               /* flex-direction: column; */
               border-right: 1px solid grey;
               padding: 0 20px;
+              font-size: 16px;
+
               @media (max-width: 1485px) {
                 font-size: 14px;
               }
@@ -575,7 +667,19 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
                 margin-left: 5px;
               `}
             >
-              &nbsp;₹ {figureToWords(sum_insured)}
+              {!sumInsuredOptions || sumInsuredOptions?.length === 0 ? (
+                <>&nbsp;₹ {figureToWords(sum_insured)}</>
+              ) : (
+                <QuoteCardSelect
+                  fontSize={"inherit"}
+                  options={sumInsuredOptions}
+                  defaultValue={{
+                    value: sum_insured,
+                    label: numberToDigitWord(sum_insured),
+                  }}
+                  onChange={suminsuredChangeHandler}
+                />
+              )}
             </span>
           </div>
           <div
@@ -597,9 +701,22 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
             <span
               css={`
                 font-weight: bold;
+                min-width: 50px;
+                text-align: center;
               `}
             >
-              &nbsp; ₹ {parseInt(netPremium).toLocaleString("en-IN")}
+              {isQuoteLoading ? (
+                <CircleLoader
+                  animation="border"
+                  className="m-0"
+                  css={`
+                    font-size: 0.73rem;
+                    font-weight: normal !important;
+                  `}
+                />
+              ) : (
+                <>&nbsp; ₹ {parseInt(netPremium).toLocaleString("en-IN")}</>
+              )}
             </span>
           </div>
           <div
@@ -619,10 +736,24 @@ function ProductHeader({ quote, selectedRiders = [], onClose, ...props }) {
               css={`
                 font-weight: bold;
                 margin-left: 5px;
+                min-width: 50px;
+                text-align: center;
               `}
             >
               &nbsp;
-              {csr}%
+              {isQuoteLoading ? (
+                <CircleLoader
+                  animation="border"
+                  className="m-0"
+                  css={`
+                    font-size: 0.73rem;
+                    font-weight: normal !important;
+                    margin: 0 auto;
+                  `}
+                />
+              ) : (
+                <>{csr}%</>
+              )}
             </span>
           </div>
         </QuoteInfoWrap>

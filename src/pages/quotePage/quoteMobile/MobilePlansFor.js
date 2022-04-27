@@ -21,7 +21,7 @@ const MobilePlansFor = () => {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   return (
     <div
@@ -67,12 +67,13 @@ const MobilePlansFor = () => {
               }
             `}
           >
-            {memberGroups[group]?.join(", ")?.replaceAll("_", "-").length > 20
+            {memberGroups[group]?.join(", ")?.split("_").join("-").length > 20
               ? `${memberGroups[group]
                   ?.join(", ")
-                  ?.replaceAll("_", "-")
+                  ?.split("_")
+                  .join("-")
                   .slice(0, 18)}...`
-              : memberGroups[group]?.join(", ")?.replaceAll("_", "-")}
+              : memberGroups[group]?.join(", ")?.split("_").join("-")}
           </span>
         ))}
     </div>

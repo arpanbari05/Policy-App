@@ -246,7 +246,7 @@ function GroupCard({ group, closeModal, ...props }) {
               background: ${colors.secondary_color};
             `}
           ></div>
-          {members.join(" + ")?.replaceAll("_", "-")}
+          {members.join(" + ")?.split("_").join("-")}
         </h5>
 
         <ToggleProductCTA group={group} closeModal={closeModal} />
@@ -287,17 +287,17 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
   let cartEntry = null;
 
   if (data.data) {
-    cartEntry = data.data.find(cartEntry => cartEntry.group.id === group.id);
+    cartEntry = data.data.find(cartEntry => cartEntry.group?.id === group?.id);
   }
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   function handleAddPlanClick() {
     closeModal && closeModal();
     history.push({
-      pathname: `/quotes/${group.id}`,
+      pathname: `/quotes/${group?.id}`,
       search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
     });
   }
@@ -346,7 +346,7 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
 
   function handleDeleteClick() {
     deleteQuote(cartEntry.id);
-    dispatch(removeQuoteFromCart(cartEntry.group.id));
+    dispatch(removeQuoteFromCart(cartEntry.group?.id));
   }
 
   return (
@@ -379,7 +379,7 @@ function ToggleProductCTA({ group, closeModal, ...props }) {
 
 function RenderProductSummaryCard({ group, ...props }) {
   const { getCartEntry } = useCart();
-  const cartEntry = getCartEntry(parseInt(group.id));
+  const cartEntry = getCartEntry(parseInt(group?.id));
 
   return <ProductSummaryCard cartEntry={cartEntry} {...props} />;
 }

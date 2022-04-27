@@ -17,7 +17,7 @@ import {
   numberToDigitWord,
 } from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import { selectAdditionalDiscounts } from "../productDetails.slice";
+
 import {
   useGetCartQuery,
   useGetEnquiriesQuery,
@@ -30,6 +30,7 @@ import { useRider, useCart } from "../../../customHooks/index";
 import { Button } from "../../../components";
 import { useEffect } from "react";
 import "./ReviewCardPopup.scss";
+import { GrFormClose } from "react-icons/gr";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -40,6 +41,7 @@ export function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
   return (
     <Modal
       show
+      onHide={onClose}
       animation={false}
       style={{
         zIndex: "2000",
@@ -90,11 +92,7 @@ export function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
             {title}
           </ModalTitle>
         )}
-        <i
-          onClick={handleClose}
-          style={{ cursor: "pointer" }}
-          class="fas fa-times"
-        ></i>
+        <GrFormClose onClick={handleClose} size="25px" />
       </Modal.Header>
       <Modal.Body
         style={{ borderRadius: "12px" }}
@@ -813,7 +811,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
     },
   } = useGetEnquiriesQuery();
 
-  const currentGroup = groups.find(group => group.id === +groupCode);
+  const currentGroup = groups.find(group => group?.id === +groupCode);
 
   groups = groups.filter(group => group.type === currentGroup.type);
 
@@ -960,9 +958,10 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
           <Button
             disabled={disableButton}
             onClick={() => {
-              window.location.href = `${
+              history.push(propsoalPageLink);
+              /* window.location.href = `${
                 window.location.origin + propsoalPageLink
-              }`;
+              }`; */
             }}
           >
             Proceed to Proposal
@@ -1070,7 +1069,7 @@ function ProceedWithoutPlan({ group, link, handleClose = () => {} }) {
   const { isLoading, isSuccess } = useDeleteGroupQuery(groupId);
 
   const handleContinue = () => {
-    setGroupId(group.id);
+    setGroupId(group?.id);
   };
 
   useEffect(() => {

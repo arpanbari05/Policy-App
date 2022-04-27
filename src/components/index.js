@@ -141,6 +141,7 @@ export function FullScreenLoader() {
     renew_buy: "#ff6600",
     fts: "#0a87ff",
     pinc: "#e1056d",
+    sriyah: "#626dc7",
   };
   const tenantAlias = process.env.REACT_APP_TENANT;
   const tenantColor = defaultColors[tenantAlias];
@@ -217,6 +218,7 @@ export function Button({
         background: ${colors.primary_color};
         border: none;
         color: #fff;
+        font-size: 14px;
         border-radius: 2px;
         height: 2.8em;
         min-width: max-content;
@@ -311,8 +313,12 @@ export function Counter({
         gap: 0.3125em;
         transform: translateX(-50%);
 
-        @media (max-width: 480px) {
+        @media (max-width: 720px) {
           transform: translateX(0);
+          gap: 0;
+          & span {
+            margin: 0 6px;
+          }
         }
         & button {
           padding: 0;
@@ -452,13 +458,13 @@ export function useGotoProductDetailsPage() {
   const { enquiryId } = useUrlEnquiry();
 
   function gotoProductPage() {
-    const groupCodes = data.data.map(cartEntry => cartEntry.group.id);
+    const groupCodes = data.data.map(cartEntry => cartEntry.group?.id);
 
     const firstGroupWithQuote = Math.min(...groupCodes);
 
     const currentGroup =
       localStorage.getItem("groups") &&
-      JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+      JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
     history.push({
       pathname: `/productdetails/${firstGroupWithQuote}`,
@@ -493,10 +499,10 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   function gotoProductPage() {
-    const groupCodes = cartEntries.map(cartEntry => cartEntry.group.id);
+    const groupCodes = cartEntries.map(cartEntry => cartEntry.group?.id);
     // const groupCodes = Object.keys(policyTypes).map(key => parseInt(key));
 
     const firstGroupWithQuote = Math.min(...groupCodes);
@@ -522,9 +528,6 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
         className="w-100 rounded"
         onClick={handleBuyClick}
         loader={isLoading}
-        css={`
-          font-size: 0.89rem;
-        `}
         {...props}
       >
         {displayTenure
@@ -566,6 +569,9 @@ export function BackButtonMobile({ path, css = "", ...props }) {
   const { colors } = useTheme();
   const history = useHistory();
 
+  const isProductDetailsPage =
+    window.location.pathname.startsWith("/productdetails");
+
   return (
     <span
       {...props}
@@ -575,7 +581,7 @@ export function BackButtonMobile({ path, css = "", ...props }) {
         ${css};
       `}
       onClick={() => {
-        history.push(path);
+        isProductDetailsPage ? history.goBack() : history.push(path);
       }}
     >
       <FaArrowCircleLeft />

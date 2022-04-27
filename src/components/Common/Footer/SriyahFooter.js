@@ -92,29 +92,25 @@ const Footer = () => {
                 </a>{" "}
                 <div className="widget-wrap">
                   {" "}
-                  <p
-                    className="color_grey_f"
-                    style={{
-                      fontSize: "17px",
-                    }}
-                  >
-                    Sriyah Insurance Brokers Pvt. Ltd. is an Insurance
-                    Regulatory & Development Authority of India (IRDAI) approved
-                    direct insurance brokers.
+                  <p className="color_grey_f">
+                    <p>An initiative of Sriyah Insurance Brokers Pvt. Ltd.</p>
+                    <br />
+                    <p>
+                      Sriyah Insurance Brokers Pvt. Ltd. is an Insurance
+                      Regulatory & Development Authority of India (IRDAI)
+                      approved direct insurance brokers.
+                    </p>
                   </p>{" "}
                   <p className="f_400 f_p f_size_15 mb-0 l_height34 color_grey_f">
                     <span>Email:</span>{" "}
-                    <a href={`mailto:${email}`} className="f_400">
-                      {email}
+                    <a href={`mailto:care@nammacover.com`} className="f_400">
+                      care@nammacover.com
                     </a>
                   </p>{" "}
                   <p className="f_400 f_p f_size_15 mb-0 l_height34 color_grey_f">
                     <span>Phone:</span>{" "}
-                    <a
-                      href={`tel:${mobile.split(" ").join("")}`}
-                      className="f_400"
-                    >
-                      {mobile}
+                    <a href={`tel:18002030504`} className="f_400">
+                      18002030504
                     </a>
                   </p>{" "}
                 </div>{" "}

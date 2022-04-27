@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import {getMedicalUrlsRuleEngine } from "./ProposalSections.slice";
 
-const useMedicalQuestions = (schema, values, setValues, name,proposalData,defaultValue) => {
+const useMedicalQuestions = (schema, values, setValues, name,proposalData,defaultValue,dispatch) => {
   const [noForAll, setNoForAll] = useState({});
   const [yesSelected, setYesSelected] = useState({});
   const [canProceed, setCanProceed] = useState({
@@ -51,10 +52,13 @@ console.log("sgvksdgv",defaultValue)
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed[item] = checkCanProceed[item]?checkCanProceed[item]:[];
         }
-        Object.keys(values[item]).length && Object.keys(values[item]).forEach(el => {
-          
-          if(values[item][el] && (!values[item][el][`is${el}`] || !values[item][el].isValid)) checkCanProceed[item] = Array.isArray(checkCanProceed[item])?[...checkCanProceed[item],el]:[el];
 
+        Object.keys(values[item]).length && Object.keys(values[item])?.forEach(el => {
+          let schemaOfEl = schema[key]?.find(({name}) => name === el)
+          console.log("ehdhdkfgl",schemaOfEl)
+          if(schemaOfEl){
+            if(values[item][el] && ((!values[item][el][`is${el}`] && !schemaOfEl?.additionalOptions?.disable_Toggle) || !values[item][el].isValid)) checkCanProceed[item] = Array.isArray(checkCanProceed[item])?[...checkCanProceed[item],el]:[el];
+          }
         })
       });
 
@@ -74,13 +78,17 @@ console.log("sgvksdgv",defaultValue)
     }
   };
 
-
+const getScheamaOfValue = (key,name) => {
+return schema[key].find(({name}) => name === name);
+}
 
 // -----------------------------------------------------------------------------------------------------------------
 //   -----------------------------  SIDE EFFECTS FOR MEDICAL QUESTIONS---------------------------------------------
 // ----------------------------------------------------------------------------------------------------------------
 
 useEffect(() => {
+console.log("rsgsrjgk",defaultValue)
+
 if(defaultValue && name === "Medical Details"){
   setValues(defaultValue)
 }
@@ -111,6 +119,7 @@ if(defaultValue && name === "Medical Details"){
         });
       });
       if (JSON.stringify(values) !== JSON.stringify(tempObj)) {
+
         setValues({ ...tempObj });
       }
     }
@@ -120,12 +129,13 @@ if(defaultValue && name === "Medical Details"){
     if (name === "Medical Details") {
       checkCanProceed();
       const keys = Object.keys(values || {});
-
+      // getScheamaOfValue
+      console.log("svsfhjvs",schema)
       let temp = keys.reduce(
         (acc, key) => ({
           ...acc,
           [key]: Object.keys(values[key]).some(
-            el => values[key][el][`is${el}`] === "Y",
+            el => values[key][el][`is${el}`] === "Y" && getScheamaOfValue(key,el)?.additionalOptions?.disable_Toggle === false,
           ),
         }),
         {},
@@ -136,39 +146,43 @@ if(defaultValue && name === "Medical Details"){
   }, [values, noForAll]);
 
   // when no for all click
-  useEffect(() => {
-    if (name === "Medical Details") {
-        console.log("sgsjghjskl",noForAll)
-      let customizedVal = {};
-      Object.keys(noForAll)
-        .filter(key => noForAll[key])
-        .forEach(key => {
-          let tempGroupVal = {};
-          schema[key].forEach(el => {
-           if (!Array.isArray(el)) {
-            if(el.additionalOptions.notAllowedIf === "N" || el.additionalOptions.disable_Toggle) {
-              tempGroupVal[el.name] = {
-                [`is${el.name}`]: "Y",
-                members: {},
-                isValid: true,
-              };
-            }else{
-              tempGroupVal[el.name] = {
-                [`is${el.name}`]: "N",
-                members: {},
-                isValid: true,
-              };
-            }
+  // useEffect(() => {
+  //   if (name === "Medical Details") {
+  //       console.log("sgsjghjskl",noForAll)
+  //     let customizedVal = {};
+  //     Object.keys(noForAll)
+  //       .filter(key => noForAll[key])
+  //       .forEach(key => {
+  //         let tempGroupVal = {};
+  //         schema[key].forEach(el => {
+  //          if (!Array.isArray(el)) {
+  //           if(el.additionalOptions.notAllowedIf === "N") {
+          
+  //             tempGroupVal[el.name] = {
+  //               [`is${el.name}`]: "Y",
+  //               members: {},
+  //               isValid: true,
+  //             };
+  //           }else if(!el.additionalOptions.disable_Toggle){
+  //             tempGroupVal[el.name] = {
+  //               [`is${el.name}`]: "N",
+  //               members: {},
+  //               isValid: true,
+  //             };
+  //           }
               
-            }
-          });
-          customizedVal[key] = tempGroupVal;
-        });
+  //           }
+  //         });
+  //         customizedVal[key] = {
+  //           ...values?.[key],
+  //           ...tempGroupVal,
+  //         };
+  //       });
 
-      if (Object.keys(customizedVal).length)
-        setValues({ ...values, ...customizedVal });
-    }
-  }, [noForAll]);
+  //     if (Object.keys(customizedVal).length)
+  //       setValues({ ...values, ...customizedVal });
+  //   }
+  // }, [noForAll]);
 
   return {
     noForAll,

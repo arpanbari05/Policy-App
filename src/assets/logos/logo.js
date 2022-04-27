@@ -25,7 +25,8 @@ import fyntune from "./fyntune.png";
 import renew_buy from "./renew_buy.png";
 import pinc from "./pinc.png";
 import CompanyLogo from "./companyLogo.png";
-import SriyahLogo from "./sriyah_broker_logo.png";
+import SriyahLogo from "./Namma_Cover_Logo.png";
+import SriyahNewLogo from "./sriyah_new.jpg";
 
 const images = {
   go_digit: digit,

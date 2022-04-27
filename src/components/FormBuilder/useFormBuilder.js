@@ -5,7 +5,7 @@ const useFormBuilder = (
   schema,
   fetchValues,
   defaultValues = {},
-  noForAll,
+  noForAll = false,
   setNoForAll,
   formName,
   insuredDetails,
@@ -15,7 +15,10 @@ const useFormBuilder = (
   setErrorInField,
   fetchErrors,
   fetchValid,
+  isPanelVisible,
+  keyStr,
 ) => {
+  console.log("edtbdbjhl", defaultValues);
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
 
   const [values, setValues] = useState(defaultValues || {});
@@ -24,12 +27,17 @@ const useFormBuilder = (
   const [isValid, setIsValid] = useState();
 
   const updateValue = (name, value, removeOtherValues = false) => {
+    console.log("sdfgdzfgvdf", name, value, values, removeOtherValues);
+    if (formName === "Medical Details" && !value) {
+      return;
+    }
+
     if (removeOtherValues) {
       setValues({ [name]: value });
-      fetchValues({ [name]: value });
+      fetchValues(() => ({ [name]: value }));
     } else {
       setValues(prev => ({ ...prev, [name]: value }));
-      fetchValues({ ...values, [name]: value });
+      fetchValues(prev => ({ ...prev, [name]: value }));
     }
 
     if (value instanceof Object) {
@@ -78,12 +86,15 @@ const useFormBuilder = (
   };
 
   const updateValues = (multipleValues = {}, action) => {
+
     if (action === "SAVE_AS_IT_IS") {
+    console.log("sdfgdzfgvdf 9", multipleValues, action);
+
       setValues(multipleValues);
-      fetchValues(multipleValues);
+      fetchValues(() => multipleValues);
     } else {
-      setValues({ ...values, ...multipleValues });
-      fetchValues({ ...values, ...multipleValues });
+      setValues(prev => ({ ...prev, ...multipleValues }));
+      fetchValues((prev) => ({ ...prev, ...multipleValues }));
     }
   };
   const insertValue = (parent, member, name, value) => {
@@ -97,7 +108,7 @@ const useFormBuilder = (
         },
       },
     });
-    fetchValues({
+    fetchValues(() => ({
       ...values,
       [parent]: {
         ...values[parent],
@@ -106,18 +117,24 @@ const useFormBuilder = (
           [name]: value,
         },
       },
-    });
+    }));
   };
   const collectRefs = useRef({});
 
   useEffect(() => {
-    if (defaultValues && Object.keys(defaultValues).length) {
-      setValues(defaultValues);
-      fetchValues(defaultValues);
+    console.log("fgvsdjvnsdk", defaultValues, values);
+    if (
+      defaultValues &&
+      Object.keys(defaultValues).length &&
+      Object.keys(values).length !== Object.keys(defaultValues).length
+    ) {
+      setValues(prev => ({...prev,...defaultValues}));
+      fetchValues((prev) => ({...prev,...defaultValues}));
     }
   }, [defaultValues]);
 
   const triggerValidation = name => {
+    console.log("bfkjf", name);
     let errorsTemp = {};
     let tempIsValid = true;
     console.log("sgbjhsfk", name);
@@ -171,15 +188,14 @@ const useFormBuilder = (
           item[0].additionalOptions.members.forEach(member => {
             item.forEach(innerItem => {
               let errorMsg =
-                innerItem.validate &&
-                values[innerItem.parent] &&
-                values[innerItem.parent].members[member] &&
+                innerItem?.validate &&
+                values?.[innerItem.parent] &&
+                values?.[innerItem.parent]?.members?.[member] &&
                 performValidations(innerItem.validate, values, {
                   variableName: innerItem.name,
                   parent: innerItem.parent,
                   member,
                 });
-
               if (renderField(innerItem, values, member)) {
                 errorsTemp[innerItem.parent + member + innerItem.name] =
                   errorMsg;
@@ -189,7 +205,7 @@ const useFormBuilder = (
           });
         } else {
           let errorMsg =
-            item.validate &&
+            item?.validate &&
             performValidations(item.validate, values, item.name);
 
           if (item.visibleOn) {
@@ -208,6 +224,7 @@ const useFormBuilder = (
 
           if (renderField(item, values)) {
             errorsTemp[item.name] = errorMsg;
+            console.log("wfvbkjv", errorMsg);
             if (errorMsg) tempIsValid = false;
           }
         }
@@ -223,6 +240,32 @@ const useFormBuilder = (
   const clearField = name => {
     setValues({ ...values, [name]: null });
   };
+
+  useEffect(() => {
+    if (noForAll && formName === "Medical Details") {
+      let tempGroupVal = {};
+      schema.forEach(el => {
+        if (!Array.isArray(el)) {
+          if (el.additionalOptions.notAllowedIf === "N") {
+            tempGroupVal[el.name] = {
+              [`is${el.name}`]: "Y",
+              members: {},
+              isValid: true,
+            };
+          } else if (!el.additionalOptions.disable_Toggle) {
+            tempGroupVal[el.name] = {
+              [`is${el.name}`]: "N",
+              members: {},
+              isValid: true,
+            };
+          }
+        }
+      });
+      if (Object.keys(tempGroupVal).length) {
+        updateValues({ ...values, ...tempGroupVal }, "SAVE_AS_IT_IS");
+      }
+    }
+  }, [noForAll]);
 
   // to scroll page as per error
   // useEffect(() => {
@@ -254,28 +297,35 @@ const useFormBuilder = (
   // , canProceed,blockScrollEffect
 
   const scrollToErrors = () => {
-    if (Object.values(errors).length && Object.values(errors).some(val => val))
-      setErrorInField(true);
-    else setErrorInField(false);
+    if (isPanelVisible) {
+      if (
+        Object.values(errors).length &&
+        Object.values(errors).some(val => val)
+      )
+        setErrorInField(true);
+      else setErrorInField(false);
 
-    if (blockScrollEffect) {
-      let filteredKey = Object.keys(errors).filter(key => errors[key]);
+      if (blockScrollEffect) {
+        let filteredKey = Object.keys(errors).filter(key => errors[key]);
 
-      if (filteredKey.length) {
-        let scrollPositions = filteredKey.map(key => {
-          let element = document.getElementById(key);
-          if (element) {
-            let y = element.getBoundingClientRect().top - 100 + window.scrollY;
-            return y;
-          }
-        });
-        window.scroll({
-          top: Math.min(...scrollPositions),
-          behavior: "smooth",
-        });
+        if (filteredKey.length) {
+          let scrollPositions = filteredKey.map(key => {
+            let element = document.getElementById(key);
+            if (element) {
+              let y =
+                element.getBoundingClientRect().top - 100 + window.scrollY;
+              return y;
+            }
+          });
+          window.scroll({
+            top: Math.min(...scrollPositions),
+            behavior: "smooth",
+          });
+        }
       }
     }
   };
+
   return {
     values,
     updateValue,

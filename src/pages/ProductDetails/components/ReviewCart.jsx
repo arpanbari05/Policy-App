@@ -8,7 +8,7 @@ import {
   selectAdditionalDiscounts,
   setexpandMobile,
 } from "../productDetails.slice";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import ReviewCartPopup from "./ReviewCardPopup";
 // import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
 import EditMembersContent from "./EditMembersContent";
@@ -38,6 +38,7 @@ import {
   useUrlEnquiry,
   useRevisedPremiumModal,
 } from "../../../customHooks";
+import useOutsiteClick from "../../../customHooks/useOutsideClick";
 import {
   Button,
   CircleLoader,
@@ -65,6 +66,9 @@ import {
   setActiveIndex,
   setIsPopupOn,
 } from "../../ProposalPage/ProposalSections/ProposalSections.slice";
+import { FaChevronDown } from "react-icons/fa";
+import Select from "react-select";
+import { QuoteCardSelect } from "../../quotePage/components/QuoteCards";
 
 const plantypes = {
   M: "Multi Individual",
@@ -86,10 +90,17 @@ const singlePay = id => {
   document.body.removeChild(form);
 };
 
-export function CartDetails({ groupCode, ...props }) {
+export function CartDetails({
+  groupCode,
+  options,
+  onChange,
+  defaultValue,
+  sum_insured,
+  ...props
+}) {
   const { colors } = useTheme();
 
-  const { journeyType, subJourneyType } = useFrontendBoot();
+  const { subJourneyType } = useFrontendBoot();
 
   const { getCartEntry } = useCart();
 
@@ -117,7 +128,7 @@ export function CartDetails({ groupCode, ...props }) {
         <h1
           className="m-0"
           css={`
-            font-size: 1.261rem;
+            font-size: 23px;
             font-weight: 900;
             color: #2d3f5e;
           `}
@@ -129,6 +140,10 @@ export function CartDetails({ groupCode, ...props }) {
 
       <div>
         <BasePlanDetails
+          defaultValue={defaultValue}
+          options={options}
+          onChange={onChange}
+          sum_insured={sum_insured}
           groupCode={groupCode}
           isUnavailable={unavailable_message}
         />
@@ -239,6 +254,7 @@ const ModifyDetailsButton = () => {
     updateCartMutation({
       discounted_total_premium,
       generate_proposal: true,
+      with_modify: true,
     }).then(resObj => {
       history.push(getUrlWithEnquirySearch(`/proposal`));
     });
@@ -823,6 +839,19 @@ const RevisedPopupFooter = ({ revisedPremiumPopupUtilityObject, onClose }) => {
               </Button>
             </DetailsWrap>
           )}
+          {!isProductDetailsPage && (
+            <DetailsWrap>
+              <Button
+                className="w-100"
+                css={`
+                  border-radius: 9px;
+                `}
+                onClick={onClose}
+              >
+                Continue
+              </Button>
+            </DetailsWrap>
+          )}
         </>
       )}
     </div>
@@ -859,6 +888,9 @@ const StyledErrorMessage = styled(ErrorMessage)`
 `;
 
 function BasePlanDetails({
+  defaultValue,
+  options,
+  onChange,
   groupCode,
   isUnavailable = false,
   revisedPremium = false,
@@ -866,7 +898,7 @@ function BasePlanDetails({
 }) {
   const { getCartEntry } = useCart();
 
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
 
@@ -886,6 +918,16 @@ function BasePlanDetails({
   const displayPolicyTerm = `${
     tenure + " " + (tenure >= 2 ? "Years" : "Year")
   } `;
+
+  const coverList = (
+    <QuoteCardSelect
+      color="#000"
+      fontSize={11}
+      options={options}
+      defaultValue={defaultValue}
+      onChange={onChange}
+    />
+  );
 
   return (
     <div className="d-flex justify-content-between flex-column mb-2" {...props}>
@@ -917,7 +959,11 @@ function BasePlanDetails({
           ) : null}
           <CartDetailRow
             title="Cover"
-            value={`₹ ${figureToWords(sum_insured)}`}
+            value={
+              !options || !options?.length || subJourneyType === "renewal"
+                ? `₹ ${figureToWords(sum_insured)}`
+                : coverList
+            }
           />
           <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
           {!revisedPremium ? (
@@ -988,7 +1034,7 @@ function TotalPremium({ groupCode, ...props }) {
       <div
         css={`
           color: var(--abc-red);
-          font-size: 17px;
+          font-size: 18px;
         `}
       >
         {isTotalPremiumLoading ? (
@@ -1056,7 +1102,12 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
       totalDiscountAmount: getTotalDiscountAmount(),
     });
 
-    updateCartMutation({ discounted_total_premium }).then(() => {
+    const featureOptions = JSON.parse(cartEntry?.feature_options);
+
+    updateCartMutation({
+      discounted_total_premium,
+      feature_options: featureOptions,
+    }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
@@ -1153,6 +1204,7 @@ function CartDetailRow({ title, value, titleCss }) {
           font-size: 11px;
           min-width: 80px;
           text-align: right;
+          color: #000;
           @media (max-width: 768px) {
             text-align: left !important;
 

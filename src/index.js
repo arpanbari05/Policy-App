@@ -5,6 +5,8 @@ import AppProviders from "./AppProviders";
 import { GlobalStyles } from "./styles";
 import ErrorBoundary from "./ErrorBoundary";
 
+window.isTransactionClicked = false;
+
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyles />

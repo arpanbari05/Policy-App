@@ -15,6 +15,12 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { RiInformationLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { setQuotesToShare, removeQuoteFromShare } from "../quote.slice";
+import {
+  XSmallFont,
+  TertiaryFont,
+  SecondaryFont,
+  SecondaryFontBold,
+} from "../../../styles/typography";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",
@@ -118,7 +124,7 @@ function QuoteCards({
             css={`
               border-bottom: none !important;
               cursor: pointer;
-              font-size: 10.5px;
+              font-size: 11px;
             `}
             onClick={() => {
               setShow(!show);
@@ -308,7 +314,7 @@ function QuoteCard({
               height: 2.4rem;
             `}
           />
-          <span
+          {/* <span
             className="px-2 text-center"
             css={`
               font-weight: 900;
@@ -316,8 +322,17 @@ function QuoteCard({
             `}
           >
             {quote?.product?.name}
-          </span>
-          <button
+          </span> */}
+          <SecondaryFontBold
+            textCenter
+            css={`
+              padding: 0 5px;
+            `}
+          >
+            {quote?.product?.name}
+          </SecondaryFontBold>
+          <SecondaryFont
+            as={"button"}
             onClick={() => {
               productDetailsModal.on();
               setdefaultActiveKey("plan-details");
@@ -328,13 +343,12 @@ function QuoteCard({
               color: ${colors.primary_color};
               border-color: inherit !important;
               line-height: 1;
-              font-size: 0.83rem;
               padding-bottom: 2px;
               border-bottom: 2px dotted ${colors.primary_color};
             `}
           >
             See Details
-          </button>
+          </SecondaryFont>
         </div>
         <div
           className="d-grid mx-3"
@@ -603,13 +617,20 @@ function QuoteCard({
                     />
                   )}
                   {/* </span> */}
-                  <span
+                  {/* <span
                     css={`
                       margin-top: 2px;
                     `}
                   >
                     Compare
-                  </span>
+                  </span> */}
+                  <SecondaryFontBold
+                    css={`
+                      margin-top: 2px;
+                    `}
+                  >
+                    Compare
+                  </SecondaryFontBold>
                 </label>
                 <input
                   className="visually-hidden"
@@ -635,28 +656,46 @@ function QuoteCard({
   );
 }
 
-function QuoteCardSelect({ ...props }) {
+export function QuoteCardSelect({ color, fontSize, maxWidth, ...props }) {
+  const { colors } = useTheme();
   return (
     <Select
       isSearchable={false}
+      theme={theme => ({
+        ...theme,
+        colors: {
+          ...theme.colors,
+          neutral80: color && color,
+          primary: colors.primary_color,
+          primary25: colors.primary_shade,
+        },
+      })}
       components={{ DropdownIndicator: FaChevronDown }}
       styles={{
         option: provided => ({
           ...provided,
-          fontSize: "12px",
+          fontSize: "10px",
           fontWeight: "bold",
           padding: "7px 7px !important",
-          textAlign: "center !important",
+          textAlign: "left",
+        }),
+        menuList: provided => ({
+          ...provided,
+          maxHeight: 190,
+          "::-webkit-scrollbar": {
+            width: "4px",
+            height: "0px",
+          },
         }),
         menu: provided => ({
           ...provided,
-          fontSize: "13px",
           fontWeight: "bold",
+          textAlign: "left",
+          overflow: "auto",
         }),
         valueContainer: provided => ({
           ...provided,
           padding: 0,
-          fontSize: "13px",
           fontWeight: "bold",
         }),
         indicatorSeparator: () => ({ display: "none" }),
@@ -664,14 +703,14 @@ function QuoteCardSelect({ ...props }) {
           ...provided,
           padding: 0,
           color: "black",
-          fontSize: "13px",
           fontWeight: "bold",
         }),
         control: provided => ({
           ...provided,
-          fontSize: "13px",
+          fontSize: fontSize || "13px",
           fontWeight: "bold",
           minHeight: "initial",
+          width: maxWidth ? "max-content" : "initial",
           outline: "none",
           border: "0 !important",
           // This line disable the blue border
@@ -751,18 +790,29 @@ function QuoteFeature({ feature, icon, onNavigate, value }) {
           min-width: auto;
         `}
       >
-        <div
+        {/* <div
           css={`
-            font-size: 11px;
+            font-size: 12px;
             color: ${colors.font.three};
           `}
         >
           {feature.name}
-        </div>
-        <div
+        </div> */}
+        <XSmallFont color={colors.font.three}>{feature.name}</XSmallFont>
+        <TertiaryFont
+          css={`
+            display: flex;
+            align-items: center;
+          `}
+          onClick={onNavigate}
+        >
+          {value}
+          {icon}
+        </TertiaryFont>
+        {/* <div
           css={`
             width: auto;
-            font-size: 12px;
+            font-size: 13px;
             display: flex;
             align-items: center;
             cursor: pointer;
@@ -771,7 +821,7 @@ function QuoteFeature({ feature, icon, onNavigate, value }) {
         >
           {value}
           {icon}
-        </div>
+        </div> */}
       </div>
     </OverlayTrigger>
   );

@@ -155,7 +155,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   if (!members) return <p>No Members found for groupCode {groupCode}</p>;
 
@@ -180,7 +180,7 @@ function BuyNowModalProduct({ groupCode, setShowBuyNow = () => {} }) {
               background: #2cd44a;
             `}
           ></div>
-          {members.join(" + ")?.replaceAll("_", "-")}
+          {members.join(" + ")?.split("_").join("-")}
         </h5>
 
         {product ? (

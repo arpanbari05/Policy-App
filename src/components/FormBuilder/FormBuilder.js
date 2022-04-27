@@ -5,6 +5,8 @@ import {
   fillingUtility,
   generateRange,
   renderField,
+  labelPicker,
+  ValueExtractor
 } from "./formUtils";
 import styled from "styled-components";
 import axios from "axios";
@@ -44,6 +46,7 @@ const FormBuilder = ({
   nomineeRelationAutopopulated,
   autoPopulateSelfOtherDetails,
   preFilledDataBase,
+  isPanelVisible,
 }) => {
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
@@ -86,28 +89,30 @@ const FormBuilder = ({
     setErrorInField,
     fetchErrors,
     fetchValid,
+    isPanelVisible,
+    keyStr,
   );
   useEffect(() => {
-    if(formName === "Other Details"){
-    if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
-      autoPopulateSelfOtherDetails({
-        updateValues,
-        selectedNomineeRelation: values.nominee_relation,
-      });
-      console.log("sdvsbnvjfv", values, options.defaultValues);
-      triggerValidation();
-    } else if (
-      preFilledDataBase &&
-      Object.keys(preFilledDataBase).length &&
-      preFilledDataBase.nominee_relation &&
-      preFilledDataBase.nominee_relation === values.nominee_relation
-    ) {
-      updateValues(preFilledDataBase, "SAVE_AS_IT_IS");
-    } else
-      updateValues(
-        { nominee_relation: values.nominee_relation },
-        "SAVE_AS_IT_IS",
-      );
+    if (formName === "Other Details") {
+      if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
+        autoPopulateSelfOtherDetails({
+          updateValues,
+          selectedNomineeRelation: values.nominee_relation,
+        });
+        console.log("sdvsbnvjfv", values, options.defaultValues);
+        triggerValidation();
+      } else if (
+        preFilledDataBase &&
+        Object.keys(preFilledDataBase).length &&
+        preFilledDataBase.nominee_relation &&
+        preFilledDataBase.nominee_relation === values.nominee_relation
+      ) {
+        updateValues(preFilledDataBase, "SAVE_AS_IT_IS");
+      } else
+        updateValues(
+          { nominee_relation: values.nominee_relation },
+          "SAVE_AS_IT_IS",
+        );
     }
   }, [values.nominee_relation]);
 
@@ -142,10 +147,13 @@ const FormBuilder = ({
 
   useEffect(() => {
     if (submitTrigger) {
-      triggerValidation();
+      triggerValidation && triggerValidation();
+      console.log("evbvvkw",submitTrigger,triggerValidation)
+
+      // console.log("berbjkb10", errors);
       // scrolltoTop if errors
       scrollToErrors && scrollToErrors();
-      setSubmit("SUBMIT");
+      setSubmit && setSubmit("SUBMIT");
     }
   }, [submitTrigger]);
 
@@ -153,26 +161,26 @@ const FormBuilder = ({
   const { asyncOptions, asyncValues } = useSelector(state => state.formBuilder);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    if(formName !== "Medical Details"){
-    const tempValues = { ...values };
-    schema.forEach(item => {
-      if (
-        item.type === "select" &&
-        !values[item.name] &&
-        item?.validate?.required &&
-        !item.fill &&
-        !item?.additionalOptions?.options?.length &&
-        Object.keys(item.additionalOptions.options || {}).length === 1
-      ) {
-        const tempValue = Object.keys(item.additionalOptions.options)[0];
+  // useEffect(() => {
+  //   if (formName !== "Medical Details") {
+  //     const tempValues = { ...values };
+  //     schema.forEach(item => {
+  //       if (
+  //         item.type === "select" &&
+  //         !values[item.name] &&
+  //         item?.validate?.required &&
+  //         !item.fill &&
+  //         !item?.additionalOptions?.options?.length &&
+  //         Object.keys(item.additionalOptions.options || {}).length === 1
+  //       ) {
+  //         const tempValue = Object.keys(item.additionalOptions.options)[0];
 
-        tempValues[item.name] = tempValue;
-      }
-    });
-    updateValues(tempValues);
-  }
-  }, [schema, errors]);
+  //         tempValues[item.name] = tempValue;
+  //       }
+  //     });
+  //     updateValues(tempValues);
+  //   }
+  // }, [schema, errors]);
   useEffect(() => {
     let temp = {};
     if (schema instanceof Array)
@@ -181,6 +189,7 @@ const FormBuilder = ({
       });
     setFillBus(temp);
   }, [schema]);
+
   useEffect(() => {
     let pincodeSchema = schema.filter(item =>
       item?.name?.includes("pincode"),
@@ -194,13 +203,15 @@ const FormBuilder = ({
       );
     }
   }, []);
+  
   useEffect(() => {
-    console.log("sgfsjkk", asyncValues);
-    setValues({ ...values, ...asyncValues });
+    console.log("sgfsjkk",formName, asyncValues,values);
+    // if(formName === "Proposer Details"){
+    setValues(prev => ({ ...prev, ...asyncValues }));
+    // }
   }, [asyncValues]);
 
-      
-      console.log("dfjklsgvb 2", values);
+  console.log("dfjklsgvb 2", values);
 
   return (
     <>
@@ -214,13 +225,19 @@ const FormBuilder = ({
                     (values[item[0]?.parent] &&
                       values[item[0]?.parent]?.members &&
                       values[item[0]?.parent]?.members instanceof Object &&
-                        values[item[0]?.parent]?.members?.[member]) ||
+                      values[item[0]?.parent]?.members?.[member]) ||
                     item[0].render === "noDependency"
                   )
                     return (
                       <CustomWrapper>
                         <div className="col-md-12">
-                          <Title style={{backgroundImage: `linear-gradient(to right, ${PrimaryShade}, white)`}}>{member}</Title>
+                          <Title
+                            style={{
+                              backgroundImage: `linear-gradient(to right, ${PrimaryShade}, white)`,
+                            }}
+                          >
+                            {member}
+                          </Title>
                           <div
                             css={`
                               display: flex;
@@ -230,7 +247,7 @@ const FormBuilder = ({
                             {item.map(innerItem => {
                               const Comp = components[innerItem.type];
                               if (!Comp) {
-                                alert("Type :" + innerItem.type + "Not found");
+                                // alert("Type :" + innerItem.type + "Not found");
                                 return <></>;
                               } else
                                 return (
@@ -401,6 +418,10 @@ const FormBuilder = ({
                                         values={values}
                                         item={innerItem}
                                         {...innerItem.additionalOptions}
+                                        label={ValueExtractor(innerItem?.additionalOptions?.label,values,member)}
+                                        notAllowed={
+                                          ValueExtractor(innerItem?.additionalOptions?.notAllowed,values,member)
+                                        }
                                       />
                                     </Wrapper>
                                   )
@@ -446,7 +467,7 @@ const FormBuilder = ({
               });
             }
             if (!Comp) {
-              alert("Type :" + item.type + "Not found");
+              // alert("Type :" + item.type + "Not found");
               return <></>;
             }
             return (
@@ -479,10 +500,9 @@ const FormBuilder = ({
                       selectedValues={values}
                       data={item.data}
                       onChange={(e, value) => {
-                        console.log("dgbfkjsdlb",e, value,item)
+                        console.log("dgbfkjsdlb", e, value, item);
 
                         if (item.parent && item.members) {
-
                           insertValue(
                             item.parent,
                             item.members,
@@ -594,6 +614,7 @@ const FormBuilder = ({
                           checkAllow(item.allow, e, "press");
                         }
                       }}
+                      triggerValidation={triggerValidation}
                       options={
                         item.additionalOptions &&
                         item.additionalOptions.customOptions &&
@@ -641,7 +662,7 @@ const Wrapper = styled.div`
   display: inline-block;
   padding-left: ${props => (props.medical ? "0px" : "15px")};
   padding-right: 15px;
-  margin-bottom: 10px;
+  margin-bottom: ${props => props.mb || "7px"};
   @media (max-width: 1023px) {
     width: 100%;
     padding-left: 8px;
@@ -656,7 +677,7 @@ const CustomWrapper = styled.div`
   border-radius: 6px;
   margin-top: 0px;
   width: 100%;
-  margin-bottom: 59px;
+  margin-bottom: 18px;
   @media (max-width: 767px) {
     width: calc(100% - 17px);
     margin-left: 8px;
@@ -669,7 +690,7 @@ const CustomWrapper = styled.div`
   }
 `;
 const Title = styled.p`
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   font-size: 17px !important;
   color: #3b3838;
   font-weight: 900 !important;

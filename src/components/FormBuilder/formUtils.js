@@ -1,14 +1,25 @@
 import { schemaIndex } from "../../pages/ProposalPage/schemaIndex";
 import { validationIndex } from "./formValidations";
+
+const  visiblilityManager = (visibleOn,value,member) => {
+  console.log("wvjhbv",visibleOn,value,member)
+  let visibility = false;
+  let checkKeys = Object.keys(visibleOn);
+    checkKeys.forEach(key => {
+      console.log("bkjdgbgd",key,value,visibleOn)
+      if (typeof visibleOn?.[key] === "string" && visibleOn?.[key].includes(value?.[key])) visibility = true;
+      else if (typeof visibleOn[key] === "object" && visibleOn[key]) visibility = visiblilityManager(visibleOn[key],value[key][member]);
+    });
+ return visibility
+}
+
 export const renderField = (item, value, member,callBack = () => {}) => {
   // console.log("lvlhvcsc", item, value);
   // conditional rendering of fields other than medical questions uses item.visibleOn
   if (item.visibleOn) {
-    let show = false;
-    let checkKeys = Object.keys(item.visibleOn);
-    checkKeys.forEach(key => {
-      if (item.visibleOn[key].includes(value[key])) show = true;
-    });
+    let show = visiblilityManager(item.visibleOn,value,member);
+    console.log("dbjdfkb",show)
+  
     callBack(show);
     return show;
   }
@@ -243,6 +254,15 @@ export const checkAllow = (type, event, eventType) => {
     });
     event.target.value = output.join("").substr(0, 14);
   }
+  if(type === "month" && event.which === 8) {
+    var val = event.target.value;
+    console.log(val);
+    if(val.length == 3 || val.length == 6) {
+      event.target.value = val.slice(0, val.length-1);
+        console.log(val)
+        // this.setState({value: val})
+    }
+  }
   if (type === "month" && eventType === "input") {
     event.preventDefault();
     let input = event.target.value;
@@ -258,3 +278,16 @@ export const checkAllow = (type, event, eventType) => {
     event.target.value = output.join("").substr(0, 9);
   }
 };
+
+export const ValueExtractor = (schema,values,member) => {
+  if(!schema) return "";
+  else if(typeof schema === "string") {
+    return schema;
+  }else{
+    let parentKey = Object.keys(schema)[0];
+    let childKey = Object.keys(schema[parentKey])[0];
+    return schema[parentKey][childKey][values[parentKey][member][childKey]]
+  }
+    console.log("vbjhvdfvbfs",schema,values)
+
+}

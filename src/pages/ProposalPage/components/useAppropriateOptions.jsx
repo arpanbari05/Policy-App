@@ -46,7 +46,8 @@ function useAppropriateOptions({
   }, [values]);
 
   useEffect(() => {
-    if (Object.keys(selectOption).length === 1 && !values[name]){
+    console.log("skbvkbw",value)
+    if (Object.keys(selectOption).length === 1 && !value ){
       directUpdateValue(name, Object.keys(selectOption)[0]);
 
     }

@@ -1,5 +1,7 @@
 import "styled-components/macro";
 import { useHistory } from "react-router-dom";
+import { FaChevronLeft } from "react-icons/fa";
+
 const GoBackButton = ({ backPath, ...extras }) => {
   const history = useHistory();
   return (
@@ -35,7 +37,7 @@ const GoBackButton = ({ backPath, ...extras }) => {
           justify-content: center;
         `}
       >
-        <i className="fas fa-chevron-left"></i>
+        <FaChevronLeft color="#777" />
       </span>
       <span
         css={`

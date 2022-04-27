@@ -92,7 +92,7 @@ function useFilters() {
     localStorage.setItem("groups", JSON.stringify(updatedGroup));
   }
 
-  let currentGroup = groups.find(group => group.id === parseInt(groupCode));
+  let currentGroup = groups.find(group => group?.id === parseInt(groupCode));
 
   const extras = currentGroup?.extras || {};
 
@@ -176,9 +176,11 @@ function useFilters() {
   const selectedBasePlanType = getSelectedFilter("baseplantype");
   const selectedInsurers = getSelectedFilter("insurers");
   const selectedDeductible = getSelectedFilter("deductible");
+  const selectedPremium = getSelectedFilter("premium");
 
   const isFiltersDefault =
     selectedCover?.code === cover &&
+    Boolean(!selectedPremium) &&
     (selectedPlanType?.code === defaultPolicyTypeFilter ||
       selectedPlanType?.code === "I") &&
     selectedBasePlanType?.code === baseplantype &&

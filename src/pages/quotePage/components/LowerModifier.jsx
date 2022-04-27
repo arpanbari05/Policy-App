@@ -22,7 +22,7 @@ const LowerModifier = ({ sortBy = <></> }) => {
   const { pos_popup } = useSelector(({ quotePage }) => quotePage);
   const {
     data: {
-      settings: { pos_nonpos_switch_message },
+      settings: { pos_nonpos_switch_message, multiindividual_visibilty },
     },
   } = useFrontendBoot();
 
@@ -40,7 +40,8 @@ const LowerModifier = ({ sortBy = <></> }) => {
         <PremiumFilter />
         {journeyType === "health" ? <CoverRangeFilter /> : <DeductibleFilter />}
         {selectedPolicyTypeFilter?.display_name !== "Individual" &&
-        journeyType !== "top_up" ? (
+        journeyType !== "top_up" &&
+        +multiindividual_visibilty !== 0 ? (
           <PolicyTypeFilter />
         ) : null}
         <MultiyearOptionFilter />

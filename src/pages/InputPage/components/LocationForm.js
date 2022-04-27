@@ -206,12 +206,12 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           >
             {groups.map(group => (
               <GroupWrapper
-                active={group.id === currentGroupCode}
+                active={group?.id === currentGroupCode}
                 color={colors.primary_color}
-                onClick={() => setCurrentGroupCode(group.id)}
+                onClick={() => setCurrentGroupCode(group?.id)}
               >
                 <Group
-                  active={group.id === currentGroupCode}
+                  active={group?.id === currentGroupCode}
                   color={colors.primary_color}
                   shade={colors.secondary_shade}
                 >

@@ -9,6 +9,7 @@ import {
 } from "../../../pages/quotePage/quote.slice";
 import { RiShareForwardFill } from "react-icons/ri";
 import useOutsiteClick from "../../../customHooks/useOutsideClick";
+import { IoShareSocialSharp } from "react-icons/io5";
 
 const SHARE_OPTIONS = [
   {
@@ -25,7 +26,14 @@ const SHARE_OPTIONS = [
   },
 ];
 
-const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
+const Sharebutton = ({
+  onClick = () => {},
+  label,
+  shareQuotes,
+  float,
+  mobile,
+  floatCss,
+}) => {
   const { colors } = useTheme();
   const dispatch = useDispatch();
   const { shareType } = useSelector(state => state.quotePage);
@@ -38,7 +46,7 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
     control: provided => ({
       ...provided,
       display: "none !important",
-      width: "150px",
+      width: "max-content",
       fontSize: "13px",
       fontWeight: "bold",
       minHeight: "initial",
@@ -55,7 +63,13 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
       fontSize: "12px",
       fontWeight: "bold",
       padding: "7px 7px !important",
+      width: "150px",
       textAlign: "center !important",
+    }),
+    menu: provided => ({
+      ...provided,
+      width: "max-content",
+      marginLeft: -15,
     }),
   };
 
@@ -72,6 +86,17 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
       dispatch(setShowSharePopup(true));
     }
   };
+
+  if (float)
+    return (
+      <FloatButton
+        onClick={onClick}
+        floatCss={floatCss}
+        color={colors?.primary_color}
+      >
+        <IoShareSocialSharp size={20} />
+      </FloatButton>
+    );
 
   return !shareQuotes ? (
     <ShareButton onClick={onClick} color={primary_color}>
@@ -91,11 +116,18 @@ const Sharebutton = ({ onClick = () => {}, label, shareQuotes, mobile }) => {
       <Select
         styles={selectStyles}
         placeholder="Share Quotes"
-        ope
         value={(shareType.value && shareType) || SHARE_OPTIONS[0]}
         options={SHARE_OPTIONS}
         onChange={onChangeHandler}
         menuIsOpen={showMenu}
+        theme={theme => ({
+          ...theme,
+          colors: {
+            ...theme.colors,
+            primary: colors.primary_color,
+            primary25: colors.primary_shade,
+          },
+        })}
       />
     </>
   );
@@ -111,7 +143,7 @@ const ShareButton = styled.button`
   border: 2px solid ${props => props.color};
   color: ${props => props.color};
   padding: 0.7em;
-  font-size: 0.79rem;
+  font-size: 12px;
   // margin: 0 15px;
   font-weight: bold;
   justify-content: center;
@@ -122,4 +154,23 @@ const ShareButton = styled.button`
     padding: 0;
     width: 65px;
   }
+`;
+
+const FloatButton = styled.button`
+  @media (min-width: 768px) {
+    display: none;
+  }
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: ${props => props.color};
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  right: 7vw;
+  bottom: 7vw;
+  z-index: 99;
+  ${props => props.floatCss}
 `;

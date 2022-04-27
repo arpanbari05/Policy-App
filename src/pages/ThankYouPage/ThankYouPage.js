@@ -47,6 +47,18 @@ const ThankYouPage = () => {
   } = useFrontendBoot();
 
   const [loading, setLoading] = useState(false);
+  const [isTransactionClicked, setIsTransactionClicked] = useState(false);
+
+  document.querySelectorAll("#transaction_link")?.forEach(ele => {
+    ele.addEventListener("click", () => {
+      setIsTransactionClicked(true);
+      window.isTransactionClicked = true;
+      // const win = window?.open(settings.account_login_link, "_blank");
+      // win?.focus();
+    });
+  });
+
+  console.log(`window.isTransactionClicked = ${window.isTransactionClicked}`);
 
   const dispatch = useDispatch();
 
@@ -102,7 +114,7 @@ const ThankYouPage = () => {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   if (payment)
     return (
@@ -136,6 +148,8 @@ const ThankYouPage = () => {
                   settings={settings}
                   total_premium={total_premium}
                   colors={colors}
+                  isTransactionClicked={isTransactionClicked}
+                  setIsTransactionClicked={setIsTransactionClicked}
                 />
 
                 <div className="col-lg-6">
@@ -143,7 +157,7 @@ const ThankYouPage = () => {
                     {loading ? (
                       <Card />
                     ) : (
-                      policyStatus.map((item, index) => {
+                      policyStatus?.map((item, index) => {
                         if (item.product)
                           return (
                             <Card
@@ -187,13 +201,15 @@ const ThankYouPage = () => {
                 tenantDetail={tenantDetail}
                 thankYouBanner={thankYouBanner}
                 total_premium={total_premium}
+                isTransactionClicked={isTransactionClicked}
+                setIsTransactionClicked={setIsTransactionClicked}
               />
 
               <div>
                 {loading ? (
                   <Card />
                 ) : (
-                  policyStatus.map((item, index) => {
+                  policyStatus?.map((item, index) => {
                     if (item.product)
                       return (
                         <Card
@@ -424,7 +440,14 @@ const Outer = styled.div`
   height: fit-content;
 `;
 
-const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
+const BannerArea = ({
+  thankYouBanner,
+  total_premium,
+  colors,
+  settings,
+  isTransactionClicked,
+  setIsTransactionClicked,
+}) => {
   return (
     <div className="col-lg-6">
       {!thankYouBanner && (
@@ -455,6 +478,8 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
                 shopMoreLink={settings.shop_more_link || ""}
                 accountLoginLink={settings.account_login_link || ""}
                 colors={colors}
+                isTransactionClicked={isTransactionClicked}
+                setIsTransactionClicked={setIsTransactionClicked}
               />
             )}
           </div>
@@ -552,7 +577,7 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
             }
           `}
           dangerouslySetInnerHTML={{
-            __html: thankYouBanner?.replaceAll("₹X", total_premium),
+            __html: thankYouBanner?.split("₹X").join(total_premium),
           }}
         ></div>
       )}
@@ -560,11 +585,26 @@ const BannerArea = ({ thankYouBanner, total_premium, colors, settings }) => {
   );
 };
 
-const Disclaimer = ({ colors, accountLoginLink, shopMoreLink }) => {
+const Disclaimer = ({
+  colors,
+  accountLoginLink,
+  shopMoreLink,
+  isTransactionClicked,
+  setIsTransactionClicked,
+}) => {
   const { policyStatus } = useSelector(state => state.proposalPage);
 
+  const onTransactionClickHandler = () => {
+    setIsTransactionClicked(true);
+    window.isTransactionClicked = true;
+    const win = window.open(accountLoginLink, "_blank");
+    win?.focus();
+  };
+
+  // console.log({ isTransactionClicked });
+
   if (
-    policyStatus.every(
+    policyStatus?.every(
       item => item.underwriting_status === "underwriting_approval",
     )
   ) {
@@ -582,7 +622,8 @@ const Disclaimer = ({ colors, accountLoginLink, shopMoreLink }) => {
               color: ${colors?.primary_color} !important;
               border-color: ${colors?.primary_color} !important;
             `}
-            href={accountLoginLink}
+            // href={accountLoginLink}
+            onClick={onTransactionClickHandler}
           >
             My Account Page.
           </a>{" "}
@@ -602,7 +643,7 @@ const Disclaimer = ({ colors, accountLoginLink, shopMoreLink }) => {
         </div>
       </>
     );
-  } else if (policyStatus.every(item => item.status === "policy_issued"))
+  } else if (policyStatus?.every(item => item.status === "policy_issued"))
     return (
       <>
         {" "}
@@ -614,7 +655,8 @@ const Disclaimer = ({ colors, accountLoginLink, shopMoreLink }) => {
         >
           Your policy document has been successfully saved in{" "}
           <a
-            href={accountLoginLink}
+            // href={accountLoginLink}
+            onClick={onTransactionClickHandler}
             css={`
               color: ${colors?.primary_color} !important;
               border-color: ${colors?.primary_color} !important;
@@ -650,7 +692,9 @@ const Disclaimer = ({ colors, accountLoginLink, shopMoreLink }) => {
         >
           You can visit the{" "}
           <a
-            href={accountLoginLink}
+            // href={accountLoginLink}
+            onClick={onTransactionClickHandler}
+            id="transaction_id"
             css={`
               color: ${colors?.primary_color} !important;
               border-color: ${colors?.primary_color} !important;
@@ -682,10 +726,20 @@ const MobileBanner = ({
   colors,
   settings,
   tenantDetail,
+  setIsTransactionClicked = () => {},
+  isTransactionClicked,
 }) => {
   const shopMoreLink = settings.shop_more_link || "";
   const accountLoginLink = settings.account_login_link || "";
 
+  const onTransactionClickHandler = () => {
+    setIsTransactionClicked(true);
+    window.isTransactionClicked = true;
+    const win = window.open(accountLoginLink, "_blank");
+    win?.focus();
+  };
+
+  // console.log({ isTransactionClicked });
   if (!thankYouBanner)
     return (
       <>
@@ -781,7 +835,8 @@ const MobileBanner = ({
           <p style={{ fontSize: "14px", lineHeight: "1.3" }}>
             Your policy document has been successfully saved in{" "}
             <a
-              href={accountLoginLink}
+              // href={accountLoginLink}
+              onClick={onTransactionClickHandler}
               style={{
                 color: colors?.primary_color,
                 borderBottom: `1px dashed ${colors?.primary_color}`,
@@ -873,7 +928,7 @@ const MobileBanner = ({
           }
         `}
         dangerouslySetInnerHTML={{
-          __html: thankYouBanner?.replaceAll("₹X", total_premium),
+          __html: thankYouBanner?.split("₹X").join(total_premium),
         }}
       ></div>
     );

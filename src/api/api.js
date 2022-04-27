@@ -53,7 +53,7 @@ export const api = createApi({
             api.util.updateQueryData("getCart", undefined, cart => {
               const cartEntryExist = cart.data.some(
                 cachedCartEntry =>
-                  cachedCartEntry.group.id === cartEntry.group.id,
+                  cachedCartEntry.group?.id === cartEntry.group?.id,
               );
               const updatedCart = {
                 ...cart,
@@ -62,7 +62,7 @@ export const api = createApi({
                       const {
                         group: { id },
                       } = cachedCartEntry;
-                      if (id === cartEntry.group.id) return cartEntry;
+                      if (id === cartEntry.group?.id) return cartEntry;
                       return cachedCartEntry;
                     })
                   : [...cart.data, cartEntry],
@@ -92,9 +92,21 @@ export const api = createApi({
       },
     }),
     getAdditionalDiscounts: builder.query({
-      query: ({ productId, groupCode, sum_insured, tenure }) => ({
-        url: `products/${productId}/additional-discounts?group=${groupCode}&sum_insured=${sum_insured}&tenure=${tenure}`,
-      }),
+      query: ({
+        productId,
+        groupCode,
+        sum_insured,
+        tenure,
+        subJourneyType,
+      }) => {
+        let endpoint = "additional-discounts";
+        if (subJourneyType === "renewal") {
+          endpoint = "renewal-additional_discounts";
+        }
+        return {
+          url: `products/${productId}/${endpoint}?group=${groupCode}&sum_insured=${sum_insured}&tenure=${tenure}`,
+        };
+      },
       providesTags: ["AdditionalDiscount"],
     }),
     getEnquiries: builder.query({
@@ -160,7 +172,7 @@ export const api = createApi({
                 data: {
                   ...draftEnquiries.data,
                   groups: draftEnquiries.data.groups.map(group => {
-                    if (group.id !== parseInt(groupCode)) return group;
+                    if (group?.id !== parseInt(groupCode)) return group;
                     return { ...group, extras };
                   }),
                 },
@@ -299,6 +311,32 @@ export const api = createApi({
     getLocationDetails: builder.query({
       query: ({ search }) => `location-details?search=${search}`,
     }),
+    getQuote: builder.query({
+      query: args => {
+        const {
+          insurer,
+          sum_insured_range,
+          tenure,
+          plan_type,
+          group,
+          base_plan_type = "base_health",
+          journeyType = "health",
+          deductible = 0,
+        } = args;
+
+        const endpoint = journeyType === "top_up" ? "topup-quotes" : "quotes";
+
+        let url = `companies/${insurer}/${endpoint}?sum_insured_range=${sum_insured_range}&tenure=${tenure}&plan_type=${plan_type}&group=${group}&base_plan_type=${base_plan_type}`;
+
+        if (journeyType === "top_up") {
+          url = url.concat(`&deductible=${deductible}`);
+        }
+
+        return {
+          url,
+        };
+      },
+    }),
     getCustomQuotes: builder.query({
       queryFn: async (
         args,
@@ -367,6 +405,25 @@ export const api = createApi({
     getProposalData: builder.query({
       query: () => ({ url: "health/proposals" }),
       providesTags: ["ProposalSummaryUpdate"],
+    }),
+    // getInsuredDetailsResponse: builder.query({
+      
+    // }),
+    saveProposal: builder.mutation({
+      query: body => ({
+        url: `/health/proposals`,
+        method: "POST",
+        body,
+      }),
+      onQueryStarted: async (_data, { dispatch, queryFulfilled }) => {
+        const { data } = await queryFulfilled;
+        console.log("rvbskf",data);
+        // dispatch(
+        //   api.util.updateQueryData("getEnquiries", undefined, draft => {
+        //     if (draft) Object.assign(draft, data);
+        //   }),
+        // );
+      },
     }),
     getTopUpAddOns: builder.query({
       queryFn: async (
@@ -495,6 +552,7 @@ export const {
   useGetFrontendBootQuery,
   useUpdateGroupsMutation,
   useCreateCartMutation,
+  useSaveProposalMutation,
   useDeleteCartMutation,
   useDeleteGroupQuery,
   useCreateEnquiryMutation,
@@ -520,6 +578,7 @@ export const {
   useGetRenewalSumInsuredsQuery,
   useGetFeatureOptionsQuery,
   useGetPoliciesQuery,
+  useGetQuoteQuery,
 } = api;
 
 function updateGroupMembersQueryBuilder(builder) {

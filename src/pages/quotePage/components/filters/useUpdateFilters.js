@@ -21,7 +21,7 @@ function useUpdateFilters() {
     ? JSON.parse(localStorage.getItem("groups"))
     : enqGroups;
 
-  const currentGroup = groups?.find(group => group.id === parseInt(groupCode));
+  const currentGroup = groups?.find(group => group?.id === parseInt(groupCode));
 
   const previousFilters = currentGroup?.extras;
 
@@ -55,7 +55,7 @@ function useUpdateFilters() {
           previousFilters?.tenure?.code ||
           getSelectedFilter("tenure")?.code,
       },
-      plan_type: filters?.plantype?.code,
+      plan_type: filters?.plantype?.code || getSelectedFilter("plantype")?.code,
     });
     localStorage.setItem("groups", JSON.stringify(groups));
   }

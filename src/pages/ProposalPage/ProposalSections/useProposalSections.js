@@ -17,10 +17,21 @@ import {
   getProposalData,
   setShowErrorPopup,
   setFailedBmiData,
+  setInsuredDetailsResponse,
+  setFailedBmiBlockJourney,
+  getMedicalUnderwritingStatus,
 } from "./ProposalSections.slice";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
-import { useRevisedPremiumModal,useCart } from "../../../customHooks";
-import { useGetEnquiriesQuery } from "../../../api/api";
+import {
+  useRevisedPremiumModal,
+  useCart,
+  useFrontendBoot,
+} from "../../../customHooks";
+import {
+  useGetEnquiriesQuery,
+  useSaveProposalMutation,
+} from "../../../api/api";
+import { shareViaEmailApi } from "../../../components/ShareQuoteModal";
 
 const useProposalSections = ({
   setActive,
@@ -28,7 +39,7 @@ const useProposalSections = ({
   setActivateLoader,
   setBlockTabSwitch,
   name,
-  listOfForms
+  listOfForms,
 }) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
@@ -37,7 +48,7 @@ const useProposalSections = ({
   const schema = useSelector(({ schema }) => schema.currentSchema);
   const history = useHistory();
   const queryStrings = useUrlQuery();
-
+  // const [saveProposal, queryState] = useSaveProposalMutation()
   const enquiryId = queryStrings.get("enquiryId");
 
   const [isValid, setValid] = useState(
@@ -46,7 +57,10 @@ const useProposalSections = ({
 
   const { data: equriesData } = useGetEnquiriesQuery();
 
+  const { tenantAlias } = useFrontendBoot();
+
   const firstName = equriesData?.data?.name?.split(" ")[0];
+  const email = equriesData?.data?.email;
   const groups = equriesData.data ? equriesData.data.groups : [];
 
   const [allDataSubmitted, setAllDataSubmitted] = useState(false);
@@ -55,25 +69,39 @@ const useProposalSections = ({
 
   const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
 
+  const { cartEntries } = useCart();
+
   const dispatch = useDispatch();
+
+  const sum_insured = cartEntries?.map(cart => ({
+    [cart?.product?.name]: cart?.sum_insured,
+  }));
 
   const checkAllValid = values => {
     if (values instanceof Object && Object.keys(values)?.length)
       return Object.keys(values)?.map(group =>
         Object.values(values[group])?.every(val => val?.isValid),
       );
-    else return false;
+    else return [];
   };
 
   // checks dropDown selected value exist in schema options or not
-  const isOptionsValuesValidated = (schema,values) => {
-    if(Array.isArray(schema)){
-      return schema.filter(el => renderField(el, values) && el?.validate?.required && el.type === "select").every(el => Boolean( el.additionalOptions.options[values[el.name]]))
-    }else{
-      return Object.keys(schema).map(key => isOptionsValuesValidated(schema[key],values[key]))
+  const isOptionsValuesValidated = (schema, values) => {
+    if (Array.isArray(schema)) {
+      return schema
+        .filter(
+          el =>
+            renderField(el, values) &&
+            el?.validate?.required &&
+            el.type === "select",
+        )
+        .every(el => Boolean(el.additionalOptions.options[values[el.name]]));
+    } else {
+      return Object.keys(schema).map(key =>
+        isOptionsValuesValidated(schema[key], values[key]),
+      );
     }
-   
-  }
+  };
 
   const havingAnyError = (errors, key) => {
     if (key) {
@@ -89,18 +117,20 @@ const useProposalSections = ({
   };
 
   const everyRequiredFilled = (schema, values = {}) => {
-    if (Array.isArray(schema)){
-
+    if (Array.isArray(schema)) {
       return schema
         .filter(
-          el => el.validate && el.validate.required === true && renderField(el, values),
+          el =>
+            el.validate &&
+            el.validate.required === true &&
+            renderField(el, values),
         )
         .every(
           el =>
             values[el.name] &&
             !performValidations(el.validate, values, el.name),
         );
-         } else
+    } else
       return Object.keys(schema)
         .map(key =>
           everyRequiredFilled(schema[key], values[key] ? values[key] : {}),
@@ -168,7 +198,6 @@ const useProposalSections = ({
         callback,
       });
     } else if (updationFor === "Insured Details") {
-
       let updatedObj = { ...checkFor.self };
       let checkForKeys = Object.keys(checkFor.self);
       checkForKeys.forEach(key => {
@@ -198,34 +227,62 @@ const useProposalSections = ({
     );
   };
 
+  const shareOnProposalSubmit = async () => {
+    const response = await shareViaEmailApi(
+      {
+        stage: "PROPOSAL_SUBMIT",
+        email,
+        insurers: cartEntries?.map(cart => cart?.product?.company?.alias),
+        mode: ["EMAIL"],
+        sum_insured,
+        sms: "",
+      },
+      tenantAlias,
+    );
+    return response;
+  };
 
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
+    console.log("bcfhdjd",values,checkAllValid(values))
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
-        console.log("egjksf 1")
+        console.log("egjksf 1");
         setActive(schemaKeys.indexOf(formName));
-        console.log("sgvjbskv",havingAnyError(errors));
-        name !== "Insured Details" && setShow(havingAnyError(errors).indexOf(true));
+        console.log("sgvjbskv", havingAnyError(errors));
+        name !== "Insured Details" &&
+          setShow(havingAnyError(errors).indexOf(true));
         return;
       }
       if (!everyRequiredFilled(schema[formName], sendedVal)) {
-        console.log("egjksf 2",everyRequiredFilled(schema[formName], sendedVal))
+        console.log(
+          "egjksf 2",
+          everyRequiredFilled(schema[formName], sendedVal),
+        );
         setActive(schemaKeys.indexOf(formName));
         return;
       }
-      let valueIsValidatedOption = isOptionsValuesValidated(schema[formName],sendedVal);
-      console.log("wsgvskdbvs",isOptionsValuesValidated(schema[formName],sendedVal))
+      let valueIsValidatedOption = isOptionsValuesValidated(
+        schema[formName],
+        sendedVal,
+      );
+      console.log(
+        "wsgvskdbvs",
+        isOptionsValuesValidated(schema[formName], sendedVal),
+      );
       // if(formName === "Proposer Details" && valueIsValidatedOption === false){
       //   setActive(schemaKeys.indexOf(formName));
       //   return;
       // }
-      if(formName !== "Proposer Details" && valueIsValidatedOption.includes(false)){
-        console.log("egjksf 3")
+      if (
+        formName !== "Proposer Details" &&
+        valueIsValidatedOption.includes(false)
+      ) {
+        console.log("egjksf 3");
         setActive(schemaKeys.indexOf(formName));
         setShow(valueIsValidatedOption.indexOf(false));
         return;
       }
-    } else if (!checkAllValid(values).every(el => el === true)) {
+    } else if (checkAllValid(values) && !checkAllValid(values).every(el => el === true)) {
       setActive(schemaKeys.indexOf(formName));
       return;
     }
@@ -268,28 +325,33 @@ const useProposalSections = ({
       dispatch(
         saveProposalData(
           { [formName]: sendedVal },
-          ({ prevProposalData, updatedProposalData, responseData}) => {
+          ({ prevProposalData, updatedProposalData, responseData }) => {
+            const { data, failed_bmi, block_journey } = responseData;
             callback();
             revisedPremiumPopupUtilityObject?.getUpdatedCart();
-            
-            if (responseData?.failed_bmi?.health) {
-              dispatch(setFailedBmiData(responseData?.failed_bmi?.health));
-              dispatch(
-                setShowBMI(
-                  Object.keys(responseData?.failed_bmi.health).join(", "),
-                ),
-              );
+            console.log("dbdhfbjksfvb", data);
+            if (data) {
+              dispatch(setInsuredDetailsResponse(data));
             }
-            if (prevProposalData["Medical Details"]) {
-              setSelfFieldsChange({
-                checkFor: prevProposalData["Medical Details"],
-                checkFrom: sendedVal,
-                updationFor: "Medical Details",
-                dispatch: dispatch,
-                callback: () => {},
-              });
-            } else {
-              setActive(getUnfilledForm(updatedProposalData));
+            if (block_journey)
+              dispatch(setFailedBmiBlockJourney(block_journey));
+            else dispatch(setFailedBmiBlockJourney(false));
+            if (failed_bmi?.health) {
+              dispatch(setFailedBmiData(failed_bmi?.health));
+              dispatch(setShowBMI(Object.keys(failed_bmi.health).join(", ")));
+            }
+            if (!block_journey) {
+              if (prevProposalData["Medical Details"]) {
+                setSelfFieldsChange({
+                  checkFor: prevProposalData["Medical Details"],
+                  checkFrom: sendedVal,
+                  updationFor: "Medical Details",
+                  dispatch: dispatch,
+                  callback: () => {},
+                });
+              } else {
+                setActive(getUnfilledForm(updatedProposalData));
+              }
             }
           },
         ),
@@ -334,6 +396,7 @@ const useProposalSections = ({
           ({ prevProposalData, updatedProposalData }) => {
             callback();
             setAllDataSubmitted(true);
+            shareOnProposalSubmit();
           },
         ),
       );
@@ -363,15 +426,25 @@ const useProposalSections = ({
   }, [canProceedToSummary]);
 
   useEffect(() => {
-console.log("djfgddd",Object.values(errors))
-if(name === "Proposer Details"){
-  Object.values(errors).some(el => el !== undefined)?setBlockTabSwitch(true):setBlockTabSwitch(false);
-}else {
-  console.log("srvsjkbv",Object.keys(errors).some(el => Object.values(errors[el]).some(val => val !== undefined)))
-  Object.keys(errors).some(el => Object.values(errors[el]).some(val => val !== undefined))?setBlockTabSwitch(true):setBlockTabSwitch(false);
-}
-
-  },[errors])
+    console.log("djfgddd", Object.values(errors));
+    if (name === "Proposer Details") {
+      Object.values(errors).some(el => el !== undefined)
+        ? setBlockTabSwitch(true)
+        : setBlockTabSwitch(false);
+    } else {
+      console.log(
+        "srvsjkbv",
+        Object.keys(errors).some(el =>
+          Object.values(errors[el]).some(val => val !== undefined),
+        ),
+      );
+      Object.keys(errors).some(el =>
+        Object.values(errors[el]).some(val => val !== undefined),
+      )
+        ? setBlockTabSwitch(true)
+        : setBlockTabSwitch(false);
+    }
+  }, [errors]);
 
   return {
     values,
@@ -388,7 +461,7 @@ if(name === "Proposer Details"){
     setErrors,
     errors,
     equriesData,
-    show, 
+    show,
     setShow,
   };
 };

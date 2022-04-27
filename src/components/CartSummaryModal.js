@@ -12,6 +12,7 @@ import { removeQuoteFromCart } from "../pages/Cart/cart.slice";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import CardModal from "./Common/Modal/CardModal";
 import { calculateTotalPremium, figureToWords } from "../utils/helper";
+import { HeadingTertiary, PrimaryFontBold } from "../styles/typography";
 
 function CartSummaryModal({
   selectedRiders = [],
@@ -55,7 +56,7 @@ function CartSummaryContent({
 
   const { groupCode } = useParams();
 
-  const currentGroup = groups.find(group => group.id === +groupCode);
+  const currentGroup = groups.find(group => group?.id === +groupCode);
 
   groups = groups.filter(group => group.type === currentGroup.type);
 
@@ -188,7 +189,7 @@ function GroupCard({ group, closeModal, allClose, selectedRiders, ...props }) {
               background: ${colors.secondary_color};
             `}
           ></div>
-          {members.join(" + ")?.replaceAll("_", "-")}
+          {members.join(" + ")?.split("_").join("-")}
         </h5>
 
         <ToggleProductCTA
@@ -205,6 +206,10 @@ function GroupCard({ group, closeModal, allClose, selectedRiders, ...props }) {
 function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
   const dispatch = useDispatch();
   const { data, isLoading, isUninitialized } = useGetCartQuery();
+
+  const {
+    colors: { primary_color, primary_shade },
+  } = useTheme();
 
   const { deleteQuote } = useQuote();
 
@@ -237,13 +242,13 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
 
   const currentGroup =
     localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group.id);
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   function handleAddPlanClick() {
     closeModal && closeModal();
     allClose();
     history.push({
-      pathname: `/quotes/${group.id}`,
+      pathname: `/quotes/${group?.id}`,
       search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
     });
   }
@@ -267,8 +272,8 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
             justify-content: center;
             align-items: center;
             width: 120px;
-            background: rgb(235, 245, 255);
-            color: #0d6efd;
+            background: ${primary_shade};
+            color: ${primary_color};
             border: none;
             @media (max-width: 400px) {
               font-size: 10px;
@@ -292,7 +297,7 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
 
   function handleDeleteClick() {
     deleteQuote(cartEntry.id);
-    dispatch(removeQuoteFromCart(cartEntry.group.id));
+    dispatch(removeQuoteFromCart(cartEntry.group?.id));
   }
 
   return (
@@ -301,8 +306,8 @@ function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
         justify-content: space-between;
         width: 1.67em;
         height: 1.67em;
-        color: #168cff;
-        background: #eff7ff;
+        color: ${primary_color};
+        background: ${primary_shade};
         display: flex;
         font-size: 22px;
         align-items: center;
@@ -431,14 +436,22 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
       </div>
       <ProductContainer>
         <div>
-          <img className="contain" src={logoSrc} alt={alias} />
+          <img
+            css={`
+              max-height: 80px;
+            `}
+            className="contain"
+            src={logoSrc}
+            alt={alias}
+          />
         </div>
         <div
           css={`
             max-width: 30%;
           `}
         >
-          <ProductName flag={name.length > 20}>{name}</ProductName>
+          {/* <ProductName flag={name.length > 20}>{name}</ProductName> */}
+          <HeadingTertiary>{name}</HeadingTertiary>
         </div>
         {deductible ? (
           <ProductData>
@@ -479,7 +492,7 @@ const ProductData = styled.div`
   left: -16px;
   & .label-add_product {
     color: #000;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 21px;
     font-weight: 900;
   }

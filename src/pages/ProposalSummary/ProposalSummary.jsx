@@ -22,13 +22,11 @@ import "styled-components/macro";
 import {
   fetchPdf,
   getProposalData,
-  postPayment,
 } from "../ProposalPage/ProposalSections/ProposalSections.slice";
 import SecureLS from "secure-ls";
 import ProductSummary from "../ProposalPage/ProposalSections/components/ProductSummary";
 import styled from "styled-components";
 import ProductSummaryMobile from "../ProposalPage/ProposalSections/components/ProductSummaryMobile";
-import ProductSummaryTab from "../ProposalPage/ProposalSections/components/ProductSummaryTab";
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { Col, Row } from "react-bootstrap";
 import TermModal from "./TermsModal";
@@ -44,10 +42,7 @@ import {
   useUSGIDiscounts,
 } from "../../customHooks";
 import { Page } from "../../components";
-import { FaChevronLeft } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import {
-  useGetEnquiriesQuery,
   useGetProductBrochureQuery,
   useGetProposalDataQuery,
 } from "../../api/api";
@@ -57,6 +52,8 @@ import { mobile } from "../../utils/mediaQueries";
 import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
 import httpClient from "../../api/httpClient";
+import { BackButtonMobile } from "../../components";
+import { TraceId } from "../../components/Navbar";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
@@ -75,16 +72,6 @@ const ProposalSummary = () => {
   const PrimaryShade = colors.primary_shade;
 
   const { data: proposalData = {} } = useGetProposalDataQuery();
-
-  const backButtonForNav = (
-    <Link
-      className="back_btn_navbar"
-      style={{ color: PrimaryColor }}
-      to={getUrlWithEnquirySearch(`/proposal`)}
-    >
-      <MdOutlineArrowBackIos />
-    </Link>
-  );
 
   let { cartEntries } = useCart();
 
@@ -173,6 +160,10 @@ const ProposalSummary = () => {
   const enquiryId = url.get("enquiryId");
 
   const dispatch = useDispatch();
+
+  const sum_insured = cartEntries?.map(cart => ({
+    [cart?.product?.name]: cart?.sum_insured,
+  }));
 
   const getTermConditionData = async (company_id, callback = () => {}) => {
     try {
@@ -266,9 +257,10 @@ const ProposalSummary = () => {
   return (
     <>
       <Page
-        noNavbarForMobile={true}
         id={"proposalSummaryPage"}
-        backButton={backButtonForNav}
+        backButton={
+          <BackButtonMobile path={getUrlWithEnquirySearch(`/proposal`)} />
+        }
       >
         <div
           className="container-fluid terms__wrapper"
@@ -397,7 +389,7 @@ const ProposalSummary = () => {
             </div>
           </div>
         </div>
-        <MobileHeader
+        {/* <MobileHeader
           css={`
             background: ${PrimaryColor};
             justify-content: space-between;
@@ -413,14 +405,34 @@ const ProposalSummary = () => {
             </MobileHeaderText>
           </Link>
 
+          <div
+            css={`
+              color: #fff;
+            `}
+          >
+            <TraceId />
+          </div>
+        </MobileHeader>
+
+        <div className="container-fluid mt-20 ">
           <ShareQuoteModal
             mobile
             insurersFor={cart.map(cart => cart?.product?.company?.alias)}
             stage="PROPOSAL_SUMMARY"
+            sum_insured={sum_insured}
+            float
+            floatCss={`bottom: 20vw;`}
           />
         </MobileHeader>
-
+ */}
         <div className="container-fluid mt-20 ">
+          <ShareQuoteModal
+            insurersFor={cart.map(cart => cart?.product?.company?.alias)}
+            stage="PROPOSAL_SUMMARY"
+            sum_insured={sum_insured}
+            float
+            floatCss={"bottom: 20vw;"}
+          />
           <div
             className="element-section "
             css={`
@@ -473,6 +485,7 @@ const ProposalSummary = () => {
                       cart => cart?.product?.company?.alias,
                     )}
                     stage="PROPOSAL_SUMMARY"
+                    sum_insured={sum_insured}
                   />
                 </div>
               </div>

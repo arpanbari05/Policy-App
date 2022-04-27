@@ -1150,7 +1150,7 @@ function FeatureValue({
       <OverlayTrigger
         placement={tooltipPlacement}
         overlay={renderTooltipDesc({
-          description: feature.short_description,
+          description: feature?.short_description,
         })}
       >
         <div
@@ -1161,14 +1161,16 @@ function FeatureValue({
         >
           {sectionTitle === "What's not covered?" ? (
             <>
-              {feature.feature_value.slice(
+              {feature?.feature_value?.slice(
                 0,
-                showMore ? feature.feature_value.length : 150,
+                showMore ? feature.feature_value?.length : 150,
               ) +
                 `${
-                  feature.feature_value.length > 150 && !showMore ? "..." : " "
+                  feature?.feature_value?.length > 150 && !showMore
+                    ? "..."
+                    : " "
                 }`}
-              {feature.feature_value.length > 150 && (
+              {feature?.feature_value?.length > 150 && (
                 <button
                   onClick={() => {
                     setShowMore(!showMore);
@@ -1184,7 +1186,7 @@ function FeatureValue({
               )}
             </>
           ) : (
-            feature.feature_value
+            feature?.feature_value
           )}
         </div>
       </OverlayTrigger>

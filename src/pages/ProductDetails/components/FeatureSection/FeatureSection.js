@@ -63,7 +63,7 @@ const FeatureSectionHeader = styled("header")`
 
 const FeatureSectionHeading = styled("p")`
   font-size: 23px;
-  margin-bottom: 8px;
+  margin-bottom: 1px;
   color: #253858;
   font-weight: 900;
   display: flex;
@@ -89,7 +89,7 @@ const FeatureSectionHeading = styled("p")`
   margin-left: 2px;
 
   ${mobile} {
-    font-size: 17px;
+    font-size: 18px;
     margin-bottom: 5px;
     &::before {
       top: 0;
@@ -101,13 +101,14 @@ const FeatureSectionSubHeading = styled("p")`
   color: #76797e;
   font-size: 14px;
   margin-left: 2px !important;
+  margin-bottom: 9px;
   color: #253858;
   ${mobile} {
     line-height: normal;
   }
 
   ${mobile} {
-    font-size: 10px;
+    font-size: 12px;
     color: #7b7b7f;
   }
 `;

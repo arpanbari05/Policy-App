@@ -219,7 +219,7 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
 
         <span
           css={`
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #253858;
             margin-bottom: 8px;
@@ -240,7 +240,7 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
           css={`
             display: flex;
             align-items: center;
-            font-size: 19px;
+            font-size: 18px;
           `}
         >
           <b
@@ -285,15 +285,10 @@ function AdditionalDiscounts({ groupCode, ...props }) {
     toggleAdditionalDiscount(additionalDiscount);
   };
 
-  const updatedAdditionalDiscount = additionalDiscounts?.filter(
-    additionalDiscount =>
-      !isUsgiLifestyleDiscount({ discount: additionalDiscount }),
-  ); //? removal of life style discount from product details page(usgi)
-
   return (
     <>
       <WrapWithTitle title="Additional Discount" {...props}>
-        {updatedAdditionalDiscount.map(additionalDiscount => (
+        {additionalDiscounts.map(additionalDiscount => (
           <AdditionalDiscount
             onApplyClick={handleApplyClick}
             additionalDiscount={additionalDiscount}
@@ -315,7 +310,7 @@ function AdditionalDiscount({
   onApplyClick,
   ...props
 }) {
-  const { name, description, alias } = additionalDiscount;
+  const { name, description, fixed_discount_value } = additionalDiscount;
 
   const { colors } = useTheme();
 
@@ -323,9 +318,16 @@ function AdditionalDiscount({
 
   const discountAmount = amount(getDiscountAmount(additionalDiscount));
 
+  const isMandatory = ["usgilifestyle", "usgiesale"]?.includes(
+    additionalDiscount?.alias,
+  ); //TODO: change logic when mandatory flag is added from backend
+
   const handleApplyClick = () => {
-    onApplyClick && onApplyClick(additionalDiscount);
+    !isMandatory && onApplyClick && onApplyClick(additionalDiscount);
   };
+
+  //* AUTO APPLY FACILITY FOR E-SALE AND LIFESTYLE DISCOUNT OF USGI IS ALREADY DEFINED IN useUsgiDiscount();
+  //* AUTO APPLY FACILITY FOR MORE ADDITIONAL DISCOUNT IN FUTURE CAN BE PUT IN THE useUsgiDiscount() BY MAKING HOOK GENERIC;
 
   return (
     <div
@@ -334,8 +336,10 @@ function AdditionalDiscount({
         border-radius: 10px;
         padding: 15px;
         display: flex;
+        margin: 10px 0px;
         justify-content: space-between;
         align-items: center;
+        opacity: ${isMandatory ? "0.7" : "1"};
         box-shadow: 0 3px 13px 0 rgba(0, 0, 0, 0.16);
       `}
       {...props}
@@ -347,7 +351,7 @@ function AdditionalDiscount({
             font-size: 18px;
 
             ${small} {
-              font-size: 12px;
+              font-size: 14px;
               line-height: 14px;
             }
           `}
@@ -381,13 +385,13 @@ function AdditionalDiscount({
           }
           display: flex;
           align-items: center;
+          cursor: ${isMandatory ? "not-allowed" : "pointer"} !important;
           @media (max-width: 537px) {
             padding: 4px 8px;
             font-size: 13px;
           }
         `}
         onClick={handleApplyClick}
-        className="btn"
       >
         <span
           css={`

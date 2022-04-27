@@ -6,6 +6,8 @@ import useFilters from "./useFilters";
 import { useCompanies, useTheme } from "../../../../customHooks";
 import "styled-components/macro";
 import { Filter, FilterHead } from ".";
+import { RiCheckboxFill } from "react-icons/ri";
+import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 
 function FilterModal({ onClose, ...props }) {
   const { colors } = useTheme();
@@ -135,7 +137,20 @@ function Insurer({ company, checked = false, onChange, css, ...props }) {
 
           <div className="d-flex align-items-center">
             <span className="plan_csr">{company.csr}% CSR</span>
-            <div className="custom_checkbox rounded-0"></div>
+            {/* <div className="custom_checkbox rounded-0"></div> */}
+            {checked ? (
+              <RiCheckboxFill
+                style={{ marginLeft: 10 }}
+                size={25}
+                color={colors.primary_color}
+              />
+            ) : (
+              <MdOutlineCheckBoxOutlineBlank
+                style={{ marginLeft: 10 }}
+                size={25}
+                color={"#aaa"}
+              />
+            )}
           </div>
         </li>
       </label>

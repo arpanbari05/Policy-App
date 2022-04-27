@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+// import millify from "millify";
+// import converter from "number-to-words";
 import { setShowPlanNotAvail } from "../ProposalSections/ProposalSections.slice";
+import { number2text } from "../../../utils/helper";
 const TextInput = ({
   name,
   label,
@@ -22,11 +25,17 @@ const TextInput = ({
   textTransform,
   onInput,
   readOnly,
+  triggerValidation = () => {},
   innerMember,
   checkAge,
   defaultValue,
   onFocus,
 }) => {
+  useEffect(() => {
+    if (name === "name" && value) {
+      triggerValidation(name);
+    }
+  }, [value]);
   const dispatch = useDispatch();
   const age =
     checkAge &&
@@ -300,26 +309,30 @@ const TextInput = ({
         error={!isFocused ? error : null}
         defaultValue={defaultValue}
       />
-
       <Label>
         {checkValidation?.required && label ? `${label}*` : label || ""}
       </Label>
 
-      <p className="formbuilder__error">{error}</p>
+      {error && <p className="formbuilder__error">{error}</p>}
+      {name === "annIncome" && value && (
+        <Income>{number2text(value)?.toLowerCase()}</Income>
+      )}
     </InputContainer>
   );
 };
 
 export default TextInput;
 
+const Income = styled.div`
+  font-size: 12px;
+  margin-top: 2px;
+  text-transform: capitalize;
+`;
 const InputContainer = styled.div`
   margin-top: 0.3rem !important;
   position: relative;
 
-  margin-bottom: 12px !important;
-  @media (max-width: 768px) {
-    margin-bottom: 12px !important;
-  }
+  margin-bottom: 2px !important;
 `;
 const Input = styled.input`
   list-style: none;

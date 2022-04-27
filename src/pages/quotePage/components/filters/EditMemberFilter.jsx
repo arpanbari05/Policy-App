@@ -21,6 +21,7 @@ import LocationEditForm from "../../../InputPage/components/LocationEditForm";
 import { setShowEditMembers } from "../../quote.slice";
 import { useGetEnquiriesQuery } from "../../../../api/api";
 import { useUpdateEnquiry } from "../../../../customHooks/index";
+import { PrimaryFontBold } from "../../../../styles/typography";
 
 export function EditMembersModal({
   children,
@@ -149,7 +150,7 @@ const EditMemberFilter = () => {
             height: 2.1em;
           `}
         />
-        <span
+        {/* <span
           className="mx-2"
           css={`
             font-weight: 900;
@@ -157,7 +158,14 @@ const EditMemberFilter = () => {
           `}
         >
           Members
-        </span>
+        </span> */}
+        <PrimaryFontBold
+          css={`
+            margin: 0 7px;
+          `}
+        >
+          Members
+        </PrimaryFontBold>
         <div
           className="d-flex justify-content-center align-items-center rounded-circle"
           css={`
