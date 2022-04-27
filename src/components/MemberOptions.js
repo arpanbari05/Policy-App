@@ -265,23 +265,25 @@ function MemberOption({
   // dropDownAgeList validation
   const validateAgeList = (
     validateSelfFunc,
+    validateSpouseFunc,
     currentMember,
     currentSelectedMember,
     userGender,
     currentUserAgeList,
   ) => {
     console.log(currentUserAgeList);
+
     if (!validateSelfFunc(currentSelectedMember, currentMember)) {
-      if (currentMember.code === "spouse") {
+      if (userGender === "F" && currentMember.code === "spouse") {
         return currentUserAgeList.slice(3, currentUserAgeList.length);
       } else {
+        // parent validation
+        if (!validateSpouseFunc(currentSelectedMember, currentMember)) {
+          return currentUserAgeList.slice(3, currentUserAgeList.length);
+        }
         return currentUserAgeList;
       }
     } else {
-      if (currentMember.code === "father" || currentMember.code === "mother") {
-        return currentUserAgeList.slice(1, currentUserAgeList.length);
-      }
-
       return currentUserAgeList.slice(3, currentUserAgeList.length);
     }
   };
@@ -418,6 +420,7 @@ function MemberOption({
         <RoundDD
           list={validateAgeList(
             validateSelf,
+            validateSpouse,
             member,
             selectedMembers,
             gender,
