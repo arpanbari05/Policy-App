@@ -18,12 +18,26 @@ function LogoLink() {
     ...frontendBoot
   } = useFrontendBoot();
 
+  const isBasicDetailsRoute = useRouteMatch({
+    path: "/input/basic-details",
+    exact: true,
+  });
+
+  const {
+    settings,
+    tenant,
+    settings: { shop_more_link },
+  } = frontendBoot?.data;
+
+  const goto =
+    tenant?.alias === "sriyah" && isBasicDetailsRoute
+      ? shop_more_link
+      : window.location.origin;
+
   if (isLoading) return <CircleLoader animation="border" />;
 
-  const { settings, tenant } = frontendBoot.data;
-
   return (
-    <a href={window.location.origin}>
+    <a href={goto}>
       <img
         src={images[tenant.alias] || settings.logo}
         alt={`companylogo`}

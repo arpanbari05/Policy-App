@@ -9,6 +9,7 @@ import {
   saveProposal,
   fetchUnderWritingMQ,
   submitProposal,
+  getMedicalUrls,
 } from "./serviceApi";
 
 const proposal = createSlice({
@@ -21,20 +22,21 @@ const proposal = createSlice({
     mediUnderwritting: false,
     showPlanNotAvail: false,
     showNSTP: false,
-    canSendSummaryPdf:false,
+    canSendSummaryPdf: false,
     activeIndex: 0,
     policyStatus: [],
     noForAllChecked: false,
     policyLoading: true,
     failedBmiData: false,
     insuredDetailsResponse:{},
+    medicalUrlsRuleEngine:false,
     failedBmiBlockJourney: false,
-    underWritingStatus:[],
+    underWritingStatus: [],
     showErrorPopup: {
       show: false,
       head: "",
       msg: "",
-      onCloseCallBack:() => {}
+      onCloseCallBack: () => {},
     },
     planDetails: {
       title: "Your Plan Details",
@@ -66,7 +68,7 @@ const proposal = createSlice({
     setIsLoading: (state, { payload }) => {
       state.isLoading = payload;
     },
-    setInsuredDetailsResponse:(state,{payload}) => {
+    setInsuredDetailsResponse: (state, { payload }) => {
       state.insuredDetailsResponse = payload;
     },
     setSelectedIcs: (state, { payload }) => {
@@ -100,6 +102,9 @@ const proposal = createSlice({
     setPlanDetails: (state, { payload }) => {
       state.planDetails = payload;
     },
+    setMedicalUrlsRuleEngine: (state, { payload }) => {
+      state.medicalUrlsRuleEngine = payload;
+    },
     pushLoadingStack: (state, { payload }) => {
       state.loadingStack.push(true);
     },
@@ -109,13 +114,13 @@ const proposal = createSlice({
     setIsPopupOn: (state, { payload }) => {
       state.isPopupOn = payload;
     },
-    setCanSendSummaryPdf:(state, { payload }) => {
+    setCanSendSummaryPdf: (state, { payload }) => {
       state.canSendSummaryPdf = payload;
     },
-    setFailedBmiBlockJourney:(state, { payload }) => {
+    setFailedBmiBlockJourney: (state, { payload }) => {
       state.failedBmiBlockJourney = payload;
     },
-    setUnderWritingStatus:(state, { payload }) => {
+    setUnderWritingStatus: (state, { payload }) => {
       state.underWritingStatus = payload;
     },
   },
@@ -143,12 +148,10 @@ export const {
   setIsPopupOn,
   setInsuredDetailsResponse,
   setFailedBmiBlockJourney,
-  setUnderWritingStatus
+  setUnderWritingStatus,
+  setMedicalUrlsRuleEngine
 } = proposal.actions;
 const ls = new SecureLS();
-
-
-
 
 // const hasAnyChangeInObj = (newVal, oldVal) => {
 //   let newValKeys = Object.keys(newVal);
@@ -167,20 +170,19 @@ export const getMedicalUnderwritingStatus = () => {
   return async (dispatch, state) => {
     try{
       const {data} = await fetchUnderWritingMQ();
-      dispatch(setUnderWritingStatus(data));
-    console.log("egbsrjkrr",data)
-
+      if(typeof data !== "string" && data?.final_result?.members){
+        dispatch(setUnderWritingStatus(data?.final_result?.members));
+      }
     } catch (err) {
       console.error(err);
     }
-    
-  }
-}
+  };
+};
 export const saveProposalData = (proposalData, next, failure) => {
   return async (dispatch, state) => {
     try {
       console.log("wvnljsdvb", proposalData);
-      let prevState = state()
+      let prevState = state();
       let prevProposalData = prevState.proposalPage.proposalData;
       let prevCart = prevState.cart;
       dispatch(setIsLoading(true));
@@ -237,7 +239,7 @@ export const fetchPdf = options => {
   return async dispatch => {
     try {
       const { data } = await policyPdf();
-      dispatch(setPolicyStatus(data.data));
+      dispatch(setPolicyStatus(data?.data));
     } catch (err) {
       console.error(err);
     }
@@ -338,5 +340,26 @@ export const getPaymentStatus = data => {
     }
   };
 };
+
+export const getMedicalUrlsRuleEngine = () => {
+  return async dispatch => {
+    try {
+      const response = await getMedicalUrls();
+      if (response?.data?.data?.members) {
+        // let structuredData = Object.keys(response.data.data.members).reduce((acc,member) => {
+        //   return {
+        //     ...acc,
+        //     [member]: {
+
+        //     }
+        //   }
+        // },{})
+        dispatch(setMedicalUrlsRuleEngine(response?.data?.data?.members));
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
+}
 
 export default proposal.reducer;

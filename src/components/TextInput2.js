@@ -98,6 +98,7 @@ export const FormGroup = styled.div`
   box-shadow: none;
   position: relative;
 `;
+
 export const TextInput = styled.input`
   z-index: 1;
   height: 60px;

@@ -5,7 +5,7 @@ const useFormBuilder = (
   schema,
   fetchValues,
   defaultValues = {},
-  noForAll=false,
+  noForAll = false,
   setNoForAll,
   formName,
   insuredDetails,
@@ -16,11 +16,9 @@ const useFormBuilder = (
   fetchErrors,
   fetchValid,
   isPanelVisible,
-  keyStr
+  keyStr,
 ) => {
-
-
-  console.log("edtbdbjhl",defaultValues)
+  console.log("edtbdbjhl", defaultValues);
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
 
   const [values, setValues] = useState(defaultValues || {});
@@ -29,20 +27,18 @@ const useFormBuilder = (
   const [isValid, setIsValid] = useState();
 
   const updateValue = (name, value, removeOtherValues = false) => {
-    console.log("sdfgdzfgvdf",name, value,values)
-    if(formName === "Medical Details" && !value){
+    console.log("sdfgdzfgvdf", name, value, values, removeOtherValues);
+    if (formName === "Medical Details" && !value) {
       return;
     }
 
-      if (removeOtherValues) {
-        setValues({ [name]: value });
-        fetchValues(() => ({ [name]: value }));
-      } else {
-        setValues(prev => ({ ...prev, [name]: value }));
-        fetchValues(prev => ({ ...prev, [name]: value }));
-      }
-    
-    
+    if (removeOtherValues) {
+      setValues({ [name]: value });
+      fetchValues(() => ({ [name]: value }));
+    } else {
+      setValues(prev => ({ ...prev, [name]: value }));
+      fetchValues(prev => ({ ...prev, [name]: value }));
+    }
 
     if (value instanceof Object) {
       if (value?.[`is${name}`] && value?.[`is${name}`] === "Y" && noForAll) {
@@ -90,12 +86,15 @@ const useFormBuilder = (
   };
 
   const updateValues = (multipleValues = {}, action) => {
+
     if (action === "SAVE_AS_IT_IS") {
+    console.log("sdfgdzfgvdf 9", multipleValues, action);
+
       setValues(multipleValues);
       fetchValues(() => multipleValues);
     } else {
-      setValues({ ...values, ...multipleValues });
-      fetchValues(() => ({ ...values, ...multipleValues }));
+      setValues(prev => ({ ...prev, ...multipleValues }));
+      fetchValues((prev) => ({ ...prev, ...multipleValues }));
     }
   };
   const insertValue = (parent, member, name, value) => {
@@ -122,16 +121,20 @@ const useFormBuilder = (
   };
   const collectRefs = useRef({});
 
-    useEffect(() => {
-      console.log("fgvsdjvnsdk",defaultValues,values)
-      if (defaultValues && Object.keys(defaultValues).length && !Object.keys(values).length ) {
-        setValues(defaultValues);
-        fetchValues(() => defaultValues);
-      }
-    }, [defaultValues]);
+  useEffect(() => {
+    console.log("fgvsdjvnsdk", defaultValues, values);
+    if (
+      defaultValues &&
+      Object.keys(defaultValues).length &&
+      !Object.keys(values).length
+    ) {
+      setValues(defaultValues);
+      fetchValues(() => defaultValues);
+    }
+  }, [defaultValues]);
 
   const triggerValidation = name => {
-    console.log("bfkjf",name)
+    console.log("bfkjf", name);
     let errorsTemp = {};
     let tempIsValid = true;
     console.log("sgbjhsfk", name);
@@ -221,6 +224,7 @@ const useFormBuilder = (
 
           if (renderField(item, values)) {
             errorsTemp[item.name] = errorMsg;
+            console.log("wfvbkjv", errorMsg);
             if (errorMsg) tempIsValid = false;
           }
         }
@@ -238,32 +242,30 @@ const useFormBuilder = (
   };
 
   useEffect(() => {
-if(noForAll){
-  let tempGroupVal = {};
-  schema.forEach(el => {
-   if (!Array.isArray(el)) {
-    if(el.additionalOptions.notAllowedIf === "N") {
-  
-      tempGroupVal[el.name] = {
-        [`is${el.name}`]: "Y",
-        members: {},
-        isValid: true,
-      };
-    }else if(!el.additionalOptions.disable_Toggle){
-      tempGroupVal[el.name] = {
-        [`is${el.name}`]: "N",
-        members: {},
-        isValid: true,
-      };
+    if (noForAll && formName === "Medical Details") {
+      let tempGroupVal = {};
+      schema.forEach(el => {
+        if (!Array.isArray(el)) {
+          if (el.additionalOptions.notAllowedIf === "N") {
+            tempGroupVal[el.name] = {
+              [`is${el.name}`]: "Y",
+              members: {},
+              isValid: true,
+            };
+          } else if (!el.additionalOptions.disable_Toggle) {
+            tempGroupVal[el.name] = {
+              [`is${el.name}`]: "N",
+              members: {},
+              isValid: true,
+            };
+          }
+        }
+      });
+      if (Object.keys(tempGroupVal).length) {
+        updateValues({ ...values, ...tempGroupVal }, "SAVE_AS_IT_IS");
+      }
     }
-      
-    }
-  });
-  if (Object.keys(tempGroupVal).length){
-    updateValues({ ...values, ...tempGroupVal },"SAVE_AS_IT_IS");
-    }
-}
-  },[noForAll])
+  }, [noForAll]);
 
   // to scroll page as per error
   // useEffect(() => {
@@ -293,35 +295,37 @@ if(noForAll){
   //   }
   // }, [errors]);
   // , canProceed,blockScrollEffect
-  
+
   const scrollToErrors = () => {
-    if(isPanelVisible){
-      if (Object.values(errors).length && Object.values(errors).some(val => val))
-      setErrorInField(true);
-    else setErrorInField(false);
+    if (isPanelVisible) {
+      if (
+        Object.values(errors).length &&
+        Object.values(errors).some(val => val)
+      )
+        setErrorInField(true);
+      else setErrorInField(false);
 
-    if (blockScrollEffect) {
-      let filteredKey = Object.keys(errors).filter(key => errors[key]);
+      if (blockScrollEffect) {
+        let filteredKey = Object.keys(errors).filter(key => errors[key]);
 
-      if (filteredKey.length) {
-        let scrollPositions = filteredKey.map(key => {
-          let element = document.getElementById(key);
-          if (element) {
-            let y = element.getBoundingClientRect().top - 100 + window.scrollY;
-            return y;
-          }
-        });
-        window.scroll({
-          top: Math.min(...scrollPositions),
-          behavior: "smooth",
-        });
+        if (filteredKey.length) {
+          let scrollPositions = filteredKey.map(key => {
+            let element = document.getElementById(key);
+            if (element) {
+              let y =
+                element.getBoundingClientRect().top - 100 + window.scrollY;
+              return y;
+            }
+          });
+          window.scroll({
+            top: Math.min(...scrollPositions),
+            behavior: "smooth",
+          });
+        }
       }
     }
-
-    }
-   
   };
-  
+
   return {
     values,
     updateValue,
