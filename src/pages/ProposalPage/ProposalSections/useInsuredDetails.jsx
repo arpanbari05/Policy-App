@@ -53,6 +53,20 @@ const useInsuredDetails = (
     });
   };
 
+  const titlePicker = (member) => {
+    
+    member = member.toLowerCase();
+    if(member.includes("mother")){
+      return "mrs"
+    }else if(member.includes("father") || member.includes("son") || member.includes("brother")){
+      return "mr"
+    }else if(member === "spouse"){
+      let {gender:genderOfSelf} = equriesData.data.input;
+      return genderOfSelf === "M"?"mrs":"mr"
+    }
+    console.log("wgrjwgk",equriesData.data)
+  }
+
   //   --------------------------------------------------------------------------------------------------------------------------------
   // -------------------------------------------   SIDE EFFECTS FOR INSURED DETAILS  ------------------------------------------------------
   // -------------------------------------------------------------------------------------------------------------------------------------
@@ -126,7 +140,7 @@ const useInsuredDetails = (
               estimatedMemberDOB = `${currentYear - parseInt(memberAge)}`;
             }
             console.log("fbjklbdxb",estimatedMemberDOB)
-            let title = memberType === "spouse" || memberType === "mother" || memberType === "mother_in_law" ? "mrs":""
+            let title = titlePicker(memberType);
             prefilledValues[memberType] = {
               ...(values && values.hasOwnProperty(memberType)
                 ? values[memberType]
