@@ -567,10 +567,8 @@ export function Import({ mobile, desktop, children }) {
 
 export function BackButtonMobile({ path, css = "", ...props }) {
   const { colors } = useTheme();
+  
   const history = useHistory();
-
-  const isProductDetailsPage =
-    window.location.pathname.startsWith("/productdetails");
 
   return (
     <span
@@ -581,7 +579,7 @@ export function BackButtonMobile({ path, css = "", ...props }) {
         ${css};
       `}
       onClick={() => {
-        isProductDetailsPage ? history.goBack() : history.push(path);
+        history.push(path);
       }}
     >
       <FaArrowCircleLeft />
