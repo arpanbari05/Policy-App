@@ -1965,12 +1965,12 @@ function validateDependentRider(rider, riders) {
   return isValid;
 }
 
-export function useRiders({
-  quote,
-  groupCode,
-  onChange,
-  defaultSelectedRiders = [],
-}) {
+export function useRiders({ quote, groupCode, onChange }) {
+  const { journeyType } = useFrontendBoot();
+
+  const defaultSelectedRiders =
+    journeyType === "health" ? quote?.health_riders : quote?.top_up_riders;
+
   const getInitialRiders = useCallback(() => {
     return defaultSelectedRiders.map(rider => ({
       ...rider,
@@ -1982,7 +1982,9 @@ export function useRiders({
 
   const [riders, setRiders] = useState(getInitialRiders);
 
-  useEffect(() => setRiders(getInitialRiders), [getInitialRiders]); //? a fallback to assign initial-riders
+  useEffect(() => {
+    return setRiders(getInitialRiders);
+  }, [getInitialRiders]); //? a fallback to assign initial-riders
 
   const feature_options = useCart().getCartEntry(+groupCode)?.feature_options;
 
@@ -1991,7 +1993,7 @@ export function useRiders({
   const findLocalRider = riderToFind =>
     riders.find(rider => rider?.id === riderToFind?.id);
 
-  const additionalUrlQueries = getRiderOptionsQueryString(riders);
+  /* const additionalUrlQueries = getRiderOptionsQueryString(riders); */
 
   const isRiderSelected = riderToCheck => {
     if (riderToCheck?.is_mandatory) return true;
@@ -2021,7 +2023,8 @@ export function useRiders({
     }
   });
 
-  const options_query = Object.keys(optionsSelected)
+
+  const additionalUrlQueries = Object.keys(optionsSelected)
     .map(opt => `${opt}=${optionsSelected[opt]}`)
     .join("&");
 
@@ -2030,7 +2033,6 @@ export function useRiders({
       additionalUrlQueries,
       feature_options: updatedFeatureOptions,
       selected_riders,
-      options_query,
     },
   });
 
@@ -2058,7 +2060,6 @@ export function useRiders({
               (localRider && localRider.isSelected) ||
               reliance_general_feature_option_value ===
                 rider?.name?.toLowerCase()?.split(" ")?.join("_"),
-            options_selected: rider?.options_selected,
           };
         });
       });
@@ -2071,6 +2072,7 @@ export function useRiders({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riders]);
 
+  
   const handleChange = changedRider => {
     if (changedRider.isSelected) {
       const isValid = validateDependentRider(

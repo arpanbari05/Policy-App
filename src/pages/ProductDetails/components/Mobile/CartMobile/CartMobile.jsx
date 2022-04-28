@@ -397,14 +397,18 @@ const CartSectionOuter = styled.div`
 
 const MemberAndEdit = ({ groupCode, ...props }) => {
   const { getGroupMembers } = useMembers();
+  
   const currentGroupMembers = getGroupMembers(groupCode);
+  
+  const {subJourneyType} = useFrontendBoot();
+  
   return (
     <div
       className="d-flex align-items-center justify-content-between"
       {...props}
     >
       <MembersList members={currentGroupMembers} />
-      <EditMembersButton groupCode={groupCode} />
+      {subJourneyType !== "renewal" && <EditMembersButton groupCode={groupCode} /> }
     </div>
   );
 };
