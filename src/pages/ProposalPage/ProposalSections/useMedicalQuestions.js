@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {getMedicalUrlsRuleEngine } from "./ProposalSections.slice";
 
-const useMedicalQuestions = (schema, values, setValues, name,proposalData,defaultValue,dispatch,isVersionRuleEngine) => {
+const useMedicalQuestions = (schema, values, setValues, name,proposalData,defaultValue,dispatch,isVersionRuleEngine,medicalUrlsRuleEngine) => {
   const [noForAll, setNoForAll] = useState({});
   const [yesSelected, setYesSelected] = useState({});
   const [canProceed, setCanProceed] = useState({
@@ -96,6 +96,7 @@ if(name === "Medical Details"){
   let ruleEngineGroup = Object.keys(schema).find(group => isVersionRuleEngine(parseInt(group)));
   console.log("svskgvbsdfjk",ruleEngineGroup,noForAll)
   if(ruleEngineGroup){
+    !medicalUrlsRuleEngine && dispatch(getMedicalUrlsRuleEngine());
     setNoForAll(prev => ({...prev,[ruleEngineGroup]:true}))
   }
 }

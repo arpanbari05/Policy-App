@@ -117,7 +117,8 @@ const InsuredDetails = ({
       proposalData,
       defaultValue,
       dispatch,
-      isVersionRuleEngine
+      isVersionRuleEngine,
+      medicalUrlsRuleEngine
     );
     console.log("wrghrjksgv",values,cartEntries,schema,noForAll)
 

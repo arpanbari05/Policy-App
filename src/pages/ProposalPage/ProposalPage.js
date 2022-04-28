@@ -106,7 +106,6 @@ const ProposalPage = () => {
     dispatch(getProposalFields());
     dispatch(getCart());
     setMemberGroups(cartEntries.map(cartItem => cartItem.group?.id));
-    dispatch(getMedicalUrlsRuleEngine());
     dispatch(
       getProposalData(() => {
         setPrepairingProposal(false);
