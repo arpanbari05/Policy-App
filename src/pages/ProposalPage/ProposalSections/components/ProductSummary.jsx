@@ -61,7 +61,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
 
   const { getCartEntry, cartEntries } = useCart();
 
-  const tenure = getCartEntry(+groups[0].id)?.tenure;
+  const tenure = getCartEntry(+groups[0]?.id)?.tenure;
 
   const revisedNetPremium = totalPremium;
 

@@ -125,7 +125,7 @@ const StyledErrorMessage = styled(ErrorMessage)`
   text-align: center;
 `;
 
-const EditMemberFilter = () => {
+const EditMemberFilter = ({ redirectToQuotes = true }) => {
   const { colors } = useTheme();
   const dispatch = useDispatch();
   const { showEditMembers: show } = useSelector(({ quotePage }) => quotePage);
@@ -142,14 +142,16 @@ const EditMemberFilter = () => {
         onClick={onEditMemberClick}
         role="button"
       >
-        <div
-          className="rounded"
-          css={`
-            background-color: ${colors.secondary_color};
-            width: 0.37em;
-            height: 2.1em;
-          `}
-        />
+        {redirectToQuotes && (
+          <div
+            className="rounded"
+            css={`
+              background-color: ${colors.secondary_color};
+              width: 0.37em;
+              height: 2.1em;
+            `}
+          />
+        )}
         {/* <span
           className="mx-2"
           css={`
@@ -182,12 +184,12 @@ const EditMemberFilter = () => {
           />
         </div>
       </div>
-      {show && <EditMembers />}
+      {show && <EditMembers redirectToQuotes={redirectToQuotes} />}
     </>
   );
 };
 
-export function EditMembers({ ...props }) {
+export function EditMembers({ redirectToQuotes, ...props }) {
   const { colors } = useTheme();
   const { getAllMembers } = useMembers();
   const dispatch = useDispatch();
@@ -244,11 +246,15 @@ export function EditMembers({ ...props }) {
         return updatedGroup?.find(grp => !grp?.pincode);
       }
     };
-    updateMembers({ members: selectedMembers }).then(res => {
+    updateMembers({ members: selectedMembers, redirectToQuotes }).then(res => {
       if (!res?.error) {
-        if (!isGroupWithPincode(res?.data?.data?.groups))
+        if (redirectToQuotes) {
+          if (!isGroupWithPincode(res?.data?.data?.groups))
+            dispatch(setShowEditMembers(false));
+          else dispatch(setEditStep(2));
+        } else {
           dispatch(setShowEditMembers(false));
-        else dispatch(setEditStep(2));
+        }
       }
     });
   };
@@ -256,22 +262,24 @@ export function EditMembers({ ...props }) {
   return (
     <>
       <EditMembersModal {...props}>
-        <Tab color={colors.secondary_shade}>
-          <TabItem
-            color={colors.primary_color}
-            active={step === 1}
-            onClick={() => dispatch(setEditStep(1))}
-          >
-            Members
-          </TabItem>
-          <TabItem
-            color={colors.primary_color}
-            active={step === 2}
-            onClick={() => dispatch(setEditStep(2))}
-          >
-            Pincode
-          </TabItem>
-        </Tab>
+        {redirectToQuotes && (
+          <Tab color={colors.secondary_shade}>
+            <TabItem
+              color={colors.primary_color}
+              active={step === 1}
+              onClick={() => dispatch(setEditStep(1))}
+            >
+              Members
+            </TabItem>
+            <TabItem
+              color={colors.primary_color}
+              active={step === 2}
+              onClick={() => dispatch(setEditStep(2))}
+            >
+              Pincode
+            </TabItem>
+          </Tab>
+        )}
         {step === 1 ? (
           <form
             onSubmit={handleSubmit}

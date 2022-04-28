@@ -16,7 +16,10 @@ import ProductSummary from "./ProposalSections/components/ProductSummary";
 import { MobileHeader, MobileHeaderText } from "./ProposalPage.style";
 import ErrorPopup from "./ProposalSections/components/ErrorPopup";
 import { getProposalData } from "./ProposalSections/ProposalSections.slice";
-import { setShowErrorPopup,getMedicalUrlsRuleEngine } from "./ProposalSections/ProposalSections.slice";
+import {
+  setShowErrorPopup,
+  getMedicalUrlsRuleEngine,
+} from "./ProposalSections/ProposalSections.slice";
 
 import { getProposalFields } from "./schema.slice";
 
@@ -36,6 +39,7 @@ import ShareQuoteModal from "../../components/ShareQuoteModal";
 import { mobile } from "../../utils/mediaQueries";
 import { BackButtonMobile } from "../../components";
 import { TraceId } from "../../components/Navbar";
+import EditMemberFilter from "../quotePage/components/filters/EditMemberFilter";
 
 import dummy from "./dumySchema";
 /* ===============================test================================= */
@@ -56,7 +60,7 @@ const ProposalPage = () => {
   const [proposerDactive, setProposerDactive] = useState(true);
 
   const { currentSchema } = useSelector(state => state.schema);
-// const currentSchema = dummy;
+  // const currentSchema = dummy;
   const [activateLoader, setActivateLoader] = useState(false);
 
   let { cartEntries } = useCart();
@@ -94,6 +98,9 @@ const ProposalPage = () => {
 
   const PrimaryShade = primary_shade;
 
+  const urlQueryStrings = new URLSearchParams(window.location.search);
+  const EnquiryId = urlQueryStrings.get("enquiryId");
+
   useEffect(() => {
     if (failedBmiBlockJourney) {
       setBmiFailBlock(failedBmiBlockJourney);
@@ -112,7 +119,7 @@ const ProposalPage = () => {
         setPrepairingProposal(false);
       }),
     );
-  }, []);
+  }, [EnquiryId]);
 
   useEffect(() => {
     setActive(activeIndex);
@@ -251,11 +258,15 @@ const ProposalPage = () => {
           {activeForm === "Insured Details" ? (
             <>
               {" "}
+              {/* <EditMemberFilter redirectToQuotes={false} /> */}
               <MainTitle
                 primaryColor={PrimaryColor}
                 bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
               >
-                {activeForm}
+                <span>{activeForm}</span>
+                {activeForm === "Insured Details" && (
+                  <EditMemberFilter redirectToQuotes={false} />
+                )}
               </MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
@@ -745,6 +756,9 @@ const MainTitle = styled.h2`
   margin-bottom: ${props => (props.bg ? "15px" : "10")};
   margin-top: ${props => (props.bg ? "15px" : "10")};
   font-weight: 900;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   background: ${props => props.bg};
   color: ${props => props.bg && props.primaryColor};
