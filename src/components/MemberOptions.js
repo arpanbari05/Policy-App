@@ -260,8 +260,67 @@ function MemberOption({
 
   const selectedAge = member.age ? member.age.display_name : "Select Age";
 
-  const validateSpouse = (selectedMembers, member) => {
-    if (member.code === "spouse" && gender === "M") {
+  // console.log("memberData", member);
+
+  // dropDownAgeList validation
+  const validateAgeList = (
+    validateSelfFunc,
+    validateSpouseFunc,
+    currentMember,
+    currentSelectedMember,
+    userGender,
+    currentUserAgeList,
+  ) => {
+    if (!validateSelfFunc(currentSelectedMember, currentMember)) {
+      if (
+        userGender === "F" &&
+        (currentMember.code === "spouse" ||
+          member.code === "mother_in_law" ||
+          member.code === "father_in_law")
+      ) {
+        return currentUserAgeList.slice(3, currentUserAgeList.length);
+      } else {
+        // parent validation
+        if (validateSpouseFunc(currentSelectedMember, currentMember)) {
+          return currentUserAgeList.slice(3, currentUserAgeList.length);
+        } else {
+          return currentUserAgeList;
+        }
+      }
+    } else {
+      return currentUserAgeList.slice(3, currentUserAgeList.length);
+    }
+  };
+
+  /* 
+    This function used to validate father mother and grand-parents if:
+    self == Male && self age is 18 or 21
+  */
+  const validateSpouseForParents = (selectedMembers, member) => {
+    if (
+      gender === "M" &&
+      (member.code === "mother" ||
+        member.code === "father" ||
+        member.code === "grand_father" ||
+        member.code === "grand_mother")
+    ) {
+      return (
+        selectedMembers[0]?.code === "self" &&
+        selectedMembers[0]?.age?.code >= 21
+      );
+    } else {
+      return false;
+    }
+  };
+
+  const validateSpouse = (selectedMembers, member, pV = false) => {
+    pV && console.log("selectedMembers", selectedMembers);
+    if (
+      gender === "M" &&
+      (member.code === "spouse" ||
+        member.code === "mother_in_law" ||
+        member.code === "father_in_law")
+    ) {
       return (
         selectedMembers[0]?.code === "self" &&
         selectedMembers[0]?.age?.code < 21
@@ -385,13 +444,14 @@ function MemberOption({
       {children}
       <div>
         <RoundDD
-          list={
-            !validateSelf(selectedMembers, member)
-              ? gender === "F" && member.code === "spouse"
-                ? ageList.slice(3, ageList.length)
-                : ageList
-              : ageList.slice(3, ageList.length)
-          }
+          list={validateAgeList(
+            validateSelf,
+            validateSpouseForParents,
+            member,
+            selectedMembers,
+            gender,
+            ageList,
+          )}
           type="dropdown"
           selected={selectedAge}
           handleChange={handleAgeChange}
