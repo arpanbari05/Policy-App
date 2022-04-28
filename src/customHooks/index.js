@@ -2016,7 +2016,6 @@ export function useRiders({ quote, groupCode, onChange }) {
     }
   });
 
-
   const additionalUrlQueries = Object.keys(optionsSelected)
     .map(opt => `${opt}=${optionsSelected[opt]}`)
     .join("&");
@@ -2065,7 +2064,6 @@ export function useRiders({ quote, groupCode, onChange }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riders]);
 
-  
   const handleChange = changedRider => {
     if (changedRider.isSelected) {
       const isValid = validateDependentRider(
@@ -2590,5 +2588,22 @@ export const useClaimBanner = () => {
   return {
     claimBannerArray,
     shouldShowClaimBanner: claimBannerArray ? true : false,
+  };
+};
+
+export const useRenewalsConfig = () => {
+  const { getCompany } = useCompanies();
+
+  const { subJourneyType } = useFrontendBoot();
+
+  const allowModification = (comp_alias = "") => {
+    return !!getCompany(comp_alias)?.allows_proposal_updation_on_renewal;
+  };
+
+  const isRenewalsJourney = subJourneyType === "renewal";
+
+  return {
+    allowModification,
+    isRenewalsJourney,
   };
 };
