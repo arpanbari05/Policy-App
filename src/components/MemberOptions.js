@@ -292,10 +292,17 @@ function MemberOption({
     }
   };
 
+  /* 
+    This function used to validate father mother and grand-parents if:
+    self == Male && self age is 18 or 21
+  */
   const validateSpouseForParents = (selectedMembers, member) => {
     if (
       gender === "M" &&
-      (member.code === "mother" || member.code === "father")
+      (member.code === "mother" ||
+        member.code === "father" ||
+        member.code === "grand_father" ||
+        member.code === "grand_mother")
     ) {
       return (
         selectedMembers[0]?.code === "self" &&
