@@ -73,6 +73,11 @@ const useProposalSections = ({
 
   const dispatch = useDispatch();
 
+  const isVersionRuleEngine = (groupId) => {
+   let result = cartEntries?.find(entry => entry.group.id == groupId)?.product?.version === "rule_engine";
+  return result;
+  }
+
   const sum_insured = cartEntries?.map(cart => ({
     [cart?.product?.name]: cart?.sum_insured,
   }));
@@ -463,6 +468,8 @@ const useProposalSections = ({
     equriesData,
     show,
     setShow,
+    cartEntries,
+    isVersionRuleEngine
   };
 };
 

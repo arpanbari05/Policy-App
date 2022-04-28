@@ -29,10 +29,15 @@ function LogoLink() {
     settings: { shop_more_link },
   } = frontendBoot?.data;
 
-  const goto =
-    tenant?.alias === "sriyah" && isBasicDetailsRoute
-      ? shop_more_link
-      : window.location.origin;
+  let goto = window.location.origin;
+
+  if (tenant?.alias === "sriyah" && isBasicDetailsRoute) {
+    goto = shop_more_link;
+  }
+
+  if (tenant?.alias === "pinc") {
+    goto = "https://dev.pincnews.co.in/dashboard";
+  }
 
   if (isLoading) return <CircleLoader animation="border" />;
 

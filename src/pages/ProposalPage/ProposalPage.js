@@ -520,7 +520,7 @@ const ProposalPage = () => {
                   You are Just 5 minutes away from investing for your future
                 </span>
                 <ShareQuoteModal
-                  insurersFor={cartEntries.map(
+                  insurersFor={cartEntries?.map(
                     cart => cart?.product?.company?.alias,
                   )}
                   stage="PROPOSAL"
