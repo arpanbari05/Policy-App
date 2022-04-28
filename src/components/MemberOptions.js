@@ -271,24 +271,43 @@ function MemberOption({
     userGender,
     currentUserAgeList,
   ) => {
-    console.log(currentUserAgeList);
-
     if (!validateSelfFunc(currentSelectedMember, currentMember)) {
-      if (userGender === "F" && currentMember.code === "spouse") {
+      if (
+        userGender === "F" &&
+        (currentMember.code === "spouse" ||
+          member.code === "mother_in_law" ||
+          member.code === "father_in_law")
+      ) {
         return currentUserAgeList.slice(3, currentUserAgeList.length);
       } else {
         // parent validation
-        if (!validateSpouseFunc(currentSelectedMember, currentMember)) {
+        if (validateSpouseFunc(currentSelectedMember, currentMember)) {
           return currentUserAgeList.slice(3, currentUserAgeList.length);
+        } else {
+          return currentUserAgeList;
         }
-        return currentUserAgeList;
       }
     } else {
       return currentUserAgeList.slice(3, currentUserAgeList.length);
     }
   };
 
-  const validateSpouse = (selectedMembers, member) => {
+  const validateSpouseForParents = (selectedMembers, member) => {
+    if (
+      gender === "M" &&
+      (member.code === "mother" || member.code === "father")
+    ) {
+      return (
+        selectedMembers[0]?.code === "self" &&
+        selectedMembers[0]?.age?.code >= 21
+      );
+    } else {
+      return false;
+    }
+  };
+
+  const validateSpouse = (selectedMembers, member, pV = false) => {
+    pV && console.log("selectedMembers", selectedMembers);
     if (
       gender === "M" &&
       (member.code === "spouse" ||
@@ -420,7 +439,7 @@ function MemberOption({
         <RoundDD
           list={validateAgeList(
             validateSelf,
-            validateSpouse,
+            validateSpouseForParents,
             member,
             selectedMembers,
             gender,
