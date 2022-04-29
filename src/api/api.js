@@ -1,8 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { formatCurrency, mergeQuotes } from "../utils/helper";
 
-// const { REACT_APP_API_BASE_URL: baseUrl } = process.env;
-const baseUrl = "https://uatapihealth.rbstaging.in/api/v1/";
+const { REACT_APP_API_BASE_URL: baseUrl } = process.env;
 
 const baseQuery = fetchBaseQuery({
   baseUrl,
