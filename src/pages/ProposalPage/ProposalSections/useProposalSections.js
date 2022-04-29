@@ -4,6 +4,7 @@ import { useHistory, useParams, Link } from "react-router-dom";
 import {
   renderField,
   performValidations,
+  getMedicalLetter,
 } from "../../../components/FormBuilder/formUtils";
 
 import {
@@ -18,6 +19,7 @@ import {
   setShowErrorPopup,
   setFailedBmiData,
   setInsuredDetailsResponse,
+  setMedicalUrlsRuleEngine,
   setFailedBmiBlockJourney,
   getMedicalUnderwritingStatus,
 } from "./ProposalSections.slice";
@@ -69,14 +71,11 @@ const useProposalSections = ({
 
   const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
 
-  const { cartEntries } = useCart();
+  const { cartEntries, isVersionRuleEngine } = useCart();
 
   const dispatch = useDispatch();
 
-  const isVersionRuleEngine = (groupId) => {
-   let result = cartEntries?.find(entry => entry.group.id == groupId)?.product?.version === "rule_engine";
-  return result;
-  }
+
 
   const sum_insured = cartEntries?.map(cart => ({
     [cart?.product?.name]: cart?.sum_insured,
@@ -337,6 +336,7 @@ const useProposalSections = ({
             console.log("dbdhfbjksfvb", data);
             if (data) {
               dispatch(setInsuredDetailsResponse(data));
+              dispatch(setMedicalUrlsRuleEngine(data?.members));
             }
             if (block_journey)
               dispatch(setFailedBmiBlockJourney(block_journey));
