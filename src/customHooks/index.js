@@ -202,6 +202,40 @@ export function useTheme() {
   };
 }
 
+export function useSortBy() {
+  const sortByOptionsConvertor = string => {
+    const sortByOptions = JSON.parse(string);
+    return sortByOptions?.map(opt => ({
+      code: opt,
+      display_name: opt.split("_").join(" "),
+    }));
+  };
+
+  const {
+    data: { sortbys },
+  } = useFrontendBoot();
+
+  return {
+    SORT_BY_OPTIONS: sortByOptionsConvertor(sortbys),
+    default:
+      sortByOptionsConvertor(sortbys) && sortByOptionsConvertor(sortbys)[0],
+  };
+}
+
+export function useFilterOrder() {
+  const {
+    data: {
+      settings: { broker_order_by },
+    },
+  } = useFrontendBoot();
+
+  const filterOrder = JSON.parse(broker_order_by);
+
+  return {
+    filterOrder,
+  };
+}
+
 export function useFrontendBoot() {
   const searchQueries = useUrlQueries();
   const {
@@ -644,6 +678,8 @@ export function useUpdateMembers() {
       gender: enquiryData.input.gender,
       deductible: enquiryData.input.deductible,
       params: enquiryData.input.params,
+      type: !redirectToQuotes && "renew",
+      action: !redirectToQuotes && "update_members",
       members: members
         ? members.map(member => ({
             type: member.code,
@@ -2023,7 +2059,6 @@ export function useRiders({ quote, groupCode, onChange }) {
     }
   });
 
-
   const additionalUrlQueries = Object.keys(optionsSelected)
     .map(opt => `${opt}=${optionsSelected[opt]}`)
     .join("&");
@@ -2072,7 +2107,6 @@ export function useRiders({ quote, groupCode, onChange }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riders]);
 
-  
   const handleChange = changedRider => {
     if (changedRider.isSelected) {
       const isValid = validateDependentRider(

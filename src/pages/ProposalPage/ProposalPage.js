@@ -32,6 +32,7 @@ import {
   useUrlEnquiry,
   useCart,
   useUSGIDiscounts,
+  useFrontendBoot,
 } from "../../customHooks";
 import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
@@ -54,6 +55,8 @@ const ProposalPage = () => {
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
 
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
+  const { subJourneyType } = useFrontendBoot();
 
   const [active, setActive] = useState(0);
 
@@ -258,15 +261,15 @@ const ProposalPage = () => {
           {activeForm === "Insured Details" ? (
             <>
               {" "}
-              {/* <EditMemberFilter redirectToQuotes={false} /> */}
               <MainTitle
                 primaryColor={PrimaryColor}
                 bg={`linear-gradient(90deg, ${PrimaryShade} 0%,rgb(255 255 255) 100%)`}
               >
                 <span>{activeForm}</span>
-                {activeForm === "Insured Details" && (
-                  <EditMemberFilter redirectToQuotes={false} />
-                )}
+                {activeForm === "Insured Details" &&
+                  subJourneyType === "renewal" && (
+                    <EditMemberFilter redirectToQuotes={false} />
+                  )}
               </MainTitle>{" "}
               <InsuredDetails
                 key={activeForm}
