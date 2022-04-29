@@ -41,7 +41,7 @@ export function BottomNavigation({ sortBy = <></>, ...props }) {
       `}
       {...props}
     >
-      <EditMembers />
+      <EditMembers redirectToQuotes={true} />
       <NavItemToggle
         onClick={onEditMemberClick}
         icon={<BsPeopleFill />}

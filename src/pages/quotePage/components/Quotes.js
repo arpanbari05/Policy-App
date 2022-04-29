@@ -29,7 +29,7 @@ function Quotes({ sortBy = "relevence", ...props }) {
       ...icQuotes,
       data: { data: mergeQuotes(icQuotes?.data?.data, { sortBy }) },
     })); // filter particular-ic quotes .
-    if (sortBy === "premium-low-to-high") {
+    if (sortBy === "premium_low_to_high") {
       mergedQuotes = mergedQuotes?.filter(
         icQuotes => !!icQuotes?.data?.data[0]?.length,
       ); // filter zero array.

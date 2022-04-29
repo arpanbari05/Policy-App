@@ -202,6 +202,63 @@ export function useTheme() {
   };
 }
 
+export function useSortBy() {
+  const sortByOptionsConvertor = string => {
+    if (!string) return null;
+    const sortByOptions = JSON.parse(string);
+    return sortByOptions?.map(opt => ({
+      code: opt,
+      display_name: opt.split("_").join(" "),
+    }));
+  };
+
+  const SORT_BY_OPTIONS = [
+    {
+      code: "relevance",
+      display_name: "Relevance",
+    },
+    {
+      code: "premium_low_to_high",
+      display_name: "Premium Low To High",
+    },
+  ];
+
+  const {
+    data: { sortbys },
+  } = useFrontendBoot();
+
+  const sortByOptions = sortByOptionsConvertor(sortbys) || SORT_BY_OPTIONS;
+  return {
+    SORT_BY_OPTIONS: sortByOptions,
+    default: sortByOptions[0],
+  };
+}
+
+export function useFilterOrder() {
+  const {
+    data: {
+      settings: { broker_order_by },
+    },
+  } = useFrontendBoot();
+
+  const filterOrder = broker_order_by
+    ? JSON.parse(broker_order_by)
+    : [
+        "sort_by",
+        "premium",
+        "cover",
+        "policy_type",
+        "multiyear_option",
+        "plan_type",
+        "insurer",
+        "more_filter",
+      ];
+
+  return {
+    filterOrder,
+  };
+}
+
 export function useFrontendBoot() {
   const searchQueries = useUrlQueries();
   const {
@@ -1701,7 +1758,7 @@ export function useQuotes({ sortBy = "relevence", quotesData = [] }) {
       ...icQuotes,
       data: { data: mergeQuotes(icQuotes.data.data, { sortBy }) },
     }));
-    if (sortBy === "premium-low-to-high") {
+    if (sortBy === "premium_low_to_high") {
       mergedQuotes = mergedQuotes.filter(
         icQuotes => !!icQuotes?.data?.data[0]?.length,
       );

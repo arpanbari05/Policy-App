@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { formatCurrency, mergeQuotes } from "../utils/helper";
 
-const { REACT_APP_API_BASE_URL: baseUrl } = process.env;
+// const { REACT_APP_API_BASE_URL: baseUrl } = process.env;
+const baseUrl = "https://uatapihealth.rbstaging.in/api/v1/";
 
 const baseQuery = fetchBaseQuery({
   baseUrl,
@@ -407,7 +408,7 @@ export const api = createApi({
       providesTags: ["ProposalSummaryUpdate"],
     }),
     // getInsuredDetailsResponse: builder.query({
-      
+
     // }),
     saveProposal: builder.mutation({
       query: body => ({
@@ -417,7 +418,7 @@ export const api = createApi({
       }),
       onQueryStarted: async (_data, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
-        console.log("rvbskf",data);
+        console.log("rvbskf", data);
         // dispatch(
         //   api.util.updateQueryData("getEnquiries", undefined, draft => {
         //     if (draft) Object.assign(draft, data);

@@ -1,23 +1,25 @@
 import { useState } from "react";
 import { Filter, FilterHead, FilterOption } from ".";
 import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
-import { useTheme } from "../../../../customHooks";
+import { useSortBy, useTheme } from "../../../../customHooks";
 import { ApplyBtn, OptionWrapper } from "./Filter.style";
 import "styled-components/macro";
 
-const SORT_BY_OPTIONS = [
-  {
-    code: "relevance",
-    display_name: "Relevance",
-  },
-  {
-    code: "premium-low-to-high",
-    display_name: "Premium Low To High",
-  },
-];
+// const SORT_BY_OPTIONS = [
+//   {
+//     code: "relevance",
+//     display_name: "Relevance",
+//   },
+//   {
+//     code: "premium_low_to_high",
+//     display_name: "Premium Low To High",
+//   },
+// ];
 
 function SortByModal({ onClose, initialSortBy, onChange, ...props }) {
   const { colors } = useTheme();
+
+  const { SORT_BY_OPTIONS } = useSortBy();
 
   const [selectedSortBy, setSelectedSortBy] = useState(initialSortBy);
 
@@ -54,7 +56,7 @@ function SortByModal({ onClose, initialSortBy, onChange, ...props }) {
     >
       <div>
         <OptionWrapper PrimaryColor={colors.primary_color}>
-          {SORT_BY_OPTIONS.map(sortByOption => (
+          {SORT_BY_OPTIONS?.map(sortByOption => (
             <FilterOption
               option={sortByOption}
               checked={isChecked(sortByOption)}
