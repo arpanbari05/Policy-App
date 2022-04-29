@@ -28,10 +28,14 @@ export const { setCurrentSchema } = schema.actions;
 export const getProposalFields = () => {
   const ls = new SecureLS();
 
+  const urlQueryStrings = new URLSearchParams(window.location.search);
+  const EnquiryId = urlQueryStrings.get("enquiryId");
+
   return async dispatch => {
     try {
       const { data } = await proposalFields({
-        enquiryId: ls.get("enquiryId"),
+        // enquiryId: ls.get("enquiryId"),
+        enquiryId: EnquiryId,
       });
       // console.log('tetete',data.data["Proposer Details"][12].validate.matched = 'address')
       //console.log('tetete',data.data["Insured Details"][4].validate.matches = 'validDigits/1/200')
