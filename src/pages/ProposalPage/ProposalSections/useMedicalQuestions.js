@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {getMedicalUrlsRuleEngine } from "./ProposalSections.slice";
 
-const useMedicalQuestions = (schema, values, setValues, name,proposalData,defaultValue,dispatch,isVersionRuleEngine) => {
+const useMedicalQuestions = ({schema, values, setValues, name,proposalData,defaultValue,dispatch,isVersionRuleEngine,medicalUrlsRuleEngine,insuredDetailsResponse,underWritingStatus}) => {
   const [noForAll, setNoForAll] = useState({});
+  const [preparingMQ, setPreparingMQ] = useState(false);
   const [yesSelected, setYesSelected] = useState({});
   const [canProceed, setCanProceed] = useState({
     canProceed: false,
@@ -82,12 +83,17 @@ const getScheamaOfValue = (key,name) => {
 return schema[key].find(({name}) => name === name);
 }
 
+const getMUStatus = (member) => {
+  return underWritingStatus?.find(({member_id}) => member_id === medicalUrlsRuleEngine[member].member_id)?.result
+}
+
 // -----------------------------------------------------------------------------------------------------------------
 //   -----------------------------  SIDE EFFECTS FOR MEDICAL QUESTIONS---------------------------------------------
 // ----------------------------------------------------------------------------------------------------------------
 
 useEffect(() => {
-console.log("rsgsrjgk",defaultValue)
+  
+console.log("rsgsrjgk",defaultValue,insuredDetailsResponse)
 if(name === "Medical Details"){
   if(defaultValue){
     setValues(defaultValue)
@@ -96,6 +102,10 @@ if(name === "Medical Details"){
   let ruleEngineGroup = Object.keys(schema).find(group => isVersionRuleEngine(parseInt(group)));
   console.log("svskgvbsdfjk",ruleEngineGroup,noForAll)
   if(ruleEngineGroup){
+    if(!medicalUrlsRuleEngine){
+      setPreparingMQ(true);
+      dispatch(getMedicalUrlsRuleEngine(() => {setPreparingMQ(false)}));
+    }
     setNoForAll(prev => ({...prev,[ruleEngineGroup]:true}))
   }
 }
@@ -142,8 +152,8 @@ if(name === "Medical Details"){
       let temp = keys.reduce(
         (acc, key) => ({
           ...acc,
-          [key]: Object.keys(values[key]).some(
-            el => values[key][el][`is${el}`] === "Y" && getScheamaOfValue(key,el)?.additionalOptions?.disable_Toggle === false,
+          [key]: Object.keys(values[key]).filter(el =>  !getScheamaOfValue(key,el)?.additionalOptions?.disable_Toggle).some(
+            el => values[key][el][`is${el}`] === "Y",
           ),
         }),
         {},
@@ -198,6 +208,8 @@ if(name === "Medical Details"){
     checkCanProceed,
     canProceed,
     yesSelected,
+    preparingMQ,
+    getMUStatus
   };
 };
 

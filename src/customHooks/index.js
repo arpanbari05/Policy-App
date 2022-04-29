@@ -851,6 +851,12 @@ export function useCart() {
     return nextGroupProduct;
   }
 
+  const isVersionRuleEngine = (groupId) => {
+    const cartEntries = data?.data;
+    let result = cartEntries?.find(entry => entry.group.id == groupId)?.product?.version === "rule_engine";
+   return result;
+   }
+
   return {
     cartEntries: data?.data,
     cartData: data,
@@ -860,6 +866,7 @@ export function useCart() {
     getCartTotalPremium,
     getNextGroupProduct,
     discounted_total_premium: data?.discounted_total_premium,
+    isVersionRuleEngine
   };
 }
 

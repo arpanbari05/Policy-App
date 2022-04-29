@@ -13,3 +13,4 @@ export const getProposal = () =>
   httpClient("health/proposals", { method: "GET" });
 
   export const getMedicalUrls = () =>   httpClient("health/proposals/medical-url", { method: "POST" });
+  export const getMedicalLetter = () =>   httpClient("health/proposals/medical-letter", { method: "POST" });

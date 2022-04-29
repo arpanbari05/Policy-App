@@ -18,7 +18,7 @@ const convertToFt = value => {
   return `${feet} ft ${inches} in`;
 };
 
-const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
+const SummaryTab = ({ title, data, values, index, getGroupMembers,isVersionRuleEngine }) => {
   const filterUnderscore = str =>
     str?.includes("_") ? str?.split("_").join(" ") : str;
 
@@ -400,6 +400,10 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
     );
   }, []);
 
+  if(!Array.isArray(data)){
+    if(Object.keys(data).some(item => isVersionRuleEngine(parseInt(item)))  && title === "Medical Details" ) return (<></>);
+  }
+  
   return (
     <>
       <Card
@@ -456,66 +460,69 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers }) => {
               margin-top: -28px;
             `}
           >
-            {data instanceof Array
+          {console.log("gfsdjgvbjsfv",title)}
+            {
+              data instanceof Array
               ? data?.map(normalRender)
-              : Object.keys(data)?.map((item, index) => (
-                  <>
-                    <Border>
-                      <TitleWrapper>
-                        <span
-                          style={{
-                            textTransform: "capitalize",
-                            wordBreak: "break-all",
-                          }}
-                        >
-                          {modifyMembersName(item)}
-                        </span>
-                      </TitleWrapper>
-                      <div
-                        css={`
-                          display: flex;
-                          flex-wrap: wrap;
-                          align-items: flex-start;
-                        `}
+              : Object.keys(data)?.map((item, index) => {
+                return isVersionRuleEngine(parseInt(item)) && title === "Medical Details"?(
+                 <></>
+                ):( <>
+                  <Border>
+                    <TitleWrapper>
+                      <span
+                        style={{
+                          textTransform: "capitalize",
+                          wordBreak: "break-all",
+                        }}
                       >
-                        {data[item]?.map((_data, index) => {
-                          return title === "Other Details"
-                            ? objectRender(
-                                {
-                                  ..._data,
-                                  additionalOptions: {
-                                    ..._data?.additionalOptions,
-                                    label:
-                                      _data?.additionalOptions?.label?.includes(
-                                        "Nominee's",
-                                      )
-                                        ? _data?.additionalOptions?.label?.replace(
-                                            "Nominee's",
-                                            "",
-                                          )
-                                        : _data?.additionalOptions?.label?.replace(
-                                            "Nominee",
-                                            "",
-                                          ),
-                                  },
+                        {modifyMembersName(item)}
+                      </span>
+                    </TitleWrapper>
+                    <div
+                      css={`
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: flex-start;
+                      `}
+                    >
+                      {data[item]?.map((_data, index) => {
+                        return title === "Other Details"
+                          ? objectRender(
+                              {
+                                ..._data,
+                                additionalOptions: {
+                                  ..._data?.additionalOptions,
+                                  label:
+                                    _data?.additionalOptions?.label?.includes(
+                                      "Nominee's",
+                                    )
+                                      ? _data?.additionalOptions?.label?.replace(
+                                          "Nominee's",
+                                          "",
+                                        )
+                                      : _data?.additionalOptions?.label?.replace(
+                                          "Nominee",
+                                          "",
+                                        ),
                                 },
-                                index,
-                                item,
-                                title,
-                                data[item],
-                              )
-                            : objectRender(
-                                _data,
-                                index,
-                                item,
-                                title,
-                                data[item],
-                              );
-                        })}
-                      </div>
-                    </Border>
-                  </>
-                ))}
+                              },
+                              index,
+                              item,
+                              title,
+                              data[item],
+                            )
+                          : objectRender(
+                              _data,
+                              index,
+                              item,
+                              title,
+                              data[item],
+                            );
+                      })}
+                    </div>
+                  </Border>
+                </>)})}
           </Row>
         </div>
       </Card>

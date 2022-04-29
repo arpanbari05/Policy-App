@@ -8,7 +8,7 @@ const  visiblilityManager = (visibleOn,value,member) => {
     checkKeys.forEach(key => {
       console.log("bkjdgbgd",key,value,visibleOn)
       if (typeof visibleOn?.[key] === "string" && visibleOn?.[key].includes(value?.[key])) visibility = true;
-      else if (typeof visibleOn[key] === "object" && visibleOn[key]) visibility = visiblilityManager(visibleOn[key],value[key][member]);
+      else if (typeof visibleOn[key] === "object" && member && visibleOn[key]) visibility = visiblilityManager(visibleOn[key],value[key][member]);
     });
  return visibility
 }

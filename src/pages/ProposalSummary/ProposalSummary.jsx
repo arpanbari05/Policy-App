@@ -73,7 +73,7 @@ const ProposalSummary = () => {
 
   const { data: proposalData = {} } = useGetProposalDataQuery();
 
-  let { cartEntries } = useCart();
+  let { cartEntries,isVersionRuleEngine } = useCart();
 
   const { currentSchema } = useSelector(state => state.schema);
 
@@ -526,6 +526,7 @@ const ProposalSummary = () => {
                                 data={currentSchema[item]}
                                 values={proposalData.data[item]}
                                 index={index}
+                                isVersionRuleEngine={isVersionRuleEngine}
                               ></SummaryTab>
                             );
                           })
