@@ -21,6 +21,7 @@ import {
   useToggle,
   useUpdateGroupMembers,
   useUrlEnquiry,
+  useRenewalsConfig,
 } from "../../../../../customHooks";
 import { Button, CircleLoader, MembersList } from "../../../../../components";
 import { mobile, small } from "../../../../../utils/mediaQueries";
@@ -96,8 +97,7 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
-  const modifyDetailsNotAllowed =
-    cartEntry?.product?.company?.alias === "universal_sompo";
+  const { allowModification } = useRenewalsConfig();
 
   return (
     <Outer toggleCard={toggleCard}>
@@ -187,7 +187,9 @@ const CartMobile = ({ groupCode, ...props }) => {
             `}
           >
             <QuickPayAndRenewButtonMobile groupCode={groupCode} />
-            {!modifyDetailsNotAllowed && <ModifyDetailsButtonMobile />}
+            {allowModification(cartEntry?.product?.company?.alias) && (
+              <ModifyDetailsButtonMobile />
+            )}
           </div>
         ) : (
           <ReviewCartButtonMobileNew groupCode={groupCode} />
@@ -397,14 +399,20 @@ const CartSectionOuter = styled.div`
 
 const MemberAndEdit = ({ groupCode, ...props }) => {
   const { getGroupMembers } = useMembers();
+
   const currentGroupMembers = getGroupMembers(groupCode);
+
+  const { subJourneyType } = useFrontendBoot();
+
   return (
     <div
       className="d-flex align-items-center justify-content-between"
       {...props}
     >
       <MembersList members={currentGroupMembers} />
-      <EditMembersButton groupCode={groupCode} />
+      {subJourneyType !== "renewal" && (
+        <EditMembersButton groupCode={groupCode} />
+      )}
     </div>
   );
 };

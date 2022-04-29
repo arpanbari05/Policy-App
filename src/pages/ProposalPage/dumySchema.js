@@ -1036,7 +1036,7 @@ const dummy ={
                     },
                     "visibleOn": {
                         "medicareind_medical_ques_17":{
-"medicareind_medical_ques_17_alcohol_types":"Beer | Wine | Hard Liquor"
+                            "medicareind_medical_ques_17_alcohol_types":"Beer | Wine | Hard Liquor"
                         }
                     },
                     "additionalOptions": {

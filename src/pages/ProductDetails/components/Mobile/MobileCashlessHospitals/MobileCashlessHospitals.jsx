@@ -11,6 +11,7 @@ import {
   tabletAndMobile,
 } from "../../../../../utils/mediaQueries";
 import { useTheme } from "../../../../../customHooks";
+import NetworkHospitalUrlCard from "../../../../../components/ProductDetails/components/NetworkHospitalUrlCard";
 
 function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
   const [searchText, setSearchText] = useState("");
@@ -40,6 +41,8 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
     }
   }, [searchText]);
 
+  console.log("hospitals", hospitals);
+
   return (
     <div
       className={`z-content ${ActiveMainTab && "z-active"}`}
@@ -52,10 +55,15 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
         }
       `}
     >
-      <Outer>
+      <Outer
+        networkUrl={
+          hospitals.networkHospitalUrl || hospitals.networkHospitalUrl !== ""
+        }
+      >
         {loading ? (
           <SpinLoader />
-        ) : (
+        ) : !hospitals.networkHospitalUrl ||
+          hospitals.networkHospitalUrl === "" ? (
           <>
             <FeatureSection secondary_color={colors.secondary_color}>
               <h6
@@ -282,6 +290,15 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
               </div>
             )}
           </>
+        ) : (
+          <div
+            css={`
+              padding: 20px;
+              background: transparent;
+            `}
+          >
+            <NetworkHospitalUrlCard url={hospitals.networkHospitalUrl} />
+          </div>
         )}
       </Outer>
     </div>
@@ -289,7 +306,7 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
 }
 
 const Outer = styled.div`
-  background-color: #fff;
+  background-color: ${props => (props.networkUrl ? "transparent" : "#fff")};
   padding-bottom: 40px;
 `;
 const Search = styled.div`

@@ -126,10 +126,10 @@ const useFormBuilder = (
     if (
       defaultValues &&
       Object.keys(defaultValues).length &&
-      !Object.keys(values).length
+      Object.keys(values).length !== Object.keys(defaultValues).length
     ) {
-      setValues(defaultValues);
-      fetchValues(() => defaultValues);
+      setValues(prev => ({...prev,...defaultValues}));
+      // fetchValues((prev) => ({...prev,...defaultValues}));
     }
   }, [defaultValues]);
 
@@ -262,6 +262,7 @@ const useFormBuilder = (
         }
       });
       if (Object.keys(tempGroupVal).length) {
+        console.log("dnasdjcbn",values,tempGroupVal)
         updateValues({ ...values, ...tempGroupVal }, "SAVE_AS_IT_IS");
       }
     }

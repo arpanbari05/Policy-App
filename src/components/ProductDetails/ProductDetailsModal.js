@@ -56,6 +56,7 @@ import { CircleLoader } from "../../components/index";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosPopup } from "../../pages/quotePage/quote.slice";
 import ErrorPopup from "../../pages/ProposalPage/ProposalSections/components/ErrorPopup";
+import NetworkHospitalUrlCard from "./components/NetworkHospitalUrlCard";
 
 function useRidersSlot() {
   const [selectedRiders, setSelectedRiders] = useState([]);
@@ -431,7 +432,7 @@ function CashlessHospitals({ quote, ...props }) {
 
   const handleSearchChange = evt => setSearch(evt.target.value);
 
-  return (
+  return !data?.network_hospital_url || data?.network_hospital_url === "" ? (
     <DetailsSectionWrap
       {...props}
       css={`
@@ -495,6 +496,15 @@ function CashlessHospitals({ quote, ...props }) {
           ))}
         </tbody>
       </table>
+    </DetailsSectionWrap>
+  ) : (
+    <DetailsSectionWrap
+      {...props}
+      css={`
+        margin-top: 20px;
+      `}
+    >
+      <NetworkHospitalUrlCard url={data?.network_hospital_url} />
     </DetailsSectionWrap>
   );
 }

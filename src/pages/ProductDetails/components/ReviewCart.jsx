@@ -37,6 +37,7 @@ import {
   useAddOns,
   useUrlEnquiry,
   useRevisedPremiumModal,
+  useRenewalsConfig,
 } from "../../../customHooks";
 import useOutsiteClick from "../../../customHooks/useOutsideClick";
 import {
@@ -108,8 +109,7 @@ export function CartDetails({
 
   const { unavailable_message, service_tax } = cartEntry;
 
-  const modifyDetailsNotAllowed =
-    cartEntry?.product?.company?.alias === "universal_sompo";
+  const { allowModification } = useRenewalsConfig();
 
   return (
     <CartDetailsWrap {...props}>
@@ -135,7 +135,10 @@ export function CartDetails({
         >
           Your Cart
         </h1>
-        <Members groupCode={groupCode} />
+        <Members
+          groupCode={groupCode}
+          editable={subJourneyType !== "renewal"}
+        />
       </div>
 
       <div>
@@ -170,7 +173,9 @@ export function CartDetails({
             `}
           >
             <QuickPayAndRenewButton groupCode={groupCode} />
-            {!modifyDetailsNotAllowed && <ModifyDetailsButton />}
+            {allowModification(cartEntry?.product?.company?.alias) && (
+              <ModifyDetailsButton />
+            )}
           </div>
         ) : (
           <ReviewCartButtonNew groupCode={groupCode} />
