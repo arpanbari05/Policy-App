@@ -36,7 +36,7 @@ function LogoLink() {
   }
 
   if (tenant?.alias === "pinc") {
-    goto = "https://dev.pincnews.co.in/dashboard";
+    goto = "https://uat.pincnews.co.in/login";
   }
 
   if (isLoading) return <CircleLoader animation="border" />;

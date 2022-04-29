@@ -4,21 +4,31 @@ import { Button, CloseButton } from "../../../../components";
 import { useTheme } from "../../../../customHooks";
 import "styled-components/macro";
 import { useState } from "react";
+import { useSortBy } from "../../../../customHooks/index";
 
-const SORT_BY_OPTIONS = [
-  {
-    code: "relevance",
-    display_name: "Relevance",
-  },
-  {
-    code: "premium-low-to-high",
-    display_name: "Premium Low To High",
-  },
-];
+// const SORT_BY_OPTIONS = [
+//   {
+//     code: "relevance",
+//     display_name: "Relevance",
+//   },
+//   {
+//     code: "premium_low_to_high",
+//     display_name: "Premium Low To High",
+//   },
+// ];
+
+const sortByOptionsConvertor = string => {
+  const sortByOptions = JSON.parse(string);
+  return sortByOptions?.map(opt => ({
+    code: opt,
+    display_name: opt.split("_").join(" "),
+  }));
+};
 
 export function SortByDialog({ onClose, currentSortBy, onChange }) {
-  const [sortBy, setSortBy] = useState(currentSortBy);
+  const { SORT_BY_OPTIONS } = useSortBy();
 
+  const [sortBy, setSortBy] = useState(currentSortBy);
   const handleChange = option => setSortBy(option.code);
 
   const handleSubmit = evt => {
@@ -32,7 +42,7 @@ export function SortByDialog({ onClose, currentSortBy, onChange }) {
     <Dialog show onHide={onClose} title="Sort By">
       <form className="p-3 pt-0" onSubmit={handleSubmit}>
         <div>
-          {SORT_BY_OPTIONS.map(option => (
+          {SORT_BY_OPTIONS?.map(option => (
             <Option
               key={option.code}
               option={option}
@@ -66,7 +76,7 @@ function Option({
     <label
       role="option"
       aria-selected={checked}
-      className="d-flex align-items-center justify-content-between py-3"
+      className="d-flex align-items-center justify-content-between py-3 text-capitalize"
       css={`
         :not(:last-child) {
           border-bottom: 1px solid ${colors.border.one};

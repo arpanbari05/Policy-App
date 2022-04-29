@@ -89,12 +89,16 @@ const ThankYouPage = () => {
 
   useEffect(() => {
     if (
+      policyStatus?.length &&
       policyStatus[0]?.pdf_path !== null &&
       policyStatus[0]?.pdf_path !== undefined
     ) {
       setLoading(false);
     }
-    if (policyStatus[0]?.underwriting_status === "underwriting_approval") {
+    if (
+      policyStatus?.length &&
+      policyStatus[0]?.underwriting_status === "underwriting_approval"
+    ) {
       clearInterval(firstInterval.current);
       clearInterval(secondInterval.current);
     }

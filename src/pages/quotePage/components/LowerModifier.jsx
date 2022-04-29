@@ -7,7 +7,7 @@ import MultiyearOptionFilter from "./filters/MultiyearOptionFilter";
 import InsurerFilter from "./filters/InsurerFilter";
 import MoreFilters from "./filters/MoreFilters";
 import PlanTypeFilter from "./filters/PlanTypeFilter";
-import { useFrontendBoot } from "../../../customHooks";
+import { useFrontendBoot, useFilterOrder } from "../../../customHooks";
 import useFilters from "./filters/useFilters.js";
 import DeductibleFilter from "./filters/DeductibleFilter";
 import { Container } from "react-bootstrap";
@@ -18,6 +18,7 @@ const LowerModifier = ({ sortBy = <></> }) => {
   const { getSelectedFilter } = useFilters();
   const selectedPolicyTypeFilter = getSelectedFilter("plantype");
   const { journeyType } = useFrontendBoot();
+  const { filterOrder } = useFilterOrder();
   const dispatch = useDispatch();
   const { pos_popup } = useSelector(({ quotePage }) => quotePage);
   const {
@@ -25,6 +26,23 @@ const LowerModifier = ({ sortBy = <></> }) => {
       settings: { pos_nonpos_switch_message, multiindividual_visibilty },
     },
   } = useFrontendBoot();
+
+  const COMPONENT = {
+    sort_by: <>{sortBy}</>,
+    multiyear_option: <MultiyearOptionFilter />,
+    policy_type:
+      selectedPolicyTypeFilter?.display_name !== "Individual" &&
+      journeyType !== "top_up" &&
+      +multiindividual_visibilty !== 0 ? (
+        <PolicyTypeFilter />
+      ) : null,
+    more_filter: <MoreFilters />,
+    plan_type: <PlanTypeFilter />,
+    cover:
+      journeyType === "health" ? <CoverRangeFilter /> : <DeductibleFilter />,
+    premium: <PremiumFilter />,
+    insurer: <InsurerFilter />,
+  };
 
   return (
     <Container
@@ -36,7 +54,7 @@ const LowerModifier = ({ sortBy = <></> }) => {
       `}
     >
       <FiltersWrapper className="d-flex">
-        {sortBy}
+        {/* {sortBy}
         <PremiumFilter />
         {journeyType === "health" ? <CoverRangeFilter /> : <DeductibleFilter />}
         {selectedPolicyTypeFilter?.display_name !== "Individual" &&
@@ -47,7 +65,8 @@ const LowerModifier = ({ sortBy = <></> }) => {
         <MultiyearOptionFilter />
         <PlanTypeFilter />
         <InsurerFilter />
-        <MoreFilters />
+      <MoreFilters /> */}
+        {filterOrder?.map(filter => COMPONENT[filter])}
       </FiltersWrapper>
       {pos_popup && (
         <ErrorPopup

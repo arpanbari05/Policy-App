@@ -63,8 +63,8 @@ const Sharebutton = ({
       fontSize: "12px",
       fontWeight: "bold",
       padding: "7px 7px !important",
-      width: "150px",
-      textAlign: "center !important",
+      maxWidth: "150px",
+      textAlign: "left !important",
     }),
     menu: provided => ({
       ...provided,

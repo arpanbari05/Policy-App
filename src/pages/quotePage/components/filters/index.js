@@ -26,7 +26,7 @@ export function FilterHead({ label, children, onClick, ...props }) {
         {label}
       </div>
       <div
-        className="d-flex align-items-center justify-content-between"
+        className="d-flex align-items-center justify-content-between text-capitalize"
         css={`
           font-size: 12px;
           gap: 1em;
@@ -91,7 +91,9 @@ export function FilterOption({ option, checked, onChange, ...props }) {
         target.current.click();
       }}
     >
-      <label htmlFor={option.code}>{option.display_name}</label>
+      <label className="text-capitalize" htmlFor={option.code}>
+        {option.display_name}
+      </label>
       <input
         ref={target}
         type="radio"

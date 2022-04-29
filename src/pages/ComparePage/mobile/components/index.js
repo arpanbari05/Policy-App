@@ -322,8 +322,8 @@ export function OptionalCoversValue({ quote, onChange }) {
           gap: 1em;
         `}
       >
-        {riders.length ? (
-          riders.map((rider, idx) => (
+        {riders?.length ? (
+          riders?.map((rider, idx) => (
             <Rider
               currentQuote={quote}
               rider={rider}

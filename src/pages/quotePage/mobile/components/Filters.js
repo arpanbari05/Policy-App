@@ -7,6 +7,7 @@ import {
   useCompanies,
   useFrontendBoot,
   useTheme,
+  useFilterOrder,
 } from "../../../../customHooks";
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 import useFilters from "../../components/filters/useFilters";
@@ -147,6 +148,8 @@ export function FilterModal({ onClose, show }) {
     journeyType,
   } = useFrontendBoot();
 
+  const { filterOrder } = useFilterOrder();
+
   let {
     data: { covers },
   } = useFrontendBoot();
@@ -198,6 +201,34 @@ export function FilterModal({ onClose, show }) {
     onClose && onClose();
   };
 
+  const NAV = {
+    multiyear_option: (
+      <FilterNavItem eventKey={"tenure"}>Multiyear Options</FilterNavItem>
+    ),
+    policy_type:
+      selectedPolicyTypeFilter?.display_name !== "Individual" &&
+      journeyType !== "top_up" &&
+      +multiindividual_visibilty !== 0 ? (
+        <FilterNavItem eventKey={"plantype"}>Policy type</FilterNavItem>
+      ) : null,
+    plan_type: (
+      <FilterNavItem eventKey={"baseplantype"}>Plan type</FilterNavItem>
+    ),
+    cover:
+      journeyType === "health" ? (
+        <FilterNavItem eventKey={"cover"}>Cover</FilterNavItem>
+      ) : (
+        <FilterNavItem eventKey={"deductible"}>Deductible</FilterNavItem>
+      ),
+    premium: <FilterNavItem eventKey={"premium"}>Premium</FilterNavItem>,
+    insurer: <FilterNavItem eventKey={"insurers"}>Insurers</FilterNavItem>,
+    more_filter: morefilters.map(filter => (
+      <FilterNavItem eventKey={filter.code} key={filter.code}>
+        {filter.group_name}
+      </FilterNavItem>
+    )),
+  };
+
   const RenderFilterOptions = ({ code, options, type, showTooltip }) => (
     <Tab.Pane eventKey={code}>
       <FilterOptions
@@ -236,7 +267,7 @@ export function FilterModal({ onClose, show }) {
               position: sticky;
             `}
           >
-            <FilterNavItem eventKey={"premium"}>Premium</FilterNavItem>
+            {/* <FilterNavItem eventKey={"premium"}>Premium</FilterNavItem>
             {journeyType === "health" ? (
               <FilterNavItem eventKey={"cover"}>Cover</FilterNavItem>
             ) : (
@@ -254,7 +285,8 @@ export function FilterModal({ onClose, show }) {
               <FilterNavItem eventKey={filter.code} key={filter.code}>
                 {filter.group_name}
               </FilterNavItem>
-            ))}
+            ))} */}
+            {filterOrder?.map(filter => NAV[filter])}
           </Nav>
 
           <Tab.Content
