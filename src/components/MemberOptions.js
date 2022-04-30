@@ -345,7 +345,12 @@ function MemberOption({
 
   useEffect(() => {
     if (validateSpouse(selectedMembers, member)) {
-      if (member.code.includes("son") || member.code.includes("daughter")) {
+      if (
+        member.code.includes("son") ||
+        member.code.includes("daughter") ||
+        member.code === "mother_in_law" ||
+        member.code === "father_in_law"
+      ) {
         if (member.isSelected) {
           const event = {
             target: { checked: false },
