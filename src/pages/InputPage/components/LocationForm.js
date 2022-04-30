@@ -116,7 +116,6 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
         let nextPath = getUrlWithEnquirySearch(
           `/input/location-${currentGroupCode + 1}`,
         );
-        console.log("medicalCheck", settings.medical_history_visibility);
         if (!nextGroup) {
           if (journeyType === "top_up")
             nextPath = getUrlWithEnquirySearch(`/input/deductible`);
