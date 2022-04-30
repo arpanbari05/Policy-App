@@ -272,12 +272,7 @@ function MemberOption({
     currentUserAgeList,
   ) => {
     if (!validateSelfFunc(currentSelectedMember, currentMember)) {
-      if (
-        userGender === "F" &&
-        (currentMember.code === "spouse" ||
-          member.code === "mother_in_law" ||
-          member.code === "father_in_law")
-      ) {
+      if (userGender === "F" && currentMember.code === "spouse") {
         return currentUserAgeList.slice(3, currentUserAgeList.length);
       } else {
         // parent validation
@@ -313,13 +308,15 @@ function MemberOption({
     }
   };
 
-  const validateSpouse = (selectedMembers, member, pV = false) => {
-    pV && console.log("selectedMembers", selectedMembers);
+  const validateSpouse = (selectedMembers, member) => {
+    console.log("memberCode", member);
     if (
       gender === "M" &&
       (member.code === "spouse" ||
         member.code === "mother_in_law" ||
-        member.code === "father_in_law")
+        member.code === "father_in_law" ||
+        member.code?.includes("son") ||
+        member.code?.includes("daughter"))
     ) {
       return (
         selectedMembers[0]?.code === "self" &&
@@ -340,6 +337,19 @@ function MemberOption({
       return false;
     }
   };
+
+  useEffect(() => {
+    if (validateSpouse(selectedMembers, member)) {
+      if (member.code.includes("son") || member.code.includes("daughter")) {
+        if (member.isSelected) {
+          const event = {
+            target: { checked: false },
+          };
+          handleChange(event);
+        }
+      }
+    }
+  }, [selectedMembers]);
 
   return (
     <div

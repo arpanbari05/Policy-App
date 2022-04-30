@@ -29,9 +29,6 @@ const RoundDD = ({
   const dropdownRef = useRef(null);
   useOutsiteClick(isOpen && dropdownRef, () => setIsOpen(false));
 
-  member.code === "son1" && console.log("memberError", redBorder);
-  member.code === "son1" && console.log("member", member);
-
   useEffect(() => {
     const array = list.filter(data =>
       data?.title?.toLowerCase().includes(searchText?.toLowerCase()),
