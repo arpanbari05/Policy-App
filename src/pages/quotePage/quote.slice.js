@@ -33,7 +33,7 @@ const quotePageSlice = createSlice({
     quotesToShare: [],
     quotesToCanvas: [],
     pos_popup: false,
-    shareType: { value: "share", label: "Share quotes" },
+    shareType: {},
     showSharePopup: true,
     quotesOnCompare: false,
     showEditMembers: false,

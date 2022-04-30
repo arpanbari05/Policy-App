@@ -86,19 +86,24 @@ export const validationIndex = {
           message: `This field is required.`,
         };
     } else if ((!values || !values[name]) && param !== false)
-    if(typeof param === "string" && param.includes("above")){
-      const date = new Date();
-      const {dob} = values;
-      let ageLimit = parseInt(param.split("/")[1]);
-      let inputAge = dob.length === 4?date.getUTCFullYear() - parseInt(dob) : date.getUTCFullYear() - dob.split("-")[2]
-     if(inputAge >= ageLimit) return {
-      status: false,
-      message: `This field is required.`,
-    };
-    }else return {
-        status: false,
-        message: `This field is required.`,
-      };
+      if (typeof param === "string" && param.includes("above")) {
+        const date = new Date();
+        const { dob } = values;
+        let ageLimit = parseInt(param.split("/")[1]);
+        let inputAge =
+          dob.length === 4
+            ? date.getUTCFullYear() - parseInt(dob)
+            : date.getUTCFullYear() - dob.split("-")[2];
+        if (inputAge >= ageLimit)
+          return {
+            status: false,
+            message: `This field is required.`,
+          };
+      } else
+        return {
+          status: false,
+          message: `This field is required.`,
+        };
   },
   length: (param, values, name) => {
     if (typeof param === "object") {
@@ -201,7 +206,10 @@ export const validationIndex = {
       switch (checkParam) {
         case "name":
           if (!value.trim().includes(" ")) {
-            return { status: false, message: `Please Enter Full Name. If last name not available enter "."(dot).`};
+            return {
+              status: false,
+              message: `Please Enter Full Name. If last name not available enter "."(dot).`,
+            };
           } else if (
             (value.trim().match(/\ /g) || []).length > 5 ||
             value.split("").length > 90
@@ -471,9 +479,14 @@ export const validationIndex = {
           } else break;
         case "email":
           let pass = false;
-          if (value.includes("@")) {
+          if (value.toLowerCase().includes("@")) {
             acceptedEmailExtensions.map(ext => {
-              if (ext === value.slice(value.lastIndexOf("."), value.length)) {
+              if (
+                ext ===
+                value
+                  .toLowerCase()
+                  .slice(value.toLowerCase().lastIndexOf("."), value.length)
+              ) {
                 pass = true;
               }
             });
@@ -481,7 +494,7 @@ export const validationIndex = {
           // console.log("bgwefhweg", pass);
           if (
             !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-              value,
+              value.toLowerCase(),
             ) ||
             !pass ||
             value.length > 64
