@@ -137,7 +137,7 @@ const InsuredDetails = ({
   const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
-    console.log("sdbjhdkgb", medicalContinueClick,isValid,underWritingStatus,medicalUrlsRuleEngine);
+    console.log("sdbjhdkgb",{ medicalContinueClick,isValid,underWritingStatus,medicalUrlsRuleEngine,showErrorPopup});
     
     if(
       medicalContinueClick &&
@@ -157,11 +157,10 @@ const InsuredDetails = ({
       }
       triggerSaveForm({ sendedVal: values, formName: name });
     }else if (
-      (medicalContinueClick &&
+      medicalContinueClick &&
       !isValid.includes(undefined) &&
       !isValid.includes(false) &&
-      !showErrorPopup?.show) 
-    
+      !showErrorPopup?.show
     ) {
       triggerSaveForm({ sendedVal: values, formName: name });
       
@@ -198,7 +197,7 @@ const InsuredDetails = ({
             onClick={() => setShow(prev => (prev === index ? false : index))}
           >
           {
-            isVersionRuleEngine(parseInt(item)) && medicalUrlsRuleEngine && name === "Medical Details"?(
+            isVersionRuleEngine(parseInt(item)) && name === "Medical Details"?(
               <UnderWritingDiscisionTable>
               <div className="head_section section_row d-flex align-items-center justify-content-evenly">
                 <div className="section_column">Member</div>
@@ -408,9 +407,12 @@ const InsuredDetails = ({
                     head: "",
                     msg: frontBootData?.settings
                       ?.medical_nstp_declaration_message,
+                      handleClose:() => {
+                setMedicalContinueClick(true);
+                      }
                   }),
                 );
-              setMedicalContinueClick(true);
+                setMedicalContinueClick(true);
 
               // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {
