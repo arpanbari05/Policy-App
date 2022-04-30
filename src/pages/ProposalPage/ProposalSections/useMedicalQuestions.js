@@ -9,6 +9,27 @@ const useMedicalQuestions = ({schema, values, setValues, name,proposalData,defau
     canProceed: false,
     canProceedArray: {},
   });
+  const noForAllHelper = (groupKey) => {
+    let tempGroupVal = {};
+    schema[groupKey].forEach(el => {
+      if (!Array.isArray(el)) {
+        if (el.additionalOptions.notAllowedIf === "N") {
+          tempGroupVal[el.name] = {
+            [`is${el.name}`]: "Y",
+            members: {},
+            isValid: true,
+          };
+        } else if (!el.additionalOptions.disable_Toggle) {
+          tempGroupVal[el.name] = {
+            [`is${el.name}`]: "N",
+            members: {},
+            isValid: true,
+          };
+        }
+      }
+    });
+    return tempGroupVal;
+  }
 console.log("sgvksdgv",defaultValue)
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
@@ -99,14 +120,17 @@ if(name === "Medical Details"){
     setValues(defaultValue)
   
   }
-  let ruleEngineGroup = Object.keys(schema).find(group => isVersionRuleEngine(parseInt(group)));
-  console.log("svskgvbsdfjk",ruleEngineGroup,noForAll)
-  if(ruleEngineGroup){
+  let ruleEngineGroup = Object.keys(schema).filter(group => isVersionRuleEngine(parseInt(group)));
+  if(ruleEngineGroup.length){
+
+  ruleEngineGroup.forEach(group => setValues(prev => ({...prev,[group]:noForAllHelper(group)})));
+  // noForAllHelper    
+    // setNoForAll(prev => ({...prev,[ruleEngineGroup]:true}))
+
     if(!medicalUrlsRuleEngine){
       setPreparingMQ(true);
       dispatch(getMedicalUrlsRuleEngine(() => {setPreparingMQ(false)}));
     }
-    setNoForAll(prev => ({...prev,[ruleEngineGroup]:true}))
   }
 }
 

@@ -248,7 +248,7 @@ const Toggle = ({
                         }),
                       );
                       setBoolean("N");
-                    } else if (message && message.stp_block_message) {
+                    } else if (notAllowedIf !== "N" && message && message.stp_block_message) {
                       dispatch(
                         setShowErrorPopup({
                           show: true,
@@ -259,6 +259,7 @@ const Toggle = ({
 
                       // setBoolean(e.target.value);
                     } else if (
+                      notAllowedIf !== "N" &&
                       message &&
                       message.npos_switch_medical_selection_message
                     ) {
