@@ -166,6 +166,9 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
   const location = useLocation();
   const searchQueries = useUrlQueries();
   const { groupCode } = useParams();
+  const urlQueryStrings = new URLSearchParams(window.location.search);
+  const city = urlQueryStrings.get("city");
+  const pincode = urlQueryStrings.get("pincode");
 
   const isRootRoute = useRouteMatch({
     path: ["/", "/input/basic-details"],
@@ -183,8 +186,9 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
   // Group location for all members group
   const firstGroupLocation = getFirstGroupLocation();
 
-  const city = groupLocation?.city || firstGroupLocation?.city;
-  const pincode = groupLocation?.pincode || firstGroupLocation?.pincode;
+  const groupCity = groupLocation?.city || city || firstGroupLocation?.city;
+  const groupPincode =
+    groupLocation?.pincode || pincode || firstGroupLocation?.pincode;
 
   const trace_id = data?.data?.trace_id;
 
@@ -223,7 +227,9 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
           `}
         >
           <Members />
-          <Info label={city} value={pincode} />
+          {groupCity && groupPincode && (
+            <Info label={groupCity} value={groupPincode} />
+          )}
         </div>
       )}
     </div>
@@ -311,6 +317,9 @@ export function Members() {
 
   if (!members || !groupLocation) return null;
 
+  const groupCity = groupLocation?.city || city || firstGroupLocation?.city;
+  const groupPincode =
+    groupLocation?.pincode || pincode || firstGroupLocation?.pincode;
   return (
     <div
       className="d-flex"
@@ -392,25 +401,22 @@ export function Members() {
           </button>
         )}
       </div>
-      <Info
-        label={groupLocation?.city || city || firstGroupLocation?.city}
-        value={groupLocation?.pincode || pincode || firstGroupLocation?.pincode}
-        onlyDesktop
-      >
-        <span
-          css={`
-            color: ${colors.primary_color};
-            cursor: pointer;
-            margin-top: -2px;
-            &:hover {
-              color: #000;
-            }
-          `}
-        >
-          {/* <RiPencilFill size={14} onClick={() => setShowPincode(true)} /> */}
-        </span>
-      </Info>
-      {/* <EditPincode show={showPincode} onClose={() => setShowPincode(false)} /> */}
+      {groupCity && groupPincode && (
+        <Info label={groupCity} value={groupPincode} onlyDesktop>
+          <span
+            css={`
+              color: ${colors.primary_color};
+              cursor: pointer;
+              margin-top: -2px;
+              &:hover {
+                color: #000;
+              }
+            `}
+          >
+            {/* <RiPencilFill size={14} onClick={() => setShowPincode(true)} /> */}
+          </span>
+        </Info>
+      )}
     </div>
   );
 }
