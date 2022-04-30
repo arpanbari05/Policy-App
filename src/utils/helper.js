@@ -52,6 +52,15 @@ export const allowOnWebsites = (sites = []) => {
   return isPass;
 };
 
+// input page visibility
+export function inputEnquiryVisibility(settings, section) {
+  if (localStorage.SSO_user) {
+    return !settings.b2b_enquiry_visibility.includes(section);
+  } else {
+    return !settings.b2c_enquiry_visibility.includes(section);
+  }
+}
+
 export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
   const noOfLakhs = number / 100000;
