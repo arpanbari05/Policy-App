@@ -3,7 +3,6 @@ import Panel from "./../components/AccordionPanel/Panel";
 import FormBuilder from "../../../components/FormBuilder/FormBuilder";
 import { Form } from "./../ProposalPage.style";
 import { components } from "../components/componentSchema";
-import styled from "styled-components";
 import ContinueBtn from "../components/Buttons/ContinueBtn";
 import BackBtn from "../components/Buttons/BackBtn";
 import useProposalSections from "./useProposalSections";
@@ -17,6 +16,8 @@ import { setShowErrorPopup, getMedicalUnderwritingStatus } from "../ProposalSect
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 import useOtherDetails from "./useOtherDetails";
 import StyledButton from "../../../components/StyledButton";
+import {DisableScreen, UnderWritingDiscisionTable} from "./insuredDetails.styles"
+import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 
 const InsuredDetails = ({
   schema,
@@ -27,7 +28,7 @@ const InsuredDetails = ({
   setBlockTabSwitch,
 }) => {
   const [medicalContinueClick, setMedicalContinueClick] = useState(false);
-  const { proposalData, showErrorPopup, insuredDetailsResponse, underWritingStatus,medicalUrlsRuleEngine } = useSelector(
+  const { proposalData, showErrorPopup, insuredDetailsResponse, underWritingStatus,medicalUrlsRuleEngine,mdicalUnderwritingLetters } = useSelector(
     state => state.proposalPage,
   );
   const dispatch = useDispatch();
@@ -108,8 +109,8 @@ const InsuredDetails = ({
     proposalDetails,
   });
 
-  const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected } =
-    useMedicalQuestions(
+  const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected, preparingMQ,getMUStatus } =
+    useMedicalQuestions({
       schema,
       values,
       setValues,
@@ -117,9 +118,12 @@ const InsuredDetails = ({
       proposalData,
       defaultValue,
       dispatch,
-      isVersionRuleEngine
-    );
-    console.log("wrghrjksgv",values,cartEntries,schema,noForAll)
+      isVersionRuleEngine,
+      medicalUrlsRuleEngine,
+      insuredDetailsResponse,
+      underWritingStatus
+    });
+    console.log("wrghrjksgv",values,cartEntries,schema,noForAll,yesSelected)
 
   const { colors } = useTheme();
 
@@ -133,7 +137,7 @@ const InsuredDetails = ({
   const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
-    console.log("sdbjhdkgb", medicalContinueClick,isValid,underWritingStatus,medicalUrlsRuleEngine);
+    console.log("sdbjhdkgb",{ medicalContinueClick,isValid,underWritingStatus,medicalUrlsRuleEngine,showErrorPopup});
     
     if(
       medicalContinueClick &&
@@ -153,11 +157,10 @@ const InsuredDetails = ({
       }
       triggerSaveForm({ sendedVal: values, formName: name });
     }else if (
-      (medicalContinueClick &&
+      medicalContinueClick &&
       !isValid.includes(undefined) &&
       !isValid.includes(false) &&
-      !showErrorPopup?.show) 
-    
+      !showErrorPopup?.show
     ) {
       triggerSaveForm({ sendedVal: values, formName: name });
       
@@ -166,6 +169,16 @@ const InsuredDetails = ({
     }
     setMedicalContinueClick(false);
   }, [isValid, medicalContinueClick, showErrorPopup,underWritingStatus]);
+
+  if (preparingMQ) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "100px" }}>
+        {/* <span className="lds-dual-ring colored--loader"></span> */}
+        <p>Preparing Medical Questions, Please Wait</p>
+        <SpinLoader proposalpage={true} />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -184,7 +197,7 @@ const InsuredDetails = ({
             onClick={() => setShow(prev => (prev === index ? false : index))}
           >
           {
-            isVersionRuleEngine(parseInt(item)) && medicalUrlsRuleEngine && name === "Medical Details"?(
+            isVersionRuleEngine(parseInt(item)) && name === "Medical Details"?(
               <UnderWritingDiscisionTable>
               <div className="head_section section_row d-flex align-items-center justify-content-evenly">
                 <div className="section_column">Member</div>
@@ -202,7 +215,13 @@ const InsuredDetails = ({
                         Click here
                                   </a>
                         </div>
-                        <div className="section_column">{underWritingStatus?.find(({member_id}) => member_id === medicalUrlsRuleEngine[member].member_id)?.result || "Not Submitted"}</div>
+                        <div className="section_column">{getMUStatus(member) || "Not Submitted"}
+                        {getMUStatus(member) !== "NotSubmitted" && mdicalUnderwritingLetters?.[member]?.medical_question_url?(
+                          <a href={mdicalUnderwritingLetters?.[member]?.medical_question_url} className="click_btn" target="_blank">
+                        Click here
+                                  </a>
+                        ):(<></>)}
+                        </div>
                       </div>
                     </>
                   ):(
@@ -379,6 +398,7 @@ const InsuredDetails = ({
             //  && (Object.keys(insuredDetailsResponse).length?underWritingStatus.length:true)
             ) {
               // NSTP popup for RB
+              console.log("grnsgh",yesSelected,frontBootData?.settings?.medical_nstp_declaration_message)
               Object.values(yesSelected).includes(true) &&
                 frontBootData?.settings?.medical_nstp_declaration_message &&
                 dispatch(
@@ -387,9 +407,12 @@ const InsuredDetails = ({
                     head: "",
                     msg: frontBootData?.settings
                       ?.medical_nstp_declaration_message,
+                      handleClose:() => {
+                setMedicalContinueClick(true);
+                      }
                   }),
                 );
-              setMedicalContinueClick(true);
+                setMedicalContinueClick(true);
 
               // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {
@@ -428,61 +451,5 @@ const InsuredDetails = ({
 
 export default InsuredDetails;
 
-const DisableScreen = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  top: -12px;
-  left: 0px;
-  z-index: 99;
-  opacity: 0.5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: not-allowed;
-  .display_onHover {
-    display: none;
-    font-size: 20px !important;
-  }
-  :hover {
-    .display_onHover {
-      display: block;
-    }
-  }
-`;
 
-const UnderWritingDiscisionTable = styled.div`
-  width: 100%;
-  border: 1px dashed #ddd;
-  margin: 20px 0px;
-  .head_section{
-   font-weight:900;
-    border-bottom: 1px dashed #ddd;
-  }
-  .section_column{
-    padding:15px 0px 15px 40px;
-    width: 33.33%;
-  }
-  .check_status_btn{
-    width: 200px;
-    margin: 10px 0;
-    @media(max-width:400px){
-      width:150px;
-    }
-  }
 
-  .click_btn{
-    background-color: #ecf6ff;
-    font-family: "Dax", sans-serif;
-    font-weight: 400;
-    border-radius: 50px;
-    margin: 0 8px;
-    font-size: 14px;
-    padding: 11px;
-    :visited{
-      background: #0a87ff !important;
-      color:white;
-    }
-  }
-`;

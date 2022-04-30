@@ -407,7 +407,7 @@ export const api = createApi({
       providesTags: ["ProposalSummaryUpdate"],
     }),
     // getInsuredDetailsResponse: builder.query({
-      
+
     // }),
     saveProposal: builder.mutation({
       query: body => ({
@@ -417,7 +417,7 @@ export const api = createApi({
       }),
       onQueryStarted: async (_data, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
-        console.log("rvbskf",data);
+        console.log("rvbskf", data);
         // dispatch(
         //   api.util.updateQueryData("getEnquiries", undefined, draft => {
         //     if (draft) Object.assign(draft, data);

@@ -62,7 +62,8 @@ function useSortBy(defaultSortBy = "relevance") {
 }
 
 function Main() {
-  const sortBy = useSortBy();
+  const { default: defaultSortBy } = useSortBy();
+  const sortBy = useSortBy(defaultSortBy?.code);
 
   return (
     <main>

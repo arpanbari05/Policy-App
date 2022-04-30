@@ -32,7 +32,7 @@ function UpperModifier() {
           `}
           className="d-flex align-items-center"
         >
-          <EditMemberFilter />
+          <EditMemberFilter redirectToQuotes={true} />
           <GroupLinks />
           <div
             css={`

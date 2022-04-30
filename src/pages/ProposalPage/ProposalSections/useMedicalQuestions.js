@@ -1,13 +1,35 @@
 import React, { useEffect, useState } from "react";
 import {getMedicalUrlsRuleEngine } from "./ProposalSections.slice";
 
-const useMedicalQuestions = (schema, values, setValues, name,proposalData,defaultValue,dispatch,isVersionRuleEngine) => {
+const useMedicalQuestions = ({schema, values, setValues, name,proposalData,defaultValue,dispatch,isVersionRuleEngine,medicalUrlsRuleEngine,insuredDetailsResponse,underWritingStatus}) => {
   const [noForAll, setNoForAll] = useState({});
+  const [preparingMQ, setPreparingMQ] = useState(false);
   const [yesSelected, setYesSelected] = useState({});
   const [canProceed, setCanProceed] = useState({
     canProceed: false,
     canProceedArray: {},
   });
+  const noForAllHelper = (groupKey) => {
+    let tempGroupVal = {};
+    schema[groupKey].forEach(el => {
+      if (!Array.isArray(el)) {
+        if (el.additionalOptions.notAllowedIf === "N") {
+          tempGroupVal[el.name] = {
+            [`is${el.name}`]: "Y",
+            members: {},
+            isValid: true,
+          };
+        } else if (!el.additionalOptions.disable_Toggle) {
+          tempGroupVal[el.name] = {
+            [`is${el.name}`]: "N",
+            members: {},
+            isValid: true,
+          };
+        }
+      }
+    });
+    return tempGroupVal;
+  }
 console.log("sgvksdgv",defaultValue)
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
@@ -82,21 +104,33 @@ const getScheamaOfValue = (key,name) => {
 return schema[key].find(({name}) => name === name);
 }
 
+const getMUStatus = (member) => {
+  return underWritingStatus?.find(({member_id}) => member_id === medicalUrlsRuleEngine[member].member_id)?.result
+}
+
 // -----------------------------------------------------------------------------------------------------------------
 //   -----------------------------  SIDE EFFECTS FOR MEDICAL QUESTIONS---------------------------------------------
 // ----------------------------------------------------------------------------------------------------------------
 
 useEffect(() => {
-console.log("rsgsrjgk",defaultValue)
+  
+console.log("rsgsrjgk",defaultValue,insuredDetailsResponse)
 if(name === "Medical Details"){
   if(defaultValue){
     setValues(defaultValue)
   
   }
-  let ruleEngineGroup = Object.keys(schema).find(group => isVersionRuleEngine(parseInt(group)));
-  console.log("svskgvbsdfjk",ruleEngineGroup,noForAll)
-  if(ruleEngineGroup){
-    setNoForAll(prev => ({...prev,[ruleEngineGroup]:true}))
+  let ruleEngineGroup = Object.keys(schema).filter(group => isVersionRuleEngine(parseInt(group)));
+  if(ruleEngineGroup.length){
+
+  ruleEngineGroup.forEach(group => setValues(prev => ({...prev,[group]:noForAllHelper(group)})));
+  // noForAllHelper    
+    // setNoForAll(prev => ({...prev,[ruleEngineGroup]:true}))
+
+    if(!medicalUrlsRuleEngine){
+      setPreparingMQ(true);
+      dispatch(getMedicalUrlsRuleEngine(() => {setPreparingMQ(false)}));
+    }
   }
 }
 
@@ -142,8 +176,8 @@ if(name === "Medical Details"){
       let temp = keys.reduce(
         (acc, key) => ({
           ...acc,
-          [key]: Object.keys(values[key]).some(
-            el => values[key][el][`is${el}`] === "Y" && getScheamaOfValue(key,el)?.additionalOptions?.disable_Toggle === false,
+          [key]: Object.keys(values[key]).filter(el =>  !getScheamaOfValue(key,el)?.additionalOptions?.disable_Toggle).some(
+            el => values[key][el][`is${el}`] === "Y",
           ),
         }),
         {},
@@ -198,6 +232,8 @@ if(name === "Medical Details"){
     checkCanProceed,
     canProceed,
     yesSelected,
+    preparingMQ,
+    getMUStatus
   };
 };
 

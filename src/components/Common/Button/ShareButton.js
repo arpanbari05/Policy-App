@@ -12,10 +12,10 @@ import useOutsiteClick from "../../../customHooks/useOutsideClick";
 import { IoShareSocialSharp } from "react-icons/io5";
 
 const SHARE_OPTIONS = [
-  {
-    value: "share",
-    label: "Share quotes",
-  },
+  // {
+  //   value: "share",
+  //   label: "Share quotes",
+  // },
   {
     value: "quotation_list",
     label: "Share quotation list",
@@ -63,8 +63,8 @@ const Sharebutton = ({
       fontSize: "12px",
       fontWeight: "bold",
       padding: "7px 7px !important",
-      width: "150px",
-      textAlign: "center !important",
+      maxWidth: "150px",
+      textAlign: "left !important",
     }),
     menu: provided => ({
       ...provided,
@@ -73,9 +73,9 @@ const Sharebutton = ({
     }),
   };
 
-  useEffect(() => {
-    dispatch(setShareType(SHARE_OPTIONS[0]));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(setShareType(SHARE_OPTIONS[0]));
+  // }, []);
 
   const onChangeHandler = e => {
     dispatch(setShareType(e));
@@ -116,7 +116,7 @@ const Sharebutton = ({
       <Select
         styles={selectStyles}
         placeholder="Share Quotes"
-        value={(shareType.value && shareType) || SHARE_OPTIONS[0]}
+        value={shareType.value && shareType}
         options={SHARE_OPTIONS}
         onChange={onChangeHandler}
         menuIsOpen={showMenu}

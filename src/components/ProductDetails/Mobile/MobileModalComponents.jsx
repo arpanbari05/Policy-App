@@ -606,6 +606,7 @@ export function MobileRenderCashlessHospitals({ quote, ...props }) {
     );
 
   let hospitals = data?.data || [];
+  let networkHospitalUrl = data.network_hospital_url || "";
   let searchByName = {};
   let searchByPincode = {};
   const displayHospitals = hospitals.slice(0, 6);
@@ -646,6 +647,7 @@ export function MobileRenderCashlessHospitals({ quote, ...props }) {
         searchByName,
         searchByPincode,
         hospitals,
+        networkHospitalUrl,
       }}
     />
   );

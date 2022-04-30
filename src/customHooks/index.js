@@ -204,6 +204,7 @@ export function useTheme() {
 
 export function useSortBy() {
   const sortByOptionsConvertor = string => {
+    if (!string) return null;
     const sortByOptions = JSON.parse(string);
     return sortByOptions?.map(opt => ({
       code: opt,
@@ -211,14 +212,25 @@ export function useSortBy() {
     }));
   };
 
+  const SORT_BY_OPTIONS = [
+    {
+      code: "relevance",
+      display_name: "Relevance",
+    },
+    {
+      code: "premium_low_to_high",
+      display_name: "Premium Low To High",
+    },
+  ];
+
   const {
     data: { sortbys },
   } = useFrontendBoot();
 
+  const sortByOptions = sortByOptionsConvertor(sortbys) || SORT_BY_OPTIONS;
   return {
-    SORT_BY_OPTIONS: sortByOptionsConvertor(sortbys),
-    default:
-      sortByOptionsConvertor(sortbys) && sortByOptionsConvertor(sortbys)[0],
+    SORT_BY_OPTIONS: sortByOptions,
+    default: sortByOptions[0],
   };
 }
 
@@ -229,7 +241,18 @@ export function useFilterOrder() {
     },
   } = useFrontendBoot();
 
-  const filterOrder = JSON.parse(broker_order_by);
+  const filterOrder = broker_order_by
+    ? JSON.parse(broker_order_by)
+    : [
+        "sort_by",
+        "premium",
+        "cover",
+        "policy_type",
+        "multiyear_option",
+        "plan_type",
+        "insurer",
+        "more_filter",
+      ];
 
   return {
     filterOrder,
@@ -837,6 +860,14 @@ export function useCart() {
     return nextGroupProduct;
   }
 
+  const isVersionRuleEngine = groupId => {
+    const cartEntries = data?.data;
+    let result =
+      cartEntries?.find(entry => entry.group.id == groupId)?.product
+        ?.version === "rule_engine";
+    return result;
+  };
+
   return {
     cartEntries: data?.data,
     cartData: data,
@@ -846,6 +877,7 @@ export function useCart() {
     getCartTotalPremium,
     getNextGroupProduct,
     discounted_total_premium: data?.discounted_total_premium,
+    isVersionRuleEngine,
   };
 }
 
@@ -1744,7 +1776,7 @@ export function useQuotes({ sortBy = "relevence", quotesData = [] }) {
       ...icQuotes,
       data: { data: mergeQuotes(icQuotes.data.data, { sortBy }) },
     }));
-    if (sortBy === "premium-low-to-high") {
+    if (sortBy === "premium_low_to_high") {
       mergedQuotes = mergedQuotes.filter(
         icQuotes => !!icQuotes?.data?.data[0]?.length,
       );
@@ -2008,7 +2040,7 @@ export function useRiders({ quote, groupCode, onChange }) {
     journeyType === "health" ? quote?.health_riders : quote?.top_up_riders;
 
   const getInitialRiders = useCallback(() => {
-    return defaultSelectedRiders.map(rider => ({
+    return defaultSelectedRiders?.map(rider => ({
       ...rider,
       id: rider?.rider_id,
       isSelected: true,
@@ -2016,10 +2048,10 @@ export function useRiders({ quote, groupCode, onChange }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupCode]);
 
-  const [riders, setRiders] = useState(getInitialRiders);
+  const [riders, setRiders] = useState(getInitialRiders() || []);
 
   useEffect(() => {
-    return setRiders(getInitialRiders);
+    return setRiders(getInitialRiders() || []);
   }, [getInitialRiders]); //? a fallback to assign initial-riders
 
   const feature_options = useCart().getCartEntry(+groupCode)?.feature_options;
@@ -2040,17 +2072,17 @@ export function useRiders({ quote, groupCode, onChange }) {
   };
 
   const affectsOtherRiders = riders
-    .filter(isRiderSelected)
+    ?.filter(isRiderSelected)
     .filter(isAffectsOtherRiders)
     .map(rider => rider.alias);
 
   let selected_riders = [];
 
-  if (affectsOtherRiders.length) selected_riders = affectsOtherRiders;
+  if (affectsOtherRiders?.length) selected_riders = affectsOtherRiders;
 
   let optionsSelected = {};
 
-  riders.forEach(rider => {
+  riders?.forEach(rider => {
     if (rider.options_selected) {
       optionsSelected = {
         ...optionsSelected,
@@ -2083,8 +2115,8 @@ export function useRiders({ quote, groupCode, onChange }) {
       const { data: ridersData } = data;
 
       setRiders(riders => {
-        return ridersData.map(rider => {
-          const localRider = riders.find(
+        return ridersData?.map(rider => {
+          const localRider = riders?.find(
             localRider => localRider.id === rider.id,
           );
 
@@ -2118,11 +2150,11 @@ export function useRiders({ quote, groupCode, onChange }) {
     }
 
     setRiders(riders => {
-      let updatedRiders = riders.map(rider =>
+      let updatedRiders = riders?.map(rider =>
         rider?.id === changedRider?.id ? changedRider : rider,
       );
 
-      updatedRiders = updatedRiders.filter(updatedRider =>
+      updatedRiders = updatedRiders?.filter(updatedRider =>
         validateDependentRider(updatedRider, getSelectedRiders(updatedRiders)),
       );
 
@@ -2134,8 +2166,8 @@ export function useRiders({ quote, groupCode, onChange }) {
     query,
     riders:
       quote?.product?.company?.alias === "reliance_general"
-        ? riders.sort((a, b) => a.total_premium - b.total_premium)
-        : riders.filter(rider => rider.total_premium > 0),
+        ? riders?.sort((a, b) => a.total_premium - b.total_premium)
+        : riders?.filter(rider => rider.total_premium > 0),
     handleChange,
     getInitialRiders,
   };
@@ -2165,7 +2197,7 @@ export function useAddOns(groupCode) {
       const addOnToAdd = { ...addOn, members };
 
       if (isTopUpAddOn) {
-        filteredAddOns = addons.filter(
+        filteredAddOns = addons?.filter(
           addOnAdded => getInsuranceType(addOnAdded) !== "top_up",
         );
       }
@@ -2181,7 +2213,7 @@ export function useAddOns(groupCode) {
   function removeAddOns(addOns = []) {
     if (!addons) return;
     updateCartEntry(cartEntry.group?.id, {
-      addons: addons.filter(addOnAdded =>
+      addons: addons?.filter(addOnAdded =>
         addOns.some(
           addOnToRemove =>
             !matchQuotes(addOnAdded, addOnToRemove, {
@@ -2631,5 +2663,22 @@ export const useClaimBanner = () => {
   return {
     claimBannerArray,
     shouldShowClaimBanner: claimBannerArray ? true : false,
+  };
+};
+
+export const useRenewalsConfig = () => {
+  const { getCompany } = useCompanies();
+
+  const { subJourneyType } = useFrontendBoot();
+
+  const allowModification = (comp_alias = "") => {
+    return !!getCompany(comp_alias)?.allows_proposal_updation_on_renewal;
+  };
+
+  const isRenewalsJourney = subJourneyType === "renewal";
+
+  return {
+    allowModification,
+    isRenewalsJourney,
   };
 };

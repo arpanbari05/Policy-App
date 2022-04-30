@@ -15,7 +15,7 @@ import SortBy from "./components/filters/SortBy";
 import assistant from "../../assets/images/call-center-service.png";
 import { QuotesLoader } from "./components";
 import TalkToUsModal from "../../components/TalkToUs";
-import { useFrontendBoot } from "../../customHooks/index";
+import { useFrontendBoot, useSortBy } from "../../customHooks/index";
 import { mergeQuotes } from "../../utils/helper";
 import "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +27,8 @@ function QuotesPage() {
 
   const { checkGroupExist } = useMembers();
 
+  const { default: defaultSortBy } = useSortBy();
+
   const [isGroupExist, setGroupExist] = useState(true);
 
   const { groupCode } = useParams();
@@ -36,10 +38,7 @@ function QuotesPage() {
     setGroupExist(isGroupExist);
   }, [groupCode]);
 
-  const [selectedSortBy, setSelectedSoryBy] = useState({
-    code: "relevance",
-    display_name: "Relevance",
-  });
+  const [selectedSortBy, setSelectedSoryBy] = useState(defaultSortBy);
 
   if (!isGroupExist) return <PageNotFound />;
 

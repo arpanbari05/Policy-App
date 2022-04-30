@@ -10,6 +10,7 @@ import {
   fetchUnderWritingMQ,
   submitProposal,
   getMedicalUrls,
+  getMedicalLetter
 } from "./serviceApi";
 
 const proposal = createSlice({
@@ -17,6 +18,7 @@ const proposal = createSlice({
   initialState: {
     proposalData: {},
     isLoading: false,
+    mdicalUnderwritingLetters : {},
     Payment: false,
     showBMI: false,
     mediUnderwritting: false,
@@ -70,6 +72,9 @@ const proposal = createSlice({
     },
     setInsuredDetailsResponse: (state, { payload }) => {
       state.insuredDetailsResponse = payload;
+    },
+    setMdicalUnderwritingLetters:(state, { payload }) => {
+      state.mdicalUnderwritingLetters = payload;
     },
     setSelectedIcs: (state, { payload }) => {
       state.isLoading = payload;
@@ -149,6 +154,7 @@ export const {
   setInsuredDetailsResponse,
   setFailedBmiBlockJourney,
   setUnderWritingStatus,
+  setMdicalUnderwritingLetters,
   setMedicalUrlsRuleEngine
 } = proposal.actions;
 const ls = new SecureLS();
@@ -172,6 +178,7 @@ export const getMedicalUnderwritingStatus = () => {
       const {data} = await fetchUnderWritingMQ();
       if(typeof data !== "string" && data?.final_result?.members){
         dispatch(setUnderWritingStatus(data?.final_result?.members));
+        dispatch(getMUResultLetters());
       }
     } catch (err) {
       console.error(err);
@@ -341,7 +348,7 @@ export const getPaymentStatus = data => {
   };
 };
 
-export const getMedicalUrlsRuleEngine = () => {
+export const getMedicalUrlsRuleEngine = (callBack) => {
   return async dispatch => {
     try {
       const response = await getMedicalUrls();
@@ -356,10 +363,25 @@ export const getMedicalUrlsRuleEngine = () => {
         // },{})
         dispatch(setMedicalUrlsRuleEngine(response?.data?.data?.members));
       }
+      callBack && callBack();
     } catch (err) {
       alert(err);
     }
   };
 }
+
+export const getMUResultLetters = () => {
+  return async dispatch => {
+    try {
+      const response = await getMedicalLetter();
+
+      if (response?.data) {
+        dispatch(setMdicalUnderwritingLetters(response?.data));
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
+} 
 
 export default proposal.reducer;

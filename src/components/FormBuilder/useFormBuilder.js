@@ -262,7 +262,6 @@ const useFormBuilder = (
         }
       });
       if (Object.keys(tempGroupVal).length) {
-        console.log("dnasdjcbn",values,tempGroupVal)
         updateValues({ ...values, ...tempGroupVal }, "SAVE_AS_IT_IS");
       }
     }
