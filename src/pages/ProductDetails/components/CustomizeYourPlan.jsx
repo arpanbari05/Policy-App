@@ -61,7 +61,7 @@ export function Riders({
 
   const updatedFeatureOptions = featureOptionsValidValue(feature_options);
 
-  const selectedFeatureOption = Object.keys(updatedFeatureOptions).length
+  const selectedFeatureOption = Object.keys(updatedFeatureOptions)?.length
     ? updatedFeatureOptions[Object.keys(updatedFeatureOptions)[0]]
     : "more_cover";
 
@@ -103,7 +103,7 @@ export function Riders({
       "You can add 'Riders' to you basic health insurance plan for additional benefits.",
   };
 
-  if (!riders.length) {
+  if (!riders?.length) {
     header.heading = "Oops! No Riders available.";
     header.subHeading =
       "You can add 'Riders' to you basic health insurance plan for additional benefits. Currently no riders are available for this base plan.";
