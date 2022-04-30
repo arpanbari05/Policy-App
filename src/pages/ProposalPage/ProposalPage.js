@@ -72,6 +72,10 @@ const ProposalPage = () => {
     [cart?.product?.name]: cart?.sum_insured,
   }));
 
+  const enableEditMembers = ["care_health"].includes(
+    cartEntries[0]?.product?.company?.alias,
+  ); // array of ICs for which edit members functionality should be displayed.
+
   const [listOfForms, setListOfForms] = useState([]);
 
   const totalPremium = useUSGIDiscounts();
@@ -267,7 +271,8 @@ const ProposalPage = () => {
               >
                 <span>{activeForm}</span>
                 {activeForm === "Insured Details" &&
-                  subJourneyType === "renewal" && (
+                  subJourneyType === "renewal" &&
+                  enableEditMembers && (
                     <EditMemberFilter redirectToQuotes={false} />
                   )}
               </MainTitle>{" "}
