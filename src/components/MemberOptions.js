@@ -272,7 +272,12 @@ function MemberOption({
     currentUserAgeList,
   ) => {
     if (!validateSelfFunc(currentSelectedMember, currentMember)) {
-      if (userGender === "F" && currentMember.code === "spouse") {
+      if (
+        userGender === "F" &&
+        (currentMember.code === "spouse" ||
+          currentMember.code === "mother_in_law" ||
+          currentMember.code === "father_in_law")
+      ) {
         return currentUserAgeList.slice(3, currentUserAgeList.length);
       } else {
         // parent validation
