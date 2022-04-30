@@ -851,11 +851,13 @@ export function useCart() {
     return nextGroupProduct;
   }
 
-  const isVersionRuleEngine = (groupId) => {
+  const isVersionRuleEngine = groupId => {
     const cartEntries = data?.data;
-    let result = cartEntries?.find(entry => entry.group.id == groupId)?.product?.version === "rule_engine";
-   return result;
-   }
+    let result =
+      cartEntries?.find(entry => entry.group.id == groupId)?.product
+        ?.version === "rule_engine";
+    return result;
+  };
 
   return {
     cartEntries: data?.data,
@@ -866,7 +868,7 @@ export function useCart() {
     getCartTotalPremium,
     getNextGroupProduct,
     discounted_total_premium: data?.discounted_total_premium,
-    isVersionRuleEngine
+    isVersionRuleEngine,
   };
 }
 
@@ -2037,10 +2039,10 @@ export function useRiders({ quote, groupCode, onChange }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupCode]);
 
-  const [riders, setRiders] = useState(getInitialRiders);
+  const [riders, setRiders] = useState(getInitialRiders() || []);
 
   useEffect(() => {
-    return setRiders(getInitialRiders);
+    return setRiders(getInitialRiders() || []);
   }, [getInitialRiders]); //? a fallback to assign initial-riders
 
   const feature_options = useCart().getCartEntry(+groupCode)?.feature_options;
