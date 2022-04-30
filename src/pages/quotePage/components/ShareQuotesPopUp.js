@@ -17,11 +17,9 @@ const Sharequotespopup = ({ onClick = () => {} }) => {
 
   const clearHandler = () => {
     dispatch(replaceShareQuotes([]));
-    dispatch(setShareType({ value: "share", label: "Share quotes" }));
+    dispatch(setShareType({}));
   };
-  return quotesToShare.length &&
-    showSharePopup &&
-    shareType.value !== "share" ? (
+  return quotesToShare.length && showSharePopup && shareType.value ? (
     <ShareQuoteWrapper>
       <Plan>{`${quotesToShare.length} plan(s) selected`}</Plan>
       <Button
