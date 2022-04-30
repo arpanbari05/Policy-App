@@ -8,10 +8,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { setShareType, setShowSharePopup } from "../../quote.slice";
 
 const SHARE_OPTIONS = [
-  {
-    value: "share",
-    label: "Share quotes",
-  },
+  // {
+  //   value: "share",
+  //   label: "Share quotes",
+  // },
   {
     value: "quotation_list",
     label: "Share quotation list",
