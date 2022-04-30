@@ -182,7 +182,6 @@ const ProposalPage = () => {
         <Card
           styledCss={`
           margin-bottom: 20px; 
-          cursor:pointer;
         `}
           id={"proposer_details"}
         >
@@ -721,7 +720,7 @@ const ProposalPage = () => {
             show={showErrorPopup.show}
             head={showErrorPopup.head}
             msg={showErrorPopup.msg}
-            handleClose={() =>
+            handleClose={() => {
               dispatch(
                 setShowErrorPopup({
                   show: false,
@@ -729,7 +728,8 @@ const ProposalPage = () => {
                   msg: "",
                 }),
               )
-            }
+              showErrorPopup?.handleClose && showErrorPopup?.handleClose(); 
+            }}
           />
         )}
       </Page>

@@ -497,27 +497,28 @@ export const validationIndex = {
               status: false,
               message: "Please enter a valid pan number.",
             };
-          } else  if (
-            value[4] &&
-            // if user enter "." as last name 
-            // pancard number's 5th char must be equal to the first char of first name of the user
-            values.name[values.name.lastIndexOf(" ") + 1] === "." &&
-            values.name[0].toUpperCase() !== value[4]
-          ) {
-            return {
-              status: false,
-              message: "5th char must be equal to your first name's 1st char.",
-            };
-          }else if (
-            value[4] &&
-            // pancard number's 5th char must be equal to the first char of last name of the user
-            values.name[values.name.lastIndexOf(" ") + 1] !== "." &&
-            values.name[values.name.lastIndexOf(" ") + 1].toUpperCase() !== value[4]
-          ) {
-            return {
-              status: false,
-              message: "5th char must be equal to your last name's 1st char.",
-            };
+          // }
+          //  else  if (
+          //   value[4] &&
+          //   // if user enter "." as last name 
+          //   // pancard number's 5th char must be equal to the first char of first name of the user
+          //   values.name[values.name.lastIndexOf(" ") + 1] === "." &&
+          //   values.name[0].toUpperCase() !== value[4]
+          // ) {
+          //   return {
+          //     status: false,
+          //     message: "5th char must be equal to your first name's 1st char.",
+          //   };
+          // }else if (
+          //   value[4] &&
+          //   // pancard number's 5th char must be equal to the first char of last name of the user
+          //   values.name[values.name.lastIndexOf(" ") + 1] !== "." &&
+          //   values.name[values.name.lastIndexOf(" ") + 1].toUpperCase() !== value[4]
+          // ) {
+          //   return {
+          //     status: false,
+          //     message: "5th char must be equal to your last name's 1st char.",
+          //   };
           } else break;
         }
         case "aadhar":
