@@ -55,9 +55,9 @@ export const allowOnWebsites = (sites = []) => {
 // input page visibility
 export function inputEnquiryVisibility(settings, section) {
   if (localStorage.SSO_user) {
-    return !settings.b2b_enquiry_visibility.includes(section);
+    return !settings?.b2b_enquiry_visibility?.includes(section);
   } else {
-    return !settings.b2c_enquiry_visibility.includes(section);
+    return !settings?.b2c_enquiry_visibility?.includes(section);
   }
 }
 
