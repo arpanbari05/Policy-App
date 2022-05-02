@@ -9,6 +9,8 @@ function useAppropriateOptions({
   name,
   directUpdateValue,
   value,
+  fill,
+  deleteValue
 }) {
   const [selectOption, setSelectOption] = useState(asyncOptions || options);
 
@@ -46,16 +48,18 @@ function useAppropriateOptions({
   }, [values]);
 
   useEffect(() => {
-    console.log("skbvkbw",value)
-    if (Object.keys(selectOption).length === 1 && !value ){
+    if (Object.keys(selectOption).length === 1 && !value && !Array.isArray(selectOption)) {
+      
       directUpdateValue(name, Object.keys(selectOption)[0]);
     }
-      
   }, [selectOption]);
 
   useEffect(() => {
     if (asyncOptions) {
       setSelectOption(asyncOptions);
+      if(value && !asyncOptions[value]){
+        deleteValue();
+      }
     } else {
       if (allValues["Proposer Details"] && name === "nominee_relation") {
         if (allValues["Proposer Details"].gender === "M") {

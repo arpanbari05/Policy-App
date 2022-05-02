@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from "react";
-import {getMedicalUrlsRuleEngine } from "./ProposalSections.slice";
+import { getMedicalUrlsRuleEngine } from "./ProposalSections.slice";
 
-const useMedicalQuestions = ({schema, values, setValues, name,proposalData,defaultValue,dispatch,isVersionRuleEngine,medicalUrlsRuleEngine,insuredDetailsResponse,underWritingStatus}) => {
+const useMedicalQuestions = ({
+  schema,
+  values,
+  setValues,
+  name,
+  proposalData,
+  defaultValue,
+  dispatch,
+  isVersionRuleEngine,
+  medicalUrlsRuleEngine,
+  insuredDetailsResponse,
+  underWritingStatus,
+}) => {
   const [noForAll, setNoForAll] = useState({});
   const [preparingMQ, setPreparingMQ] = useState(false);
   const [yesSelected, setYesSelected] = useState({});
@@ -9,7 +21,7 @@ const useMedicalQuestions = ({schema, values, setValues, name,proposalData,defau
     canProceed: false,
     canProceedArray: {},
   });
-  const noForAllHelper = (groupKey) => {
+  const noForAllHelper = groupKey => {
     let tempGroupVal = {};
     schema[groupKey].forEach(el => {
       if (!Array.isArray(el)) {
@@ -29,8 +41,8 @@ const useMedicalQuestions = ({schema, values, setValues, name,proposalData,defau
       }
     });
     return tempGroupVal;
-  }
-console.log("sgvksdgv",defaultValue)
+  };
+  console.log("sgvksdgv", defaultValue);
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
     const key2 = Object.keys(noForAll || {});
@@ -46,45 +58,66 @@ console.log("sgvksdgv",defaultValue)
       let isNotChecked = {};
       let hasYes = {};
       let checkCanProceed = {};
-      
+
       key2.forEach(item => {
-        console.log("wkfbwkd",typeof values[item] )
-        if(typeof values[item] === "object" && values[item]){
+        console.log("wkfbwkd", typeof values[item]);
+        if (typeof values[item] === "object" && values[item]) {
           if (noForAll[item] !== true) {
             isNotChecked[item] = false;
           } else {
             isNotChecked[item] = true;
           }
-          const temp =
-            Object.keys(values[item])?.some(
-              data => values?.[item]?.[data]?.[`is${data}`] === "Y",
-            );
+          const temp = Object.keys(values[item])?.some(
+            data => values?.[item]?.[data]?.[`is${data}`] === "Y",
+          );
           if (temp === true) {
             hasYes[item] = true;
           } else {
             hasYes[item] = false;
           }
-        }else{
+        } else {
           hasYes[item] = true;
         }
       });
 
       key.forEach(item => {
-        console.log("wfkwbhdkf",{checkCanProceed,hasYes,item,isNotChecked,values})
+        console.log("wfkwbhdkf", {
+          checkCanProceed,
+          hasYes,
+          item,
+          isNotChecked,
+          values,
+        });
         if (hasYes[item] === isNotChecked[item]) {
-          checkCanProceed[item] = checkCanProceed[item]?checkCanProceed[item]:[];
+          checkCanProceed[item] = checkCanProceed[item]
+            ? checkCanProceed[item]
+            : [];
         }
 
-        Object.keys(values[item]).length && Object.keys(values[item])?.forEach(el => {
-          let schemaOfEl = schema[key]?.find(({name}) => name === el)
-          console.log("ehdhdkfgl",schemaOfEl)
-          if(schemaOfEl){
-            if(values[item][el] && ((!values[item][el][`is${el}`] && !schemaOfEl?.additionalOptions?.disable_Toggle) || !values[item][el].isValid)) checkCanProceed[item] = Array.isArray(checkCanProceed[item])?[...checkCanProceed[item],el]:[el];
-          }
-        })
+        Object.keys(values[item]).length &&
+          Object.keys(values[item])?.forEach(el => {
+            let schemaOfEl = schema[key]?.find(({ name }) => name === el);
+            console.log("ehdhdkfgl", schemaOfEl);
+            if (schemaOfEl) {
+              if (
+                values[item][el] &&
+                ((!values[item][el][`is${el}`] &&
+                  !schemaOfEl?.additionalOptions?.disable_Toggle) ||
+                  !values[item][el].isValid)
+              )
+                checkCanProceed[item] = Array.isArray(checkCanProceed[item])
+                  ? [...checkCanProceed[item], el]
+                  : [el];
+            }
+          });
       });
 
-      console.log("wfkwbhdkf",{checkCanProceed,hasYes,isNotChecked,values})
+      console.log("wfkwbhdkf", {
+        checkCanProceed,
+        hasYes,
+        isNotChecked,
+        values,
+      });
       if (key2.length < 1) {
         isNotChecked = true;
       }
@@ -100,42 +133,51 @@ console.log("sgvksdgv",defaultValue)
     }
   };
 
-const getScheamaOfValue = (key,name) => {
-return schema[key].find(({name}) => name === name);
-}
+  const getScheamaOfValue = (key, name) => {
+    return schema[key].find(({ name }) => name === name);
+  };
 
-const getMUStatus = (member) => {
-  return underWritingStatus?.find(({member_id}) => member_id === medicalUrlsRuleEngine[member].member_id)?.result
-}
+  const getMUStatus = member => {
+    return underWritingStatus?.find(
+      ({ member_id }) => member_id === medicalUrlsRuleEngine[member].member_id,
+    )?.result;
+  };
 
-// -----------------------------------------------------------------------------------------------------------------
-//   -----------------------------  SIDE EFFECTS FOR MEDICAL QUESTIONS---------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------------------------
+  //   -----------------------------  SIDE EFFECTS FOR MEDICAL QUESTIONS---------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------
 
-useEffect(() => {
-  
-console.log("rsgsrjgk",defaultValue,insuredDetailsResponse)
-if(name === "Medical Details"){
-  if(defaultValue){
-    setValues(defaultValue)
-  
-  }
-  let ruleEngineGroup = Object.keys(schema).filter(group => isVersionRuleEngine(parseInt(group)));
-  if(ruleEngineGroup.length){
+  useEffect(() => {
+    console.log(
+      "rsgsrjgk",
+      defaultValue,
+      insuredDetailsResponse,
+      medicalUrlsRuleEngine,
+    );
+    if (name === "Medical Details") {
+      if (defaultValue) {
+        setValues(defaultValue);
+      }
+      let ruleEngineGroup = Object.keys(schema).filter(group =>
+        isVersionRuleEngine(parseInt(group)),
+      );
+      if (ruleEngineGroup.length) {
+        // if rule engine is true then set other MQ noFORALL
+        ruleEngineGroup.forEach(group =>
+          setValues(prev => ({ ...prev, [group]: noForAllHelper(group) })),
+        );
 
-  ruleEngineGroup.forEach(group => setValues(prev => ({...prev,[group]:noForAllHelper(group)})));
-  // noForAllHelper    
-    // setNoForAll(prev => ({...prev,[ruleEngineGroup]:true}))
-
-    if(!medicalUrlsRuleEngine){
-      setPreparingMQ(true);
-      dispatch(getMedicalUrlsRuleEngine(() => {setPreparingMQ(false)}));
+        if (!medicalUrlsRuleEngine) {
+          setPreparingMQ(true);
+          dispatch(
+            getMedicalUrlsRuleEngine(() => {
+              setPreparingMQ(false);
+            }),
+          );
+        }
+      }
     }
-  }
-}
-
-},[])
-
+  }, []);
 
   useEffect(() => {
     if (name === "Medical Details") {
@@ -161,7 +203,6 @@ if(name === "Medical Details"){
         });
       });
       if (JSON.stringify(values) !== JSON.stringify(tempObj)) {
-
         setValues({ ...tempObj });
       }
     }
@@ -172,13 +213,16 @@ if(name === "Medical Details"){
       checkCanProceed();
       const keys = Object.keys(values || {});
       // getScheamaOfValue
-      console.log("svsfhjvs",schema)
+      console.log("svsfhjvs", schema);
       let temp = keys.reduce(
         (acc, key) => ({
           ...acc,
-          [key]: Object.keys(values[key]).filter(el =>  !getScheamaOfValue(key,el)?.additionalOptions?.disable_Toggle).some(
-            el => values[key][el][`is${el}`] === "Y",
-          ),
+          [key]: Object.keys(values[key])
+            .filter(
+              el =>
+                !getScheamaOfValue(key, el)?.additionalOptions?.disable_Toggle,
+            )
+            .some(el => values[key][el][`is${el}`] === "Y"),
         }),
         {},
       );
@@ -199,7 +243,7 @@ if(name === "Medical Details"){
   //         schema[key].forEach(el => {
   //          if (!Array.isArray(el)) {
   //           if(el.additionalOptions.notAllowedIf === "N") {
-          
+
   //             tempGroupVal[el.name] = {
   //               [`is${el.name}`]: "Y",
   //               members: {},
@@ -212,7 +256,7 @@ if(name === "Medical Details"){
   //               isValid: true,
   //             };
   //           }
-              
+
   //           }
   //         });
   //         customizedVal[key] = {
@@ -233,7 +277,7 @@ if(name === "Medical Details"){
     canProceed,
     yesSelected,
     preparingMQ,
-    getMUStatus
+    getMUStatus,
   };
 };
 

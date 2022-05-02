@@ -86,9 +86,9 @@ const useFormBuilder = (
   };
 
   const updateValues = (multipleValues = {}, action) => {
+    console.log("sdfgdzfgvdf 9", multipleValues, action);
 
     if (action === "SAVE_AS_IT_IS") {
-    console.log("sdfgdzfgvdf 9", multipleValues, action);
 
       setValues(multipleValues);
       fetchValues(() => multipleValues);

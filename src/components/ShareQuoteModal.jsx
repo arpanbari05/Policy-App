@@ -171,6 +171,7 @@ const ShareQuoteModal = ({
           float={float}
         />
       )}
+      
       {show && (
         <Modal
           show={show}
