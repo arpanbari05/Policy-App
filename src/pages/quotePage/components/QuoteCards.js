@@ -7,7 +7,7 @@ import ProductDetailsModal from "../../../components/ProductDetails/ProductDetai
 import { PremiumButton } from "../../../components";
 import { ClickSound, numberToDigitWord } from "../../../utils/helper";
 import { uniq } from "lodash";
-import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
@@ -539,7 +539,7 @@ function QuoteCard({
                   `}
                 >
                   {isShare ? (
-                    <IoCheckmarkCircleSharp
+                    <IoIosCheckmarkCircle
                       color={colors.primary_color}
                       style={{ marginRight: 3 }}
                       size={20}
@@ -602,7 +602,7 @@ function QuoteCard({
                   `}
                 > */}
                   {isCompareQuote ? (
-                    <IoCheckmarkCircleSharp
+                    <IoIosCheckmarkCircle
                       color={colors.primary_color}
                       style={{ marginRight: 3 }}
                       size={20}
