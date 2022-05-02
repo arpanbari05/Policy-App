@@ -1,5 +1,5 @@
 import _, { range } from "lodash";
-import clickSound from "../assets/audio/button-click.wav";
+import clickSound from "../assets/audio/button-click.mp3";
 
 // all on specific urls
 export const allowOnWebsites = (sites = []) => {
