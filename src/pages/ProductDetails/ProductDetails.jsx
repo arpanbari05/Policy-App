@@ -32,12 +32,13 @@ import GoBackButton from "../../components/GoBackButton";
 import { useGetEnquiriesQuery, useUpdateEnquiryMutation } from "../../api/api";
 import { useDispatch } from "react-redux";
 import { setPosPopup } from "../quotePage/quote.slice";
-
+import ShareQuoteModal from "../../components/ShareQuoteModal";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
 
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
+
   const { pos_popup } = useSelector(({ quotePage }) => quotePage);
 
   const {
@@ -187,6 +188,20 @@ const ProductDetails = () => {
             >
               <GoBackButton
                 backPath={`/quotes/${groupCode}?enquiryId=${enquiryId}`}
+              />
+            </div>
+          )}
+
+          {subJourneyType === "renewal" && (
+            <div
+              css={`
+                margin-right: 10px;
+              `}
+            >
+              <ShareQuoteModal
+                insurersFor={[cartEntry?.product?.company?.alias]}
+                stage="RENEWAL_PRODUCT_DETAILS"
+                sum_insured={sum_insured}
               />
             </div>
           )}

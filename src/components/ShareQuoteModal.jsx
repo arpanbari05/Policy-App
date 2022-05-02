@@ -130,7 +130,7 @@ const ShareQuoteModal = ({
       const image = id && (await printImageById(id));
       setImageSend(image);
     };
-    if (["PROPOSAL", "PROPOSAL_SUMMARY", "COMPARE"].includes(stage)) setStep(2);
+    if (["PROPOSAL", "PROPOSAL_SUMMARY", "COMPARE" , "RENEWAL_PRODUCT_DETAILS"].includes(stage)) setStep(2);
     getImage();
   }, []);
 
@@ -568,7 +568,9 @@ function ShareStep2({
   const [emailStatus, setEmailStatus] = useState({ status: 0, message: null });
 
   const [disableEmail, setDisableEmail] = useState(false);
+  
   const [disableSMS, setDisableSMS] = useState(false);
+  
   const [disableWhatsapp, setDisableWhatsapp] = useState(false);
 
   const sendRef = useRef();
