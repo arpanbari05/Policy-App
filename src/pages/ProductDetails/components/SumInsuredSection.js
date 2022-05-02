@@ -13,19 +13,17 @@ function SumInsuredSection({ cartEntry }) {
 
   const currentSumInsuredIndex = available_sum_insureds?.indexOf(+sum_insured);
 
-  const nextTwoSumInsureds = React.useMemo(
+  const currentAndNextTwoSumInsureds = React.useMemo(
     () =>
       available_sum_insureds?.slice(
-        currentSumInsuredIndex + 1,
+        currentSumInsuredIndex,
         currentSumInsuredIndex + 3,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
-  const displaySumInsureds = [+sum_insured, ...nextTwoSumInsureds];
-
-  if (!displaySumInsureds?.length) return null;
+  if (!currentAndNextTwoSumInsureds?.length) return null;
 
   return (
     <FeatureSection heading="Upgrade Sum Insured">
@@ -38,7 +36,7 @@ function SumInsuredSection({ cartEntry }) {
             }
           `}
         >
-          {displaySumInsureds.map(sumInsured => (
+          {currentAndNextTwoSumInsureds.map(sumInsured => (
             <SumInsuredOption
               sum_insured={sumInsured}
               cartEntry={cartEntry}
