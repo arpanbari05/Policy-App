@@ -725,6 +725,8 @@ const RevisedPopupFooter = ({ revisedPremiumPopupUtilityObject, onClose }) => {
 
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
 
+  const { subJourneyType } = useFrontendBoot();
+
   const isProductDetailsPage =
     window.location.pathname.startsWith("/productdetails");
 
@@ -821,15 +823,17 @@ const RevisedPopupFooter = ({ revisedPremiumPopupUtilityObject, onClose }) => {
       {revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart && (
         <>
           <DetailsWrap>
-            <Button
-              className="w-100"
-              css={`
-                border-radius: 9px;
-              `}
-              onClick={viewQuotesHandler}
-            >
-              View Quotes
-            </Button>
+            {subJourneyType !== "renewal" && (
+              <Button
+                className="w-100"
+                css={`
+                  border-radius: 9px;
+                `}
+                onClick={viewQuotesHandler}
+              >
+                View Quotes
+              </Button>
+            )}
           </DetailsWrap>
           {isProductDetailsPage && (
             <DetailsWrap>
