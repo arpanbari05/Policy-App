@@ -714,7 +714,8 @@ export function useUpdateMembers() {
           ? members?.length === 1
             ? "I"
             : getSelectedFilter("plantype")?.code === "I"
-            ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+            ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type ||
+              "F"
             : getSelectedFilter("plantype")?.code
           : "I",
       pincode: enquiryData?.input?.pincode,
