@@ -16,7 +16,7 @@ import assistant from "../../assets/images/call-center-service.png";
 import { QuotesLoader } from "./components";
 import TalkToUsModal from "../../components/TalkToUs";
 import { useFrontendBoot, useSortBy } from "../../customHooks/index";
-import { mergeQuotes } from "../../utils/helper";
+import { ClickSound, mergeQuotes } from "../../utils/helper";
 import "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
 import { replaceShareQuotes } from "./quote.slice";
@@ -278,7 +278,10 @@ function AssistanceCard(props) {
           background-color: #fff;
           font-weight: 900;
         `}
-        onClick={() => setShowTalk(true)}
+        onClick={() => {
+          ClickSound();
+          setShowTalk(true);
+        }}
       >
         Talk to us
       </button>

@@ -11,6 +11,7 @@ import { useFrontendBoot, useTheme } from "../../../../customHooks/index.js";
 import { Filter, FilterHead } from "./index.js";
 import { IoRadioButtonOn } from "react-icons/io5";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
+import { ClickSound } from "../../../../utils/helper.js";
 
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
@@ -46,6 +47,7 @@ const FilterModal = ({ show, onClose }) => {
   }, [selectedPolicyTypeFilter]);
 
   const handleChange = (code, displayName) => {
+    ClickSound();
     if (displayName) {
       setselectedPlanType({ code, displayName });
     }

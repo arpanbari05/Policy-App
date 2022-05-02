@@ -30,7 +30,7 @@ import { useRider, useCart } from "../../../customHooks/index";
 import { Button } from "../../../components";
 import { useEffect } from "react";
 import "./ReviewCardPopup.scss";
-import { GrFormClose } from "react-icons/gr";
+import { FaTimes } from "react-icons/fa";
 
 const tabletMedia = `@media (min-width: 768px) and (max-width: 900px)`;
 
@@ -92,7 +92,7 @@ export function PopUpWithCloseButton({ title, onClose = () => {}, children }) {
             {title}
           </ModalTitle>
         )}
-        <GrFormClose onClick={handleClose} size="25px" />
+        <FaTimes onClick={handleClose} style={{ cursor: "pointer" }} />
       </Modal.Header>
       <Modal.Body
         style={{ borderRadius: "12px" }}

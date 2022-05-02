@@ -10,6 +10,7 @@ import "styled-components/macro";
 import { Filter, FilterHead } from "./index.js";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 import { IoRadioButtonOn } from "react-icons/io5";
+import { ClickSound } from "../../../../utils/helper.js";
 
 const DESCRIPTIONS = {
   arogya_sanjeevani:
@@ -64,6 +65,7 @@ function FilterModal({ onClose, ...props }) {
   );
 
   const handleChange = baseplantype => {
+    ClickSound();
     setSelectedPlanType(baseplantype);
   };
 

@@ -10,6 +10,7 @@ import SecureLS from "secure-ls";
 import "./navDropdown.scss";
 import { numberToDigitWord } from "../../../../utils/helper";
 import { deleteCartItem } from "../../../../modules/QuotesPage/quotePage.slice";
+import { FaTimes } from "react-icons/fa";
 
 const NavDropdown = ({ children, customClassName }) => {
   const ls = new SecureLS();
@@ -92,7 +93,9 @@ const NavDropdown = ({ children, customClassName }) => {
                     className="btn close_modal_cart btn-white border_radius_modal"
                     data-dismiss="modal"
                   >
-                    <i className="fa fa-close"></i>
+                    <FaTimes
+                      style={{ cursor: "pointer", fontWeight: "bold" }}
+                    ></FaTimes>
                   </button>
                 </div>
 

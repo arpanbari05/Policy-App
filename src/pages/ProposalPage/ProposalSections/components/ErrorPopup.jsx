@@ -4,6 +4,7 @@ import { setShowBMI } from "../ProposalSections.slice";
 import { setShowPlanNotAvail } from "../ProposalSections.slice";
 import { useHistory } from "react-router";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
+import { FaTimes } from "react-icons/fa";
 
 import {
   ButtonWrapper,
@@ -13,20 +14,29 @@ import {
   Container,
   ViewQuotesWrapper,
 } from "./BMI";
+import { ClickSound } from "../../../../utils/helper";
 
 const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
-  const {showErrorPopup} = useSelector(({proposalPage}) => proposalPage);
+  const { showErrorPopup } = useSelector(({ proposalPage }) => proposalPage);
   return (
     <PopupWrapper>
       <Popup>
         {/* <CloseButton
             onClick={handleClose}
           > */}
-        <i
+        {/* <i
           style={{ margin: "10px 10px 0 0", cursor: "pointer" }}
           class="fas fa-times"
           onClick={handleClose}
-        ></i>
+        ></i> */}
+        <FaTimes
+          onClick={handleClose}
+          style={{
+            margin: "10px 10px 0 0",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+        ></FaTimes>
         {/* </CloseButton> */}
         <Container>
           {head && <span>{head}</span>}
@@ -35,10 +45,15 @@ const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
               Please choose a different plan/insurer */}
           {msg && <p>{msg}</p>}
           <ButtonWrapper>
-            <button className="btn" onClick={() => {
-              handleClose();
-              showErrorPopup?.onCloseCallBack && showErrorPopup.onCloseCallBack();
-            }}>
+            <button
+              className="btn"
+              onClick={() => {
+                ClickSound();
+                handleClose();
+                showErrorPopup?.onCloseCallBack &&
+                  showErrorPopup.onCloseCallBack();
+              }}
+            >
               OK
             </button>
           </ButtonWrapper>

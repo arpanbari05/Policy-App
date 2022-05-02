@@ -8,6 +8,7 @@ import "styled-components/macro";
 import { Filter, FilterHead } from ".";
 import { RiCheckboxFill } from "react-icons/ri";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
+import { ClickSound } from "../../../../utils/helper";
 
 function FilterModal({ onClose, ...props }) {
   const { colors } = useTheme();
@@ -42,6 +43,7 @@ function FilterModal({ onClose, ...props }) {
     );
 
   const handleChange = (company, checked) => {
+    ClickSound();
     if (checked) {
       removeInsurer(company);
       return;

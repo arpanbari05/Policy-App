@@ -10,6 +10,7 @@ import {
 import { RiShareForwardFill } from "react-icons/ri";
 import useOutsiteClick from "../../../customHooks/useOutsideClick";
 import { IoShareSocialSharp } from "react-icons/io5";
+import { ClickSound } from "../../../utils/helper";
 
 const SHARE_OPTIONS = [
   // {
@@ -27,7 +28,7 @@ const SHARE_OPTIONS = [
 ];
 
 const Sharebutton = ({
-  onClick = () => {},
+  onClick: onClickButton = () => {},
   label,
   shareQuotes,
   float,
@@ -41,6 +42,11 @@ const Sharebutton = ({
   const [showMenu, setShowMenu] = useState(false);
   useOutsiteClick(selectRef, () => setShowMenu(false));
   const primary_color = mobile ? "#fff" : colors?.primary_color;
+
+  const onClick = () => {
+    ClickSound();
+    onClickButton();
+  };
 
   const selectStyles = {
     control: provided => ({
@@ -107,7 +113,10 @@ const Sharebutton = ({
     <>
       <ShareButton
         ref={selectRef}
-        onClick={() => setShowMenu(true)}
+        onClick={() => {
+          ClickSound();
+          setShowMenu(true);
+        }}
         color={primary_color}
       >
         <RiShareForwardFill color={primary_color} />
@@ -118,7 +127,10 @@ const Sharebutton = ({
         placeholder="Share Quotes"
         value={shareType.value && shareType}
         options={SHARE_OPTIONS}
-        onChange={onChangeHandler}
+        onChange={opt => {
+          ClickSound();
+          onChangeHandler(opt);
+        }}
         menuIsOpen={showMenu}
         theme={theme => ({
           ...theme,

@@ -6,18 +6,25 @@ import { mobile } from "../utils/mediaQueries";
 import { useForm } from "react-hook-form";
 import { Modal } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import {
   useFrontendBoot,
   useNameInput,
   useNumberInput,
   useEmailInput,
+  useTheme,
 } from "../customHooks/index";
 import { useGetEnquiriesQuery } from "../api/api";
 import { useUrlQueries } from "../customHooks/useUrlQuery";
 import validateInput from "../utils/inputPageUtils";
 import { shareViaEmailApi } from "./ShareQuoteModal";
+import {
+  HeadingPrimary,
+  HeadingSecondary,
+  SecondaryFont,
+} from "../styles/typography";
 
-const TalkToUsContent = () => {
+const TalkToUsContent = ({ setSuccess }) => {
   const searchQueries = useUrlQueries();
   const { data } = useFrontendBoot();
   const { data: enquiryData } = useGetEnquiriesQuery(undefined, {
@@ -32,7 +39,6 @@ const TalkToUsContent = () => {
     email: enquiryData.data.email,
     mobile: enquiryData.data.mobile,
   };
-  const [success, setSuccess] = useState(false);
   const [loader, setLoader] = useState(false);
   const [emailError, setEmailErrors] = useState({});
   const [mobileError, setMobileErrors] = useState({});
@@ -149,6 +155,8 @@ const TalkToUsContent = () => {
 };
 
 const Talktouspopup = ({ show, onClose }) => {
+  const [success, setSuccess] = useState(false);
+
   return (
     <Modal
       centered
@@ -164,9 +172,11 @@ const Talktouspopup = ({ show, onClose }) => {
       }}
       className={`noselect`}
       css={`
-        & .modal-content {
+        & > .modal-content {
           max-width: 90%;
           width: 90% !important;
+          border: none !important;
+          overflow: hidden !important;
         }
         @media (min-width: 990px) {
           .modal-dialog {
@@ -199,35 +209,48 @@ const Talktouspopup = ({ show, onClose }) => {
         }
       `}
     >
-      <Modal.Header
-        // closeButton
-        style={{
-          borderBottomColor: "#fff",
-          padding: `10px 10px 0 0`,
-          borderTopLeftRadius: "14px",
-          borderToprightRadius: "14px",
-          borderBottomRightRadius: "0px",
-          position: "relative",
-          borderBottomLeftRadius: "0px",
-        }}
-        css={`
-          @media (max-width: 400px) {
-            padding: 0.5rem;
-          }
-        `}
-      >
-        <button
-          onClick={onClose}
-          style={{
-            margin: "10px 10px 0 auto",
+      {!success ? (
+        <>
+          <Modal.Header
+            // closeButton
+            style={{
+              borderBottomColor: "#fff",
+              padding: `10px 10px 0 0`,
+              borderTopLeftRadius: "14px",
+              borderToprightRadius: "14px",
+              borderBottomRightRadius: "0px",
+              position: "relative",
+              borderBottomLeftRadius: "0px",
+            }}
+            css={`
+              @media (max-width: 400px) {
+                padding: 0.5rem;
+              }
+            `}
+          >
+            <button
+              onClick={onClose}
+              style={{
+                margin: "10px 10px 0 auto",
+              }}
+            >
+              <FaTimes />
+            </button>
+          </Modal.Header>
+          <div style={{ padding: "0 1rem 1rem 1rem" }}>
+            <TalkToUsContent setSuccess={setSuccess} />
+          </div>
+        </>
+      ) : (
+        <Success
+          title={"Details recieved"}
+          subtitle={`We will get in touch with you supersoon`}
+          onClose={() => {
+            setSuccess(false);
+            onClose();
           }}
-        >
-          <FaTimes />
-        </button>
-      </Modal.Header>
-      <div style={{ padding: "0 1rem 1rem 1rem" }}>
-        <TalkToUsContent />
-      </div>
+        />
+      )}
     </Modal>
   );
 };
@@ -243,6 +266,44 @@ const Divider = () => {
 };
 
 export default Talktouspopup;
+
+function Success({ title, subtitle, onClose }) {
+  const { colors } = useTheme();
+
+  return (
+    <SuccessWrapper>
+      <Banner color={colors.primary_color}>
+        <IconWrapper>
+          <IoIosCheckmarkCircleOutline
+            size={120}
+            color={colors.primary_color}
+          />
+        </IconWrapper>
+      </Banner>
+      <ContentWrapper>
+        <HeadingPrimary>{title}</HeadingPrimary>
+        <SecondaryFont
+          css={`
+            color: #777;
+          `}
+        >
+          {subtitle}
+        </SecondaryFont>
+
+        <Button
+          css={`
+            margin-top: 20px;
+            width: 70px;
+            border-radius: 7px;
+          `}
+          onClick={onClose}
+        >
+          OK
+        </Button>
+      </ContentWrapper>
+    </SuccessWrapper>
+  );
+}
 
 const Heading = styled.div`
   font-size: 24px;
@@ -307,4 +368,39 @@ const ErrorMessage = styled.p`
   width: 100%;
   margin: 0;
   text-align: left;
+`;
+
+const Banner = styled.div`
+  width: 100%;
+  height: 40%;
+  border-radius: 0.3rem 0.3rem 0 0;
+  background: ${props => props.color};
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+`;
+
+const IconWrapper = styled.span`
+  width: 110px;
+  height: 110px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transform: translateY(50%);
+`;
+
+const ContentWrapper = styled.div`
+  padding-top: 60px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const SuccessWrapper = styled.div`
+  height: calc(580px);
 `;

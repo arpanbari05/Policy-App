@@ -9,6 +9,7 @@ import { Filter, FilterHead } from ".";
 import { tenures } from "../../data";
 import { IoRadioButtonOn } from "react-icons/io5";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
+import { ClickSound } from "../../../../utils/helper";
 
 function FilterModal({ onClose, ...props }) {
   const { colors } = useTheme();
@@ -19,7 +20,10 @@ function FilterModal({ onClose, ...props }) {
     getSelectedFilter("tenure"),
   );
 
-  const handleChange = tenure => setSelectedTenure(tenure);
+  const handleChange = tenure => {
+    ClickSound();
+    setSelectedTenure(tenure);
+  };
 
   const isSelected = tenure => tenure.code === selectedTenure.code;
 

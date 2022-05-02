@@ -22,6 +22,7 @@ import { setShowEditMembers } from "../../quote.slice";
 import { useGetEnquiriesQuery } from "../../../../api/api";
 import { useUpdateEnquiry } from "../../../../customHooks/index";
 import { PrimaryFontBold } from "../../../../styles/typography";
+import { ClickSound } from "../../../../utils/helper";
 
 export function EditMembersModal({
   children,
@@ -131,6 +132,7 @@ const EditMemberFilter = ({ redirectToQuotes = true }) => {
   const { showEditMembers: show } = useSelector(({ quotePage }) => quotePage);
 
   const onEditMemberClick = () => {
+    ClickSound();
     dispatch(setShowEditMembers(true));
     dispatch(setEditStep(1));
   };

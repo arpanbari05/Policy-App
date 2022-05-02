@@ -4,6 +4,7 @@ import { useTheme, useToggle } from "../../../../customHooks";
 import React, { useRef } from "react";
 import { IoRadioButtonOn } from "react-icons/io5";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
+import { ClickSound } from "../../../../utils/helper";
 
 export function FilterHead({ label, children, onClick, ...props }) {
   const handleClick = () => onClick && onClick();
@@ -61,11 +62,19 @@ export function Filter({ label, children, ...props }) {
     >
       {React.Children.map(children, child => {
         if (child.type.name === (<FilterHead />).type.name)
-          return React.cloneElement(child, { onClick: modalToggle.on });
+          return React.cloneElement(child, {
+            onClick: () => {
+              ClickSound();
+              modalToggle.on();
+            },
+          });
         return modalToggle.isOn
           ? React.cloneElement(child, {
               ...child.props,
-              onClose: modalToggle.off,
+              onClose: () => {
+                ClickSound();
+                modalToggle.off();
+              },
             })
           : null;
       })}
@@ -77,6 +86,7 @@ export function FilterOption({ option, checked, onChange, ...props }) {
   const target = useRef(null);
   const { colors } = useTheme();
   const handleChange = evt => {
+    ClickSound();
     if (evt.target.checked) onChange && onChange(option);
   };
 

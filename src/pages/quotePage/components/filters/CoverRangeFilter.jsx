@@ -9,7 +9,7 @@ import useUpdateFilters from "./useUpdateFilters";
 import { Filter, FilterHead } from ".";
 import { setPosPopup } from "../../quote.slice";
 import { useDispatch } from "react-redux";
-import { isSSOJourney } from "../../../../utils/helper";
+import { isSSOJourney, ClickSound } from "../../../../utils/helper";
 import { IoRadioButtonOn } from "react-icons/io5";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 
@@ -179,6 +179,7 @@ function CoverOption({ cover, checked, onChange, ...props }) {
   const { colors } = useTheme();
 
   const handleChange = evt => {
+    ClickSound();
     if (evt.target.checked) onChange && onChange(cover);
   };
 

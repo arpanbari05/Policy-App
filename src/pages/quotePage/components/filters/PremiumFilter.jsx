@@ -8,6 +8,7 @@ import { useFrontendBoot, useTheme } from "../../../../customHooks";
 import { Filter, FilterHead } from ".";
 import { IoRadioButtonOn } from "react-icons/io5";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
+import { ClickSound } from "../../../../utils/helper";
 
 function PremiumFilterModal({ onClose, ...props }) {
   const {
@@ -25,6 +26,7 @@ function PremiumFilterModal({ onClose, ...props }) {
   const { updateFilters } = useUpdateFilters();
 
   const handleChange = premium => {
+    ClickSound();
     setSelectedPremiumFilter(premium);
   };
 

@@ -22,6 +22,9 @@ import Sharequotespopup from "../pages/quotePage/components/ShareQuotesPopUp";
 import { images } from "../assets/logos/logo";
 import { mobile } from "../utils/mediaQueries";
 import HttpClient from "../api/httpClient";
+import { FaTimes } from "react-icons/fa";
+import { IoIosShareAlt } from "react-icons/io";
+import { MdOutlineCheckCircle } from "react-icons/md";
 
 export const shareViaEmailApi = (data, company_alias) =>
   HttpClient(`${company_alias}/communications`, {
@@ -40,7 +43,8 @@ const printImageById = async id => {
   return imgData.split(",")[1];
 };
 
-const ShareCTA = ({ onClick, loader, disabled }) => {
+const ShareCTA = ({ onClick, loader, disabled = false }) => {
+  const { colors } = useTheme();
   return (
     <Button
       loader={loader}
@@ -55,6 +59,11 @@ const ShareCTA = ({ onClick, loader, disabled }) => {
           min-width: 50px;
           max-width: 50px;
         }
+
+        &:disabled {
+          background: ${colors.primary_color} !important;
+          color: #fff !important;
+        }
       `}
     >
       <span
@@ -65,7 +74,14 @@ const ShareCTA = ({ onClick, loader, disabled }) => {
           }
         `}
       >
-        Share
+        {disabled ? (
+          <div className="d-flex gap-1 align-items-center justify-content-center">
+            <MdOutlineCheckCircle size={20} />
+            <span>Shared</span>
+          </div>
+        ) : (
+          <>Share</>
+        )}
       </span>
       <span
         css={`
@@ -76,7 +92,7 @@ const ShareCTA = ({ onClick, loader, disabled }) => {
           }
         `}
       >
-        <i className="fas fa-share"></i>{" "}
+        <IoIosShareAlt></IoIosShareAlt>{" "}
       </span>
     </Button>
   );
@@ -213,11 +229,10 @@ const ShareQuoteModal = ({
                 ? "Choose the quotes to share"
                 : "Hi, please choose the way you wish to share the quotes."}
             </Modal.Title>
-            <i
+            <FaTimes
               onClick={handleClose}
-              style={{ cursor: "pointer" }}
-              className="fas fa-times"
-            ></i>
+              style={{ cursor: "pointer", fontWeight: "bold" }}
+            ></FaTimes>
           </Modal.Header>
           <Modal.Body>
             {shareQuotes && shareType.value === "specific_quotes" && (

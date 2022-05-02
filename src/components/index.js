@@ -19,6 +19,7 @@ import {
 import {
   amount,
   calculateTotalPremium,
+  ClickSound,
   getDisplayPremium,
 } from "../utils/helper";
 import CartSummaryModal from "./CartSummaryModal";
@@ -202,6 +203,7 @@ export function Button({
   loader = false,
   disabled = false,
   arrow = false,
+  gray = true,
   css,
   onClick,
   loaderPrimaryColor = true,
@@ -209,6 +211,7 @@ export function Button({
 }) {
   const { colors } = useTheme();
   const handleClick = evt => {
+    ClickSound();
     if (loader || disabled) return;
     onClick && onClick(evt);
   };
@@ -567,7 +570,7 @@ export function Import({ mobile, desktop, children }) {
 
 export function BackButtonMobile({ path, css = "", ...props }) {
   const { colors } = useTheme();
-  
+
   const history = useHistory();
 
   return (
