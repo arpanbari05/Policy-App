@@ -1,6 +1,10 @@
 import { BackButtonMobile, Page } from "../../../components";
 import { GroupLinks } from "../components/UpperModifier";
-import { useFrontendBoot, useTheme } from "../../../customHooks";
+import {
+  useFrontendBoot,
+  useTheme,
+  useSortBy as useSortByHook,
+} from "../../../customHooks";
 import { BottomNavigation } from "./components";
 import { Quotes } from "./components/Quotes";
 import { QuotesLoader } from "../components";
@@ -62,7 +66,7 @@ function useSortBy(defaultSortBy = "relevance") {
 }
 
 function Main() {
-  const { default: defaultSortBy } = useSortBy();
+  const { default: defaultSortBy } = useSortByHook();
   const sortBy = useSortBy(defaultSortBy?.code);
 
   return (
