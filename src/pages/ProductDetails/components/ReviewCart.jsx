@@ -70,6 +70,7 @@ import {
 import { FaChevronDown } from "react-icons/fa";
 import Select from "react-select";
 import { QuoteCardSelect } from "../../quotePage/components/QuoteCards";
+import { images } from "../../../assets/logos/logo";
 
 const plantypes = {
   M: "Multi Individual",
@@ -912,7 +913,6 @@ function BasePlanDetails({
   const cartEntry = getCartEntry(parseInt(groupCode));
 
   const {
-    icLogoSrc,
     plantype,
     sum_insured,
     deductible,
@@ -951,7 +951,7 @@ function BasePlanDetails({
             css={`
               height: 45px;
             `}
-            src={icLogoSrc}
+            src={images[alias]}
             alt={alias}
           />
         </div>
