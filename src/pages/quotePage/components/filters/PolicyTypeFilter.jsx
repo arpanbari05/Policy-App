@@ -9,6 +9,8 @@ import useUpdateFilters from "./useUpdateFilters.js";
 import useFilters from "./useFilters.js";
 import { useFrontendBoot, useTheme } from "../../../../customHooks/index.js";
 import { Filter, FilterHead } from "./index.js";
+import { IoRadioButtonOn } from "react-icons/io5";
+import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 
 const renderTooltipDesc = ({ props, desc }) => (
   <Tooltip {...props}>{desc}</Tooltip>
@@ -108,9 +110,18 @@ const FilterModal = ({ show, onClose }) => {
                         <input
                           type="radio"
                           id={option.code}
+                          className="visually-hidden"
                           name="policyType"
                           checked={selectedPlanType.code === option.code}
                         />
+                        {selectedPlanType.code === option.code ? (
+                          <IoRadioButtonOn
+                            size={25}
+                            color={colors.primary_color}
+                          />
+                        ) : (
+                          <RiCheckboxBlankCircleLine size={25} color="#aaa" />
+                        )}
                       </li>
                     ) : (
                       <></>
