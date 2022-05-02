@@ -41,15 +41,17 @@ import { mobile } from "../../utils/mediaQueries";
 import { BackButtonMobile } from "../../components";
 import { TraceId } from "../../components/Navbar";
 import EditMemberFilter from "../quotePage/components/filters/EditMemberFilter";
-
 import dummy from "./dumySchema";
 /* ===============================test================================= */
 
 /* ===============================test================================= */
 const ProposalPage = () => {
   const [prepairingPtoposal, setPrepairingProposal] = useState(false);
+
   let blockTabSwitch = false;
+
   const setBlockTabSwitch = val => (blockTabSwitch = val);
+
   const [memberGroups, setMemberGroups] = useState([]);
 
   const [bmiFailBlock, setBmiFailBlock] = useState(false);
@@ -452,36 +454,6 @@ const ProposalPage = () => {
           />
         }
       >
-        {/* <MobileHeader
-          css={`
-            justify-content: space-between;
-            background: ${PrimaryColor};
-          `}
-        >
-          <Link
-            to={getUrlWithEnquirySearch(
-              `/productdetails/${Math.max(...memberGroups)}`,
-            )}
-            // onClick={() => {
-            //   history.push({ pathname: getUrlWithEnquirySearch("/proposal") });
-            // }}
-          >
-            <MobileHeaderText>
-              <i
-                class="fa fa-arrow-circle-left"
-                style={{ marginRight: "10px", cursor: "pointer" }}
-              ></i>{" "}
-              Proposal Form
-            </MobileHeaderText>
-          </Link>
-          <ShareQuoteModal
-            mobile
-            insurersFor={cartEntries.map(cart => cart?.product?.company?.alias)}
-            stage="PROPOSAL"
-            sum_insured={sum_insured}
-          />
-        </MobileHeader> */}
-
         <div
           className="container-fluid mt-20 pb-100"
           css={`
@@ -746,8 +718,8 @@ const ProposalPage = () => {
                   head: "",
                   msg: "",
                 }),
-              )
-              showErrorPopup?.handleClose && showErrorPopup?.handleClose(); 
+              );
+              showErrorPopup?.handleClose && showErrorPopup?.handleClose();
             }}
           />
         )}
