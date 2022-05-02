@@ -15,7 +15,11 @@ import { useUrlQueries } from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
 import "styled-components/macro";
 import { useHistory } from "react-router-dom";
-import { allowOnWebsites, capitalize } from "../../../utils/helper";
+import {
+  allowOnWebsites,
+  capitalize,
+  inputEnquiryVisibility,
+} from "../../../utils/helper";
 import * as mq from "../../../utils/mediaQueries";
 import validateInput, {
   isEnquiryOptional,
@@ -23,6 +27,7 @@ import validateInput, {
 import styled from "styled-components";
 
 const BasicDetailsForm = ({ posContent, ...props }) => {
+  const b2b_enquiry_visibility = ["name", "email", "mobile", "gender"];
   const originURl = window.location.origin;
   let inputData = {
     gender: "M",
@@ -143,66 +148,68 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
               }
             `}
           >
-            <div
-              css={`
-                width: 100%;
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                align-items: center;
-                margin-bottom: 15px;
-                margin-top: 13px;
-                font-weight: 900;
-                gap: 1rem;
-                & img {
-                  height: 40px;
-                }
-              `}
-            >
-              <GenderWrapper
-                active={gender === "M"}
-                name="male-input"
-                color={colors.primary_color}
-                onClick={() => setGender("M")}
+            {inputEnquiryVisibility(settings, "gender") && (
+              <div
+                css={`
+                  width: 100%;
+                  display: grid;
+                  grid-template-columns: repeat(2, 1fr);
+                  align-items: center;
+                  margin-bottom: 15px;
+                  margin-top: 13px;
+                  font-weight: 900;
+                  gap: 1rem;
+                  & img {
+                    height: 40px;
+                  }
+                `}
               >
-                <img
-                  src={boy}
-                  alt={"girl"}
-                  css={`
-                    filter: ${gender !== "M" && "grayscale(100%)"};
-                  `}
-                />
-                <span
-                  css={`
-                    color: ${gender === "M" && colors.primary_color};
-                    margin: 0 5px;
-                  `}
+                <GenderWrapper
+                  active={gender === "M"}
+                  name="male-input"
+                  color={colors.primary_color}
+                  onClick={() => setGender("M")}
                 >
-                  Male
-                </span>
-              </GenderWrapper>
-              <GenderWrapper
-                name="female-input"
-                active={gender === "F"}
-                color={colors.primary_color}
-                onClick={() => setGender("F")}
-              >
-                <img
-                  src={girl}
-                  alt={"girl"}
-                  css={`
-                    filter: ${gender !== "F" && "grayscale(100%)"};
-                    margin: 0 5px;
-                  `}
-                />
-                <span
-                  css={`
-                    color: ${gender === "F" && colors.primary_color};
-                  `}
+                  <img
+                    src={boy}
+                    alt={"girl"}
+                    css={`
+                      filter: ${gender !== "M" && "grayscale(100%)"};
+                    `}
+                  />
+                  <span
+                    css={`
+                      color: ${gender === "M" && colors.primary_color};
+                      margin: 0 5px;
+                    `}
+                  >
+                    Male
+                  </span>
+                </GenderWrapper>
+                <GenderWrapper
+                  name="female-input"
+                  active={gender === "F"}
+                  color={colors.primary_color}
+                  onClick={() => setGender("F")}
                 >
-                  Female
-                </span>
-              </GenderWrapper>
-            </div>
+                  <img
+                    src={girl}
+                    alt={"girl"}
+                    css={`
+                      filter: ${gender !== "F" && "grayscale(100%)"};
+                      margin: 0 5px;
+                    `}
+                  />
+                  <span
+                    css={`
+                      color: ${gender === "F" && colors.primary_color};
+                    `}
+                  >
+                    Female
+                  </span>
+                </GenderWrapper>
+              </div>
+            )}
             <div
               className="d-flex align-items-center justify-content-between w-100"
               css={`
@@ -216,53 +223,59 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
                 }
               `}
             >
-              <div
-                css={`
-                  height: 100%;
-                  @media (max-width: 770px) {
-                    width: 100%;
-                  }
-                `}
-              >
-                <TextInput2
-                  label="Full Name"
-                  name="name"
-                  type="text"
-                  autoFocus
-                  {...fullNameInput}
-                  maxLength={60}
-                />
-                <ErrorMessage>{fullNameError.message}</ErrorMessage>
-              </div>
+              {inputEnquiryVisibility(settings, "name") && (
+                <div
+                  css={`
+                    height: 100%;
+                    @media (max-width: 770px) {
+                      width: 100%;
+                    }
+                  `}
+                >
+                  <TextInput2
+                    label="Full Name"
+                    name="name"
+                    type="text"
+                    autoFocus
+                    {...fullNameInput}
+                    maxLength={60}
+                  />
+                  <ErrorMessage>{fullNameError.message}</ErrorMessage>
+                </div>
+              )}
 
-              <div
-                css={`
-                  height: 100%;
-                  @media (max-width: 770px) {
-                    width: 100%;
-                  }
-                `}
-              >
+              {inputEnquiryVisibility(settings, "mobile") && (
+                <div
+                  css={`
+                    height: 100%;
+                    @media (max-width: 770px) {
+                      width: 100%;
+                    }
+                  `}
+                >
+                  <TextInput2
+                    label="Mobile No."
+                    name="mobile"
+                    type="tel"
+                    maxLength={10}
+                    {...mobileInput}
+                  />
+                  <ErrorMessage>{mobileError.message}</ErrorMessage>
+                </div>
+              )}
+            </div>
+            {inputEnquiryVisibility(settings, "email") && (
+              <div className="w-100">
                 <TextInput2
-                  label="Mobile No."
-                  name="mobile"
-                  type="tel"
-                  maxLength={10}
-                  {...mobileInput}
+                  type="email"
+                  name="email"
+                  label="Email Id"
+                  maxLength={50}
+                  {...emailInput}
                 />
-                <ErrorMessage>{mobileError.message}</ErrorMessage>
+                <ErrorMessage>{emailError.message}</ErrorMessage>
               </div>
-            </div>
-            <div className="w-100">
-              <TextInput2
-                type="email"
-                name="email"
-                label="Email Id"
-                maxLength={50}
-                {...emailInput}
-              />
-              <ErrorMessage>{emailError.message}</ErrorMessage>
-            </div>
+            )}
           </div>
           {tenant.alias === "fyntune" ? (
             <div>

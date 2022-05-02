@@ -20,7 +20,7 @@ import { RiCheckboxBlankCircleLine, RiCheckboxFill } from "react-icons/ri";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 import useWindowSize from "../../../../customHooks/useWindowSize";
 import { useGetEnquiriesQuery } from "../../../../api/api";
-import { isSSOJourney } from "../../../../utils/helper";
+import { ClickSound, isSSOJourney } from "../../../../utils/helper";
 import { useDispatch } from "react-redux";
 import { setPosPopup } from "../../quote.slice";
 
@@ -466,6 +466,7 @@ function FilterOption({
   const { colors } = useTheme();
 
   const handleChange = () => {
+    ClickSound();
     onChange && onChange(option, !checked);
   };
 

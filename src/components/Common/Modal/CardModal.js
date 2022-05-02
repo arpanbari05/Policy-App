@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Container } from "react-bootstrap";
-import { IoClose } from "react-icons/io5";
+import { FaTimes } from "react-icons/fa";
 import styled from "styled-components";
 import "styled-components/macro";
 import StyledButton from "../../StyledButton";
@@ -118,11 +118,10 @@ const CardModal = ({
             styledCss={`margin-right: 15px !important; height: 58px;`}
           />
         )}
-        <i
+        <FaTimes
           onClick={handleClose}
           style={{ cursor: "pointer", fontWeight: "bold" }}
-          class="fas fa-times"
-        ></i>
+        ></FaTimes>
       </Modal.Header>
       {/* <CloseButton
         type="button"

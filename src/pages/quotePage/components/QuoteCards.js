@@ -5,9 +5,9 @@ import "styled-components/macro";
 import { useCompanies, useTheme, useToggle } from "../../../customHooks";
 import ProductDetailsModal from "../../../components/ProductDetails/ProductDetailsModal";
 import { PremiumButton } from "../../../components";
-import { numberToDigitWord } from "../../../utils/helper";
+import { ClickSound, numberToDigitWord } from "../../../utils/helper";
 import { uniq } from "lodash";
-import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
@@ -127,6 +127,7 @@ function QuoteCards({
               font-size: 11px;
             `}
             onClick={() => {
+              ClickSound();
               setShow(!show);
             }}
           >
@@ -216,23 +217,27 @@ function QuoteCard({
   const { logo: logoSrc } = getCompany(quote?.company_alias);
 
   const handleSumInsuredChange = evt => {
+    ClickSound();
     const { value } = evt;
 
     setSelectedSumInsured(parseInt(value));
   };
 
   const handleDeductibleChange = evt => {
+    ClickSound();
     const { value } = evt;
 
     setSelectedDeductible(parseInt(value));
   };
 
   const handleCompareChange = evt => {
+    ClickSound();
     const { checked } = evt.target;
     onChange && onChange({ checked, quote });
   };
 
   const handleShareQuoteChange = evt => {
+    ClickSound();
     const { checked } = evt.target;
     if (checked) {
       dispatch(setQuotesToShare(quotes));
@@ -334,6 +339,7 @@ function QuoteCard({
           <SecondaryFont
             as={"button"}
             onClick={() => {
+              ClickSound();
               productDetailsModal.on();
               setdefaultActiveKey("plan-details");
             }}
@@ -374,6 +380,7 @@ function QuoteCard({
               feature={feature}
               icon={<IoIosArrowForward />}
               onNavigate={() => {
+                ClickSound();
                 productDetailsModal.on();
                 setdefaultActiveKey("cashless-hospitals");
               }}
@@ -532,7 +539,7 @@ function QuoteCard({
                   `}
                 >
                   {isShare ? (
-                    <IoCheckmarkCircleSharp
+                    <IoIosCheckmarkCircle
                       color={colors.primary_color}
                       style={{ marginRight: 3 }}
                       size={20}
@@ -595,7 +602,7 @@ function QuoteCard({
                   `}
                 > */}
                   {isCompareQuote ? (
-                    <IoCheckmarkCircleSharp
+                    <IoIosCheckmarkCircle
                       color={colors.primary_color}
                       style={{ marginRight: 3 }}
                       size={20}

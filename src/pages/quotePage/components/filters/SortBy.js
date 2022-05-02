@@ -4,6 +4,7 @@ import CustomModal1 from "../../../../components/Common/Modal/CustomModal1";
 import { useSortBy, useTheme } from "../../../../customHooks";
 import { ApplyBtn, OptionWrapper } from "./Filter.style";
 import "styled-components/macro";
+import { ClickSound } from "../../../../utils/helper";
 
 // const SORT_BY_OPTIONS = [
 //   {
@@ -24,6 +25,7 @@ function SortByModal({ onClose, initialSortBy, onChange, ...props }) {
   const [selectedSortBy, setSelectedSortBy] = useState(initialSortBy);
 
   const handleChange = premium => {
+    ClickSound();
     setSelectedSortBy(premium);
   };
 

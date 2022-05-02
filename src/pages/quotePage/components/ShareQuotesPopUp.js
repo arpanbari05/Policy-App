@@ -8,6 +8,7 @@ import {
   setShowSharePopup,
 } from "../quote.slice";
 import { RiShareForwardFill } from "react-icons/ri";
+import { ClickSound } from "../../../utils/helper";
 
 const Sharequotespopup = ({ onClick = () => {} }) => {
   const { quotesToShare, shareType, showSharePopup } = useSelector(
@@ -16,6 +17,7 @@ const Sharequotespopup = ({ onClick = () => {} }) => {
   const dispatch = useDispatch();
 
   const clearHandler = () => {
+    ClickSound();
     dispatch(replaceShareQuotes([]));
     dispatch(setShareType({}));
   };

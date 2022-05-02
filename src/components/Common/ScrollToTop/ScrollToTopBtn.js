@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTheme } from "../../../customHooks";
 import { FaChevronUp } from "react-icons/fa";
+import { ClickSound } from "../../../utils/helper";
 
 const ScrollToTopBtn = () => {
   const { colors } = useTheme();
 
   const [scrollPosition, setScrollPosition] = useState(0);
-  
+
   const handleScroll = () => {
     const position = window.pageYOffset;
     setScrollPosition(position);
@@ -22,6 +23,7 @@ const ScrollToTopBtn = () => {
   }, []);
 
   const handleClick = () => {
+    ClickSound();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   return (

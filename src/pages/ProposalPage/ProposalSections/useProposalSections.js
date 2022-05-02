@@ -75,16 +75,16 @@ const useProposalSections = ({
 
   const dispatch = useDispatch();
 
-
-
   const sum_insured = cartEntries?.map(cart => ({
     [cart?.product?.name]: cart?.sum_insured,
   }));
 
   const checkAllValid = values => {
-    if (values instanceof Object && Object.keys(values)?.length)
-      return Object.keys(values)?.map(group =>
-        Object.values(values[group])?.every(val => val?.isValid),
+    if (values && values instanceof Object && Object.keys(values)?.length)
+      return Object.keys(values)?.map(
+        group =>
+          values[group] &&
+          Object.values(values[group])?.every(val => val?.isValid),
       );
     else return [];
   };
@@ -247,7 +247,7 @@ const useProposalSections = ({
   };
 
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
-    console.log("bcfhdjd",values,checkAllValid(values))
+    console.log("bcfhdjd", values, checkAllValid(values));
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
         console.log("egjksf 1");
@@ -286,7 +286,10 @@ const useProposalSections = ({
         setShow(valueIsValidatedOption.indexOf(false));
         return;
       }
-    } else if (checkAllValid(values) && !checkAllValid(values).every(el => el === true)) {
+    } else if (
+      checkAllValid(values) &&
+      !checkAllValid(values).every(el => el === true)
+    ) {
       setActive(schemaKeys.indexOf(formName));
       return;
     }
@@ -469,7 +472,7 @@ const useProposalSections = ({
     show,
     setShow,
     cartEntries,
-    isVersionRuleEngine
+    isVersionRuleEngine,
   };
 };
 

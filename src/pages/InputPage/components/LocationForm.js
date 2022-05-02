@@ -23,6 +23,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
   const {
     data: { popularcities },
     journeyType,
+    settings,
   } = useFrontendBoot();
   const { currentForm, groupCode: groupId } = useParams();
   const {
@@ -118,7 +119,10 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
         if (!nextGroup) {
           if (journeyType === "top_up")
             nextPath = getUrlWithEnquirySearch(`/input/deductible`);
-          else nextPath = getUrlWithEnquirySearch(`/input/medicalHistory`);
+          else
+            nextPath = !settings.medical_history_visibility
+              ? getUrlWithEnquirySearch(`/input/medicalHistory`)
+              : getUrlWithEnquirySearch(`/quotes/${groups[0].id}`);
         }
         history.push(nextPath);
       }

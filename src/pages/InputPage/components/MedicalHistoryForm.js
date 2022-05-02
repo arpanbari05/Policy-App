@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import CustomProgressBar from "../../../components/ProgressBar";
 import { Title, ErrorMessage } from "./FormComponents";
 import RadioCapsule from "../../../components/RadioCapsule";
@@ -47,7 +47,7 @@ const MedicalHistoryForm = ({ posContent }) => {
   const { groups } = useMembers();
   const { updateEnquiry } = useUpdateEnquiry();
   const { data, isLoading } = useGetFrontendBootQuery();
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, settings } = useFrontendBoot();
   const { existingdiseases } = data || [""];
 
   // ===========functions=============

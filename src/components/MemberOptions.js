@@ -366,12 +366,12 @@ function MemberOption({
       className="rounded-2"
       title={
         validateSpouse(selectedMembers, member) &&
-        "Please select age 21 years and above for Spouse as per legal marriage age in India."
+        "Self age has to be 21 years and above as per legal marriage age in India to buy a policy with Spouse."
       }
       onClick={() => {
         validateSpouse(selectedMembers, member) &&
           setServerError(
-            "Please select age 21 years and above for Spouse as per legal marriage age in India.",
+            "Self age has to be 21 years and above as per legal marriage age in India to buy a policy with Spouse.",
           );
       }}
       css={`

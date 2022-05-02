@@ -22,7 +22,9 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
   const frontendData = { data: frontendBoot.data };
 
   useEffect(() => {
-    if (!values?.underwriting_status) {
+    if (values?.pdf_path) {
+      setDownloadPolicyLoader(false);
+    } else if (!values?.underwriting_status) {
       setTimeout(() => {
         setDownloadPolicyLoader(false);
       }, 50000);

@@ -10,6 +10,7 @@ import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { useTotalPremium, useFirstGroupCodeWithProduct } from "../../";
 import "styled-components/macro";
 import { Link } from "react-router-dom";
+import { FaTimes } from "react-icons/fa";
 
 function SidebarCart({ handleClose = () => {} }) {
   const firstName = "User";
@@ -386,7 +387,9 @@ export function CloseButton({ css = ``, ...props }) {
       `}
       {...props}
     >
-      <i class="fas fa-times"></i>
+      <FaTimes
+        style={{ cursor: "pointer", fontWeight: "bold" }}
+      ></FaTimes>
     </button>
   );
 }

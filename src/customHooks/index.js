@@ -568,7 +568,7 @@ export function useMembers() {
 
   function getMembersText({ id }) {
     const groupMembers = getGroupMembers(id);
-    return groupMembers.map(member => member.display_name).join(", ");
+    return groupMembers?.map(member => member.display_name).join(", ");
   }
 
   function checkGroupExist(groupCode) {
@@ -693,7 +693,7 @@ export function useUpdateMembers() {
 
   const { getSelectedFilter } = useFilters();
 
-  function updateMembers({ members, ...data } = {}) {
+  function updateMembers({ members, redirectToQuotes, ...data } = {}) {
     const updateData = {
       email: enquiryData.email,
       mobile: enquiryData.mobile,
@@ -701,6 +701,8 @@ export function useUpdateMembers() {
       gender: enquiryData.input.gender,
       deductible: enquiryData.input.deductible,
       params: enquiryData.input.params,
+      type: !redirectToQuotes && "renew",
+      action: !redirectToQuotes && "update_members",
       members: members
         ? members.map(member => ({
             type: member.code,
@@ -712,7 +714,8 @@ export function useUpdateMembers() {
           ? members?.length === 1
             ? "I"
             : getSelectedFilter("plantype")?.code === "I"
-            ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type
+            ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type ||
+              "F"
             : getSelectedFilter("plantype")?.code
           : "I",
       pincode: enquiryData?.input?.pincode,
@@ -731,10 +734,17 @@ export function useUpdateMembers() {
             data: { groups, enquiry_id },
           },
         } = response;
-        history.push({
-          pathname: `/quotes/${groups[0].id}`,
-          search: `enquiryId=${enquiry_id}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
-        });
+        if (redirectToQuotes) {
+          history.push({
+            pathname: `/quotes/${groups[0].id}`,
+            search: `enquiryId=${enquiry_id}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
+          });
+        } else {
+          history.push({
+            pathname: `/proposal`,
+            search: `enquiryId=${enquiry_id}`,
+          });
+        }
         dispatch(
           api.util.updateQueryData("getEnquiries", undefined, draft => {
             Object.assign(draft, response.data);
@@ -851,11 +861,13 @@ export function useCart() {
     return nextGroupProduct;
   }
 
-  const isVersionRuleEngine = (groupId) => {
+  const isVersionRuleEngine = groupId => {
     const cartEntries = data?.data;
-    let result = cartEntries?.find(entry => entry.group.id == groupId)?.product?.version === "rule_engine";
-   return result;
-   }
+    let result =
+      cartEntries?.find(entry => entry.group.id == groupId)?.product
+        ?.version === "rule_engine";
+    return result;
+  };
 
   return {
     cartEntries: data?.data,
@@ -866,7 +878,7 @@ export function useCart() {
     getCartTotalPremium,
     getNextGroupProduct,
     discounted_total_premium: data?.discounted_total_premium,
-    isVersionRuleEngine
+    isVersionRuleEngine,
   };
 }
 
@@ -2037,10 +2049,10 @@ export function useRiders({ quote, groupCode, onChange }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupCode]);
 
-  const [riders, setRiders] = useState(getInitialRiders);
+  const [riders, setRiders] = useState(getInitialRiders() || []);
 
   useEffect(() => {
-    return setRiders(getInitialRiders);
+    return setRiders(getInitialRiders() || []);
   }, [getInitialRiders]); //? a fallback to assign initial-riders
 
   const feature_options = useCart().getCartEntry(+groupCode)?.feature_options;
@@ -2366,13 +2378,13 @@ export const useRevisedPremiumModal = () => {
           let ridersInPreviousCart = previousEntry.health_riders.map(
             rider => rider.name,
           );
-          let ridersInCurrentCart = currentEntry.health_riders.map(
+          let ridersInCurrentCart = currentEntry?.health_riders.map(
             rider => rider.name,
           );
 
-          if (ridersInPreviousCart.length !== ridersInCurrentCart.length) {
-            let removedRiderName = ridersInPreviousCart.find(
-              rider => ridersInCurrentCart.indexOf(rider) < 0,
+          if (ridersInPreviousCart?.length !== ridersInCurrentCart?.length) {
+            let removedRiderName = ridersInPreviousCart?.find(
+              rider => ridersInCurrentCart?.indexOf(rider) < 0,
             );
             stringedRidersName += !stringedRidersName
               ? removedRiderName
@@ -2425,7 +2437,7 @@ export const useRevisedPremiumModal = () => {
   };
 
   const getPreviousCartEntryPremium = groupCode => {
-    const cartEntry = previousCartEntries.find(
+    const cartEntry = previousCartEntries?.find(
       cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
     );
 
@@ -2433,7 +2445,7 @@ export const useRevisedPremiumModal = () => {
   };
 
   const getUpdatedCartEntryPremium = groupCode => {
-    const cartEntry = cartEntries.find(
+    const cartEntry = cartEntries?.find(
       cartEntry => +cartEntry?.group?.id === parseInt(groupCode),
     );
 

@@ -1,5 +1,5 @@
 import _, { range } from "lodash";
-import clickSound from "../assets/audio/button-click.wav";
+import clickSound from "../assets/audio/button-click.mp3";
 
 // all on specific urls
 export const allowOnWebsites = (sites = []) => {
@@ -51,6 +51,15 @@ export const allowOnWebsites = (sites = []) => {
   });
   return isPass;
 };
+
+// input page visibility
+export function inputEnquiryVisibility(settings, section) {
+  if (localStorage.SSO_user) {
+    return !settings?.b2b_enquiry_visibility?.includes(section);
+  } else {
+    return !settings?.b2c_enquiry_visibility?.includes(section);
+  }
+}
 
 export const formatCurrency = (number, decimals, recursiveCall) => {
   const decimalPoints = decimals || 2;
