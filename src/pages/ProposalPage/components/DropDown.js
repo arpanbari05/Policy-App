@@ -8,6 +8,7 @@ import useAppropriateOptions from "./useAppropriateOptions";
 import {
   setShowErrorPopup
 } from "../ProposalSections/ProposalSections.slice";
+import { callApi } from "../../../components/FormBuilder/FormBuilder.slice";
 
 const DropDown = ({
   name,
@@ -30,6 +31,7 @@ const DropDown = ({
   deleteValue = () => {},
   directUpdateValue = () => {},
   invalidateOption,
+  fill=false,
 }) => {
   const dispatch = useDispatch();
   const { selectOption } = useAppropriateOptions({
@@ -41,17 +43,36 @@ const DropDown = ({
     name,
     directUpdateValue,
     value,
+    fill,
+    deleteValue
   });
-console.log("fbfnlsdvd",value,selectOption)
-  // value = selectOption[value]
-const [selectedNone, setSelectedNoneState] = useState(false)
+
+const [selectedNone, setSelectedNoneState] = useState(false);
+
   useEffect(() => {
-    console.log("sfsvbjksf",value,selectOption,values)
+   
     if(value){
-      if(selectOption[value] && values && values[name] !== selectOption[value]){
+      console.log("sfsvbjksf",value,selectOption[value],values)
+
+      if(selectOption[value] && values && values[name] !== selectOption[value] && !fill){
         directUpdateValue(name,value);
-      }else if(!selectOption[value]) deleteValue()
+      }else if(!selectOption[value]) deleteValue();
+
     }
+    if(fill && name.includes("town")){
+      console.log("wefvewhjbfjew",values,values[name],name)
+  
+        if (values[name] && fill) {
+          dispatch(
+            callApi(fill.using, {
+              [name]: values[name],
+              [fill.alsoUse]:
+                values[fill.alsoUse],
+            }),
+            fill,
+          );
+        }
+      }
   },[value])
 
   const [dataValue, setDataValue] = useState();
@@ -87,7 +108,7 @@ const [selectedNone, setSelectedNoneState] = useState(false)
         }}
        
         disabled={
-          (Object.keys(selectOption).length === 1 && !asyncOptions) || readOnly
+          (value && Object.keys(selectOption).length === 1 && !asyncOptions) || readOnly
         }
         error={error}
         height={height}

@@ -177,7 +177,7 @@ const FormBuilder = ({
 
   //         tempValues[item.name] = tempValue;
   //       }
-  //     });
+  //     }); 
   //     updateValues(tempValues);
   //   }
   // }, [schema, errors]);
@@ -194,7 +194,7 @@ const FormBuilder = ({
     let pincodeSchema = schema.filter(item =>
       item?.name?.includes("pincode"),
     )[0];
-
+    
     if (pincodeSchema && pincodeSchema?.value && pincodeSchema.fill) {
       dispatch(
         callApi(pincodeSchema.fill?.using, {
@@ -202,6 +202,8 @@ const FormBuilder = ({
         }),
       );
     }
+    // console.log("Evfbvfk",townSchema,values[townSchema.name],values)
+   
   }, []);
   
   useEffect(() => {
@@ -560,6 +562,7 @@ const FormBuilder = ({
                           setTrigger(name);
                         });
                       }}
+                      fill={item.fill}
                       deleteValue={() => {
                         updateValues(
                           Object.keys(values)

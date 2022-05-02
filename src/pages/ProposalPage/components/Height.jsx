@@ -25,7 +25,7 @@ const inches = {
   10: "10 inches",
   11: "11 inches",
 };
-const Height = ({ onChange, value, error }) => {
+const Height = ({ onChange, value, error, readOnly }) => {
   const [combinedValue, setValue] = useState({
     feet: Math.floor(value / 12) * 12,
     inches: value % 12,
@@ -55,6 +55,7 @@ const Height = ({ onChange, value, error }) => {
           options={feet}
           height={true}
           borderR={true}
+          readOnly={readOnly}
           onChange={e =>
             setValue(prev => {
               return {
@@ -71,6 +72,7 @@ const Height = ({ onChange, value, error }) => {
           label="Inches"
           dropPlaceholder="inches"
           options={inches}
+          readOnly={readOnly}
           height={true}
           onChange={e =>
             setValue(prev => {
