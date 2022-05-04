@@ -111,7 +111,7 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
     );
   };
 
-  return allowOnWebsites(["topup", "renewBuyUat"]) ? (
+  return allowOnWebsites(["topup", "renewBuyUat", "renewalRB"]) ? (
     <div {...props}>
       <form onSubmit={handleSubmit}>
         <div

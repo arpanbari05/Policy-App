@@ -14,7 +14,7 @@ import {
 import { useUrlQueries } from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
 import "styled-components/macro";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import {
   allowOnWebsites,
   capitalize,
@@ -97,7 +97,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
     }
   };
 
-  return (
+  return !allowOnWebsites(["renewalRB"]) ? (
     <div {...props}>
       <form onSubmit={handleFormSubmit}>
         <div
@@ -335,6 +335,8 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
         </Button>
       </form>
     </div>
+  ) : (
+    <Redirect to="/input/renewal-details" />
   );
 };
 
