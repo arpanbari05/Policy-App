@@ -105,7 +105,7 @@ const Sharebutton = ({
     );
 
   return !shareQuotes ? (
-    <ShareButton onClick={onClick} color={primary_color}>
+    <ShareButton onClick={onClick} color={primary_color} data-html2canvas-ignore="true">
       <RiShareForwardFill color={primary_color} />
       <span style={{ marginLeft: 5 }}>{label ? label : "Share"}</span>
     </ShareButton>
@@ -118,6 +118,7 @@ const Sharebutton = ({
           setShowMenu(true);
         }}
         color={primary_color}
+        data-html2canvas-ignore="true"
       >
         <RiShareForwardFill color={primary_color} />
         <span style={{ marginLeft: 5 }}>{"Share quotes"}</span>
