@@ -12,7 +12,14 @@ Medical Details : {
             notAllowed   : true/false           -- This key is intoduced to invalidate plan when user select "Yes" for medical question and to show "plan not valid" popup/modal --
             showMembers  : true/false           -- This key is intoduced to control render of members select options under medicalquestions --
             members      : ["self",etc.]        -- This key is intoduced to get list of members assigned to the groupcode --
-        }
+        },
+        visibleOn:{
+            dependentQuestionName : value       -- value must be equal to the value of "dependentQuestionName" on which this questions should render
+        } || {
+            dependentQuestionParentName : {
+                dependentQuestionName : value
+            }
+        }                                       -- visibleOn can be nested Object in case of medical question.
     },
     ]
 }

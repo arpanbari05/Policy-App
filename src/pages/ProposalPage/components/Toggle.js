@@ -44,7 +44,7 @@ const Toggle = ({
       : members,
   );
 
-  const [membersSelectedTillNow, setMembersSelectedTillNow] = useState({});
+  const [membersSelectedTillNow, setMembersSelectedTillNow] = useState(false);
 
   useEffect(() => {
     if (showMembersIf) {
@@ -55,6 +55,7 @@ const Toggle = ({
       );
     }
     if (isMandatoryMQ) {
+      console.log("isMandatoryMQ", isMandatoryMQ);
       let questionsToCheck = showMembersIf.split("||");
       let membersSelectedTillNow = membersToMap.reduce((acc, member) => {
         let isMemberPresent = questionsToCheck.some(
@@ -152,8 +153,8 @@ const Toggle = ({
     }
 
     if (!isMandatoryMQ) {
-      console.log("qefeihjfbkf", customShowMembers, boolean, label);
-      if (boolean === "N" && !customShowMembers) {
+      console.log("qefeihjfbkf", boolean, customShowMembers, boolean, label);
+      if ((boolean === "N" || boolean === "") && !customShowMembers) {
         onChange({
           [`is${name}`]: boolean,
           members: {},
@@ -175,11 +176,14 @@ const Toggle = ({
   ]);
 
   useEffect(() => {
-    if (isMandatoryMQ) {
+    if (isMandatoryMQ && membersSelectedTillNow) {
       console.log("wvbkwdsbvjdce", membersSelectedTillNow);
+      // if(Object.values(membersSelectedTillNow).includes(true)){
       onChange({
         ...value,
-        [`is${name}`]: "Y",
+        [`is${name}`]: Object.values(membersSelectedTillNow).includes(true)
+          ? "Y"
+          : "N",
         members: membersSelectedTillNow,
         isValid: true,
       });
@@ -223,6 +227,7 @@ const Toggle = ({
                 & .box {
                   background-color: ${PrimaryShade};
                 }
+                opacity:${isMandatoryMQ?"0.5":"1"} !important;
                 display: ${disable_Toggle ? "none" : "block"};
                 text-align: end !important;
                 @media (max-width: 767px) {
@@ -239,43 +244,49 @@ const Toggle = ({
                   type="radio"
                   name={`is${name}`}
                   onChange={e => {
-                    if (restrictMaleMembers && membersToMap.length === 0) {
-                      dispatch(
-                        setShowErrorPopup({
-                          show: true,
-                          head: "",
-                          msg: "Male members are not eligible for this question.",
-                        }),
-                      );
-                      setBoolean("N");
-                    } else if (notAllowedIf !== "N" && message && message.stp_block_message) {
-                      dispatch(
-                        setShowErrorPopup({
-                          show: true,
-                          head: "",
-                          msg: message.stp_block_message,
-                        }),
-                      );
+                    if (!isMandatoryMQ) {
+                      if (restrictMaleMembers && membersToMap.length === 0) {
+                        dispatch(
+                          setShowErrorPopup({
+                            show: true,
+                            head: "",
+                            msg: "Male members are not eligible for this question.",
+                          }),
+                        );
+                        setBoolean("N");
+                      } else if (
+                        notAllowedIf !== "N" &&
+                        message &&
+                        message.stp_block_message
+                      ) {
+                        dispatch(
+                          setShowErrorPopup({
+                            show: true,
+                            head: "",
+                            msg: message.stp_block_message,
+                          }),
+                        );
 
-                      // setBoolean(e.target.value);
-                    } else if (
-                      notAllowedIf !== "N" &&
-                      message &&
-                      message.npos_switch_medical_selection_message
-                    ) {
-                      dispatch(
-                        setShowErrorPopup({
-                          show: true,
-                          head: "",
-                          msg: message.npos_switch_medical_selection_message,
-                        }),
-                      );
+                        // setBoolean(e.target.value);
+                      } else if (
+                        notAllowedIf !== "N" &&
+                        message &&
+                        message.npos_switch_medical_selection_message
+                      ) {
+                        dispatch(
+                          setShowErrorPopup({
+                            show: true,
+                            head: "",
+                            msg: message.npos_switch_medical_selection_message,
+                          }),
+                        );
 
-                      setBoolean(e.target.value);
-                    } else if (notAllowed) {
-                      dispatch(setShowPlanNotAvail(true));
-                    } else {
-                      setBoolean(e.target.value);
+                        setBoolean(e.target.value);
+                      } else if (notAllowed) {
+                        dispatch(setShowPlanNotAvail(true));
+                      } else {
+                        setBoolean(e.target.value);
+                      }
                     }
                   }}
                   value="Y"
