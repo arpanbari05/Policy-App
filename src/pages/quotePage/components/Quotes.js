@@ -97,7 +97,7 @@ function Quotes({ sortBy = "relevence", ...props }) {
 
 export default Quotes;
 
-function CompareQuotesTray({ compare, onClose }) {
+export function CompareQuotesTray({ compare, onClose }) {
   const history = useHistory();
 
   const { getUrlWithEnquirySearch } = useUrlEnquiry();

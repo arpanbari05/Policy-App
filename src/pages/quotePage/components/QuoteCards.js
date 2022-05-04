@@ -2,25 +2,37 @@ import { useEffect, useState } from "react";
 import { Col, Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { SeeText } from "./QuoteCard.style";
 import "styled-components/macro";
-import { useCompanies, useTheme, useToggle } from "../../../customHooks";
+import {
+  useCompanies,
+  useTheme,
+  useToggle,
+  useShortlistedPlans,
+} from "../../../customHooks";
 import ProductDetailsModal from "../../../components/ProductDetails/ProductDetailsModal";
 import { PremiumButton } from "../../../components";
 import { ClickSound, numberToDigitWord } from "../../../utils/helper";
 import { uniq } from "lodash";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
 import Select from "react-select";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { RiInformationLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { setQuotesToShare, removeQuoteFromShare } from "../quote.slice";
+import {
+  setQuotesToShare,
+  removeQuoteFromShare,
+  addShortListedQuote,
+  removeShortListedQuote,
+} from "../quote.slice";
 import {
   XSmallFont,
   TertiaryFont,
   SecondaryFont,
   SecondaryFontBold,
 } from "../../../styles/typography";
+import { useParams } from "react-router-dom";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",
@@ -155,15 +167,24 @@ function QuoteCard({
 }) {
   const { colors } = useTheme();
 
+  const { groupCode } = useParams();
+
   const isDeductibleJourney = quotes[0]?.deductible;
 
   const { shareType, quotesToShare } = useSelector(state => state.quotePage);
+
+  const { getPlanByGroup, addPlanToShortlist, removePlanToShortlist } =
+    useShortlistedPlans();
+
+  const shortlistedQuotes = getPlanByGroup(groupCode);
 
   const dispatch = useDispatch();
 
   const deductibles = getDeductibles(quotes);
 
   const [isShare, setIsShare] = useState(false);
+
+  const [isShortlisted, setIsShortListed] = useState(false);
 
   const [selectedDeductible, setSelectedDeductible] = useState(
     Math.max(...deductibles),
@@ -194,6 +215,8 @@ function QuoteCard({
 
   const { getCompany } = useCompanies();
 
+  console.log({ shortlistedQuotes });
+
   useEffect(() => {
     if (!quote) {
       setSelectedSumInsured(parseInt(sumInsureds[0]));
@@ -209,6 +232,13 @@ function QuoteCard({
     );
     setIsShare(isInShare ? true : false);
   }, [quotesToShare, shareType]);
+
+  useEffect(() => {
+    const isInShortlisted = shortlistedQuotes?.find(
+      q => q?.product?.id === (quote?.product?.id || quotes[0]?.product?.id),
+    );
+    setIsShortListed(Boolean(isInShortlisted));
+  }, []);
 
   if (!quote) return null;
 
@@ -234,6 +264,18 @@ function QuoteCard({
     ClickSound();
     const { checked } = evt.target;
     onChange && onChange({ checked, quote });
+  };
+
+  const handleShortListedQuotes = evt => {
+    ClickSound();
+    const { checked } = evt.target;
+    if (checked) {
+      addPlanToShortlist({ ...quote, cashlessHospitalsCount, groupCode });
+      setIsShortListed(true);
+    } else {
+      removePlanToShortlist(quote);
+      setIsShortListed(false);
+    }
   };
 
   const handleShareQuoteChange = evt => {
@@ -280,6 +322,29 @@ function QuoteCard({
 
   return (
     <div id={quote?.company_alias} {...props}>
+      <label
+        css={`
+          position: absolute;
+          top: ${quote?.usp_message?.length > 0 ? "25px" : "10px"};
+          left: 10px;
+          cursor: pointer;
+        `}
+        htmlFor={`${quote?.company_alias}_shortlisted`}
+      >
+        <input
+          className="visually-hidden"
+          checked={isShortlisted}
+          type="checkbox"
+          onChange={handleShortListedQuotes}
+          id={`${quote?.company_alias}_shortlisted`}
+          name={`${quote?.company_alias}_shortlisted`}
+        />
+        {isShortlisted ? (
+          <FaBookmark color={colors.primary_color} />
+        ) : (
+          <FaRegBookmark color={"#444"} />
+        )}
+      </label>
       {quote?.usp_message?.length > 0 && (
         <div
           css={`

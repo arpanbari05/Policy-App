@@ -1014,3 +1014,19 @@ h6 {
 .modal-content {
   border: none !important;
 }
+
+.only-desktop {
+  display: block;
+}
+.only-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .only-desktop {
+    display: none;
+  }
+  .only-mobile {
+    display: block;
+  }
+}

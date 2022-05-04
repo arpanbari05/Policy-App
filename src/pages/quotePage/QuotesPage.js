@@ -6,7 +6,7 @@ import LowerModifier from "./components/LowerModifier";
 import Quotes from "./components/Quotes";
 import UpperModifier from "./components/UpperModifier";
 import { useMembers, useTheme, useGetQuotes } from "../../customHooks";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
 import { FaSync } from "react-icons/fa";
@@ -15,12 +15,30 @@ import SortBy from "./components/filters/SortBy";
 import assistant from "../../assets/images/call-center-service.png";
 import { QuotesLoader } from "./components";
 import TalkToUsModal from "../../components/TalkToUs";
-import { useFrontendBoot, useSortBy } from "../../customHooks/index";
-import { ClickSound, mergeQuotes } from "../../utils/helper";
+import {
+  useFrontendBoot,
+  useSortBy,
+  useShortlistedPlans,
+} from "../../customHooks/index";
+import {
+  ClickSound,
+  mergeQuotes,
+  figureToWords,
+  numberToDigitWord,
+  amount,
+} from "../../utils/helper";
 import "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
 import { replaceShareQuotes } from "./quote.slice";
-import { HeadingTertiary, PrimaryFont } from "../../styles/typography";
+import {
+  HeadingTertiary,
+  PrimaryFont,
+  PrimaryFontBold,
+  TertiaryFontBold,
+  XSmallFont,
+} from "../../styles/typography";
+import { IoIosArrowForward } from "react-icons/io";
+import { images as logos } from "../../assets/logos/logo";
 
 function QuotesPage() {
   const { colors } = useTheme();
@@ -112,7 +130,16 @@ function QuotesPage() {
               flex: 1;
             `}
           >
-            <AssistanceCard />
+            <div
+              className="d-flex"
+              css={`
+                flex-direction: column;
+                gap: 10px;
+              `}
+            >
+              <AssistanceCard />
+              <ShortListedQuote />
+            </div>
           </div>
         </div>
       </Container>
@@ -122,6 +149,138 @@ function QuotesPage() {
 
 export default QuotesPage;
 
+function ShortListedQuote() {
+  const { colors } = useTheme();
+
+  const urlQueryStrings = new URLSearchParams(window.location.search);
+
+  const { groupCode } = useParams();
+
+  const enquiryId = urlQueryStrings.get("enquiryId");
+
+  const { getPlanByGroup } = useShortlistedPlans();
+
+  const shortlistedQuotes = getPlanByGroup(groupCode);
+
+  const lastQuote = shortlistedQuotes[shortlistedQuotes.length - 1];
+
+  const companyLogo = logos[lastQuote?.company_alias];
+
+  return (
+    <div
+      css={`
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        padding-top: 0;
+      `}
+    >
+      <div
+        css={`
+          display: flex;
+          align-items: center;
+          border-bottom: 1px solid #dcdcdc;
+          padding: 10px 0;
+          gap: 10px;
+        `}
+      >
+        <PrimaryFontBold>Shortlisted plan(s)</PrimaryFontBold>
+        <span
+          css={`
+            width: 15px;
+            height: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: ${colors.primary_color};
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 50%;
+          `}
+        >
+          {shortlistedQuotes.length}
+        </span>
+      </div>
+      {shortlistedQuotes.length > 0 ? (
+        <>
+          <div
+            css={`
+              display: flex;
+              gap: 20px;
+              padding: 10px;
+            `}
+          >
+            <img
+              css={`
+                max-height: 45px;
+                max-width: 90px;
+                object-fit: contain;
+              `}
+              src={companyLogo}
+              alt="company_logo"
+            />
+            <div>
+              <TertiaryFontBold
+                css={`
+                  width: 100%;
+                  margin-bottom: 15px;
+                `}
+              >
+                {lastQuote?.product?.name}
+              </TertiaryFontBold>
+              <div className="d-flex gap-4">
+                <div>
+                  <XSmallFont>Cover</XSmallFont>
+                  <TertiaryFontBold>
+                    {figureToWords(+lastQuote?.sum_insured)}
+                  </TertiaryFontBold>
+                </div>
+                <div>
+                  <XSmallFont>Premium</XSmallFont>
+                  <TertiaryFontBold>
+                    {amount(lastQuote?.total_premium)}
+                  </TertiaryFontBold>
+                </div>
+              </div>
+            </div>
+          </div>
+          <Link
+            css={`
+      padding: 5px;
+      text-align-center;
+      border-radius: 1000px;
+      color: ${colors.primary_color};
+      background: ${colors.primary_shade};
+      font-size: 12px;
+      width: 100%;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+      margin-top: 10px;
+      `}
+            to={`/shortlisted/${groupCode}?enquiryId=${enquiryId}`}
+          >
+            <span>View shortlisted quotes</span>
+            <IoIosArrowForward size={15} />
+          </Link>
+        </>
+      ) : (
+        <div
+          css={`
+            text-align: center;
+            margin: 20px;
+            font-size: 12px;
+          `}
+        >
+          No plans shortlisted
+        </div>
+      )}
+    </div>
+  );
+}
 function ShowingPlanType() {
   const dispatch = useDispatch();
   const { colors } = useTheme();

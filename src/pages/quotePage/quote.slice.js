@@ -33,6 +33,7 @@ const quotePageSlice = createSlice({
     quotesToShare: [],
     quotesToCanvas: [],
     pos_popup: false,
+    shortlistedQuotes: [],
     shareType: {},
     showSharePopup: true,
     quotesOnCompare: false,
@@ -83,6 +84,17 @@ const quotePageSlice = createSlice({
       state.quotesToShare = state.quotesToShare.filter(
         data => data[0]?.product?.id !== action.payload[0]?.product?.id,
       );
+    },
+    addShortListedQuote: (state, action) => {
+      state.shortlistedQuotes = [...state.shortlistedQuotes, action.payload];
+    },
+    removeShortListedQuote: (state, action) => {
+      state.shortlistedQuotes = state.shortlistedQuotes.filter(
+        quote => quote.product.id !== action.payload.product.id,
+      );
+    },
+    replaceShortlistedQuote: (state, action) => {
+      state.shortlistedQuotes = action.payload;
     },
     setPosPopup: (state, action) => {
       state.pos_popup = action.payload;
@@ -318,8 +330,11 @@ export const {
   setQuotesToShare,
   removeQuoteFromShare,
   setShareType,
+  addShortListedQuote,
+  removeShortListedQuote,
   setShowEditMembers,
   setEditStep,
+  replaceShortlistedQuote,
   setShowSharePopup,
   setQuotesToCanvas,
   replaceShareQuotes,

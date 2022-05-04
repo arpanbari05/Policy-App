@@ -56,9 +56,11 @@ function CartSummaryContent({
 
   const { groupCode } = useParams();
 
-  const currentGroup = groups.find(group => group?.id === +groupCode);
+  const currentGroup = groups.find(
+    group => group?.id === (+groupCode),
+  );
 
-  groups = groups.filter(group => group.type === currentGroup.type);
+  groups = groups.filter(group => group.type === currentGroup?.type);
 
   return (
     <div {...props}>

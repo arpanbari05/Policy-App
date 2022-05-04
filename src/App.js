@@ -10,6 +10,7 @@ import NotFoundPage from "./components/Common/NotFoundPage/NotFoundPage";
 import { useFrontendBoot } from "../src/customHooks";
 import { BaseComponent } from "./components/BaseComponent";
 import CheckPolicies from "./components/Common/CheckPolicies";
+import ShortlistedQuotes from "./pages/ShortlistedPage/shortlistedQuotes";
 const ProposalPage = lazy(() => import("./pages/ProposalPage/ProposalPage"));
 const ProposalSummary = lazy(() =>
   import("./pages/ProposalSummary/ProposalSummary"),
@@ -36,6 +37,9 @@ function App() {
             <LoadCart>
               <QuotesPage />
             </LoadCart>
+          </Route>
+          <Route exact path="/shortlisted/:groupCode">
+            <ShortlistedQuotes />
           </Route>
           <Route exact path="/productdetails/:groupCode">
             <LoadCart>
