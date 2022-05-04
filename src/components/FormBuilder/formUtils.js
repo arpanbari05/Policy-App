@@ -1,25 +1,30 @@
 import { schemaIndex } from "../../pages/ProposalPage/schemaIndex";
 import { validationIndex } from "./formValidations";
 
-const  visiblilityManager = (visibleOn,value,member) => {
-  console.log("wvjhbv",visibleOn,value,member)
+const visiblilityManager = (visibleOn, value, member) => {
+  console.log("wvjhbv", visibleOn, value, member);
   let visibility = false;
   let checkKeys = Object.keys(visibleOn);
-    checkKeys.forEach(key => {
-      console.log("bkjdgbgd",key,value,visibleOn)
-      if (typeof visibleOn?.[key] === "string" && visibleOn?.[key].includes(value?.[key])) visibility = true;
-      else if (typeof visibleOn[key] === "object" && member && visibleOn[key]) visibility = visiblilityManager(visibleOn[key],value[key][member]);
-    });
- return visibility
-}
+  checkKeys.forEach(key => {
+    console.log("bkjdgbgd", key, value, visibleOn);
+    if (
+      typeof visibleOn?.[key] === "string" &&
+      visibleOn?.[key].includes(value?.[key])
+    )
+      visibility = true;
+    else if (typeof visibleOn[key] === "object" && member && visibleOn[key])
+      visibility = visiblilityManager(visibleOn[key], value[key][member]);
+  });
+  return visibility;
+};
 
-export const renderField = (item, value, member,callBack = () => {}) => {
+export const renderField = (item, value, member, callBack = () => {}) => {
   // console.log("lvlhvcsc", item, value);
   // conditional rendering of fields other than medical questions uses item.visibleOn
   if (item.visibleOn) {
-    let show = visiblilityManager(item.visibleOn,value,member);
-    console.log("dbjdfkb",show)
-  
+    let show = visiblilityManager(item.visibleOn, value, member);
+    console.log("dbjdfkb", show);
+
     callBack(show);
     return show;
   }
@@ -27,16 +32,21 @@ export const renderField = (item, value, member,callBack = () => {}) => {
   // conditional rendering of medical questions uses item.render
   if (item.render) {
     const { when, is } = item.render;
-    if(  item.render === "noDependency") return true
-    if ((item.parent && member && !when.includes("||") )) {
+    if (item.render === "noDependency") return true;
+    if (item.parent && member && !when.includes("||")) {
       if (
-        (value[item.parent] &&
+        value[item.parent] &&
         value[item.parent].members instanceof Object &&
-        value[item.parent].members[member]) 
+        value[item.parent].members[member]
       ) {
-        console.log("weifhgif",value)
-        if(when !== ""){
-          return value[item.parent].members[member] && value[item.parent][member] && value[item.parent][member][when] && value[item.parent][member][when] === is 
+        console.log("weifhgif", value);
+        if (when !== "") {
+          return (
+            value[item.parent].members[member] &&
+            value[item.parent][member] &&
+            value[item.parent][member][when] &&
+            value[item.parent][member][when] === is
+          );
         }
         return true;
       } else return false;
@@ -84,7 +94,7 @@ export const renderField = (item, value, member,callBack = () => {}) => {
         // console.log("wvhsrjvh", item);
         return check;
       }
-      if (value[when] === is) return true;
+      if (value?.[when] === is) return true;
       else return false;
     }
   } else return true;
@@ -254,13 +264,13 @@ export const checkAllow = (type, event, eventType) => {
     });
     event.target.value = output.join("").substr(0, 14);
   }
-  if(type === "month" && event.which === 8) {
+  if (type === "month" && event.which === 8) {
     var val = event.target.value;
     console.log(val);
-    if(val.length == 3 || val.length == 6) {
-      event.target.value = val.slice(0, val.length-1);
-        console.log(val)
-        // this.setState({value: val})
+    if (val.length == 3 || val.length == 6) {
+      event.target.value = val.slice(0, val.length - 1);
+      console.log(val);
+      // this.setState({value: val})
     }
   }
   if (type === "month" && eventType === "input") {
@@ -279,15 +289,14 @@ export const checkAllow = (type, event, eventType) => {
   }
 };
 
-export const ValueExtractor = (schema,values,member) => {
-  if(!schema) return "";
-  else if(typeof schema === "string") {
+export const ValueExtractor = (schema, values, member) => {
+  if (!schema) return "";
+  else if (typeof schema === "string") {
     return schema;
-  }else{
+  } else {
     let parentKey = Object.keys(schema)[0];
     let childKey = Object.keys(schema[parentKey])[0];
-    return schema[parentKey][childKey][values[parentKey][member][childKey]]
+    return schema[parentKey][childKey][values[parentKey][member][childKey]];
   }
-    console.log("vbjhvdfvbfs",schema,values)
-
-}
+  console.log("vbjhvdfvbfs", schema, values);
+};
