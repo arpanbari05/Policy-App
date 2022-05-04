@@ -430,6 +430,7 @@ const SummaryTab = ({ title, data, values, index, getGroupMembers,isVersionRuleE
             <PencilWrapper
               className="d-flex justify-content-center align-items-center"
               style={{ color: PrimaryColor }}
+              data-html2canvas-ignore="true"
             >
               {/* <PencilIcon
           style={{

@@ -278,7 +278,7 @@ export const getProposalData = successCallBack => {
                 : Object.keys(responseData).length,
             ),
           );
-        successCallBack();
+          successCallBack && successCallBack();
       }
 
       // callBackFunc();

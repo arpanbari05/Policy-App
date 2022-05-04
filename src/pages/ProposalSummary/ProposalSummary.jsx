@@ -100,9 +100,10 @@ const ProposalSummary = () => {
   const [pdfDoc, setPdfDoc] = useState(null);
   useEffect(() => {
     let logoImgData;
-
     if (proposalData?.data && Object.keys(cart).length && canSendSummaryPdf) {
-      const divToPrint = document.querySelector("#printSummaryPage");
+      // const divToPrint = document.querySelector(Window.width>1022?"#printSummaryPage":"#printSummaryPageMobile");
+      const divToPrint = document.querySelector(window.outerWidth>1022?"#printSummaryPage":"#printSummaryPageMobile");
+
       html2canvas(divToPrint, {
         scale: 2,
       }).then(canvas => {
@@ -513,37 +514,45 @@ const ProposalSummary = () => {
                 `}
               >  
               {/*download pdf button*/}
-              <button
-              data-html2canvas-ignore="true"
-                css={`
-                  position: fixed;
-                  bottom: 100px;
-                  right: 7vw;
-                  box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
-                  z-index: 9999;
-                  background-color: ${PrimaryColor};
-                  color: white;
-                  width: 50px;
-                  height: 50px;
-                  border-radius: 100%;
-                  // display: nonex;
-                  @media (max-width: 1023px) {
-                    display: block;
-                  }
-                `}
-                className="btn share_Quote_btn"
-                onClick={() => imageSendQuote("#printSummaryPageMobile")}
-              >
-                {!loader ? (
-                  <RiDownload2Line size={25} />
-                ) : (
-                  <i className="fa fa-circle-notch rotate" />
-                )}
-              </button>
+              {console.log("wgrgjnrgr",pdfDoc)}
+              {
+                pdfDoc?(
+                  <>
+                  <button
+                  data-html2canvas-ignore="true"
+                    css={`
+                      position: fixed;
+                      bottom: 100px;
+                      right: 7vw;
+                      box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+                      z-index: 9999;
+                      background-color: ${PrimaryColor};
+                      color: white;
+                      width: 50px;
+                      height: 50px;
+                      border-radius: 100%;
+                      // display: nonex;
+                      @media (max-width: 1023px) {
+                        display: block;
+                      }
+                    `}
+                    className="btn share_Quote_btn"
+                    onClick={() => imageSendQuote("#printSummaryPageMobile")}
+                  >
+                    {!loader ? (
+                      <RiDownload2Line size={25} />
+                    ) : (
+                      <i className="fa fa-circle-notch rotate" />
+                    )}
+                  </button>
+                  </>
+                ):(<></>)
+              }
+             
                 <div className="row margin_top_tab_proposal">
                   <div class="col-lg-12 col-md-12 no-padding-mobile">
                     <div className="signUp-page signUp-minimal pb-70">
-                      <div className="-wrapper pad_proposal_s mt-2">
+                      <div className="-wrapper pad_proposal_s mt-2"  id="printSummaryPageMobile">
                         {proposalData.data && allFields ? (
                           allFields.map((item, index) => {
                             return (
