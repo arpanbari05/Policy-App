@@ -34,6 +34,7 @@ import {
 } from "../../../../utils/helper";
 import { useGetCartQuery } from "../../../../api/api";
 import { current } from "@reduxjs/toolkit";
+import { images } from "../../../../assets/logos/logo";
 
 const removeTotalPremium = cart => {
   let { totalPremium, ...y } = cart;
@@ -534,7 +535,9 @@ const ViewPlanDetails = styled.span`
 
 function CartSummary({ item, index, groupCode }) {
   const { data: frontendData, journeyType } = useFrontendBoot();
+
   const dispatch = useDispatch();
+
   const { colors } = useTheme();
 
   const { planDetails } = useSelector(state => state.proposalPage);
@@ -559,6 +562,8 @@ function CartSummary({ item, index, groupCode }) {
     query: { isLoading, isUninitialized },
     getSelectedAdditionalDiscounts,
   } = useAdditionalDiscount(groupCode);
+
+  const alias = item?.product?.company?.alias;
 
   const selectedAdditionalDiscounts = getSelectedAdditionalDiscounts();
 
@@ -616,12 +621,10 @@ function CartSummary({ item, index, groupCode }) {
           `}
         >
           <span>
-            <img
-              src={frontendData.companies[item.product.company.alias].logo}
-            />{" "}
+            <img src={images[alias]} />{" "}
           </span>
 
-          <span>{item.product.name}</span>
+          <span>{item?.product?.name}</span>
         </div>
 
         <div
@@ -650,7 +653,7 @@ function CartSummary({ item, index, groupCode }) {
                 padding-left: 10px;
               `}
             >
-              {policyTypes[item.group?.id]}
+              {policyTypes[item?.group?.id]}
             </span>
           </div>
 
@@ -672,7 +675,7 @@ function CartSummary({ item, index, groupCode }) {
                   padding-left: 10px;
                 `}
               >
-                {amount(item.deductible)}
+                {amount(item?.deductible)}
               </span>
             </div>
           ) : null}
@@ -693,7 +696,7 @@ function CartSummary({ item, index, groupCode }) {
                 padding-left: 10px;
               `}
             >
-              {numberToDigitWord(item.sum_insured)}
+              {numberToDigitWord(item?.sum_insured)}
             </span>
           </div>
           <div

@@ -134,7 +134,7 @@ const useMedicalQuestions = ({
   };
 
   const getScheamaOfValue = (key, name) => {
-    return schema[key]?.find(({ name }) => name === name);
+    return schema[key].find(({ name }) => name === name);
   };
 
   const getMUStatus = member => {
@@ -148,7 +148,12 @@ const useMedicalQuestions = ({
   // ----------------------------------------------------------------------------------------------------------------
 
   useEffect(() => {
-    console.log("rsgsrjgk", defaultValue, insuredDetailsResponse);
+    console.log(
+      "rsgsrjgk",
+      defaultValue,
+      insuredDetailsResponse,
+      medicalUrlsRuleEngine,
+    );
     if (name === "Medical Details") {
       if (defaultValue) {
         setValues(defaultValue);
@@ -157,11 +162,10 @@ const useMedicalQuestions = ({
         isVersionRuleEngine(parseInt(group)),
       );
       if (ruleEngineGroup.length) {
+        // if rule engine is true then set other MQ noFORALL
         ruleEngineGroup.forEach(group =>
           setValues(prev => ({ ...prev, [group]: noForAllHelper(group) })),
         );
-        // noForAllHelper
-        // setNoForAll(prev => ({...prev,[ruleEngineGroup]:true}))
 
         if (!medicalUrlsRuleEngine) {
           setPreparingMQ(true);

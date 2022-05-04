@@ -270,6 +270,7 @@ const ProposalSummary = () => {
             }
           `}
         >
+        
           <div className="termsInner__wrapper">
             <div className="quotes_compare_div summary_footer_width">
               <ProposalCheckBox
@@ -425,13 +426,14 @@ const ProposalSummary = () => {
           />
         </MobileHeader>
  */}
+ 
         <div className="container-fluid mt-20 ">
           <ShareQuoteModal
             insurersFor={cart.map(cart => cart?.product?.company?.alias)}
             stage="PROPOSAL_SUMMARY"
             sum_insured={sum_insured}
             float
-            floatCss={"bottom: 20vw;"}
+            floatCss={"bottom: 160px;"}
           />
           <div
             className="element-section "
@@ -509,7 +511,35 @@ const ProposalSummary = () => {
                     width: 100%;
                   }
                 `}
+              >  
+              {/*download pdf button*/}
+              <button
+              data-html2canvas-ignore="true"
+                css={`
+                  position: fixed;
+                  bottom: 100px;
+                  right: 7vw;
+                  box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+                  z-index: 9999;
+                  background-color: ${PrimaryColor};
+                  color: white;
+                  width: 50px;
+                  height: 50px;
+                  border-radius: 100%;
+                  // display: nonex;
+                  @media (max-width: 1023px) {
+                    display: block;
+                  }
+                `}
+                className="btn share_Quote_btn"
+                onClick={() => imageSendQuote("#printSummaryPageMobile")}
               >
+                {!loader ? (
+                  <RiDownload2Line size={25} />
+                ) : (
+                  <i className="fa fa-circle-notch rotate" />
+                )}
+              </button>
                 <div className="row margin_top_tab_proposal">
                   <div class="col-lg-12 col-md-12 no-padding-mobile">
                     <div className="signUp-page signUp-minimal pb-70">

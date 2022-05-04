@@ -533,67 +533,6 @@ const ProposalPage = () => {
                   }
                 `}
               >
-                {/* <div
-                css={`
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                  margin-bottom: 10px;
-                `}
-              >
-                <button
-                  className="btn"
-                  type="button"
-                  onClick={() => {
-                    history.goBack();
-                  }}
-                  css={`
-                    width: max-content;
-                    margin-left: -9px;
-
-                    color: var(--abc-red);
-                    font-size: 17px;
-                    display: flex;
-                    align-items: center;
-                    @media (max-width: 1024px) {
-                      padding: 10px 20px;
-                    }
-                  `}
-                >
-                  <div
-                    className="d-flex justify-content-center align-items-center"
-                    css={`
-                      background: #f1f4f8;
-                      width: 35px;
-                      margin-right: 20px;
-                      border-radius: 100%;
-                      height: 35px;
-                      color: #707b8b;
-                    `}
-                  >
-                    <FaChevronLeft />
-                  </div>
-                  <span
-                    css={`
-                      color: #3b4c69;
-                      font-weight: 600;
-                    `}
-                  >
-                    Go Back
-                  </span>
-                </button>
-                <span
-                  css={`
-                    font-weight: 900;
-                    color: #505f79;
-                    @media (max-width: 1024px) {
-                      display: none;
-                    }
-                  `}
-                >
-                  You are Just 5 minutes away from investing for your future
-                </span>
-              </div> */}
                 <div
                   css={`
                     @media (min-width: 1025px) {
@@ -643,65 +582,14 @@ const ProposalPage = () => {
                       }
                     `}
                   >
-                    {console.log(
-                      "qdbkhaffaf",
-                      proposalData,
-                      listOfForms[active],
-                    )}
                     {form(active, proposalData[listOfForms[active]])}
                   </div>
                 </div>
               </Row>
             </div>
-
-            {/* <div
-            className="element-tile-two"
-            style={{ width: "100%" }}
-            css={`
-              @media (min-width: 768px) and (max-width: 1200px) {
-                font-size: 18px;
-              }
-            `}
-          >
-            You are Just 5 minutes away from investing for your future
-          </div>
-          <div className="row margin_top_tab_proposal">
-            <div class="col-lg-12 col-md-12 no-padding-mobile">
-              <FormGrid
-                active={active}
-                setActive={setActive}
-                listOfForms={listOfForms}
-              />
-
-              <ProductSummary cart={cart} setActive={setActive} />
-            </div>
-          </div>
-
-          {form(active, proposalData[listOfForms[active]])} */}
-            {/* <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "50px",
-            }}
-          >
-            <ProductSummaryTab cart={cart} />
-          </div> */}
           </div>
         </div>
 
-        {/* <div
-        css={`
-          @media (max-width: 1199px) {
-            display: block;
-          }
-          @media (min-width: 1200px) {
-            display: none;
-          }
-        `}
-      >
-        <ProductSummaryMobile cart={cart} />
-      </div> */}
         <PlanUnavailable />
         <BMI />
         <NSTP />
