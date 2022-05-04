@@ -14,6 +14,7 @@ export const allowOnWebsites = (sites = []) => {
   ];
   const sriyahUat = "https://health-uat.nammacover.com";
   const pincUat = "https://uat-health.pincinsurance.com";
+  const renewalRB = "https://uatrenewal.rbstaging.in";
   const origin = window.location.origin;
 
   let isPass = false;
@@ -45,6 +46,11 @@ export const allowOnWebsites = (sites = []) => {
     }
     if (site === "pincUat") {
       if (pincUat === origin) {
+        isPass = true;
+      }
+    }
+    if (site === "renewalRB") {
+      if (renewalRB === origin) {
         isPass = true;
       }
     }

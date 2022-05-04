@@ -10,7 +10,7 @@ import {
   fetchUnderWritingMQ,
   submitProposal,
   getMedicalUrls,
-  getMedicalLetter
+  getMedicalLetter,
 } from "./serviceApi";
 
 const proposal = createSlice({
@@ -18,7 +18,7 @@ const proposal = createSlice({
   initialState: {
     proposalData: {},
     isLoading: false,
-    mdicalUnderwritingLetters : {},
+    mdicalUnderwritingLetters: {},
     Payment: false,
     showBMI: false,
     mediUnderwritting: false,
@@ -30,8 +30,8 @@ const proposal = createSlice({
     noForAllChecked: false,
     policyLoading: true,
     failedBmiData: false,
-    insuredDetailsResponse:{},
-    medicalUrlsRuleEngine:false,
+    insuredDetailsResponse: {},
+    medicalUrlsRuleEngine: false,
     failedBmiBlockJourney: false,
     underWritingStatus: [],
     showErrorPopup: {
@@ -73,7 +73,7 @@ const proposal = createSlice({
     setInsuredDetailsResponse: (state, { payload }) => {
       state.insuredDetailsResponse = payload;
     },
-    setMdicalUnderwritingLetters:(state, { payload }) => {
+    setMdicalUnderwritingLetters: (state, { payload }) => {
       state.mdicalUnderwritingLetters = payload;
     },
     setSelectedIcs: (state, { payload }) => {
@@ -155,7 +155,7 @@ export const {
   setFailedBmiBlockJourney,
   setUnderWritingStatus,
   setMdicalUnderwritingLetters,
-  setMedicalUrlsRuleEngine
+  setMedicalUrlsRuleEngine,
 } = proposal.actions;
 const ls = new SecureLS();
 
@@ -174,9 +174,9 @@ const ls = new SecureLS();
 // };
 export const getMedicalUnderwritingStatus = () => {
   return async (dispatch, state) => {
-    try{
-      const {data} = await fetchUnderWritingMQ();
-      if(typeof data !== "string" && data?.final_result?.members){
+    try {
+      const { data } = await fetchUnderWritingMQ();
+      if (typeof data !== "string" && data?.final_result?.members) {
         dispatch(setUnderWritingStatus(data?.final_result?.members));
         dispatch(getMUResultLetters());
       }
@@ -278,7 +278,7 @@ export const getProposalData = successCallBack => {
                 : Object.keys(responseData).length,
             ),
           );
-          successCallBack && successCallBack();
+        successCallBack && successCallBack();
       }
 
       // callBackFunc();
@@ -348,7 +348,7 @@ export const getPaymentStatus = data => {
   };
 };
 
-export const getMedicalUrlsRuleEngine = (callBack) => {
+export const getMedicalUrlsRuleEngine = callBack => {
   return async dispatch => {
     try {
       const response = await getMedicalUrls();
@@ -368,7 +368,7 @@ export const getMedicalUrlsRuleEngine = (callBack) => {
       alert(err);
     }
   };
-}
+};
 
 export const getMUResultLetters = () => {
   return async dispatch => {
@@ -382,6 +382,6 @@ export const getMUResultLetters = () => {
       alert(err);
     }
   };
-} 
+};
 
 export default proposal.reducer;
