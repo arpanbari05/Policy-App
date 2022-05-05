@@ -130,13 +130,15 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
                   : "Your renewal details?",
               }}
             ></Title>
-            <LinkButton
-              onClick={() => {
-                history.push("/input/basic-details");
-              }}
-            >
-              Fresh policy
-            </LinkButton>
+            {!allowOnWebsites(["renewalRB"]) && (
+              <LinkButton
+                onClick={() => {
+                  history.push("/input/basic-details");
+                }}
+              >
+                Fresh policy
+              </LinkButton>
+            )}
           </FlexSectionStyled>
           <CustomProgressBar now={1} total={1} />
 
