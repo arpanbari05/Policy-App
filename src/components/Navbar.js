@@ -65,7 +65,7 @@ function LogoLink() {
   );
 }
 
-const Navbar = ({ backButton: BackButton = <></> }) => {
+const Navbar = ({ backButton: BackButton = <></>, noShadow = false }) => {
   const location = useLocation();
   const searchQueries = useUrlQueries();
 
@@ -92,7 +92,12 @@ const Navbar = ({ backButton: BackButton = <></> }) => {
         }
       `}
     >
-      <Card width={"100%"} height={"55px"} className="position-relative">
+      <Card
+        width={"100%"}
+        height={"55px"}
+        boxShadow={noShadow && "none"}
+        className="position-relative"
+      >
         <div className="container d-flex justify-content-between align-items-center h-100">
           <div
             css={`

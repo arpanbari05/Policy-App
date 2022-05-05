@@ -188,6 +188,7 @@ const ProductDetails = () => {
             >
               <GoBackButton
                 backPath={`/quotes/${groupCode}?enquiryId=${enquiryId}`}
+                shouldFollowPath
               />
             </div>
           )}

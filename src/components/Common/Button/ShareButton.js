@@ -105,7 +105,11 @@ const Sharebutton = ({
     );
 
   return !shareQuotes ? (
-    <ShareButton onClick={onClick} color={primary_color} data-html2canvas-ignore="true">
+    <ShareButton
+      onClick={onClick}
+      color={primary_color}
+      data-html2canvas-ignore="true"
+    >
       <RiShareForwardFill color={primary_color} />
       <span style={{ marginLeft: 5 }}>{label ? label : "Share"}</span>
     </ShareButton>
@@ -173,8 +177,8 @@ const FloatButton = styled.button`
   @media (min-width: 768px) {
     display: none;
   }
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: ${props => props.color};
   color: #fff;
@@ -185,5 +189,6 @@ const FloatButton = styled.button`
   right: 7vw;
   bottom: 7vw;
   z-index: 99;
+  box-shadow: 0 4px 13px rgba(0, 0, 0, 0.4);
   ${props => props.floatCss}
 `;
