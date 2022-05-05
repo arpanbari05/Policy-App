@@ -140,7 +140,7 @@ function QuotesPage() {
               `}
             >
               <ShortListedQuote />
-              <AssistanceCard />
+              {tenantAlias !== "robinhood" && <AssistanceCard />}
             </div>
           </div>
         </div>
