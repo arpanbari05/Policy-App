@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Col, Row } from "react-bootstrap";
 import styled from "styled-components";
 import "styled-components/macro";
-import { renderField } from "../../../../components/FormBuilder/formUtils";
+import { renderField,ValueExtractor } from "../../../../components/FormBuilder/formUtils";
 import pencil from "../../../../assets/images/pencil_pro.png";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { useDispatch, useSelector } from "react-redux";
@@ -281,9 +281,9 @@ const SummaryTab = ({
                           values?.[item]?.[data.name]?.[_item]?.[
                             additionalQuestion?.name
                           ] && (
-                            <AdditionalWrapper2 className="text-dark">
+                            <AdditionalWrapper2 className="text-dark"> 
                               <AdditionalQuestion className="font_15_p_s">
-                                {additionalQuestion.additionalOptions.label ||
+                                {ValueExtractor(additionalQuestion?.additionalOptions?.label,values?.[item],_item) ||
                                   additionalQuestion.additionalOptions
                                     .placeholder}
                               </AdditionalQuestion>
