@@ -509,7 +509,7 @@ const FormBuilder = ({
                 ) && (
                   <Wrapper
                     key={index + item.name}
-                    id={item.name}
+                    id={item.name + keyStr}
                     width={item.width}
                   >
                     <Comp
