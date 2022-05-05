@@ -116,6 +116,15 @@ export const api = createApi({
     getPolicies: builder.query({
       query: () => ({ url: `/policies` }),
     }),
+    updateShortlistedQuotes: builder.mutation({
+      query: (quotes = []) => ({
+        url: `/shortlists`,
+        method: "PUT",
+        body: {
+          shortlisted_quotes: quotes,
+        },
+      }),
+    }),
     getQuotes: builder.query({
       query: ({
         alias,
@@ -562,6 +571,7 @@ export const {
   useUpdateEnquiryMutation,
   useUpdateGroupMembersMutation,
   useGetNetworkHospitalsQuery,
+  useUpdateShortlistedQuotesMutation,
   useGetClaimProcessQuery,
   useGetProductBrochureQuery,
   useGetAboutCompanyQuery,

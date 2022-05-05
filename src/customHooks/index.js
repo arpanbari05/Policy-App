@@ -21,6 +21,7 @@ import {
   useUpdateEnquiryMutation,
   useUpdateGroupMembersMutation,
   useUpdateGroupsMutation,
+  useUpdateShortlistedQuotesMutation,
 } from "../api/api";
 import { getRiderSendData } from "../pages/Cart/hooks/useCartProduct";
 import useFilters from "../pages/quotePage/components/filters/useFilters";
@@ -28,6 +29,7 @@ import {
   setPolicyTypes,
   setPolicyType,
   updateFetchedFilters,
+  replaceShortlistedQuote,
 } from "../pages/quotePage/quote.slice";
 import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter";
 import styles from "../styles";
@@ -55,6 +57,10 @@ import config from "../config";
 import { useCallback } from "react";
 import { quoteCompareFeature } from "../test/data/quoteFeatures";
 import { refreshUserData } from "../pages/InputPage/greetingPage.slice";
+import {
+  addShortListedQuote,
+  removeShortListedQuote,
+} from "../pages/quotePage/quote.slice";
 import _ from "lodash";
 import {
   requestDownloadSuccess,
@@ -687,6 +693,8 @@ export function useUpdateMembers() {
   } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
   const [createEnquiry, queryState] = useCreateEnquiry();
 
+  const { replaceShortlistedPlans } = useShortlistedPlans();
+
   const history = useHistory();
 
   const dispatch = useDispatch();
@@ -734,6 +742,7 @@ export function useUpdateMembers() {
             data: { groups, enquiry_id },
           },
         } = response;
+        replaceShortlistedPlans([]);
         if (redirectToQuotes) {
           history.push({
             pathname: `/quotes/${groups[0].id}`,
@@ -2683,3 +2692,44 @@ export const useRenewalsConfig = () => {
     isRenewalsJourney,
   };
 };
+
+export function useShortlistedPlans() {
+  useEffect(() => {}, []);
+
+  const dispatch = useDispatch();
+
+  const [updateShortlistedQuotes] = useUpdateShortlistedQuotesMutation();
+
+  const { shortlistedQuotes } = useSelector(({ quotePage }) => quotePage);
+
+  function getPlanByGroup(groupCode) {
+    return shortlistedQuotes?.filter(plan => plan.groupCode === groupCode);
+  }
+
+  function addPlanToShortlist(quote) {
+    dispatch(addShortListedQuote({ ...quote }));
+    updateShortlistedQuotes([quote, ...shortlistedQuotes]);
+  }
+
+  function removePlanToShortlist(quote) {
+    dispatch(removeShortListedQuote({ ...quote }));
+    updateShortlistedQuotes(
+      shortlistedQuotes.filter(
+        plan => plan?.product?.id !== quote?.product?.id,
+      ),
+    );
+  }
+
+  function replaceShortlistedPlans(shortlistedQuotes = []) {
+    dispatch(replaceShortlistedQuote([]));
+    updateShortlistedQuotes([]);
+  }
+
+  return {
+    getPlanByGroup,
+    shortlistedQuotes,
+    addPlanToShortlist,
+    removePlanToShortlist,
+    replaceShortlistedPlans,
+  };
+}

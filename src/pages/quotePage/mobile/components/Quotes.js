@@ -161,7 +161,12 @@ function CompareTray({ quotes = [], onRemove, onClose }) {
   );
 }
 
-function QuoteCards({ quotesData, cashlessHospitalsCount, compare, ...props }) {
+export function QuoteCards({
+  quotesData,
+  cashlessHospitalsCount,
+  compare,
+  ...props
+}) {
   const morePlansToggle = useToggle(false);
 
   const { boxShadows } = useTheme();
@@ -451,38 +456,46 @@ function QuoteCard({
                     font-size: 12px;
                   `}
                 >
-                  Deductible:
-                  <select
-                    value={selectedDeductible}
-                    onChange={evt =>
-                      handleDeductibleChange({ value: evt.target.value })
-                    }
-                  >
-                    {deductibles.map(deductible => (
-                      <option key={deductible} value={deductible}>
-                        {numberToDigitWord(deductible)}
-                      </option>
-                    ))}
-                  </select>
+                  {`Deductible: `}
+                  {deductibles.length > 1 ? (
+                    <select
+                      value={selectedDeductible}
+                      onChange={evt =>
+                        handleDeductibleChange({ value: evt.target.value })
+                      }
+                    >
+                      {deductibles.map(deductible => (
+                        <option key={deductible} value={deductible}>
+                          {numberToDigitWord(deductible)}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span>{numberToDigitWord(selectedDeductible)}</span>
+                  )}
                 </div>
                 <div
                   css={`
                     font-size: 12px;
                   `}
                 >
-                  Cover:
-                  <select
-                    value={selectedSumInsured}
-                    onChange={evt =>
-                      handleSumInsuredChange({ value: evt.target.value })
-                    }
-                  >
-                    {sumInsureds.map(cover => (
-                      <option key={cover} value={cover}>
-                        {numberToDigitWord(cover)}
-                      </option>
-                    ))}
-                  </select>
+                  {`Cover: `}
+                  {sumInsureds.length > 1 ? (
+                    <select
+                      value={selectedSumInsured}
+                      onChange={evt =>
+                        handleSumInsuredChange({ value: evt.target.value })
+                      }
+                    >
+                      {sumInsureds.map(cover => (
+                        <option key={cover} value={cover}>
+                          {numberToDigitWord(cover)}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span>{numberToDigitWord(selectedSumInsured)}</span>
+                  )}
                 </div>
               </>
             )}
@@ -493,19 +506,23 @@ function QuoteCard({
                     font-size: 0.79rem;
                   `}
                 >
-                  Cover:
-                  <select
-                    value={selectedSumInsured}
-                    onChange={evt =>
-                      handleSumInsuredChange({ value: evt.target.value })
-                    }
-                  >
-                    {sumInsureds.map(cover => (
-                      <option key={cover} value={cover}>
-                        {numberToDigitWord(cover)}
-                      </option>
-                    ))}
-                  </select>
+                  {`Cover: `}
+                  {sumInsureds.length > 1 ? (
+                    <select
+                      value={selectedSumInsured}
+                      onChange={evt =>
+                        handleSumInsuredChange({ value: evt.target.value })
+                      }
+                    >
+                      {sumInsureds.map(cover => (
+                        <option key={cover} value={cover}>
+                          {numberToDigitWord(cover)}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span>{numberToDigitWord(selectedSumInsured)}</span>
+                  )}
                 </div>
               </>
             )}
