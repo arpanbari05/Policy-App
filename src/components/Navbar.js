@@ -95,7 +95,11 @@ const Navbar = ({ backButton: BackButton = <></>, noShadow = false }) => {
       <Card
         width={"100%"}
         height={"55px"}
-        boxShadow={noShadow && "none"}
+        boxShadow={
+          noShadow
+            ? "none"
+            : "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+        }
         className="position-relative"
       >
         <div className="container d-flex justify-content-between align-items-center h-100">
