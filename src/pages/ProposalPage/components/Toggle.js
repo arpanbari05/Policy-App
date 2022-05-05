@@ -47,13 +47,13 @@ const Toggle = ({
   const [membersSelectedTillNow, setMembersSelectedTillNow] = useState(false);
 
   useEffect(() => {
-    if (showMembersIf) {
-      setCustomshowMembers(
-        showMembersIf.split("||").some(name => {
-          return values && values[name] && values[name][`is${name}`] === "Y";
-        }),
-      );
-    }
+    // if (showMembersIf) {
+    //   setCustomshowMembers(
+    //     showMembersIf.split("||").some(name => {
+    //       return values && values[name] && values[name][`is${name}`] === "Y";
+    //     }),
+    //   );
+    // }
     if (isMandatoryMQ) {
       console.log("isMandatoryMQ", isMandatoryMQ);
       let questionsToCheck = showMembersIf.split("||");

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   checkAllow,
   fetchMembers,
@@ -215,6 +215,26 @@ const FormBuilder = ({
 
   console.log("dfjklsgvb 2", values,noForAll);
 
+  const additionaMQVisibility = useCallback(
+    (item,member) => {
+      const {additionalOptions} = item;
+      if(additionalOptions?.showMembersIf){
+        const dependentMqNames = additionalOptions.showMembersIf.split("||");
+        console.log("dfvbfnk",dependentMqNames,values);
+        return dependentMqNames.some(mqName => values[mqName]?.members[member]);
+      }else{
+        return (values[item?.parent] &&
+          values[item?.parent]?.members &&
+          values[item?.parent]?.members instanceof Object &&
+          values[item?.parent]?.members?.[member]) ||
+        item.render === "noDependency" 
+      }
+    },
+    [values],
+  )
+  
+
+
   return (
     <>
       {schema instanceof Array &&
@@ -224,11 +244,7 @@ const FormBuilder = ({
               <>
                 {item[0]?.additionalOptions?.members?.map(member => {
                   if (
-                    (values[item[0]?.parent] &&
-                      values[item[0]?.parent]?.members &&
-                      values[item[0]?.parent]?.members instanceof Object &&
-                      values[item[0]?.parent]?.members?.[member]) ||
-                    item[0].render === "noDependency"
+                    additionaMQVisibility(item[0], member)
                   )
                     return (
                       <CustomWrapper>

@@ -1,26 +1,50 @@
-Medical Details : {
-    groupcode_membersInGroupcode : [
+Insured Details : {
+    member : [                                     -- Array of Objects (Objects are Insured Details questions)
         {
-
-        type : "custom_toggle"/"custom_medical" -- This key is intoduced to check the medical question has sub questions or not --
-                                                -- "custom_toggle" : means this medical question, not have any sub questions --
-                                                -- "custom_medical" : means this medical question, have sub questions --    
-        name : "NAME OF QUESTION"                                         
-        width: "WIDTH OF THE QUESTION CONTROLLED BY THE BACK-END"
-        additionalOptions : {
-            notAllowedIf : "N"                  -- This key is intoduced to add open "plan not valid" popup/modal, this key can only have a value "N", it is for special case medical questions which usr can not mark as "NO" --
-            notAllowed   : true/false           -- This key is intoduced to invalidate plan when user select "Yes" for medical question and to show "plan not valid" popup/modal --
-            showMembers  : true/false           -- This key is intoduced to control render of members select options under medicalquestions --
-            members      : ["self",etc.]        -- This key is intoduced to get list of members assigned to the groupcode --
-        },
-        visibleOn:{
-            dependentQuestionName : value       -- value must be equal to the value of "dependentQuestionName" on which this questions should render
-        } || {
-            dependentQuestionParentName : {
-                dependentQuestionName : value
+            type : "text"/"select"/"date"          -- This key is intoduced to select component --
+            name : "NAME OF QUESTION" 
+            visibleOn : {
+                dependentQuestionName : value      -- value must be equal to the value of "dependentQuestionName" on which this questions should render --
             }
-        }                                       -- visibleOn can be nested Object in case of medical question.
-    },
+            allow : "dob"                          -- to open datePicker 
+            additionalOptions : {
+                label  : "LABEL OF QUESTION OR HEADING OF QUESTION"
+                maxLength : number                 -- value of this key must be typeof === number, this key is introduced to restrict entered value length or entered value length must be less than value passed to this key --
+                placeHolder: "REGULAR INPUT FIELD PLACEHOLDER"
+                readOnly   : true/false            -- To make field uneditable by the user, if value is false or negative --
+            }
+            validate : {
+                required : true/false              -- value can be boolean only, intended to make input field mendatory --
+                age      : [minAge,maxAge]         -- value of this key will be an array of range --
+                matches  : "date"
+            }
+        }
+    ]   
+}
+
+Medical Details : {
+    groupcode_membersInGroupcode : [                -- Array of Objects (Objects are additional medical questions)
+        {
+            type : "custom_toggle"/"custom_medical" -- This key is intoduced to check the medical question has sub questions or not & select component --
+                                                    -- "custom_toggle" : means this medical question, not have any sub questions --
+                                                    -- "custom_medical" : means this medical question, have sub questions --    
+            name : "NAME OF QUESTION"                                         
+            width: "WIDTH OF THE QUESTION CONTROLLED BY THE BACK-END"
+            additionalOptions : {
+                notAllowedIf : "N"                  -- This key is intoduced to add open "plan not valid" popup/modal, this key can only have a value "N", it is for special case medical questions which usr can not mark as "NO" --
+                notAllowed   : true/false           -- This key is intoduced to invalidate plan when user select "Yes" for medical question and to show "plan not valid" popup/modal --
+                showMembers  : true/false           -- This key is intoduced to control render of members select options under medicalquestions --
+                members      : ["self",etc.]        -- This key is intoduced to get list of members assigned to the groupcode --
+                showMembersIf : "MQNAme || MQName"      -- value in " showMembersIf " must be string consist on names of medical questions of which values are responsible for additional options visibility, saperated with "||" --
+            },
+            visibleOn : {
+                dependentQuestionName : value       -- value must be equal to the value of "dependentQuestionName" on which this questions should render --
+            } || {
+                dependentQuestionParentName : {
+                    dependentQuestionName : value
+                }
+            }                                       -- visibleOn can be nested Object in case of additional medical question.
+        },
     ]
 }
 
