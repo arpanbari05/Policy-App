@@ -99,7 +99,7 @@ export function Quotes({ sortBy }) {
   );
 }
 
-function CompareTray({ quotes = [], onRemove, onClose }) {
+export function CompareTray({ quotes = [], onRemove, onClose }) {
   const { colors, boxShadows } = useTheme();
   const history = useHistory();
   const { groupCode } = useParams();
