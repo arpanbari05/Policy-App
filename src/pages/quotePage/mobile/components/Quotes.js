@@ -218,7 +218,7 @@ export function QuoteCards({
         <Collapse in={morePlansToggle.isOn}>
           <div>
             {collapsedQuotes.map(quotes => (
-              <div className="mt-3" key={Object.values(quotes)[0].product.id}>
+              <div className="mt-2" key={Object.values(quotes)[0].product.id}>
                 <QuoteCard
                   cashlessHospitalsCount={cashlessHospitalsCount}
                   {...getQuoteCardProps(quotes)}
@@ -327,7 +327,7 @@ function QuoteCard({
     <div {...props}>
       <div
         className={`d-flex justify-content-between w-100 ${
-          isFirstQuote ? "position-absolute" : "px-2"
+          isFirstQuote && "position-absolute"
         } `}
         css={`
           top: 0;
@@ -340,12 +340,10 @@ function QuoteCard({
             className="d-flex align-items-center"
             css={`
               gap: 0.3em;
-              ${isFirstQuote
-                ? `background-color: ${colors.secondary_shade};
-            border-radius: 0 3em 0 0;
-            padding: 0.6em;
-            padding-right: 2em;`
-                : ""}
+              background-color: ${colors.secondary_shade};
+              border-radius: 0 3em 0 0;
+              padding: 0.6em;
+              padding-right: 2em;
             `}
           >
             <span
@@ -371,12 +369,10 @@ function QuoteCard({
             className="d-flex align-items-center"
             css={`
               gap: 0.3em;
-              ${isFirstQuote
-                ? `background-color: ${colors.secondary_shade};
+              background-color: ${colors.secondary_shade};
               border-radius: 0 3em 0 0;
               padding: 0.6em;
-              padding-right: 2em;`
-                : ""}
+              padding-right: 2em;
             `}
           >
             <span
@@ -402,12 +398,10 @@ function QuoteCard({
           onClick={() => handleProductDetailsModal("mobile-plan-details")}
           className="d-flex align-items-center"
           css={`
-            ${isFirstQuote
-              ? `background-color: ${colors.secondary_shade};
+            background-color: ${colors.secondary_shade};
             border-radius: 3em 0 0 0;
             padding: 0.6em;
-            padding-left: 2em;`
-              : null}
+            padding-left: 2em;
           `}
         >
           See details <ChevronRightCircle />
