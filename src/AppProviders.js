@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 import { BrowserRouter, useLocation } from "react-router-dom";
@@ -7,6 +7,7 @@ import {
   useGetFrontendBootQuery,
   useGetCartQuery,
   useGetPoliciesQuery,
+  useGetShortlistedQuotesQuery,
 } from "./api/api";
 import { ErrorFallback, FullScreenLoader } from "./components";
 import { useGetEnquiriesQuery } from "./api/api";
@@ -17,6 +18,8 @@ import "./app.css";
 import { some } from "lodash";
 import "styled-components/macro";
 import { useUrlQueries } from "./customHooks/useUrlQuery";
+import { useDispatch } from "react-redux";
+import { replaceShortlistedQuote } from "./pages/quotePage/quote.slice";
 
 function AppProviders({ children }) {
   return (
@@ -34,6 +37,8 @@ function AppLoaders({ children, ...props }) {
   const isRootRoute = useRouteMatch({ path: "/", exact: true });
   const searchQueries = useUrlQueries();
   const { pathname } = useLocation();
+
+  const dispatch = useDispatch();
 
   const isBasicDetailsRoute = useRouteMatch({
     path: "/input/basic-details",
@@ -88,6 +93,18 @@ function AppLoaders({ children, ...props }) {
       skip: dontCheckPolicies,
     });
 
+  const {
+    data,
+    isFetching: isFetchingShortlisted,
+    isError: isErrorShortlisted,
+  } = useGetShortlistedQuotesQuery();
+
+  useEffect(() => {
+    if (data) {
+      dispatch(replaceShortlistedQuote(data?.data?.shortlisted_quotes || []));
+    }
+  }, [data]);
+
   if (isLoading || isUninitialized) return <FullScreenLoader />;
 
   if (isError)
@@ -122,6 +139,8 @@ function AppLoaders({ children, ...props }) {
   if (isLoadingCart) return <FullScreenLoader />;
 
   if (isLoadingPolicy) return <FullScreenLoader />;
+
+  if (isFetchingShortlisted) return <FullScreenLoader />;
 
   if (isErrorEnq)
     return (

@@ -238,7 +238,7 @@ function QuoteCard({
       q => q?.product?.id === (quote?.product?.id || quotes[0]?.product?.id),
     );
     setIsShortListed(Boolean(isInShortlisted));
-  }, []);
+  }, [shortlistedQuotes]);
 
   if (!quote) return null;
 
@@ -288,6 +288,10 @@ function QuoteCard({
     }
   };
 
+  const shortlistDesc = isShortlisted
+    ? "Remove from Shortlisted Plans"
+    : "Add to Shortlisted Plans";
+
   let features = isDeductibleJourney ? quoteFeatures : quote?.features;
   features = features?.filter(feature =>
     featuresDisplayedOnQuoteCard.includes(feature?.code),
@@ -322,29 +326,34 @@ function QuoteCard({
 
   return (
     <div id={quote?.company_alias} {...props}>
-      <label
-        css={`
-          position: absolute;
-          top: ${quote?.usp_message?.length > 0 ? "25px" : "10px"};
-          left: 10px;
-          cursor: pointer;
-        `}
-        htmlFor={`${quote?.company_alias}_shortlisted`}
+      <OverlayTrigger
+        placement={"right"}
+        overlay={renderTooltip(shortlistDesc)}
       >
-        <input
-          className="visually-hidden"
-          checked={isShortlisted}
-          type="checkbox"
-          onChange={handleShortListedQuotes}
-          id={`${quote?.company_alias}_shortlisted`}
-          name={`${quote?.company_alias}_shortlisted`}
-        />
-        {isShortlisted ? (
-          <FaBookmark color={colors.primary_color} />
-        ) : (
-          <FaRegBookmark color={"#444"} />
-        )}
-      </label>
+        <label
+          css={`
+            position: absolute;
+            top: ${quote?.usp_message?.length > 0 ? "25px" : "10px"};
+            left: 10px;
+            cursor: pointer;
+          `}
+          htmlFor={`${quote?.company_alias}_shortlisted`}
+        >
+          <input
+            className="visually-hidden"
+            checked={isShortlisted}
+            type="checkbox"
+            onChange={handleShortListedQuotes}
+            id={`${quote?.company_alias}_shortlisted`}
+            name={`${quote?.company_alias}_shortlisted`}
+          />
+          {isShortlisted ? (
+            <FaBookmark color={colors.primary_color} />
+          ) : (
+            <FaRegBookmark color={"#444"} />
+          )}
+        </label>
+      </OverlayTrigger>
       {quote?.usp_message?.length > 0 && (
         <div
           css={`

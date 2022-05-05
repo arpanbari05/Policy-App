@@ -74,6 +74,7 @@ export function Page({
   loader,
   noNavbarForMobile = false,
   backButton: BackButton = <></>,
+  noShadow = false,
   id = "",
   ...props
 }) {
@@ -88,7 +89,7 @@ export function Page({
         }
         desktop={() => import("./Navbar")}
       >
-        {NavBar => <NavBar backButton={BackButton} />}
+        {NavBar => <NavBar noShadow={noShadow} backButton={BackButton} />}
       </Import>
       <div>{children}</div>
     </div>

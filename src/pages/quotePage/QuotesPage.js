@@ -49,6 +49,8 @@ function QuotesPage() {
 
   const [isGroupExist, setGroupExist] = useState(true);
 
+  const { tenantAlias } = useFrontendBoot();
+
   const { groupCode } = useParams();
 
   useEffect(() => {
@@ -137,8 +139,8 @@ function QuotesPage() {
                 gap: 10px;
               `}
             >
-              <AssistanceCard />
               <ShortListedQuote />
+              <AssistanceCard />
             </div>
           </div>
         </div>
@@ -169,9 +171,10 @@ function ShortListedQuote() {
   return (
     <div
       css={`
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         padding: 10px;
         padding-top: 0;
+        border: 1px solid #dcdcdc;
       `}
     >
       <div

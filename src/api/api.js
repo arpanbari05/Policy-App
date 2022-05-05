@@ -125,6 +125,9 @@ export const api = createApi({
         },
       }),
     }),
+    getShortlistedQuotes: builder.query({
+      query: () => ({ url: `/shortlists` }),
+    }),
     getQuotes: builder.query({
       query: ({
         alias,
@@ -576,6 +579,7 @@ export const {
   useGetProductBrochureQuery,
   useGetAboutCompanyQuery,
   useGetProductFeaturesQuery,
+  useGetShortlistedQuotesQuery,
   useGetLocationDetailsQuery,
   useGetCustomQuotesQuery,
   useUpdateCompareQuotesMutation,

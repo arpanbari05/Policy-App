@@ -2721,8 +2721,8 @@ export function useShortlistedPlans() {
   }
 
   function replaceShortlistedPlans(shortlistedQuotes = []) {
-    dispatch(replaceShortlistedQuote([]));
-    updateShortlistedQuotes([]);
+    dispatch(replaceShortlistedQuote(shortlistedQuotes));
+    updateShortlistedQuotes(shortlistedQuotes);
   }
 
   return {

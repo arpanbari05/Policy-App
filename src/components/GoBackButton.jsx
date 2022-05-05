@@ -2,7 +2,7 @@ import "styled-components/macro";
 import { useHistory } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa";
 
-const GoBackButton = ({ backPath, ...extras }) => {
+const GoBackButton = ({ backPath, shouldFollowPath = false, ...extras }) => {
   const history = useHistory();
   return (
     <button
@@ -20,8 +20,11 @@ const GoBackButton = ({ backPath, ...extras }) => {
         cursor: pointer;
       `}
       onClick={() => {
-        // history.push(backPath);
-        history.goBack();
+        if (shouldFollowPath && backPath) {
+          history.push(backPath);
+        } else {
+          history.goBack();
+        }
       }}
     >
       <span

@@ -14,6 +14,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { HeadingSecondary, TertiaryFontBold } from "../../styles/typography";
 import { IoIosArrowBack } from "react-icons/io";
 import { CompareQuotesTray } from "../quotePage/components/Quotes";
+import { CompareTray } from "../quotePage/mobile/components/Quotes";
 import GroupLinks from "./components/groupLinks/groupLinks";
 import "styled-components/macro";
 
@@ -42,12 +43,14 @@ function ShortlistedQuotes() {
 
   const compareSlot = useCompareSlot({ maxLength: 2 });
 
+  const isQuotesOnCompare = compareSlot.quotes.length;
+
   const gotoQuotes = () => {
     history.goBack();
   };
 
   return (
-    <Page>
+    <Page noShadow>
       <GroupLinks />
       <Wrapper className="container-lg">
         <Header>
@@ -77,31 +80,52 @@ function ShortlistedQuotes() {
           </LinkWrapper>
           <HeadingSecondary>Shortlisted quotes</HeadingSecondary>
         </Header>
-        {quotes.map(quote => (
-          <div className="only-desktop">
-            <QuoteCards
-              cashlessHospitalsCount={quote.cashlessHospitalsCount}
-              quotesData={quote.data}
-              compare={compare}
-              key={quote.company_alias}
-              sortBy={defaultSortBy?.code}
-            />
+        {quotes.length > 0 ? (
+          <>
+            {quotes.map(quote => (
+              <div className="only-desktop">
+                <QuoteCards
+                  cashlessHospitalsCount={quote.cashlessHospitalsCount}
+                  quotesData={quote.data}
+                  compare={compare}
+                  key={quote.company_alias}
+                  sortBy={defaultSortBy?.code}
+                />
+              </div>
+            ))}
+            {quotes.map(quote => (
+              <div className="only-mobile">
+                <QuoteCardsMobile
+                  cashlessHospitalsCount={quote.cashlessHospitalsCount}
+                  quotesData={quote.data}
+                  compare={compareSlot}
+                  key={quote.company_alias}
+                  sortBy={defaultSortBy?.code}
+                />
+              </div>
+            ))}
+          </>
+        ) : (
+          <div
+            css={`
+              margin: 20vh auto;
+              text-align: center;
+            `}
+          >
+            No shortlisted quotes!
           </div>
-        ))}
-        {quotes.map(quote => (
-          <div className="only-mobile">
-            <QuoteCardsMobile
-              cashlessHospitalsCount={quote.cashlessHospitalsCount}
-              quotesData={quote.data}
-              compare={compareSlot}
-              key={quote.company_alias}
-              sortBy={defaultSortBy?.code}
-            />
-          </div>
-        ))}
+        )}
       </Wrapper>
       {compare?.isQuotesOnCompare ? (
         <CompareQuotesTray compare={compare} onClose={compare?.reset} />
+      ) : null}
+
+      {isQuotesOnCompare ? (
+        <CompareTray
+          quotes={compareSlot.quotes}
+          onRemove={compareSlot.remove}
+          onClose={compareSlot.clear}
+        />
       ) : null}
     </Page>
   );
@@ -113,12 +137,11 @@ const Wrapper = styled.div`
   width: 830px;
   display: grid;
   gap: 10px;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 
   @media (max-width: 850px) {
     width: 100%;
-    padding-top: 20px;
   }
 `;
 
