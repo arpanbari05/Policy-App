@@ -10,11 +10,16 @@ import {
   useToggle,
   useUrlEnquiry,
   useFrontendBoot,
+  useShortlistedPlans,
 } from "../../../../customHooks";
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 import "styled-components/macro";
 import { Button, PremiumButton } from "../../../../components";
-import { mergeQuotes, numberToDigitWord } from "../../../../utils/helper";
+import {
+  mergeQuotes,
+  numberToDigitWord,
+  ClickSound,
+} from "../../../../utils/helper";
 import ProductDetailsModal from "../../../../components/ProductDetails/ProductDetailsModal";
 import { FaChevronDown, FaChevronRight, FaChevronUp } from "react-icons/fa";
 import { Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -22,7 +27,7 @@ import { IoRadioButtonOff, IoRadioButtonOn } from "react-icons/io5";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { CompareQuoteTrayItem, CompareTrayAdd } from "../../components";
 import _ from "lodash";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setQuotesToShare,
@@ -32,6 +37,8 @@ import {
 import ShareQuoteModal from "../../../../components/ShareQuoteModal";
 import useFilters from "../../components/filters/useFilters";
 import { PrimaryFontBold } from "../../../../styles/typography";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa";
+import { useRouteMatch } from "react-router-dom";
 
 export function Quotes({ sortBy }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
@@ -71,6 +78,7 @@ export function Quotes({ sortBy }) {
         stage="QUOTE"
         hideBtn
       />
+      <ShortlistFloat />
       <div
         className="d-flex flex-column"
         css={`
@@ -115,6 +123,7 @@ export function CompareTray({ quotes = [], onRemove, onClose }) {
     updateCompareQuotes(quotes);
     history.push(getUrlWithEnquirySearch(`/compare/${groupCode}`));
   };
+
   return (
     <div
       className="position-fixed p-2 w-100"
@@ -150,13 +159,28 @@ export function CompareTray({ quotes = [], onRemove, onClose }) {
           <CompareTrayAdd key={idx} />
         ))}
       </div>
-      <Button
-        onClick={handleCompareClick}
-        disabled={quotes.length < 2}
-        className="my-3 w-100"
-      >
-        <PrimaryFontBold>Compare Now</PrimaryFontBold>
-      </Button>
+      <div className="d-flex gap-3 justify-content-center">
+        <Button
+          onClick={handleCompareClick}
+          disabled={quotes.length < 2}
+          className="my-3 w-100"
+        >
+          <PrimaryFontBold css={"text-align: center;"}>
+            Compare Now
+          </PrimaryFontBold>
+        </Button>
+        {/* <Button
+          css={`
+            background: ${colors.secondary_shade};
+          `}
+          onClick={onClose}
+          className="my-3 w-100"
+        >
+          <PrimaryFontBold css={"text-align: center; color: #444;"}>
+            Cancel
+          </PrimaryFontBold>
+        </Button> */}
+      </div>
     </div>
   );
 }
@@ -288,11 +312,46 @@ function QuoteCard({
 
   const dispatch = useDispatch();
 
+  const isShortlistRoute = useRouteMatch({ path: "/shortlisted" });
+
+  const shortlistRef = useRef();
+
+  const timeout = useRef();
+
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  useOutsiteClick(shortlistRef, () => setShowTooltip(false));
+
+  const toggleTooltip = () => {
+    setShowTooltip(!isShortlistRoute);
+    return hideTimeoutTooltip();
+  };
+
+  const hideTimeoutTooltip = () => {
+    clearTimeout(timeout.current);
+    timeout.current = setTimeout(() => {
+      setShowTooltip(false);
+    }, [3000]);
+  };
+
   const { shareType, quotesToShare } = useSelector(state => state.quotePage);
 
   const productDetailsToggle = useToggle(false);
 
   const { journeyType } = useFrontendBoot();
+
+  const { groupCode } = useParams();
+
+  const [isShortlisted, setIsShortListed] = useState(false);
+
+  const {
+    addPlanToShortlist,
+    removePlanToShortlist,
+    getPlanByGroup,
+    canDelete,
+  } = useShortlistedPlans();
+
+  const shortlistedQuotes = getPlanByGroup(groupCode);
 
   useEffect(() => {
     const isInShare = quotesToShare?.find(
@@ -300,6 +359,13 @@ function QuoteCard({
     );
     setIsShare(isInShare ? true : false);
   }, [quotesToShare, shareType]);
+
+  useEffect(() => {
+    const isInShortlisted = shortlistedQuotes?.find(
+      q => q?.product?.id === (quote?.product?.id || quotes[0]?.product?.id),
+    );
+    setIsShortListed(Boolean(isInShortlisted));
+  }, [shortlistedQuotes]);
 
   if (!quote) return null;
 
@@ -322,6 +388,24 @@ function QuoteCard({
       dispatch(removeQuoteFromShare(quotes));
     }
   };
+
+  const handleShortListedQuotes = evt => {
+    ClickSound();
+    const { checked } = evt.target;
+    if (checked) {
+      addPlanToShortlist({ ...quote, cashlessHospitalsCount, groupCode });
+      setIsShortListed(true);
+    } else {
+      removePlanToShortlist(quote);
+      setIsShortListed(false);
+    }
+  };
+
+  const shortlistDesc = !canDelete
+    ? "Atleast 1 shortlisted plan is mandatory"
+    : isShortlisted
+    ? "Remove Shortlisted Plan"
+    : "Add to Shortlisted Plans";
 
   return (
     <div {...props}>
@@ -522,7 +606,12 @@ function QuoteCard({
             )}
           </div>
         </div>
-        <div>
+        <div
+          className="d-flex gap-1 align-items-start"
+          css={`
+            margin-left: 0.6em;
+          `}
+        >
           <PremiumButton
             displayTenure={false}
             quote={quote}
@@ -530,9 +619,48 @@ function QuoteCard({
             css={`
               font-size: 13px;
               width: 7.3em;
-              margin-left: 0.6em;
             `}
           />
+          <OverlayTrigger
+            show={showTooltip}
+            placement="bottom"
+            overlay={<Tooltip {...props}>{shortlistDesc}</Tooltip>}
+          >
+            <label
+              className="d-flex align-items-start justify-content-center"
+              css={`
+                gap: 0.3em;
+                padding: 0;
+                flex-grow: 1;
+                border-left: 3px solid #fff;
+                border-right: 3px solid #fff;
+              `}
+              ref={shortlistRef}
+              onClick={toggleTooltip}
+            >
+              <span
+                css={`
+                  color: ${colors.primary_color};
+                  font-size: 1rem;
+                  line-height: 1;
+                  margin-bottom: 0.2em;
+                `}
+              >
+                {isShortlisted ? (
+                  <FaBookmark color={colors.primary_color} />
+                ) : (
+                  <FaRegBookmark color={"#444"} />
+                )}
+              </span>
+              {/* {isShortlisted ? "Shortlisted" : "Shortlist"} */}
+              <input
+                className="visually-hidden"
+                type="checkbox"
+                checked={isShortlisted}
+                onChange={handleShortListedQuotes}
+              />
+            </label>
+          </OverlayTrigger>
         </div>
       </div>
       <QuoteFeatures
@@ -679,5 +807,62 @@ export function QuoteCardDataset(description, index, PrimaryColor) {
         </OverlayTrigger>
       </span>
     </span>
+  );
+}
+
+export function ShortlistFloat() {
+  const { colors } = useTheme();
+
+  const urlQueryStrings = new URLSearchParams(window.location.search);
+  const enquiryId = urlQueryStrings.get("enquiryId");
+
+  const { getPlanByGroup } = useShortlistedPlans();
+
+  const { groupCode } = useParams();
+
+  const shortlistedQuotes = getPlanByGroup(groupCode);
+
+  return (
+    shortlistedQuotes?.length > 0 && (
+      <Link
+        to={`/shortlisted/${groupCode}?enquiryId=${enquiryId}`}
+        css={`
+          border-radius: 50%;
+          background: ${colors.primary_color};
+          color: #fff;
+          width: 60px;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: fixed;
+          bottom: 90px;
+          right: 20px;
+          z-index: 99;
+          box-shadow: 0 4px 13px rgba(0, 0, 0, 0.4);
+        `}
+      >
+        <span>
+          <FaBookmark size={30} />
+          <span
+            css={`
+              border-radius: 50%;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 25px;
+              height: 25px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: ${colors.primary_color};
+            `}
+          >
+            {shortlistedQuotes?.length}
+          </span>
+        </span>
+      </Link>
+    )
   );
 }
