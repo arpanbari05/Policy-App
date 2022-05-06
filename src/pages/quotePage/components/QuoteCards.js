@@ -173,8 +173,12 @@ function QuoteCard({
 
   const { shareType, quotesToShare } = useSelector(state => state.quotePage);
 
-  const { getPlanByGroup, addPlanToShortlist, removePlanToShortlist } =
-    useShortlistedPlans();
+  const {
+    getPlanByGroup,
+    addPlanToShortlist,
+    removePlanToShortlist,
+    canDelete,
+  } = useShortlistedPlans();
 
   const shortlistedQuotes = getPlanByGroup(groupCode);
 
@@ -288,7 +292,9 @@ function QuoteCard({
     }
   };
 
-  const shortlistDesc = isShortlisted
+  const shortlistDesc = !canDelete
+    ? "Atleast 1 shortlisted plan is mandatory"
+    : isShortlisted
     ? "Remove from Shortlisted Plans"
     : "Add to Shortlisted Plans";
 
@@ -333,8 +339,8 @@ function QuoteCard({
         <label
           css={`
             position: absolute;
-            top: ${quote?.usp_message?.length > 0 ? "25px" : "10px"};
-            left: 10px;
+            top: 10px;
+            right: 10px;
             cursor: pointer;
           `}
           htmlFor={`${quote?.company_alias}_shortlisted`}
@@ -725,6 +731,11 @@ function QuoteCard({
             )}
           </div>
         </div>
+        <div
+          css={`
+            width: 20px;
+          `}
+        ></div>
       </div>
       {productDetailsModal.isOn && (
         <ProductDetailsModal

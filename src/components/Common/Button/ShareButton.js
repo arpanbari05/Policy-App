@@ -16,10 +16,10 @@ const SHARE_OPTIONS = [
   // {
   //   value: "share",
   //   label: "Share quotes",
-  // },
+// },
   {
     value: "quotation_list",
-    label: "Share quotation list",
+    label: "Share all the quotes",
   },
   {
     value: "specific_quotes",
