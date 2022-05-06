@@ -6,10 +6,14 @@ import { useHistory } from "react-router";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { FaTimes } from "react-icons/fa";
 import { setActiveIndex } from "../ProposalSections.slice";
+import { useFrontendBoot } from "../../../../customHooks";
 
 const BMI = () => {
   const { showBMI } = useSelector(state => state.proposalPage);
   const history = useHistory();
+  const {
+    data: frontBootData,
+  } = useFrontendBoot();
   const urlQuery = useUrlQuery();
   const enquiryId = urlQuery.get("enquiryId");
   const { memberGroups } = useSelector(state => state.greetingPage);
@@ -20,15 +24,30 @@ const BMI = () => {
     return (
       <PopupWrapper>
         <Popup>
-          <FaTimes style={{margin: "20px 20px 0 0", cursor: "pointer"}} onClick={() => {
+          <FaTimes
+            style={{ margin: "20px 20px 0 0", cursor: "pointer" }}
+            onClick={() => {
               dispatch(setShowBMI(false));
-            }} />
+            }}
+          />
           <Container>
-            <p>
-              Based on BMI of <span>{showBMI}</span> this plan isn't available.
-              Please change your details for selected plan or choose another
-              plan
-            </p>
+            {frontBootData?.settings?.medical_stp_declaration_message &&
+            frontBootData?.settings?.display_stp_message_over_bmi_message ? (
+              <>
+                <p>
+                  {frontBootData?.settings?.medical_stp_declaration_message}
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  Based on BMI of <span>{showBMI}</span> this plan isn't
+                  available. Please change your details for selected plan or
+                  choose another plan
+                </p>
+              </>
+            )}
+
             <ButtonWrapper>
               <button
                 onClick={() => {

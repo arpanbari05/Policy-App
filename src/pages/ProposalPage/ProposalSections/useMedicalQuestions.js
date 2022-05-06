@@ -133,8 +133,9 @@ const useMedicalQuestions = ({
     }
   };
 
-  const getScheamaOfValue = (key, name) => {
-    return schema[key].find(({ name }) => name === name);
+  const getScheamaOfValue = (key, mqname) => {
+    console.log("aefbakef",key,name,schema,schema[key].find(({ name }) => name === mqname))
+    return schema[key].find(({ name }) => name === mqname);
   };
 
   const getMUStatus = member => {
@@ -213,14 +214,14 @@ const useMedicalQuestions = ({
       checkCanProceed();
       const keys = Object.keys(values || {});
       // getScheamaOfValue
-      console.log("svsfhjvs", schema);
+     
       let temp = keys.reduce(
         (acc, key) => ({
           ...acc,
           [key]: Object.keys(values[key])
             .filter(
               el =>
-                !getScheamaOfValue(key, el)?.additionalOptions?.disable_Toggle,
+                !getScheamaOfValue(key, el)?.additionalOptions?.disable_Toggle && !getScheamaOfValue(key, el)?.additionalOptions?.notAllowedIf,
             )
             .some(el => values[key][el][`is${el}`] === "Y"),
         }),
