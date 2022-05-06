@@ -140,7 +140,7 @@ function QuotesPage() {
               `}
             >
               <ShortListedQuote />
-              <AssistanceCard />
+              {tenantAlias !== "robinhood" && <AssistanceCard />}
             </div>
           </div>
         </div>
@@ -358,7 +358,7 @@ function ClearFilters(props) {
   );
 }
 
-function AssistanceCard(props) {
+export function AssistanceCard(props) {
   const [showTalk, setShowTalk] = useState(false);
   const { colors } = useTheme();
   const {

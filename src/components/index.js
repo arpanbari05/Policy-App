@@ -480,7 +480,7 @@ export function useGotoProductDetailsPage() {
 }
 
 export function PremiumButton({ quote, displayTenure = true, ...props }) {
-  const history = useHistory();
+
 
   const cartSummaryModal = useToggle(false);
 
@@ -511,10 +511,9 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
 
     const firstGroupWithQuote = Math.min(...groupCodes);
 
-    history.push({
-      pathname: `/productdetails/${firstGroupWithQuote}`,
-      search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
-    });
+    window.location.assign(
+      `/productdetails/${firstGroupWithQuote}?enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
+    );
   }
 
   const handleContinueClick = () => {

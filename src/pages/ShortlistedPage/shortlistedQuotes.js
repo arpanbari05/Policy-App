@@ -2,11 +2,13 @@ import React from "react";
 import { Page } from "../../components";
 import {
   useCompareSlot,
+  useFrontendBoot,
   useQuotesCompare,
   useShortlistedPlans,
   useSortBy,
   useTheme,
 } from "../../customHooks";
+import { AssistanceCard } from "../quotePage/QuotesPage";
 import QuoteCards from "../quotePage/components/QuoteCards";
 import { QuoteCards as QuoteCardsMobile } from "../quotePage/mobile/components/Quotes";
 import styled from "styled-components";
@@ -31,6 +33,8 @@ function ShortlistedQuotes() {
 
   const history = useHistory();
 
+  const { tenantAlias } = useFrontendBoot();
+
   // transforming quotes data
   const quotes = shortlistedQuotes.map(quote => ({
     cashlessHospitalsCount: quote?.cashlessHospitalsCount,
@@ -52,7 +56,7 @@ function ShortlistedQuotes() {
   return (
     <Page noShadow>
       <GroupLinks />
-      <Wrapper className="container-lg">
+      <Wrapper className="container">
         <Header>
           <LinkWrapper color={colors.primary_color} onClick={gotoQuotes}>
             <IoIosArrowBack size={15} />
@@ -80,41 +84,73 @@ function ShortlistedQuotes() {
           </LinkWrapper>
           <HeadingSecondary>Shortlisted quotes</HeadingSecondary>
         </Header>
-        {quotes.length > 0 ? (
-          <>
-            {quotes.map(quote => (
-              <div className="only-desktop">
-                <QuoteCards
-                  cashlessHospitalsCount={quote.cashlessHospitalsCount}
-                  quotesData={quote.data}
-                  compare={compare}
-                  key={quote.company_alias}
-                  sortBy={defaultSortBy?.code}
-                />
-              </div>
-            ))}
-            {quotes.map(quote => (
-              <div className="only-mobile">
-                <QuoteCardsMobile
-                  cashlessHospitalsCount={quote.cashlessHospitalsCount}
-                  quotesData={quote.data}
-                  compare={compareSlot}
-                  key={quote.company_alias}
-                  sortBy={defaultSortBy?.code}
-                />
-              </div>
-            ))}
-          </>
-        ) : (
+        <div className="d-flex gap-3 align-items-start justify-content-center">
           <div
             css={`
-              margin: 20vh auto;
-              text-align: center;
+              flex: 3;
+              display: grid;
+              gap: 10px;
+              justify-content: ${tenantAlias !== "robinhood"
+                ? "stretch"
+                : "center"};
             `}
           >
-            No shortlisted quotes!
+            {quotes.length > 0 ? (
+              <>
+                {quotes.map(quote => (
+                  <div
+                    className="only-desktop"
+                    css={`
+                      width: 100%;
+                      max-width: 850px;
+                    `}
+                  >
+                    <QuoteCards
+                      cashlessHospitalsCount={quote.cashlessHospitalsCount}
+                      quotesData={quote.data}
+                      compare={compare}
+                      key={quote.company_alias}
+                      sortBy={defaultSortBy?.code}
+                    />
+                  </div>
+                ))}
+                {quotes.map(quote => (
+                  <div className="only-mobile">
+                    <QuoteCardsMobile
+                      cashlessHospitalsCount={quote.cashlessHospitalsCount}
+                      quotesData={quote.data}
+                      compare={compareSlot}
+                      key={quote.company_alias}
+                      sortBy={defaultSortBy?.code}
+                    />
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div
+                css={`
+                  margin: 20vh auto;
+                  text-align: center;
+                `}
+              >
+                No shortlisted quotes!
+              </div>
+            )}
           </div>
-        )}
+          {tenantAlias !== "robinhood" && (
+            <div
+              css={`
+                flex: 1;
+
+                @media (max-width: 1025px) {
+                  display: none;
+                }
+              `}
+            >
+              <AssistanceCard />
+            </div>
+          )}
+        </div>
       </Wrapper>
       {compare?.isQuotesOnCompare ? (
         <CompareQuotesTray compare={compare} onClose={compare?.reset} />
@@ -134,7 +170,6 @@ function ShortlistedQuotes() {
 export default ShortlistedQuotes;
 
 const Wrapper = styled.div`
-  width: 830px;
   display: grid;
   gap: 10px;
   padding-top: 20px;

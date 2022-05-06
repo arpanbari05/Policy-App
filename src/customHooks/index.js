@@ -1790,12 +1790,36 @@ export function useQuotes({ sortBy = "relevence", quotesData = [] }) {
       mergedQuotes = mergedQuotes.filter(
         icQuotes => !!icQuotes?.data?.data[0]?.length,
       );
-      mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) =>
-        icQuotesA.data.data[0][0].total_premium >
-        icQuotesB.data.data[0][0].total_premium
-          ? 1
-          : -1,
-      );
+
+      mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) => {
+        let ridersPremiumA = 0;
+        let ridersPremiumB = 0;
+
+        icQuotesA.data.data[0][0].mandatory_riders.forEach(
+          rider => (ridersPremiumA += rider?.total_premium),
+        );
+        icQuotesB.data.data[0][0].mandatory_riders.forEach(
+          rider => (ridersPremiumB += rider?.total_premium),
+        );
+        if (
+          icQuotesA.data.data[0][0].total_premium + ridersPremiumA >
+          icQuotesB.data.data[0][0].total_premium + ridersPremiumB
+        ) {
+          return 1;
+        } else return -1;
+      });
+      // mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) => {
+
+      //   let ridersPremiumA = 0;
+      //   let ridersPremiumB = 0;
+
+      //   icQuotesA.data.data[0][0].mandatory_riders.forEach(rider => ridersPremiumA += rider?.total_premium);
+      //   icQuotesB.data.data[0][0].mandatory_riders.forEach(rider => ridersPremiumB += rider?.total_premium);
+      //     return icQuotesA.data.data[0][0].total_premium + ridersPremiumA >
+      //     icQuotesB.data.data[0][0].total_premium + ridersPremiumB
+      //       ? 1
+      //       : -1,
+      // })
     }
   }
 
@@ -2694,13 +2718,19 @@ export const useRenewalsConfig = () => {
 };
 
 export function useShortlistedPlans() {
-  useEffect(() => {}, []);
+  let canDelete = true;
 
   const dispatch = useDispatch();
+
+  const { pathname } = useLocation();
 
   const [updateShortlistedQuotes] = useUpdateShortlistedQuotesMutation();
 
   const { shortlistedQuotes } = useSelector(({ quotePage }) => quotePage);
+
+  if (pathname.startsWith("/shortlisted") && shortlistedQuotes.length === 1) {
+    canDelete = false;
+  }
 
   function getPlanByGroup(groupCode) {
     return shortlistedQuotes?.filter(plan => plan.groupCode === groupCode);
@@ -2712,12 +2742,17 @@ export function useShortlistedPlans() {
   }
 
   function removePlanToShortlist(quote) {
-    dispatch(removeShortListedQuote({ ...quote }));
-    updateShortlistedQuotes(
-      shortlistedQuotes.filter(
-        plan => plan?.product?.id !== quote?.product?.id,
-      ),
-    );
+    // don't delete last quote in shortlist if it is on shortlist page
+    if (pathname.startsWith("/shortlisted") && shortlistedQuotes.length === 1) {
+      return;
+    } else {
+      dispatch(removeShortListedQuote({ ...quote }));
+      updateShortlistedQuotes(
+        shortlistedQuotes.filter(
+          plan => plan?.product?.id !== quote?.product?.id,
+        ),
+      );
+    }
   }
 
   function replaceShortlistedPlans(shortlistedQuotes = []) {
@@ -2731,5 +2766,6 @@ export function useShortlistedPlans() {
     addPlanToShortlist,
     removePlanToShortlist,
     replaceShortlistedPlans,
+    canDelete,
   };
 }
