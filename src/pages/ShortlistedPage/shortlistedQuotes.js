@@ -7,6 +7,7 @@ import {
   useSortBy,
   useTheme,
 } from "../../customHooks";
+import { AssistanceCard } from "../quotePage/QuotesPage";
 import QuoteCards from "../quotePage/components/QuoteCards";
 import { QuoteCards as QuoteCardsMobile } from "../quotePage/mobile/components/Quotes";
 import styled from "styled-components";
@@ -52,7 +53,7 @@ function ShortlistedQuotes() {
   return (
     <Page noShadow>
       <GroupLinks />
-      <Wrapper className="container-lg">
+      <Wrapper className="container">
         <Header>
           <LinkWrapper color={colors.primary_color} onClick={gotoQuotes}>
             <IoIosArrowBack size={15} />
@@ -80,41 +81,60 @@ function ShortlistedQuotes() {
           </LinkWrapper>
           <HeadingSecondary>Shortlisted quotes</HeadingSecondary>
         </Header>
-        {quotes.length > 0 ? (
-          <>
-            {quotes.map(quote => (
-              <div className="only-desktop">
-                <QuoteCards
-                  cashlessHospitalsCount={quote.cashlessHospitalsCount}
-                  quotesData={quote.data}
-                  compare={compare}
-                  key={quote.company_alias}
-                  sortBy={defaultSortBy?.code}
-                />
-              </div>
-            ))}
-            {quotes.map(quote => (
-              <div className="only-mobile">
-                <QuoteCardsMobile
-                  cashlessHospitalsCount={quote.cashlessHospitalsCount}
-                  quotesData={quote.data}
-                  compare={compareSlot}
-                  key={quote.company_alias}
-                  sortBy={defaultSortBy?.code}
-                />
-              </div>
-            ))}
-          </>
-        ) : (
+        <div className="d-flex gap-2 align-items-start">
           <div
             css={`
-              margin: 20vh auto;
-              text-align: center;
+              flex: 3;
+              display: grid;
+              gap: 10px;
             `}
           >
-            No shortlisted quotes!
+            {quotes.length > 0 ? (
+              <>
+                {quotes.map(quote => (
+                  <div
+                    className="only-desktop"
+                  >
+                    <QuoteCards
+                      cashlessHospitalsCount={quote.cashlessHospitalsCount}
+                      quotesData={quote.data}
+                      compare={compare}
+                      key={quote.company_alias}
+                      sortBy={defaultSortBy?.code}
+                    />
+                  </div>
+                ))}
+                {quotes.map(quote => (
+                  <div className="only-mobile">
+                    <QuoteCardsMobile
+                      cashlessHospitalsCount={quote.cashlessHospitalsCount}
+                      quotesData={quote.data}
+                      compare={compareSlot}
+                      key={quote.company_alias}
+                      sortBy={defaultSortBy?.code}
+                    />
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div
+                css={`
+                  margin: 20vh auto;
+                  text-align: center;
+                `}
+              >
+                No shortlisted quotes!
+              </div>
+            )}
           </div>
-        )}
+          <div
+            css={`
+              flex: 1;
+            `}
+          >
+            <AssistanceCard />
+          </div>
+        </div>
       </Wrapper>
       {compare?.isQuotesOnCompare ? (
         <CompareQuotesTray compare={compare} onClose={compare?.reset} />
@@ -134,7 +154,7 @@ function ShortlistedQuotes() {
 export default ShortlistedQuotes;
 
 const Wrapper = styled.div`
-  width: 830px;
+  // width: 830px;
   display: grid;
   gap: 10px;
   padding-top: 20px;
