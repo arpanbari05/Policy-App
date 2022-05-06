@@ -16,7 +16,7 @@ const SHARE_OPTIONS = [
   // {
   //   value: "share",
   //   label: "Share quotes",
-// },
+  // },
   {
     value: "quotation_list",
     label: "Share all the quotes",
@@ -177,8 +177,8 @@ const FloatButton = styled.button`
   @media (min-width: 768px) {
     display: none;
   }
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: ${props => props.color};
   color: #fff;

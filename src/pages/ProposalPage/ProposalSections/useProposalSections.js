@@ -404,7 +404,7 @@ const useProposalSections = ({
           ({ prevProposalData, updatedProposalData }) => {
             callback();
             setAllDataSubmitted(true);
-            shareOnProposalSubmit();
+            // shareOnProposalSubmit();
           },
         ),
       );

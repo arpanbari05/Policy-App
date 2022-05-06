@@ -2,6 +2,7 @@ import React from "react";
 import { Page } from "../../components";
 import {
   useCompareSlot,
+  useFrontendBoot,
   useQuotesCompare,
   useShortlistedPlans,
   useSortBy,
@@ -31,6 +32,8 @@ function ShortlistedQuotes() {
   const { colors } = useTheme();
 
   const history = useHistory();
+
+  const { tenantAlias } = useFrontendBoot();
 
   // transforming quotes data
   const quotes = shortlistedQuotes.map(quote => ({
@@ -81,12 +84,15 @@ function ShortlistedQuotes() {
           </LinkWrapper>
           <HeadingSecondary>Shortlisted quotes</HeadingSecondary>
         </Header>
-        <div className="d-flex gap-2 align-items-start">
+        <div className="d-flex gap-3 align-items-start justify-content-center">
           <div
             css={`
               flex: 3;
               display: grid;
               gap: 10px;
+              justify-content: ${tenantAlias !== "robinhood"
+                ? "stretch"
+                : "center"};
             `}
           >
             {quotes.length > 0 ? (
@@ -94,6 +100,10 @@ function ShortlistedQuotes() {
                 {quotes.map(quote => (
                   <div
                     className="only-desktop"
+                    css={`
+                      width: 100%;
+                      max-width: 850px;
+                    `}
                   >
                     <QuoteCards
                       cashlessHospitalsCount={quote.cashlessHospitalsCount}
@@ -127,13 +137,19 @@ function ShortlistedQuotes() {
               </div>
             )}
           </div>
-          <div
-            css={`
-              flex: 1;
-            `}
-          >
-            <AssistanceCard />
-          </div>
+          {tenantAlias !== "robinhood" && (
+            <div
+              css={`
+                flex: 1;
+
+                @media (max-width: 1025px) {
+                  display: none;
+                }
+              `}
+            >
+              <AssistanceCard />
+            </div>
+          )}
         </div>
       </Wrapper>
       {compare?.isQuotesOnCompare ? (
@@ -154,7 +170,6 @@ function ShortlistedQuotes() {
 export default ShortlistedQuotes;
 
 const Wrapper = styled.div`
-  // width: 830px;
   display: grid;
   gap: 10px;
   padding-top: 20px;
