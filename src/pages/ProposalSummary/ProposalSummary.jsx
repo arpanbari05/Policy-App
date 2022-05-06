@@ -9,6 +9,7 @@ import jsPDF from "jspdf";
 import oneInsurepdf from "../../assets/logos/oneinsure_pdf.png";
 import renewBuyPDF from "../../assets/logos/renewbuy_pdf.png";
 import pincPDF from "../../assets/logos/pinc_pdf.png";
+import sriyahPDF from "../../assets/logos/sriyah_pdf.png";
 import fyntunePDF from "../../assets/logos/fyntune_pdf.png";
 import { getProposalFields } from "../ProposalPage/schema.slice";
 import { MdOutlineArrowBackIos } from "react-icons/md";
@@ -62,8 +63,9 @@ const ProposalSummary = () => {
   const pdfLogoSelector = {
     fyntune: fyntunePDF,
     oneinsure: oneInsurepdf,
-    renewbuy: renewBuyPDF,
+    renew_buy: renewBuyPDF,
     pinc: pincPDF,
+    sriyah: sriyahPDF,
   };
   const { colors } = useTheme();
 
