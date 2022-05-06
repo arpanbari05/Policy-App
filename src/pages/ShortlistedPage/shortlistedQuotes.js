@@ -141,6 +141,10 @@ function ShortlistedQuotes() {
             <div
               css={`
                 flex: 1;
+
+                @media (max-width: 1025px) {
+                  display: none;
+                }
               `}
             >
               <AssistanceCard />
