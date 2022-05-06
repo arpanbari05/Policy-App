@@ -310,7 +310,7 @@ const useFormBuilder = (
 
         if (filteredKey.length) {
           let scrollPositions = filteredKey.map(key => {
-            let element = document.getElementById(key);
+            let element = document.getElementById(key+keyStr);
             if (element) {
               let y =
                 element.getBoundingClientRect().top - 100 + window.scrollY;
