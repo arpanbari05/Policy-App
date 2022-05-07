@@ -31,7 +31,7 @@ export default function PincPosLogout() {
     window.location.href = "https://dev.pincnews.co.in";
   };
 
-  return allowOnWebsites(["pincUat", "topup"]) ? (
+  return allowOnWebsites(["pincUat"]) ? (
     localStorage.SSO_user ? (
       <StyledLogoutBtn onClick={handleClick} color={colors.primary_color}>
         Logout
