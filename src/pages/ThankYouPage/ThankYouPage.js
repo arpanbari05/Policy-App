@@ -154,6 +154,7 @@ const ThankYouPage = () => {
                   colors={colors}
                   isTransactionClicked={isTransactionClicked}
                   setIsTransactionClicked={setIsTransactionClicked}
+                  tenant={tenantDetail}
                 />
 
                 <div className="col-lg-6">
@@ -207,6 +208,7 @@ const ThankYouPage = () => {
                 total_premium={total_premium}
                 isTransactionClicked={isTransactionClicked}
                 setIsTransactionClicked={setIsTransactionClicked}
+                tenant={tenantDetail}
               />
 
               <div>
@@ -451,6 +453,7 @@ const BannerArea = ({
   settings,
   isTransactionClicked,
   setIsTransactionClicked,
+  tenant,
 }) => {
   return (
     <div className="col-lg-6">
@@ -477,7 +480,7 @@ const BannerArea = ({
             />
           </div>
           <div>
-            {settings && (
+            {settings && tenant?.alias !== "robinhood" && (
               <Disclaimer
                 shopMoreLink={settings.shop_more_link || ""}
                 accountLoginLink={settings.account_login_link || ""}
@@ -593,7 +596,6 @@ const Disclaimer = ({
   colors,
   accountLoginLink,
   shopMoreLink,
-  isTransactionClicked,
   setIsTransactionClicked,
 }) => {
   const { policyStatus } = useSelector(state => state.proposalPage);
@@ -731,7 +733,7 @@ const MobileBanner = ({
   settings,
   tenantDetail,
   setIsTransactionClicked = () => {},
-  isTransactionClicked,
+  tenant,
 }) => {
   const shopMoreLink = settings.shop_more_link || "";
   const accountLoginLink = settings.account_login_link || "";
@@ -743,7 +745,6 @@ const MobileBanner = ({
     win?.focus();
   };
 
-  // console.log({ isTransactionClicked });
   if (!thankYouBanner)
     return (
       <>
@@ -830,42 +831,44 @@ const MobileBanner = ({
             />
           </div>
         </div>
-        <div
-          style={{
-            margin: "10px",
-            textAlign: "center",
-          }}
-        >
-          <p style={{ fontSize: "14px", lineHeight: "1.3" }}>
-            Your policy document has been successfully saved in{" "}
-            <a
-              // href={accountLoginLink}
-              onClick={onTransactionClickHandler}
-              style={{
-                color: colors?.primary_color,
-                borderBottom: `1px dashed ${colors?.primary_color}`,
-                fontWeight: "bold",
-              }}
-            >
-              My Account Page.
-            </a>{" "}
-            You can visit the My Account page to retrieve your policy copy at
-            any time.
-          </p>
+        {tenant?.alias !== "robinhood" && (
+          <div
+            style={{
+              margin: "10px",
+              textAlign: "center",
+            }}
+          >
+            <p style={{ fontSize: "14px", lineHeight: "1.3" }}>
+              Your policy document has been successfully saved in{" "}
+              <a
+                // href={accountLoginLink}
+                onClick={onTransactionClickHandler}
+                style={{
+                  color: colors?.primary_color,
+                  borderBottom: `1px dashed ${colors?.primary_color}`,
+                  fontWeight: "bold",
+                }}
+              >
+                My Account Page.
+              </a>{" "}
+              You can visit the My Account page to retrieve your policy copy at
+              any time.
+            </p>
 
-          <p style={{ fontSize: "14px", marginTop: "20px" }}>
-            <a
-              href={shopMoreLink}
-              style={{
-                color: colors?.primary_color,
-                borderBottom: `1px dashed ${colors?.primary_color}`,
-                fontWeight: "bold",
-              }}
-            >
-              Shop More {">"}
-            </a>
-          </p>
-        </div>
+            <p style={{ fontSize: "14px", marginTop: "20px" }}>
+              <a
+                href={shopMoreLink}
+                style={{
+                  color: colors?.primary_color,
+                  borderBottom: `1px dashed ${colors?.primary_color}`,
+                  fontWeight: "bold",
+                }}
+              >
+                Shop More {">"}
+              </a>
+            </p>
+          </div>
+        )}
       </>
     );
   if (thankYouBanner)
