@@ -71,7 +71,7 @@ function useAppropriateOptions({
         }
         if (
           allValues["Proposer Details"].marital_status &&
-          allValues["Proposer Details"].marital_status === "single"
+          allValues["Proposer Details"].marital_status.toLowerCase() === "single"
         ) {
           const { wife, husband, spouse,brother_in_law,father_in_law, mother_in_law, ...validOptions } = options;
           setSelectOption(validOptions);
