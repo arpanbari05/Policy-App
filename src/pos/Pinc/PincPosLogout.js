@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-import api from "../../api/api";
 import { useTheme } from "../../customHooks";
 import { allowOnWebsites } from "../../utils/helper";
 
@@ -11,15 +9,17 @@ export default function PincPosLogout() {
       const data = await fetch(`${process.env.REACT_APP_API_BASE_URL}logout`, {
         method: "POST",
         headers: {
-          "content-type": "application/json",
+          "Content-Type": "application/json",
         },
-        body: {
-          token: JSON.parse(localStorage.SSO_user).token,
-        },
+        body: localStorage.SSO_user,
       });
       if (data.status === 200) {
         localStorage.removeItem("SSO_user");
-        window.location.reload();
+        if (window.location.pathname.includes("/input/basic-details")) {
+          window.location.href = window.location.origin;
+        } else {
+          window.location.reload();
+        }
       }
     } catch (error) {
       alert(error.message);
