@@ -176,17 +176,17 @@ const TextInput = ({
               }
             }
           } else if (checkAllChar(e.target.value, forbiddedSymbols)) {
-            if (checkValidation?.matches === "onlyDigits") {
-              if (regForOnlyDigit.test(e.target.value)) {
-                onChange(e);
-                setFallbackValue(e.target.value);
-              }
-            } else if (checkValidation["matches"] === "annIncome" || name === "annIncome") {
+            if(name === "annIncome"){
               if (
                 regForOnlyDigit.test(e.target.value) &&
                 parseInt(e.target.value) && 
                 e.target.value.length < 10
               ) {
+                onChange(e);
+                setFallbackValue(e.target.value);
+              }
+            }else if (checkValidation?.matches === "onlyDigits") {
+              if (regForOnlyDigit.test(e.target.value)) {
                 onChange(e);
                 setFallbackValue(e.target.value);
               }

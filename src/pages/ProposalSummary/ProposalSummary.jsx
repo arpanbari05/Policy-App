@@ -329,7 +329,7 @@ const ProposalSummary = () => {
                                   cursor: "pointer",
                                   backgroundColor:
                                     item.payment_status === "success"
-                                      ? "#ffbf66"
+                                      ? PrimaryShade
                                       : PrimaryColor,
                                 }}
                                 onClick={() => {
