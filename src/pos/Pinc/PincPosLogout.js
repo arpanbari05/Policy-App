@@ -5,17 +5,16 @@ import { useTheme } from "../../customHooks";
 import { allowOnWebsites } from "../../utils/helper";
 
 export default function PincPosLogout() {
-  const [status, setStatus] = useState(false);
   const { colors } = useTheme();
   const handleClick = async () => {
-    const urlQueryStrings = new URLSearchParams(window.location.search);
-    const EnquiryId = urlQueryStrings.get("enquiryId");
     try {
       const data = await fetch(`${process.env.REACT_APP_API_BASE_URL}logout`, {
         method: "POST",
         headers: {
-          "Enquiry-Id": EnquiryId,
           "content-type": "application/json",
+        },
+        body: {
+          token: JSON.parse(localStorage.SSO_user).token,
         },
       });
       if (data.status === 200) {
@@ -29,7 +28,7 @@ export default function PincPosLogout() {
   };
 
   const handleClickLogin = () => {
-    window.location.href = "https://dev.pincnews.co.in/login";
+    window.location.href = "https://dev.pincnews.co.in";
   };
 
   return allowOnWebsites(["pincUat", "topup"]) ? (
