@@ -311,7 +311,7 @@ const TextInput = ({
         defaultValue={defaultValue}
       />
       <Label>
-        {checkValidation?.required && label ? `${label}*` : label || ""}
+        {checkValidation?.required === true && label ? `${label}*` : label || ""}
       </Label>
 
       {error && <p className="formbuilder__error">{error}</p>}
