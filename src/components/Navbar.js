@@ -11,6 +11,7 @@ import { images } from "../assets/logos/logo";
 import { useUrlQueries } from "../customHooks/useUrlQuery";
 import { allowOnWebsites, isThemeApp } from "../utils/helper";
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
+import PincPosLogout from "../pos/Pinc/PincPosLogout";
 
 function LogoLink() {
   const {
@@ -36,7 +37,7 @@ function LogoLink() {
   }
 
   if (tenant?.alias === "pinc") {
-    goto = "https://uat.pincnews.co.in/login";
+    goto = tenant.broker_dashboard_url;
   }
 
   if (isLoading) return <CircleLoader animation="border" />;
@@ -124,10 +125,11 @@ const Navbar = ({ backButton: BackButton = <></>, noShadow = false }) => {
             )}
           </div>
 
-          {location.pathname !== "/" && trace_id && (
+          {location.pathname !== "/" && trace_id ? (
             <div
               css={`
                 display: flex;
+                align-items: center;
               `}
             >
               <div
@@ -139,7 +141,10 @@ const Navbar = ({ backButton: BackButton = <></>, noShadow = false }) => {
               >
                 <TraceId />
               </div>
+              <PincPosLogout />
             </div>
+          ) : (
+            <PincPosLogout />
           )}
 
           {allowOnWebsites([
@@ -224,8 +229,17 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
           <LogoLink />
         </div>
 
-        {location.pathname !== "/" && trace_id && <TraceId />}
+        <section
+          css={`
+            display: flex;
+            align-items: center;
+          `}
+        >
+          {location.pathname !== "/" && trace_id && <TraceId />}
+          <PincPosLogout />
+        </section>
       </div>
+
       {!location.pathname.startsWith("/input") && trace_id && (
         <div
           className="d-flex align-items-center justify-content-between py-2"
