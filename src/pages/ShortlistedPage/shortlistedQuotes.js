@@ -102,7 +102,6 @@ function ShortlistedQuotes() {
                     className="only-desktop"
                     css={`
                       width: 100%;
-                      max-width: 850px;
                     `}
                   >
                     <QuoteCards
