@@ -97,7 +97,9 @@ function AppLoaders({ children, ...props }) {
     data,
     isFetching: isFetchingShortlisted,
     isError: isErrorShortlisted,
-  } = useGetShortlistedQuotesQuery();
+  } = useGetShortlistedQuotesQuery(undefined, {
+    skip: !searchQueries?.enquiryId,
+  });
 
   useEffect(() => {
     if (data) {
