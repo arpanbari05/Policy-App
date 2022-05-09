@@ -1022,6 +1022,13 @@ h6 {
   display: none;
 }
 
+.shortlist-tooltip.tooltip-inner,
+.shortlist-tooltip > *,
+.shortlist-tooltip > .tooltip-inner {
+  animation: none !important;
+  font-size: 13px;
+}
+
 @media (max-width: 768px) {
   .only-desktop {
     display: none;
