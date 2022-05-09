@@ -178,7 +178,6 @@ const GroupsWrapper = styled.div`
   background: ${props => props.color};
   padding: 10px 0;
   display: flex;
-  overflow-x: auto;
 
   &::-webkit-scrollbar {
     display: none;
@@ -189,6 +188,7 @@ const GroupsWrapper = styled.div`
     background: none;
     border-radius: 0 0 1em 1em;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    overflow-x: auto;
   }
 `;
 
