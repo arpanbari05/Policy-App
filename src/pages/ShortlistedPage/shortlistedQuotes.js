@@ -18,6 +18,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import { CompareQuotesTray } from "../quotePage/components/Quotes";
 import { CompareTray } from "../quotePage/mobile/components/Quotes";
 import GroupLinks from "./components/groupLinks/groupLinks";
+import { api } from "../../api/api";
+import { useDispatch } from "react-redux";
 import "styled-components/macro";
 
 function ShortlistedQuotes() {
@@ -30,6 +32,8 @@ function ShortlistedQuotes() {
   const { default: defaultSortBy } = useSortBy();
 
   const { colors } = useTheme();
+
+  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -50,6 +54,7 @@ function ShortlistedQuotes() {
   const isQuotesOnCompare = compareSlot.quotes.length;
 
   const gotoQuotes = () => {
+    dispatch(api.util.resetApiState()); // clearing cache to improve performance
     history.goBack();
   };
 

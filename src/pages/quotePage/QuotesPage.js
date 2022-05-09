@@ -6,7 +6,7 @@ import LowerModifier from "./components/LowerModifier";
 import Quotes from "./components/Quotes";
 import UpperModifier from "./components/UpperModifier";
 import { useMembers, useTheme, useGetQuotes } from "../../customHooks";
-import { Link, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import PageNotFound from "../PageNotFound";
 import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
 import { FaSync } from "react-icons/fa";
@@ -39,6 +39,7 @@ import {
 } from "../../styles/typography";
 import { IoIosArrowForward } from "react-icons/io";
 import { images as logos } from "../../assets/logos/logo";
+import { api } from "../../api/api";
 
 function QuotesPage() {
   const { colors } = useTheme();
@@ -158,6 +159,10 @@ function ShortListedQuote() {
 
   const { groupCode } = useParams();
 
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+
   const enquiryId = urlQueryStrings.get("enquiryId");
 
   const { getPlanByGroup } = useShortlistedPlans();
@@ -247,7 +252,7 @@ function ShortListedQuote() {
               </div>
             </div>
           </div>
-          <Link
+          <button
             css={`
       padding: 5px;
       text-align-center;
@@ -264,11 +269,14 @@ function ShortListedQuote() {
       cursor: pointer;
       margin-top: 10px;
       `}
-            to={`/shortlisted/${groupCode}?enquiryId=${enquiryId}`}
+            onClick={() => {
+              dispatch(api.util.resetApiState()); // clearing cache to improve performance
+              history.push(`/shortlisted/${groupCode}?enquiryId=${enquiryId}`);
+            }}
           >
             <span>View shortlisted quotes</span>
             <IoIosArrowForward size={15} />
-          </Link>
+          </button>
         </>
       ) : (
         <div

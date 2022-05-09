@@ -356,9 +356,9 @@ function QuoteCard({
             name={`${quote?.company_alias}_shortlisted`}
           />
           {isShortlisted ? (
-            <FaBookmark size={20} color={colors.primary_color} />
+            <FaBookmark size={19} color={colors.primary_color} />
           ) : (
-            <FaRegBookmark size={20} color={"#444"} />
+            <FaRegBookmark size={19} color={"#444"} />
           )}
         </label>
       </OverlayTrigger>
