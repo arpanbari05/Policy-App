@@ -894,6 +894,8 @@ export function useCart() {
 export function useRider(groupCode) {
   const { getCartEntry, updateCartEntry } = useCart();
 
+  const { journeyType, subJourneyType } = useFrontendBoot();
+
   function getSelectedRiders() {
     const cartEntry = getCartEntry(groupCode);
 
@@ -902,8 +904,10 @@ export function useRider(groupCode) {
     if (isRelianceInfinityPlan(cartEntry))
       return health_riders?.length ? health_riders : top_up_riders;
 
-    return health_riders?.length
-      ? health_riders.filter(rider => rider.total_premium > 0)
+    return journeyType === "health"
+      ? subJourneyType === "renewal"
+        ? health_riders
+        : health_riders.filter(rider => rider.total_premium > 0)
       : top_up_riders.filter(rider => rider.total_premium > 0);
   }
 
@@ -2068,7 +2072,7 @@ function validateDependentRider(rider, riders) {
 }
 
 export function useRiders({ quote, groupCode, onChange }) {
-  const { journeyType } = useFrontendBoot();
+  const { journeyType, subJourneyType } = useFrontendBoot();
 
   const defaultSelectedRiders =
     journeyType === "health" ? quote?.health_riders : quote?.top_up_riders;
@@ -2201,6 +2205,8 @@ export function useRiders({ quote, groupCode, onChange }) {
     riders:
       quote?.product?.company?.alias === "reliance_general"
         ? riders?.sort((a, b) => a.total_premium - b.total_premium)
+        : subJourneyType === "renewal"
+        ? riders
         : riders?.filter(rider => rider.total_premium > 0),
     handleChange,
     getInitialRiders,
