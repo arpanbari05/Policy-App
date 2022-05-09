@@ -42,7 +42,9 @@ const featuresDisplayedOnQuoteCard = [
   "co_payment",
 ];
 
-const renderTooltip = description => <Tooltip>{description}</Tooltip>;
+const renderTooltip = (description, className) => (
+  <Tooltip className={className}>{description}</Tooltip>
+);
 
 function QuoteCards({
   quotesData,
@@ -334,7 +336,7 @@ function QuoteCard({
     <div id={quote?.company_alias} {...props}>
       <OverlayTrigger
         placement={"right"}
-        overlay={renderTooltip(shortlistDesc)}
+        overlay={renderTooltip(shortlistDesc, "shortlist-tooltip")}
       >
         <label
           css={`
@@ -354,9 +356,9 @@ function QuoteCard({
             name={`${quote?.company_alias}_shortlisted`}
           />
           {isShortlisted ? (
-            <FaBookmark color={colors.primary_color} />
+            <FaBookmark size={20} color={colors.primary_color} />
           ) : (
-            <FaRegBookmark color={"#444"} />
+            <FaRegBookmark size={20} color={"#444"} />
           )}
         </label>
       </OverlayTrigger>

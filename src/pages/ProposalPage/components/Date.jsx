@@ -129,7 +129,7 @@ const DateComp = ({
           }
           maxDate={
             age?.length && parseFloat(age[0]) >= 1
-              ? new Date(currentYear - age[0], currentMonth, currentDate - 2)
+              ? new Date(currentYear - age[0], currentMonth, currentDate)
               : age[0]
               ? new Date(
                   currentYear,
