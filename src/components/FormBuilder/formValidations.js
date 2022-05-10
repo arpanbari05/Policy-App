@@ -69,7 +69,7 @@ function contains(target, pattern) {
 
 export const validationIndex = {
   required: (param, values, name) => {
-    console.log(name, values, param, "heheheh3");
+
 
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
@@ -251,10 +251,10 @@ export const validationIndex = {
           } else break;
         case "validYear":
           if (typeof value === "string" || value instanceof String) {
-            // console.log("sknslkfn", value);
+        
             let month = value?.split("-")[0];
             let year = value?.split("-")[1];
-            // console.log("qcbib", param, value);
+            
             if (
               !(
                 month > 0 &&
