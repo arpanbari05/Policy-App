@@ -276,11 +276,11 @@ function QuoteCard({
     ClickSound();
     const { checked } = evt.target;
     if (checked) {
-      addPlanToShortlist({ ...quote, cashlessHospitalsCount, groupCode });
       setIsShortListed(true);
+      addPlanToShortlist({ ...quote, cashlessHospitalsCount, groupCode });
     } else {
-      removePlanToShortlist(quote);
       setIsShortListed(false);
+      removePlanToShortlist(quote);
     }
   };
 
@@ -333,7 +333,7 @@ function QuoteCard({
   // };
 
   return (
-    <div id={quote?.company_alias} {...props}>
+    <div className="position-relative" id={quote?.company_alias} {...props}>
       <OverlayTrigger
         placement={"right"}
         overlay={renderTooltip(shortlistDesc, "shortlist-tooltip")}

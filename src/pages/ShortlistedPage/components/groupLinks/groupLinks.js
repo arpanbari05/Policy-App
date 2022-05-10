@@ -101,9 +101,18 @@ function GroupLinks() {
             margin-right: 0 !important;
           `}
         >
-          <ShareQuoteModal label={"Share plans"} stage="SHORTLISTED_QUOTES" />
+          <ShareQuoteModal
+            label={"Share plans"}
+            stage="SHORTLISTED_QUOTES"
+            purpose="shortlistedQuotes"
+          />
         </div>
-        <ShareQuoteModal stage="SHORTLISTED_QUOTES" mobile float />
+        <ShareQuoteModal
+          stage="SHORTLISTED_QUOTES"
+          purpose="shortlistedQuotes"
+          mobile
+          float
+        />
       </div>
     </GroupsWrapper>
   );

@@ -76,6 +76,7 @@ export function Quotes({ sortBy }) {
         sum_insured={getSelectedFilter("cover")?.code}
         shareQuotes
         stage="QUOTE"
+        purpose="quote"
         hideBtn
       />
       <ShortlistFloat />
@@ -390,15 +391,16 @@ function QuoteCard({
   };
 
   const handleShortListedQuotes = evt => {
-    ClickSound();
     const { checked } = evt.target;
+
     if (checked) {
-      addPlanToShortlist({ ...quote, cashlessHospitalsCount, groupCode });
       setIsShortListed(true);
+      addPlanToShortlist({ ...quote, cashlessHospitalsCount, groupCode });
     } else {
-      removePlanToShortlist(quote);
       setIsShortListed(false);
+      removePlanToShortlist(quote);
     }
+    console.log({ checked });
   };
 
   const shortlistDesc = !canDelete

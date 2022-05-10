@@ -445,7 +445,6 @@ export function Members() {
 }
 
 function Member({ member, ...props }) {
-  console.log("displayName", member);
   const memberType = member?.display_name.toString()?.split("_").join(" ");
 
   return (
