@@ -2,7 +2,10 @@ import React, { useCallback } from "react";
 import { Col, Row } from "react-bootstrap";
 import styled from "styled-components";
 import "styled-components/macro";
-import { renderField,ValueExtractor } from "../../../../components/FormBuilder/formUtils";
+import {
+  renderField,
+  ValueExtractor,
+} from "../../../../components/FormBuilder/formUtils";
 import pencil from "../../../../assets/images/pencil_pro.png";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { useDispatch, useSelector } from "react-redux";
@@ -264,7 +267,7 @@ const SummaryTab = ({
           className="details_border_b_p_s"
         >
           <MedicalQuestionWrapper SecondaryColor={SecondaryColor}>
-            {data.additionalOptions.label}
+            {data?.additionalOptions?.label}
           </MedicalQuestionWrapper>
 
           {values?.[item]?.[data.name] instanceof Object &&
@@ -276,14 +279,18 @@ const SummaryTab = ({
                   <>
                     <CustomMedicalTitle>{_item}</CustomMedicalTitle>
                     <InnerWrapper>
-                      {schema[i + 1].map(
+                      {schema[i + 1]?.map(
                         additionalQuestion =>
                           values?.[item]?.[data.name]?.[_item]?.[
                             additionalQuestion?.name
                           ] && (
-                            <AdditionalWrapper2 className="text-dark"> 
+                            <AdditionalWrapper2 className="text-dark">
                               <AdditionalQuestion className="font_15_p_s">
-                                {ValueExtractor(additionalQuestion?.additionalOptions?.label,values?.[item],_item) ||
+                                {ValueExtractor(
+                                  additionalQuestion?.additionalOptions?.label,
+                                  values?.[item],
+                                  _item,
+                                ) ||
                                   additionalQuestion.additionalOptions
                                     .placeholder}
                               </AdditionalQuestion>
