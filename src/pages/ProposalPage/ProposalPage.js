@@ -514,6 +514,7 @@ const ProposalPage = () => {
                   )}
                   stage="PROPOSAL"
                   sum_insured={sum_insured}
+                  purpose="proposalDetail"
                 />
               </div>
             </div>
@@ -547,6 +548,7 @@ const ProposalPage = () => {
                       cart => cart?.product?.company?.alias,
                     )}
                     stage="PROPOSAL"
+                    purpose="proposalDetail"
                     sum_insured={sum_insured}
                     float
                   />

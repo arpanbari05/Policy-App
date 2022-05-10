@@ -74,7 +74,11 @@ function ComparePage() {
       <Container className="pt-3">
         <div className="d-flex align-items-center justify-content-between">
           <BackButton />
-          <ShareQuoteModal stage="COMPARE" imageSend={imageSend} />
+          <ShareQuoteModal
+            stage="COMPARE"
+            purpose="compare"
+            imageSend={imageSend}
+          />
         </div>
         <CompareHeaderWrap>
           <div

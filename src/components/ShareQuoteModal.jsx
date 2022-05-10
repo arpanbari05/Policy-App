@@ -104,6 +104,7 @@ const ShareQuoteModal = ({
   float = false,
   imageSend: imageToSend,
   emailStatus,
+  purpose = "",
   stage = "",
   floatCss = "",
   hideBtn,
@@ -146,7 +147,15 @@ const ShareQuoteModal = ({
       const image = id && (await printImageById(id));
       setImageSend(image);
     };
-    if (["PROPOSAL", "PROPOSAL_SUMMARY", "COMPARE" , "RENEWAL_PRODUCT_DETAILS"].includes(stage)) setStep(2);
+    if (
+      [
+        "PROPOSAL",
+        "PROPOSAL_SUMMARY",
+        "COMPARE",
+        "RENEWAL_PRODUCT_DETAILS",
+      ].includes(stage)
+    )
+      setStep(2);
     getImage();
   }, []);
 
@@ -187,7 +196,7 @@ const ShareQuoteModal = ({
           float={float}
         />
       )}
-      
+
       {show && (
         <Modal
           show={show}
@@ -264,6 +273,7 @@ const ShareQuoteModal = ({
               emailStatus={emailStatus}
               setEmailStatus={setlEmaiStatus}
               stage={stage}
+              purpose={purpose}
               sum_insured={sum_insured}
               setIsSending={setIsSending}
               setErrorMsg={setErrorMsg}
@@ -549,6 +559,7 @@ function ShareStep2({
   imageSend,
   setImageSend,
   stage,
+  purpose,
   setIsSending,
   setErrorMsg,
   isSending,
@@ -584,9 +595,9 @@ function ShareStep2({
   const [emailStatus, setEmailStatus] = useState({ status: 0, message: null });
 
   const [disableEmail, setDisableEmail] = useState(false);
-  
+
   const [disableSMS, setDisableSMS] = useState(false);
-  
+
   const [disableWhatsapp, setDisableWhatsapp] = useState(false);
 
   const sendRef = useRef();
@@ -709,7 +720,9 @@ function ShareStep2({
             handleShare(e, {
               mode: ["EMAIL"],
               stage,
+              purpose,
               email,
+              via: "email",
               whatsapp: "",
               sms: "",
               image_to_send: imageSend ? imageSend : undefined,
@@ -781,6 +794,8 @@ function ShareStep2({
               handleShare(e, {
                 mode: ["SMS"],
                 stage,
+                purpose,
+                via: "sms",
                 email: "",
                 whatsapp: "",
                 sms: smsNo,

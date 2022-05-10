@@ -9,25 +9,14 @@ import MaskedInput from "react-text-mask";
 const DateComp = ({
   label,
   placeholder,
-  type,
   checkValidation,
   onChange,
   error,
-  onBlur,
   onKeyDown,
-  reference,
   value,
-  onKeyPress,
-  maxLength,
-  textTransform,
-  onInput,
   readOnly,
-  startDate,
-  endDate,
   age = [0, 0],
 }) => {
-  const [isHovering, setIsHovering] = useState(false);
-
   const [isFocused, setIsFocused] = useState(false);
   const onFocus = () => setIsFocused(true);
   let newDate = new Date();
@@ -36,10 +25,6 @@ const DateComp = ({
   let currentDate = newDate.getDate();
 
   const startRef = useRef();
-
-  const formatFordatePicker = val => {
-    return val && val.length === 4 ? "yyyy" : "dd-MM-yyyy";
-  };
 
   const getMoment = val => {
     return val?.length === 4

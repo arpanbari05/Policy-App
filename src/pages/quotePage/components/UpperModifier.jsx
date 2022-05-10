@@ -44,6 +44,7 @@ function UpperModifier() {
               imageSend={sendQuote}
               emailStatus={emailStatus}
               stage="QUOTE"
+              purpose="quote"
               label="Share Quote"
               sum_insured={getSelectedFilter("cover")?.code}
             />
