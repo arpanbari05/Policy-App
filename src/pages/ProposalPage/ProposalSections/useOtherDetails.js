@@ -20,7 +20,7 @@ const useOtherDetails = ({defaultValue,setValues,name,values,insuredDetails,prop
 
   useEffect(() => {
       if(name === "Other Details"){
-    setValues(defaultValue);
+    setValues(prev => ({...defaultValue,...prev}));
       }
   },[])
 
@@ -69,7 +69,6 @@ const useOtherDetails = ({defaultValue,setValues,name,values,insuredDetails,prop
           if (dataForAutopopulate[nameWithoutNominee])
             acc[name] = dataForAutopopulate[nameWithoutNominee];
         });
-        console.log("sgvsfjvhsfkv", dataForAutopopulate);
         setValues({ ...acc, nominee_relation: nomineeRelation },"SAVE_AS_IT_IS");
         setNomineeRelationAutopopulated(true);
       

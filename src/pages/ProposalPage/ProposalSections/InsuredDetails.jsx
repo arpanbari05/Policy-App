@@ -12,17 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import "styled-components/macro";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
 import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
-import {
-  setShowErrorPopup,
-  getMedicalUnderwritingStatus,
-} from "../ProposalSections/ProposalSections.slice";
+import { setShowErrorPopup, getMedicalUnderwritingStatus } from "../ProposalSections/ProposalSections.slice";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 import useOtherDetails from "./useOtherDetails";
 import StyledButton from "../../../components/StyledButton";
-import {
-  DisableScreen,
-  UnderWritingDiscisionTable,
-} from "./insuredDetails.styles";
+import {DisableScreen, UnderWritingDiscisionTable} from "./insuredDetails.styles"
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 
 const InsuredDetails = ({
@@ -34,14 +28,9 @@ const InsuredDetails = ({
   setBlockTabSwitch,
 }) => {
   const [medicalContinueClick, setMedicalContinueClick] = useState(false);
-  const {
-    proposalData,
-    showErrorPopup,
-    insuredDetailsResponse,
-    underWritingStatus,
-    medicalUrlsRuleEngine,
-    mdicalUnderwritingLetters,
-  } = useSelector(state => state.proposalPage);
+  const { proposalData, showErrorPopup, insuredDetailsResponse, underWritingStatus,medicalUrlsRuleEngine,mdicalUnderwritingLetters } = useSelector(
+    state => state.proposalPage,
+  );
   const dispatch = useDispatch();
 
   const insuredDetails = useSelector(
@@ -76,7 +65,7 @@ const InsuredDetails = ({
     show,
     setShow,
     cartEntries,
-    isVersionRuleEngine,
+    isVersionRuleEngine
   } = useProposalSections({
     setActive,
     name,
@@ -120,28 +109,21 @@ const InsuredDetails = ({
     proposalDetails,
   });
 
-  const {
-    noForAll,
-    setNoForAll,
-    checkCanProceed,
-    canProceed,
-    yesSelected,
-    preparingMQ,
-    getMUStatus,
-  } = useMedicalQuestions({
-    schema,
-    values,
-    setValues,
-    name,
-    proposalData,
-    defaultValue,
-    dispatch,
-    isVersionRuleEngine,
-    medicalUrlsRuleEngine,
-    insuredDetailsResponse,
-    underWritingStatus,
-  });
-  console.log("wrghrjksgv", values, cartEntries, schema, noForAll, yesSelected);
+  const { noForAll, setNoForAll, checkCanProceed, canProceed, yesSelected, preparingMQ,getMUStatus } =
+    useMedicalQuestions({
+      schema,
+      values,
+      setValues,
+      name,
+      proposalData,
+      defaultValue,
+      dispatch,
+      isVersionRuleEngine,
+      medicalUrlsRuleEngine,
+      insuredDetailsResponse,
+      underWritingStatus
+    });
+    console.log("wrghrjksgv",values,cartEntries,schema,noForAll,yesSelected)
 
   const { colors } = useTheme();
 
@@ -149,29 +131,22 @@ const InsuredDetails = ({
 
   const [initColor, setInitColor] = useState(PrimaryColor);
 
+
   const fullName = proposalData["Proposer Details"]?.name;
 
   const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
-    console.log("sdbjhdkgb", {
-      medicalContinueClick,
-      isValid,
-      underWritingStatus,
-      medicalUrlsRuleEngine,
-      showErrorPopup,
-    });
-
-    if (
+    console.log("sdbjhdkgb",{ medicalContinueClick,isValid,underWritingStatus,medicalUrlsRuleEngine,showErrorPopup});
+    
+    if(
       medicalContinueClick &&
       medicalUrlsRuleEngine &&
       underWritingStatus.length &&
-      !underWritingStatus.map(({ result }) => result)?.includes("NotSubmitted")
-    ) {
-      if (
-        underWritingStatus.map(({ result }) => result)?.includes("Manual_UV") ||
-        underWritingStatus.map(({ result }) => result)?.includes("MER")
-      ) {
+    !underWritingStatus.map(({result}) => result)?.includes("NotSubmitted")
+    ){
+      if(underWritingStatus.map(({result}) => result)?.includes("Manual_UV") ||
+      underWritingStatus.map(({result}) => result)?.includes("MER")){
         dispatch(
           setShowErrorPopup({
             show: true,
@@ -181,18 +156,19 @@ const InsuredDetails = ({
         );
       }
       triggerSaveForm({ sendedVal: values, formName: name });
-    } else if (
+    }else if (
       medicalContinueClick &&
       !isValid.includes(undefined) &&
       !isValid.includes(false) &&
       !showErrorPopup?.show
     ) {
       triggerSaveForm({ sendedVal: values, formName: name });
-    } else if (isValid.includes(false)) {
+      
+    }else if(isValid.includes(false)){
       setShow(isValid.indexOf(false));
     }
     setMedicalContinueClick(false);
-  }, [isValid, medicalContinueClick, showErrorPopup, underWritingStatus]);
+  }, [isValid, medicalContinueClick, showErrorPopup,underWritingStatus]);
 
   if (preparingMQ) {
     return (
@@ -220,199 +196,175 @@ const InsuredDetails = ({
             show={show === index}
             onClick={() => setShow(prev => (prev === index ? false : index))}
           >
-            {isVersionRuleEngine(parseInt(item)) &&
-            name === "Medical Details" ? (
+          {
+            isVersionRuleEngine(parseInt(item)) && name === "Medical Details"?(
               <UnderWritingDiscisionTable>
-                <div className="head_section section_row d-flex align-items-center justify-content-evenly">
-                  <div className="section_column">Member</div>
-                  <div className="section_column">Medical Questions</div>
-                  <div className="section_column">Underwiting Discision</div>
-                </div>
-                {medicalUrlsRuleEngine &&
-                  Object.keys(medicalUrlsRuleEngine)?.map(member => {
-                    return item
-                      ?.toLowerCase()
-                      ?.includes(member.toLowerCase()) ? (
-                      <>
-                        <div className="section_row d-flex align-items-center">
-                          <div className="section_column">{member}</div>
-                          <div className="section_column">
-                            <a
-                              href={
-                                medicalUrlsRuleEngine[member]
-                                  .medical_question_url
-                              }
-                              className="click_btn"
-                              target="_blank"
-                            >
-                              Click here
-                            </a>
-                          </div>
-                          <div className="section_column">
-                            {getMUStatus(member) || "Not Submitted"}
-                            {getMUStatus(member) !== "NotSubmitted" &&
-                            !getMUStatus(member)
-                              ?.toLowerCase()
-                              .includes("accepted") &&
-                            mdicalUnderwritingLetters?.[member]
-                              ?.medical_question_url ? (
-                              <a
-                                href={
-                                  mdicalUnderwritingLetters?.[member]
-                                    ?.medical_question_url
-                                }
-                                className="click_btn"
-                                target="_blank"
-                              >
-                                Click here
-                              </a>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
+              <div className="head_section section_row d-flex align-items-center justify-content-evenly">
+                <div className="section_column">Member</div>
+                <div className="section_column">Medical Questions</div>
+                <div className="section_column">Underwiting Discision</div>
+              </div>
+              {medicalUrlsRuleEngine &&
+                Object.keys(medicalUrlsRuleEngine).map(member => {
+                  return item.toLowerCase().includes(member.toLowerCase())?(
+                    <>
+                      <div className="section_row d-flex align-items-center">
+                        <div className="section_column">{member}</div>
+                        <div className="section_column">
+                        <a href={medicalUrlsRuleEngine[member].medical_question_url} className="click_btn" target="_blank">
+                        Click here
+                                  </a>
                         </div>
-                      </>
-                    ) : (
-                      <></>
-                    );
-                  })}
-              </UnderWritingDiscisionTable>
-            ) : (
+                        <div className="section_column">{getMUStatus(member) || "Not Submitted"}
+                        {getMUStatus(member) !== "NotSubmitted" && !getMUStatus(member).toLowerCase().includes("accepted") && mdicalUnderwritingLetters?.[member]?.medical_question_url?(
+                          <a href={mdicalUnderwritingLetters?.[member]?.medical_question_url} className="click_btn" target="_blank">
+                        Click here
+                                  </a>
+                        ):(<></>)}
+                        </div>
+                      </div>
+                    </>
+                  ):(
+                    <></>
+                  )
+                })}
+      
+              </UnderWritingDiscisionTable> 
+            ):(
               <div>
-                {name === "Medical Details" &&
-                renewal_policy_status?.medicalQuestionsReadOnly ? (
-                  <DisableScreen></DisableScreen>
-                ) : (
-                  <></>
-                )}
-                {name === "Medical Details" && (
+              
+              {name === "Medical Details" && renewal_policy_status?.medicalQuestionsReadOnly ? (
+                <DisableScreen></DisableScreen>
+              ) : (
+                <></>
+              )}
+              {name === "Medical Details" && (
+                <div
+                  css={`
+                    margin: 20px 29px;
+                    margin-top: -36px;
+                    @media (max-width: 1024px) {
+                      margin-top: 10px;
+                    }
+                  `}
+                >
                   <div
                     css={`
-                      margin: 20px 29px;
-                      margin-top: -36px;
+                      display: flex;
+                      justify-content: flex-end;
+
+                      & .container {
+                        margin: 0;
+                        width: max-content;
+                      }
                       @media (max-width: 1024px) {
-                        margin-top: 10px;
+                        justify-content: flex-start;
+                        margin-left: -26px;
                       }
                     `}
                   >
-                    <div
+                    <div style={{ marginRight: "15px" }}>
+                      <Checkbox2
+                        showTitle={false}
+                        title={"No" + item}
+                        //value={noForAll[item]}
+                        checked={noForAll[item]}
+                        onChange={e => {
+                          setNoForAll({
+                            ...noForAll,
+                            [item]: e.target.checked,
+                          });
+                        }}
+                      ></Checkbox2>{" "}
+                    </div>
+                    <span>No For All Questions </span>{" "}
+                  </div>
+
+                  {!noForAll[item] && !yesSelected[item] && (
+                    <p
+                      id={initColor === PrimaryColor ? "noID" : item}
                       css={`
                         display: flex;
+                        font-size: 12px;
                         justify-content: flex-end;
-
-                        & .container {
-                          margin: 0;
-                          width: max-content;
-                        }
+                        color: ${initColor};
                         @media (max-width: 1024px) {
                           justify-content: flex-start;
-                          margin-left: -26px;
+                          /* margin-left: -26px; */
                         }
                       `}
                     >
-                      <div style={{ marginRight: "15px" }}>
-                        <Checkbox2
-                          showTitle={false}
-                          title={"No" + item}
-                          //value={noForAll[item]}
-                          checked={noForAll[item]}
-                          onChange={e => {
-                            setNoForAll({
-                              ...noForAll,
-                              [item]: e.target.checked,
-                            });
-                          }}
-                        ></Checkbox2>{" "}
-                      </div>
-                      <span>No For All Questions </span>{" "}
-                    </div>
-
-                    {!noForAll[item] && !yesSelected[item] && (
-                      <p
-                        id={initColor === PrimaryColor ? "noID" : item}
-                        css={`
-                          display: flex;
-                          font-size: 12px;
-                          justify-content: flex-end;
-                          color: ${initColor};
-                          @media (max-width: 1024px) {
-                            justify-content: flex-start;
-                            /* margin-left: -26px; */
-                          }
-                        `}
-                      >
-                        Please select the checkbox if no for all questions item
-                      </p>
-                    )}
-                  </div>
-                )}
-                <Form>
-                  <FormBuilder
-                    isInsuredDetails
-                    keyStr={item}
-                    lastName={fullName?.split(" ").slice(-1)}
-                    schema={schema[item]}
-                    components={components}
-                    fetchValues={(res = () => {}) => {
-                      console.log("hjkgsr", res, values);
-
-                      setValues(prev => ({
-                        ...prev,
-                        [item]: res(prev?.[item]),
-                      }));
-                    }}
-                    fetchErrors={res => {
-                      setErrors(prev => ({ ...prev, [item]: res }));
-                    }}
-                    setErrorInField={setErrorInField}
-                    fetchValid={res => {
-                      let valid = isValid;
-                      valid[index] = res;
-                      setValid(valid);
-                    }}
-                    options={{
-                      defaultValues: defaultValue
-                        ? defaultValue[item]
-                        : values?.[item] || {},
-                      validateOn: "change",
-                    }}
-                    formName={name}
-                    additionalErrors={additionalErrors[item]}
-                    setSubmit={setSubmit}
-                    submitTrigger={submit}
-                    isPanelVisible={show === index}
-                    noForAll={noForAll[item]}
-                    proposalData={proposalData}
-                    canProceed={!yesSelected[item] ? canProceed : ""}
-                    yesSelected={yesSelected}
-                    setNoForAll={value => {
-                      setNoForAll({ ...noForAll, [item]: value });
-                    }}
-                    setNomineeRelationAutopopulated={
-                      setNomineeRelationAutopopulated
-                    }
-                    preFilledDataBase={defaultValue ? defaultValue[item] : {}}
-                    nomineeRelationAutopopulated={nomineeRelationAutopopulated}
-                    autoPopulateSelfOtherDetails={({
-                      updateValues,
+                      Please select the checkbox if no for all questions item
+                    </p>
+                  )}
+                </div>
+              )}
+              <Form>
+        
+                <FormBuilder
+                  isInsuredDetails
+                  keyStr={item}
+                  lastName={fullName?.split(" ").slice(-1)}
+                  schema={schema[item]}
+                  components={components}
+                  fetchValues={(res = () => {}) => {
+                    setValues(prev => {
+                      return { ...prev, [item]: res(prev?.[item]) }
+                    });
+                  }}
+                  fetchErrors={res => {
+                    setErrors(prev => ({ ...prev, [item]: res }));
+                  }}
+                  setErrorInField={setErrorInField}
+                  fetchValid={res => {
+                    let valid = isValid;
+                    valid[index] = res;
+                    setValid(valid);
+                  }}
+                  options={{
+                    defaultValues: defaultValue?defaultValue[item]:values?.[item] || {},
+                    validateOn: "change",
+                  }}
+                  formName={name}
+                  additionalErrors={additionalErrors[item]}
+                  setSubmit={setSubmit}
+                  submitTrigger={submit}
+                  isPanelVisible={show === index}
+                  noForAll={noForAll[item]}
+                  proposalData={proposalData}
+                  canProceed={!yesSelected[item] ? canProceed : ""}
+                  yesSelected={yesSelected}
+                  setNoForAll={value => {
+                    setNoForAll({ ...noForAll, [item]: value });
+                  }}
+                  setNomineeRelationAutopopulated={
+                    setNomineeRelationAutopopulated
+                  }
+                  preFilledDataBase={defaultValue ? defaultValue[item] : {}}
+                  nomineeRelationAutopopulated={nomineeRelationAutopopulated}
+                  autoPopulateSelfOtherDetails={({
+                    updateValues,
+                    selectedNomineeRelation,
+                  }) =>
+                    autoPopulateSelfOtherDetails({
+                      schema: schema[item],
+                      values: values ? values[item] : {},
+                      setValues: updateValues,
                       selectedNomineeRelation,
-                    }) =>
-                      autoPopulateSelfOtherDetails({
-                        schema: schema[item],
-                        values: values ? values[item] : {},
-                        setValues: updateValues,
-                        selectedNomineeRelation,
-                      })
-                    }
-                  />
-                </Form>{" "}
-              </div>
-            )}
+                    })
+                  }
+                />
+              </Form>{" "}
+            </div>
+            )
+          }
+          
           </Panel>
         );
       })}
-      {console.log("Svsfods", underWritingStatus, insuredDetailsResponse)}
+      {console.log("Svsfods", underWritingStatus,insuredDetailsResponse)}
 
+ 
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
@@ -423,33 +375,30 @@ const InsuredDetails = ({
           }}
         />
 
-        {/* <div className="check_status_btn">
+       {/* <div className="check_status_btn">
         <StyledButton noIcon={true} styledCss={{    padding: "0px 10px", fontSize:"16px"}}>
         Check Underwriting Status
       </StyledButton>
         </div> */}
+       
 
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
-            if (name === "Medical Details") {
+            if(name === "Medical Details"){
               checkCanProceed();
-              console.log("dbjfbjfd");
+              console.log("dbjfbjfd",)
               dispatch(getMedicalUnderwritingStatus());
             }
             setSubmit("Medical");
             console.log("ewrgnjkrsv", canProceed);
             if (
-              name === "Medical Details" &&
-              canProceed?.canProceed
-              //  && (Object.keys(insuredDetailsResponse).length?underWritingStatus.length:true)
+              name === "Medical Details" && 
+            canProceed?.canProceed
+            //  && (Object.keys(insuredDetailsResponse).length?underWritingStatus.length:true)
             ) {
               // NSTP popup for RB
-              console.log(
-                "grnsgh",
-                yesSelected,
-                frontBootData?.settings?.medical_nstp_declaration_message,
-              );
+              console.log("grnsgh",yesSelected,frontBootData?.settings?.medical_nstp_declaration_message)
               Object.values(yesSelected).includes(true) &&
                 frontBootData?.settings?.medical_nstp_declaration_message &&
                 dispatch(
@@ -458,12 +407,12 @@ const InsuredDetails = ({
                     head: "",
                     msg: frontBootData?.settings
                       ?.medical_nstp_declaration_message,
-                    handleClose: () => {
-                      setMedicalContinueClick(true);
-                    },
+                      handleClose:() => {
+                setMedicalContinueClick(true);
+                      }
                   }),
                 );
-              setMedicalContinueClick(true);
+                setMedicalContinueClick(true);
 
               // setContinueBtnClick(true);
             } else if (name !== "Medical Details") {
@@ -501,3 +450,6 @@ const InsuredDetails = ({
 };
 
 export default InsuredDetails;
+
+
+

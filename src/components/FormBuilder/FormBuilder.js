@@ -99,7 +99,7 @@ const FormBuilder = ({
           updateValues,
           selectedNomineeRelation: values.nominee_relation,
         });
-        triggerValidation();
+        // triggerValidation();
       } else if (
         preFilledDataBase &&
         Object.keys(preFilledDataBase).length &&
