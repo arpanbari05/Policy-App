@@ -18,7 +18,6 @@ const useFormBuilder = (
   isPanelVisible,
   keyStr,
 ) => {
-  console.log("edtbdbjhl", defaultValues);
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
 
   const [values, setValues] = useState(defaultValues || {});
@@ -89,12 +88,11 @@ const useFormBuilder = (
     console.log("sdfgdzfgvdf 9", multipleValues, action);
 
     if (action === "SAVE_AS_IT_IS") {
-
       setValues(multipleValues);
       fetchValues(() => multipleValues);
     } else {
       setValues(prev => ({ ...prev, ...multipleValues }));
-      fetchValues((prev) => ({ ...prev, ...multipleValues }));
+      fetchValues(prev => ({ ...prev, ...multipleValues }));
     }
   };
   const insertValue = (parent, member, name, value) => {
@@ -122,22 +120,20 @@ const useFormBuilder = (
   const collectRefs = useRef({});
 
   useEffect(() => {
-    console.log("fgvsdjvnsdk", defaultValues, values);
     if (
       defaultValues &&
       Object.keys(defaultValues).length &&
       Object.keys(values).length !== Object.keys(defaultValues).length
     ) {
-      setValues(prev => ({...prev,...defaultValues}));
+      setValues(prev => ({ ...prev, ...defaultValues }));
       // fetchValues((prev) => ({...prev,...defaultValues}));
     }
   }, [defaultValues]);
 
   const triggerValidation = name => {
-    console.log("bfkjf", name);
+    
     let errorsTemp = {};
     let tempIsValid = true;
-    console.log("sgbjhsfk", name);
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
       let findGroup = schema.findIndex(el => el.name === parent);
@@ -209,8 +205,6 @@ const useFormBuilder = (
             performValidations(item.validate, values, item.name);
 
           if (item.visibleOn) {
-            console.log("dfbjhdf", item, values);
-
             if (
               values[Object.keys(item.visibleOn)[0]] ===
               item.visibleOn[Object.keys(item.visibleOn)[0]]
@@ -224,7 +218,7 @@ const useFormBuilder = (
 
           if (renderField(item, values)) {
             errorsTemp[item.name] = errorMsg;
-            console.log("wfvbkjv", errorMsg);
+
             if (errorMsg) tempIsValid = false;
           }
         }
@@ -310,7 +304,7 @@ const useFormBuilder = (
 
         if (filteredKey.length) {
           let scrollPositions = filteredKey.map(key => {
-            let element = document.getElementById(key+keyStr);
+            let element = document.getElementById(key + keyStr);
             if (element) {
               let y =
                 element.getBoundingClientRect().top - 100 + window.scrollY;
