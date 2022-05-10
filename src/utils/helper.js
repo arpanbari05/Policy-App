@@ -915,12 +915,11 @@ export const featureOptionsValidValue = featureOptions => {
     featureOptions === null ||
     featureOptions === undefined ||
     featureOptions === "[]" ||
-    featureOptions === "{}" ||
     Array.isArray(featureOptions)
   ) {
     return {};
   }
-  return featureOptions;
+  return JSON.parse(featureOptions);
 };
 
 export const getPolicyPremium = (policyStatus = []) => {
