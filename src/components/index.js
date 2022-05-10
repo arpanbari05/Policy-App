@@ -156,7 +156,10 @@ export function FullScreenLoader() {
           display: flex;
           flex-direction: column;
           gap: 1rem;
-          margin: 35vh auto;
+          position: fixed;
+          top: 35vh;
+          left: 50%;
+          transform: translateX(-50%);
           align-items: center;
           justify-content: center;
         `}
@@ -480,8 +483,6 @@ export function useGotoProductDetailsPage() {
 }
 
 export function PremiumButton({ quote, displayTenure = true, ...props }) {
-
-
   const cartSummaryModal = useToggle(false);
 
   const {
