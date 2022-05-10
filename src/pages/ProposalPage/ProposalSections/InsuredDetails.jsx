@@ -308,9 +308,9 @@ const InsuredDetails = ({
                   schema={schema[item]}
                   components={components}
                   fetchValues={(res = () => {}) => {
-        console.log("hjkgsr",res,values)
-
-                    setValues(prev => ({ ...prev, [item]: res(prev?.[item]) }));
+                    setValues(prev => {
+                      return { ...prev, [item]: res(prev?.[item]) }
+                    });
                   }}
                   fetchErrors={res => {
                     setErrors(prev => ({ ...prev, [item]: res }));
