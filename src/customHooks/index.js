@@ -773,7 +773,7 @@ export function useCart() {
 
   const searchQueries = useUrlQueries();
 
-  const { data } = useGetCartQuery();
+  const { data, isLoading } = useGetCartQuery();
 
   const {
     data: {
@@ -888,6 +888,7 @@ export function useCart() {
     getNextGroupProduct,
     discounted_total_premium: data?.discounted_total_premium,
     isVersionRuleEngine,
+    isLoading,
   };
 }
 
