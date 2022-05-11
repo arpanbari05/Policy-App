@@ -10,18 +10,12 @@ import {
 import {
   saveProposalData,
   submitProposalData,
-  setMedUnderwritting,
-  setProposalData,
   setShowBMI,
-  setShowNSTP,
-  setActiveIndex,
-  getProposalData,
-  setShowErrorPopup,
   setFailedBmiData,
   setInsuredDetailsResponse,
+  setUnderWritingStatus,
   setMedicalUrlsRuleEngine,
   setFailedBmiBlockJourney,
-  getMedicalUnderwritingStatus,
 } from "./ProposalSections.slice";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import {
@@ -340,6 +334,7 @@ const useProposalSections = ({
             if (data) {
               dispatch(setInsuredDetailsResponse(data));
               dispatch(setMedicalUrlsRuleEngine(data?.members));
+              dispatch(setUnderWritingStatus([]));
             }
             if (block_journey)
               dispatch(setFailedBmiBlockJourney(block_journey));
@@ -355,7 +350,9 @@ const useProposalSections = ({
                   checkFrom: sendedVal,
                   updationFor: "Medical Details",
                   dispatch: dispatch,
-                  callback: () => {},
+                  callback: () => {
+                    revisedPremiumPopupUtilityObject?.getUpdatedCart(() => {});
+                  },
                 });
               } else {
                 setActive(getUnfilledForm(updatedProposalData));

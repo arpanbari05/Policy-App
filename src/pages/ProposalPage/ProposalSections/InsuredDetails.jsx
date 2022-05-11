@@ -216,7 +216,7 @@ const InsuredDetails = ({
                                   </a>
                         </div>
                         <div className="section_column">{getMUStatus(member) || "Not Submitted"}
-                        {getMUStatus(member) !== "NotSubmitted" && !getMUStatus(member).toLowerCase().includes("accepted") && mdicalUnderwritingLetters?.[member]?.medical_question_url?(
+                        {getMUStatus(member) !== "NotSubmitted" && !getMUStatus(member)?.toLowerCase()?.includes("accepted") && mdicalUnderwritingLetters?.[member]?.medical_question_url?(
                           <a href={mdicalUnderwritingLetters?.[member]?.medical_question_url} className="click_btn" target="_blank">
                         Click here
                                   </a>
