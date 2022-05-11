@@ -1,26 +1,22 @@
-import { Link, Redirect, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useCartProduct } from "../../Cart";
 import styled from "styled-components/macro";
 import care_health from "../../../assets/logos/Care.png";
 import { useSelector, useDispatch } from "react-redux";
-import Pencil from "../../../assets/images/pencil_pink.png";
-import {
-  selectAdditionalDiscounts,
-  setexpandMobile,
-} from "../productDetails.slice";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { selectAdditionalDiscounts } from "../productDetails.slice";
+import { useState } from "react";
 import ReviewCartPopup from "./ReviewCardPopup";
+import { FaPen } from "react-icons/fa";
 // import EditMembersPopup from "../../QuotesPage/components/EditMembersPopup/EditMembersPopup";
-import EditMembersContent from "./EditMembersContent";
 import { mobile, small } from "../../../utils/mediaQueries";
-import CardModal from "../../../components/Common/Modal/CardModal";
 import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
 import {
   amount,
   figureToWords,
   getDisplayPremium,
   getTotalPremiumWithDiscount,
-  premiumWithAddons,
+  isSSOJourney,
+  numberToDigitWord,
 } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
@@ -34,43 +30,30 @@ import {
   useTheme,
   useToggle,
   useUpdateGroupMembers,
-  useAddOns,
   useUrlEnquiry,
   useRevisedPremiumModal,
   useRenewalsConfig,
 } from "../../../customHooks";
-import useOutsiteClick from "../../../customHooks/useOutsideClick";
 import {
   Button,
   CircleLoader,
-  CloseButton,
   MembersList,
   MemberText,
 } from "../../../components";
-import { FaChevronRight, FaPen } from "react-icons/fa";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { ErrorMessage } from "../../InputPage/components/FormComponents";
-import { NewReviewCartPopup } from "../../../components/NewReviewCartPopup";
 import {
   MemberOptions,
   useMembersForm,
 } from "../../../components/MemberOptions";
 import { Modal } from "react-bootstrap";
-import {
-  api,
-  useGetEnquiriesQuery,
-  useUpdateCartMutation,
-} from "../../../api/api";
 import _ from "lodash";
-import { setShowEditMembers } from "../../quotePage/quote.slice";
-import {
-  setActiveIndex,
-  setIsPopupOn,
-} from "../../ProposalPage/ProposalSections/ProposalSections.slice";
-import { FaChevronDown } from "react-icons/fa";
-import Select from "react-select";
+import { setPosPopup, setShowEditMembers } from "../../quotePage/quote.slice";
+import { setIsPopupOn } from "../../ProposalPage/ProposalSections/ProposalSections.slice";
 import { QuoteCardSelect } from "../../quotePage/components/QuoteCards";
 import { images } from "../../../assets/logos/logo";
+import ErrorPopup from "../../ProposalPage/ProposalSections/components/ErrorPopup";
+import { getSumInsuredOptions } from "../../../components/ProductDetails/ProductDetailsModal";
 
 const plantypes = {
   M: "Multi Individual",
@@ -92,14 +75,7 @@ const singlePay = id => {
   document.body.removeChild(form);
 };
 
-export function CartDetails({
-  groupCode,
-  options,
-  onChange,
-  defaultValue,
-  sum_insured,
-  ...props
-}) {
+export function CartDetails({ groupCode, sum_insured, ...props }) {
   const { colors } = useTheme();
 
   const { subJourneyType } = useFrontendBoot();
@@ -144,9 +120,6 @@ export function CartDetails({
 
       <div>
         <BasePlanDetails
-          defaultValue={defaultValue}
-          options={options}
-          onChange={onChange}
           sum_insured={sum_insured}
           groupCode={groupCode}
           isUnavailable={unavailable_message}
@@ -900,19 +873,26 @@ const StyledErrorMessage = styled(ErrorMessage)`
 `;
 
 function BasePlanDetails({
-  defaultValue,
-  options,
-  onChange,
   groupCode,
   isUnavailable = false,
   revisedPremium = false,
   ...props
 }) {
-  const { getCartEntry } = useCart();
+  const { pos_popup } = useSelector(({ quotePage }) => quotePage);
 
-  const { journeyType, subJourneyType } = useFrontendBoot();
+  const { getCartEntry, updateCartEntry } = useCart();
+
+  const {
+    journeyType,
+    subJourneyType,
+    data: {
+      settings: { pos_nonpos_switch_message, restrict_posp_quotes_after_limit },
+    },
+  } = useFrontendBoot();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
+
+  const dispatch = useDispatch();
 
   const {
     plantype,
@@ -920,82 +900,121 @@ function BasePlanDetails({
     deductible,
     tenure,
     premium,
+    group,
+    available_sum_insureds,
     product: {
       name,
       company: { alias },
     },
   } = cartEntry;
 
+  const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
+
   const displayPolicyTerm = `${
     tenure + " " + (tenure >= 2 ? "Years" : "Year")
   } `;
 
-  const coverList = (
+  let options = getSumInsuredOptions(available_sum_insureds);
+
+  if (isSSOJourney() && restrict_posp_quotes_after_limit === `${1}`) {
+    options = options.filter(si => si.value <= 500000);
+  }
+
+  const handleChange = option => {
+    if (isSSOJourney() && pos_nonpos_switch_message && option.value > 500000)
+      dispatch(setPosPopup(true));
+    updateCartEntry(group?.id, { sum_insured: option?.value });
+  };
+
+  const coverList = isTotalPremiumLoading ? (
+    <CircleLoader
+      animation="border"
+      className="m-0"
+      css={`
+        font-size: 0.73rem;
+        font-weight: normal !important;
+      `}
+    />
+  ) : (
     <QuoteCardSelect
       color="#000"
       fontSize={11}
       options={options}
-      defaultValue={defaultValue}
-      onChange={onChange}
+      defaultValue={{
+        value: sum_insured,
+        label: numberToDigitWord(sum_insured),
+      }}
+      onChange={handleChange}
     />
   );
 
   return (
-    <div className="d-flex justify-content-between flex-column mb-2" {...props}>
+    <>
+      {pos_popup && (
+        <ErrorPopup
+          handleClose={() => dispatch(setPosPopup(false))}
+          htmlProps={pos_nonpos_switch_message}
+        />
+      )}
       <div
-        className="d-flex align-items-center mt-2"
-        css={`
-          gap: 1em;
-        `}
+        className="d-flex justify-content-between flex-column mb-2"
+        {...props}
       >
-        <div className="d-flex align-items-center">
-          <img
-            css={`
-              height: 45px;
-            `}
-            src={images[alias]}
-            alt={alias}
-          />
-        </div>
-        <div>{name}</div>
-      </div>
-      {!isUnavailable ? (
-        <div className="mt-2">
-          <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
-          {journeyType === "top_up" ? (
-            <CartDetailRow
-              title="Deductible"
-              value={`₹ ${figureToWords(deductible)}`}
+        <div
+          className="d-flex align-items-center mt-2"
+          css={`
+            gap: 1em;
+          `}
+        >
+          <div className="d-flex align-items-center">
+            <img
+              css={`
+                height: 45px;
+              `}
+              src={images[alias]}
+              alt={alias}
             />
-          ) : null}
-          <CartDetailRow
-            title="Cover"
-            value={
-              !options || !options?.length || subJourneyType === "renewal"
-                ? `₹ ${figureToWords(sum_insured)}`
-                : coverList
-            }
-          />
-          <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
-          {!revisedPremium ? (
+          </div>
+          <div>{name}</div>
+        </div>
+        {!isUnavailable ? (
+          <div className="mt-2">
+            <CartDetailRow title="Plan Type" value={plantypes[plantype]} />
+            {journeyType === "top_up" ? (
+              <CartDetailRow
+                title="Deductible"
+                value={`₹ ${figureToWords(deductible)}`}
+              />
+            ) : null}
             <CartDetailRow
-              title="Premium"
+              title="Cover"
               value={
-                <span
-                  css={`
-                    text-decoration: ${revisedPremium
-                      ? "line-through"
-                      : "none"};
-                  `}
-                >
-                  {amount(premium)}
-                </span>
+                !options || !options?.length || subJourneyType === "renewal"
+                  ? `₹ ${figureToWords(sum_insured)}`
+                  : coverList
               }
             />
-          ) : null}
-        </div>
-      ) : null}
-    </div>
+            <CartDetailRow title="Policy Term" value={displayPolicyTerm} />
+            {!revisedPremium ? (
+              <CartDetailRow
+                title="Premium"
+                value={
+                  <span
+                    css={`
+                      text-decoration: ${revisedPremium
+                        ? "line-through"
+                        : "none"};
+                    `}
+                  >
+                    {amount(premium)}
+                  </span>
+                }
+              />
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+    </>
   );
 }
 
