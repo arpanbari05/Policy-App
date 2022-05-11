@@ -206,7 +206,7 @@ const InsuredDetails = ({
               </div>
               {medicalUrlsRuleEngine &&
                 Object.keys(medicalUrlsRuleEngine).map(member => {
-                  return item.toLowerCase().includes(member.toLowerCase())?(
+                  return item?.toLowerCase()?.includes(member?.toLowerCase())?(
                     <>
                       <div className="section_row d-flex align-items-center">
                         <div className="section_column">{member}</div>

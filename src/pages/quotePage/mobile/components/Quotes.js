@@ -39,6 +39,7 @@ import useFilters from "../../components/filters/useFilters";
 import { PrimaryFontBold } from "../../../../styles/typography";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { useRouteMatch } from "react-router-dom";
+import { api } from "../../../../api/api";
 
 export function Quotes({ sortBy }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
@@ -822,12 +823,19 @@ export function ShortlistFloat() {
 
   const { groupCode } = useParams();
 
+  const history = useHistory();
+
+  const dispatch = useDispatch();
+
   const shortlistedQuotes = getPlanByGroup(groupCode);
 
   return (
     shortlistedQuotes?.length > 0 && (
-      <Link
-        to={`/shortlisted/${groupCode}?enquiryId=${enquiryId}`}
+      <button
+        onClick={() => {
+          dispatch(api.util.resetApiState()); // clearing cache to improve performance
+          history.push(`/shortlisted/${groupCode}?enquiryId=${enquiryId}`);
+        }}
         css={`
           border-radius: 50%;
           background: ${colors.primary_color};
@@ -864,7 +872,7 @@ export function ShortlistFloat() {
             {shortlistedQuotes?.length}
           </span>
         </span>
-      </Link>
+      </button>
     )
   );
 }

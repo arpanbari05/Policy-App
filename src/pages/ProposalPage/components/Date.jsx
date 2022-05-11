@@ -108,7 +108,7 @@ const DateComp = ({
               ? new Date(
                   currentYear - (age[1] + 1),
                   currentMonth,
-                  currentDate + (`${age[0]}`.includes(".") ? 2 : 1),
+                  currentDate + (`${age[1]}`.includes(".") ? 2 : 1),
                 )
               : ""
           }
@@ -119,7 +119,7 @@ const DateComp = ({
               ? new Date(
                   currentYear,
                   currentMonth - Number(age[0].toString().split(".")[1]),
-                  currentDate - (`${age[0]}`.includes(".") ? 1 : 0),
+                  currentDate - (`${age[0]}`.includes(".") ? 2 : 0),
                 )
               : new Date()
           }
