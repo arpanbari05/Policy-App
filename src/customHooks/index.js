@@ -2711,14 +2711,21 @@ export const useRenewalsConfig = () => {
 
   const { subJourneyType } = useFrontendBoot();
 
+  const { data: enquiryData } = useGetEnquiriesQuery();
+
   const allowModification = (comp_alias = "") => {
     return !!getCompany(comp_alias)?.allows_proposal_updation_on_renewal;
+  };
+
+  const allowsQuickPay = () => {
+    return !!enquiryData?.data?.renewal_policy?.allows_quick_pay;
   };
 
   const isRenewalsJourney = subJourneyType === "renewal";
 
   return {
     allowModification,
+    allowsQuickPay,
     isRenewalsJourney,
   };
 };

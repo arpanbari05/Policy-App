@@ -110,7 +110,7 @@ export function CartDetails({
 
   const { unavailable_message, service_tax } = cartEntry;
 
-  const { allowModification } = useRenewalsConfig();
+  const { allowModification, allowsQuickPay } = useRenewalsConfig();
 
   return (
     <CartDetailsWrap {...props}>
@@ -173,7 +173,9 @@ export function CartDetails({
               }
             `}
           >
-            <QuickPayAndRenewButton groupCode={groupCode} />
+            {allowsQuickPay() && (
+              <QuickPayAndRenewButton groupCode={groupCode} />
+            )}
             {allowModification(cartEntry?.product?.company?.alias) && (
               <ModifyDetailsButton />
             )}
