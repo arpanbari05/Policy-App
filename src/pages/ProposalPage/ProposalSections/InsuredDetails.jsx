@@ -206,7 +206,7 @@ const InsuredDetails = ({
               </div>
               {medicalUrlsRuleEngine &&
                 Object.keys(medicalUrlsRuleEngine).map(member => {
-                  return item.toLowerCase().includes(member.toLowerCase())?(
+                  return item?.toLowerCase()?.includes(member?.toLowerCase())?(
                     <>
                       <div className="section_row d-flex align-items-center">
                         <div className="section_column">{member}</div>
@@ -216,7 +216,7 @@ const InsuredDetails = ({
                                   </a>
                         </div>
                         <div className="section_column">{getMUStatus(member) || "Not Submitted"}
-                        {getMUStatus(member) !== "NotSubmitted" && !getMUStatus(member).toLowerCase().includes("accepted") && mdicalUnderwritingLetters?.[member]?.medical_question_url?(
+                        {getMUStatus(member) !== "NotSubmitted" && !getMUStatus(member)?.toLowerCase()?.includes("accepted") && mdicalUnderwritingLetters?.[member]?.medical_question_url?(
                           <a href={mdicalUnderwritingLetters?.[member]?.medical_question_url} className="click_btn" target="_blank">
                         Click here
                                   </a>
