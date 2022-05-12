@@ -23,6 +23,10 @@ import { useGetEnquiriesQuery } from "../../../../api/api";
 import { ClickSound, isSSOJourney } from "../../../../utils/helper";
 import { useDispatch } from "react-redux";
 import { setPosPopup } from "../../quote.slice";
+import {
+  validateCustomCover,
+  CustomInputWrapper,
+} from "../../components/filters/CoverRangeFilter";
 
 const availableMoreFilters = {
   popular_filters: true,
@@ -50,7 +54,7 @@ export function useFiltersSlot({ initialFilters } = {}) {
     if (availableMoreFilters[code]) {
       isChecked = filters[code]?.find(
         singleSelectedOption =>
-          singleSelectedOption?.display_name === option.display_name,
+          singleSelectedOption?.display_name === option?.display_name,
       );
 
       updateFilters =
@@ -72,21 +76,21 @@ export function useFiltersSlot({ initialFilters } = {}) {
               ? undefined
               : filters[code]?.filter(
                   singleSelectedOption =>
-                    singleSelectedOption?.display_name !== option.display_name,
+                    singleSelectedOption?.display_name !== option?.display_name,
                 ),
         }; // REMOVAL LOGIC
     } else {
-      isChecked = filters[code]?.display_name === option.display_name;
+      isChecked = filters[code]?.display_name === option?.display_name;
       if (type === "check") {
         isChecked =
           Array.isArray(filters[code]) &&
-          filters[code]?.find(insurer => insurer.alias === option.alias);
+          filters[code]?.find(insurer => insurer.alias === option?.alias);
         updateFilters = { ...filters };
         if (isChecked) {
           updateFilters = {
             ...filters,
             [code]: updateFilters[code]?.filter(
-              filter => filter.alias !== option.alias,
+              filter => filter.alias !== option?.alias,
             ),
           };
         } else {
@@ -185,6 +189,43 @@ export function FilterModal({ onClose, show }) {
     },
   });
 
+  const [customCoverError, setCustomCoverError] = useState("");
+  const [customCover, setCustomCover] = useState({});
+
+  const handleCustomCoverChange = (evt, onChange) => {
+    let { value: givenCustomCover } = evt.target;
+
+    if (!givenCustomCover) {
+      setCustomCover("");
+      setCustomCoverError("");
+      onChange && onChange(getSelectedFilter("cover"));
+      return;
+    }
+
+    givenCustomCover = parseInt(givenCustomCover);
+
+    if (givenCustomCover >= 0) {
+      setCustomCover(givenCustomCover);
+
+      const customCoverError = validateCustomCover(givenCustomCover);
+
+      if (customCoverError) {
+        setCustomCoverError(customCoverError);
+        onChange && onChange({});
+
+        return;
+      }
+
+      setCustomCoverError("");
+      onChange &&
+        onChange({
+          code: `${givenCustomCover}-${givenCustomCover}`,
+          display_name: givenCustomCover,
+          custom: `${givenCustomCover}`,
+        });
+    }
+  };
+
   const handleClearFiltersClick = () => {
     clearFilters();
     resetFilters();
@@ -203,25 +244,43 @@ export function FilterModal({ onClose, show }) {
 
   const NAV = {
     multiyear_option: (
-      <FilterNavItem eventKey={"tenure"}>Multiyear Options</FilterNavItem>
+      <FilterNavItem key="tenure" eventKey={"tenure"}>
+        Multiyear Options
+      </FilterNavItem>
     ),
     policy_type:
       selectedPolicyTypeFilter?.display_name !== "Individual" &&
       journeyType !== "top_up" &&
       +multiindividual_visibilty !== 0 ? (
-        <FilterNavItem eventKey={"plantype"}>Policy type</FilterNavItem>
+        <FilterNavItem key={"plantype"} eventKey={"plantype"}>
+          Policy type
+        </FilterNavItem>
       ) : null,
     plan_type: (
-      <FilterNavItem eventKey={"baseplantype"}>Plan type</FilterNavItem>
+      <FilterNavItem key={"baseplantype"} eventKey={"baseplantype"}>
+        Plan type
+      </FilterNavItem>
     ),
     cover:
       journeyType === "health" ? (
-        <FilterNavItem eventKey={"cover"}>Cover</FilterNavItem>
+        <FilterNavItem key={"cover"} eventKey={"cover"}>
+          Cover
+        </FilterNavItem>
       ) : (
-        <FilterNavItem eventKey={"deductible"}>Deductible</FilterNavItem>
+        <FilterNavItem key={"deductible"} eventKey={"deductible"}>
+          Deductible
+        </FilterNavItem>
       ),
-    premium: <FilterNavItem eventKey={"premium"}>Premium</FilterNavItem>,
-    insurer: <FilterNavItem eventKey={"insurers"}>Insurers</FilterNavItem>,
+    premium: (
+      <FilterNavItem key={"premium"} eventKey={"premium"}>
+        Premium
+      </FilterNavItem>
+    ),
+    insurer: (
+      <FilterNavItem key={"insurers"} eventKey={"insurers"}>
+        Insurers
+      </FilterNavItem>
+    ),
     more_filter: morefilters.map(filter => (
       <FilterNavItem eventKey={filter.code} key={filter.code}>
         {filter.group_name}
@@ -239,6 +298,26 @@ export function FilterModal({ onClose, show }) {
         type={type}
         showTooltip={showTooltip}
       />
+      {/* {code === "cover" && ( */}
+      {false && (
+        <CustomInputWrapper className="mt-3">
+          <input
+            type="number"
+            placeholder="Enter your own cover."
+            className="w-100"
+            autoFocus
+            value={customCover}
+            onChange={e =>
+              handleCustomCoverChange(e, option =>
+                updateFilter(code, option, type),
+              )
+            }
+          />
+          {customCoverError ? (
+            <div className="bottom_msg">{customCoverError}</div>
+          ) : null}
+        </CustomInputWrapper>
+      )}
     </Tab.Pane>
   );
 

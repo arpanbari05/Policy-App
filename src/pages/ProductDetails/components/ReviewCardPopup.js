@@ -625,17 +625,17 @@ function ProductDetailsCard({ cartItem }) {
         >
           <div
             css={`
-              width: 80%;
+              // width: 80%;
               height: 45px !important;
               display: flex;
               align-items: center;
               justify-content: space-between;
-              margin-right: 10px;
+              margin-right: 20px;
               margin-bottom: 0px;
 
               & img {
                 object-fit: contain;
-                width: 100%;
+                // width: 100%;
                 height: 100%;
               }
             `}
@@ -743,8 +743,51 @@ function ProductDetailsCard({ cartItem }) {
                 Premium
                 <br />
                 <span className="edit_css_prod si_text">
-                  {amount(premium)} /{" "}
-                  {tenure === 1 ? "year" : `${tenure} years`}
+                  {amount(premium)}
+                  {/* {tenure === 1 ? "year" : `${tenure} years`} */}
+                </span>
+              </span>
+            </div>
+          </div>
+          <div
+            css={`
+              border-left: 1px solid #ddd;
+              display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+              display: -ms-flexbox; /* TWEENER - IE 10 */
+              display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+              display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
+              flex: 1;
+              -webkit-flex: 1;
+              align-items: center;
+              justify-content: center;
+            `}
+          >
+            <div>
+              <span
+                css={`
+                  color: #000;
+                  font-size: 11px;
+                  line-height: 21px;
+                  @media (max-width: 900px) {
+                    font-size: 13px;
+                  }
+                  .edit_css_prod {
+                    @media (max-width: 900px) {
+                      font-size: 13px !important;
+                    }
+                  }
+
+                  .si_text {
+                    font-size: 15px;
+                    font-weight: 900;
+                    color: #505f79;
+                  }
+                `}
+              >
+                Tenure
+                <br />
+                <span className="edit_css_prod si_text">
+                  {tenure === 1 ? `${tenure} Year` : `${tenure} Years`}
                 </span>
               </span>
             </div>
