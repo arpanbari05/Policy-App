@@ -44,7 +44,7 @@ export default function PincPosLogout() {
     window.location.href = tenant?.broker_dashboard_url;
   };
 
-  return allowOnWebsites(["pincUat", "topup"]) ? (
+  return allowOnWebsites(["pincUat"]) ? (
     localStorage.SSO_user ? (
       !loading ? (
         <StyledOuter>
