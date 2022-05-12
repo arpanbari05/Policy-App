@@ -104,6 +104,7 @@ const ShareQuoteModal = ({
   float = false,
   imageSend: imageToSend,
   emailStatus,
+  onShareClick = () => {},
   purpose = "",
   stage = "",
   floatCss = "",
@@ -184,6 +185,11 @@ const ShareQuoteModal = ({
 
   const handleShow = () => setshow(true);
 
+  const handleShareClick = () => {
+    setshow(true);
+    onShareClick();
+  };
+
   return (
     <>
       {!hideBtn && (
@@ -191,7 +197,7 @@ const ShareQuoteModal = ({
           floatCss={floatCss}
           mobile={mobile}
           shareQuotes={shareQuotes}
-          onClick={handleShow}
+          onClick={handleShareClick}
           label={label}
           float={float}
         />
@@ -448,7 +454,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
   const [canvasQuotes, setCanvasQuotes] = useState([]);
 
   useEffect(() => {
-    setselectedQuotes(quotesToShare);
+    setselectedQuotes(quotesToShare || []);
   }, []);
 
   useEffect(() => {
@@ -485,7 +491,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
       setCanvasQuotes([]);
     } else {
       handleReplaceQuotes(quotesToShare);
-      setCanvasQuotes(quotesToShare.map(quote => quote[0]));
+      setCanvasQuotes(quotesToShare?.map(quote => quote[0]));
     }
   };
 
@@ -501,6 +507,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
       scale: 0.9,
     }).then(canvas => {
       const imgData = canvas.toDataURL("image/jpeg");
+      console.log(imgData);
       setImageSend(imgData.split(",")[1]);
       setLoader(false);
       setStep(2);
@@ -528,7 +535,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
           </ShareQuotesHeaderItem>
         </ShareQuotesHeader>
         <ShareQuotes>
-          {quotesToShare.map(quotes => (
+          {quotesToShare?.map(quotes => (
             <Quote
               quotes={quotes}
               onHandleAdd={handleAddQuote}
@@ -660,6 +667,7 @@ function ShareStep2({
           scale: 0.9,
         });
         const imgData = canvas.toDataURL("image/jpeg");
+        console.log(imgData);
         data = { ...data, image_to_send: imgData.split(",")[1] };
       }
       const response = await shareViaEmailApi(data, tenantAlias);

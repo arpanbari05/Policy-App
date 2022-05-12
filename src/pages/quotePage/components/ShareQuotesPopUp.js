@@ -9,6 +9,7 @@ import {
 } from "../quote.slice";
 import { RiShareForwardFill } from "react-icons/ri";
 import { ClickSound } from "../../../utils/helper";
+import { useRouteMatch } from "react-router-dom";
 
 const Sharequotespopup = ({ onClick = () => {} }) => {
   const { quotesToShare, shareType, showSharePopup } = useSelector(
@@ -16,14 +17,19 @@ const Sharequotespopup = ({ onClick = () => {} }) => {
   );
   const dispatch = useDispatch();
 
+  const isShortlistedRoute = useRouteMatch("/shortlisted");
+
   const clearHandler = () => {
     ClickSound();
     dispatch(replaceShareQuotes([]));
     dispatch(setShareType({}));
   };
-  return quotesToShare.length && showSharePopup && shareType.value ? (
+  return !isShortlistedRoute &&
+    quotesToShare?.length &&
+    showSharePopup &&
+    shareType.value ? (
     <ShareQuoteWrapper>
-      <Plan>{`${quotesToShare.length} plan(s) selected`}</Plan>
+      <Plan>{`${quotesToShare?.length} plan(s) selected`}</Plan>
       <Button
         css={`
           height: 40px;
