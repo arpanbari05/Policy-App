@@ -1,4 +1,4 @@
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import InputPage from "./pages/InputPage/InputPage";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import QuotesPage from "./pages/quotePage/";
@@ -11,6 +11,7 @@ import { useFrontendBoot } from "../src/customHooks";
 import { BaseComponent } from "./components/BaseComponent";
 import CheckPolicies from "./components/Common/CheckPolicies";
 import ShortlistedQuotes from "./pages/ShortlistedPage/shortlistedQuotes";
+import ChooseYourJourneyPage from "./pages/ChooseYourJourneyPage/ChooseYourJourneyPage";
 const ProposalPage = lazy(() => import("./pages/ProposalPage/ProposalPage"));
 const ProposalSummary = lazy(() =>
   import("./pages/ProposalSummary/ProposalSummary"),
@@ -32,6 +33,13 @@ function App() {
             component={() => <BaseComponent tenant={tenant} />}
             exact
           ></Route>
+          <Route path={"/choose-your-journey"}>
+            {tenant?.alias === "fyntune" ? (
+              <ChooseYourJourneyPage />
+            ) : (
+              <Redirect to={"/"} />
+            )}
+          </Route>
           <Route exact path="/input/:currentForm" component={InputPage} />
           <Route exact path="/quotes/:groupCode">
             <LoadCart>
