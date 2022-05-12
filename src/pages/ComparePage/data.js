@@ -59,6 +59,11 @@ export const BASIC_FEATURES = [
     description:
       "Co-payment means a cost sharing requirement that the Policy holder will bear a specified percentage of the admissible claims amount",
   },
+  {
+    title: "Pre Policy Medical Screening",
+    description:
+      "The pre-policy medical checkup refers to the medical examination that is required before issuing the policy. This checkup is mandatory for applicants above a certain age and is done to determine the applicant's current medical fitness",
+  },
 ];
 
 export const SPECIAL_FEATURES = [
@@ -108,9 +113,9 @@ export const SPECIAL_FEATURES = [
       "Disease wise is a cost sharing requirement that provides that the Policyholder shall bear a specified percentage of the admissible claims amount for mentioned specific disease.",
   },
   {
-    title: "Pre Policy Medical Screening",
+    title: "Recharge Benefit",
     description:
-      "The pre-policy medical checkup refers to the medical examination that is required before issuing the policy. This checkup is mandatory for applicants above a certain age and is done to determine the applicant's current medical fitness",
+      "If the Sum Insured and Cumulative Bonus (if any) is exhausted due to claims incurred and paid during the Policy Year or incurred during the Policy Year and accepted as payable, then it is agreed that a Restore Sum Insured will be automatically available for the particular Policy Year",
   },
 ];
 
