@@ -97,7 +97,7 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
 
-  const { allowModification } = useRenewalsConfig();
+  const { allowModification, allowsQuickPay } = useRenewalsConfig();
 
   return (
     <Outer toggleCard={toggleCard}>
@@ -186,7 +186,9 @@ const CartMobile = ({ groupCode, ...props }) => {
               }
             `}
           >
-            <QuickPayAndRenewButtonMobile groupCode={groupCode} />
+            {allowsQuickPay() && (
+              <QuickPayAndRenewButtonMobile groupCode={groupCode} />
+            )}
             {allowModification(cartEntry?.product?.company?.alias) && (
               <ModifyDetailsButtonMobile />
             )}
