@@ -49,8 +49,8 @@ function AppLoaders({ children, ...props }) {
     exact: true,
   });
 
-  const isJOurneyTypeRoute = useRouteMatch({
-    path: "/input/journey-type",
+  const isChooseYourJourneyPage = useRouteMatch({
+    path: "/choose-your-journey",
     exact: true,
   });
   const isTestRoute = useRouteMatch({ path: "/test" });
@@ -130,7 +130,7 @@ function AppLoaders({ children, ...props }) {
       isRootRoute,
       isBasicDetailsRoute,
       isRenewalDetailsRoute,
-      isJOurneyTypeRoute,
+      isChooseYourJourneyPage,
     ])
   )
     return children;

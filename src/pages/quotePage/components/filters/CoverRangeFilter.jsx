@@ -13,7 +13,7 @@ import { isSSOJourney, ClickSound } from "../../../../utils/helper";
 import { IoRadioButtonOn } from "react-icons/io5";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 
-function validateCustomCover(customCover) {
+export function validateCustomCover(customCover) {
   if (customCover < 200000) {
     return "Minimum should be 2 lac";
   } else if (customCover > 20000000) {
@@ -243,7 +243,7 @@ const CoverRangeFilter = () => {
 
 export default CoverRangeFilter;
 
-const CustomInputWrapper = styled.div`
+export const CustomInputWrapper = styled.div`
   width: 100%;
   .bottom_msg {
     background-color: #d5ddea;
