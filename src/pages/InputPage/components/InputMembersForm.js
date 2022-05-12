@@ -128,6 +128,8 @@ function InputMembersForm({ posContent, ...props }) {
         const { groups } = res?.data?.data;
         const firstGroup = Math.min(...groups.map(group => group?.id));
 
+        localStorage.removeItem("default_filters");
+
         nextPagePath = `/input/location-${firstGroup}`;
         history.push(getUrlWithEnquirySearch(nextPagePath));
       })
