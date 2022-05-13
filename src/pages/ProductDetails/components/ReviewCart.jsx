@@ -17,6 +17,7 @@ import {
   getTotalPremiumWithDiscount,
   isSSOJourney,
   numberToDigitWord,
+  featureOptionsValidValue,
 } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
@@ -1115,19 +1116,9 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const enquiryId = urlQueryStrings.get("enquiryId");
 
-  const { ...frontendBoot } = useFrontendBoot();
-
-  const { tenant } = frontendBoot?.data;
-
-  let currentGroup = {};
-  try {
-    console.log("The parsable groups string", localStorage.getItem("groups"));
-    currentGroup =
-      localStorage.getItem("groups") &&
-      JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
-  } catch (err) {
-    tenant?.alias === "spa" && alert(`=> ${err}`);
-  }
+  const currentGroup =
+    localStorage.getItem("groups") &&
+    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
   const handleClick = () => {
     const discounted_total_premium = getTotalPremiumWithDiscount({
@@ -1135,7 +1126,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
       totalDiscountAmount: getTotalDiscountAmount(),
     });
 
-    const featureOptions = JSON.parse(cartEntry?.feature_options);
+    const featureOptions = featureOptionsValidValue(cartEntry?.feature_options);
 
     updateCartMutation({
       discounted_total_premium,
