@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RiShareFill, RiDownload2Line } from "react-icons/ri";
+import { RiDownload2Line } from "react-icons/ri";
 import "./ProposalSummary.scss";
 import ProposalCheckBox from "../../components/Common/ProposalSummary/summaryCheckBox";
 import SummaryTab from "../ProposalPage/components/SummaryTab/SummaryTab";
@@ -12,14 +12,6 @@ import pincPDF from "../../assets/logos/pinc_pdf.png";
 import sriyahPDF from "../../assets/logos/sriyah_pdf.png";
 import fyntunePDF from "../../assets/logos/fyntune_pdf.png";
 import { getProposalFields } from "../ProposalPage/schema.slice";
-import { MdOutlineArrowBackIos } from "react-icons/md";
-import ProposalSummaryTab from "./../../components/Common/ProposalSummary/ProposalSummary";
-import {
-  MobileHeader,
-  MobileHeaderText,
-} from "./../ProposalPage/ProposalPage.style";
-import "styled-components/macro";
-
 import {
   fetchPdf,
   getProposalData,
@@ -31,8 +23,6 @@ import ProductSummaryMobile from "../ProposalPage/ProposalSections/components/Pr
 import useUrlQuery from "../../customHooks/useUrlQuery";
 import { Col, Row } from "react-bootstrap";
 import TermModal from "./TermsModal";
-import { RevisedPremiumPopup } from "../ProductDetails/components/ReviewCart";
-import { getAboutCompany } from "../SeeDetails/serviceApi";
 import { getTermConditions } from "../ProposalPage/serviceApi";
 import {
   useFrontendBoot,
@@ -54,12 +44,14 @@ import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
 import httpClient from "../../api/httpClient";
 import { BackButtonMobile } from "../../components";
-import { TraceId } from "../../components/Navbar";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
+
   const [loader, setLoader] = useState(false);
+
   const { getGroupMembers } = useMembers();
+
   const pdfLogoSelector = {
     fyntune: fyntunePDF,
     oneinsure: oneInsurepdf,
@@ -67,6 +59,7 @@ const ProposalSummary = () => {
     pinc: pincPDF,
     sriyah: sriyahPDF,
   };
+
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -90,20 +83,19 @@ const ProposalSummary = () => {
   const frontendBoot = useFrontendBoot();
 
   const frontendData = { data: frontendBoot.data };
+
+  const tenantAlias = frontendBoot?.data?.tenant?.alias;
+
   const cart = cartEntries;
 
   const totalPremium = useUSGIDiscounts();
-
-  const tenantName = frontendBoot?.data?.tenant?.alias;
 
   const totalPremiumPolicies = getPolicyPremium(policyStatus);
 
   // TO SEND PDF SUMMARY TO BACKEND
   const [pdfDoc, setPdfDoc] = useState(null);
   useEffect(() => {
-    let logoImgData;
     if (proposalData?.data && Object.keys(cart).length && canSendSummaryPdf) {
-      // const divToPrint = document.querySelector(Window.width>1022?"#printSummaryPage":"#printSummaryPageMobile");
       const divToPrint = document.querySelector(
         window.outerWidth > 1022
           ? "#printSummaryPage"
@@ -123,8 +115,8 @@ const ProposalSummary = () => {
 
         doc.text(10, 10, "Proposal Summary");
 
-        pdfLogoSelector[tenantName] &&
-          doc.addImage(pdfLogoSelector[tenantName], "PNG", 150, 2, 30, 15);
+        pdfLogoSelector[tenantAlias] &&
+          doc.addImage(pdfLogoSelector[tenantAlias], "PNG", 150, 2, 30, 15);
 
         doc.addImage(
           imgData,
@@ -147,7 +139,6 @@ const ProposalSummary = () => {
   useEffect(() => {
     if (pdfDoc) {
       let pdfDocInBytes = btoa(pdfDoc.output());
-      console.log("wkfbvhbvck", pdfDocInBytes);
 
       httpClient("proposals/pdf", {
         method: "POST",
@@ -245,10 +236,6 @@ const ProposalSummary = () => {
   const imageSendQuote = id => {
     window.scrollTo(0, 0);
     setTimeout(() => {
-      // setTimeout(() => {
-      //   setLoader(true);
-      // }, 100);
-
       pdfDoc.save("Proposal_Summary.pdf");
     }, 1000);
   };
@@ -396,43 +383,6 @@ const ProposalSummary = () => {
             </div>
           </div>
         </div>
-        {/* <MobileHeader
-          css={`
-            background: ${PrimaryColor};
-            justify-content: space-between;
-          `}
-        >
-          <Link to={getUrlWithEnquirySearch("/proposal")}>
-            <MobileHeaderText>
-              <i
-                class="fa fa-arrow-circle-left"
-                style={{ marginRight: "10px", cursor: "pointer" }}
-              ></i>{" "}
-              Review
-            </MobileHeaderText>
-          </Link>
-
-          <div
-            css={`
-              color: #fff;
-            `}
-          >
-            <TraceId />
-          </div>
-        </MobileHeader>
-
-        <div className="container-fluid mt-20 ">
-          <ShareQuoteModal
-            mobile
-            insurersFor={cart.map(cart => cart?.product?.company?.alias)}
-            stage="PROPOSAL_SUMMARY"
-            purpose="proposalSummary"
-            sum_insured={sum_insured}
-            float
-            floatCss={`bottom: 20vw;`}
-          />
-        </MobileHeader>
- */}
 
         <div className="container-fluid mt-20 ">
           <ShareQuoteModal
@@ -522,7 +472,7 @@ const ProposalSummary = () => {
                 `}
               >
                 {/*download pdf button*/}
-                {console.log("wgrgjnrgr", pdfDoc)}
+
                 {pdfDoc ? (
                   <>
                     <button
@@ -662,6 +612,12 @@ const PayButton = styled.div`
 `;
 
 const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
+  const frontendBoot = useFrontendBoot();
+
+  const frontendData = { data: frontendBoot.data };
+
+  const tenantAlias = frontendBoot?.data?.tenant?.alias;
+
   const { colors } = useTheme();
 
   const PrimaryColor = colors.primary_color;
@@ -683,7 +639,7 @@ const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
   return (
     <Card
       styledCss={`
-        margin-bottom: 20px;
+        margin-bottom: 100px;
         @media (max-width: 768px) {
           margin-bottom: 10px;
           padding: 5px 2px;
@@ -697,56 +653,65 @@ const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
       >
         {"Terms and Conditions"}
       </MainTitle>
-      <ContentSection>
-        {checkBoxContentArray?.map((item, index) => (
-          <div>
-            <p key={index}>
-              <span
-                css={`
-                  position: relative;
-                  top: -5px;
-                  ${mobile} {
-                    position: static;
-                  }
-                `}
-              >
-                <ProposalCheckBox
-                  title={item}
-                  type={"checkbox"}
-                  value={checkBoxTracker?.includes(item)}
-                  onChange={e => {
-                    e.target.checked &&
-                      setCheckBoxTracker(currentState => [
-                        ...currentState,
-                        item,
-                      ]);
+      {tenantAlias !== "spa" && (
+        <ContentSection>
+          {checkBoxContentArray?.map((item, index) => (
+            <div>
+              <p key={index}>
+                <span
+                  css={`
+                    position: relative;
+                    top: -5px;
+                    ${mobile} {
+                      position: static;
+                    }
+                  `}
+                >
+                  <ProposalCheckBox
+                    title={item}
+                    type={"checkbox"}
+                    value={checkBoxTracker?.includes(item)}
+                    onChange={e => {
+                      e.target.checked &&
+                        setCheckBoxTracker(currentState => [
+                          ...currentState,
+                          item,
+                        ]);
 
-                    !e.target.checked &&
-                      setCheckBoxTracker(currentState =>
-                        currentState?.filter(singleItem => singleItem !== item),
-                      );
-                  }}
-                />
-              </span>
+                      !e.target.checked &&
+                        setCheckBoxTracker(currentState =>
+                          currentState?.filter(
+                            singleItem => singleItem !== item,
+                          ),
+                        );
+                    }}
+                  />
+                </span>
 
-              <span
-                css={`
-                  ${mobile} {
-                    font-size: 12px !important;
-                  }
-                  & a {
-                    color: ${PrimaryColor};
-                  }
-                `}
-                dangerouslySetInnerHTML={{ __html: item }}
-              ></span>
-            </p>
-          </div>
-        ))}
-        {cartEntries.map((singleItem, index) => (
-          <PolicyWordingsRenderer key={index} singleItem={singleItem} />
-        ))}
-      </ContentSection>
+                <span
+                  css={`
+                    ${mobile} {
+                      font-size: 12px !important;
+                    }
+                    & a {
+                      color: ${PrimaryColor};
+                    }
+                  `}
+                  dangerouslySetInnerHTML={{ __html: item }}
+                ></span>
+              </p>
+            </div>
+          ))}
+          {cartEntries.map((singleItem, index) => (
+            <PolicyWordingsRenderer key={index} singleItem={singleItem} />
+          ))}
+        </ContentSection>
+      )}
+      {tenantAlias === "spa" && tCSectionData?.radio && (
+        <ContentSection
+          dangerouslySetInnerHTML={{ __html: tCSectionData?.radio }}
+        ></ContentSection>
+      )}
     </Card>
   );
 };
@@ -756,7 +721,6 @@ const MainTitle = styled.h2`
   margin-bottom: ${props => (props.bg ? "15px" : "10")};
   margin-top: ${props => (props.bg ? "15px" : "10")};
   font-weight: 900;
-
   background: ${props => props.bg && props.PrimaryShade};
   color: ${props => props.bg && props.PrimaryColor};
   font-size: 21px;

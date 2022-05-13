@@ -54,6 +54,7 @@ import { QuoteCardSelect } from "../../quotePage/components/QuoteCards";
 import { images } from "../../../assets/logos/logo";
 import ErrorPopup from "../../ProposalPage/ProposalSections/components/ErrorPopup";
 import { getSumInsuredOptions } from "../../../components/ProductDetails/ProductDetailsModal";
+import { useGetEnquiriesQuery } from "../../../api/api";
 
 const plantypes = {
   M: "Multi Individual",

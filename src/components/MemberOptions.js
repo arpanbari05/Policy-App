@@ -314,7 +314,6 @@ function MemberOption({
   };
 
   const validateSpouse = (selectedMembers, member) => {
-    console.log("memberCode", member);
     if (
       gender === "M" &&
       (member.code === "spouse" ||

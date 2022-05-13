@@ -174,7 +174,6 @@ const ProductDetails = () => {
               />
             </div>
           )}
-
           <div
             css={`
               width: 70%;
@@ -279,11 +278,13 @@ function getSumInsuredOptions(arr = []) {
 
 function SumInsuredOptionsSection({ cartEntry }) {
   const { updateCartEntry } = useCart();
+  
   const {
     data: {
       settings: { pos_nonpos_switch_message, restrict_posp_quotes_after_limit },
     },
   } = useFrontendBoot();
+  
   const dispatch = useDispatch();
 
   const { available_sum_insureds, group, sum_insured } = cartEntry;

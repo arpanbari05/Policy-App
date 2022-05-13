@@ -915,7 +915,13 @@ export function useRider(groupCode) {
   function replaceRiders(riders = []) {
     const ridersCartData = riders.map(getRiderCartData);
 
-    updateCartEntry(groupCode, { health_riders: ridersCartData });
+    let ridersDataObj = {};
+    if (journeyType === "health")
+      ridersDataObj = { health_riders: ridersCartData };
+    if (journeyType === "top_up")
+      ridersDataObj = { top_up_riders: ridersCartData };
+
+    updateCartEntry(groupCode, ridersDataObj);
   }
 
   return { getSelectedRiders, replaceRiders };
