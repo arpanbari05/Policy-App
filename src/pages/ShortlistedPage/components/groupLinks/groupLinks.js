@@ -8,18 +8,28 @@ import styled from "styled-components";
 import "styled-components/macro";
 import { PrimaryFontBold } from "../../../../styles/typography";
 import ShareQuoteModal from "../../../../components/ShareQuoteModal";
+import { setShareType } from "../../../quotePage/quote.slice";
+import { useDispatch, useSelector } from "react-redux";
+import useWindowSize from "../../../../customHooks/useWindowSize";
 
 function GroupLinks() {
   const { groups } = useMembers();
+
   const { colors } = useTheme();
 
   const [partioned, setPartioned] = useState(false);
 
   const { enquiryId } = useUrlEnquiry();
 
+  const { quotesToShare } = useSelector(({ quotePage }) => quotePage);
+
   const allMembersGroup = groups.find(group => group.type === "all");
 
+  const [_, xWidth] = useWindowSize();
+
   const { groupCode } = useParams();
+
+  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -94,22 +104,45 @@ function GroupLinks() {
               View Separate Plans
             </ToggleGroupTypeBtn>
           ))}
-        <div
-          className="only-desktop"
-          css={`
-            margin-left: auto;
-            margin-right: 0 !important;
-          `}
-        >
-          <ShareQuoteModal
-            label={"Share plans"}
-            stage="SHORTLISTED_QUOTES"
-            purpose="shortlistedQuotes"
-          />
-        </div>
+
+        {xWidth > 768 && (
+          <div
+            className="only-desktop"
+            css={`
+              margin-left: auto;
+              margin-right: 0 !important;
+            `}
+          >
+            <ShareQuoteModal
+              label={"Share plans"}
+              insurersFor={quotesToShare.map(
+                q => q[0]?.product?.company?.alias,
+              )}
+              onShareClick={() => {
+                dispatch(
+                  setShareType({
+                    value: "quotation_list",
+                    display_name: "Share all the quotes",
+                  }),
+                );
+              }}
+              stage="SHORTLISTED_QUOTES"
+              purpose="shortlistedQuotes"
+            />
+          </div>
+        )}
         <ShareQuoteModal
           stage="SHORTLISTED_QUOTES"
+          insurersFor={quotesToShare?.map(q => q[0]?.product?.company?.alias)}
           purpose="shortlistedQuotes"
+          onShareClick={() => {
+            dispatch(
+              setShareType({
+                value: "quotation_list",
+                display_name: "Share all the quotes",
+              }),
+            );
+          }}
           mobile
           float
         />

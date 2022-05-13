@@ -36,6 +36,7 @@ function PlanTypeForm({ posContent, ...props }) {
         "default_filters",
         JSON.stringify({ plan_type: selectedPlanType?.code }),
       );
+      localStorage.setItem("groups", JSON.stringify(groups));
       history.push(getUrlWithEnquirySearch(`/input/location-${firstGroup}`));
     });
   };

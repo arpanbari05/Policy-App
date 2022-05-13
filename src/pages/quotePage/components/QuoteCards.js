@@ -498,24 +498,39 @@ function QuoteCard({
                 `}
               >
                 <QuoteCardOption label={"Deductible:"}>
-                  <QuoteCardSelect
-                    options={deductibles.map(deductible => ({
-                      value: deductible,
-                      label: numberToDigitWord(deductible)
+                  {deductibles.length > 1 ? (
+                    <QuoteCardSelect
+                      options={deductibles.map(deductible => ({
+                        value: deductible,
+                        label: numberToDigitWord(deductible)
+                          .replace("₹", "")
+                          .replace("Lakh", "L"),
+                      }))}
+                      value={{
+                        value: selectedDeductible,
+                        label: numberToDigitWord(selectedDeductible)
+                          .replace("₹", "")
+                          .replace("Lakh", "L"),
+                      }}
+                      onChange={handleDeductibleChange}
+                    />
+                  ) : (
+                    <div
+                      css={`
+                        font-weight: bold;
+                        font-size: 13px;
+                        display: flex;
+                        gap: 7px;
+                      `}
+                    >
+                      {numberToDigitWord(selectedSumInsured)
                         .replace("₹", "")
-                        .replace("Lakh", "L"),
-                    }))}
-                    value={{
-                      value: selectedDeductible,
-                      label: numberToDigitWord(selectedDeductible)
-                        .replace("₹", "")
-                        .replace("Lakh", "L"),
-                    }}
-                    onChange={handleDeductibleChange}
-                  />
+                        .replace("Lakh", "L")}
+                    </div>
+                  )}
                 </QuoteCardOption>
-                {sumInsureds?.length > 1 ? (
-                  <QuoteCardOption info label={"Cover:"}>
+                <QuoteCardOption info label={"Cover:"}>
+                  {sumInsureds?.length > 1 ? (
                     <QuoteCardSelect
                       options={sumInsureds.map(sumInsured => ({
                         value: sumInsured,
@@ -531,24 +546,21 @@ function QuoteCard({
                       }}
                       onChange={handleSumInsuredChange}
                     />
-                  </QuoteCardOption>
-                ) : (
-                  <div
-                    css={`
-                      font-weight: bold;
-                      font-size: 13px;
-                      display: flex;
-                      gap: 7px;
-                    `}
-                  >
-                    <span>Cover:</span>
-                    <span>
+                  ) : (
+                    <div
+                      css={`
+                        font-weight: bold;
+                        font-size: 13px;
+                        display: flex;
+                        gap: 7px;
+                      `}
+                    >
                       {numberToDigitWord(selectedSumInsured)
                         .replace("₹", "")
                         .replace("Lakh", "L")}
-                    </span>
-                  </div>
-                )}
+                    </div>
+                  )}
+                </QuoteCardOption>
               </div>
             )}
             {!isDeductibleJourney && (

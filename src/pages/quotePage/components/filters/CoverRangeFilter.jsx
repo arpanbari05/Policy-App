@@ -13,7 +13,7 @@ import { isSSOJourney, ClickSound } from "../../../../utils/helper";
 import { IoRadioButtonOn } from "react-icons/io5";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 
-function validateCustomCover(customCover) {
+export function validateCustomCover(customCover) {
   if (customCover < 200000) {
     return "Minimum should be 2 lac";
   } else if (customCover > 20000000) {
@@ -117,6 +117,11 @@ function CoverFilterModal({ onClose, ...props }) {
     covers = covers.slice(0, 2);
   }
 
+  const showCustomCover = !(
+    localStorage.getItem("SSO_user") &&
+    restrict_posp_quotes_after_limit === `${1}`
+  );
+
   return (
     <CustomModal1
       header="Choose Your Cover Range"
@@ -146,27 +151,32 @@ function CoverFilterModal({ onClose, ...props }) {
               key={cover.code}
             />
           ))}
-          <div
-            style={{
-              fontWeight: "600",
-            }}
-            className="text-center w-100"
-          >
-            OR
-          </div>
 
-          <CustomInputWrapper>
-            <input
-              type="number"
-              placeholder="Enter your own cover."
-              className="w-100"
-              value={customCover}
-              onChange={handleCustomCoverChange}
-            />
-            {customCoverError ? (
-              <div className="bottom_msg">{customCoverError}</div>
-            ) : null}
-          </CustomInputWrapper>
+          {showCustomCover && (
+            <>
+              <div
+                style={{
+                  fontWeight: "600",
+                }}
+                className="text-center w-100"
+              >
+                OR
+              </div>
+
+              <CustomInputWrapper>
+                <input
+                  type="number"
+                  placeholder="Enter your own cover."
+                  className="w-100"
+                  value={customCover}
+                  onChange={handleCustomCoverChange}
+                />
+                {customCoverError ? (
+                  <div className="bottom_msg">{customCoverError}</div>
+                ) : null}
+              </CustomInputWrapper>
+            </>
+          )}
         </OptionWrapper>
       </div>
     </CustomModal1>
@@ -233,7 +243,7 @@ const CoverRangeFilter = () => {
 
 export default CoverRangeFilter;
 
-const CustomInputWrapper = styled.div`
+export const CustomInputWrapper = styled.div`
   width: 100%;
   .bottom_msg {
     background-color: #d5ddea;

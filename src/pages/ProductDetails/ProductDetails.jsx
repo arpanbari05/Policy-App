@@ -13,7 +13,6 @@ import ProductDetailsNavbar from "./components/ProductDetailsNavbar";
 import { mobile } from "../../utils/mediaQueries";
 import "styled-components/macro";
 import { BackButtonMobile, Page } from "../../components";
-import ErrorPopup from "../ProposalPage/ProposalSections/components/ErrorPopup";
 import PageNotFound from "../PageNotFound";
 import {
   useCart,
@@ -39,16 +38,6 @@ const ProductDetails = () => {
 
   const expand = useSelector(({ productPage }) => productPage.expandMobile);
 
-  const { pos_popup } = useSelector(({ quotePage }) => quotePage);
-
-  const {
-    data: {
-      settings: { pos_nonpos_switch_message, restrict_posp_quotes_after_limit },
-    },
-  } = useFrontendBoot();
-
-  const { colors } = useTheme();
-
   const history = useHistory();
 
   const urlQueries = useUrlQuery();
@@ -61,25 +50,11 @@ const ProductDetails = () => {
 
   const [showNav, setShowNav] = useState(false);
 
-  const dispatch = useDispatch();
-
-  const { getCartEntry, updateCartEntry } = useCart();
+  const { getCartEntry } = useCart();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
 
-  const { sum_insured, available_sum_insureds, group } = cartEntry;
-
-  const handleChange = option => {
-    if (isSSOJourney() && pos_nonpos_switch_message && option.value > 500000)
-      dispatch(setPosPopup(true));
-    updateCartEntry(group?.id, { sum_insured: option?.value });
-  };
-
-  let sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
-
-  if (isSSOJourney() && restrict_posp_quotes_after_limit === `${1}`) {
-    sumInsuredOptions = sumInsuredOptions.filter(si => si.value <= 500000);
-  }
+  const { sum_insured } = cartEntry;
 
   useUSGIDiscounts(); //! to get the discounts logic of usgi.
 
@@ -135,13 +110,6 @@ const ProductDetails = () => {
         />
       }
     >
-      {pos_popup && (
-        <ErrorPopup
-          handleClose={() => dispatch(setPosPopup(false))}
-          htmlProps={pos_nonpos_switch_message}
-        />
-      )}
-
       <main
         className="container noselect"
         css={
@@ -242,15 +210,7 @@ const ProductDetails = () => {
               }
             `}
           >
-            <CartDetails
-              defaultValue={{
-                value: sum_insured,
-                label: numberToDigitWord(sum_insured),
-              }}
-              options={sumInsuredOptions}
-              onChange={handleChange}
-              groupCode={parseInt(groupCode)}
-            />
+            <CartDetails groupCode={parseInt(groupCode)} />
           </div>
           <div
             css={`

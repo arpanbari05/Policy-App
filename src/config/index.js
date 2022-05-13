@@ -240,12 +240,12 @@ const config = {
       ],
     },
   ],
-  baseplantypes: [
-    { code: "arogya_sanjeevani", display_name: "Arogya Sanjeevani" },
-    { code: "global_plans", display_name: "Global Plans" },
-    { code: "base_health", display_name: "Base health" },
-    { code: "1_crore_plan", display_name: "1 crore plan" },
-  ],
+  // baseplantypes: [
+  //   { code: "arogya_sanjeevani", display_name: "Arogya Sanjeevani" },
+  //   { code: "global_plans", display_name: "Global Plans" },
+  //   { code: "base_health", display_name: "Base health" },
+  //   { code: "1_crore_plan", display_name: "1 crore plan" },
+  // ],
   // defaultfilters: { cover: "300001-500000", tenure: "1", plan_type: "F" },
   // settings: {
   //   journey_type: "cross_sell",

@@ -34,6 +34,7 @@ const proposal = createSlice({
     medicalUrlsRuleEngine: false,
     failedBmiBlockJourney: false,
     underWritingStatus: [],
+    muApplicationResult: "",
     showErrorPopup: {
       show: false,
       head: "",
@@ -128,6 +129,9 @@ const proposal = createSlice({
     setUnderWritingStatus: (state, { payload }) => {
       state.underWritingStatus = payload;
     },
+    setMuApplicationResult: (state, { payload }) => {
+      state.muApplicationResult = payload;
+    },
   },
 });
 export const {
@@ -156,6 +160,7 @@ export const {
   setUnderWritingStatus,
   setMdicalUnderwritingLetters,
   setMedicalUrlsRuleEngine,
+  setMuApplicationResult
 } = proposal.actions;
 const ls = new SecureLS();
 

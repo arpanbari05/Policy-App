@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Page } from "../../components";
 import {
   useCompareSlot,
@@ -19,8 +19,12 @@ import { CompareQuotesTray } from "../quotePage/components/Quotes";
 import { CompareTray } from "../quotePage/mobile/components/Quotes";
 import GroupLinks from "./components/groupLinks/groupLinks";
 import { api } from "../../api/api";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "styled-components/macro";
+import {
+  replaceShareQuotes,
+  setShareType,
+} from "../../pages/quotePage/quote.slice";
 
 function ShortlistedQuotes() {
   const { getPlanByGroup } = useShortlistedPlans();
@@ -38,6 +42,22 @@ function ShortlistedQuotes() {
   const history = useHistory();
 
   const { tenantAlias } = useFrontendBoot();
+
+  const { shareType } = useSelector(({ quotePage }) => quotePage);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setShareType({}));
+    };
+  }, []);
+
+  useEffect(() => {
+    if (shareType.value === "quotation_list") {
+      dispatch(replaceShareQuotes(shortlistedQuotes.map(sq => [sq])));
+    } else if (shareType.value === "specific_quotes") {
+      dispatch(replaceShareQuotes([]));
+    }
+  }, [shareType]);
 
   // transforming quotes data
   const quotes = shortlistedQuotes.map(quote => ({
