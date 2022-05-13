@@ -39,7 +39,6 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
   const currentGroup = getGroup(groupCode);
   const groups = allGroups.filter(group => group.type === currentGroup.type);
   const groupWithoutLocation = groups.find(group => !group.pincode);
-  console.log(groupWithoutLocation);
   const [currentGroupCode, setCurrentGroupCode] = useState(
     currentGroup?.type === "all"
       ? groups[0].id

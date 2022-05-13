@@ -221,8 +221,6 @@ function QuoteCard({
 
   const { getCompany } = useCompanies();
 
-  console.log({ shortlistedQuotes });
-
   useEffect(() => {
     if (!quote) {
       setSelectedSumInsured(parseInt(sumInsureds[0]));
@@ -345,7 +343,7 @@ function QuoteCard({
             right: 10px;
             cursor: pointer;
           `}
-          htmlFor={`${quote?.company_alias}_shortlisted`}
+          // htmlFor={`${quote?.company_alias}_shortlisted`}
         >
           <input
             className="visually-hidden"
@@ -353,7 +351,7 @@ function QuoteCard({
             type="checkbox"
             onChange={handleShortListedQuotes}
             id={`${quote?.company_alias}_shortlisted`}
-            name={`${quote?.company_alias}_shortlisted`}
+            // name={`${quote?.company_alias}_shortlisted`}
           />
           {isShortlisted ? (
             <FaBookmark size={19} color={colors.primary_color} />
