@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { RidersSection } from "./components/CustomizeYourPlan";
 import CheckDiscount from "./components/CheckDiscount";
 import { CartDetails } from "./components/ReviewCart";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import ProductCard from "./components/AddOnProductCard";
 import useUrlQuery from "../../customHooks/useUrlQuery";
@@ -29,9 +29,9 @@ import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 import Benefit from "./components/Benefit";
 import GoBackButton from "../../components/GoBackButton";
 import { useGetEnquiriesQuery, useUpdateEnquiryMutation } from "../../api/api";
-import { useDispatch } from "react-redux";
 import { setPosPopup } from "../quotePage/quote.slice";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
+import ErrorPopup from "../ProposalPage/ProposalSections/components/ErrorPopup";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
@@ -55,6 +55,15 @@ const ProductDetails = () => {
   const cartEntry = getCartEntry(parseInt(groupCode));
 
   const { sum_insured } = cartEntry;
+
+  const { pos_popup } = useSelector(({ quotePage }) => quotePage);
+
+  const dispatch = useDispatch();
+  const {
+    data: {
+      settings: { pos_nonpos_switch_message },
+    },
+  } = useFrontendBoot();
 
   useUSGIDiscounts(); //! to get the discounts logic of usgi.
 
@@ -103,22 +112,29 @@ const ProductDetails = () => {
   }
 
   return (
-    <Page
-      backButton={
-        <BackButtonMobile
-          path={`/quotes/${groupCode}?enquiryId=${enquiryId}`}
+    <>
+      {pos_popup && (
+        <ErrorPopup
+          handleClose={() => dispatch(setPosPopup(false))}
+          htmlProps={pos_nonpos_switch_message}
         />
-      }
-    >
-      <main
-        className="container noselect"
-        css={
-          expand
-            ? `
+      )}
+      <Page
+        backButton={
+          <BackButtonMobile
+            path={`/quotes/${groupCode}?enquiryId=${enquiryId}`}
+          />
+        }
+      >
+        <main
+          className="container noselect"
+          css={
+            expand
+              ? `
         position:fixed;
         opacity:0.5;
         `
-            : `
+              : `
 
 
           @media (min-width : 1200px){
@@ -128,145 +144,150 @@ const ProductDetails = () => {
             background-color: #fff;
           }
         `
-        }
-      >
-        {showNav && <ProductDetailsNavbar />}
-        <div
-          className="d-flex align-items-center justify-content-between my-3"
-          css={`
-            @media (max-width: 1200px) {
-              flex-direction: column;
-              align-items: flex-start !important;
-            }
-          `}
+          }
         >
-          {subJourneyType !== "renewal" && (
-            <div
-              css={`
-                @media (max-width: 1200px) {
-                  width: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                }
-                ${mobile} {
-                  display: none;
-                }
-              `}
-            >
-              <GoBackButton
-                backPath={`/quotes/${groupCode}?enquiryId=${enquiryId}`}
-                shouldFollowPath
-              />
-            </div>
-          )}
-
-          {subJourneyType === "renewal" && (
-            <div
-              css={`
-                margin-right: 10px;
-              `}
-            >
-              <ShareQuoteModal
-                insurersFor={[cartEntry?.product?.company?.alias]}
-                stage="RENEWAL_PRODUCT_DETAILS"
-                sum_insured={sum_insured}
-              />
-            </div>
-          )}
+          {showNav && <ProductDetailsNavbar />}
           <div
+            className="d-flex align-items-center justify-content-between my-3"
             css={`
-              width: 70%;
               @media (max-width: 1200px) {
-                width: 100%;
-              }
-            `}
-            className="flex-fill"
-          >
-            <ProductCard />
-          </div>
-        </div>
-        <Row
-          className="pb-3"
-          css={`
-            justify-content: center;
-            @media (max-width: 1200px) {
-              flex-direction: column;
-            }
-          `}
-        >
-          <div
-            css={`
-              width: 26%;
-              @media (max-width: 1350px) {
-                width: 30%;
-              }
-              @media (max-width: 1200px) {
-                width: 100%;
-              }
-              ${mobile} {
-                display: none;
+                flex-direction: column;
+                align-items: flex-start !important;
               }
             `}
           >
-            <CartDetails groupCode={parseInt(groupCode)} />
-          </div>
-          <div
-            css={`
-              width: 74%;
-              @media (max-width: 1350px) {
-                width: 70%;
-              }
-              @media (max-width: 1200px) {
-                width: 100%;
-              }
-            `}
-          >
-            <Col
-              xl={12}
-              lg={12}
-              md={12}
-              sm={12}
-              xs={12}
-              css={`
-                @media (max-width: 1200px) {
-                  margin-top: 15px;
-                }
-                ${mobile} {
-                  padding: 0;
-                  margin-bottom: 127px;
-                }
-              `}
-            >
-              {subJourneyType === "renewal" && (
-                <SumInsuredSection cartEntry={cartEntry} />
-              )}
+            {subJourneyType !== "renewal" && (
               <div
                 css={`
-                  display: none;
-                  @media (max-width: 768px) {
-                    display: block;
+                  @media (max-width: 1200px) {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                  ${mobile} {
+                    display: none;
                   }
                 `}
               >
-                <SumInsuredOptionsSection cartEntry={cartEntry} />
+                <GoBackButton
+                  backPath={`/quotes/${groupCode}?enquiryId=${enquiryId}`}
+                  shouldFollowPath
+                />
               </div>
+            )}
 
-              <CheckDiscount
-                groupCode={parseInt(groupCode)}
-                cartEntry={cartEntry}
-              />
-              <Benefit cartEntry={cartEntry} groupCode={parseInt(groupCode)} />
-              <RidersSection isProductDetailsPage={true} />
-              {+settings?.addons_visibilty === 1 && journeyType === "health" ? (
-                <AddOnSection cartEntry={cartEntry} />
-              ) : null}
-            </Col>
+            {subJourneyType === "renewal" && (
+              <div
+                css={`
+                  margin-right: 10px;
+                `}
+              >
+                <ShareQuoteModal
+                  insurersFor={[cartEntry?.product?.company?.alias]}
+                  stage="RENEWAL_PRODUCT_DETAILS"
+                  sum_insured={sum_insured}
+                />
+              </div>
+            )}
+            <div
+              css={`
+                width: 70%;
+                @media (max-width: 1200px) {
+                  width: 100%;
+                }
+              `}
+              className="flex-fill"
+            >
+              <ProductCard />
+            </div>
           </div>
-        </Row>
-      </main>
-      <CartMobile groupCode={parseInt(groupCode)} />
-    </Page>
+          <Row
+            className="pb-3"
+            css={`
+              justify-content: center;
+              @media (max-width: 1200px) {
+                flex-direction: column;
+              }
+            `}
+          >
+            <div
+              css={`
+                width: 26%;
+                @media (max-width: 1350px) {
+                  width: 30%;
+                }
+                @media (max-width: 1200px) {
+                  width: 100%;
+                }
+                ${mobile} {
+                  display: none;
+                }
+              `}
+            >
+              <CartDetails groupCode={parseInt(groupCode)} />
+            </div>
+            <div
+              css={`
+                width: 74%;
+                @media (max-width: 1350px) {
+                  width: 70%;
+                }
+                @media (max-width: 1200px) {
+                  width: 100%;
+                }
+              `}
+            >
+              <Col
+                xl={12}
+                lg={12}
+                md={12}
+                sm={12}
+                xs={12}
+                css={`
+                  @media (max-width: 1200px) {
+                    margin-top: 15px;
+                  }
+                  ${mobile} {
+                    padding: 0;
+                    margin-bottom: 127px;
+                  }
+                `}
+              >
+                {subJourneyType === "renewal" && (
+                  <SumInsuredSection cartEntry={cartEntry} />
+                )}
+                <div
+                  css={`
+                    display: none;
+                    @media (max-width: 768px) {
+                      display: block;
+                    }
+                  `}
+                >
+                  <SumInsuredOptionsSection cartEntry={cartEntry} />
+                </div>
+
+                <CheckDiscount
+                  groupCode={parseInt(groupCode)}
+                  cartEntry={cartEntry}
+                />
+                <Benefit
+                  cartEntry={cartEntry}
+                  groupCode={parseInt(groupCode)}
+                />
+                <RidersSection isProductDetailsPage={true} />
+                {+settings?.addons_visibilty === 1 &&
+                journeyType === "health" ? (
+                  <AddOnSection cartEntry={cartEntry} />
+                ) : null}
+              </Col>
+            </div>
+          </Row>
+        </main>
+        <CartMobile groupCode={parseInt(groupCode)} />
+      </Page>
+    </>
   );
 };
 
@@ -278,13 +299,13 @@ function getSumInsuredOptions(arr = []) {
 
 function SumInsuredOptionsSection({ cartEntry }) {
   const { updateCartEntry } = useCart();
-  
+
   const {
     data: {
       settings: { pos_nonpos_switch_message, restrict_posp_quotes_after_limit },
     },
   } = useFrontendBoot();
-  
+
   const dispatch = useDispatch();
 
   const { available_sum_insureds, group, sum_insured } = cartEntry;

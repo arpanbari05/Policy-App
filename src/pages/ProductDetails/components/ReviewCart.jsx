@@ -17,6 +17,7 @@ import {
   getTotalPremiumWithDiscount,
   isSSOJourney,
   numberToDigitWord,
+  featureOptionsValidValue,
 } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
@@ -879,8 +880,6 @@ function BasePlanDetails({
   revisedPremium = false,
   ...props
 }) {
-  const { pos_popup } = useSelector(({ quotePage }) => quotePage);
-
   const { getCartEntry, updateCartEntry } = useCart();
 
   const {
@@ -951,12 +950,6 @@ function BasePlanDetails({
 
   return (
     <>
-      {pos_popup && (
-        <ErrorPopup
-          handleClose={() => dispatch(setPosPopup(false))}
-          htmlProps={pos_nonpos_switch_message}
-        />
-      )}
       <div
         className="d-flex justify-content-between flex-column mb-2"
         {...props}
@@ -1133,7 +1126,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
       totalDiscountAmount: getTotalDiscountAmount(),
     });
 
-    const featureOptions = JSON.parse(cartEntry?.feature_options);
+    const featureOptions = featureOptionsValidValue(cartEntry?.feature_options);
 
     updateCartMutation({
       discounted_total_premium,

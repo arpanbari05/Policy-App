@@ -1,8 +1,8 @@
 import React from "react";
 import { OptionCard, WrapWithTitle } from ".";
 import { CircleLoader } from "../../../components";
-import { useCart, useGetQuote } from "../../../customHooks";
-import { amount, matchQuotes, numberToDigitWord } from "../../../utils/helper";
+import { useCart } from "../../../customHooks";
+import { amount, numberToDigitWord } from "../../../utils/helper";
 import { mobile } from "../../../utils/mediaQueries";
 import FeatureSection from "./FeatureSection/FeatureSection";
 import "styled-components/macro";

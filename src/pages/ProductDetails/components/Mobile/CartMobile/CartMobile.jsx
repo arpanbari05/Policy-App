@@ -73,7 +73,7 @@ const CartMobile = ({ groupCode, ...props }) => {
 
   const { getNextGroupProduct } = useCart();
 
-  const { journeyType, subJourneyType } = useFrontendBoot();
+  const { subJourneyType } = useFrontendBoot();
 
   const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
@@ -88,7 +88,7 @@ const CartMobile = ({ groupCode, ...props }) => {
     additionalDiscounts,
   });
 
-  const { addons, netPremiumWithoutDiscount } = cartEntry;
+  const { netPremiumWithoutDiscount } = cartEntry;
 
   const total_premium = getTotalPremiumWithDiscount({
     netPremiumWithoutDiscount,
@@ -315,6 +315,7 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
 }
 
 const QuickPayAndRenewButtonMobile = ({ groupCode }) => {
+  
   const { getTotalDiscountAmount, query: additionalDiscountsQuery } =
     useAdditionalDiscount(groupCode);
 

@@ -134,7 +134,6 @@ function TenureDiscount({ discount, checked = false, onChange, ...props }) {
           padding-bottom: 0.7rem;
           text-align: center;
           position: relative;
-          z-index : -1;
           width: 200px;
           border: 2px solid;
           border-color: ${checked ? colors.primary_color : "#e5e5e5"};
