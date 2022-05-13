@@ -385,7 +385,7 @@ const InsuredDetails = ({
         <ContinueBtn
           onClick={() => {
             setInitColor("#c7222a");
-            if(name === "Medical Details"){
+            if(name === "Medical Details"&& Object.keys(schema).some(group => isVersionRuleEngine(parseInt(group)))){
               checkCanProceed();
               console.log("dbjfbjfd",)
               dispatch(getMedicalUnderwritingStatus());
