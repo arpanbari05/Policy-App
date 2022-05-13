@@ -716,6 +716,7 @@ export function useUpdateMembers() {
         ? members.map(member => ({
             type: member.code,
             age: member.age.code,
+            new_member: member.new_member,
           }))
         : enquiryData.input.members,
       plan_type:

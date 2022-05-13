@@ -11,6 +11,9 @@ import { Filter, FilterHead } from "./index.js";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 import { IoRadioButtonOn } from "react-icons/io5";
 import { ClickSound } from "../../../../utils/helper.js";
+import { PortDatePicker } from "../../../InputPage/components/PortabilityForm";
+import { useUpdateEnquiry } from "../../../../customHooks";
+import { CircleLoader } from "../../../../components/index.js";
 
 const DESCRIPTIONS = {
   arogya_sanjeevani:
@@ -47,9 +50,17 @@ function FilterModal({ onClose, ...props }) {
   const { journeyType } = useFrontendBoot();
   const { colors } = useTheme();
 
+  const { updateEnquiry } = useUpdateEnquiry();
+
   const {
     data: { baseplantypes },
   } = useFrontendBoot();
+
+  const [isLoading, setLoading] = useState(false);
+
+  const [expiryDate, setExpiryDate] = useState(null);
+
+  const [expiryDateError, setExpiryError] = useState(null);
 
   const renderPlanTypes =
     journeyType === "top_up"
@@ -74,7 +85,7 @@ function FilterModal({ onClose, ...props }) {
 
   const { updateFilters } = useUpdateFilters();
 
-  const handleApplyClick = () => {
+  const handleApplyClick = async () => {
     const updatedBasePlanTypeFilter = { baseplantype: selectedPlanType };
 
     if (selectedPlanType.code === "1_crore_plan") {
@@ -84,10 +95,23 @@ function FilterModal({ onClose, ...props }) {
       };
     }
 
-    console.log(updatedBasePlanTypeFilter);
-    updateFilters(updatedBasePlanTypeFilter);
+    let expiry_date = new Date(expiryDate).toLocaleDateString();
+    expiry_date = expiry_date.split("/").reverse().join("-");
 
-    onClose && onClose();
+    if (selectedPlanType.code === "port_plan") {
+      setLoading(true);
+      await Promise.all([
+        updateEnquiry({ expiry_date }),
+        updateFilters(updatedBasePlanTypeFilter),
+      ]);
+      // updateFilters(updatedBasePlanTypeFilter);
+      // const res = await updateEnquiry({ expiry_date });
+      // setLoading(false);
+      onClose && onClose();
+    } else {
+      updateFilters(updatedBasePlanTypeFilter);
+      onClose && onClose();
+    }
   };
 
   return (
@@ -97,11 +121,21 @@ function FilterModal({ onClose, ...props }) {
         <ApplyBtn
           css={`
             background-color: ${colors.primary_color};
+
+            &:disabled {
+              background: ${colors.secondary_shade};
+              color: #444;
+            }
           `}
           className="apply_btn mx-auto h-100 w-100"
           onClick={handleApplyClick}
+          disabled={
+            (!expiryDate || expiryDateError) &&
+            selectedPlanType.code === "port_plan"
+          }
         >
-          Apply
+          {"Apply"}
+          {isLoading && <CircleLoader animation="border" />}
         </ApplyBtn>
       }
       handleClose={() => onClose && onClose()}
@@ -118,6 +152,9 @@ function FilterModal({ onClose, ...props }) {
                 checked={isSelected(baseplantype)}
                 onChange={handleChange}
                 key={baseplantype.code}
+                expiryDate={expiryDate}
+                setExpiryDate={setExpiryDate}
+                setExpiryError={setExpiryError}
               />
             );
           })}
@@ -127,7 +164,15 @@ function FilterModal({ onClose, ...props }) {
   );
 }
 
-function PlanType({ baseplantype, checked = false, onChange, ...props }) {
+function PlanType({
+  baseplantype,
+  checked = false,
+  onChange,
+  expiryDate,
+  setExpiryDate = () => {},
+  setExpiryError = () => {},
+  ...props
+}) {
   const target = useRef(null);
   const handleChange = evt => {
     if (evt.target.checked) onChange && onChange(baseplantype, checked);
@@ -139,7 +184,7 @@ function PlanType({ baseplantype, checked = false, onChange, ...props }) {
       css={`
         margin: 5px 0;
       `}
-      className="option d-flex align-items-center justify-content-between"
+      className="option d-flex align-items-center justify-content-between flex-wrap"
       {...props}
       onClick={() => {
         target.current.click();
@@ -172,6 +217,20 @@ function PlanType({ baseplantype, checked = false, onChange, ...props }) {
         onChange={handleChange}
         ref={target}
       />
+      {baseplantype.code === "port_plan" && checked && (
+        <div
+          css={`
+            min-width: 100%;
+            margin-top: 20px;
+          `}
+        >
+          <PortDatePicker
+            value={expiryDate}
+            setError={setExpiryError}
+            setValue={setExpiryDate}
+          />
+        </div>
+      )}
     </li>
   );
 }

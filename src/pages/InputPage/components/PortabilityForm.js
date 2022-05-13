@@ -57,7 +57,8 @@ function PortabilityForm() {
     <ThemeProvider theme={theme}>
       <div className="p-3">
         <Title className="mb-4">Do you wish to port existing policy?</Title>
-        <LocalizationProvider locale={enIDLocale} dateAdapter={AdapterDateFns}>
+        <PortDatePicker value={value} setValue={setValue} setError={setError} />
+        {/* <LocalizationProvider locale={enIDLocale} dateAdapter={AdapterDateFns}>
           <DatePicker
             label="Choose date"
             mask="__/__/____"
@@ -93,7 +94,7 @@ function PortabilityForm() {
               );
             }}
           />
-        </LocalizationProvider>
+        </LocalizationProvider> */}
         <div className="mt-4">
           <div
             className="d-flex justify-content-between align-items-center"
@@ -168,3 +169,50 @@ function PortabilityForm() {
 }
 
 export default PortabilityForm;
+
+export function PortDatePicker({value, setValue = () => {}, setError = () => {}}) {
+  const minDate = new Date(Date.now());
+  minDate.setDate(minDate.getDate() - 6); // - 6 days
+  const maxDate = new Date(Date.now());
+  maxDate.setDate(maxDate.getDate() + 60); // + 60 days
+
+  return (
+    <LocalizationProvider locale={enIDLocale} dateAdapter={AdapterDateFns}>
+      <DatePicker
+        label="Choose date"
+        mask="__/__/____"
+        value={value}
+        ampm={false}
+        maxDate={
+          new Date(
+            `${maxDate.getFullYear()}-${
+              maxDate.getMonth() + 1
+            }-${maxDate.getDate()}`,
+          )
+        }
+        minDate={
+          new Date(
+            `${minDate.getFullYear()}-${
+              minDate.getMonth() + 1
+            }-${minDate.getDate()}`,
+          )
+        }
+        onChange={newValue => {
+          setValue(newValue);
+        }}
+        renderInput={params => {
+          setError(params.error);
+          return (
+            <TextField
+              autoComplete="off"
+              color="primary"
+              fullWidth
+              helperText={params.error && "Please provide a valid date"}
+              {...params}
+            />
+          );
+        }}
+      />
+    </LocalizationProvider>
+  );
+}

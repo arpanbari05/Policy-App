@@ -7,7 +7,7 @@ const dontCheckPoliciesUrl = [
   "/",
   "/input/basic-details",
   "/thankyou",
-  "input/portability",
+  "/input/portability",
 ];
 
 export default function CheckPolicies({ children, ...props }) {
