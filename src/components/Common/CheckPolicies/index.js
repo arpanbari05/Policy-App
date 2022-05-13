@@ -3,7 +3,12 @@ import useUrlQuery from "../../../customHooks/useUrlQuery";
 import { useGetPoliciesQuery } from "../../../api/api";
 import { FullScreenLoader, FullScreenLoaderSkeleton } from "../../index";
 
-const dontCheckPoliciesUrl = ["/", "/input/basic-details", "/thankyou"];
+const dontCheckPoliciesUrl = [
+  "/",
+  "/input/basic-details",
+  "/thankyou",
+  "input/portability",
+];
 
 export default function CheckPolicies({ children, ...props }) {
   const { pathname } = useLocation();

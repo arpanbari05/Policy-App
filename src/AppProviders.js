@@ -32,7 +32,12 @@ function AppProviders({ children }) {
 }
 
 export default AppProviders;
-const dontCheckPoliciesUrl = ["/", "/input/basic-details", "/thankyou"];
+const dontCheckPoliciesUrl = [
+  "/",
+  "/input/basic-details",
+  "/thankyou",
+  "/input/portability",
+];
 function AppLoaders({ children, ...props }) {
   const isRootRoute = useRouteMatch({ path: "/", exact: true });
   const searchQueries = useUrlQueries();
@@ -42,6 +47,10 @@ function AppLoaders({ children, ...props }) {
 
   const isBasicDetailsRoute = useRouteMatch({
     path: "/input/basic-details",
+    exact: true,
+  });
+  const isPortabilityRoute = useRouteMatch({
+    path: "/input/portability",
     exact: true,
   });
   const isRenewalDetailsRoute = useRouteMatch({
@@ -131,6 +140,7 @@ function AppLoaders({ children, ...props }) {
       isBasicDetailsRoute,
       isRenewalDetailsRoute,
       isChooseYourJourneyPage,
+      isPortabilityRoute,
     ])
   )
     return children;

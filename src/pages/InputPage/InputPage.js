@@ -15,12 +15,12 @@ import RenewalDetailsForm from "./components/RenewalDetailsForm";
 import "styled-components/macro";
 import { Spinner } from "react-bootstrap";
 import MedicalHistoryForm from "./components/MedicalHistoryForm";
+import PortabilityForm from "./components/PortabilityForm";
 import JourneyTypeForm from "./components/JourneyTypeForm";
 import { renderDisclaimer } from "../../utils/helper";
 import { usePos } from "../../customHooks/usePos";
 import { usePosPinc } from "../../customHooks/usePosPinc";
 import Footer from "../../components/Common/Footer/SriyahFooter";
-import PortabilityForm from "./components/PortabilityForm";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -125,6 +125,7 @@ const InputPage = () => {
               >
                 {currentForm === "basic-details" && (
                   <BasicDetailsForm posContent={posContent} />
+                  // <PortabilityForm />
                 )}
 
                 {currentForm === "members" && (

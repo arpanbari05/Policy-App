@@ -680,6 +680,7 @@ export function useUpdateEnquiry() {
 
   return {
     ...queryState,
+    error: queryState.error,
     updateEnquiry,
     isLoading: queryState.isLoading || updateGroupsQueryState.isLoading,
   };
