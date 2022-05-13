@@ -70,7 +70,6 @@ const FeatureSectionHeading = styled("p")`
   /* margin-left:20px !important; */
   align-items: center;
   position: relative;
-  z-index: -1;
   /* @media (max-width: 767px) {
     display: none;
   } */
@@ -82,8 +81,6 @@ const FeatureSectionHeading = styled("p")`
       top: -7px;
       margin-right: 10px;
       position: relative;
-      z-index: -1;
-
       background-color: ${({ secondary_color }) => secondary_color};
       border-radius: 0 15px 15px 0;
     }

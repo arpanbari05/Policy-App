@@ -879,8 +879,6 @@ function BasePlanDetails({
   revisedPremium = false,
   ...props
 }) {
-  const { pos_popup } = useSelector(({ quotePage }) => quotePage);
-
   const { getCartEntry, updateCartEntry } = useCart();
 
   const {
@@ -951,12 +949,6 @@ function BasePlanDetails({
 
   return (
     <>
-      {pos_popup && (
-        <ErrorPopup
-          handleClose={() => dispatch(setPosPopup(false))}
-          htmlProps={pos_nonpos_switch_message}
-        />
-      )}
       <div
         className="d-flex justify-content-between flex-column mb-2"
         {...props}
