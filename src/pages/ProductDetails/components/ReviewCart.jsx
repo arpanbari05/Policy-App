@@ -1115,9 +1115,19 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const enquiryId = urlQueryStrings.get("enquiryId");
 
-  const currentGroup =
-    localStorage.getItem("groups") &&
-    JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
+  const { ...frontendBoot } = useFrontendBoot();
+
+  const { tenant } = frontendBoot?.data;
+
+  let currentGroup = {};
+  try {
+    console.log("The parsable groups string", localStorage.getItem("groups"));
+    currentGroup =
+      localStorage.getItem("groups") &&
+      JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
+  } catch (err) {
+    tenant?.alias === "spa" && alert(`=> ${err}`);
+  }
 
   const handleClick = () => {
     const discounted_total_premium = getTotalPremiumWithDiscount({
