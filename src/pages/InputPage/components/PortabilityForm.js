@@ -26,9 +26,7 @@ function PortabilityForm() {
       fontFamily: "Inter-regular",
     },
   });
-
   console.log(new Date(value).toLocaleDateString());
-
   return (
     <ThemeProvider theme={theme}>
       <Card>

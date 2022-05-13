@@ -20,6 +20,7 @@ import { renderDisclaimer } from "../../utils/helper";
 import { usePos } from "../../customHooks/usePos";
 import { usePosPinc } from "../../customHooks/usePosPinc";
 import Footer from "../../components/Common/Footer/SriyahFooter";
+import PortabilityForm from "./components/PortabilityForm";
 
 const journeyTitle = {
   top_up: "TOP UP INSURANCE",
@@ -144,9 +145,13 @@ const InputPage = () => {
                 {currentForm === "medicalHistory" && (
                   <MedicalHistoryForm posContent={posContent} />
                 )}
+
+                {currentForm === "portability" && <PortabilityForm />}
+
                 {currentForm === "renewal-details" && (
                   <RenewalDetailsForm posContent={posContent} />
                 )}
+
                 {currentForm === "journey-type" && <JourneyTypeForm />}
               </div>
             </Card>

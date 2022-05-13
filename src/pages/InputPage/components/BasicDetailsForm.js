@@ -127,6 +127,16 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
               >
                 Renew policy
               </LinkButton>
+              <LinkButton
+                type="button"
+                onClick={() => {
+                  history.push({
+                    pathname: "/input/portability",
+                  });
+                }}
+              >
+                Port
+              </LinkButton>
             </FlexSectionStyled>
           ) : (
             <Title
