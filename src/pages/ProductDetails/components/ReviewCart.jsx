@@ -17,6 +17,7 @@ import {
   getTotalPremiumWithDiscount,
   isSSOJourney,
   numberToDigitWord,
+  featureOptionsValidValue,
 } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
@@ -1125,7 +1126,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
       totalDiscountAmount: getTotalDiscountAmount(),
     });
 
-    const featureOptions = JSON.parse(cartEntry?.feature_options);
+    const featureOptions = featureOptionsValidValue(cartEntry?.feature_options);
 
     updateCartMutation({
       discounted_total_premium,
