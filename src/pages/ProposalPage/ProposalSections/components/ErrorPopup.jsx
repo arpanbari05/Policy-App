@@ -1,34 +1,16 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setShowBMI } from "../ProposalSections.slice";
-import { setShowPlanNotAvail } from "../ProposalSections.slice";
-import { useHistory } from "react-router";
-import useUrlQuery from "../../../../customHooks/useUrlQuery";
+import { useSelector } from "react-redux";
 import { FaTimes } from "react-icons/fa";
-
-import {
-  ButtonWrapper,
-  CloseButton,
-  Popup,
-  PopupWrapper,
-  Container,
-  ViewQuotesWrapper,
-} from "./BMI";
+import { ButtonWrapper, Popup, PopupWrapper, Container } from "./BMI";
 import { ClickSound } from "../../../../utils/helper";
+import { useTheme } from "../../../../customHooks";
 
 const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
   const { showErrorPopup } = useSelector(({ proposalPage }) => proposalPage);
+  const { colors } = useTheme();
   return (
     <PopupWrapper>
       <Popup>
-        {/* <CloseButton
-            onClick={handleClose}
-          > */}
-        {/* <i
-          style={{ margin: "10px 10px 0 0", cursor: "pointer" }}
-          class="fas fa-times"
-          onClick={handleClose}
-        ></i> */}
         <FaTimes
           onClick={handleClose}
           style={{
@@ -37,7 +19,7 @@ const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
             fontWeight: "bold",
           }}
         ></FaTimes>
-        {/* </CloseButton> */}
+
         <Container>
           {head && <span>{head}</span>}
           {htmlProps && <div dangerouslySetInnerHTML={{ __html: htmlProps }} />}
@@ -47,6 +29,9 @@ const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
           <ButtonWrapper>
             <button
               className="btn"
+              css={`
+                background: ${`${colors?.primary_color} !important`};
+              `}
               onClick={() => {
                 ClickSound();
                 handleClose();
@@ -57,15 +42,6 @@ const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
               OK
             </button>
           </ButtonWrapper>
-          {/* <ViewQuotesWrapper>
-              <button
-                onClick={() => {
-                  history.push(`/quotes/${member}?enquiryId=${enquiryId}`);
-                }}
-              >
-                View Quotes {">"}
-              </button>
-            </ViewQuotesWrapper> */}
         </Container>
       </Popup>
     </PopupWrapper>
@@ -73,18 +49,3 @@ const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
 };
 
 export default ErrorPopup;
-
-// const PlanUnavailable = () => {
-//   const { showPlanNotAvail } = useSelector(state => state.proposalPage);
-//   const history = useHistory();
-//   const urlQuery = useUrlQuery();
-//   const enquiryId = urlQuery.get("enquiryId");
-//   const { memberGroups } = useSelector(state => state.greetingPage);
-//   const member = Object.keys(memberGroups)[0];
-//   const dispatch = useDispatch();
-//   if (!showPlanNotAvail) return <></>;
-//   if (showPlanNotAvail)
-
-// };
-
-// export default PlanUnavailable;
