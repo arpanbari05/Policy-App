@@ -17,6 +17,7 @@ import { figureToWords } from "../utils/helper";
 import {
   setQuotesToCanvas,
   setShowSharePopup,
+  setShareType,
 } from "../pages/quotePage/quote.slice";
 import Sharequotespopup from "../pages/quotePage/components/ShareQuotesPopUp";
 import { images } from "../assets/logos/logo";
@@ -179,6 +180,7 @@ const ShareQuoteModal = ({
   const handleClose = () => {
     setshow(false);
     setIsSending(false);
+    dispatch(setShareType({}));
     if (shareType.value === "specific_quotes")
       dispatch(setShowSharePopup(true));
   };
@@ -742,7 +744,7 @@ function ShareStep2({
         />
       </ShareOption>
 
-      {tenantAlias !== "sriyah" && (
+      {!["sriyah", "pinc"].includes(tenantAlias) && (
         <ShareOption
           className="d-flex mb-3 align-items-center justify-content-between w-100"
           primaryColor={PrimaryColor}
@@ -774,6 +776,42 @@ function ShareStep2({
           ) : (
             <ShareCTA />
           )}
+        </ShareOption>
+      )}
+
+      {["pinc"].includes(tenantAlias) && (
+        <ShareOption
+          className="d-flex mb-3 align-items-center justify-content-between w-100"
+          primaryColor={PrimaryColor}
+        >
+          <div className="d-flex align-items-center">
+            <div className="icon_wrapper">
+              <WhtsappIcon width="21" />
+            </div>
+            <input
+              type="number"
+              onChange={e => handleNumberCheck(e, setWtsappNo)}
+              placeholder="Mobile no."
+              value={wtsappNo}
+            />
+          </div>
+
+          <ShareCTA
+            disabled={disableWhatsapp}
+            loader={isSending === "WHATSAPP"}
+            onClick={e => {
+              handleShare(e, {
+                mode: ["WHATSAPP"],
+                stage,
+                purpose,
+                via: "whatsapp",
+                whatsapp: wtsappNo,
+                image_to_send: imageSend ? imageSend : undefined,
+                insurers,
+                sum_insured,
+              });
+            }}
+          />
         </ShareOption>
       )}
 
