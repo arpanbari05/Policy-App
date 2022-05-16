@@ -621,9 +621,22 @@ function ShareStep2({
   };
 
   const handleEmailCheck = e => {
-    if (e.target.value.length <= 50) {
+    if (
+      e.target.value.length <= 50 &&
+      checkAllChar(e.target.value, "~`!#$%^&*()_-+={[]}:;\"'<>,?/".split(""))
+    ) {
       setEmail(e.target.value);
     }
+  };
+
+  const checkAllChar = (value, checkValue) => {
+    let check = true;
+    for (let i of value) {
+      if (checkValue.includes(i)) {
+        check = false;
+      }
+    }
+    return check;
   };
 
   const disableButton = mode => {
