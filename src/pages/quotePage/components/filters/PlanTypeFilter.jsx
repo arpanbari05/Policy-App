@@ -101,7 +101,7 @@ function FilterModal({ onClose, ...props }) {
     if (selectedPlanType.code === "port_plan") {
       setLoading(true);
       await Promise.all([
-        updateEnquiry({ expiry_date }),
+        updateEnquiry({ expiry_date, type: "port" }),
         updateFilters(updatedBasePlanTypeFilter),
       ]);
       // updateFilters(updatedBasePlanTypeFilter);
