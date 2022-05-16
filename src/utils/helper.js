@@ -433,17 +433,20 @@ function getTotalDiscount(additionalDiscounts, product) {
 export function calculateTotalPremium(
   cartEntry,
   { additionalDiscounts = [] } = {},
+  journeyType = "health",
 ) {
   const {
     total_premium: basePlanPremium = 0,
     health_riders = [],
-    addons = [],
+    top_up_riders = [],
   } = cartEntry;
 
   const totalPremium = items =>
     items.reduce((totalPremium, item) => totalPremium + item.total_premium, 0);
 
-  let ridersPremium = totalPremium(health_riders);
+  let ridersPremium = totalPremium(
+    journeyType === "health" ? health_riders : top_up_riders,
+  );
 
   const total_premium = basePlanPremium;
 

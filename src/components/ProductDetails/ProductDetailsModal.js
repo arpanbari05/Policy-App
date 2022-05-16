@@ -618,10 +618,15 @@ function ProductHeader({
 
   const { logo, csr } = getCompany(company.alias);
 
-  const netPremium = calculateTotalPremium({
-    total_premium,
-    health_riders: selectedRiders?.length ? selectedRiders : mandatory_riders,
-  });
+  const netPremium = calculateTotalPremium(
+    {
+      total_premium,
+      health_riders: selectedRiders?.length ? selectedRiders : mandatory_riders,
+      top_up_riders: selectedRiders?.length ? selectedRiders : mandatory_riders,
+    },
+    {},
+    journeyType,
+  );
 
   const handlePremiumClick = () => {
     buyQuote(quote, selectedRiders).then(cartSummaryModal.on);

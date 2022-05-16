@@ -15,6 +15,7 @@ import {
   useToggle,
   useUrlEnquiry,
   useCart,
+  useFrontendBoot,
 } from "../customHooks";
 import {
   amount,
@@ -521,10 +522,17 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
     gotoProductPage();
   };
 
-  const netPremium = calculateTotalPremium({
-    total_premium: quote.total_premium,
-    health_riders: quote.riders ? quote.riders : quote.mandatory_riders, // quote?.riders doesn't contains mandatory rider
-  });
+  const { journeyType } = useFrontendBoot();
+
+  const netPremium = calculateTotalPremium(
+    {
+      total_premium: quote.total_premium,
+      health_riders: quote.riders ? quote.riders : quote.mandatory_riders, // quote?.riders doesn't contains mandatory rider
+      top_up_riders: quote.riders ? quote.riders : quote.mandatory_riders,
+    },
+    {},
+    journeyType,
+  );
 
   return (
     <div className="w-100">
