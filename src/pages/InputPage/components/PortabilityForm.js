@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme, useUpdateEnquiry } from "../../../customHooks";
+import { useTheme } from "../../../customHooks";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -49,7 +49,11 @@ function PortabilityForm() {
     let expiry_date = new Date(value).toLocaleDateString();
     expiry_date = expiry_date.split("/").reverse().join("-");
 
-    const res = await createEnquiry({ expiry_date, type: "port" });
+    const res = await createEnquiry({
+      expiry_date,
+      type: "port",
+      section: "health",
+    });
     if (!res.error) history.push("/input/basic-details");
   };
 
