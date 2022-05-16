@@ -44,6 +44,7 @@ import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
 import httpClient from "../../api/httpClient";
 import { BackButtonMobile } from "../../components";
+import "styled-components/macro";
 
 const ProposalSummary = () => {
   const { getUrlWithEnquirySearch } = useUrlEnquiry();

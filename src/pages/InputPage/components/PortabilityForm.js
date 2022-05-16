@@ -3,6 +3,7 @@ import { useTheme, useUpdateEnquiry } from "../../../customHooks";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useCreateEnquiryMutation } from "../../../api/api";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Title } from "../components/FormComponents";
@@ -16,7 +17,10 @@ function PortabilityForm() {
 
   const [error, setError] = React.useState(null);
 
-  const { updateEnquiry, isLoading, error: reqError } = useUpdateEnquiry();
+  // const { updateEnquiry, isLoading, error: reqError } = useUpdateEnquiry();
+
+  const [createEnquiry, { isLoading, error: reqError }] =
+    useCreateEnquiryMutation();
 
   const { colors } = useTheme();
 
@@ -45,7 +49,7 @@ function PortabilityForm() {
     let expiry_date = new Date(value).toLocaleDateString();
     expiry_date = expiry_date.split("/").reverse().join("-");
 
-    const res = await updateEnquiry({ expiry_date });
+    const res = await createEnquiry({ expiry_date, type: "port" });
     if (!res.error) history.push("/input/basic-details");
   };
 
@@ -170,7 +174,11 @@ function PortabilityForm() {
 
 export default PortabilityForm;
 
-export function PortDatePicker({value, setValue = () => {}, setError = () => {}}) {
+export function PortDatePicker({
+  value,
+  setValue = () => {},
+  setError = () => {},
+}) {
   const minDate = new Date(Date.now());
   minDate.setDate(minDate.getDate() - 6); // - 6 days
   const maxDate = new Date(Date.now());
