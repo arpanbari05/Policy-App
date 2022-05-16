@@ -66,7 +66,11 @@ export function useMembersForm(initialMembersList = []) {
   const { groupCode } = useParams();
 
   useEffect(() => {
-    setMembers(initialMembersList);
+    setMembers(
+      typeof initialMembersList === "function"
+        ? initialMembersList()
+        : initialMembersList,
+    );
   }, [groupCode]); //? CHANGES MEMBERS ON GROUP-CODE CHANGE.
 
   const validate = () => {
@@ -92,21 +96,21 @@ export function useMembersForm(initialMembersList = []) {
     setError(null);
     setMembers(members => {
       const updatedMembers = members.map(member => {
-        const new_member = initialMembersList().find(
-          mem => mem.code === member.code,
-        );
+        const new_member =
+          typeof initialMembersList === "function"
+            ? initialMembersList().find(mem => mem.code === member.code)
+            : {};
 
         if (member.code === changedMember.code)
           return {
             ...changedMember,
-            new_member: !new_member.isSelected,
+            new_member: !new_member?.isSelected,
           };
         else
           return {
             ...member,
-            new_member: !new_member.isSelected,
+            new_member: !new_member?.isSelected,
           };
-
       });
 
       return updatedMembers;
