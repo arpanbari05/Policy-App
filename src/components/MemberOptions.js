@@ -106,7 +106,6 @@ export function useMembersForm(initialMembersList = []) {
             ...member,
             new_member: !new_member.isSelected,
           };
-
       });
 
       return updatedMembers;

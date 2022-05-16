@@ -785,6 +785,8 @@ export function useCart() {
 
   const { getCompany } = useCompanies();
 
+  const { journeyType } = useFrontendBoot();
+
   const getCartTotalPremium = () => {
     return data?.discounted_total_premium;
   };
@@ -805,8 +807,16 @@ export function useCart() {
     return {
       ...cartEntry,
       plantype: group?.plan_type,
-      netPremium: calculateTotalPremium(cartEntry, { additionalDiscounts }),
-      netPremiumWithoutDiscount: calculateTotalPremium(cartEntry),
+      netPremium: calculateTotalPremium(
+        cartEntry,
+        { additionalDiscounts },
+        journeyType,
+      ),
+      netPremiumWithoutDiscount: calculateTotalPremium(
+        cartEntry,
+        {},
+        journeyType,
+      ),
       icLogoSrc,
     };
   }
@@ -830,8 +840,6 @@ export function useCart() {
   }
 
   const [updateCartMutation, updateCartMutationQuery] = useUpdateCartMutation();
-
-  const { journeyType } = useFrontendBoot();
 
   function updateCart(groupCode) {
     const { id, health_riders, ...cartEntry } = getCartEntry(groupCode);
