@@ -337,7 +337,7 @@ export const MobileProductDetailsFooter = ({
 
   const { journeyType } = useFrontendBoot();
 
-  const { sum_insured, total_premium, tenure } = quote;
+  const { total_premium } = quote;
 
   const cartSummaryModal = useToggle();
 
@@ -349,10 +349,15 @@ export const MobileProductDetailsFooter = ({
 
   const { colors } = useTheme();
 
-  const netPremium = calculateTotalPremium({
-    total_premium,
-    health_riders: quote?.mandatory_riders,
-  });
+  const netPremium = calculateTotalPremium(
+    {
+      total_premium,
+      health_riders: quote?.mandatory_riders,
+      top_up_riders: quote?.mandatory_riders,
+    },
+    {},
+    journeyType,
+  );
 
   return (
     <FooterOuter>

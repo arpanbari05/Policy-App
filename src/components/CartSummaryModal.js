@@ -6,7 +6,12 @@ import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components/macro";
 import { Button } from ".";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
-import { useCompanies, useQuote, useTheme } from "../customHooks";
+import {
+  useCompanies,
+  useFrontendBoot,
+  useQuote,
+  useTheme,
+} from "../customHooks";
 import useUrlQuery from "../customHooks/useUrlQuery";
 import { removeQuoteFromCart } from "../pages/Cart/cart.slice";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
@@ -56,9 +61,7 @@ function CartSummaryContent({
 
   const { groupCode } = useParams();
 
-  const currentGroup = groups.find(
-    group => group?.id === (+groupCode),
-  );
+  const currentGroup = groups.find(group => group?.id === +groupCode);
 
   groups = groups.filter(group => group.type === currentGroup?.type);
 
@@ -353,7 +356,7 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
     total_premium,
     tenure,
     health_riders,
-    mandatory_riders,
+    top_up_riders,
     product: {
       company: { alias },
       name,
@@ -364,10 +367,17 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
 
   const { logo: logoSrc } = getCompany(alias);
 
-  const netPremium = calculateTotalPremium({
-    total_premium,
-    health_riders: health_riders.length ? health_riders : selectedRiders,
-  });
+  const { journeyType } = useFrontendBoot();
+
+  const netPremium = calculateTotalPremium(
+    {
+      total_premium,
+      health_riders: health_riders.length ? health_riders : selectedRiders,
+      top_up_riders: top_up_riders.length ? top_up_riders : selectedRiders,
+    },
+    {},
+    journeyType,
+  );
 
   return (
     <div {...props}>
