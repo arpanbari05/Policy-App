@@ -1507,7 +1507,7 @@ export function useQuotesCompare(initialCompareQuotes = []) {
   const [updateCompareQuotesMutation, updateQuery] =
     useUpdateCompareQuotesMutation();
 
-  const { data, ...query } = useGetCompareQuotesQuery();
+  const { isLoading, data, ...query } = useGetCompareQuotesQuery();
 
   const [compareQuotes, setCompareQuotes] = useState(initialCompareQuotes);
 
