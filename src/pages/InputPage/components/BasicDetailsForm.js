@@ -27,8 +27,6 @@ import validateInput, {
 import styled from "styled-components";
 
 const BasicDetailsForm = ({ posContent, ...props }) => {
-  const b2b_enquiry_visibility = ["name", "email", "mobile", "gender"];
-  const originURl = window.location.origin;
   let inputData = {
     gender: "M",
   };
@@ -51,7 +49,9 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
   });
   const emailInput = useEmailInput(inputData?.email || "", setEmailErrors);
   const [gender, setGender] = useState(inputData?.gender || "");
-  const [journeyType, setJourneyType] = useState("health");
+  const [journeyType, setJourneyType] = useState(
+    allowOnWebsites(["topupRB"]) ? "top_up" : "health",
+  );
 
   const handleFormSubmit = async event => {
     event.preventDefault();

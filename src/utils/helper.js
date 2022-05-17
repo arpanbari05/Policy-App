@@ -18,6 +18,7 @@ export const allowOnWebsites = (sites = []) => {
     "https://uatrenewal.rbstaging.in",
     "https://health-renewals.renewbuy.com",
   ];
+  const topupRB = "https://uat-topup.rbstaging.in";
   const origin = window.location.origin;
 
   let isPass = false;
@@ -54,6 +55,11 @@ export const allowOnWebsites = (sites = []) => {
     }
     if (site === "renewalRB") {
       if (renewalRB.includes(origin)) {
+        isPass = true;
+      }
+    }
+    if (site === "topupRB") {
+      if (topupRB.includes(origin)) {
         isPass = true;
       }
     }
