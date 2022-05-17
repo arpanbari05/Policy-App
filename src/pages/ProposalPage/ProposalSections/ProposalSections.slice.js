@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import SecureLS from "secure-ls";
-import swal from "sweetalert";
 import { policyPdf } from "../../ThankYouPage/serviceApi";
-import { api, useGetCartQuery } from "../../../api/api";
+import { api } from "../../../api/api";
 import {
   getProposal,
   PaymentStatus,
@@ -160,29 +159,16 @@ export const {
   setUnderWritingStatus,
   setMdicalUnderwritingLetters,
   setMedicalUrlsRuleEngine,
-  setMuApplicationResult
+  setMuApplicationResult,
 } = proposal.actions;
 const ls = new SecureLS();
 
-// const hasAnyChangeInObj = (newVal, oldVal) => {
-//   let newValKeys = Object.keys(newVal);
-//   let oldValKeys = Object.keys(oldVal);
-//   // if(newValKeys.length !== oldValKeys.length) return true
-//   console.log(
-//     "wfgbkjwsdfgsfb",
-//     newVal,
-//     oldVal,
-//     newValKeys.some(newValKey => newVal[newValKey] !== oldVal[newValKey]),
-//   );
-
-//   return newValKeys.some(newValKey => newVal[newValKey] !== oldVal[newValKey]);
-// };
 export const getMedicalUnderwritingStatus = () => {
   return async (dispatch, state) => {
     try {
       const { data } = await fetchUnderWritingMQ();
-      if (typeof data !== "string" && data?.final_result?.members) {
-        dispatch(setUnderWritingStatus(data?.final_result?.members));
+      if (typeof data !== "string" && data?.length) {
+        dispatch(setUnderWritingStatus(data));
         dispatch(getMUResultLetters());
       }
     } catch (err) {
