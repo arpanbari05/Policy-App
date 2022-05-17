@@ -650,6 +650,24 @@ export function mergeQuotes(quotes = [], { sortBy = "relevance" } = {}) {
     sortedMergeQuotes = sortedMergeQuotes.sort((quotesA, quotesB) =>
       quotesA[0]?.total_premium > quotesB[0]?.total_premium ? 1 : -1,
     );
+  } else if (sortBy === "relevance") {
+    sortedMergeQuotes = Object.values(mergedQuotes).sort();
+    sortedMergeQuotes = sortedMergeQuotes.map(quotes =>
+      quotes.sort((quoteA, quoteB) =>
+        quoteA?.total_premium > quoteB?.total_premium ? 1 : -1,
+      ),
+    );
+
+    sortedMergeQuotes = sortedMergeQuotes.sort((quotesA, quotesB) =>
+      +quotesA[0]?.features
+        .find(f => f?.code === "pre_existing_disease_cover")
+        ?.value?.split(" ")[0] >
+      +quotesB[0]?.features
+        .find(f => f?.code === "pre_existing_disease_cover")
+        .value?.split(" ")[0]
+        ? 1
+        : -1,
+    );
   }
 
   return sortedMergeQuotes;

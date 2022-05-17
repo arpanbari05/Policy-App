@@ -13,9 +13,12 @@ import { Button } from "../../../components";
 import { useHistory, useParams } from "react-router-dom";
 import { mergeQuotes } from "../../../utils/helper";
 import { CompareQuoteTrayItem, CompareTrayAdd } from ".";
+import { useGetEnquiriesQuery } from "../../../api/api";
 
 function Quotes({ sortBy = "relevence", ...props }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
+
+  const { data: enquiryData } = useGetEnquiriesQuery();
 
   let mergedQuotes = data;
 
@@ -47,6 +50,20 @@ function Quotes({ sortBy = "relevence", ...props }) {
         // sort logic based on ridersPremium
         return icQuotesA?.data?.data[0][0].total_premium + ridersPremiumA >
           icQuotesB.data.data[0][0].total_premium + ridersPremiumB
+          ? 1
+          : -1;
+      }); // main sorting logic
+    } else if (sortBy === "relevance" && enquiryData?.data?.input?.existing_diseases?.length) {
+      mergedQuotes = mergedQuotes?.filter(
+        icQuotes => !!icQuotes?.data?.data[0]?.length,
+      ); // filter zero array.
+      mergedQuotes = mergedQuotes?.sort((icQuotesA, icQuotesB) => {
+        return +icQuotesA?.data?.data[0][0]?.features
+          ?.find(f => f.code === "pre_existing_disease_cover")
+          ?.value?.split(" ")[0] >
+          +icQuotesB.data.data[0][0]?.features
+            ?.find(f => f.code === "pre_existing_disease_cover")
+            ?.value?.split(" ")[0]
           ? 1
           : -1;
       }); // main sorting logic

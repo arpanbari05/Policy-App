@@ -1799,6 +1799,8 @@ export function usePolicyNumberInput(
 export function useQuotes({ sortBy = "relevence", quotesData = [] }) {
   let mergedQuotes = quotesData;
 
+  const { data } = useGetEnquiriesQuery();
+
   if (quotesData) {
     mergedQuotes = quotesData.filter(
       icQuotes => !!icQuotes?.data?.data[0]?.total_premium,
@@ -1829,18 +1831,23 @@ export function useQuotes({ sortBy = "relevence", quotesData = [] }) {
           return 1;
         } else return -1;
       });
-      // mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) => {
+    } else if (sortBy === "relevance" && data?.data?.input?.existing_diseases?.length) {
+      mergedQuotes = mergedQuotes.filter(
+        icQuotes => !!icQuotes?.data?.data[0]?.length,
+      );
 
-      //   let ridersPremiumA = 0;
-      //   let ridersPremiumB = 0;
-
-      //   icQuotesA.data.data[0][0].mandatory_riders.forEach(rider => ridersPremiumA += rider?.total_premium);
-      //   icQuotesB.data.data[0][0].mandatory_riders.forEach(rider => ridersPremiumB += rider?.total_premium);
-      //     return icQuotesA.data.data[0][0].total_premium + ridersPremiumA >
-      //     icQuotesB.data.data[0][0].total_premium + ridersPremiumB
-      //       ? 1
-      //       : -1,
-      // })
+      mergedQuotes = mergedQuotes.sort((icQuotesA, icQuotesB) => {
+        if (
+          +icQuotesA.data.data[0][0]?.features
+            ?.find(f => f.code === "pre_existing_disease_cover")
+            ?.value?.split(" ")[0] >
+          +icQuotesB.data.data[0][0]?.features
+            ?.find(f => f.code === "pre_existing_disease_cover")
+            ?.value?.split(" ")[0]
+        ) {
+          return 1;
+        } else return -1;
+      });
     }
   }
 
