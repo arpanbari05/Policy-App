@@ -330,7 +330,6 @@ const useProposalSections = ({
             const { data, failed_bmi, block_journey } = responseData;
             callback();
             revisedPremiumPopupUtilityObject?.getUpdatedCart();
-            console.log("dbdhfbjksfvb", data);
             if (data) {
               dispatch(setInsuredDetailsResponse(data));
               dispatch(setMedicalUrlsRuleEngine(data?.members));

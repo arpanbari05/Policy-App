@@ -11,7 +11,6 @@ const useMedicalQuestions = ({
   dispatch,
   isVersionRuleEngine,
   medicalUrlsRuleEngine,
-  insuredDetailsResponse,
   underWritingStatus,
 }) => {
   const [noForAll, setNoForAll] = useState({});
@@ -42,7 +41,7 @@ const useMedicalQuestions = ({
     });
     return tempGroupVal;
   };
-  console.log("sgvksdgv", defaultValue);
+
   const checkCanProceed = () => {
     const key = Object.keys(values || {});
     const key2 = Object.keys(noForAll || {});
@@ -60,7 +59,6 @@ const useMedicalQuestions = ({
       let checkCanProceed = {};
 
       key2.forEach(item => {
-        console.log("wkfbwkd", typeof values[item]);
         if (typeof values[item] === "object" && values[item]) {
           if (noForAll[item] !== true) {
             isNotChecked[item] = false;
@@ -81,13 +79,6 @@ const useMedicalQuestions = ({
       });
 
       key.forEach(item => {
-        console.log("wfkwbhdkf", {
-          checkCanProceed,
-          hasYes,
-          item,
-          isNotChecked,
-          values,
-        });
         if (hasYes[item] === isNotChecked[item]) {
           checkCanProceed[item] = checkCanProceed[item]
             ? checkCanProceed[item]
@@ -97,7 +88,7 @@ const useMedicalQuestions = ({
         Object.keys(values[item]).length &&
           Object.keys(values[item])?.forEach(el => {
             let schemaOfEl = schema[key]?.find(({ name }) => name === el);
-            console.log("ehdhdkfgl", schemaOfEl);
+
             if (schemaOfEl) {
               if (
                 values[item][el] &&
@@ -112,12 +103,6 @@ const useMedicalQuestions = ({
           });
       });
 
-      console.log("wfkwbhdkf", {
-        checkCanProceed,
-        hasYes,
-        isNotChecked,
-        values,
-      });
       if (key2.length < 1) {
         isNotChecked = true;
       }
@@ -134,14 +119,23 @@ const useMedicalQuestions = ({
   };
 
   const getScheamaOfValue = (key, mqname) => {
-    console.log("aefbakef",key,name,schema,schema[key].find(({ name }) => name === mqname))
     return schema[key].find(({ name }) => name === mqname);
   };
 
   const getMUStatus = member => {
-    return underWritingStatus?.find(
-      ({ member_id }) => member_id === medicalUrlsRuleEngine[member].member_id,
-    )?.result;
+    return underWritingStatus
+      ?.find(({ final_result }) =>
+        final_result?.members?.find(
+          singleMemberObj =>
+            singleMemberObj?.member_id ===
+            medicalUrlsRuleEngine[member].member_id,
+        ),
+      )
+      ?.final_result?.members?.find(
+        singleMemberObj =>
+          singleMemberObj?.member_id ===
+          medicalUrlsRuleEngine[member].member_id,
+      )?.result;
   };
 
   // -----------------------------------------------------------------------------------------------------------------
@@ -149,12 +143,6 @@ const useMedicalQuestions = ({
   // ----------------------------------------------------------------------------------------------------------------
 
   useEffect(() => {
-    console.log(
-      "rsgsrjgk",
-      defaultValue,
-      insuredDetailsResponse,
-      medicalUrlsRuleEngine,
-    );
     if (name === "Medical Details") {
       if (defaultValue) {
         setValues(defaultValue);
@@ -214,21 +202,22 @@ const useMedicalQuestions = ({
       checkCanProceed();
       const keys = Object.keys(values || {});
       // getScheamaOfValue
-     
+
       let temp = keys.reduce(
         (acc, key) => ({
           ...acc,
           [key]: Object.keys(values[key])
             .filter(
               el =>
-                !getScheamaOfValue(key, el)?.additionalOptions?.disable_Toggle && !getScheamaOfValue(key, el)?.additionalOptions?.notAllowedIf,
+                !getScheamaOfValue(key, el)?.additionalOptions
+                  ?.disable_Toggle &&
+                !getScheamaOfValue(key, el)?.additionalOptions?.notAllowedIf,
             )
             .some(el => values[key][el][`is${el}`] === "Y"),
         }),
         {},
       );
       setYesSelected(temp);
-      console.log("skbjvkvb", temp, values, keys);
     }
   }, [values, noForAll]);
 

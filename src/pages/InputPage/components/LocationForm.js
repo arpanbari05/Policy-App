@@ -119,7 +119,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           if (journeyType === "top_up")
             nextPath = getUrlWithEnquirySearch(`/input/deductible`);
           else
-            nextPath = !settings.medical_history_visibility
+            nextPath = settings.medical_history_visibility
               ? getUrlWithEnquirySearch(`/input/medicalHistory`)
               : getUrlWithEnquirySearch(`/quotes/${groups[0].id}`);
         }
