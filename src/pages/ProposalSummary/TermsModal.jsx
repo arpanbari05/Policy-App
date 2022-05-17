@@ -107,16 +107,14 @@ const TermModal = ({
           class="fas fa-times"
         ></i>
       </Modal.Header>
-      {
-        <CloseButton
-          type="button"
-          className="btn btn-white recom_close_css "
-          style={{ marginTop: "-8px", zIndex: 2500 }}
-          onClick={handleClose}
-        >
-          <i className="fa fa-close"></i>
-        </CloseButton>
-      }
+
+      <CloseButton
+        type="button"
+        className="btn btn-white recom_close_css "
+        style={{ marginTop: "-8px", zIndex: 2500 }}
+        onClick={handleClose}
+      />
+
       <Modal.Body
         css={`
           overflow: scroll;
