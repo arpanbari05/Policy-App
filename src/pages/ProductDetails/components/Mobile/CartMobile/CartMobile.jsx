@@ -315,7 +315,6 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
 }
 
 const QuickPayAndRenewButtonMobile = ({ groupCode }) => {
-  
   const { getTotalDiscountAmount, query: additionalDiscountsQuery } =
     useAdditionalDiscount(groupCode);
 
@@ -509,12 +508,6 @@ function EditMembers({}) {
         <RevisedPremiumPopup
           revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
           onClose={revisedPremiumPopupUtilityObject.off}
-          title={
-            revisedPremiumPopupUtilityObject.getUpdatedCartEntry(groupCode)
-              ?.unavailable_message
-              ? "Plan Unavailable due to change in date of birth"
-              : "Revised Premium due to change in date of birth"
-          }
         />
       )}
     </>

@@ -546,7 +546,7 @@ function CartSummary({ item, index, groupCode }) {
     removeTotalPremium(planDetails.prevCart || {}),
   );
 
-  const health_riders = useRider(item?.group?.id).getSelectedRiders();
+  const displayRiders = useRider(item?.group?.id).getSelectedRiders();
 
   const [showRiders, setShowRiders] = useState(false);
 
@@ -761,7 +761,7 @@ function CartSummary({ item, index, groupCode }) {
             <></>
           )}
         </div>
-        {item.health_riders.length > 0 && (
+        {displayRiders.length > 0 && (
           <>
             {" "}
             <hr
@@ -797,14 +797,14 @@ function CartSummary({ item, index, groupCode }) {
             </div>
           </>
         )}
-        {health_riders.length && showRiders ? (
+        {displayRiders.length && showRiders ? (
           <div
             className="row bg_medical_box_row"
             css={`
               // padding: 0 10px;
             `}
           >
-            {health_riders.map(riders => (
+            {displayRiders.map(riders => (
               <div
                 css={`
                   display: flex;
