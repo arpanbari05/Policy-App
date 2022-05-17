@@ -4,13 +4,12 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
 import { getTermConditions } from "../ProposalPage/serviceApi";
-import { useCart,} from "../../customHooks/index";
+import { useCart } from "../../customHooks/index";
 
 const TermModal = ({
   title,
   show,
   customClass,
-
   content,
   buttonValue,
   handleClick,
@@ -36,22 +35,18 @@ const TermModal = ({
   const prod_id = Object.keys(cart)[0];
 
   useEffect(() => {
-    console.log("bjksfv",cart,prod_id)
     if (cart[prod_id].product && cart[prod_id].product.company.id) {
       getTermConditionData(cart[prod_id].product.company.id, setTerm);
     }
   }, []);
 
-  // console.log("mkmk",term)
   return (
     <Modal
       centered
-      //fullscreen
       show={show}
       size="lg"
       onHide={handleClose}
       animation={false}
-      //dialogClassName="modal-box"
       style={{
         zIndex: "99999",
         borderRadius: "12px",
@@ -112,14 +107,16 @@ const TermModal = ({
           class="fas fa-times"
         ></i>
       </Modal.Header>
-      {/* <CloseButton
-        type="button"
-        className="btn btn-white recom_close_css "
-        style={{ marginTop: "-8px", zIndex: 2500 }}
-        onClick={handleClose}
-      >
-        <i className="fa fa-close"></i>
-      </CloseButton> */}
+      {
+        <CloseButton
+          type="button"
+          className="btn btn-white recom_close_css "
+          style={{ marginTop: "-8px", zIndex: 2500 }}
+          onClick={handleClose}
+        >
+          <i className="fa fa-close"></i>
+        </CloseButton>
+      }
       <Modal.Body
         css={`
           overflow: scroll;
@@ -135,63 +132,6 @@ const TermModal = ({
         ) : (
           <span>Loading...</span>
         )}
-        {/* <span
-          css={`
-              position: absolute;
-             
-            `}
-          >
-             <i class="fa fa-check color-orange"></i></span>
-          <div
-          css={`
-          padding-left:20px !important;
-          padding-bottom: 20px !important;
-          `}
-          >
-            
-              <span
-              css={`
-              font-size:15px;
-              `}
-              >I agree that this proposal and the declarations shall be the basis of the contract between me / us and Aditya Birla Health Insurance Company Ltd. I further consent and authorize Aditya Birla Health Insurance Co. Ltd. and / or any of its authorized representatives to seek medical information from any hospital/consultant that I or any person proposed to be insured has attended or may attend in future concerning any disease or illness or injury. The information provided will be the basis of any insurance policy that We may issue. Proposer must disclose all facts relevant to all persons proposed to be insured that may affect our decision to issue a policy or its terms. Non-compliance may result in the avoidance of the policy. I / we, have proposed for this insurance policy with Aditya Birla Health insurance company ltd. I / We have read & understood the full terms, conditions & exclusions of the policy. </span>
-          </div>
-          <span
-          css={`
-              position: absolute;
-            `}
-          >
-             <i class="fa fa-check color-orange"></i></span>
-          <div
-          css={`
-          padding-left:20px !important;
-          padding-bottom: 20px !important;
-          `}
-          >
-            
-            <span
-            css={`
-            font-size:15px;
-            `}
-            ><strong>DECLARATION WARRANTY ON BEHALF OF ALL PERSONS PROPOSED TO BE INSURED</strong> <br/> I hereby declare and warrant on my behalf and on behalf of all persons proposed to be insured that the above statements are true and complete in all respects and that there is no other information which is relevant to this application for insurance that has not been disclosed to Aditya Birla Health Insurance Company Ltd. I agree that this proposal and the declarations shall be the basis of the contract between me and all persons to be insured and Aditya Birla Health Insurance Company Ltd. I further consent and authorise Aditya Birla Health Insurance Company Ltd. and/or any of its authorized representatives to seek medical information from any hospital / consultant that I or any person proposed to be insured has attended or may attend in future concerning any disease or illness or injury.</span>
-           </div>
-           <span
-          css={`
-              position: absolute;
-            `}
-          >
-             <i class="fa fa-check color-orange"></i></span>
-          {/* <div
-          css={`
-          padding-left:20px !important;
-          padding-bottom: 20px !important;
-          `}
-          > */}
-        {/*             
-            <span
-            css={`
-            font-size:15px;
-            `}
-            ><strong>DISCLAIMER</strong> <br/> I agree that this proposal and the declarations shall be the basis of the contract between me / us and Aditya Birla Health Insurance Company Ltd. I further consent and authorize Aditya Birla Health Insurance Co. Ltd. and / or any of its authorized representatives to seek medical information from any hospital / consultant that I or any person proposed to be insured has attended or may attend in future concerning any disease or illness or injury. The information provided will be the basis of any insurance policy that We may issue. Proposer must disclose all facts relevant to all persons proposed to be insured that may affect our decision to issue a policy or its terms. Non-compliance may result in the avoidance of the policy. I / we, have proposed for this insurance policy with Aditya Birla Health insurance company ltd. I / We have read &amp; understood the full terms, conditions &amp; exclusions of the policy.</span>  </div> */}
       </Modal.Body>
       <Modal.Footer
         style={{
