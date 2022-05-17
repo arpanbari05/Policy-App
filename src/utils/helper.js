@@ -14,7 +14,11 @@ export const allowOnWebsites = (sites = []) => {
   ];
   const sriyahUat = "https://health-uat.nammacover.com";
   const pincUat = "https://uat-health.pincinsurance.com";
-  const renewalRB = "https://uatrenewal.rbstaging.in";
+  const renewalRB = [
+    "https://uatrenewal.rbstaging.in",
+    "https://health-renewals.renewbuy.com",
+  ];
+  const topupRB = "https://uat-topup.rbstaging.in";
   const origin = window.location.origin;
 
   let isPass = false;
@@ -50,7 +54,12 @@ export const allowOnWebsites = (sites = []) => {
       }
     }
     if (site === "renewalRB") {
-      if (renewalRB === origin) {
+      if (renewalRB.includes(origin)) {
+        isPass = true;
+      }
+    }
+    if (site === "topupRB") {
+      if (topupRB.includes(origin)) {
         isPass = true;
       }
     }

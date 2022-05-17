@@ -502,7 +502,7 @@ function BackButton(props) {
   const { groupCode } = useParams();
 
   const handleBackClick = () => {
-    history.push(getUrlWithEnquirySearch(`/quotes/${groupCode}`));
+    history.goBack();
   };
 
   return (
