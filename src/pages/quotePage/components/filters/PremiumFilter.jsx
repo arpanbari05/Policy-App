@@ -12,7 +12,8 @@ import { ClickSound } from "../../../../utils/helper";
 
 function PremiumFilterModal({ onClose, ...props }) {
   const {
-    data: { premiums },
+    data: { premiums: allPremiums },
+    journeyType,
   } = useFrontendBoot();
 
   const { colors } = useTheme();
@@ -37,6 +38,10 @@ function PremiumFilterModal({ onClose, ...props }) {
     updateFilters({ premium: selectedPremiumFilter });
     onClose && onClose();
   };
+
+  const premiums = allPremiums.filter(
+    premium => premium?.section === journeyType,
+  );
 
   return (
     <CustomModal1

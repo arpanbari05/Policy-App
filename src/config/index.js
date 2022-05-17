@@ -39,12 +39,43 @@ const config = {
   //   { code: "other_diseases", display_name: "Other Diseases" },
   // ],
   // companies,
+  // premiums: [
+  //   { code: "<5000", display_name: "< \u20b95,000" },
+  //   { code: "5000-10000", display_name: "\u20b95,000 - \u20b910,000" },
+  //   { code: "10000-15000", display_name: "\u20b910,000 - \u20b915,000" },
+  //   { code: "15000-20000", display_name: "\u20b915,000 - \u20b920,000" },
+  //   { code: ">20000", display_name: "> \u20b920,000" },
+  // ],
   premiums: [
-    { code: "<5000", display_name: "< \u20b95,000" },
-    { code: "5000-10000", display_name: "\u20b95,000 - \u20b910,000" },
-    { code: "10000-15000", display_name: "\u20b910,000 - \u20b915,000" },
-    { code: "15000-20000", display_name: "\u20b915,000 - \u20b920,000" },
-    { code: ">20000", display_name: "> \u20b920,000" },
+    { code: "<1000", display_name: "Upto \u20b91000", section: "top_up" },
+    {
+      code: "1000-3000",
+      display_name: "\u20b91000 - \u20b93000",
+      section: "top_up",
+    },
+    {
+      code: "3000-5000",
+      display_name: "\u20b93000 - \u20b95000",
+      section: "top_up",
+    },
+    { code: ">5000", display_name: "Above \u20b95000", section: "top_up" },
+    { code: "<5000", display_name: "< \u20b95,000", section: "health" },
+    {
+      code: "5000-10000",
+      display_name: "\u20b95,000 - \u20b910,000",
+      section: "health",
+    },
+    {
+      code: "10000-15000",
+      display_name: "\u20b910,000 - \u20b915,000",
+      section: "health",
+    },
+    {
+      code: "15000-20000",
+      display_name: "\u20b915,000 - \u20b920,000",
+      section: "health",
+    },
+    { code: ">20000", display_name: "> \u20b920,000", section: "health" },
   ],
   // covers: [
   //   { code: "100000-300000", display_name: "Upto 3 Lakhs" },

@@ -673,7 +673,7 @@ export function mergeQuotes(quotes = [], { sortBy = "relevance" } = {}) {
         ?.value?.split(" ")[0] >
       +quotesB[0]?.features
         .find(f => f?.code === "pre_existing_disease_cover")
-        .value?.split(" ")[0]
+        ?.value?.split(" ")[0]
         ? 1
         : -1,
     );
