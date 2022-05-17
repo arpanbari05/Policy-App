@@ -710,8 +710,8 @@ export function useUpdateMembers() {
       gender: enquiryData.input.gender,
       deductible: enquiryData.input.deductible,
       params: enquiryData.input.params,
-      type: !redirectToQuotes && "renew",
-      action: !redirectToQuotes && "update_members",
+      type: !redirectToQuotes ? "renew" : undefined,
+      action: !redirectToQuotes ? "update_members" : undefined,
       members: members
         ? members.map(member => ({
             type: member.code,
@@ -1831,7 +1831,10 @@ export function useQuotes({ sortBy = "relevence", quotesData = [] }) {
           return 1;
         } else return -1;
       });
-    } else if (sortBy === "relevance" && data?.data?.input?.existing_diseases?.length) {
+    } else if (
+      sortBy === "relevance" &&
+      data?.data?.input?.existing_diseases?.length
+    ) {
       mergedQuotes = mergedQuotes.filter(
         icQuotes => !!icQuotes?.data?.data[0]?.length,
       );

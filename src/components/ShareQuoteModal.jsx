@@ -623,7 +623,7 @@ function ShareStep2({
   const handleEmailCheck = e => {
     if (
       e.target.value.length <= 50 &&
-      checkAllChar(e.target.value, "~`!#$%^&*()_-+={[]}:;\"'<>,?/".split(""))
+      checkAllChar(e.target.value, "~`!#$%^&*()_-+={[]}:;\"'<>,?/\\|".split(""))
     ) {
       setEmail(e.target.value);
     }

@@ -66,43 +66,6 @@ function PortabilityForm() {
       <div className="p-3">
         <Title className="mb-4">Do you wish to port existing policy?</Title>
         <PortDatePicker value={value} setValue={setValue} setError={setError} />
-        {/* <LocalizationProvider locale={enIDLocale} dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="Choose date"
-            mask="__/__/____"
-            value={value}
-            ampm={false}
-            maxDate={
-              new Date(
-                `${maxDate.getFullYear()}-${
-                  maxDate.getMonth() + 1
-                }-${maxDate.getDate()}`,
-              )
-            }
-            minDate={
-              new Date(
-                `${minDate.getFullYear()}-${
-                  minDate.getMonth() + 1
-                }-${minDate.getDate()}`,
-              )
-            }
-            onChange={newValue => {
-              setValue(newValue);
-            }}
-            renderInput={params => {
-              setError(params.error);
-              return (
-                <TextField
-                  autoComplete="off"
-                  color="primary"
-                  fullWidth
-                  helperText={params.error && "Please provide a valid date"}
-                  {...params}
-                />
-              );
-            }}
-          />
-        </LocalizationProvider> */}
         <div className="mt-4">
           <div
             className="d-flex justify-content-between align-items-center"
