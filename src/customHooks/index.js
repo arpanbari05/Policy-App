@@ -312,6 +312,7 @@ export function useFilter() {
     data: {
       defaultfilters: { cover, tenure, plan_type },
     },
+    journeyType,
   } = useFrontendBoot();
 
   const {
@@ -327,7 +328,8 @@ export function useFilter() {
 
     let tenureFilter = tenure;
     let coverFilter = cover;
-    let base_plan_type = "base_health";
+    let base_plan_type =
+      journeyType === "top_up" ? "topup_plan" : "base_health";
     let planTypeFilter = plan_type;
 
     if (extras) {
