@@ -310,7 +310,7 @@ function AdditionalDiscount({
   onApplyClick,
   ...props
 }) {
-  const { name, description, fixed_discount_value } = additionalDiscount;
+  const { name, description } = additionalDiscount;
 
   const { colors } = useTheme();
 

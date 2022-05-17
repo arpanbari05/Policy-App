@@ -23,6 +23,7 @@ import {
   HeadingSecondary,
   SecondaryFont,
 } from "../styles/typography";
+import { isSSOJourney } from "../utils/helper";
 
 const TalkToUsContent = ({ setSuccess }) => {
   const searchQueries = useUrlQueries();
@@ -77,6 +78,10 @@ const TalkToUsContent = ({ setSuccess }) => {
       setSuccess(`${response.statusCode}`.startsWith("2"));
     }
   };
+
+  const isPOS = isSSOJourney();
+
+  const email = isPOS ? data?.settings?.email_pos : data?.settings?.email;
 
   return (
     <Wrapper>
@@ -148,7 +153,10 @@ const TalkToUsContent = ({ setSuccess }) => {
       </div>
       <Divider />
       <Title>
-        Email us at <a href={"#link"}>{data?.settings?.email}</a>
+        Email us at{" "}
+        <a href={`mailto:${email}`}>
+          {email}
+        </a>
       </Title>
     </Wrapper>
   );

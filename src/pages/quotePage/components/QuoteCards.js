@@ -521,7 +521,7 @@ function QuoteCard({
                         gap: 7px;
                       `}
                     >
-                      {numberToDigitWord(selectedSumInsured)
+                      {numberToDigitWord(selectedDeductible)
                         .replace("₹", "")
                         .replace("Lakh", "L")}
                     </div>

@@ -97,7 +97,7 @@ const ProposerDetails = ({
     }
   }, []);
 
-console.log("ergnjkg",values)
+  console.log("ergnjkg", values);
 
   return (
     <>
@@ -142,11 +142,6 @@ console.log("ergnjkg",values)
           <RevisedPremiumPopup
             revisedPremiumPopupUtilityObject={revisedPremiumPopupUtilityObject}
             onClose={revisedPremiumPopupUtilityObject.off}
-            title={
-              revisedPremiumPopupUtilityObject?.isAnyPlanUnAvailableInCart
-                ? "Plan Unavailable due to change in date of birth"
-                : `Hi ${firstName}, Revised Premium due to change in date of birth.`
-            }
           />
         )}
       </div>

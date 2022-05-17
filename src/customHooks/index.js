@@ -842,7 +842,8 @@ export function useCart() {
   const [updateCartMutation, updateCartMutationQuery] = useUpdateCartMutation();
 
   function updateCart(groupCode) {
-    const { id, health_riders, ...cartEntry } = getCartEntry(groupCode);
+    const { id, health_riders, top_up_riders, ...cartEntry } =
+      getCartEntry(groupCode);
 
     return [
       ({
@@ -855,7 +856,9 @@ export function useCart() {
           ...cartEntry,
           cartId: id,
           [journeyType === "health" ? "riders" : "top_up_riders"]:
-            health_riders.map(getRiderSendData),
+            journeyType === "health"
+              ? health_riders.map(getRiderSendData)
+              : top_up_riders.map(getRiderSendData),
           addons: cartEntry.addons.map(getAddOnSendData),
           discounted_total_premium,
           feature_options,
@@ -2352,7 +2355,13 @@ export const useRevisedPremiumModal = () => {
   const isProductDetailsPage =
     window.location.pathname.startsWith("/productdetails");
 
+  const isProposalPage = window.location.pathname.startsWith("/proposal");
+
   const dispatch = useDispatch();
+
+  const { data: enquiryData } = useGetEnquiriesQuery();
+
+  const firstName = enquiryData?.data?.name?.split(" ")[0];
 
   /*-----------------------------------------------------------------------------------------------*/
   //? Proposal page constants
@@ -2508,6 +2517,30 @@ export const useRevisedPremiumModal = () => {
     return cartEntry?.premium;
   };
 
+  const titleGenerator = groupCode => {
+    let title = `Hi ${firstName} , Plan Unavailable due to change in date of birth`;
+
+    if (isProductDetailsPage) {
+      title = getUpdatedCartEntry(groupCode)?.unavailable_message
+        ? getUpdatedCartEntry(groupCode)?.unavailable_title
+          ? `Hi ${firstName} , ${
+              getUpdatedCartEntry(groupCode)?.unavailable_title
+            }`
+          : `Hi ${firstName} , Plan Unavailable due to change in date of birth`
+        : `Hi ${firstName} , Revised Premium due to change in date of birth`;
+    }
+    if (isProposalPage) {
+      title = isAnyPlanUnAvailableInCart
+        ? unAvailablePlanInTheCart?.unavailable_title
+          ? `Hi ${firstName} , ${unAvailablePlanInTheCart?.unavailable_title}`
+          : `Hi ${firstName} , Plan Unavailable due to change in date of birth`
+        : `Hi ${firstName} , Revised Premium due to change in date of birth`;
+    }
+    return title;
+  };
+
+  const title = titleGenerator(groupCode);
+
   return {
     getUpdatedCart,
     revisedPremiumPopupToggle,
@@ -2524,6 +2557,7 @@ export const useRevisedPremiumModal = () => {
     getUpdatedCartEntryPremium,
     isAnyPlanUnAvailableInCart,
     unAvailablePlanInTheCart,
+    title,
   };
 };
 
