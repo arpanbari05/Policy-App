@@ -154,14 +154,6 @@ const InsuredDetails = ({
   const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
-    console.log("sdbjhdkgb", {
-      medicalContinueClick,
-      isValid,
-      underWritingStatus,
-      medicalUrlsRuleEngine,
-      showErrorPopup,
-    });
-
     if (
       medicalContinueClick &&
       medicalUrlsRuleEngine &&
@@ -226,7 +218,7 @@ const InsuredDetails = ({
                 <div className="head_section section_row d-flex align-items-center justify-content-evenly">
                   <div className="section_column">Member</div>
                   <div className="section_column">Medical Questions</div>
-                  <div className="section_column">Underwiting Discision</div>
+                  <div className="section_column">Underwriting Decision</div>
                 </div>
                 {medicalUrlsRuleEngine &&
                   Object.keys(medicalUrlsRuleEngine).map(member => {
@@ -245,12 +237,12 @@ const InsuredDetails = ({
                               className="click_btn"
                               target="_blank"
                             >
-                              Click here
+                              Click here there
                             </a>
                           </div>
                           <div className="section_column">
                             {getMUStatus(member) || "Not Submitted"}
-                            {getMUStatus(member) !== "NotSubmitted" &&
+                            {/*getMUStatus(member) !== "NotSubmitted" &&
                             !getMUStatus(member)
                               ?.toLowerCase()
                               ?.includes("accepted") &&
@@ -268,7 +260,7 @@ const InsuredDetails = ({
                               </a>
                             ) : (
                               <></>
-                            )}
+                            )*/}
                           </div>
                         </div>
                       </>
@@ -408,7 +400,6 @@ const InsuredDetails = ({
           </Panel>
         );
       })}
-      {console.log("Svsfods", underWritingStatus, insuredDetailsResponse)}
 
       <div className="proposal_continue_back_margin container">
         <BackBtn
@@ -436,22 +427,18 @@ const InsuredDetails = ({
               )
             ) {
               checkCanProceed();
-              console.log("dbjfbjfd");
+
               dispatch(getMedicalUnderwritingStatus());
             }
             setSubmit("Medical");
-            console.log("ewrgnjkrsv", canProceed);
+
             if (
               name === "Medical Details" &&
               canProceed?.canProceed
               //  && (Object.keys(insuredDetailsResponse).length?underWritingStatus.length:true)
             ) {
               // NSTP popup for RB
-              console.log(
-                "grnsgh",
-                yesSelected,
-                frontBootData?.settings?.medical_nstp_declaration_message,
-              );
+
               Object.values(yesSelected).includes(true) &&
                 frontBootData?.settings?.medical_nstp_declaration_message &&
                 dispatch(
