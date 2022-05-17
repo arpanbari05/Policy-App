@@ -31,11 +31,6 @@ const tenures = [
   { code: "3", display_name: "3 Year" },
 ];
 
-const defaultFilters = {
-  baseplantype: "base_health",
-  plantype: "F",
-};
-
 function useFilters() {
   const { groupCode } = useParams();
 
@@ -43,7 +38,13 @@ function useFilters() {
 
   let {
     data: { defaultfilters, morefilters, ...filters },
+    journeyType,
   } = useFrontendBoot();
+
+  const defaultFilters = {
+    baseplantype: journeyType === "top_up" ? "topup_plan" : "base_health",
+    plantype: "F",
+  };
 
   let {
     data: {
