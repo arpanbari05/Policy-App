@@ -10,6 +10,7 @@ import { Title } from "../components/FormComponents";
 import enIDLocale from "date-fns/locale/en-IN";
 import { useHistory } from "react-router-dom";
 import { Button } from "../../../components";
+import { dateObjectToLocaleString } from "../../../utils/helper";
 import "styled-components/macro";
 
 function PortabilityForm() {
@@ -46,11 +47,10 @@ function PortabilityForm() {
   maxDate.setDate(maxDate.getDate() + 60); // + 60 days
 
   const handleSubmit = async () => {
-    let expiry_date = new Date(value).toLocaleDateString();
-    expiry_date = expiry_date.split("/").reverse().join("-");
+    const expiry_date = dateObjectToLocaleString(new Date(value)).split("/");
 
     const res = await createEnquiry({
-      expiry_date,
+      expiry_date: `${expiry_date[2]}/${expiry_date[1]}/${expiry_date[0]}`,
       type: "port",
       section: "health",
     });
