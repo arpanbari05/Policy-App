@@ -369,11 +369,26 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
 
   const { journeyType } = useFrontendBoot();
 
+  console.log("Health_riders", health_riders);
+  const removeDuplicateRiders = ridersArray => {
+    return ridersArray.filter(
+      (value, index, self) =>
+        index ===
+        self.findIndex(
+          t => t.rider_id === value.rider_id && t.name === value.name,
+        ),
+    );
+  };
+
   const netPremium = calculateTotalPremium(
     {
       total_premium,
-      health_riders: health_riders.length ? health_riders : selectedRiders,
-      top_up_riders: top_up_riders.length ? top_up_riders : selectedRiders,
+      health_riders: health_riders.length
+        ? removeDuplicateRiders(health_riders)
+        : selectedRiders,
+      top_up_riders: top_up_riders.length
+        ? removeDuplicateRiders(top_up_riders)
+        : selectedRiders,
     },
     {},
     journeyType,
