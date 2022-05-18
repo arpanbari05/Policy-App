@@ -242,15 +242,15 @@ const InsuredDetails = ({
                           </div>
                           <div className="section_column">
                             {getMUStatus(member) || "Not Submitted"}
-                            {/*getMUStatus(member) !== "NotSubmitted" &&
+                            {getMUStatus(member) !== "NotSubmitted" &&
                             !getMUStatus(member)
                               ?.toLowerCase()
                               ?.includes("accepted") &&
-                            mdicalUnderwritingLetters?.[member]
+                            mdicalUnderwritingLetters[member]
                               ?.medical_question_url ? (
                               <a
                                 href={
-                                  mdicalUnderwritingLetters?.[member]
+                                  mdicalUnderwritingLetters[member]
                                     ?.medical_question_url
                                 }
                                 className="click_btn"
@@ -260,7 +260,7 @@ const InsuredDetails = ({
                               </a>
                             ) : (
                               <></>
-                            )*/}
+                            )}
                           </div>
                         </div>
                       </>
