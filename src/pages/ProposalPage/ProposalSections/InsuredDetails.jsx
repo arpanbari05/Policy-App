@@ -237,7 +237,7 @@ const InsuredDetails = ({
                               className="click_btn"
                               target="_blank"
                             >
-                              Click here there
+                              Click here
                             </a>
                           </div>
                           <div className="section_column">
