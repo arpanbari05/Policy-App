@@ -861,17 +861,13 @@ export function renderDisclaimer({ tenantName, settings }) {
       return settings.disclaimer_pos;
     } else {
       return tenantName.toLowerCase() === "sriyah"
-        ? `By clicking on Get Started, I hereby authorise
-      Sriyah Insurance Brokers Pvt. Ltd. and all of its affiliates,
-      subsidiaries, group companies and related parties to access the details
-      such as my name, address, telephone number, e-mail address, birth date
-      and / or anniversary date shared by me, and contact me to provide
-      information on the various products and services offered. I understand
-      that this consent will override my NDNC registration, if any. I also
-      understand that at any point of time, I wish to stop receiving such
-      communications from Sriyah Insurance Brokers Pvt. Ltd., I can withdraw
-      such consent anytime on (to provide a contact number or email id or
-      both).`
+        ? `By clicking on Get Started, I hereby authorise Nammacover and all of its affiliates, 
+        subsidiaries, group companies and related parties to access the details such as my name, 
+        address, telephone number, e-mail address, birth date and / or anniversary date shared 
+        by me, and contact me to provide information on the various products and services offered. 
+        I understand that this consent will override my NDNC registration, if any. I also understand
+         that at any point of time, I wish to stop receiving such communications from Nammacover, 
+         I can withdraw such consent anytime on (to provide a contact number or email id or both).`
         : `By clicking on Get Started, I hereby authorise ${tenantName}. and all of
       its affiliates, subsidiaries, group companies and related parties to
       access the details such as my name, address, telephone number, e-mail
