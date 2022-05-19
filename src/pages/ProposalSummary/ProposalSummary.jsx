@@ -615,8 +615,6 @@ const PayButton = styled.div`
 const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
   const frontendBoot = useFrontendBoot();
 
-  const frontendData = { data: frontendBoot.data };
-
   const tenantAlias = frontendBoot?.data?.tenant?.alias;
 
   const { colors } = useTheme();
@@ -710,6 +708,22 @@ const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
       )}
       {tenantAlias === "spa" && tCSectionData?.radio && (
         <ContentSection
+          css={`
+            & p {
+              font-size: 1rem !important;
+              ${mobile} {
+                font-size: 12px !important;
+              }
+            }
+            & label {
+              margin: 10px 20px !important;
+              display: block !important;
+              font-weight: 600;
+              ${mobile} {
+                font-size: 14px !important;
+              }
+            }
+          `}
           dangerouslySetInnerHTML={{ __html: tCSectionData?.radio }}
         ></ContentSection>
       )}
