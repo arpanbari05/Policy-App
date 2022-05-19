@@ -9,7 +9,7 @@ import {
   useGetPoliciesQuery,
   useGetShortlistedQuotesQuery,
 } from "./api/api";
-import { ErrorFallback, FullScreenLoader } from "./components";
+import { FullScreenLoader } from "./components";
 import { useGetEnquiriesQuery } from "./api/api";
 import { LoadEnquiries } from "./components";
 import { Page } from "./components/index";
@@ -20,6 +20,7 @@ import "styled-components/macro";
 import { useUrlQueries } from "./customHooks/useUrlQuery";
 import { useDispatch } from "react-redux";
 import { replaceShortlistedQuote } from "./pages/quotePage/quote.slice";
+import { allowOnSpecificPages } from "./utils/helper";
 
 function AppProviders({ children }) {
   return (
@@ -32,16 +33,10 @@ function AppProviders({ children }) {
 }
 
 export default AppProviders;
-const dontCheckPoliciesUrl = [
-  "/",
-  "/input/basic-details",
-  "/thankyou",
-  "/input/portability",
-];
+
 function AppLoaders({ children, ...props }) {
   const isRootRoute = useRouteMatch({ path: "/", exact: true });
   const searchQueries = useUrlQueries();
-  const { pathname } = useLocation();
 
   const dispatch = useDispatch();
 
@@ -68,9 +63,6 @@ function AppLoaders({ children, ...props }) {
   const isProductDetailsRoute = useRouteMatch({ path: "/productdetails" });
   const isProposalRoute = useRouteMatch({ path: "/proposal" });
   const isProposalSummaryRoute = useRouteMatch({ path: "/proposal_summary" });
-  const isThankyouRoute = useRouteMatch({ path: "/thankyou" });
-
-  const dontCheckPolicies = dontCheckPoliciesUrl.includes(pathname);
 
   const { isLoading, isUninitialized, isError } = useGetFrontendBootQuery(
     undefined,
@@ -87,28 +79,32 @@ function AppLoaders({ children, ...props }) {
     refetch,
   } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
-  const { isLoading: isLoadingCart, isUninitialized: isUninitializedCart } =
-    useGetCartQuery(undefined, {
-      skip: !(
-        isQuoteRoute ||
-        isProductDetailsRoute ||
-        isProposalRoute ||
-        isProposalSummaryRoute
-      ),
-    });
-
-  const { isLoading: isLoadingPolicy, isUninitialized: isUninitializedPolicy } =
-    useGetPoliciesQuery(undefined, {
-      skip: dontCheckPolicies,
-    });
-
-  const {
-    data,
-    isFetching: isFetchingShortlisted,
-    isError: isErrorShortlisted,
-  } = useGetShortlistedQuotesQuery(undefined, {
-    skip: !searchQueries?.enquiryId,
+  const { isLoading: isLoadingCart } = useGetCartQuery(undefined, {
+    skip: !(
+      isQuoteRoute ||
+      isProductDetailsRoute ||
+      isProposalRoute ||
+      isProposalSummaryRoute
+    ),
   });
+
+  const { isLoading: isLoadingPolicy } = useGetPoliciesQuery(undefined, {
+    skip:
+      !searchQueries.enquiryId ||
+      allowOnSpecificPages([
+        "/basic-details",
+        "/thankyou",
+        "/portability",
+        "/renewal-details",
+      ]),
+  });
+
+  const { data, isFetching: isFetchingShortlisted } =
+    useGetShortlistedQuotesQuery(undefined, {
+      skip:
+        !searchQueries.enquiryId ||
+        !allowOnSpecificPages(["/quotes", "/shortlisted"]),
+    });
 
   useEffect(() => {
     if (data) {
