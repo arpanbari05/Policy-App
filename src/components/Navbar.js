@@ -71,7 +71,12 @@ const Navbar = ({ backButton: BackButton = <></>, noShadow = false }) => {
   const searchQueries = useUrlQueries();
 
   const isRootRoute = useRouteMatch({
-    path: ["/", "/input/basic-details"],
+    path: [
+      "/",
+      "/input/basic-details",
+      "/input/renewal-details",
+      "/input/portability",
+    ],
     exact: true,
   });
 

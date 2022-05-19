@@ -28,12 +28,12 @@ import useFilters from "../pages/quotePage/components/filters/useFilters";
 import {
   setPolicyTypes,
   setPolicyType,
-  updateFetchedFilters,
   replaceShortlistedQuote,
 } from "../pages/quotePage/quote.slice";
 import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter";
 import styles from "../styles";
 import {
+  allowOnSpecificPages,
   capitalize,
   featureOptionsValidValue,
   getAddOnSendData,
@@ -1512,7 +1512,9 @@ export function useQuotesCompare(initialCompareQuotes = []) {
   const [updateCompareQuotesMutation, updateQuery] =
     useUpdateCompareQuotesMutation();
 
-  const { isLoading, data, ...query } = useGetCompareQuotesQuery();
+  const { isLoading, data, ...query } = useGetCompareQuotesQuery(undefined, {
+    skip: !allowOnSpecificPages(["/compare"]),
+  });
 
   const [compareQuotes, setCompareQuotes] = useState(initialCompareQuotes);
 
@@ -1615,20 +1617,22 @@ export function useQuotesCompare(initialCompareQuotes = []) {
 
   function getUpdateCompareQuotesMutation(groupCode) {
     function updateCompareQuotes(quotes = []) {
-      if (!data?.data?.products)
+      if (quotes.length) {
+        if (!data?.data?.products)
+          return updateCompareQuotesMutation({
+            products: [{ group: parseInt(groupCode), quotes }],
+          });
+
+        const { products } = data.data;
+
         return updateCompareQuotesMutation({
-          products: [{ group: parseInt(groupCode), quotes }],
+          products: products.map(product =>
+            parseInt(product.group) === parseInt(groupCode)
+              ? { ...product, quotes }
+              : product,
+          ),
         });
-
-      const { products } = data.data;
-
-      return updateCompareQuotesMutation({
-        products: products.map(product =>
-          parseInt(product.group) === parseInt(groupCode)
-            ? { ...product, quotes }
-            : product,
-        ),
-      });
+      }
     }
 
     return [updateCompareQuotes, updateQuery];
@@ -2708,7 +2712,6 @@ export const useUSGIDiscounts = () => {
 
   const {
     query: { data, isSuccess },
-    addAdditionalDiscount,
   } = useAdditionalDiscount(groupCode, skipToken);
 
   useEffect(() => {

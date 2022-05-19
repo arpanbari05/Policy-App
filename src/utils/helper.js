@@ -67,6 +67,17 @@ export const allowOnWebsites = (sites = []) => {
   return isPass;
 };
 
+// allowOnSpecificPages
+export function allowOnSpecificPages(pages = []) {
+  let check = false;
+  pages.forEach(page => {
+    if (window.location.pathname.includes(page.toString())) {
+      check = true;
+    }
+  });
+  return check;
+}
+
 // input page visibility
 export function inputEnquiryVisibility(settings, section) {
   if (localStorage.SSO_user) {

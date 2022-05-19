@@ -93,17 +93,7 @@ function QuotesPage() {
               <ClearFilters />
             </div>
           </div>
-          {/* <p
-            className="m-0 d-none d-xl-block"
-            css={`
-              font-size: 0.89rem;
-              color: ${colors.font.four};
-              text-align: left;
-              flex: 1;
-            `}
-          >
-            All Premium Plans are GST Inclusive
-          </p> */}
+
           <PrimaryFont
             css={`
               flex: 1;
