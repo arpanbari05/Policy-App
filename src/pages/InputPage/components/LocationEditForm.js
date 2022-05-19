@@ -630,7 +630,7 @@ function LocationOptions({
           setMouseEntered(false);
         }}
       >
-        {data.map(location => (
+        {data?.map(location => (
           <Location
             location={location}
             onChange={handleChange}
