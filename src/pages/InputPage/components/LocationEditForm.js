@@ -14,11 +14,11 @@ import { ErrorMessage, SubTitle, Title } from "./FormComponents";
 import { every } from "lodash";
 import { useGetLocationDetailsQuery } from "../../../api/api";
 import "styled-components/macro";
-import { InputFormCta } from ".";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { setEditStep, setShowEditMembers } from "../../quotePage/quote.slice";
 import { Button } from "../../../components";
+import {api} from "../../../api/api";
 
 function LocationForm({ edit = false, close = () => {}, posContent }) {
   const { colors } = useTheme();
@@ -47,8 +47,6 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
   );
 
   const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
-
-  const { refetch } = useGetQuotes();
 
   const [error, setError] = useState(null);
 
@@ -110,7 +108,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
             !groupWithoutLocation ||
             groupWithoutLocation?.id === currentGroupCode
           ) {
-            refetch();
+            dispatch(api.util.invalidateTags(["custom_quotes"]));
             return dispatch(setShowEditMembers(false));
           } else {
             setCurrentGroupCode(prev => prev + 1);
@@ -122,7 +120,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           ) {
             setCurrentGroupCode(groupWithoutLocation?.id);
           } else {
-            refetch();
+            dispatch(api.util.invalidateTags(["custom_quotes"]));
             return dispatch(setShowEditMembers(false));
           }
         }
@@ -155,7 +153,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
         : setError("Please enter a valid Pincode or City");
       return;
     }
-    submit(selectedCity);
+    return submit(selectedCity);
   };
 
   const {

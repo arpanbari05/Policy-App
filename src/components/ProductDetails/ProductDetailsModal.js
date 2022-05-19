@@ -665,35 +665,37 @@ function ProductHeader({
         </div>
 
         <QuoteInfoWrap>
-          {journeyType === "top_up" && (
-            <div
-              css={`
-                display: flex;
-                align-items: center;
-                /* flex-direction: column; */
-                border-right: 1px solid grey;
-                padding: 0 20px;
-                font-size: 16px;
-
-                @media (max-width: 1485px) {
-                  font-size: 14px;
-                }
-                @media (max-width: 1390px) {
-                  font-size: 12px;
-                }
-              `}
-            >
-              <span>Deductible: </span>
-              <span
+          {
+            /* journeyType === "top_up" */ false && (
+              <div
                 css={`
-                  font-weight: bold;
-                  margin-left: 5px;
+                  display: flex;
+                  align-items: center;
+                  /* flex-direction: column; */
+                  border-right: 1px solid grey;
+                  padding: 0 20px;
+                  font-size: 16px;
+
+                  @media (max-width: 1485px) {
+                    font-size: 14px;
+                  }
+                  @media (max-width: 1390px) {
+                    font-size: 12px;
+                  }
                 `}
               >
-                &nbsp;₹ {figureToWords(deductible)}
-              </span>
-            </div>
-          )}
+                <span>Deductible: </span>
+                <span
+                  css={`
+                    font-weight: bold;
+                    margin-left: 5px;
+                  `}
+                >
+                  &nbsp;₹ {figureToWords(deductible)}
+                </span>
+              </div>
+            )
+          }
           {journeyType === "top_up" ? (
             <div
               css={`
