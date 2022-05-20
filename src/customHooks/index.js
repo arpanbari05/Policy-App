@@ -1434,10 +1434,12 @@ export function useGetQuotes(queryConfig = {}) {
     { skip, ...queryConfig },
   );
 
-  const isLoading =
-    insurersToFetch?.length <= 4
-      ? data?.length < insurersToFetch?.length
-      : data?.length < insurersToFetch?.length - 2;
+  // const isLoading =
+  //   insurersToFetch?.length <= 4
+  //     ? data?.length < insurersToFetch?.length
+  //     : data?.length < insurersToFetch?.length - 2;
+
+  const isLoading = data?.length < insurersToFetch?.length;
 
   const quotesWithoutMoreFilters = data;
 
