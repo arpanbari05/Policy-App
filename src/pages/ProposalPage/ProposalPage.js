@@ -491,6 +491,7 @@ const ProposalPage = () => {
                 backPath={getUrlWithEnquirySearch(
                   `/productdetails/${Math.max(...memberGroups)}`,
                 )}
+                shouldFollowPath
               />
               <div
                 css={`
