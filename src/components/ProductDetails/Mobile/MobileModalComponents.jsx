@@ -66,6 +66,7 @@ export function MobileProductHeader({
     mandatory_riders,
     health_riders,
     tenure,
+    deductible,
     available_sum_insureds,
   } = quote;
 
@@ -99,6 +100,15 @@ export function MobileProductHeader({
         <MiddleDiv></MiddleDiv>
 
         <LowerDiv>
+          {journeyType === "top_up" && (
+            <CoverDiv>
+              <span>Deductible</span>
+              <br />
+              <span>
+                <b>₹ {figureToWords(deductible)}</b>
+              </span>
+            </CoverDiv>
+          )}
           <CoverDiv>
             <span>Cover</span>
             <br />
