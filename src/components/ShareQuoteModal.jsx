@@ -44,7 +44,12 @@ const printImageById = async id => {
   return imgData.split(",")[1];
 };
 
-const ShareCTA = ({ onClick, loader, disabled = false }) => {
+const ShareCTA = ({
+  onClick,
+  loader,
+  disabled = false,
+  strongDisabled = false,
+}) => {
   const { colors } = useTheme();
   return (
     <Button
@@ -61,10 +66,13 @@ const ShareCTA = ({ onClick, loader, disabled = false }) => {
           max-width: 50px;
         }
 
+        ${!strongDisabled &&
+        `
         &:disabled {
           background: ${colors.primary_color} !important;
           color: #fff !important;
         }
+        `}
       `}
     >
       <span
@@ -75,7 +83,7 @@ const ShareCTA = ({ onClick, loader, disabled = false }) => {
           }
         `}
       >
-        {disabled ? (
+        {disabled && !strongDisabled ? (
           <div className="d-flex gap-1 align-items-center justify-content-center">
             <MdOutlineCheckCircle size={20} />
             <span>Shared</span>
@@ -607,14 +615,34 @@ function ShareStep2({
 
   const [disableSMS, setDisableSMS] = useState(false);
 
+  const [error, setError] = useState({});
+
   const [disableWhatsapp, setDisableWhatsapp] = useState(false);
 
   const sendRef = useRef();
 
-  const handleNumberCheck = (e, setAction) => {
+  const handleNumberCheck = (e, setAction, type = "sms") => {
     e.preventDefault();
     if (Number(e.target.value.length) <= 10) {
       if (![0, 1, 2, 3, 4, 5].includes(Number(e.target.value[0]))) {
+        setError(prev => {
+          if (type === "sms")
+            return {
+              ...prev,
+              sms:
+                e.target.value.length < 10
+                  ? "Mobile number must be 10 digits"
+                  : null,
+            };
+          if (type === "whatsapp")
+            return {
+              ...prev,
+              whatsapp:
+                e.target.value.length < 10
+                  ? "Mobile number must be 10 digits"
+                  : null,
+            };
+        });
         return setAction(e.target.value);
       }
     }
@@ -622,9 +650,22 @@ function ShareStep2({
 
   const handleEmailCheck = e => {
     if (
-      e.target.value.length <= 50 &&
+      e.target.value.length <= 64 &&
       checkAllChar(e.target.value, "~`!#$%^&*()_-+={[]}:;\"'<>,?/\\|".split(""))
     ) {
+      if (
+        !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          e.target.value.toLowerCase(),
+        )
+      ) {
+        setError(prev => ({
+          ...prev,
+          email: "Invalid email address",
+        }));
+      } else {
+        setError(prev => ({ ...prev, email: null }));
+      }
+
       setEmail(e.target.value);
     }
   };
@@ -719,62 +760,68 @@ function ShareStep2({
         }
       `}
     >
-      <ShareOption
-        className="d-flex align-items-center justify-content-between  mb-3"
-        primaryColor={PrimaryColor}
-      >
-        <div className="d-flex align-items-center position-relative w-100">
-          <div className="icon_wrapper">
-            <EmailIcon width="21" />
-          </div>
-          <input
-            type="email"
-            onChange={handleEmailCheck}
-            placeholder="Email"
-            value={email}
-            css={``}
-          />
-        </div>
-        <ShareCTA
-          disabled={disableEmail}
-          loader={isSending === "EMAIL"}
-          // onClick={e => handleSendViaEmail(e)}
-          onClick={e => {
-            handleShare(e, {
-              mode: ["EMAIL"],
-              stage,
-              purpose,
-              email,
-              via: "email",
-              whatsapp: "",
-              sms: "",
-              image_to_send: imageSend ? imageSend : undefined,
-              insurers,
-              sum_insured,
-            });
-          }}
-          // loader={isSending && !emailStatus?.message}
-        />
-      </ShareOption>
-
-      {!["sriyah", "pinc"].includes(tenantAlias) && (
+      <div className="mb-3">
         <ShareOption
-          className="d-flex mb-3 align-items-center justify-content-between w-100"
+          className="d-flex align-items-center justify-content-between"
           primaryColor={PrimaryColor}
+          error={error.email}
         >
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center position-relative w-100">
             <div className="icon_wrapper">
-              <WhtsappIcon width="21" />
+              <EmailIcon width="21" />
             </div>
             <input
-              type="number"
-              onChange={e => handleNumberCheck(e, setWtsappNo)}
-              placeholder="Mobile no."
-              value={wtsappNo}
+              type="email"
+              onChange={handleEmailCheck}
+              placeholder="Email"
+              value={email}
+              css={``}
             />
           </div>
+          <ShareCTA
+            disabled={disableEmail || error.email}
+            strongDisabled={error.email}
+            loader={isSending === "EMAIL"}
+            // onClick={e => handleSendViaEmail(e)}
+            onClick={e => {
+              handleShare(e, {
+                mode: ["EMAIL"],
+                stage,
+                purpose,
+                email,
+                via: "email",
+                whatsapp: "",
+                sms: "",
+                image_to_send: imageSend ? imageSend : undefined,
+                insurers,
+                sum_insured,
+              });
+            }}
+            // loader={isSending && !emailStatus?.message}
+          />
+        </ShareOption>
+        {error.email && <ErrorMessage>{error.email}</ErrorMessage>}
+      </div>
 
-          {Number(wtsappNo.length) === 10 ? (
+      {!["sriyah", "pinc"].includes(tenantAlias) && (
+        <div className="mb-3">
+          <ShareOption
+            className="d-flex align-items-center justify-content-between w-100"
+            primaryColor={PrimaryColor}
+            error={error.whatsapp}
+          >
+            <div className="d-flex align-items-center">
+              <div className="icon_wrapper">
+                <WhtsappIcon width="21" />
+              </div>
+              <input
+                type="number"
+                onChange={e => handleNumberCheck(e, setWtsappNo, "whatsapp")}
+                placeholder="Mobile no."
+                value={wtsappNo}
+              />
+            </div>
+
             <a
               target="_blank"
               ref={sendRef}
@@ -784,95 +831,103 @@ function ShareStep2({
                 return disableButton("WHATSAPP");
               }}
             >
-              <ShareCTA disabled={disableWhatsapp} />
+              <ShareCTA
+                disabled={disableWhatsapp || error.whatsapp}
+                strongDisabled={error.whatsapp}
+              ></ShareCTA>
             </a>
-          ) : (
-            <ShareCTA />
-          )}
-        </ShareOption>
+          </ShareOption>
+          {error.whatsapp && <ErrorMessage>{error.whatsapp}</ErrorMessage>}
+        </div>
       )}
 
       {["pinc"].includes(tenantAlias) && (
+        <div className="mb-3">
+          <ShareOption
+            className="d-flex align-items-center justify-content-between w-100"
+            primaryColor={PrimaryColor}
+            error={error.whatsapp}
+          >
+            <div className="d-flex align-items-center">
+              <div className="icon_wrapper">
+                <WhtsappIcon width="21" />
+              </div>
+              <input
+                type="number"
+                onChange={e => handleNumberCheck(e, setWtsappNo, "whatsapp")}
+                placeholder="Mobile no."
+                value={wtsappNo}
+              />
+            </div>
+
+            <ShareCTA
+              disabled={disableWhatsapp || error.whatsapp}
+              strongDisabled={error.whatsapp}
+              loader={isSending === "WHATSAPP"}
+              onClick={e => {
+                handleShare(e, {
+                  mode: ["WHATSAPP"],
+                  stage,
+                  purpose,
+                  via: "whatsapp",
+                  whatsapp: wtsappNo,
+                  image_to_send: imageSend ? imageSend : undefined,
+                  insurers,
+                  sum_insured,
+                });
+              }}
+            />
+          </ShareOption>
+          {error.whatsapp && <ErrorMessage>{error.whatsapp}</ErrorMessage>}
+        </div>
+      )}
+
+      <div className="mb-3">
         <ShareOption
-          className="d-flex mb-3 align-items-center justify-content-between w-100"
+          className="d-flex align-items-center justify-content-between w-100"
           primaryColor={PrimaryColor}
+          error={error.sms}
         >
           <div className="d-flex align-items-center">
             <div className="icon_wrapper">
-              <WhtsappIcon width="21" />
+              <SmsIcon width="21" />
             </div>
             <input
               type="number"
-              onChange={e => handleNumberCheck(e, setWtsappNo)}
               placeholder="Mobile no."
-              value={wtsappNo}
+              value={smsNo}
+              onChange={e => handleNumberCheck(e, setSmsNo)}
             />
           </div>
 
           <ShareCTA
-            disabled={disableWhatsapp}
-            loader={isSending === "WHATSAPP"}
+            disabled={disableSMS || error.sms}
+            strongDisabled={error.sms}
+            loader={isSending === "SMS"}
             onClick={e => {
-              handleShare(e, {
-                mode: ["WHATSAPP"],
-                stage,
-                purpose,
-                via: "whatsapp",
-                whatsapp: wtsappNo,
-                image_to_send: imageSend ? imageSend : undefined,
-                insurers,
-                sum_insured,
-              });
+              setEmailStatus({ status: 0, message: null });
+              Number(smsNo.length) === 10 &&
+                handleShare(e, {
+                  mode: ["SMS"],
+                  stage,
+                  purpose,
+                  via: "sms",
+                  email: "",
+                  whatsapp: "",
+                  sms: smsNo,
+                  sum_insured,
+                  insurers,
+                });
             }}
           />
         </ShareOption>
-      )}
-
-      <ShareOption
-        className="d-flex mb-3 align-items-center justify-content-between w-100"
-        primaryColor={PrimaryColor}
-      >
-        <div className="d-flex align-items-center">
-          <div className="icon_wrapper">
-            <SmsIcon width="21" />
-          </div>
-          <input
-            type="number"
-            placeholder="Mobile no."
-            value={smsNo}
-            onChange={e => handleNumberCheck(e, setSmsNo)}
-          />
-        </div>
-
-        <ShareCTA
-          disabled={disableSMS}
-          loader={isSending === "SMS"}
-          onClick={e => {
-            setEmailStatus({ status: 0, message: null });
-            Number(smsNo.length) === 10 &&
-              handleShare(e, {
-                mode: ["SMS"],
-                stage,
-                purpose,
-                via: "sms",
-                email: "",
-                whatsapp: "",
-                sms: smsNo,
-                sum_insured,
-                insurers,
-              });
-          }}
-        />
-      </ShareOption>
+        {error.sms && <ErrorMessage>{error.sms}</ErrorMessage>}
+      </div>
 
       <InfoMessage className="p-3 text-center" PrimaryShade={PrimaryShade}>
         * Please note that the premium may vary in future.
       </InfoMessage>
-      {errorMsg ? (
-        <div className="text-center text-danger">{errorMsg}</div>
-      ) : (
-        ""
-      )}
+      {errorMsg && <div className="text-center text-danger">{errorMsg}</div>}
       {emailStatus && (
         <EmailSent status={emailStatus.status}>
           {/* {handleRotation()} */}
@@ -886,8 +941,9 @@ function ShareStep2({
 export default ShareQuoteModal;
 
 const ShareOption = styled.div`
+  overflow: hidden;
   border-radius: 10px;
-  border: solid 1px #d5dce5;
+  border: solid 1px ${props => (props.error ? "#c7222a" : "#d5dce5")};
   padding-left: 10px;
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
@@ -957,6 +1013,12 @@ const ShareOption = styled.div`
   }
 `;
 
+const ErrorMessage = styled.p`
+  color: #c7222a;
+  font-size: 12px;
+  margin: 0;
+  margin-top: 2px;
+`;
 const InfoMessage = styled.div`
   background-color: ${props => props.PrimaryShade};
   font-weight: 600;

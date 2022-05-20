@@ -39,10 +39,16 @@ function useFilters() {
   let {
     data: { defaultfilters, morefilters, ...filters },
     journeyType,
+    subJourneyType,
   } = useFrontendBoot();
 
   const defaultFilters = {
-    baseplantype: journeyType === "top_up" ? "topup_plan" : "base_health",
+    baseplantype:
+      journeyType === "top_up"
+        ? "topup_plan"
+        : subJourneyType === "port"
+        ? "port_plan"
+        : "base_health", //logic for default plan type filter
     plantype: "F",
   };
 

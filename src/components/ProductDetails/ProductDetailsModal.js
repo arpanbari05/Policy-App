@@ -91,8 +91,6 @@ function ProductDetailsModal({
 
   const [currSumInsured, setCurSumInsured] = useState(sum_insured);
 
-  const [currDeductible, setCurDeductible] = useState(deductible);
-
   useEffect(() => {
     if (currSumInsured > 500000 && pos_nonpos_switch_message && isSSOJourney())
       dispatch(setPosPopup(true));
@@ -143,8 +141,6 @@ function ProductDetailsModal({
           <ProductHeader
             currSumInsured={currSumInsured}
             setCurSumInsured={setCurSumInsured}
-            currDeductible={currDeductible}
-            setCurDeductible={setCurDeductible}
             quote={quote}
             selectedRiders={selectedRiders}
             onClose={handleClose}
@@ -579,8 +575,6 @@ export function getSumInsuredOptions(arr = []) {
 function ProductHeader({
   quote,
   selectedRiders = [],
-  currDeductible,
-  setCurDeductible,
   currSumInsured,
   setCurSumInsured,
   onClose,
@@ -664,38 +658,36 @@ function ProductHeader({
           <ProductName>{name}</ProductName>
         </div>
 
-        <QuoteInfoWrap>
-          {
-            /* journeyType === "top_up" */ false && (
-              <div
-                css={`
-                  display: flex;
-                  align-items: center;
-                  /* flex-direction: column; */
-                  border-right: 1px solid grey;
-                  padding: 0 20px;
-                  font-size: 16px;
+        <QuoteInfoWrap longSpace={journeyType === "top_up"}>
+          {journeyType === "top_up" && (
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                /* flex-direction: column; */
+                border-right: 1px solid grey;
+                padding: 0 20px;
+                font-size: 16px;
 
-                  @media (max-width: 1485px) {
-                    font-size: 14px;
-                  }
-                  @media (max-width: 1390px) {
-                    font-size: 12px;
-                  }
+                @media (max-width: 1485px) {
+                  font-size: 14px;
+                }
+                @media (max-width: 1390px) {
+                  font-size: 12px;
+                }
+              `}
+            >
+              <span>Deductible: </span>
+              <span
+                css={`
+                  font-weight: bold;
+                  margin-left: 5px;
                 `}
               >
-                <span>Deductible: </span>
-                <span
-                  css={`
-                    font-weight: bold;
-                    margin-left: 5px;
-                  `}
-                >
-                  &nbsp;₹ {figureToWords(deductible)}
-                </span>
-              </div>
-            )
-          }
+                &nbsp;₹ {figureToWords(deductible)}
+              </span>
+            </div>
+          )}
           {journeyType === "top_up" ? (
             <div
               css={`
@@ -886,11 +878,11 @@ const QuoteInfoWrap = styled.div`
   border-radius: 10px;
   display: flex;
   align-items: center;
-  width: 46%;
+  width: ${({ longSpace }) => (longSpace ? "60%" : "46%")};
   height: 75px;
   justify-content: space-around;
   @media (max-width: 1190px) {
-    width: 50%;
+    width: ${({ longSpace }) => (longSpace ? "58%" : "50%")};
   }
   @media (max-width: 1090px) {
     width: 55%;
