@@ -58,9 +58,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
   const emailInput = useEmailInput(inputData?.email || "", setEmailErrors);
   const [gender, setGender] = useState(inputData?.gender || "");
   const [journeyType, setJourneyType] = useState(
-    location.origin?.includes(tenant?.topup_frontend_domain)
-      ? "top_up"
-      : "health",
+    location.host === tenant.topup_frontend_domain ? "top_up" : "health",
   );
 
   const handleFormSubmit = async event => {
@@ -112,7 +110,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
     }
   };
 
-  return !location.origin?.includes(tenant?.health_renewal_frontend_domain) ? (
+  return location.host !== tenant?.health_renewal_frontend_domain ? (
     <div {...props}>
       <form onSubmit={handleFormSubmit}>
         <div
