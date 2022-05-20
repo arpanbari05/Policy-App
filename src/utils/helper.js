@@ -3,6 +3,7 @@ import clickSound from "../assets/audio/button-click.mp3";
 
 // all on specific urls
 export const allowOnWebsites = (sites = []) => {
+  const renewBuyAll = ["rbstaging.in", "renewbuy.com"];
   const renewBuyUat = [
     "https://uathealth.rbstaging.in",
     "https://renewbuy-health.fynity.in",
@@ -14,10 +15,6 @@ export const allowOnWebsites = (sites = []) => {
   ];
   const sriyahUat = "https://health-uat.nammacover.com";
   const pincUat = "https://uat-health.pincinsurance.com";
-  const renewalRB = [
-    "https://uatrenewal.rbstaging.in",
-    "https://health-renewals.renewbuy.com",
-  ];
   const topupRB = "https://uat-topup.rbstaging.in";
   const origin = window.location.origin;
 
@@ -53,15 +50,17 @@ export const allowOnWebsites = (sites = []) => {
         isPass = true;
       }
     }
-    if (site === "renewalRB") {
-      if (renewalRB.includes(origin)) {
-        isPass = true;
-      }
-    }
     if (site === "topupRB") {
       if (topupRB.includes(origin)) {
         isPass = true;
       }
+    }
+    if (site === "renewBuyAll") {
+      renewBuyAll.forEach(value => {
+        if (origin.includes(value)) {
+          isPass = true;
+        }
+      });
     }
   });
   return isPass;
