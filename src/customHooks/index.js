@@ -265,7 +265,7 @@ export function useFilterOrder() {
   };
 }
 
-export function useFrontendBoot() {
+export function useFrontendBoot(skipEnquiry = true) {
   const searchQueries = useUrlQueries();
   const {
     data: frontendData,
@@ -275,7 +275,7 @@ export function useFrontendBoot() {
   } = useGetFrontendBootQuery();
 
   const { data: enquiryData } = useGetEnquiriesQuery(undefined, {
-    skip: !searchQueries.enquiryId,
+    skip: !searchQueries.enquiryId && skipEnquiry,
   });
 
   const data = { ...frontendData, ...config };
@@ -289,7 +289,8 @@ export function useFrontendBoot() {
 
   if (enquiryData?.data) {
     journeyType = enquiryData?.data?.section;
-    subJourneyType = enquiryData?.data?.type === "renew" ? "renewal" : "";
+    subJourneyType =
+      enquiryData?.data?.type === "renew" ? "renewal" : enquiryData?.data?.type;
   }
 
   return {

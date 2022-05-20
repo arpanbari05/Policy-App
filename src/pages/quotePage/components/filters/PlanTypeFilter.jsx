@@ -104,7 +104,7 @@ function FilterModal({ onClose, ...props }) {
       setLoading(true);
       await Promise.all([
         updateEnquiry({
-          expiry_date: `${expiry_date[2]}/${expiry_date[1]}/${expiry_date[0]}`,
+          expiry_date: `${expiry_date[2]}-${expiry_date[1]}-${expiry_date[0]}`,
           type: "port",
         }),
         updateFilters(updatedBasePlanTypeFilter),

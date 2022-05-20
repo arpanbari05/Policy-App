@@ -54,7 +54,8 @@ function PortabilityForm() {
       type: "port",
       section: "health",
     });
-    if (!res.error) history.push("/input/basic-details");
+    if (!res.error)
+      history.push(`/input/basic-details?enquiryId=${res?.data?.data?.enquiry_id}`);
   };
 
   const goBack = () => {
