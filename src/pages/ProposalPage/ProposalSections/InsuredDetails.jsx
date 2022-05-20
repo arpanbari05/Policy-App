@@ -451,7 +451,7 @@ const InsuredDetails = ({
                       setMedicalContinueClick(true);
                     },
                   }),
-                );
+                ); 
               setMedicalContinueClick(true);
 
               // setContinueBtnClick(true);

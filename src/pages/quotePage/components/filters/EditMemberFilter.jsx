@@ -332,7 +332,6 @@ export function EditMembers({ redirectToQuotes, ...props }) {
             </Button>
           </form>
         ) : (
-          // <EditPincode show={show} onClose={onClose} />
           <div
             css={`
               padding: 1em 4em;
@@ -352,14 +351,6 @@ export function EditMembers({ redirectToQuotes, ...props }) {
 
 export default EditMemberFilter;
 
-const EditMembersButton = styled.button`
-  background-color: white;
-  width: 35px;
-  height: 35px;
-  border-radius: 100%;
-  margin: 0px 5px;
-  border: none;
-`;
 const Tab = styled.div`
   width: 100%;
   display: flex;

@@ -26,6 +26,7 @@ export const api = createApi({
     "TenureDiscount",
     "ProposalSummaryUpdate",
     "featureOption",
+    "custom_quotes"
   ],
   endpoints: builder => ({
     getCities: builder.mutation({
@@ -393,6 +394,7 @@ export const api = createApi({
 
         return { data: [] };
       },
+      providesTags: ["custom_quotes"],
     }),
     updateCompareQuotes: builder.mutation({
       query: body => ({
