@@ -12,6 +12,7 @@ import { useUrlQueries } from "../customHooks/useUrlQuery";
 import { allowOnWebsites, isThemeApp } from "../utils/helper";
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 import PincPosLogout from "../pos/Pinc/PincPosLogout";
+import KeyVerificationModal from "../pos/RenewBuy/KeyVerificationModal";
 
 function LogoLink() {
   const {
@@ -98,6 +99,7 @@ const Navbar = ({ backButton: BackButton = <></>, noShadow = false }) => {
         }
       `}
     >
+      {allowOnWebsites(["renewBuyAll"]) && <KeyVerificationModal />}
       <Card
         width={"100%"}
         height={"55px"}
