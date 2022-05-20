@@ -27,6 +27,7 @@ import validateInput, {
 import styled from "styled-components";
 
 const BasicDetailsForm = ({ posContent, ...props }) => {
+  const location = window.location;
   let inputData = {
     gender: "M",
   };
@@ -50,7 +51,9 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
   const emailInput = useEmailInput(inputData?.email || "", setEmailErrors);
   const [gender, setGender] = useState(inputData?.gender || "");
   const [journeyType, setJourneyType] = useState(
-    allowOnWebsites(["topupRB"]) ? "top_up" : "health",
+    location.origin?.includes(tenant?.topup_frontend_domain)
+      ? "top_up"
+      : "health",
   );
 
   const handleFormSubmit = async event => {
@@ -97,7 +100,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
     }
   };
 
-  return !allowOnWebsites(["renewalRB"]) ? (
+  return !location.origin?.includes(tenant?.health_renewal_frontend_domain) ? (
     <div {...props}>
       <form onSubmit={handleFormSubmit}>
         <div
