@@ -461,7 +461,6 @@ export function CircleCloseButton({
 }
 
 export function useGotoProductDetailsPage() {
-  const history = useHistory();
   const { data } = useGetCartQuery();
   const { enquiryId } = useUrlEnquiry();
 
@@ -474,10 +473,7 @@ export function useGotoProductDetailsPage() {
       localStorage.getItem("groups") &&
       JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
-    history.push({
-      pathname: `/productdetails/${firstGroupWithQuote}`,
-      search: `enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`,
-    });
+    window.location.href = `/productdetails/${firstGroupWithQuote}?enquiryId=${enquiryId}&pincode=${currentGroup.pincode}&city=${currentGroup.city}`;
   }
 
   return { gotoProductPage };
