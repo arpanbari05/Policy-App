@@ -431,6 +431,7 @@ const ProposalSummary = () => {
                   <GoBackButton
                     data-html2canvas-ignore
                     backPath={getUrlWithEnquirySearch("/proposal")}
+                    shouldFollowPath
                   />
                 }
                 <div></div>

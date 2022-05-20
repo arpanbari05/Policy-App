@@ -21,7 +21,7 @@ const GoBackButton = ({ backPath, shouldFollowPath = false, ...extras }) => {
       `}
       onClick={() => {
         if (shouldFollowPath && backPath) {
-          history.push(backPath);
+          window.location.href = backPath;
         } else {
           history.goBack();
         }
