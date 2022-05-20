@@ -17,6 +17,7 @@ import {
 import { PortDatePicker } from "../../../InputPage/components/PortabilityForm";
 import { useUpdateEnquiry } from "../../../../customHooks";
 import { CircleLoader } from "../../../../components/index.js";
+import { isSSOJourney } from "../../../../utils/helper";
 
 const DESCRIPTIONS = {
   arogya_sanjeevani:
@@ -50,14 +51,24 @@ const PlanTypeFilter = () => {
 export default PlanTypeFilter;
 
 function FilterModal({ onClose, ...props }) {
-  const { journeyType } = useFrontendBoot();
+  const {
+    journeyType,
+    data: {
+      settings: { restrict_posp_quotes_after_limit },
+    },
+  } = useFrontendBoot();
   const { colors } = useTheme();
 
   const { updateEnquiry } = useUpdateEnquiry();
 
-  const {
+  let {
     data: { baseplantypes },
   } = useFrontendBoot();
+
+  if (isSSOJourney() && restrict_posp_quotes_after_limit === "1")
+    baseplantypes = baseplantypes.filter(
+      plantype => plantype.code !== "1_crore_plan",
+    ); // excluding 1 Crore plan filter for POS user PINC Broker
 
   const [isLoading, setLoading] = useState(false);
 

@@ -1,11 +1,10 @@
 import { Redirect, useLocation } from "react-router-dom";
-import { allowOnWebsites } from "../utils/helper";
 
 export function BaseComponent({ tenant }) {
   const location = useLocation();
-  return !allowOnWebsites(["renewalRB"]) ? (
-    <Redirect from="/" to={`/input/basic-details${location.search}`} />
-  ) : (
+  return location.host === tenant?.health_renewal_frontend_domain ? (
     <Redirect from="/" to={`/input/renewal-details`} />
+  ) : (
+    <Redirect from="/" to={`/input/basic-details${location.search}`} />
   );
 }
