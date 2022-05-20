@@ -10,7 +10,10 @@ import "styled-components/macro";
 import { Filter, FilterHead } from "./index.js";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 import { IoRadioButtonOn } from "react-icons/io5";
-import { ClickSound } from "../../../../utils/helper.js";
+import {
+  ClickSound,
+  dateObjectToLocaleString,
+} from "../../../../utils/helper.js";
 import { PortDatePicker } from "../../../InputPage/components/PortabilityForm";
 import { useUpdateEnquiry } from "../../../../customHooks";
 import { CircleLoader } from "../../../../components/index.js";
@@ -95,13 +98,15 @@ function FilterModal({ onClose, ...props }) {
       };
     }
 
-    let expiry_date = new Date(expiryDate).toLocaleDateString();
-    expiry_date = expiry_date.split("/").reverse().join("-");
+    let expiry_date = dateObjectToLocaleString(new Date(expiryDate)).split("/");
 
     if (selectedPlanType.code === "port_plan") {
       setLoading(true);
       await Promise.all([
-        updateEnquiry({ expiry_date, type: "port" }),
+        updateEnquiry({
+          expiry_date: `${expiry_date[2]}/${expiry_date[1]}/${expiry_date[0]}`,
+          type: "port",
+        }),
         updateFilters(updatedBasePlanTypeFilter),
       ]);
       // updateFilters(updatedBasePlanTypeFilter);

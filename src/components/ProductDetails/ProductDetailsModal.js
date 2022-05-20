@@ -87,7 +87,7 @@ function ProductDetailsModal({
     data: { settings: pos_nonpos_switch_message },
   } = useFrontendBoot();
 
-  const { sum_insured } = propQuote;
+  const { sum_insured, deductible } = propQuote;
 
   const [currSumInsured, setCurSumInsured] = useState(sum_insured);
 
@@ -602,6 +602,7 @@ function ProductHeader({
   const {
     product: { company, name },
     sum_insured,
+    deductible,
     total_premium,
     tenure,
     mandatory_riders,
@@ -657,46 +658,105 @@ function ProductHeader({
           <ProductName>{name}</ProductName>
         </div>
 
-        <QuoteInfoWrap>
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-              /* flex-direction: column; */
-              border-right: 1px solid grey;
-              padding: 0 20px;
-              font-size: 16px;
-
-              @media (max-width: 1485px) {
-                font-size: 14px;
-              }
-              @media (max-width: 1390px) {
-                font-size: 12px;
-              }
-            `}
-          >
-            <span>Cover: </span>
-            <span
+        <QuoteInfoWrap longSpace={journeyType === "top_up"}>
+          {journeyType === "top_up" && (
+            <div
               css={`
-                font-weight: bold;
-                margin-left: 5px;
+                display: flex;
+                align-items: center;
+                /* flex-direction: column; */
+                border-right: 1px solid grey;
+                padding: 0 20px;
+                font-size: 16px;
+
+                @media (max-width: 1485px) {
+                  font-size: 14px;
+                }
+                @media (max-width: 1390px) {
+                  font-size: 12px;
+                }
               `}
             >
-              {!sumInsuredOptions || sumInsuredOptions?.length === 0 ? (
-                <>&nbsp;₹ {figureToWords(sum_insured)}</>
-              ) : (
-                <QuoteCardSelect
-                  fontSize={"inherit"}
-                  options={sumInsuredOptions}
-                  defaultValue={{
-                    value: sum_insured,
-                    label: numberToDigitWord(sum_insured),
-                  }}
-                  onChange={suminsuredChangeHandler}
-                />
-              )}
-            </span>
-          </div>
+              <span>Deductible: </span>
+              <span
+                css={`
+                  font-weight: bold;
+                  margin-left: 5px;
+                `}
+              >
+                &nbsp;₹ {figureToWords(deductible)}
+              </span>
+            </div>
+          )}
+          {journeyType === "top_up" ? (
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                /* flex-direction: column; */
+                border-right: 1px solid grey;
+                padding: 0 20px;
+                font-size: 16px;
+
+                @media (max-width: 1485px) {
+                  font-size: 14px;
+                }
+                @media (max-width: 1390px) {
+                  font-size: 12px;
+                }
+              `}
+            >
+              <span>Cover: </span>
+              <span
+                css={`
+                  font-weight: bold;
+                  margin-left: 5px;
+                `}
+              >
+                &nbsp;₹ {figureToWords(sum_insured)}
+              </span>
+            </div>
+          ) : (
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                /* flex-direction: column; */
+                border-right: 1px solid grey;
+                padding: 0 20px;
+                font-size: 16px;
+
+                @media (max-width: 1485px) {
+                  font-size: 14px;
+                }
+                @media (max-width: 1390px) {
+                  font-size: 12px;
+                }
+              `}
+            >
+              <span>Cover: </span>
+              <span
+                css={`
+                  font-weight: bold;
+                  margin-left: 5px;
+                `}
+              >
+                {!sumInsuredOptions || sumInsuredOptions?.length === 0 ? (
+                  <>&nbsp;₹ {figureToWords(sum_insured)}</>
+                ) : (
+                  <QuoteCardSelect
+                    fontSize={"inherit"}
+                    options={sumInsuredOptions}
+                    defaultValue={{
+                      value: sum_insured,
+                      label: numberToDigitWord(sum_insured),
+                    }}
+                    onChange={suminsuredChangeHandler}
+                  />
+                )}
+              </span>
+            </div>
+          )}
           <div
             css={`
               display: flex;
@@ -818,11 +878,11 @@ const QuoteInfoWrap = styled.div`
   border-radius: 10px;
   display: flex;
   align-items: center;
-  width: 46%;
+  width: ${({ longSpace }) => (longSpace ? "60%" : "46%")};
   height: 75px;
   justify-content: space-around;
   @media (max-width: 1190px) {
-    width: 50%;
+    width: ${({ longSpace }) => (longSpace ? "58%" : "50%")};
   }
   @media (max-width: 1090px) {
     width: 55%;
