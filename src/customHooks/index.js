@@ -265,7 +265,7 @@ export function useFilterOrder() {
   };
 }
 
-export function useFrontendBoot() {
+export function useFrontendBoot(skipEnquiry = true) {
   const searchQueries = useUrlQueries();
   const {
     data: frontendData,
@@ -275,7 +275,7 @@ export function useFrontendBoot() {
   } = useGetFrontendBootQuery();
 
   const { data: enquiryData } = useGetEnquiriesQuery(undefined, {
-    skip: !searchQueries.enquiryId,
+    skip: !searchQueries.enquiryId && skipEnquiry,
   });
 
   const data = { ...frontendData, ...config };
@@ -289,7 +289,8 @@ export function useFrontendBoot() {
 
   if (enquiryData?.data) {
     journeyType = enquiryData?.data?.section;
-    subJourneyType = enquiryData?.data?.type === "renew" ? "renewal" : "";
+    subJourneyType =
+      enquiryData?.data?.type === "renew" ? "renewal" : enquiryData?.data?.type;
   }
 
   return {
@@ -313,6 +314,7 @@ export function useFilter() {
       defaultfilters: { cover, tenure, plan_type },
     },
     journeyType,
+    subJourneyType,
   } = useFrontendBoot();
 
   const {
@@ -329,7 +331,11 @@ export function useFilter() {
     let tenureFilter = tenure;
     let coverFilter = cover;
     let base_plan_type =
-      journeyType === "top_up" ? "topup_plan" : "base_health";
+      journeyType === "top_up"
+        ? "topup_plan"
+        : subJourneyType === "port"
+        ? "port_plan"
+        : "base_health"; // logic for default plan type filter
     let planTypeFilter = plan_type;
 
     if (extras) {
@@ -1434,10 +1440,12 @@ export function useGetQuotes(queryConfig = {}) {
     { skip, ...queryConfig },
   );
 
-  const isLoading =
-    insurersToFetch?.length <= 4
-      ? data?.length < insurersToFetch?.length
-      : data?.length < insurersToFetch?.length - 2;
+  // const isLoading =
+  //   insurersToFetch?.length <= 4
+  //     ? data?.length < insurersToFetch?.length
+  //     : data?.length < insurersToFetch?.length - 2;
+
+  const isLoading = data?.length < insurersToFetch?.length;
 
   const quotesWithoutMoreFilters = data;
 

@@ -206,6 +206,17 @@ const TextInput = ({
                 onChange(e);
                 setFallbackValue(e.target.value);
               }
+            } else if (checkValidation?.["matches"] === "email") {
+              if (
+                e.target.value.length <= 64 &&
+                checkAllChar(
+                  e.target.value,
+                  forbiddedSymbols.filter(el => !"@.".split("").includes(el)),
+                )
+              ) {
+                onChange(e);
+                setFallbackValue(e.target.value);
+              }
             } else {
               if (
                 notAllowed &&
@@ -254,7 +265,7 @@ const TextInput = ({
             }
           } else if (checkValidation?.["matches"] === "email") {
             if (
-              e.target.value.length <= 60 &&
+              e.target.value.length <= 64 &&
               checkAllChar(
                 e.target.value,
                 forbiddedSymbols.filter(el => !"@.".split("").includes(el)),
