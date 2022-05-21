@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { setAsyncOptions } from "../../../components/FormBuilder/FormBuilder.slice";
+import { useDispatch, useSelector } from "react-redux";
 import down from "./../../../assets/images/down-arrow.svg";
 import up from "./../../../assets/images/up-arrow.svg";
 import useAppropriateOptions from "./useAppropriateOptions";
-import {
-  setShowErrorPopup
-} from "../ProposalSections/ProposalSections.slice";
+import { setShowErrorPopup } from "../ProposalSections/ProposalSections.slice";
 import { callApi } from "../../../components/FormBuilder/FormBuilder.slice";
+import { useGetEnquiriesQuery } from "../../../api/api";
+import { getAge } from "../../../utils/helper";
 
 const DropDown = ({
   name,
@@ -31,7 +30,7 @@ const DropDown = ({
   deleteValue = () => {},
   directUpdateValue = () => {},
   invalidateOption,
-  fill=false,
+  fill = false,
 }) => {
   const dispatch = useDispatch();
   const { selectOption } = useAppropriateOptions({
@@ -44,71 +43,141 @@ const DropDown = ({
     directUpdateValue,
     value,
     fill,
-    deleteValue
+    deleteValue,
   });
 
-const [selectedNone, setSelectedNoneState] = useState(false);
+  const [selectedNone, setSelectedNoneState] = useState(false);
+
+  const proposelSelectedDOBRedux = useSelector(
+    ({ proposalPage }) => proposalPage?.proposalData["Proposer Details"]?.dob,
+  );
+
+  const {
+    data: {
+      data: {
+        input: { members },
+      },
+    },
+  } = useGetEnquiriesQuery();
+
+  let proposerAgeTemp = parseInt(
+    members?.filter(i => i.type === "self")[0]?.age,
+  );
+
+  let currentYear = new Date().getFullYear();
+
+  let estimatedProposerDOB = `${currentYear - proposerAgeTemp}`;
+
+  const proposerAge = getAge(
+    proposelSelectedDOBRedux?.split("-")[2] ||
+      selectedValues?.dob ||
+      estimatedProposerDOB,
+  );
+
+  console.log("The proposer age", proposerAge);
 
   useEffect(() => {
-   
-    if(value){
-      console.log("sfsvbjksf",value,selectOption[value],values)
-
-      if(selectOption[value] && values && values[name] !== selectOption[value] && !fill){
-        directUpdateValue(name,value);
-      }else if(!selectOption[value]) deleteValue();
-
+    if (value) {
+      if (
+        selectOption[value] &&
+        values &&
+        values[name] !== selectOption[value] &&
+        !fill
+      ) {
+        directUpdateValue(name, value);
+      } else if (!selectOption[value]) deleteValue();
     }
-    if(fill && name.includes("town")){
-      console.log("wefvewhjbfjew",values,values[name],name)
-  
-        if (values[name] && fill) {
-          dispatch(
-            callApi(fill.using, {
-              [name]: values[name],
-              [fill.alsoUse]:
-                values[fill.alsoUse],
-            }),
-            fill,
-          );
-        }
+    if (fill && name.includes("town")) {
+      if (values[name] && fill) {
+        dispatch(
+          callApi(fill.using, {
+            [name]: values[name],
+            [fill.alsoUse]: values[fill.alsoUse],
+          }),
+          fill,
+        );
       }
-  },[value])
-
-  const [dataValue, setDataValue] = useState();
-
-  const excludeOptionsPage = excludeOptions?.when?.split(".")[0];
-
-  const excludeOptionsVariable = excludeOptions?.when?.split(".")[1];
+    }
+  }, [value]);
 
   label = label || "- Select -";
 
   label = checkValidation?.required ? `${label}*` : label;
 
+  let optionsToDisplay = <></>;
+
+  if (Object.keys(selectedValues)?.length) {
+    if (
+      selectedValues?.title &&
+      selectedValues.title === "mrs" &&
+      label === "Marital Status*"
+    ) {
+      optionsToDisplay = Object.keys(selectOption)
+        .filter(item => item !== "single")
+        .map(item => (
+          <>
+            <option
+              key={item + selectOption[item]}
+              value={item}
+              selected={selectedNone}
+            >
+              {selectOption[item]}
+            </option>
+          </>
+        ));
+    } else if (
+      selectedValues?.title &&
+      selectedValues?.title === "mr" &&
+      label === "Marital Status*" &&
+      proposerAge < 21
+    ) {
+      optionsToDisplay = Object.keys(selectOption)
+        .filter(item => item !== "married")
+        .map(item => (
+          <>
+            <option
+              key={item + selectOption[item]}
+              value={item}
+              selected={selectedNone}
+            >
+              {selectOption[item]}
+            </option>
+          </>
+        ));
+    } else {
+      optionsToDisplay = Object.keys(selectOption).map(item => (
+        <option key={item + selectOption[item]} value={item}>
+          {selectOption[item]}
+        </option>
+      ));
+    }
+  }
+
   return (
-    <SelectContainer
-      height={height}
-    >
+    <SelectContainer height={height}>
       <Select
-      value={value}
+        value={value}
         onChange={e => {
-          setSelectedNoneState(false)
-// console.log("wrgrjkbd",invalidateOption.option,e.target.value)
+          setSelectedNoneState(false);
 
-          if(invalidateOption && invalidateOption?.option && invalidateOption.option === e.target.value){
-
-            dispatch(setShowErrorPopup({
-              show: true,
-              head: "",
-              msg:  invalidateOption.message,
-            }));
+          if (
+            invalidateOption &&
+            invalidateOption?.option &&
+            invalidateOption.option === e.target.value
+          ) {
+            dispatch(
+              setShowErrorPopup({
+                show: true,
+                head: "",
+                msg: invalidateOption.message,
+              }),
+            );
             setSelectedNoneState(true);
-       
-          }else onChange(e, e.target.value);
+          } else onChange(e, e.target.value);
         }}
-       
         disabled={
-          (value && Object.keys(selectOption).length === 1 && !asyncOptions) || readOnly
+          (value && Object.keys(selectOption).length === 1 && !asyncOptions) ||
+          readOnly
         }
         error={error}
         height={height}
@@ -126,23 +195,7 @@ const [selectedNone, setSelectedNoneState] = useState(false);
             {dropPlaceholder || label || "- Select -"}
           </option>
         )}
-        {selectedValues?.title &&
-        selectedValues.title === "mrs" &&
-        label === "Marital Status"
-          ? Object.keys(selectOption)
-              .filter(item => item !== "single")
-              .map(item => (
-                <>
-                  <option key={item + selectOption[item]} value={item} selected={selectedNone}>
-                    {selectOption[item]}
-                  </option>
-                </>
-              ))
-          : Object.keys(selectOption).map(item => (
-              <option key={item + selectOption[item]} value={item}>
-                {selectOption[item]}
-              </option>
-            ))}
+        {optionsToDisplay}
       </Select>
       <Label height={height}>{label}</Label>
       {error && <p className="formbuilder__error">{error}</p>}
@@ -152,7 +205,6 @@ const [selectedNone, setSelectedNoneState] = useState(false);
 
 export default DropDown;
 const SelectContainer = styled.div`
-  
   margin-top: ${props =>
     !props.height ? "0.3rem !important" : "9px !important"};
   position: relative;
@@ -169,9 +221,8 @@ const Select = styled.select`
   appearance: none;
   background: ${props => (props.disabled ? "" : `url(${down}) no-repeat 98%`)};
 
-    
   list-style: none;
-  &:disabled{
+  &:disabled {
     cursor: not-allowed !important;
     pointer-events: all !important;
   }
