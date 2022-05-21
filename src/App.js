@@ -12,7 +12,6 @@ import { BaseComponent } from "./components/BaseComponent";
 import CheckPolicies from "./components/Common/CheckPolicies";
 import ShortlistedQuotes from "./pages/ShortlistedPage/shortlistedQuotes";
 import ChooseYourJourneyPage from "./pages/ChooseYourJourneyPage/ChooseYourJourneyPage";
-import PortabilityForm from "./pages/InputPage/components/PortabilityForm";
 const ProposalPage = lazy(() => import("./pages/ProposalPage/ProposalPage"));
 const ProposalSummary = lazy(() =>
   import("./pages/ProposalSummary/ProposalSummary"),

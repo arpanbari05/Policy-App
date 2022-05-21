@@ -17,6 +17,8 @@ import {
 import { PortDatePicker } from "../../../InputPage/components/PortabilityForm";
 import { useUpdateEnquiry } from "../../../../customHooks";
 import { CircleLoader } from "../../../../components/index.js";
+import { isSSOJourney } from "../../../../utils/helper";
+import { useGetEnquiriesQuery } from "../../../../api/api";
 
 const DESCRIPTIONS = {
   arogya_sanjeevani:
@@ -50,18 +52,38 @@ const PlanTypeFilter = () => {
 export default PlanTypeFilter;
 
 function FilterModal({ onClose, ...props }) {
-  const { journeyType } = useFrontendBoot();
+  const {
+    journeyType,
+    data: {
+      settings: { restrict_posp_quotes_after_limit },
+    },
+  } = useFrontendBoot();
   const { colors } = useTheme();
+
+  const {
+    data: {
+      data: {
+        input: { port_policy_expiry_date },
+      },
+    },
+  } = useGetEnquiriesQuery();
 
   const { updateEnquiry } = useUpdateEnquiry();
 
-  const {
+  let {
     data: { baseplantypes },
   } = useFrontendBoot();
 
+  if (isSSOJourney() && restrict_posp_quotes_after_limit === "1")
+    baseplantypes = baseplantypes.filter(
+      plantype => plantype.code !== "1_crore_plan",
+    ); // excluding 1 Crore plan filter for POS user PINC Broker
+
   const [isLoading, setLoading] = useState(false);
 
-  const [expiryDate, setExpiryDate] = useState(null);
+  const [expiryDate, setExpiryDate] = useState(
+    new Date(port_policy_expiry_date),
+  );
 
   const [expiryDateError, setExpiryError] = useState(null);
 
@@ -104,7 +126,7 @@ function FilterModal({ onClose, ...props }) {
       setLoading(true);
       await Promise.all([
         updateEnquiry({
-          expiry_date: `${expiry_date[2]}/${expiry_date[1]}/${expiry_date[0]}`,
+          expiry_date: `${expiry_date[2]}-${expiry_date[1]}-${expiry_date[0]}`,
           type: "port",
         }),
         updateFilters(updatedBasePlanTypeFilter),

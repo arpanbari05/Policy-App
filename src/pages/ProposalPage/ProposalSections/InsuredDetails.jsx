@@ -24,6 +24,7 @@ import {
   UnderWritingDiscisionTable,
 } from "./insuredDetails.styles";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
+import { ClickSound } from "../../../utils/helper";
 
 const InsuredDetails = ({
   schema,
@@ -404,6 +405,7 @@ const InsuredDetails = ({
       <div className="proposal_continue_back_margin container">
         <BackBtn
           onClick={() => {
+            ClickSound();
             setActive(prev => {
               if (prev === 0) return 0;
               else return prev - 1;
@@ -419,6 +421,7 @@ const InsuredDetails = ({
 
         <ContinueBtn
           onClick={() => {
+            ClickSound();
             setInitColor("#c7222a");
             if (
               name === "Medical Details" &&
@@ -451,7 +454,7 @@ const InsuredDetails = ({
                       setMedicalContinueClick(true);
                     },
                   }),
-                ); 
+                );
               setMedicalContinueClick(true);
 
               // setContinueBtnClick(true);

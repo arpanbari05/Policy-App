@@ -10,6 +10,7 @@ import {
   useEmailInput,
   useTheme,
   useFrontendBoot,
+  useUpdateEnquiry,
 } from "../../../customHooks";
 import { useUrlQueries } from "../../../customHooks/useUrlQuery";
 import { Button } from "../../../components";
@@ -27,17 +28,24 @@ import validateInput, {
 import styled from "styled-components";
 
 const BasicDetailsForm = ({ posContent, ...props }) => {
+  const location = window.location;
   let inputData = {
     gender: "M",
   };
+
+  const urlQueryStrings = new URLSearchParams(window.location.search);
+  const EnquiryId = urlQueryStrings.get("enquiryId");
+
   const { colors } = useTheme();
   const urlSearchParams = useUrlQueries();
   const [createEnquiry, createEnquiryQuery] = useCreateEnquiry();
+  const { updateEnquiry, ...updateEnquiryQuery } = useUpdateEnquiry();
 
   const history = useHistory();
   const {
     data: { tenant, settings },
-  } = useFrontendBoot();
+    subJourneyType,
+  } = useFrontendBoot(!Boolean(EnquiryId));
 
   //===== page states======
   const [emailError, setEmailErrors] = useState({});
@@ -50,7 +58,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
   const emailInput = useEmailInput(inputData?.email || "", setEmailErrors);
   const [gender, setGender] = useState(inputData?.gender || "");
   const [journeyType, setJourneyType] = useState(
-    allowOnWebsites(["topupRB"]) ? "top_up" : "health",
+    location.host === tenant.topup_frontend_domain ? "top_up" : "health",
   );
 
   const handleFormSubmit = async event => {
@@ -82,7 +90,12 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
         params: urlSearchParams,
         section: journeyType,
       };
-      const response = await createEnquiry(data);
+      let response;
+      if (subJourneyType === "port") {
+        response = await updateEnquiry(data);
+      } else {
+        response = await createEnquiry(data);
+      }
 
       if (response.data) {
         const enquiryId = response.data.data.enquiry_id;
@@ -97,7 +110,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
     }
   };
 
-  return !allowOnWebsites(["renewalRB"]) ? (
+  return location.host !== tenant?.health_renewal_frontend_domain ? (
     <div {...props}>
       <form onSubmit={handleFormSubmit}>
         <div
@@ -329,7 +342,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
               ? null
               : !gender
           }
-          loader={createEnquiryQuery.isLoading}
+          loader={createEnquiryQuery.isLoading || updateEnquiryQuery.isLoading}
           css={`
             height: 58px;
             font-weight: normal;
