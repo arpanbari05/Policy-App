@@ -17,6 +17,7 @@ const TextInput = ({
   allValues,
   onChange,
   onPaste,
+  onClick = () => {},
   onCopy,
   onKeyDown,
   onBlur,
@@ -24,7 +25,7 @@ const TextInput = ({
   member,
   onKeyPress,
   name,
-  id
+  id,
 }) => {
   const { colors } = useTheme();
 
@@ -56,7 +57,9 @@ const TextInput = ({
       `}
     >
       <FloatingLabel controlId="floatingInput" label={label}>
-        <label className="visually-hidden" htmlFor={id}>{label}</label>
+        <label className="visually-hidden" htmlFor={id}>
+          {label}
+        </label>
         <Form.Control
           autoComplete={autoComplete}
           type={type}
@@ -64,6 +67,7 @@ const TextInput = ({
           value={value}
           onChange={onChange}
           onPaste={onPaste}
+          onClick={onClick}
           onCopy={onPaste}
           onKeyDown={onKeyDown}
           onBlur={onBlur}

@@ -735,6 +735,10 @@ export function useUpdateMembers() {
             ? JSON.parse(localStorage.getItem("default_filters"))?.plan_type ||
               "F"
             : getSelectedFilter("plantype")?.code
+          : journeyType === "top_up"
+          ? members?.length === 1
+            ? "I"
+            : "F"
           : "I",
       pincode: enquiryData?.input?.pincode,
       ...data,
