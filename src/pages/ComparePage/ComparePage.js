@@ -669,7 +669,7 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
         >
           {numToLakh(compareQuote.sum_insured)}
         </div>
-      ) : (
+      ) : sumInsureds.length > 1 ? (
         <select
           value={compareQuote.sum_insured}
           onChange={handleChange}
@@ -691,6 +691,8 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
             );
           })}
         </select>
+      ) : (
+        <div>{numToLakh(sumInsureds[0])}</div>
       )}
       {isLoading && (
         <CircleLoader
@@ -776,7 +778,7 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
     >
       {isLoading ? (
         <div>{numToLakh(compareQuote.deductible)}</div>
-      ) : (
+      ) : deductibles?.length > 1 ? (
         <select
           value={compareQuote.deductible}
           onChange={handleChange}
@@ -798,6 +800,8 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
             </option>
           ))}
         </select>
+      ) : (
+        <div>{numToLakh(deductibles[0])}</div>
       )}
       {isLoading && <CircleLoader animation="border" />}
     </div>
