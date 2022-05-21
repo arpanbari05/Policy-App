@@ -69,12 +69,8 @@ const DropDown = ({
   let estimatedProposerDOB = `${currentYear - proposerAgeTemp}`;
 
   const proposerAge = getAge(
-    proposelSelectedDOBRedux?.split("-")[2] ||
-      selectedValues?.dob ||
-      estimatedProposerDOB,
+    selectedValues?.dob || proposelSelectedDOBRedux || estimatedProposerDOB,
   );
-
-  console.log("The proposer age", proposerAge);
 
   useEffect(() => {
     if (value) {
@@ -103,55 +99,6 @@ const DropDown = ({
   label = label || "- Select -";
 
   label = checkValidation?.required ? `${label}*` : label;
-
-  let optionsToDisplay = <></>;
-
-  if (Object.keys(selectedValues)?.length) {
-    if (
-      selectedValues?.title &&
-      selectedValues.title === "mrs" &&
-      label === "Marital Status*"
-    ) {
-      optionsToDisplay = Object.keys(selectOption)
-        .filter(item => item !== "single")
-        .map(item => (
-          <>
-            <option
-              key={item + selectOption[item]}
-              value={item}
-              selected={selectedNone}
-            >
-              {selectOption[item]}
-            </option>
-          </>
-        ));
-    } else if (
-      selectedValues?.title &&
-      selectedValues?.title === "mr" &&
-      label === "Marital Status*" &&
-      proposerAge < 21
-    ) {
-      optionsToDisplay = Object.keys(selectOption)
-        .filter(item => item !== "married")
-        .map(item => (
-          <>
-            <option
-              key={item + selectOption[item]}
-              value={item}
-              selected={selectedNone}
-            >
-              {selectOption[item]}
-            </option>
-          </>
-        ));
-    } else {
-      optionsToDisplay = Object.keys(selectOption).map(item => (
-        <option key={item + selectOption[item]} value={item}>
-          {selectOption[item]}
-        </option>
-      ));
-    }
-  }
 
   return (
     <SelectContainer height={height}>
@@ -195,7 +142,44 @@ const DropDown = ({
             {dropPlaceholder || label || "- Select -"}
           </option>
         )}
-        {optionsToDisplay}
+        {selectedValues?.title &&
+        selectedValues.title === "mrs" &&
+        label === "Marital Status*"
+          ? Object.keys(selectOption)
+              .filter(item => item !== "single")
+              .map(item => (
+                <>
+                  <option
+                    key={item + selectOption[item]}
+                    value={item}
+                    selected={selectedNone}
+                  >
+                    {selectOption[item]}
+                  </option>
+                </>
+              ))
+          : selectedValues?.title &&
+            selectedValues?.title === "mr" &&
+            label === "Marital Status*" &&
+            proposerAge < 21
+          ? Object.keys(selectOption)
+              .filter(item => item !== "married")
+              .map(item => (
+                <>
+                  <option
+                    key={item + selectOption[item]}
+                    value={item}
+                    selected={selectedNone}
+                  >
+                    {selectOption[item]}
+                  </option>
+                </>
+              ))
+          : Object.keys(selectOption).map(item => (
+              <option key={item + selectOption[item]} value={item}>
+                {selectOption[item]}
+              </option>
+            ))}
       </Select>
       <Label height={height}>{label}</Label>
       {error && <p className="formbuilder__error">{error}</p>}
