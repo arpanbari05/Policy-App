@@ -65,9 +65,11 @@ function ComparePage() {
 
   const showDifferenceToggle = useToggle(false);
 
-  if (isLoading || isUninitialized) return <FullScreenLoader />;
-
   const compareQuotes = getCompareQuotes(groupCode)?.quotes;
+  console.log("CompareQuotes", compareQuotes);
+  console.log("isLoading-", isLoading, isUninitialized);
+  if (isLoading || isUninitialized || !compareQuotes)
+    return <FullScreenLoader />;
 
   return (
     <Page id="printCompare">
@@ -519,7 +521,11 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
   return (
     <CompareSection title="Plan Details" {...props}>
       {journeyType === "top_up" ? (
-        <FeatureRow title={"Deductible"} description="" select={select}>
+        <FeatureRow
+          title={"Deductible"}
+          description={DESCRIPTIONS.deductible}
+          select={select}
+        >
           {compareQuotes.map((quote, idx) => (
             <DeductibleFeatureValue
               key={quote.deductible + quote.product.id + idx}
@@ -765,12 +771,20 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
       {...props}
       css={`
         font-size: 16px;
+        color: #647188;
       `}
     >
       {isLoading ? (
-        <div>{compareQuote.deductible}</div>
+        <div>{numToLakh(compareQuote.deductible)}</div>
       ) : (
-        <select value={compareQuote.deductible} onChange={handleChange}>
+        <select
+          value={compareQuote.deductible}
+          onChange={handleChange}
+          css={`
+            font-size: 16px;
+            color: #647188;
+          `}
+        >
           {deductibles.map(deductible => (
             <option
               key={deductible}
@@ -780,7 +794,7 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
                 color: #647188;
               `}
             >
-              {deductible}
+              {numToLakh(deductible)}
             </option>
           ))}
         </select>

@@ -4,6 +4,8 @@ import clickSound from "../assets/audio/button-click.mp3";
 // all on specific urls
 export const allowOnWebsites = (sites = []) => {
   const renewBuyAll = ["rbstaging.in", "renewbuy.com"];
+  const healthUat =
+    "https://healthdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in";
   const renewBuyUat = [
     "https://uathealth.rbstaging.in",
     "https://renewbuy-health.fynity.in",
@@ -25,6 +27,11 @@ export const allowOnWebsites = (sites = []) => {
         isPass = true;
       }
       if (topup.includes(origin)) {
+        isPass = true;
+      }
+    }
+    if (site === "healthUat") {
+      if (healthUat.includes(origin)) {
         isPass = true;
       }
     }
