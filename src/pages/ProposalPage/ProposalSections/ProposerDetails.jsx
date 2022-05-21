@@ -60,8 +60,6 @@ const ProposerDetails = ({
     },
   } = useGetEnquiriesQuery();
 
-  const firstName = proposerName?.split(" ")[0];
-
   useEffect(() => {
     if (name === "Proposer Details") {
       let proposerAge = parseInt(
@@ -97,8 +95,6 @@ const ProposerDetails = ({
       setValues({ ...prefilledValues, ...defaultValue });
     }
   }, []);
-
-  console.log("ergnjkg", values);
 
   return (
     <>

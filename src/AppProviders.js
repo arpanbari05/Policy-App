@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
-import { BrowserRouter, useLocation } from "react-router-dom";
-import { useRouteMatch } from "react-router-dom";
+import { BrowserRouter, useRouteMatch } from "react-router-dom";
 import {
   useGetFrontendBootQuery,
   useGetCartQuery,

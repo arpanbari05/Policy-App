@@ -141,7 +141,8 @@ export const WHATS_NOT_COVERED = [
 ];
 
 export const DESCRIPTIONS = {
-  deductible: "",
+  deductible:
+    "Your minimum deductible amount should be equal to your existing Base Health plan's cover amount. Top Up will provide the coverage once the existing cover amount is exhausted.",
   sum_insured:
     "Cover Amount of the selected plan is the maximum pay out the Insurance company will offer",
   tenure: "Policy term for which you can buy this policy",

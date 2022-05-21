@@ -80,10 +80,15 @@ export function MobileProductHeader({
 
   const { logo, csr } = getCompany(company.alias);
 
-  const netPremium = calculateTotalPremium({
-    total_premium,
-    health_riders: health_riders?.length ? health_riders : mandatory_riders,
-  });
+  const netPremium = calculateTotalPremium(
+    {
+      total_premium,
+      health_riders: selectedRiders?.length ? selectedRiders : mandatory_riders,
+      top_up_riders: selectedRiders?.length ? selectedRiders : mandatory_riders,
+    },
+    {},
+    journeyType,
+  );
 
   const suminsuredChangeHandler = option => {
     setCurSumInsured(option?.value);
