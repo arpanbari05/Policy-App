@@ -3,6 +3,9 @@ import clickSound from "../assets/audio/button-click.mp3";
 
 // all on specific urls
 export const allowOnWebsites = (sites = []) => {
+  const renewBuyAll = ["rbstaging.in", "renewbuy.com"];
+  const healthUat =
+    "https://healthdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in";
   const renewBuyUat = [
     "https://uathealth.rbstaging.in",
     "https://renewbuy-health.fynity.in",
@@ -14,10 +17,6 @@ export const allowOnWebsites = (sites = []) => {
   ];
   const sriyahUat = "https://health-uat.nammacover.com";
   const pincUat = "https://uat-health.pincinsurance.com";
-  const renewalRB = [
-    "https://uatrenewal.rbstaging.in",
-    "https://health-renewals.renewbuy.com",
-  ];
   const topupRB = "https://uat-topup.rbstaging.in";
   const origin = window.location.origin;
 
@@ -28,6 +27,11 @@ export const allowOnWebsites = (sites = []) => {
         isPass = true;
       }
       if (topup.includes(origin)) {
+        isPass = true;
+      }
+    }
+    if (site === "healthUat") {
+      if (healthUat.includes(origin)) {
         isPass = true;
       }
     }
@@ -53,15 +57,17 @@ export const allowOnWebsites = (sites = []) => {
         isPass = true;
       }
     }
-    if (site === "renewalRB") {
-      if (renewalRB.includes(origin)) {
-        isPass = true;
-      }
-    }
     if (site === "topupRB") {
       if (topupRB.includes(origin)) {
         isPass = true;
       }
+    }
+    if (site === "renewBuyAll") {
+      renewBuyAll.forEach(value => {
+        if (origin.includes(value)) {
+          isPass = true;
+        }
+      });
     }
   });
   return isPass;
@@ -1086,3 +1092,11 @@ function convert_number(number) {
   }
   return res;
 }
+
+export const getAge = (birthYear = "2000") => {
+  if (birthYear.length > 4) {
+    birthYear = birthYear?.split("-")[2];
+  }
+  const currentYear = new Date().getFullYear();
+  return +currentYear - +birthYear;
+};

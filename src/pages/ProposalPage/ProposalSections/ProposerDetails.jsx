@@ -13,6 +13,7 @@ import { callApi } from "../../../components/FormBuilder/FormBuilder.slice";
 import { setActiveIndex } from "./ProposalSections.slice";
 import { useGetEnquiriesQuery } from "../../../api/api";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
+import { ClickSound } from "../../../utils/helper";
 
 const ProposerDetails = ({
   schema = {},
@@ -59,8 +60,6 @@ const ProposerDetails = ({
     },
   } = useGetEnquiriesQuery();
 
-  const firstName = proposerName?.split(" ")[0];
-
   useEffect(() => {
     if (name === "Proposer Details") {
       let proposerAge = parseInt(
@@ -97,8 +96,6 @@ const ProposerDetails = ({
     }
   }, []);
 
-  console.log("ergnjkg", values);
-
   return (
     <>
       <div>
@@ -122,6 +119,7 @@ const ProposerDetails = ({
         <BackBtn
           hide={name === "Proposer Details"}
           onClick={() => {
+            ClickSound();
             setProposerDactive(false);
             setActive(prev => {
               if (prev === 0) return 0;
@@ -131,6 +129,7 @@ const ProposerDetails = ({
         />
         <ContinueBtn
           onClick={() => {
+            ClickSound();
             setSubmit(true);
             triggerSaveForm({
               sendedVal: values,
