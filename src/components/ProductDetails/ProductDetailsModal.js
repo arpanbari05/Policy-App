@@ -83,11 +83,13 @@ function ProductDetailsModal({
 
   const dispatch = useDispatch();
 
+  const { journeyType } = useFrontendBoot();
+
   const {
     data: { settings: pos_nonpos_switch_message },
   } = useFrontendBoot();
 
-  const { sum_insured, deductible } = propQuote;
+  const { sum_insured } = propQuote;
 
   const [currSumInsured, setCurSumInsured] = useState(sum_insured);
 
@@ -104,7 +106,9 @@ function ProductDetailsModal({
   const fetchedQuote =
     data &&
     data?.data?.data?.find(q => q?.product?.id === propQuote?.product?.id);
-  const quote = fetchedQuote || propQuote;
+
+  const quote =
+    journeyType === "top_up" ? propQuote : fetchedQuote || propQuote;
 
   return (
     <Modal

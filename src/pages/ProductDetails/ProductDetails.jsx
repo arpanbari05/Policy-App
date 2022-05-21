@@ -94,9 +94,9 @@ const ProductDetails = () => {
     window.location.hash = "";
   }, [groupCode]); */
 
-  useEffect(() => {
+  /* useEffect(() => {
     updateEnquiry(data?.data);
-  }, []);
+  }, []); */
 
   const {
     journeyType,

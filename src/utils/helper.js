@@ -1092,3 +1092,11 @@ function convert_number(number) {
   }
   return res;
 }
+
+export const getAge = (birthYear = "2000") => {
+  if (birthYear.length > 4) {
+    birthYear = birthYear?.split("-")[2];
+  }
+  const currentYear = new Date().getFullYear();
+  return +currentYear - +birthYear;
+};
