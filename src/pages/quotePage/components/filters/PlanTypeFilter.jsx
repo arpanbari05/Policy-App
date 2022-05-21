@@ -18,6 +18,7 @@ import { PortDatePicker } from "../../../InputPage/components/PortabilityForm";
 import { useUpdateEnquiry } from "../../../../customHooks";
 import { CircleLoader } from "../../../../components/index.js";
 import { isSSOJourney } from "../../../../utils/helper";
+import { useGetEnquiriesQuery } from "../../../../api/api";
 
 const DESCRIPTIONS = {
   arogya_sanjeevani:
@@ -59,6 +60,14 @@ function FilterModal({ onClose, ...props }) {
   } = useFrontendBoot();
   const { colors } = useTheme();
 
+  const {
+    data: {
+      data: {
+        input: { port_policy_expiry_date },
+      },
+    },
+  } = useGetEnquiriesQuery();
+
   const { updateEnquiry } = useUpdateEnquiry();
 
   let {
@@ -72,7 +81,9 @@ function FilterModal({ onClose, ...props }) {
 
   const [isLoading, setLoading] = useState(false);
 
-  const [expiryDate, setExpiryDate] = useState(null);
+  const [expiryDate, setExpiryDate] = useState(
+    new Date(port_policy_expiry_date),
+  );
 
   const [expiryDateError, setExpiryError] = useState(null);
 
