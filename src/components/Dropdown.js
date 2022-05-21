@@ -41,6 +41,10 @@ const Dropdown = forwardRef(
         ...provided,
         fontWeight: "bold",
       }),
+      menuList: provided => ({
+        ...provided,
+        maxHeight: 150,
+      }),
     };
 
     return (
