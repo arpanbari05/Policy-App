@@ -6,4 +6,15 @@ import maxbupa from "./Maxbupa.png";
 import boy from "./boy.png";
 import girl from "./girl.png";
 import checkRB from "./checkRB.png";
-export { closeImg, bg, check, fyntune, boy, girl, maxbupa, checkRB };
+import notVerified from "./notVerified.png";
+export {
+  closeImg,
+  bg,
+  check,
+  fyntune,
+  boy,
+  girl,
+  maxbupa,
+  checkRB,
+  notVerified,
+};
