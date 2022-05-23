@@ -50,7 +50,7 @@ function PortabilityForm() {
     const expiry_date = dateObjectToLocaleString(new Date(value)).split("/");
 
     const res = await createEnquiry({
-      expiry_date: `${expiry_date[2]}-${expiry_date[1]}-${expiry_date[0]}`,
+      port_policy_expiry_date: `${expiry_date[2]}-${expiry_date[1]}-${expiry_date[0]}`,
       type: "port",
       section: "health",
     });
