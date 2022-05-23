@@ -115,8 +115,6 @@ const FormBuilder = ({
     }
   }, [values.nominee_relation]);
 
-  console.log("sfghljsf", values);
-
   const [trigger, setTrigger] = useState(false);
 
   const relationships = [
@@ -178,16 +176,13 @@ const FormBuilder = ({
         }),
       );
     }
-    
   }, []);
 
   useEffect(() => {
-    
     if (formName !== "Medical Details") {
       setValues(prev => ({ ...prev, ...asyncValues }));
     }
   }, [asyncValues]);
-
 
   const additionaMQVisibility = useCallback(
     (item, member) => {
@@ -478,7 +473,7 @@ const FormBuilder = ({
                     updateValues(
                       Object.keys(values)
                         .filter(key => key !== item.name)
-                        .reduce(  
+                        .reduce(
                           (acc, key) => ({ ...acc, [key]: values[key] }),
                           {},
                         ),
@@ -496,8 +491,6 @@ const FormBuilder = ({
                       selectedValues={values}
                       data={item.data}
                       onChange={(e, value) => {
-                        console.log("dgbfkjsdlb", e, value, item);
-
                         if (item.parent && item.members) {
                           insertValue(
                             item.parent,
@@ -517,11 +510,6 @@ const FormBuilder = ({
                               !insuredDetails[e.target.value] &&
                               nomineeRelationAutopopulated
                             ) {
-                              console.log(
-                                "sdvnsjdbvs",
-                                item.name,
-                                e.target.value,
-                              );
                               updateValue(item.name, e.target.value, true);
                               setNomineeRelationAutopopulated(false);
                             } else updateValue(item.name, e.target.value);
