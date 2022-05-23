@@ -26,7 +26,7 @@ export const api = createApi({
     "TenureDiscount",
     "ProposalSummaryUpdate",
     "featureOption",
-    "custom_quotes"
+    "custom_quotes",
   ],
   endpoints: builder => ({
     getCities: builder.mutation({
