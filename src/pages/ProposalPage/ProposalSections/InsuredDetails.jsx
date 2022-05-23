@@ -142,7 +142,6 @@ const InsuredDetails = ({
     insuredDetailsResponse,
     underWritingStatus,
   });
-  console.log("wrghrjksgv", values, cartEntries, schema, noForAll, yesSelected);
 
   const { colors } = useTheme();
 
@@ -237,6 +236,7 @@ const InsuredDetails = ({
                               }
                               className="click_btn"
                               target="_blank"
+                              rel="noreferrer"
                             >
                               Click here
                             </a>
@@ -256,6 +256,7 @@ const InsuredDetails = ({
                                 }
                                 className="click_btn"
                                 target="_blank"
+                                rel="noreferrer"
                               >
                                 Click here
                               </a>
@@ -361,9 +362,7 @@ const InsuredDetails = ({
                       setValid(valid);
                     }}
                     options={{
-                      defaultValues: defaultValue
-                        ? defaultValue[item]
-                        : values?.[item] || {},
+                      defaultValues: values?.[item] || {},
                       validateOn: "change",
                     }}
                     formName={name}
