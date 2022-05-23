@@ -4,8 +4,8 @@ import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { useState } from "react";
 import {
   amount,
+  featureOptionsValidValue,
   figureToWords,
-  premiumWithAddons,
   getTotalPremiumWithDiscount,
 } from "../../../../../utils/helper";
 import {
@@ -22,6 +22,8 @@ import {
   useUpdateGroupMembers,
   useUrlEnquiry,
   useRenewalsConfig,
+  usePortabilityJourneyConfig,
+  useUpdateEnquiry,
 } from "../../../../../customHooks";
 import { Button, CircleLoader, MembersList } from "../../../../../components";
 import { mobile, small } from "../../../../../utils/mediaQueries";
@@ -39,6 +41,8 @@ import {
   useMembersForm,
 } from "../../../../../components/MemberOptions";
 import { setShowEditMembers } from "../../../../quotePage/quote.slice";
+import SimpleCheckBox from "../../../../../components/Common/Checkbox/SimpleCheckBox";
+import { PortDatePicker } from "../../../../InputPage/components/PortabilityForm";
 
 const plantypes = {
   M: "Multi Individual",
@@ -249,6 +253,8 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
 
   const [updateCartMutation, query] = updateCart(groupCode);
 
+  const { updateEnquiry, enquiryData } = useUpdateEnquiry();
+
   const cartEntry = getCartEntry(groupCode);
 
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
@@ -258,6 +264,9 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
   const nextGroupProduct = getNextGroupProduct(parseInt(groupCode));
 
   const reviewCartModalNew = useToggle();
+
+  const { is_port, allDataAvailableForPort, disableReviewCartButton } =
+    usePortabilityJourneyConfig(groupCode);
 
   const urlQueryStrings = new URLSearchParams(window.location.search);
 
@@ -273,11 +282,38 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
       totalDiscountAmount: getTotalDiscountAmount(),
     });
 
-    updateCartMutation({ discounted_total_premium }).then(() => {
+    const featureOptions = featureOptionsValidValue(cartEntry?.feature_options);
+
+    if (is_port && allDataAvailableForPort) {
+      return updateEnquiry(enquiryData).then((data, err) => {
+        if (data) {
+          updateCartMutation({
+            discounted_total_premium,
+            feature_options: featureOptions,
+          }).then(() => {
+            if (nextGroupProduct) {
+              const enquiryId = url.get("enquiryId");
+              history.push({
+                pathname: `/productdetails/${nextGroupProduct?.group?.id}`,
+                search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
+              });
+              return;
+            }
+
+            reviewCartModalNew.on();
+          });
+        }
+      });
+    }
+
+    updateCartMutation({
+      discounted_total_premium,
+      feature_options: featureOptions,
+    }).then(() => {
       if (nextGroupProduct) {
         const enquiryId = url.get("enquiryId");
         history.push({
-          pathname: `/productdetails/${nextGroupProduct.group?.id}`,
+          pathname: `/productdetails/${nextGroupProduct?.group?.id}`,
           search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
         });
         return;
@@ -298,7 +334,8 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
           query.isLoading ||
           additionalDiscountsQuery.isLoading ||
           additionalDiscountsQuery.isFetching ||
-          isTotalPremiumLoading
+          isTotalPremiumLoading ||
+          disableReviewCartButton
         }
         {...props}
       >
@@ -375,6 +412,7 @@ const ModifyDetailsButtonMobile = () => {
 };
 
 const CartSection = ({ groupCode, ...props }) => {
+  const { journeyType } = useFrontendBoot();
   return (
     <CartSectionOuter {...props}>
       <h1
@@ -390,6 +428,8 @@ const CartSection = ({ groupCode, ...props }) => {
       <PlanCard groupCode={groupCode} />
       <Discounts groupCode={groupCode} />
       <Riders groupCode={groupCode} />
+      {process.env.REACT_APP_TENANT === "fyntune" &&
+        journeyType === "health" && <PortPlanMobile groupCode={groupCode} />}
     </CartSectionOuter>
   );
 };
@@ -398,6 +438,69 @@ const CartSectionOuter = styled.div`
   width: 100%;
   padding: 0px 10px 10px 10px;
 `;
+
+const PortPlanMobile = ({ groupCode, ...props }) => {
+  const { colors } = useTheme();
+
+  const {
+    portClickHandler,
+    dateChangeHandler,
+    expiry_date,
+    expiryDateToggle,
+    is_port,
+  } = usePortabilityJourneyConfig(groupCode);
+
+  return (
+    <div>
+      <h3
+        css={`
+          color: ${colors.primary_color};
+          font-size: 18px;
+          font-weight: 900;
+          margin: 10px 0;
+        `}
+      >
+        Port Existing policy
+      </h3>
+      <div
+        css={`
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-bottom: 4px;
+          width: 100%;
+        `}
+      >
+        <SimpleCheckBox
+          accentColor={colors.primary_color}
+          name="port_plan"
+          onChange={portClickHandler}
+          checked={is_port}
+        />
+        <span
+          css={`
+            font-size: 11px;
+            color: #555;
+            margin-left: 0.3rem;
+            ${small} {
+              font-size: 12px;
+              line-height: 12px;
+            }
+          `}
+        >
+          Do you wish to port your existing policy?
+        </span>
+      </div>
+      {expiryDateToggle.isOn && (
+        <PortDatePicker
+          value={expiry_date || null}
+          setValue={dateChangeHandler}
+          setError={() => {}}
+        />
+      )}
+    </div>
+  );
+};
 
 const MemberAndEdit = ({ groupCode, ...props }) => {
   const { getGroupMembers } = useMembers();
