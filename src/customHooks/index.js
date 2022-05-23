@@ -35,6 +35,7 @@ import styles from "../styles";
 import {
   allowOnSpecificPages,
   capitalize,
+  dateObjectToLocaleString,
   featureOptionsValidValue,
   getAddOnSendData,
   getInsuranceType,
@@ -671,6 +672,10 @@ export function useUpdateEnquiry() {
 
   const [updateGroups, updateGroupsQueryState] = useUpdateGroupsMutation();
 
+  const { data } = useGetEnquiriesQuery();
+
+  const dispatch = useDispatch();
+
   async function updateEnquiry(data) {
     if (data?.pincode) {
       const { groupCode, ...sendData } = data;
@@ -686,11 +691,24 @@ export function useUpdateEnquiry() {
     return updateEnquiryMutation(data);
   }
 
+  const updateEnquiryData = updatedEnquiryData => {
+    dispatch(
+      api.util.updateQueryData("getEnquiries", undefined, enquiriesDraft => {
+        return Object.assign(enquiriesDraft, {
+          ...enquiriesDraft,
+          data: updatedEnquiryData,
+        });
+      }),
+    );
+  };
+
   return {
     ...queryState,
     error: queryState.error,
     updateEnquiry,
     isLoading: queryState.isLoading || updateGroupsQueryState.isLoading,
+    updateEnquiryData,
+    enquiryData: data?.data,
   };
 }
 
@@ -2859,3 +2877,51 @@ export function useShortlistedPlans() {
     canDelete,
   };
 }
+
+export const usePortabilityJourneyConfig = groupCode => {
+  const { updateEnquiryData, enquiryData } = useUpdateEnquiry();
+
+  const { updateCartEntry, getCartEntry } = useCart();
+
+  const cartEntry = getCartEntry(groupCode);
+
+  const expiryDateToggle = useToggle(false);
+
+  const portClickHandler = e => {
+    e.target.checked && expiryDateToggle.on();
+    !e.target.checked && expiryDateToggle.off();
+    updateCartEntry(groupCode, { ...cartEntry, is_port: e.target.checked });
+  };
+
+  const dateChangeHandler = expiryDate => {
+    const expiry_date_temp = dateObjectToLocaleString(
+      new Date(expiryDate),
+    ).split("/");
+    const port_policy_expiry_date = `${expiry_date_temp[2]}-${expiry_date_temp[1]}-${expiry_date_temp[0]}`;
+    cartEntry?.is_port &&
+      updateEnquiryData({ ...enquiryData, port_policy_expiry_date });
+  };
+
+  const is_port = cartEntry?.is_port;
+
+  const expiry_date =
+    enquiryData?.port_policy_expiry_date ||
+    enquiryData?.input?.port_policy_expiry_date;
+
+  const allDataAvailableForPort = !!(
+    enquiryData?.port_policy_expiry_date ||
+    enquiryData?.input?.port_policy_expiry_date
+  );
+
+  const disableReviewCartButton = is_port ? !allDataAvailableForPort : false;
+
+  return {
+    portClickHandler,
+    dateChangeHandler,
+    expiry_date,
+    expiryDateToggle,
+    is_port,
+    allDataAvailableForPort,
+    disableReviewCartButton,
+  };
+};

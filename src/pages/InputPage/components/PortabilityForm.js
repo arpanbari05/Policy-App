@@ -50,12 +50,14 @@ function PortabilityForm() {
     const expiry_date = dateObjectToLocaleString(new Date(value)).split("/");
 
     const res = await createEnquiry({
-      expiry_date: `${expiry_date[2]}-${expiry_date[1]}-${expiry_date[0]}`,
+      port_policy_expiry_date: `${expiry_date[2]}-${expiry_date[1]}-${expiry_date[0]}`,
       type: "port",
       section: "health",
     });
     if (!res.error)
-      history.push(`/input/basic-details?enquiryId=${res?.data?.data?.enquiry_id}`);
+      history.push(
+        `/input/basic-details?enquiryId=${res?.data?.data?.enquiry_id}`,
+      );
   };
 
   const goBack = () => {
@@ -155,7 +157,7 @@ export function PortDatePicker({
   return (
     <LocalizationProvider locale={enIDLocale} dateAdapter={AdapterDateFns}>
       <DatePicker
-        label="Choose date"
+        label="Choose Expiry Date"
         mask="__/__/____"
         value={value}
         ampm={false}

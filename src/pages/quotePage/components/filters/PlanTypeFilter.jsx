@@ -126,7 +126,7 @@ function FilterModal({ onClose, ...props }) {
     if (selectedPlanType.code === "port_plan") {
       await Promise.all([
         updateEnquiry({
-          expiry_date: `${expiry_date[2]}-${expiry_date[1]}-${expiry_date[0]}`,
+          port_policy_expiry_date: `${expiry_date[2]}-${expiry_date[1]}-${expiry_date[0]}`,
           type: "port",
         }),
         updateFilters(updatedBasePlanTypeFilter),
@@ -145,7 +145,10 @@ function FilterModal({ onClose, ...props }) {
         }),
         updateFilters(updatedBasePlanTypeFilter),
       ]);
-    } else if (selectedPlanType.code === "health" && journeyType !== "health") {
+    } else if (
+      selectedPlanType.code === "base_health" &&
+      journeyType !== "health"
+    ) {
       await Promise.all([
         updateEnquiry({
           section: "health",
