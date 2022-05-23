@@ -9,9 +9,8 @@ const useInsuredDetails = (
   groups,
   setValues,
   defaultValue,
-  equriesData
+  equriesData,
 ) => {
-  console.log("sgsfkvbjkfv",values)
   function formatter(number) {
     if (!isNaN(number)) number = parseInt(number);
     const updatedNumber = number.toLocaleString("en-US", {
@@ -53,19 +52,21 @@ const useInsuredDetails = (
     });
   };
 
-  const titlePicker = (member) => {
-    
+  const titlePicker = member => {
     member = member.toLowerCase();
-    if(member.includes("mother")){
-      return "mrs"
-    }else if(member.includes("father") || member.includes("son") || member.includes("brother")){
-      return "mr"
-    }else if(member === "spouse"){
-      let {gender:genderOfSelf} = equriesData.data.input;
-      return genderOfSelf === "M"?"mrs":"mr"
+    if (member.includes("mother")) {
+      return "mrs";
+    } else if (
+      member.includes("father") ||
+      member.includes("son") ||
+      member.includes("brother")
+    ) {
+      return "mr";
+    } else if (member === "spouse") {
+      let { gender: genderOfSelf } = equriesData.data.input;
+      return genderOfSelf === "M" ? "mrs" : "mr";
     }
-    console.log("wgrjwgk",equriesData.data)
-  }
+  };
 
   //   --------------------------------------------------------------------------------------------------------------------------------
   // -------------------------------------------   SIDE EFFECTS FOR INSURED DETAILS  ------------------------------------------------------
@@ -87,7 +88,7 @@ const useInsuredDetails = (
         let currentDate = new Date().getDate();
         Object.keys(schema).forEach(memberType => {
           if (memberType === "self") {
-            let tempObj = {...defaultValue?.[memberType]};
+            let tempObj = { ...defaultValue?.[memberType] };
             schema["self"].forEach(item => {
               if (
                 (proposalData["Proposer Details"][item.name] &&
@@ -113,33 +114,21 @@ const useInsuredDetails = (
             //   !proposalData["Insured Details"] ||
             //   !proposalData["Insured Details"][memberType].dob
             // )
-             
+
             let memberAge = membersDataFromGreetingPage.find(
               member => member.type === memberType,
             )?.age;
-            console.log("dfbkvd",memberAge)
             let estimatedMemberDOB;
             if (
               `${memberAge}`.includes("Month") ||
               `${memberAge}`.includes(".")
             ) {
-            console.log("cghdhdadfd", Number(memberAge));
-
               let current = new Date();
-              // current.setMonth(
-              //   current.getMonth() -
-              //     (`${memberAge}`.includes(".")
-              //       ? parseInt(`${memberAge}`.split(".")[1])
-              //       : parseInt(memberAge)) -
-              //     1,
-              // );
 
               estimatedMemberDOB = `${current.getUTCFullYear()}`;
-            }
-             else {
+            } else {
               estimatedMemberDOB = `${currentYear - parseInt(memberAge)}`;
             }
-            console.log("fbjklbdxb",estimatedMemberDOB)
             let title = titlePicker(memberType);
             prefilledValues[memberType] = {
               ...(values && values.hasOwnProperty(memberType)
@@ -147,7 +136,7 @@ const useInsuredDetails = (
                 : {}),
               dob: estimatedMemberDOB,
               title,
-              ...defaultValue?.[memberType]
+              ...defaultValue?.[memberType],
             };
           }
           if (
@@ -166,7 +155,6 @@ const useInsuredDetails = (
               };
           }
         });
-        console.log("sbnlfkb", prefilledValues, defaultValue);
 
         setValues({
           ...prefilledValues,
