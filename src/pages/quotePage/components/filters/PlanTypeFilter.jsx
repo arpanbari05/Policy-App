@@ -122,8 +122,8 @@ function FilterModal({ onClose, ...props }) {
 
     let expiry_date = dateObjectToLocaleString(new Date(expiryDate)).split("/");
 
+    setLoading(true);
     if (selectedPlanType.code === "port_plan") {
-      setLoading(true);
       await Promise.all([
         updateEnquiry({
           expiry_date: `${expiry_date[2]}-${expiry_date[1]}-${expiry_date[0]}`,
@@ -135,10 +135,27 @@ function FilterModal({ onClose, ...props }) {
       // const res = await updateEnquiry({ expiry_date });
       // setLoading(false);
       onClose && onClose();
+    } else if (
+      selectedPlanType.code === "topup_plan" &&
+      journeyType !== "top_up"
+    ) {
+      await Promise.all([
+        updateEnquiry({
+          section: "top_up",
+        }),
+        updateFilters(updatedBasePlanTypeFilter),
+      ]);
+    } else if (selectedPlanType.code === "health" && journeyType !== "health") {
+      await Promise.all([
+        updateEnquiry({
+          section: "health",
+        }),
+        updateFilters(updatedBasePlanTypeFilter),
+      ]);
     } else {
       updateFilters(updatedBasePlanTypeFilter);
-      onClose && onClose();
     }
+    onClose && onClose();
   };
 
   return (
