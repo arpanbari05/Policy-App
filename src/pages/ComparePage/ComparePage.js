@@ -65,9 +65,11 @@ function ComparePage() {
 
   const showDifferenceToggle = useToggle(false);
 
-  if (isLoading || isUninitialized) return <FullScreenLoader />;
-
   const compareQuotes = getCompareQuotes(groupCode)?.quotes;
+  console.log("CompareQuotes", compareQuotes);
+  console.log("isLoading-", isLoading, isUninitialized);
+  if (isLoading || isUninitialized || !compareQuotes)
+    return <FullScreenLoader />;
 
   return (
     <Page id="printCompare">
@@ -519,7 +521,11 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
   return (
     <CompareSection title="Plan Details" {...props}>
       {journeyType === "top_up" ? (
-        <FeatureRow title={"Deductible"} description="" select={select}>
+        <FeatureRow
+          title={"Deductible"}
+          description={DESCRIPTIONS.deductible}
+          select={select}
+        >
           {compareQuotes.map((quote, idx) => (
             <DeductibleFeatureValue
               key={quote.deductible + quote.product.id + idx}
@@ -663,7 +669,7 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
         >
           {numToLakh(compareQuote.sum_insured)}
         </div>
-      ) : (
+      ) : sumInsureds.length > 1 ? (
         <select
           value={compareQuote.sum_insured}
           onChange={handleChange}
@@ -685,6 +691,8 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
             );
           })}
         </select>
+      ) : (
+        <div>{numToLakh(sumInsureds[0])}</div>
       )}
       {isLoading && (
         <CircleLoader
@@ -765,12 +773,20 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
       {...props}
       css={`
         font-size: 16px;
+        color: #647188;
       `}
     >
       {isLoading ? (
-        <div>{compareQuote.deductible}</div>
-      ) : (
-        <select value={compareQuote.deductible} onChange={handleChange}>
+        <div>{numToLakh(compareQuote.deductible)}</div>
+      ) : deductibles?.length > 1 ? (
+        <select
+          value={compareQuote.deductible}
+          onChange={handleChange}
+          css={`
+            font-size: 16px;
+            color: #647188;
+          `}
+        >
           {deductibles.map(deductible => (
             <option
               key={deductible}
@@ -780,10 +796,12 @@ function DeductibleFeatureValue({ compareQuote, ...props }) {
                 color: #647188;
               `}
             >
-              {deductible}
+              {numToLakh(deductible)}
             </option>
           ))}
         </select>
+      ) : (
+        <div>{numToLakh(deductibles[0])}</div>
       )}
       {isLoading && <CircleLoader animation="border" />}
     </div>

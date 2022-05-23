@@ -300,7 +300,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
               </div>
             )}
           </div>
-          {tenant.alias === "fyntune" ? (
+          {tenant.alias === "fyntune" && !allowOnWebsites(["healthUat"]) ? (
             <div>
               Journey Type:
               <label className="mx-3">

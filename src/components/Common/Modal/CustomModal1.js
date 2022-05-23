@@ -1,6 +1,9 @@
 import { FaTimes } from "react-icons/fa";
 import styled from "styled-components/macro";
 import * as mq from "../../../utils/mediaQueries";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { useTheme } from "../../../customHooks";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 
 const BackdropDiv = styled.div`
   height: 100vh;
@@ -79,9 +82,11 @@ const CustomModal1 = ({
   leftAlignmnetMargin,
   customizedTopMargin,
   tooltipDesc,
+  headerTooltipDescription = "",
   noBodyOverflow,
   ...props
 }) => {
+  const { colors } = useTheme();
   return (
     <>
       <BackdropDiv onClick={handleClose} />
@@ -93,6 +98,20 @@ const CustomModal1 = ({
           <div>
             <ModalTitle>
               <span>{header}</span>
+              {Boolean(headerTooltipDescription) && (
+                <OverlayTrigger
+                  placement="right"
+                  overlay={<Tooltip>{headerTooltipDescription}</Tooltip>}
+                >
+                  <span>
+                    <IoIosInformationCircleOutline
+                      size={14}
+                      color={colors.primary_color}
+                      style={{ marginLeft: 5 }}
+                    />
+                  </span>
+                </OverlayTrigger>
+              )}
             </ModalTitle>
 
             <ToolTipContent>{tooltipDesc}</ToolTipContent>
@@ -104,7 +123,7 @@ const CustomModal1 = ({
         <ModalBody className="modal-body" noBodyOverflow={noBodyOverflow}>
           {children}
         </ModalBody>
-        <ModalFooter style={{marginTop: 10}}>{footerJSX}</ModalFooter>
+        <ModalFooter style={{ marginTop: 10 }}>{footerJSX}</ModalFooter>
       </ModalContent>
     </>
   );
