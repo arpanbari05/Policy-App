@@ -146,7 +146,6 @@ const ProposalPage = () => {
       activeForm?.toLowerCase()?.split(" ")?.join("_"),
     );
     const offset = element?.getBoundingClientRect()?.top - 100 + window.scrollY;
-    console.log({ element, activeForm, offset });
     window.scroll({
       top: offset,
       behavior: "smooth",

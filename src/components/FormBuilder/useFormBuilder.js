@@ -26,7 +26,6 @@ const useFormBuilder = (
   const [isValid, setIsValid] = useState();
 
   const updateValue = (name, value, removeOtherValues = false) => {
-    console.log("sdfgdzfgvdf", name, value, values, removeOtherValues);
     if (formName === "Medical Details" && !value) {
       return;
     }
@@ -85,8 +84,6 @@ const useFormBuilder = (
   };
 
   const updateValues = (multipleValues = {}, action) => {
-    console.log("sdfgdzfgvdf 9", multipleValues, action);
-
     if (action === "SAVE_AS_IT_IS") {
       setValues(multipleValues);
       fetchValues(() => multipleValues);
@@ -131,7 +128,6 @@ const useFormBuilder = (
   }, [defaultValues]);
 
   const triggerValidation = name => {
-    
     let errorsTemp = {};
     let tempIsValid = true;
     if (typeof name === "object") {
@@ -260,35 +256,6 @@ const useFormBuilder = (
       }
     }
   }, [noForAll]);
-
-  // to scroll page as per error
-  // useEffect(() => {
-  //   console.log("toggle", errors);
-  //   if (Object.values(errors).length && Object.values(errors).some(val => val))
-  //     setErrorInField(true);
-  //   else setErrorInField(false);
-  //   if (blockScrollEffect) {
-  //     let filteredKey = Object.keys(errors).filter(key => errors[key]);
-  //     // if (canProceed && !canProceed.canProceed)
-  //     //   filteredKey = canProceed.canProceedArray;
-  //     console.log("srgvshfvjkl", errors, filteredKey, yesSelected, canProceed);
-  //     if (filteredKey.length) {
-  //       let scrollPositions = filteredKey.map(key => {
-  //         let element = document.getElementById(key);
-  //         if (element) {
-  //           let y = element.getBoundingClientRect().top - 100 + window.scrollY;
-  //           return y;
-  //         }
-  //       });
-  //       console.log("svbkjsbnv", scrollPositions);
-  //       window.scroll({
-  //         top: Math.min(...scrollPositions),
-  //         behavior: "smooth",
-  //       });
-  //     }
-  //   }
-  // }, [errors]);
-  // , canProceed,blockScrollEffect
 
   const scrollToErrors = () => {
     if (isPanelVisible) {

@@ -55,7 +55,9 @@ function PortabilityForm() {
       section: "health",
     });
     if (!res.error)
-      history.push(`/input/basic-details?enquiryId=${res?.data?.data?.enquiry_id}`);
+      history.push(
+        `/input/basic-details?enquiryId=${res?.data?.data?.enquiry_id}`,
+      );
   };
 
   const goBack = () => {
@@ -155,7 +157,7 @@ export function PortDatePicker({
   return (
     <LocalizationProvider locale={enIDLocale} dateAdapter={AdapterDateFns}>
       <DatePicker
-        label="Choose date"
+        label="Choose Expiry Date"
         mask="__/__/____"
         value={value}
         ampm={false}

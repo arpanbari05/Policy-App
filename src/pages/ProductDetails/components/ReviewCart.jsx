@@ -18,6 +18,7 @@ import {
   isSSOJourney,
   numberToDigitWord,
   featureOptionsValidValue,
+  dateObjectToLocaleString,
 } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
@@ -34,6 +35,8 @@ import {
   useUrlEnquiry,
   useRevisedPremiumModal,
   useRenewalsConfig,
+  useUpdateEnquiry,
+  usePortabilityJourneyConfig,
 } from "../../../customHooks";
 import {
   Button,
@@ -53,9 +56,9 @@ import { setPosPopup, setShowEditMembers } from "../../quotePage/quote.slice";
 import { setIsPopupOn } from "../../ProposalPage/ProposalSections/ProposalSections.slice";
 import { QuoteCardSelect } from "../../quotePage/components/QuoteCards";
 import { images } from "../../../assets/logos/logo";
-import ErrorPopup from "../../ProposalPage/ProposalSections/components/ErrorPopup";
 import { getSumInsuredOptions } from "../../../components/ProductDetails/ProductDetailsModal";
-import { useGetEnquiriesQuery } from "../../../api/api";
+import SimpleCheckBox from "../../../components/Common/Checkbox/SimpleCheckBox";
+import { PortDatePicker } from "../../InputPage/components/PortabilityForm";
 
 const plantypes = {
   M: "Multi Individual",
@@ -80,7 +83,7 @@ const singlePay = id => {
 export function CartDetails({ groupCode, sum_insured, ...props }) {
   const { colors } = useTheme();
 
-  const { subJourneyType } = useFrontendBoot();
+  const { subJourneyType, journeyType } = useFrontendBoot();
 
   const { getCartEntry } = useCart();
 
@@ -134,6 +137,8 @@ export function CartDetails({ groupCode, sum_insured, ...props }) {
             <DiscountsList groupCode={groupCode} />
             <AddOnsList cartEntry={cartEntry} />
             <Taxes service_tax={service_tax} />
+            {process.env.REACT_APP_TENANT === "fyntune" &&
+              journeyType === "health" && <PortPlan groupCode={groupCode} />}
             <TotalPremium groupCode={groupCode} />
           </div>
         )}
@@ -162,6 +167,65 @@ export function CartDetails({ groupCode, sum_insured, ...props }) {
     </CartDetailsWrap>
   );
 }
+
+const PortPlan = ({ groupCode, ...props }) => {
+  const { colors } = useTheme();
+
+  const {
+    portClickHandler,
+    dateChangeHandler,
+    expiry_date,
+    expiryDateToggle,
+    is_port,
+  } = usePortabilityJourneyConfig(groupCode);
+
+  return (
+    <CartSection title="Port Existing Policy" {...props}>
+      <div
+        css={`
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-bottom: 4px;
+          width: 100%;
+          ${mobile} {
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1;
+          }
+        `}
+      >
+        <SimpleCheckBox
+          accentColor={colors.primary_color}
+          name="port_plan"
+          onChange={portClickHandler}
+          checked={is_port}
+        />
+        <span
+          css={`
+            font-size: 11px;
+            color: #555;
+            margin-left: 0.3rem;
+            ${small} {
+              font-size: 10px;
+              line-height: 12px;
+              width: 100%;
+            }
+          `}
+        >
+          Do you wish to port your existing policy?
+        </span>
+      </div>
+      {expiryDateToggle.isOn && (
+        <PortDatePicker
+          value={expiry_date || null}
+          setValue={dateChangeHandler}
+          setError={() => {}}
+        />
+      )}
+    </CartSection>
+  );
+};
 
 const QuickPayAndRenewButton = ({ groupCode }) => {
   const { getTotalDiscountAmount, query: additionalDiscountsQuery } =
@@ -1095,6 +1159,8 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const [updateCartMutation, query] = updateCart(groupCode);
 
+  const { updateEnquiry, enquiryData } = useUpdateEnquiry();
+
   const cartEntry = getCartEntry(groupCode);
 
   const isTotalPremiumLoading = useTotalPremiumLoader(cartEntry);
@@ -1111,6 +1177,9 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
 
   const enquiryId = urlQueryStrings.get("enquiryId");
 
+  const { is_port, allDataAvailableForPort, disableReviewCartButton } =
+    usePortabilityJourneyConfig(groupCode);
+
   const currentGroup =
     localStorage.getItem("groups") &&
     JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
@@ -1122,6 +1191,28 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
     });
 
     const featureOptions = featureOptionsValidValue(cartEntry?.feature_options);
+
+    if (is_port && allDataAvailableForPort) {
+      return updateEnquiry(enquiryData).then((data, err) => {
+        if (data) {
+          updateCartMutation({
+            discounted_total_premium,
+            feature_options: featureOptions,
+          }).then(() => {
+            if (nextGroupProduct) {
+              const enquiryId = url.get("enquiryId");
+              history.push({
+                pathname: `/productdetails/${nextGroupProduct?.group?.id}`,
+                search: `enquiryId=${enquiryId}&pincode=${currentGroup?.pincode}&city=${currentGroup?.city}`,
+              });
+              return;
+            }
+
+            reviewCartModalNew.on();
+          });
+        }
+      });
+    }
 
     updateCartMutation({
       discounted_total_premium,
@@ -1151,7 +1242,8 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
           query?.isLoading ||
           additionalDiscountsQuery?.isLoading ||
           additionalDiscountsQuery?.isFetching ||
-          isTotalPremiumLoading
+          isTotalPremiumLoading ||
+          disableReviewCartButton
         }
         {...props}
       >
