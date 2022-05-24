@@ -54,8 +54,6 @@ const ProductDetails = () => {
 
   const cartEntry = getCartEntry(parseInt(groupCode));
 
-  const { sum_insured } = cartEntry;
-
   const { pos_popup } = useSelector(({ quotePage }) => quotePage);
 
   const dispatch = useDispatch();
@@ -186,7 +184,7 @@ const ProductDetails = () => {
                 <ShareQuoteModal
                   insurersFor={[cartEntry?.product?.company?.alias]}
                   stage="RENEWAL_PRODUCT_DETAILS"
-                  sum_insured={sum_insured}
+                  sum_insured={cartEntry?.sum_insured}
                 />
               </div>
             )}
