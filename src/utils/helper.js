@@ -603,6 +603,7 @@ export function getPlanFeatures(features, sum_insured) {
       id: index + 1,
       title: item.name,
       description: item.description,
+      displayType: item.display_type[0],
     });
     item?.sum_insureds[sum_insured]?.features?.forEach(innerItem => {
       innerData[item.name] = [

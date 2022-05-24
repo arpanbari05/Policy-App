@@ -5,7 +5,7 @@ import FeaturesTab from "../components/PlanDetails/FeaturesTab";
 import { useSelector } from "react-redux";
 import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import "styled-components/macro";
-import { mobile, tabletAndMobile } from "../../../utils/mediaQueries";
+import { tabletAndMobile } from "../../../utils/mediaQueries";
 import { RiDownload2Line } from "react-icons/ri";
 import { useTheme } from "../../../customHooks";
 
@@ -55,9 +55,9 @@ const PlanDetails = ({
                 >
                   <Col md={6} className="text-left">
                     <div className="nav flex-column nav-pills nav-pills-custom border_left_tab_plan">
-                      {planDetails.featureList &&
-                        planDetails.featureList.map((data, i) => {
-                          return (
+                      {planDetails?.featureList?.map((data, i) => {
+                        return (
+                          data.displayType === "base" && (
                             <PlansTab
                               key={i}
                               title={data.title}
@@ -65,8 +65,9 @@ const PlanDetails = ({
                               onClick={() => handleActive(data.id, data.title)}
                               isActive={activeTab === data.id ? true : false}
                             />
-                          );
-                        })}
+                          )
+                        );
+                      })}
                     </div>
                     <div
                       style={{

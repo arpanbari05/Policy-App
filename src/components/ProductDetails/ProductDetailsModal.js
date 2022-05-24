@@ -339,6 +339,7 @@ function RenderPlanDetails({ quote, ...props }) {
   const policy_wording_url = (productBrochureQuery.data || [])[0]
     ?.policy_wording_url;
 
+  console.log("PlanDetailsFrom", planDetails);
   return (
     <PlanDetails
       ActiveMainTab
@@ -672,7 +673,6 @@ function ProductHeader({
                 border-right: 1px solid grey;
                 padding: 0 20px;
                 font-size: 16px;
-
                 @media (max-width: 1485px) {
                   font-size: 14px;
                 }
@@ -882,10 +882,12 @@ const QuoteInfoWrap = styled.div`
   border-radius: 10px;
   display: flex;
   align-items: center;
+  transform: translateX(-80px);
   width: ${({ longSpace }) => (longSpace ? "60%" : "46%")};
   height: 75px;
   justify-content: space-around;
   @media (max-width: 1190px) {
+    transform: translateX(-32px);
     width: ${({ longSpace }) => (longSpace ? "58%" : "50%")};
   }
   @media (max-width: 1090px) {
