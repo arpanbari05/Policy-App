@@ -28,7 +28,6 @@ import SumInsuredSection from "./components/SumInsuredSection";
 import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 import Benefit from "./components/Benefit";
 import GoBackButton from "../../components/GoBackButton";
-import { useGetEnquiriesQuery, useUpdateEnquiryMutation } from "../../api/api";
 import { setPosPopup } from "../quotePage/quote.slice";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import ErrorPopup from "../ProposalPage/ProposalSections/components/ErrorPopup";
@@ -88,6 +87,10 @@ const ProductDetails = () => {
     window.location.hash = "";
   }, [groupCode]); */
 
+  /* useEffect(() => {
+    updateEnquiry(data?.data);
+  }, []); */
+
   const {
     journeyType,
     subJourneyType,
@@ -97,13 +100,8 @@ const ProductDetails = () => {
   if (!enquiryId) return <PageNotFound />;
 
   if (!cartEntry) {
-    if (subJourneyType === "renewal") {
-      alert(`Product not found against group code ${groupCode}.`);
-      return (window.location.href = "/");
-    } else {
-      alert(`Product not found against group code ${groupCode}.`);
-      return history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
-    }
+    alert(`Product not found against group code ${groupCode}.`);
+    return history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
   }
 
   const { sum_insured } = cartEntry;
@@ -183,7 +181,7 @@ const ProductDetails = () => {
                 <ShareQuoteModal
                   insurersFor={[cartEntry?.product?.company?.alias]}
                   stage="RENEWAL_PRODUCT_DETAILS"
-                  sum_insured={cartEntry?.sum_insured}
+                  sum_insured={sum_insured}
                 />
               </div>
             )}
