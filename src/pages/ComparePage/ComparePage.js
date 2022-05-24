@@ -66,8 +66,7 @@ function ComparePage() {
   const showDifferenceToggle = useToggle(false);
 
   const compareQuotes = getCompareQuotes(groupCode)?.quotes;
-  console.log("CompareQuotes", compareQuotes);
-  console.log("isLoading-", isLoading, isUninitialized);
+
   if (isLoading || isUninitialized || !compareQuotes)
     return <FullScreenLoader />;
 
@@ -231,7 +230,7 @@ function ComparePage() {
             />
           )}
 
-          {/* ================= Additional-Benefits */}
+          {/* ================= Additional-Benefits =================*/}
 
           {isSelectedSectionView ? (
             Object.keys(selectedSectionView).find(value => {

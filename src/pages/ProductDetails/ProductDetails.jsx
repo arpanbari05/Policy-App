@@ -183,7 +183,7 @@ const ProductDetails = () => {
                 <ShareQuoteModal
                   insurersFor={[cartEntry?.product?.company?.alias]}
                   stage="RENEWAL_PRODUCT_DETAILS"
-                  sum_insured={sum_insured}
+                  sum_insured={cartEntry?.sum_insured}
                 />
               </div>
             )}
