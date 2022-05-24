@@ -339,6 +339,7 @@ function RenderPlanDetails({ quote, ...props }) {
   const policy_wording_url = (productBrochureQuery.data || [])[0]
     ?.policy_wording_url;
 
+  console.log("PlanDetailsFrom", planDetails);
   return (
     <PlanDetails
       ActiveMainTab
