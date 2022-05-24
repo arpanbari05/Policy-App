@@ -52,6 +52,11 @@ export default function validateInput({
   setMobileErrors = () => {},
 }) {
   let isValidate = true;
+  console.log("FullName", fullNameInput);
+  if (fullNameInput?.value?.trim().split(" ").length < 2) {
+    setFullNameErrors({ message: "Please enter a valid FullName." });
+    isValidate = false;
+  }
 
   if (fullNameInput?.value?.length > 0 && fullNameInput?.value?.length < 3) {
     setFullNameErrors({ message: "Please enter a valid FullName." });
