@@ -396,7 +396,7 @@ function QuoteCard({
             src={logoSrc}
             alt={quote?.company_alias}
             css={`
-              height: 2.4rem;
+              height: 48px;
             `}
           />
           {/* <span
