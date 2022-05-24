@@ -42,10 +42,6 @@ const ProductDetails = () => {
 
   const urlQueries = useUrlQuery();
 
-  const [updateEnquiry] = useUpdateEnquiryMutation();
-
-  const { data } = useGetEnquiriesQuery();
-
   const enquiryId = urlQueries.get("enquiryId");
 
   const [showNav, setShowNav] = useState(false);
@@ -92,10 +88,6 @@ const ProductDetails = () => {
     window.location.hash = "";
   }, [groupCode]); */
 
-  /* useEffect(() => {
-    updateEnquiry(data?.data);
-  }, []); */
-
   const {
     journeyType,
     subJourneyType,
@@ -105,9 +97,16 @@ const ProductDetails = () => {
   if (!enquiryId) return <PageNotFound />;
 
   if (!cartEntry) {
-    alert(`Product not found against group code ${groupCode}.`);
-    return history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
+    if (subJourneyType === "renewal") {
+      alert(`Product not found against group code ${groupCode}.`);
+      return (window.location.href = "/");
+    } else {
+      alert(`Product not found against group code ${groupCode}.`);
+      return history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
+    }
   }
+
+  const { sum_insured } = cartEntry;
 
   return (
     <>
