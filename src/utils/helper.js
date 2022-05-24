@@ -4,6 +4,7 @@ import clickSound from "../assets/audio/button-click.mp3";
 // all on specific urls
 export const allowOnWebsites = (sites = []) => {
   const renewBuyAll = ["rbstaging.in", "renewbuy.com"];
+  const pincAll = ["pincinsurance.com", "pinctree.com"];
   const healthUat =
     "https://healthdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in";
   const renewBuyUat = [
@@ -64,6 +65,13 @@ export const allowOnWebsites = (sites = []) => {
     }
     if (site === "renewBuyAll") {
       renewBuyAll.forEach(value => {
+        if (origin.includes(value)) {
+          isPass = true;
+        }
+      });
+    }
+    if (site === "pincAll") {
+      pincAll.forEach(value => {
         if (origin.includes(value)) {
           isPass = true;
         }
