@@ -54,7 +54,6 @@ export const getRiders = async (
     callback(response.data);
   } catch (error) {
     alert(error);
-    console.error(error);
   }
 };
 
@@ -77,7 +76,6 @@ export const getAbhiRiders = async (
     callback(response.data);
   } catch (error) {
     alert(error);
-    console.error(error);
   }
 };
 
@@ -164,10 +162,12 @@ const SeeDetails = ({
     let featureList = [];
     let innerData = {};
     data?.forEach((item, index) => {
+      console.log("plantype", item);
       featureList.push({
         id: index + 1,
         title: item.name,
         description: item.description,
+        displayType: item.display_type[0],
       });
       item?.sum_insureds[sum_insured]?.features?.forEach(innerItem => {
         innerData[item.name] = [
