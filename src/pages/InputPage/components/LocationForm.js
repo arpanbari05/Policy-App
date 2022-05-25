@@ -77,7 +77,11 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
     if (previousGroup)
       return getUrlWithEnquirySearch(`/input/location-${previousGroup.id}`);
 
-    if (journeyType === "top_up" || isSingleMember)
+    if (
+      journeyType === "top_up" ||
+      isSingleMember ||
+      settings?.multiindividual_visibilty === 0
+    )
       return getUrlWithEnquirySearch(`/input/members`);
 
     return getUrlWithEnquirySearch(`/input/plantype`);

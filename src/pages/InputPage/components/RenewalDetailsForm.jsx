@@ -48,7 +48,7 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
 
   useEffect(() => {
     isSuccess &&
-      history.push(
+      window.location.assign(
         `/productdetails/${data?.data?.groups[0]?.id}?enquiryId=${data?.data?.enquiry_id}`,
       );
   }, [isSuccess]);

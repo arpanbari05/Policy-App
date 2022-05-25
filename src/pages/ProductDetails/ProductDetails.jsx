@@ -28,7 +28,6 @@ import SumInsuredSection from "./components/SumInsuredSection";
 import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 import Benefit from "./components/Benefit";
 import GoBackButton from "../../components/GoBackButton";
-import { useGetEnquiriesQuery, useUpdateEnquiryMutation } from "../../api/api";
 import { setPosPopup } from "../quotePage/quote.slice";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
 import ErrorPopup from "../ProposalPage/ProposalSections/components/ErrorPopup";
@@ -42,10 +41,6 @@ const ProductDetails = () => {
 
   const urlQueries = useUrlQuery();
 
-  const [updateEnquiry] = useUpdateEnquiryMutation();
-
-  const { data } = useGetEnquiriesQuery();
-
   const enquiryId = urlQueries.get("enquiryId");
 
   const [showNav, setShowNav] = useState(false);
@@ -53,8 +48,6 @@ const ProductDetails = () => {
   const { getCartEntry } = useCart();
 
   const cartEntry = getCartEntry(parseInt(groupCode));
-
-  const { sum_insured } = cartEntry;
 
   const { pos_popup } = useSelector(({ quotePage }) => quotePage);
 
@@ -110,6 +103,8 @@ const ProductDetails = () => {
     alert(`Product not found against group code ${groupCode}.`);
     return history.replace(`/quotes/${groupCode}?enquiryId=${enquiryId}`);
   }
+
+  const { sum_insured } = cartEntry;
 
   return (
     <>

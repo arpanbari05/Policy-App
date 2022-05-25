@@ -287,7 +287,6 @@ export function CompareRiderPremium({
   const { colors } = useTheme();
   const { isSelected } = rider;
 
-  console.log(colors);
   const handleChange = evt => {
     if (rider?.is_mandatory) return;
     onChange && onChange({ ...rider, isSelected: evt.target.checked });
@@ -353,7 +352,7 @@ export function CompareRiderPremium({
   );
 }
 
-export function RiderPremium({ quote, rider, isLoading = false, onChange }) {
+export function RiderPremium({ rider, isLoading = false, onChange }) {
   const { colors } = useTheme();
   const { isSelected } = rider;
 
@@ -452,9 +451,9 @@ function RiderOption({
   }
 
   if (typeof options[0] === "object") {
-    optionsList = options?.map(opitonObject => ({
-      code: Object.keys(opitonObject)[0],
-      display_name: Object.values(opitonObject)[0],
+    optionsList = options?.map(optionObject => ({
+      code: Object.keys(optionObject)[0],
+      display_name: Object.values(optionObject)[0],
     }));
   }
 
