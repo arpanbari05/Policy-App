@@ -145,7 +145,9 @@ export function FullScreenLoader() {
     fts: "#0a87ff",
     pinc: "#e1056d",
     sriyah: "#626dc7",
+    spa: "#3877d6",
   };
+
   const tenantAlias = process.env.REACT_APP_TENANT;
   const tenantColor = defaultColors[tenantAlias];
   const tenantLogo = images[tenantAlias];
