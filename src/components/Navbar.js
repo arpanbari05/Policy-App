@@ -154,12 +154,7 @@ const Navbar = ({ backButton: BackButton = <></>, noShadow = false }) => {
             <PincPosLogout />
           )}
 
-          {allowOnWebsites([
-            "topup",
-            "renewBuyUat",
-            "sriyahUat",
-            "pincUat",
-          ]) && (
+          {allowOnWebsites(["allUat"]) && (
             <span
               onClick={() => {
                 setShow(true);

@@ -4,6 +4,17 @@ import clickSound from "../assets/audio/button-click.mp3";
 // all on specific urls
 export const allowOnWebsites = (sites = []) => {
   const renewBuyAll = ["rbstaging.in", "renewbuy.com"];
+  const allUat = [
+    "https://uathealth.rbstaging.in",
+    "https://renewbuy-health.fynity.in",
+    "https://healthdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in",
+    "https://topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in",
+    "http://localhost:3000",
+    "https://health-uat.nammacover.com",
+    "https://uat-health.pincinsurance.com",
+    "https://uat-topup.rbstaging.in",
+    "https://uathealth.analahinsurance.com",
+  ];
   const healthUat =
     "https://healthdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in";
   const renewBuyUat = [
@@ -64,6 +75,13 @@ export const allowOnWebsites = (sites = []) => {
     }
     if (site === "renewBuyAll") {
       renewBuyAll.forEach(value => {
+        if (origin.includes(value)) {
+          isPass = true;
+        }
+      });
+    }
+    if (site === "allUat") {
+      allUat.forEach(value => {
         if (origin.includes(value)) {
           isPass = true;
         }
