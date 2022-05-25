@@ -33,6 +33,7 @@ import {
   useCart,
   useUSGIDiscounts,
   useFrontendBoot,
+  useCompanies,
 } from "../../customHooks";
 import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
@@ -68,15 +69,19 @@ const ProposalPage = () => {
   // const currentSchema = dummy;
   const [activateLoader, setActivateLoader] = useState(false);
 
+  const { getCompany } = useCompanies();
+
   let { cartEntries } = useCart();
+
+  const company_alias = cartEntries[0]?.product?.company?.alias;
+
+  const company = getCompany(company_alias);
+
+  const enableEditMembers = company?.allows_proposal_updation_on_renewal === 1; // array of ICs for which edit members functionality should be displayed.
 
   const sum_insured = cartEntries?.map(cart => ({
     [cart?.product?.name]: cart?.sum_insured,
   }));
-
-  const enableEditMembers = ["care_health"].includes(
-    cartEntries[0]?.product?.company?.alias,
-  ); // array of ICs for which edit members functionality should be displayed.
 
   const [listOfForms, setListOfForms] = useState([]);
 
