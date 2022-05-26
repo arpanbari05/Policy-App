@@ -7,6 +7,12 @@ import ErrorBoundary from "./ErrorBoundary";
 
 window.isTransactionClicked = false;
 
+if (process.env.NODE_ENV === "production") {
+  console.log = () => {};
+  console.error = () => {};
+  console.debug = () => {};
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyles />
