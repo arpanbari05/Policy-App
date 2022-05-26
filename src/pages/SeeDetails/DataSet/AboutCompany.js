@@ -8,7 +8,7 @@ import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
 import BarMarketMobile from "../MobileComponents/AboutCompanyMobile/BarMarketMobile";
 import BarGroupMobile from "../MobileComponents/AboutCompanyMobile/BarGroupMobile";
 import { useTheme } from "../../../customHooks";
-import { mobile, tabletAndMobile } from "../../../utils/mediaQueries";
+import { tabletAndMobile } from "../../../utils/mediaQueries";
 
 const AboutCompany = ({ ActiveMainTab, aboutCompany, company_name }) => {
   const { loading } = useSelector(state => state.seeDetails);

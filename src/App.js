@@ -1,17 +1,16 @@
+import { lazy, Suspense } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { useFrontendBoot } from "../src/customHooks";
+import { FullScreenLoader, LoadCart } from "./components";
+import { BaseComponent } from "./components/BaseComponent";
+import CheckPolicies from "./components/Common/CheckPolicies";
+import NotFoundPage from "./components/Common/NotFoundPage/NotFoundPage";
+import ChooseYourJourneyPage from "./pages/ChooseYourJourneyPage/ChooseYourJourneyPage";
+import ComparePage from "./pages/ComparePage";
 import InputPage from "./pages/InputPage/InputPage";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import QuotesPage from "./pages/quotePage/";
-import { lazy } from "react";
-import { Suspense } from "react";
-import { FullScreenLoader, LoadCart } from "./components";
-import ComparePage from "./pages/ComparePage";
-import NotFoundPage from "./components/Common/NotFoundPage/NotFoundPage";
-import { useFrontendBoot } from "../src/customHooks";
-import { BaseComponent } from "./components/BaseComponent";
-import CheckPolicies from "./components/Common/CheckPolicies";
 import ShortlistedQuotes from "./pages/ShortlistedPage/shortlistedQuotes";
-import ChooseYourJourneyPage from "./pages/ChooseYourJourneyPage/ChooseYourJourneyPage";
 const ProposalPage = lazy(() => import("./pages/ProposalPage/ProposalPage"));
 const ProposalSummary = lazy(() =>
   import("./pages/ProposalSummary/ProposalSummary"),
