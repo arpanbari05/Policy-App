@@ -360,6 +360,7 @@ export function useFilter() {
 
 export function useMembers() {
   const dispatch = useDispatch();
+
   const searchQueries = useUrlQueries();
 
   const reduxGroup =
@@ -673,8 +674,11 @@ export function useUpdateEnquiry() {
   const [updateEnquiryMutation, queryState] = useUpdateEnquiryMutation();
 
   const [updateGroups, updateGroupsQueryState] = useUpdateGroupsMutation();
+  const searchQueries = useUrlQueries();
 
-  const { data } = useGetEnquiriesQuery();
+  const { data } = useGetEnquiriesQuery(undefined, {
+    skip: !searchQueries.enquiryId,
+  });
 
   const dispatch = useDispatch();
 

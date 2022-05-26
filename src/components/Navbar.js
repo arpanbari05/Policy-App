@@ -82,7 +82,7 @@ const Navbar = ({ backButton: BackButton = <></>, noShadow = false }) => {
   });
 
   const { data } = useGetEnquiriesQuery(undefined, {
-    skip: !!isRootRoute && !searchQueries.enquiryId,
+    skip: !searchQueries.enquiryId,
   });
 
   const [show, setShow] = useState(false);
@@ -154,12 +154,7 @@ const Navbar = ({ backButton: BackButton = <></>, noShadow = false }) => {
             <PincPosLogout />
           )}
 
-          {allowOnWebsites([
-            "topup",
-            "renewBuyUat",
-            "sriyahUat",
-            "pincUat",
-          ]) && (
+          {allowOnWebsites(["allUat"]) && (
             <span
               onClick={() => {
                 setShow(true);
@@ -197,7 +192,7 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
   });
 
   const { data } = useGetEnquiriesQuery(undefined, {
-    skip: !!isRootRoute && !searchQueries.enquiryId,
+    skip: !searchQueries.enquiryId,
   });
 
   const { getGroupLocation, getFirstGroupLocation } = useMembers();
@@ -543,7 +538,7 @@ export function TraceId() {
   });
 
   const { data, isLoading, isUninitialized } = useGetEnquiriesQuery(undefined, {
-    skip: !!isBasicDetailsRoute && !searchQueries.enquiryId,
+    skip: !searchQueries.enquiryId,
   });
 
   const [show, setShow] = useState(false);

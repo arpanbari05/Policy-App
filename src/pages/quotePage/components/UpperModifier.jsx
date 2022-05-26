@@ -83,7 +83,7 @@ export function GroupLinks({ ...props }) {
   if (partioned) {
     groupsToShow = groups.filter(group => group?.id !== allMembersGroup?.id);
   } else {
-    groupsToShow = [allMembersGroup];
+    groupsToShow = [allMembersGroup].filter(group => !!group);
   }
 
   const currentGroup =
@@ -147,17 +147,17 @@ export function GroupLinks({ ...props }) {
 export function GroupLink({ group, ...props }) {
   const { colors } = useTheme();
 
-  const { id } = group;
+  let { groupCode } = useParams();
+
+  const { getMembersText } = useMembers();
 
   const { enquiryId } = useUrlEnquiry();
 
-  let { groupCode } = useParams();
+  const { id } = group;
 
   groupCode = parseInt(groupCode);
 
   const isCurrentGroup = id === groupCode;
-
-  const { getMembersText } = useMembers();
 
   const membersText = getMembersText(group);
 

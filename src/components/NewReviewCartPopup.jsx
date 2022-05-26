@@ -46,7 +46,6 @@ function CartSummaryContent({ closeModal, onContine, ...props }) {
       data: { groups },
     },
   } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
-  const { data } = useGetCartQuery();
 
   const revisedNetPremiumArray = groups.map(
     singleGroup => getCartEntry(parseInt(singleGroup.id))?.netPremium,

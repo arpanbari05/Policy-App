@@ -322,7 +322,7 @@ function AddOnCard({ quotesList = [], cartEntry }) {
         currentQuote={quote}
         cartEntry={cartEntry}
       />
-
+      {console.log("AddOn_quote", quote)}
       {detailsToggle.isOn ? (
         <AddOnDetails addOn={quote} handleClose={detailsToggle.off} />
       ) : null}
