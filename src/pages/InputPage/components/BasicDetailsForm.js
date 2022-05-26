@@ -1,7 +1,9 @@
 import { useState } from "react";
-import CustomProgressBar from "../../../components/ProgressBar";
-import { Title, ErrorMessage } from "./FormComponents";
+import { Redirect, useHistory } from "react-router-dom";
+import styled from "styled-components";
 import { boy, girl } from "../../../assets/images";
+import { Button } from "../../../components";
+import CustomProgressBar from "../../../components/ProgressBar";
 import TextInput2 from "../../../components/TextInput2";
 import {
   useCreateEnquiry,
@@ -13,19 +15,17 @@ import {
   useUpdateEnquiry,
 } from "../../../customHooks";
 import { useUrlQueries } from "../../../customHooks/useUrlQuery";
-import { Button } from "../../../components";
-import "styled-components/macro";
-import { Redirect, useHistory } from "react-router-dom";
 import {
   allowOnWebsites,
   capitalize,
   inputEnquiryVisibility,
 } from "../../../utils/helper";
-import * as mq from "../../../utils/mediaQueries";
 import validateInput, {
   isEnquiryOptional,
 } from "../../../utils/inputPageUtils";
-import styled from "styled-components";
+import * as mq from "../../../utils/mediaQueries";
+import { Title, ErrorMessage } from "./FormComponents";
+import "styled-components/macro";
 
 const BasicDetailsForm = ({ posContent, ...props }) => {
   const location = window.location;
@@ -45,7 +45,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
   const {
     data: { tenant, settings },
     subJourneyType,
-  } = useFrontendBoot(!Boolean(EnquiryId));
+  } = useFrontendBoot(!EnquiryId);
 
   //===== page states======
   const [emailError, setEmailErrors] = useState({});
@@ -259,7 +259,6 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
                     label="Full Name"
                     name="name"
                     type="text"
-                    autoFocus
                     {...fullNameInput}
                     maxLength={60}
                   />
