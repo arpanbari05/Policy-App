@@ -272,6 +272,7 @@ const ProductDetails = () => {
                   groupCode={parseInt(groupCode)}
                 />
                 <RidersSection isProductDetailsPage={true} />
+
                 {+settings?.addons_visibilty === 1 &&
                 journeyType === "health" ? (
                   <AddOnSection cartEntry={cartEntry} />

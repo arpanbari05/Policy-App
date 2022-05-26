@@ -674,8 +674,11 @@ export function useUpdateEnquiry() {
   const [updateEnquiryMutation, queryState] = useUpdateEnquiryMutation();
 
   const [updateGroups, updateGroupsQueryState] = useUpdateGroupsMutation();
+  const searchQueries = useUrlQueries();
 
-  const { data } = useGetEnquiriesQuery();
+  const { data } = useGetEnquiriesQuery(undefined, {
+    skip: !searchQueries.enquiryId,
+  });
 
   const dispatch = useDispatch();
 
