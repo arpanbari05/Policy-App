@@ -15,19 +15,21 @@ import {
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 import "styled-components/macro";
 import { Button, PremiumButton } from "../../../../components";
-import {
-  mergeQuotes,
-  numberToDigitWord,
-  ClickSound,
-} from "../../../../utils/helper";
+import { mergeQuotes, numberToDigitWord } from "../../../../utils/helper";
 import ProductDetailsModal from "../../../../components/ProductDetails/ProductDetailsModal";
-import { FaChevronDown, FaChevronRight, FaChevronUp } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaChevronRight,
+  FaChevronUp,
+  FaBookmark,
+  FaRegBookmark,
+} from "react-icons/fa";
 import { Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { IoRadioButtonOff, IoRadioButtonOn } from "react-icons/io5";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { CompareQuoteTrayItem, CompareTrayAdd } from "../../components";
 import _ from "lodash";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setQuotesToShare,
@@ -37,8 +39,7 @@ import {
 import ShareQuoteModal from "../../../../components/ShareQuoteModal";
 import useFilters from "../../components/filters/useFilters";
 import { PrimaryFontBold } from "../../../../styles/typography";
-import { FaBookmark, FaRegBookmark } from "react-icons/fa";
-import { useRouteMatch } from "react-router-dom";
+
 import { api } from "../../../../api/api";
 
 export function Quotes({ sortBy }) {
@@ -401,7 +402,6 @@ function QuoteCard({
       setIsShortListed(false);
       removePlanToShortlist(quote);
     }
-    console.log({ checked });
   };
 
   const shortlistDesc = !canDelete
@@ -630,6 +630,7 @@ function QuoteCard({
             overlay={<Tooltip {...props}>{shortlistDesc}</Tooltip>}
           >
             <label
+              aria-hidden="true"
               className="d-flex align-items-start justify-content-center"
               css={`
                 gap: 0.3em;
@@ -684,7 +685,7 @@ function QuoteFeatures({
   handleNavigate = () => {},
 }) {
   const { colors } = useTheme();
-  features = features.filter((feature, index) =>
+  features = features.filter(feature =>
     featuresDisplayedOnQuoteCard.includes(feature.code),
   );
   return (
@@ -714,7 +715,7 @@ function QuoteFeatures({
   );
 }
 
-function QuoteFeature({ feature, value, index, onNavigate }) {
+function QuoteFeature({ feature, value, index }) {
   const { colors } = useTheme();
   return (
     <div
@@ -801,6 +802,7 @@ export function QuoteCardDataset(description, index, PrimaryColor) {
           show={showTooltip}
         >
           <span
+            aria-hidden="true"
             ref={target}
             onClick={toggleTooltip}
             style={{ position: "relative", top: "-1px" }}

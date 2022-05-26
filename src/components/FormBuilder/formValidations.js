@@ -69,8 +69,6 @@ function contains(target, pattern) {
 
 export const validationIndex = {
   required: (param, values, name) => {
-
-
     if (typeof name === "object") {
       const { parent, member, variableName } = name;
 
@@ -237,8 +235,8 @@ export const validationIndex = {
             };
           } else break;
         case "validDigits":
-          let min = parseInt(param.split("/")[1]);
-          let max = parseInt(param.split("/")[2]);
+          var min = parseInt(param.split("/")[1]);
+          var max = parseInt(param.split("/")[2]);
 
           if (!/^[0-9]*$/.test(value) || !(value >= min && value <= max)) {
             return {
@@ -251,10 +249,9 @@ export const validationIndex = {
           } else break;
         case "validYear":
           if (typeof value === "string" || value instanceof String) {
-        
             let month = value?.split("-")[0];
             let year = value?.split("-")[1];
-            
+
             if (
               !(
                 month > 0 &&
@@ -377,9 +374,9 @@ export const validationIndex = {
           }
           break;
         case "onlyYear":
-          let currentDate = new Date();
-          let inputDate = values[name.parent][name.member][name.variableName];
-          let birthYear = name.dob ? name.dob.split("-")[2] : name.age;
+          var currentDate = new Date();
+          var inputDate = values[name.parent][name.member][name.variableName];
+          var birthYear = name.dob ? name.dob.split("-")[2] : name.age;
           if (
             currentDate.getUTCFullYear() < parseInt(inputDate) ||
             parseInt(inputDate) < parseInt(birthYear)
@@ -478,7 +475,7 @@ export const validationIndex = {
             };
           } else break;
         case "email":
-          let pass = false;
+          var pass = false;
           if (value.toLowerCase().includes("@")) {
             acceptedEmailExtensions.map(ext => {
               if (
@@ -510,28 +507,6 @@ export const validationIndex = {
               status: false,
               message: "Please enter a valid pan number.",
             };
-          // }
-          //  else  if (
-          //   value[4] &&
-          //   // if user enter "." as last name 
-          //   // pancard number's 5th char must be equal to the first char of first name of the user
-          //   values.name[values.name.lastIndexOf(" ") + 1] === "." &&
-          //   values.name[0].toUpperCase() !== value[4]
-          // ) {
-          //   return {
-          //     status: false,
-          //     message: "5th char must be equal to your first name's 1st char.",
-          //   };
-          // }else if (
-          //   value[4] &&
-          //   // pancard number's 5th char must be equal to the first char of last name of the user
-          //   values.name[values.name.lastIndexOf(" ") + 1] !== "." &&
-          //   values.name[values.name.lastIndexOf(" ") + 1].toUpperCase() !== value[4]
-          // ) {
-          //   return {
-          //     status: false,
-          //     message: "5th char must be equal to your last name's 1st char.",
-          //   };
           } else break;
         }
         case "aadhar":
@@ -585,13 +560,7 @@ export const validationIndex = {
               message: "Enter valid address",
             };
           } else break;
-        case "name":
-          if (!/^[a-zA-Z. ]{3,30}$/.test(value)) {
-            return {
-              status: false,
-              message: "Please enter fullname.",
-            };
-          } else break;
+
         default:
           if (param.startsWith("^") && param.endsWith("$")) {
             const reg = new RegExp(param);
@@ -602,11 +571,6 @@ export const validationIndex = {
               };
             } else break;
           } else return;
-        // {
-        //   status: false,
-        //   message:
-        //     "No Regex specified for the combination remove matches or change the param",
-        // };
       }
     }
   },

@@ -6,7 +6,7 @@ import {
   IoCheckmarkCircleSharp,
   IoRemoveCircle,
 } from "react-icons/io5";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { useGetCartQuery, useGetEnquiriesQuery } from "../api/api";
 import {
@@ -29,7 +29,6 @@ import FilterSkeletonLoader from "./Common/filter-skeleton-loader/FilterSkeleton
 import * as mq from "../utils/mediaQueries";
 import { GiCircle } from "react-icons/gi";
 import { images } from "../assets/logos/logo";
-import { defaultPrimaryColor } from "../config";
 import { useUrlQueries } from "../customHooks/useUrlQuery";
 
 export function ScreenTopLoader({ progress, show }) {
@@ -209,8 +208,6 @@ export function Button({
   children,
   loader = false,
   disabled = false,
-  arrow = false,
-  gray = true,
   css,
   onClick,
   loaderPrimaryColor = true,
@@ -582,6 +579,7 @@ export function BackButtonMobile({ path, css = "", ...props }) {
 
   return (
     <span
+      aria-hidden="true"
       {...props}
       css={`
         color: ${colors.primary_color};
@@ -621,7 +619,6 @@ export function OptionSelect({
     >
       <label
         className="d-flex align-items-center flex-grow-1 align-self-stretch"
-        role="button"
         css={`
           font-size: 15px;
           line-height: 1;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router";
-import { useHistory } from "react-router";
+import { useLocation, useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Row } from "react-bootstrap";
 import "./ThankYouPage.scss";
@@ -17,7 +16,6 @@ import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import { small } from "../../utils/mediaQueries";
 import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
-import checkImg from "../../assets/images/correct.png";
 
 const ThankYouPage = () => {
   const ls = new SecureLS();
@@ -57,8 +55,6 @@ const ThankYouPage = () => {
       // win?.focus();
     });
   });
-
-  console.log(`window.isTransactionClicked = ${window.isTransactionClicked}`);
 
   const dispatch = useDispatch();
 
@@ -273,7 +269,7 @@ const ThankYouPage = () => {
                         Uh OH! Payment Faiiled.
                       </h3>
                       <p className="text-p" style={{ textAlign: "center" }}>
-                        Don't worry. Please try again.
+                        Don&lsquo;t worry. Please try again.
                       </p>
                       <div>
                         <div
@@ -297,8 +293,9 @@ const ThankYouPage = () => {
                 {
                   <>
                     <div className="col-md-12 text-center margin_top_unsuccess">
-                      <a
-                        href="#"
+                      <span
+                        role="button"
+                        tabIndex={0}
                         className="btn_back_q_proposal"
                         css={`
                           display: inline-block;
@@ -319,9 +316,10 @@ const ThankYouPage = () => {
                         }}
                       >
                         Back To Quotes
-                      </a>
-                      <a
-                        href="#"
+                      </span>
+                      <span
+                        role="button"
+                        tabIndex={0}
                         className="btn_start_proposal_back_t"
                         css={`
                           color: #0a87ff;
@@ -342,7 +340,7 @@ const ThankYouPage = () => {
                         }}
                       >
                         Try Again
-                      </a>
+                      </span>
 
                       <p className="footer-text-unsuccess">
                         If you have any questions, please call us on{" "}
@@ -378,7 +376,7 @@ const ThankYouPage = () => {
                       color: "#595959",
                     }}
                   >
-                    Don't worry. Please try again.
+                    Dont worry. Please try again.
                   </p>
                 </div>
 
@@ -535,7 +533,7 @@ const BannerArea = ({
                 margin-left: -57px;
                 margin-top: -10px;
                 border-radius: 100%;
-                background-image: url(${checkImg});
+                background-image: url(${Correct});
                 background-size: cover;
               }
             }
@@ -785,7 +783,6 @@ const MobileBanner = ({
               fontSize: "15px",
               whiteSpace: "nowrap",
               fontWeight: "bold",
-              backgroundColor: colors?.primary_shade,
               borderRadius: "55px",
               // letterSpacing: "1px"
             }}
@@ -908,7 +905,7 @@ const MobileBanner = ({
               margin-left: -25px;
               margin-top: -2px;
               border-radius: 100%;
-              background-image: url(${checkImg});
+              background-image: url(${Correct});
               background-size: cover;
             }
           }

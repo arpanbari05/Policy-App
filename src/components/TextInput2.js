@@ -88,6 +88,8 @@ const TextInput2 = React.forwardRef(
   ),
 );
 
+TextInput2.displayName = "TextInput2";
+
 export default TextInput2;
 
 export const FormGroup = styled.div`

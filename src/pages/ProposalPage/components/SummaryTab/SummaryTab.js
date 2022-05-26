@@ -6,7 +6,6 @@ import {
   renderField,
   ValueExtractor,
 } from "../../../../components/FormBuilder/formUtils";
-import pencil from "../../../../assets/images/pencil_pro.png";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
@@ -59,8 +58,6 @@ const SummaryTab = ({
   const dispatch = useDispatch();
 
   const history = useHistory();
-
-  const { theme } = useSelector(state => state.frontendBoot);
 
   const { asyncOptions } = useSelector(({ formBuilder }) => formBuilder);
 
@@ -129,10 +126,10 @@ const SummaryTab = ({
       return <></>;
 
     if (data?.type === "select")
-      return Boolean(
+      return (
         data.name === "town" || data.name === "area"
           ? values[data.name + "__value"]
-          : getValueFromCode(values[data.name], data),
+          : getValueFromCode(values[data.name], data)
       ) ? (
         <Col
           md={4}
@@ -192,10 +189,10 @@ const SummaryTab = ({
                 return (
                   <div
                     key={_i}
-                    class="col-md-2 mb-12"
+                    className="col-md-2 mb-12"
                     style={{ display: "inline-block" }}
                   >
-                    <p class="font_15_p_s medical_details_p_s">
+                    <p className="font_15_p_s medical_details_p_s">
                       {item ? item : "No"}
                     </p>
                   </div>
@@ -204,12 +201,12 @@ const SummaryTab = ({
             })
           ) : !data.additionalOptions.showMembers &&
             values[data.name][`is${data.name}`] === "Y" ? (
-            <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
-              <p class="font_15_p_s medical_details_p_s">{"Yes"}</p>
+            <div className="col-md-2 mb-12" style={{ display: "inline-block" }}>
+              <p className="font_15_p_s medical_details_p_s">{"Yes"}</p>
             </div>
           ) : (
-            <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
-              <p class="font_15_p_s medical_details_p_s">{"No"}</p>
+            <div className="col-md-2 mb-12" style={{ display: "inline-block" }}>
+              <p className="font_15_p_s medical_details_p_s">{"No"}</p>
             </div>
           )}
         </Col>
@@ -273,55 +270,53 @@ const SummaryTab = ({
           {values?.[item]?.[data.name] instanceof Object &&
           values?.[item]?.[data.name]?.members &&
           Object.keys(values?.[item]?.[data.name]?.members).length ? (
-            Object.keys(values?.[item]?.[data.name]?.members).map(
-              (_item, _i) => {
-                return values?.[item]?.[data.name]?.members[_item] ? (
-                  <>
-                    <CustomMedicalTitle>{_item}</CustomMedicalTitle>
-                    <InnerWrapper>
-                      {schema[i + 1]?.map(
-                        additionalQuestion =>
-                          values?.[item]?.[data.name]?.[_item]?.[
-                            additionalQuestion?.name
-                          ] && (
-                            <AdditionalWrapper2 className="text-dark">
-                              <AdditionalQuestion className="font_15_p_s">
-                                {ValueExtractor(
-                                  additionalQuestion?.additionalOptions?.label,
-                                  values?.[item],
-                                  _item,
-                                ) ||
-                                  additionalQuestion.additionalOptions
-                                    .placeholder}
-                              </AdditionalQuestion>
-                              <AdditionalAnswer
-                                className="font_sub_p_s"
-                                style={{ fontWeight: "900" }}
+            Object.keys(values?.[item]?.[data.name]?.members).map(_item => {
+              return values?.[item]?.[data.name]?.members[_item] ? (
+                <>
+                  <CustomMedicalTitle>{_item}</CustomMedicalTitle>
+                  <InnerWrapper>
+                    {schema[i + 1]?.map(
+                      additionalQuestion =>
+                        values?.[item]?.[data.name]?.[_item]?.[
+                          additionalQuestion?.name
+                        ] && (
+                          <AdditionalWrapper2 className="text-dark">
+                            <AdditionalQuestion className="font_15_p_s">
+                              {ValueExtractor(
+                                additionalQuestion?.additionalOptions?.label,
+                                values?.[item],
+                                _item,
+                              ) ||
+                                additionalQuestion.additionalOptions
+                                  .placeholder}
+                            </AdditionalQuestion>
+                            <AdditionalAnswer
+                              className="font_sub_p_s"
+                              style={{ fontWeight: "900" }}
+                            >
+                              <p
+                                style={{
+                                  overflowWrap: "break-word",
+                                }}
                               >
-                                <p
-                                  style={{
-                                    overflowWrap: "break-word",
-                                  }}
-                                >
-                                  {
-                                    values?.[item]?.[data.name]?.[_item]?.[
-                                      additionalQuestion?.name
-                                    ]
-                                  }
-                                </p>
-                              </AdditionalAnswer>
-                            </AdditionalWrapper2>
-                          ),
-                      )}
-                    </InnerWrapper>
-                  </>
-                ) : (
-                  <></>
-                );
-              },
-            )
+                                {
+                                  values?.[item]?.[data.name]?.[_item]?.[
+                                    additionalQuestion?.name
+                                  ]
+                                }
+                              </p>
+                            </AdditionalAnswer>
+                          </AdditionalWrapper2>
+                        ),
+                    )}
+                  </InnerWrapper>
+                </>
+              ) : (
+                <></>
+              );
+            })
           ) : (
-            <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
+            <div className="col-md-2 mb-12" style={{ display: "inline-block" }}>
               <MedicalAnswer>No</MedicalAnswer>
             </div>
           )}
@@ -329,7 +324,7 @@ const SummaryTab = ({
       );
     }
     if (data.type === "select")
-      return Boolean(getValueFromCode(values?.[item]?.[data.name], data)) ? (
+      return getValueFromCode(values?.[item]?.[data.name], data) ? (
         <Col
           md={4}
           sm={4}
@@ -386,7 +381,7 @@ const SummaryTab = ({
                   return (
                     <div
                       key={_i}
-                      class="col-md-2 mb-12"
+                      className="col-md-2 mb-12"
                       style={{ display: "inline-block" }}
                       css={`
                         font-weight: 900 !important;
@@ -401,11 +396,11 @@ const SummaryTab = ({
           ) : !data.additionalOptions.showMembers &&
             values?.[item]?.[data.name] &&
             values?.[item]?.[data.name][`is${data.name}`] === "Y" ? (
-            <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
+            <div className="col-md-2 mb-12" style={{ display: "inline-block" }}>
               <MedicalAnswer>Yes</MedicalAnswer>
             </div>
           ) : (
-            <div class="col-md-2 mb-12" style={{ display: "inline-block" }}>
+            <div className="col-md-2 mb-12" style={{ display: "inline-block" }}>
               <MedicalAnswer>No</MedicalAnswer>
             </div>
           )}
@@ -479,11 +474,10 @@ const SummaryTab = ({
               margin-top: -28px;
             `}
           >
-            {console.log("gfsdjgvbjsfv", title)}
             {data instanceof Array
               ? data?.map(normalRender)
               : Object.keys(data)?.length &&
-                Object.keys(data)?.map((item, index) => {
+                Object.keys(data)?.map(item => {
                   return isVersionRuleEngine(parseInt(item)) &&
                     title === "Medical Details" ? (
                     <></>
@@ -617,19 +611,7 @@ const PencilWrapper = styled.div`
   border-radius: 100%;
   margin: 0px 5px;
 `;
-const InnerTextBorder = styled.div`
-  margin: 15px 0px;
-  /* text-decoration:underline; */
-  color: #69758d !important;
-  font-weight: 600 !important;
-  font-size: 18px;
 
-  @media (max-width: 767px) {
-    margin-bottom: 0;
-    margin-top: 12px;
-    font-size: 14px;
-  }
-`;
 const MedicalQuestionWrapper = styled.p`
   font-size: 15px !important;
   text-align: inherit;
@@ -702,11 +684,7 @@ const InnerWrapper = styled.div`
   flex-wrap: wrap;
   padding-left: 12px;
 `;
-const AdditionalWrapper = styled.div`
-  min-width: 25%;
-  max-width: 100%;
-  margin-bottom: 12px;
-`;
+
 const AdditionalWrapper2 = styled.div`
   min-width: 25%;
   max-width: 257px;

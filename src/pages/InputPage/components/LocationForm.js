@@ -213,6 +213,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           >
             {groups.map(group => (
               <GroupWrapper
+                key={group?.id}
                 active={group?.id === currentGroupCode}
                 color={colors.primary_color}
                 onClick={() => setCurrentGroupCode(group?.id)}
@@ -492,7 +493,6 @@ function LocationOptions({
   onChange,
   showError = true,
   setError = () => {},
-  css = "",
   ...props
 }) {
   const [mouseEntered, setMouseEntered] = useState(false);
@@ -553,18 +553,13 @@ function LocationOptions({
   );
 }
 
-function Location({ location, isSelected = false, onChange, ...props }) {
+function Location({ location, onChange, ...props }) {
   const handleClick = () => {
     onChange && onChange(location);
   };
 
   return (
-    <li
-      {...props}
-      role="option"
-      aria-selected={isSelected}
-      onClick={handleClick}
-    >
+    <li {...props} aria-hidden="true" onClick={handleClick}>
       {location.city}
     </li>
   );

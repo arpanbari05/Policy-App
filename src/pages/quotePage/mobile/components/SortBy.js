@@ -6,25 +6,6 @@ import "styled-components/macro";
 import { useState } from "react";
 import { useSortBy } from "../../../../customHooks/index";
 
-// const SORT_BY_OPTIONS = [
-//   {
-//     code: "relevance",
-//     display_name: "Relevance",
-//   },
-//   {
-//     code: "premium_low_to_high",
-//     display_name: "Premium Low To High",
-//   },
-// ];
-
-const sortByOptionsConvertor = string => {
-  const sortByOptions = JSON.parse(string);
-  return sortByOptions?.map(opt => ({
-    code: opt,
-    display_name: opt.split("_").join(" "),
-  }));
-};
-
 export function SortByDialog({ onClose, currentSortBy, onChange }) {
   const { SORT_BY_OPTIONS } = useSortBy();
 
@@ -74,7 +55,7 @@ function Option({
 
   return (
     <label
-      role="option"
+      aria-hidden="true"
       aria-selected={checked}
       className="d-flex align-items-center justify-content-between py-3 text-capitalize"
       css={`

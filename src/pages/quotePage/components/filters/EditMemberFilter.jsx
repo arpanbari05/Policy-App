@@ -15,10 +15,9 @@ import { Button } from "../../../../components";
 import { RiPencilFill } from "react-icons/ri";
 import { FaTimes } from "react-icons/fa";
 import * as mq from "../../../../utils/mediaQueries";
-import { setEditStep } from "../../quote.slice";
+import { setEditStep, setShowEditMembers } from "../../quote.slice";
 import { useDispatch, useSelector } from "react-redux";
 import LocationEditForm from "../../../InputPage/components/LocationEditForm";
-import { setShowEditMembers } from "../../quote.slice";
 import { useGetEnquiriesQuery } from "../../../../api/api";
 import { useUpdateEnquiry } from "../../../../customHooks/index";
 import { PrimaryFontBold } from "../../../../styles/typography";
@@ -142,6 +141,7 @@ const EditMemberFilter = ({ redirectToQuotes = true }) => {
       <div
         className="d-flex align-items-center"
         onClick={onEditMemberClick}
+        tabIndex={0}
         role="button"
       >
         {redirectToQuotes && (
@@ -207,7 +207,7 @@ export function EditMembers({ redirectToQuotes, ...props }) {
     }
   }, [clientError]);
 
-  const { isError, validate, getSelectedMembers, ...memberForm } =
+  const { validate, getSelectedMembers, ...memberForm } =
     useMembersForm(getAllMembers);
 
   const { updateMembers, isLoading, error } = useUpdateMembers();

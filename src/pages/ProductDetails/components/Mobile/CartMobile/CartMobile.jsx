@@ -553,7 +553,7 @@ const StyledErrorMessage = styled(ErrorMessage)`
   text-align: center;
 `;
 
-function EditMembers({}) {
+function EditMembers() {
   const { groupCode } = useParams();
 
   const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();

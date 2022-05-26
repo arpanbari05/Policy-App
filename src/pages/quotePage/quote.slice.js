@@ -6,17 +6,15 @@ import {
   getCart,
   getDiscount,
   updateCart,
-  getUpdatedGroups,
 } from "./serviceApi";
 import { createUser } from "../InputPage/ServiceApi/serviceApi";
 import SecureLS from "secure-ls";
 import {
   ageError,
-  createUserData,
   refreshUserData,
   setMemberGroups,
+  setTraceId,
 } from "../InputPage/greetingPage.slice";
-import { setTraceId } from "../InputPage/greetingPage.slice";
 import axios from "axios";
 import { api } from "../../api/api";
 const ls = new SecureLS();
@@ -68,7 +66,7 @@ const quotePageSlice = createSlice({
   },
   name: "quote",
   reducers: {
-    ChangeUi: (state, action) => {
+    ChangeUi: state => {
       state.toggleUi = !state.toggleUi;
     },
     setAppLoading: (state, action) => {
@@ -106,7 +104,6 @@ const quotePageSlice = createSlice({
       state.showSharePopup = action.payload;
     },
     setEditStep: (state, action) => {
-      console.log(action.payload);
       state.editStep = action.payload;
     },
     replaceShareQuotes: (state, action) => {
@@ -224,13 +221,13 @@ const quotePageSlice = createSlice({
         data => data !== action.payload,
       );
     },
-    removeAllQuotesForCompare: (state, action) => {
+    removeAllQuotesForCompare: state => {
       state.quotesForCompare = [];
     },
     replaceQuotes: (state, action) => {
       state.quotes = action.payload;
     },
-    deleteQuotes: (state, action) => {
+    deleteQuotes: state => {
       state.quotes = [];
     },
     replaceFilterQuotes: (state, action) => {
@@ -243,7 +240,7 @@ const quotePageSlice = createSlice({
     saveFilteredQuotes: (state, action) => {
       state.quotes = [action.payload];
     },
-    clearFilterQuotes: (state, action) => {
+    clearFilterQuotes: state => {
       state.filterQuotes = [];
       state.quotes = [];
       state.quotesForCompare = [];
@@ -270,7 +267,6 @@ const quotePageSlice = createSlice({
       state.productDiscounts = action.payload;
     },
     saveFilteredPremium: (state, action) => {
-      console.log("hehe3325321t3dsg");
       state.quotes = state.quotes.map(item =>
         item.filter(quote =>
           action.payload.code.includes("-")
@@ -471,7 +467,10 @@ export const fetchQuotes =
           member,
         });
       });
-    } catch (error) {}
+    } catch (error) {
+      alert(error.message);
+      console.log(error);
+    }
   };
 
 export const saveQuotesData = data => {
@@ -506,7 +505,6 @@ export const insurerFilter = data => {
   let aliasSet = [];
   data.map(({ alias }) => aliasSet.push(alias));
 
-  console.log(aliasSet, "alias");
   return async dispatch => {
     dispatch(insurerFilterQuotes(aliasSet));
   };
@@ -537,14 +535,6 @@ export const createCartItem = (data, onCreate = () => {}) => {
         onCreate(response?.data.data.id);
         dispatch(getCartItem());
         dispatch(saveCartData(response?.data?.data));
-        // swal({
-        //   title: "Product Added to Cart!",
-        //   icon: "success",
-        //   button: "Ok",
-        //   className: "red-bg",
-        //   closeOnClickOutside:, title, list true,
-        //   closeOnEsc: true,
-        // });
       }
     } catch (err) {
       console.log(err);
@@ -597,19 +587,8 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
   // let members = data.filter(d => d.age);
 
   return async (dispatch, getState) => {
-    const data = getState().greetingPage.proposerDetails;
-    const companies = getState().frontendBoot.frontendData.data.companies;
     const planType = getState().quotePage.filters.planType;
-    const {
-      first_name,
-      last_name,
-      name,
-      mobile,
-      gender,
-      email,
-      pincode,
-      members,
-    } = givenData || {};
+    const { name, mobile, gender, email, pincode, members } = givenData || {};
     try {
       let sonCount = 1;
       let DCount = 1;
@@ -644,67 +623,13 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
         handleClose();
       }
 
-      // const { data } = response;
-
-      // const {
-      //   data: { enquiry_id },
-      //   access_token,
-      // } = data;
-
-      // ls.set("token", access_token);
-      // ls.set("enquiryId", enquiry_id);
-
-      // dispatch(
-      //   createUserData({
-      //     ...data,
-      //     member: members,
-      //   }),
-      // );
-
-      // const newMemberGroups = data.data.groups.reduce(
-      //   (groups, member) => ({
-      //     ...groups,
-      //     [member.id]: member.members,
-      //   }),
-      //   {},
-      // );
-
-      // dispatch(createUserData({ member: data.data.input.members }));
-      // const memberGroupsList = Object.keys(newMemberGroups);
-      // const showPlanTypeFilter =
-      //   memberGroupsList.length > 1 ||
-      //   newMemberGroups[memberGroupsList[0]].length > 1;
-      // if (!showPlanTypeFilter) {
-      //   dispatch(
-      //     setFilters({
-      //       planType: "Individual",
-      //     }),
-      //   );
-      // }
-      // dispatch(setMemberGroups(newMemberGroups));
-
-      // dispatch(replaceFilterQuotes([]));
-      // dispatch(replaceQuotes([]));
-      // history.push({
-      //   pathname: `/quotes/${memberGroupsList[0]}`,
-      //   search: `enquiryId=${enquiry_id}`,
-      // });
-      // Object.keys(companies).forEach((item) =>
-      //   dispatch(saveQuotesData({ alias: item, type: "normal" }))
-      // );
       if (response.data) {
-        // dispatch(
-        //   api.util.updateQueryData("getEnquiries", undefined, (draft) => {
-        //     Object.assign(draft, response.data);
-        //   })
-        // );
         const currentGroup =
           localStorage.getItem("groups") &&
           JSON.parse(localStorage.getItem("groups")).find(group => group?.id);
 
         dispatch(setAppLoading(true));
         ls.set("enquiryId", response?.data?.data?.enquiry_id);
-        console.log("kvbwbdv", response.data.data.trace_id);
         dispatch(setTraceId(response.data.data.trace_id));
         const newData = {
           enquiryId: response?.data?.data?.enquiry_id,
@@ -750,7 +675,6 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
 export const getProductDiscount =
   ({ alias, product_id, member, sum_insured, group }, onFetch = () => {}) =>
   async dispatch => {
-    console.log(alias, product_id, member, sum_insured, group);
     try {
       const response = await getDiscount({
         alias: alias,
@@ -766,7 +690,6 @@ export const getProductDiscount =
         dispatch(saveProductDiscountResponse(response?.data?.data));
         onFetch(response.data?.data);
       }
-      console.log(response);
     } catch (err) {
       alert(err);
       console.log(err);

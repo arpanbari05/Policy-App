@@ -448,15 +448,15 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
           `}
         >
           <ProductData noBorder>
-            <span class="label-add_product">Sum Insured</span>
+            <span className="label-add_product">Sum Insured</span>
             <span>₹ {figureToWords(sum_insured)}</span>
           </ProductData>
           <ProductData>
-            <span class="label-add_product">Premium</span>
+            <span className="label-add_product">Premium</span>
             <span>₹ {parseInt(netPremium).toLocaleString("en-IN")}</span>
           </ProductData>
           <ProductData>
-            <span class="label-add_product">Tenure</span>
+            <span className="label-add_product">Tenure</span>
             <span> {tenure} Year</span>
           </ProductData>
         </span>
@@ -482,20 +482,20 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
         </div>
         {deductible ? (
           <ProductData>
-            <span class="label-add_product">Deductible</span>
+            <span className="label-add_product">Deductible</span>
             <span>₹ {figureToWords(deductible)}</span>
           </ProductData>
         ) : null}
         <ProductData>
-          <span class="label-add_product">Sum Insured</span>
+          <span className="label-add_product">Sum Insured</span>
           <span>₹ {figureToWords(sum_insured)}</span>
         </ProductData>
         <ProductData>
-          <span class="label-add_product">Premium</span>
+          <span className="label-add_product">Premium</span>
           <span>₹ {parseInt(netPremium).toLocaleString("en-IN")}</span>
         </ProductData>
         <ProductData>
-          <span class="label-add_product">Tenure</span>
+          <span className="label-add_product">Tenure</span>
           <span>
             {" "}
             {tenure >= 2 ? `${tenure + " Years"}` : `${tenure + " Year"}`}
