@@ -23,8 +23,6 @@ function App() {
     data: { tenant },
   } = useFrontendBoot();
 
-  console.log("nothing");
-
   return (
     <Suspense fallback={<FullScreenLoader />}>
       <CheckPolicies>

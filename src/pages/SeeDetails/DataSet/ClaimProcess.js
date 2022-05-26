@@ -7,7 +7,6 @@ import {
   RiMailLine,
   RiLink,
 } from "react-icons/ri";
-import mobile from "../../../assets/images/mobile.png";
 import ClaimMain from "../components/ClaimProcess/ClaimProcessMain/ClaimMain";
 import { useSelector } from "react-redux";
 import "styled-components/macro";

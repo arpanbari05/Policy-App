@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -11,12 +11,10 @@ import {
   premiumFilterCards,
   setShouldFetchQuotes,
 } from "./quote.slice";
-import { updateGroups } from "./serviceApi";
 import { useFrontendBoot } from "../../customHooks/index";
 
 function useQuotesPage() {
   const { companies } = useFrontendBoot()?.data;
-  const { data } = useFrontendBoot();
 
   const imageSendQuote = (email, stage) => {
     const input = document.getElementById("printQuotePage");
@@ -39,28 +37,11 @@ function useQuotesPage() {
     });
   };
 
-  const {
-    fetchFilters,
-    quotes,
-    filterQuotes: QuotesToAdd,
-    shouldFetchQuotes,
-  } = useSelector(state => state.quotePage);
+  const { fetchFilters, quotes, shouldFetchQuotes } = useSelector(
+    state => state.quotePage,
+  );
 
-  const findCode = (fitlerName, fitlerValue) => {
-    if (fitlerName === "covers" && Number(fitlerValue) > 9999999) {
-      return `10000000-${fitlerValue}`;
-    }
-    let code = `${fitlerValue}-${fitlerValue}`;
-    data[fitlerName].forEach(data => {
-      if (data.display_name === fitlerValue) {
-        code = data.code;
-      }
-    });
-
-    return code;
-  };
-
-  const { member, plan_type: proposerPlanType } = useSelector(
+  const { member } = useSelector(
     ({ greetingPage }) => greetingPage.proposerDetails,
   );
 
@@ -84,12 +65,8 @@ function useQuotesPage() {
   const [showBuyNow, setShowBuyNow] = useState(false);
   const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
 
-  const { memberGroups, proposerDetails } = useSelector(
-    ({ greetingPage }) => greetingPage,
-  );
-  const { selectedGroup, filters } = useSelector(({ quotePage }) => quotePage);
-
-  const initRef = useRef(true);
+  const { memberGroups } = useSelector(({ greetingPage }) => greetingPage);
+  const { filters } = useSelector(({ quotePage }) => quotePage);
 
   const { groupCode } = useParams();
 
@@ -131,18 +108,6 @@ function useQuotesPage() {
 
     dispatch(setShouldFetchQuotes(false));
   }, [fetchFilters]);
-
-  const updateFilter = async filters => {
-    try {
-      await updateGroups({
-        groupCode,
-        data: {
-          extras: filters,
-          plan_type: findCode("plantypes", filters?.planType),
-        },
-      });
-    } catch {}
-  };
 
   useEffect(() => {
     dispatch(clearFilterQuotes());
