@@ -360,6 +360,7 @@ export function useFilter() {
 
 export function useMembers() {
   const dispatch = useDispatch();
+
   const searchQueries = useUrlQueries();
 
   const reduxGroup =
