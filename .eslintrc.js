@@ -6,7 +6,12 @@ module.exports = {
     jest: true,
     node: true,
   },
-  extends: ["plugin:react/recommended"],
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:react-hooks/recommended",
+  ],
   parser: "babel-eslint",
   parserOptions: {
     ecmaFeatures: {
