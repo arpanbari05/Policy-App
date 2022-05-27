@@ -56,13 +56,13 @@ function PlanTypeForm({ posContent, ...props }) {
       </div>
 
       <div>
-        {plantypes.map(plantype => {
+        {plantypes.map((plantype, index) => {
           return (
-            <div>
+            <div key={index}>
               <RadioButton
-                onMouseEnter={e => setOnHoverPlanType(plantype)}
-                onMouseOut={e => setOnHoverPlanType(selectedPlanType)}
-                onClick={e => setSelectedPlanType(plantype)}
+                onMouseEnter={() => setOnHoverPlanType(plantype)}
+                onMouseOut={() => setOnHoverPlanType(selectedPlanType)}
+                onClick={() => setSelectedPlanType(plantype)}
                 id={plantype.display_name}
                 value={plantype.code}
                 checked={selectedPlanType.code === plantype.code}

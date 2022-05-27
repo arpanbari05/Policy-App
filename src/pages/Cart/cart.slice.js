@@ -36,6 +36,7 @@ const cartSlice = createSlice({
         totalPremium: 0,
         discounted_total_premium: 0,
       };
+      return state;
     },
   },
 });
@@ -99,7 +100,10 @@ export const getCart = (checkRenewal, next) => async (dispatch, getState) => {
         next();
       }
     }
-  } catch (error) {}
+  } catch (error) {
+    alert(error);
+    console.log(error);
+  }
 };
 
 export default cartSlice.reducer;

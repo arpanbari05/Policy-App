@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Row } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components/macro";
@@ -10,12 +10,7 @@ import {
   useTheme,
 } from "../../../customHooks";
 import { mobile } from "../../../utils/mediaQueries";
-import {
-  amount,
-  getFirstName,
-  getTotalPremium,
-  numberToDigitWord,
-} from "../../../utils/helper";
+import { amount, getFirstName, numberToDigitWord } from "../../../utils/helper";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 
 import {
@@ -28,7 +23,6 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import { useRider, useCart } from "../../../customHooks/index";
 import { Button } from "../../../components";
-import { useEffect } from "react";
 import "./ReviewCardPopup.scss";
 import { FaTimes } from "react-icons/fa";
 
@@ -228,7 +222,6 @@ function ProductDetailsCardMobile({ cartItem }) {
       insurance_type,
       company: { alias },
     },
-    total_premium,
     premium,
     sum_insured,
     top_up_riders,
@@ -387,6 +380,7 @@ function ProductDetailsCardMobile({ cartItem }) {
         >
           {displayRiders.map(rider => (
             <div
+              key={rider.name}
               css={`
                 /* flex: 1; */
                 padding: 3px;
@@ -399,7 +393,7 @@ function ProductDetailsCardMobile({ cartItem }) {
                   color: #419bf9;
                 `}
               >
-                <i class="far fa-check-circle"></i>
+                <i className="far fa-check-circle"></i>
               </span>
               <span
                 css={`
@@ -450,6 +444,7 @@ function ProductDetailsCardMobile({ cartItem }) {
           </div>
           {addons.map(addon => (
             <div
+              key={addon.product.name}
               css={`
                 display: none;
                 border: 1px solid #ddd;
@@ -578,7 +573,7 @@ function ProductDetailsCard({ cartItem }) {
       name,
       company: { alias },
     },
-    total_premium,
+
     premium,
     tenure,
     sum_insured,
@@ -797,7 +792,7 @@ function ProductDetailsCard({ cartItem }) {
       </div>
 
       {displayRiders.length > 0 ? <hr /> : null}
-      <div class="row w-100 flex-row">
+      <div className="row w-100 flex-row">
         {displayRiders.map((rider, index) => (
           <div
             key={index}
@@ -900,7 +895,7 @@ function ReviewCartPopup({ propsoalPageLink, onClose = () => {} }) {
       </PopUpWithCloseButton>
     );
 
-  const handleCloseClick = PrimaryColor => {
+  const handleCloseClick = () => {
     onClose();
   };
 

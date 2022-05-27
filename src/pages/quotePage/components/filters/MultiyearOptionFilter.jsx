@@ -86,6 +86,9 @@ function MultiYearOption({ tenure, onChange, checked, ...props }) {
       onClick={() => {
         target.current.click();
       }}
+      onKeyDown={() => {
+        target.current.click();
+      }}
     >
       <label htmlFor={"tenure-" + tenure.code}>
         {tenure.display_name}{" "}

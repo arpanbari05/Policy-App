@@ -2,30 +2,24 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
-import arrow from "./../../../../assets/images/arrow.png";
 import CardModalM from "./../../../../components/Common/Modal/CardModelM.js";
 
 import correct from "./../../../../assets/images/correct_icon.png";
 import { useLocation } from "react-router";
 import ProposalCheckBox from "../../../../components/Common/ProposalSummary/summaryCheckBox";
-import CheckBox from "../../components/Checkbox/Checkbox";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import SecureLS from "secure-ls";
 import TermModal from "../../../ProposalSummary/TermsModal";
-import {
-  useCompanies,
-  useFrontendBoot,
-  useTheme,
-} from "../../../../customHooks";
+import { useFrontendBoot, useTheme } from "../../../../customHooks";
 
 const removeTotalPremium = cart => {
-  let { totalPremium, ...y } = cart;
+  let { ...y } = cart;
   return y;
 };
 
 const numToString = value => value.toLocaleString("en-IN");
 
-function ProductSummaryMobile({ cart, payNow }) {
+function ProductSummaryMobile({ cart }) {
   const location = useLocation();
 
   const [show, setShow] = useState(false);
@@ -46,9 +40,7 @@ function ProductSummaryMobile({ cart, payNow }) {
   // const { frontendData } = useSelector(state => state.frontendBoot);
   const ls = new SecureLS();
   const url = useUrlQuery();
-  const { proposalData, policyStatus, policyLoading } = useSelector(
-    state => state.proposalPage,
-  );
+  const { policyStatus } = useSelector(state => state.proposalPage);
   const enquiryId = url.get("enquiryId");
   const onClick = mobile => {
     if (
@@ -157,7 +149,7 @@ function ProductSummaryMobile({ cart, payNow }) {
                   </div>
                   <div className="row bg_medical_box_row">
                     {item.health_riders.map(riders => (
-                      <div className="col-md-6">
+                      <div className="col-md-6" key={riders.name}>
                         <img
                           src={correct}
                           className="display_in_m_medical"
@@ -173,9 +165,9 @@ function ProductSummaryMobile({ cart, payNow }) {
                 </div>
                 <br />
                 {item.addons.length ? (
-                  <div class="row">
-                    <div class="col-md-12">
-                      <p class="bottom_addon_cover_medical">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <p className="bottom_addon_cover_medical">
                         Add-ons Coverages
                       </p>
                       <hr />
@@ -187,7 +179,10 @@ function ProductSummaryMobile({ cart, payNow }) {
 
                 <br />
                 {item.addons.map(addOns => (
-                  <div className="rider-box_product_pro_medical">
+                  <div
+                    className="rider-box_product_pro_medical"
+                    key={addOns.product.name + addOns.sum_insured.toString()}
+                  >
                     <div className="row_display_pro_review">
                       <div className="logo_add_review float_left_addon_c">
                         <img
@@ -246,17 +241,6 @@ function ProductSummaryMobile({ cart, payNow }) {
   const [checked, setChecked] = useState(false);
   return (
     <>
-      {/* <div css={`
-          bottom: 0;
-          position: fixed;
-          background-color: red;
-          width:100%;
-          z-index: 9999;
-
-        
-        `}>
-sggs
-    </div> */}
       <div
         css={`
           bottom: 0;
@@ -316,7 +300,7 @@ sggs
                   {"I have read & accepted the Insurance Company's"}&nbsp;
                 </span>
                 <span
-                  class="TermsAndConditions"
+                  className="TermsAndConditions"
                   css={`
                     color: ${PrimaryColor};
                   `}
@@ -337,54 +321,8 @@ sggs
             </div>
           </div>
         )}
-        {/* <img
-          alt="arrow"
-          src={arrow}
-          onClick={() => setShow(true)}
-          css={`
-            position: absolute;
-            left: 45%;
-            margin-top: -10px;
-            transform: rotate(-90deg);
-            cursor: pointer;
-            background: transparent;
-          `}
-        /> */}
+
         <Outer>
-          {/* <Premium onClick={() => setShow(true)}>
-            <h6
-              style={{
-                fontSize: "14px",
-                
-              }}
-              css={`
-                @media (min-width: 768px) {
-                  font-size: 18px !important;
-                }
-              `}
-            >
-              Total Premium
-            </h6>
-
-            <p
-              css={`
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 18px;
-                font-weight: 600;
-                color: #c72229;
-            
-                @media (min-width: 768px) {
-                  font-size: 21px !important;
-                }
-              `}
-            >
-              {" "}
-              <i class="fa fa-inr"></i> {cart?.totalPremium}
-            </p>
-          </Premium> */}
-
           {location.pathname === "/proposal_summary" ? (
             <View
               css={`
@@ -406,7 +344,7 @@ sggs
               <PayList>
                 {policyStatus &&
                   policyStatus.map(item => (
-                    <PayItem>
+                    <PayItem key={item.total_premium}>
                       <ItemName>{item?.product?.name}</ItemName>
                       <PayButton
                         onClick={() => {
@@ -448,9 +386,7 @@ const Outer = styled.div`
     padding: 21px 20px !important;
   }
 `;
-const Premium = styled.button`
-  text-align: left;
-`;
+
 const View = styled.button`
   background-color: #0a87ff;
   color: #fff;

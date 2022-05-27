@@ -11,8 +11,8 @@ const KeyVerificationModal = () => {
       <div className="ValidationBox">
         <img src={notVerified} alt="not verified" />
         <code>
-          "Dear Partner Please complete Your POSP certification in order to
-          issue policy"
+          &quot;Dear Partner Please complete Your POSP certification in order to
+          issue policy&quot;
         </code>
         <StyledLogoutBtn
           color={colors.primary_color}

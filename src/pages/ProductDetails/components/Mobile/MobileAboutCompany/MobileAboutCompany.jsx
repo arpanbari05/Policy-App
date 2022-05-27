@@ -6,7 +6,7 @@ import SpinLoader from "../../../../../components/Common/SpinLoader/SpinLoader";
 import ProgessBar from "../../../../SeeDetails/components/AboutCompany/ProgessBar";
 import BarGroupMobile from "./BarGroupMobile";
 import BarMarketMobile from "./BarMarketMobile";
-import { mobile, tabletAndMobile } from "../../../../../utils/mediaQueries";
+import { tabletAndMobile } from "../../../../../utils/mediaQueries";
 import { useTheme } from "../../../../../customHooks";
 
 function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
@@ -141,8 +141,8 @@ function MobileAboutCompany({ ActiveMainTab, aboutCompany, company_name }) {
                       <span style={{ color: colors.primary_color }}>
                         Why it is important:{" "}
                       </span>
-                      Market size refers to measure of the consumers' preference
-                      for a product over other similar products.{" "}
+                      Market size refers to measure of the consumers&#39;
+                      preference for a product over other similar products.{" "}
                     </p>
                   </Detail>
                 </Inner>

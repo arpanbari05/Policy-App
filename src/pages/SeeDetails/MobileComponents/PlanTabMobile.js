@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import "styled-components/macro";
 import useWindowSize from "../../../customHooks/useWindowSize";
-import { Collapse } from "react-bootstrap";
 import downarrow from "./../../../assets/images/downarrow.png";
 import FeatureDefinitionMobile from "./FeatureDefinitionMobile";
 import { useTheme } from "../../../customHooks";
 import { mobile, tablet } from "../../../utils/mediaQueries";
 const PlanTabMobile = ({ data, item }) => {
-  const [windowHeight, windowWidth] = useWindowSize();
+  const [windowWidth] = useWindowSize();
   const [toggle, setToggle] = useState(false);
   const { colors } = useTheme();
   if (windowWidth < 768)
@@ -73,12 +72,13 @@ const PlanTabMobile = ({ data, item }) => {
           {toggle ? (
             data.map((item, i) => {
               return (
-                <>
+                <Fragment key={i}>
                   {item.header === "Permanent Exclusions" && (
                     <div style={{ paddingLeft: "20px", margin: "10px" }}>
                       {item.value.split("\n").map(itemdata => {
                         return (
                           <li
+                            key={itemdata}
                             style={{
                               fontSize: "11px",
                               borderRadius: "3px",
@@ -86,7 +86,7 @@ const PlanTabMobile = ({ data, item }) => {
                               lineHeight: "1.1",
                             }}
                             css={`
-                              list-style-type: 	disc;
+                              list-style-type: disc;
                               text-indent: -0.8em;
                               &::marker {
                                 color: #f7a600;
@@ -116,7 +116,7 @@ const PlanTabMobile = ({ data, item }) => {
                         short_description={item.short_description}
                       />
                     )}
-                </>
+                </Fragment>
               );
             })
           ) : (
@@ -189,7 +189,7 @@ const PlanTabMobile = ({ data, item }) => {
             {toggle ? (
               data.map((item, i) => {
                 return (
-                  <>
+                  <Fragment key={i}>
                     {item.header === "Permanent Exclusions" && (
                       <div
                         style={{
@@ -201,6 +201,7 @@ const PlanTabMobile = ({ data, item }) => {
                         {item.value.split("\n").map(itemdata => {
                           return (
                             <li
+                              key={itemdata}
                               style={{
                                 fontSize: "14px",
                                 borderRadius: "3px",
@@ -236,7 +237,7 @@ const PlanTabMobile = ({ data, item }) => {
                           short_description={item.short_description}
                         />
                       )}
-                  </>
+                  </Fragment>
                 );
               })
             ) : (

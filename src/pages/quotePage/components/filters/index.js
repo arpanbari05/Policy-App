@@ -92,6 +92,7 @@ export function FilterOption({ option, checked, onChange, ...props }) {
 
   return (
     <li
+      aria-hidden="true"
       css={`
         margin: 5px 0;
       `}

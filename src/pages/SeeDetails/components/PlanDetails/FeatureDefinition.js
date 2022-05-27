@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Col, Collapse, Row } from "react-bootstrap";
+import { Collapse, Row } from "react-bootstrap";
 import { BiChevronDown } from "react-icons/bi";
 import styled from "styled-components/macro";
-import heartImg from "../../../../assets/images/heart-attack.png";
 function FeatureDefinition({ data }) {
   const [toggle, setToggle] = useState(false);
 
@@ -34,6 +33,7 @@ function FeatureDefinition({ data }) {
                 fontSize: "30px",
               }}
               onClick={() => setToggle(!toggle)}
+              onKeyDown={() => setToggle(!toggle)}
             >
               <BiChevronDown />
             </span>

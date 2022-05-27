@@ -177,6 +177,7 @@ function ComparePage() {
           <FeatureRow>
             {quotes.map((quote, idx) => (
               <TenureFeatureValueMobile
+                key={idx}
                 quote={quote}
                 groupCode={groupCode}
                 select={{
@@ -203,7 +204,7 @@ function ComparePage() {
           <FeatureRow>
             {quotes.map((quote, idx) => (
               <TenureFeatureValueMobile
-                quotes={quotes}
+                key={idx}
                 select={{
                   isSelectedSectionView,
                   setIsSelectedSectionView,

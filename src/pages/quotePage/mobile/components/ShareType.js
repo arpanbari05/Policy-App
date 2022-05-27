@@ -8,10 +8,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setShareType, setShowSharePopup } from "../../quote.slice";
 
 const SHARE_OPTIONS = [
-  // {
-  //   value: "share",
-  //   label: "Share quotes",
-  // },
   {
     value: "quotation_list",
     label: "Share all the quotes",
@@ -82,7 +78,7 @@ function Option({
 
   return (
     <label
-      role="option"
+      aria-hidden="true"
       aria-selected={checked}
       className="d-flex align-items-center justify-content-between py-3"
       css={`

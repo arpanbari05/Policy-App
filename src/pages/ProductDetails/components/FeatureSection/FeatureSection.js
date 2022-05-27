@@ -51,6 +51,8 @@ FeatureSection.Header = ({ heading, subHeading, secondary_color }) => {
   );
 };
 
+FeatureSection.Header.displayName = "FeatureSectionHeader";
+
 const FeatureSectionHeader = styled("header")`
   margin-bottom: 20px;
   /* @media (max-width: 767px) {

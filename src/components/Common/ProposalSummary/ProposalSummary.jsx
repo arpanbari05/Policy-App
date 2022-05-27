@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Col, Collapse, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import ProposalCheckBox from "./summaryCheckBox";
 import "./proposalSummary.scss";
 import { useLocation } from "react-router";
-import care from "./../../../assets/images/Care_Health.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItem } from "../../../pages/quotePage/quote.slice";
 import TermModal from "../../../pages/ProposalSummary/TermsModal";
 import { FaAngleRight } from "react-icons/fa";
 
 const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
-  const [show, setShow] = useState(false);
   const [termShow, setTermShow] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -98,12 +96,6 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
               align-items: center !important;
             `}
           >
-            {/* <label class="cbx" for="self1">
-						 <svg width="12px" height="10px">
-							<use xlinkHref="#check"></use>
-						</svg> 
-						<span></span>
-					</label> */}
             <ProposalCheckBox
               title={"checked"}
               type={"checkbox"}
@@ -113,7 +105,7 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
             <div>
               <span className="iaccept-text-proposal">I Accept the </span>
               <span
-                class="p_dark_f_a_check terms-propposal-card"
+                className="p_dark_f_a_check terms-propposal-card"
                 style={{ cursor: "pointer" }}
                 onClick={() => setTermShow(true)}
               >
@@ -168,12 +160,12 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
           )}
           {riders.length ? (
             <div className="additional-plan-wrapper">
-              <div class="line-div"></div>
+              <div className="line-div"></div>
               <p className="addon_cover_btn_proposal_form_summary">
                 Additional Riders
               </p>
               {riders.map(item => (
-                <div className="addonWrap">
+                <div className="addonWrap" key={item.rider.name}>
                   <div className="addonWrap__name">{item.rider.name}</div>
                   <div className="addonWrap__premium">{item.premium}</div>
                 </div>
@@ -182,48 +174,6 @@ const ProposalSummary = ({ checked, onChange, setTotalPremium, onPayment }) => {
           ) : (
             <></>
           )}
-          {/* <div className="additional-plan-wrapper">
-            <div class="line-div"></div>
-            <p className="addon_cover_btn_proposal_form_summary">
-              Additional Plans
-            </p>
-
-            <li className="proposal-card-accordian theme-sidebar-widget-proposal">
-              <a
-                onClick={() => {
-                  setShow(!show);
-                }}
-              >
-                <div className="close-button-additional">
-                  <i class="fa fa-close close_proposal_form_addon "></i>
-                </div>
-                <i className="additional_header_proposal">
-                  {" "}
-                  Supra Super Topup(1)
-                </i>
-
-                <button type="button" class="expander-button-proposal">
-                  <i class="fa fa-chevron-down"></i>
-                </button>
-              </a>
-              <Collapse in={show}>
-                <div id="collapseOne">
-                  <div className="card-body card_body_padding margin_bottom_more_plan_card ">
-                    <Col md={12}>
-                      <div className="additional_accordian">
-                        <div className="text-accordion-card">
-                          Base Plan Premium{" "}
-                        </div>
-                        <span>
-                          <i className="amount-accordion-card"></i> 5,212
-                        </span>
-                      </div>{" "}
-                    </Col>
-                  </div>
-                </div>
-              </Collapse>
-            </li>
-          </div> */}
         </ul>
       </div>
     </>

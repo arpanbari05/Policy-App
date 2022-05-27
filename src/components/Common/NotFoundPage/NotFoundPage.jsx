@@ -1,5 +1,4 @@
-import React, { Component, useState } from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
 import styled from "styled-components";
 // import Navbar from "../Navbar/Navbar";
 import { reportErrors } from "./ServiceApi";
@@ -17,7 +16,9 @@ function NotFoundPage() {
         trace: this?.state?.errorInfo.componentStack.split(`\n    `),
       });
       setErrorReported(true);
-    } catch {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -499,7 +499,9 @@ export const api = createApi({
               //? assign(targetObject , newObject)<updated object>
             }),
           );
-        } catch (error) {}
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
     getRenewalSumInsureds: builder.query({

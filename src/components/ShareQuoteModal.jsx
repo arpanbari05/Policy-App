@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import EmailIcon from "../assets/svg-icons/EmailIcon";
 import WhtsappIcon from "../assets/svg-icons/WhtsappIcon";
 import SmsIcon from "../assets/svg-icons/SmsIcon";
 import styled from "styled-components";
-import { useRef, useState } from "react";
+
 import { EmailSent } from "../pages/ComparePage/ComparePage.style";
 import { setEmail as setlEmaiStatus } from "../pages/ComparePage/compare.slice";
 import { useCompanies, useFrontendBoot, useTheme } from "../customHooks/index";
@@ -111,7 +111,6 @@ const ShareQuoteModal = ({
   mobile = false,
   showModal,
   float = false,
-  imageSend: imageToSend,
   emailStatus,
   onShareClick = () => {},
   purpose = "",
@@ -393,7 +392,9 @@ function Quote({
           onChange={e => setSelectedCover(e.target.value)}
         >
           {sumInsureds.map(sum_insured => (
-            <option value={sum_insured}>₹ {figureToWords(sum_insured)}</option>
+            <option key={sum_insured} value={sum_insured}>
+              ₹ {figureToWords(sum_insured)}
+            </option>
           ))}
         </select>
       </div>
@@ -418,8 +419,8 @@ const CanvasQuotes = () => {
           <ShareQuotesHeaderItem>Cover</ShareQuotesHeaderItem>
           <ShareQuotesHeaderItem>Proceed</ShareQuotesHeaderItem>
         </ShareQuotesHeader>
-        {quotesToCanvas.map(quote => (
-          <CanvasQuoteTemplate colors={colors} quote={quote} />
+        {quotesToCanvas.map((quote, index) => (
+          <CanvasQuoteTemplate key={index} colors={colors} quote={quote} />
         ))}
       </div>
     </Canvas>
@@ -517,7 +518,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
       scale: 0.9,
     }).then(canvas => {
       const imgData = canvas.toDataURL("image/jpeg");
-      console.log(imgData);
+
       setImageSend(imgData.split(",")[1]);
       setLoader(false);
       setStep(2);
@@ -545,8 +546,9 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
           </ShareQuotesHeaderItem>
         </ShareQuotesHeader>
         <ShareQuotes>
-          {quotesToShare?.map(quotes => (
+          {quotesToShare?.map((quotes, index) => (
             <Quote
+              key={index}
               quotes={quotes}
               onHandleAdd={handleAddQuote}
               onHandleRemove={handleRemoveQuote}
@@ -574,7 +576,7 @@ function ShareStep1({ setStep = () => {}, hide, setImageSend, setInsurers }) {
 
 function ShareStep2({
   imageSend,
-  setImageSend,
+
   stage,
   purpose,
   setIsSending,
@@ -723,7 +725,6 @@ function ShareStep2({
           scale: 0.9,
         });
         const imgData = canvas.toDataURL("image/jpeg");
-        console.log(imgData);
         data = { ...data, image_to_send: imgData.split(",")[1] };
       }
       const response = await shareViaEmailApi(data, tenantAlias);
@@ -1061,7 +1062,6 @@ const ShareQuotesHeader = styled.div`
   width: 100%;
   grid-template-columns: ${props => props.cols || "3fr 1fr 1fr 1fr"};
   background: ${props => props.color || "#eee"};
-  background: ;
   padding: 8px;
   color: ${({ color }) => (color ? "#fff" : "#000")};
 
@@ -1201,23 +1201,9 @@ const StepWrapper = styled.div`
   }
 `;
 
-const Step = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid;
-  border-color: ${props => (props.active ? props.color : "#dcdcdc")};
-  background: ${props => (props.active ? props.color : "transparent")};
-  color: ${props => (props.active ? "#fff" : "black")};
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const Flex = styled.div`
   display: flex;
-  align-items center;
+  align-items: center;
   justify-content: center;
   margin-bottom: 15px;
   width: calc(100% + 2rem);

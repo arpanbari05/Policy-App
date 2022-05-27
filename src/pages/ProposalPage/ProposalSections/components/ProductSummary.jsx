@@ -4,14 +4,10 @@ import styled from "styled-components";
 import "styled-components/macro";
 import ViewPlanDetailModal from "./ViewPlanDetailModal";
 import {
-  setActiveIndex,
   setPlanDetails,
   setCanSendSummaryPdf,
 } from "../ProposalSections.slice";
-import arrow from "./../../../../assets/images/arrow.png";
-import care from "./../../../../assets/images/Care_Health.png";
-import correct from "./../../../../assets/images/correct_icon.png";
-import { AiOutlineCheckCircle } from "react-icons/ai";
+
 import "./ProductSummary.scss";
 import { useHistory, Link } from "react-router-dom";
 import Card from "../../../../components/Card";
@@ -33,11 +29,10 @@ import {
   premiumWithAddons,
 } from "../../../../utils/helper";
 import { useGetCartQuery } from "../../../../api/api";
-import { current } from "@reduxjs/toolkit";
 import { images } from "../../../../assets/logos/logo";
 
 const removeTotalPremium = cart => {
-  let { totalPremium, ...y } = cart;
+  let { ...y } = cart;
   return y;
 };
 
@@ -131,7 +126,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
             }
           `}
         >
-          <i class="fas fa-chevron-right"></i>
+          <i className="fas fa-chevron-right"></i>
         </span>
       </span>
       <div
@@ -190,7 +185,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
             }
           `}
         >
-          <i class="fas fa-chevron-right"></i>
+          <i className="fas fa-chevron-right"></i>
         </span>
       </span>
       <div
@@ -221,26 +216,26 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
             ))}
             {planDetails.isRenewed ? (
               <>
-                <div class="row padding_filter_footer_medical">
-                  {/* <div class="col-md-12">
-                      <p class="font_grey">Total Premium</p>
+                <div className="row padding_filter_footer_medical">
+                  {/* <div className="col-md-12">
+                      <p className="font_grey">Total Premium</p>
                     </div> */}
                   {parseInt(planDetails.prevCart.discounted_total_premium) !==
                     0 && parseInt(revisedNetPremium) !== 0 ? (
                     <>
-                      <div class="col-md-4">
+                      <div className="col-md-4">
                         <button
                           type="button"
                           name="Continue"
-                          class="next text-left btn"
+                          className="next text-left btn"
                           value="Continue"
                         >
-                          <span class="color_span_total_revise">
+                          <span className="color_span_total_revise">
                             Previous Premium
                           </span>
                           <br />
                           <span
-                            class="color_span_total_blck_medical text_decoration_line_through addon_plan_d_inter_1_product_pro_f_mediacl_btn revised-premium"
+                            className="color_span_total_blck_medical text_decoration_line_through addon_plan_d_inter_1_product_pro_f_mediacl_btn revised-premium"
                             css={`
                               @media (max-width: 767px) {
                                 font-size: 16px !important;
@@ -256,24 +251,24 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
                           </span>
                         </button>
                       </div>
-                      <div class="col-md-4">
+                      <div className="col-md-4">
                         <button
                           type="button"
                           name="Continue"
-                          class="next text-left btn"
+                          className="next text-left btn"
                           value="Continue"
                         >
                           <span
                             css={`
                               color: green;
                             `}
-                            class="color_span_total_revise revised-premium-title"
+                            className="color_span_total_revise revised-premium-title"
                           >
                             Revised Premium
                           </span>
                           <br />
                           <span
-                            class="color_span_total_blck_medical"
+                            className="color_span_total_blck_medical"
                             css={`
                               @media (max-width: 767px) {
                                 font-size: 16px !important;
@@ -291,7 +286,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
                           </span>
                         </button>
                       </div>
-                      <div class="col-md-4" style={{ float: "right" }}>
+                      <div className="col-md-4" style={{ float: "right" }}>
                         <button
                           css={`
                             background: ${PrimaryColor};
@@ -304,7 +299,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
                           `}
                           type="button"
                           name="Continue"
-                          class=" btn btn_continue_medi_revise_pop next"
+                          className=" btn btn_continue_medi_revise_pop next"
                           value="Continue"
                           onClick={() => {
                             setActive(prev => prev + 1);
@@ -325,7 +320,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
                   ) : (
                     <>
                       <div className="w-100 d-flex align-items-center justify-content-center">
-                        <div class="col-md-4">
+                        <div className="col-md-4">
                           <button
                             css={`
                               background: ${PrimaryColor};
@@ -345,7 +340,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
                             `}
                             type="button"
                             name="Continue"
-                            class=" btn btn-default"
+                            className=" btn btn-default"
                             value="Continue"
                             onClick={() => {
                               setActive(prev => prev + 1);
@@ -363,7 +358,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
                           </button>
                         </div>
 
-                        <div class="col-md-4">
+                        <div className="col-md-4">
                           <Link
                             to={`/quotes/${planUnavailableGroups[0]}${history.location.search}`}
                             css={`
@@ -385,7 +380,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
                             `}
                             type="button"
                             name="Continue"
-                            class=" btn btn_continue_medi_revise_pop next"
+                            className=" btn btn_continue_medi_revise_pop next"
                             value="Continue"
                           >
                             View Quotes <RiArrowRightSLine size={25} />
@@ -474,63 +469,12 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
 
 export default ProductSummary;
 
-const Wrapper = styled.div`
-  width: 22%;
-  display: inline-block;
-  float: right;
-  border: 1px solid #dfdfdf;
-  border-radius: 8px;
-  padding-left: 10px;
-  @media (min-width: 768px) and (max-width: 1200px) {
-    display: none;
-  }
-  /*position: absolute;
-   right: 68px;
-   top: 240px;*/
-`;
-
-const Button = styled.button`
-  margin-top: 10px;
-  font-size: 18px !important;
-  font-weight: 600;
-  color: #000;
-
-  margin-top: 2px !important;
-  display: inline-block;
-
-  text-align: left !important;
-  white-space: nowrap;
-  vertical-align: middle;
-  user-select: none;
-
-  padding: 10px 0px;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 0.25rem;
-  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
-  background: #fff;
-`;
 const Price = styled.span`
   display: block;
   font-size: 21px;
   font-weight: 600;
   color: #0a87ff;
-
   margin-top: -3px;
-`;
-const ViewPlanDetails = styled.span`
-  cursor: pointer;
-  position: absolute;
-
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  & img {
-    display: inline-block;
-    margin-left: 2px;
-    cursor: pointer;
-  }
 `;
 
 function CartSummary({ item, index, groupCode }) {
@@ -621,7 +565,7 @@ function CartSummary({ item, index, groupCode }) {
           `}
         >
           <span>
-            <img src={images[alias]} />{" "}
+            <img src={images[alias]} alt="product pic" />{" "}
           </span>
 
           <span>{item?.product?.name}</span>
@@ -806,6 +750,7 @@ function CartSummary({ item, index, groupCode }) {
           >
             {displayRiders.map(riders => (
               <div
+                key={riders.total_premium.toString() + riders.name}
                 css={`
                   display: flex;
                   flex-direction: row;
@@ -876,6 +821,7 @@ function CartSummary({ item, index, groupCode }) {
           >
             {selectedAdditionalDiscounts.map(singleDiscountObj => (
               <DiscountDetail
+                key={singleDiscountObj?.nam}
                 title={singleDiscountObj?.name}
                 groupCode={groupCode}
                 additionalDiscount={singleDiscountObj}
@@ -930,7 +876,10 @@ function CartSummary({ item, index, groupCode }) {
       {/* <br /> */}
       {showAddOns &&
         item.addons.map((addOns, addOnIndex) => (
-          <div className="rider-box_product_pro_medical">
+          <div
+            className="rider-box_product_pro_medical"
+            key={addOns.product.name + addOnIndex.toString()}
+          >
             <div
               className="row_display_pro_review"
               css={`
@@ -1108,9 +1057,8 @@ function CartSummary({ item, index, groupCode }) {
 const DiscountDetail = ({
   groupCode,
   title,
-  value,
+
   additionalDiscount,
-  ...props
 }) => {
   const { getDiscountAmount } = useAdditionalDiscount(groupCode);
 

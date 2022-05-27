@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Container } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { Modal } from "react-bootstrap";
 import styled from "styled-components";
 import "styled-components/macro";
 import { getTermConditions } from "../ProposalPage/serviceApi";
@@ -10,11 +9,8 @@ const TermModal = ({
   title,
   show,
   customClass,
-  content,
-  buttonValue,
-  handleClick,
+
   handleClose,
-  BtnArrow,
   noFooter,
   showButton = true,
   revised = false,
@@ -104,7 +100,7 @@ const TermModal = ({
         <i
           onClick={handleClose}
           style={{ cursor: "pointer" }}
-          class="fas fa-times"
+          className="fas fa-times"
         ></i>
       </Modal.Header>
 
@@ -148,11 +144,6 @@ const TermModal = ({
 
 export default TermModal;
 
-const ModalSpan = styled.span`
-  & .card-modal {
-    width: 1000px;
-  }
-`;
 const CloseButton = styled.button`
   position: absolute;
   top: 20px;
@@ -173,16 +164,6 @@ const ModalTitle = styled.h5`
     font-size: 16px;
     line-height: 1.3;
   }
-  /* &:after {
-    content: "";
-    height: 37px;
-    width: 7px;
-    position: absolute;
-    left: 0px;
-    top: 13px;
-    background-color: #fecc28;
-    border-radius: 50px;
-  } */
 `;
 
 const Paragraph = styled.div`

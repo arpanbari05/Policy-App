@@ -84,8 +84,9 @@ function SidebarCart({ handleClose = () => {} }) {
               margin-top: 10px;
             `}
           >
-            {Object.keys(memberGroups).map(groupCode => (
+            {Object.keys(memberGroups).map((groupCode, index) => (
               <CartProduct
+                key={index}
                 groupCode={groupCode}
                 handleAddPlanClick={handleClose}
               />
@@ -387,9 +388,7 @@ export function CloseButton({ css = ``, ...props }) {
       `}
       {...props}
     >
-      <FaTimes
-        style={{ cursor: "pointer", fontWeight: "bold" }}
-      ></FaTimes>
+      <FaTimes style={{ cursor: "pointer", fontWeight: "bold" }}></FaTimes>
     </button>
   );
 }

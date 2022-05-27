@@ -48,7 +48,6 @@ export function AddOnCheckButton({
   return (
     <div {...props}>
       <label
-        role="checkbox"
         aria-checked={checked}
         className="w-100 p-2 d-flex align-items-center justify-content-center rounded"
         css={`
@@ -154,7 +153,7 @@ export function EditModal({
       onUpdate({
         sumInsured: selectedSumInsured,
         deductible: selectedDeductible,
-        member
+        member,
       });
     handleClose();
   };

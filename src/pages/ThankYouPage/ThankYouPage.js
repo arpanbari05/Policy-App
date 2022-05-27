@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router";
-import { useHistory } from "react-router";
+import { useLocation, useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Row } from "react-bootstrap";
 import "./ThankYouPage.scss";
@@ -17,7 +16,6 @@ import "styled-components/macro";
 import { useFrontendBoot, useTheme } from "../../customHooks";
 import { small } from "../../utils/mediaQueries";
 import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
-import checkImg from "../../assets/images/correct.png";
 
 const ThankYouPage = () => {
   const ls = new SecureLS();
@@ -53,12 +51,8 @@ const ThankYouPage = () => {
     ele.addEventListener("click", () => {
       setIsTransactionClicked(true);
       window.isTransactionClicked = true;
-      // const win = window?.open(settings.account_login_link, "_blank");
-      // win?.focus();
     });
   });
-
-  console.log(`window.isTransactionClicked = ${window.isTransactionClicked}`);
 
   const dispatch = useDispatch();
 
@@ -273,7 +267,7 @@ const ThankYouPage = () => {
                         Uh OH! Payment Faiiled.
                       </h3>
                       <p className="text-p" style={{ textAlign: "center" }}>
-                        Don't worry. Please try again.
+                        Don&lsquo;t worry. Please try again.
                       </p>
                       <div>
                         <div
@@ -297,8 +291,9 @@ const ThankYouPage = () => {
                 {
                   <>
                     <div className="col-md-12 text-center margin_top_unsuccess">
-                      <a
-                        href="#"
+                      <span
+                        role="button"
+                        tabIndex={0}
                         className="btn_back_q_proposal"
                         css={`
                           display: inline-block;
@@ -317,11 +312,20 @@ const ThankYouPage = () => {
                             }&city=${currentGroup?.city}`,
                           });
                         }}
+                        onKeyDown={() => {
+                          history.push({
+                            pathname: "/quotes",
+                            search: `enquiryId=${ls.get("enquiryId")}&pincode=${
+                              currentGroup?.pincode
+                            }&city=${currentGroup?.city}`,
+                          });
+                        }}
                       >
                         Back To Quotes
-                      </a>
-                      <a
-                        href="#"
+                      </span>
+                      <span
+                        role="button"
+                        tabIndex={0}
                         className="btn_start_proposal_back_t"
                         css={`
                           color: #0a87ff;
@@ -340,9 +344,17 @@ const ThankYouPage = () => {
                             }&city=${currentGroup?.city}`,
                           });
                         }}
+                        onKeyDown={() => {
+                          history.push({
+                            pathname: "/proposal",
+                            search: `enquiryId=${ls.get("enquiryId")}&pincode=${
+                              currentGroup?.pincode
+                            }&city=${currentGroup?.city}`,
+                          });
+                        }}
                       >
                         Try Again
-                      </a>
+                      </span>
 
                       <p className="footer-text-unsuccess">
                         If you have any questions, please call us on{" "}
@@ -378,7 +390,7 @@ const ThankYouPage = () => {
                       color: "#595959",
                     }}
                   >
-                    Don't worry. Please try again.
+                    Dont worry. Please try again.
                   </p>
                 </div>
 
@@ -402,8 +414,7 @@ const ThankYouPage = () => {
                   padding: "20px 0px",
                 }}
               >
-                <a
-                  href="#"
+                <span
                   style={{
                     borderRadius: "4px",
                     backgroundColor: "#0a87ff",
@@ -418,9 +429,17 @@ const ThankYouPage = () => {
                       }&city=${currentGroup?.city}`,
                     });
                   }}
+                  onKeyDown={() => {
+                    history.push({
+                      pathname: "/proposal",
+                      search: `enquiryId=${ls.get("enquiryId")}&pincode=${
+                        currentGroup?.pincode
+                      }&city=${currentGroup?.city}`,
+                    });
+                  }}
                 >
                   Try Again
-                </a>
+                </span>
               </div>
 
               <div
@@ -535,7 +554,7 @@ const BannerArea = ({
                 margin-left: -57px;
                 margin-top: -10px;
                 border-radius: 100%;
-                background-image: url(${checkImg});
+                background-image: url(${Correct});
                 background-size: cover;
               }
             }
@@ -623,16 +642,16 @@ const Disclaimer = ({
           `}
         >
           You can track your policy status on{" "}
-          <a
+          <span
             css={`
               color: ${colors?.primary_color} !important;
               border-color: ${colors?.primary_color} !important;
             `}
-            // href={accountLoginLink}
             onClick={onTransactionClickHandler}
+            onKeyDown={onTransactionClickHandler}
           >
             My Account Page.
-          </a>{" "}
+          </span>{" "}
           at anytime.
         </div>
         <div>
@@ -660,16 +679,16 @@ const Disclaimer = ({
           `}
         >
           Your policy document has been successfully saved in{" "}
-          <a
-            // href={accountLoginLink}
+          <span
             onClick={onTransactionClickHandler}
+            onKeyDown={onTransactionClickHandler}
             css={`
               color: ${colors?.primary_color} !important;
               border-color: ${colors?.primary_color} !important;
             `}
           >
             My Account Page.
-          </a>{" "}
+          </span>{" "}
           You can visit the My Account page to retrieve your policy copy at any
           time.
         </div>
@@ -697,9 +716,9 @@ const Disclaimer = ({
           `}
         >
           You can visit the{" "}
-          <a
-            // href={accountLoginLink}
+          <span
             onClick={onTransactionClickHandler}
+            onKeyDown={onTransactionClickHandler}
             id="transaction_id"
             css={`
               color: ${colors?.primary_color} !important;
@@ -707,7 +726,7 @@ const Disclaimer = ({
             `}
           >
             My Account Page.
-          </a>{" "}
+          </span>{" "}
           to retrieve your policy copy or track your policy status at any time.
         </div>
         <div>
@@ -785,7 +804,6 @@ const MobileBanner = ({
               fontSize: "15px",
               whiteSpace: "nowrap",
               fontWeight: "bold",
-              backgroundColor: colors?.primary_shade,
               borderRadius: "55px",
               // letterSpacing: "1px"
             }}
@@ -840,9 +858,9 @@ const MobileBanner = ({
           >
             <p style={{ fontSize: "14px", lineHeight: "1.3" }}>
               Your policy document has been successfully saved in{" "}
-              <a
-                // href={accountLoginLink}
+              <span
                 onClick={onTransactionClickHandler}
+                onKeyDown={onTransactionClickHandler}
                 style={{
                   color: colors?.primary_color,
                   borderBottom: `1px dashed ${colors?.primary_color}`,
@@ -850,7 +868,7 @@ const MobileBanner = ({
                 }}
               >
                 My Account Page.
-              </a>{" "}
+              </span>{" "}
               You can visit the My Account page to retrieve your policy copy at
               any time.
             </p>
@@ -908,7 +926,7 @@ const MobileBanner = ({
               margin-left: -25px;
               margin-top: -2px;
               border-radius: 100%;
-              background-image: url(${checkImg});
+              background-image: url(${Correct});
               background-size: cover;
             }
           }

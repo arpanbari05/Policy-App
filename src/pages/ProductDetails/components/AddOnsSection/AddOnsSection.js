@@ -116,8 +116,8 @@ function TopUpAddOns({ cartEntry, insurance_type }) {
         }
       `}
     >
-      {topUpQuotes.map((quotesList, idx1) =>
-        quotesList.map((quotes, idx) => (
+      {topUpQuotes?.map((quotesList, idx1) =>
+        quotesList?.map((quotes, idx) => (
           <AddOnCard
             quotesList={quotes}
             key={idx + ":" + idx1 + ""}

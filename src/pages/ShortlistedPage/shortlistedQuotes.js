@@ -10,13 +10,15 @@ import {
 } from "../../customHooks";
 import { AssistanceCard } from "../quotePage/QuotesPage";
 import QuoteCards from "../quotePage/components/QuoteCards";
-import { QuoteCards as QuoteCardsMobile } from "../quotePage/mobile/components/Quotes";
+import {
+  QuoteCards as QuoteCardsMobile,
+  CompareTray,
+} from "../quotePage/mobile/components/Quotes";
 import styled from "styled-components";
 import { useHistory, useParams } from "react-router-dom";
 import { HeadingSecondary, TertiaryFontBold } from "../../styles/typography";
 import { IoIosArrowBack } from "react-icons/io";
 import { CompareQuotesTray } from "../quotePage/components/Quotes";
-import { CompareTray } from "../quotePage/mobile/components/Quotes";
 import GroupLinks from "./components/groupLinks/groupLinks";
 import { api } from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
@@ -124,6 +126,7 @@ function ShortlistedQuotes() {
               <>
                 {quotes.map(quote => (
                   <div
+                    key={quote.company_alias}
                     className="only-desktop"
                     css={`
                       width: 100%;
@@ -133,18 +136,16 @@ function ShortlistedQuotes() {
                       cashlessHospitalsCount={quote.cashlessHospitalsCount}
                       quotesData={quote.data}
                       compare={compare}
-                      key={quote.company_alias}
                       sortBy={defaultSortBy?.code}
                     />
                   </div>
                 ))}
                 {quotes.map(quote => (
-                  <div className="only-mobile">
+                  <div className="only-mobile" key={quote.company_alias}>
                     <QuoteCardsMobile
                       cashlessHospitalsCount={quote.cashlessHospitalsCount}
                       quotesData={quote.data}
                       compare={compareSlot}
-                      key={quote.company_alias}
                       sortBy={defaultSortBy?.code}
                     />
                   </div>

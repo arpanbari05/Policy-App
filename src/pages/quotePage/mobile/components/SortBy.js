@@ -55,7 +55,7 @@ function Option({
 
   return (
     <label
-      role="option"
+      aria-hidden="true"
       aria-selected={checked}
       className="d-flex align-items-center justify-content-between py-3 text-capitalize"
       css={`

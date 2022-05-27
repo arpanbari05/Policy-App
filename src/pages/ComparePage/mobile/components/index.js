@@ -1,3 +1,4 @@
+import { Children, cloneElement, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BackButtonMobile, CircleLoader } from "../../../../components";
 import {
@@ -10,11 +11,9 @@ import "styled-components/macro";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { Modal } from "react-bootstrap";
 import { BsPlusLg } from "react-icons/bs";
-import React from "react";
+
 import * as mq from "../../../../utils/mediaQueries";
 import { CompareRiderPremium } from "../../../ProductDetails/components/CustomizeYourPlan";
-import { useState } from "react";
-// import { CompareRiderPremium } from "../../../ProductDetails/components/CompareRiderPremium";
 
 export function Header() {
   const { colors } = useTheme();
@@ -244,7 +243,7 @@ export function InfoPopupToggle({ title, description }) {
   );
 }
 
-export function AddPlanCard({ compareQuotes, children, ...props }) {
+export function AddPlanCard({ children, ...props }) {
   const { colors } = useTheme();
 
   const comparePlansPopupToggle = useToggle();
@@ -294,8 +293,8 @@ export function AddPlanCard({ compareQuotes, children, ...props }) {
         <div className="mt-3">Add Plan</div>
       </button>
       {comparePlansPopupToggle.isOn &&
-        React.Children.map(children, child =>
-          React.cloneElement(child, { onClose: comparePlansPopupToggle.off }),
+        Children.map(children, child =>
+          cloneElement(child, { onClose: comparePlansPopupToggle.off }),
         )}
     </div>
   );
@@ -346,9 +345,9 @@ export function OptionalCoversValue({ quote, onChange }) {
           >
             <h4>Oops! No Riders available.</h4>
             <p>
-              You can add 'Riders' to you basic health insurance plan for
-              additional benefits. Currently no riders are available for this
-              base plan.
+              You can add &#39;Riders&#39; to you basic health insurance plan
+              for additional benefits. Currently no riders are available for
+              this base plan.
             </p>
           </div>
         )}

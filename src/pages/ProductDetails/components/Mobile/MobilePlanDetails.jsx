@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import styled from "styled-components";
 import "styled-components/macro";
 import PlanTabMobile from "../../../SeeDetails/MobileComponents/PlanTabMobile";
@@ -35,12 +35,12 @@ function MobilePlanDetails({
           {planDetails.featureList &&
             planDetails.featureList.map((data, i) => {
               return (
-                <>
+                <Fragment key={i}>
                   <PlanTabMobile
                     item={data}
                     data={planDetails.innerData[data.title]}
                   />
-                </>
+                </Fragment>
               );
             })}
           {policyWordingUrl && brochureUrl ? (
@@ -69,7 +69,7 @@ function MobilePlanDetails({
                 className="sub-heading title_h4_download"
                 style={{ fontSize: "12px", lineHeight: "1.1" }}
               >
-                To find out more about the company and it's products, kindly
+                To find out more about the company and it&#39;s products, kindly
                 refer the documents given below
               </div>
 
@@ -78,18 +78,6 @@ function MobilePlanDetails({
                   Product Brochure
                 </div>
                 <DownloadImgWrapper className="icon-box float_left">
-                  {/* <a
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        href={brochureUrl}>
-                                            
-                                            <img src={download} alt="download"
-                                            style={{  height: "100%", marginRight: "10px",width:"100%" }}
-                                        />
-
-
-                                    </a>   */}
-
                   <a
                     target="_blank"
                     rel="noopener noreferrer"

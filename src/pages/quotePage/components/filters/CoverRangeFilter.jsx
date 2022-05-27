@@ -203,6 +203,9 @@ function CoverOption({ cover, checked, onChange, ...props }) {
       onClick={() => {
         inputRef.current.click();
       }}
+      onKeyDown={() => {
+        inputRef.current.click();
+      }}
     >
       <label htmlFor={cover.code}>{cover.display_name}</label>
       <input
@@ -225,8 +228,6 @@ function CoverOption({ cover, checked, onChange, ...props }) {
 }
 
 const CoverRangeFilter = () => {
-  const [showModal, setShowModal] = useState(false);
-
   const { getSelectedFilter } = useFilters();
 
   const selectedCover = getSelectedFilter("cover");

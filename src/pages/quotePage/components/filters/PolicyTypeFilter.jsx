@@ -96,6 +96,9 @@ const FilterModal = ({ show, onClose }) => {
                         onClick={() =>
                           handleChange(option.code, option.display_name)
                         }
+                        onKeyDown={() =>
+                          handleChange(option.code, option.display_name)
+                        }
                       >
                         <label htmlFor={option.code}>
                           <OverlayTrigger

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Container, OverlayTrigger, Tooltip } from "react-bootstrap";
 import {
   CircleLoader,
@@ -13,7 +14,6 @@ import {
   useQuotesCompare,
   useTheme,
   useToggle,
-  useUrlEnquiry,
 } from "../../customHooks";
 import { useHistory, useParams } from "react-router-dom";
 import "styled-components/macro";
@@ -32,13 +32,11 @@ import {
   WHATS_NOT_COVERED,
 } from "./data";
 import { every, uniq } from "lodash";
-import { useEffect } from "react";
-import { downloadComparePage } from "./utils";
 import { ProductCard, ShowDifference } from "./components";
 import { AddPlanCard, OptionalCoversValue } from "./mobile/components";
 import AddPlansModal from "./components/AddPlansModal";
-import { useState } from "react";
 import useDownloadPDF from "../../customHooks/useDownloadPDF";
+
 import TenureFeatureValue from "./components/tenure/Tenure";
 import useComparePage from "./useComparePage";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
@@ -66,7 +64,6 @@ function ComparePage() {
   const showDifferenceToggle = useToggle(false);
 
   const compareQuotes = getCompareQuotes(groupCode)?.quotes;
-  console.log("compareQuotes:", compareQuotes);
 
   if (isLoading || isUninitialized || !compareQuotes)
     return <FullScreenLoader />;
@@ -357,7 +354,6 @@ function OptionalCoversSection({ compareQuotes, select }) {
           description={DESCRIPTIONS["unique_features"]}
         >
           {compareQuotes?.map((quote, idx) => {
-            console.log(idx + quote.product.id);
             return (
               <OptionalCoversValue
                 quote={quote}
@@ -503,9 +499,7 @@ function DownloadButton({ ...props }) {
 }
 
 function BackButton(props) {
-  const { getUrlWithEnquirySearch } = useUrlEnquiry();
   const history = useHistory();
-  const { groupCode } = useParams();
 
   const handleBackClick = () => {
     history.goBack();
@@ -579,6 +573,7 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
         >
           {compareQuotes.map((quote, idx) => (
             <TenureFeatureValue
+              key={quote.premium + idx}
               quote={quote}
               id={quote.premium + idx}
               groupCode={groupCode}
@@ -591,6 +586,7 @@ function PlanDetailsSection({ compareQuotes = [], select, ...props }) {
           <FeatureRow title={"Tenure"} select={select}>
             {compareQuotes.map((quote, idx) => (
               <TenureFeatureValue
+                key={quote.premium + idx}
                 quote={quote}
                 id={quote.premium + idx}
                 groupCode={groupCode}
@@ -833,7 +829,9 @@ function KeyBenefitsSection({ compareQuotes = [], select, ...props }) {
               >
                 <ul>
                   {feature &&
-                    feature.value?.split("\n").map(value => <li>{value}</li>)}
+                    feature.value
+                      ?.split("\n")
+                      .map(value => <li key={value}>{value}</li>)}
                 </ul>
               </div>
             ) : null,
@@ -853,7 +851,9 @@ function KeyBenefitsSection({ compareQuotes = [], select, ...props }) {
                 >
                   <ul>
                     {feature &&
-                      feature.value?.split("\n").map(value => <li>{value}</li>)}
+                      feature.value
+                        ?.split("\n")
+                        .map(value => <li key={value}>{value}</li>)}
                   </ul>
                 </div>
               ) : null,
@@ -1151,8 +1151,6 @@ function FeatureValue({
   } = useCompareFeature(compareQuote);
   const [showMore, setShowMore] = useState(false);
 
-  const { colors } = useTheme();
-
   const feature = getFeature({ sectionTitle, featureTitle });
 
   useEffect(() => {
@@ -1344,7 +1342,7 @@ function FeatureRow({
   );
 }
 
-function CompareSection({ title = "", children, ...props }) {
+function CompareSection({ title = "", children }) {
   const { colors } = useTheme();
 
   return (

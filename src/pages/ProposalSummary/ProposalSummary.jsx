@@ -32,7 +32,7 @@ import {
   useMembers,
   useUSGIDiscounts,
 } from "../../customHooks";
-import { Page } from "../../components";
+import { Page, BackButtonMobile } from "../../components";
 import {
   useGetProductBrochureQuery,
   useGetProposalDataQuery,
@@ -43,7 +43,6 @@ import { mobile } from "../../utils/mediaQueries";
 import { amount, getPolicyPremium, isSSOJourney } from "../../utils/helper";
 import Card from "../../components/Card";
 import httpClient from "../../api/httpClient";
-import { BackButtonMobile } from "../../components";
 import "styled-components/macro";
 
 const ProposalSummary = () => {
@@ -234,7 +233,7 @@ const ProposalSummary = () => {
     }
   };
 
-  const imageSendQuote = id => {
+  const imageSendQuote = () => {
     window.scrollTo(0, 0);
     setTimeout(() => {
       pdfDoc.save("Proposal_Summary.pdf");
@@ -298,7 +297,7 @@ const ProposalSummary = () => {
               )}
             </div>
 
-            <div class="quotes_compare_buttons_div">
+            <div className="quotes_compare_buttons_div">
               <div
                 className="row btn_p_summary_pay_now d-flex align-items-center"
                 onClick={() => checked && onClick()}
@@ -306,13 +305,13 @@ const ProposalSummary = () => {
                   background: ${PrimaryColor} !important;
                 `}
               >
-                <div class="col-md-4 position-relative">
+                <div className="col-md-4 position-relative">
                   {show && (
                     <MultipleWrapper>
                       <PayList>
                         {policyStatus &&
                           policyStatus.map(item => (
-                            <PayItem>
+                            <PayItem key={item?.product?.name}>
                               <ItemName>{item?.product?.name}</ItemName>
                               <PayButton
                                 PrimaryColor={PrimaryColor}
@@ -362,7 +361,7 @@ const ProposalSummary = () => {
                     Pay Now{" "}
                   </button>
                 </div>
-                <div class="col-md-8">
+                <div className="col-md-8">
                   <div
                     disabled={!(checked && allTcChecked)}
                     css={`
@@ -373,8 +372,8 @@ const ProposalSummary = () => {
                     `}
                   >
                     <span>Total Premium</span>
-                    <p class="p_dark_f_a" style={{ marginBottom: "unset" }}>
-                      <span class="font_weight_normal text-white">
+                    <p className="p_dark_f_a" style={{ marginBottom: "unset" }}>
+                      <span className="font_weight_normal text-white">
                         {amount(totalPremiumPolicies)}
                       </span>
                     </p>
@@ -510,7 +509,7 @@ const ProposalSummary = () => {
                 )}
 
                 <div className="row margin_top_tab_proposal">
-                  <div class="col-lg-12 col-md-12 no-padding-mobile">
+                  <div className="col-lg-12 col-md-12 no-padding-mobile">
                     <div className="signUp-page signUp-minimal pb-70">
                       <div
                         className="-wrapper pad_proposal_s mt-2"
@@ -656,8 +655,8 @@ const TermsAndConditionsSection = ({ setAllTcChecked, tCSectionData }) => {
       {tenantAlias !== "spa" && (
         <ContentSection>
           {checkBoxContentArray?.map((item, index) => (
-            <div>
-              <p key={index}>
+            <div key={index}>
+              <p>
                 <span
                   css={`
                     position: relative;
@@ -774,6 +773,7 @@ const PolicyWordingsRenderer = ({ singleItem }) => {
         `}
         href={policy_wording_url}
         target="_blank"
+        rel="noreferrer"
       >
         Policy wordings
       </a>

@@ -3,23 +3,17 @@ import FeatureSection from "./FeatureSection/FeatureSection";
 
 import "styled-components/macro";
 import { mobile, small } from "../../../utils/mediaQueries";
-import { amount, isUsgiLifestyleDiscount } from "../../../utils/helper";
+import { amount } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
   useTenureDiscount,
   useTheme,
-  useCart,
 } from "../../../customHooks";
 import { FaCheck } from "react-icons/fa";
 import { useEffect } from "react";
 import { WrapWithTitle } from ".";
 
-const CheckDiscountSection = ({
-  loaderStart = () => {},
-  groupCode,
-  cartEntry,
-  ...props
-}) => {
+const CheckDiscountSection = ({ groupCode, cartEntry, ...props }) => {
   return (
     <FeatureSection
       heading="Check Discounts"
@@ -401,9 +395,9 @@ function AdditionalDiscount({
           Apply
         </span>
         {isSelected ? (
-          <i class="fas fa-check"></i>
+          <i className="fas fa-check"></i>
         ) : (
-          <i class="fas fa-plus"></i>
+          <i className="fas fa-plus"></i>
         )}
       </button>
     </div>

@@ -163,6 +163,7 @@ export const numOnly = event => {
     key === 39 ||
     key === 46
   ) {
+    // something has to come
   } else {
     event.preventDefault();
   }
@@ -347,9 +348,6 @@ export function getDiscountAmount(additionalDiscount, cartEntry) {
     return discountedAmount;
   }
 
-  if (applied_on_discounts) {
-  }
-
   if (fixed_discount_value) {
     discountedAmount = +fixed_discount_value;
   }
@@ -510,43 +508,8 @@ export function calculateTotalPremium(
   const addOnsTotalPremium = getAddOnsTotalPremium(cartEntry.addons);
 
   // if (cartEntry?.product?.company?.alias === "royal_sundaram") {
-  if (false) {
-    const hospitalRider = health_riders.find(
-      rider => rider.name === "Hospital Cash Benefit",
-    );
 
-    if (health_riders.length === 1 && hospitalRider) {
-      return (
-        totalPremiumAfterDiscount +
-        addOnsTotalPremium +
-        health_riders[0]?.total_premium
-      );
-    } else {
-      let calculatedPremium = Math.round(total_premium / 1.04 / 1.18);
-
-      let calculatedRider = 0;
-      if (hospitalRider) {
-        health_riders.forEach(item => {
-          if (item.name !== "Hospital Cash Benefit") {
-            calculatedRider += item.total_premium;
-          }
-        });
-        ridersPremium = calculatedRider;
-        totalPremiumAfterDiscount =
-          (calculatedPremium + ridersPremium + addOnsTotalPremium) *
-            1.04 *
-            1.18 +
-          hospitalRider.total_premium;
-      } else {
-        totalPremiumAfterDiscount =
-          (calculatedPremium + ridersPremium + addOnsTotalPremium) *
-          1.04 *
-          1.18;
-      }
-    }
-  } else {
-    totalPremiumAfterDiscount += ridersPremium + addOnsTotalPremium;
-  }
+  totalPremiumAfterDiscount += ridersPremium + addOnsTotalPremium;
 
   return totalPremiumAfterDiscount;
 }

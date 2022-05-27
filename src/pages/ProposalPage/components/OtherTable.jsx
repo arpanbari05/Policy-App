@@ -30,10 +30,8 @@ const OtherTable = ({
           ))}
         </TableHeader>
         {questions.map((item, index) => (
-          <TableRow>
-            <Col key={index} width={33.3}>
-              {item.label}
-            </Col>
+          <TableRow key={index}>
+            <Col width={33.3}>{item.label}</Col>
             {members.map((innerItem, index) => (
               <Col key={index} width={66.7 / members.length}>
                 <ProposalCheckBox

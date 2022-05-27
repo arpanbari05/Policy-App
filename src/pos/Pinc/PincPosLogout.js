@@ -15,7 +15,6 @@ export default function PincPosLogout() {
 
   useEffect(() => {
     if (localStorage.Pos_details) {
-      console.log(JSON.parse(localStorage.Pos_details));
       setData(JSON.parse(localStorage.Pos_details));
     }
   }, []);
@@ -36,7 +35,7 @@ export default function PincPosLogout() {
       }
     } catch (error) {
       alert(error.message);
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -55,7 +54,12 @@ export default function PincPosLogout() {
             <h4>{data?.first_name + " " + data?.last_name}</h4>
             <p>{data?.pos_id}</p>
           </div>
-          <span onClick={handleClick} title="Logout">
+          <span
+            onClick={handleClick}
+            onKeyDown={handleClick}
+            title="Logout"
+            aria-hidden="true"
+          >
             <RiLogoutCircleRLine size={26} color={colors.primary_color} />
           </span>
         </StyledOuter>

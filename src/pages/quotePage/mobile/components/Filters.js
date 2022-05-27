@@ -35,16 +35,6 @@ const availableMoreFilters = {
   others: true,
 };
 
-const DESCRIPTIONS = {
-  arogya_sanjeevani:
-    "Plan offering Arogya Sanjeevani Benefits; this policy is a standard health insurance policy introduced by the IRDA & offered by Health Insurance Companies in India",
-  global_plans:
-    "Plans offering Global coverage; this policy ensure you are civered for health expenses internationally",
-  base_health:
-    "Plans covering all your medical needs; this policy offer varied health benefits meeting your needs",
-  "1_crore_plan": "Plans offering cover amount 1 Crore",
-};
-
 export function useFiltersSlot({ initialFilters } = {}) {
   const [filters, setFilters] = useState(initialFilters);
 
@@ -233,7 +223,6 @@ export function FilterModal({ onClose, show }) {
 
   const handleShowPlansClick = () => {
     updateFilters(filters);
-    console.log({ filters });
     !filters?.cover?.applicable_on_pos &&
     isSSOJourney() &&
     pos_nonpos_switch_message
@@ -346,25 +335,6 @@ export function FilterModal({ onClose, show }) {
               position: sticky;
             `}
           >
-            {/* <FilterNavItem eventKey={"premium"}>Premium</FilterNavItem>
-            {journeyType === "health" ? (
-              <FilterNavItem eventKey={"cover"}>Cover</FilterNavItem>
-            ) : (
-              <FilterNavItem eventKey={"deductible"}>Deductible</FilterNavItem>
-            )}
-            {selectedPolicyTypeFilter?.display_name !== "Individual" &&
-            journeyType !== "top_up" &&
-            +multiindividual_visibilty !== 0 ? (
-              <FilterNavItem eventKey={"plantype"}>Policy type</FilterNavItem>
-            ) : null}
-            <FilterNavItem eventKey={"tenure"}>Multiyear Options</FilterNavItem>
-            <FilterNavItem eventKey={"baseplantype"}>Plan type</FilterNavItem>
-            <FilterNavItem eventKey={"insurers"}>Insurers</FilterNavItem>
-            {morefilters.map(filter => (
-              <FilterNavItem eventKey={filter.code} key={filter.code}>
-                {filter.group_name}
-              </FilterNavItem>
-            ))} */}
             {filterOrder?.map(filter => NAV[filter])}
           </Nav>
 
@@ -460,7 +430,7 @@ export function FilterOptions({
   currentOption,
   onChange,
   type,
-  filterGroup,
+
   showTooltip,
   ...props
 }) {
@@ -562,7 +532,7 @@ function FilterOption({
       {...props}
     >
       <label
-        role="button"
+        aria-hidden="true"
         className="d-flex align-items-center justify-content-between px-2 py-1"
         css={`
           font-size: 0.79rem;
@@ -575,6 +545,7 @@ function FilterOption({
           tooltip={showTooltip}
         />
         <span
+          aria-hidden="true"
           css={`
             font-size: 1.6rem;
             line-height: 1;
@@ -630,7 +601,7 @@ function FilterNavItem({ children, eventKey, ...props }) {
 function InsurersFilter({ onChange, currentOptions, code }) {
   const { companies } = useCompanies();
 
-  const handleChange = (company, evt) => {
+  const handleChange = company => {
     // if (evt.target.checked) {
     onChange && onChange(code, company, "check");
     // }
@@ -826,7 +797,7 @@ function FilterDataSet({ name, description, tooltip, ...props }) {
           placement="bottom"
           overlay={<Tooltip {...props}>{description}</Tooltip>}
         >
-          <span ref={target} onClick={toggleTooltip}>
+          <span aria-hidden="true" ref={target} onClick={toggleTooltip}>
             <IoMdInformationCircleOutline />
           </span>
         </OverlayTrigger>

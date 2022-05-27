@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 const useInsuredDetails = (
   name,
@@ -11,15 +11,6 @@ const useInsuredDetails = (
   defaultValue,
   equriesData,
 ) => {
-  function formatter(number) {
-    if (!isNaN(number)) number = parseInt(number);
-    const updatedNumber = number.toLocaleString("en-US", {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    });
-    return updatedNumber;
-  }
-
   const getPanelDescContent = item => {
     let result = [];
     if (values && name === "Insured Details") {
@@ -27,8 +18,6 @@ const useInsuredDetails = (
         Object.keys(values[item]).forEach(key => {
           if (key === "dob" && values[item][key]) {
             let updatedKey = values[item][key].split("-");
-            const date = updatedKey[0];
-            const month = updatedKey[1];
             const year = updatedKey[2] || values[item][key];
             updatedKey = `${year}`;
             result[1] = updatedKey;
@@ -84,8 +73,7 @@ const useInsuredDetails = (
       if (schema) {
         // let tempAllMemberDetail = {...values};
         let currentYear = new Date().getUTCFullYear();
-        let currentMonth = new Date().getMonth();
-        let currentDate = new Date().getDate();
+
         Object.keys(schema).forEach(memberType => {
           if (memberType === "self") {
             let tempObj = { ...defaultValue?.[memberType] };

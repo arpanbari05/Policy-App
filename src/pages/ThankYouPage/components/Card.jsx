@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import "styled-components/macro";
-import { policyPdf } from "../serviceApi";
-import Download from "./Download";
 import mail from "./../../../assets/svg/mailpolicy.svg";
 import paper from "./../../../assets/svg/paperplicy.svg";
 import repolicy from "./../../../assets/svg/repolicy.svg";
-import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
 import { useFrontendBoot, useTheme } from "../../../customHooks";
 import { FiDownload } from "react-icons/fi";
 
@@ -65,7 +61,7 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
               >
                 Download Policy{" "}
                 {isLoading || !values?.pdf_path ? (
-                  <span class="thankyou lds-dual-ring"></span>
+                  <span className="thankyou lds-dual-ring"></span>
                 ) : (
                   <FiDownload size={18} />
                 )}
@@ -163,7 +159,7 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
           </DocImage>
           <DocMessage>
             You will receive the Policy in your inbox once generated. In case
-            it's under medical underwriting it might take longer.{" "}
+            it&lsquo;s under medical underwriting it might take longer.{" "}
           </DocMessage>
         </StatusWrapper>
       )}
@@ -180,7 +176,7 @@ const Card = ({ values, isLoading, showTrackStatus }) => {
           </DocImage>
           <DocMessage>
             You will receive the Policy in your inbox once generated. In case
-            it's under medical underwriting it might take longer.{" "}
+            it&lsquo;s under medical underwriting it might take longer.{" "}
           </DocMessage>
         </StatusWrapper>
       )}

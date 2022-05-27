@@ -127,7 +127,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
                 dangerouslySetInnerHTML={{
                   __html: posContent.question
                     ? posContent.question
-                    : "Tell us about yourself?",
+                    : "Tell us about yourself? ",
                 }}
               ></Title>
               <LinkButton

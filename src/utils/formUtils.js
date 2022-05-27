@@ -31,6 +31,7 @@ export const numOnly = event => {
     key === 39 ||
     key === 46
   ) {
+    // something has to come
   } else {
     event.preventDefault();
   }
