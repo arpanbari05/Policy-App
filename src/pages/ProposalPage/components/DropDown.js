@@ -100,36 +100,93 @@ const DropDown = ({
 
   label = checkValidation?.required ? `${label}*` : label;
 
-  return (
-    <SelectContainer height={height}>
-      <Select
-        value={value}
-        onChange={e => {
-          setSelectedNoneState(false);
+  const changeHandler = e => {
+    setSelectedNoneState(false);
 
-          if (
-            invalidateOption &&
-            invalidateOption?.option &&
-            invalidateOption.option === e.target.value
-          ) {
-            dispatch(
-              setShowErrorPopup({
-                show: true,
-                head: "",
-                msg: invalidateOption.message,
-              }),
-            );
-            setSelectedNoneState(true);
-          } else onChange(e, e.target.value);
-        }}
-        disabled={
-          (value && Object.keys(selectOption).length === 1 && !asyncOptions) ||
-          readOnly
-        }
-        error={error}
-        height={height}
-        borderR={borderR}
-      >
+    if (
+      invalidateOption &&
+      invalidateOption?.option &&
+      invalidateOption.option === e.target.value
+    ) {
+      dispatch(
+        setShowErrorPopup({
+          show: true,
+          head: "",
+          msg: invalidateOption.message,
+        }),
+      );
+      setSelectedNoneState(true);
+    } else onChange(e, e.target.value);
+  };
+
+  const OptionsRenderer = () => {
+    let subOptions = Object.keys(selectOption).map(item => (
+      <option key={item + selectOption[item]} value={item}>
+        {selectOption[item]}
+      </option>
+    ));
+
+    //! ------ VALIDATIONS ------
+
+    if (
+      selectedValues?.title &&
+      selectedValues.title === "mrs" &&
+      label === "Marital Status*"
+    ) {
+      subOptions = Object.keys(selectOption)
+        .filter(item => item !== "single")
+        .map(item => (
+          <>
+            <option
+              key={item + selectOption[item]}
+              value={item}
+              selected={selectedNone}
+            >
+              {selectOption[item]}
+            </option>
+          </>
+        ));
+    } else if (
+      selectedValues?.title &&
+      selectedValues?.title === "mr" &&
+      label === "Marital Status*" &&
+      proposerAge < 21
+    ) {
+      subOptions = Object.keys(selectOption)
+        .filter(item => item !== "married")
+        .map(item => (
+          <>
+            <option
+              key={item + selectOption[item]}
+              value={item}
+              selected={selectedNone}
+            >
+              {selectOption[item]}
+            </option>
+          </>
+        ));
+    } else if (
+      selectedValues?.title &&
+      selectedValues?.title === "mr" &&
+      label === "Occupation*"
+    ) {
+      subOptions = Object.keys(selectOption)
+        .filter(item => item !== "House wife")
+        .map(item => (
+          <>
+            <option
+              key={item + selectOption[item]}
+              value={item}
+              selected={selectedNone}
+            >
+              {selectOption[item]}
+            </option>
+          </>
+        ));
+    }
+
+    return (
+      <>
         {((Object.keys(selectOption).length !== 1 &&
           checkValidation?.required &&
           !asyncOptions) ||
@@ -142,44 +199,25 @@ const DropDown = ({
             {dropPlaceholder || label || "- Select -"}
           </option>
         )}
-        {selectedValues?.title &&
-        selectedValues.title === "mrs" &&
-        label === "Marital Status*"
-          ? Object.keys(selectOption)
-              .filter(item => item !== "single")
-              .map(item => (
-                <>
-                  <option
-                    key={item + selectOption[item]}
-                    value={item}
-                    selected={selectedNone}
-                  >
-                    {selectOption[item]}
-                  </option>
-                </>
-              ))
-          : selectedValues?.title &&
-            selectedValues?.title === "mr" &&
-            label === "Marital Status*" &&
-            proposerAge < 21
-          ? Object.keys(selectOption)
-              .filter(item => item !== "married")
-              .map(item => (
-                <>
-                  <option
-                    key={item + selectOption[item]}
-                    value={item}
-                    selected={selectedNone}
-                  >
-                    {selectOption[item]}
-                  </option>
-                </>
-              ))
-          : Object.keys(selectOption).map(item => (
-              <option key={item + selectOption[item]} value={item}>
-                {selectOption[item]}
-              </option>
-            ))}
+        {subOptions}
+      </>
+    );
+  };
+
+  return (
+    <SelectContainer height={height}>
+      <Select
+        value={value}
+        onChange={changeHandler}
+        disabled={
+          (value && Object.keys(selectOption).length === 1 && !asyncOptions) ||
+          readOnly
+        }
+        error={error}
+        height={height}
+        borderR={borderR}
+      >
+        <OptionsRenderer />
       </Select>
       <Label height={height}>{label}</Label>
       {error && <p className="formbuilder__error">{error}</p>}

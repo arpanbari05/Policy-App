@@ -151,7 +151,6 @@ const InsuredDetails = ({
 
   const fullName = proposalData["Proposer Details"]?.name;
 
-  const firstName = fullName?.split(" ")[0];
 
   useEffect(() => {
     if (
