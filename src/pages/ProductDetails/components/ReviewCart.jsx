@@ -89,7 +89,11 @@ export function CartDetails({ groupCode, sum_insured, ...props }) {
 
   const cartEntry = getCartEntry(groupCode);
 
-  const { unavailable_message, service_tax } = cartEntry;
+  const {
+    unavailable_message,
+    service_tax,
+    product: { supports_port },
+  } = cartEntry;
 
   const { allowModification, allowsQuickPay } = useRenewalsConfig();
 
@@ -138,7 +142,9 @@ export function CartDetails({ groupCode, sum_insured, ...props }) {
             <AddOnsList cartEntry={cartEntry} />
             <Taxes service_tax={service_tax} />
             {process.env.REACT_APP_TENANT === "fyntune" &&
-              journeyType === "health" && <PortPlan groupCode={groupCode} />}
+              journeyType === "health" &&
+              subJourneyType !== "port" &&
+              !!supports_port && <PortPlan groupCode={groupCode} />}
             <TotalPremium groupCode={groupCode} />
           </div>
         )}

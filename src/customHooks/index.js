@@ -266,6 +266,12 @@ export function useFilterOrder() {
   };
 }
 
+const subJourneyTypeOptions = {
+  renew: "renewal",
+  port: "port",
+  new: "new",
+};
+
 export function useFrontendBoot(skipEnquiry = true) {
   const searchQueries = useUrlQueries();
   const {
@@ -289,12 +295,14 @@ export function useFrontendBoot(skipEnquiry = true) {
   let subJourneyType = "";
 
   if (enquiryData?.data) {
+    console.log(
+      "subJourneyTypeOptions[enquiryData?.data?.type]",
+      enquiryData?.data?.type,
+      subJourneyTypeOptions[enquiryData?.data?.type],
+    );
     journeyType = enquiryData?.data?.section;
-    subJourneyType =
-      enquiryData?.data?.type === "renew" ? "renewal" : enquiryData?.data?.type;
+    subJourneyType = subJourneyTypeOptions[enquiryData?.data?.type];
   }
-
-  console.log("data", data);
 
   return {
     query,
