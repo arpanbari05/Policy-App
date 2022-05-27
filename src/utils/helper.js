@@ -1127,3 +1127,17 @@ export const getAge = (birthYear = "2000") => {
   const currentYear = new Date().getFullYear();
   return +currentYear - +birthYear;
 };
+
+export const renewalSumInsuredGenerator = (
+  currentSumInsured = 100000,
+  available_sum_insureds,
+) => {
+  const currentSumInsuredIndex = available_sum_insureds?.indexOf(
+    +currentSumInsured,
+  );
+
+  return available_sum_insureds?.slice(
+    currentSumInsuredIndex,
+    currentSumInsuredIndex + 3,
+  );
+};

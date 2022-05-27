@@ -249,9 +249,7 @@ const ProductDetails = () => {
                   }
                 `}
               >
-                {subJourneyType === "renewal" && (
-                  <SumInsuredSection cartEntry={cartEntry} />
-                )}
+                {subJourneyType === "renewal" && <SumInsuredSection />}
                 <div
                   css={`
                     display: none;
