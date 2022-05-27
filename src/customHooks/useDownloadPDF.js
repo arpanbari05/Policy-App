@@ -4,8 +4,8 @@ import { useFrontendBoot } from "./index";
 function getLogo(companies, quotes) {
   const logoArray = quotes?.map(quote => {
     return {
-      companyAlias: quote.company_alias,
-      image: companies[quote.company_alias]?.logo,
+      ...quote,
+      logo: companies[quote.company_alias]?.logo,
     };
   });
   return logoArray;
@@ -18,8 +18,7 @@ export default function useDownloadPDF({ quotes, logo }) {
 
   async function downloadComparePDF() {
     const pdfBodyContent = JSON.stringify({
-      quotes,
-      logos: getLogo(data?.companies, quotes),
+      quotes: getLogo(data?.companies, quotes),
     });
     try {
       setPdfFetchLoading(true);
