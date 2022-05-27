@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useFrontendBoot } from "./index";
+import { useUrlQueries } from "./useUrlQuery";
 
 function getLogo(companies, quotes) {
   const logoArray = quotes?.map(quote => {
@@ -15,10 +16,12 @@ export default function useDownloadPDF({ quotes, logo }) {
   const [status, setStatus] = useState(null);
   const [pdfFetchLoading, setPdfFetchLoading] = useState(false);
   const { data } = useFrontendBoot();
+  const enquiryData = useUrlQueries();
 
   async function downloadComparePDF() {
     const pdfBodyContent = JSON.stringify({
       quotes: getLogo(data?.companies, quotes),
+      groupCode: window.location.pathname.split("/")[2],
     });
     try {
       setPdfFetchLoading(true);
@@ -28,6 +31,7 @@ export default function useDownloadPDF({ quotes, logo }) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "enquiry-id": enquiryData.enquiryId,
           },
           body: pdfBodyContent,
         },
