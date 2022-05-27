@@ -295,11 +295,6 @@ export function useFrontendBoot(skipEnquiry = true) {
   let subJourneyType = "";
 
   if (enquiryData?.data) {
-    console.log(
-      "subJourneyTypeOptions[enquiryData?.data?.type]",
-      enquiryData?.data?.type,
-      subJourneyTypeOptions[enquiryData?.data?.type],
-    );
     journeyType = enquiryData?.data?.section;
     subJourneyType = subJourneyTypeOptions[enquiryData?.data?.type];
   }

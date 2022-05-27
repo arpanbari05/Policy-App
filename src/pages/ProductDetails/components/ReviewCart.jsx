@@ -606,7 +606,7 @@ function EditMembers({}) {
 
   let serverErrors;
 
-  if (isError) serverErrors = Object.values(error?.data?.errors);
+  if (isError) serverErrors = Object.values(error?.data?.errors || {});
 
   return (
     <>
@@ -1048,7 +1048,10 @@ function BasePlanDetails({
             <CartDetailRow
               title="Cover"
               value={
-                !options || !options?.length || subJourneyType === "renewal"
+                !options ||
+                !options?.length ||
+                subJourneyType === "renewal" ||
+                revisedPremium
                   ? `₹ ${figureToWords(sum_insured)}`
                   : coverList
               }
