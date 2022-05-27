@@ -7,21 +7,37 @@ import { mobile } from "../../../utils/mediaQueries";
 import FeatureSection from "./FeatureSection/FeatureSection";
 import "styled-components/macro";
 import { useGetRenewalSumInsuredsQuery } from "../../../api/api";
+import { renewalSumInsuredGenerator } from "../../../utils/helper";
+import { useParams } from "react-router-dom";
 
-function SumInsuredSection({ cartEntry }) {
-  const { available_sum_insureds, sum_insured } = cartEntry;
+function SumInsuredSection() {
+  const { groupCode } = useParams();
 
-  const currentSumInsuredIndex = available_sum_insureds?.indexOf(+sum_insured);
+  const { updateCartEntry, getCartEntry } = useCart();
 
-  const currentAndNextTwoSumInsureds = React.useMemo(
-    () =>
-      available_sum_insureds?.slice(
-        currentSumInsuredIndex,
-        currentSumInsuredIndex + 3,
-      ),
+  const cartEntry = getCartEntry(groupCode);
+
+  const {
+    available_sum_insureds,
+    sum_insured,
+    available_renewals_sum_insureds,
+  } = cartEntry;
+
+  const currentAndNextTwoSumInsuredsMemoized = React.useMemo(
+    renewalSumInsuredGenerator.bind(null, sum_insured, available_sum_insureds),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
+
+  const currentAndNextTwoSumInsureds =
+    available_renewals_sum_insureds || currentAndNextTwoSumInsuredsMemoized;
+
+  React.useEffect(() => {
+    updateCartEntry(groupCode, {
+      ...cartEntry,
+      available_renewals_sum_insureds: currentAndNextTwoSumInsureds,
+    });
+  }, []);
 
   if (!currentAndNextTwoSumInsureds?.length) return null;
 
