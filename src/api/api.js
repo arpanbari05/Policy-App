@@ -431,7 +431,7 @@ export const api = createApi({
       }),
       onQueryStarted: async (_data, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
-        console.log("rvbskf", data);
+
         // dispatch(
         //   api.util.updateQueryData("getEnquiries", undefined, draft => {
         //     if (draft) Object.assign(draft, data);
@@ -457,7 +457,7 @@ export const api = createApi({
         const topUpQuotesResponses = await getQuotePromises(
           topUpUrls,
           fetchWithBaseQuery,
-          { afterEach: res => console.log({ res }) },
+          { afterEach: res => {} },
         );
 
         const topUpQuotes = topUpQuotesResponses
