@@ -266,6 +266,12 @@ export function useFilterOrder() {
   };
 }
 
+const subJourneyTypeOptions = {
+  renew: "renewal",
+  port: "port",
+  new: "new",
+};
+
 export function useFrontendBoot(skipEnquiry = true) {
   const searchQueries = useUrlQueries();
   const {
@@ -290,11 +296,8 @@ export function useFrontendBoot(skipEnquiry = true) {
 
   if (enquiryData?.data) {
     journeyType = enquiryData?.data?.section;
-    subJourneyType =
-      enquiryData?.data?.type === "renew" ? "renewal" : enquiryData?.data?.type;
+    subJourneyType = subJourneyTypeOptions[enquiryData?.data?.type];
   }
-
-  console.log("data", data);
 
   return {
     query,

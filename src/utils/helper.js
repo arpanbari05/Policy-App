@@ -4,6 +4,7 @@ import clickSound from "../assets/audio/button-click.mp3";
 // all on specific urls
 export const allowOnWebsites = (sites = []) => {
   const renewBuyAll = ["rbstaging.in", "renewbuy.com"];
+  const pincAll = ["pincinsurance.com", "pinctree.com"];
   const allUat = [
     "https://uathealth.rbstaging.in",
     "https://renewbuy-health.fynity.in",
@@ -75,6 +76,13 @@ export const allowOnWebsites = (sites = []) => {
     }
     if (site === "renewBuyAll") {
       renewBuyAll.forEach(value => {
+        if (origin.includes(value)) {
+          isPass = true;
+        }
+      });
+    }
+    if (site === "pincAll") {
+      pincAll.forEach(value => {
         if (origin.includes(value)) {
           isPass = true;
         }
@@ -1081,4 +1089,18 @@ export const getAge = (birthYear = "2000") => {
   }
   const currentYear = new Date().getFullYear();
   return +currentYear - +birthYear;
+};
+
+export const renewalSumInsuredGenerator = (
+  currentSumInsured = 100000,
+  available_sum_insureds,
+) => {
+  const currentSumInsuredIndex = available_sum_insureds?.indexOf(
+    +currentSumInsured,
+  );
+
+  return available_sum_insureds?.slice(
+    currentSumInsuredIndex,
+    currentSumInsuredIndex + 3,
+  );
 };
