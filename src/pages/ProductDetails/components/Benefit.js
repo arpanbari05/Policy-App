@@ -84,6 +84,7 @@ const Options = ({
 
   return primaryKeys.map(pKey => (
     <select
+      key={pKey}
       onClick={e => {
         e.stopPropagation();
       }}
@@ -130,7 +131,7 @@ const ContentSection = ({
     <StyledContentSection
       theme={theme}
       key={data?.name}
-      onClick={e => {
+      onClick={() => {
         setChecked(prev => !prev);
       }}
     >
@@ -168,7 +169,7 @@ const ContentSection = ({
           alignItems: "center",
           justifyContent: "center",
           borderRadius: "50%",
-          boxShadow: true ? "0 3px 8px rgba(0,0,0,.2)" : "none",
+          boxShadow: "0 3px 8px rgba(0,0,0,.2)",
         }}
       >
         {checked && <RiCheckFill color={"#fff"} size={17} />}
@@ -177,7 +178,7 @@ const ContentSection = ({
   );
 };
 
-const Benefit = ({}) => {
+const Benefit = () => {
   const { groupCode } = useParams();
 
   const { colors: theme } = useTheme();
@@ -204,7 +205,6 @@ const Benefit = ({}) => {
   );
 
   useEffect(() => {
-    console.log("The selected benefit is", selectedBenefit);
     updateFeatureOptions({ feature_options: selectedBenefit });
   }, [selectedBenefit]);
 
@@ -251,8 +251,9 @@ const Benefit = ({}) => {
         >
           <BenefitCardWrapper>
             {data &&
-              data?.data?.map(data => (
+              data?.data?.map((data, index) => (
                 <ContentSection
+                  key={index}
                   selectedBenefit={selectedBenefit}
                   setSelectedBenefit={setSelectedBenefit}
                   data={data}

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import CustomProgressBar from "../../../components/ProgressBar";
 import { Title, ErrorMessage } from "./FormComponents";
 import RadioCapsule from "../../../components/RadioCapsule";
@@ -47,7 +47,7 @@ const MedicalHistoryForm = ({ posContent }) => {
   const { groups } = useMembers();
   const { updateEnquiry } = useUpdateEnquiry();
   const { data, isLoading } = useGetFrontendBootQuery();
-  const { journeyType, settings } = useFrontendBoot();
+  const { journeyType } = useFrontendBoot();
   const { existingdiseases } = data || [""];
 
   // ===========functions=============
@@ -121,6 +121,7 @@ const MedicalHistoryForm = ({ posContent }) => {
           medicalHistoryRadioArr.map(({ code, display_name }, i) => {
             return (
               <RadioButton
+                key={display_name + i.toString()}
                 onClick={e => {
                   if (display_name === "No") {
                     setSelected(e.target.value);
@@ -152,6 +153,7 @@ const MedicalHistoryForm = ({ posContent }) => {
         existingdiseases.map(({ display_name, code }, i) => {
           return (
             <RadioCapsule
+              key={display_name + i.toString()}
               value={code}
               id={code}
               styledCss={`margin-bottom: 10px; margin-right: 5px;`}

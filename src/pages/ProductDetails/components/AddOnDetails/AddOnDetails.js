@@ -9,7 +9,6 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import Modal from "../../../../components/Common/Modal";
-import { CloseButton } from "../../../Cart/components/SidebarCart/SidebarCart";
 import { amount } from "../../../../utils/helper";
 import { mobile } from "../../../../utils/mediaQueries";
 import styled from "styled-components/macro";
@@ -19,9 +18,9 @@ import {
   ErrorMessage,
   ListItem,
   useFetchDownloads,
+  useAddOnDetails,
 } from "./helpers";
 
-import useAddOnDetails from "./helpers";
 import { useCompanies, useTheme } from "../../../../customHooks";
 import { FaTimes } from "react-icons/fa";
 
@@ -183,6 +182,7 @@ function CriticalIllnessList({ feature }) {
           >
             {criticalIllnessList.slice(1).map(criticalIllness => (
               <li
+                key={criticalIllness}
                 css={`
                   min-width: 50%;
                 `}
@@ -266,6 +266,7 @@ function FeatureDetail({ title, description = "", shortDesc = "" }) {
             <ul>
               {description.split("\n").map(item => (
                 <li
+                  key={item}
                   css={`
                     margin-bottom: 1em;
                   `}
@@ -348,7 +349,7 @@ AddOnDetails.NavBody = function NavBody({
     <Col lg={9}>
       <Tab.Content>
         {addOnDetails.map(addOnDetail => (
-          <Tab.Pane eventKey={addOnDetail.name}>
+          <Tab.Pane eventKey={addOnDetail.name} key={addOnDetail.name}>
             {addOnDetailsComponents[addOnDetail.name]
               ? addOnDetailsComponents[addOnDetail.name]({
                   addOnDetail,
@@ -371,7 +372,6 @@ AddOnDetails.NavBody = function NavBody({
 
 AddOnDetails.Nav = function Nav({ navItems = [] }) {
   const [currentItem, setCurrentItem] = useState(navItems[0]);
-  const navItemPosition = [...navItems, "downloads"].indexOf(currentItem);
 
   const handleNavClick = itemName => setCurrentItem(itemName);
 

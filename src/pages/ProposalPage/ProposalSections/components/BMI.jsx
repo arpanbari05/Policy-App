@@ -5,15 +5,12 @@ import { setShowBMI } from "../ProposalSections.slice";
 import { useHistory } from "react-router";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { FaTimes } from "react-icons/fa";
-import { setActiveIndex } from "../ProposalSections.slice";
 import { useFrontendBoot } from "../../../../customHooks";
 
 const BMI = () => {
   const { showBMI } = useSelector(state => state.proposalPage);
   const history = useHistory();
-  const {
-    data: frontBootData,
-  } = useFrontendBoot();
+  const { data: frontBootData } = useFrontendBoot();
   const urlQuery = useUrlQuery();
   const enquiryId = urlQuery.get("enquiryId");
   const { memberGroups } = useSelector(state => state.greetingPage);
@@ -41,7 +38,7 @@ const BMI = () => {
             ) : (
               <>
                 <p>
-                  Based on BMI of <span>{showBMI}</span> this plan isn't
+                  Based on BMI of <span>{showBMI}</span> this plan isn&#39;t
                   available. Please change your details for selected plan or
                   choose another plan
                 </p>

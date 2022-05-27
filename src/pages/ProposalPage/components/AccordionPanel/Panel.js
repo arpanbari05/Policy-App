@@ -2,9 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import "styled-components/macro";
 import { Collapse } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import pencil from "../../../../assets/images/pencil_pro.png";
-import ProposalCheckBox from "../../../../components/Common/ProposalSummary/summaryCheckBox";
 import { useTheme } from "../../../../customHooks";
 import { FaChevronUp, FaPen } from "react-icons/fa";
 const Panel = ({
@@ -114,14 +111,11 @@ const Panel = ({
           ) : !isFilled ? (
             <>
               <ChevronWrapper>
-                <i class="fas fa-chevron-down"></i>
+                <i className="fas fa-chevron-down"></i>
               </ChevronWrapper>
             </>
           ) : (
             <>
-              {/* <PencilWrapper isMedical={formName === "Medical Details"}>
-                <span>Edit</span> <img src={pencil} alt={"pencil"}></img>
-              </PencilWrapper> */}
               <div
                 css={`
                   width: 30px;

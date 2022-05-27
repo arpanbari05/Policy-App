@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Col, Spinner } from "react-bootstrap";
 import { FaPlusCircle, FaTrashAlt } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -17,7 +16,7 @@ import { removeQuoteFromCart } from "../pages/Cart/cart.slice";
 import CardSkeletonLoader from "./Common/card-skeleton-loader/CardSkeletonLoader";
 import CardModal from "./Common/Modal/CardModal";
 import { calculateTotalPremium, figureToWords } from "../utils/helper";
-import { HeadingTertiary, PrimaryFontBold } from "../styles/typography";
+import { HeadingTertiary } from "../styles/typography";
 
 function CartSummaryModal({
   selectedRiders = [],
@@ -67,8 +66,9 @@ function CartSummaryContent({
 
   return (
     <div {...props}>
-      {groups.map(group => (
+      {groups.map((group, index) => (
         <GroupCard
+          key={index}
           group={group}
           closeModal={closeModal}
           allClose={allClose}
@@ -85,15 +85,7 @@ function CartSummaryContent({
   );
 }
 
-function Footer({ closeModal, onContine, ...props }) {
-  const {
-    data: {
-      data: { groups },
-    },
-  } = useGetEnquiriesQuery();
-
-  const [isConfirmed, setIsConfirmed] = useState(false);
-
+function Footer({ onContine, ...props }) {
   const { data, isLoading, isUninitialized } = useGetCartQuery();
 
   if (isLoading || isUninitialized) return null;
@@ -106,36 +98,13 @@ function Footer({ closeModal, onContine, ...props }) {
     if (!totalCartEntries) return null;
   }
 
-  const totalGroups = groups.length;
-
-  const isQuoteNotSelected = totalCartEntries < totalGroups;
-
   function handleContinueClick() {
     onContine && onContine();
   }
 
-  function handleYesClick() {
-    setIsConfirmed(true);
-  }
-
-  function handleNoClick() {
-    closeModal && closeModal();
-  }
-
   return (
     <div className="d-flex justify-content-center mt-3" {...props}>
-      {isQuoteNotSelected && !isConfirmed && false ? (
-        <div
-          className="d-flex align-items-center"
-          css={`
-            gap: 1em;
-          `}
-        >
-          Are you sure you want to proceed without adding a plan?{" "}
-          <Button onClick={handleYesClick}>Yes</Button>{" "}
-          <Button onClick={handleNoClick}>No</Button>
-        </div>
-      ) : (
+      {
         <Button
           css={`
             height: 60px;
@@ -153,7 +122,7 @@ function Footer({ closeModal, onContine, ...props }) {
         >
           Continue
         </Button>
-      )}
+      }
     </div>
   );
 }
@@ -208,7 +177,7 @@ function GroupCard({ group, closeModal, allClose, selectedRiders, ...props }) {
   );
 }
 
-function ToggleProductCTA({ group, closeModal, allClose, ...props }) {
+function ToggleProductCTA({ group, closeModal, allClose }) {
   const dispatch = useDispatch();
   const { data, isLoading, isUninitialized } = useGetCartQuery();
 
@@ -369,7 +338,6 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
 
   const { journeyType } = useFrontendBoot();
 
-  console.log("Health_riders", health_riders);
   const removeDuplicateRiders = ridersArray => {
     return ridersArray.filter(
       (value, index, self) =>
@@ -536,13 +504,6 @@ const ProductData = styled.div`
   }
   @media (max-width: 400px) {
   }
-`;
-
-const ProductName = styled.span`
-  color: #000;
-  font-size: 15px;
-  font-weight: 900;
-  margin-right: -26px;
 `;
 
 const ProductContainer = styled.div`

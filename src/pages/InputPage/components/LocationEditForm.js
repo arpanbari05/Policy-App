@@ -4,7 +4,6 @@ import CustomProgressBar from "../../../components/ProgressBar";
 import TextInput from "../../../components/TextInput";
 import {
   useFrontendBoot,
-  useGetQuotes,
   useMembers,
   useTheme,
   useUpdateEnquiry,
@@ -12,15 +11,14 @@ import {
 } from "../../../customHooks";
 import { ErrorMessage, SubTitle, Title } from "./FormComponents";
 import { every } from "lodash";
-import { useGetLocationDetailsQuery } from "../../../api/api";
+import { useGetLocationDetailsQuery, api } from "../../../api/api";
 import "styled-components/macro";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { setEditStep, setShowEditMembers } from "../../quotePage/quote.slice";
 import { Button } from "../../../components";
-import {api} from "../../../api/api";
 
-function LocationForm({ edit = false, close = () => {}, posContent }) {
+function LocationForm({ edit = false, posContent }) {
   const { colors } = useTheme();
   const {
     data: { popularcities },
@@ -73,18 +71,6 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
     setSelectedCity(getInitialSelectedCity);
     reset();
   }, [currentGroupCode]);
-
-  const getBackLink = () => {
-    const isSingleMember = !groups.some(group => group.members.length > 1);
-
-    if (previousGroup)
-      return getUrlWithEnquirySearch(`/input/location-${previousGroup?.id}`);
-
-    if (journeyType === "top_up" || isSingleMember)
-      return getUrlWithEnquirySearch(`/input/members`);
-
-    return getUrlWithEnquirySearch(`/input/plantype`);
-  };
 
   const goBack = () => {
     if (previousGroup) {
@@ -221,6 +207,7 @@ function LocationForm({ edit = false, close = () => {}, posContent }) {
           >
             {groups.map(group => (
               <GroupWrapper
+                key={group?.id}
                 active={group?.id === currentGroupCode}
                 color={colors.primary_color}
                 onClick={() => setCurrentGroupCode(group?.id)}
@@ -580,7 +567,7 @@ function LocationOptions({
   showError = true,
   groupCode,
   setError = () => {},
-  css = "",
+
   ...props
 }) {
   const [mouseEntered, setMouseEntered] = useState(false);

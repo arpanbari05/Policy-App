@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useGetDiscountsQuery } from "../../../../api/api";
 import { CircleLoader } from "../../../../components";
 import { useQuotesCompare } from "../../../../customHooks";
@@ -41,7 +40,7 @@ const TenureFeatureValue = ({ quote, groupCode, journeyType }) => {
         }}
       >
         {data?.data?.map(value => (
-          <option value={value.tenure}>{`${value.tenure} ${
+          <option key={value.tenure} value={value.tenure}>{`${value.tenure} ${
             value.tenure === 1 ? "Year" : "Years"
           }`}</option>
         ))}

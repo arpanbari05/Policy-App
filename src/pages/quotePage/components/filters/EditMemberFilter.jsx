@@ -143,6 +143,7 @@ const EditMemberFilter = ({ redirectToQuotes = true }) => {
         onClick={onEditMemberClick}
         tabIndex={0}
         role="button"
+        onKeyDown={onEditMemberClick}
       >
         {redirectToQuotes && (
           <div

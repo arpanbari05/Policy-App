@@ -7,11 +7,8 @@ import { useFrontendBoot } from "../../../customHooks";
 import sriyah_brokerImg from "../../../assets/logos/sriyah_broker_logo.png";
 
 const Footer = () => {
-  const {
-    query: { isLoading },
-    ...frontendBoot
-  } = useFrontendBoot();
-  const { email, mobile } = frontendBoot?.data?.settings;
+  const { ...frontendBoot } = useFrontendBoot();
+
   const { alias } = frontendBoot?.data?.tenant;
   return alias === "sriyah" ? (
     <FooterContainer>
@@ -36,10 +33,10 @@ const Footer = () => {
                     </a>
                   </li>{" "}
                   <li>
-                    <a href="#">Health Insurance</a>
+                    <span>Health Insurance</span>
                   </li>{" "}
                   <li>
-                    <a href="#">Super Top Up Insurance</a>
+                    <span>Super Top Up Insurance</span>
                   </li>{" "}
                 </ul>{" "}
               </div>
@@ -122,9 +119,9 @@ const Footer = () => {
 
       <BottomContainer>
         <div className="container">
-          <div classname="row align-items-center">
+          <div className="row align-items-center">
             <div className="col-lg-12 col-md-5 col-sm-6 text-center">
-              <p class="mb-0 f_400 color_grey">
+              <p className="mb-0 f_400 color_grey">
                 Licenced by Registration No. 203 | License valid till :
                 26/08/2024 | Category : Direct Broker | CIN :
                 U66010KA2003PTC031462 <br />

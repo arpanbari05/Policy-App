@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-
-import cashlessImg from "../../../../../assets/images/cashless_m.png";
+import { useState } from "react";
 import styled from "styled-components/macro";
 import { useTheme } from "../../../../../customHooks";
 
@@ -13,7 +11,7 @@ export const claimBtn = (
   secondaryShade,
 ) => {
   return (
-    <a
+    <span
       onClick={() => handleClick(id)}
       css={`
         padding: 10px 20px;
@@ -43,7 +41,7 @@ export const claimBtn = (
       `}
     >
       {title}
-    </a>
+    </span>
   );
 };
 

@@ -1,9 +1,7 @@
 import { useHistory, useParams } from "react-router-dom";
 import { useCartProduct } from "../../Cart";
 import styled from "styled-components/macro";
-import care_health from "../../../assets/logos/Care.png";
 import { useSelector, useDispatch } from "react-redux";
-import { selectAdditionalDiscounts } from "../productDetails.slice";
 import { useState } from "react";
 import ReviewCartPopup from "./ReviewCardPopup";
 import { FaPen } from "react-icons/fa";
@@ -18,7 +16,6 @@ import {
   isSSOJourney,
   numberToDigitWord,
   featureOptionsValidValue,
-  dateObjectToLocaleString,
 } from "../../../utils/helper";
 import {
   useAdditionalDiscount,
@@ -308,7 +305,7 @@ const ModifyDetailsButton = () => {
       discounted_total_premium,
       generate_proposal: true,
       with_modify: true,
-    }).then(resObj => {
+    }).then(() => {
       history.push(getUrlWithEnquirySearch(`/proposal`));
     });
   };
@@ -548,7 +545,7 @@ function Members({ groupCode, editable = true, ...props }) {
   );
 }
 
-function EditMembersButton({ groupCode, ...props }) {
+function EditMembersButton({ ...props }) {
   const { colors } = useTheme();
 
   const dispatch = useDispatch();
@@ -574,7 +571,7 @@ function EditMembersButton({ groupCode, ...props }) {
   );
 }
 
-function EditMembers({}) {
+function EditMembers() {
   const { groupCode } = useParams();
 
   const revisedPremiumPopupUtilityObject = useRevisedPremiumModal();
@@ -641,7 +638,6 @@ function EditMembers({}) {
 export const RevisedPremiumPopup = ({
   revisedPremiumPopupUtilityObject,
   onClose,
-  ...props
 }) => {
   const { colors } = useTheme();
 
@@ -1202,7 +1198,7 @@ function ReviewCartButtonNew({ groupCode, ...props }) {
     const featureOptions = featureOptionsValidValue(cartEntry?.feature_options);
 
     if (is_port && allDataAvailableForPort) {
-      return updateEnquiry(enquiryData).then((data, err) => {
+      return updateEnquiry(enquiryData).then(data => {
         if (data) {
           updateCartMutation({
             discounted_total_premium,
@@ -1343,94 +1339,6 @@ function CartDetailRow({ title, value, titleCss }) {
   );
 }
 
-function AddOnDetailsRow({ addOn }) {
-  const { product, total_premium, members } = addOn;
-  const companies = useSelector(
-    state => state.frontendBoot.frontendData.data.companies,
-  );
-  const { logo } = companies[product?.company?.alias];
-  const totalPremium = amount(total_premium);
-  const { groupCode } = useParams();
-  const { product: cartProduct, updateProductRedux } =
-    useCartProduct(groupCode);
-  const removeAddOn = addOnId => {
-    updateProductRedux({
-      ...cartProduct,
-      addons: cartProduct?.addons?.filter(
-        addon => addon?.product?.id !== addOnId,
-      ),
-    });
-  };
-  const handleRemoveAddOnClick = () => {
-    removeAddOn(product?.id);
-  };
-  const logoTitle = (
-    <div
-      css={`
-        display: flex;
-        align-items: center;
-      `}
-    >
-      <div
-        css={`
-          width: 25px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 25px;
-        `}
-      >
-        <img
-          css={`
-            width: 100%;
-            /* margin-bottom: 5px; */
-          `}
-          src={product?.company?.alias === "care_health" ? care_health : logo}
-          alt={product?.company?.alias}
-        />
-      </div>
-      <span
-        css={`
-          font-size: 11px;
-          font-weight: 400;
-          width: 100%;
-          padding: 0px 5px;
-          display: flex;
-          align-items: center;
-        `}
-      >
-        {`${product?.name} ${
-          members.filter(member => member !== "all").length
-            ? `(${members})`
-            : ""
-        }`}
-      </span>
-    </div>
-  );
-  return (
-    <CartDetailRow
-      title={logoTitle}
-      value={
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-          `}
-        >
-          <span
-            css={`
-              text-align: right;
-            `}
-          >
-            {totalPremium}
-          </span>
-        </div>
-      }
-    />
-  );
-}
-
 export function BackgroundBorderTitle({ title, ...props }) {
   const { colors } = useTheme();
 
@@ -1472,12 +1380,9 @@ function useReviewCartButton({ groupCode }) {
 
   const {
     product,
-    totalPremium,
     updateProduct: addProduct,
     isCartProductLoading,
   } = useCartProduct(groupCode);
-
-  const { sum_insured, total_premium, premium, group } = product;
 
   const urlQueryStrings = new URLSearchParams(window.location.search);
 
@@ -1517,73 +1422,6 @@ function useReviewCartButton({ groupCode }) {
     enquiryId,
     handleReviewPopupClose,
   };
-}
-
-function Discounts({ discounts = [], premium }) {
-  const additionalDiscounts = useSelector(selectAdditionalDiscounts);
-  const findAdditionalDiscount = discountAlias =>
-    additionalDiscounts.find(discount => discount?.alias === discountAlias);
-  return discounts.length > 0 ? (
-    <>
-      <div
-        css={`
-          display: flex;
-          justify-content: space-between;
-          /* padding: 5px 0px; */
-          border-bottom: 1px solid #ddd;
-          flex-direction: column;
-          /* padding-left: 12px; */
-        `}
-      >
-        <div
-          css={`
-            width: 30%;
-            max-width: 80px;
-          `}
-        >
-          <BackgroundBorderTitle title="Discounts" />
-        </div>
-        <div
-          css={`
-            font-size: 11px;
-            color: #555555;
-            /* padding-left: 12px; */
-            margin-top: 7px;
-            width: 100%;
-          `}
-        >
-          {discounts.map(discountAlias => {
-            const discount = findAdditionalDiscount(discountAlias);
-            return (
-              <>
-                <div
-                  css={`
-                    display: flex;
-                    justify-content: space-between;
-                    width: 100%;
-                    margin-bottom: 4px;
-                  `}
-                >
-                  <span>{discount?.name}</span>
-                  <span
-                    css={`
-                      font-weight: 900;
-                      font-size: 11px;
-                      min-width: 100px;
-                      text-align: right;
-                      color: black;
-                    `}
-                  >
-                    - ₹ {(premium / 100) * discount?.percent}
-                  </span>
-                </div>
-              </>
-            );
-          })}
-        </div>
-      </div>
-    </>
-  ) : null;
 }
 
 export function ReviewCartButton() {
@@ -1668,7 +1506,7 @@ function ProceedButton({
 }) {
   const { theme } = useSelector(state => state.frontendBoot);
 
-  const { PrimaryColor, SecondaryColor, PrimaryShade, SecondaryShade } = theme;
+  const { PrimaryColor } = theme;
 
   return (
     <div

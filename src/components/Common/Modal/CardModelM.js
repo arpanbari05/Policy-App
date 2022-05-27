@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Container } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import styled from "styled-components";
 import StyledButtonM from "../Button/StyledButtonM";
 import "styled-components/macro";
@@ -27,7 +27,6 @@ const CardModal = ({
         border: "none",
       }}
       className={`${customClass} showOnMobile hideOnDesktop `}
-      onHide={handleClose}
     >
       <Modal.Header
         closeButton
@@ -102,17 +101,6 @@ const MobileModal = styled(Modal)`
   }
 `;
 
-const ModalSpan = styled.span`
-  & .card-modal {
-    width: 1000px;
-  }
-`;
-const CloseButton = styled.button`
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  border-radius: 50%;
-`;
 const ModalTitle = styled.h5`
   color: #000;
   font-size: 15px;

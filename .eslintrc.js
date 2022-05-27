@@ -30,12 +30,12 @@ module.exports = {
     "react/prop-types": 0,
     "react-hooks/exhaustive-deps": 0,
     "jsx-a11y/no-autofocus": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
     "no-useless-escape": 0,
     "jsx-a11y/no-noninteractive-element-interactions": 0,
     "jsx-a11y/no-noninteractive-element-to-interactive-role": 0,
-    "jsx-a11y/click-events-have-key-events": 0,
-    "jsx-a11y/anchor-is-valid": 0,
     "jsx-a11y/no-static-element-interactions": 0,
+    "no-prototype-builtins": 0,
   },
   settings: {
     react: {

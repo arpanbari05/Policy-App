@@ -2,7 +2,6 @@ import React from "react";
 import "styled-components/macro";
 import "./Checkbox.css";
 
-import { useSelector } from "react-redux";
 import { useTheme } from "../../../../customHooks";
 
 const Checkbox2 = ({ title, onChange, checked, showTitle = true }) => {
@@ -12,7 +11,7 @@ const Checkbox2 = ({ title, onChange, checked, showTitle = true }) => {
 
   return (
     <div
-      class="container d-flex align-items-center"
+      className="container d-flex align-items-center"
       css={`
         position: relative;
         // left: -18px;

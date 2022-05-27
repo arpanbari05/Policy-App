@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { components } from "../components/componentSchema";
 import FormBuilder from "../../../components/FormBuilder/FormBuilder";
 import { Form } from "./../ProposalPage.style";
@@ -6,11 +6,8 @@ import BackBtn from "../components/Buttons/BackBtn";
 import ContinueBtn from "../components/Buttons/ContinueBtn";
 import useProposalSections from "./useProposalSections";
 import { useDispatch, useSelector } from "react-redux";
-
 import "styled-components/macro";
-import BMI from "./components/BMI";
 import { callApi } from "../../../components/FormBuilder/FormBuilder.slice";
-import { setActiveIndex } from "./ProposalSections.slice";
 import { useGetEnquiriesQuery } from "../../../api/api";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
 import { ClickSound } from "../../../utils/helper";
@@ -115,7 +112,7 @@ const ProposerDetails = ({
           />
         </Form>
       </div>
-      <div class="proposal_continue_back_margin container">
+      <div className="proposal_continue_back_margin container">
         <BackBtn
           hide={name === "Proposer Details"}
           onClick={() => {

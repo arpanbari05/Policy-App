@@ -19,7 +19,7 @@ const PlanDetails = ({
   const [activeDelayedTab, setActiveDelayedTab] = useState(1);
 
   const { loading } = useSelector(state => state.seeDetails);
-  const handleActive = (id, selected) => {
+  const handleActive = id => {
     setActiveTab(id);
     setTimeout(() => setActiveDelayedTab(id), 500);
   };
@@ -107,9 +107,9 @@ const PlanDetails = ({
                                     color: #505f79;
                                   `}
                                 >
-                                  To find out more about the company and it's
-                                  products, kindly refer the documents given
-                                  below
+                                  To find out more about the company and
+                                  it&#39;s products, kindly refer the documents
+                                  given below
                                 </div>
                               </div>
                             </Col>
@@ -138,7 +138,6 @@ const PlanDetails = ({
                     </div>
                   </Col>
                   <Col md={6} className="tab-content">
-                    {console.log("FEATURES_LIST", planDetails.featureList)}
                     {planDetails.featureList &&
                       planDetails.featureList.map((data, i) => {
                         return (

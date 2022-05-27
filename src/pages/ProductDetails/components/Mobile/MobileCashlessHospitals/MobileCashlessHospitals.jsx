@@ -1,24 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import "styled-components/macro";
 import styled from "styled-components/macro";
 import SearchBarWithCityDD from "./SearchBarWithCityDD";
 import SpinLoader from "../../../../../components/Common/SpinLoader/SpinLoader";
-import {
-  mobile,
-  small,
-  tablet,
-  tabletAndMobile,
-} from "../../../../../utils/mediaQueries";
+import { mobile, tabletAndMobile } from "../../../../../utils/mediaQueries";
 import { useTheme } from "../../../../../customHooks";
 import NetworkHospitalUrlCard from "../../../../../components/ProductDetails/components/NetworkHospitalUrlCard";
 
 function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
   const [searchText, setSearchText] = useState("");
-
-  const [searchByNameKeys, setSearchByNameKeys] = useState([]);
-
-  const [searchByPincodeKeys, setSearchByPincodeKeys] = useState([]);
 
   const [foundHospital, setFoundHospital] = useState(hospitals.hospitals);
 
@@ -40,8 +30,6 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
       setFoundHospital(hospitals.hospitals);
     }
   }, [searchText]);
-
-  console.log("hospitals", hospitals);
 
   return (
     <div
@@ -84,8 +72,8 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
               >
                 {hospitals.displayHospitals &&
                   hospitals.displayHospitals.map(item =>
-                    item.map((el, index) => (
-                      <tr>
+                    item.map(el => (
+                      <tr key={el.name}>
                         <td
                           style={{
                             padding: "10px",
@@ -308,19 +296,6 @@ function MobileCashlessHospitals({ ActiveMainTab, hospitals }) {
 const Outer = styled.div`
   background-color: ${props => (props.networkUrl ? "transparent" : "#fff")};
   padding-bottom: 40px;
-`;
-const Search = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  border: 1px solid gray;
-  margin: 10px;
-  border-radius: 10px;
-  padding: 10px 5px;
-  margin-top: 20px;
-  flex-wrap: nowrap;
-  @media (max-width: 767px) {
-    padding: 0px 5px !important;
-  }
 `;
 
 const FeatureSection = styled.div`

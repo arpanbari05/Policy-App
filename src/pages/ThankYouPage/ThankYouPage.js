@@ -51,8 +51,6 @@ const ThankYouPage = () => {
     ele.addEventListener("click", () => {
       setIsTransactionClicked(true);
       window.isTransactionClicked = true;
-      // const win = window?.open(settings.account_login_link, "_blank");
-      // win?.focus();
     });
   });
 
@@ -314,6 +312,14 @@ const ThankYouPage = () => {
                             }&city=${currentGroup?.city}`,
                           });
                         }}
+                        onKeyDown={() => {
+                          history.push({
+                            pathname: "/quotes",
+                            search: `enquiryId=${ls.get("enquiryId")}&pincode=${
+                              currentGroup?.pincode
+                            }&city=${currentGroup?.city}`,
+                          });
+                        }}
                       >
                         Back To Quotes
                       </span>
@@ -331,6 +337,14 @@ const ThankYouPage = () => {
                           }
                         `}
                         onClick={() => {
+                          history.push({
+                            pathname: "/proposal",
+                            search: `enquiryId=${ls.get("enquiryId")}&pincode=${
+                              currentGroup?.pincode
+                            }&city=${currentGroup?.city}`,
+                          });
+                        }}
+                        onKeyDown={() => {
                           history.push({
                             pathname: "/proposal",
                             search: `enquiryId=${ls.get("enquiryId")}&pincode=${
@@ -400,8 +414,7 @@ const ThankYouPage = () => {
                   padding: "20px 0px",
                 }}
               >
-                <a
-                  href="#"
+                <span
                   style={{
                     borderRadius: "4px",
                     backgroundColor: "#0a87ff",
@@ -416,9 +429,17 @@ const ThankYouPage = () => {
                       }&city=${currentGroup?.city}`,
                     });
                   }}
+                  onKeyDown={() => {
+                    history.push({
+                      pathname: "/proposal",
+                      search: `enquiryId=${ls.get("enquiryId")}&pincode=${
+                        currentGroup?.pincode
+                      }&city=${currentGroup?.city}`,
+                    });
+                  }}
                 >
                   Try Again
-                </a>
+                </span>
               </div>
 
               <div
@@ -621,16 +642,16 @@ const Disclaimer = ({
           `}
         >
           You can track your policy status on{" "}
-          <a
+          <span
             css={`
               color: ${colors?.primary_color} !important;
               border-color: ${colors?.primary_color} !important;
             `}
-            // href={accountLoginLink}
             onClick={onTransactionClickHandler}
+            onKeyDown={onTransactionClickHandler}
           >
             My Account Page.
-          </a>{" "}
+          </span>{" "}
           at anytime.
         </div>
         <div>
@@ -658,16 +679,16 @@ const Disclaimer = ({
           `}
         >
           Your policy document has been successfully saved in{" "}
-          <a
-            // href={accountLoginLink}
+          <span
             onClick={onTransactionClickHandler}
+            onKeyDown={onTransactionClickHandler}
             css={`
               color: ${colors?.primary_color} !important;
               border-color: ${colors?.primary_color} !important;
             `}
           >
             My Account Page.
-          </a>{" "}
+          </span>{" "}
           You can visit the My Account page to retrieve your policy copy at any
           time.
         </div>
@@ -695,9 +716,9 @@ const Disclaimer = ({
           `}
         >
           You can visit the{" "}
-          <a
-            // href={accountLoginLink}
+          <span
             onClick={onTransactionClickHandler}
+            onKeyDown={onTransactionClickHandler}
             id="transaction_id"
             css={`
               color: ${colors?.primary_color} !important;
@@ -705,7 +726,7 @@ const Disclaimer = ({
             `}
           >
             My Account Page.
-          </a>{" "}
+          </span>{" "}
           to retrieve your policy copy or track your policy status at any time.
         </div>
         <div>
@@ -837,9 +858,9 @@ const MobileBanner = ({
           >
             <p style={{ fontSize: "14px", lineHeight: "1.3" }}>
               Your policy document has been successfully saved in{" "}
-              <a
-                // href={accountLoginLink}
+              <span
                 onClick={onTransactionClickHandler}
+                onKeyDown={onTransactionClickHandler}
                 style={{
                   color: colors?.primary_color,
                   borderBottom: `1px dashed ${colors?.primary_color}`,
@@ -847,7 +868,7 @@ const MobileBanner = ({
                 }}
               >
                 My Account Page.
-              </a>{" "}
+              </span>{" "}
               You can visit the My Account page to retrieve your policy copy at
               any time.
             </p>

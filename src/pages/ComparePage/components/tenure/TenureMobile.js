@@ -3,12 +3,7 @@ import { CircleLoader } from "../../../../components";
 import { useQuotesCompare } from "../../../../customHooks";
 import { FeatureValue } from "../../mobile/components";
 
-const TenureFeatureValueMobile = ({
-  select,
-  quote,
-  groupCode,
-  journeyType,
-}) => {
+const TenureFeatureValueMobile = ({ quote, groupCode, journeyType }) => {
   const { updateCompareQuote } = useQuotesCompare();
 
   const { data, isLoading } = useGetDiscountsQuery({
@@ -38,7 +33,7 @@ const TenureFeatureValueMobile = ({
           onChange={event => handleTenureChange(event.target.value)}
         >
           {data?.data?.map(value => (
-            <option value={value.tenure}>{`${value.tenure} ${
+            <option key={value.tenure} value={value.tenure}>{`${value.tenure} ${
               value.tenure === 1 ? "Year" : "Years"
             }`}</option>
           ))}

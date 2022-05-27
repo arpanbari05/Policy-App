@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Button } from "./index";
 import TextInput from "./TextInput2";
 import { mobile } from "../utils/mediaQueries";
-import { useForm } from "react-hook-form";
 import { Modal } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
@@ -18,11 +17,7 @@ import { useGetEnquiriesQuery } from "../api/api";
 import { useUrlQueries } from "../customHooks/useUrlQuery";
 import validateInput from "../utils/inputPageUtils";
 import { shareViaEmailApi } from "./ShareQuoteModal";
-import {
-  HeadingPrimary,
-  HeadingSecondary,
-  SecondaryFont,
-} from "../styles/typography";
+import { HeadingPrimary, SecondaryFont } from "../styles/typography";
 import { isSSOJourney } from "../utils/helper";
 
 const TalkToUsContent = ({ setSuccess }) => {
@@ -86,7 +81,9 @@ const TalkToUsContent = ({ setSuccess }) => {
   return (
     <Wrapper>
       <Heading>Need Help?</Heading>
-      <Subtitle>Submit your details and we'll reach out supersoon!</Subtitle>
+      <Subtitle>
+        Submit your details and we&#39;ll reach out supersoon!
+      </Subtitle>
       <FormWrapper onSubmit={onCallHandler}>
         <div className="w-100">
           <TextInput
@@ -153,10 +150,7 @@ const TalkToUsContent = ({ setSuccess }) => {
       </div>
       <Divider />
       <Title>
-        Email us at{" "}
-        <a href={`mailto:${email}`}>
-          {email}
-        </a>
+        Email us at <a href={`mailto:${email}`}>{email}</a>
       </Title>
     </Wrapper>
   );

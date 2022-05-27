@@ -236,6 +236,9 @@ function PlanType({
       onClick={() => {
         target.current.click();
       }}
+      onKeyDown={() => {
+        target.current.click();
+      }}
     >
       <label htmlFor={baseplantype.code}>
         <OverlayTrigger

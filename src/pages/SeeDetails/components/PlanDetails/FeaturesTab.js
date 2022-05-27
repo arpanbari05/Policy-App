@@ -1,16 +1,12 @@
-import React, { useState } from "react";
-import { Col, Row, Collapse } from "react-bootstrap";
-import roomRent from "../../../../assets/images/room_r.png";
+import React from "react";
+import { Col, Row } from "react-bootstrap";
 import styled from "styled-components/macro";
 import FeatureDefinition from "./FeatureDefinition";
 import "./FeatureTab.css";
 
 const dataSet = (dataArray, type) => {
   const array = [];
-  let sentences = [];
-  let pargraph = "";
 
-  const length = dataArray?.length;
   if (type === "container") {
     dataArray?.map((data, i) => {
       data.is_visible === 1 &&
@@ -19,9 +15,10 @@ const dataSet = (dataArray, type) => {
             {(data.header === "Permanent Exclusions" ||
               data.header === "Major Exclusions") && (
               <div className="featureExclusion">
-                {data.value.split("\n").map(item => {
+                {data.value.split("\n").map((item, index) => {
                   return (
                     <li
+                      key={index}
                       style={{
                         fontSize: "13px",
                         borderRadius: "3px",

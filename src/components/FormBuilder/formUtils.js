@@ -2,11 +2,9 @@ import { schemaIndex } from "../../pages/ProposalPage/schemaIndex";
 import { validationIndex } from "./formValidations";
 
 const visiblilityManager = (visibleOn, value, member) => {
-  console.log("wvjhbv", visibleOn, value, member);
   let visibility = false;
   let checkKeys = Object.keys(visibleOn);
   checkKeys.forEach(key => {
-    console.log("bkjdgbgd", key, value, visibleOn);
     if (
       typeof visibleOn?.[key] === "string" &&
       visibleOn?.[key].includes(value?.[key])
@@ -19,17 +17,12 @@ const visiblilityManager = (visibleOn, value, member) => {
 };
 
 export const renderField = (item, value, member, callBack = () => {}) => {
-  // console.log("lvlhvcsc", item, value);
-  // conditional rendering of fields other than medical questions uses item.visibleOn
   if (item.visibleOn) {
     let show = visiblilityManager(item.visibleOn, value, member);
-    console.log("dbjdfkb", show);
-
     callBack(show);
     return show;
   }
 
-  // conditional rendering of medical questions uses item.render
   if (item.render) {
     const { when, is } = item.render;
     if (item.render === "noDependency") return true;
@@ -39,7 +32,6 @@ export const renderField = (item, value, member, callBack = () => {}) => {
         value[item.parent].members instanceof Object &&
         value[item.parent].members[member]
       ) {
-        console.log("weifhgif", value);
         if (when !== "") {
           return (
             value[item.parent].members[member] &&
@@ -100,7 +92,7 @@ export const renderField = (item, value, member, callBack = () => {}) => {
   } else return true;
 };
 export const generateRange = (param, values) => {
-  if (!param instanceof Array && values?.RelationToProposerCode) {
+  if (!(param instanceof Array) && values?.RelationToProposerCode) {
     const [min, max, text] =
       param[values?.RelationToProposerCode.toLowerCase()];
     let object = {};
@@ -172,44 +164,6 @@ const checkValue = (str, max) => {
   return str;
 };
 export const checkAllow = (type, event, eventType) => {
-  // console.log("sgbsjkk", event);
-
-  // if (type === "address" && eventType === "down") {
-  //   let key = event.keyCode;
-  //   if (
-  //     (key >= 65 && key <= 90) ||
-  //     (key <= 48 && key >= 57) ||
-  //     key === 50 ||
-  //     key === 191 ||
-  //     key === 190 ||
-  //     key === 188 ||
-  //     key === 186 ||
-  //     key === 222 ||
-  //     key === 189
-  //   ) {
-  //   } else {
-  //     event.preventDefault();
-  //   }
-  // }
-  // if (type === "address" && eventType === "down") {
-  //   let key = event.keyCode;
-
-  //   if (
-  //     (key >= 65 && key <= 90) ||
-  //     key === 8 ||
-  //     key === 9 ||
-  //     key === 20 ||
-  //     key === 16 ||
-  //     key === 13 ||
-  //     key === 37 ||
-  //     key === 39 ||
-  //     key === 46 ||
-  //     key === 32
-  //   ) {
-  //   } else {
-  //     event.preventDefault();
-  //   }
-  // }
   if (type === "onlyAlphabets" && eventType === "down") {
     let key = event.keyCode;
 
@@ -226,6 +180,7 @@ export const checkAllow = (type, event, eventType) => {
       key === 190 ||
       key === 32
     ) {
+      // something has to come
     } else {
       event.preventDefault();
     }
@@ -247,6 +202,7 @@ export const checkAllow = (type, event, eventType) => {
       !(charCode > 31 && (charCode < 48 || charCode > 57)) ||
       charCode === 46
     ) {
+      // something has to come
     } else event.preventDefault();
   }
   if (type === "dob" && eventType === "input") {
@@ -265,11 +221,9 @@ export const checkAllow = (type, event, eventType) => {
   }
   if (type === "month" && event.which === 8) {
     var val = event.target.value;
-    console.log(val);
+
     if (val.length == 3 || val.length == 6) {
       event.target.value = val.slice(0, val.length - 1);
-      console.log(val);
-      // this.setState({value: val})
     }
   }
   if (type === "month" && eventType === "input") {
@@ -297,5 +251,4 @@ export const ValueExtractor = (schema, values, member) => {
     let childKey = Object.keys(schema[parentKey])[0];
     return schema[parentKey][childKey][values[parentKey][member][childKey]];
   }
-  console.log("vbjhvdfvbfs", schema, values);
 };

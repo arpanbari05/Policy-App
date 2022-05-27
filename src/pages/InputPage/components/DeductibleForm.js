@@ -111,8 +111,8 @@ function DeductibleForm({ posContent, ...props }) {
         `}
       >
         Your minimum deductible amount should be equal to your existing Base
-        Health plan's cover amount. Top Up will provide the coverage once the
-        existing cover amount is exhausted.
+        Health plan&#39;s cover amount. Top Up will provide the coverage once
+        the existing cover amount is exhausted.
       </p>
       <div className="mt-3">
         <InputFormCta
