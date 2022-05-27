@@ -294,8 +294,6 @@ export function useFrontendBoot(skipEnquiry = true) {
       enquiryData?.data?.type === "renew" ? "renewal" : enquiryData?.data?.type;
   }
 
-  console.log("data", data);
-
   return {
     query,
     journeyType,

@@ -38,7 +38,7 @@ import { ProductCard, ShowDifference } from "./components";
 import { AddPlanCard, OptionalCoversValue } from "./mobile/components";
 import AddPlansModal from "./components/AddPlansModal";
 import { useState } from "react";
-
+import useDownloadPDF from "../../customHooks/useDownloadPDF";
 import TenureFeatureValue from "./components/tenure/Tenure";
 import useComparePage from "./useComparePage";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
@@ -66,6 +66,7 @@ function ComparePage() {
   const showDifferenceToggle = useToggle(false);
 
   const compareQuotes = getCompareQuotes(groupCode)?.quotes;
+  console.log("compareQuotes:", compareQuotes);
 
   if (isLoading || isUninitialized || !compareQuotes)
     return <FullScreenLoader />;
@@ -101,7 +102,7 @@ function ComparePage() {
               onChange={showDifferenceToggle.toggle}
               checked={showDifferenceToggle.isOn}
             />
-            <DownloadButton />
+            <DownloadButton quotes={compareQuotes} />
           </div>
           <CompareProductCards compareQuotes={compareQuotes} />
         </CompareHeaderWrap>
@@ -460,8 +461,12 @@ function CompareProductCards({ compareQuotes = [], ...props }) {
 
 function DownloadButton({ ...props }) {
   const { colors } = useTheme();
+  const { pdfFetchLoading, downloadComparePDF } = useDownloadPDF({
+    quotes: props.quotes,
+    logo: [],
+  });
   const handleClick = () => {
-    downloadComparePage();
+    downloadComparePDF();
   };
 
   return (
@@ -492,7 +497,7 @@ function DownloadButton({ ...props }) {
       >
         <BiPrinter />
       </div>
-      Download
+      {pdfFetchLoading ? <span>...</span> : <span>Download</span>}
     </button>
   );
 }
