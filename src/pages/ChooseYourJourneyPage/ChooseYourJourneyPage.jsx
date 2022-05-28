@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import styled from "styled-components/macro";
-import { useTheme, useFrontendBoot } from "../../customHooks/index";
-import { Page } from "../../components";
-import { renderDisclaimer } from "../../utils/helper";
-import Footer from "../../components/Common/Footer/SriyahFooter";
-import Card from "../../components/Card";
-import { bg, checkRB } from "../../assets/images";
 import { Spinner } from "react-bootstrap";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import styled from "styled-components/macro";
+import { bg } from "../../assets/images";
+import { Page } from "../../components";
+import Card from "../../components/Card";
+import Footer from "../../components/Common/Footer/SriyahFooter";
+import { useFrontendBoot, useTheme } from "../../customHooks/index";
+import { renderDisclaimer } from "../../utils/helper";
 import JourneyCard from "./components/JourneyCard";
 
 const journeyArray = [
@@ -260,9 +260,7 @@ function HeaderCard({ content }) {
         </div>
 
         <>
-          <h1>
-            Some long Dummy data.
-          </h1>
+          <h1>Some long Dummy data.</h1>
           <PlanList />
         </>
       </PlanCard>

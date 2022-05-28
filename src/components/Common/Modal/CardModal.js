@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Container } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
 import styled from "styled-components";
 import "styled-components/macro";
@@ -161,17 +161,6 @@ const CardModal = ({
 
 export default CardModal;
 
-const ModalSpan = styled.span`
-  & .card-modal {
-    width: 1000px;
-  }
-`;
-const CloseButton = styled.button`
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  border-radius: 50%;
-`;
 const ModalTitle = styled.h5`
   // font-family: "PFEncoreSansProblck";
   margin: 0 17px;
@@ -179,12 +168,12 @@ const ModalTitle = styled.h5`
   margin-bottom: 0;
   line-height: 1.5;
   color: #000;
-  font-size: ${({ usedAsReviewCartPopup }) =>
-    usedAsReviewCartPopup ? "18px" : "20px"}
-  padding : ${({ usedAsReviewCartPopup }) => usedAsReviewCartPopup && "1rem"}
   color: #304261;
   font-weight: 900;
   width: 80%;
+  font-size: ${({ usedAsReviewCartPopup }) =>
+    usedAsReviewCartPopup ? "18px" : "20px"};
+  padding: ${({ usedAsReviewCartPopup }) => usedAsReviewCartPopup && "1rem"};
   @media (max-width: 767px) {
     font-size: 15px;
     line-height: 1.3;
@@ -193,14 +182,4 @@ const ModalTitle = styled.h5`
   @media (max-width: 400px) {
     font-size: 13px;
   }
-  /* &:after {
-    content: "";
-    height: 37px;
-    width: 7px;
-    position: absolute;
-    left: 0px;
-    top: 13px;
-    background-color: #fecc28;
-    border-radius: 50px;
-  } */
 `;

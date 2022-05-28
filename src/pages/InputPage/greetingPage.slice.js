@@ -7,22 +7,11 @@ import {
   setShouldFetchQuotes,
   updateFetchedFilters,
 } from "../quotePage/quote.slice";
-import { updateGroups } from "../quotePage/serviceApi";
-import { setPlanType } from "../quotePage/quote.slice";
-
-// import {
-//   saveFilteredQuotes,
-//   setFilters,
-//   setSelectedGroup,
-//   updateAllFilters,
-//   updateFetchedFilters,
-// } from "../../QuotesPage/quotePage.slice";
-
 import {
-  createUser,
-  updateUser,
   checkpinCode,
+  createUser,
   getProposerData,
+  updateUser,
 } from "./ServiceApi/serviceApi";
 
 // import { getCityForPincode } from "../../../FrontendBoot/serviceApi/frontendBoot";
@@ -51,7 +40,7 @@ const greeting = createSlice({
     setTraceId: (state, action) => {
       state.trace_id = action.payload;
     },
-    catchEnquiry: (state, action) => {
+    catchEnquiry: state => {
       state.enquiryHasFailed = true;
     },
 
@@ -147,20 +136,6 @@ export const saveForm1UserDetails = (
             is_pincode_search,
           }));
 
-        const { data } = await updateGroups({
-          groupCode: memberGroup,
-          data: {
-            pincode: pinCode,
-          },
-        });
-        console.log("wwww", data);
-        const {
-          data: { enquiry_id },
-          access_token,
-        } = data;
-
-        // ls.set("token", access_token);
-        // ls.set("enquiryId", enquiry_id);
         dispatch(
           createUserData({
             pincode: pinCode,
@@ -227,53 +202,13 @@ export const saveForm2UserDetails = (userDetails, handleChange) => {
           ...modUserDetails,
         }),
       );
-      // dispatch(setMemberGroups(newMemberGroups));
-      // dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
-      const newMemberGroups = data.data.groups.reduce(
-        (groups, member) => ({
-          ...groups,
-          [member.id]: member.members,
-        }),
-        {},
-      );
-      // pushToQuotes(Object.keys(newMemberGroups)[0]);
+
       handleChange(2);
-      console.log("dgasgasd", 221);
-      // dispatch(saveFilteredQuotes([]));
-      // dispatch(createUserData(modUserDetails));
     } catch (err) {
       //alert(err);
     }
   };
 };
-
-// export const saveForm2UserDetails = (data, handleChange) => {
-//   const { pinCode, is_pincode_search } = data;
-
-//   return async dispatch => {
-//     try {
-//       const data = await updateUser({
-//         pincode: pinCode,
-//         is_pincode_search: is_pincode_search,
-//       });
-
-//       if (data?.input?.pincode !== null) {
-//         dispatch(
-//           createUserData({
-//             pincode: pinCode,
-//             is_pincode_search: is_pincode_search,
-//           }),
-//         );
-//         setTimeout(() => {
-//           handleChange("form3");
-//           dispatch(setIsDisabled(false));
-//         }, 500);
-//       }
-//     } catch (err) {
-//       //alert(err);
-//     }
-//   };
-// };
 
 export const validChildAgeCodePicker = age => {
   let strAge = age.toString();
@@ -372,7 +307,6 @@ export const saveForm3UserDetails = (
               type: member.type.slice(0, 8).concat(DCount++),
             };
           if (member.type.includes("son")) {
-            console.log("ijgbifbv", member);
             return {
               ...member,
               age:
@@ -388,8 +322,6 @@ export const saveForm3UserDetails = (
       });
 
       if (response?.data) {
-        console.log("ovdnvojd", response.data.data.input.members);
-
         dispatch(
           createUserData({
             members: response.data.data.input.members.map(member => {
@@ -432,17 +364,7 @@ export const saveForm3UserDetails = (
       if (data && !response.errors && data.length === 1) {
         handleChange(4.1);
       }
-      // dispatch(createUserData({ member: data }));
-      // const newMemberGroups = response.data.data.members.reduce(
-      //   (groups, member) => ({
-      //     ...groups,
-      //     [member.group]: groups[member.group]
-      //       ? [...groups[member.group], member.type]
-      //       : [member.type],
-      //   }),
-      //   {},
-      // );
-      console.log("response data", response.data.data.groups);
+
       const newMemberGroups = response.data.data.groups.reduce(
         (groups, member) => ({
           ...groups,
@@ -463,15 +385,7 @@ export const saveForm3UserDetails = (
           }),
         );
       }
-      const members = Object.keys(newMemberGroups || {});
-      console.log(
-        "Members form save user form 3 data",
-        "newMemberGroups",
-        "selected group",
-        members,
-        newMemberGroups,
-        Object.keys(newMemberGroups)[0],
-      );
+
       dispatch(setMemberGroups(newMemberGroups));
 
       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
@@ -521,7 +435,7 @@ export const saveForm5UserDetails = (
   pushToQuotes,
   isSuperTopUpJourney,
 ) => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     try {
       const response = await updateUser({
         existing_diseases: [...data],
@@ -571,7 +485,6 @@ export const SaveForm7UserDeatils = (dataFromForm, pushToQuotes) => {
         }),
         {},
       );
-      console.log("The newMemberGroups", newMemberGroups);
       dispatch(setMemberGroups(newMemberGroups));
       dispatch(setSelectedGroup(Object.keys(newMemberGroups)[0]));
       pushToQuotes(Object.keys(newMemberGroups)[0]);
@@ -589,7 +502,6 @@ export const getRegion = data => {
       dispatch(requestRegionData());
       const response = await checkpinCode(data);
 
-      console.log("The response", response);
       if (!response?.message) {
         dispatch(createRegionData(response?.data));
       } else {

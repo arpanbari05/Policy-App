@@ -1,22 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useTheme } from "../../../customHooks";
-import styled from "styled-components";
-import Select from "react-select";
+import React, { useRef, useState } from "react";
+import { IoShareSocialSharp } from "react-icons/io5";
+import { RiShareForwardFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
+import styled from "styled-components";
+import { useTheme } from "../../../customHooks";
+import useOutsiteClick from "../../../customHooks/useOutsideClick";
 import {
   setShareType,
   setShowSharePopup,
 } from "../../../pages/quotePage/quote.slice";
-import { RiShareForwardFill } from "react-icons/ri";
-import useOutsiteClick from "../../../customHooks/useOutsideClick";
-import { IoShareSocialSharp } from "react-icons/io5";
 import { ClickSound } from "../../../utils/helper";
 
 const SHARE_OPTIONS = [
-  // {
-  //   value: "share",
-  //   label: "Share quotes",
-  // },
   {
     value: "quotation_list",
     label: "Share all the quotes",

@@ -1,48 +1,47 @@
-import styled from "styled-components/macro";
-import "styled-components/macro";
-import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+import _ from "lodash";
 import { useState } from "react";
+import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+import { FaPen } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import styled from "styled-components/macro";
+import { Button, CircleLoader, MembersList } from "../../../../../components";
+import SimpleCheckBox from "../../../../../components/Common/Checkbox/SimpleCheckBox";
 import {
-  amount,
-  featureOptionsValidValue,
-  figureToWords,
-  getTotalPremiumWithDiscount,
-} from "../../../../../utils/helper";
+  MemberOptions,
+  useMembersForm,
+} from "../../../../../components/MemberOptions";
 import {
   useAdditionalDiscount,
   useCart,
   useFrontendBoot,
   useMembers,
+  usePortabilityJourneyConfig,
+  useRenewalsConfig,
   useRevisedPremiumModal,
   useRider,
   useRiders,
   useTenureDiscount,
   useTheme,
   useToggle,
+  useUpdateEnquiry,
   useUpdateGroupMembers,
   useUrlEnquiry,
-  useRenewalsConfig,
-  usePortabilityJourneyConfig,
-  useUpdateEnquiry,
 } from "../../../../../customHooks";
-import { Button, CircleLoader, MembersList } from "../../../../../components";
-import { mobile, small } from "../../../../../utils/mediaQueries";
-import { FaPen } from "react-icons/fa";
-import { EditMembersModal } from "../../../../quotePage/components/filters/EditMemberFilter";
-import { ErrorMessage } from "../../../../InputPage/components/FormComponents";
-import { useHistory, useParams } from "react-router-dom";
 import useUrlQuery from "../../../../../customHooks/useUrlQuery";
-import ReviewCartPopup from "../../ReviewCardPopup";
-import _ from "lodash";
-import { RevisedPremiumPopup } from "../../ReviewCart";
-import { useDispatch } from "react-redux";
 import {
-  MemberOptions,
-  useMembersForm,
-} from "../../../../../components/MemberOptions";
-import { setShowEditMembers } from "../../../../quotePage/quote.slice";
-import SimpleCheckBox from "../../../../../components/Common/Checkbox/SimpleCheckBox";
+  amount,
+  featureOptionsValidValue,
+  figureToWords,
+  getTotalPremiumWithDiscount,
+} from "../../../../../utils/helper";
+import { mobile, small } from "../../../../../utils/mediaQueries";
+import { ErrorMessage } from "../../../../InputPage/components/FormComponents";
 import { PortDatePicker } from "../../../../InputPage/components/PortabilityForm";
+import { EditMembersModal } from "../../../../quotePage/components/filters/EditMemberFilter";
+import { setShowEditMembers } from "../../../../quotePage/quote.slice";
+import ReviewCartPopup from "../../ReviewCardPopup";
+import { RevisedPremiumPopup } from "../../ReviewCart";
 
 const plantypes = {
   M: "Multi Individual",
@@ -64,7 +63,7 @@ const singlePay = id => {
   document.body.removeChild(form);
 };
 
-const CartMobile = ({ groupCode, ...props }) => {
+const CartMobile = ({ groupCode }) => {
   const [toggleCard, setToggleCard] = useState(false);
 
   const { colors } = useTheme();
@@ -285,7 +284,7 @@ function ReviewCartButtonMobileNew({ groupCode, ...props }) {
     const featureOptions = featureOptionsValidValue(cartEntry?.feature_options);
 
     if (is_port && allDataAvailableForPort) {
-      return updateEnquiry(enquiryData).then((data, err) => {
+      return updateEnquiry(enquiryData).then(data => {
         if (data) {
           updateCartMutation({
             discounted_total_premium,
@@ -439,7 +438,7 @@ const CartSectionOuter = styled.div`
   padding: 0px 10px 10px 10px;
 `;
 
-const PortPlanMobile = ({ groupCode, ...props }) => {
+const PortPlanMobile = ({ groupCode }) => {
   const { colors } = useTheme();
 
   const {
@@ -522,7 +521,7 @@ const MemberAndEdit = ({ groupCode, ...props }) => {
   );
 };
 
-function EditMembersButton({ groupCode, ...props }) {
+function EditMembersButton({ ...props }) {
   const { colors } = useTheme();
 
   const dispatch = useDispatch();
@@ -568,7 +567,7 @@ function EditMembers() {
 
   const {
     updateGroupMembers,
-    query: { isLoading, error, isError, data },
+    query: { isLoading, error, isError },
   } = useUpdateGroupMembers(groupCode);
 
   const handleSubmit = () => {
@@ -700,7 +699,7 @@ const TitleValueRenderer = ({ title, value }) => {
   );
 };
 
-const Discounts = ({ groupCode, ...props }) => {
+const Discounts = ({ groupCode }) => {
   const { colors } = useTheme();
 
   const { getSelectedAdditionalDiscounts } = useAdditionalDiscount(groupCode);
@@ -748,7 +747,7 @@ function DiscountDetails({ additionalDiscount, groupCode, ...props }) {
   );
 }
 
-const Riders = ({ groupCode, ...props }) => {
+const Riders = ({ groupCode }) => {
   const { getSelectedRiders } = useRider(groupCode);
 
   const riders = getSelectedRiders();

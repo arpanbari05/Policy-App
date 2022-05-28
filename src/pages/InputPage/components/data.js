@@ -1,7 +1,6 @@
+import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
 import Checkbox from "../../../components/Checkbox";
 import RoundDD from "../../../components/RoundDD";
-import StyledComponent from "styled-components/macro";
-import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
 
 export const age = [];
 for (let i = 0; i <= 10; i++) {
@@ -9,7 +8,6 @@ for (let i = 0; i <= 10; i++) {
 }
 
 export const getAge = (min, max) => {
-  console.log(min, max, "+++");
   const age = [];
   const checkMin = Number(min) >= 1 ? min : `${Number(min?.split(".")[0]) + 1}`;
   const checkMinMonths = Number(min) < 1 && min?.split(".")[1];
@@ -42,7 +40,6 @@ export const dataset = (
   const age = [{ id: -1, title: "Select Age" }, ...list];
   let removeChild = false;
   let count = 1;
-  console.log("hadgs0", title);
   if (title === "Son" || title === "Daughter") {
     insurerCBXArray.forEach(element => {
       if (
@@ -62,7 +59,6 @@ export const dataset = (
       }
     });
   }
-  console.log("hadgs", title);
 
   return (
     <>

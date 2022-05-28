@@ -1,12 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getFrontendData } from "../serviceApi/frontendBoot";
-//import { setFilters } from "../../modules/QuotesPage/quotePage.slice";
-import { theme } from ".././../assets/global";
-import SecureLS from "secure-ls";
-import axios from "axios";
-import { setFilters } from "../../pages/quotePage/quote.slice";
-
-const ls = new SecureLS();
 
 const frontEndBoot = createSlice({
   name: "frontendBoot",
@@ -25,7 +18,7 @@ const frontEndBoot = createSlice({
     error: false,
   },
   reducers: {
-    requestFrontendData: (state, action) => {
+    requestFrontendData: state => {
       state.loading = true;
       state.error = false;
       // return { loading: true, frontendData: [], error: false };
@@ -62,7 +55,6 @@ export const fetchFrontendData = (onFetch = () => {}) => {
     try {
       dispatch(requestFrontendData());
       const data = await getFrontendData();
-     
 
       dispatch(saveFrontendData(data));
 

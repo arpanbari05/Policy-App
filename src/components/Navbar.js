@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import Card from "./Card";
-import "styled-components/macro";
-import { useLocation, useParams, useRouteMatch } from "react-router-dom";
-import ThemeModal from "./ThemeModal";
-import { useGetEnquiriesQuery } from "../api/api";
-import { useFrontendBoot, useMembers, useTheme } from "../customHooks";
+import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { FaRegCopy } from "react-icons/fa";
+import { useLocation, useParams, useRouteMatch } from "react-router-dom";
+import "styled-components/macro";
 import { CircleLoader } from ".";
+import { useGetEnquiriesQuery } from "../api/api";
 import { images } from "../assets/logos/logo";
+import { useFrontendBoot, useMembers, useTheme } from "../customHooks";
 import { useUrlQueries } from "../customHooks/useUrlQuery";
-import { allowOnWebsites, isThemeApp } from "../utils/helper";
-import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 import PincPosLogout from "../pos/Pinc/PincPosLogout";
 import KeyVerificationModal from "../pos/RenewBuy/KeyVerificationModal";
+import { allowOnWebsites } from "../utils/helper";
+import Card from "./Card";
+import ThemeModal from "./ThemeModal";
 
 function LogoLink() {
   const {

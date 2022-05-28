@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { some } from "lodash";
+import { useEffect, useState } from "react";
 import { Modal, Tab, Tabs } from "react-bootstrap";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components/macro";
 import { Button, useGotoProductDetailsPage } from "..";
-import { tabletAndMobile } from "../../utils/mediaQueries";
-import "styled-components/macro";
 import {
   useGetAboutCompanyQuery,
   useGetClaimProcessQuery,
@@ -12,8 +13,8 @@ import {
   useGetProductBrochureQuery,
   useGetProductFeaturesQuery,
 } from "../../api/api";
+import { CircleLoader } from "../../components/index";
 import {
-  useClaimBanner,
   useCompanies,
   useFrontendBoot,
   useGetSingleICQuote,
@@ -21,9 +22,15 @@ import {
   useTheme,
   useToggle,
 } from "../../customHooks";
+import { Riders } from "../../pages/ProductDetails/components/CustomizeYourPlan";
+import SearchBarWithCityDD from "../../pages/ProductDetails/components/Mobile/MobileCashlessHospitals/SearchBarWithCityDD";
+import ErrorPopup from "../../pages/ProposalPage/ProposalSections/components/ErrorPopup";
+import { QuoteCardSelect } from "../../pages/quotePage/components/QuoteCards";
+import { setPosPopup } from "../../pages/quotePage/quote.slice";
+import AboutCompany from "../../pages/SeeDetails/DataSet/AboutCompany";
 import ClaimProcess from "../../pages/SeeDetails/DataSet/ClaimProcess";
+import PlanDetails from "../../pages/SeeDetails/DataSet/PlanDetails";
 import {
-  amount,
   calculateTotalPremium,
   figureToWords,
   getDisplayPremium,
@@ -31,32 +38,21 @@ import {
   isSSOJourney,
   numberToDigitWord,
 } from "../../utils/helper";
-import CardSkeletonLoader from "../Common/card-skeleton-loader/CardSkeletonLoader";
-import { some } from "lodash";
-import AboutCompany from "../../pages/SeeDetails/DataSet/AboutCompany";
-import PlanDetails from "../../pages/SeeDetails/DataSet/PlanDetails";
-import { Riders } from "../../pages/ProductDetails/components/CustomizeYourPlan";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { tabletAndMobile } from "../../utils/mediaQueries";
 import CartSummaryModal from "../CartSummaryModal";
+import CardSkeletonLoader from "../Common/card-skeleton-loader/CardSkeletonLoader";
+import NetworkHospitalUrlCard from "./components/NetworkHospitalUrlCard";
 import {
-  MobileProductHeader,
-  MobileProductDetailsTabs,
   MobileProductDetailsFooter,
-  MobileRenderPlanDetails,
-  MobileSeeDetailsTop,
-  MobileRidersSection,
-  MobileRenderClaimProcess,
+  MobileProductDetailsTabs,
+  MobileProductHeader,
   MobileRenderAboutCompany,
   MobileRenderCashlessHospitals,
+  MobileRenderClaimProcess,
+  MobileRenderPlanDetails,
+  MobileRidersSection,
+  MobileSeeDetailsTop,
 } from "./Mobile/MobileModalComponents";
-import SearchBarWithCityDD from "../../pages/ProductDetails/components/Mobile/MobileCashlessHospitals/SearchBarWithCityDD";
-import { QuoteCardSelect } from "../../pages/quotePage/components/QuoteCards";
-import { CircleLoader } from "../../components/index";
-import { useSelector, useDispatch } from "react-redux";
-import { setPosPopup } from "../../pages/quotePage/quote.slice";
-import ErrorPopup from "../../pages/ProposalPage/ProposalSections/components/ErrorPopup";
-import NetworkHospitalUrlCard from "./components/NetworkHospitalUrlCard";
 
 function useRidersSlot() {
   const [selectedRiders, setSelectedRiders] = useState([]);
@@ -339,7 +335,6 @@ function RenderPlanDetails({ quote, ...props }) {
   const policy_wording_url = (productBrochureQuery.data || [])[0]
     ?.policy_wording_url;
 
-  console.log("PlanDetailsFrom", planDetails);
   return (
     <PlanDetails
       ActiveMainTab
@@ -351,7 +346,7 @@ function RenderPlanDetails({ quote, ...props }) {
   );
 }
 
-function RenderClaimProcess({ quote, ...props }) {
+function RenderClaimProcess({ quote }) {
   const {
     product: { company, id },
   } = quote;
@@ -383,7 +378,7 @@ function RenderClaimProcess({ quote, ...props }) {
   );
 }
 
-function RenderAboutCompany({ quote, ...props }) {
+function RenderAboutCompany({ quote }) {
   const {
     product: { company },
   } = quote;
@@ -580,7 +575,7 @@ export function getSumInsuredOptions(arr = []) {
 function ProductHeader({
   quote,
   selectedRiders = [],
-  currSumInsured,
+
   setCurSumInsured,
   onClose,
   isLoading: isQuoteLoading,

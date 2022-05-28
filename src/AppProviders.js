@@ -1,23 +1,21 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import { some } from "lodash";
 import React, { useEffect } from "react";
-import { store } from "./app/store";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { BrowserRouter, useRouteMatch } from "react-router-dom";
+import "styled-components/macro";
 import {
-  useGetFrontendBootQuery,
   useGetCartQuery,
+  useGetEnquiriesQuery,
+  useGetFrontendBootQuery,
   useGetPoliciesQuery,
   useGetShortlistedQuotesQuery,
 } from "./api/api";
-import { FullScreenLoader } from "./components";
-import { useGetEnquiriesQuery } from "./api/api";
-import { LoadEnquiries } from "./components";
-import { Page } from "./components/index";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./app.css";
-import { some } from "lodash";
-import "styled-components/macro";
+import { store } from "./app/store";
+import { FullScreenLoader, LoadEnquiries } from "./components";
+import { Page } from "./components/index";
 import { useUrlQueries } from "./customHooks/useUrlQuery";
-import { useDispatch } from "react-redux";
 import { replaceShortlistedQuote } from "./pages/quotePage/quote.slice";
 import { allowOnSpecificPages } from "./utils/helper";
 

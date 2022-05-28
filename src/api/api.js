@@ -429,9 +429,7 @@ export const api = createApi({
         method: "POST",
         body,
       }),
-      onQueryStarted: async (_data, { dispatch, queryFulfilled }) => {
-        const { data } = await queryFulfilled;
-
+      onQueryStarted: async () => {
         // dispatch(
         //   api.util.updateQueryData("getEnquiries", undefined, draft => {
         //     if (draft) Object.assign(draft, data);

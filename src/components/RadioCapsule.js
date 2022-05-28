@@ -1,17 +1,8 @@
 import React from "react";
 import styled from "styled-components/macro";
-import { useSelector } from "react-redux";
 import { useTheme } from "../customHooks";
 
-const RadioCapsule = ({
-  label,
-  checked,
-  value,
-  onChange,
-  onClick,
-  styledCss,
-  id,
-}) => {
+const RadioCapsule = ({ label, checked, value, onClick, styledCss, id }) => {
   const { colors } = useTheme();
 
   const { primary_color, secondary_shade } = colors;

@@ -1,11 +1,6 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { updateQuotesForCompare } from "../quotePage/quote.slice";
 import { getFeaturesApi, getRidersApi } from "../quotePage/serviceApi";
-
-// import {
-//   getFeaturesApi,
-//   getRidersApi,
-// } from "../quotePage/ServiceApi/serviceApi";
 import { fetchComparison, sendEmail, updateComparison } from "./serviceApi";
 
 const comparePageSlice = createSlice({
@@ -60,7 +55,7 @@ const comparePageSlice = createSlice({
           `${data.data.product.id}${data.data.sum_insured}` !== action.payload,
       );
     },
-    resetFeature(state, action) {
+    resetFeature(state) {
       state.quotes = [];
     },
     clearLoading(state) {
