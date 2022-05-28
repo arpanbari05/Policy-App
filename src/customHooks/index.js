@@ -2051,6 +2051,10 @@ export function useCompareFeature(compareQuote) {
 
   let { data } = query;
 
+  if (compareQuote?.product?.id && data) {
+    sessionStorage.setItem(compareQuote?.product?.id, JSON.stringify(data));
+  }
+
   const { journeyType } = useFrontendBoot();
 
   function getFeature({ sectionTitle, featureTitle }) {
