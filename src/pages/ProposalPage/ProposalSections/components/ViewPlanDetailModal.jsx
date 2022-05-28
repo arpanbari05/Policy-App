@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { Modal, Container } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import styled from "styled-components";
 import "styled-components/macro";
 
-function ViewPlanDetailModal({ title, show, content, handleClose, revised }) {
+function ViewPlanDetailModal({ title, show, content, handleClose }) {
   return (
     <>
       <Modal

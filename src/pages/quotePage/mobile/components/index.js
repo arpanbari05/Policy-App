@@ -1,19 +1,18 @@
-import { useTheme, useToggle } from "../../../../customHooks";
+import React from "react";
+import { BsPeopleFill } from "react-icons/bs";
 import {
   RiChatSmile3Line,
   RiFilter2Line,
   RiShareLine,
   RiSortAsc,
 } from "react-icons/ri";
-import { BsPeopleFill } from "react-icons/bs";
-import { EditMembers } from "../../components/filters/EditMemberFilter";
-import React from "react";
-import "styled-components/macro";
-import { FilterModal } from "./Filters";
-import Talktouspopup from "../../../../components/TalkToUs";
-import ShareQuoteModal from "../../../../components/ShareQuoteModal";
-import { setEditStep, setShowEditMembers } from "../../quote.slice";
 import { useDispatch } from "react-redux";
+import "styled-components/macro";
+import Talktouspopup from "../../../../components/TalkToUs";
+import { useTheme, useToggle } from "../../../../customHooks";
+import { EditMembers } from "../../components/filters/EditMemberFilter";
+import { setEditStep, setShowEditMembers } from "../../quote.slice";
+import { FilterModal } from "./Filters";
 import ShareTypeModal from "./ShareType";
 
 export function BottomNavigation({ sortBy = <></>, ...props }) {
@@ -64,7 +63,7 @@ export function BottomNavigation({ sortBy = <></>, ...props }) {
   );
 }
 
-export function NavItem({ icon: Icon = <></>, children, onClick, ...props }) {
+export function NavItem({ icon: Icon = <></>, children, onClick }) {
   const { colors } = useTheme();
   return (
     <button

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function useAppropriateOptions({
   values,
@@ -9,8 +9,8 @@ function useAppropriateOptions({
   name,
   directUpdateValue,
   value,
-  fill,
-  deleteValue
+
+  deleteValue,
 }) {
   const [selectOption, setSelectOption] = useState(asyncOptions || options);
 
@@ -48,8 +48,11 @@ function useAppropriateOptions({
   }, [values]);
 
   useEffect(() => {
-    if (Object.keys(selectOption).length === 1 && !value && !Array.isArray(selectOption)) {
-      
+    if (
+      Object.keys(selectOption).length === 1 &&
+      !value &&
+      !Array.isArray(selectOption)
+    ) {
       directUpdateValue(name, Object.keys(selectOption)[0]);
     }
   }, [selectOption]);
@@ -57,23 +60,24 @@ function useAppropriateOptions({
   useEffect(() => {
     if (asyncOptions) {
       setSelectOption(asyncOptions);
-      if(value && !asyncOptions[value]){
+      if (value && !asyncOptions[value]) {
         deleteValue();
       }
     } else {
       if (allValues["Proposer Details"] && name === "nominee_relation") {
         if (allValues["Proposer Details"].gender === "M") {
-          let { husband, ...validOptions } = options;
+          let { ...validOptions } = options;
           setSelectOption(validOptions);
         } else if (allValues["Proposer Details"].gender === "F") {
-          const { wife, ...validOptions } = options;
+          const { ...validOptions } = options;
           setSelectOption(validOptions);
         }
         if (
           allValues["Proposer Details"].marital_status &&
-          allValues["Proposer Details"].marital_status.toLowerCase() === "single"
+          allValues["Proposer Details"].marital_status.toLowerCase() ===
+            "single"
         ) {
-          const { wife, husband, spouse,brother_in_law,father_in_law, mother_in_law, ...validOptions } = options;
+          const { ...validOptions } = options;
           setSelectOption(validOptions);
         }
       }

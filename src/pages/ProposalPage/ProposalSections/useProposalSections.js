@@ -1,33 +1,23 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useGetEnquiriesQuery } from "../../../api/api";
 import {
-  renderField,
   performValidations,
-  getMedicalLetter,
+  renderField,
 } from "../../../components/FormBuilder/formUtils";
-
-import {
-  saveProposalData,
-  submitProposalData,
-  setShowBMI,
-  setFailedBmiData,
-  setInsuredDetailsResponse,
-  setUnderWritingStatus,
-  setMedicalUrlsRuleEngine,
-  setFailedBmiBlockJourney,
-} from "./ProposalSections.slice";
+import { useCart, useRevisedPremiumModal } from "../../../customHooks";
 import useUrlQuery from "../../../customHooks/useUrlQuery";
 import {
-  useRevisedPremiumModal,
-  useCart,
-  useFrontendBoot,
-} from "../../../customHooks";
-import {
-  useGetEnquiriesQuery,
-  useSaveProposalMutation,
-} from "../../../api/api";
-import { shareViaEmailApi } from "../../../components/ShareQuoteModal";
+  saveProposalData,
+  setFailedBmiBlockJourney,
+  setFailedBmiData,
+  setInsuredDetailsResponse,
+  setMedicalUrlsRuleEngine,
+  setShowBMI,
+  setUnderWritingStatus,
+  submitProposalData,
+} from "./ProposalSections.slice";
 
 const useProposalSections = ({
   setActive,
@@ -35,7 +25,6 @@ const useProposalSections = ({
   setActivateLoader,
   setBlockTabSwitch,
   name,
-  listOfForms,
 }) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
@@ -53,10 +42,6 @@ const useProposalSections = ({
 
   const { data: equriesData } = useGetEnquiriesQuery();
 
-  const { tenantAlias } = useFrontendBoot();
-
-  const firstName = equriesData?.data?.name?.split(" ")[0];
-  const email = equriesData?.data?.email;
   const groups = equriesData.data ? equriesData.data.groups : [];
 
   const [allDataSubmitted, setAllDataSubmitted] = useState(false);
@@ -68,10 +53,6 @@ const useProposalSections = ({
   const { cartEntries, isVersionRuleEngine } = useCart();
 
   const dispatch = useDispatch();
-
-  const sum_insured = cartEntries?.map(cart => ({
-    [cart?.product?.name]: cart?.sum_insured,
-  }));
 
   const checkAllValid = values => {
     if (values && values instanceof Object && Object.keys(values)?.length)
@@ -147,7 +128,7 @@ const useProposalSections = ({
     checkFor,
     checkFrom,
     updationFor,
-    dispatch,
+
     insuredDetails,
     callback,
   }) => {
@@ -221,41 +202,19 @@ const useProposalSections = ({
   const schemaKeys = Object.keys(schema);
   const getUnfilledForm = updatedProposalData => {
     return schemaKeys.indexOf(
-      schemaKeys.find((key, index) => !updatedProposalData[key]),
+      schemaKeys.find(key => !updatedProposalData[key]),
     );
-  };
-
-  const shareOnProposalSubmit = async () => {
-    const response = await shareViaEmailApi(
-      {
-        stage: "PROPOSAL_SUBMIT",
-        email,
-        insurers: cartEntries?.map(cart => cart?.product?.company?.alias),
-        mode: ["EMAIL"],
-        sum_insured,
-        sms: "",
-      },
-      tenantAlias,
-    );
-    return response;
   };
 
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
-    console.log("bcfhdjd", values, checkAllValid(values));
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
-        console.log("egjksf 1");
         setActive(schemaKeys.indexOf(formName));
-        console.log("sgvjbskv", havingAnyError(errors));
         name !== "Insured Details" &&
           setShow(havingAnyError(errors).indexOf(true));
         return;
       }
       if (!everyRequiredFilled(schema[formName], sendedVal)) {
-        console.log(
-          "egjksf 2",
-          everyRequiredFilled(schema[formName], sendedVal),
-        );
         setActive(schemaKeys.indexOf(formName));
         return;
       }
@@ -263,19 +222,11 @@ const useProposalSections = ({
         schema[formName],
         sendedVal,
       );
-      console.log(
-        "wsgvskdbvs",
-        isOptionsValuesValidated(schema[formName], sendedVal),
-      );
-      // if(formName === "Proposer Details" && valueIsValidatedOption === false){
-      //   setActive(schemaKeys.indexOf(formName));
-      //   return;
-      // }
+
       if (
         formName !== "Proposer Details" &&
         valueIsValidatedOption.includes(false)
       ) {
-        console.log("egjksf 3");
         setActive(schemaKeys.indexOf(formName));
         setShow(valueIsValidatedOption.indexOf(false));
         return;
@@ -395,14 +346,10 @@ const useProposalSections = ({
       everyRequiredFilled(schema[formName], sendedVal)
     ) {
       dispatch(
-        saveProposalData(
-          { [formName]: sendedVal },
-          ({ prevProposalData, updatedProposalData }) => {
-            callback();
-            setAllDataSubmitted(true);
-            // shareOnProposalSubmit();
-          },
-        ),
+        saveProposalData({ [formName]: sendedVal }, () => {
+          callback();
+          setAllDataSubmitted(true);
+        }),
       );
     }
   };
@@ -430,18 +377,11 @@ const useProposalSections = ({
   }, [canProceedToSummary]);
 
   useEffect(() => {
-    console.log("djfgddd", Object.values(errors));
     if (name === "Proposer Details") {
       Object.values(errors).some(el => el !== undefined)
         ? setBlockTabSwitch(true)
         : setBlockTabSwitch(false);
     } else {
-      console.log(
-        "srvsjkbv",
-        Object.keys(errors).some(el =>
-          Object.values(errors[el]).some(val => val !== undefined),
-        ),
-      );
       Object.keys(errors).some(el =>
         Object.values(errors[el]).some(val => val !== undefined),
       )

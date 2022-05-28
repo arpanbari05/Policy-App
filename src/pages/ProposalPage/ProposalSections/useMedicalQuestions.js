@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getMedicalUrlsRuleEngine } from "./ProposalSections.slice";
 
 const useMedicalQuestions = ({
@@ -220,45 +220,6 @@ const useMedicalQuestions = ({
       setYesSelected(temp);
     }
   }, [values, noForAll]);
-
-  // when no for all click
-  // useEffect(() => {
-  //   if (name === "Medical Details") {
-  //       console.log("sgsjghjskl",noForAll)
-  //     let customizedVal = {};
-  //     Object.keys(noForAll)
-  //       .filter(key => noForAll[key])
-  //       .forEach(key => {
-  //         let tempGroupVal = {};
-  //         schema[key].forEach(el => {
-  //          if (!Array.isArray(el)) {
-  //           if(el.additionalOptions.notAllowedIf === "N") {
-
-  //             tempGroupVal[el.name] = {
-  //               [`is${el.name}`]: "Y",
-  //               members: {},
-  //               isValid: true,
-  //             };
-  //           }else if(!el.additionalOptions.disable_Toggle){
-  //             tempGroupVal[el.name] = {
-  //               [`is${el.name}`]: "N",
-  //               members: {},
-  //               isValid: true,
-  //             };
-  //           }
-
-  //           }
-  //         });
-  //         customizedVal[key] = {
-  //           ...values?.[key],
-  //           ...tempGroupVal,
-  //         };
-  //       });
-
-  //     if (Object.keys(customizedVal).length)
-  //       setValues({ ...values, ...customizedVal });
-  //   }
-  // }, [noForAll]);
 
   return {
     noForAll,

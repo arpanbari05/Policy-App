@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-// import millify from "millify";
-// import converter from "number-to-words";
-import { setShowPlanNotAvail } from "../ProposalSections/ProposalSections.slice";
 import { number2text } from "../../../utils/helper";
+import { setShowPlanNotAvail } from "../ProposalSections/ProposalSections.slice";
 const TextInput = ({
   name,
   label,
@@ -16,7 +14,6 @@ const TextInput = ({
   error,
   onBlur,
   onKeyDown,
-  reference,
   notAllowed,
   allValues,
   value,
@@ -67,9 +64,7 @@ const TextInput = ({
     }
     return check;
   };
-  const { mediUnderwritting } = useSelector(
-    state => state.proposalPage.proposalData,
-  );
+
   const checkAllChar = (value, checkValue) => {
     console.log(checkValue);
     let check = true;
@@ -82,20 +77,6 @@ const TextInput = ({
     return check;
   };
 
-  const checkDoubleChar = e => {
-    if (e.keyCode === 190 && fullName[fullName.length - 1] === " ") {
-      e.preventDefault();
-    }
-    if (e.keyCode === 32 && fullName.length < 1) {
-      e.preventDefault();
-    }
-  };
-
-  // const [innerValue, setInnerValue] = useState(value);
-  // useEffect(() => {
-  //   setInnerValue(value);
-  // }, [value]);
-  // console.log(isHovering, "isHovering");
   return (
     <InputContainer>
       <Input
@@ -275,10 +256,8 @@ const TextInput = ({
               setFallbackValue(e.target.value);
             }
           } else {
-            console.log("sgvjsvl", notAllowed);
             if (
               notAllowed &&
-              // mediUnderwritting &&
               ((notAllowed.split("/")[0] !== "null" &&
                 parseInt(e.target.value) <=
                   parseInt(notAllowed.split("/")[0])) ||

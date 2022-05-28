@@ -1,7 +1,7 @@
-import { mobile, small } from "../../../utils/mediaQueries";
-import "styled-components/macro";
 import { FaCheck } from "react-icons/fa";
+import "styled-components/macro";
 import { useTheme } from "../../../customHooks";
+import { mobile } from "../../../utils/mediaQueries";
 
 export function WrapWithTitle({ title, children }) {
   return (

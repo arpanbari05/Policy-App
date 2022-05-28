@@ -1,35 +1,22 @@
-import { Container } from "react-bootstrap";
-import { Page } from "../../components";
-import useFilters from "./components/filters/useFilters";
-import useUpdateFilters from "./components/filters/useUpdateFilters";
-import LowerModifier from "./components/LowerModifier";
-import Quotes from "./components/Quotes";
-import UpperModifier from "./components/UpperModifier";
-import { useMembers, useTheme, useGetQuotes } from "../../customHooks";
-import { useHistory, useParams } from "react-router-dom";
-import PageNotFound from "../PageNotFound";
-import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
-import { FaSync } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import SortBy from "./components/filters/SortBy";
+import { Container } from "react-bootstrap";
+import { FaSync } from "react-icons/fa";
+import { IoIosArrowForward } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import "styled-components/macro";
+import { api } from "../../api/api";
 import assistant from "../../assets/images/call-center-service.png";
-import { QuotesLoader } from "./components";
+import { images as logos } from "../../assets/logos/logo";
+import { Page } from "../../components";
+import ScrollToTopBtn from "../../components/Common/ScrollToTop/ScrollToTopBtn";
 import TalkToUsModal from "../../components/TalkToUs";
+import { useGetQuotes, useMembers, useTheme } from "../../customHooks";
 import {
   useFrontendBoot,
-  useSortBy,
   useShortlistedPlans,
+  useSortBy,
 } from "../../customHooks/index";
-import {
-  ClickSound,
-  mergeQuotes,
-  figureToWords,
-  numberToDigitWord,
-  amount,
-} from "../../utils/helper";
-import "styled-components/macro";
-import { useDispatch, useSelector } from "react-redux";
-import { replaceShareQuotes } from "./quote.slice";
 import {
   HeadingTertiary,
   PrimaryFont,
@@ -37,9 +24,21 @@ import {
   TertiaryFontBold,
   XSmallFont,
 } from "../../styles/typography";
-import { IoIosArrowForward } from "react-icons/io";
-import { images as logos } from "../../assets/logos/logo";
-import { api } from "../../api/api";
+import {
+  amount,
+  ClickSound,
+  figureToWords,
+  mergeQuotes,
+} from "../../utils/helper";
+import PageNotFound from "../PageNotFound";
+import { QuotesLoader } from "./components";
+import SortBy from "./components/filters/SortBy";
+import useFilters from "./components/filters/useFilters";
+import useUpdateFilters from "./components/filters/useUpdateFilters";
+import LowerModifier from "./components/LowerModifier";
+import Quotes from "./components/Quotes";
+import UpperModifier from "./components/UpperModifier";
+import { replaceShareQuotes } from "./quote.slice";
 
 function QuotesPage() {
   const { colors } = useTheme();
