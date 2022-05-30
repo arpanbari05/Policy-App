@@ -270,12 +270,7 @@ const subJourneyTypeOptions = {
 
 export function useFrontendBoot(skipEnquiry = true) {
   const searchQueries = useUrlQueries();
-  const {
-    data: frontendData,
-    isLoading,
-    isUninitialized,
-    ...query
-  } = useGetFrontendBootQuery();
+  const { data: frontendData, ...query } = useGetFrontendBootQuery();
 
   const { data: enquiryData } = useGetEnquiriesQuery(undefined, {
     skip: !searchQueries.enquiryId && skipEnquiry,
