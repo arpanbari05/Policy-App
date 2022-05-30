@@ -49,9 +49,7 @@ const FormBuilder = ({
   isPanelVisible,
 }) => {
   const { colors } = useTheme();
-  const PrimaryColor = colors.primary_color,
-    SecondaryColor = colors.secondary_color,
-    PrimaryShade = colors.primary_shade;
+  const PrimaryShade = colors.primary_shade;
 
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -59,6 +57,10 @@ const FormBuilder = ({
 
   const proposalDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
+  );
+
+  const otherDetails = useSelector(
+    ({ proposalPage }) => proposalPage.proposalData["Other Details"],
   );
 
   const {
@@ -75,10 +77,10 @@ const FormBuilder = ({
     updateValidateObjSchema,
     setBlockScrollEffect,
     scrollToErrors,
-  } = useFormBuilder(
+  } = useFormBuilder({
     schema,
     fetchValues,
-    options.defaultValues,
+    defaultValues: options.defaultValues,
     noForAll,
     setNoForAll,
     formName,
@@ -91,7 +93,8 @@ const FormBuilder = ({
     fetchValid,
     isPanelVisible,
     keyStr,
-  );
+    otherDetails
+  });
   useEffect(() => {
     if (formName === "Other Details") {
       if (values.nominee_relation && insuredDetails[values.nominee_relation]) {

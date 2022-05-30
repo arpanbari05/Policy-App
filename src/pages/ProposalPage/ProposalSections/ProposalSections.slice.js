@@ -179,23 +179,22 @@ export const getMedicalUnderwritingStatus = () => {
 export const saveProposalData = (proposalData, next, failure) => {
   return async (dispatch, state) => {
     try {
-      console.log("wvnljsdvb", proposalData);
       let prevState = state();
+
       let prevProposalData = prevState.proposalPage.proposalData;
+
       let prevCart = prevState.cart;
+
       dispatch(setIsLoading(true));
+
       dispatch(pushLoadingStack());
+
       const response = await saveProposal(proposalData);
-      // dispatch(
-      //   api.util.invalidateTags([
-      //     "Cart",
-      //   ],undefined,))
 
       dispatch(api.util.invalidateTags(["ProposalSummaryUpdate"]));
+
       dispatch(setProposalData(proposalData));
 
-      // console.log("dfbjdflb", state());
-      //console.log("saveProposalData success", response);
       if (response.statusCode === 200) {
         next({
           responseData: response.data,
@@ -203,6 +202,7 @@ export const saveProposalData = (proposalData, next, failure) => {
           prevCart,
           updatedProposalData: state().proposalPage.proposalData,
         });
+
         dispatch(popLoadingStack());
       } else if (!response.data) {
         if (typeof response.errors === "object") {
@@ -225,9 +225,7 @@ export const saveProposalData = (proposalData, next, failure) => {
           );
         }
       }
-      console.log("bchkadvbchav", response);
     } catch (err) {
-      //console.error("saveProposalData error", err);
       dispatch(setIsLoading(false));
     }
   };
@@ -255,10 +253,10 @@ export const getProposalData = successCallBack => {
         const { activeIndex } = state().proposalPage;
         Object.keys(data.data).forEach(item => {
           if (!(data.data[item] instanceof Array)) {
-            responseData[item] = data.data[item];
+            responseData[item] = data?.data[item];
           }
         });
-        console.log("sfvbjksfb", otherData);
+
         dispatch(setProposalData(responseData));
         activeIndex !== 0 &&
           !activeIndex &&

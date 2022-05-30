@@ -23,10 +23,7 @@ import {
   useCart,
   useFrontendBoot,
 } from "../../../customHooks";
-import {
-  useGetEnquiriesQuery,
-  useSaveProposalMutation,
-} from "../../../api/api";
+import { useGetEnquiriesQuery } from "../../../api/api";
 import { shareViaEmailApi } from "../../../components/ShareQuoteModal";
 
 const useProposalSections = ({
@@ -241,21 +238,15 @@ const useProposalSections = ({
   };
 
   const triggerSaveForm = ({ sendedVal, formName, callback = () => {} }) => {
-    console.log("bcfhdjd", values, checkAllValid(values));
     if (formName !== "Medical Details") {
       if (havingAnyError(errors).includes(true)) {
-        console.log("egjksf 1");
         setActive(schemaKeys.indexOf(formName));
-        console.log("sgvjbskv", havingAnyError(errors));
+
         name !== "Insured Details" &&
           setShow(havingAnyError(errors).indexOf(true));
         return;
       }
       if (!everyRequiredFilled(schema[formName], sendedVal)) {
-        console.log(
-          "egjksf 2",
-          everyRequiredFilled(schema[formName], sendedVal),
-        );
         setActive(schemaKeys.indexOf(formName));
         return;
       }
@@ -263,10 +254,7 @@ const useProposalSections = ({
         schema[formName],
         sendedVal,
       );
-      console.log(
-        "wsgvskdbvs",
-        isOptionsValuesValidated(schema[formName], sendedVal),
-      );
+
       // if(formName === "Proposer Details" && valueIsValidatedOption === false){
       //   setActive(schemaKeys.indexOf(formName));
       //   return;
@@ -275,7 +263,6 @@ const useProposalSections = ({
         formName !== "Proposer Details" &&
         valueIsValidatedOption.includes(false)
       ) {
-        console.log("egjksf 3");
         setActive(schemaKeys.indexOf(formName));
         setShow(valueIsValidatedOption.indexOf(false));
         return;
@@ -430,18 +417,11 @@ const useProposalSections = ({
   }, [canProceedToSummary]);
 
   useEffect(() => {
-    console.log("djfgddd", Object.values(errors));
     if (name === "Proposer Details") {
       Object.values(errors).some(el => el !== undefined)
         ? setBlockTabSwitch(true)
         : setBlockTabSwitch(false);
     } else {
-      console.log(
-        "srvsjkbv",
-        Object.keys(errors).some(el =>
-          Object.values(errors[el]).some(val => val !== undefined),
-        ),
-      );
       Object.keys(errors).some(el =>
         Object.values(errors[el]).some(val => val !== undefined),
       )

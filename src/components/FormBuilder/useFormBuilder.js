@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { performValidations, renderField } from "./formUtils";
 
-const useFormBuilder = (
+const useFormBuilder = ({
   schema,
   fetchValues,
   defaultValues = {},
@@ -17,7 +17,8 @@ const useFormBuilder = (
   fetchValid,
   isPanelVisible,
   keyStr,
-) => {
+  otherDetails,
+}) => {
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
 
   const [values, setValues] = useState(defaultValues || {});

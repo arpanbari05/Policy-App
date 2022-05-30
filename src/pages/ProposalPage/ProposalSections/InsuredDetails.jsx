@@ -151,7 +151,6 @@ const InsuredDetails = ({
 
   const fullName = proposalData["Proposer Details"]?.name;
 
-
   useEffect(() => {
     if (
       medicalContinueClick &&
@@ -347,6 +346,7 @@ const InsuredDetails = ({
                     schema={schema[item]}
                     components={components}
                     fetchValues={(res = () => {}) => {
+                      console.log("The item", item, res);
                       setValues(prev => {
                         return { ...prev, [item]: res(prev?.[item]) };
                       });
