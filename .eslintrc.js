@@ -23,7 +23,7 @@ module.exports = {
   plugins: ["import", "unused-imports"],
   root: true,
   rules: {
-    "no-console": "warn",
+    "no-console": ["warn", { allow: ["warn", "error"] }],
     "no-duplicate-imports": "warn",
     "no-unused-vars": "warn",
     "unused-imports/no-unused-imports": "error",

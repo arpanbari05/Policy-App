@@ -469,7 +469,7 @@ export const fetchQuotes =
       });
     } catch (error) {
       alert(error.message);
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -495,7 +495,7 @@ export const saveQuotesData = data => {
         dispatch(saveQuotes(newData));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert(err);
     }
   };
@@ -537,7 +537,7 @@ export const createCartItem = (data, onCreate = () => {}) => {
         dispatch(saveCartData(response?.data?.data));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert(err);
     }
   };
@@ -551,7 +551,7 @@ export const deleteCartItem = (data, onDelete = () => {}) => {
         dispatch(getCartItem());
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert(err);
     }
   };
@@ -565,7 +565,7 @@ export const getCartItem = data => {
         dispatch(saveProductCart(response?.data?.data));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert(err);
     }
   };
@@ -667,7 +667,7 @@ export const updateUserMembersDetails = (givenData, history, handleClose) => {
       }
     } catch (err) {
       setAppLoading(false);
-      console.log(err);
+      console.error(err);
       alert(err);
     }
   };
@@ -692,7 +692,7 @@ export const getProductDiscount =
       }
     } catch (err) {
       alert(err);
-      console.log(err);
+      console.error(err);
     }
   };
 

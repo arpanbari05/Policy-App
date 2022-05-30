@@ -6,13 +6,13 @@ const seeDetailsSlice = createSlice({
   },
   name: "compare",
   reducers: {
-    requestDetails(state, action) {
+    requestDetails(state) {
       state.loading = true;
     },
-    requestDetailsSuccess(state, action) {
+    requestDetailsSuccess(state) {
       state.loading = false;
     },
-    requestDetailsFailed(state, action) {
+    requestDetailsFailed(state) {
       state.loading = false;
     },
   },

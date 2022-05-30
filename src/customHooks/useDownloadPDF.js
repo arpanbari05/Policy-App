@@ -34,46 +34,44 @@ function getFeatures(quotes) {
     };
   });
 
-  console.log(newQuotesWithFeatures);
+  return newQuotesWithFeatures;
 }
 
-export default function useDownloadPDF({ quotes, logo }) {
-  const [status, setStatus] = useState(null);
+export default function useDownloadPDF({ quotes }) {
   const [pdfFetchLoading, setPdfFetchLoading] = useState(false);
   const { data } = useFrontendBoot();
   const enquiryData = useUrlQueries();
 
   async function downloadComparePDF() {
+    const newQuotes = getFeatures(quotes);
     const pdfBodyContent = JSON.stringify({
-      quotes: getLogo(data?.companies, quotes),
+      quotes: getLogo(data?.companies, newQuotes),
       groupCode: window.location.pathname.split("/")[2],
     });
     try {
       setPdfFetchLoading(true);
-      getFeatures(quotes);
-      // const response = await fetch(
-      //   `${process.env.REACT_APP_API_BASE_URL}compare/share_pdf`,
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       "enquiry-id": enquiryData.enquiryId,
-      //     },
-      //     body: pdfBodyContent,
-      //   },
-      // );
 
-      // if (response.status === 200) {
-      //   const data = await response.json();
-      //   console.log(data);
-      //   setPdfFetchLoading(false);
-      // } else {
-      //   console.error(response.message);
-      //   setPdfFetchLoading(false);
-      // }
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}compare/share_pdf`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "enquiry-id": enquiryData.enquiryId,
+          },
+          body: pdfBodyContent,
+        },
+      );
+
+      if (response.status === 200) {
+        setPdfFetchLoading(false);
+      } else {
+        console.error(response.message);
+        setPdfFetchLoading(false);
+      }
       setPdfFetchLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setPdfFetchLoading(false);
     }
   }
