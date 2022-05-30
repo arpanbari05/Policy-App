@@ -210,9 +210,9 @@ const InnerWrapper = styled.div`
   } */
 `;
 
-function HeaderCard({ content }) {
+function HeaderCard() {
   const { colors } = useTheme();
-  const { journeyType, isLoading, isUninitialized } = useFrontendBoot();
+  const { isLoading, isUninitialized } = useFrontendBoot();
 
   return (
     <Card

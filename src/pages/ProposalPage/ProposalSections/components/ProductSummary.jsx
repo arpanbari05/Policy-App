@@ -39,7 +39,7 @@ const removeTotalPremium = cart => {
 const numToString = value => value.toLocaleString("en-IN");
 
 const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
-  const [show, setShow] = useState(false);
+  const [, setShow] = useState(false);
 
   const history = useHistory();
 

@@ -1,19 +1,18 @@
-import { useState, useEffect } from "react";
-import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
-import FeatureSection from "./FeatureSection/FeatureSection";
-import styled from "styled-components/macro";
-import { small, tabletAndMobile } from "../../../utils/mediaQueries";
-import { useCart, useRider, useRiders, useTheme } from "../../../customHooks";
-import { CircleLoader } from "../../../components";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { mobile } from "../../../utils/mediaQueries";
+import { useParams } from "react-router-dom";
+import styled from "styled-components/macro";
+import { CircleLoader } from "../../../components";
+import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
+import { useCart, useRider, useRiders, useTheme } from "../../../customHooks";
 import {
   amount,
   careRidersConditionChecker,
   featureOptionsValidValue,
 } from "../../../utils/helper";
+import { mobile, small, tabletAndMobile } from "../../../utils/mediaQueries";
+import FeatureSection from "./FeatureSection/FeatureSection";
 
 export function RidersSection({ loaderStop, isProductDetailsPage = false }) {
   let { groupCode } = useParams();
@@ -44,7 +43,6 @@ export function RidersSection({ loaderStop, isProductDetailsPage = false }) {
 }
 
 export function Riders({
-  loaderStop = () => {},
   quote,
   groupCode,
   onChange,

@@ -115,7 +115,7 @@ export const addPremium = (productId, sum_insured, premium) => {
   };
 };
 export const updateQuotes = req => {
-  return async dispatch => {
+  return async () => {
     try {
       await updateComparison(req);
     } catch (error) {
@@ -218,7 +218,7 @@ export const getFeatures =
       );
     } catch (err) {
       alert(err);
-      console.log(err);
+      console.error(err);
     }
   };
 export const sendEmailAction = req => {

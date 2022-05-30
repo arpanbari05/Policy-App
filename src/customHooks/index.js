@@ -1539,7 +1539,7 @@ export function useQuotesCompare(initialCompareQuotes = []) {
   const [updateCompareQuotesMutation, updateQuery] =
     useUpdateCompareQuotesMutation();
 
-  const { isLoading, data, ...query } = useGetCompareQuotesQuery(undefined, {
+  const { data, ...query } = useGetCompareQuotesQuery(undefined, {
     skip: !allowOnSpecificPages(["/compare"]),
   });
 
@@ -2096,24 +2096,6 @@ function isAffectsOtherRiders(rider) {
 
 function isMandatoryRider(rider) {
   return !!rider.is_mandatory;
-}
-
-function getRiderOptionsQueryString(riders = []) {
-  const riderOptionsQueryString = riders.reduce(
-    (urlQueries, rider) =>
-      rider?.options_selected
-        ? urlQueries.concat(
-            Object.keys(rider.options_selected)
-              .map(
-                riderOptionKey =>
-                  `${riderOptionKey}=${rider.options_selected[riderOptionKey]}&`,
-              )
-              .join("&"),
-          )
-        : urlQueries,
-    "",
-  );
-  return riderOptionsQueryString;
 }
 
 function getSelectedRiders(riders = []) {

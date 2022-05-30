@@ -67,19 +67,9 @@ function LogoLink() {
   );
 }
 
-const Navbar = ({ backButton: BackButton = <></>, noShadow = false }) => {
+const Navbar = ({ noShadow = false }) => {
   const location = useLocation();
   const searchQueries = useUrlQueries();
-
-  const isRootRoute = useRouteMatch({
-    path: [
-      "/",
-      "/input/basic-details",
-      "/input/renewal-details",
-      "/input/portability",
-    ],
-    exact: true,
-  });
 
   const { data } = useGetEnquiriesQuery(undefined, {
     skip: !searchQueries.enquiryId,
@@ -185,11 +175,6 @@ export function NavbarMobile({ backButton: BackButton = <></> }) {
   const urlQueryStrings = new URLSearchParams(window.location.search);
   const city = urlQueryStrings.get("city");
   const pincode = urlQueryStrings.get("pincode");
-
-  const isRootRoute = useRouteMatch({
-    path: ["/", "/input/basic-details"],
-    exact: true,
-  });
 
   const { data } = useGetEnquiriesQuery(undefined, {
     skip: !searchQueries.enquiryId,
@@ -519,9 +504,7 @@ function fallbackCopyTextToClipboard(text, fallback) {
   textArea.select();
 
   try {
-    var successful = document.execCommand("copy");
-    var msg = successful ? "successful" : "unsuccessful";
-    console.log("Fallback: Copying text command was " + msg);
+    document.execCommand("copy");
   } catch (err) {
     console.error("Fallback: Oops, unable to copy", err);
     fallback();
@@ -532,10 +515,6 @@ function fallbackCopyTextToClipboard(text, fallback) {
 
 export function TraceId() {
   const searchQueries = useUrlQueries();
-  const isBasicDetailsRoute = useRouteMatch({
-    path: ["/input/basic-details", "/"],
-    exact: true,
-  });
 
   const { data, isLoading, isUninitialized } = useGetEnquiriesQuery(undefined, {
     skip: !searchQueries.enquiryId,

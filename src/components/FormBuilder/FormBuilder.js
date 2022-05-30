@@ -339,7 +339,7 @@ const FormBuilder = ({
                                         onFocus={() =>
                                           setBlockScrollEffect(false)
                                         }
-                                        onBlur={e => {
+                                        onBlur={() => {
                                           if (options.validateOn === "blur") {
                                             setTrigger(innerItem.name);
                                           }
@@ -579,7 +579,7 @@ const FormBuilder = ({
                           checkAllow(item.allow, e, "input");
                         }
                       }}
-                      onBlur={e => {
+                      onBlur={() => {
                         if (options.validateOn === "blur") {
                           setTrigger(item.name);
                         }

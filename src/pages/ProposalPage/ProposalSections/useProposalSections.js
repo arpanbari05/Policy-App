@@ -120,7 +120,7 @@ const useProposalSections = ({
         : true;
   };
 
-  const [additionalErrors, setAdditionalErrors] = useState({});
+  const additionalErrors = {};
 
   const [submit, setSubmit] = useState(false);
 

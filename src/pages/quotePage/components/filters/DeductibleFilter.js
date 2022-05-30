@@ -23,8 +23,6 @@ function DeductibleFilterModal({ onClose, ...props }) {
     getSelectedFilter("deductible"),
   );
 
-  const [showError, setShowError] = useState(false);
-
   const [showDropdown, setShowDropdown] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -96,20 +94,11 @@ function DeductibleFilterModal({ onClose, ...props }) {
           showDropdown={showDropdown}
         />
       </div>
-      {/* <p
-        className="mt-3"
-        css={`
-          font-size: 0.79rem;
-        `}
-      >
-        Your minimum deductible should be equal to your existing cover. Super
-        top up will provide the coverage once the existing cover is exhausted
-      </p> */}
     </CustomModal1>
   );
 }
 
-function DeductibleFilter({ ...props }) {
+function DeductibleFilter() {
   const { getSelectedFilter } = useFilters();
 
   const selectedPremiumFilter = getSelectedFilter("deductible");

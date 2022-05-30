@@ -455,13 +455,14 @@ export const api = createApi({
         const topUpQuotesResponses = await getQuotePromises(
           topUpUrls,
           fetchWithBaseQuery,
-          { afterEach: res => {} },
+          { afterEach: () => {} },
         );
 
         const topUpQuotes = topUpQuotesResponses
           .map(quotesResponse => quotesResponse.data?.data)
           .map(quotes => mergeQuotes(quotes));
 
+        dispatch;
         return {
           data: topUpQuotes,
         };
@@ -498,7 +499,7 @@ export const api = createApi({
             }),
           );
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       },
     }),

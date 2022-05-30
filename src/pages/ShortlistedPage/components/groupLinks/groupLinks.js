@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useTheme, useUrlEnquiry, useMembers } from "../../../../customHooks";
-import { MemberText } from "../../../../components";
-import * as mq from "../../../../utils/mediaQueries";
-import { useParams, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import "styled-components/macro";
-import { PrimaryFontBold } from "../../../../styles/typography";
+import { MemberText } from "../../../../components";
 import ShareQuoteModal from "../../../../components/ShareQuoteModal";
-import { setShareType } from "../../../quotePage/quote.slice";
-import { useDispatch, useSelector } from "react-redux";
+import { useMembers, useTheme, useUrlEnquiry } from "../../../../customHooks";
 import useWindowSize from "../../../../customHooks/useWindowSize";
+import { PrimaryFontBold } from "../../../../styles/typography";
+import * as mq from "../../../../utils/mediaQueries";
+import { setShareType } from "../../../quotePage/quote.slice";
 
 function GroupLinks() {
   const { groups } = useMembers();
@@ -25,6 +24,7 @@ function GroupLinks() {
 
   const allMembersGroup = groups.find(group => group.type === "all");
 
+  // eslint-disable-next-line no-unused-vars
   const [_, xWidth] = useWindowSize();
 
   const { groupCode } = useParams();
@@ -255,7 +255,7 @@ const ToggleGroupTypeBtn = styled.button`
   font-size: 0.79rem;
   line-height: 1;
   color: ${props => props.color};
-  pointer: cursor;
+  cursor: pointer;
   &:hover {
     text-decoration: underline;
     text-underline-offset: 3px;

@@ -241,7 +241,6 @@ function MemberOption({
   children,
   selectedMembers,
   selectable = true,
-  updateMembersList,
   setServerError,
   gender,
   ...props

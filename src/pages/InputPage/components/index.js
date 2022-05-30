@@ -1,9 +1,8 @@
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../../../components";
 import "styled-components/macro";
 
 export function BackLink({ goBack = () => {}, ...props }) {
-  const history = useHistory();
   return (
     <Link
       onClick={goBack}

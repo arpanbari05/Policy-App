@@ -483,7 +483,7 @@ const RiderName = styled.h1`
 function RiderDescription({ rider, ...props }) {
   const { description } = rider;
 
-  const [showMore, setShowMore] = useState(true);
+  const showMore = true;
 
   return (
     <RiderDescriptionWrap className="m-0" {...props}>

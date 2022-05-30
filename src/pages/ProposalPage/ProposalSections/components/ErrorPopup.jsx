@@ -5,7 +5,7 @@ import { ButtonWrapper, Popup, PopupWrapper, Container } from "./BMI";
 import { ClickSound } from "../../../../utils/helper";
 import { useTheme } from "../../../../customHooks";
 
-const ErrorPopup = ({ show, head, msg, htmlProps, handleClose }) => {
+const ErrorPopup = ({ head, msg, htmlProps, handleClose }) => {
   const { showErrorPopup } = useSelector(({ proposalPage }) => proposalPage);
   const { colors } = useTheme();
   return (

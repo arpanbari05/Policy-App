@@ -84,7 +84,6 @@ const CustomModal1 = ({
   tooltipDesc,
   headerTooltipDescription = "",
   noBodyOverflow,
-  ...props
 }) => {
   const { colors } = useTheme();
   return (

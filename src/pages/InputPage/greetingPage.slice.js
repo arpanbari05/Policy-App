@@ -71,7 +71,7 @@ const greeting = createSlice({
     createUserSuccess: state => {
       state.status = false;
     },
-    requestRegionData: (state, action) => {
+    requestRegionData: state => {
       state.regionDetailsLoading = true;
       state.regionDetailsError = false;
     },
@@ -491,7 +491,7 @@ export const SaveForm7UserDeatils = (dataFromForm, pushToQuotes) => {
       dispatch(setShouldFetchQuotes(true));
       dispatch(createUserData({ deductible: dataFromForm }));
     } catch (error) {
-      console.log("Form 7 functionality error", error);
+      console.error("Form 7 functionality error", error);
     }
   };
 };

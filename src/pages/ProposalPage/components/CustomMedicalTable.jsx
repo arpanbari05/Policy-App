@@ -15,8 +15,8 @@ const CustomMedicalTable = ({
 }) => {
   const [filteredOption, setFilteredMembers] = useState([]);
   const [additionalValues, setAdditionalValues] = useState({});
-  const [isValid, setIsValid] = useState(true);
-  const [toggleValue, setToggleValue] = useState(value);
+  const isValid = true;
+  const toggleValue = value;
 
   useEffect(() => {
     let temp = additionalValues;

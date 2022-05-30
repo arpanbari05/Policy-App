@@ -18,7 +18,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { setEditStep, setShowEditMembers } from "../../quotePage/quote.slice";
 
-function LocationForm({ edit = false, close = () => {}, posContent }) {
+function LocationForm({ edit = false, posContent }) {
   const { colors } = useTheme();
   const {
     data: { popularcities },

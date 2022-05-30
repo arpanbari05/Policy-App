@@ -2,7 +2,6 @@ import React from "react";
 import { ProgressBar } from "react-bootstrap";
 import "styled-components/macro";
 const ProgessBar = ({ year, value, color }) => {
-  console.log(year, value, color, "gag13");
   return (
     <span
       css={`
@@ -47,24 +46,6 @@ const ProgessBar = ({ year, value, color }) => {
       />
     </span>
   );
-
-  // return (
-  // 	<>
-  // 		<h3 className="progress-title">{year}</h3>
-  // 		<div className={`progress_chart `} >
-  // 			<div className="progress-bar" style={{ width: `${value - 21}%`, height: "0px", maxWidth:"195px" }}
-  // 				css={`
-  // 					 &:before{
-  // 						background-color: ${color};
-  // 						 border: 5px solid ${color} !important;
-  // 					 }
-  // 					 `}
-  // 			>
-  // 				<div className="progress-value">{`${value}%`}</div>
-  // 			</div>
-  // 		</div>
-  // 	</>
-  // );
 };
 
 export default ProgessBar;
