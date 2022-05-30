@@ -27,7 +27,7 @@
     "jspdf": "^2.3.1",
     "moment": "^2.29.1",
     "ngx-toggle-switch": "^2.0.5",
-    "node-sass": "^5.0.0",
+    "node-sass": "^6.0.1",
     "number-to-words": "^1.2.4",
     "randexp": "^0.5.3",
     "react": "^17.0.2",
@@ -77,8 +77,8 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-unused-imports": "^2.0.0",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "msw": "^0.36.3",
     "prettier": "^2.5.1",
     "serve": "^13.0.2"

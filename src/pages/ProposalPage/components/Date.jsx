@@ -47,7 +47,11 @@ const DateComp = ({
       parseInt(val) === parseInt(currentYear)
     ) {
       return getMoment(
-        `${currentDate}-${currentMonth - (Number(age[0]) + 1)}-${val}`,
+        new Date(
+          val,
+          currentMonth - Number(age[0]?.toString().split(".")[1]),
+          currentDate,
+        ),
       );
     }
     if (val && val.length === 10) return getMoment(val);
