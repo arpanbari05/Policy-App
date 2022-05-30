@@ -31,7 +31,7 @@ const Toggle = ({
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
   const { genderOfSelf } = useMembers();
-  const [customShowMembers, setCustomshowMembers] = useState(false);
+  const customShowMembers = false;
 
   const [membersToMap, setMembersToMap] = useState(
     customMembers instanceof Array && customMembers.length

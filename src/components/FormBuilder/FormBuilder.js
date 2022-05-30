@@ -29,10 +29,8 @@ const FormBuilder = ({
   setCustomValid = () => {},
   noForAll,
   setNoForAll,
-  setNoForAllEmpty,
   keyStr,
   lastName,
-  isInsuredDetails,
   proposalData,
   canProceed,
   yesSelected,
@@ -45,9 +43,7 @@ const FormBuilder = ({
   isPanelVisible,
 }) => {
   const { colors } = useTheme();
-  const PrimaryColor = colors.primary_color,
-    SecondaryColor = colors.secondary_color,
-    PrimaryShade = colors.primary_shade;
+  const PrimaryShade = colors.primary_shade;
 
   const insuredDetails = useSelector(
     ({ proposalPage }) => proposalPage.proposalData["Insured Details"],
@@ -62,10 +58,8 @@ const FormBuilder = ({
     values,
     triggerValidation,
     errors,
-    isValid,
     setValues,
     insertValue,
-    setErrors,
     updateValues,
     checkReadOnly,
     updateValidateObjSchema,
@@ -339,7 +333,7 @@ const FormBuilder = ({
                                         onFocus={() =>
                                           setBlockScrollEffect(false)
                                         }
-                                        onBlur={e => {
+                                        onBlur={() => {
                                           if (options.validateOn === "blur") {
                                             setTrigger(innerItem.name);
                                           }
@@ -579,7 +573,7 @@ const FormBuilder = ({
                           checkAllow(item.allow, e, "input");
                         }
                       }}
-                      onBlur={e => {
+                      onBlur={() => {
                         if (options.validateOn === "blur") {
                           setTrigger(item.name);
                         }

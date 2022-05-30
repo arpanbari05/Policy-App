@@ -100,6 +100,8 @@ const TextInput = ({
             ) {
               onChange(e);
               setFallbackValue(e.target.value);
+              fallbackValue;
+              isChanged;
             }
           } else if (
             checkValidation["matches"] === "name" ||

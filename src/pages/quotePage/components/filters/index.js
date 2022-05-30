@@ -42,7 +42,7 @@ export function FilterHead({ label, children, onClick, ...props }) {
   );
 }
 
-export function Filter({ label, children, ...props }) {
+export function Filter({ children, ...props }) {
   const { colors } = useTheme();
   const modalToggle = useToggle();
 

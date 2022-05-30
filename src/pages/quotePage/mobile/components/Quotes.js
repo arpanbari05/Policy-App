@@ -282,9 +282,11 @@ function QuoteCard({
   isFirstQuote = false,
   ...props
 }) {
+  // eslint-disable-next-line no-unused-vars
   const [defaultActiveKey, setdefaultActiveKey] = useState(
     "mobile-plan-details",
   );
+
   const { colors } = useTheme();
 
   const {

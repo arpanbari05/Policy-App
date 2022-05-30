@@ -12,7 +12,6 @@ import PlanTypeForm from "./components/PlanTypeForm";
 import LocationForm from "./components/LocationForm";
 import DeductibleForm from "./components/DeductibleForm";
 import RenewalDetailsForm from "./components/RenewalDetailsForm";
-import "styled-components/macro";
 import { Spinner } from "react-bootstrap";
 import MedicalHistoryForm from "./components/MedicalHistoryForm";
 import PortabilityForm from "./components/PortabilityForm";
@@ -256,7 +255,7 @@ const InnerWrapper = styled.div`
 
 function HeaderCard({ content }) {
   const { colors } = useTheme();
-  const { journeyType, data, isLoading, isUninitialized } = useFrontendBoot();
+  const { journeyType, isLoading, isUninitialized } = useFrontendBoot();
 
   return (
     <Card

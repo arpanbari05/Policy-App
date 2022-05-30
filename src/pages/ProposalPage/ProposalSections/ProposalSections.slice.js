@@ -110,10 +110,10 @@ const proposal = createSlice({
     setMedicalUrlsRuleEngine: (state, { payload }) => {
       state.medicalUrlsRuleEngine = payload;
     },
-    pushLoadingStack: (state, { payload }) => {
+    pushLoadingStack: state => {
       state.loadingStack.push(true);
     },
-    popLoadingStack: (state, { payload }) => {
+    popLoadingStack: state => {
       state.loadingStack.pop();
     },
     setIsPopupOn: (state, { payload }) => {
@@ -164,7 +164,7 @@ export const {
 const ls = new SecureLS();
 
 export const getMedicalUnderwritingStatus = () => {
-  return async (dispatch, state) => {
+  return async dispatch => {
     try {
       const { data } = await fetchUnderWritingMQ();
       if (typeof data !== "string" && data?.length) {
@@ -176,10 +176,9 @@ export const getMedicalUnderwritingStatus = () => {
     }
   };
 };
-export const saveProposalData = (proposalData, next, failure) => {
+export const saveProposalData = (proposalData, next) => {
   return async (dispatch, state) => {
     try {
-      console.log("wvnljsdvb", proposalData);
       let prevState = state();
       let prevProposalData = prevState.proposalPage.proposalData;
       let prevCart = prevState.cart;
@@ -225,7 +224,6 @@ export const saveProposalData = (proposalData, next, failure) => {
           );
         }
       }
-      console.log("bchkadvbchav", response);
     } catch (err) {
       //console.error("saveProposalData error", err);
       dispatch(setIsLoading(false));
@@ -233,7 +231,7 @@ export const saveProposalData = (proposalData, next, failure) => {
   };
 };
 
-export const fetchPdf = options => {
+export const fetchPdf = () => {
   return async dispatch => {
     try {
       const { data } = await policyPdf();
@@ -247,7 +245,7 @@ export const fetchPdf = options => {
 export const getProposalData = successCallBack => {
   return async (dispatch, state) => {
     try {
-      const { data, statusCode, ...otherData } = await getProposal();
+      const { data, statusCode } = await getProposal();
 
       if (statusCode === 200) {
         const responseData = {};
@@ -258,7 +256,6 @@ export const getProposalData = successCallBack => {
             responseData[item] = data.data[item];
           }
         });
-        console.log("sfvbjksfb", otherData);
         dispatch(setProposalData(responseData));
         activeIndex !== 0 &&
           !activeIndex &&
@@ -279,11 +276,9 @@ export const getProposalData = successCallBack => {
   };
 };
 export const submitProposalData = next => {
-  console.log("Executed submitProposal data");
   return async dispatch => {
     try {
       const res = await submitProposal({ enquiryId: ls.get("enquiryId") });
-      console.log("sfvblsfkn", res);
 
       if (res.statusCode === 200) {
         next();
@@ -297,7 +292,6 @@ export const submitProposalData = next => {
         );
       }
     } catch (err) {
-      console.log("Error occured in submitProposal data");
       console.error(err);
 
       if (err.message) {

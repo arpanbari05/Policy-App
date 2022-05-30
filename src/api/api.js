@@ -462,6 +462,7 @@ export const api = createApi({
           .map(quotesResponse => quotesResponse.data?.data)
           .map(quotes => mergeQuotes(quotes));
 
+        dispatch;
         return {
           data: topUpQuotes,
         };

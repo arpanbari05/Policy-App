@@ -68,6 +68,7 @@ const ProductSummary = ({ setActive = () => {}, totalPremium = 0 }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     setShow(planDetails.show);
+    show;
   }, [planDetails]);
 
   const { colors } = useTheme();

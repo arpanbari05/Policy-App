@@ -24,7 +24,7 @@ const ThankYouPage = () => {
 
   const { pathname } = useLocation();
 
-  const [payment, SetPayment] = useState(true);
+  const payment = true;
 
   const firstInterval = useRef(null);
 

@@ -25,8 +25,6 @@ export function cartSendData(cartData) {
     discounts,
   } = cartData;
 
-  
-
   const riders = health_riders
     ? health_riders.map(health_rider => ({
         ...health_rider,
@@ -127,7 +125,6 @@ function useCartProduct(groupCode, selectedProduct) {
 
   const updateProductRedux = useCallback(
     productData => {
-      console.log(productData, "gsagsd32t32");
       dispatch(addQuoteToCart({ groupCode, product: productData }));
     },
     [dispatch, groupCode],
