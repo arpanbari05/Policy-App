@@ -1,36 +1,51 @@
-# This is a basic workflow to help you get started with Actions
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: CI
-
-# Controls when the action will run.
+name: UAT Build
 
 on:
-  # Triggers the workflow on push or pull request events but only for the development branch
   push:
     branches: [ uat ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
-    runs-on: self-hosted
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.17.*]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      
-      - uses: actions/checkout@v2
-        with: 
-          path: uat
-          
-      - name: Build 
-        env: 
-          CI: False
-        run: |
-          npm i
-          npm install env-cmd
-          npm run build:uat
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm install 
+    
+    - name: Build 
+      env: 
+        CI: False
+      run: npm run build:uat --if-present
+    
+    - name: Upload build
+      uses: actions/upload-artifact@v2
+      with:
+        name: fts-uat
+        path: build
+  
+  download:
+  
+    needs: build
+    
+    runs-on: self-hosted
+    
+    steps:
+      - name: Download Build
+        uses: actions/download-artifact@v2
+        with:
+          name: fts-uat
+          path: /var/www/healthdemo
