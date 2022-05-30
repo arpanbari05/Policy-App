@@ -60,10 +60,10 @@ function useQuotesPage() {
   const filterQuotes = quotes.map(icQuotes => filterGivenQuotes(icQuotes));
 
   const dispatch = useDispatch();
-  const showPopup = false;
+  const [showPopup, setShowPopup] = useState(false);
   const [showSeeDetails, setShowSeeDetails] = useState(false);
   const [showBuyNow, setShowBuyNow] = useState(false);
-  const recFilterdQuotes = [];
+  const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
 
   const { memberGroups } = useSelector(({ greetingPage }) => greetingPage);
   const { filters } = useSelector(({ quotePage }) => quotePage);
