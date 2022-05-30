@@ -1,10 +1,8 @@
-import styled from "styled-components";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setShowNSTP } from "../ProposalSections.slice";
-import { useHistory } from "react-router";
-import useUrlQuery from "../../../../customHooks/useUrlQuery";
 import { FaTimes } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import { setShowNSTP } from "../ProposalSections.slice";
 
 const NSTP = () => {
   const { showNSTP, mediUnderwritting } = useSelector(
@@ -19,9 +17,12 @@ const NSTP = () => {
     return (
       <PopupWrapper>
         <Popup>
-          <FaTimes style={{margin: "20px 20px 0 0", cursor: "pointer"}} onClick={() => {
+          <FaTimes
+            style={{ margin: "20px 20px 0 0", cursor: "pointer" }}
+            onClick={() => {
               dispatch(setShowNSTP(false));
-            }} />
+            }}
+          />
           <Container>
             <p>
               Hello {proposerDetails?.name?.split(" ")[0]}! Your policy will be
@@ -45,15 +46,7 @@ const NSTP = () => {
 };
 
 export default NSTP;
-const ViewQuotesWrapper = styled.div`
-  text-align: center;
-  margin-top: 12px;
-  & button {
-    color: #c72229;
-    display: inline-block;
-    border-bottom: 1px dashed #c72229;
-  }
-`;
+
 const PopupWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -81,22 +74,7 @@ const Popup = styled.div`
     padding: 15px;
   }
 `;
-const CloseButton = styled.button`
-  width: 26px;
-  height: 26px;
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  border: 1px solid #dce2ea;
-  border-radius: 50%;
-  font-size: 16px;
-  & i {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-`;
+
 const Container = styled.div`
   padding: 60px 50px 30px;
   text-align: left;

@@ -1,17 +1,8 @@
 import React from "react";
 import "styled-components/macro";
-import "./Checkbox.css";
-import { useSelector } from "react-redux";
 import { useTheme } from "../customHooks";
-const Checkbox = ({
-  code,
-  title,
-  type,
-  handleChange,
-  checked,
-  disabled,
-  form3,
-}) => {
+import "./Checkbox.css";
+const Checkbox = ({ code, title, type, handleChange, checked, disabled }) => {
   const { colors } = useTheme();
 
   const handleChecked = () => {

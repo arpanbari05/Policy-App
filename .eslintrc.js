@@ -20,12 +20,13 @@ module.exports = {
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
     sourceType: "module", // Allows for the use of imports
   },
-  plugins: ["import"],
+  plugins: ["import", "unused-imports"],
   root: true,
   rules: {
     "no-console": "warn",
     "no-duplicate-imports": "warn",
     "no-unused-vars": "warn",
+    "unused-imports/no-unused-imports": "error",
     "react/react-in-jsx-scope": 0,
     "react/prop-types": 0,
     "react-hooks/exhaustive-deps": 0,

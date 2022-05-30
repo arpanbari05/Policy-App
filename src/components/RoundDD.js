@@ -1,16 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
-
-import { v4 as uuidv4 } from "uuid";
-import { useSelector } from "react-redux";
-
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components/macro";
-import useOutsiteClick from "../customHooks/useOutsideClick";
+import { v4 as uuidv4 } from "uuid";
 import { useTheme } from "../customHooks";
+import useOutsiteClick from "../customHooks/useOutsideClick";
 import { months2years } from "../utils/helper";
 
 const RoundDD = ({
   disabled,
-  title,
   list,
   handleChange,
   type,
@@ -18,8 +14,6 @@ const RoundDD = ({
   redBorder,
   code,
   member,
-  selectedMembers,
-
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,14 +34,11 @@ const RoundDD = ({
     setIsOpen(!isOpen);
   };
   const handleSelect = (value, data) => {
-    console.log(data);
     const isMonth = data.title.search("Months");
-    console.log(isMonth);
     const newData = {
       title: data.title,
       id: months2years(data.title.split(" ")[0]),
     };
-    console.log();
     handleChange(code, value, type, isMonth === -1 ? data : newData);
 
     setIsOpen(!isOpen);

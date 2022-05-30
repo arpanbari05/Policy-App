@@ -1,28 +1,26 @@
-import CustomProgressBar from "../../../components/ProgressBar";
-import { ErrorMessage, Title } from "./FormComponents";
-import {
-  useFrontendBoot,
-  useMembers,
-  useTheme,
-  useToggle,
-  useUpdateEnquiry,
-  useUrlEnquiry,
-} from "../../../customHooks";
+import { useEffect, useState } from "react";
+import { RiAddCircleFill } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components/macro";
+import { InputFormCta } from ".";
 import { useGetEnquiriesQuery } from "../../../api/api";
+import { Button } from "../../../components";
 import {
   MemberOptions,
   useMembersForm,
 } from "../../../components/MemberOptions";
-import styled from "styled-components/macro";
-import { useHistory } from "react-router-dom";
-import { InputFormCta } from ".";
-import { RiAddCircleFill } from "react-icons/ri";
-import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
-import { Button } from "../../../components";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import CustomProgressBar from "../../../components/ProgressBar";
+import {
+  useFrontendBoot,
+  useMembers,
+  useTheme,
+  useUpdateEnquiry,
+  useUrlEnquiry,
+} from "../../../customHooks";
 import { setShowEditMembers } from "../../../pages/quotePage/quote.slice";
+import { EditMembersModal } from "../../quotePage/components/filters/EditMemberFilter";
+import { ErrorMessage, Title } from "./FormComponents";
 
 function InputMembersForm({ posContent, ...props }) {
   const [serverError, setServerError] = useState("");
@@ -75,7 +73,6 @@ function InputMembersForm({ posContent, ...props }) {
     if (!isValid) return;
 
     const selectedMembers = getSelectedMembers();
-    console.log("selectedMembers", selectedMembers);
 
     const sendData = {
       members: selectedMembers.map(member => ({
@@ -235,20 +232,10 @@ function EditMembers({
   onClose,
   serverError,
   onSubmit,
-  initialMembersList = [],
   setServerError,
   gender,
   ...props
 }) {
-  // const {
-  //   isError,
-  //   error,
-  //   validate,
-  //   getSelectedMembers,
-  //   membersList,
-  //   ...membersForm
-  // } = useMembersForm(initialMembersList);
-
   const handleSubmit = evt => {
     evt.preventDefault();
     const isValid = validate();

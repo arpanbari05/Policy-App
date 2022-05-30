@@ -1,14 +1,11 @@
-import * as mq from "../../../../utils/mediaQueries";
-import { CloseButton } from "../../../Cart/components/SidebarCart/SidebarCart";
-import { useSelector } from "react-redux";
-import { selectCompany } from "../../../../FrontendBoot/reducer/frontendBoot.slice";
-import { amount } from "../../../../utils/helper";
 import { Accordion } from "react-bootstrap";
 import "styled-components/macro";
-import { ErrorMessage, ListItem, useFetchDownloads } from "./helpers";
-import useAddOnDetails from "./helpers";
-import AddOnDetails, { addOnDetailsComponents } from "./AddOnDetails";
 import { useCompanies } from "../../../../customHooks";
+import { amount } from "../../../../utils/helper";
+import * as mq from "../../../../utils/mediaQueries";
+import { CloseButton } from "../../../Cart/components/SidebarCart/SidebarCart";
+import { addOnDetailsComponents } from "./AddOnDetails";
+import useAddOnDetails, { ErrorMessage } from "./helpers";
 
 function AddOnDetailsMobile({ addOn, handleClose, ...props }) {
   return (
@@ -248,7 +245,6 @@ AddOnDetailsMobile.Body = function Body({ addOn }) {
 
 function DetailBody({ addOnDetail, children }) {
   const { name } = addOnDetail;
-  console.log("name", name);
   return (
     <div>
       <DetailsTitle eventKey={name}>{name}</DetailsTitle>
@@ -259,18 +255,6 @@ function DetailBody({ addOnDetail, children }) {
         `}
       >
         <div>{children}</div>
-      </Accordion.Collapse>
-    </div>
-  );
-}
-
-function Downloads({ addOn, setDownloads, downloads }) {
-  const { status, handleRetry } = useFetchDownloads({ addOn, setDownloads });
-  return (
-    <div>
-      <DetailsTitle eventKey="downloads">Downloads</DetailsTitle>
-      <Accordion.Collapse eventKey={"downloads"}>
-        <div>Hi</div>
       </Accordion.Collapse>
     </div>
   );

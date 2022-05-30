@@ -1,7 +1,6 @@
 import React from "react";
 import "styled-components/macro";
 import BackButton from "../../../../components/BackButton";
-import GoBack from "../../../ComparePage/components/GoBackBtn/GoBack";
 const BackBtn = ({ onClick, hide, customStyle }) => {
   return (
     <BackButton

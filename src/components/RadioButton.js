@@ -1,10 +1,8 @@
 import React from "react";
-import styled from "styled-components/macro";
-import { useSelector } from "react-redux";
 import { FaCheck } from "react-icons/fa";
+import styled from "styled-components/macro";
 import { useTheme } from "../customHooks";
 const RadioButton = ({
-  onChange,
   checked,
   value,
   id,

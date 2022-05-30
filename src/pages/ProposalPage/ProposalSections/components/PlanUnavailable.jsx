@@ -1,19 +1,17 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setShowBMI } from "../ProposalSections.slice";
-import { setShowPlanNotAvail } from "../ProposalSections.slice";
+import { FaTimes } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import { useMembers } from "../../../../customHooks/index";
 import useUrlQuery from "../../../../customHooks/useUrlQuery";
+import { setShowPlanNotAvail } from "../ProposalSections.slice";
 import {
   ButtonWrapper,
-  CloseButton,
+  Container,
   Popup,
   PopupWrapper,
-  Container,
   ViewQuotesWrapper,
 } from "./BMI";
-import { FaTimes } from "react-icons/fa";
-import { useMembers } from "../../../../customHooks/index"
 
 const PlanUnavailable = () => {
   const { showPlanNotAvail } = useSelector(state => state.proposalPage);
@@ -27,9 +25,12 @@ const PlanUnavailable = () => {
     return (
       <PopupWrapper>
         <Popup>
-            <FaTimes style={{margin: "20px 20px 0 0", cursor: "pointer"}} onClick={() => {
+          <FaTimes
+            style={{ margin: "20px 20px 0 0", cursor: "pointer" }}
+            onClick={() => {
               dispatch(setShowPlanNotAvail(false));
-            }} />
+            }}
+          />
           <Container>
             <span>Plan Unavailable</span>
             <p>

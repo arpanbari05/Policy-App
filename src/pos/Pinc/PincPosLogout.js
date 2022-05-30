@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
+import { RiLogoutCircleRLine } from "react-icons/ri";
 import styled from "styled-components";
 import { useFrontendBoot, useTheme } from "../../customHooks";
-import { allowOnWebsites } from "../../utils/helper";
-import { RiLogoutCircleRLine } from "react-icons/ri";
 import usePosVerification from "./usePosVerification";
 
 export default function PincPosLogout() {

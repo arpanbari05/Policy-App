@@ -1,7 +1,8 @@
-import { Modal, Tab, Tabs } from "react-bootstrap";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { some } from "lodash";
+import { Tabs } from "react-bootstrap";
+import { IoArrowBackCircleSharp } from "react-icons/io5";
+import { useParams } from "react-router-dom";
 import styled from "styled-components/macro";
-import { Button, useGotoProductDetailsPage } from "../../../components";
 import {
   useGetAboutCompanyQuery,
   useGetClaimProcessQuery,
@@ -9,6 +10,8 @@ import {
   useGetProductBrochureQuery,
   useGetProductFeaturesQuery,
 } from "../../../api/api";
+import { Button, useGotoProductDetailsPage } from "../../../components";
+import { CircleLoader } from "../../../components/index";
 import {
   useCompanies,
   useFrontendBoot,
@@ -16,6 +19,12 @@ import {
   useTheme,
   useToggle,
 } from "../../../customHooks";
+import MobileAboutCompany from "../../../pages/ProductDetails/components/Mobile/MobileAboutCompany/MobileAboutCompany";
+import MobileAddOnCoverages from "../../../pages/ProductDetails/components/Mobile/MobileAddOnCoverages";
+import MobileCashlessHospitals from "../../../pages/ProductDetails/components/Mobile/MobileCashlessHospitals/MobileCashlessHospitals";
+import MobileClaimProcess from "../../../pages/ProductDetails/components/Mobile/MobileClaimProcesses/MobileClaimProcesses";
+import MobilePlanDetails from "../../../pages/ProductDetails/components/Mobile/MobilePlanDetails";
+import { QuoteCardSelect } from "../../../pages/quotePage/components/QuoteCards";
 import {
   amount,
   calculateTotalPremium,
@@ -25,29 +34,14 @@ import {
   isSSOJourney,
   numberToDigitWord,
 } from "../../../utils/helper";
-import { mobile, small, tabletAndMobile } from "../../../utils/mediaQueries";
-import CardSkeletonLoader from "../../Common/card-skeleton-loader/CardSkeletonLoader";
-import { some } from "lodash";
-import AboutCompany from "../../../pages/SeeDetails/DataSet/AboutCompany";
-import PlanDetails from "../../../pages/SeeDetails/DataSet/PlanDetails";
-import { Riders } from "../../../pages/ProductDetails/components/CustomizeYourPlan";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { small, tabletAndMobile } from "../../../utils/mediaQueries";
 import CartSummaryModal from "../../CartSummaryModal";
-import MobilePlanDetails from "../../../pages/ProductDetails/components/Mobile/MobilePlanDetails";
-import MobileAddOnCoverages from "../../../pages/ProductDetails/components/Mobile/MobileAddOnCoverages";
-import { IoArrowBackCircleSharp } from "react-icons/io5";
-import MobileClaimProcess from "../../../pages/ProductDetails/components/Mobile/MobileClaimProcesses/MobileClaimProcesses";
-import MobileAboutCompany from "../../../pages/ProductDetails/components/Mobile/MobileAboutCompany/MobileAboutCompany";
-import MobileCashlessHospitals from "../../../pages/ProductDetails/components/Mobile/MobileCashlessHospitals/MobileCashlessHospitals";
-import { QuoteCardSelect } from "../../../pages/quotePage/components/QuoteCards";
+import CardSkeletonLoader from "../../Common/card-skeleton-loader/CardSkeletonLoader";
 import { getSumInsuredOptions } from "../ProductDetailsModal";
-import { CircleLoader } from "../../../components/index";
 
 export function MobileProductHeader({
   quote,
   selectedRiders = [],
-  onClose,
   isLoading,
   setCurSumInsured = () => {},
   ...props
@@ -64,7 +58,6 @@ export function MobileProductHeader({
     sum_insured,
     total_premium,
     mandatory_riders,
-    health_riders,
     tenure,
     deductible,
     available_sum_insureds,
@@ -343,7 +336,6 @@ export const MobileProductDetailsFooter = ({
   quote,
   selectedRiders = [],
   onClose,
-  ...props
 }) => {
   const {
     buyQuote,
@@ -543,7 +535,7 @@ export function MobileRidersSection({ quote, isLoading, ...props }) {
   );
 }
 
-export function MobileRenderClaimProcess({ quote, ...props }) {
+export function MobileRenderClaimProcess({ quote }) {
   const {
     product: { company, id },
   } = quote;
@@ -575,7 +567,7 @@ export function MobileRenderClaimProcess({ quote, ...props }) {
   );
 }
 
-export function MobileRenderAboutCompany({ quote, ...props }) {
+export function MobileRenderAboutCompany({ quote }) {
   const {
     product: { company },
   } = quote;
@@ -604,7 +596,7 @@ export function MobileRenderAboutCompany({ quote, ...props }) {
   );
 }
 
-export function MobileRenderCashlessHospitals({ quote, ...props }) {
+export function MobileRenderCashlessHospitals({ quote }) {
   const {
     product: { company },
   } = quote;

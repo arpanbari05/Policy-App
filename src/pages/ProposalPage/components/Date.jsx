@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import moment from "moment";
+import React, { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
-import calendar from "./../../../assets/images/calendar.png";
 import MaskedInput from "react-text-mask";
+import styled from "styled-components";
+import calendar from "./../../../assets/images/calendar.png";
 
 const DateComp = ({
   label,
@@ -46,8 +46,6 @@ const DateComp = ({
       Number(age[0]) < 1 &&
       parseInt(val) === parseInt(currentYear)
     ) {
-      console.log("fvbdwedfewdwk", val);
-
       return getMoment(
         `${currentDate}-${currentMonth - (Number(age[0]) + 1)}-${val}`,
       );
@@ -235,15 +233,7 @@ const InputContainer = styled.div`
     }
   }
 `;
-const Input = styled.input`
-  list-style: none;
-  list-style-type: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  box-sizing: border-box;
-  margin: 0;
-  text-transform: ${props => props.textTransform};
-`;
+
 const Label = styled.label`
   text-align: left;
   list-style: none;

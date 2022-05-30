@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components/macro";
-import { IoArrowBackSharp } from "react-icons/io5";
 
 const BackButton = ({
   type,
@@ -11,7 +10,6 @@ const BackButton = ({
   width,
   height,
   bg,
-  icon,
   color,
 
   styledCss,

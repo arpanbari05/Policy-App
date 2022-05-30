@@ -1,38 +1,36 @@
+import { uniq } from "lodash";
 import { useEffect, useState } from "react";
 import { Col, Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { SeeText } from "./QuoteCard.style";
-import "styled-components/macro";
 import {
-  useCompanies,
-  useTheme,
-  useToggle,
-  useShortlistedPlans,
-} from "../../../customHooks";
-import ProductDetailsModal from "../../../components/ProductDetails/ProductDetailsModal";
-import { PremiumButton } from "../../../components";
-import { ClickSound, numberToDigitWord } from "../../../utils/helper";
-import { uniq } from "lodash";
-import { IoIosCheckmarkCircle } from "react-icons/io";
-import { IoIosArrowForward } from "react-icons/io";
-import { FaBookmark, FaRegBookmark } from "react-icons/fa";
-import { quoteFeatures } from "../../../test/data/quoteFeatures";
-import Select from "react-select";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+  FaBookmark,
+  FaChevronDown,
+  FaChevronUp,
+  FaRegBookmark,
+} from "react-icons/fa";
+import { IoIosArrowForward, IoIosCheckmarkCircle } from "react-icons/io";
 import { RiInformationLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import Select from "react-select";
+import "styled-components/macro";
+import { PremiumButton } from "../../../components";
+import ProductDetailsModal from "../../../components/ProductDetails/ProductDetailsModal";
 import {
-  setQuotesToShare,
-  removeQuoteFromShare,
-  addShortListedQuote,
-  removeShortListedQuote,
-} from "../quote.slice";
+  useCompanies,
+  useShortlistedPlans,
+  useTheme,
+  useToggle,
+} from "../../../customHooks";
 import {
-  XSmallFont,
-  TertiaryFont,
   SecondaryFont,
   SecondaryFontBold,
+  TertiaryFont,
+  XSmallFont,
 } from "../../../styles/typography";
-import { useParams } from "react-router-dom";
+import { quoteFeatures } from "../../../test/data/quoteFeatures";
+import { ClickSound, numberToDigitWord } from "../../../utils/helper";
+import { removeQuoteFromShare, setQuotesToShare } from "../quote.slice";
+import { SeeText } from "./QuoteCard.style";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",

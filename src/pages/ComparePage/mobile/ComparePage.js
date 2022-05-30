@@ -38,6 +38,7 @@ import {
 import _ from "lodash";
 import AddPlansModal from "../components/AddPlansModal";
 import TenureFeatureValueMobile from "../components/tenure/TenureMobile";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 function findQuoteBySumInsured(quotes, sum_insured) {
   return quotes.find(
@@ -513,7 +514,20 @@ function SumInsuredFeatureValue({ quote, onChange, allQuotes }) {
       {isLoading ? (
         <div>{numberToDigitWord(quote.sum_insured)}</div>
       ) : (
-        <select value={quote.sum_insured} onChange={handleChange}>
+        <select
+          value={quote.sum_insured}
+          onChange={handleChange}
+          css={`
+            width: 80px;
+            background-color: transparent;
+            z-index: 10;
+            color: inherit;
+            -webkit-appearance: none;
+            &::-ms-expand {
+              display: none;
+            }
+          `}
+        >
           {sumInsureds.map(sumInsured => {
             const index = similarQuotes.findIndex(
               quoteData => quoteData.sum_insured === sumInsured,
@@ -529,7 +543,17 @@ function SumInsuredFeatureValue({ quote, onChange, allQuotes }) {
           })}
         </select>
       )}
-      {isLoading ? <CircleLoader animation="border" /> : null}
+      {isLoading ? (
+        <CircleLoader animation="border" />
+      ) : (
+        <span
+          css={`
+            transform: translateX(-30px);
+          `}
+        >
+          <RiArrowDropDownLine size={25} />
+        </span>
+      )}
     </FeatureValue>
   );
 }
