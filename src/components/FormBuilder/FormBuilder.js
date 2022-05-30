@@ -29,10 +29,10 @@ const FormBuilder = ({
   setCustomValid = () => {},
   noForAll,
   setNoForAll,
-  setNoForAllEmpty,
+
   keyStr,
   lastName,
-  isInsuredDetails,
+
   proposalData,
   canProceed,
   yesSelected,
@@ -64,10 +64,8 @@ const FormBuilder = ({
     values,
     triggerValidation,
     errors,
-    isValid,
     setValues,
     insertValue,
-    setErrors,
     updateValues,
     checkReadOnly,
     updateValidateObjSchema,
@@ -89,21 +87,25 @@ const FormBuilder = ({
     fetchValid,
     isPanelVisible,
     keyStr,
-    otherDetails
+    otherDetails,
   });
+
+  console.log("The values in formbuilder" , values)
+
   useEffect(() => {
+
     if (formName === "Other Details") {
-      if (values.nominee_relation && insuredDetails[values.nominee_relation]) {
+      if (values.nominee_relation && insuredDetails[values?.nominee_relation]) {
         autoPopulateSelfOtherDetails({
           updateValues,
-          selectedNomineeRelation: values.nominee_relation,
+          selectedNomineeRelation: values?.nominee_relation,
         });
         // triggerValidation();
       } else if (
         preFilledDataBase &&
         Object.keys(preFilledDataBase).length &&
-        preFilledDataBase.nominee_relation &&
-        preFilledDataBase.nominee_relation === values.nominee_relation
+        preFilledDataBase?.nominee_relation &&
+        preFilledDataBase?.nominee_relation === values?.nominee_relation
       ) {
         updateValues(preFilledDataBase, "SAVE_AS_IT_IS");
       } else
@@ -112,7 +114,7 @@ const FormBuilder = ({
           "SAVE_AS_IT_IS",
         );
     }
-  }, [values.nominee_relation]);
+  }, [values?.nominee_relation]);
 
   const [trigger, setTrigger] = useState(false);
 

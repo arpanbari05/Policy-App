@@ -9,8 +9,6 @@ const useFormBuilder = ({
   setNoForAll,
   formName,
   insuredDetails,
-  canProceed,
-  yesSelected,
   proposalDetails,
   setErrorInField,
   fetchErrors,

@@ -18,14 +18,8 @@ import {
   setUnderWritingStatus,
   submitProposalData,
 } from "./ProposalSections.slice";
-import useUrlQuery from "../../../customHooks/useUrlQuery";
-import {
-  useRevisedPremiumModal,
-  useCart,
-  useFrontendBoot,
-} from "../../../customHooks";
-import { useGetEnquiriesQuery } from "../../../api/api";
-import { shareViaEmailApi } from "../../../components/ShareQuoteModal";
+
+
 
 const useProposalSections = ({
   setActive,
