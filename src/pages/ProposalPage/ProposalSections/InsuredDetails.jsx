@@ -84,6 +84,8 @@ const InsuredDetails = ({
     schema,
     setBlockTabSwitch,
   });
+
+  
   useEffect(() => {
     if (name === "Insured Details" && isValid.includes(false))
       setShow(isValid.indexOf(false));

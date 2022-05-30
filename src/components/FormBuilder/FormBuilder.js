@@ -29,10 +29,8 @@ const FormBuilder = ({
   setCustomValid = () => {},
   noForAll,
   setNoForAll,
-
   keyStr,
   lastName,
-
   proposalData,
   canProceed,
   yesSelected,
@@ -90,10 +88,7 @@ const FormBuilder = ({
     otherDetails,
   });
 
-  console.log("The values in formbuilder" , values)
-
   useEffect(() => {
-
     if (formName === "Other Details") {
       if (values.nominee_relation && insuredDetails[values?.nominee_relation]) {
         autoPopulateSelfOtherDetails({

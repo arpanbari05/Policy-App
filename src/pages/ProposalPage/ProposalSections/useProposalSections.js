@@ -19,16 +19,15 @@ import {
   submitProposalData,
 } from "./ProposalSections.slice";
 
-
-
 const useProposalSections = ({
   setActive,
   partialLength,
   setActivateLoader,
   setBlockTabSwitch,
   name,
+  defaultValue,
 }) => {
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState(defaultValue || {});
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(0);
   const [errorInField, setErrorInField] = useState(true);
