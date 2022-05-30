@@ -30,7 +30,7 @@ export default function useIsUserVerified() {
           });
         })
         .catch(error => {
-          console.log(error);
+          console.error(error);
           alert(error.message);
           setLoading(false);
         });

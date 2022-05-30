@@ -66,7 +66,6 @@ const TextInput = ({
   };
 
   const checkAllChar = (value, checkValue) => {
-    console.log(checkValue);
     let check = true;
     for (let i in value) {
       if (checkValue.includes(value[i])) {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { numToLakh } from "../pages/ComparePage/useComparePage";
 import { useFrontendBoot } from "./index";
 import { useUrlQueries } from "./useUrlQuery";
 
@@ -24,13 +25,13 @@ function getFeatures(quotes) {
 
     return {
       product: quote.product,
-      sum_insured: quote.sum_insured,
+      sum_insured: numToLakh(quote.sum_insured),
       cashless_hospitals_count: quote.cashless_hospitals_count,
       company_alias: quote.company_alias,
       deductible: quote.deductible,
       tenure: quote.tenure,
       total_premium: quote.total_premium,
-      features_contnet: currentProductFeaturesBySumInsures,
+      features: currentProductFeaturesBySumInsures,
     };
   });
 
@@ -76,5 +77,5 @@ export default function useDownloadPDF({ quotes }) {
     }
   }
 
-  return { status, pdfFetchLoading, downloadComparePDF };
+  return { pdfFetchLoading, downloadComparePDF };
 }

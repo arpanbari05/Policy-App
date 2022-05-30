@@ -172,17 +172,6 @@ export function CompareTray({ quotes = [], onRemove, onClose }) {
             Compare Now
           </PrimaryFontBold>
         </Button>
-        {/* <Button
-          css={`
-            background: ${colors.secondary_shade};
-          `}
-          onClick={onClose}
-          className="my-3 w-100"
-        >
-          <PrimaryFontBold css={"text-align: center; color: #444;"}>
-            Cancel
-          </PrimaryFontBold>
-        </Button> */}
       </div>
     </div>
   );

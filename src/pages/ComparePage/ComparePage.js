@@ -459,7 +459,6 @@ function DownloadButton({ ...props }) {
   const { colors } = useTheme();
   const { pdfFetchLoading, downloadComparePDF } = useDownloadPDF({
     quotes: props.quotes,
-    logo: [],
   });
   const handleClick = () => {
     downloadComparePDF();

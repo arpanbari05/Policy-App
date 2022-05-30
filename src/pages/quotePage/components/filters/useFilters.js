@@ -176,7 +176,7 @@ function useFilters() {
     );
   }
 
-  const { cover, plantype, baseplantype, tenure } = defaultfilters;
+  const { cover, baseplantype, tenure } = defaultfilters;
   const selectedCover = getSelectedFilter("cover");
   const selectedPlanType = getSelectedFilter("plantype");
   const selectedTenure = getSelectedFilter("tenure");
