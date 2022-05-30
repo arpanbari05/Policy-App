@@ -33,11 +33,11 @@ const Dropdown = forwardRef(
         outline: "0px !important",
         display: hideDefaultControl ? "none" : "flex",
       }),
-      placeholder: (provided, state) => ({
+      placeholder: provided => ({
         ...provided,
         fontWeight: "bold",
       }),
-      input: (provided, state) => ({
+      input: provided => ({
         ...provided,
         fontWeight: "bold",
       }),

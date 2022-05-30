@@ -43,8 +43,8 @@ const TextInput = ({
         ].split("-")[2],
       );
   const [isFocused, setIsFocused] = useState(false);
-  const [fallbackValue, setFallbackValue] = useState("");
-  const [isChanged, setChanged] = useState(false);
+  const [, setFallbackValue] = useState("");
+  const [, setChanged] = useState(false);
   const regForOnlyDigit = new RegExp("^[0-9]*$");
   const [isHovering, setIsHovering] = useState(false);
   const fullName = value || "";

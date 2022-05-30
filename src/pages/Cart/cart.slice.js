@@ -102,7 +102,7 @@ export const getCart = (checkRenewal, next) => async (dispatch, getState) => {
     }
   } catch (error) {
     alert(error);
-    console.log(error);
+    console.error(error);
   }
 };
 

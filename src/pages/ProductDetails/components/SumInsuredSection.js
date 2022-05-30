@@ -1,14 +1,17 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import "styled-components/macro";
 import { OptionCard, WrapWithTitle } from ".";
+import { useGetRenewalSumInsuredsQuery } from "../../../api/api";
 import { CircleLoader } from "../../../components";
 import { useCart } from "../../../customHooks";
-import { amount, numberToDigitWord } from "../../../utils/helper";
+import {
+  amount,
+  numberToDigitWord,
+  renewalSumInsuredGenerator,
+} from "../../../utils/helper";
 import { mobile } from "../../../utils/mediaQueries";
 import FeatureSection from "./FeatureSection/FeatureSection";
-import "styled-components/macro";
-import { useGetRenewalSumInsuredsQuery } from "../../../api/api";
-import { renewalSumInsuredGenerator } from "../../../utils/helper";
-import { useParams } from "react-router-dom";
 
 function SumInsuredSection() {
   const { groupCode } = useParams();

@@ -188,7 +188,7 @@ export function FilterModal({ onClose, show }) {
     if (!givenCustomCover) {
       setCustomCover("");
       setCustomCoverError("");
-      onChange && onChange(getSelectedFilter("cover"));
+      onChange?.(getSelectedFilter("cover"));
       return;
     }
 
@@ -201,18 +201,17 @@ export function FilterModal({ onClose, show }) {
 
       if (customCoverError) {
         setCustomCoverError(customCoverError);
-        onChange && onChange({});
+        onChange?.({});
 
         return;
       }
 
       setCustomCoverError("");
-      onChange &&
-        onChange({
-          code: `${givenCustomCover}-${givenCustomCover}`,
-          display_name: givenCustomCover,
-          custom: `${givenCustomCover}`,
-        });
+      onChange?.({
+        code: `${givenCustomCover}-${givenCustomCover}`,
+        display_name: givenCustomCover,
+        custom: `${givenCustomCover}`,
+      });
     }
   };
 
@@ -223,12 +222,13 @@ export function FilterModal({ onClose, show }) {
 
   const handleShowPlansClick = () => {
     updateFilters(filters);
+    // eslint-disable-next-line no-unused-expressions
     !filters?.cover?.applicable_on_pos &&
     isSSOJourney() &&
     pos_nonpos_switch_message
       ? dispatch(setPosPopup(true))
       : dispatch(setPosPopup(false));
-    onClose && onClose();
+    onClose?.();
   };
 
   const NAV = {
@@ -459,7 +459,7 @@ export function FilterOptions({
   }
 
   const handleChange = option => {
-    onChange && onChange(code, option, type);
+    onChange?.(code, option, type);
   };
 
   return (
@@ -516,7 +516,7 @@ function FilterOption({
 
   const handleChange = () => {
     ClickSound();
-    onChange && onChange(option, !checked);
+    onChange?.(option, !checked);
   };
 
   return (
@@ -603,7 +603,7 @@ function InsurersFilter({ onChange, currentOptions, code }) {
 
   const handleChange = company => {
     // if (evt.target.checked) {
-    onChange && onChange(code, company, "check");
+    onChange?.(code, company, "check");
     // }
   };
 
@@ -637,7 +637,7 @@ function InsurerOption({
 
   const handleChange = evt => {
     setChecked(evt.target.checked);
-    onChange && onChange(company, evt);
+    onChange?.(company, evt);
   };
 
   return (

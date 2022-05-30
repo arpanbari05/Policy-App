@@ -1,8 +1,7 @@
-import styled from "styled-components/macro";
-import "styled-components/macro";
-import { useState, useEffect } from "react";
-import { useTheme } from "../customHooks";
+import { useEffect, useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import styled from "styled-components/macro";
+import { useTheme } from "../customHooks";
 import { autoCapitalizationHandler } from "../utils/helper";
 
 function DropDown2({ label, value, onChange, options, onBlur }) {

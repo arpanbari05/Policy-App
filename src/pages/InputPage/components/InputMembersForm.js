@@ -130,7 +130,7 @@ function InputMembersForm({ posContent, ...props }) {
         nextPagePath = `/input/location-${firstGroup}`;
         history.push(getUrlWithEnquirySearch(nextPagePath));
       })
-      .catch(error => console.log(error));
+      .catch(error => console.error(error));
   };
 
   if (isLoading) return <p>Loading...</p>;

@@ -1,30 +1,26 @@
 import { useParams } from "react-router";
-import { mobile, small } from "../../../utils/mediaQueries";
 import styled from "styled-components/macro";
+import { useGetEnquiriesQuery } from "../../../api/api";
 import {
   useAdditionalDiscount,
   useCart,
   useFrontendBoot,
-  useRiders,
-  useTenureDiscount,
   useTheme,
 } from "../../../customHooks";
 import {
   amount,
+  getTotalPremiumWithDiscount,
   numberToDigitWord,
   tenureInWords,
-  getTotalPremiumWithDiscount,
 } from "../../../utils/helper";
-import "styled-components/macro";
-import _ from "lodash";
-import { useGetEnquiriesQuery } from "../../../api/api";
+import { mobile, small } from "../../../utils/mediaQueries";
 
 function ProductCard() {
   const { groupCode } = useParams();
 
   const { colors } = useTheme();
 
-  const { journeyType, subJourneyType } = useFrontendBoot();
+  const { subJourneyType } = useFrontendBoot();
 
   const { getCartEntry } = useCart();
 
@@ -382,21 +378,4 @@ function Detail({ label, children }) {
       </div>
     </div>
   );
-}
-
-function isQueryLoading(query) {
-  return _.some([query.isUninitialized, query.isLoading, query.isFetching]);
-}
-
-function useTotalPremiumLoader(cartEntry) {
-  const { group } = cartEntry;
-  const tenureDiscount = useTenureDiscount(group?.id);
-  const riders = useRiders({ quote: cartEntry, groupCode: group?.id });
-
-  const isTotalPremiumLoading = _.some([
-    isQueryLoading(tenureDiscount?.query),
-    isQueryLoading(riders?.query),
-  ]);
-
-  return isTotalPremiumLoading;
 }

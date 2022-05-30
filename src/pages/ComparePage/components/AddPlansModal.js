@@ -383,7 +383,7 @@ function QuoteCard({
   );
 }
 
-function QuoteCardOption({ title = "", children, ...props }) {
+function QuoteCardOption({ title = "", children }) {
   return (
     <div>
       <div

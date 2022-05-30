@@ -23,7 +23,7 @@ function ProductSummaryMobile({ cart }) {
   const location = useLocation();
 
   const [show, setShow] = useState(false);
-  const [showP, setShowP] = useState(false);
+  const showP = false;
   // const { theme } = useSelector(state => state.frontendBoot);
 
   const { colors } = useTheme();

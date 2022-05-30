@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchQuotes, setFilters } from "../quotePage/quote.slice";
-
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { useFrontendBoot } from "../../customHooks";
 import {
   getCompare,
   removeFeature,
@@ -12,13 +14,13 @@ import {
   setShoutGetCompare,
   updateQuotes,
 } from "../ComparePage/compare.slice";
+import {
+  fetchQuotes,
+  removeQuotesForCompare,
+  setFilters,
+  setQuotesForCompare,
+} from "../quotePage/quote.slice";
 import { getFeatures, resetFeature } from "./compare.slice";
-import { setQuotesForCompare } from "../quotePage/quote.slice";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import { useParams } from "react-router";
-import { removeQuotesForCompare } from "../quotePage/quote.slice";
-import { useFrontendBoot } from "../../customHooks";
 
 const useComparePage = () => {
   const dispatch = useDispatch();

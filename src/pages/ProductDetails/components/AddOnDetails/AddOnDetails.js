@@ -208,7 +208,6 @@ AddOnDetails.WhatItCovers = function WhatItCovers({
   sumInsured,
 }) {
   const { features } = addOnDetail.sum_insureds[sumInsured] || {};
-  console.log("ddd", features);
   return (
     <div
       css={`
@@ -371,7 +370,7 @@ AddOnDetails.NavBody = function NavBody({
 };
 
 AddOnDetails.Nav = function Nav({ navItems = [] }) {
-  const [currentItem, setCurrentItem] = useState(navItems[0]);
+  const [, setCurrentItem] = useState(navItems[0]);
 
   const handleNavClick = itemName => setCurrentItem(itemName);
 
@@ -388,25 +387,6 @@ AddOnDetails.Nav = function Nav({ navItems = [] }) {
         height: calc(60px * ${navItems.length + 1});
       `}
     >
-      {/* <div
-        css={`
-          position: absolute;
-          height: 100%;
-          width: 8px;
-          background-color: #f1f1f1;
-          border-radius: 10px;
-        `}
-      >
-        <div
-          css={`
-            height: calc(100% / ${navItems.length + 1});
-            background-color: var(--abc-red);
-            border-radius: 10px;
-            transition: all 0.33s cubic-bezier(0.38, 0.8, 0.32, 1.07);
-            transform: translateY(calc(100% * ${navItemPosition}));
-          `}
-        />
-      </div> */}
       <Nav
         className="flex-column"
         css={`
