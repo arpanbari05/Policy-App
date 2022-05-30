@@ -1,4 +1,8 @@
-import { useState, useEffect, useReducer, useMemo } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { every, uniq } from "lodash";
+import RandExp from "randexp";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import {
@@ -23,17 +27,31 @@ import {
   useUpdateGroupsMutation,
   useUpdateShortlistedQuotesMutation,
 } from "../api/api";
+import config from "../config";
 import { getRiderSendData } from "../pages/Cart/hooks/useCartProduct";
-import useFilters from "../pages/quotePage/components/filters/useFilters";
 import {
-  setPolicyTypes,
-  setPolicyType,
-  replaceShortlistedQuote,
-} from "../pages/quotePage/quote.slice";
+  requestDownloadSuccess,
+  sendEmailAction,
+} from "../pages/ComparePage/compare.slice";
+import { refreshUserData } from "../pages/InputPage/greetingPage.slice";
+import {
+  setIsPopupOn,
+  setShowErrorPopup,
+} from "../pages/ProposalPage/ProposalSections/ProposalSections.slice";
+import useFilters from "../pages/quotePage/components/filters/useFilters";
 import useQuoteFilter from "../pages/quotePage/components/filters/useQuoteFilter";
+import {
+  addShortListedQuote,
+  removeShortListedQuote,
+  replaceShortlistedQuote,
+  setPolicyType,
+  setPolicyTypes,
+} from "../pages/quotePage/quote.slice";
 import styles from "../styles";
+import { quoteCompareFeature } from "../test/data/quoteFeatures";
 import {
   allowOnSpecificPages,
+  calculateTotalPremium,
   capitalize,
   dateObjectToLocaleString,
   featureOptionsValidValue,
@@ -51,29 +69,7 @@ import {
   parseJson,
   regexStringToRegex,
 } from "../utils/helper";
-import { calculateTotalPremium } from "../utils/helper";
 import useUrlQuery, { useUrlQueries } from "./useUrlQuery";
-import { every, uniq } from "lodash";
-import config from "../config";
-import { useCallback } from "react";
-import { quoteCompareFeature } from "../test/data/quoteFeatures";
-import { refreshUserData } from "../pages/InputPage/greetingPage.slice";
-import {
-  addShortListedQuote,
-  removeShortListedQuote,
-} from "../pages/quotePage/quote.slice";
-import _ from "lodash";
-import {
-  requestDownloadSuccess,
-  sendEmailAction,
-} from "../pages/ComparePage/compare.slice";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import {
-  setIsPopupOn,
-  setShowErrorPopup,
-} from "../pages/ProposalPage/ProposalSections/ProposalSections.slice";
-import RandExp from "randexp";
 
 const journeyTypeInsurances = {
   top_up: ["top_up"],
@@ -274,12 +270,7 @@ const subJourneyTypeOptions = {
 
 export function useFrontendBoot(skipEnquiry = true) {
   const searchQueries = useUrlQueries();
-  const {
-    data: frontendData,
-    isLoading,
-    isUninitialized,
-    ...query
-  } = useGetFrontendBootQuery();
+  const { data: frontendData, ...query } = useGetFrontendBootQuery();
 
   const { data: enquiryData } = useGetEnquiriesQuery(undefined, {
     skip: !searchQueries.enquiryId && skipEnquiry,
@@ -1392,8 +1383,6 @@ export function useUrlEnquiry() {
 
   const { groupCode } = useParams();
 
-  const { groups } = useMembers();
-
   function getUrlWithEnquirySearch(path = "") {
     const currentGroup =
       localStorage.getItem("groups") &&
@@ -1809,7 +1798,7 @@ export function useNumberInput(
   return { value, onChange, type: "tel", maxLength, touched };
 }
 
-const validatePolicyNumber = (str = "", selectedIC = {}) => {
+const validatePolicyNumber = () => {
   return true;
 };
 export function usePolicyNumberInput(
@@ -2050,6 +2039,10 @@ export function useCompareFeature(compareQuote) {
   let query = useGetCompareFeaturesQuery(compareQuote?.product?.id);
 
   let { data } = query;
+
+  if (compareQuote?.product?.id && data) {
+    sessionStorage.setItem(compareQuote?.product?.id, JSON.stringify(data));
+  }
 
   const { journeyType } = useFrontendBoot();
 

@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
-import Panel from "./../components/AccordionPanel/Panel";
-import FormBuilder from "../../../components/FormBuilder/FormBuilder";
-import { Form } from "./../ProposalPage.style";
-import { components } from "../components/componentSchema";
-import ContinueBtn from "../components/Buttons/ContinueBtn";
-import BackBtn from "../components/Buttons/BackBtn";
-import useProposalSections from "./useProposalSections";
-import useMedicalQuestions from "./useMedicalQuestions";
-import useInsuredDetails from "./useInsuredDetails";
 import { useDispatch, useSelector } from "react-redux";
 import "styled-components/macro";
+import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
+import FormBuilder from "../../../components/FormBuilder/FormBuilder";
+import { useFrontendBoot, useMembers, useTheme } from "../../../customHooks";
+import { ClickSound } from "../../../utils/helper";
 import Checkbox2 from "../../ComparePage/components/Checkbox/Checbox";
-import { useFrontendBoot, useTheme, useMembers } from "../../../customHooks";
-import {
-  setShowErrorPopup,
-  getMedicalUnderwritingStatus,
-} from "../ProposalSections/ProposalSections.slice";
 import { RevisedPremiumPopup } from "../../ProductDetails/components/ReviewCart";
-import useOtherDetails from "./useOtherDetails";
-import StyledButton from "../../../components/StyledButton";
+import BackBtn from "../components/Buttons/BackBtn";
+import ContinueBtn from "../components/Buttons/ContinueBtn";
+import { components } from "../components/componentSchema";
+import {
+  getMedicalUnderwritingStatus,
+  setShowErrorPopup,
+} from "../ProposalSections/ProposalSections.slice";
+import Panel from "./../components/AccordionPanel/Panel";
+import { Form } from "./../ProposalPage.style";
 import {
   DisableScreen,
   UnderWritingDiscisionTable,
 } from "./insuredDetails.styles";
-import SpinLoader from "../../../components/Common/SpinLoader/SpinLoader";
-import { ClickSound } from "../../../utils/helper";
+import useInsuredDetails from "./useInsuredDetails";
+import useMedicalQuestions from "./useMedicalQuestions";
+import useOtherDetails from "./useOtherDetails";
+import useProposalSections from "./useProposalSections";
 
 const InsuredDetails = ({
   schema,
@@ -72,11 +71,9 @@ const InsuredDetails = ({
     setErrorInField,
     triggerSaveForm,
     setErrors,
-    errors,
     equriesData,
     show,
     setShow,
-    cartEntries,
     isVersionRuleEngine,
   } = useProposalSections({
     setActive,
@@ -410,12 +407,6 @@ const InsuredDetails = ({
             });
           }}
         />
-
-        {/* <div className="check_status_btn">
-        <StyledButton noIcon={true} styledCss={{    padding: "0px 10px", fontSize:"16px"}}>
-        Check Underwriting Status
-      </StyledButton>
-        </div> */}
 
         <ContinueBtn
           onClick={() => {

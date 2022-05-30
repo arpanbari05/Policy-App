@@ -1,21 +1,17 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import "styled-components/macro";
+import { useTheme } from "../../customHooks";
+import { callApi } from "./FormBuilder.slice";
 import {
   checkAllow,
   fetchMembers,
-  fillingUtility,
   generateRange,
   renderField,
-  labelPicker,
   ValueExtractor,
 } from "./formUtils";
-import styled from "styled-components";
-import axios from "axios";
 import useFormBuilder from "./useFormBuilder";
-import { useDispatch, useSelector } from "react-redux";
-import { callApi } from "./FormBuilder.slice";
-import { render } from "@testing-library/react";
-import "styled-components/macro";
-import { useTheme } from "../../customHooks";
 
 const FormBuilder = ({
   components = {},

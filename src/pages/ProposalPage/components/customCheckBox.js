@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "styled-components";
 import styled from "styled-components/macro";
 
@@ -9,14 +9,14 @@ const CustomCheckBox = ({
   onChange,
   innerMember,
 }) => {
-  console.log("svjsbkvk", value);
   useEffect(() => {
     if (!value) onChange({ target: { value: "N" } });
   }, []);
   return (
-    <div style={{ display: "flex", alignItems: "center", marginBottom:"10px" }}>
+    <div
+      style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+    >
       {" "}
-      
       <input
         className="inp-cbx"
         id={name + innerMember}
@@ -24,7 +24,6 @@ const CustomCheckBox = ({
         checked={value === "Y" ? true : false}
         onChange={onChange}
       />
-     
       <label className="cbx" htmlFor={name + innerMember}>
         <span>
           <svg width="12px" height="10px">
@@ -37,10 +36,7 @@ const CustomCheckBox = ({
           <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
         </symbol>
       </svg>
-      <Question>
-      {" "}
-      {placeholder}
-    </Question>
+      <Question> {placeholder}</Question>
     </div>
   );
 };
@@ -48,7 +44,7 @@ const CustomCheckBox = ({
 export default CustomCheckBox;
 
 const Question = styled.span`
-margin-left: 7px !important;
+  margin-left: 7px !important;
 
   &:after {
     content: "";

@@ -1,13 +1,10 @@
-import { useCallback } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { AiOutlineDownload } from "react-icons/ai";
 import styled from "styled-components/macro";
+import { useTheme } from "../../../../customHooks";
 import * as mq from "../../../../utils/mediaQueries";
 import { getProductBrochureAPI } from "../../../SeeDetails/serviceApi";
 import { getAddOnDetails } from "../../serviceApi";
-import DownloadIcon from "../../../../assets/images/download.png";
-import { AiOutlineDownload } from "react-icons/ai";
-import { useTheme } from "../../../../customHooks";
 
 export function useAddOnDetails({ addOn = {} }) {
   const [addOnDetails, setAddonDetails] = useState(null);

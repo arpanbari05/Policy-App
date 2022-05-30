@@ -2,9 +2,8 @@
 
 import React from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
-import "styled-components/macro";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import "styled-components/macro";
 import { useTheme } from "../customHooks";
 const TextInput = ({
   label,
@@ -14,15 +13,12 @@ const TextInput = ({
   clear,
   autoComplete,
   styledCss,
-  allValues,
   onChange,
   onPaste,
   onClick = () => {},
-  onCopy,
   onKeyDown,
   onBlur,
   maxLength,
-  member,
   onKeyPress,
   name,
   id,

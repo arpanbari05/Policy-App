@@ -25,6 +25,5 @@ export const getAdditionalDiscounts = ({
   );
 
 export const getAddOnDetails = ({ productId }) => {
-  console.log("addOnDetailsaddOnDetailsaaaa", productId);
   return httpClient(`products/${productId}/features`);
 };

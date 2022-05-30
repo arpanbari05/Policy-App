@@ -1,7 +1,7 @@
-import { useHistory, useLocation, Redirect } from "react-router-dom";
-import useUrlQuery from "../../../customHooks/useUrlQuery";
+import { Redirect, useHistory, useLocation } from "react-router-dom";
 import { useGetPoliciesQuery } from "../../../api/api";
-import { FullScreenLoader, FullScreenLoaderSkeleton } from "../../index";
+import useUrlQuery from "../../../customHooks/useUrlQuery";
+import { FullScreenLoader } from "../../index";
 
 const dontCheckPoliciesUrl = [
   "/",
@@ -11,7 +11,7 @@ const dontCheckPoliciesUrl = [
   "/input/renewal-details",
 ];
 
-export default function CheckPolicies({ children, ...props }) {
+export default function CheckPolicies({ children }) {
   const { pathname } = useLocation();
   const history = useHistory();
 
@@ -43,10 +43,6 @@ export default function CheckPolicies({ children, ...props }) {
         }}
       />;
     }
-
-    // const isPaymentFailed = policies.some((policy) => !!policy.payment_status);
-
-    //   if (isPaymentFailed)
   }
 
   return children;

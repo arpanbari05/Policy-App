@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Import } from "../../components";
 import { useMembers } from "../../customHooks";
 import PageNotFound from "../PageNotFound";
 import QuotePageMobile from "./mobile/QuotesPage";
@@ -22,18 +21,6 @@ function QuotesPage() {
   if (!isGroupExist) return <PageNotFound />;
 
   return isMobile ? <QuotePageMobile /> : <QuotePage />;
-  // <Import
-  //   mobile={() =>
-  //     import(
-  //       /* webpackChunkName: "quotes-page-mobile" */ "./mobile/QuotesPage"
-  //     )
-  //   }
-  //   desktop={() =>
-  //     import(/* webpackChunkName: "quotes-page-desktop" */ "./QuotesPage")
-  //   }
-  // >
-  //   {Page => <Page />}
-  // </Import>
 }
 
 export default QuotesPage;

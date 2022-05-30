@@ -1,48 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import SecureLS from "secure-ls";
-import styled from "styled-components/macro";
-import { useHistory, useParams, Link } from "react-router-dom";
-import FormGrid from "../../components/Common/FormGrid/FormGrid";
-import ProposalSummary from "../../components/Common/ProposalSummary/ProposalSummary";
-import { getCart } from "../Cart/cart.slice";
-import { FaPen } from "react-icons/fa";
-import { MdOutlineArrowBackIos } from "react-icons/md";
-
-import { InsuredDetails, ProposerDetails } from "./ProposalSections";
-import BMI from "./ProposalSections/components/BMI";
-import NSTP from "./ProposalSections/components/NSTP";
-import ProductSummary from "./ProposalSections/components/ProductSummary";
-import { MobileHeader, MobileHeaderText } from "./ProposalPage.style";
-import ErrorPopup from "./ProposalSections/components/ErrorPopup";
-import { getProposalData } from "./ProposalSections/ProposalSections.slice";
-import {
-  setShowErrorPopup,
-  getMedicalUrlsRuleEngine,
-} from "./ProposalSections/ProposalSections.slice";
-
-import { getProposalFields } from "./schema.slice";
-
-import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
-import Card from "../../components/Card";
 import { Row } from "react-bootstrap";
+import { FaPen } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components/macro";
+import { BackButtonMobile, Page } from "../../components";
+import Card from "../../components/Card";
 import SpinLoader from "../../components/Common/SpinLoader/SpinLoader";
-import {
-  useTheme,
-  useUrlEnquiry,
-  useCart,
-  useUSGIDiscounts,
-  useFrontendBoot,
-  useCompanies,
-} from "../../customHooks";
-import { Page } from "../../components";
 import GoBackButton from "../../components/GoBackButton";
 import ShareQuoteModal from "../../components/ShareQuoteModal";
+import {
+  useCart,
+  useCompanies,
+  useFrontendBoot,
+  useTheme,
+  useUrlEnquiry,
+  useUSGIDiscounts,
+} from "../../customHooks";
 import { mobile } from "../../utils/mediaQueries";
-import { BackButtonMobile } from "../../components";
-import { TraceId } from "../../components/Navbar";
+import { getCart } from "../Cart/cart.slice";
 import EditMemberFilter from "../quotePage/components/filters/EditMemberFilter";
-import dummy from "./dumySchema";
+import { InsuredDetails, ProposerDetails } from "./ProposalSections";
+import BMI from "./ProposalSections/components/BMI";
+import ErrorPopup from "./ProposalSections/components/ErrorPopup";
+import NSTP from "./ProposalSections/components/NSTP";
+import PlanUnavailable from "./ProposalSections/components/PlanUnavailable";
+import ProductSummary from "./ProposalSections/components/ProductSummary";
+import {
+  getProposalData,
+  setShowErrorPopup,
+} from "./ProposalSections/ProposalSections.slice";
+import { getProposalFields } from "./schema.slice";
+
 /* ===============================test================================= */
 
 /* ===============================test================================= */
@@ -94,15 +82,8 @@ const ProposalPage = () => {
 
   const dispatch = useDispatch();
 
-  const {
-    activeIndex,
-    proposalData,
-    showErrorPopup,
-    showBMI,
-    failedBmiData,
-    isPopupOn,
-    failedBmiBlockJourney,
-  } = useSelector(state => state.proposalPage);
+  const { activeIndex, proposalData, showErrorPopup, failedBmiBlockJourney } =
+    useSelector(state => state.proposalPage);
 
   const {
     colors: { primary_color, primary_shade },

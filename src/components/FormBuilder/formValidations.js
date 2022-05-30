@@ -1,8 +1,5 @@
 import moment from "moment";
-import { date } from "yup";
-import { age } from "../../pages/InputPage/components/data";
 
-import { checkAllChar } from "../../utils/formUtils";
 function test_same_digit(num) {
   var first = num % 10;
   while (num) {
@@ -11,35 +8,6 @@ function test_same_digit(num) {
   }
   return true;
 }
-const forbiddedSymbols = [
-  "!",
-  "%",
-  "$",
-  "&",
-  "+",
-  "=",
-  "^",
-  "*",
-  "`",
-  "#",
-  "~",
-  "_",
-  "(",
-  ")",
-  "{",
-  "}",
-  ";",
-  "?",
-  '"',
-  "'",
-  "@",
-  ">",
-  "\\",
-  "[",
-  "]",
-  "<",
-  "|",
-];
 
 const acceptedEmailExtensions = [
   ".com",
@@ -56,16 +24,6 @@ const acceptedEmailExtensions = [
   ".bike",
   ".jll.com",
 ];
-
-function contains(target, pattern) {
-  var value = false;
-  pattern.forEach(function (letter) {
-    if (target.indexOf(letter) > -1) {
-      value = true;
-    }
-  });
-  return value;
-}
 
 export const validationIndex = {
   required: (param, values, name) => {
@@ -148,29 +106,7 @@ export const validationIndex = {
       }
     }
   },
-  // allow: (param, values, name) => {
-  //   const { parent, member, variableName } = name;
-  //   let value =
-  //     parent && member && variableName && values
-  //       ? values?.[parent]?.[member]?.[variableName]
-  //       : parent && member && values
-  //       ? values?.[parent]?.[member]
-  //       : values?.[name];
-  //   if (param === "onlyNumbers") {
-  //     console.log(
-  //       "sghsdfjkv",value
-  //     )
-  //   }
-  //   let message = {
-  //     onlyNumbers: "Input should be number",
-  //   };
-  //   if (message[param]) {
-  //     return {
-  //       status: false,
-  //       message: message[param],
-  //     };
-  //   }
-  // },
+
   matches: (param, values, name) => {
     const { parent, member, variableName } = name;
     let compareTo;

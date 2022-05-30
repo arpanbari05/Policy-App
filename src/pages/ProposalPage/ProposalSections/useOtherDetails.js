@@ -29,10 +29,7 @@ const useOtherDetails = ({
     }
   }, []);
 
-  // for auto populate self data when nominee relation is self
   const autoPopulateSelfOtherDetails = ({
-    values,
-    key,
     setValues,
     schema,
     selectedNomineeRelation,

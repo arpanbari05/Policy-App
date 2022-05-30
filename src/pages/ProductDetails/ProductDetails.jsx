@@ -1,36 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { RidersSection } from "./components/CustomizeYourPlan";
-import CheckDiscount from "./components/CheckDiscount";
-import { CartDetails } from "./components/ReviewCart";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import ProductCard from "./components/AddOnProductCard";
-import useUrlQuery from "../../customHooks/useUrlQuery";
-import { useEffect } from "react";
-import { useState } from "react";
-import ProductDetailsNavbar from "./components/ProductDetailsNavbar";
-import { mobile } from "../../utils/mediaQueries";
+import Select from "react-select";
 import "styled-components/macro";
 import { BackButtonMobile, Page } from "../../components";
-import PageNotFound from "../PageNotFound";
-import {
-  useCart,
-  useFrontendBoot,
-  useTheme,
-  useUSGIDiscounts,
-} from "../../customHooks";
-import CartMobile from "./components/Mobile/CartMobile/CartMobile";
-import FeatureSection from "./components/FeatureSection/FeatureSection";
-import Select from "react-select";
+import GoBackButton from "../../components/GoBackButton";
+import ShareQuoteModal from "../../components/ShareQuoteModal";
+import { useCart, useFrontendBoot, useUSGIDiscounts } from "../../customHooks";
+import useUrlQuery from "../../customHooks/useUrlQuery";
 import { isSSOJourney, numberToDigitWord } from "../../utils/helper";
-import SumInsuredSection from "./components/SumInsuredSection";
+import { mobile } from "../../utils/mediaQueries";
+import PageNotFound from "../PageNotFound";
+import ErrorPopup from "../ProposalPage/ProposalSections/components/ErrorPopup";
+import { setPosPopup } from "../quotePage/quote.slice";
+import ProductCard from "./components/AddOnProductCard";
 import AddOnSection from "./components/AddOnsSection/AddOnsSection";
 import Benefit from "./components/Benefit";
-import GoBackButton from "../../components/GoBackButton";
-import { setPosPopup } from "../quotePage/quote.slice";
-import ShareQuoteModal from "../../components/ShareQuoteModal";
-import ErrorPopup from "../ProposalPage/ProposalSections/components/ErrorPopup";
+import CheckDiscount from "./components/CheckDiscount";
+import { RidersSection } from "./components/CustomizeYourPlan";
+import FeatureSection from "./components/FeatureSection/FeatureSection";
+import CartMobile from "./components/Mobile/CartMobile/CartMobile";
+import ProductDetailsNavbar from "./components/ProductDetailsNavbar";
+import { CartDetails } from "./components/ReviewCart";
+import SumInsuredSection from "./components/SumInsuredSection";
 
 const ProductDetails = () => {
   const { groupCode } = useParams();
@@ -69,27 +62,6 @@ const ProductDetails = () => {
     document.addEventListener("scroll", scrollListener);
     return () => document.removeEventListener("scroll", scrollListener);
   }, []);
-
-  // TODO : READ WHAT location.hash DO BEFORE UN-COMMENTING.
-  /*useEffect(() => {
-    if (location.hash) {
-      const scrollToRef = document.querySelector(location.hash);
-      if (scrollToRef) {
-        window.scrollTo({
-          top: scrollToRef.offsetTop + 110,
-          left: 0,
-        });
-      }
-    }
-  }, [location.hash]);
-
-  useEffect(() => {
-    window.location.hash = "";
-  }, [groupCode]); */
-
-  /* useEffect(() => {
-    updateEnquiry(data?.data);
-  }, []); */
 
   const {
     journeyType,

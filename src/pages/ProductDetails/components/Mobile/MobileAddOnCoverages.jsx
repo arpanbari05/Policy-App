@@ -1,29 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
-import CardSkeletonLoader from "../../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
-import FeatureSection from "../FeatureSection/FeatureSection";
-import styled from "styled-components/macro";
-import ErrorMessage from "../../../../components/Common/ErrorMessage/ErrorMessage";
-import { useSelector } from "react-redux";
-import { small, tabletAndMobile } from "../../../../utils/mediaQueries";
 import { AiTwotoneCheckCircle } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { amount, careRidersConditionChecker } from "../../../../utils/helper";
-import {
-  useCart,
-  useFrontendBoot,
-  useRider,
-  useTheme,
-} from "../../../../customHooks/index";
+import styled from "styled-components/macro";
 import { useGetRidersQuery } from "../../../../api/api";
-import { FaCheckCircle } from "react-icons/fa";
-import { RiderWrapper } from "../../../ComparePage/ComparePage.style";
 import { CircleLoader } from "../../../../components";
-import { useParams } from "react-router-dom";
-import {
-  MobileDetailsSectionWrap,
-  MobileSeeDetailsTopOuter,
-} from "../../../../components/ProductDetails/Mobile/MobileModalComponents";
+import CardSkeletonLoader from "../../../../components/Common/card-skeleton-loader/CardSkeletonLoader";
+import { MobileDetailsSectionWrap } from "../../../../components/ProductDetails/Mobile/MobileModalComponents";
 import { DetailsSectionWrap } from "../../../../components/ProductDetails/ProductDetailsModal";
+import { useFrontendBoot, useTheme } from "../../../../customHooks/index";
+import { amount, careRidersConditionChecker } from "../../../../utils/helper";
+import { small, tabletAndMobile } from "../../../../utils/mediaQueries";
+import FeatureSection from "../FeatureSection/FeatureSection";
 
 function MobileAddOnCoverages({
   quote,
@@ -498,33 +485,9 @@ function RiderDescription({ rider, ...props }) {
 
   const [showMore, setShowMore] = useState(true);
 
-  const { colors } = useTheme();
-
-  const toggleShowMore = () => setShowMore(!showMore);
-
-  const handleShowMore = evt => {
-    evt.stopPropagation();
-    toggleShowMore();
-  };
-
   return (
     <RiderDescriptionWrap className="m-0" {...props}>
       {showMore ? description : description.slice(0, 40)}
-      {/*description.length > 40 ? (
-        <ShowMoreButton
-          className="btn p-0 mx-1"
-          css={`
-            &,
-            &:hover {
-              color: ${colors.primary_color};
-            }
-          `}
-          onClick={handleShowMore}
-          type="button"
-        >
-          {showMore ? "Read less" : "...Read more"}
-        </ShowMoreButton>
-          ) : null*/}
     </RiderDescriptionWrap>
   );
 }
@@ -533,8 +496,4 @@ const RiderDescriptionWrap = styled.p`
   color: #253858;
   font-size: 10px;
   overflow: hidden;
-`;
-
-const ShowMoreButton = styled.button`
-  font-size: inherit;
 `;

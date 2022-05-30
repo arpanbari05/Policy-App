@@ -1,22 +1,19 @@
-import React, { useState, useEffect, Fragment } from "react";
-import plusImg from "../../../assets/images/plus.png";
+import React, { Fragment, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components/macro";
-import { useDispatch, useSelector } from "react-redux";
+import { useMembers, useTheme } from "../../../customHooks";
 import {
-  setShowNSTP,
-  setShowPlanNotAvail,
+  noForAllCheckedFalse,
   setShowErrorPopup,
+  setShowPlanNotAvail,
 } from "../ProposalSections/ProposalSections.slice";
-import { useMembers } from "../../../customHooks";
-import { noForAllCheckedFalse } from "../ProposalSections/ProposalSections.slice";
-import { useTheme } from "../../../customHooks";
 const Toggle = ({
   label,
   customOptions,
   members = [],
   name,
   value,
-  error,
+
   onChange,
   notAllowed,
   values,
@@ -28,16 +25,14 @@ const Toggle = ({
   restrictMaleMembers = false,
   message,
 }) => {
-  console.log("Svsjbv", disable_Toggle, value, name);
   const isMandatoryMQ = label.toLowerCase().includes("mandatory");
   const { colors } = useTheme();
   const PrimaryColor = colors.primary_color,
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
-  const { getSelectedMembers, getMember, getAllMembers, genderOfSelf } =
-    useMembers();
+  const { genderOfSelf } = useMembers();
   const [customShowMembers, setCustomshowMembers] = useState(false);
-  console.log("wgkwrjsd", customMembers, members);
+
   const [membersToMap, setMembersToMap] = useState(
     customMembers instanceof Array && customMembers.length
       ? customMembers
@@ -47,15 +42,7 @@ const Toggle = ({
   const [membersSelectedTillNow, setMembersSelectedTillNow] = useState(false);
 
   useEffect(() => {
-    // if (showMembersIf) {
-    //   setCustomshowMembers(
-    //     showMembersIf.split("||").some(name => {
-    //       return values && values[name] && values[name][`is${name}`] === "Y";
-    //     }),
-    //   );
-    // }
     if (isMandatoryMQ) {
-      console.log("isMandatoryMQ", isMandatoryMQ);
       let questionsToCheck = showMembersIf.split("||");
       let membersSelectedTillNow = membersToMap.reduce((acc, member) => {
         let isMemberPresent = questionsToCheck.some(
@@ -63,7 +50,6 @@ const Toggle = ({
         );
         return isMemberPresent ? { ...acc, [member]: true } : acc;
       }, {});
-      console.log("khgjdtbhdt", membersSelectedTillNow);
 
       setMembersSelectedTillNow(membersSelectedTillNow);
     }
@@ -81,11 +67,6 @@ const Toggle = ({
   const [membersStatus, setMembersStatus] = useState(
     value?.members || innitialMemberStatus(),
   );
-  console.log("Wvkwbf", disable_Toggle, membersStatus);
-  const { mediUnderwritting } = useSelector(
-    state => state.proposalPage.proposalData,
-  );
-  // const membersToMap = members;
 
   useEffect(() => {
     if (disable_Toggle) {
@@ -115,7 +96,6 @@ const Toggle = ({
       setBoolean(value[`is${name}`]);
       setMembersStatus(value.members);
     }
-    console.log("bfxfjkl", membersToMap);
     if (restrictMaleMembers) {
       if (genderOfSelf === "M") {
         setMembersToMap(membersToMap.filter(member => member !== "self"));
@@ -124,8 +104,6 @@ const Toggle = ({
       }
 
       setMembersToMap(prev => prev.filter(el => !allMaleMembers.includes(el)));
-
-      console.log("evekfnmv", membersToMap, getAllMembers());
     }
   }, [value]);
 
@@ -153,7 +131,6 @@ const Toggle = ({
     }
 
     if (!isMandatoryMQ) {
-      console.log("qefeihjfbkf", boolean, customShowMembers, boolean, label);
       if ((boolean === "N" || boolean === "") && !customShowMembers) {
         onChange({
           [`is${name}`]: boolean,
@@ -177,8 +154,6 @@ const Toggle = ({
 
   useEffect(() => {
     if (isMandatoryMQ && membersSelectedTillNow) {
-      console.log("wvbkwdsbvjdce", membersSelectedTillNow);
-      // if(Object.values(membersSelectedTillNow).includes(true)){
       onChange({
         ...value,
         [`is${name}`]: Object.values(membersSelectedTillNow).includes(true)
@@ -187,22 +162,8 @@ const Toggle = ({
         members: membersSelectedTillNow,
         isValid: true,
       });
-      // console.log("adfvksadhbvvd",boolean, membersStatus, customShowMembers,label,membersSelectedTillNow)
     }
   }, [Object.keys(membersSelectedTillNow).length]);
-
-  console.log("sgjsgsrgr", {
-    value,
-    label,
-    boolean,
-    membersToMap,
-    showMembers,
-    customShowMembers,
-    membersStatus,
-    restrictMaleMembers,
-    customMembers,
-    members,
-  });
 
   return (
     <>
@@ -227,7 +188,7 @@ const Toggle = ({
                 & .box {
                   background-color: ${PrimaryShade};
                 }
-                opacity:${isMandatoryMQ?"0.5":"1"} !important;
+                opacity: ${isMandatoryMQ ? "0.5" : "1"} !important;
                 display: ${disable_Toggle ? "none" : "block"};
                 text-align: end !important;
                 @media (max-width: 767px) {
@@ -399,10 +360,6 @@ const Toggle = ({
 
 export default Toggle;
 
-const PlusImg = styled.img`
-  float: left;
-  margin: 0 12px 0 2px;
-`;
 const Question = styled.p`
   &:after {
     content: "";
