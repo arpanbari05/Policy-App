@@ -25,7 +25,6 @@ export const allowOnWebsites = (sites = []) => {
   const renewBuyProd = "https://health.renewbuy.com";
   const topup = [
     "https://topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in",
-    "http://localhost:3000",
   ];
   const sriyahUat = "https://health-uat.nammacover.com";
   const pincUat = "https://uat-health.pincinsurance.com";
