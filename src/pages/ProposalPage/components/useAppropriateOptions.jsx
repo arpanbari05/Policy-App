@@ -9,7 +9,6 @@ function useAppropriateOptions({
   name,
   directUpdateValue,
   value,
-
   deleteValue,
 }) {
   const [selectOption, setSelectOption] = useState(asyncOptions || options);
