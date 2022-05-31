@@ -30,7 +30,7 @@ export const callApi = (endPoint, param) => {
       let newTemp = temp[0];
       newTemp.forEach(innerItem => {
         let [value, key] = Object.values(innerItem);
-        console.log("The options", options);
+
         options = {
           ...options,
           ...{
