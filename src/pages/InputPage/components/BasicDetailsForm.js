@@ -131,16 +131,18 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
                     : "Tell us about yourself? ",
                 }}
               ></Title>
-              <LinkButton
-                type="button"
-                onClick={() => {
-                  history.push({
-                    pathname: "/input/renewal-details",
-                  });
-                }}
-              >
-                Renew policy
-              </LinkButton>
+              {process.env.NODE_ENV === "development" && (
+                <LinkButton
+                  type="button"
+                  onClick={() => {
+                    history.push({
+                      pathname: "/input/renewal-details",
+                    });
+                  }}
+                >
+                  Renew policy
+                </LinkButton>
+              )}
               <LinkButton
                 type="button"
                 onClick={() => {

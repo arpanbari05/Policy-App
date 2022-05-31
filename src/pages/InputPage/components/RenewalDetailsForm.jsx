@@ -1,7 +1,13 @@
+import { useEffect, useState } from "react";
+import { Redirect, useHistory } from "react-router-dom";
+import styled from "styled-components";
 import "styled-components/macro";
-import { mobile } from "../../../utils/mediaQueries";
+import { useUpdateRenewalQueryMutation } from "../../../api/api";
+import { Button } from "../../../components";
+import DropDown2 from "../../../components/DropDown2";
 import CustomProgressBar from "../../../components/ProgressBar";
-import { ErrorMessage, Title } from "./FormComponents";
+import ResponsiveDatePickers from "../../../components/ResponsiveDatePickers";
+import TextInput2 from "../../../components/TextInput2";
 import {
   useCompanies,
   useCreateEnquiry,
@@ -10,19 +16,12 @@ import {
   usePolicyNumberValidations,
 } from "../../../customHooks";
 import {
+  dateObjectToLocaleString,
   getCustomIcOptions,
   regexStringToRegex,
-  dateObjectToLocaleString,
-  allowOnWebsites,
 } from "../../../utils/helper";
-import { useState, useEffect } from "react";
-import TextInput2 from "../../../components/TextInput2";
-import { Button } from "../../../components";
-import DropDown2 from "../../../components/DropDown2";
-import { useUpdateRenewalQueryMutation } from "../../../api/api";
-import { useHistory, Redirect } from "react-router-dom";
-import styled from "styled-components";
-import ResponsiveDatePickers from "../../../components/ResponsiveDatePickers";
+import { mobile } from "../../../utils/mediaQueries";
+import { ErrorMessage, Title } from "./FormComponents";
 
 const RenewalDetailsForm = ({ posContent, ...props }) => {
   const { companies } = useCompanies();
@@ -116,8 +115,7 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
   };
 
   return process.env.NODE_ENV === "development" ||
-    location.host === tenant?.health_renewal_frontend_domain ||
-    allowOnWebsites(["topup", "healthUat", "renewBuyUat"]) ? (
+    location.host === tenant?.health_renewal_frontend_domain ? (
     <div {...props}>
       <form onSubmit={handleSubmit}>
         <div
@@ -136,16 +134,15 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
                   : "Your renewal details?",
               }}
             ></Title>
-            {location.host !==
-              tenant?.health_renewal_frontend_domain(
-                <LinkButton
-                  onClick={() => {
-                    history.push("/input/basic-details");
-                  }}
-                >
-                  Fresh policy
-                </LinkButton>,
-              )}
+            {location.host !== tenant?.health_renewal_frontend_domain && (
+              <LinkButton
+                onClick={() => {
+                  history.push("/input/basic-details");
+                }}
+              >
+                Fresh policy
+              </LinkButton>
+            )}
           </FlexSectionStyled>
           <CustomProgressBar now={1} total={1} />
 
