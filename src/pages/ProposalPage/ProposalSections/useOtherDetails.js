@@ -5,10 +5,8 @@ const useOtherDetails = ({
   defaultValue,
   setValues,
   name,
-  values,
   insuredDetails,
   proposalDetails,
-  schema,
 }) => {
   const [nomineeRelationAutopopulated, setNomineeRelationAutopopulated] =
     useState(false);
