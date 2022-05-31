@@ -136,15 +136,16 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
                   : "Your renewal details?",
               }}
             ></Title>
-            {!allowOnWebsites(["renewalRB"]) && (
-              <LinkButton
-                onClick={() => {
-                  history.push("/input/basic-details");
-                }}
-              >
-                Fresh policy
-              </LinkButton>
-            )}
+            {location.host !==
+              tenant?.health_renewal_frontend_domain(
+                <LinkButton
+                  onClick={() => {
+                    history.push("/input/basic-details");
+                  }}
+                >
+                  Fresh policy
+                </LinkButton>,
+              )}
           </FlexSectionStyled>
           <CustomProgressBar now={1} total={1} />
 
