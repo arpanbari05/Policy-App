@@ -6,6 +6,7 @@ import {
   useCompanies,
   useCreateEnquiry,
   useDD,
+  useFrontendBoot,
   usePolicyNumberValidations,
 } from "../../../customHooks";
 import {
@@ -25,6 +26,9 @@ import ResponsiveDatePickers from "../../../components/ResponsiveDatePickers";
 
 const RenewalDetailsForm = ({ posContent, ...props }) => {
   const { companies } = useCompanies();
+  const {
+    data: { tenant },
+  } = useFrontendBoot();
 
   const icArray = Object.values(companies).map(singleIC => ({
     display_name: singleIC.name,
@@ -112,7 +116,8 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
   };
 
   return process.env.NODE_ENV === "development" ||
-    allowOnWebsites(["topup", "healthUat", "renewBuyUat", "renewalRB"]) ? (
+    location.host === tenant?.health_renewal_frontend_domain ||
+    allowOnWebsites(["topup", "healthUat", "renewBuyUat"]) ? (
     <div {...props}>
       <form onSubmit={handleSubmit}>
         <div
