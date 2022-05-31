@@ -30,11 +30,12 @@ export const callApi = (endPoint, param) => {
       let newTemp = temp[0];
       newTemp.forEach(innerItem => {
         let [value, key] = Object.values(innerItem);
+        console.log("The options", options);
         options = {
           ...options,
           ...{
             [`area_${Object.keys(param)[0].split("_")[1]}`]: {
-              ...options["area"],
+              ...options[`area_${Object.keys(param)[0].split("_")[1]}`],
               ...{ [key]: value },
             },
           },
