@@ -111,7 +111,8 @@ const RenewalDetailsForm = ({ posContent, ...props }) => {
     );
   };
 
-  return allowOnWebsites(["topup", "renewBuyUat", "renewalRB"]) ? (
+  return process.env.NODE_ENV === "development" ||
+    allowOnWebsites(["topup", "healthUat", "renewBuyUat", "renewalRB"]) ? (
     <div {...props}>
       <form onSubmit={handleSubmit}>
         <div
