@@ -24,6 +24,7 @@ const ThankYouPage = () => {
 
   const { pathname } = useLocation();
 
+  // eslint-disable-next-line no-unused-vars
   const [payment, SetPayment] = useState(true);
 
   const firstInterval = useRef(null);

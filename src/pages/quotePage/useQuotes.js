@@ -60,9 +60,11 @@ function useQuotesPage() {
   const filterQuotes = quotes.map(icQuotes => filterGivenQuotes(icQuotes));
 
   const dispatch = useDispatch();
+  // eslint-disable-next-line no-unused-vars
   const [showPopup, setShowPopup] = useState(false);
   const [showSeeDetails, setShowSeeDetails] = useState(false);
   const [showBuyNow, setShowBuyNow] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [recFilterdQuotes, setRecFilterdQuotes] = useState([]);
 
   const { memberGroups } = useSelector(({ greetingPage }) => greetingPage);

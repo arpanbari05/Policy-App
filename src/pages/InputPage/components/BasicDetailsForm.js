@@ -299,7 +299,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
               </div>
             )}
           </div>
-          {tenant.alias === "fyntune" && !allowOnWebsites(["healthUat"]) ? (
+          {process.env.NODE_ENV === "development" ? (
             <div>
               Journey Type:
               <label className="mx-3">

@@ -31,6 +31,7 @@ const Toggle = ({
     SecondaryColor = colors.secondary_color,
     PrimaryShade = colors.primary_shade;
   const { genderOfSelf } = useMembers();
+  // eslint-disable-next-line no-unused-vars
   const [customShowMembers, setCustomshowMembers] = useState(false);
 
   const [membersToMap, setMembersToMap] = useState(
