@@ -15,7 +15,9 @@ const CustomMedicalTable = ({
 }) => {
   const [filteredOption, setFilteredMembers] = useState([]);
   const [additionalValues, setAdditionalValues] = useState({});
+  // eslint-disable-next-line no-unused-vars
   const [isValid, setIsValid] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const [toggleValue, setToggleValue] = useState(value);
 
   useEffect(() => {

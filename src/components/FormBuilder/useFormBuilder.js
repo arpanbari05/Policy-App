@@ -15,7 +15,6 @@ const useFormBuilder = ({
   fetchValid,
   isPanelVisible,
   keyStr,
-  otherDetails,
 }) => {
   const [blockScrollEffect, setBlockScrollEffect] = useState(true);
 

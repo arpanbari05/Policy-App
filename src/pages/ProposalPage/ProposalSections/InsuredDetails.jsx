@@ -85,7 +85,6 @@ const InsuredDetails = ({
     setBlockTabSwitch,
   });
 
-  
   useEffect(() => {
     if (name === "Insured Details" && isValid.includes(false))
       setShow(isValid.indexOf(false));
@@ -149,8 +148,6 @@ const InsuredDetails = ({
   const [initColor, setInitColor] = useState(PrimaryColor);
 
   const fullName = proposalData["Proposer Details"]?.name;
-
-  console.log("The values from insured detials" , values)
 
   useEffect(() => {
     if (
