@@ -121,7 +121,8 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
             }
           `}
         >
-          {allowOnWebsites(["topup", "renewBuyUat"]) ? (
+          {process.env.NODE_ENV === "development" ||
+          allowOnWebsites(["topup", "healthUat", "renewBuyUat"]) ? (
             <FlexSectionStyled>
               <Title
                 dangerouslySetInnerHTML={{
