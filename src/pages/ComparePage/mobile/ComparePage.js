@@ -111,7 +111,7 @@ function ComparePage() {
 
   return (
     <div>
-      <Header />
+      <Header quotes={quotes} />
 
       <section
         className="p-2 d-flex align-items-center"

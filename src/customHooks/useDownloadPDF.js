@@ -65,7 +65,12 @@ export default function useDownloadPDF({ quotes }) {
       );
 
       if (response.status === 200) {
-        setPdfFetchLoading(false);
+        response.json().then(data => {
+          if (data) {
+            setPdfFetchLoading(false);
+            window.open(data.pdf_path, "_blank");
+          }
+        });
       } else {
         console.error(response.message);
         setPdfFetchLoading(false);
