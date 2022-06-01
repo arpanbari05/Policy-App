@@ -91,7 +91,7 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
         section: journeyType,
       };
       let response;
-      if (subJourneyType === "port") {
+      if (subJourneyType === "port" || EnquiryId) {
         response = await updateEnquiry(data);
       } else {
         response = await createEnquiry(data);
