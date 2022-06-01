@@ -85,7 +85,7 @@ function ComparePage() {
 
   const { products } = data.data;
 
-  const compareQuotes = products.find(compareQuotesGroup =>
+  const compareQuotes = products?.find(compareQuotesGroup =>
     matchGroupCodes(compareQuotesGroup.group, groupCode),
   );
 
