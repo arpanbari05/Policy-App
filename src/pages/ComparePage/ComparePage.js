@@ -480,19 +480,28 @@ function DownloadButton({ ...props }) {
       onClick={handleClick}
       {...props}
     >
-      <div
-        className="rounded-circle p-1 d-flex align-items-center justify-content-center"
-        css={`
-          background-color: ${colors.primary_shade};
-          color: ${colors.primary_color};
-          font-size: 1.2rem;
-          height: 2rem;
-          width: 2rem;
-        `}
-      >
-        <BiPrinter />
-      </div>
-      {pdfFetchLoading ? <span>...</span> : <span>Download</span>}
+      {pdfFetchLoading ? (
+        <CircleLoader
+          animation="border"
+          css={`
+            color: ${colors.primary_color};
+          `}
+        />
+      ) : (
+        <div
+          className="rounded-circle p-1 d-flex align-items-center justify-content-center"
+          css={`
+            background-color: ${colors.primary_shade};
+            color: ${colors.primary_color};
+            font-size: 1.2rem;
+            height: 2rem;
+            width: 2rem;
+          `}
+        >
+          <BiPrinter />
+        </div>
+      )}
+      <span>Download</span>
     </button>
   );
 }
