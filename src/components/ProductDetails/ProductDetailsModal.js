@@ -658,14 +658,13 @@ function ProductHeader({
           <ProductName>{name}</ProductName>
         </div>
 
-        <QuoteInfoWrap longSpace={journeyType === "top_up"}>
-          {journeyType === "top_up" && (
+        <QuoteInfoWrap /* longSpace={journeyType === "top_up"} */>
+          {/*journeyType === "top_up" && (
             <div
               css={`
                 display: flex;
                 align-items: center;
-                /* flex-direction: column; */
-                border-right: 1px solid grey;
+                           border-right: 1px solid grey;
                 padding: 0 20px;
                 font-size: 16px;
                 @media (max-width: 1485px) {
@@ -686,7 +685,7 @@ function ProductHeader({
                 &nbsp;₹ {figureToWords(deductible)}
               </span>
             </div>
-          )}
+              )*/}
           {journeyType === "top_up" ? (
             <div
               css={`
