@@ -14,10 +14,12 @@ import {
 import "./app.css";
 import { store } from "./app/store";
 import { FullScreenLoader, LoadEnquiries } from "./components";
+import MaintenancePage from "./components/ServerErrorPages/MaintenancePage";
 import { Page } from "./components/index";
 import { useUrlQueries } from "./customHooks/useUrlQuery";
 import { replaceShortlistedQuote } from "./pages/quotePage/quote.slice";
 import { allowOnSpecificPages } from "./utils/helper";
+import InternalServerErrorPage from "./components/ServerErrorPages/InternalServerErrorPage";
 
 function AppProviders({ children }) {
   return (
@@ -61,12 +63,13 @@ function AppLoaders({ children, ...props }) {
   const isProposalRoute = useRouteMatch({ path: "/proposal" });
   const isProposalSummaryRoute = useRouteMatch({ path: "/proposal_summary" });
 
-  const { isLoading, isUninitialized, isError } = useGetFrontendBootQuery(
-    undefined,
-    {
-      skip: !!isTestRoute,
-    },
-  );
+  const {
+    isLoading,
+    isUninitialized,
+    error: serverError,
+  } = useGetFrontendBootQuery(undefined, {
+    skip: !!isTestRoute,
+  });
 
   const {
     isLoading: isLoadingEnq,
@@ -111,20 +114,9 @@ function AppLoaders({ children, ...props }) {
 
   if (isLoading || isUninitialized) return <FullScreenLoader />;
 
-  if (isError)
-    return (
-      <div
-        className="d-flex flex-column align-items-center justify-content-center"
-        css={`
-          height: 100vh;
-          place-items: center;
-        `}
-      >
-        <p>Something went wrong!</p>
-
-        <button onClick={() => window.location.reload()}>Reload</button>
-      </div>
-    );
+  if (serverError.status === 503) return <MaintenancePage />;
+  if (serverError.status === 500 || serverError.status !== 503)
+    return <InternalServerErrorPage />;
 
   if (
     some([
