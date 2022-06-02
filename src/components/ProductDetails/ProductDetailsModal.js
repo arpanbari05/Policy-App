@@ -602,7 +602,7 @@ function ProductHeader({
   const {
     product: { company, name },
     sum_insured,
-    deductible,
+    /* deductible, */
     total_premium,
     tenure,
     mandatory_riders,

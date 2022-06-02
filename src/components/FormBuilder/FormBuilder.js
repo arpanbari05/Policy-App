@@ -53,10 +53,6 @@ const FormBuilder = ({
     ({ proposalPage }) => proposalPage.proposalData["Proposer Details"],
   );
 
-  const otherDetails = useSelector(
-    ({ proposalPage }) => proposalPage.proposalData["Other Details"],
-  );
-
   const {
     updateValue,
     values,
@@ -85,7 +81,6 @@ const FormBuilder = ({
     fetchValid,
     isPanelVisible,
     keyStr,
-    otherDetails,
   });
 
   useEffect(() => {
