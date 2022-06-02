@@ -156,7 +156,7 @@ export const api = createApi({
     }),
     getFrontendBoot: builder.query({
       query: () => ({
-        url: `frontend-boots`,
+        url: `frontend-boot`,
       }),
       transformResponse: res => {
         return {

@@ -1,7 +1,8 @@
-import errorImage from "../../assets/svg/503.svg";
+import { get503ErrorImage } from "./serverImages";
 import { StyledWrapper } from "./StyledCompErrors";
 
 export default function MaintenancePage() {
+  const errorImage = get503ErrorImage();
   return (
     <StyledWrapper>
       <img src={errorImage} alt="under maintenance" />
