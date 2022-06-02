@@ -2,6 +2,7 @@ import CardSkeletonLoader from "../../../components/Common/card-skeleton-loader/
 import QuoteCards from "./QuoteCards";
 
 import {
+  useCompanies,
   useGetQuotes,
   useQuotesCompare,
   useTheme,
@@ -19,6 +20,8 @@ function Quotes({ sortBy = "relevence", ...props }) {
   const { data, isLoading, isNoQuotes } = useGetQuotes();
 
   const { data: enquiryData } = useGetEnquiriesQuery();
+
+  const { companies: allCompanies } = useCompanies();
 
   let mergedQuotes = data;
 
@@ -53,7 +56,10 @@ function Quotes({ sortBy = "relevence", ...props }) {
           ? 1
           : -1;
       }); // main sorting logic
-    } else if (sortBy === "relevance" && enquiryData?.data?.input?.existing_diseases?.length) {
+    } else if (
+      sortBy === "relevance" &&
+      enquiryData?.data?.input?.existing_diseases?.length
+    ) {
       mergedQuotes = mergedQuotes?.filter(
         icQuotes => !!icQuotes?.data?.data[0]?.length,
       ); // filter zero array.
@@ -67,6 +73,27 @@ function Quotes({ sortBy = "relevence", ...props }) {
           ? 1
           : -1;
       }); // main sorting logic
+    } else if (sortBy === "relevance") {
+      // logic for Sorting by company alias priority
+
+      mergedQuotes = mergedQuotes?.filter(
+        icQuotes => !!icQuotes?.data?.data[0]?.length,
+      ); // filter zero array.
+      mergedQuotes = mergedQuotes?.sort((icQuotesA, icQuotesB) => {
+        const priorityA = +allCompanies[icQuotesA?.company_alias]?.priority;
+        const priorityB = +allCompanies[icQuotesB?.company_alias]?.priority;
+
+        // sort logic based on priority
+        /////// Note: if priority is NULL it should come at the end ///////
+        if (!priorityA) return 1;
+
+        if (!priorityB) return -1;
+
+        if (priorityA && priorityB)
+          return priorityA < priorityB ? -1 : priorityA > priorityB ? 1 : 0;
+
+        return 0;
+      });
     }
   }
 

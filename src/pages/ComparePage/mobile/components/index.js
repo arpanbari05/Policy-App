@@ -11,14 +11,17 @@ import "styled-components/macro";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { Modal } from "react-bootstrap";
 import { BsPlusLg } from "react-icons/bs";
+import { RiPrinterLine } from "react-icons/ri";
 
 import * as mq from "../../../../utils/mediaQueries";
 import { CompareRiderPremium } from "../../../ProductDetails/components/CustomizeYourPlan";
+import useDownloadPDF from "../../../../customHooks/useDownloadPDF";
 
-export function Header() {
+export function Header({ quotes }) {
   const { colors } = useTheme();
   const { groupCode } = useParams();
   const { getUrlWithEnquirySearch } = useUrlEnquiry();
+  const { pdfFetchLoading, downloadComparePDF } = useDownloadPDF({ quotes });
 
   return (
     <header
@@ -45,6 +48,24 @@ export function Header() {
           Compare Plans
         </h1>
       </div>
+      <section
+        role="button"
+        tabIndex={0}
+        onClick={() => {
+          downloadComparePDF();
+        }}
+      >
+        {pdfFetchLoading ? (
+          <CircleLoader
+            animation="border"
+            css={`
+              color: white;
+            `}
+          />
+        ) : (
+          <RiPrinterLine size={28} />
+        )}
+      </section>
     </header>
   );
 }

@@ -85,7 +85,7 @@ function ComparePage() {
 
   const { products } = data.data;
 
-  const compareQuotes = products.find(compareQuotesGroup =>
+  const compareQuotes = products?.find(compareQuotesGroup =>
     matchGroupCodes(compareQuotesGroup.group, groupCode),
   );
 
@@ -111,7 +111,7 @@ function ComparePage() {
 
   return (
     <div>
-      <Header />
+      <Header quotes={quotes} />
 
       <section
         className="p-2 d-flex align-items-center"
