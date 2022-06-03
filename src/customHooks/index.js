@@ -20,6 +20,7 @@ import {
   useGetFrontendBootQuery,
   useGetQuoteQuery,
   useGetRidersQuery,
+  useLazyGetQuoteQuery,
   useUpdateCartMutation,
   useUpdateCompareQuotesMutation,
   useUpdateEnquiryMutation,
@@ -1400,6 +1401,42 @@ export function useUrlEnquiry() {
   return { enquiryId, getUrlWithEnquirySearch };
 }
 
+/// condition fetching quotes query
+export function useGetSingleQuote(queryConfig = {}) {
+  const { groupCode } = useParams();
+
+  const { journeyType } = useFrontendBoot();
+
+  const { getSelectedFilter } = useFilters();
+
+  const [getQuoteQuery, { data, isFetching, refetch, ...query }] =
+    useLazyGetQuoteQuery(undefined, {
+      ...queryConfig,
+      fetchPolicy: "cache-only",
+    });
+
+  function getQuote(filters) {
+    const { sum_insured, insurerToFetch, deductible } = filters;
+
+    return getQuoteQuery({
+      insurer: insurerToFetch,
+      deductible,
+      sum_insured_range: sum_insured,
+      group: +groupCode,
+      base_plan_type: getSelectedFilter("baseplantype")?.code,
+      tenure: getSelectedFilter("tenure")?.code,
+      plan_type: getSelectedFilter("plantype")?.code,
+      journeyType,
+    });
+  }
+  return {
+    data: { data },
+    isFetching,
+    refetch,
+    getQuote,
+  };
+}
+
 export function useGetSingleICQuote(filters, queryConfig = {}) {
   const { sum_insured, insurerToFetch } = filters;
 
@@ -1409,7 +1446,7 @@ export function useGetSingleICQuote(filters, queryConfig = {}) {
 
   const { getSelectedFilter } = useFilters();
 
-  let { data, isFetching } = useGetQuoteQuery(
+  let { data, isFetching, refetch, ...query } = useGetQuoteQuery(
     {
       insurer: insurerToFetch,
       deductible: getSelectedFilter("deductible")?.code,
@@ -1423,7 +1460,12 @@ export function useGetSingleICQuote(filters, queryConfig = {}) {
     { ...queryConfig },
   );
 
-  return { data: { company_alias: insurerToFetch, data }, isFetching };
+  return {
+    data: { company_alias: insurerToFetch, data },
+    isFetching,
+    refetch,
+    query,
+  };
 }
 
 export function useGetQuotes(queryConfig = {}) {
@@ -2074,17 +2116,17 @@ export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
   const { journeyType, subJourneyType } = useFrontendBoot();
 
   const getRidersQueryParams = {
-    sum_insured: quote?.sum_insured,
-    tenure: quote?.tenure,
-    productId: quote?.product.id,
-    group: parseInt(groupCode),
+    sum_insured: +quote?.sum_insured,
+    tenure: +quote?.tenure,
+    productId: +quote?.product.id,
+    group: +groupCode,
     journeyType,
     subJourneyType,
     ...queryOptions,
   };
 
   if (quote?.deductible) {
-    getRidersQueryParams.deductible = quote?.deductible;
+    getRidersQueryParams.deductible = +quote?.deductible;
   }
 
   return useGetRidersQuery(getRidersQueryParams);
@@ -2160,8 +2202,8 @@ export function useRiders({ quote, groupCode, onChange }) {
 
   const affectsOtherRiders = riders
     ?.filter(isRiderSelected)
-    .filter(isAffectsOtherRiders)
-    .map(rider => rider.alias);
+    ?.filter(isAffectsOtherRiders)
+    ?.map(rider => rider.alias);
 
   let selected_riders = [];
 

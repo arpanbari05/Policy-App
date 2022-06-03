@@ -237,10 +237,12 @@ const ProductDetails = () => {
                   groupCode={parseInt(groupCode)}
                   cartEntry={cartEntry}
                 />
+
                 <Benefit
                   cartEntry={cartEntry}
                   groupCode={parseInt(groupCode)}
                 />
+
                 <RidersSection isProductDetailsPage={true} />
 
                 {+settings?.addons_visibilty === 1 &&
@@ -251,7 +253,10 @@ const ProductDetails = () => {
             </div>
           </Row>
         </main>
-        <CartMobile groupCode={parseInt(groupCode)} />
+
+        {window.innerWidth < 768 && (
+          <CartMobile groupCode={parseInt(groupCode)} />
+        )}
       </Page>
     </>
   );

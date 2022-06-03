@@ -118,11 +118,13 @@ function TopUpAddOns({ cartEntry, insurance_type }) {
     >
       {topUpQuotes?.map((quotesList, idx1) =>
         quotesList?.map((quotes, idx) => (
-          <AddOnCard
-            quotesList={quotes}
-            key={idx + ":" + idx1 + ""}
-            cartEntry={cartEntry}
-          />
+          <>
+            <AddOnCard
+              quotesList={quotes}
+              key={idx + ":" + idx1 + ""}
+              cartEntry={cartEntry}
+            />
+          </>
         )),
       )}
     </div>
@@ -179,6 +181,7 @@ function AddOnCard({ quotesList = [], cartEntry }) {
   const { boxShadows, colors } = useTheme();
 
   const editToggle = useToggle(false);
+  
   const detailsToggle = useToggle(false);
 
   let { quote, handleSumInsuredChange, handleDeductibleChange } = useQuoteCard({
@@ -205,11 +208,11 @@ function AddOnCard({ quotesList = [], cartEntry }) {
     );
   };
 
-  if (quote && members?.length === 1) {
+  /* if (quote && members?.length === 1) {
     quote = quotesList.find(
       addOn => matchQuotes(addOn, quote) && addOn?.member === members[0],
     );
-  }
+  } */
 
   if (!quote) return null;
 
