@@ -529,6 +529,10 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
     journeyType,
   );
 
+  if (netPremium) {
+    sessionStorage.setItem(`${"premium" + quote.product.id}`, netPremium);
+  }
+
   return (
     <div className="w-100">
       <Button
