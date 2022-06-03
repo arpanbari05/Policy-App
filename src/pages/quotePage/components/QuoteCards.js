@@ -13,10 +13,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Select from "react-select";
 import "styled-components/macro";
-import { PremiumButton } from "../../../components";
+import { CircleLoader, PremiumButton } from "../../../components";
 import ProductDetailsModal from "../../../components/ProductDetails/ProductDetailsModal";
 import {
   useCompanies,
+  useGetSingleQuote,
   useShortlistedPlans,
   useTheme,
   useToggle,
@@ -28,9 +29,14 @@ import {
   XSmallFont,
 } from "../../../styles/typography";
 import { quoteFeatures } from "../../../test/data/quoteFeatures";
-import { ClickSound, numberToDigitWord } from "../../../utils/helper";
+import {
+  ClickSound,
+  numberToDigitWord,
+  mergeQuotes,
+} from "../../../utils/helper";
 import { removeQuoteFromShare, setQuotesToShare } from "../quote.slice";
 import { SeeText } from "./QuoteCard.style";
+import useFilters from "../components/filters/useFilters";
 
 const featuresDisplayedOnQuoteCard = [
   "cashless_hospitals",
@@ -159,7 +165,7 @@ function getDeductibles(quotes = []) {
 }
 
 function QuoteCard({
-  quotes = [],
+  quotes: initialQuotes = [],
   compare: { checkFn, onChange } = {},
   sortBy,
   cashlessHospitalsCount,
@@ -169,8 +175,7 @@ function QuoteCard({
 
   const { groupCode } = useParams();
 
-  const isDeductibleJourney = quotes[0]?.deductible;
-
+  // const [quotes, setQuotes] = useState(initialQuotes);
   const { shareType, quotesToShare } = useSelector(state => state.quotePage);
 
   const {
@@ -182,27 +187,64 @@ function QuoteCard({
 
   const shortlistedQuotes = getPlanByGroup(groupCode);
 
+  const { getSelectedFilter } = useFilters();
+
   const dispatch = useDispatch();
 
-  const deductibles = getDeductibles(quotes);
+  const [quotesAndSelectedDeductible, setQuotesAndSelectedDeductible] =
+    useState({
+      quotes: initialQuotes,
+      selectedDeductible: getSelectedFilter("deductible").code,
+      selectedSumInsured: null,
+    });
+
+  const setSelectedSumInsured = value => {
+    setQuotesAndSelectedDeductible(prev => ({
+      ...prev,
+      selectedSumInsured: value,
+    }));
+  };
+
+  const { selectedDeductible, quotes, selectedSumInsured } =
+    quotesAndSelectedDeductible;
+
+  const isDeductibleJourney = quotes[0]?.deductible;
+
+  // const deductibles = getDeductibles(quotes);
+  const deductibles = [
+    ...new Set(
+      quotes[0]?.available_sum_insured_deductibles
+        ?.map(data => data.deductible)
+        ?.sort((a, b) => b - a),
+    ),
+  ];
 
   const [isShare, setIsShare] = useState(false);
 
   const [isShortlisted, setIsShortListed] = useState(false);
 
-  const [selectedDeductible, setSelectedDeductible] = useState(
-    Math.max(...deductibles),
-  );
+  // const [selectedDeductible, setSelectedDeductible] = useState(
+  //   getSelectedFilter("deductible")?.code,
+  // );
+
   const sumInsureds = isDeductibleJourney
-    ? quotes
-        .filter(
+    ? // ? [
+      //     ...new Set(
+      //       quotes[0]?.available_sum_insured_deductibles
+      //         ?.filter(data => +data.deductible === +selectedDeductible)
+      //         ?.map(data => data.sum_insured),
+      //     ),
+      //   ]
+      // :
+      quotes
+        ?.filter(
           quote => parseInt(quote?.deductible) === parseInt(selectedDeductible),
         )
-        .map(quote => parseInt(quote?.sum_insured))
-        .sort((a, b) => a - b)
+        ?.map(quote => parseInt(quote?.sum_insured))
+        ?.sort((a, b) => a - b)
     : quotes.map(quote => parseInt(quote?.sum_insured)).sort((a, b) => a - b);
 
-  const [selectedSumInsured, setSelectedSumInsured] = useState();
+  // const [selectedSumInsured, setSelectedSumInsured] = useState();
   const [defaultActiveKey, setdefaultActiveKey] = useState("plan-details");
 
   const quote = quotes.find(quote =>
@@ -214,7 +256,11 @@ function QuoteCard({
 
   useEffect(() => {
     setSelectedSumInsured(sumInsureds[0]);
-    setSelectedDeductible(Math.max(...deductibles));
+    // setSelectedDeductible(getSelectedFilter("deductible")?.code);
+    setQuotesAndSelectedDeductible(prev => ({
+      ...prev,
+      selectedDeductible: getSelectedFilter("deductible")?.code,
+    }));
   }, [sortBy]); // SETS MIN-SUM-INSURED OPTION AS DEFAULT SELECTED
 
   const { getCompany } = useCompanies();
@@ -227,6 +273,8 @@ function QuoteCard({
   }, [quote, quotes, sumInsureds, deductibles]);
 
   const productDetailsModal = useToggle(false);
+
+  const { getQuote, isFetching } = useGetSingleQuote();
 
   useEffect(() => {
     const isInShare = quotesToShare?.find(
@@ -241,6 +289,8 @@ function QuoteCard({
     );
     setIsShortListed(Boolean(isInShortlisted));
   }, [shortlistedQuotes]);
+
+  console.log({ quote, selectedDeductible, selectedSumInsured, quotes });
 
   if (!quote) return null;
 
@@ -258,8 +308,29 @@ function QuoteCard({
   const handleDeductibleChange = evt => {
     ClickSound();
     const { value } = evt;
+    getQuote({
+      insurerToFetch: quote?.company_alias,
+      sum_insured: quote?.sum_insured,
+      deductible: +value,
+    })
+      .unwrap()
+      .then(data => {
+        const mergedQuotes = mergeQuotes(data?.data, { sortBy })?.find(
+          mq => mq[0]?.product?.id === quote?.product?.id,
+        );
+        // setSelectedDeductible(parseInt(value));
+        const currentSumInsured = mergedQuotes
+          ?.filter(quote => parseInt(quote?.deductible) === parseInt(value))
+          ?.map(quote => parseInt(quote?.sum_insured))
+          ?.sort((a, b) => a - b)[0];
 
-    setSelectedDeductible(parseInt(value));
+        setQuotesAndSelectedDeductible(() => ({
+          quotes: mergedQuotes,
+          selectedDeductible: parseInt(value),
+          selectedSumInsured: currentSumInsured,
+        }));
+        // setQuotes(mergedQuotes);
+      });
   };
 
   const handleCompareChange = evt => {
@@ -485,7 +556,7 @@ function QuoteCard({
               gap: ${isDeductibleJourney ? ".6rem" : "0.8em"};
             `}
           >
-            <PremiumButton quote={quote} />
+            <PremiumButton isFetching={isFetching} quote={quote} />
             {isDeductibleJourney && (
               <div
                 className="rounded p-1 w-100 d-flex justify-content-between"
@@ -502,7 +573,7 @@ function QuoteCard({
                           .replace("₹", "")
                           .replace("Lakh", "L"),
                       }))}
-                      value={{
+                      defaultValue={{
                         value: selectedDeductible,
                         label: numberToDigitWord(selectedDeductible)
                           .replace("₹", "")
@@ -526,7 +597,9 @@ function QuoteCard({
                   )}
                 </QuoteCardOption>
                 <QuoteCardOption info label={"Cover:"}>
-                  {sumInsureds?.length > 1 ? (
+                  {isFetching ? (
+                    <CircleLoader animation="border" />
+                  ) : sumInsureds?.length > 1 ? (
                     <QuoteCardSelect
                       options={sumInsureds.map(sumInsured => ({
                         value: sumInsured,
