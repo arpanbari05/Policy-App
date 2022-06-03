@@ -400,7 +400,6 @@ function CompareFeatureValue({ quote, sectionTitle, featureTitle, onLoad }) {
 
   useEffect(() => {
     if (feature) onLoad && onLoad({ featureTitle, feature }, quote);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feature]);
 
   if (isLoading) return <FeatureValue isLoading={isLoading} />;
