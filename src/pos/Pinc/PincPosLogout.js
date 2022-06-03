@@ -30,7 +30,7 @@ export default function PincPosLogout() {
       if (data.status === 200) {
         localStorage.removeItem("SSO_user");
         localStorage.removeItem("Pos_details");
-        window.location.href = tenant.broker_dashboard_url;
+        window.location.href = "https://pinctreepos.app.link/fyntune";
       }
     } catch (error) {
       alert(error.message);
