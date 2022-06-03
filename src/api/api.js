@@ -589,6 +589,7 @@ export const {
   useGetCompareQuotesQuery,
   useGetCompareFeaturesQuery,
   usePrefetch,
+  useLazyGetQuoteQuery,
   useGetProposalDataQuery,
   useGetTopUpAddOnsQuery,
   useUpdateRenewalQueryMutation,
