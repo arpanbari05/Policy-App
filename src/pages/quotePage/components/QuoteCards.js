@@ -161,7 +161,7 @@ function QuoteCards({
 export default QuoteCards;
 
 function getDeductibles(quotes = []) {
-  return uniq(quotes.map(quote => quote.deductible));
+  return uniq(quotes?.map(quote => quote.deductible));
 }
 
 function QuoteCard({
@@ -208,14 +208,15 @@ function QuoteCard({
   const { selectedDeductible, quotes, selectedSumInsured } =
     quotesAndSelectedDeductible;
 
-  const isDeductibleJourney = quotes[0]?.deductible;
+  const isDeductibleJourney = quotes && quotes[0]?.deductible;
 
   // const deductibles = getDeductibles(quotes);
   const deductibles = [
     ...new Set(
-      quotes[0]?.available_sum_insured_deductibles
-        ?.map(data => data.deductible)
-        ?.sort((a, b) => b - a),
+      quotes &&
+        quotes[0]?.available_sum_insured_deductibles
+          ?.map(data => data.deductible)
+          ?.sort((a, b) => b - a),
     ),
   ];
 
@@ -236,18 +237,19 @@ function QuoteCard({
       //     ),
       //   ]
       // :
+      quotes &&
       quotes
         ?.filter(
           quote => parseInt(quote?.deductible) === parseInt(selectedDeductible),
         )
         ?.map(quote => parseInt(quote?.sum_insured))
         ?.sort((a, b) => a - b)
-    : quotes.map(quote => parseInt(quote?.sum_insured)).sort((a, b) => a - b);
+    : quotes?.map(quote => parseInt(quote?.sum_insured)).sort((a, b) => a - b);
 
   // const [selectedSumInsured, setSelectedSumInsured] = useState();
   const [defaultActiveKey, setdefaultActiveKey] = useState("plan-details");
 
-  const quote = quotes.find(quote =>
+  const quote = quotes?.find(quote =>
     isDeductibleJourney
       ? parseInt(quote?.deductible) === parseInt(selectedDeductible) &&
         parseInt(quote?.sum_insured) === parseInt(selectedSumInsured)
@@ -255,7 +257,7 @@ function QuoteCard({
   );
 
   useEffect(() => {
-    setSelectedSumInsured(sumInsureds[0]);
+    setSelectedSumInsured(sumInsureds && sumInsureds[0]);
     // setSelectedDeductible(getSelectedFilter("deductible")?.code);
     setQuotesAndSelectedDeductible(prev => ({
       ...prev,
@@ -267,7 +269,7 @@ function QuoteCard({
 
   useEffect(() => {
     if (!quote) {
-      setSelectedSumInsured(parseInt(sumInsureds[0]));
+      setSelectedSumInsured(sumInsureds && parseInt(sumInsureds[0]));
       // setSelectedDeductible(parseInt(deductibles[0]));
     }
   }, [quote, quotes, sumInsureds, deductibles]);
@@ -570,14 +572,14 @@ function QuoteCard({
                       options={deductibles.map(deductible => ({
                         value: deductible,
                         label: numberToDigitWord(deductible)
-                          .replace("₹", "")
-                          .replace("Lakh", "L"),
+                          ?.replace("₹", "")
+                          ?.replace("Lakh", "L"),
                       }))}
                       defaultValue={{
                         value: selectedDeductible,
                         label: numberToDigitWord(selectedDeductible)
-                          .replace("₹", "")
-                          .replace("Lakh", "L"),
+                          ?.replace("₹", "")
+                          ?.replace("Lakh", "L"),
                       }}
                       onChange={handleDeductibleChange}
                     />
@@ -601,7 +603,7 @@ function QuoteCard({
                     <CircleLoader animation="border" />
                   ) : sumInsureds?.length > 1 ? (
                     <QuoteCardSelect
-                      options={sumInsureds.map(sumInsured => ({
+                      options={sumInsureds?.map(sumInsured => ({
                         value: sumInsured,
                         label: numberToDigitWord(sumInsured)
                           .replace("₹", "")
@@ -653,7 +655,7 @@ function QuoteCard({
                       Cover:
                     </span>
                     <QuoteCardSelect
-                      options={sumInsureds.map(sumInsured => ({
+                      options={sumInsureds?.map(sumInsured => ({
                         value: sumInsured,
                         label: numberToDigitWord(sumInsured).replace("₹", ""),
                       }))}
