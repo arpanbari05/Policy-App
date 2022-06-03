@@ -2074,17 +2074,17 @@ export function useGetRiders(quote, groupCode, { queryOptions = {} } = {}) {
   const { journeyType, subJourneyType } = useFrontendBoot();
 
   const getRidersQueryParams = {
-    sum_insured: quote?.sum_insured,
-    tenure: quote?.tenure,
-    productId: quote?.product.id,
-    group: parseInt(groupCode),
+    sum_insured: +quote?.sum_insured,
+    tenure: +quote?.tenure,
+    productId: +quote?.product.id,
+    group: +groupCode,
     journeyType,
     subJourneyType,
     ...queryOptions,
   };
 
   if (quote?.deductible) {
-    getRidersQueryParams.deductible = quote?.deductible;
+    getRidersQueryParams.deductible = +quote?.deductible;
   }
 
   return useGetRidersQuery(getRidersQueryParams);
@@ -2160,8 +2160,8 @@ export function useRiders({ quote, groupCode, onChange }) {
 
   const affectsOtherRiders = riders
     ?.filter(isRiderSelected)
-    .filter(isAffectsOtherRiders)
-    .map(rider => rider.alias);
+    ?.filter(isAffectsOtherRiders)
+    ?.map(rider => rider.alias);
 
   let selected_riders = [];
 
