@@ -215,7 +215,7 @@ function QuoteCard({
     ...new Set(
       quotes[0]?.available_sum_insured_deductibles
         ?.map(data => data.deductible)
-        .sort((a, b) => b - a),
+        ?.sort((a, b) => b - a),
     ),
   ];
 
@@ -237,11 +237,11 @@ function QuoteCard({
       //   ]
       // :
       quotes
-        .filter(
+        ?.filter(
           quote => parseInt(quote?.deductible) === parseInt(selectedDeductible),
         )
-        .map(quote => parseInt(quote?.sum_insured))
-        .sort((a, b) => a - b)
+        ?.map(quote => parseInt(quote?.sum_insured))
+        ?.sort((a, b) => a - b)
     : quotes.map(quote => parseInt(quote?.sum_insured)).sort((a, b) => a - b);
 
   // const [selectedSumInsured, setSelectedSumInsured] = useState();
@@ -320,9 +320,9 @@ function QuoteCard({
         );
         // setSelectedDeductible(parseInt(value));
         const currentSumInsured = mergedQuotes
-          .filter(quote => parseInt(quote?.deductible) === parseInt(value))
-          .map(quote => parseInt(quote?.sum_insured))
-          .sort((a, b) => a - b)[0];
+          ?.filter(quote => parseInt(quote?.deductible) === parseInt(value))
+          ?.map(quote => parseInt(quote?.sum_insured))
+          ?.sort((a, b) => a - b)[0];
 
         setQuotesAndSelectedDeductible(() => ({
           quotes: mergedQuotes,
