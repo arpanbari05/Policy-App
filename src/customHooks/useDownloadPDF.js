@@ -3,7 +3,7 @@ import { numToLakh } from "../pages/ComparePage/useComparePage";
 import { useFrontendBoot } from "./index";
 import { useUrlQueries } from "./useUrlQuery";
 
-function getLogo(companies, quotes) {
+function getQuotesWithLogo(companies, quotes) {
   const logoArray = quotes?.map(quote => {
     return {
       ...quote,
@@ -30,8 +30,11 @@ function getFeatures(quotes) {
       company_alias: quote.company_alias,
       deductible: quote.deductible,
       tenure: quote.tenure,
-      total_premium: quote.total_premium,
+      total_premium: sessionStorage[`premium${quote.product.id}`],
       features: currentProductFeaturesBySumInsures,
+      riders: JSON.parse(
+        sessionStorage[`${quote.product.id}riders${quote.sum_insured}`],
+      ),
     };
   });
 
@@ -46,8 +49,11 @@ export default function useDownloadPDF({ quotes }) {
   async function downloadComparePDF() {
     const newQuotes = getFeatures(quotes);
     const pdfBodyContent = JSON.stringify({
-      quotes: getLogo(data?.companies, newQuotes),
+      quotes: getQuotesWithLogo(data?.companies, newQuotes),
       groupCode: window.location.pathname.split("/")[2],
+      broker_name: data?.tenant?.name,
+      broker_contact_email: data.tenant.email,
+      broker_logo: data?.settings?.logo,
     });
     try {
       setPdfFetchLoading(true);

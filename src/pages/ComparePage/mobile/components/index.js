@@ -334,6 +334,13 @@ export function OptionalCoversValue({ quote, onChange }) {
     handleChange,
   } = useRiders({ quote, onChange: handleRidersChange, groupCode });
 
+  if (quote) {
+    sessionStorage.setItem(
+      quote.product.id + `riders` + quote.sum_insured,
+      JSON.stringify(riders),
+    );
+  }
+
   return (
     <FeatureValue isLoading={isLoading || isFetching || isUninitialized}>
       <div
