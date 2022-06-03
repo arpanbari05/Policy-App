@@ -700,7 +700,13 @@ function SumInsuredFeatureValue({ compareQuote, allQuotes, ...props }) {
           })}
         </select>
       ) : (
-        <div>{numToLakh(sumInsureds[0])}</div>
+        <div
+          css={`
+            color: #647188;
+          `}
+        >
+          {numToLakh(sumInsureds[0])}
+        </div>
       )}
       {isLoading && (
         <CircleLoader
