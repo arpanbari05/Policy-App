@@ -14,7 +14,7 @@ import {
 } from "../../../../customHooks";
 import useOutsiteClick from "../../../../customHooks/useOutsideClick";
 import "styled-components/macro";
-import { Button, PremiumButton } from "../../../../components";
+import { Button, CircleLoader, PremiumButton } from "../../../../components";
 import { mergeQuotes, numberToDigitWord } from "../../../../utils/helper";
 import ProductDetailsModal from "../../../../components/ProductDetails/ProductDetailsModal";
 import {
@@ -95,6 +95,7 @@ export function Quotes({ sortBy }) {
             quotesData={icQuotes.data}
             compare={compareSlot}
             cashlessHospitalsCount={icQuotes?.cashless_hospitals_count}
+            sortBy={sortBy}
           />
         ))}
         {isLoading ? <CardSkeletonLoader /> : null}
@@ -181,6 +182,7 @@ export function QuoteCards({
   quotesData,
   cashlessHospitalsCount,
   compare,
+  sortBy,
   ...props
 }) {
   const morePlansToggle = useToggle(false);
@@ -229,6 +231,7 @@ export function QuoteCards({
         <QuoteCard
           cashlessHospitalsCount={cashlessHospitalsCount}
           {...getQuoteCardProps(firstQuote)}
+          sortBy={sortBy}
           isFirstQuote
         />
         <Collapse in={morePlansToggle.isOn}>
@@ -279,6 +282,7 @@ function QuoteCard({
   quotes,
   cashlessHospitalsCount,
   compare = {},
+  sortBy,
   isFirstQuote = false,
   ...props
 }) {
@@ -292,6 +296,7 @@ function QuoteCard({
   const {
     quote,
     logoSrc,
+    isFetching,
     deductibles,
     selectedDeductible,
     selectedSumInsured,
@@ -300,6 +305,7 @@ function QuoteCard({
     handleSumInsuredChange,
   } = useQuoteCard({
     quotes,
+    sortBy,
   });
 
   const [isShare, setIsShare] = useState(false);
@@ -531,7 +537,7 @@ function QuoteCard({
                   {`Deductible: `}
                   {deductibles.length > 1 ? (
                     <select
-                      value={selectedDeductible}
+                      defaultValue={selectedDeductible}
                       onChange={evt =>
                         handleDeductibleChange({ value: evt.target.value })
                       }
@@ -552,21 +558,27 @@ function QuoteCard({
                   `}
                 >
                   {`Cover: `}
-                  {sumInsureds.length > 1 ? (
-                    <select
-                      value={selectedSumInsured}
-                      onChange={evt =>
-                        handleSumInsuredChange({ value: evt.target.value })
-                      }
-                    >
-                      {sumInsureds.map(cover => (
-                        <option key={cover} value={cover}>
-                          {numberToDigitWord(cover)}
-                        </option>
-                      ))}
-                    </select>
+                  {isFetching ? (
+                    <CircleLoader animation="border" />
                   ) : (
-                    <span>{numberToDigitWord(selectedSumInsured)}</span>
+                    <>
+                      {sumInsureds.length > 1 ? (
+                        <select
+                          value={selectedSumInsured}
+                          onChange={evt =>
+                            handleSumInsuredChange({ value: evt.target.value })
+                          }
+                        >
+                          {sumInsureds.map(cover => (
+                            <option key={cover} value={cover}>
+                              {numberToDigitWord(cover)}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <span>{numberToDigitWord(selectedSumInsured)}</span>
+                      )}
+                    </>
                   )}
                 </div>
               </>
@@ -609,6 +621,7 @@ function QuoteCard({
           <PremiumButton
             displayTenure={false}
             quote={quote}
+            isFetching={isFetching}
             className="px-3"
             css={`
               font-size: 13px;

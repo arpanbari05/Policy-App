@@ -292,8 +292,6 @@ function QuoteCard({
     setIsShortListed(Boolean(isInShortlisted));
   }, [shortlistedQuotes]);
 
-  console.log({ quote, selectedDeductible, selectedSumInsured, quotes });
-
   if (!quote) return null;
 
   const isCompareQuote = checkFn(quote);
