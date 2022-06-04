@@ -606,6 +606,7 @@ function ProductHeader({
     tenure,
     mandatory_riders,
     available_sum_insureds,
+    deductible,
   } = quote;
 
   let sumInsuredOptions = getSumInsuredOptions(available_sum_insureds);
@@ -641,14 +642,14 @@ function ProductHeader({
   return (
     <FixedTop>
       <ProductHeaderWrap
-        className="d-flex align-items-center justify-content-between position-relative"
+        className="d-flex align-items-center justify-content-between position-relative gap-3"
         {...props}
       >
         <div
           className="d-flex align-items-center"
           css={`
             gap: 1em;
-            width: 25%;
+            max-width: 24%;
           `}
         >
           <LogoWrap>
@@ -686,33 +687,62 @@ function ProductHeader({
             </div>
               )*/}
           {journeyType === "top_up" ? (
-            <div
-              css={`
-                display: flex;
-                align-items: center;
-                /* flex-direction: column; */
-                border-right: 1px solid grey;
-                padding: 0 20px;
-                font-size: 16px;
-
-                @media (max-width: 1485px) {
-                  font-size: 14px;
-                }
-                @media (max-width: 1390px) {
-                  font-size: 12px;
-                }
-              `}
-            >
-              <span>Cover: </span>
-              <span
+            <>
+              <div
                 css={`
-                  font-weight: bold;
-                  margin-left: 5px;
+                  display: flex;
+                  align-items: center;
+                  /* flex-direction: column; */
+                  border-right: 1px solid grey;
+                  padding: 0 20px;
+                  font-size: 16px;
+
+                  @media (max-width: 1485px) {
+                    font-size: 14px;
+                  }
+                  @media (max-width: 1390px) {
+                    font-size: 12px;
+                  }
                 `}
               >
-                &nbsp;₹ {figureToWords(sum_insured)}
-              </span>
-            </div>
+                <span>Deductible: </span>
+                <span
+                  css={`
+                    font-weight: bold;
+                    margin-left: 5px;
+                  `}
+                >
+                  &nbsp;₹ {figureToWords(deductible)}
+                </span>
+              </div>
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  /* flex-direction: column; */
+                  border-right: 1px solid grey;
+                  padding: 0 20px;
+                  font-size: 16px;
+
+                  @media (max-width: 1485px) {
+                    font-size: 14px;
+                  }
+                  @media (max-width: 1390px) {
+                    font-size: 12px;
+                  }
+                `}
+              >
+                <span>Cover: </span>
+                <span
+                  css={`
+                    font-weight: bold;
+                    margin-left: 5px;
+                  `}
+                >
+                  &nbsp;₹ {figureToWords(sum_insured)}
+                </span>
+              </div>
+            </>
           ) : (
             <div
               css={`
@@ -794,6 +824,7 @@ function ProductHeader({
           <div
             css={`
               display: flex;
+              padding-left: 10px;
               /* flex-direction: column; */
               @media (max-width: 1485px) {
                 font-size: 14px;
@@ -832,6 +863,7 @@ function ProductHeader({
         <div
           css={`
             max-width: 300px;
+            flex-grow: 1;
           `}
           className="d-flex align-items-center justify-content-center"
         >
@@ -872,11 +904,13 @@ function ProductHeader({
 const QuoteInfoWrap = styled.div`
   border: solid 1px #bac3cf;
   padding: 0 5px;
+  flex-grow: 3;
   border-radius: 10px;
   display: flex;
   align-items: center;
-  transform: translateX(-80px);
-  width: ${({ longSpace }) => (longSpace ? "60%" : "46%")};
+  // transform: translateX(-80px);
+  min-width: ${({ longSpace }) => (longSpace ? "60%" : "46%")};
+  max-width: max-content;
   height: 75px;
   justify-content: space-around;
   @media (max-width: 1190px) {
@@ -906,7 +940,7 @@ const FixedTop = styled.div`
 `;
 
 const ProductName = styled.div`
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 900;
 `;
 

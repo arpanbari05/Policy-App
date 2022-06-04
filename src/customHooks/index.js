@@ -20,6 +20,7 @@ import {
   useGetFrontendBootQuery,
   useGetQuoteQuery,
   useGetRidersQuery,
+  useLazyGetQuoteQuery,
   useUpdateCartMutation,
   useUpdateCompareQuotesMutation,
   useUpdateEnquiryMutation,
@@ -1400,6 +1401,42 @@ export function useUrlEnquiry() {
   return { enquiryId, getUrlWithEnquirySearch };
 }
 
+/// condition fetching quotes query
+export function useGetSingleQuote(queryConfig = {}) {
+  const { groupCode } = useParams();
+
+  const { journeyType } = useFrontendBoot();
+
+  const { getSelectedFilter } = useFilters();
+
+  const [getQuoteQuery, { data, isFetching, refetch, ...query }] =
+    useLazyGetQuoteQuery(undefined, {
+      ...queryConfig,
+      fetchPolicy: "cache-only",
+    });
+
+  function getQuote(filters) {
+    const { sum_insured, insurerToFetch, deductible } = filters;
+
+    return getQuoteQuery({
+      insurer: insurerToFetch,
+      deductible,
+      sum_insured_range: sum_insured,
+      group: +groupCode,
+      base_plan_type: getSelectedFilter("baseplantype")?.code,
+      tenure: getSelectedFilter("tenure")?.code,
+      plan_type: getSelectedFilter("plantype")?.code,
+      journeyType,
+    });
+  }
+  return {
+    data: { data },
+    isFetching,
+    refetch,
+    getQuote,
+  };
+}
+
 export function useGetSingleICQuote(filters, queryConfig = {}) {
   const { sum_insured, insurerToFetch } = filters;
 
@@ -1409,7 +1446,7 @@ export function useGetSingleICQuote(filters, queryConfig = {}) {
 
   const { getSelectedFilter } = useFilters();
 
-  let { data, isFetching } = useGetQuoteQuery(
+  let { data, isFetching, refetch, ...query } = useGetQuoteQuery(
     {
       insurer: insurerToFetch,
       deductible: getSelectedFilter("deductible")?.code,
@@ -1423,7 +1460,12 @@ export function useGetSingleICQuote(filters, queryConfig = {}) {
     { ...queryConfig },
   );
 
-  return { data: { company_alias: insurerToFetch, data }, isFetching };
+  return {
+    data: { company_alias: insurerToFetch, data },
+    isFetching,
+    refetch,
+    query,
+  };
 }
 
 export function useGetQuotes(queryConfig = {}) {
@@ -1572,7 +1614,7 @@ export function useQuotesCompare(initialCompareQuotes = []) {
               parseInt(compare.group) === parseInt(groupCode)
                 ? {
                     ...compare,
-                    quotes: compare.quotes.filter(
+                    quotes: compare.quotes?.filter(
                       quote =>
                         !every([
                           parseInt(quoteToRemove.product.id) ===
@@ -1628,7 +1670,7 @@ export function useQuotesCompare(initialCompareQuotes = []) {
               compare.group === parseInt(groupCode)
                 ? {
                     ...compare,
-                    quotes: compare.quotes.map(quote => {
+                    quotes: compare.quotes?.map(quote => {
                       return matchQuotes(quote, previousQuote)
                         ? updatedQuote
                         : quote;
@@ -1644,7 +1686,7 @@ export function useQuotesCompare(initialCompareQuotes = []) {
 
   function getUpdateCompareQuotesMutation(groupCode) {
     function updateCompareQuotes(quotes = []) {
-      if (quotes.length) {
+      if (quotes?.length) {
         if (!data?.data?.products)
           return updateCompareQuotesMutation({
             products: [{ group: parseInt(groupCode), quotes }],
@@ -1894,32 +1936,70 @@ export function useQuotes({ sortBy = "relevence", quotesData = [] }) {
 }
 
 function getDeductibles(quotes = []) {
-  return uniq(quotes.map(quote => quote.deductible));
+  return uniq(quotes?.map(quote => quote.deductible));
 }
 
-export function useQuoteCard({ quotes = [], defaultValues = {} }) {
-  const isDeductibleJourney = quotes[0]?.deductible;
+export function useQuoteCard({
+  quotes: initialQuotes = [],
+  defaultValues = {},
+  sortBy,
+}) {
+  // const [selectedDeductible, setSelectedDeductible] = useState(
+  //   defaultValues.deductible || deductibles[0],
+  // );
 
-  const deductibles = getDeductibles(quotes);
+  const { getSelectedFilter } = useFilters();
 
-  const [selectedDeductible, setSelectedDeductible] = useState(
-    defaultValues.deductible || deductibles[0],
-  );
+  const [quotesAndSelectedDeductible, setQuotesAndSelectedDeductible] =
+    useState({
+      quotes: initialQuotes,
+      selectedDeductible: getSelectedFilter("deductible").code,
+      selectedSumInsured: null,
+    });
+
+  const { selectedDeductible, selectedSumInsured, quotes } =
+    quotesAndSelectedDeductible;
+
+  const isDeductibleJourney = quotes && quotes[0]?.deductible;
+
+  // const deductibles = getDeductibles(quotes);
+  const deductibles = [
+    ...new Set(
+      quotes &&
+        quotes[0]?.available_sum_insured_deductibles
+          ?.map(data => data.deductible)
+          ?.sort((a, b) => b - a),
+    ),
+  ];
 
   const sumInsureds = isDeductibleJourney
-    ? quotes
-        .filter(
-          quote => parseInt(quote.deductible) === parseInt(selectedDeductible),
+    ? // ? [
+      //     ...new Set(
+      //       quotes[0]?.available_sum_insured_deductibles
+      //         ?.filter(data => +data.deductible === +selectedDeductible)
+      //         ?.map(data => data.sum_insured),
+      //     ),
+      //   ]
+      // :
+      quotes &&
+      quotes
+        ?.filter(
+          quote => parseInt(quote?.deductible) === parseInt(selectedDeductible),
         )
-        .map(quote => parseInt(quote.sum_insured))
-        .sort((a, b) => a - b)
-    : quotes.map(quote => parseInt(quote.sum_insured));
+        ?.map(quote => parseInt(quote?.sum_insured))
+        ?.sort((a, b) => a - b)
+    : quotes?.map(quote => parseInt(quote?.sum_insured)).sort((a, b) => a - b);
 
-  const [selectedSumInsured, setSelectedSumInsured] = useState(
-    defaultValues.sumInsured || sumInsureds[0],
-  );
+  const setSelectedSumInsured = value => {
+    setQuotesAndSelectedDeductible(prev => ({
+      ...prev,
+      selectedSumInsured: value,
+    }));
+  };
 
-  const quote = quotes.find(quote =>
+  const { getQuote, isFetching } = useGetSingleQuote();
+
+  const quote = quotes?.find(quote =>
     isDeductibleJourney
       ? parseInt(quote.deductible) === parseInt(selectedDeductible) &&
         parseInt(quote.sum_insured) === parseInt(selectedSumInsured)
@@ -1930,10 +2010,10 @@ export function useQuoteCard({ quotes = [], defaultValues = {} }) {
 
   useEffect(() => {
     if (!quote) {
-      setSelectedSumInsured(parseInt(sumInsureds[0]));
+      setSelectedSumInsured(parseInt(sumInsureds && sumInsureds[0]));
     }
   }, [quote, quotes, sumInsureds, deductibles]);
-
+  
   if (!quote) return { quote };
 
   const { logo: logoSrc } = getCompany(quote.company_alias);
@@ -1947,7 +2027,30 @@ export function useQuoteCard({ quotes = [], defaultValues = {} }) {
   const handleDeductibleChange = evt => {
     const { value } = evt;
 
-    setSelectedDeductible(parseInt(value));
+    getQuote({
+      insurerToFetch: quote?.company_alias,
+      sum_insured: quote?.sum_insured,
+      deductible: +value,
+    })
+      .unwrap()
+      .then(data => {
+        const mergedQuotes = mergeQuotes(data?.data, { sortBy })?.find(
+          mq => mq[0]?.product?.id === quote?.product?.id,
+        );
+        // setSelectedDeductible(parseInt(value));
+        const currentSumInsured = mergedQuotes
+          ?.filter(quote => parseInt(quote?.deductible) === parseInt(value))
+          ?.map(quote => parseInt(quote?.sum_insured))
+          ?.sort((a, b) => a - b)[0];
+
+        setQuotesAndSelectedDeductible(() => ({
+          quotes: mergedQuotes,
+          selectedDeductible: parseInt(value),
+          selectedSumInsured: currentSumInsured,
+        }));
+        // setQuotes(mergedQuotes);
+      });
+    // setSelectedDeductible(parseInt(value));
   };
 
   return {
@@ -1959,6 +2062,7 @@ export function useQuoteCard({ quotes = [], defaultValues = {} }) {
     selectedSumInsured,
     deductibles,
     sumInsureds,
+    isFetching
   };
 }
 
@@ -1993,7 +2097,7 @@ export function useCompareSlot({ initialState = [], maxLength = 3 } = {}) {
   const add = quote => dispatch({ type: "add", payload: quote });
   const remove = quote => dispatch({ type: "remove", payload: quote });
   const check = quote =>
-    quotes.some(quoteInSlot => matchQuotes(quote, quoteInSlot));
+    quotes?.some(quoteInSlot => matchQuotes(quote, quoteInSlot));
 
   const clear = () => dispatch({ type: "clear" });
 

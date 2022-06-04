@@ -19,10 +19,12 @@ import { useHistory, useParams } from "react-router-dom";
 import "styled-components/macro";
 import { BiPrinter } from "react-icons/bi";
 import {
+  allowOnWebsites,
   getFeatureForQuotes,
   getQuoteKey,
   numToLakh,
 } from "../../utils/helper";
+import { downloadComparePage } from "./utils";
 import { useGetCompareFeaturesQuery } from "../../api/api";
 import {
   BASIC_FEATURES,
@@ -461,7 +463,9 @@ function DownloadButton({ ...props }) {
     quotes: props.quotes,
   });
   const handleClick = () => {
-    downloadComparePDF();
+    allowOnWebsites(["healthAll"])
+      ? downloadComparePDF()
+      : downloadComparePage();
   };
 
   return (
