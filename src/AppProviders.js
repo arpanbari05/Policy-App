@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { some } from "lodash";
 import React, { useEffect } from "react";
 import { Provider, useDispatch } from "react-redux";
-import { BrowserRouter, Redirect, useRouteMatch } from "react-router-dom";
+import { BrowserRouter, useRouteMatch } from "react-router-dom";
 import "styled-components/macro";
 import {
   useGetCartQuery,
@@ -14,12 +14,11 @@ import {
 import "./app.css";
 import { store } from "./app/store";
 import { FullScreenLoader, LoadEnquiries } from "./components";
+import InternalServerErrorPage from "./components/ServerErrorPages/InternalServerErrorPage";
 import MaintenancePage from "./components/ServerErrorPages/MaintenancePage";
-import { Page } from "./components/index";
 import { useUrlQueries } from "./customHooks/useUrlQuery";
 import { replaceShortlistedQuote } from "./pages/quotePage/quote.slice";
 import { allowOnSpecificPages } from "./utils/helper";
-import InternalServerErrorPage from "./components/ServerErrorPages/InternalServerErrorPage";
 
 function AppProviders({ children }) {
   return (
@@ -76,7 +75,6 @@ function AppLoaders({ children, ...props }) {
     isFetching: isFetchingEnq,
     isUninitialized: isUninitializedEnq,
     isError: isErrorEnq,
-    refetch,
   } = useGetEnquiriesQuery(undefined, { skip: !searchQueries.enquiryId });
 
   const { isLoading: isLoadingCart } = useGetCartQuery(undefined, {
@@ -114,8 +112,8 @@ function AppLoaders({ children, ...props }) {
 
   if (isLoading || isUninitialized) return <FullScreenLoader />;
 
-  if (serverError.status === 503) return <MaintenancePage />;
-  if (serverError.status === 500 || serverError.status !== 503)
+  if (serverError?.status === 503) return <MaintenancePage />;
+  if (serverError?.status === 500 || serverError)
     return <InternalServerErrorPage />;
 
   if (
@@ -139,12 +137,10 @@ function AppLoaders({ children, ...props }) {
 
   if (isFetchingShortlisted) return <FullScreenLoader />;
 
-  if (isErrorEnq)
-    return (
-      <Page>
-        <Redirect to="/input/basic-details" />
-      </Page>
-    );
+  if (isErrorEnq) {
+    sessionStorage.setItem("invalidEnquiry", 1);
+    window.location.href = `${window.location.origin}/input/basic-details`;
+  }
 
   return <LoadEnquiries {...props}>{children}</LoadEnquiries>;
 }
