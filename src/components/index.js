@@ -145,6 +145,7 @@ export function FullScreenLoader() {
     pinc: "#e1056d",
     sriyah: "#626dc7",
     spa: "#3877d6",
+    analah: "#092c4c",
   };
 
   const tenantAlias = process.env.REACT_APP_TENANT;
