@@ -14,7 +14,6 @@ export function CompareRiderPremium({
   const { colors } = useTheme();
   const { isSelected } = rider;
 
-  console.log(colors);
   const handleChange = evt => {
     if (rider?.is_mandatory) return;
     onChange && onChange({ ...rider, isSelected: evt.target.checked });
