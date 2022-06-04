@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import styled from "styled-components";
 import { useFrontendBoot, useTheme } from "../../customHooks";
+import { allowOnWebsites } from "../../utils/helper";
 import usePosVerification from "./usePosVerification";
 
 export default function PincPosLogout() {
@@ -30,7 +31,9 @@ export default function PincPosLogout() {
       if (data.status === 200) {
         localStorage.removeItem("SSO_user");
         localStorage.removeItem("Pos_details");
-        window.location.href = tenant.broker_dashboard_url;
+        window.location.href = allowOnWebsites(["pincProd"])
+          ? "https://pinctreepos.app.link/fyntune"
+          : "https://pinctreepos.app.link/fyntunedev";
       }
     } catch (error) {
       alert(error.message);

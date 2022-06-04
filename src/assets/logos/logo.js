@@ -26,6 +26,7 @@ import sbi_g from "./sbi_general.png";
 import star from "./Star.png";
 import tata from "./tata-aig.png";
 import universal_sompo from "./universal_sompo.png";
+import analah from "./analah-logo.png";
 
 const images = {
   go_digit: digit,
@@ -55,6 +56,7 @@ const images = {
   fyntune,
   renew_buy,
   pinc,
+  analah,
   CompanyLogo,
 };
 

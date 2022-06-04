@@ -228,22 +228,35 @@ function PlanDetails({ cartEntry }) {
     sum_insured,
     premium,
     tenure,
+    deductible,
   } = cartEntry;
 
-  const sumInsured = amount(sum_insured);
+  const { journeyType } = useFrontendBoot();
 
   const displayPremium = `${amount(premium)} / ${
     tenure > 1 ? `${tenure} Years` : "Year"
   }`;
   return (
     <DetailDispalyPanel className="d-flex">
+      {journeyType === "top_up" && (
+        <div className="detail_child">
+          <LabelStyle mobile={mobile} small={small}>
+            Deductible :
+          </LabelStyle>
+          <ValueStyle mobile={mobile} small={small} className="detail_amount">
+            {" "}
+            {numberToDigitWord(deductible)}
+          </ValueStyle>
+        </div>
+      )}
+
       <div className="detail_child">
         <LabelStyle mobile={mobile} small={small}>
           Cover :
         </LabelStyle>
         <ValueStyle mobile={mobile} small={small} className="detail_amount">
           {" "}
-          {sumInsured}
+          {numberToDigitWord(sum_insured)}
         </ValueStyle>
       </div>
 

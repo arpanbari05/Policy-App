@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { some } from "lodash";
 import React, { useEffect } from "react";
 import { Provider, useDispatch } from "react-redux";
-import { BrowserRouter, useRouteMatch } from "react-router-dom";
+import { BrowserRouter, Redirect, useRouteMatch } from "react-router-dom";
 import "styled-components/macro";
 import {
   useGetCartQuery,
@@ -142,8 +142,7 @@ function AppLoaders({ children, ...props }) {
   if (isErrorEnq)
     return (
       <Page>
-        <p>Something went wrong while fetching enquiry details!</p>
-        <button onClick={refetch}>Retry</button>
+        <Redirect to="/input/basic-details" />
       </Page>
     );
 

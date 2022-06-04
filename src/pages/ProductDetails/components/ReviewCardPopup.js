@@ -226,6 +226,8 @@ function ProductDetailsCardMobile({ cartItem }) {
     sum_insured,
     top_up_riders,
     addons,
+    deductible,
+    tenure,
     group: { id: groupCode },
   } = cartItem;
   const health_riders = useRider(groupCode).getSelectedRiders();
@@ -298,16 +300,16 @@ function ProductDetailsCardMobile({ cartItem }) {
             <div
               css={`
                 width: 50%;
-                padding-right: 10px;
                 border-right: 1px solid #ddd;
                 margin-right: 10px;
               `}
+              className="px-2"
             >
               <div
                 css={`
                   display: flex;
-                  gap: 10px;
-                  justify-content: center;
+                  gap: 5px;
+                  justify-content: start;
                 `}
               >
                 <div
@@ -330,12 +332,12 @@ function ProductDetailsCardMobile({ cartItem }) {
                   css={`
                     display: flex;
                     font-size: 10px;
-                    gap: 10px;
-                    justify-content: center;
+                    gap: 5px;
+                    justify-content: start;
                   `}
                 >
-                  <div>Premium:</div>
-                  <div>{amount(premium)}</div>
+                  <div>Deductible:</div>
+                  <div>{amount(deductible)}</div>
                 </div>
               ) : null}
             </div>
@@ -348,7 +350,7 @@ function ProductDetailsCardMobile({ cartItem }) {
                 css={`
                   display: flex;
                   justify-content: space-center;
-                  gap: 10px;
+                  gap: 5px;
                 `}
               >
                 <div
@@ -366,6 +368,30 @@ function ProductDetailsCardMobile({ cartItem }) {
                   {amount(premium)}
                 </div>
               </div>
+              {insurance_type?.alias === "top_up" && (
+                <div
+                  css={`
+                    display: flex;
+                    justify-content: space-center;
+                    gap: 5px;
+                  `}
+                >
+                  <div
+                    css={`
+                      font-size: 10px;
+                    `}
+                  >
+                    Tenure:
+                  </div>
+                  <div
+                    css={`
+                      font-size: 10px;
+                    `}
+                  >
+                    {tenure === 1 ? `${tenure} Year` : `${tenure} Years`}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -573,7 +599,7 @@ function ProductDetailsCard({ cartItem }) {
       name,
       company: { alias },
     },
-
+    deductible,
     premium,
     tenure,
     sum_insured,
@@ -659,6 +685,49 @@ function ProductDetailsCard({ cartItem }) {
             display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
           `}
         >
+          {journeyType === "top_up" && (
+            <div
+              css={`
+                display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+                display: -ms-flexbox; /* TWEENER - IE 10 */
+                display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+                display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
+                align-items: center;
+                flex: 1;
+                -webkit-flex: 1;
+                justify-content: center;
+                border-right: 1px solid #ddd;
+              `}
+            >
+              <span
+                css={`
+                  color: #000;
+                  font-size: 11px;
+                  line-height: 21px;
+                  @media (max-width: 900px) {
+                    font-size: 13px;
+                  }
+                  .edit_css_prod {
+                    @media (max-width: 900px) {
+                      font-size: 13px !important;
+                    }
+                  }
+
+                  .si_text {
+                    font-size: 15px;
+                    font-weight: 900;
+                    color: #505f79;
+                  }
+                `}
+              >
+                Deductible
+                <br />
+                <span className="edit_css_prod si_text">
+                  {numberToDigitWord(deductible)}
+                </span>
+              </span>
+            </div>
+          )}
           <div
             css={`
               display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */

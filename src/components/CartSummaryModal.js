@@ -415,7 +415,13 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
             background: rgb(240 243 247);
           `}
         >
-          <ProductData noBorder>
+          {deductible ? (
+            <ProductData noBorder>
+              <span className="label-add_product">Deductible</span>
+              <span>₹ {figureToWords(deductible)}</span>
+            </ProductData>
+          ) : null}
+          <ProductData noBorder={!deductible}>
             <span className="label-add_product">Sum Insured</span>
             <span>₹ {figureToWords(sum_insured)}</span>
           </ProductData>
@@ -442,7 +448,7 @@ function ProductSummaryCard({ cartEntry, selectedRiders, ...props }) {
         </div>
         <div
           css={`
-            max-width: 30%;
+            max-width: 26%;
           `}
         >
           {/* <ProductName flag={name.length > 20}>{name}</ProductName> */}
@@ -481,7 +487,7 @@ const ProductData = styled.div`
   flex-direction: column;
   color: black;
   border-left: 1px solid #dce2ec;
-  padding-left: 34px;
+  padding-left: 28px;
 
   position: relative;
   left: -16px;
@@ -493,10 +499,10 @@ const ProductData = styled.div`
   }
   @media (max-width: 767px) {
     border-left: ${props => props.noBorder && "unset"};
-    padding-left: 0px;
+    flex-grow: 1;
+    padding-left: 0;
     left: unset;
     font-size: 12px;
-    width: 31%;
     text-align: center;
     & .label-add_product {
       font-size: 12px;

@@ -5,6 +5,10 @@ import clickSound from "../assets/audio/button-click.mp3";
 export const allowOnWebsites = (sites = []) => {
   const renewBuyAll = ["rbstaging.in", "renewbuy.com"];
   const pincAll = ["pincinsurance.com", "pinctree.com"];
+  const healthAll = [
+    "https://healthdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in",
+    "https://topupdemo-gbk1bfj4vz7bg2mxwhgvlaws2uebzxb4.fynity.in",
+  ];
   const allUat = [
     "https://uathealth.rbstaging.in",
     "https://renewbuy-health.fynity.in",
@@ -28,6 +32,7 @@ export const allowOnWebsites = (sites = []) => {
   ];
   const sriyahUat = "https://health-uat.nammacover.com";
   const pincUat = "https://uat-health.pincinsurance.com";
+  const pincProd = "https://health.pinctree.com";
   const topupRB = "https://uat-topup.rbstaging.in";
   const origin = window.location.origin;
 
@@ -68,6 +73,11 @@ export const allowOnWebsites = (sites = []) => {
         isPass = true;
       }
     }
+    if (site === "pincProd") {
+      if (pincProd === origin) {
+        isPass = true;
+      }
+    }
     if (site === "topupRB") {
       if (topupRB.includes(origin)) {
         isPass = true;
@@ -82,6 +92,13 @@ export const allowOnWebsites = (sites = []) => {
     }
     if (site === "pincAll") {
       pincAll.forEach(value => {
+        if (origin.includes(value)) {
+          isPass = true;
+        }
+      });
+    }
+    if (site === "healthAll") {
+      healthAll.forEach(value => {
         if (origin.includes(value)) {
           isPass = true;
         }

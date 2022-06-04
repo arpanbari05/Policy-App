@@ -145,6 +145,7 @@ export function FullScreenLoader() {
     pinc: "#e1056d",
     sriyah: "#626dc7",
     spa: "#3877d6",
+    analah: "#092c4c",
   };
 
   const tenantAlias = process.env.REACT_APP_TENANT;
@@ -478,7 +479,12 @@ export function useGotoProductDetailsPage() {
   return { gotoProductPage };
 }
 
-export function PremiumButton({ quote, displayTenure = true, ...props }) {
+export function PremiumButton({
+  quote,
+  displayTenure = true,
+  isFetching,
+  ...props
+}) {
   const cartSummaryModal = useToggle(false);
 
   const {
@@ -529,20 +535,28 @@ export function PremiumButton({ quote, displayTenure = true, ...props }) {
     journeyType,
   );
 
+  if (netPremium) {
+    sessionStorage.setItem(`${"premium" + quote.product.id}`, netPremium);
+  }
+
   return (
     <div className="w-100">
       <Button
         className="w-100 rounded"
         onClick={handleBuyClick}
-        loader={isLoading}
+        loader={isLoading || isFetching}
         {...props}
       >
-        {displayTenure
-          ? getDisplayPremium({
-              total_premium: netPremium,
-              tenure: quote.tenure,
-            })
-          : amount(netPremium)}
+        {!isFetching && (
+          <>
+            {displayTenure
+              ? getDisplayPremium({
+                  total_premium: netPremium,
+                  tenure: quote.tenure,
+                })
+              : amount(netPremium)}
+          </>
+        )}
       </Button>
       {cartSummaryModal.isOn && (
         <CartSummaryModal
