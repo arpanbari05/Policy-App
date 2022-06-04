@@ -1968,7 +1968,7 @@ export function useQuoteCard({
       quotes &&
         quotes[0]?.available_sum_insured_deductibles
           ?.map(data => data.deductible)
-          ?.sort((a, b) => b - a),
+          ?.sort((a, b) => a - b),
     ),
   ];
 
@@ -2013,7 +2013,7 @@ export function useQuoteCard({
       setSelectedSumInsured(parseInt(sumInsureds && sumInsureds[0]));
     }
   }, [quote, quotes, sumInsureds, deductibles]);
-  
+
   if (!quote) return { quote };
 
   const { logo: logoSrc } = getCompany(quote.company_alias);
@@ -2062,7 +2062,7 @@ export function useQuoteCard({
     selectedSumInsured,
     deductibles,
     sumInsureds,
-    isFetching
+    isFetching,
   };
 }
 

@@ -216,7 +216,7 @@ function QuoteCard({
       quotes &&
         quotes[0]?.available_sum_insured_deductibles
           ?.map(data => data.deductible)
-          ?.sort((a, b) => b - a),
+          ?.sort((a, b) => a - b),
     ),
   ];
 

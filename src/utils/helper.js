@@ -257,11 +257,12 @@ export const numberToDigitWord = (
     if (roundTo && !Number.isInteger(temp)) temp = temp.toFixed(roundTo);
     return `${type !== "seeDetails" ? "₹" : ""} ${temp} Lakh`;
   }
-  if (value.length > 3) {
-    let temp = rounded / Math.pow(10, 3);
-    if (roundTo && !Number.isInteger(temp)) temp = temp.toFixed(roundTo);
-    return `₹ ${temp} Thousand`;
-  }
+  // if (value.length > 3) {
+  //   let temp = rounded / Math.pow(10, 3);
+  //   if (roundTo && !Number.isInteger(temp)) temp = temp.toFixed(roundTo);
+  //   return `₹ ${temp} Thousand`;
+  // }
+  if (number.toString().length > 3) return `₹ ${number / 1000} Thousand`;
 };
 
 export const dateUtil = e => {
