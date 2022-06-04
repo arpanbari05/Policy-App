@@ -19,6 +19,7 @@ import { numToLakh } from "../../../utils/helper";
 
 function AddPlansModal({ onClose, compareQuotes = [], ...props }) {
   const handleClose = () => onClose && onClose();
+  const [addMorePlanError, setAddMorePlanError] = useState(null);
 
   const { colors } = useTheme();
 
@@ -63,27 +64,34 @@ function AddPlansModal({ onClose, compareQuotes = [], ...props }) {
         `}
       >
         <h1
-          className="m-0"
+          className="mt-4"
           css={`
             font-weight: 900;
             font-size: 1.37rem;
-
             @media (max-width: 768px) {
               font-size: 1rem;
             }
           `}
         >
           Add upto 3 plans to compare
+          <p
+            css={`
+              color: red;
+              font-size: 0.89rem;
+            `}
+          >
+            {addMorePlanError}
+          </p>
         </h1>
         {error ? (
-          <div
+          <p
             css={`
               color: red;
               font-size: 0.89rem;
             `}
           >
             {error}
-          </div>
+          </p>
         ) : (
           <Button onClick={handleCompareClick}>Compare</Button>
         )}
@@ -142,14 +150,17 @@ function AddPlansModal({ onClose, compareQuotes = [], ...props }) {
           `}
         />
       </div>
-      <Quotes compareList={compareList} />
+      <Quotes
+        compareList={compareList}
+        setAddMorePlanError={setAddMorePlanError}
+      />
     </Modal>
   );
 }
 
 export default AddPlansModal;
 
-function Quotes({ compareList, ...props }) {
+function Quotes({ compareList, setAddMorePlanError, ...props }) {
   const { data, isLoading } = useGetQuotes();
   const { journeyType } = useFrontendBoot();
 
@@ -157,10 +168,14 @@ function Quotes({ compareList, ...props }) {
 
   const handleCompareChange = ({ checked, quote }) => {
     if (checked) {
+      if (compareList.quotes.length === 3) {
+        setAddMorePlanError("Oops! you can add only upto 3 plans");
+        return;
+      }
       compareList.addQuote(quote);
       return;
     }
-
+    setAddMorePlanError(null);
     compareList.removeQuote(quote);
   };
 
