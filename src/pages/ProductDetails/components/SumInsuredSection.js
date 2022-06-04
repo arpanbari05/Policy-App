@@ -5,44 +5,30 @@ import { OptionCard, WrapWithTitle } from ".";
 import { useGetRenewalSumInsuredsQuery } from "../../../api/api";
 import { CircleLoader } from "../../../components";
 import { useCart } from "../../../customHooks";
-import {
-  amount,
-  numberToDigitWord,
-  renewalSumInsuredGenerator,
-} from "../../../utils/helper";
+import { amount, numberToDigitWord } from "../../../utils/helper";
 import { mobile } from "../../../utils/mediaQueries";
 import FeatureSection from "./FeatureSection/FeatureSection";
 
 function SumInsuredSection() {
   const { groupCode } = useParams();
 
-  const { updateCartEntry, getCartEntry } = useCart();
+  const { getCartEntry } = useCart();
 
   const cartEntry = getCartEntry(groupCode);
 
-  const {
-    available_sum_insureds,
-    sum_insured,
-    available_renewals_sum_insureds,
-  } = cartEntry;
+  const { sum_insured, product, group, tenure } = cartEntry;
 
-  const currentAndNextTwoSumInsuredsMemoized = React.useMemo(
-    renewalSumInsuredGenerator.bind(null, sum_insured, available_sum_insureds),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+  const { data } = useGetRenewalSumInsuredsQuery({
+    product_id: product?.id,
+    groupCode: group?.id,
+    tenure,
+  });
+
+  const displaySumInsureds = data?.data?.map(
+    singleOption => singleOption?.sum_insured,
   );
 
-  const currentAndNextTwoSumInsureds =
-    available_renewals_sum_insureds || currentAndNextTwoSumInsuredsMemoized;
-
-  React.useEffect(() => {
-    updateCartEntry(groupCode, {
-      ...cartEntry,
-      available_renewals_sum_insureds: currentAndNextTwoSumInsureds,
-    });
-  }, []);
-
-  if (!currentAndNextTwoSumInsureds?.length) return null;
+  if (!displaySumInsureds?.length) return null;
 
   return (
     <FeatureSection heading="Upgrade Sum Insured">
@@ -55,7 +41,7 @@ function SumInsuredSection() {
             }
           `}
         >
-          {currentAndNextTwoSumInsureds.map(sumInsured => (
+          {displaySumInsureds.map(sumInsured => (
             <SumInsuredOption
               sum_insured={sumInsured}
               cartEntry={cartEntry}

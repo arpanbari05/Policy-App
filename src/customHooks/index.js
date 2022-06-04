@@ -2224,6 +2224,52 @@ function validateDependentRider(rider, riders) {
   return isValid;
 }
 
+const validateAvailableOnlyWithRiders = (riders = []) => {
+  /* const selectedRidersAlias = getSelectedRiders(riders).map(
+    rider => rider.alias,
+  );
+
+  let displayRiders = riders.map(rider => {
+    if (rider.available_only_with) {
+      const disable = !selectedRidersAlias.some(alias =>
+        rider.available_only_with.includes(alias),
+      );
+
+      return {
+        ...rider,
+        disable,
+      };
+    }
+    return { ...rider, disable: true };
+  }); 
+
+  return displayRiders; */
+
+  return riders;
+};
+
+const validateNotAvailableRiders = (riders = []) => {
+  const selectedRidersAlias = getSelectedRiders(riders).map(
+    rider => rider.alias,
+  );
+
+  let displayRiders = riders.map(rider => {
+    if (rider.not_available_with) {
+      const disable = selectedRidersAlias.some(alias =>
+        rider.not_available_with.includes(alias),
+      );
+
+      return {
+        ...rider,
+        disable,
+      };
+    }
+    return { ...rider, disable: false };
+  });
+
+  return displayRiders;
+};
+
 export function useRiders({ quote, groupCode, onChange }) {
   const { journeyType, subJourneyType } = useFrontendBoot();
 
@@ -2318,6 +2364,7 @@ export function useRiders({ quote, groupCode, onChange }) {
               (localRider && localRider.isSelected) ||
               reliance_general_feature_option_value ===
                 rider?.name?.toLowerCase()?.split(" ")?.join("_"),
+            disable: false,
           };
         });
       });
@@ -2345,22 +2392,36 @@ export function useRiders({ quote, groupCode, onChange }) {
         rider?.id === changedRider?.id ? changedRider : rider,
       );
 
-      updatedRiders = updatedRiders?.filter(updatedRider =>
-        validateDependentRider(updatedRider, getSelectedRiders(updatedRiders)),
+      //? not_available_with functionality
+      updatedRiders = validateNotAvailableRiders(updatedRiders);
+
+      console.log(
+        "The riders after validateNotAvailableRiders(updatedRiders)",
+        updatedRiders,
       );
+      //? Disable and Selected cannot be together.
+      updatedRiders = updatedRiders.map(rider => {
+        return {
+          ...rider,
+          isSelected: rider?.disable ? false : rider?.isSelected,
+        };
+      });
 
       return updatedRiders;
     });
   };
 
+  //? general functionality
+  let displayRiders =
+    quote?.product?.company?.alias === "reliance_general"
+      ? riders?.sort((a, b) => a.total_premium - b.total_premium)
+      : subJourneyType === "renewal"
+      ? riders
+      : riders?.filter(rider => rider.total_premium > 0);
+
   return {
     query,
-    riders:
-      quote?.product?.company?.alias === "reliance_general"
-        ? riders?.sort((a, b) => a.total_premium - b.total_premium)
-        : subJourneyType === "renewal"
-        ? riders
-        : riders?.filter(rider => rider.total_premium > 0),
+    riders: displayRiders,
     handleChange,
     getInitialRiders,
   };
@@ -2417,7 +2478,6 @@ export function useAddOns(groupCode) {
       ),
     });
   }
-
   return { addAddOns, removeAddOns };
 }
 

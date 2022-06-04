@@ -26,6 +26,7 @@ import validateInput, {
 import * as mq from "../../../utils/mediaQueries";
 import { Title, ErrorMessage } from "./FormComponents";
 import "styled-components/macro";
+import toast from "react-hot-toast";
 
 const BasicDetailsForm = ({ posContent, ...props }) => {
   const location = window.location;
@@ -46,6 +47,18 @@ const BasicDetailsForm = ({ posContent, ...props }) => {
     data: { tenant, settings },
     subJourneyType,
   } = useFrontendBoot(!EnquiryId);
+
+  // previous error
+  if (sessionStorage["invalidEnquiry"]) {
+    toast.error("Opps! invalid enquiryId passed.", {
+      style: {
+        borderRadius: "5px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+    sessionStorage.removeItem("invalidEnquiry");
+  }
 
   //===== page states======
   const [emailError, setEmailErrors] = useState({});

@@ -5,6 +5,7 @@ import App from "./App";
 import AppProviders from "./AppProviders";
 import { GlobalStyles } from "./styles";
 import ErrorBoundary from "./ErrorBoundary";
+import { Toaster } from "react-hot-toast";
 
 window.isTransactionClicked = false;
 
@@ -20,6 +21,7 @@ ReactDOM.render(
       <AppProviders>
         <App />
       </AppProviders>
+      <Toaster position="bottom-right" />
     </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById("root"),

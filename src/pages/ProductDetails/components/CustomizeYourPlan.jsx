@@ -174,7 +174,7 @@ export function RiderCardNew({
   isRelianceGeneralPlan,
   ...props
 }) {
-  const { isSelected } = rider;
+  const { isSelected, disable } = rider;
 
   const { colors } = useTheme();
 
@@ -216,7 +216,11 @@ export function RiderCardNew({
   };
 
   return (
-    <RiderCardWrap {...props} isSelected={isSelected} isDisabled={isDisabled}>
+    <RiderCardWrap
+      {...props}
+      isSelected={isSelected}
+      isDisabled={isDisabled || disable}
+    >
       {showPEDRiderWarning && (
         <div className="d-flex align-items-center justify-content-end">
           <span
@@ -269,7 +273,7 @@ export function RiderCardNew({
         </div>
         <RiderPremium
           rider={rider}
-          onChange={isDisabled ? () => {} : onChange}
+          onChange={isDisabled || disable ? () => {} : onChange}
           isLoading={isFetching}
         />
       </div>
